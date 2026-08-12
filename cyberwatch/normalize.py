@@ -68,6 +68,22 @@ def _contains(haystack: str, needle: str) -> bool:
     return re.search(pattern, haystack) is not None
 
 
+def _starts_with(haystack: str, prefix: str) -> bool:
+    """Test de racine en début de mot : « cyber » attrape « cyberattaque »,
+    mais pas le « cyber » interne d'un mot sans rapport."""
+    pattern = r"(?<!\w)" + re.escape(prefix.strip())
+    return re.search(pattern, haystack) is not None
+
+
+def _has_cyber_marker(blob: str) -> bool:
+    """Vrai si le texte porte un marqueur cyber discriminant."""
+    if not blob:
+        return False
+    if any(_starts_with(blob, prefix) for prefix in config.CYBER_PREFIXES):
+        return True
+    return any(_contains(blob, phrase) for phrase in config.CYBER_PHRASES)
+
+
 # --------------------------------------------------------------------------
 # Menace (§8)
 # --------------------------------------------------------------------------
@@ -91,7 +107,7 @@ def classify_threat(*texts: str, default: str = "") -> str:
 
     if default:
         return default
-    if any(_contains(blob, marker.strip()) for marker in config.CYBER_MARKERS):
+    if _has_cyber_marker(blob):
         return config.THREAT_OTHER
     return config.THREAT_UNKNOWN
 
@@ -109,7 +125,7 @@ def looks_cyber(*texts: str) -> bool:
         for pattern in patterns:
             if _contains(blob, pattern):
                 return True
-    return any(marker.strip() in blob for marker in config.CYBER_MARKERS)
+    return _has_cyber_marker(blob)
 
 
 # --------------------------------------------------------------------------

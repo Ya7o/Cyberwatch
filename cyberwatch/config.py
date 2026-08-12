@@ -115,10 +115,31 @@ THREAT_RULES: list[tuple[str, list[str]]] = [
 ]
 
 # Vocabulaire prouvant qu'un texte parle bien de cyber (sinon : hors périmètre).
-CYBER_MARKERS = [
-    "cyber", "informatique", "numerique", "donnees", "data", "pirat",
-    "ransomware", "phishing", "hameconnage", "ddos", "malware", "intrusion",
-    "fuite", "breach", "hack", "securite des systemes", "si ", "rgpd", "cnil",
+#
+# Ces marqueurs doivent rester discriminants. Des termes trop généraux
+# (« numérique », « données », « informatique » seuls) laisseraient entrer toute
+# la rubrique Numérique d'un média local dans la base.
+
+#: Racines de mots, testées en début de mot : « cyber » attrape « cyberattaque »,
+#: « pirat » attrape « piratage », « piraté », « pirates ».
+CYBER_PREFIXES = [
+    "cyber", "pirat", "hack", "ransomware", "rancongiciel", "phish",
+    "hameconn", "malware", "ddos", "intrusion", "exfiltr", "rgpd", "cnil",
+    "spyware", "botnet", "keylogger", "cryptolock",
+]
+
+#: Expressions exactes, testées sur limites de mots.
+CYBER_PHRASES = [
+    "fuite de donnees", "vol de donnees", "violation de donnees",
+    "donnees personnelles", "donnees exposees", "donnees volees",
+    "base de donnees exposee", "data breach", "data leak",
+    "incident informatique", "incident de securite", "security incident",
+    "securite informatique", "securite des systemes", "attaque informatique",
+    "systeme d information", "logiciel malveillant", "deni de service",
+    "denial of service", "messagerie compromise", "compte compromis",
+    "comptes compromis", "usurpation d identite", "identifiants voles",
+    "acces non autorise", "unauthorized access", "arnaque en ligne",
+    "escroquerie en ligne", "faux site",
 ]
 
 # --------------------------------------------------------------------------

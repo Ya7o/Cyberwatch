@@ -97,12 +97,47 @@ class TestThreatTaxonomy:
 class TestLooksCyber:
     """Garde-fou d'ingestion : un contenu non cyber n'entre pas dans la base."""
 
-    def test_contenu_cyber(self):
-        assert looks_cyber("Cyberattaque contre l'hôpital")
-        assert looks_cyber("Fuite de données chez l'opérateur")
+    @pytest.mark.parametrize(
+        "text",
+        [
+            "Cyberattaque contre l'hôpital",
+            "Fuite de données chez l'opérateur",
+            "Le CHU victime d'un ransomware",
+            "Campagne de phishing en cours",
+            "La mairie piratée ce week-end",
+            "Incident informatique à la préfecture",
+            "Attaque DDoS sur le portail",
+            "Données exposées par un prestataire",
+        ],
+    )
+    def test_contenu_cyber(self, text):
+        assert looks_cyber(text)
 
-    def test_contenu_hors_perimetre(self):
-        assert not looks_cyber("Inauguration du nouveau stade municipal")
+    @pytest.mark.parametrize(
+        "text",
+        [
+            "Inauguration du nouveau stade municipal",
+            # Régression : le marqueur « si » laissait passer tout texte français.
+            "Le conseil municipal vote si le budget passe",
+            "Si la pluie continue, la route sera fermée",
+            # Régression : « numérique » et « données » sont trop généraux pour
+            # qualifier un contenu cyber — la rubrique Numérique d'un média
+            # local déversait sinon tous ses articles dans la base.
+            "Inauguration de la médiathèque numérique",
+            "Les données du recensement sont publiées",
+            "Formation aux outils informatiques pour les seniors",
+            "Le nouveau site internet de la mairie est en ligne",
+        ],
+    )
+    def test_contenu_hors_perimetre(self, text):
+        assert not looks_cyber(text)
+
+    def test_racine_de_mot_reconnue(self):
+        """« cyber » doit attraper « cyberattaque », « pirat » « piratage »."""
+        assert looks_cyber("cyberattaque")
+        assert looks_cyber("cybersécurité")
+        assert looks_cyber("piratage")
+        assert looks_cyber("piratée")
 
 
 class TestSector:

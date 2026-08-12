@@ -18,13 +18,17 @@ on:
         description: "Commande à exécuter"
         type: choice
         default: maj
-        options: [maj, create, diagnose, replay]
+        options: [maj, create, diagnose, replay, probe]
       layers:
         description: "Couches (core, local_media, watch, all)"
         type: string
         default: all
       start:
         description: "Début de fenêtre AAAA-MM-JJ (optionnel)"
+        type: string
+        default: ""
+      source:
+        description: "Source_ID à sonder (mode probe uniquement)"
         type: string
         default: ""
 
@@ -81,6 +85,11 @@ jobs:
           fi
           if [ "${{ steps.scope.outputs.mode }}" = "replay" ]; then
             python -m cyberwatch replay $ARGS
+          elif [ "${{ steps.scope.outputs.mode }}" = "probe" ]; then
+            for SRC in $(echo "${{ inputs.source }}" | tr ',' ' '); do
+              python -m cyberwatch probe "$SRC" $ARGS
+              echo
+            done
           elif [ "${{ steps.scope.outputs.mode }}" = "diagnose" ]; then
             python -m cyberwatch diagnose --layers "${{ steps.scope.outputs.layers }}" $ARGS
           else
@@ -89,11 +98,11 @@ jobs:
           fi
 
       - name: Récapitulatif du run
-        if: always() && steps.scope.outputs.mode != 'diagnose'
+        if: always() && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe'
         run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publier les données
-        if: steps.scope.outputs.mode != 'diagnose'
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe'
         run: |
           git config user.name  "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

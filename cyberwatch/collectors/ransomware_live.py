@@ -79,11 +79,17 @@ class RansomwareLiveCollector(Collector):
                 [working_template] if working_template else ENDPOINT_TEMPLATES
             )
             fetched = False
+            empty_country = False
 
             for template in templates:
                 url = template.format(country=country)
                 response = client.fetch(url, budget)
                 if not response.ok:
+                    # Une fois le bon point d'entrée connu, un 404 sur un pays
+                    # signifie « aucune victime enregistrée », pas un échec de
+                    # protocole : le pays a bien été interrogé.
+                    if working_template and response.status_code == 404:
+                        empty_country = True
                     continue
 
                 payload = response.json()
@@ -108,7 +114,7 @@ class RansomwareLiveCollector(Collector):
                     result.entries.append(entry)
                 break
 
-            if fetched:
+            if fetched or empty_country:
                 result.units_done += 1
             elif working_template is None:
                 # Aucun modèle d'URL ne répond : l'API n'est pas joignable.

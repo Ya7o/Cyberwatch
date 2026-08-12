@@ -232,6 +232,116 @@ def cmd_diagnose(args) -> int:
     return 0
 
 
+def cmd_probe(args) -> int:
+    """Détaille, pour une source, ce que chaque méthode d'accès a répondu.
+
+    Complète `diagnose`, qui dit *qu'une* source échoue : `probe` dit *pourquoi*,
+    étape par étape de la chaîne d'accès. C'est l'outil à lancer quand une source
+    passe en `FAIL` et qu'il faut décider quoi corriger.
+    """
+    from urllib.parse import urljoin
+
+    from .collectors.feed import COMMON_FEED_PATHS, discover_feeds, parse_feed
+    from .collectors.jsonld import (
+        PAGINATION_PATTERNS,
+        extract_jsonld_entries,
+        extract_time_tag_entries,
+        page_url,
+    )
+    from .collectors.wordpress import discover_endpoint, origin_of
+
+    spec = sources.by_id(args.source)
+    if spec is None:
+        print(f"Source inconnue : {args.source}")
+        print("Sources disponibles :")
+        for candidate in sources.ALL_SOURCES:
+            print(f"  - {candidate.source_id}")
+        return 1
+
+    context = make_run_context(MODE_DIAGNOSE, args.as_of, args.start)
+    window = context.window
+    client = HttpClient(run_budget=Budget(120, 300))
+    budget = client.source_budget()
+
+    print(f"PROBE {spec.source_id}")
+    print(f"  URL de départ : {spec.start_url}")
+    print(f"  Fenêtre       : {window.start} -> {window.end}")
+    print()
+
+    print("robots.txt")
+    print(f"  chemin autorisé : {client.allowed(spec.start_url)}")
+    print()
+
+    print("1. Page de départ")
+    first = client.fetch(spec.start_url, budget)
+    print(f"  HTTP {first.status_code} · {len(first.text)} octets · {first.reason_code}")
+    if first.ok:
+        head = first.text[:400].replace("\n", " ")
+        print(f"  début : {head[:180]}…")
+    print()
+
+    print("2. API REST WordPress")
+    endpoint = discover_endpoint(client, spec.start_url, budget)
+    if endpoint:
+        print(f"  détectée : {endpoint}")
+        probe = client.fetch(f"{endpoint}/posts?per_page=3", budget)
+        payload = probe.json()
+        print(f"  HTTP {probe.status_code} · "
+              f"{len(payload) if isinstance(payload, list) else 'corps non liste'} articles")
+        print(f"  X-WP-TotalPages : {probe.headers.get('X-WP-TotalPages', 'absent')}")
+        if isinstance(payload, list) and payload:
+            post = payload[0]
+            print(f"  exemple : {post.get('date')} — "
+                  f"{(post.get('title') or {}).get('rendered', '')[:70]}")
+    else:
+        print("  non disponible")
+    print()
+
+    print("3. Flux RSS / Atom")
+    candidates = discover_feeds(client, spec.start_url, budget)[:6]
+    for feed_url in candidates:
+        response = client.fetch(feed_url, budget)
+        if not response.ok:
+            print(f"  HTTP {response.status_code:3} · {feed_url}")
+            continue
+        entries = parse_feed(response.text, spec)
+        oldest = min((e.published for e in entries), default="")
+        print(f"  HTTP 200 · {len(entries):3} entrées · plus ancienne {oldest or '—'} "
+              f"· {feed_url}")
+        if entries:
+            print(f"    exemple : {entries[0].published} — {entries[0].title[:70]}")
+            break
+    print()
+
+    print("4. JSON-LD et balises time")
+    if first.ok:
+        jsonld = extract_jsonld_entries(first.text, spec.start_url, spec)
+        timed = extract_time_tag_entries(first.text, spec.start_url, spec)
+        print(f"  JSON-LD  : {len(jsonld)} entrées datées")
+        if jsonld:
+            print(f"    exemple : {jsonld[0].published} — {jsonld[0].title[:70]}")
+        print(f"  <time>   : {len(timed)} entrées datées")
+        if timed:
+            print(f"    exemple : {timed[0].published} — {timed[0].title[:70]}")
+        blocks = first.text.count("application/ld+json")
+        print(f"  blocs ld+json présents dans la page : {blocks}")
+        print(f"  balises <time> présentes : {first.text.count('<time')}")
+    else:
+        print("  page de départ inaccessible")
+    print()
+
+    print("5. Pagination")
+    for pattern in PAGINATION_PATTERNS:
+        url = page_url(spec.start_url, pattern, 2)
+        response = client.fetch(url, budget)
+        marker = "identique à la page 1" if response.ok and response.text == first.text else ""
+        print(f"  HTTP {response.status_code:3} · {url} {marker}")
+    print()
+
+    print(f"Total requêtes : {budget.requests_made}")
+    return 0
+
+
 def cmd_report(args) -> int:
     """Résumé Markdown du dernier run, pour le récapitulatif GitHub Actions."""
     run_log = store.load_run_log()
@@ -348,6 +458,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     report = subparsers.add_parser("report", help="Résumé Markdown du dernier run.")
     report.set_defaults(func=cmd_report)
+
+    probe = subparsers.add_parser(
+        "probe", help="Détailler ce que chaque méthode d'accès répond pour une source."
+    )
+    probe.add_argument("source", help="Source_ID à sonder.")
+    add_common(probe, with_layers=False)
+    probe.set_defaults(func=cmd_probe)
 
     check = subparsers.add_parser("check", help="Rejouer les contrôles du §29.")
     check.set_defaults(func=cmd_check)
