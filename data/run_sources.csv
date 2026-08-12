@@ -1,1 +1,20 @@
 Run_ID,As_Of,Source_ID,Layer,Status,Coverage,Reason_Code,Reason,Calls,Units_Done,Units_Expected,Items_seen,Items_collected,New_items,Latest_item_date,Access_Method,Duration_s,Comment
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,FRENCHBREACHES,CORE_DIRECT,OK,100,OK,"Protocole complet, test de succès satisfait.",4,1,1,689,689,0,2026-08-12,feed:https://frenchbreaches.com/feed.xml,15.7,Accès retenu : feed:https://frenchbreaches.com/feed.xml
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,BONJOURLAFUITE,CORE_DIRECT,OK,100,OK,"Protocole complet, test de succès satisfait.",4,1,1,0,0,0,,dated-link,11.0,Accès retenu : dated-link
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,CYBERATTAQUE_ORG,CORE_DIRECT,OK,100,OK,"Protocole complet, test de succès satisfait.",8,5,1,403,369,0,2026-08-12,wordpress,10.6,Accès retenu : wordpress
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,RANSOMWARE_LIVE,CORE_DIRECT,OK,100,OK,"Protocole complet, test de succès satisfait.",5,5,5,171,171,0,2026-08-12,https://api.ransomware.live/v2/countryvictims/,5.7,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,CERT_MU_ALERTS,CORE_DIRECT,OK,100,OK,"Protocole complet, test de succès satisfait.",3,1,1,0,0,0,,feed:https://cert-mu.govmu.org/cert-mu/?feed=rss2,28.0,Accès retenu : feed:https://cert-mu.govmu.org/cert-mu/?feed=rss2
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,CIRT_MG,CORE_DIRECT,FAIL,0,NO_FEED_FOUND,"Aucun format exploitable trouvé (ni API WordPress, ni flux, ni JSON-LD).",9,0,0,0,0,0,,wordpress,8.7,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,CERT_SC_ALERTS,CORE_DIRECT,FAIL,0,NO_FEED_FOUND,"Aucun format exploitable trouvé (ni API WordPress, ni flux, ni JSON-LD).",15,0,0,0,0,0,,wordpress,16.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,ZINFOS974_CYBER,LOCAL_MEDIA_DIRECT,FAIL,0,HTTP_403,Accès refusé par le site (HTTP 403).,6,0,0,0,0,0,,jsonld,5.4,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,LINFO_CYBER,LOCAL_MEDIA_DIRECT,FAIL,0,HTTP_403,Accès refusé par le site (HTTP 403).,16,0,0,0,0,0,,jsonld,15.3,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,KWEZI_NUMERIQUE,LOCAL_MEDIA_DIRECT,OK,100,OK,"Protocole complet, test de succès satisfait.",17,16,16,1524,23,0,2026-07-27,wordpress,18.0,Accès retenu : wordpress
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,REUNION_ENTITY_WATCH,ENTITY_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,88,0,0,0,,google-news-rss,0.1,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,MAYOTTE_ENTITY_WATCH,ENTITY_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,62,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,MAYOTTE_MEDIA_WATCH,REGIONAL_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,8,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,MAURITIUS_REGIONAL_WATCH,REGIONAL_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,28,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,MADAGASCAR_REGIONAL_WATCH,REGIONAL_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,18,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,SEYCHELLES_REGIONAL_WATCH,REGIONAL_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,18,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,COMORES_REGIONAL_WATCH,REGIONAL_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,20,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,LINFO_OCEAN_INDIEN_WATCH,REGIONAL_WATCH,FAIL,0,OK,"Protocole complet, test de succès satisfait.",0,0,10,0,0,0,,google-news-rss,0.0,
+RUN-20260812T214315,2026-08-12T21:43:15.702935+04:00,HACKMAGEDDON,CANDIDATE_DISABLED,SKIPPED,0,SOURCE_INACTIVE,Source désactivée dans le référentiel SOURCES.,0,0,0,0,0,0,,,0.0,
