@@ -255,6 +255,48 @@ class TestJsonLd:
         assert entries[0].published == "2026-05-02"
         assert entries[0].url == "https://media.re/actu/cyberattaque-mairie"
 
+    def test_repli_dates_en_texte_brut(self):
+        """Cas des sites de CERT : HTML statique, sans JSON-LD ni balise time."""
+        from cyberwatch.collectors.jsonld import extract_dated_link_entries
+
+        page = """<html><body><ul>
+          <li><a href="/alerts/ransomware">Ransomware warning for local banks</a> — 12 August 2026</li>
+          <li>05/07/2026 : <a href="/alerts/phishing">Phishing campaign targeting citizens</a></li>
+        </ul><footer>&copy; 2026 CERT-SC</footer></body></html>"""
+        spec = SourceSpec("TEST", config.LAYER_CORE, "Seychelles")
+        entries = extract_dated_link_entries(page, "https://cert-sc.sc/alerts/", spec)
+
+        assert len(entries) == 2
+        # Chaque date s'accroche au lien dont elle est la plus proche, y compris
+        # lorsqu'elle est placée après le lien.
+        by_url = {e.url: e.published for e in entries}
+        assert by_url["https://cert-sc.sc/alerts/ransomware"] == "2026-08-12"
+        assert by_url["https://cert-sc.sc/alerts/phishing"] == "2026-07-05"
+
+    def test_annee_seule_ignoree(self):
+        """Un « © 2026 » de pied de page n'est pas une date d'article."""
+        from cyberwatch.collectors.jsonld import extract_dated_link_entries
+
+        spec = SourceSpec("TEST", config.LAYER_CORE, "Seychelles")
+        page = '<a href="/a">Un titre suffisamment long</a> &copy; 2026'
+        assert extract_dated_link_entries(page, "https://x/", spec) == []
+
+    def test_chaine_des_trois_extracteurs(self):
+        """Le collecteur retombe sur les dates en clair si rien d'autre ne marche."""
+        page = """<html><body>
+          <a href="/alerts/a">Alerte de sécurité sur un service public</a> 2026-04-10
+          <a href="/alerts/b">Ancienne alerte hors fenêtre</a> 2025-10-01
+        </body></html>"""
+        client = FakeClient({"cert.example/alerts": ok(page)})
+        spec = SourceSpec("TEST", config.LAYER_CORE, "Seychelles",
+                          "https://cert.example/alerts/", "jsonld")
+        result = JsonLdCollector().collect(client, spec, WINDOW)
+
+        assert result.access_method == "dated-link"
+        assert result.reached_boundary is True
+        assert result.resolve() == (status.OK, 100)
+        assert len(result.entries) == 1  # celle de 2025 est hors fenêtre
+
     def test_borne_atteinte_par_entree_anterieure(self):
         """Une entrée antérieure à la fenêtre prouve que la borne est atteinte."""
         client = FakeClient({"media.re/liste": ok(JSONLD_PAGE)})
@@ -404,6 +446,40 @@ class TestBudgets:
         source_status, coverage = result.resolve()
         assert source_status == status.PARTIAL
         assert coverage < 100
+
+    def test_repli_agent_sur_403(self):
+        """403 alors que robots.txt autorise : on se re-présente autrement.
+
+        Le refus vient d'un pare-feu filtrant sur l'agent, pas d'une politique
+        d'exclusion. Le repli conserve l'identification du projet.
+        """
+        from cyberwatch.http import HttpClient
+
+        calls = []
+
+        class Response:
+            def __init__(self, code, text=""):
+                self.status_code = code
+                self.text = text
+                self.headers = {}
+
+        client = HttpClient(respect_robots=False, polite_delay=0)
+
+        def fake_get(url, timeout=None, headers=None):
+            agent = (headers or {}).get("User-Agent", config.HTTP_USER_AGENT)
+            calls.append(agent)
+            if agent == config.HTTP_USER_AGENT:
+                return Response(403)
+            return Response(200, "<html>ok</html>")
+
+        client.session.get = fake_get
+        result = client.fetch("https://exemple.fr/page")
+
+        assert result.ok is True
+        assert len(calls) == 2
+        assert calls[1] == config.HTTP_USER_AGENT_FALLBACK
+        # L'identité du projet reste visible dans l'agent de repli.
+        assert "Cyberwatch" in config.HTTP_USER_AGENT_FALLBACK
 
     def test_budget_de_run_bloque_les_requetes(self):
         run_budget = Budget(max_requests=1, max_seconds=600)

@@ -109,6 +109,90 @@ def extract_jsonld_entries(text: str, base_url: str, spec: SourceSpec) -> list[R
     return entries
 
 
+#: Dates écrites en clair dans le HTML, sans balise dédiée. Couvre l'ISO, les
+#: formats numériques courants et les dates en toutes lettres, en français
+#: comme en anglais.
+_MONTHS = (
+    "janvier|fevrier|février|mars|avril|mai|juin|juillet|aout|août|septembre|"
+    "octobre|novembre|decembre|décembre|"
+    "january|february|march|april|may|june|july|august|september|october|"
+    "november|december|"
+    "jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec"
+)
+_TEXT_DATE_RE = re.compile(
+    r"(?<![\d/-])("
+    r"\d{4}-\d{2}-\d{2}"
+    r"|\d{1,2}[/.]\d{1,2}[/.]\d{4}"
+    rf"|\d{{1,2}}(?:er)?\s+(?:{_MONTHS})\.?\s+\d{{4}}"
+    rf"|(?:{_MONTHS})\.?\s+\d{{1,2}},?\s+\d{{4}}"
+    r")(?![\d/-])",
+    flags=re.IGNORECASE,
+)
+
+
+def extract_dated_link_entries(
+    text: str, base_url: str, spec: SourceSpec
+) -> list[RawEntry]:
+    """Dernier repli : dates écrites en clair, associées au lien le plus proche.
+
+    Beaucoup de sites institutionnels — les CERT en particulier — publient une
+    liste d'alertes en HTML statique, sans données structurées ni balise
+    `<time>`. La date y est du texte ordinaire à côté du lien. Ce repli reste
+    générique : il ne présume d'aucune classe CSS propre à un site.
+    """
+    entries: list[RawEntry] = []
+    seen: set[str] = set()
+
+    for match in _TEXT_DATE_RE.finditer(text):
+        published = parse_date(match.group(1))
+        if not published:
+            continue
+
+        start = max(0, match.start() - 1500)
+        end = min(len(text), match.end() + 1500)
+        window = text[start:end]
+
+        best_url = ""
+        best_title = ""
+        best_distance = None
+        anchor = match.start() - start
+
+        for link in _LINK_NEAR_RE.finditer(window):
+            href = link.group(1)
+            label = strip_html(link.group(2))
+            if not href or href.startswith("#") or "javascript:" in href.lower():
+                continue
+            if len(label) < 12:
+                continue
+            # Distance au bord le plus proche du lien : une date placée juste
+            # après un lien lui appartient, même si le lien suivant commence
+            # plus près de son point de départ.
+            if link.start() <= anchor <= link.end():
+                distance = 0
+            else:
+                distance = min(abs(link.start() - anchor), abs(link.end() - anchor))
+            if best_distance is None or distance < best_distance:
+                best_distance = distance
+                best_url = urljoin(base_url, href)
+                best_title = label
+
+        if not best_url or best_url in seen:
+            continue
+        seen.add(best_url)
+
+        entries.append(
+            RawEntry(
+                title=best_title,
+                url=best_url,
+                published=published,
+                threat=spec.default_threat,
+                location=spec.location_rule,
+            )
+        )
+
+    return entries
+
+
 def extract_time_tag_entries(text: str, base_url: str, spec: SourceSpec) -> list[RawEntry]:
     """Repli : balises `<time datetime>` associées au lien le plus proche.
 
@@ -201,15 +285,26 @@ class JsonLdCollector(Collector):
             result.calls = budget.requests_made
             return result
 
-        entries = extract_jsonld_entries(first.text, spec.start_url, spec)
-        method = "jsonld"
-        if not entries:
-            entries = extract_time_tag_entries(first.text, spec.start_url, spec)
-            method = "time-tag"
+        # Trois extracteurs génériques, du plus fiable au plus approximatif.
+        extractors = [
+            ("jsonld", extract_jsonld_entries),
+            ("time-tag", extract_time_tag_entries),
+            ("dated-link", extract_dated_link_entries),
+        ]
+        entries: list[RawEntry] = []
+        method = ""
+        for name, extractor in extractors:
+            entries = extractor(first.text, spec.start_url, spec)
+            if entries:
+                method = name
+                break
+
         if not entries:
             result.reason_code = status.REASON_NO_DATE
             result.calls = budget.requests_made
             return result
+
+        extract = dict(extractors)[method]
 
         result.access_method = method
         seen_urls = {e.url for e in entries if e.url}
@@ -231,11 +326,7 @@ class JsonLdCollector(Collector):
                 if not response.ok:
                     continue
 
-                page_entries = (
-                    extract_jsonld_entries(response.text, url, spec)
-                    if method == "jsonld"
-                    else extract_time_tag_entries(response.text, url, spec)
-                )
+                page_entries = extract(response.text, url, spec)
                 fresh = [e for e in page_entries if e.url and e.url not in seen_urls]
                 if not fresh:
                     continue

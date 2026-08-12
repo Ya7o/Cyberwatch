@@ -105,6 +105,9 @@ class HttpClient:
         )
         self._last_request_at: dict[str, float] = {}
         self._robots_cache: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+        #: Hôtes ayant refusé l'agent identifié : on y emploie directement le
+        #: repli, pour ne pas gaspiller une requête sur deux.
+        self._fallback_hosts: set[str] = set()
 
     # ------------------------------------------------------------------
     # robots.txt
@@ -179,6 +182,7 @@ class HttpClient:
         host = urlparse(url).netloc
         attempt = 0
         started = time.monotonic()
+        tried_fallback_ua = False
 
         while attempt <= config.HTTP_MAX_RETRIES:
             self._wait_politely(host)
@@ -186,9 +190,13 @@ class HttpClient:
             if source_budget is not None:
                 source_budget.consume()
 
+            request_headers = dict(headers or {})
+            if host in self._fallback_hosts:
+                request_headers["User-Agent"] = config.HTTP_USER_AGENT_FALLBACK
+
             try:
                 response = self.session.get(
-                    url, timeout=self.timeout, headers=headers or {}
+                    url, timeout=self.timeout, headers=request_headers
                 )
             except requests.Timeout:
                 attempt += 1
@@ -228,6 +236,15 @@ class HttpClient:
                     )
                     return FetchResult(False, url, code, "", reason, elapsed)
                 time.sleep(2 ** attempt)
+                continue
+
+            # 403 alors que le robots.txt autorise le chemin : le refus vient
+            # d'un pare-feu qui filtre sur l'agent, pas d'une politique
+            # d'exclusion. On réessaie une fois en se présentant sous une forme
+            # que ces pare-feux acceptent, sans masquer l'identité du projet.
+            if code == 403 and not tried_fallback_ua and host not in self._fallback_hosts:
+                tried_fallback_ua = True
+                self._fallback_hosts.add(host)
                 continue
 
             reason = {

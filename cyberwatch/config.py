@@ -248,6 +248,16 @@ HTTP_USER_AGENT = (
     "observatoire cyber France - Océan Indien)"
 )
 
+#: Agent de repli, utilisé uniquement lorsqu'un site répond 403 à l'agent
+#: ci-dessus alors que son `robots.txt` autorise le chemin demandé. Beaucoup de
+#: pare-feux applicatifs refusent indistinctement tout agent qui ne commence pas
+#: par « Mozilla/5.0 ». Le repli conserve l'identification du projet : on se
+#: présente toujours, on ne se déguise pas en navigateur anonyme.
+HTTP_USER_AGENT_FALLBACK = (
+    "Mozilla/5.0 (compatible; CyberwatchBot/1.0; "
+    "+https://github.com/Ya7o/Cyberwatch)"
+)
+
 MAX_REQUESTS_PER_SOURCE = 60
 MAX_PAGES_PER_SOURCE = 50
 MAX_SECONDS_PER_SOURCE = 180
