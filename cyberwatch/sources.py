@@ -52,12 +52,17 @@ CORE_SOURCES = [
         collector="autodetect",
         default_threat=config.THREAT_LEAK,
         location_rule=config.LOC_FRANCE,
+        params={"title_is_organisation": True},
         protocol=(
             "Parcourir la timeline : date, organisation, via, données concernées, "
             "source. Filtrer par période."
         ),
         success_test="Timeline parcourue jusqu'à la borne, chaque item daté et nommé.",
-        notes="Page de contrôle de volume : https://bonjourlafuite.eu.org/stats.html",
+        notes=(
+            "Chaque bloc de la chronologie est nommé d'après l'organisation "
+            "touchée : le titre de l'entrée est l'organisation. "
+            "Page de contrôle de volume : https://bonjourlafuite.eu.org/stats.html"
+        ),
     ),
     SourceSpec(
         source_id="CYBERATTAQUE_ORG",

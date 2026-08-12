@@ -63,6 +63,7 @@ class TestEntryToItem:
             zone=config.LOC_FRANCE,
             default_threat=config.THREAT_LEAK,
             location_rule=config.LOC_FRANCE,
+            params={"title_is_organisation": True},
         )
         entry = RawEntry(
             title="Société Générale",
@@ -74,6 +75,24 @@ class TestEntryToItem:
         assert item is not None
         assert item.Threat == config.THREAT_LEAK
         assert item.Organisation_Raw == "Société Générale"
+
+    def test_titre_organisation_declare_par_la_source_seulement(self):
+        """Sans la règle déclarée, aucun titre n'est promu en organisation."""
+        leak_spec = SourceSpec(
+            source_id="FRENCHBREACHES",
+            layer=config.LAYER_CORE,
+            zone=config.LOC_FRANCE,
+            default_threat=config.THREAT_LEAK,
+        )
+        entry = RawEntry(
+            title="Une fuite de données touche plusieurs acteurs du secteur",
+            url="https://frenchbreaches.com/a",
+            published="2026-03-05",
+        )
+        item = entry_to_item(entry, leak_spec, AS_OF, {}, {})
+
+        assert item is not None
+        assert item.Organisation_Key == ""  # aucune organisation inventée
 
     def test_entree_sans_date_ecartee(self):
         entry = RawEntry(title="Cyberattaque", url="https://media.re/c", published="")

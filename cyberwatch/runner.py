@@ -140,6 +140,16 @@ def entry_to_item(
     # Organisation : fournie par la source, sinon lue dans le titre, sinon
     # reconnue parmi les entités surveillées. Jamais devinée.
     organisation = entry.organisation or organisation_from_title(entry.title)
+
+    # Certaines sources publient l'organisation comme titre de l'entrée : c'est
+    # le cas des chronologies de fuites, dont chaque bloc est nommé d'après
+    # l'organisation touchée (§13.2). La règle est déclarée par la source, elle
+    # n'est pas déduite de la forme du titre.
+    if not organisation and spec.params.get("title_is_organisation"):
+        candidate = entry.title.strip()
+        if candidate and len(candidate.split()) <= 8:
+            organisation = candidate
+
     if not organisation:
         organisation = find_known_entity(text, known_orgs)
 
