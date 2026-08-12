@@ -148,6 +148,7 @@ class NewsRssCollector(Collector):
 
         result.units_expected = sum(len(queries) for _n, _a, queries in tasks)
         seen_urls: set[str] = set()
+        failures: dict[str, int] = {}
 
         for name, aliases, queries in tasks:
             entity_entries: list[RawEntry] = []
@@ -167,8 +168,12 @@ class NewsRssCollector(Collector):
                 response = client.fetch(build_url(query, lang, when_days), budget)
                 if not response.ok:
                     entity_status = status.PARTIAL
-                    if response.reason_code == status.REASON_HTTP_429:
-                        result.reason_code = status.REASON_HTTP_429
+                    # Conserver la cause réelle du refus : sans elle, la source
+                    # ressortirait en échec sans raison exploitable.
+                    result.reason_code = response.reason_code
+                    failures[response.reason_code] = (
+                        failures.get(response.reason_code, 0) + 1
+                    )
                     continue
 
                 queries_done += 1
@@ -215,8 +220,15 @@ class NewsRssCollector(Collector):
             and result.reason_code == status.REASON_OK
         )
         result.calls = budget.requests_made
-        if not result.reached_boundary and result.units_done:
-            result.comment = (
-                f"{result.units_done}/{result.units_expected} requêtes exécutées"
-            )
+        if not result.reached_boundary:
+            detail = f"{result.units_done}/{result.units_expected} requêtes exécutées"
+            if failures:
+                causes = ", ".join(
+                    f"{code} x{count}"
+                    for code, count in sorted(
+                        failures.items(), key=lambda kv: -kv[1]
+                    )
+                )
+                detail = f"{detail} ; refus : {causes}"
+            result.comment = detail
         return result

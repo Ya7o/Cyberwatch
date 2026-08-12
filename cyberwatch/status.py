@@ -60,6 +60,7 @@ REASON_BUDGET_RUN = "RUN_BUDGET_REACHED"
 REASON_LAYER_NOT_SCHEDULED = "LAYER_NOT_SCHEDULED"
 REASON_SOURCE_INACTIVE = "SOURCE_INACTIVE"
 REASON_PARSE_ERROR = "PARSE_ERROR"
+REASON_NO_RESULT = "NO_RESULT"
 
 REASON_TEXTS = {
     REASON_OK: "Protocole complet, test de succès satisfait.",
@@ -77,6 +78,10 @@ REASON_TEXTS = {
     REASON_LAYER_NOT_SCHEDULED: "Couche non planifiée pour ce run (balayage hebdomadaire).",
     REASON_SOURCE_INACTIVE: "Source désactivée dans le référentiel SOURCES.",
     REASON_PARSE_ERROR: "Contenu récupéré mais illisible.",
+    REASON_NO_RESULT: (
+        "Aucune unité du protocole n'a abouti : la source n'a rien renvoyé "
+        "d'exploitable, sans que la cause ait pu être qualifiée."
+    ),
 }
 
 

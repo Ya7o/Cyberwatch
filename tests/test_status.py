@@ -162,3 +162,34 @@ class TestReasonTexts:
         for code in codes:
             assert status.reason_text(code) != code
             assert status.reason_text(code).strip()
+
+
+class TestReasonCoherence:
+    """Un statut dégradé ne doit jamais porter la raison « tout va bien »."""
+
+    def test_fail_ne_porte_jamais_reason_ok(self):
+        result = CollectResult(reason_code=status.REASON_OK)
+        assert result.resolve() == (status.FAIL, 0)
+        assert result.reason_code == status.REASON_NO_RESULT
+        assert status.reason_text(result.reason_code) != status.reason_text(
+            status.REASON_OK
+        )
+
+    def test_partial_ne_porte_jamais_reason_ok(self):
+        result = CollectResult(
+            entries=[RawEntry()], units_done=5, units_expected=20,
+            reason_code=status.REASON_OK,
+        )
+        source_status, _coverage = result.resolve()
+        assert source_status == status.PARTIAL
+        assert result.reason_code == status.REASON_NO_RESULT
+
+    def test_cause_reelle_conservee(self):
+        result = CollectResult(reason_code=status.REASON_HTTP_429)
+        assert result.resolve() == (status.FAIL, 0)
+        assert result.reason_code == status.REASON_HTTP_429
+
+    def test_ok_conserve_sa_raison(self):
+        result = CollectResult(reached_boundary=True, units_done=1, units_expected=1)
+        assert result.resolve() == (status.OK, 100)
+        assert result.reason_code == status.REASON_OK
