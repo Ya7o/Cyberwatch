@@ -2,7 +2,7 @@
 
 Chaque source déclare son URL de départ, son protocole, son test de succès et sa
 règle de localisation. Ce fichier est la traduction exécutable du tableau du
-§23 : dix-neuf lignes, dont deux volontairement inactives.
+§23, avec une ligne volontairement inactive.
 
 Deux écarts assumés par rapport à la méthode d'origine, tous deux documentés
 dans `METHODOLOGY.md` :
@@ -10,17 +10,44 @@ dans `METHODOLOGY.md` :
 - `RANSOMWARE_LIVE` est **activée** : elle était désactivée faute d'accès
   opérationnel en conversation, alors qu'il s'agit d'une API JSON publique. La
   méthode la désigne elle-même comme prioritaire (§21).
-- Les couches de veille passent par **Google News RSS** plutôt que par un
-  moteur de recherche généraliste, aucun n'étant appelable gratuitement en
-  script. Les requêtes exécutées restent fixes et documentées (§22).
+- Les couches de veille interrogent **directement les flux des médias** au
+  lieu d'un moteur de recherche. La voie Google News, envisagée d'abord, est
+  fermée : son `robots.txt` interdit `/rss/search`. Le remplacement suit la
+  règle « source directe > recherche moteur » (§31).
 """
 
 from __future__ import annotations
 
 from . import config, watchlists
 from .collectors.base import SourceSpec
-from .collectors.newsrss import domain_queries
 from .model import SOURCE_COLUMNS
+
+# --------------------------------------------------------------------------
+# Médias suivis par territoire, pour les couches de veille.
+# Ces domaines sont interrogés via leur propre flux : c'est la traduction de la
+# règle « source directe > recherche moteur » (§31).
+# --------------------------------------------------------------------------
+
+REUNION_MEDIA = [
+    "www.zinfos974.com",
+    "www.linfo.re",
+    "www.clicanoo.re",
+    "www.ipreunion.com",
+    "www.imazpress.com",
+    "la1ere.francetvinfo.fr/reunion",
+]
+
+MAYOTTE_MEDIA = [
+    "www.linfokwezi.fr",
+    "mayottehebdo.com",
+    "lejournaldemayotte.yt",
+    "la1ere.francetvinfo.fr/mayotte",
+]
+
+MAURICE_MEDIA = ["defimedia.info", "lexpress.mu", "www.lemauricien.com"]
+MADAGASCAR_MEDIA = ["lexpress.mg", "midi-madagasikara.mg"]
+SEYCHELLES_MEDIA = ["www.nation.sc"]
+COMORES_MEDIA = ["alwatwan.net", "lagazettedescomores.com"]
 
 # --------------------------------------------------------------------------
 # Couche A — CORE_DIRECT : archives et agrégateurs parcourables directement
@@ -173,152 +200,114 @@ LOCAL_MEDIA_SOURCES = [
 ]
 
 # --------------------------------------------------------------------------
-# Couche C — ENTITY_WATCH : surveillance nominative
+# Couche C — ENTITY_WATCH : surveillance nominative via les flux des médias
 # --------------------------------------------------------------------------
 
+_WATCH_PROTOCOL = (
+    "Lire le flux de chaque média du territoire, retenir les articles relevant "
+    "du cyber, et reconnaître nominativement les entités surveillées."
+)
+_WATCH_SUCCESS = (
+    "OK seulement si tous les médias du territoire ont répondu ET si les flux "
+    "remontent jusqu'au début de la fenêtre ; sinon PARTIAL avec la couverture "
+    "réelle, jamais un zéro vérifié."
+)
+_WATCH_NOTE = (
+    "Les requêtes Google News de la méthode d'origine ont été abandonnées : le "
+    "robots.txt de Google interdit /rss/search. Les médias sont donc interrogés "
+    "directement, conformément à la règle « source directe > recherche moteur » "
+    "(§31). Un flux ne portant que ses dernières publications, cette couche "
+    "surveille le présent et ne reconstitue pas l'historique."
+)
+
+
+def _watch(source_id, zone, media, entities, layer, require_entity=True, notes=""):
+    """Source de veille : flux directs des médias + entités surveillées."""
+    return SourceSpec(
+        source_id=source_id,
+        layer=layer,
+        zone=zone,
+        start_url=f"https://{media[0]}/" if media else "",
+        collector="mediawatch",
+        location_rule=zone if zone in config.LOCATIONS else "",
+        params={
+            "domains": media,
+            "entities": watchlists.as_params(entities),
+            "require_entity": require_entity,
+        },
+        protocol=_WATCH_PROTOCOL,
+        success_test=_WATCH_SUCCESS,
+        notes=" ".join(filter(None, [notes, _WATCH_NOTE])),
+    )
+
+
 ENTITY_WATCH_SOURCES = [
-    SourceSpec(
-        source_id="REUNION_ENTITY_WATCH",
-        layer=config.LAYER_ENTITY_WATCH,
-        zone=config.LOC_REUNION,
-        start_url="https://news.google.com/rss/search",
-        collector="newsrss",
-        location_rule=config.LOC_REUNION,
-        params={
-            "entities": watchlists.as_params(watchlists.REUNION_ENTITIES),
-            "lang": "fr",
-        },
-        protocol=(
-            "Deux requêtes fixes par entité (fusion documentée de Q1-Q4), pour "
-            "les 24 communes et les 20 entités critiques de La Réunion."
-        ),
-        success_test=(
-            "Calls_expected = nombre d'entités x 2. OK seulement si toutes les "
-            "requêtes ont été exécutées ; sinon PARTIAL, jamais un zéro vérifié."
-        ),
-        notes="Un article de sensibilisation générale n'est pas un incident.",
+    _watch(
+        "REUNION_ENTITY_WATCH",
+        config.LOC_REUNION,
+        REUNION_MEDIA,
+        watchlists.REUNION_ENTITIES,
+        config.LAYER_ENTITY_WATCH,
+        notes="24 communes et 20 entités critiques de La Réunion.",
     ),
-    SourceSpec(
-        source_id="MAYOTTE_ENTITY_WATCH",
-        layer=config.LAYER_ENTITY_WATCH,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://news.google.com/rss/search",
-        collector="newsrss",
-        location_rule=config.LOC_MAYOTTE,
-        params={
-            "entities": watchlists.as_params(watchlists.MAYOTTE_ENTITIES),
-            "lang": "fr",
-        },
-        protocol="Mêmes requêtes que La Réunion, pour les 17 communes et les entités critiques.",
-        success_test="Toutes les communes et entités critiques interrogées.",
-        notes="",
+    _watch(
+        "MAYOTTE_ENTITY_WATCH",
+        config.LOC_MAYOTTE,
+        MAYOTTE_MEDIA,
+        watchlists.MAYOTTE_ENTITIES,
+        config.LAYER_ENTITY_WATCH,
+        notes="17 communes et les entités critiques de Mayotte.",
     ),
 ]
 
 # --------------------------------------------------------------------------
-# Couche D — REGIONAL_WATCH : veille par territoire et par média
+# Couche D — REGIONAL_WATCH : veille par territoire
 # --------------------------------------------------------------------------
 
-
-def _regional(
-    source_id: str,
-    zone: str,
-    domains: list[str],
-    territory: str,
-    entities,
-    lang: str = "fr",
-    notes: str = "",
-) -> SourceSpec:
-    """Source régionale : requêtes par domaine média + entités critiques."""
-    queries: list[str] = []
-    for domain in domains:
-        queries.extend(domain_queries(domain, territory, lang))
-    return SourceSpec(
-        source_id=source_id,
-        layer=config.LAYER_REGIONAL_WATCH,
-        zone=zone,
-        start_url="https://news.google.com/rss/search",
-        collector="newsrss",
-        location_rule=zone,
-        params={
-            "queries": queries,
-            "entities": watchlists.as_params(entities),
-            "lang": lang,
-        },
-        protocol=(
-            f"Deux requêtes fixes par domaine ({', '.join(domains)}) et deux "
-            "par entité critique du territoire."
-        ),
-        success_test="Toutes les requêtes prévues exécutées.",
-        notes=notes,
-    )
-
-
 REGIONAL_WATCH_SOURCES = [
-    _regional(
+    _watch(
         "MAYOTTE_MEDIA_WATCH",
         config.LOC_MAYOTTE,
-        ["linfokwezi.fr", "mayottehebdo.com", "lejournaldemayotte.yt", "gazeti.fr"],
-        "Mayotte",
+        MAYOTTE_MEDIA,
         [],
-        notes="Complète la rubrique Numérique de Kwezi par les autres médias mahorais.",
+        config.LAYER_REGIONAL_WATCH,
+        require_entity=False,
+        notes="Tout contenu cyber mahorais, sans exiger une entité de la liste.",
     ),
-    _regional(
+    _watch(
         "MAURITIUS_REGIONAL_WATCH",
         config.LOC_MAURICE,
-        ["defimedia.info", "lexpress.mu", "lemauricien.com"],
-        "Maurice",
+        MAURICE_MEDIA,
         watchlists.MAURICE_ENTITIES,
-        notes="Un article général ne crée pas d'incident sans organisation victime nommée.",
+        config.LAYER_REGIONAL_WATCH,
+        require_entity=False,
+        notes="Un article général ne crée pas d'incident sans organisation nommée.",
     ),
-    _regional(
+    _watch(
         "MADAGASCAR_REGIONAL_WATCH",
         config.LOC_MADAGASCAR,
-        ["lexpress.mg"],
-        "Madagascar",
+        MADAGASCAR_MEDIA,
         watchlists.MADAGASCAR_ENTITIES,
-        notes="Les ajouts de médias doivent être documentés ici avant usage.",
+        config.LAYER_REGIONAL_WATCH,
+        require_entity=False,
     ),
-    _regional(
+    _watch(
         "SEYCHELLES_REGIONAL_WATCH",
         config.LOC_SEYCHELLES,
-        ["nation.sc"],
-        "Seychelles",
+        SEYCHELLES_MEDIA,
         watchlists.SEYCHELLES_ENTITIES,
-        lang="en",
-        notes="Territoire anglophone : requêtes en anglais.",
+        config.LAYER_REGIONAL_WATCH,
+        require_entity=False,
+        notes="Territoire anglophone.",
     ),
-    _regional(
+    _watch(
         "COMORES_REGIONAL_WATCH",
         config.LOC_COMORES,
-        ["alwatwan.net", "lagazettedescomores.com"],
-        "Comores",
+        COMORES_MEDIA,
         watchlists.COMORES_ENTITIES,
-        notes=(
-            "Indexation locale faible : un protocole complet sans résultat récent "
-            "donne OK avec zéro item ; une indexation insuffisante donne PARTIAL."
-        ),
-    ),
-    SourceSpec(
-        source_id="LINFO_OCEAN_INDIEN_WATCH",
-        layer=config.LAYER_REGIONAL_WATCH,
-        zone="Océan Indien",
-        start_url="https://news.google.com/rss/search",
-        collector="newsrss",
-        params={
-            "queries": [
-                q
-                for territory in ["Maurice", "Madagascar", "Mayotte", "Seychelles", "Comores"]
-                for q in domain_queries("linfo.re", territory)
-            ],
-            "lang": "fr",
-        },
-        protocol="Deux requêtes fixes par territoire sur le domaine linfo.re.",
-        success_test="Les dix requêtes exécutées.",
-        notes=(
-            "La localisation doit provenir du contenu ou de la rubrique, jamais "
-            "d'une mention géographique secondaire."
-        ),
+        config.LAYER_REGIONAL_WATCH,
+        require_entity=False,
+        notes="Indexation locale faible : la couverture réelle est publiée telle quelle.",
     ),
 ]
 
@@ -398,6 +387,8 @@ def expected_units(spec: SourceSpec) -> int:
     params = spec.params or {}
     entities = params.get("entities") or []
     queries = params.get("queries") or []
+    if spec.collector == "mediawatch":
+        return len(params.get("domains") or [])
     if spec.collector == "newsrss":
         return len(entities) * 2 + len(queries)
     if spec.collector == "ransomware_live":

@@ -63,24 +63,29 @@ organisation, date, groupe et pays. La méthode la désignait elle-même comme
 prioritaire, les sources françaises étant fortement orientées « fuite de données ».
 `HACKMAGEDDON` reste désactivée.
 
-### 1.3 Les couches de veille passent par Google News RSS
+### 1.3 Les couches de veille interrogent directement les flux des médias
 
-La version 1 prévoyait des requêtes de moteur de recherche. Aucun moteur
-généraliste n'est appelable gratuitement depuis un script. Google News RSS le
-remplace : gratuit, sans clé, et **déterministe dans sa forme** — la requête
-exécutée est écrite telle quelle dans `SOURCES`.
+La version 1 prévoyait des requêtes de moteur de recherche, exécutables à la main
+mais pas en script. Google News RSS a d'abord été retenu comme substitut, puis
+**abandonné après vérification** : le `robots.txt` de Google interdit
+`/rss/search`. Le pipeline respecte les robots.txt, cette voie est donc fermée.
 
-Les quatre requêtes Q1–Q4 par entité sont **fusionnées en deux** requêtes reliées
-par `OR`, que Google News traite nativement. Le rappel est équivalent pour moitié
-moins d'appels : c'est le principal levier de maîtrise de la volumétrie.
+Les couches de veille lisent désormais **le flux propre de chaque média** du
+territoire, puis reconnaissent nominativement les entités surveillées dans les
+articles. Ce remplacement est meilleur sur trois plans :
 
-Un **contexte territorial** est ajouté à chaque requête (« La Réunion »,
-« Mayotte »…), sans quoi « Mairie de Saint-Denis » ramènerait massivement des
-résultats de Seine-Saint-Denis.
+- **conformité** : on consomme les flux que les médias publient pour être lus ;
+- **fidélité à la méthode** : le §31 pose « source directe > recherche moteur » ;
+- **volumétrie** : une requête par média au lieu de deux par entité, soit
+  **36 unités au lieu de 266** pour un balayage complet.
 
-**Limites assumées** : indexation plus faible des petits médias comoriens et
-malgaches, et fenêtre RSS glissante. Ces sources rapportent honnêtement `PARTIAL`
-plutôt qu'un faux `OK`.
+Un article n'entre dans la base que s'il relève du cyber : la seule mention d'une
+commune ne suffit pas, celle-ci pouvant être citée pour tout autre motif.
+
+**Limite assumée** : un flux ne porte que ses dernières publications. Cette
+couche surveille donc le présent et ne reconstitue pas l'historique. Sa
+couverture est calculée sur la part de fenêtre réellement observée, et elle
+ressort `PARTIAL` plutôt que de revendiquer une énumération complète.
 
 ### 1.4 Le XLSX est remplacé par des CSV
 
@@ -174,9 +179,11 @@ le coût quotidien reste constant dans le temps.
 
 | Run | Requêtes | Durée |
 |---|---|---|
-| Quotidien (sources directes) | ~30 | 1–2 min |
-| Hebdomadaire (balayage complet) | ~270 | 5–10 min |
-| `CREATE` initial (année en cours) | ~300 | 10–20 min |
+| Quotidien (sources directes) | ~40 | 1–2 min |
+| Hebdomadaire (balayage complet) | ~90 | 2–4 min |
+| `CREATE` initial (année en cours) | ~90 | 2–5 min |
+
+Mesures relevées en exécution réelle, pas des estimations.
 
 **Plafonds durs**, appliqués dans `cyberwatch/config.py` :
 
@@ -206,6 +213,8 @@ fonctionné** dans `RUN_SOURCES` :
 2. **Flux RSS / Atom** — autodécouverte puis chemins conventionnels.
 3. **JSON-LD schema.org** (`NewsArticle`) — présent sur la quasi-totalité des sites
    de presse, donc générique.
+4. **Dates en texte brut** associées au lien le plus proche — dernier repli, utile
+   pour les sites institutionnels en HTML statique sans données structurées.
 
 Si aucun ne fonctionne : `FAIL` avec `Reason_Code = NO_FEED_FOUND`, jamais un zéro
 silencieux.
@@ -251,3 +260,21 @@ protocole terminé         >  site accessible
 couverture multi-source   >  dépendance à un seul agrégateur
 transparence des trous    >  faux zéro
 ```
+
+
+---
+
+## 10. Ce que l'exécution réelle a appris
+
+Ces constats proviennent de runs en conditions réelles, pas d'hypothèses.
+
+| Constat | Conséquence retenue |
+|---|---|
+| `robots.txt` de Google interdit `/rss/search` | Couches de veille rebasculées sur les flux directs des médias (§1.3) |
+| Trois médias répondent `403` à tout agent non-navigateur, alors que leur `robots.txt` autorise le chemin | Une seule nouvelle tentative avec un agent accepté par ces pare-feux, l'identification du projet étant conservée |
+| CIRT-MG est une coquille JavaScript de 1,5 Ko | `FAIL` assumé et affiché : aucune page n'y est énumérable sans navigateur |
+| Un marqueur de vocabulaire trop court (« si ») laissait entrer tout texte français | Vocabulaire scindé en racines de mots et expressions exactes, testé sur limites de mots |
+| Une liste de fuites nomme ses entrées d'après l'organisation, sans vocabulaire cyber | Le garde-fou d'ingestion ne s'applique pas aux sources déclarant une menace par défaut |
+
+Le principe commun : **chaque limite rencontrée est inscrite dans le statut de la
+source plutôt que contournée ou masquée.**

@@ -490,3 +490,118 @@ class TestBudgets:
         result = client.fetch("https://exemple.fr")
         assert result.ok is False
         assert result.reason_code == status.REASON_BUDGET_RUN
+
+
+# --------------------------------------------------------------------------
+# Veille par flux directs des médias
+# --------------------------------------------------------------------------
+
+MEDIA_FEED = """<?xml version="1.0"?>
+<rss version="2.0"><channel>
+  <item>
+    <title>Le CHU de La Réunion victime d'une cyberattaque</title>
+    <link>https://media.re/1</link>
+    <pubDate>Wed, 04 Mar 2026 06:00:00 GMT</pubDate>
+    <description>Une intrusion a paralysé les services.</description>
+  </item>
+  <item>
+    <title>Air Austral inaugure une nouvelle ligne</title>
+    <link>https://media.re/2</link>
+    <pubDate>Wed, 04 Mar 2026 06:00:00 GMT</pubDate>
+    <description>Ouverture commerciale.</description>
+  </item>
+  <item>
+    <title>Fuite de données chez un opérateur national</title>
+    <link>https://media.re/3</link>
+    <pubDate>Wed, 04 Mar 2026 06:00:00 GMT</pubDate>
+    <description>Des données personnelles exposées.</description>
+  </item>
+</channel></rss>
+"""
+
+
+class TestMediaWatch:
+    """Remplace les requêtes Google News, interdites par le robots.txt."""
+
+    def _spec(self, domains, entities, require_entity=True):
+        return SourceSpec(
+            "WATCH", config.LAYER_ENTITY_WATCH, "La Réunion",
+            f"https://{domains[0]}/", "mediawatch",
+            location_rule="La Réunion",
+            params={"domains": domains, "entities": entities,
+                    "require_entity": require_entity},
+        )
+
+    def test_entite_reconnue_dans_le_flux(self):
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({"media.re": ok(MEDIA_FEED)})
+        spec = self._spec(
+            ["media.re"],
+            [{"name": "CHU de La Réunion", "aliases": ["CHU Réunion"]}],
+        )
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert len(result.entries) == 1
+        assert result.entries[0].entity == "CHU de La Réunion"
+        assert result.entries[0].organisation == "CHU de La Réunion"
+
+    def test_article_non_cyber_ecarte_meme_si_entite_citee(self):
+        """Une commune citée pour une inauguration n'est pas un incident."""
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({"media.re": ok(MEDIA_FEED)})
+        spec = self._spec(["media.re"], [{"name": "Air Austral", "aliases": []}])
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert result.entries == []
+        assert result.watch_rows[0]["items_found"] == 0
+
+    def test_veille_regionale_sans_entite_requise(self):
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({"media.re": ok(MEDIA_FEED)})
+        spec = self._spec(["media.re"], [], require_entity=False)
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        # Les deux articles cyber sont retenus, l'article commercial non.
+        assert len(result.entries) == 2
+
+    def test_media_injoignable_reduit_la_couverture(self):
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({"media.re": ok(MEDIA_FEED)})
+        spec = self._spec(["media.re", "absent.re"], [], require_entity=False)
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        source_status, coverage = result.resolve()
+        assert source_status == status.PARTIAL
+        assert coverage < 100
+        assert "1/2 médias interrogés" in result.comment
+
+    def test_aucun_media_joignable_donne_fail(self):
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({})
+        spec = self._spec(["absent.re"], [], require_entity=False)
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert result.resolve()[0] == status.FAIL
+        assert result.reason_code != status.REASON_OK
+
+    def test_etat_de_veille_par_entite(self):
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({"media.re": ok(MEDIA_FEED)})
+        spec = self._spec(
+            ["media.re"],
+            [{"name": "CHU de La Réunion", "aliases": []},
+             {"name": "Air Austral", "aliases": []}],
+        )
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        rows = {r["entity"]: r for r in result.watch_rows}
+        assert rows["CHU de La Réunion"]["items_found"] == 1
+        assert rows["Air Austral"]["items_found"] == 0
+        # Chaque entité surveillée est présente, touchée ou non.
+        assert len(rows) == 2

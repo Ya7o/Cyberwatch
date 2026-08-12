@@ -6,6 +6,7 @@ from .autodetect import AutodetectCollector
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
 from .feed import FeedCollector
 from .jsonld import JsonLdCollector
+from .mediawatch import MediaWatchCollector
 from .newsrss import NewsRssCollector
 from .ransomware_live import RansomwareLiveCollector
 from .wordpress import WordPressCollector
@@ -16,6 +17,7 @@ REGISTRY: dict[str, type[Collector]] = {
     "feed": FeedCollector,
     "jsonld": JsonLdCollector,
     "newsrss": NewsRssCollector,
+    "mediawatch": MediaWatchCollector,
     "ransomware_live": RansomwareLiveCollector,
 }
 
