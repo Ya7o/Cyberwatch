@@ -1,0 +1,117 @@
+name: Collecte
+
+# Deux cadences, un seul workflow :
+#   - tous les jours  : sources directes uniquement (~30 requêtes, 1-2 min) ;
+#   - le lundi        : balayage complet, couches de veille comprises (~270 requêtes).
+# Les couches non planifiées ne sont pas en erreur : elles sont marquées SKIPPED,
+# ce que le modèle de statuts distingue explicitement d'un échec.
+#
+# Les heures cron sont en UTC. La Réunion est à UTC+4.
+
+on:
+  schedule:
+    - cron: "0 4 * * *"    # 08 h à La Réunion — sources directes
+    - cron: "0 3 * * 1"    # lundi 07 h — balayage complet
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Commande à exécuter"
+        type: choice
+        default: maj
+        options: [maj, create, diagnose, replay]
+      layers:
+        description: "Couches (core, local_media, watch, all)"
+        type: string
+        default: all
+      start:
+        description: "Début de fenêtre AAAA-MM-JJ (optionnel)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collecte
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Déterminer le périmètre du run
+        id: scope
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ inputs.mode }}"     >> "$GITHUB_OUTPUT"
+            echo "layers=${{ inputs.layers }}" >> "$GITHUB_OUTPUT"
+            echo "start=${{ inputs.start }}"   >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "0 3 * * 1" ]; then
+            echo "mode=maj"  >> "$GITHUB_OUTPUT"
+            echo "layers=all" >> "$GITHUB_OUTPUT"
+            echo "start="     >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=maj" >> "$GITHUB_OUTPUT"
+            echo "layers=core,local_media" >> "$GITHUB_OUTPUT"
+            echo "start=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Collecter
+        id: run
+        # Un run DEGRADED ou BROKEN ne doit pas faire échouer le job : les
+        # données déjà collectées sont valides et le statut est publié tel quel
+        # sur le dashboard. C'est le principe « transparence > faux zéro ».
+        continue-on-error: true
+        run: |
+          ARGS=""
+          if [ -n "${{ steps.scope.outputs.start }}" ]; then
+            ARGS="--start ${{ steps.scope.outputs.start }}"
+          fi
+          if [ "${{ steps.scope.outputs.mode }}" = "replay" ]; then
+            python -m cyberwatch replay $ARGS
+          elif [ "${{ steps.scope.outputs.mode }}" = "diagnose" ]; then
+            python -m cyberwatch diagnose --layers "${{ steps.scope.outputs.layers }}" $ARGS
+          else
+            python -m cyberwatch ${{ steps.scope.outputs.mode }} \
+              --layers "${{ steps.scope.outputs.layers }}" $ARGS
+          fi
+
+      - name: Récapitulatif du run
+        if: always() && steps.scope.outputs.mode != 'diagnose'
+        run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publier les données
+        if: steps.scope.outputs.mode != 'diagnose'
+        run: |
+          git config user.name  "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data docs/data
+          if git diff --staged --quiet; then
+            echo "Aucun changement de données : rien à publier."
+            exit 0
+          fi
+          RUN_ID=$(python -c "
+          from cyberwatch import store
+          rows = store.load_run_log()
+          print(rows[-1]['Run_ID'] if rows else 'inconnu')
+          ")
+          git commit -m "data: collecte ${RUN_ID}"
+          for delay in 0 2 4 8 16; do
+            [ "$delay" -gt 0 ] && sleep "$delay"
+            git pull --rebase origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+          done
+          echo "Échec de la publication après plusieurs tentatives." >&2
+          exit 1

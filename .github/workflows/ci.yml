@@ -1,0 +1,65 @@
+name: Tests
+
+# Les tests ne touchent jamais le réseau : ils exercent le moteur déterministe
+# et les parseurs sur des échantillons de formats standards.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Tests unitaires
+        run: python -m pytest tests/ -q
+
+      - name: Test de répétabilité (§27)
+        run: python -m cyberwatch test-repeat
+
+      - name: Contrôles avant export (§29)
+        run: python -m cyberwatch check
+
+      - name: Cohérence du référentiel des sources
+        run: |
+          python - <<'PY'
+          from cyberwatch import sources, config
+
+          specs = sources.ALL_SOURCES
+          ids = [s.source_id for s in specs]
+          assert len(ids) == len(set(ids)), "Source_ID dupliqué dans le référentiel"
+
+          for spec in specs:
+              assert spec.layer in config.LAYER_WEIGHTS, f"{spec.source_id}: couche inconnue"
+              if spec.active:
+                  assert spec.protocol, f"{spec.source_id}: protocole non documenté"
+                  assert spec.success_test, f"{spec.source_id}: test de succès non documenté"
+
+          budget = sum(sources.expected_units(s) for s in sources.active_sources())
+          assert budget <= config.MAX_REQUESTS_PER_RUN, (
+              f"Le balayage complet ({budget} unités) dépasse le budget de run "
+              f"({config.MAX_REQUESTS_PER_RUN})"
+          )
+          print(f"{len(specs)} sources, {len(sources.active_sources())} actives, "
+                f"{budget} unités pour un balayage complet "
+                f"(budget {config.MAX_REQUESTS_PER_RUN})")
+          PY

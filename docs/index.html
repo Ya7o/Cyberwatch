@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyberwatch — Observatoire cyber France / Océan Indien</title>
+<meta name="description" content="Incidents cyber publiquement listés en France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles et Comores.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">🛡️</span>
+      <div>
+        <h1>Cyberwatch</h1>
+        <p class="brand-sub">Observatoire des incidents cyber — France &amp; Océan Indien</p>
+      </div>
+    </div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de thème">
+      <span data-theme-icon>◐</span>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Bandeau d'état permanent, visible sur les deux onglets -->
+  <section class="runbar" id="runbar" aria-label="État du dernier run">
+    <div class="runbar-main">
+      <div class="run-pill" id="run-pill">
+        <span class="run-dot" aria-hidden="true"></span>
+        <span id="run-status-label">Chargement…</span>
+      </div>
+      <p class="run-explain" id="run-explain"></p>
+    </div>
+    <dl class="runbar-stats">
+      <div><dt>Score de couverture</dt><dd id="run-health">—</dd></div>
+      <div><dt>Dernière collecte</dt><dd id="run-date">—</dd></div>
+      <div><dt>Sources</dt><dd id="run-sources">—</dd></div>
+    </dl>
+  </section>
+
+  <section class="blindspots" id="blindspots" hidden>
+    <h2 class="blindspots-title">
+      <span aria-hidden="true">⚠</span> Angles morts du dernier run
+    </h2>
+    <p class="blindspots-intro">
+      Ces sources n'ont pas été parcourues intégralement. Sur la période concernée,
+      un zéro ne signifie pas « aucun incident » mais « information indisponible ».
+    </p>
+    <ul id="blindspots-list" class="blindspots-list"></ul>
+  </section>
+
+  <!-- Onglets -->
+  <nav class="tabs" role="tablist" aria-label="Vues du dashboard">
+    <button class="tab" role="tab" id="tab-general" aria-controls="panel-general" aria-selected="true" data-tab="general">
+      Vue générale
+    </button>
+    <button class="tab" role="tab" id="tab-focus" aria-controls="panel-focus" aria-selected="false" data-tab="focus">
+      Focus Réunion / Mayotte
+    </button>
+  </nav>
+
+  <!-- Filtres partagés -->
+  <section class="filters" aria-label="Filtres">
+    <div class="filter">
+      <label for="f-period">Période</label>
+      <select id="f-period">
+        <option value="all">Tout l'historique</option>
+        <option value="12">12 derniers mois</option>
+        <option value="6">6 derniers mois</option>
+        <option value="3">3 derniers mois</option>
+      </select>
+    </div>
+    <div class="filter" id="filter-location">
+      <label for="f-location">Territoire</label>
+      <select id="f-location"><option value="">Tous</option></select>
+    </div>
+    <div class="filter">
+      <label for="f-sector">Secteur</label>
+      <select id="f-sector"><option value="">Tous</option></select>
+    </div>
+    <div class="filter">
+      <label for="f-threat">Menace</label>
+      <select id="f-threat"><option value="">Toutes</option></select>
+    </div>
+    <div class="filter">
+      <label for="f-source">Source</label>
+      <select id="f-source"><option value="">Toutes</option></select>
+    </div>
+    <div class="filter filter-grow">
+      <label for="f-search">Recherche</label>
+      <input id="f-search" type="search" placeholder="Organisation, secteur…" autocomplete="off">
+    </div>
+    <button id="f-reset" class="btn-reset" type="button">Réinitialiser</button>
+  </section>
+
+  <!-- ONGLET 1 — GÉNÉRAL -->
+  <div id="panel-general" role="tabpanel" aria-labelledby="tab-general">
+
+    <section class="kpis" aria-label="Indicateurs clés">
+      <article class="kpi">
+        <h3>Incidents</h3>
+        <p class="kpi-value" id="kpi-incidents">—</p>
+        <p class="kpi-note" id="kpi-incidents-note">sur la sélection</p>
+      </article>
+      <article class="kpi">
+        <h3>Organisations touchées</h3>
+        <p class="kpi-value" id="kpi-orgs">—</p>
+        <p class="kpi-note">organisations distinctes</p>
+      </article>
+      <article class="kpi">
+        <h3>Incidents multi-sources</h3>
+        <p class="kpi-value" id="kpi-multi">—</p>
+        <p class="kpi-note">confirmés par ≥ 2 sources</p>
+      </article>
+      <article class="kpi">
+        <h3>Nouveaux au dernier run</h3>
+        <p class="kpi-value" id="kpi-new">—</p>
+        <p class="kpi-note">incidents ajoutés</p>
+      </article>
+    </section>
+
+    <section class="grid-2">
+      <figure class="card">
+        <figcaption>
+          <h2>Incidents par mois</h2>
+          <p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p>
+        </figcaption>
+        <div class="chart" id="chart-month"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>
+          <h2>Incidents par territoire</h2>
+          <p>Localisation retenue par la source, jamais déduite d'une mention secondaire.</p>
+        </figcaption>
+        <div class="chart" id="chart-location"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>
+          <h2>Incidents par secteur</h2>
+          <p>Secteur donné par la source, sinon règle fixe, sinon « Inconnu ».</p>
+        </figcaption>
+        <div class="chart" id="chart-sector"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>
+          <h2>Incidents par type de menace</h2>
+          <p>Taxonomie à priorité fixe : un ransomware qui exfiltre reste un ransomware.</p>
+        </figcaption>
+        <div class="chart" id="chart-threat"></div>
+      </figure>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Incidents</h2>
+        <p id="table-count" class="muted"></p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" id="incidents-table">
+          <thead>
+            <tr>
+              <th data-sort="date" aria-sort="descending">Date</th>
+              <th data-sort="org">Organisation</th>
+              <th data-sort="location">Territoire</th>
+              <th data-sort="sector">Secteur</th>
+              <th data-sort="threat">Menace</th>
+              <th data-sort="items">Sources</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Santé des sources</h2>
+        <p class="muted">
+          Un <strong>zéro vérifié</strong> signifie que le protocole est allé au bout sans rien trouver.
+          Un zéro grisé signifie que l'information est indisponible.
+        </p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" id="sources-table">
+          <thead>
+            <tr>
+              <th>Source</th><th>Couche</th><th>Statut</th><th>Couverture</th>
+              <th>Items</th><th>Accès</th><th>Détail</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ONGLET 2 — FOCUS RÉUNION / MAYOTTE -->
+  <div id="panel-focus" role="tabpanel" aria-labelledby="tab-focus" hidden>
+
+    <section class="kpis kpis-3" aria-label="Indicateurs Réunion et Mayotte">
+      <article class="kpi kpi-accent-1">
+        <h3>La Réunion</h3>
+        <p class="kpi-value" id="kpi-re">—</p>
+        <p class="kpi-note" id="kpi-re-note">incidents</p>
+      </article>
+      <article class="kpi kpi-accent-2">
+        <h3>Mayotte</h3>
+        <p class="kpi-value" id="kpi-yt">—</p>
+        <p class="kpi-note" id="kpi-yt-note">incidents</p>
+      </article>
+      <article class="kpi">
+        <h3>Entités sous surveillance</h3>
+        <p class="kpi-value" id="kpi-entities">—</p>
+        <p class="kpi-note" id="kpi-entities-note">communes et entités critiques</p>
+      </article>
+    </section>
+
+    <figure class="card">
+      <figcaption>
+        <h2>Évolution mensuelle — Réunion et Mayotte</h2>
+        <p>Les deux territoires côte à côte, sur la période sélectionnée.</p>
+      </figcaption>
+      <div class="chart" id="chart-focus-month"></div>
+    </figure>
+
+    <section class="grid-2">
+      <figure class="card">
+        <figcaption>
+          <h2>Secteurs touchés localement</h2>
+          <p>Profil sectoriel des deux territoires.</p>
+        </figcaption>
+        <div class="chart" id="chart-focus-sector"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>
+          <h2>Menaces localement</h2>
+          <p>Répartition des types d'incidents.</p>
+        </figcaption>
+        <div class="chart" id="chart-focus-threat"></div>
+      </figure>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Tableau de veille des entités</h2>
+        <p class="muted">
+          Les 24 communes réunionnaises, les 17 communes mahoraises et les entités critiques
+          des deux territoires. La couverture de la veille se lit ici, nom par nom.
+        </p>
+      </div>
+      <div class="entity-filters">
+        <label><input type="radio" name="entity-scope" value="all" checked> Toutes</label>
+        <label><input type="radio" name="entity-scope" value="La Réunion"> La Réunion</label>
+        <label><input type="radio" name="entity-scope" value="Mayotte"> Mayotte</label>
+        <label class="entity-sep"><input type="checkbox" id="entity-hit-only"> Uniquement celles touchées</label>
+      </div>
+      <div class="table-scroll table-tall">
+        <table class="data-table" id="entities-table">
+          <thead>
+            <tr>
+              <th>Entité</th><th>Territoire</th><th>Type</th>
+              <th>Veille</th><th>Dernière interrogation</th><th>Dernier incident</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Incidents Réunion / Mayotte</h2>
+        <p id="focus-table-count" class="muted"></p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" id="focus-incidents-table">
+          <thead>
+            <tr>
+              <th>Date</th><th>Organisation</th><th>Territoire</th>
+              <th>Secteur</th><th>Menace</th><th>Sources</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>
+      <strong>Ce que cette base est.</strong> La liste la plus large possible des incidents cyber
+      <em>publiquement listés</em> par plusieurs sources, avec une couverture mesurable et un
+      protocole reproductible. Elle ne prétend pas représenter toutes les cyberattaques réelles.
+    </p>
+    <p class="footer-meta">
+      Méthode <span id="foot-method">—</span> ·
+      Empreinte incidents <code id="foot-hash">—</code> ·
+      <a href="data/incidents.json" download>Télécharger les incidents (JSON)</a> ·
+      <a href="https://github.com/Ya7o/Cyberwatch">Code et données sur GitHub</a>
+    </p>
+  </footer>
+</div>
+
+<div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

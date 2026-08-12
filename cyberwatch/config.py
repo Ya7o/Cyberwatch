@@ -1,0 +1,262 @@
+"""Constantes et tables de référence de la méthode OBS-FR-OI.
+
+Toutes les valeurs normatives de la méthodologie sont regroupées ici afin qu'une
+évolution de méthode se traduise par un diff lisible dans un seul fichier.
+"""
+
+from __future__ import annotations
+
+METHOD_ID = "OBS-FR-OI-SIMPLE-SOURCING-2"
+
+# --------------------------------------------------------------------------
+# Périmètre géographique (§10)
+# --------------------------------------------------------------------------
+
+LOC_FRANCE = "France métropolitaine"
+LOC_REUNION = "La Réunion"
+LOC_MAYOTTE = "Mayotte"
+LOC_MAURICE = "Maurice"
+LOC_MADAGASCAR = "Madagascar"
+LOC_SEYCHELLES = "Seychelles"
+LOC_COMORES = "Comores"
+LOC_INCONNU = "Inconnu"
+
+LOCATIONS = [
+    LOC_FRANCE,
+    LOC_REUNION,
+    LOC_MAYOTTE,
+    LOC_MAURICE,
+    LOC_MADAGASCAR,
+    LOC_SEYCHELLES,
+    LOC_COMORES,
+    LOC_INCONNU,
+]
+
+# Territoires du focus « Réunion / Mayotte » du dashboard.
+FOCUS_LOCATIONS = [LOC_REUNION, LOC_MAYOTTE]
+
+# --------------------------------------------------------------------------
+# Taxonomie des menaces (§8) — l'ordre de la liste EST l'ordre de priorité.
+# Les motifs sont écrits sans accents : le texte est désaccentué avant test.
+# --------------------------------------------------------------------------
+
+THREAT_RANSOMWARE = "Ransomware"
+THREAT_DDOS = "DDoS"
+THREAT_MALWARE = "Malware"
+THREAT_ACCOUNT = "Compromission de compte / messagerie"
+THREAT_INTRUSION = "Intrusion"
+THREAT_LEAK = "Fuite de données"
+THREAT_PHISHING = "Phishing / fraude"
+THREAT_THIRD_PARTY = "Incident tiers"
+THREAT_OTHER = "Autre cyber"
+THREAT_UNKNOWN = "Inconnu"
+
+THREATS = [
+    THREAT_RANSOMWARE,
+    THREAT_DDOS,
+    THREAT_MALWARE,
+    THREAT_ACCOUNT,
+    THREAT_INTRUSION,
+    THREAT_LEAK,
+    THREAT_PHISHING,
+    THREAT_THIRD_PARTY,
+    THREAT_OTHER,
+    THREAT_UNKNOWN,
+]
+
+# Groupes ransomware fréquemment cités : leur seule mention qualifie la menace.
+RANSOMWARE_GROUPS = [
+    "lockbit", "alphv", "blackcat", "clop", "cl0p", "play", "akira", "8base",
+    "medusa", "rhysida", "black basta", "royal", "bianlian", "hunters",
+    "qilin", "inc ransom", "ransomhub", "cactus", "noescape", "everest",
+    "stormous", "trigona", "vice society", "conti", "revil", "hive",
+    "blackbyte", "daixin", "dragonforce", "safepay", "brain cipher",
+]
+
+THREAT_RULES: list[tuple[str, list[str]]] = [
+    (THREAT_RANSOMWARE, [
+        "ransomware", "rancongiciel", "rancon", "ransom",
+        "chiffrement des donnees", "donnees chiffrees",
+    ] + RANSOMWARE_GROUPS),
+    (THREAT_DDOS, [
+        "ddos", "d dos", "deni de service", "denial of service",
+        "attaque par saturation",
+    ]),
+    (THREAT_MALWARE, [
+        "malware", "logiciel malveillant", "virus informatique", "trojan",
+        "cheval de troie", "spyware", "infostealer", "rootkit", "botnet",
+    ]),
+    (THREAT_ACCOUNT, [
+        "messagerie compromise", "compte compromis", "comptes compromis",
+        "boite mail piratee", "compte pirate", "usurpation de compte",
+        "identifiants voles", "credential", "account takeover",
+        "compromission de la messagerie", "piratage de compte",
+    ]),
+    (THREAT_INTRUSION, [
+        "intrusion", "acces non autorise", "compromission du systeme",
+        "compromission si", "systeme d information compromis",
+        "unauthorized access", "piratage informatique", "cyberattaque",
+        "cyber attaque", "attaque informatique", "hacking", "piratage",
+        "attaque par un groupe",
+    ]),
+    (THREAT_LEAK, [
+        "fuite de donnees", "fuite massive", "exfiltration", "data breach",
+        "donnees exposees", "donnees personnelles exposees", "base de donnees exposee",
+        "vol de donnees", "donnees derobees", "leak", "violation de donnees",
+    ]),
+    (THREAT_PHISHING, [
+        "phishing", "hameconnage", "fraude", "arnaque", "escroquerie",
+        "scam", "smishing", "faux site", "usurpation d identite",
+    ]),
+    (THREAT_THIRD_PARTY, [
+        "prestataire", "sous traitant", "fournisseur", "chez son hebergeur",
+        "third party", "supply chain", "chaine d approvisionnement",
+    ]),
+]
+
+# Vocabulaire prouvant qu'un texte parle bien de cyber (sinon : hors périmètre).
+CYBER_MARKERS = [
+    "cyber", "informatique", "numerique", "donnees", "data", "pirat",
+    "ransomware", "phishing", "hameconnage", "ddos", "malware", "intrusion",
+    "fuite", "breach", "hack", "securite des systemes", "si ", "rgpd", "cnil",
+]
+
+# --------------------------------------------------------------------------
+# Secteurs (§9) — l'ordre EST l'ordre de priorité, premier motif trouvé gagne.
+# --------------------------------------------------------------------------
+
+SECTOR_ADMIN = "Administration / Collectivité"
+SECTOR_HEALTH = "Santé"
+SECTOR_EDUCATION = "Éducation / Formation"
+SECTOR_FINANCE = "Finance / Assurance"
+SECTOR_TRANSPORT = "Transport / Logistique"
+SECTOR_SPORT = "Sport"
+SECTOR_RETAIL = "Commerce / Distribution"
+SECTOR_TECH = "Numérique / Technologie"
+SECTOR_ENERGY = "Énergie / Utilities"
+SECTOR_UNKNOWN = "Inconnu"
+
+SECTORS = [
+    SECTOR_ADMIN,
+    SECTOR_HEALTH,
+    SECTOR_EDUCATION,
+    SECTOR_FINANCE,
+    SECTOR_TRANSPORT,
+    SECTOR_SPORT,
+    SECTOR_RETAIL,
+    SECTOR_TECH,
+    SECTOR_ENERGY,
+    SECTOR_UNKNOWN,
+]
+
+# Motifs testés sur limites de mots, texte désaccentué et en minuscules.
+SECTOR_RULES: list[tuple[str, list[str]]] = [
+    (SECTOR_ADMIN, [
+        "mairie", "ville de", "commune", "communaute d agglomeration",
+        "departement", "region", "ministere", "prefecture", "prefet",
+        "collectivite", "municipalite", "conseil departemental",
+        "conseil regional", "gouvernement", "government", "administration",
+        "caf", "cgss", "securite sociale", "caisse d allocations",
+        "mairie de", "council", "municipal",
+    ]),
+    (SECTOR_HEALTH, [
+        "chu", "chr", "hopital", "hospitalier", "clinique", "sante",
+        "laboratoire", "ehpad", "medical", "medecine", "pharmacie",
+        "hospital", "health", "ars",
+    ]),
+    (SECTOR_EDUCATION, [
+        "universite", "university", "ecole", "college", "lycee",
+        "enseignement", "academie", "rectorat", "formation", "campus",
+        "school", "education", "institut",
+    ]),
+    (SECTOR_FINANCE, [
+        "banque", "bank", "assurance", "insurance", "mutuelle", "courtage",
+        "finance", "financier", "credit", "tresor", "impots", "fiscal",
+        "douane", "revenue authority", "microfinance",
+    ]),
+    (SECTOR_TRANSPORT, [
+        "compagnie aerienne", "airlines", "airways", "air ", "aeroport",
+        "airport", "port maritime", "grand port", "portuaire", "transport",
+        "logistique", "logistics", "fret", "maritime", "shipping",
+    ]),
+    (SECTOR_SPORT, [
+        "federation", "club sportif", "sport", "fitness", "stade",
+        "olympique", "football",
+    ]),
+    (SECTOR_RETAIL, [
+        "cci", "chambre de commerce", "commerce", "distribution", "enseigne",
+        "supermarche", "hypermarche", "magasin", "retail", "boutique",
+        "e commerce", "chambre de metiers",
+    ]),
+    (SECTOR_TECH, [
+        "cloud", "logiciel", "software", "saas", "numerique", "telecom",
+        "telecommunication", "operateur mobile", "internet", "technologie",
+        "tech", "informatique", "hebergeur", "datacenter", "orange", "sfr",
+        "zeop", "emtel", "telma", "airtel",
+    ]),
+    (SECTOR_ENERGY, [
+        "energie", "energy", "electricite", "electricity", "edf", "eau",
+        "water", "assainissement", "utilities", "jirama", "runeo", "cise",
+        "petrole", "gaz",
+    ]),
+]
+
+# --------------------------------------------------------------------------
+# Déduplication et dates (§11, §12)
+# --------------------------------------------------------------------------
+
+# Écart maximal, en jours, entre deux items successifs d'une même organisation
+# pour qu'ils appartiennent au même incident.
+INCIDENT_GAP_DAYS = 14
+
+# Chevauchement rejoué à chaque MAJ (§6).
+MAJ_OVERLAP_DAYS = 14
+
+DATE_BASIS_EVENT = "EVENT"
+DATE_BASIS_PUBLICATION = "PUBLICATION"
+
+# --------------------------------------------------------------------------
+# Budgets et plafonds durs — garantissent qu'aucun run ne dérape (§5 du plan)
+# --------------------------------------------------------------------------
+
+HTTP_TIMEOUT_SECONDS = 20
+HTTP_MAX_RETRIES = 2
+HTTP_POLITE_DELAY_SECONDS = 1.0
+HTTP_USER_AGENT = (
+    "CyberwatchBot/1.0 (+https://github.com/Ya7o/Cyberwatch; "
+    "observatoire cyber France - Océan Indien)"
+)
+
+MAX_REQUESTS_PER_SOURCE = 60
+MAX_PAGES_PER_SOURCE = 50
+MAX_SECONDS_PER_SOURCE = 180
+
+MAX_REQUESTS_PER_RUN = 800
+MAX_SECONDS_PER_RUN = 45 * 60
+
+# --------------------------------------------------------------------------
+# Couches de sourcing (§2)
+# --------------------------------------------------------------------------
+
+LAYER_CORE = "CORE_DIRECT"
+LAYER_LOCAL_MEDIA = "LOCAL_MEDIA_DIRECT"
+LAYER_ENTITY_WATCH = "ENTITY_WATCH"
+LAYER_REGIONAL_WATCH = "REGIONAL_WATCH"
+LAYER_DISABLED = "CANDIDATE_DISABLED"
+
+# Groupes de couches sélectionnables en ligne de commande (--layers).
+LAYER_GROUPS = {
+    "core": [LAYER_CORE],
+    "local_media": [LAYER_LOCAL_MEDIA],
+    "watch": [LAYER_ENTITY_WATCH, LAYER_REGIONAL_WATCH],
+    "all": [LAYER_CORE, LAYER_LOCAL_MEDIA, LAYER_ENTITY_WATCH, LAYER_REGIONAL_WATCH],
+}
+
+# Pondération des couches dans le calcul du Health_Score.
+LAYER_WEIGHTS = {
+    LAYER_CORE: 3,
+    LAYER_LOCAL_MEDIA: 1,
+    LAYER_ENTITY_WATCH: 1,
+    LAYER_REGIONAL_WATCH: 1,
+    LAYER_DISABLED: 0,
+}

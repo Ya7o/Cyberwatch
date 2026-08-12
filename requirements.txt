@@ -1,0 +1,4 @@
+# Dépendances volontairement minimales : moins de dépendances, moins de casse.
+# Le JSON-LD et l'autodécouverte de flux sont extraits sans BeautifulSoup ni lxml.
+requests>=2.31,<3
+feedparser>=6.0,<7
