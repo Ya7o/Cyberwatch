@@ -50,6 +50,31 @@ class TestEntryToItem:
         )
         assert entry_to_item(entry, SPEC, AS_OF, {}, {}) is None
 
+    def test_source_a_menace_declaree_ne_refiltre_pas(self):
+        """Une liste de fuites ne publie que des fuites : son périmètre fait foi.
+
+        Sans cette règle, une entrée réduite au nom de l'organisation touchée
+        serait écartée faute de vocabulaire cyber, produisant un faux zéro sur
+        une source pourtant intégralement parcourue.
+        """
+        leak_spec = SourceSpec(
+            source_id="BONJOURLAFUITE",
+            layer=config.LAYER_CORE,
+            zone=config.LOC_FRANCE,
+            default_threat=config.THREAT_LEAK,
+            location_rule=config.LOC_FRANCE,
+        )
+        entry = RawEntry(
+            title="Société Générale",
+            url="https://bonjourlafuite.eu.org/a",
+            published="2026-03-05",
+        )
+        item = entry_to_item(entry, leak_spec, AS_OF, {}, {})
+
+        assert item is not None
+        assert item.Threat == config.THREAT_LEAK
+        assert item.Organisation_Raw == "Société Générale"
+
     def test_entree_sans_date_ecartee(self):
         entry = RawEntry(title="Cyberattaque", url="https://media.re/c", published="")
         assert entry_to_item(entry, SPEC, AS_OF, {}, {}) is None

@@ -129,7 +129,12 @@ def entry_to_item(
         return None
 
     text = f"{entry.title} {entry.summary}"
-    if not looks_cyber(text):
+
+    # Une source qui déclare une menace par défaut ne publie, par construction,
+    # que des incidents de ce type : son périmètre fait foi. Exiger en plus du
+    # vocabulaire cyber dans le texte y produirait un faux zéro, les entrées de
+    # ces listes se réduisant souvent au nom de l'organisation touchée.
+    if not spec.default_threat and not looks_cyber(text):
         return None
 
     # Organisation : fournie par la source, sinon lue dans le titre, sinon
