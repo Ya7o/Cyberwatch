@@ -102,12 +102,8 @@ jobs:
             echo "Aucun changement de données : rien à publier."
             exit 0
           fi
-          RUN_ID=$(python -c "
-          from cyberwatch import store
-          rows = store.load_run_log()
-          print(rows[-1]['Run_ID'] if rows else 'inconnu')
-          ")
-          git commit -m "data: collecte ${RUN_ID}"
+          RUN_ID=$(tail -n 1 data/run_log.csv | cut -d, -f1)
+          git commit -m "data: collecte ${RUN_ID:-inconnue}"
           for delay in 0 2 4 8 16; do
             [ "$delay" -gt 0 ] && sleep "$delay"
             git pull --rebase origin "${GITHUB_REF_NAME}" && \
