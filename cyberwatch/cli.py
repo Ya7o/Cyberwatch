@@ -129,8 +129,13 @@ def cmd_test_repeat(args) -> int:
     """Test de répétabilité du §27 : deux constructions, quatre égalités."""
     items = store.load_items()
     if not items:
-        print("Aucun ITEMS en base : rien à tester.")
-        return 1
+        # Base neuve : il n'y a rien à comparer, ce n'est pas un échec.
+        # La répétabilité du moteur reste couverte par tests/test_identity.py,
+        # qui s'exécute sur des jeux de données figés.
+        print("TEST REPETABILITE (§27)")
+        print("  Base vide : aucun ITEMS à rejouer, test sans objet.")
+        print("  Le moteur reste couvert par les tests unitaires sur fixtures.")
+        return 0
 
     build_a = build_incidents(items)
     hash_items_a = identity.items_hash(items)
