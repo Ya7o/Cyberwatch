@@ -26,7 +26,9 @@ from .model import (
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
-SITE_DATA_DIR = ROOT / "docs" / "data"
+#: Données du dashboard. Le site est servi depuis la racine du dépôt, afin
+#: que l'URL de GitHub Pages soit celle du dashboard sans sous-dossier.
+SITE_DATA_DIR = ROOT / "assets" / "data"
 
 ITEMS_CSV = DATA_DIR / "items.csv"
 INCIDENTS_CSV = DATA_DIR / "incidents.csv"

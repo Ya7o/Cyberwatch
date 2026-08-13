@@ -1,8 +1,8 @@
 name: Collecte
 
 # Deux cadences, un seul workflow :
-#   - tous les jours  : sources directes uniquement (~30 requêtes, 1-2 min) ;
-#   - le lundi        : balayage complet, couches de veille comprises (~270 requêtes).
+#   - tous les jours  : sources directes uniquement (~70 requêtes, 1-2 min) ;
+#   - le lundi        : balayage complet, couches de veille comprises (~130 requêtes).
 # Les couches non planifiées ne sont pas en erreur : elles sont marquées SKIPPED,
 # ce que le modèle de statuts distingue explicitement d'un échec.
 #
@@ -106,7 +106,7 @@ jobs:
         run: |
           git config user.name  "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data docs/data
+          git add data assets/data
           if git diff --staged --quiet; then
             echo "Aucun changement de données : rien à publier."
             exit 0

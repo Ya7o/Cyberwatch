@@ -687,8 +687,8 @@
 
   async function start() {
     const [incidents, statusData] = await Promise.all([
-      load("data/incidents.json", []),
-      load("data/status.json", null),
+      load("assets/data/incidents.json", []),
+      load("assets/data/status.json", null),
     ]);
     state.incidents = Array.isArray(incidents) ? incidents : [];
     state.status = statusData;

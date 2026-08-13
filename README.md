@@ -55,7 +55,7 @@ python -m cyberwatch replay            # reconstruire INCIDENTS sans réseau
 python -m cyberwatch test-repeat       # test de répétabilité
 python -m cyberwatch build-site        # régénérer les données du dashboard
 
-python -m http.server --directory docs # consulter le dashboard en local
+python -m http.server                  # consulter le dashboard en local
 ```
 
 Restreindre le périmètre : `--layers core,local_media` · `--layers watch` · `--layers all`.
@@ -74,8 +74,9 @@ cyberwatch/          le pipeline
   collectors/        WordPress · RSS · JSON-LD · flux médias · ransomware.live
   sources.py         référentiel des 18 sources
   watchlists.py      41 communes et entités critiques par territoire
+index.html           le dashboard, servi à la racine par GitHub Pages
+assets/              style, script et données du dashboard (sans dépendance)
 data/                la base, six CSV versionnés
-docs/                le dashboard (HTML/CSS/JS, sans dépendance)
 tests/               219 tests hors ligne
 ```
 
@@ -112,10 +113,10 @@ Chaque source déclare son URL, son protocole et son test de succès dans
 ## Installation sur un nouveau dépôt
 
 1. Activer GitHub Pages : *Settings → Pages → Source : Deploy from a branch*,
-   branche par défaut, **dossier `/docs`**. Si le dossier reste sur `/`, la
-   racine du dépôt est servie et Jekyll y affiche ce README à la place du
-   dashboard ; l'`index.html` de la racine redirige alors vers `/docs/`, mais
-   le réglage `/docs` reste préférable.
+   branche par défaut, **dossier `/` (racine)**. Le dashboard est `index.html`
+   à la racine, de sorte que l'URL de Pages soit directement celle du
+   dashboard, sans sous-dossier. Le `.nojekyll` évite que Jekyll ne retouche
+   un site déjà statique.
 2. Lancer une première collecte : *Actions → Collecte → Run workflow*.
 
 Le dépôt doit être public pour bénéficier de Pages et des minutes Actions
