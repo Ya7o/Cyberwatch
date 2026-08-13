@@ -8,6 +8,10 @@ Notion centrale : **la borne de date est-elle atteinte ?** C'est la traduction
 littérale du `Success_test` de la méthode — une source n'est `OK` que si elle a
 été remontée jusqu'au début de la fenêtre demandée, pas seulement si elle a
 répondu HTTP 200 (§5).
+
+Exception explicite : BonjourLaFuite possède en V0 un contrat fonctionnel
+OK/FAIL propre à la source. Un collecteur peut donc fournir `status_override`
+quand son protocole définit lui-même le statut sans couverture ni borne.
 """
 
 from __future__ import annotations
@@ -93,6 +97,10 @@ class CollectResult:
     reason_code: str = status.REASON_OK
     access_method: str = ""
     comment: str = ""
+    #: Statut imposé par un protocole propre à une source. `None` signifie que
+    #: le modèle générique borne/couverture s'applique. En V0, seul
+    #: BonjourLaFuite l'utilise afin de rester strictement sur OK/FAIL.
+    status_override: str | None = None
     #: État de veille par entité, renseigné par les couches de surveillance
     #: nominative. Alimente `ENTITY_WATCH` et le focus Réunion / Mayotte.
     watch_rows: list[dict] = field(default_factory=list)
@@ -100,13 +108,21 @@ class CollectResult:
     def resolve(self) -> tuple[str, int]:
         """Traduit le compte rendu en couple (statut, couverture).
 
-        Trois cas seulement, ce qui rend le statut lisible :
+        Le chemin normal conserve trois cas :
           - borne atteinte sans incident de parcours     -> `OK`, 100 %
           - parcours entamé mais interrompu              -> `PARTIAL`, couverture réelle
           - rien d'exploitable                           -> `FAIL`, 0 %
 
-        Un `OK` avec zéro entrée est un **zéro vérifié**, pas une anomalie.
+        Un protocole source-spécifique peut fournir `status_override`. Dans ce
+        cas, aucune borne, aucun score de santé et aucune couverture ne décide du
+        statut ; la couverture retournée n'est qu'une valeur de compatibilité
+        pour les consommateurs historiques du modèle.
         """
+        if self.status_override is not None:
+            if self.status_override == status.OK:
+                return status.OK, 100
+            return status.FAIL, 0
+
         if self.reason_code in (
             status.REASON_ROBOTS,
             status.REASON_LAYER_NOT_SCHEDULED,
