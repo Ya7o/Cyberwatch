@@ -17,8 +17,8 @@ dashboard statique sur GitHub Pages.
 
 | Quand | Quoi |
 |---|---|
-| Tous les jours à 8 h (heure Réunion) | Sources directes et ransomware.live — ~30 requêtes, 1 à 2 min |
-| Le lundi | Balayage complet, couches de veille comprises — ~270 requêtes |
+| Tous les jours à 8 h (heure Réunion) | Sources directes et ransomware.live — ~70 requêtes, 1 à 2 min |
+| Le lundi | Balayage complet, couches de veille comprises — ~130 requêtes, 3 à 4 min |
 
 Chaque run met à jour `data/`, régénère `docs/data/` et publie un commit. Le
 dashboard se rafraîchit sans intervention. Le récapitulatif de chaque run est
@@ -71,22 +71,28 @@ cyberwatch/          le pipeline
   identity.py        identifiants SHA256, tri canonique, empreintes
   dedup.py           composantes d'incident à 14 jours
   status.py          modèle de statuts et agrégation du run
-  collectors/        WordPress · RSS · JSON-LD · Google News · ransomware.live
-  sources.py         référentiel des 19 sources
+  collectors/        WordPress · RSS · JSON-LD · flux médias · ransomware.live
+  sources.py         référentiel des 18 sources
   watchlists.py      41 communes et entités critiques par territoire
 data/                la base, six CSV versionnés
 docs/                le dashboard (HTML/CSS/JS, sans dépendance)
-tests/               152 tests hors ligne
+tests/               219 tests hors ligne
 ```
 
 ---
 
 ## Sources
 
-19 sources réparties en cinq couches : archives et agrégateurs nationaux
-(FrenchBreaches, BonjourLaFuite, Cyberattaque.org, ransomware.live), médias locaux
-(Zinfos974, LINFO, Kwezi), CERT régionaux (Maurice, Madagascar, Seychelles),
-surveillance nominative de 110 entités, et veille régionale par territoire.
+18 sources réparties en cinq couches : archives et agrégateurs nationaux
+(FrenchBreaches, BonjourLaFuite, Cyberattaque.org, ransomware.live), média local
+(Kwezi), CERT régional (Maurice), surveillance nominative de 110 entités via les
+flux des médias de chaque territoire, et veille régionale.
+
+Cinq sources sont **inactives**, chacune avec son motif daté et son critère de
+réactivation : CIRT-MG et CERT-SC ne publient plus de liste énumérable, deux
+médias réunionnais refusent toute lecture automatisée, et Hackmageddon n'a jamais
+été activée. Elles restent affichées en `SKIPPED` sur le dashboard avec leur
+raison — désactiver n'est pas masquer.
 
 Chaque source déclare son URL, son protocole et son test de succès dans
 `data/sources.csv`, recopiés depuis `cyberwatch/sources.py`.
@@ -106,7 +112,10 @@ Chaque source déclare son URL, son protocole et son test de succès dans
 ## Installation sur un nouveau dépôt
 
 1. Activer GitHub Pages : *Settings → Pages → Source : Deploy from a branch*,
-   branche par défaut, dossier `/docs`.
+   branche par défaut, **dossier `/docs`**. Si le dossier reste sur `/`, la
+   racine du dépôt est servie et Jekyll y affiche ce README à la place du
+   dashboard ; l'`index.html` de la racine redirige alors vers `/docs/`, mais
+   le réglage `/docs` reste préférable.
 2. Lancer une première collecte : *Actions → Collecte → Run workflow*.
 
 Le dépôt doit être public pour bénéficier de Pages et des minutes Actions
