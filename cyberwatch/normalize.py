@@ -75,11 +75,33 @@ def _starts_with(haystack: str, prefix: str) -> bool:
     return re.search(pattern, haystack) is not None
 
 
+def _is_physical_context(blob: str) -> bool:
+    """Vrai si le texte décrit un cambriolage plutôt qu'un incident cyber."""
+    return any(_contains(blob, marker) for marker in config.PHYSICAL_MARKERS)
+
+
+def _is_ambiguous(pattern: str) -> bool:
+    """Vrai si un motif vaut aussi bien pour le physique que pour le cyber."""
+    return any(
+        pattern.startswith(prefix) for prefix in config.AMBIGUOUS_PREFIXES
+    )
+
+
 def _has_cyber_marker(blob: str) -> bool:
-    """Vrai si le texte porte un marqueur cyber discriminant."""
+    """Vrai si le texte porte un marqueur cyber discriminant.
+
+    En contexte manifestement physique — cambriolage, effraction — les racines
+    ambiguës comme « intrusion » sont écartées : « intrusion nocturne chez un
+    commerçant » n'est pas un incident informatique.
+    """
     if not blob:
         return False
-    if any(_starts_with(blob, prefix) for prefix in config.CYBER_PREFIXES):
+
+    prefixes = config.CYBER_PREFIXES
+    if _is_physical_context(blob):
+        prefixes = [p for p in prefixes if p not in config.AMBIGUOUS_PREFIXES]
+
+    if any(_starts_with(blob, prefix) for prefix in prefixes):
         return True
     return any(_contains(blob, phrase) for phrase in config.CYBER_PHRASES)
 
@@ -121,8 +143,15 @@ def looks_cyber(*texts: str) -> bool:
     blob = searchable(" ".join(t for t in texts if t))
     if not blob:
         return False
+
+    # Le garde-fou du contexte physique s'applique aussi à la taxonomie : sans
+    # cela, la règle « intrusion » qualifierait un cambriolage avant même que
+    # le contexte ne soit examiné.
+    physical = _is_physical_context(blob)
     for _threat, patterns in config.THREAT_RULES:
         for pattern in patterns:
+            if physical and _is_ambiguous(pattern):
+                continue
             if _contains(blob, pattern):
                 return True
     return _has_cyber_marker(blob)
@@ -133,29 +162,44 @@ def looks_cyber(*texts: str) -> bool:
 # --------------------------------------------------------------------------
 
 
-def classify_sector(*texts: str, given: str = "") -> str:
-    """Secteur normalisé.
-
-    Priorité du §9 : secteur explicitement fourni par la source, puis règle
-    fixe, puis `Inconnu`. Aucune recherche Web improvisée.
-    """
-    if given:
-        cleaned = given.strip()
-        if cleaned in config.SECTORS:
-            return cleaned
-        blob = searchable(cleaned)
-        for sector, patterns in config.SECTOR_RULES:
-            for pattern in patterns:
-                if _contains(blob, pattern):
-                    return sector
-
-    blob = searchable(" ".join(t for t in texts if t))
+def _sector_from_blob(blob: str) -> str:
+    """Premier secteur dont un motif apparaît dans le texte donné."""
     if not blob:
         return config.SECTOR_UNKNOWN
     for sector, patterns in config.SECTOR_RULES:
         for pattern in patterns:
             if _contains(blob, pattern):
                 return sector
+    return config.SECTOR_UNKNOWN
+
+
+def classify_sector(*texts: str, given: str = "") -> str:
+    """Secteur normalisé.
+
+    Priorité du §9 : secteur explicitement fourni par la source, puis règle
+    fixe, puis `Inconnu`. Aucune recherche Web improvisée.
+
+    Les textes sont examinés **dans l'ordre, séparément** : le premier qui
+    tranche l'emporte. C'est ce qui permet à l'appelant de passer d'abord le
+    nom de l'organisation, puis seulement le corps de l'article. Sans cette
+    séparation, un article mentionnant « fédération » ferait basculer en
+    « Sport » une victime qui n'a rien de sportif.
+    """
+    if given:
+        cleaned = given.strip()
+        if cleaned in config.SECTORS:
+            return cleaned
+        mapped = config.ACTIVITY_TO_SECTOR.get(searchable(cleaned))
+        if mapped:
+            return mapped
+        sector = _sector_from_blob(searchable(cleaned))
+        if sector != config.SECTOR_UNKNOWN:
+            return sector
+
+    for text in texts:
+        sector = _sector_from_blob(searchable(text))
+        if sector != config.SECTOR_UNKNOWN:
+            return sector
     return config.SECTOR_UNKNOWN
 
 
@@ -329,24 +373,104 @@ _TITLE_NOISE = {
     "communique", "edito", "analyse", "enquete", "video", "photos", "direct",
 }
 
+#: Tournures marquant le début du récit de l'incident. Le nom de l'organisation
+#: s'arrête juste avant : « Impact Centre Chrétien frappé par Qilin » désigne
+#: l'organisation « Impact Centre Chrétien ».
+_INCIDENT_CUTS = [
+    " frappe", " frappee", " victime", " touche", " touchee", " pirate",
+    " piratee", " vise", " visee", " cible", " ciblee", " paralyse",
+    " paralysee", " revendique", " attaque par", " subit", " confirme",
+    " annonce", " hit by", " targeted", " claimed by",
+]
+
+#: Caractères décoratifs rencontrés en tête de libellé (pastilles de statut,
+#: puces, espaces insécables). Retirés avant toute autre normalisation.
+_DECORATIVE_RE = re.compile(
+    r"[ ​•■-➿️\U0001F000-\U0001FAFF]", flags=re.UNICODE
+)
+
+#: Contenu entre parenthèses en fin de libellé : précisions rédactionnelles
+#: (« AXYON (EDF, Eiffage, Bouygues…) ») qui ne font pas partie du nom.
+_TRAILING_PAREN_RE = re.compile(r"\s*[\(\[][^\)\]]*[\)\]]\s*$")
+
+
+def clean_organisation(raw: str) -> str:
+    """Nettoie un libellé d'organisation sans en altérer l'identité.
+
+    Retire les décorations (pastilles, puces, espaces insécables), les
+    précisions entre parenthèses en fin de libellé, et le préfixe `www.` des
+    noms de domaine. Le nom lui-même n'est jamais réécrit : aucun rapprochement
+    n'est tenté, conformément au §7.
+    """
+    if not raw:
+        return ""
+    text = _DECORATIVE_RE.sub(" ", str(raw))
+    text = _SPACES_RE.sub(" ", text).strip(" -–—•\t")
+
+    previous = None
+    while previous != text:
+        previous = text
+        text = _TRAILING_PAREN_RE.sub("", text).strip()
+
+    if text.lower().startswith("www."):
+        text = text[4:]
+    return text.strip(" -–—•\t")
+
+
+def _cut_at_incident(text: str) -> str:
+    """Tronque un libellé au premier marqueur de récit d'incident."""
+    blob = searchable(text)
+    cut = None
+    for marker in _INCIDENT_CUTS:
+        position = blob.find(marker)
+        if position > 0 and (cut is None or position < cut):
+            cut = position
+    if cut is None:
+        return text
+    # `searchable` conserve les positions à l'exception de la ponctuation, qui
+    # devient espace : la troncature reste alignée sur le texte d'origine.
+    return text[:cut].strip(" -–—•,;\t")
+
 
 def organisation_from_title(title: str) -> str:
     """Organisation déduite d'un titre suivant le schéma `Organisation : ...`.
 
-    Renvoie une chaîne vide si le préfixe est un mot rédactionnel plutôt qu'un
-    nom d'organisation — mieux vaut `Inconnu` qu'une organisation inventée.
+    Renvoie une chaîne vide si le candidat est un mot rédactionnel ou une phrase
+    décrivant l'incident plutôt qu'un nom d'organisation — mieux vaut `Inconnu`
+    qu'une organisation inventée.
     """
     if not title:
         return ""
     match = _TITLE_ORG_RE.match(title)
     if not match:
         return ""
-    candidate = match.group(1).strip(" -–—•\t")
+
+    candidate = clean_organisation(_cut_at_incident(match.group(1)))
     if not candidate:
         return ""
     if searchable(candidate) in _TITLE_NOISE:
         return ""
-    if len(candidate.split()) > 8:
+    if len(candidate.split()) > 6:
+        return ""
+    # Un nom d'organisation ne contient pas le vocabulaire de l'incident.
+    if _has_cyber_marker(searchable(candidate)):
+        return ""
+    return candidate
+
+
+def organisation_from_entry_title(title: str, max_words: int = 12) -> str:
+    """Organisation lue directement dans le titre d'une entrée.
+
+    Réservé aux sources qui déclarent nommer leurs entrées d'après
+    l'organisation touchée — chronologies de fuites et listes de victimes. La
+    règle est portée par la source, jamais devinée à la forme du titre.
+    """
+    candidate = clean_organisation(_cut_at_incident(title or ""))
+    if not candidate:
+        return ""
+    if len(candidate.split()) > max_words:
+        return ""
+    if searchable(candidate) in _TITLE_NOISE:
         return ""
     return candidate
 

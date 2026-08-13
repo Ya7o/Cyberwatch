@@ -236,3 +236,138 @@ class TestOrganisationExtraction:
         assert find_known_entity("La Mairie de Saint-Denis piratée", index) == (
             "Mairie de Saint-Denis"
         )
+
+
+class TestCleanOrganisation:
+    """Nettoyage des libellés sans réécriture du nom (§7)."""
+
+    @pytest.mark.parametrize(
+        "raw,expected",
+        [
+            ("🟢\xa0LaSanté.net", "LaSanté.net"),
+            ("www.ville-dunkerque.fr", "ville-dunkerque.fr"),
+            ("AXYON  (EDF, Eiffage, Bouygues)", "AXYON"),
+            ('OFII / ANEF (Portail "Étrangers en France")', "OFII / ANEF"),
+            ("Trescal", "Trescal"),
+            ("", ""),
+        ],
+    )
+    def test_nettoyage(self, raw, expected):
+        from cyberwatch.normalize import clean_organisation
+
+        assert clean_organisation(raw) == expected
+
+    def test_le_nom_n_est_jamais_reecrit(self):
+        """Aucun rapprochement : hartford.fr ne devient pas « Hartford »."""
+        from cyberwatch.normalize import clean_organisation
+
+        assert clean_organisation("hartford.fr") == "hartford.fr"
+
+
+class TestOrganisationFromTitle:
+    """Règle « Organisation : ... », tronquée au récit de l'incident."""
+
+    @pytest.mark.parametrize(
+        "title,expected",
+        [
+            ("Enseignement catholique : une fuite expose 1,5 M", "Enseignement catholique"),
+            ("Crous : 770 000 étudiants touchés", "Crous"),
+            # Régression : le titre entier était pris pour une organisation.
+            ("Son-Video.com frappé une nouvelle fois par une cyberattaque : détails",
+             "Son-Video.com"),
+            ("Impact Centre Chrétien frappé par Qilin : ce que l'on sait",
+             "Impact Centre Chrétien"),
+            ("Cyberattaque : un hôpital touché", ""),
+            ("Un hôpital victime d'une attaque", ""),
+        ],
+    )
+    def test_extraction(self, title, expected):
+        assert organisation_from_title(title) == expected
+
+
+class TestOrganisationFromEntryTitle:
+    """Sources dont chaque entrée est nommée d'après l'organisation."""
+
+    @pytest.mark.parametrize(
+        "title,expected",
+        [
+            ("Trescal", "Trescal"),
+            ("AgroParisTech", "AgroParisTech"),
+            ("🟢\xa0Intermarché", "Intermarché"),
+            ("Chambre de Commerce et de l'Industrie Nice Côte d'Azur",
+             "Chambre de Commerce et de l'Industrie Nice Côte d'Azur"),
+            ("AXYON  (EDF, Eiffage, Bouygues, Engie, Renault)", "AXYON"),
+        ],
+    )
+    def test_extraction(self, title, expected):
+        from cyberwatch.normalize import organisation_from_entry_title
+
+        assert organisation_from_entry_title(title) == expected
+
+    def test_phrase_trop_longue_rejetee(self):
+        from cyberwatch.normalize import organisation_from_entry_title
+
+        long_title = " ".join(["mot"] * 20)
+        assert organisation_from_entry_title(long_title) == ""
+
+
+class TestIntrusionPhysiqueOuCyber:
+    """« Intrusion » vaut pour le cambriolage comme pour l'informatique."""
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            "Intrusion nocturne chez un commerçant de Dzoumogné",
+            "Matériel disparu après un cambriolage à Kaweni",
+            "Tentative d'effraction en pleine nuit",
+            "Cambriolage nocturne au Douka Bé de Longoni",
+        ],
+    )
+    def test_effraction_physique_ecartee(self, text):
+        assert not looks_cyber(text)
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            "Intrusion dans le système d'information de la mairie",
+            "Intrusion informatique chez un opérateur",
+            "Une intrusion a permis l'exfiltration de données",
+            # Marqueur physique présent, mais terme cyber sans équivoque.
+            "Ransomware après une intrusion nocturne sur le SI",
+        ],
+    )
+    def test_intrusion_cyber_conservee(self, text):
+        assert looks_cyber(text)
+
+
+class TestSecteurPrecedence:
+    """Le secteur est celui de la victime, pas du récit de l'article."""
+
+    def test_organisation_prime_sur_le_texte(self):
+        """Régression : un article citant « fédération » classait Trescal en Sport."""
+        assert classify_sector(
+            "Trescal", "Fuite touchant plusieurs fédérations françaises"
+        ) == config.SECTOR_UNKNOWN
+
+    def test_victime_sportive_bien_classee(self):
+        assert classify_sector(
+            "Fédération Française de Squash", "fuite de données"
+        ) == config.SECTOR_SPORT
+
+    def test_texte_utilise_si_organisation_inconnue(self):
+        assert classify_sector(
+            "", "Cyberattaque contre une fédération sportive"
+        ) == config.SECTOR_SPORT
+
+    @pytest.mark.parametrize(
+        "activity,expected",
+        [
+            ("Manufacturing", config.SECTOR_INDUSTRY),
+            ("Construction", config.SECTOR_CONSTRUCTION),
+            ("Business Services", config.SECTOR_SERVICES),
+            ("Healthcare", config.SECTOR_HEALTH),
+            ("Government", config.SECTOR_ADMIN),
+        ],
+    )
+    def test_activite_ransomware_live_traduite(self, activity, expected):
+        assert classify_sector("", given=activity) == expected

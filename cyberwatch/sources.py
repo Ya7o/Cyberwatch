@@ -63,6 +63,7 @@ CORE_SOURCES = [
         collector="autodetect",
         default_threat=config.THREAT_LEAK,
         location_rule=config.LOC_FRANCE,
+        params={"title_is_organisation": True},
         protocol=(
             "Parcourir l'archive des alertes de fuite, descendre jusqu'à "
             "TARGET_START, relever date, organisation, titre, menace et URL."
@@ -70,7 +71,11 @@ CORE_SOURCES = [
         success_test=(
             "Borne de date atteinte et toutes les entrées de la fenêtre énumérées."
         ),
-        notes="Localisation par défaut France métropolitaine sauf indication contraire.",
+        notes=(
+            "Chaque entrée est nommée d'après l'organisation touchée : le titre "
+            "de l'entrée est l'organisation. Localisation par défaut France "
+            "métropolitaine sauf indication contraire."
+        ),
     ),
     SourceSpec(
         source_id="BONJOURLAFUITE",

@@ -45,14 +45,29 @@
     });
   }
 
-  function countBy(rows, key) {
+  function countBy(rows, key, { dropUnknown = false } = {}) {
     const counts = new Map();
     for (const row of rows) {
       const value = row[key] || "Inconnu";
+      if (dropUnknown && value === "Inconnu") continue;
       counts.set(value, (counts.get(value) || 0) + 1);
     }
     return Array.from(counts, ([label, value]) => ({ label, value }))
       .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label, "fr"));
+  }
+
+  /** Note de couverture d'une dimension souvent inconnue.
+   *
+   * Le secteur n'est renseigné que lorsque le nom de l'organisation le révèle
+   * ou que la source le fournit. Masquer « Inconnu » rend le graphique
+   * lisible ; annoncer la part réellement documentée évite de laisser croire
+   * que le graphique porte sur l'ensemble. */
+  function knownNote(rows, key, singular) {
+    const known = rows.filter((r) => (r[key] || "Inconnu") !== "Inconnu").length;
+    if (!rows.length) return "";
+    const share = Math.round((100 * known) / rows.length);
+    return `${known} incident${known > 1 ? "s" : ""} sur ${rows.length} ont un `
+      + `${singular} documenté (${share} %). Les autres sont exclus de ce graphique.`;
   }
 
   // ------------------------------------------------------------- graphiques
@@ -407,8 +422,9 @@
     barChartTime($("#chart-month"), months.map((m) => ({ label: m, value: perMonth.get(m) || 0 })));
 
     barChartH($("#chart-location"), countBy(rows, "location"));
-    barChartH($("#chart-sector"), countBy(rows, "sector"));
+    barChartH($("#chart-sector"), countBy(rows, "sector", { dropUnknown: true }));
     barChartH($("#chart-threat"), countBy(rows, "threat"));
+    $("#sector-note").textContent = knownNote(rows, "sector", "secteur");
 
     renderIncidentsTable($("#incidents-table tbody"), rows, $("#table-count"));
   }
@@ -507,8 +523,9 @@
     yt.forEach((r) => mapYt.set(monthKey(r.date), (mapYt.get(monthKey(r.date)) || 0) + 1));
     groupedBars($("#chart-focus-month"), months, mapRe, mapYt, ["La Réunion", "Mayotte"]);
 
-    barChartH($("#chart-focus-sector"), countBy(rows, "sector"));
+    barChartH($("#chart-focus-sector"), countBy(rows, "sector", { dropUnknown: true }));
     barChartH($("#chart-focus-threat"), countBy(rows, "threat"));
+    $("#focus-sector-note").textContent = knownNote(rows, "sector", "secteur");
 
     renderEntities();
     renderIncidentsTable($("#focus-incidents-table tbody"), rows, $("#focus-table-count"));

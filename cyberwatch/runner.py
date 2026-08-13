@@ -25,8 +25,10 @@ from .normalize import (
     classify_location,
     classify_sector,
     classify_threat,
+    clean_organisation,
     find_known_entity,
     looks_cyber,
+    organisation_from_entry_title,
     organisation_from_title,
     organisation_key,
 )
@@ -139,16 +141,16 @@ def entry_to_item(
 
     # Organisation : fournie par la source, sinon lue dans le titre, sinon
     # reconnue parmi les entités surveillées. Jamais devinée.
-    organisation = entry.organisation or organisation_from_title(entry.title)
+    organisation = clean_organisation(entry.organisation) or organisation_from_title(
+        entry.title
+    )
 
-    # Certaines sources publient l'organisation comme titre de l'entrée : c'est
-    # le cas des chronologies de fuites, dont chaque bloc est nommé d'après
-    # l'organisation touchée (§13.2). La règle est déclarée par la source, elle
-    # n'est pas déduite de la forme du titre.
+    # Certaines sources publient l'organisation comme titre de l'entrée : les
+    # chronologies de fuites et les listes de victimes nomment chaque entrée
+    # d'après l'organisation touchée (§13.1, §13.2). La règle est déclarée par
+    # la source, elle n'est pas déduite de la forme du titre.
     if not organisation and spec.params.get("title_is_organisation"):
-        candidate = entry.title.strip()
-        if candidate and len(candidate.split()) <= 8:
-            organisation = candidate
+        organisation = organisation_from_entry_title(entry.title)
 
     if not organisation:
         organisation = find_known_entity(text, known_orgs)
@@ -160,7 +162,18 @@ def entry_to_item(
             sector_hint = watched.sector_hint
 
     threat = classify_threat(text, default=spec.default_threat)
-    sector = classify_sector(organisation, text, given=entry.sector or sector_hint)
+
+    # Le secteur est celui de la victime (§9). Le nom de l'organisation est donc
+    # examiné avant le corps de l'article : celui-ci décrit l'incident, pas le
+    # métier de la victime, et un simple mot y suffirait à la reclasser à tort.
+    # Lorsque la source nomme ses entrées d'après l'organisation, le corps n'est
+    # qu'une description de la fuite : on ne s'y rabat pas du tout.
+    sector_texts = (
+        (organisation,)
+        if spec.params.get("title_is_organisation")
+        else (organisation, text)
+    )
+    sector = classify_sector(*sector_texts, given=entry.sector or sector_hint)
     location = classify_location(
         text, given=entry.location, default=spec.location_rule
     )

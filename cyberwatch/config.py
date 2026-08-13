@@ -128,6 +128,21 @@ CYBER_PREFIXES = [
     "spyware", "botnet", "keylogger", "cryptolock",
 ]
 
+#: Vocabulaire du cambriolage et de l'effraction. « Intrusion » désigne aussi
+#: bien une intrusion informatique qu'une intrusion nocturne chez un
+#: commerçant : en présence de ces mots, un marqueur cyber ambigu ne suffit
+#: plus, il faut un terme sans équivoque.
+PHYSICAL_MARKERS = [
+    "cambriolage", "cambriolages", "cambrioleur", "cambrioleurs", "cambriole",
+    "effraction", "effractions", "nocturne", "nocturnes", "s introduire",
+    "porte fracturee", "vitre brisee", "coffre fort", "burglary", "break in",
+    "voleurs", "malfaiteurs", "domicile", "commercant",
+]
+
+#: Racines dont la seule présence ne suffit pas à qualifier un contenu de cyber
+#: lorsque le contexte est manifestement physique.
+AMBIGUOUS_PREFIXES = ["intrusion", "hack"]
+
 #: Expressions exactes, testées sur limites de mots.
 CYBER_PHRASES = [
     "fuite de donnees", "vol de donnees", "violation de donnees",
@@ -155,6 +170,12 @@ SECTOR_SPORT = "Sport"
 SECTOR_RETAIL = "Commerce / Distribution"
 SECTOR_TECH = "Numérique / Technologie"
 SECTOR_ENERGY = "Énergie / Utilities"
+#: Extensions au §9, ajoutées après mesure : elles couvrent les deux premiers
+#: secteurs victimes de rançongiciel au monde, que la liste d'origine laissait
+#: tomber dans « Inconnu ».
+SECTOR_INDUSTRY = "Industrie / Manufacture"
+SECTOR_CONSTRUCTION = "Construction / BTP"
+SECTOR_SERVICES = "Services aux entreprises"
 SECTOR_UNKNOWN = "Inconnu"
 
 SECTORS = [
@@ -167,8 +188,66 @@ SECTORS = [
     SECTOR_RETAIL,
     SECTOR_TECH,
     SECTOR_ENERGY,
+    SECTOR_INDUSTRY,
+    SECTOR_CONSTRUCTION,
+    SECTOR_SERVICES,
     SECTOR_UNKNOWN,
 ]
+
+#: Correspondance des libellés d'activité anglophones de ransomware.live vers
+#: la taxonomie française. Appliquée uniquement au secteur explicitement fourni
+#: par la source, jamais au texte libre d'un article.
+ACTIVITY_TO_SECTOR = {
+    "manufacturing": SECTOR_INDUSTRY,
+    "industrial machinery": SECTOR_INDUSTRY,
+    "machinery": SECTOR_INDUSTRY,
+    "metals mining": SECTOR_INDUSTRY,
+    "chemicals": SECTOR_INDUSTRY,
+    "automotive": SECTOR_INDUSTRY,
+    "aerospace defense": SECTOR_INDUSTRY,
+    "electronics": SECTOR_INDUSTRY,
+    "food beverages": SECTOR_INDUSTRY,
+    "agriculture": SECTOR_INDUSTRY,
+    "construction": SECTOR_CONSTRUCTION,
+    "real estate": SECTOR_CONSTRUCTION,
+    "business services": SECTOR_SERVICES,
+    "consumer services": SECTOR_SERVICES,
+    "legal services": SECTOR_SERVICES,
+    "law firms": SECTOR_SERVICES,
+    "accounting": SECTOR_SERVICES,
+    "staffing recruiting": SECTOR_SERVICES,
+    "healthcare": SECTOR_HEALTH,
+    "hospital health care": SECTOR_HEALTH,
+    "pharmaceuticals": SECTOR_HEALTH,
+    "biotechnology": SECTOR_HEALTH,
+    "education": SECTOR_EDUCATION,
+    "finance": SECTOR_FINANCE,
+    "financial services": SECTOR_FINANCE,
+    "banking": SECTOR_FINANCE,
+    "insurance": SECTOR_FINANCE,
+    "retail": SECTOR_RETAIL,
+    "wholesale": SECTOR_RETAIL,
+    "consumer goods": SECTOR_RETAIL,
+    "transportation": SECTOR_TRANSPORT,
+    "logistics supply chain": SECTOR_TRANSPORT,
+    "shipping": SECTOR_TRANSPORT,
+    "airlines aviation": SECTOR_TRANSPORT,
+    "government": SECTOR_ADMIN,
+    "government administration": SECTOR_ADMIN,
+    "public administration": SECTOR_ADMIN,
+    "non profit": SECTOR_ADMIN,
+    "it services": SECTOR_TECH,
+    "information technology": SECTOR_TECH,
+    "software": SECTOR_TECH,
+    "telecommunications": SECTOR_TECH,
+    "media internet": SECTOR_TECH,
+    "energy utilities": SECTOR_ENERGY,
+    "energy": SECTOR_ENERGY,
+    "utilities": SECTOR_ENERGY,
+    "oil gas": SECTOR_ENERGY,
+    "hospitality": SECTOR_RETAIL,
+    "sports": SECTOR_SPORT,
+}
 
 # Motifs testés sur limites de mots, texte désaccentué et en minuscules.
 SECTOR_RULES: list[tuple[str, list[str]]] = [
@@ -219,6 +298,20 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "energie", "energy", "electricite", "electricity", "edf", "eau",
         "water", "assainissement", "utilities", "jirama", "runeo", "cise",
         "petrole", "gaz",
+    ]),
+    (SECTOR_CONSTRUCTION, [
+        "batiment", "btp", "travaux publics", "construction", "immobilier",
+        "maconnerie", "charpente", "promoteur immobilier",
+    ]),
+    (SECTOR_INDUSTRY, [
+        "industrie", "industriel", "manufacture", "usine", "fonderie",
+        "metallurgie", "chimie", "agroalimentaire", "automobile",
+        "aeronautique", "fabricant",
+    ]),
+    (SECTOR_SERVICES, [
+        "cabinet d avocats", "cabinet comptable", "expertise comptable",
+        "notaire", "huissier", "conseil en", "interim", "recrutement",
+        "nettoyage", "securite privee",
     ]),
 ]
 
