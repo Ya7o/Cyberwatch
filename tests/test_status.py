@@ -182,7 +182,10 @@ class TestReasonCoherence:
         )
         source_status, _coverage = result.resolve()
         assert source_status == status.PARTIAL
-        assert result.reason_code == status.REASON_NO_RESULT
+        # Dire « rien d'exploitable » d'une source partiellement aboutie
+        # serait aussi faux que de la dire complète.
+        assert result.reason_code == status.REASON_INCOMPLETE
+        assert "partiellement" in status.reason_text(result.reason_code)
 
     def test_cause_reelle_conservee(self):
         result = CollectResult(reason_code=status.REASON_HTTP_429)

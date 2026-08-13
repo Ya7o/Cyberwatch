@@ -61,6 +61,7 @@ REASON_LAYER_NOT_SCHEDULED = "LAYER_NOT_SCHEDULED"
 REASON_SOURCE_INACTIVE = "SOURCE_INACTIVE"
 REASON_PARSE_ERROR = "PARSE_ERROR"
 REASON_NO_RESULT = "NO_RESULT"
+REASON_INCOMPLETE = "INCOMPLETE"
 
 REASON_TEXTS = {
     REASON_OK: "Protocole complet, test de succès satisfait.",
@@ -81,6 +82,10 @@ REASON_TEXTS = {
     REASON_NO_RESULT: (
         "Aucune unité du protocole n'a abouti : la source n'a rien renvoyé "
         "d'exploitable, sans que la cause ait pu être qualifiée."
+    ),
+    REASON_INCOMPLETE: (
+        "Protocole partiellement exécuté : une partie seulement des unités "
+        "prévues a abouti. Le détail figure dans le commentaire de la source."
     ),
 }
 

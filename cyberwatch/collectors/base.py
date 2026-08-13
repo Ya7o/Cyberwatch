@@ -119,21 +119,24 @@ class CollectResult:
             # Une borne non atteinte interdit de revendiquer 100 %.
             if not self.reached_boundary:
                 coverage = min(coverage, 99)
-            self._ensure_reason()
+            self._ensure_reason(status.REASON_INCOMPLETE)
             return status.PARTIAL, coverage
 
-        self._ensure_reason()
+        self._ensure_reason(status.REASON_NO_RESULT)
         return status.FAIL, 0
 
-    def _ensure_reason(self) -> None:
+    def _ensure_reason(self, fallback: str) -> None:
         """Un statut dégradé ne doit jamais porter la raison « tout va bien ».
 
         Sans ce garde-fou, une source pouvait ressortir en `FAIL` accompagnée de
         « Protocole complet, test de succès satisfait » — un compte rendu qui se
         contredit lui-même et ne dit rien d'actionnable.
+
+        Le repli diffère selon la sévérité : dire « rien d'exploitable » d'une
+        source ayant abouti aux deux tiers serait tout aussi faux.
         """
         if self.reason_code == status.REASON_OK:
-            self.reason_code = status.REASON_NO_RESULT
+            self.reason_code = fallback
 
 
 class Collector:
