@@ -21,3 +21,13 @@ def test_cyberattaque_title_extracts_the_victim_prefix():
 
 def test_ransomware_technical_suffix_is_removed():
     assert _victim_name("PC SOFT FRANCE - Leaked data") == "PC SOFT FRANCE"
+
+
+def test_terminal_domain_is_not_part_of_the_organisation_identity():
+    assert organisation_key("Booking.com") == organisation_key("Booking")
+    assert organisation_key("Location-etudiant.fr") == organisation_key("Location-Etudiant")
+
+
+def test_validated_spacing_variants_share_one_identity():
+    assert organisation_key("Easy Lounge") == organisation_key("EasyLounge")
+    assert organisation_key("Move Up Formation") == organisation_key("MoveUp Formation")

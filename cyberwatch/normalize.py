@@ -20,6 +20,21 @@ from . import config
 LEGAL_FORMS = {"sas", "sarl", "sa", "eurl"}
 INCIDENT_SUFFIXES = {"pirate", "piratee", "pirates", "piratees", "revendique", "revendiquee"}
 
+# Variantes observées sur plusieurs sources pour le même incident et validées
+# manuellement. Cette table reste volontairement courte : elle ne doit pas
+# devenir un rapprochement flou de noms proches.
+ORGANISATION_ALIASES = {
+    "move up formation": "moveup formation",
+    "kams paris": "kamsparis",
+    "easy lounge": "easylounge",
+    "alumn force": "alumnforce",
+    "unis cite": "uniscite",
+    "keep cool": "keepcool",
+    "store pas cher": "storepascher",
+}
+
+_DOMAIN_SUFFIX_RE = re.compile(r"\.(?:fr|com|net|org|eu|io)$", flags=re.IGNORECASE)
+
 _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _SPACES_RE = re.compile(r"\s+")
 
@@ -42,7 +57,9 @@ def organisation_key(raw: str) -> str:
     """
     if not raw:
         return ""
-    text = strip_accents(str(raw))
+    # Les sources alternent entre une marque et son domaine public
+    # ("Booking" / "Booking.com"). Seul un suffixe final est retiré.
+    text = _DOMAIN_SUFFIX_RE.sub("", strip_accents(str(raw)).strip())
     text = text.lower()
     text = _PUNCT_RE.sub(" ", text)
     text = _SPACES_RE.sub(" ", text).strip()
@@ -52,7 +69,8 @@ def organisation_key(raw: str) -> str:
     while tokens and tokens[-1] in INCIDENT_SUFFIXES:
         tokens.pop()
     text = " ".join(tokens)
-    return re.sub(r"(?<=[a-z])\s+(?=\d)", "", text)
+    text = re.sub(r"(?<=[a-z])\s+(?=\d)", "", text)
+    return ORGANISATION_ALIASES.get(text, text)
 
 
 def searchable(text: str) -> str:
