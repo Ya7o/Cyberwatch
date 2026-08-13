@@ -267,7 +267,7 @@ def run_source(
     outcome.units_done = result.units_done
     outcome.units_expected = result.units_expected
     outcome.calls = result.calls
-    outcome.items_seen = len(result.entries)
+    outcome.items_seen = result.items_seen if result.items_seen is not None else len(result.entries)
     outcome.items_collected = len(items)
     outcome.access_method = result.access_method
     outcome.comment = result.comment
@@ -375,12 +375,6 @@ def pre_export_checks(
         if not incident.Sources:
             problems.append(f"Incident sans source : {incident.Incident_ID}")
 
-    active = sources.active_sources()
-    if [spec.source_id for spec in active] != ["BONJOURLAFUITE"]:
-        problems.append("La seule source active doit être BONJOURLAFUITE")
-    if any(item.Source_ID != "BONJOURLAFUITE" for item in items):
-        problems.append("Tous les ITEMS doivent provenir de BONJOURLAFUITE")
-
     seen_sources = {o.source_id for o in outcomes}
     for spec in sources.ALL_SOURCES:
         if spec.active and spec.source_id not in seen_sources:
@@ -438,6 +432,7 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
     # périmée. `MAJ` conserve au contraire le stock et n'y ajoute que le
     # nouveau (§25).
     existing_items = [] if context.mode == MODE_CREATE else store.load_items()
+    existing_item_ids = {item.Item_ID for item in existing_items}
 
     if offline:
         report.items = existing_items
@@ -470,6 +465,11 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
             )
 
         merged, new_count = merge_items(existing_items, collected)
+        for outcome in report.outcomes:
+            outcome.new_items = sum(
+                item.Source_ID == outcome.source_id and item.Item_ID not in existing_item_ids
+                for item in collected
+            )
         report.items = merged
         report.new_items = new_count
         report.requests = run_budget.requests_made
@@ -480,7 +480,7 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
     )
     report.items_hash = identity.items_hash(report.items)
     report.incidents_hash = identity.incidents_hash(report.incidents)
-    report.health = 100 if report.outcomes and report.outcomes[0].status == status.OK else 0
+    report.health = 100 if report.outcomes and all(o.status == status.OK for o in report.outcomes) else 0
     report.overall = "OK" if report.health == 100 else status.BROKEN
     report.problems = pre_export_checks(
         report.items, report.incidents, report.outcomes
@@ -542,7 +542,6 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
         return
 
     counts = status.status_counts(report.outcomes)
-    bonjour = next((o for o in report.outcomes if o.source_id == "BONJOURLAFUITE"), None)
     store.append_run_log(
         {
             "Run_ID": context.run_id,
@@ -556,9 +555,9 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
             "Incidents_Count": len(report.incidents),
             "New_Items": report.new_items,
             "New_Incidents": report.new_incidents,
-            "Source_Status": bonjour.status if bonjour else status.FAIL,
-            "Items_seen": bonjour.items_seen if bonjour else 0,
-            "Items_in_window": bonjour.units_done if bonjour else 0,
+            "Source_Status": "OK" if report.overall == "OK" else status.FAIL,
+            "Items_seen": sum(o.items_seen for o in report.outcomes),
+            "Items_in_window": sum(o.units_done for o in report.outcomes),
             "Sources_OK": counts.get(status.OK, 0),
             "Sources_PARTIAL": counts.get(status.PARTIAL, 0),
             "Sources_FAIL": counts.get(status.FAIL, 0),

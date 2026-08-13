@@ -104,6 +104,8 @@ class CollectResult:
     #: État de veille par entité, renseigné par les couches de surveillance
     #: nominative. Alimente `ENTITY_WATCH` et le focus Réunion / Mayotte.
     watch_rows: list[dict] = field(default_factory=list)
+    #: Compteur structurel indépendant des entrées conservées dans la fenêtre.
+    items_seen: int | None = None
 
     def resolve(self) -> tuple[str, int]:
         """Traduit le compte rendu en couple (statut, couverture).

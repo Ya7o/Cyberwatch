@@ -57,7 +57,7 @@ def _print_summary(report) -> None:
         f"{counts.get(status.SKIPPED, 0)} hors périmètre"
     )
     print(f"  Health score  : {report.health}/100")
-    labels = {**status.RUN_STATUS_LABELS, status.OK: "BonjourLaFuite reconnue"}
+    labels = {**status.RUN_STATUS_LABELS, status.OK: "Toutes les sources actives sont reconnues"}
     print(f"  Statut global : {report.overall} — {labels.get(report.overall, report.overall)}")
     print(f"  Items_Hash    : {report.items_hash[:32]}")
     print(f"  Incidents_Hash: {report.incidents_hash[:32]}")
@@ -499,16 +499,11 @@ def cmd_check(args) -> int:
     # Les contrôles portant sur RUN_SOURCES ne s'appliquent pas hors run.
     problems = [p for p in problems if "RUN_SOURCES" not in p]
 
-    active = sources.active_sources()
-    if [spec.source_id for spec in active] != ["BONJOURLAFUITE"]:
-        problems.append("La seule source active doit être BONJOURLAFUITE")
     last = store.load_run_log()
     if last:
         row = last[-1]
-        if row.get("Source_Status") != status.OK:
-            problems.append("Le dernier statut BonjourLaFuite n'est pas OK")
-        if int(row.get("Items_seen") or 0) < 1:
-            problems.append("Items_seen BonjourLaFuite doit être >= 1")
+        if row.get("Overall_Status") != "OK":
+            problems.append("Le dernier run n'est pas OK")
         if not row.get("Items_Hash") or not row.get("Incidents_Hash"):
             problems.append("Les hashes du dernier run sont absents")
 

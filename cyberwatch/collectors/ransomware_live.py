@@ -31,8 +31,6 @@ COUNTRY_TO_LOCATION = {
 ENDPOINT_TEMPLATES = [
     "https://api.ransomware.live/v2/countryvictims/{country}",
     "https://api.ransomware.live/countryvictims/{country}",
-    "https://api.ransomware.live/v2/recentvictims",
-    "https://api.ransomware.live/recentvictims",
 ]
 
 #: Noms de champs rencontrés selon les versions de l'API.
@@ -69,6 +67,7 @@ class RansomwareLiveCollector(Collector):
 
         working_template = None
         seen: set[tuple[str, str]] = set()
+        recognized = 0
 
         for country in countries:
             if budget.exhausted:
@@ -111,6 +110,7 @@ class RansomwareLiveCollector(Collector):
                     if signature in seen:
                         continue
                     seen.add(signature)
+                    recognized += 1
                     result.entries.append(entry)
                 break
 
@@ -132,6 +132,9 @@ class RansomwareLiveCollector(Collector):
             and result.reason_code == status.REASON_OK
         )
         result.calls = budget.requests_made
+        result.items_seen = recognized
+        result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
+        result.comment = f"items_seen={recognized}; items_in_window={len(result.entries)}"
         return result
 
 
