@@ -102,7 +102,7 @@ def status_payload() -> dict:
                 "items_collected": items,
                 # Pour BonjourLaFuite V0, Units_Done transporte uniquement le
                 # nombre reconnu dans la fenêtre. Il ne sert jamais au statut.
-                "items_in_window": units_done if source_id == "BONJOURLAFUITE" else items,
+                "items_in_window": _to_int(row.get("Items_in_window")) if source_id == "BONJOURLAFUITE" else items,
                 "units_done": units_done,
                 "units_expected": _to_int(row.get("Units_Expected")),
                 "calls": _to_int(row.get("Calls")),

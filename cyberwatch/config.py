@@ -341,7 +341,7 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
 INCIDENT_GAP_DAYS = 14
 
 # Chevauchement rejoué à chaque MAJ (§6).
-MAJ_OVERLAP_DAYS = 14
+MAJ_OVERLAP_DAYS = 30
 
 DATE_BASIS_EVENT = "EVENT"
 DATE_BASIS_PUBLICATION = "PUBLICATION"

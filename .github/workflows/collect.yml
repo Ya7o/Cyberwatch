@@ -85,10 +85,6 @@ jobs:
 
       - name: Collecter
         id: run
-        # Un run DEGRADED ou BROKEN ne doit pas faire échouer le job : les
-        # données déjà collectées sont valides et le statut est publié tel quel
-        # sur le dashboard. C'est le principe « transparence > faux zéro ».
-        continue-on-error: true
         run: |
           ARGS=""
           if [ -n "${{ steps.scope.outputs.start }}" ]; then
@@ -117,6 +113,13 @@ jobs:
       - name: Récapitulatif du run
         if: always() && steps.kind.outputs.writes == 'true'
         run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Contrôles et répétabilité
+        if: steps.kind.outputs.writes == 'true'
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python -m cyberwatch build-site
 
       - name: Publier les données
         if: steps.kind.outputs.writes == 'true'

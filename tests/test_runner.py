@@ -201,7 +201,7 @@ class TestEntityWatch:
 
 class TestPreExportChecks:
     def test_base_saine(self, make_item):
-        items = [make_item()]
+        items = [make_item(source="BONJOURLAFUITE")]
         incidents = build_incidents(items)
         outcomes = [
             status.SourceOutcome(spec.source_id, spec.layer, status.OK, 100)

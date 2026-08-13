@@ -66,7 +66,7 @@ def make_run_context(
     """Fige les paramètres du run.
 
     `CREATE` sans période démarre au 1er janvier de l'année de `AS_OF` (§6).
-    `MAJ` rejoue au minimum les 14 derniers jours depuis le dernier run, ce
+    `MAJ` rejoue volontairement les 30 derniers jours depuis le dernier run, ce
     chevauchement permettant de récupérer ajouts tardifs et corrections.
     """
     now = (
@@ -375,6 +375,12 @@ def pre_export_checks(
         if not incident.Sources:
             problems.append(f"Incident sans source : {incident.Incident_ID}")
 
+    active = sources.active_sources()
+    if [spec.source_id for spec in active] != ["BONJOURLAFUITE"]:
+        problems.append("La seule source active doit être BONJOURLAFUITE")
+    if any(item.Source_ID != "BONJOURLAFUITE" for item in items):
+        problems.append("Tous les ITEMS doivent provenir de BONJOURLAFUITE")
+
     seen_sources = {o.source_id for o in outcomes}
     for spec in sources.ALL_SOURCES:
         if spec.active and spec.source_id not in seen_sources:
@@ -447,7 +453,9 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
         collected: list[Item] = []
         watch_rows: list[dict] = []
 
-        for spec in sources.ALL_SOURCES:
+        # V0 mono-source : ne jamais exécuter ni journaliser les collecteurs
+        # désactivés ; le pipeline doit appeler exactement BonjourLaFuite.
+        for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
                 client, spec, context, known_orgs, entity_index, territories
             )
@@ -472,10 +480,8 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
     )
     report.items_hash = identity.items_hash(report.items)
     report.incidents_hash = identity.incidents_hash(report.incidents)
-    report.health = status.health_score(report.outcomes)
-    report.overall = (
-        status.overall_status(report.outcomes) if report.outcomes else status.HEALTHY
-    )
+    report.health = 100 if report.outcomes and report.outcomes[0].status == status.OK else 0
+    report.overall = "OK" if report.health == 100 else status.BROKEN
     report.problems = pre_export_checks(
         report.items, report.incidents, report.outcomes
     )
@@ -509,6 +515,7 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
                     "Units_Done": o.units_done,
                     "Units_Expected": o.units_expected,
                     "Items_seen": o.items_seen,
+                    "Items_in_window": o.units_done,
                     "Items_collected": o.items_collected,
                     "New_items": o.new_items,
                     "Latest_item_date": o.latest_item_date,
@@ -529,7 +536,13 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
             )
         )
 
+    # REPLAY est une transformation locale : il ne constitue pas une collecte
+    # et ne doit donc pas remplacer l'état OK/FAIL de la dernière collecte.
+    if not report.outcomes:
+        return
+
     counts = status.status_counts(report.outcomes)
+    bonjour = next((o for o in report.outcomes if o.source_id == "BONJOURLAFUITE"), None)
     store.append_run_log(
         {
             "Run_ID": context.run_id,
@@ -543,11 +556,13 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
             "Incidents_Count": len(report.incidents),
             "New_Items": report.new_items,
             "New_Incidents": report.new_incidents,
+            "Source_Status": bonjour.status if bonjour else status.FAIL,
+            "Items_seen": bonjour.items_seen if bonjour else 0,
+            "Items_in_window": bonjour.units_done if bonjour else 0,
             "Sources_OK": counts.get(status.OK, 0),
             "Sources_PARTIAL": counts.get(status.PARTIAL, 0),
             "Sources_FAIL": counts.get(status.FAIL, 0),
             "Sources_SKIPPED": counts.get(status.SKIPPED, 0),
-            "Health_Score": report.health,
             "Items_Hash": report.items_hash,
             "Incidents_Hash": report.incidents_hash,
             "Overall_Status": report.overall,

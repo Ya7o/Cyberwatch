@@ -57,7 +57,8 @@ def _print_summary(report) -> None:
         f"{counts.get(status.SKIPPED, 0)} hors périmètre"
     )
     print(f"  Health score  : {report.health}/100")
-    print(f"  Statut global : {report.overall} — {status.RUN_STATUS_LABELS[report.overall]}")
+    labels = {**status.RUN_STATUS_LABELS, status.OK: "BonjourLaFuite reconnue"}
+    print(f"  Statut global : {report.overall} — {labels.get(report.overall, report.overall)}")
     print(f"  Items_Hash    : {report.items_hash[:32]}")
     print(f"  Incidents_Hash: {report.incidents_hash[:32]}")
     print(f"  Durée         : {report.duration}s · {report.requests} requêtes")
@@ -497,6 +498,19 @@ def cmd_check(args) -> int:
     problems = pre_export_checks(items, incidents, [])
     # Les contrôles portant sur RUN_SOURCES ne s'appliquent pas hors run.
     problems = [p for p in problems if "RUN_SOURCES" not in p]
+
+    active = sources.active_sources()
+    if [spec.source_id for spec in active] != ["BONJOURLAFUITE"]:
+        problems.append("La seule source active doit être BONJOURLAFUITE")
+    last = store.load_run_log()
+    if last:
+        row = last[-1]
+        if row.get("Source_Status") != status.OK:
+            problems.append("Le dernier statut BonjourLaFuite n'est pas OK")
+        if int(row.get("Items_seen") or 0) < 1:
+            problems.append("Items_seen BonjourLaFuite doit être >= 1")
+        if not row.get("Items_Hash") or not row.get("Incidents_Hash"):
+            problems.append("Les hashes du dernier run sont absents")
 
     print(f"Contrôles avant export (§29) — {len(items)} items, {len(incidents)} incidents")
     if not problems:

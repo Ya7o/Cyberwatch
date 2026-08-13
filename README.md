@@ -1,9 +1,9 @@
-# Cyberwatch — Observatoire des incidents cyber France / Océan Indien
+# Cyberwatch V0
 
-Pipeline automatique qui collecte les incidents cyber **publiquement listés** en
-France métropolitaine, à La Réunion, Mayotte, Maurice, Madagascar, aux Seychelles
-et aux Comores, construit une base déterministe reproductible, et publie un
-dashboard statique sur GitHub Pages.
+V0 valide une chaîne de collecte volontairement simple et déterministe :
+**BonjourLaFuite → ITEMS → normalisation → déduplication → INCIDENTS → dashboard**.
+BonjourLaFuite est la seule source active ; les autres collecteurs sont conservés,
+mais désactivés.
 
 **Dashboard : https://ya7o.github.io/Cyberwatch/**
 
@@ -13,12 +13,18 @@ dashboard statique sur GitHub Pages.
 
 ---
 
+## État de la source
+
+`OK` signifie qu'au moins un item BonjourLaFuite (date + organisation) a été
+reconnu. `FAIL` signifie que la page est inaccessible ou qu'aucun item n'a été
+reconnu. Un item hors fenêtre compte dans `Items_seen`, mais pas dans
+`Items_in_window` ni forcément dans `Items_collected`.
+
 ## Ce qui tourne tout seul
 
 | Quand | Quoi |
 |---|---|
-| Tous les jours à 8 h (heure Réunion) | Sources directes et ransomware.live — ~70 requêtes, 1 à 2 min |
-| Le lundi | Balayage complet, couches de veille comprises — ~130 requêtes, 3 à 4 min |
+| Chaque exécution | BonjourLaFuite uniquement |
 
 Chaque run met à jour `data/`, régénère `docs/data/` et publie un commit. Le
 dashboard se rafraîchit sans intervention. Le récapitulatif de chaque run est
@@ -48,17 +54,16 @@ Détail complet dans [`METHODOLOGY.md`](METHODOLOGY.md).
 ```bash
 pip install -r requirements.txt
 
-python -m cyberwatch diagnose          # sonder les sources, mesurer le coût réel
 python -m cyberwatch create            # construire la base (année en cours)
-python -m cyberwatch maj               # mettre à jour (fenêtre glissante 14 jours)
+python -m cyberwatch maj               # mettre à jour (fenêtre glissante 30 jours)
 python -m cyberwatch replay            # reconstruire INCIDENTS sans réseau
 python -m cyberwatch test-repeat       # test de répétabilité
+python -m cyberwatch check             # contrôles mono-source et hashes
 python -m cyberwatch build-site        # régénérer les données du dashboard
 
 python -m http.server                  # consulter le dashboard en local
 ```
 
-Restreindre le périmètre : `--layers core,local_media` · `--layers watch` · `--layers all`.
 Figer un cutoff : `--as-of 2026-08-12T19:07:00+04:00`.
 
 ---
