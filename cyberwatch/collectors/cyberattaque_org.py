@@ -28,7 +28,18 @@ _ORG_AFTER_COLON_CONFIRMS_CYBERATTACK = re.compile(
     re.I,
 )
 
+# Une mesure chiffrée en tête de titre décrit l'impact, jamais la victime.
+# Cette règle ne rejette pas les organisations pouvant commencer par un chiffre
+# (par exemple « 5doigts2pieds ») : elle exige une unité de volume de données.
+_EDITORIAL_DATA_COUNT = re.compile(
+    r"^\s*\d[\d\s.,]*\s+(?:lignes?|enregistrements?|comptes?|"
+    r"donnees?|dossiers?|go|gb|to|tb)\b",
+    re.I,
+)
+
 def organisation_from_title(title: str) -> str:
+    if _EDITORIAL_DATA_COUNT.match(title or ""):
+        return ""
     after_colon = _ORG_AFTER_COLON_CONFIRMS_CYBERATTACK.search(title or "")
     if after_colon:
         return clean_organisation(after_colon.group(1))
@@ -49,7 +60,10 @@ def repair_existing_identities(items: list[Item]) -> tuple[list[Item], int]:
     for item in items:
         organisation = item.Organisation_Raw
         if item.Source_ID == "CYBERATTAQUE_ORG":
-            organisation = organisation_from_title(item.Title) or organisation
+            organisation = organisation_from_title(item.Title)
+            if not organisation:
+                changed += 1
+                continue
         key = organisation_key(organisation)
         if organisation == item.Organisation_Raw and key == item.Organisation_Key:
             repaired.append(item)
@@ -65,10 +79,14 @@ class CyberattaqueOrgCollector(WordPressCollector):
     name = "cyberattaque_org"
     def collect(self, client, spec, window):
         result = super().collect(client, spec, window)
+        items_seen = len(result.entries)
         for entry in result.entries:
-            entry.organisation = organisation_from_title(entry.title) or "Inconnu"
-        result.items_seen = len(result.entries)
-        result.units_done = len(result.entries)
+            entry.organisation = organisation_from_title(entry.title)
+        # L'article reste compté pour mesurer la couverture de la source, mais
+        # sans victime nommée il ne peut pas devenir un incident.
+        result.entries = [entry for entry in result.entries if entry.organisation]
+        result.items_seen = items_seen
+        result.units_done = items_seen
         result.status_override = status.OK if result.entries else status.FAIL
         if not result.entries and result.reason_code == status.REASON_OK:
             result.reason_code = status.REASON_PARSE_ERROR

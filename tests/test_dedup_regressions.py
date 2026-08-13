@@ -53,6 +53,19 @@ def test_cyberattaque_extracts_victim_named_after_editorial_headline():
     assert organisation_from_title(title) == "Armurerie Lavaux"
 
 
+def test_cyberattaque_rejects_data_count_editorial_headline_without_victim():
+    title = "678 438 lignes de données fiscales de Français en fuite après le piratage des impôts"
+    assert organisation_from_title(title) == ""
+
+
+def test_existing_cyberattaque_editorial_headline_is_removed_from_items(make_item):
+    title = "678 438 lignes de données fiscales de Français en fuite après le piratage des impôts"
+    item = make_item(source="CYBERATTAQUE_ORG", org=title, url="https://example.org/impots", title=title)
+    repaired, changed = repair_existing_identities([item])
+    assert changed == 1
+    assert repaired == []
+
+
 def test_validated_source_variants_share_one_identity():
     assert organisation_key("Actini Group") == organisation_key("actini")
     assert organisation_key("Chambre de Commerce et de l’Industrie Nice Côte d’Azur") == organisation_key("Chambre de Commerce et d'Industrie Nice Côte d'Azur")
