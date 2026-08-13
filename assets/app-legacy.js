@@ -311,43 +311,13 @@
     return out;
   }
 
-  // ---------------------------------------------------------------- filtres
+  // --------------------------------------------------------- action rapide
 
-  function readFilters() {
-    return {
-      period: $("#f-period").value,
-      location: $("#f-location").value,
-      sector: $("#f-sector").value,
-      threat: $("#f-threat").value,
-      source: $("#f-source").value,
-      search: $("#f-search").value.trim().toLowerCase(),
-    };
-  }
-
-  function applyFilters(incidents, { except = "" } = {}) {
-    const filters = readFilters();
-    let cutoff = "";
-    if (filters.period !== "all") {
-      const date = new Date();
-      date.setMonth(date.getMonth() - Number(filters.period));
-      cutoff = date.toISOString().slice(0, 10);
-    }
-
+  function applyFilters(incidents) {
     return incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
-      if (cutoff && incident.date < cutoff) return false;
-      // `except` retire un critère du filtrage : sert à recalculer les valeurs
-      // encore proposables pour ce critère-là, sans qu'il se restreigne lui-même.
-      if (except !== "location" && filters.location && incident.location !== filters.location) return false;
-      if (except !== "sector" && filters.sector && incident.sector !== filters.sector) return false;
-      if (except !== "threat" && filters.threat && incident.threat !== filters.threat) return false;
-      if (except !== "source" && filters.source && !incident.sources.includes(filters.source)) return false;
-      if (filters.search) {
-        const blob = `${incident.org} ${incident.sector} ${incident.threat} ${incident.location}`.toLowerCase();
-        if (!blob.includes(filters.search)) return false;
-      }
       return true;
     });
   }
@@ -521,58 +491,13 @@
 
   function render() {
     renderRunPill();
-    refreshFilterOptions();
     renderGeneral();
     renderSources();
   }
 
   // ----------------------------------------------------------- interactions
 
-  function fillSelect(id, values) {
-    const select = $(id);
-    const current = select.value;
-    const options = values.map((value) => `<option value="${esc(value)}">${esc(value)}</option>`);
-    select.innerHTML = select.children[0].outerHTML + options.join("");
-    select.value = current;
-  }
-
-  /** Recalcule les options de chaque filtre sur ce qui reste sélectionnable.
-   *
-   * Un filtre ne se restreint pas lui-même : ses options sont calculées sur les
-   * incidents filtrés par tous les *autres* critères. On ne peut donc plus
-   * choisir une valeur qui viderait la vue. */
-  function refreshFilterOptions() {
-    const fields = [
-      ["#f-location", "location", (i) => [i.location]],
-      ["#f-sector", "sector", (i) => [i.sector]],
-      ["#f-threat", "threat", (i) => [i.threat]],
-      ["#f-source", "source", (i) => i.sources],
-    ];
-    for (const [id, key, values] of fields) {
-      const scope = applyFilters(state.incidents, { except: key });
-      const options = [...new Set(scope.flatMap(values))].filter(Boolean).sort();
-      fillSelect(id, options);
-    }
-  }
-
   function setupFilters() {
-    refreshFilterOptions();
-
-    ["#f-period", "#f-location", "#f-sector", "#f-threat", "#f-source"].forEach((id) => {
-      $(id).addEventListener("change", render);
-    });
-    let timer;
-    $("#f-search").addEventListener("input", () => {
-      clearTimeout(timer);
-      timer = setTimeout(render, 180);
-    });
-    $("#f-reset").addEventListener("click", () => {
-      $("#f-period").value = "all";
-      ["#f-location", "#f-sector", "#f-threat", "#f-source"].forEach((id) => { $(id).value = ""; });
-      $("#f-search").value = "";
-      $("#f-ocean-indien")?.setAttribute("aria-pressed", "false");
-      render();
-    });
     $("#f-ocean-indien")?.addEventListener("click", (event) => {
       const button = event.currentTarget;
       button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));

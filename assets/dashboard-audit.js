@@ -7,8 +7,6 @@
     status: null,
     page: 1,
     pageSize: 50,
-    sourceSearch: "",
-    sourceStatus: "",
   };
   let tableObserver = null;
   let timer = null;
@@ -62,10 +60,8 @@
     style.textContent = `
       #bonjour-v0{display:none!important}
       .incidents-card .table-scroll{max-height:none}
-      .audit-toolbar,.audit-pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-      .audit-toolbar{margin:10px 0 12px}
-      .audit-toolbar input,.audit-toolbar select,.audit-pager button,.audit-pager select{font:inherit;font-size:13px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-primary)}
-      .audit-toolbar input{flex:1;min-width:210px}.audit-count,.audit-pager{font-size:12.5px;color:var(--text-secondary)}
+      .audit-pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary)}
+      .audit-pager button,.audit-pager select{font:inherit;font-size:13px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-primary)}
       .audit-pager{justify-content:space-between;margin-top:12px}.audit-pager-actions{display:flex;gap:8px;align-items:center}.audit-pager button:disabled{opacity:.45}
       .source-name{font-weight:650}.source-meta,.source-control{font-size:11.5px;color:var(--text-secondary)}
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
@@ -73,7 +69,6 @@
       #sources-table{table-layout:auto!important}#sources-table td,#sources-table th{width:auto!important;vertical-align:top}.source-measures{white-space:normal!important}
       @media(max-width:700px){
         .topbar-inner{align-items:flex-start}.brand-sub{max-width:190px}.run-pill{white-space:normal;text-align:left}
-        .filters{display:grid;grid-template-columns:1fr 1fr}.filter,.filter-grow{min-width:0}.filter-grow{grid-column:1/-1}.btn-reset{grid-column:1/-1}
         .incidents-card .table-scroll,.reliability .table-scroll{overflow:visible;max-height:none}
         #incidents-table thead,#sources-table thead{display:none}
         #incidents-table,#incidents-table tbody,#incidents-table tr,#incidents-table td,#sources-table,#sources-table tbody,#sources-table tr,#sources-table td{display:block;width:100%}
@@ -81,7 +76,7 @@
         #incidents-table td,#sources-table td{border:0!important;padding:3px 0!important;white-space:normal!important;max-width:none!important;overflow:visible!important;width:auto!important}
         #incidents-table td[data-label]::before,#sources-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
         #incidents-table .org-cell{font-size:16px;font-weight:650;padding-bottom:7px!important}#incidents-table .org-cell::before{display:none}
-        #incidents-table .sources-cell::before{display:block;margin-bottom:4px}.audit-toolbar{align-items:stretch}.audit-toolbar input,.audit-toolbar select{width:100%;min-width:0}
+        #incidents-table .sources-cell::before{display:block;margin-bottom:4px}
         .audit-pager{align-items:flex-start}.audit-pager-actions{width:100%;justify-content:space-between}
       }
     `;
@@ -91,8 +86,8 @@
   function restructure() {
     installCss();
     const reliability = $("#fiabilite");
-    const filters = $(".filters");
-    if (reliability && filters) filters.parentNode.insertBefore(reliability, filters);
+    const quickActions = $(".quick-actions");
+    if (reliability && quickActions) quickActions.parentNode.insertBefore(reliability, quickActions);
     if ($(".reliability-title")) $(".reliability-title").textContent = "Sources & fiabilité";
     const incidentCard = $("#incidents-table")?.closest("section.card");
     if (incidentCard) incidentCard.classList.add("incidents-card");
@@ -105,54 +100,13 @@
       if (note) note.textContent = "reliés à ≥ 2 sources — pas une confirmation indépendante";
     }
 
-    const body = reliability?.querySelector(".reliability-body");
-    if (body && !$("#audit-source-toolbar")) {
-      const toolbar = document.createElement("div");
-      toolbar.className = "audit-toolbar";
-      toolbar.id = "audit-source-toolbar";
-      toolbar.innerHTML = `
-        <input id="audit-source-search" type="search" placeholder="Rechercher une source…" autocomplete="off">
-        <select id="audit-source-status" aria-label="Filtrer les sources">
-          <option value="">Tous les statuts</option><option>OK</option><option>PARTIAL</option><option>FAIL</option><option>SKIPPED</option>
-        </select><span id="audit-source-count" class="audit-count"></span>`;
-      const sourcesTitle = Array.from(body.querySelectorAll(".reliability-h3")).find((node) => node.textContent.trim() === "Sources");
-      if (sourcesTitle) sourcesTitle.insertAdjacentElement("afterend", toolbar);
-      else body.prepend(toolbar);
-    }
-  }
-
-  function readFilters() {
-    return {
-      period: $("#f-period")?.value || "all",
-      location: $("#f-location")?.value || "",
-      sector: $("#f-sector")?.value || "",
-      threat: $("#f-threat")?.value || "",
-      source: $("#f-source")?.value || "",
-      search: ($("#f-search")?.value || "").trim().toLowerCase(),
-    };
   }
 
   function filteredIncidents() {
-    const f = readFilters();
-    let cutoff = "";
-    if (f.period !== "all") {
-      const date = new Date();
-      date.setMonth(date.getMonth() - Number(f.period));
-      cutoff = date.toISOString().slice(0, 10);
-    }
     return state.incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
-      if (cutoff && incident.date < cutoff) return false;
-      if (f.location && incident.location !== f.location) return false;
-      if (f.sector && incident.sector !== f.sector) return false;
-      if (f.threat && incident.threat !== f.threat) return false;
-      if (f.source && !(incident.sources || []).includes(f.source)) return false;
-      if (f.search) {
-        const text = `${incident.org} ${incident.location} ${incident.sector} ${incident.threat} ${(incident.sources || []).join(" ")}`.toLowerCase();
-        if (!text.includes(f.search)) return false;
-      }
       return true;
     });
   }
@@ -243,12 +197,7 @@
   }
 
   function renderSources() {
-    const all = ((state.status && state.status.sources) || []).slice();
-    let rows = all;
-    const q = state.sourceSearch.toLowerCase();
-    if (q) rows = rows.filter((s) => `${s.id} ${s.layer} ${s.zone} ${s.access_method}`.toLowerCase().includes(q));
-    if (state.sourceStatus) rows = rows.filter((s) => s.status === state.sourceStatus);
-    if ($("#audit-source-count")) $("#audit-source-count").textContent = `${rows.length} / ${all.length} source${all.length > 1 ? "s" : ""}`;
+    const rows = ((state.status && state.status.sources) || []).slice();
     const head = $("#sources-table thead tr");
     if (head) head.innerHTML = "<th>Source</th><th>Statut</th><th>Mesures</th><th>Dernier item</th><th>Accès</th><th>Détail</th>";
     const tbody = $("#sources-table tbody");
@@ -296,12 +245,6 @@
   }
 
   function bindAuditControls() {
-    let searchTimer;
-    $("#audit-source-search")?.addEventListener("input", (event) => {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => { state.sourceSearch = event.target.value.trim(); renderSources(); }, 120);
-    });
-    $("#audit-source-status")?.addEventListener("change", (event) => { state.sourceStatus = event.target.value; renderSources(); });
     document.addEventListener("cyberwatch:filters-changed", () => requestAnimationFrame(patchAll));
   }
 

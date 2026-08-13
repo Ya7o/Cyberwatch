@@ -166,7 +166,12 @@ a { color: var(--series-1); }
 .blindspots-list li { margin-bottom: 4px; }
 .blindspots-list strong { color: var(--text-primary); }
 
-/* ---------------------------------------------------------------- filtres */
+/* --------------------------------------------------------- action rapide */
+
+.quick-actions {
+  display: flex;
+  padding: 16px 0 4px;
+}
 
 .filters {
   display: flex;
