@@ -84,9 +84,6 @@
 
   function restructure() {
     installCss();
-    const reliability = $("#fiabilite");
-    const quickActions = $(".quick-actions");
-    if (reliability && quickActions) quickActions.parentNode.insertBefore(reliability, quickActions);
     if ($(".reliability-title")) $(".reliability-title").textContent = "Sources & fiabilité";
     const incidentCard = $("#incidents-table")?.closest("section.card");
     if (incidentCard) incidentCard.classList.add("incidents-card");

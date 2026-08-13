@@ -389,7 +389,7 @@
     if (oceanButton?.getAttribute("aria-pressed") === "true") {
       oceanButton.textContent = `Océan Indien · ${rows.length}`;
     } else if (oceanButton) {
-      oceanButton.textContent = "Océan Indien";
+      oceanButton.textContent = "Voir l’Océan Indien";
     }
 
     $("#kpi-incidents").textContent = rows.length;
