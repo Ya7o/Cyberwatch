@@ -180,6 +180,8 @@ a { color: var(--series-1); }
 }
 .btn-quick:hover, .btn-quick[aria-pressed="true"] { color: var(--text-primary); border-color: var(--series-1); }
 .btn-quick[aria-pressed="true"] { background: color-mix(in srgb, var(--series-1) 12%, var(--surface)); }
+.source-filter { display: inline-flex; align-items: center; gap: 7px; color: var(--text-secondary); font-size: 13px; }
+.source-filter select { font: inherit; color: var(--text-primary); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 9px; }
 
 /* ------------------------------------------------------------------- KPI */
 

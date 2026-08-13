@@ -101,8 +101,10 @@
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
       const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
       const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
+      const source = $("#f-source")?.value || "";
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
+      if (source && !(incident.sources || []).includes(source)) return false;
       if ((automotive || largeRetail) && !(
         (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
         || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))

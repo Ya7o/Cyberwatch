@@ -323,13 +323,26 @@
     return String(value || "").trim().toLocaleLowerCase("fr-FR");
   }
 
+  function sourceLabel(id) {
+    const labels = {
+      BONJOURLAFUITE: "BonjourLaFuite",
+      FRENCHBREACHES: "FrenchBreaches",
+      CYBERATTAQUE_ORG: "Cyberattaque.org",
+      RANSOMWARE_LIVE: "Ransomware.live",
+      KWEZI_NUMERIQUE: "Kwezi",
+    };
+    return labels[id] || id;
+  }
+
   function applyFilters(incidents) {
     return incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
       const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
       const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
+      const source = $("#f-source")?.value || "";
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
+      if (source && !(incident.sources || []).includes(source)) return false;
       if ((automotive || largeRetail) && !(
         (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
         || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
@@ -521,6 +534,19 @@
       document.dispatchEvent(new Event("cyberwatch:filters-changed"));
       render();
     }));
+    $("#f-source")?.addEventListener("change", () => {
+      document.dispatchEvent(new Event("cyberwatch:filters-changed"));
+      render();
+    });
+  }
+
+  function populateSourceFilter() {
+    const select = $("#f-source");
+    if (!select) return;
+    const sources = new Set();
+    state.incidents.forEach((incident) => (incident.sources || []).forEach((source) => sources.add(source)));
+    select.innerHTML = `<option value="">Toutes les sources</option>${Array.from(sources).sort()
+      .map((source) => `<option value="${esc(source)}">${esc(sourceLabel(source))}</option>`).join("")}`;
   }
 
   function setupSorting() {
@@ -581,6 +607,7 @@
     state.incidents = Array.isArray(incidents) ? incidents : [];
     state.status = statusData;
 
+    populateSourceFilter();
     setupTheme();
     setupFilters();
     setupSorting();
