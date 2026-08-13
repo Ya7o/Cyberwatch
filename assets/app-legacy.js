@@ -420,6 +420,12 @@
 
   function renderGeneral() {
     const rows = applyFilters(state.incidents);
+    const oceanButton = $("#f-ocean-indien");
+    if (oceanButton?.getAttribute("aria-pressed") === "true") {
+      oceanButton.textContent = `Océan Indien · ${rows.length}`;
+    } else if (oceanButton) {
+      oceanButton.textContent = "Océan Indien";
+    }
 
     $("#kpi-incidents").textContent = rows.length;
     $("#kpi-incidents-note").textContent =
@@ -570,6 +576,7 @@
     $("#f-ocean-indien")?.addEventListener("click", (event) => {
       const button = event.currentTarget;
       button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
+      document.dispatchEvent(new Event("cyberwatch:filters-changed"));
       render();
     });
   }

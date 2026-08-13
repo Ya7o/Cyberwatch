@@ -302,7 +302,7 @@
       searchTimer = setTimeout(() => { state.sourceSearch = event.target.value.trim(); renderSources(); }, 120);
     });
     $("#audit-source-status")?.addEventListener("change", (event) => { state.sourceStatus = event.target.value; renderSources(); });
-    $("#f-ocean-indien")?.addEventListener("click", () => requestAnimationFrame(patchAll));
+    document.addEventListener("cyberwatch:filters-changed", () => requestAnimationFrame(patchAll));
   }
 
   async function load(path, fallback) {
