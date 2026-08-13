@@ -104,13 +104,17 @@ CORE_SOURCES = [
         start_url="https://www.cyberattaque.org/type/attaque/",
         collector="autodetect",
         location_rule=config.LOC_FRANCE,
-        params={"categories": "attaque"},
+        params={"categories": "attaque", "scope_is_cyber": True},
         protocol=(
             "Parcourir séquentiellement la pagination sans sauter de page, "
             "jusqu'à une date antérieure à TARGET_START."
         ),
         success_test="Toutes les pages nécessaires parcourues, aucune page sautée.",
-        notes="Organisation déduite du texte précédant « : » dans le titre.",
+        notes=(
+            "La catégorie « attaque » du site ne publie que des incidents : son "
+            "périmètre fait foi, le garde-fou de vocabulaire ne s'y applique pas. "
+            "Organisation déduite du texte précédant « : » dans le titre."
+        ),
     ),
     SourceSpec(
         source_id="RANSOMWARE_LIVE",

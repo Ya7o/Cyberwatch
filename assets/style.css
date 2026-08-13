@@ -112,78 +112,59 @@ a { color: var(--series-1); }
 }
 .theme-toggle:hover { color: var(--text-primary); }
 
-/* ------------------------------------------------------------- bandeau run */
+/* ------------------------------------------- pastille d'état de la collecte */
 
-.runbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gap);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  margin-top: var(--gap);
-}
-.runbar-main { min-width: 260px; flex: 1 1 320px; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
 
 .run-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 650;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  padding: 5px 12px 5px 10px;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 560;
+  text-decoration: none;
+  color: var(--text-secondary);
+  padding: 5px 11px 5px 9px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--plane);
+  white-space: nowrap;
 }
-.run-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--status-skipped); }
+.run-pill:hover { color: var(--text-primary); }
+.run-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--status-skipped); flex: none; }
 .run-pill[data-status="HEALTHY"] .run-dot { background: var(--status-ok); }
 .run-pill[data-status="DEGRADED"] .run-dot { background: var(--status-partial); }
 .run-pill[data-status="BROKEN"] .run-dot { background: var(--status-fail); }
 
-.run-explain { margin: 8px 0 0; font-size: 13.5px; color: var(--text-secondary); }
+/* ------------------------------------------------ fiabilité de la collecte */
 
-.runbar-stats { display: flex; gap: 26px; margin: 0; flex-wrap: wrap; }
-.runbar-stats dt { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
-.runbar-stats dd { margin: 2px 0 0; font-size: 17px; font-weight: 620; }
-
-/* --------------------------------------------------------- angles morts */
-
-.blindspots {
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--status-partial);
-  background: var(--surface);
-  border-radius: var(--radius);
+.reliability { padding: 0; }
+.reliability > summary {
   padding: 14px 18px;
-  margin-top: var(--gap);
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  list-style: none;
 }
-.blindspots-title { font-size: 14px; display: flex; align-items: center; gap: 8px; }
-.blindspots-intro { margin: 6px 0 10px; font-size: 13.5px; color: var(--text-secondary); }
+.reliability > summary::-webkit-details-marker { display: none; }
+.reliability > summary::before {
+  content: "▸";
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-right: 2px;
+}
+.reliability[open] > summary::before { content: "▾"; }
+.reliability > summary:hover { background: var(--plane); }
+.reliability-title { font-size: 14px; font-weight: 630; }
+.reliability-summary { font-size: 13px; color: var(--text-secondary); }
+.reliability-body { padding: 0 18px 18px; }
+.reliability-h3 { font-size: 13px; margin: 16px 0 8px; color: var(--text-secondary); }
+
 .blindspots-list { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--text-secondary); }
 .blindspots-list li { margin-bottom: 4px; }
 .blindspots-list strong { color: var(--text-primary); }
-
-/* ---------------------------------------------------------------- onglets */
-
-.tabs { display: flex; gap: 4px; margin-top: 22px; border-bottom: 1px solid var(--border); }
-.tab {
-  appearance: none;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: var(--text-secondary);
-  font: inherit;
-  font-weight: 560;
-  padding: 10px 16px;
-  cursor: pointer;
-  margin-bottom: -1px;
-}
-.tab:hover { color: var(--text-primary); }
-.tab[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--series-1); }
 
 /* ---------------------------------------------------------------- filtres */
 
@@ -219,7 +200,9 @@ a { color: var(--series-1); }
 
 /* ------------------------------------------------------------------- KPI */
 
-.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); margin-top: var(--gap); }
+.kpis { display: grid; margin-top: var(--gap);
+  grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
+.kpis-legacy { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); margin-top: var(--gap); }
 .kpis-3 { grid-template-columns: repeat(3, 1fr); }
 .kpi {
   background: var(--surface);
@@ -227,8 +210,9 @@ a { color: var(--series-1); }
   border-radius: var(--radius);
   padding: 16px 18px;
 }
-.kpi h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600; }
+.kpi h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600; }
 .kpi-value { margin: 6px 0 2px; font-size: 32px; font-weight: 660; letter-spacing: -0.02em; }
+.kpi-value-sm { font-size: 20px; }
 .kpi-note { margin: 0; font-size: 12.5px; color: var(--text-secondary); }
 .kpi-accent-1 { border-top: 3px solid var(--series-1); }
 .kpi-accent-2 { border-top: 3px solid var(--series-2); }

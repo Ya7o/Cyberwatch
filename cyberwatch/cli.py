@@ -200,6 +200,7 @@ def cmd_diagnose(args) -> int:
     )
     known_orgs = watchlists.known_organisations()
     entity_index = watchlists.entity_index()
+    territories = watchlists.entity_territories()
 
     header = (
         f"{'Source':28} {'Statut':8} {'Cov':>4} {'Items':>6} {'Req':>5} "
@@ -213,7 +214,7 @@ def cmd_diagnose(args) -> int:
         if args.only and spec.source_id != args.only:
             continue
         outcome, items, _rows = run_source(
-            client, spec, context, known_orgs, entity_index
+            client, spec, context, known_orgs, entity_index, territories
         )
         total_calls += outcome.calls
         detail = outcome.access_method or outcome.reason_code

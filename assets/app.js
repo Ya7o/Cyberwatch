@@ -6,18 +6,17 @@
 (() => {
   "use strict";
 
-  const FOCUS = ["La Réunion", "Mayotte"];
   const MONTHS = ["janv.", "févr.", "mars", "avr.", "mai", "juin",
                   "juil.", "août", "sept.", "oct.", "nov.", "déc."];
 
   const state = {
     incidents: [],
     status: null,
-    tab: "general",
     sort: { key: "date", dir: -1 },
-    entityScope: "all",
-    entityHitOnly: false,
   };
+
+  //: Libellés courts des niveaux de run, pour la pastille.
+  const LABELS = { HEALTHY: "complète", DEGRADED: "partielle", BROKEN: "incomplète" };
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -325,7 +324,7 @@
     };
   }
 
-  function applyFilters(incidents, { focusOnly = false } = {}) {
+  function applyFilters(incidents, { except = "" } = {}) {
     const filters = readFilters();
     let cutoff = "";
     if (filters.period !== "all") {
@@ -335,12 +334,13 @@
     }
 
     return incidents.filter((incident) => {
-      if (focusOnly && !FOCUS.includes(incident.location)) return false;
       if (cutoff && incident.date < cutoff) return false;
-      if (filters.location && incident.location !== filters.location) return false;
-      if (filters.sector && incident.sector !== filters.sector) return false;
-      if (filters.threat && incident.threat !== filters.threat) return false;
-      if (filters.source && !incident.sources.includes(filters.source)) return false;
+      // `except` retire un critère du filtrage : sert à recalculer les valeurs
+      // encore proposables pour ce critère-là, sans qu'il se restreigne lui-même.
+      if (except !== "location" && filters.location && incident.location !== filters.location) return false;
+      if (except !== "sector" && filters.sector && incident.sector !== filters.sector) return false;
+      if (except !== "threat" && filters.threat && incident.threat !== filters.threat) return false;
+      if (except !== "source" && filters.source && !incident.sources.includes(filters.source)) return false;
       if (filters.search) {
         const blob = `${incident.org} ${incident.sector} ${incident.threat} ${incident.location}`.toLowerCase();
         if (!blob.includes(filters.search)) return false;
@@ -367,30 +367,42 @@
 
   // ----------------------------------------------------------------- rendu
 
-  function renderRunbar() {
+  /** État de la collecte, réduit à une pastille.
+   *
+   * Le détail — angles morts et santé de chaque source — vit dans la section
+   * repliée en bas de page : l'information reste accessible sans occuper
+   * l'écran d'accueil, dont le sujet est les incidents. */
+  function renderRunPill() {
     const data = state.status;
+    const pill = $("#run-pill");
+    const text = $("#run-pill-text");
+
     if (!data || !data.run.id) {
-      $("#run-status-label").textContent = "Aucune collecte enregistrée";
-      $("#run-explain").textContent =
-        "La base est vide : la première collecte automatique n'a pas encore eu lieu.";
+      pill.dataset.status = "";
+      text.textContent = "Aucune collecte";
+      $("#reliability-summary").textContent =
+        "La première collecte automatique n'a pas encore eu lieu.";
       return;
     }
 
     const run = data.run;
-    const pill = $("#run-pill");
+    const c = data.counts;
     pill.dataset.status = run.overall;
-    $("#run-status-label").textContent = run.overall;
-    $("#run-explain").textContent =
-      (data.labels.run_status && data.labels.run_status[run.overall]) || "";
-    $("#run-health").textContent = `${run.health}/100`;
-    $("#run-date").textContent = formatDate(run.as_of);
-    $("#run-sources").textContent =
-      `${data.counts.ok} OK · ${data.counts.partial} partielles · ${data.counts.fail} en échec`;
+    text.textContent = `Collecte ${LABELS[run.overall] || run.overall} · ${run.health}/100`;
+    pill.title = (data.labels.run_status && data.labels.run_status[run.overall]) || "";
 
+    $("#kpi-date").textContent = formatDate(run.as_of);
+    $("#kpi-new").textContent =
+      `+${run.new_incidents} incident${run.new_incidents > 1 ? "s" : ""} au dernier run`;
     $("#foot-method").textContent = data.method_id || "—";
     $("#foot-hash").textContent = (run.incidents_hash || "—").slice(0, 16);
 
     const spots = data.blind_spots || [];
+    $("#reliability-summary").textContent =
+      `${c.ok} source${c.ok > 1 ? "s" : ""} complète${c.ok > 1 ? "s" : ""}, `
+      + `${c.partial} partielle${c.partial > 1 ? "s" : ""}, ${c.fail} en échec`
+      + (spots.length ? ` · ${spots.length} angle${spots.length > 1 ? "s" : ""} mort${spots.length > 1 ? "s" : ""}` : "");
+
     const box = $("#blindspots");
     if (!spots.length) {
       box.hidden = true;
@@ -411,7 +423,6 @@
       rows.length === state.incidents.length ? "sur l'ensemble de la base" : "sur la sélection";
     $("#kpi-orgs").textContent = new Set(rows.map((r) => r.org).filter(Boolean)).size;
     $("#kpi-multi").textContent = rows.filter((r) => r.sources.length >= 2).length;
-    $("#kpi-new").textContent = state.status ? state.status.run.new_incidents : "—";
 
     const months = monthsRange(rows);
     const perMonth = new Map();
@@ -499,78 +510,11 @@
     }).join("");
   }
 
-  function renderFocus() {
-    const rows = applyFilters(state.incidents, { focusOnly: true });
-    const re = rows.filter((r) => r.location === "La Réunion");
-    const yt = rows.filter((r) => r.location === "Mayotte");
-
-    $("#kpi-re").textContent = re.length;
-    $("#kpi-yt").textContent = yt.length;
-    $("#kpi-re-note").textContent = `${new Set(re.map((r) => r.org)).size} organisations`;
-    $("#kpi-yt-note").textContent = `${new Set(yt.map((r) => r.org)).size} organisations`;
-
-    const entities = (state.status && state.status.entities) || [];
-    const focusEntities = entities.filter((e) => FOCUS.includes(e.territory));
-    const touched = focusEntities.filter((e) => e.last_incident).length;
-    $("#kpi-entities").textContent = focusEntities.length;
-    $("#kpi-entities-note").textContent =
-      `${touched} avec au moins un incident connu`;
-
-    const months = monthsRange(rows);
-    const mapRe = new Map();
-    const mapYt = new Map();
-    re.forEach((r) => mapRe.set(monthKey(r.date), (mapRe.get(monthKey(r.date)) || 0) + 1));
-    yt.forEach((r) => mapYt.set(monthKey(r.date), (mapYt.get(monthKey(r.date)) || 0) + 1));
-    groupedBars($("#chart-focus-month"), months, mapRe, mapYt, ["La Réunion", "Mayotte"]);
-
-    barChartH($("#chart-focus-sector"), countBy(rows, "sector", { dropUnknown: true }));
-    barChartH($("#chart-focus-threat"), countBy(rows, "threat"));
-    $("#focus-sector-note").textContent = knownNote(rows, "sector", "secteur");
-
-    renderEntities();
-    renderIncidentsTable($("#focus-incidents-table tbody"), rows, $("#focus-table-count"));
-  }
-
-  function renderEntities() {
-    const all = (state.status && state.status.entities) || [];
-    let rows = all.filter((e) => FOCUS.includes(e.territory));
-    if (state.entityScope !== "all") {
-      rows = rows.filter((e) => e.territory === state.entityScope);
-    }
-    if (state.entityHitOnly) {
-      rows = rows.filter((e) => e.last_incident);
-    }
-    rows = rows.slice().sort((a, b) => {
-      if (a.last_incident && !b.last_incident) return -1;
-      if (!a.last_incident && b.last_incident) return 1;
-      if (a.last_incident !== b.last_incident) return a.last_incident < b.last_incident ? 1 : -1;
-      return a.entity.localeCompare(b.entity, "fr");
-    });
-
-    $("#entities-table tbody").innerHTML = rows.map((entity) => {
-      const watch = entity.query_status || "SKIPPED";
-      const incident = entity.last_incident
-        ? `<strong>${esc(entity.last_incident)}</strong>`
-        : `<span class="zero-untrusted">aucun</span>`;
-      return `<tr>
-        <td class="wrap-cell">${esc(entity.entity)}</td>
-        <td>${esc(entity.territory)}</td>
-        <td>${esc(entity.kind)}</td>
-        <td><span class="chip" data-status="${esc(watch)}">${esc(watch)}</span></td>
-        <td class="num">${esc(entity.last_queried ? formatDate(entity.last_queried) : "jamais")}</td>
-        <td class="num">${incident}</td>
-      </tr>`;
-    }).join("");
-  }
-
   function render() {
-    renderRunbar();
-    if (state.tab === "general") {
-      renderGeneral();
-      renderSources();
-    } else {
-      renderFocus();
-    }
+    renderRunPill();
+    refreshFilterOptions();
+    renderGeneral();
+    renderSources();
   }
 
   // ----------------------------------------------------------- interactions
@@ -583,12 +527,27 @@
     select.value = current;
   }
 
+  /** Recalcule les options de chaque filtre sur ce qui reste sélectionnable.
+   *
+   * Un filtre ne se restreint pas lui-même : ses options sont calculées sur les
+   * incidents filtrés par tous les *autres* critères. On ne peut donc plus
+   * choisir une valeur qui viderait la vue. */
+  function refreshFilterOptions() {
+    const fields = [
+      ["#f-location", "location", (i) => [i.location]],
+      ["#f-sector", "sector", (i) => [i.sector]],
+      ["#f-threat", "threat", (i) => [i.threat]],
+      ["#f-source", "source", (i) => i.sources],
+    ];
+    for (const [id, key, values] of fields) {
+      const scope = applyFilters(state.incidents, { except: key });
+      const options = [...new Set(scope.flatMap(values))].filter(Boolean).sort();
+      fillSelect(id, options);
+    }
+  }
+
   function setupFilters() {
-    const incidents = state.incidents;
-    fillSelect("#f-location", [...new Set(incidents.map((i) => i.location))].sort());
-    fillSelect("#f-sector", [...new Set(incidents.map((i) => i.sector))].sort());
-    fillSelect("#f-threat", [...new Set(incidents.map((i) => i.threat))].sort());
-    fillSelect("#f-source", [...new Set(incidents.flatMap((i) => i.sources))].sort());
+    refreshFilterOptions();
 
     ["#f-period", "#f-location", "#f-sector", "#f-threat", "#f-source"].forEach((id) => {
       $(id).addEventListener("change", render);
@@ -606,22 +565,6 @@
     });
   }
 
-  function setupTabs() {
-    $$(".tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        state.tab = tab.dataset.tab;
-        $$(".tab").forEach((other) => {
-          other.setAttribute("aria-selected", String(other === tab));
-        });
-        $("#panel-general").hidden = state.tab !== "general";
-        $("#panel-focus").hidden = state.tab !== "focus";
-        // Le territoire est piloté par l'onglet dans la vue focus.
-        $("#filter-location").style.display = state.tab === "focus" ? "none" : "";
-        render();
-      });
-    });
-  }
-
   function setupSorting() {
     $$("#incidents-table th[data-sort]").forEach((th) => {
       th.addEventListener("click", () => {
@@ -636,19 +579,6 @@
         });
         render();
       });
-    });
-  }
-
-  function setupEntityFilters() {
-    $$('input[name="entity-scope"]').forEach((input) => {
-      input.addEventListener("change", () => {
-        state.entityScope = input.value;
-        renderEntities();
-      });
-    });
-    $("#entity-hit-only").addEventListener("change", (event) => {
-      state.entityHitOnly = event.target.checked;
-      renderEntities();
     });
   }
 
@@ -694,10 +624,8 @@
     state.status = statusData;
 
     setupTheme();
-    setupTabs();
     setupFilters();
     setupSorting();
-    setupEntityFilters();
     render();
   }
 

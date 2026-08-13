@@ -260,3 +260,99 @@ class TestCreateRepartDeZero:
         )
         report = runner.execute(context, offline=True)
         assert len(report.items) == 1
+
+
+class TestFauxPositifFourriere:
+    """Régression sur le cas réel qui a pollué la base.
+
+    « Six interpellations après une intrusion dans une fourrière à Saint-Denis »
+    était devenu un incident cyber de la Mairie de Saint-Denis — et c'était le
+    seul incident réunionnais de la base.
+    """
+
+    TITRE = "Six interpellations après une intrusion dans une fourrière à Saint-Denis"
+
+    def test_le_nom_nu_de_commune_n_identifie_plus_la_mairie(self):
+        from cyberwatch import watchlists
+        from cyberwatch.collectors.mediawatch import mentions
+        from cyberwatch.normalize import searchable
+
+        mairie = next(
+            e for e in watchlists.REUNION_ENTITIES if e.name == "Mairie de Saint-Denis"
+        )
+        labels = watchlists.identifying_labels(mairie)
+        assert "Saint-Denis" not in labels
+        assert mentions(searchable(self.TITRE), labels) == ""
+
+    def test_le_fait_divers_n_est_pas_cyber(self):
+        from cyberwatch.normalize import looks_cyber
+
+        assert not looks_cyber(self.TITRE)
+
+    def test_la_mairie_reste_reconnue_quand_elle_est_nommee(self):
+        from cyberwatch import watchlists
+        from cyberwatch.collectors.mediawatch import mentions
+        from cyberwatch.normalize import searchable
+
+        mairie = next(
+            e for e in watchlists.REUNION_ENTITIES if e.name == "Mairie de Saint-Denis"
+        )
+        labels = watchlists.identifying_labels(mairie)
+        for titre in (
+            "La Mairie de Saint-Denis victime d'une cyberattaque",
+            "La commune de Saint-Denis touchée par un ransomware",
+        ):
+            assert mentions(searchable(titre), labels) != ""
+
+
+class TestTerritoireDeLEntite:
+    """§10 rang 2 — une entité surveillée impose son territoire."""
+
+    def test_entite_ultramarine_dans_une_source_nationale(self):
+        """Air Austral restait « France métropolitaine » via un agrégateur national."""
+        from cyberwatch import sources, watchlists
+
+        spec = sources.by_id("CYBERATTAQUE_ORG")
+        entry = RawEntry(
+            title="Air Austral : les données de 1 000 employés diffusées publiquement",
+            url="https://www.cyberattaque.org/a",
+            published="2026-05-31",
+        )
+        item = entry_to_item(
+            entry, spec, AS_OF,
+            watchlists.known_organisations(),
+            watchlists.entity_index(),
+            watchlists.entity_territories(),
+        )
+        assert item.Organisation_Raw == "Air Austral"
+        assert item.Location == config.LOC_REUNION
+        assert item.Sector == config.SECTOR_TRANSPORT
+
+    def test_organisation_inconnue_garde_la_regle_de_la_source(self):
+        from cyberwatch import sources, watchlists
+
+        spec = sources.by_id("CYBERATTAQUE_ORG")
+        entry = RawEntry(
+            title="Société Dupont : fuite de données",
+            url="https://www.cyberattaque.org/b",
+            published="2026-05-31",
+        )
+        item = entry_to_item(
+            entry, spec, AS_OF, {}, {}, watchlists.entity_territories()
+        )
+        assert item.Location == config.LOC_FRANCE
+
+    def test_localisation_de_la_source_prime_sur_l_entite(self):
+        """Une localisation explicitement fournie reste au rang 1."""
+        from cyberwatch import watchlists
+
+        spec = SourceSpec("X", config.LAYER_CORE, "Multi", location_rule="")
+        entry = RawEntry(
+            title="Air Austral piratée", url="https://x/c", published="2026-05-31",
+            location=config.LOC_MAURICE,
+        )
+        item = entry_to_item(
+            entry, spec, AS_OF, watchlists.known_organisations(), {},
+            watchlists.entity_territories(),
+        )
+        assert item.Location == config.LOC_MAURICE

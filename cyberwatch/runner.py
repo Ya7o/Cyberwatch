@@ -23,6 +23,7 @@ from .http import Budget, HttpClient
 from .model import Incident, Item
 from .normalize import (
     classify_location,
+    searchable,
     classify_sector,
     classify_threat,
     clean_organisation,
@@ -120,6 +121,7 @@ def entry_to_item(
     as_of: str,
     known_orgs: dict[str, str],
     entity_index: dict,
+    territories: dict[str, str] | None = None,
 ) -> Item | None:
     """Convertit une entrée brute en item normalisé, ou `None` si hors périmètre.
 
@@ -127,16 +129,21 @@ def entry_to_item(
     lorsqu'il provient d'une rubrique cyber : c'est le garde-fou qui empêche la
     rubrique « Numérique » d'un média local de tout déverser dans `ITEMS`.
     """
+    territories = territories or {}
+
     if not entry.published:
         return None
 
     text = f"{entry.title} {entry.summary}"
 
-    # Une source qui déclare une menace par défaut ne publie, par construction,
-    # que des incidents de ce type : son périmètre fait foi. Exiger en plus du
-    # vocabulaire cyber dans le texte y produirait un faux zéro, les entrées de
-    # ces listes se réduisant souvent au nom de l'organisation touchée.
-    if not spec.default_threat and not looks_cyber(text):
+    # Le garde-fou de vocabulaire protège des rubriques généralistes, où tout
+    # n'est pas cyber. Il ne s'applique pas aux sources dont le périmètre entier
+    # l'est déjà — liste de fuites, de victimes de rançongiciel, ou catégorie
+    # « attaque » d'un site spécialisé : leur périmètre fait foi, et l'exiger en
+    # plus écarterait des titres pourtant sans ambiguïté (« les données de 1 000
+    # employés diffusées publiquement »).
+    scope_is_cyber = spec.default_threat or spec.params.get("scope_is_cyber")
+    if not scope_is_cyber and not looks_cyber(text):
         return None
 
     # Organisation : fournie par la source, sinon lue dans le titre, sinon
@@ -174,8 +181,15 @@ def entry_to_item(
         else (organisation, text)
     )
     sector = classify_sector(*sector_texts, given=entry.sector or sector_hint)
+
+    # Une entité surveillée impose son territoire (§10, rang 2) : sans cela, un
+    # incident touchant une organisation ultramarine mais relayé par une source
+    # nationale héritait de la règle fixe de cette source.
     location = classify_location(
-        text, given=entry.location, default=spec.location_rule
+        text,
+        given=entry.location,
+        entity=territories.get(searchable(organisation), ""),
+        default=spec.location_rule,
     )
 
     key = organisation_key(organisation)
@@ -208,6 +222,7 @@ def run_source(
     context: RunContext,
     known_orgs: dict[str, str],
     entity_index: dict,
+    territories: dict[str, str] | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     """Exécute une source et rend son compte rendu, ses items et sa veille."""
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -239,7 +254,9 @@ def run_source(
 
     items: list[Item] = []
     for entry in result.entries:
-        item = entry_to_item(entry, spec, context.as_of, known_orgs, entity_index)
+        item = entry_to_item(
+            entry, spec, context.as_of, known_orgs, entity_index, territories
+        )
         if item is not None:
             items.append(item)
 
@@ -425,13 +442,14 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
         client = HttpClient(run_budget=run_budget)
         known_orgs = watchlists.known_organisations()
         entity_index = watchlists.entity_index()
+        territories = watchlists.entity_territories()
 
         collected: list[Item] = []
         watch_rows: list[dict] = []
 
         for spec in sources.ALL_SOURCES:
             outcome, items, rows = run_source(
-                client, spec, context, known_orgs, entity_index
+                client, spec, context, known_orgs, entity_index, territories
             )
             report.outcomes.append(outcome)
             collected.extend(items)

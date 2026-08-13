@@ -16,55 +16,48 @@
       <span class="brand-mark" aria-hidden="true">🛡️</span>
       <div>
         <h1>Cyberwatch</h1>
-        <p class="brand-sub">Observatoire des incidents cyber — France &amp; Océan Indien</p>
+        <p class="brand-sub">Incidents cyber publiquement listés — France &amp; Océan Indien</p>
       </div>
     </div>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de thème">
-      <span data-theme-icon>◐</span>
-    </button>
+    <div class="topbar-right">
+      <!-- L'état de la collecte tient en une pastille : l'utile est ailleurs,
+           et le détail attend en bas de page. -->
+      <a class="run-pill" id="run-pill" href="#fiabilite" title="Voir la fiabilité de la collecte">
+        <span class="run-dot" aria-hidden="true"></span>
+        <span id="run-pill-text">Chargement…</span>
+      </a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de thème">
+        <span data-theme-icon>◐</span>
+      </button>
+    </div>
   </div>
 </header>
 
 <div class="wrap">
 
-  <!-- Bandeau d'état permanent, visible sur les deux onglets -->
-  <section class="runbar" id="runbar" aria-label="État du dernier run">
-    <div class="runbar-main">
-      <div class="run-pill" id="run-pill">
-        <span class="run-dot" aria-hidden="true"></span>
-        <span id="run-status-label">Chargement…</span>
-      </div>
-      <p class="run-explain" id="run-explain"></p>
-    </div>
-    <dl class="runbar-stats">
-      <div><dt>Score de couverture</dt><dd id="run-health">—</dd></div>
-      <div><dt>Dernière collecte</dt><dd id="run-date">—</dd></div>
-      <div><dt>Sources</dt><dd id="run-sources">—</dd></div>
-    </dl>
+  <section class="kpis" aria-label="Indicateurs clés">
+    <article class="kpi">
+      <h2>Incidents</h2>
+      <p class="kpi-value" id="kpi-incidents">—</p>
+      <p class="kpi-note" id="kpi-incidents-note">sur la sélection</p>
+    </article>
+    <article class="kpi">
+      <h2>Organisations touchées</h2>
+      <p class="kpi-value" id="kpi-orgs">—</p>
+      <p class="kpi-note">organisations distinctes</p>
+    </article>
+    <article class="kpi">
+      <h2>Confirmés par plusieurs sources</h2>
+      <p class="kpi-value" id="kpi-multi">—</p>
+      <p class="kpi-note">incidents vus par ≥ 2 sources</p>
+    </article>
+    <article class="kpi">
+      <h2>Dernière collecte</h2>
+      <p class="kpi-value kpi-value-sm" id="kpi-date">—</p>
+      <p class="kpi-note" id="kpi-new">—</p>
+    </article>
   </section>
 
-  <section class="blindspots" id="blindspots" hidden>
-    <h2 class="blindspots-title">
-      <span aria-hidden="true">⚠</span> Angles morts du dernier run
-    </h2>
-    <p class="blindspots-intro">
-      Ces sources n'ont pas été parcourues intégralement. Sur la période concernée,
-      un zéro ne signifie pas « aucun incident » mais « information indisponible ».
-    </p>
-    <ul id="blindspots-list" class="blindspots-list"></ul>
-  </section>
-
-  <!-- Onglets -->
-  <nav class="tabs" role="tablist" aria-label="Vues du dashboard">
-    <button class="tab" role="tab" id="tab-general" aria-controls="panel-general" aria-selected="true" data-tab="general">
-      Vue générale
-    </button>
-    <button class="tab" role="tab" id="tab-focus" aria-controls="panel-focus" aria-selected="false" data-tab="focus">
-      Focus Réunion / Mayotte
-    </button>
-  </nav>
-
-  <!-- Filtres partagés -->
   <section class="filters" aria-label="Filtres">
     <div class="filter">
       <label for="f-period">Période</label>
@@ -75,7 +68,7 @@
         <option value="3">3 derniers mois</option>
       </select>
     </div>
-    <div class="filter" id="filter-location">
+    <div class="filter">
       <label for="f-location">Territoire</label>
       <select id="f-location"><option value="">Tous</option></select>
     </div>
@@ -98,94 +91,82 @@
     <button id="f-reset" class="btn-reset" type="button">Réinitialiser</button>
   </section>
 
-  <!-- ONGLET 1 — GÉNÉRAL -->
-  <div id="panel-general" role="tabpanel" aria-labelledby="tab-general">
+  <section class="card">
+    <div class="card-head">
+      <h2>Incidents</h2>
+      <p id="table-count" class="muted"></p>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table" id="incidents-table">
+        <thead>
+          <tr>
+            <th data-sort="date" aria-sort="descending">Date</th>
+            <th data-sort="org">Organisation</th>
+            <th data-sort="location">Territoire</th>
+            <th data-sort="sector">Secteur</th>
+            <th data-sort="threat">Menace</th>
+            <th data-sort="items">Sources</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
 
-    <section class="kpis" aria-label="Indicateurs clés">
-      <article class="kpi">
-        <h3>Incidents</h3>
-        <p class="kpi-value" id="kpi-incidents">—</p>
-        <p class="kpi-note" id="kpi-incidents-note">sur la sélection</p>
-      </article>
-      <article class="kpi">
-        <h3>Organisations touchées</h3>
-        <p class="kpi-value" id="kpi-orgs">—</p>
-        <p class="kpi-note">organisations distinctes</p>
-      </article>
-      <article class="kpi">
-        <h3>Incidents multi-sources</h3>
-        <p class="kpi-value" id="kpi-multi">—</p>
-        <p class="kpi-note">confirmés par ≥ 2 sources</p>
-      </article>
-      <article class="kpi">
-        <h3>Nouveaux au dernier run</h3>
-        <p class="kpi-value" id="kpi-new">—</p>
-        <p class="kpi-note">incidents ajoutés</p>
-      </article>
-    </section>
+  <section class="grid-2">
+    <figure class="card">
+      <figcaption>
+        <h2>Incidents par mois</h2>
+        <p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p>
+      </figcaption>
+      <div class="chart" id="chart-month"></div>
+    </figure>
+    <figure class="card">
+      <figcaption>
+        <h2>Incidents par territoire</h2>
+        <p>Localisation retenue par la source ou imposée par l'organisation reconnue.</p>
+      </figcaption>
+      <div class="chart" id="chart-location"></div>
+    </figure>
+    <figure class="card">
+      <figcaption>
+        <h2>Incidents par secteur</h2>
+        <p>Secteur de l'organisation victime, donné par la source ou déduit de son nom.</p>
+        <p id="sector-note" class="chart-note"></p>
+      </figcaption>
+      <div class="chart" id="chart-sector"></div>
+    </figure>
+    <figure class="card">
+      <figcaption>
+        <h2>Incidents par type de menace</h2>
+        <p>Taxonomie à priorité fixe : un ransomware qui exfiltre reste un ransomware.</p>
+      </figcaption>
+      <div class="chart" id="chart-threat"></div>
+    </figure>
+  </section>
 
-    <section class="grid-2">
-      <figure class="card">
-        <figcaption>
-          <h2>Incidents par mois</h2>
-          <p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p>
-        </figcaption>
-        <div class="chart" id="chart-month"></div>
-      </figure>
-      <figure class="card">
-        <figcaption>
-          <h2>Incidents par territoire</h2>
-          <p>Localisation retenue par la source, jamais déduite d'une mention secondaire.</p>
-        </figcaption>
-        <div class="chart" id="chart-location"></div>
-      </figure>
-      <figure class="card">
-        <figcaption>
-          <h2>Incidents par secteur</h2>
-          <p>Secteur de l'organisation victime, donné par la source ou déduit de son nom.</p>
-          <p id="sector-note" class="chart-note"></p>
-        </figcaption>
-        <div class="chart" id="chart-sector"></div>
-      </figure>
-      <figure class="card">
-        <figcaption>
-          <h2>Incidents par type de menace</h2>
-          <p>Taxonomie à priorité fixe : un ransomware qui exfiltre reste un ransomware.</p>
-        </figcaption>
-        <div class="chart" id="chart-threat"></div>
-      </figure>
-    </section>
+  <!-- La fiabilité de la collecte reste consultable, mais elle n'est pas le
+       sujet : elle attend repliée en bas de page. -->
+  <details class="card reliability" id="fiabilite">
+    <summary>
+      <span class="reliability-title">Fiabilité de la collecte</span>
+      <span class="reliability-summary" id="reliability-summary"></span>
+    </summary>
 
-    <section class="card">
-      <div class="card-head">
-        <h2>Incidents</h2>
-        <p id="table-count" class="muted"></p>
+    <div class="reliability-body">
+      <p class="muted">
+        Un <strong>zéro vérifié</strong> signifie que le protocole est allé au bout sans
+        rien trouver. Un zéro grisé signifie que l'information est indisponible.
+        Sur les périodes concernées par un angle mort, un zéro ne veut pas dire
+        « aucun incident » mais « on ne sait pas ».
+      </p>
+
+      <div id="blindspots" hidden>
+        <h3 class="reliability-h3">Angles morts du dernier run</h3>
+        <ul id="blindspots-list" class="blindspots-list"></ul>
       </div>
-      <div class="table-scroll">
-        <table class="data-table" id="incidents-table">
-          <thead>
-            <tr>
-              <th data-sort="date" aria-sort="descending">Date</th>
-              <th data-sort="org">Organisation</th>
-              <th data-sort="location">Territoire</th>
-              <th data-sort="sector">Secteur</th>
-              <th data-sort="threat">Menace</th>
-              <th data-sort="items">Sources</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
 
-    <section class="card">
-      <div class="card-head">
-        <h2>Santé des sources</h2>
-        <p class="muted">
-          Un <strong>zéro vérifié</strong> signifie que le protocole est allé au bout sans rien trouver.
-          Un zéro grisé signifie que l'information est indisponible.
-        </p>
-      </div>
+      <h3 class="reliability-h3">Sources</h3>
       <div class="table-scroll">
         <table class="data-table" id="sources-table">
           <thead>
@@ -197,101 +178,8 @@
           <tbody></tbody>
         </table>
       </div>
-    </section>
-  </div>
-
-  <!-- ONGLET 2 — FOCUS RÉUNION / MAYOTTE -->
-  <div id="panel-focus" role="tabpanel" aria-labelledby="tab-focus" hidden>
-
-    <section class="kpis kpis-3" aria-label="Indicateurs Réunion et Mayotte">
-      <article class="kpi kpi-accent-1">
-        <h3>La Réunion</h3>
-        <p class="kpi-value" id="kpi-re">—</p>
-        <p class="kpi-note" id="kpi-re-note">incidents</p>
-      </article>
-      <article class="kpi kpi-accent-2">
-        <h3>Mayotte</h3>
-        <p class="kpi-value" id="kpi-yt">—</p>
-        <p class="kpi-note" id="kpi-yt-note">incidents</p>
-      </article>
-      <article class="kpi">
-        <h3>Entités sous surveillance</h3>
-        <p class="kpi-value" id="kpi-entities">—</p>
-        <p class="kpi-note" id="kpi-entities-note">communes et entités critiques</p>
-      </article>
-    </section>
-
-    <figure class="card">
-      <figcaption>
-        <h2>Évolution mensuelle — Réunion et Mayotte</h2>
-        <p>Les deux territoires côte à côte, sur la période sélectionnée.</p>
-      </figcaption>
-      <div class="chart" id="chart-focus-month"></div>
-    </figure>
-
-    <section class="grid-2">
-      <figure class="card">
-        <figcaption>
-          <h2>Secteurs touchés localement</h2>
-          <p>Profil sectoriel des deux territoires.</p>
-          <p id="focus-sector-note" class="chart-note"></p>
-        </figcaption>
-        <div class="chart" id="chart-focus-sector"></div>
-      </figure>
-      <figure class="card">
-        <figcaption>
-          <h2>Menaces localement</h2>
-          <p>Répartition des types d'incidents.</p>
-        </figcaption>
-        <div class="chart" id="chart-focus-threat"></div>
-      </figure>
-    </section>
-
-    <section class="card">
-      <div class="card-head">
-        <h2>Tableau de veille des entités</h2>
-        <p class="muted">
-          Les 24 communes réunionnaises, les 17 communes mahoraises et les entités critiques
-          des deux territoires. La couverture de la veille se lit ici, nom par nom.
-        </p>
-      </div>
-      <div class="entity-filters">
-        <label><input type="radio" name="entity-scope" value="all" checked> Toutes</label>
-        <label><input type="radio" name="entity-scope" value="La Réunion"> La Réunion</label>
-        <label><input type="radio" name="entity-scope" value="Mayotte"> Mayotte</label>
-        <label class="entity-sep"><input type="checkbox" id="entity-hit-only"> Uniquement celles touchées</label>
-      </div>
-      <div class="table-scroll table-tall">
-        <table class="data-table" id="entities-table">
-          <thead>
-            <tr>
-              <th>Entité</th><th>Territoire</th><th>Type</th>
-              <th>Veille</th><th>Dernière interrogation</th><th>Dernier incident</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="card-head">
-        <h2>Incidents Réunion / Mayotte</h2>
-        <p id="focus-table-count" class="muted"></p>
-      </div>
-      <div class="table-scroll">
-        <table class="data-table" id="focus-incidents-table">
-          <thead>
-            <tr>
-              <th>Date</th><th>Organisation</th><th>Territoire</th>
-              <th>Secteur</th><th>Menace</th><th>Sources</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-  </div>
+    </div>
+  </details>
 
   <footer class="footer">
     <p>

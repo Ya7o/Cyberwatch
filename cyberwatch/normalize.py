@@ -223,17 +223,24 @@ LOCATION_HINTS: list[tuple[str, list[str]]] = [
 def classify_location(
     *texts: str,
     given: str = "",
+    entity: str = "",
     default: str = "",
 ) -> str:
     """Localisation normalisée, selon la priorité du §10.
 
     1. localisation explicitement structurée par la source (`given`) ;
-    2. règle fixe du collecteur (`default`) ;
-    3. indice textuel ;
-    4. `Inconnu`.
+    2. **territoire de l'entité surveillée reconnue** (`entity`) ;
+    3. règle fixe du collecteur (`default`) ;
+    4. indice textuel ;
+    5. `Inconnu`.
+
+    Le rang 2 traduit un fait : une entité de la liste de surveillance appartient
+    à son territoire quelle que soit la source qui la mentionne. Sans lui, un
+    incident touchant Air Austral et relayé par une source nationale était classé
+    « France métropolitaine » à cause de la règle fixe de cette source.
 
     Un simple mot géographique dans un texte ne suffit jamais à requalifier un
-    incident : `given` et `default` priment toujours sur l'indice textuel.
+    incident : les rangs 1 à 3 priment toujours sur l'indice textuel.
     """
     if given:
         cleaned = given.strip()
@@ -244,6 +251,9 @@ def classify_location(
             for hint in hints:
                 if _contains(blob, hint):
                     return location
+
+    if entity and entity in config.LOCATIONS:
+        return entity
 
     if default and default in config.LOCATIONS:
         return default

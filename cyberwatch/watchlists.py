@@ -189,11 +189,16 @@ TERRITORY_CONTEXT = {
 
 
 def as_params(entities: list[WatchedEntity]) -> list[dict]:
-    """Entités converties au format attendu par le collecteur Google News."""
+    """Entités converties au format attendu par les collecteurs de veille.
+
+    Les alias transmis sont ceux qui **identifient** l'entité : le nom nu d'une
+    commune en est exclu, faute de quoi la moindre mention de la ville
+    rattacherait l'article à sa mairie.
+    """
     return [
         {
             "name": entity.name,
-            "aliases": entity.aliases,
+            "aliases": identifying_labels(entity)[1:],
             "context": TERRITORY_CONTEXT.get(entity.territory, ""),
             "territory": entity.territory,
             "kind": entity.kind,
@@ -208,8 +213,47 @@ def entity_index() -> dict[str, WatchedEntity]:
     return {entity.name: entity for entity in ALL_ENTITIES}
 
 
+def entity_territories() -> dict[str, str]:
+    """Index « clé normalisée -> territoire » des entités surveillées.
+
+    Permet à une organisation reconnue d'imposer son territoire, quelle que soit
+    la source qui la mentionne : Air Austral est réunionnaise même lorsqu'un
+    agrégateur national la relaie. Seuls les libellés identifiants sont indexés,
+    pour la même raison que dans `known_organisations()`.
+    """
+    from .normalize import searchable
+
+    index: dict[str, str] = {}
+    for entity in ALL_ENTITIES:
+        for label in identifying_labels(entity):
+            key = searchable(label)
+            if key and key not in index:
+                index[key] = entity.territory
+    return index
+
+
 #: Qualificatifs rendant un libellé de commune non ambigu.
 _COMMUNE_QUALIFIERS = ("mairie", "commune", "ville")
+
+
+def identifying_labels(entity: WatchedEntity) -> list[str]:
+    """Libellés permettant d'attribuer un article à une entité.
+
+    Pour une commune, le nom nu est écarté : citer « Saint-Denis » désigne la
+    ville, pas sa mairie. Sans cette règle, tout fait divers survenu sur le
+    territoire communal devenait un incident de la collectivité — c'est ainsi
+    qu'une intrusion dans une fourrière est entrée dans la base.
+    """
+    from .normalize import searchable
+
+    labels = [entity.name, *entity.aliases]
+    if entity.kind != "commune":
+        return labels
+    return [
+        label
+        for label in labels
+        if any(q in searchable(label) for q in _COMMUNE_QUALIFIERS)
+    ]
 
 
 def known_organisations() -> dict[str, str]:

@@ -137,6 +137,10 @@ PHYSICAL_MARKERS = [
     "effraction", "effractions", "nocturne", "nocturnes", "s introduire",
     "porte fracturee", "vitre brisee", "coffre fort", "burglary", "break in",
     "voleurs", "malfaiteurs", "domicile", "commercant",
+    # Vocabulaire de fait divers relevé sur des faux positifs réels.
+    "fourriere", "interpellation", "interpellations", "interpelles",
+    "garde a vue", "gendarmerie", "commissariat", "degradations",
+    "vol de materiel", "squat", "squatteurs", "grillage", "entrepot",
 ]
 
 #: Racines dont la seule présence ne suffit pas à qualifier un contenu de cyber
@@ -258,6 +262,10 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "conseil regional", "gouvernement", "government", "administration",
         "caf", "cgss", "securite sociale", "caisse d allocations",
         "mairie de", "council", "municipal",
+        # Sécurité civile et forces de l'ordre, fréquentes dans la base réelle.
+        "police", "gendarmerie", "pompiers", "sdis", "sapeurs pompiers",
+        "service departemental d incendie", "protection civile",
+        "ambassade", "consulat", "prefectorale", "agence nationale",
     ]),
     (SECTOR_HEALTH, [
         "chu", "chr", "hopital", "hospitalier", "clinique", "sante",
@@ -287,8 +295,13 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "cci", "chambre de commerce", "commerce", "distribution", "enseigne",
         "supermarche", "hypermarche", "magasin", "retail", "boutique",
         "e commerce", "chambre de metiers",
+        # Concessions et négoce, relevés dans la base réelle.
+        "concession", "concessionnaire", "automobiles", "garage",
+        "grande surface", "centre commercial", "negoce", "grossiste",
     ]),
     (SECTOR_TECH, [
+        "technologies", "technology", "systemes", "systems", "reseaux",
+        "digital", "web", "editeur de logiciels", "esn",
         "cloud", "logiciel", "software", "saas", "numerique", "telecom",
         "telecommunication", "operateur mobile", "internet", "technologie",
         "tech", "informatique", "hebergeur", "datacenter", "orange", "sfr",
@@ -302,6 +315,7 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_CONSTRUCTION, [
         "batiment", "btp", "travaux publics", "construction", "immobilier",
         "maconnerie", "charpente", "promoteur immobilier",
+        "immo", "habitat", "logement", "hlm", "bailleur social", "foncier",
     ]),
     (SECTOR_INDUSTRY, [
         "industrie", "industriel", "manufacture", "usine", "fonderie",
@@ -312,6 +326,9 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "cabinet d avocats", "cabinet comptable", "expertise comptable",
         "notaire", "huissier", "conseil en", "interim", "recrutement",
         "nettoyage", "securite privee",
+        # Structures associatives et ordres professionnels.
+        "association", "ordre des", "syndicat", "avocats", "mutuelle",
+        "groupement", "cooperative", "chambre syndicale",
     ]),
 ]
 
