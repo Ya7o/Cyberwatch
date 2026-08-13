@@ -53,6 +53,11 @@ class RawEntry:
     event_date: str = ""
     organisation: str = ""
     sector: str = ""
+    #: Localisation **publiée par la source** (rubrique géographique, pays d'une
+    #: API). Un collecteur ne doit jamais y recopier la règle fixe de la source :
+    #: le runner l'applique lui-même au rang 3, après le territoire de l'entité
+    #: reconnue. La préremplir ici la ferait passer au rang 1 et écraserait ce
+    #: rang 2 — c'est ce qui maintenait Air Austral en « France métropolitaine ».
     location: str = ""
     threat: str = ""
     entity: str = ""

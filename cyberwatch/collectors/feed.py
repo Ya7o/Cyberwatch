@@ -91,7 +91,6 @@ def parse_feed(text: str, spec: SourceSpec) -> list[RawEntry]:
                 published=published,
                 summary=summary,
                 threat=spec.default_threat,
-                location=spec.location_rule,
             )
         )
     return entries

@@ -605,3 +605,44 @@ class TestMediaWatch:
         assert rows["Air Austral"]["items_found"] == 0
         # Chaque entité surveillée est présente, touchée ou non.
         assert len(rows) == 2
+
+
+class TestPasDeLocalisationPrerenseignee:
+    """Un collecteur ne recopie jamais la règle fixe de la source.
+
+    Régression : les collecteurs génériques préremplissaient `entry.location`
+    avec `spec.location_rule`. Le runner y voyait une localisation « publiée par
+    la source » — rang 1 du §10 — ce qui écrasait le rang 2, le territoire de
+    l'entité reconnue. Air Austral restait donc « France métropolitaine » alors
+    même que la correction de rang 2 était en place et testée.
+    """
+
+    SPEC = SourceSpec(
+        "TEST", config.LAYER_CORE, "France", "https://x/", "autodetect",
+        location_rule=config.LOC_FRANCE,
+    )
+
+    def test_wordpress(self):
+        from cyberwatch.collectors.wordpress import _entry_from_post
+
+        post = {
+            "date": "2026-05-31T10:00:00", "link": "https://x/1",
+            "title": {"rendered": "Air Austral"}, "excerpt": {"rendered": ""},
+        }
+        assert _entry_from_post(post, self.SPEC).location == ""
+
+    def test_feed(self):
+        entries = parse_feed(RSS_FEED, self.SPEC)
+        assert entries and all(e.location == "" for e in entries)
+
+    def test_jsonld(self):
+        entries = extract_jsonld_entries(JSONLD_PAGE, "https://x/", self.SPEC)
+        assert entries and all(e.location == "" for e in entries)
+
+    def test_ransomware_live_conserve_le_pays_reel(self):
+        """Seule exception légitime : l'API publie un vrai pays."""
+        client = FakeClient({"ransomware.live": ok(RANSOMWARE_PAYLOAD)})
+        spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi",
+                          collector="ransomware_live", params={"countries": ["FR"]})
+        result = RansomwareLiveCollector().collect(client, spec, WINDOW)
+        assert result.entries[0].location == config.LOC_FRANCE

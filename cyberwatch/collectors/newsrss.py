@@ -192,7 +192,6 @@ class NewsRssCollector(Collector):
                     if name:
                         entry.entity = name
                         entry.organisation = name
-                        entry.location = spec.location_rule or entry.location
                         entity_entries.append(entry)
                     result.entries.append(entry)
 

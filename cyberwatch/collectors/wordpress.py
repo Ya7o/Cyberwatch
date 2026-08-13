@@ -195,5 +195,4 @@ def _entry_from_post(post: dict, spec: SourceSpec) -> RawEntry | None:
         published=published,
         summary=summary,
         threat=spec.default_threat,
-        location=spec.location_rule,
     )

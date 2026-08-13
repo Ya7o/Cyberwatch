@@ -102,7 +102,6 @@ def extract_jsonld_entries(text: str, base_url: str, spec: SourceSpec) -> list[R
                     published=published,
                     summary=summary,
                     threat=spec.default_threat,
-                    location=spec.location_rule,
                 )
             )
 
@@ -186,7 +185,6 @@ def extract_dated_link_entries(
                 url=best_url,
                 published=published,
                 threat=spec.default_threat,
-                location=spec.location_rule,
             )
         )
 
@@ -235,7 +233,6 @@ def extract_time_tag_entries(text: str, base_url: str, spec: SourceSpec) -> list
                 url=best_url,
                 published=published,
                 threat=spec.default_threat,
-                location=spec.location_rule,
             )
         )
 
