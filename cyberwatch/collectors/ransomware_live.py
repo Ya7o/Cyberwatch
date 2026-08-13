@@ -134,6 +134,7 @@ class RansomwareLiveCollector(Collector):
         result.calls = budget.requests_made
         result.items_seen = recognized
         result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
+        result.units_done = len(result.entries)
         result.comment = f"items_seen={recognized}; items_in_window={len(result.entries)}"
         return result
 
@@ -154,6 +155,8 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
         return None
 
     organisation = _first_field(record, FIELD_ALIASES["organisation"])
+    if organisation.strip().lower() in {"[redacted]", "redacted", "unknown", "n/a"}:
+        return None
     published = parse_date(_first_field(record, FIELD_ALIASES["date"]))
     if not organisation or not published:
         return None

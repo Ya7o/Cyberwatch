@@ -86,8 +86,15 @@ def make_run_context(
     else:
         start = dt.date(now.year, 1, 1).isoformat()
 
+    base_run_id = now.strftime("RUN-%Y%m%dT%H%M%S")
+    existing_run_ids = {row.get("Run_ID", "") for row in store.load_run_log()}
+    sequence = 1
+    run_id = base_run_id
+    while run_id in existing_run_ids:
+        sequence += 1
+        run_id = f"{base_run_id}-{sequence}"
     return RunContext(
-        run_id=now.strftime("RUN-%Y%m%dT%H%M%S"),
+        run_id=run_id,
         as_of=as_of_iso,
         target_start=start,
         target_end=end,
@@ -161,6 +168,11 @@ def entry_to_item(
 
     if not organisation:
         organisation = find_known_entity(text, known_orgs)
+
+    # Kwezi mesure tous les articles de rubrique, mais ne matérialise dans
+    # ITEMS que ceux dont la victime est déterminée sans heuristique variable.
+    if spec.source_id == "KWEZI_NUMERIQUE" and not organisation:
+        return None
 
     sector_hint = ""
     if entry.entity:
@@ -469,6 +481,9 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
             outcome.new_items = sum(
                 item.Source_ID == outcome.source_id and item.Item_ID not in existing_item_ids
                 for item in collected
+            )
+            outcome.items_collected = sum(
+                item.Source_ID == outcome.source_id for item in merged
             )
         report.items = merged
         report.new_items = new_count

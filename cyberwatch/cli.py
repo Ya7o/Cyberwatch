@@ -506,6 +506,14 @@ def cmd_check(args) -> int:
             problems.append("Le dernier run n'est pas OK")
         if not row.get("Items_Hash") or not row.get("Incidents_Hash"):
             problems.append("Les hashes du dernier run sont absents")
+    if len({row.get("Run_ID", "") for row in last}) != len(last):
+        problems.append("Run_ID dupliqué dans RUN_LOG")
+    run_sources = store.load_run_sources()
+    pairs = [(row.get("Run_ID", ""), row.get("Source_ID", "")) for row in run_sources]
+    if len(set(pairs)) != len(pairs):
+        problems.append("Couple Run_ID / Source_ID dupliqué dans RUN_SOURCES")
+    if any(not item.Organisation_Key for item in items):
+        problems.append("Organisation_Key vide dans ITEMS")
 
     print(f"Contrôles avant export (§29) — {len(items)} items, {len(incidents)} incidents")
     if not problems:
