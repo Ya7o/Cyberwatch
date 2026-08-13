@@ -226,3 +226,37 @@ class TestPreExportChecks:
         ]
         problems = pre_export_checks([], [], outcomes)
         assert any("OK sans couverture complète" in p for p in problems)
+
+
+class TestCreateRepartDeZero:
+    """§24 — `CREATE` construit la base depuis zéro, `MAJ` cumule (§25)."""
+
+    def test_create_ignore_le_snapshot_precedent(self, tmp_path, monkeypatch, make_item):
+        """Une évolution des règles change les Item_ID : sans repartir de zéro,
+        chaque item cohabiterait avec sa version périmée."""
+        from cyberwatch import runner, store
+
+        for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV"):
+            monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
+
+        store.save_items([make_item(url="https://ancien/1")])
+        context = runner.make_run_context(
+            runner.MODE_CREATE, as_of="2026-08-12T10:00:00+04:00"
+        )
+        report = runner.execute(context, offline=True)
+        assert report.items == []
+
+    def test_maj_conserve_le_stock(self, tmp_path, monkeypatch, make_item):
+        from cyberwatch import runner, store
+
+        for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV"):
+            monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
+
+        store.save_items([make_item(url="https://ancien/1")])
+        context = runner.make_run_context(
+            runner.MODE_MAJ, as_of="2026-08-12T10:00:00+04:00"
+        )
+        report = runner.execute(context, offline=True)
+        assert len(report.items) == 1

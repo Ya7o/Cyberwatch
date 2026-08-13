@@ -405,9 +405,16 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
     started = time.monotonic()
     report = RunReport(context=context)
 
-    existing_items = store.load_items()
     previous_incidents = store.load_incidents()
     previous_ids = {i.Incident_ID for i in previous_incidents}
+
+    # `CREATE` construit la base **depuis zéro** (§24) : le snapshot `ITEMS`
+    # précédent n'est pas repris. C'est ce qui permet de repartir proprement
+    # après une évolution des règles de normalisation, laquelle change les
+    # `Item_ID` et laisserait sinon cohabiter chaque item avec sa version
+    # périmée. `MAJ` conserve au contraire le stock et n'y ajoute que le
+    # nouveau (§25).
+    existing_items = [] if context.mode == MODE_CREATE else store.load_items()
 
     if offline:
         report.items = existing_items
