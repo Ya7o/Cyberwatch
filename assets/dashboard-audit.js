@@ -19,6 +19,7 @@
     "système u", "super u",
   ]);
   const orgKey = (value) => String(value || "").trim().toLocaleLowerCase("fr-FR");
+  const selectedSources = () => new Set($$("#f-sources input[type='checkbox']:checked").map((input) => input.value));
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[ch]));
@@ -101,10 +102,10 @@
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
       const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
       const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
-      const source = $("#f-source")?.value || "";
+      const sources = selectedSources();
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
-      if (source && !(incident.sources || []).includes(source)) return false;
+      if (sources.size && !(incident.sources || []).some((source) => sources.has(source))) return false;
       if ((automotive || largeRetail) && !(
         (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
         || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
