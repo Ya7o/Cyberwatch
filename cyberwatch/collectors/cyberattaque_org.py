@@ -20,7 +20,18 @@ _ORG_PREFIX = re.compile(
     re.I,
 )
 
+# Certains titres commencent par une accroche journalistique et ne nomment la
+# victime qu'après les deux-points. Cette forme reste stricte : seule une
+# entité qui « confirme une cyberattaque » est retenue.
+_ORG_AFTER_COLON_CONFIRMS_CYBERATTACK = re.compile(
+    r":\s*(?:l['’]\s*)?(.+?)\s+confirme\s+(?:une?\s+)?cyberattaque\b",
+    re.I,
+)
+
 def organisation_from_title(title: str) -> str:
+    after_colon = _ORG_AFTER_COLON_CONFIRMS_CYBERATTACK.search(title or "")
+    if after_colon:
+        return clean_organisation(after_colon.group(1))
     head = (title or "").split(":", 1)[0].strip()
     match = _ORG_PREFIX.match(head)
     return clean_organisation(match.group(1) if match else head)
@@ -29,24 +40,23 @@ def organisation_from_title(title: str) -> str:
 def repair_existing_identities(items: list[Item]) -> tuple[list[Item], int]:
     """Répare les organisations déjà extraites par ce collecteur.
 
-    Seuls les items Cyberattaque.org dont le parseur fournit un nom différent
-    sont modifiés. L'identifiant est recalculé car il inclut la clé d'identité.
+    Les titres Cyberattaque.org sont reparcourus ; toutes les clés existantes
+    sont ensuite recalculées pour appliquer les alias déterministes. L'identifiant
+    est recalculé car il inclut la clé d'identité.
     """
     repaired: list[Item] = []
     changed = 0
     for item in items:
-        if item.Source_ID != "CYBERATTAQUE_ORG":
-            repaired.append(item)
-            continue
-        organisation = organisation_from_title(item.Title)
-        if not organisation or organisation == item.Organisation_Raw:
+        organisation = item.Organisation_Raw
+        if item.Source_ID == "CYBERATTAQUE_ORG":
+            organisation = organisation_from_title(item.Title) or organisation
+        key = organisation_key(organisation)
+        if organisation == item.Organisation_Raw and key == item.Organisation_Key:
             repaired.append(item)
             continue
         item.Organisation_Raw = organisation
-        item.Organisation_Key = organisation_key(organisation)
-        item.Item_ID = item_id(
-            item.Source_ID, item.Published_Date, item.Organisation_Key, item.URL,
-        )
+        item.Organisation_Key = key
+        item.Item_ID = item_id(item.Source_ID, item.Published_Date, key, item.URL)
         repaired.append(item)
         changed += 1
     return repaired, changed
