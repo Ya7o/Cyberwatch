@@ -58,7 +58,6 @@
     const style = document.createElement("style");
     style.id = "dashboard-audit-css";
     style.textContent = `
-      #bonjour-v0{display:none!important}
       .incidents-card .table-scroll{max-height:none}
       .audit-pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary)}
       .audit-pager button,.audit-pager select{font:inherit;font-size:13px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-primary)}
@@ -91,14 +90,6 @@
     if ($(".reliability-title")) $(".reliability-title").textContent = "Sources & fiabilité";
     const incidentCard = $("#incidents-table")?.closest("section.card");
     if (incidentCard) incidentCard.classList.add("incidents-card");
-
-    const multi = $("#kpi-multi")?.closest("article");
-    if (multi) {
-      const title = multi.querySelector("h2");
-      const note = multi.querySelector(".kpi-note");
-      if (title) title.textContent = "Recoupés par plusieurs sources";
-      if (note) note.textContent = "reliés à ≥ 2 sources — pas une confirmation indépendante";
-    }
 
   }
 
@@ -231,10 +222,6 @@
     const executed = c.ok + c.partial + c.fail;
     if ($("#run-pill-text")) $("#run-pill-text").textContent = run.overall === "HEALTHY" ? `Collecte OK · ${executed} source${executed > 1 ? "s" : ""}` : `Collecte à vérifier · ${c.partial + c.fail} source${c.partial + c.fail > 1 ? "s" : ""}`;
     if ($("#run-pill")) $("#run-pill").title = `Run ${run.mode} · score global ${run.health}/100 · ${c.skipped} source(s) hors périmètre`;
-    if ($("#kpi-new")) {
-      if (run.mode === "CREATE") $("#kpi-new").textContent = `Base reconstruite · ${run.incidents} incidents chargés`;
-      else $("#kpi-new").textContent = `+${run.new_incidents} nouvel${run.new_incidents > 1 ? "s" : ""} incident${run.new_incidents > 1 ? "s" : ""}`;
-    }
     if ($("#reliability-summary")) $("#reliability-summary").textContent = `${executed} exécutée${executed > 1 ? "s" : ""} · ${c.ok} OK · ${c.partial} partielle${c.partial > 1 ? "s" : ""} · ${c.fail} échec${c.fail > 1 ? "s" : ""} · ${c.skipped} hors run`;
   }
 

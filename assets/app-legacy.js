@@ -364,11 +364,6 @@
     text.textContent = `Collecte ${LABELS[run.overall] || run.overall} · ${run.health}/100`;
     pill.title = (data.labels.run_status && data.labels.run_status[run.overall]) || "";
 
-    $("#kpi-date").textContent = formatDate(run.as_of);
-    $("#kpi-new").textContent =
-      `+${run.new_incidents} incident${run.new_incidents > 1 ? "s" : ""} au dernier run`;
-    $("#foot-method").textContent = data.method_id || "—";
-    $("#foot-hash").textContent = (run.incidents_hash || "—").slice(0, 16);
 
     const spots = data.blind_spots || [];
     $("#reliability-summary").textContent =
@@ -401,7 +396,6 @@
     $("#kpi-incidents-note").textContent =
       rows.length === state.incidents.length ? "sur l'ensemble de la base" : "sur la sélection";
     $("#kpi-orgs").textContent = new Set(rows.map((r) => r.org).filter(Boolean)).size;
-    $("#kpi-multi").textContent = rows.filter((r) => r.sources.length >= 2).length;
 
     const months = monthsRange(rows);
     const perMonth = new Map();
