@@ -53,6 +53,16 @@ def _first_field(record: dict, aliases: list[str]) -> str:
     return ""
 
 
+def _victim_name(value: str) -> str:
+    """Transforme un domaine victime en libellé stable, sans heuristique Web."""
+    raw = (value or "").strip()
+    lowered = raw.lower().removeprefix("www.")
+    labels = lowered.split(".")
+    if len(labels) == 2 and labels[-1] in {"fr", "com", "net", "org", "eu", "io", "co", "re"}:
+        return labels[0]
+    return raw
+
+
 class RansomwareLiveCollector(Collector):
     """Énumère les victimes de rançongiciel des pays du périmètre."""
 
@@ -154,7 +164,7 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
     if not isinstance(record, dict):
         return None
 
-    organisation = _first_field(record, FIELD_ALIASES["organisation"])
+    organisation = _victim_name(_first_field(record, FIELD_ALIASES["organisation"]))
     if organisation.strip().lower() in {"[redacted]", "redacted", "unknown", "n/a"}:
         return None
     published = parse_date(_first_field(record, FIELD_ALIASES["date"]))

@@ -18,6 +18,7 @@ from . import config
 
 #: Formes juridiques retirées uniquement lorsqu'elles sont des mots isolés.
 LEGAL_FORMS = {"sas", "sarl", "sa", "eurl"}
+INCIDENT_SUFFIXES = {"pirate", "piratee", "pirates", "piratees", "revendique", "revendiquee"}
 
 _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _SPACES_RE = re.compile(r"\s+")
@@ -48,7 +49,10 @@ def organisation_key(raw: str) -> str:
     if not text:
         return ""
     tokens = [t for t in text.split(" ") if t and t not in LEGAL_FORMS]
-    return " ".join(tokens)
+    while tokens and tokens[-1] in INCIDENT_SUFFIXES:
+        tokens.pop()
+    text = " ".join(tokens)
+    return re.sub(r"(?<=[a-z])\s+(?=\d)", "", text)
 
 
 def searchable(text: str) -> str:
