@@ -36,6 +36,7 @@ SOURCES_CSV = DATA_DIR / "sources.csv"
 RUN_SOURCES_CSV = DATA_DIR / "run_sources.csv"
 RUN_LOG_CSV = DATA_DIR / "run_log.csv"
 ENTITY_WATCH_CSV = DATA_DIR / "entity_watch.csv"
+ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 
 
 # --------------------------------------------------------------------------

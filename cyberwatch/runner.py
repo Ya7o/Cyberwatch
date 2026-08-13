@@ -15,7 +15,7 @@ import datetime as dt
 import time
 from dataclasses import dataclass, field
 
-from . import config, identity, sources, status, store, watchlists
+from . import config, enrichment, identity, sources, status, store, watchlists
 from .collectors import get_collector
 from .collectors.base import RawEntry, SourceSpec, Window
 from .dedup import build_incidents, merge_items
@@ -129,6 +129,7 @@ def entry_to_item(
     known_orgs: dict[str, str],
     entity_index: dict,
     territories: dict[str, str] | None = None,
+    reference: dict[str, enrichment.Enrichment] | None = None,
 ) -> Item | None:
     """Convertit une entrée brute en item normalisé, ou `None` si hors périmètre.
 
@@ -187,22 +188,22 @@ def entry_to_item(
     # métier de la victime, et un simple mot y suffirait à la reclasser à tort.
     # Lorsque la source nomme ses entrées d'après l'organisation, le corps n'est
     # qu'une description de la fuite : on ne s'y rabat pas du tout.
-    sector_texts = (
-        (organisation,)
-        if spec.params.get("title_is_organisation")
-        else (organisation, text)
-    )
-    sector = classify_sector(*sector_texts, given=entry.sector or sector_hint)
+    # Les champs structurés de la source passent toujours en premier. Le
+    # référentiel dédié vient ensuite ; les règles et défauts existants ne sont
+    # consultés qu'en dernier recours.
+    sector = classify_sector(given=entry.sector)
+    location = classify_location(given=entry.location)
+    sector, location = enrichment.enrich_unknowns(organisation, sector, location, reference or {})
 
-    # Une entité surveillée impose son territoire (§10, rang 2) : sans cela, un
-    # incident touchant une organisation ultramarine mais relayé par une source
-    # nationale héritait de la règle fixe de cette source.
-    location = classify_location(
-        text,
-        given=entry.location,
-        entity=territories.get(searchable(organisation), ""),
-        default=spec.location_rule,
-    )
+    sector_texts = (organisation,) if spec.params.get("title_is_organisation") else (organisation, text)
+    if sector == config.SECTOR_UNKNOWN:
+        sector = classify_sector(*sector_texts, given=sector_hint)
+    if location == config.LOC_INCONNU:
+        location = classify_location(
+            text,
+            entity=territories.get(searchable(organisation), ""),
+            default=spec.location_rule,
+        )
 
     key = organisation_key(organisation)
 
@@ -235,6 +236,7 @@ def run_source(
     known_orgs: dict[str, str],
     entity_index: dict,
     territories: dict[str, str] | None = None,
+    reference: dict[str, enrichment.Enrichment] | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     """Exécute une source et rend son compte rendu, ses items et sa veille."""
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -267,7 +269,7 @@ def run_source(
     items: list[Item] = []
     for entry in result.entries:
         item = entry_to_item(
-            entry, spec, context.as_of, known_orgs, entity_index, territories
+            entry, spec, context.as_of, known_orgs, entity_index, territories, reference
         )
         if item is not None:
             items.append(item)
@@ -456,6 +458,7 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
         known_orgs = watchlists.known_organisations()
         entity_index = watchlists.entity_index()
         territories = watchlists.entity_territories()
+        reference = enrichment.load_reference()
 
         collected: list[Item] = []
         watch_rows: list[dict] = []
@@ -464,7 +467,7 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
         # désactivés ; le pipeline doit appeler exactement BonjourLaFuite.
         for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
-                client, spec, context, known_orgs, entity_index, territories
+                client, spec, context, known_orgs, entity_index, territories, reference
             )
             report.outcomes.append(outcome)
             collected.extend(items)

@@ -13,6 +13,7 @@ from cyberwatch.normalize import (
     organisation_key,
     parse_date,
 )
+from cyberwatch.enrichment import Enrichment, enrich_items, enrich_unknowns
 
 
 class TestOrganisationKey:
@@ -52,6 +53,35 @@ class TestOrganisationKey:
     def test_pas_de_rapprochement_flou(self):
         """Deux libellés différents restent deux organisations distinctes (§11)."""
         assert organisation_key("CHU Réunion") != organisation_key("CHU de La Réunion")
+
+
+class TestEnrichmentReference:
+    def test_reference_completes_only_unknown_values(self):
+        reference = {
+            "air austral": Enrichment(
+                organisation="Air Austral", sector=config.SECTOR_TRANSPORT,
+                location=config.LOC_REUNION, scope="Océan Indien", reason="test", validation_url="",
+            )
+        }
+        assert enrich_unknowns("Air Austral", config.SECTOR_UNKNOWN, config.LOC_INCONNU, reference) == (
+            config.SECTOR_TRANSPORT, config.LOC_REUNION
+        )
+
+    def test_structured_source_values_are_not_replaced(self):
+        reference = {
+            "air austral": Enrichment(
+                organisation="Air Austral", sector=config.SECTOR_TRANSPORT,
+                location=config.LOC_REUNION, scope="Océan Indien", reason="test", validation_url="",
+            )
+        }
+        assert enrich_unknowns("Air Austral", config.SECTOR_TECH, config.LOC_FRANCE, reference) == (
+            config.SECTOR_TECH, config.LOC_FRANCE
+        )
+
+    def test_item_enrichment_reports_ocean_indian_changes(self, make_item):
+        item = make_item(org="Air Austral", sector=config.SECTOR_UNKNOWN, location=config.LOC_INCONNU)
+        reference = {"air austral": Enrichment("Air Austral", config.SECTOR_TRANSPORT, config.LOC_REUNION, "Océan Indien", "test", "")}
+        assert enrich_items([item], reference) == {"sector": 1, "location": 1, "ocean_indian": 1, "france": 0}
 
 
 class TestThreatTaxonomy:
