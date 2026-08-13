@@ -2,7 +2,8 @@
 
 Chaque source déclare son URL de départ, son protocole, son test de succès et sa
 règle de localisation. Ce fichier est la traduction exécutable du tableau du
-§23, avec une ligne volontairement inactive.
+§23. Cinq lignes sont volontairement inactives, chacune avec le motif de
+sa désactivation et son critère de réactivation (§21).
 
 Deux écarts assumés par rapport à la méthode d'origine, tous deux documentés
 dans `METHODOLOGY.md` :
@@ -137,25 +138,38 @@ CORE_SOURCES = [
     ),
     SourceSpec(
         source_id="CIRT_MG",
-        layer=config.LAYER_CORE,
+        layer=config.LAYER_DISABLED,
         zone=config.LOC_MADAGASCAR,
         start_url="https://www.cirt.gov.mg/",
         collector="autodetect",
+        active=False,
         location_rule=config.LOC_MADAGASCAR,
         protocol="Lire les bulletins et alertes datés de la fenêtre.",
-        success_test="Bulletins énumérables de façon stable ; sinon PARTIAL.",
-        notes="Incident créé uniquement si une organisation victime est nommée.",
+        success_test="Bulletins énumérables de façon stable.",
+        notes=(
+            "Inactive depuis la vérification du 12/08/2026 : le site est une "
+            "coquille JavaScript de 1,5 Ko, ses flux répondent 200 avec zéro "
+            "entrée et toutes les pages de pagination sont identiques. Aucun "
+            "bulletin n'y est énumérable sans navigateur. Réactiver dès que la "
+            "commande probe y trouve des entrées datées."
+        ),
     ),
     SourceSpec(
         source_id="CERT_SC_ALERTS",
-        layer=config.LAYER_CORE,
+        layer=config.LAYER_DISABLED,
         zone=config.LOC_SEYCHELLES,
         start_url="https://cert-sc.sc/alerts/",
         collector="autodetect",
+        active=False,
         location_rule=config.LOC_SEYCHELLES,
         protocol="Énumérer les alertes et relever leur date.",
         success_test="Toutes les alertes énumérables et datables.",
-        notes="Incident seulement si victime ou cible nommée.",
+        notes=(
+            "Inactive depuis la vérification du 12/08/2026 : /alerts/ renvoie la "
+            "page d'accueil (titre « Welcome »), sans aucune liste datée, et les "
+            "flux répondent 404. L'URL du protocole d'origine n'existe plus sous "
+            "cette forme. Réactiver après avoir retrouvé l'URL réelle des alertes."
+        ),
     ),
 ]
 
@@ -166,25 +180,37 @@ CORE_SOURCES = [
 LOCAL_MEDIA_SOURCES = [
     SourceSpec(
         source_id="ZINFOS974_CYBER",
-        layer=config.LAYER_LOCAL_MEDIA,
+        layer=config.LAYER_DISABLED,
         zone=config.LOC_REUNION,
         start_url="https://www.zinfos974.com/dossier/cyberattaque/",
         collector="autodetect",
+        active=False,
         location_rule=config.LOC_REUNION,
         protocol="Lire chaque article du dossier, suivre la pagination jusqu'à la borne.",
         success_test="Pagination parcourue jusqu'à la borne, tous les items datés.",
-        notes="Les reprises nationales ne deviennent réunionnaises que si elles visent La Réunion.",
+        notes=(
+            "Inactive depuis la vérification du 12/08/2026 : le site répond 403 "
+            "à toute requête, y compris sur les chemins que son propre robots.txt "
+            "autorise, et après une nouvelle tentative sous un agent accepté par "
+            "les pare-feux courants. Les articles réunionnais restent atteints par "
+            "REUNION_ENTITY_WATCH, qui lit quatre autres médias du territoire."
+        ),
     ),
     SourceSpec(
         source_id="LINFO_CYBER",
-        layer=config.LAYER_LOCAL_MEDIA,
+        layer=config.LAYER_DISABLED,
         zone=config.LOC_REUNION,
         start_url="https://www.linfo.re/tags/cyberattaque",
         collector="autodetect",
+        active=False,
         location_rule=config.LOC_REUNION,
         protocol="Lire toutes les cartes de l'étiquette, parcourir les pages numériques.",
         success_test="Pagination complète, chaque carte datée avec URL.",
-        notes="Ne jamais transformer automatiquement un article « France » en incident réunionnais.",
+        notes=(
+            "Inactive depuis la vérification du 12/08/2026 : même refus 403 "
+            "systématique que Zinfos974, robots.txt pourtant permissif. Les "
+            "articles réunionnais restent atteints par REUNION_ENTITY_WATCH."
+        ),
     ),
     SourceSpec(
         source_id="KWEZI_NUMERIQUE",

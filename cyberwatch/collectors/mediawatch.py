@@ -25,14 +25,7 @@ from urllib.parse import urlparse
 
 from .. import status
 from ..normalize import _contains, looks_cyber, searchable
-from .base import (
-    CollectResult,
-    Collector,
-    RawEntry,
-    SourceSpec,
-    Window,
-    coverage_from_days,
-)
+from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
 from .feed import discover_feeds, parse_feed
 
 
@@ -177,14 +170,20 @@ class MediaWatchCollector(Collector):
         )
 
         if not result.reached_boundary:
-            depth = coverage_from_days(all_entries, window)
-            reach = int(round(100 * len(working_domains) / max(1, len(domains))))
-            # La couverture combine profondeur temporelle et médias atteints.
-            result.units_done = min(depth, reach)
-            result.units_expected = 100
+            # La couverture mesure ce que le protocole contrôle : le nombre de
+            # médias effectivement lus. La profondeur d'un flux est une propriété
+            # du média, pas un défaut d'exécution — la mesurer contre une fenêtre
+            # historique donnerait un « 3 % » permanent qui ne dirait rien
+            # d'actionnable. Elle est donc rapportée en clair dans le commentaire,
+            # et la borne non atteinte interdit de toute façon un OK.
+            result.units_done = len(working_domains)
+            result.units_expected = len(domains)
             parts = [
                 f"{len(working_domains)}/{len(domains)} médias interrogés",
-                f"flux remontant au {oldest}" if oldest else "aucune date lue",
+                (
+                    f"flux remontant au {oldest}, début de fenêtre demandé "
+                    f"{window.start}"
+                ) if oldest else "aucune date lue",
             ]
             if failures:
                 parts.append(
