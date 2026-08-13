@@ -33,6 +33,12 @@ jobs:
       - name: Tests unitaires
         run: python -m pytest tests/ -q
 
+      - name: Syntaxe dashboard
+        run: |
+          node --check assets/app.js
+          node --check assets/app-legacy.js
+          node --check assets/dashboard-audit.js
+
       - name: Test de répétabilité (§27)
         run: python -m cyberwatch test-repeat
 
