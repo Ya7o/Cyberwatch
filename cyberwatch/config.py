@@ -368,6 +368,22 @@ HTTP_USER_AGENT_FALLBACK = (
     "+https://github.com/Ya7o/Cyberwatch)"
 )
 
+#: Termes interrogés dans l'API de recherche d'un média sous WordPress.
+#: Un flux RSS ne porte qu'une semaine ; l'API, elle, accepte un filtre de date
+#: et rouvre tout l'historique — à condition de lui dire quoi chercher, sous
+#: peine de rapatrier le journal entier. Cette liste est un filet de rappel
+#: volontairement large : la pertinence est tranchée ensuite par `looks_cyber`,
+#: qui reste seul juge de ce qui entre en base. Elle est fixe, donc le jeu de
+#: requêtes est reproductible d'un run à l'autre (§22).
+MEDIA_SEARCH_TERMS = [
+    "cyberattaque",
+    "piratage",
+    "rançongiciel",
+    "ransomware",
+    "données personnelles",
+    "informatique",
+]
+
 MAX_REQUESTS_PER_SOURCE = 60
 MAX_PAGES_PER_SOURCE = 50
 MAX_SECONDS_PER_SOURCE = 180

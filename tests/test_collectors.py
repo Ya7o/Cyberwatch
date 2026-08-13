@@ -606,6 +606,68 @@ class TestMediaWatch:
         # Chaque entité surveillée est présente, touchée ou non.
         assert len(rows) == 2
 
+    # ----------------------------------------------------------------
+    # Chemin API : c'est lui qui rouvre l'historique.
+    # Le sondage en CI a montré que les trois médias mahorais exposent une
+    # API REST remontant à janvier, quand les médias réunionnais n'offrent
+    # qu'un flux d'une semaine. Le collecteur doit donc préférer l'API quand
+    # elle existe, et le dire dans son compte rendu.
+    # ----------------------------------------------------------------
+
+    def _wp_client(self, posts=None):
+        payload = json.dumps(
+            posts
+            if posts is not None
+            else [
+                {
+                    "id": 7,
+                    "date": "2026-01-15T08:00:00",
+                    "link": "https://media.yt/7",
+                    "title": {"rendered": "Cyberattaque contre le CHU de Mayotte"},
+                    "excerpt": {"rendered": "<p>Rançongiciel.</p>"},
+                }
+            ]
+        )
+        return FakeClient({"media.yt/wp-json/wp/v2/posts": ok(payload)})
+
+    def test_api_wordpress_preferee_au_flux(self):
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = self._wp_client()
+        spec = self._spec(
+            ["media.yt"], [{"name": "CHU de Mayotte", "aliases": []}]
+        )
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert result.access_method == "media-api"
+        assert len(result.entries) == 1
+        assert result.entries[0].published == "2026-01-15"
+        # Fenêtre énumérée de bout en bout : la source peut prétendre à OK.
+        assert result.resolve() == (status.OK, 100)
+
+    def test_api_vide_reste_un_zero_verifie(self):
+        """Une API qui répond sans résultat ne fait pas retomber sur le flux."""
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = self._wp_client(posts=[])
+        spec = self._spec(["media.yt"], [], require_entity=False)
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert result.entries == []
+        assert result.resolve() == (status.OK, 100)
+
+    def test_media_sans_api_reste_limite_a_son_flux(self):
+        """Le flux ne remonte qu'à ses dernières entrées : jamais un OK."""
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        client = FakeClient({"media.re": ok(MEDIA_FEED)})
+        spec = self._spec(["media.re"], [], require_entity=False)
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert result.access_method == "media-feed"
+        assert result.resolve()[0] == status.PARTIAL
+        assert "ne remontant qu'au media.re au 2026-03-04" in result.comment
+
 
 class TestPasDeLocalisationPrerenseignee:
     """Un collecteur ne recopie jamais la règle fixe de la source.
@@ -623,13 +685,13 @@ class TestPasDeLocalisationPrerenseignee:
     )
 
     def test_wordpress(self):
-        from cyberwatch.collectors.wordpress import _entry_from_post
+        from cyberwatch.collectors.wordpress import entry_from_post
 
         post = {
             "date": "2026-05-31T10:00:00", "link": "https://x/1",
             "title": {"rendered": "Air Austral"}, "excerpt": {"rendered": ""},
         }
-        assert _entry_from_post(post, self.SPEC).location == ""
+        assert entry_from_post(post, self.SPEC).location == ""
 
     def test_feed(self):
         entries = parse_feed(RSS_FEED, self.SPEC)

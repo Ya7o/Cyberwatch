@@ -129,7 +129,7 @@ class WordPressCollector(Collector):
                 break
 
             if total_pages is None:
-                total_pages = _total_pages(response)
+                total_pages = total_pages_of(response)
                 result.units_expected = total_pages or 1
 
             payload = response.json()
@@ -138,7 +138,7 @@ class WordPressCollector(Collector):
                 break
 
             for post in payload:
-                entry = _entry_from_post(post, spec)
+                entry = entry_from_post(post, spec)
                 if entry:
                     result.entries.append(entry)
 
@@ -164,7 +164,7 @@ class WordPressCollector(Collector):
         return result
 
 
-def _total_pages(response) -> int | None:
+def total_pages_of(response) -> int | None:
     """Nombre total de pages, lu dans l'en-tête `X-WP-TotalPages`."""
     raw = getattr(response, "headers", None)
     if raw:
@@ -177,7 +177,7 @@ def _total_pages(response) -> int | None:
     return None
 
 
-def _entry_from_post(post: dict, spec: SourceSpec) -> RawEntry | None:
+def entry_from_post(post: dict, spec: SourceSpec) -> RawEntry | None:
     """Convertit un article WordPress en entrée brute."""
     if not isinstance(post, dict):
         return None
