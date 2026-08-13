@@ -400,7 +400,6 @@
     $("#kpi-incidents-note").textContent = rows.length === state.incidents.length
       ? "événements uniques dans la base"
       : "événements recensés pour l’Océan Indien";
-    $("#kpi-orgs").textContent = new Set(rows.map((r) => r.org).filter(Boolean)).size;
 
     const months = monthsRange(rows);
     const perMonth = new Map();

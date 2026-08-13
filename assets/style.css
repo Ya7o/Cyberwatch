@@ -185,7 +185,7 @@ a { color: var(--series-1); }
 
 .kpis { display: grid; margin-top: var(--gap);
   grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
-.kpis-summary { grid-template-columns: repeat(2, 1fr); }
+.kpis-summary { grid-template-columns: minmax(0, 1fr); }
 .kpis-legacy { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); margin-top: var(--gap); }
 .kpis-3 { grid-template-columns: repeat(3, 1fr); }
 .kpi {
