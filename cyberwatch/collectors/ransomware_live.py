@@ -12,6 +12,8 @@ celle qui répond est enregistrée dans `RUN_SOURCES`.
 
 from __future__ import annotations
 
+import re
+
 from .. import config, status
 from ..normalize import parse_date
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
@@ -60,7 +62,15 @@ def _victim_name(value: str) -> str:
     labels = lowered.split(".")
     if len(labels) == 2 and labels[-1] in {"fr", "com", "net", "org", "eu", "io", "co", "re"}:
         return labels[0]
-    return raw
+    raw = re.sub(r"\s*-\s*(?:leaked data|data leak|claimed)\s*$", "", raw, flags=re.I)
+    return raw.replace("-", " ").replace("_", " ").strip()
+
+
+def _normalise_url(value: str) -> str:
+    value = (value or "").strip()
+    if value and not value.startswith(("http://", "https://")) and "." in value:
+        return f"https://{value}"
+    return value
 
 
 class RansomwareLiveCollector(Collector):
@@ -181,7 +191,7 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
 
     return RawEntry(
         title=title,
-        url=_first_field(record, FIELD_ALIASES["url"]),
+        url=_normalise_url(_first_field(record, FIELD_ALIASES["url"])),
         published=published,
         summary=f"Groupe : {group}" if group else "",
         organisation=organisation,

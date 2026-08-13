@@ -196,6 +196,13 @@ a { color: var(--series-1); }
   color: var(--text-secondary);
   cursor: pointer;
 }
+.btn-quick {
+  font: inherit; font-size: 13.5px; padding: 7px 14px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-secondary); cursor: pointer;
+}
+.btn-quick:hover, .btn-quick[aria-pressed="true"] { color: var(--text-primary); border-color: var(--series-1); }
+.btn-quick[aria-pressed="true"] { background: color-mix(in srgb, var(--series-1) 12%, var(--surface)); }
 .btn-reset:hover { color: var(--text-primary); }
 
 /* ------------------------------------------------------------------- KPI */

@@ -141,6 +141,9 @@
       cutoff = date.toISOString().slice(0, 10);
     }
     return state.incidents.filter((incident) => {
+      const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+      const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+      if (ocean && !oceanLocations.has(incident.location)) return false;
       if (cutoff && incident.date < cutoff) return false;
       if (f.location && incident.location !== f.location) return false;
       if (f.sector && incident.sector !== f.sector) return false;
@@ -299,6 +302,7 @@
       searchTimer = setTimeout(() => { state.sourceSearch = event.target.value.trim(); renderSources(); }, 120);
     });
     $("#audit-source-status")?.addEventListener("change", (event) => { state.sourceStatus = event.target.value; renderSources(); });
+    $("#f-ocean-indien")?.addEventListener("click", () => requestAnimationFrame(patchAll));
   }
 
   async function load(path, fallback) {

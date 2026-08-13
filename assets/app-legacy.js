@@ -334,6 +334,9 @@
     }
 
     return incidents.filter((incident) => {
+      const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+      const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+      if (ocean && !oceanLocations.has(incident.location)) return false;
       if (cutoff && incident.date < cutoff) return false;
       // `except` retire un critère du filtrage : sert à recalculer les valeurs
       // encore proposables pour ce critère-là, sans qu'il se restreigne lui-même.
@@ -561,6 +564,12 @@
       $("#f-period").value = "all";
       ["#f-location", "#f-sector", "#f-threat", "#f-source"].forEach((id) => { $(id).value = ""; });
       $("#f-search").value = "";
+      $("#f-ocean-indien")?.setAttribute("aria-pressed", "false");
+      render();
+    });
+    $("#f-ocean-indien")?.addEventListener("click", (event) => {
+      const button = event.currentTarget;
+      button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
       render();
     });
   }
