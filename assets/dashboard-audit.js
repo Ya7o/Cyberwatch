@@ -206,16 +206,19 @@
       const url = safeUrl(source.url);
       const name = sourceLabel(source.id);
       const sourceName = url ? `<a class="source-name" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>` : `<span class="source-name">${esc(name)}</span>`;
-      const measures = source.id === "BONJOURLAFUITE"
-        ? `${source.items_seen ?? 0} vus · ${source.items_in_window ?? 0} fenêtre · ${source.items_collected ?? 0} collectés`
-        : `${source.items_seen ?? 0} vus · ${source.items_collected ?? source.items ?? 0} collectés`;
+      const seen = source.items_seen ?? 0;
+      const inWindow = source.items_in_window ?? source.items_collected ?? source.items ?? 0;
+      const saved = source.items_collected ?? source.items ?? 0;
+      const measures = seen === saved
+        ? `${saved} entrées enregistrées`
+        : `${seen} reçues · ${inWindow} retenues · ${saved} uniques`;
       const control = source.id === "BONJOURLAFUITE" ? "Statut OK/FAIL spécifique · pas de couverture générique" : (source.status === "SKIPPED" ? "Hors périmètre du run" : `Couverture ${source.coverage}%`);
       const latest = source.id === "BONJOURLAFUITE" ? [source.last_recognized_org, source.last_recognized_date].filter(Boolean).join(" · ") : (source.latest_item || "—");
       const detail = source.status === "FAIL" ? (source.error || source.comment || source.reason || "Échec") : (source.comment || source.reason || "");
       return `<tr>
         <td data-label="Source">${sourceName}<div class="source-meta">${esc(source.id)} · ${esc(source.layer || "")}</div></td>
         <td data-label="Statut"><span class="chip" data-status="${esc(source.status)}">${esc(source.status)}</span><div class="source-control">${esc(control)}</div></td>
-        <td data-label="Mesures" class="source-measures">${esc(measures)}</td>
+        <td data-label="Mesures" class="source-measures" title="Reçues : entrées fournies par la source. Retenues : entrées dans le périmètre. Uniques : entrées enregistrées après dédoublonnage.">${esc(measures)}</td>
         <td data-label="Dernier item">${esc(latest)}</td>
         <td data-label="Accès" class="cell-clip">${esc(source.access_method || "—")}</td>
         <td data-label="Détail" class="cell-detail">${esc(detail)}</td>

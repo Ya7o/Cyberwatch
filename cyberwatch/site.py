@@ -100,9 +100,12 @@ def status_payload() -> dict:
                 "items": items,
                 "items_seen": items_seen,
                 "items_collected": items,
-                # Pour BonjourLaFuite V0, Units_Done transporte uniquement le
-                # nombre reconnu dans la fenêtre. Il ne sert jamais au statut.
-                "items_in_window": _to_int(row.get("Items_in_window")) if source_id == "BONJOURLAFUITE" else items,
+                # Les collecteurs exposent ce nombre dans leur commentaire
+                # machine. Il est distinct des éléments finalement uniques en
+                # base : une même entrée peut être dédoublonnée à l'écriture.
+                "items_in_window": _to_int(
+                    _comment_metric(comment, "items_in_window")
+                ) or items,
                 "units_done": units_done,
                 "units_expected": _to_int(row.get("Units_Expected")),
                 "calls": _to_int(row.get("Calls")),
