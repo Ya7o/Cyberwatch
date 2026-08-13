@@ -20,9 +20,7 @@
       </div>
     </div>
     <div class="topbar-right">
-      <!-- L'état de la collecte tient en une pastille : l'utile est ailleurs,
-           et le détail attend en bas de page. -->
-      <a class="run-pill" id="run-pill" href="#fiabilite" title="Voir la fiabilité de la collecte">
+      <a class="run-pill" id="run-pill" href="#fiabilite" title="Voir l’état des sources">
         <span class="run-dot" aria-hidden="true"></span>
         <span id="run-pill-text">Chargement…</span>
       </a>
@@ -37,14 +35,14 @@
 
   <section class="kpis kpis-summary" aria-label="Indicateurs clés">
     <article class="kpi">
-      <h2>Incidents</h2>
+      <h2>Incidents recensés</h2>
       <p class="kpi-value" id="kpi-incidents">—</p>
-      <p class="kpi-note" id="kpi-incidents-note">sur la sélection</p>
+      <p class="kpi-note" id="kpi-incidents-note">événements uniques dans la base</p>
     </article>
     <article class="kpi">
-      <h2>Organisations concernées</h2>
+      <h2>Organisations affectées</h2>
       <p class="kpi-value" id="kpi-orgs">—</p>
-      <p class="kpi-note">organisations distinctes</p>
+      <p class="kpi-note">entités distinctes associées aux incidents</p>
     </article>
   </section>
 
@@ -110,7 +108,7 @@
        sujet : elle attend repliée en bas de page. -->
   <details class="card reliability" id="fiabilite">
     <summary>
-      <span class="reliability-title">Fiabilité de la collecte</span>
+      <span class="reliability-title">État des sources</span>
       <span class="reliability-summary" id="reliability-summary"></span>
     </summary>
 

@@ -360,16 +360,20 @@
 
     const run = data.run;
     const c = data.counts;
+    const totalSources = (data.sources || []).length || c.ok + c.partial + c.fail + c.skipped;
+    const needsAttention = c.partial + c.fail;
     pill.dataset.status = run.overall;
-    text.textContent = `Collecte ${LABELS[run.overall] || run.overall} · ${run.health}/100`;
-    pill.title = (data.labels.run_status && data.labels.run_status[run.overall]) || "";
+    text.textContent = needsAttention
+      ? `Sources : ${c.ok}/${totalSources} opérationnelles · ${needsAttention} à vérifier`
+      : `Sources : ${c.ok}/${totalSources} opérationnelles`;
+    pill.title = "Voir l’état détaillé des sources";
 
 
     const spots = data.blind_spots || [];
     $("#reliability-summary").textContent =
-      `${c.ok} source${c.ok > 1 ? "s" : ""} complète${c.ok > 1 ? "s" : ""}, `
-      + `${c.partial} partielle${c.partial > 1 ? "s" : ""}, ${c.fail} en échec`
-      + (spots.length ? ` · ${spots.length} angle${spots.length > 1 ? "s" : ""} mort${spots.length > 1 ? "s" : ""}` : "");
+      needsAttention
+        ? `${c.ok}/${totalSources} sources opérationnelles · ${needsAttention} à vérifier`
+        : `${c.ok}/${totalSources} sources opérationnelles · aucune anomalie signalée`;
 
     const box = $("#blindspots");
     if (!spots.length) {
@@ -393,8 +397,9 @@
     }
 
     $("#kpi-incidents").textContent = rows.length;
-    $("#kpi-incidents-note").textContent =
-      rows.length === state.incidents.length ? "sur l'ensemble de la base" : "sur la sélection";
+    $("#kpi-incidents-note").textContent = rows.length === state.incidents.length
+      ? "événements uniques dans la base"
+      : "événements recensés pour l’Océan Indien";
     $("#kpi-orgs").textContent = new Set(rows.map((r) => r.org).filter(Boolean)).size;
 
     const months = monthsRange(rows);

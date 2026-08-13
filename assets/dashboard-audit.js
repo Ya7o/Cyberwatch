@@ -84,7 +84,7 @@
 
   function restructure() {
     installCss();
-    if ($(".reliability-title")) $(".reliability-title").textContent = "Sources & fiabilité";
+    if ($(".reliability-title")) $(".reliability-title").textContent = "État des sources";
     const incidentCard = $("#incidents-table")?.closest("section.card");
     if (incidentCard) incidentCard.classList.add("incidents-card");
 
@@ -216,10 +216,11 @@
     if (!data || !data.run) return;
     const run = data.run;
     const c = data.counts || { ok: 0, partial: 0, fail: 0, skipped: 0 };
-    const executed = c.ok + c.partial + c.fail;
-    if ($("#run-pill-text")) $("#run-pill-text").textContent = run.overall === "HEALTHY" ? `Collecte OK · ${executed} source${executed > 1 ? "s" : ""}` : `Collecte à vérifier · ${c.partial + c.fail} source${c.partial + c.fail > 1 ? "s" : ""}`;
-    if ($("#run-pill")) $("#run-pill").title = `Run ${run.mode} · score global ${run.health}/100 · ${c.skipped} source(s) hors périmètre`;
-    if ($("#reliability-summary")) $("#reliability-summary").textContent = `${executed} exécutée${executed > 1 ? "s" : ""} · ${c.ok} OK · ${c.partial} partielle${c.partial > 1 ? "s" : ""} · ${c.fail} échec${c.fail > 1 ? "s" : ""} · ${c.skipped} hors run`;
+    const totalSources = (data.sources || []).length || c.ok + c.partial + c.fail + c.skipped;
+    const needsAttention = c.partial + c.fail;
+    if ($("#run-pill-text")) $("#run-pill-text").textContent = needsAttention ? `Sources : ${c.ok}/${totalSources} opérationnelles · ${needsAttention} à vérifier` : `Sources : ${c.ok}/${totalSources} opérationnelles`;
+    if ($("#run-pill")) $("#run-pill").title = "Voir l’état détaillé des sources";
+    if ($("#reliability-summary")) $("#reliability-summary").textContent = needsAttention ? `${c.ok}/${totalSources} sources opérationnelles · ${needsAttention} à vérifier` : `${c.ok}/${totalSources} sources opérationnelles · aucune anomalie signalée`;
   }
 
   function patchAll() {
