@@ -18,7 +18,7 @@ on:
         description: "Commande à exécuter"
         type: choice
         default: maj
-        options: [maj, create, diagnose, replay, probe]
+        options: [maj, create, diagnose, replay, probe, probe-media]
       layers:
         description: "Couches (core, local_media, watch, all)"
         type: string
@@ -28,7 +28,7 @@ on:
         type: string
         default: ""
       source:
-        description: "Source_ID à sonder (mode probe uniquement)"
+        description: "Source_ID à sonder (mode probe), ou domaines (mode probe-media)"
         type: string
         default: ""
 
@@ -72,6 +72,17 @@ jobs:
             echo "start=" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Distinguer les modes qui écrivent des données
+        id: kind
+        # diagnose, probe et probe-media n'écrivent rien : ni récapitulatif de
+        # run, ni publication. Les lister une seule fois ici évite d'oublier
+        # l'un d'eux dans une condition et de publier un commit vide.
+        run: |
+          case "${{ steps.scope.outputs.mode }}" in
+            diagnose|probe|probe-media) echo "writes=false" >> "$GITHUB_OUTPUT" ;;
+            *)                          echo "writes=true"  >> "$GITHUB_OUTPUT" ;;
+          esac
+
       - name: Collecter
         id: run
         # Un run DEGRADED ou BROKEN ne doit pas faire échouer le job : les
@@ -90,6 +101,12 @@ jobs:
               python -m cyberwatch probe "$SRC" $ARGS
               echo
             done
+          elif [ "${{ steps.scope.outputs.mode }}" = "probe-media" ]; then
+            ONLY=""
+            if [ -n "${{ inputs.source }}" ]; then
+              ONLY="--only ${{ inputs.source }}"
+            fi
+            python -m cyberwatch probe-media $ONLY $ARGS
           elif [ "${{ steps.scope.outputs.mode }}" = "diagnose" ]; then
             python -m cyberwatch diagnose --layers "${{ steps.scope.outputs.layers }}" $ARGS
           else
@@ -98,11 +115,11 @@ jobs:
           fi
 
       - name: Récapitulatif du run
-        if: always() && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe'
+        if: always() && steps.kind.outputs.writes == 'true'
         run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publier les données
-        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe'
+        if: steps.kind.outputs.writes == 'true'
         run: |
           git config user.name  "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

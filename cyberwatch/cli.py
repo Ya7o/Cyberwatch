@@ -343,6 +343,99 @@ def cmd_probe(args) -> int:
     return 0
 
 
+def cmd_probe_media(args) -> int:
+    """Teste, média par média, quel chemin d'accès offre le plus d'historique.
+
+    Les couches de veille lisent aujourd'hui les flux RSS, qui ne portent que
+    quelques semaines. Un média sous WordPress expose en revanche une API REST
+    filtrable par date, donc tout son historique. Cette commande dit lesquels
+    l'offrent, et jusqu'où chacun remonte réellement.
+    """
+    from .collectors.base import SourceSpec
+    from .collectors.feed import discover_feeds, parse_feed
+    from .collectors.wordpress import discover_endpoint
+
+    domains: list[tuple[str, str]] = []
+    for spec in sources.ALL_SOURCES:
+        for domain in spec.params.get("domains") or []:
+            if (spec.zone, domain) not in domains:
+                domains.append((spec.zone, domain))
+    if args.only:
+        wanted = {d.strip() for d in args.only.split(",")}
+        domains = [(z, d) for z, d in domains if d in wanted]
+
+    context = make_run_context(MODE_DIAGNOSE, args.as_of, args.start)
+    window = context.window
+    # Une vingtaine de requêtes par média : découverte de l'API, puis essai des
+    # chemins de flux conventionnels. Le budget est dimensionné pour que le
+    # dernier média sondé le soit aussi complètement que le premier.
+    client = HttpClient(run_budget=Budget(40 * max(1, len(domains)), 1500))
+
+    print(f"PROBE MEDIA — fenêtre {window.start} -> {window.end}")
+    print(f"{len(domains)} médias à sonder")
+    print()
+    header = f"{'Média':34} {'Territoire':14} {'API WP':7} {'Flux':6} {'Remonte au':12} Détail"
+    print(header)
+    print("-" * len(header))
+
+    usable = []
+    for zone, domain in domains:
+        base = domain if domain.startswith("http") else f"https://{domain}/"
+        budget = client.source_budget()
+        spec = SourceSpec("PROBE", "X", zone, base, "autodetect")
+
+        endpoint = discover_endpoint(client, base, budget)
+        wp_depth, wp_count, detail = "", 0, ""
+        if endpoint:
+            url = (f"{endpoint}/posts?per_page=100&orderby=date&order=asc"
+                   f"&after={window.start}T00:00:00&_fields=id,date")
+            response = client.fetch(url, budget)
+            payload = response.json() if response.ok else None
+            if isinstance(payload, list) and payload:
+                from .normalize import parse_date
+
+                wp_count = len(payload)
+                wp_depth = parse_date(payload[0].get("date"))
+                pages = response.headers.get("X-WP-TotalPages", "?")
+                detail = f"{pages} page(s) sur la fenêtre"
+            elif response.ok:
+                detail = "API présente mais aucun article sur la fenêtre"
+            else:
+                detail = f"API présente, lecture {response.reason_code}"
+
+        feed_depth = ""
+        for feed_url in discover_feeds(client, base, budget)[:4]:
+            response = client.fetch(feed_url, budget)
+            if not response.ok:
+                continue
+            entries = parse_feed(response.text, spec)
+            if entries:
+                feed_depth = min(e.published for e in entries if e.published)
+                break
+
+        deepest = wp_depth or feed_depth
+        print(f"{domain[:33]:34} {zone[:13]:14} "
+              f"{'oui' if endpoint else 'non':7} {'oui' if feed_depth else 'non':6} "
+              f"{deepest or '—':12} {detail}")
+        if wp_depth:
+            usable.append((domain, wp_depth, wp_count))
+
+    print()
+    if usable:
+        print("Médias exposant une API WordPress exploitable :")
+        for domain, depth, count in usable:
+            print(f"  {domain:34} historique jusqu'au {depth}, {count}+ articles")
+        print()
+        print("-> basculer ces médias sur le collecteur WordPress rouvrirait "
+              "l'historique complet, là où leur flux ne porte que quelques semaines.")
+    else:
+        print("Aucun média n'expose d'API WordPress exploitable : la veille reste "
+              "limitée à la profondeur des flux.")
+    print()
+    print(f"Total requêtes : {client.run_budget.requests_made}")
+    return 0
+
+
 def cmd_report(args) -> int:
     """Résumé Markdown du dernier run, pour le récapitulatif GitHub Actions."""
     run_log = store.load_run_log()
@@ -466,6 +559,17 @@ def build_parser() -> argparse.ArgumentParser:
     probe.add_argument("source", help="Source_ID à sonder.")
     add_common(probe, with_layers=False)
     probe.set_defaults(func=cmd_probe)
+
+    probe_media = subparsers.add_parser(
+        "probe-media",
+        help="Comparer, média par média, la profondeur offerte par l'API "
+             "WordPress et par le flux RSS.",
+    )
+    probe_media.add_argument(
+        "--only", help="Ne sonder que ces domaines (séparés par des virgules)."
+    )
+    add_common(probe_media, with_layers=False)
+    probe_media.set_defaults(func=cmd_probe_media)
 
     check = subparsers.add_parser("check", help="Rejouer les contrôles du §29.")
     check.set_defaults(func=cmd_check)
