@@ -1,4 +1,4 @@
-name: Vérification BonjourLaFuite
+name: Audit dédup BonjourLaFuite
 
 on:
   push:
@@ -6,94 +6,41 @@ on:
     paths:
       - .github/workflows/verify-bonjourlafuite.yml
 
-permissions:
-  contents: write
-
 jobs:
-  verify:
+  audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
           ref: agent/bonjourlafuite-status-v0
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
-
-      - name: Installer les dépendances
-        run: pip install -r requirements.txt
-
-      - name: Réinitialiser complètement la base
-        run: |
-          rm -f data/*.csv
-          rm -f assets/data/*.json
-          echo "Base supprimée avant CREATE."
-
-      - name: CREATE 2026 depuis une base vide
-        shell: bash
-        run: |
-          set +e
-          python -m cyberwatch create --layers core --start 2026-01-01
-          rc=$?
-          echo "CLI exit code: $rc"
-          test -f data/items.csv
-          test -f data/incidents.csv
-          test -f data/run_sources.csv
-
-      - name: Vérifier BonjourLaFuite dans la base
+      - name: Auditer les regroupements
         run: |
           python - <<'PY'
           import csv, json
-          from pathlib import Path
+          from cyberwatch.model import Item
+          from cyberwatch.dedup import build_incidents
 
-          def rows(path):
-              with Path(path).open(encoding="utf-8", newline="") as f:
-                  return list(csv.DictReader(f))
-
-          run_sources = rows("data/run_sources.csv")
-          items = rows("data/items.csv")
-          incidents = rows("data/incidents.csv")
-          run_log = rows("data/run_log.csv")
-
-          blf = [r for r in run_sources if r.get("Source_ID") == "BONJOURLAFUITE"]
-          assert len(blf) == 1, f"attendu 1 résultat BONJOURLAFUITE, obtenu {len(blf)}"
-          r = blf[0]
-          blf_items = [i for i in items if i.get("Source_ID") == "BONJOURLAFUITE"]
-          blf_2026 = [i for i in blf_items if (i.get("Published_Date") or "").startswith("2026-")]
-          blf_incidents = [
-              i for i in incidents
-              if "BONJOURLAFUITE" in (i.get("Sources") or "").split(" | ")
+          with open("data/items.csv", encoding="utf-8", newline="") as f:
+              raw = list(csv.DictReader(f))
+          items = [Item.from_row(r) for r in raw if r.get("Source_ID") == "BONJOURLAFUITE"]
+          incidents = build_incidents(items)
+          grouped = [
+              {
+                  "date": i.Date,
+                  "organisation": i.Organisation,
+                  "items_count": i.Items_Count,
+                  "urls": i.Source_URLs,
+              }
+              for i in incidents if i.Items_Count > 1
           ]
-
-          summary = {
-              "run_id": run_log[-1].get("Run_ID") if run_log else "",
-              "status": r.get("Status"),
-              "items_seen": int(r.get("Items_seen") or 0),
-              "items_in_window": int(r.get("Units_Done") or 0),
-              "items_collected": int(r.get("Items_collected") or 0),
-              "latest_item_date": r.get("Latest_item_date"),
-              "comment": r.get("Comment"),
-              "db_items_bonjourlafuite": len(blf_items),
-              "db_items_bonjourlafuite_2026": len(blf_2026),
-              "db_incidents_containing_bonjourlafuite": len(blf_incidents),
-              "db_total_items": len(items),
-              "db_total_incidents": len(incidents),
-          }
-          print("BONJOURLAFUITE_VERIFY=" + json.dumps(summary, ensure_ascii=False, sort_keys=True))
-
-          assert summary["status"] in {"OK", "FAIL"}
-          assert summary["items_seen"] >= summary["items_in_window"]
-          assert summary["items_collected"] == len(blf_items)
-          assert summary["items_in_window"] == len(blf_2026)
+          print("BLF_ONLY_ITEMS=", len(items))
+          print("BLF_ONLY_INCIDENTS=", len(incidents))
+          print("BLF_GROUPED=" + json.dumps(grouped, ensure_ascii=False, sort_keys=True))
+          print("REDUCTION=", len(items) - len(incidents))
+          assert len(items) == 313
+          assert len(incidents) == 310
+          assert len(items) - len(incidents) == 3
           PY
-
-      - name: Publier la base reconstruite
-        run: |
-          git config user.name "cyberwatch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data assets/data
-          git commit -m "data: reset et CREATE vérification BonjourLaFuite" || exit 0
-          git push origin HEAD:agent/bonjourlafuite-status-v0
