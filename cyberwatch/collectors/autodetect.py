@@ -1,12 +1,10 @@
-"""Chaîne d'accès automatique : WordPress → flux → JSON-LD.
+"""Chaîne d'accès automatique : cas dédiés puis WordPress → flux → JSON-LD.
 
-C'est la réponse au problème central du projet : les structures HTML des sites
-sources ne sont pas connues à l'avance et changent avec le temps. Plutôt que
-d'écrire un parser sur mesure par site, on essaie successivement trois formats
-standardisés et l'on **enregistre celui qui a fonctionné** dans `RUN_SOURCES`.
-
-Le dashboard affiche cette méthode d'accès : on sait donc à tout moment par
-quel chemin chaque source est réellement lue.
+Les sources génériques suivent la chaîne standardisée. Une source peut toutefois
+avoir un contrat fonctionnel propre lorsque sa structure et son indicateur de
+santé sont explicitement définis. BonjourLaFuite est le seul cas dédié de la V0 :
+son statut dépend de la reconnaissance des blocs de timeline, pas de la borne de
+la fenêtre.
 """
 
 from __future__ import annotations
@@ -19,11 +17,14 @@ from .wordpress import WordPressCollector
 
 
 class AutodetectCollector(Collector):
-    """Essaie chaque collecteur générique et retient le meilleur résultat.
+    """Route les cas dédiés, sinon essaie les collecteurs génériques.
 
-    « Meilleur » signifie : le premier qui atteint la borne de date. À défaut,
-    celui qui a ramené le plus d'entrées — un résultat partiel exploitable vaut
-    mieux qu'un échec, à condition d'être déclaré `PARTIAL`.
+    Pour les sources génériques, « meilleur » signifie : le premier chemin qui
+    atteint la borne de date. À défaut, celui qui a ramené le plus d'entrées —
+    un résultat partiel exploitable vaut mieux qu'un échec déclaré à tort OK.
+
+    BonjourLaFuite ne passe jamais par cette logique de borne/couverture : le
+    collecteur dédié implémente strictement son contrat OK/FAIL V0.
     """
 
     name = "autodetect"
@@ -32,6 +33,13 @@ class AutodetectCollector(Collector):
     CHAIN = [WordPressCollector, FeedCollector, JsonLdCollector]
 
     def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
+        if spec.source_id == "BONJOURLAFUITE":
+            # Import local pour ne pas introduire de dépendance circulaire dans
+            # le registre générique des collecteurs.
+            from .bonjourlafuite import BonjourLaFuiteCollector
+
+            return BonjourLaFuiteCollector().collect(client, spec, window)
+
         attempts: list[CollectResult] = []
         total_calls = 0
 

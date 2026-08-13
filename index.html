@@ -35,6 +35,51 @@
 
 <div class="wrap">
 
+  <!-- V0 source-spécifique : aucune notion de PARTIAL, EMPTY, health score ou
+       borne de couverture n'entre dans cet indicateur. -->
+  <section class="card" id="bonjour-v0" aria-labelledby="bonjour-title">
+    <div class="card-head">
+      <div>
+        <h2 id="bonjour-title">BonjourLaFuite — état du collecteur</h2>
+        <p class="muted">
+          V0 : OK dès qu'au moins un bloc avec date valide et organisation est reconnu,
+          indépendamment des nouveaux incidents présents dans la fenêtre.
+        </p>
+      </div>
+      <span class="chip" id="bonjour-status" data-status="">—</span>
+    </div>
+
+    <section class="kpis" aria-label="Indicateurs BonjourLaFuite">
+      <article class="kpi">
+        <h2>Items_seen</h2>
+        <p class="kpi-value" id="bonjour-seen">—</p>
+        <p class="kpi-note">blocs reconnus sur la page</p>
+      </article>
+      <article class="kpi">
+        <h2>Items_in_window</h2>
+        <p class="kpi-value" id="bonjour-window">—</p>
+        <p class="kpi-note">blocs reconnus dans la fenêtre</p>
+      </article>
+      <article class="kpi">
+        <h2>Items_collected</h2>
+        <p class="kpi-value" id="bonjour-collected">—</p>
+        <p class="kpi-note">items matérialisés après contrôles</p>
+      </article>
+      <article class="kpi">
+        <h2>Dernier item reconnu</h2>
+        <p class="kpi-value kpi-value-sm" id="bonjour-latest">—</p>
+        <p class="kpi-note" id="bonjour-latest-date">—</p>
+      </article>
+      <article class="kpi">
+        <h2>Dernier run</h2>
+        <p class="kpi-value kpi-value-sm" id="bonjour-run">—</p>
+        <p class="kpi-note">date du compte rendu affiché</p>
+      </article>
+    </section>
+
+    <p id="bonjour-error" class="muted" role="alert" hidden></p>
+  </section>
+
   <section class="kpis" aria-label="Indicateurs clés">
     <article class="kpi">
       <h2>Incidents</h2>
@@ -199,5 +244,58 @@
 <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
 
 <script src="assets/app.js"></script>
+<script>
+(() => {
+  "use strict";
+
+  const setText = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value ?? "—";
+  };
+
+  const formatRun = (value) => {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value).slice(0, 10);
+    return date.toLocaleString("fr-FR", {
+      day: "2-digit", month: "2-digit", year: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
+  };
+
+  async function renderBonjourStatus() {
+    const statusNode = document.getElementById("bonjour-status");
+    const errorNode = document.getElementById("bonjour-error");
+
+    try {
+      const response = await fetch("assets/data/status.json", { cache: "no-cache" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const payload = await response.json();
+      const source = payload.bonjourlafuite || {};
+
+      const sourceStatus = source.status || "—";
+      statusNode.textContent = sourceStatus;
+      statusNode.dataset.status = sourceStatus;
+      setText("bonjour-seen", source.items_seen ?? 0);
+      setText("bonjour-window", source.items_in_window ?? 0);
+      setText("bonjour-collected", source.items_collected ?? 0);
+      setText("bonjour-latest", source.last_recognized_org || "—");
+      setText("bonjour-latest-date", source.last_recognized_date || "—");
+      setText("bonjour-run", formatRun(source.last_run));
+
+      const message = sourceStatus === "FAIL" ? (source.error || "Échec du collecteur") : "";
+      errorNode.hidden = !message;
+      errorNode.textContent = message ? `Erreur : ${message}` : "";
+    } catch (error) {
+      statusNode.textContent = "FAIL";
+      statusNode.dataset.status = "FAIL";
+      errorNode.hidden = false;
+      errorNode.textContent = `Erreur : état BonjourLaFuite indisponible (${error.message})`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", renderBonjourStatus);
+})();
+</script>
 </body>
 </html>
