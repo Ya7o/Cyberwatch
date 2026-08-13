@@ -313,11 +313,27 @@
 
   // --------------------------------------------------------- action rapide
 
+  const AUTOMOTIVE_ORGS = new Set(["groupe courtois automobiles"]);
+  const LARGE_RETAIL_ORGS = new Set([
+    "auchan", "intermarché", "intermarché drive", "lidl", "magasins u",
+    "système u", "super u",
+  ]);
+
+  function orgKey(value) {
+    return String(value || "").trim().toLocaleLowerCase("fr-FR");
+  }
+
   function applyFilters(incidents) {
     return incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+      const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
+      const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
+      if ((automotive || largeRetail) && !(
+        (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
+        || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
+      )) return false;
       return true;
     });
   }
@@ -389,17 +405,20 @@
 
   function renderGeneral() {
     const rows = applyFilters(state.incidents);
-    const oceanButton = $("#f-ocean-indien");
-    if (oceanButton?.getAttribute("aria-pressed") === "true") {
-      oceanButton.textContent = `Océan Indien · ${rows.length}`;
-    } else if (oceanButton) {
-      oceanButton.textContent = "Voir l’Océan Indien";
-    }
+    const quickButtons = [
+      ["#f-ocean-indien", "Voir l’Océan Indien"],
+      ["#f-auto", "Concessions automobiles"],
+      ["#f-grande-distrib", "Grande distribution"],
+    ];
+    quickButtons.forEach(([id, label]) => {
+      const button = $(id);
+      if (button) button.textContent = button.getAttribute("aria-pressed") === "true" ? `${label} · ${rows.length}` : label;
+    });
 
     $("#kpi-incidents").textContent = rows.length;
     $("#kpi-incidents-note").textContent = rows.length === state.incidents.length
       ? "événements uniques dans la base"
-      : "événements recensés pour l’Océan Indien";
+      : "événements correspondant au filtre actif";
 
     const months = monthsRange(rows);
     const perMonth = new Map();
@@ -496,12 +515,12 @@
   // ----------------------------------------------------------- interactions
 
   function setupFilters() {
-    $("#f-ocean-indien")?.addEventListener("click", (event) => {
+    ["#f-ocean-indien", "#f-auto", "#f-grande-distrib"].forEach((id) => $(id)?.addEventListener("click", (event) => {
       const button = event.currentTarget;
       button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
       document.dispatchEvent(new Event("cyberwatch:filters-changed"));
       render();
-    });
+    }));
   }
 
   function setupSorting() {

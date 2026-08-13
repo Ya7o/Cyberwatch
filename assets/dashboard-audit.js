@@ -13,6 +13,12 @@
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  const AUTOMOTIVE_ORGS = new Set(["groupe courtois automobiles"]);
+  const LARGE_RETAIL_ORGS = new Set([
+    "auchan", "intermarché", "intermarché drive", "lidl", "magasins u",
+    "système u", "super u",
+  ]);
+  const orgKey = (value) => String(value || "").trim().toLocaleLowerCase("fr-FR");
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[ch]));
@@ -93,8 +99,14 @@
   function filteredIncidents() {
     return state.incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+      const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
+      const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
+      if ((automotive || largeRetail) && !(
+        (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
+        || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
+      )) return false;
       return true;
     });
   }
