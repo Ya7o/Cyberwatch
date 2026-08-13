@@ -19,7 +19,9 @@ import sys
 
 from . import config, identity, site, sources, status, store
 from .collectors.base import Window
+from .collectors.cyberattaque_org import repair_existing_identities
 from .dedup import build_incidents
+from .duplicate_audit import find_duplicate_candidates
 from .http import Budget, HttpClient
 from .runner import (
     MODE_CREATE,
@@ -123,6 +125,21 @@ def cmd_replay(args) -> int:
     else:
         print("  Reconstruction identique : transformation ITEMS -> INCIDENTS stable.")
     site.build()
+    return 0
+
+
+def cmd_repair_identities(args) -> int:
+    """Applique les corrections déterministes du parseur aux items existants."""
+    items, changed = repair_existing_identities(store.load_items())
+    ids = [item.Item_ID for item in items]
+    if len(ids) != len(set(ids)):
+        print("Réparation annulée : collision d'Item_ID détectée.")
+        return 1
+    incidents = build_incidents(items)
+    store.save_items(identity.sort_items(items))
+    store.save_incidents(incidents)
+    site.build()
+    print(f"Réparation des identités : {changed} item(s) corrigé(s), {len(incidents)} incidents reconstruits.")
     return 0
 
 
@@ -492,6 +509,23 @@ def cmd_build_site(args) -> int:
     return 0
 
 
+def cmd_audit_duplicates(args) -> int:
+    """Affiche les rapprochements d'organisations à examiner, sans mutation."""
+    candidates = find_duplicate_candidates(store.load_items(), max_days=args.max_days)
+    print(f"Audit doublons potentiels — {len(candidates)} candidat(s), aucun rapprochement appliqué.")
+    for candidate in candidates:
+        short, long = candidate.short, candidate.long
+        print()
+        print(f"- Nom court : {short.Organisation_Raw} ({short.Organisation_Key})")
+        print(f"  Nom long  : {long.Organisation_Raw} ({long.Organisation_Key})")
+        print(f"  Dates     : {short.best_date} / {long.best_date} (écart {candidate.days_apart} j)")
+        print(f"  Menaces   : {short.Threat} / {long.Threat}")
+        print(f"  Sources   : {short.Source_ID} / {long.Source_ID}")
+        print(f"  URLs      : {short.URL} | {long.URL}")
+        print("  Motif     : inclusion de mots, sources différentes, date et menace compatibles")
+    return 0
+
+
 def cmd_check(args) -> int:
     items = store.load_items()
     incidents = store.load_incidents()
@@ -554,6 +588,11 @@ def build_parser() -> argparse.ArgumentParser:
     add_common(replay, with_layers=False)
     replay.set_defaults(func=cmd_replay)
 
+    repair = subparsers.add_parser(
+        "repair-identities", help="Appliquer les corrections déterministes aux ITEMS existants."
+    )
+    repair.set_defaults(func=cmd_repair_identities)
+
     repeat = subparsers.add_parser("test-repeat", help="Test de répétabilité (§27).")
     repeat.set_defaults(func=cmd_test_repeat)
 
@@ -566,6 +605,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     build = subparsers.add_parser("build-site", help="Régénérer les données du site.")
     build.set_defaults(func=cmd_build_site)
+
+    duplicate_audit = subparsers.add_parser(
+        "audit-duplicates", help="Signaler des doublons potentiels sans les fusionner."
+    )
+    duplicate_audit.add_argument(
+        "--max-days", type=int, default=3,
+        help="Écart maximal entre dates, en jours (défaut : 3).",
+    )
+    duplicate_audit.set_defaults(func=cmd_audit_duplicates)
 
     report = subparsers.add_parser("report", help="Résumé Markdown du dernier run.")
     report.set_defaults(func=cmd_report)

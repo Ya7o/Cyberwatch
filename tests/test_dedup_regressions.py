@@ -1,7 +1,7 @@
 """Régressions de normalisation prouvées par l'audit multi-source."""
 
 from cyberwatch.collectors.ransomware_live import _victim_name
-from cyberwatch.collectors.cyberattaque_org import organisation_from_title
+from cyberwatch.collectors.cyberattaque_org import organisation_from_title, repair_existing_identities
 from cyberwatch.normalize import organisation_key
 
 
@@ -18,6 +18,34 @@ def test_ransomware_domain_is_canonicalized_before_identity():
 
 def test_cyberattaque_title_extracts_the_victim_prefix():
     assert organisation_from_title("GitHub touché par une cyberattaque") == "GitHub"
+
+
+def test_cyberattaque_removes_compound_editorial_tail_before_victim():
+    assert organisation_from_title("Biosynex annonce être victime d’une fuite") == "Biosynex"
+
+
+def test_cyberattaque_removes_informs_clients_editorial_tail():
+    assert organisation_from_title("Europ Camera informe ses clients d’une fuite") == "Europ Camera"
+
+
+def test_cyberattaque_removes_opens_breach_series_editorial_tail():
+    assert organisation_from_title("Roussel Agri62 ouvre la série de fuites BLGCloud") == "Roussel Agri62"
+    assert organisation_from_title("Roussel Agri62 ouvre la serie de fuites BLGCloud") == "Roussel Agri62"
+
+
+def test_cyberattaque_does_not_truncate_a_name_without_editorial_tail():
+    assert organisation_from_title("Annonce France : incident de sécurité") == "Annonce France"
+
+
+def test_existing_cyberattaque_item_is_repaired_with_a_new_identity(make_item):
+    item = make_item(
+        source="CYBERATTAQUE_ORG", org="Biosynex annonce être",
+        url="https://example.org/biosynex", title="Biosynex annonce être victime d’une fuite",
+    )
+    repaired, changed = repair_existing_identities([item])
+    assert changed == 1
+    assert repaired[0].Organisation_Raw == "Biosynex"
+    assert repaired[0].Organisation_Key == "biosynex"
 
 def test_ransomware_technical_suffix_is_removed():
     assert _victim_name("PC SOFT FRANCE - Leaked data") == "PC SOFT FRANCE"
