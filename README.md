@@ -7,6 +7,36 @@ mais désactivés.
 
 **Dashboard : https://ya7o.github.io/Cyberwatch/**
 
+## Bootstrap et exploitation
+
+Les seules sources actives sont `BONJOURLAFUITE`, `FRENCHBREACHES`,
+`CYBERATTAQUE_ORG`, `RANSOMWARE_LIVE` et `KWEZI_NUMERIQUE`.
+
+Une base neuve suit obligatoirement cette séquence :
+
+```bash
+python -m cyberwatch create
+python -m cyberwatch check
+python -m cyberwatch test-repeat
+python -m cyberwatch test-live-repeat
+python -m cyberwatch baseline
+python -m cyberwatch build-site
+```
+
+`maj` est uniquement une mise à jour d'un corpus existant : elle refuse de
+démarrer sans `snapshot.json`, `items.csv` et `incidents.csv` cohérents. La CI
+code utilise `python -m cyberwatch check --allow-uninitialized` et accepte donc
+une base totalement neuve, mais jamais des fichiers partiels.
+
+Les états sont explicites : **base non initialisée** (aucun snapshot ni CSV),
+**base valide** (provenance et hashes cohérents), **base incohérente** (fichiers
+partiels ou divergents), **run BROKEN** (journal de diagnostic sans remplacement
+du snapshot), et **baseline** (snapshot également validé par Live Repeat).
+
+Un `CREATE` BROKEN ne publie pas de snapshot. Une fois la baseline créée, la
+collecte quotidienne de 08:00 heure Réunion peut lancer `python -m cyberwatch maj`.
+Le full scan hebdomadaire ne sera réintroduit qu'avec les couches Watch.
+
 > Cette base ne prétend pas représenter toutes les cyberattaques réelles. Elle vise
 > la liste la plus large possible des incidents *publiquement listés*, avec une
 > **couverture mesurable** et un protocole **reproductible**.

@@ -42,8 +42,8 @@ jobs:
       - name: Test de répétabilité (§27)
         run: python -m cyberwatch test-repeat
 
-      - name: Contrôles avant export (§29)
-        run: python -m cyberwatch check
+      - name: Contrôles structurels (§29)
+        run: python -m cyberwatch check --allow-uninitialized
 
       - name: Cohérence du référentiel des sources
         run: |
@@ -55,7 +55,8 @@ jobs:
           assert len(ids) == len(set(ids)), "Source_ID dupliqué dans le référentiel"
 
           for spec in specs:
-              assert spec.layer in config.LAYER_WEIGHTS, f"{spec.source_id}: couche inconnue"
+              known_layers = {layer for group in config.LAYER_GROUPS.values() for layer in group} | {config.LAYER_DISABLED}
+              assert spec.layer in known_layers, f"{spec.source_id}: couche inconnue"
               if spec.active:
                   assert spec.protocol, f"{spec.source_id}: protocole non documenté"
                   assert spec.success_test, f"{spec.source_id}: test de succès non documenté"

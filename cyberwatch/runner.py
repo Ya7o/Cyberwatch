@@ -543,8 +543,7 @@ class RunReport:
     new_incidents: int = 0
     items_hash: str = ""
     incidents_hash: str = ""
-    overall: str = status.HEALTHY
-    health: int = 0
+    overall: str = status.OK
     problems: list[str] = field(default_factory=list)
     duration: float = 0.0
     requests: int = 0
@@ -622,8 +621,13 @@ def execute(
     )
     report.items_hash = identity.items_hash(report.items)
     report.incidents_hash = identity.incidents_hash(report.incidents)
-    report.health = 100 if report.outcomes and all(o.status == status.OK for o in report.outcomes) else 0
-    report.overall = "OK" if report.health == 100 else status.BROKEN
+    # Le statut global est volontairement binaire : tout le périmètre actif
+    # doit être OK, sinon le run est BROKEN et ne peut pas publier un snapshot.
+    report.overall = (
+        status.OK
+        if report.outcomes and all(o.status == status.OK for o in report.outcomes)
+        else status.BROKEN
+    )
     report.problems = pre_export_checks(
         report.items, report.incidents, report.outcomes
     )

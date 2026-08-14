@@ -60,7 +60,6 @@ def _print_summary(report) -> None:
         f"{counts.get(status.FAIL, 0)} FAIL · "
         f"{counts.get(status.SKIPPED, 0)} hors périmètre"
     )
-    print(f"  Health score  : {report.health}/100")
     labels = {**status.RUN_STATUS_LABELS, status.OK: "Toutes les sources actives sont reconnues"}
     print(f"  Statut global : {report.overall} — {labels.get(report.overall, report.overall)}")
     print(f"  Items_Hash    : {report.items_hash[:32]}")
@@ -99,6 +98,16 @@ def cmd_create(args) -> int:
 
 
 def cmd_maj(args) -> int:
+    base_state, details = store.snapshot_state()
+    if base_state != store.BASE_VALID:
+        print("ERREUR : Aucun snapshot Cyberwatch valide n'existe.")
+        print("Exécuter d'abord :")
+        print("\n  python -m cyberwatch create")
+        if base_state == store.BASE_INCOHERENT:
+            print("\nBASE INCOHÉRENTE / INITIALISATION INCOMPLÈTE :")
+            for detail in details:
+                print(f"  ! {detail}")
+        return 1
     context = make_run_context(
         MODE_MAJ, args.as_of, args.start, _layers_from(args.layers)
     )
@@ -203,7 +212,8 @@ def cmd_test_repeat(args) -> int:
         # La répétabilité du moteur reste couverte par tests/test_identity.py,
         # qui s'exécute sur des jeux de données figés.
         print("TEST REPETABILITE (§27)")
-        print("  Base vide : aucun ITEMS à rejouer, test sans objet.")
+        print("  Base vide : test de répétabilité sur snapshot sans objet.")
+        print("  ATTENTION : cela ne prouve pas la répétabilité d’un snapshot réel.")
         print("  Le moteur reste couvert par les tests unitaires sur fixtures.")
         return 0
 
@@ -260,8 +270,8 @@ def cmd_test_live_repeat(args) -> int:
         ("Items_Hash", first.items_hash, second.items_hash),
         ("Incidents_Hash", first.incidents_hash, second.incidents_hash),
     ]
-    healthy = first.overall == status.OK and second.overall == status.OK
-    passed = healthy and all(left == right for _, left, right in checks)
+    sources_ok = first.overall == status.OK and second.overall == status.OK
+    passed = sources_ok and all(left == right for _, left, right in checks)
     print("LIVE REPETITION")
     print(f"AS_OF : {first_context.as_of}")
     print(f"TARGET_START : {first_context.target_start}")
@@ -279,7 +289,7 @@ def cmd_test_live_repeat(args) -> int:
         print(f"  {'PASS' if left == right else 'FAIL'}  {label}")
         if label != "Sources" and left != right:
             print(f"GLOBAL DIFFERENCE\n{label} A : {left}\n{label} B : {right}")
-    print(f"  {'PASS' if healthy else 'FAIL'}  Sources des deux runs OK")
+    print(f"  {'PASS' if sources_ok else 'FAIL'}  Sources des deux runs OK")
     print("  RESULTAT :", "PASS" if passed else "FAIL")
     return 0 if passed else 1
 
@@ -579,7 +589,7 @@ def cmd_report(args) -> int:
     rows = [r for r in store.load_run_sources() if r.get("Run_ID") == run_id]
 
     overall = last.get("Overall_Status", "")
-    icon = {"HEALTHY": "🟢", "DEGRADED": "🟡", "BROKEN": "🔴"}.get(overall, "⚪")
+    icon = {"OK": "🟢", "BROKEN": "🔴"}.get(overall, "⚪")
 
     print(f"## {icon} {overall} — {last.get('Mode', '')} `{run_id}`")
     print()
@@ -588,7 +598,8 @@ def cmd_report(args) -> int:
     print(f"- Items : **{last.get('Items_Count')}** (+{last.get('New_Items')} nouveaux)")
     print(f"- Incidents : **{last.get('Incidents_Count')}** "
           f"(+{last.get('New_Incidents')} nouveaux)")
-    print(f"- Score de couverture : **{last.get('Health_Score')}/100**")
+    print(f"- Sources : **{last.get('Sources_OK', 0)} OK / {last.get('Sources_FAIL', 0)} FAIL**")
+    print(f"- Statut global : **{overall}**")
     print(f"- Coût réel : {last.get('Requests')} requêtes en {last.get('Duration_s')}s")
     print()
     print("| Source | Couche | Statut | Couv. | Items | Accès | Raison |")
@@ -640,6 +651,20 @@ def cmd_audit_duplicates(args) -> int:
 
 
 def cmd_check(args) -> int:
+    base_state, state_problems = store.snapshot_state()
+    if base_state == store.BASE_UNINITIALIZED:
+        print("Contrôles avant export (§29) — BASE NON INITIALISÉE")
+        if getattr(args, "allow_uninitialized", False):
+            print("  PASS : aucune donnée partielle n'est présente.")
+            return 0
+        print("  ! Snapshot Cyberwatch absent : exécuter d'abord CREATE.")
+        return 1
+    if base_state == store.BASE_INCOHERENT:
+        print("Contrôles avant export (§29) — BASE INCOHÉRENTE / INITIALISATION INCOMPLÈTE")
+        for problem in state_problems:
+            print(f"  ! {problem}")
+        return 1
+
     items = store.load_items()
     incidents = store.load_incidents()
     problems = pre_export_checks(items, incidents, [])
@@ -659,20 +684,6 @@ def cmd_check(args) -> int:
         problems.append("Couple Run_ID / Source_ID dupliqué dans RUN_SOURCES")
     if any(not item.Organisation_Key for item in items):
         problems.append("Organisation_Key vide dans ITEMS")
-    snapshot = store.load_snapshot()
-    if not snapshot:
-        problems.append("Provenance snapshot absente")
-    else:
-        actual = {
-            "Items_Count": len(items),
-            "Incidents_Count": len(incidents),
-            "Items_Hash": identity.items_hash(items),
-            "Incidents_Hash": identity.incidents_hash(incidents),
-        }
-        for key, value in actual.items():
-            if str(snapshot.get(key, "")) != str(value):
-                problems.append(f"Provenance snapshot incohérente : {key}")
-
     print(f"Contrôles avant export (§29) — {len(items)} items, {len(incidents)} incidents")
     if not problems:
         print("  Tous les contrôles passent.")
@@ -782,6 +793,10 @@ def build_parser() -> argparse.ArgumentParser:
     probe_media.set_defaults(func=cmd_probe_media)
 
     check = subparsers.add_parser("check", help="Rejouer les contrôles du §29.")
+    check.add_argument(
+        "--allow-uninitialized", action="store_true",
+        help="Accepter uniquement une base totalement neuve pour la CI code.",
+    )
     check.set_defaults(func=cmd_check)
 
     return parser

@@ -20,7 +20,7 @@ masquer, les écarts introduits par le passage à l'exécution automatique.
 ### 1.1 Le modèle de statuts est refondu
 
 La version 1 utilisait cinq statuts (`OK`, `EMPTY`, `PARTIAL`, `FAIL`, `NOT_RUN`) et
-un statut global binaire (`OK` / `DEGRADED`). Ce vocabulaire mélangeait deux
+un statut global insuffisamment explicite. Ce vocabulaire mélangeait deux
 questions distinctes et rendait `PARTIAL` ininterprétable.
 
 La version 2 sépare **trois informations orthogonales** :
@@ -44,16 +44,15 @@ que si `Status = OK`. Partout ailleurs il signifie « information indisponible �
 le dashboard l'affiche grisé. C'est la règle « transparence des trous de couverture
 > faux zéro » rendue visuelle.
 
-**Statut global du run**, à trois niveaux motivés :
+**Statut global du run**, binaire et sans score :
 
 | Niveau | Règle | Lecture |
 |---|---|---|
-| `HEALTHY` | Toutes les sources planifiées sont `OK`. | Base complète |
-| `DEGRADED` | Aucune source `CORE_DIRECT` en `FAIL`, mais au moins une source `PARTIAL` ou `FAIL`. | Base utilisable, angles morts listés |
-| `BROKEN` | Une source `CORE_DIRECT` en `FAIL`, **ou** `Health_Score < 50`. | Ne pas conclure sur les tendances |
+| `OK` | Toutes les sources actives sont `OK`. | Snapshot publiable |
+| `BROKEN` | Au moins une source active n'est pas `OK`. | Ne pas publier de snapshot |
 
-`Health_Score` = moyenne des couvertures pondérée par couche (`CORE_DIRECT` ×3,
-autres ×1), les sources `SKIPPED` étant exclues du calcul.
+Les compteurs `Sources_OK` et `Sources_FAIL` rendent ce statut vérifiable. Il
+n'existe pas de score composite métier.
 
 ### 1.2 `RANSOMWARE_LIVE` est activée
 

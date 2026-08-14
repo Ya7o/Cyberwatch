@@ -66,6 +66,26 @@ def _comment_metric(comment: str, key: str) -> str:
 
 def status_payload() -> dict:
     """Santé du dernier run, angles morts, veille et état BonjourLaFuite."""
+    base_state, base_problems = store.snapshot_state()
+    if base_state != store.BASE_VALID:
+        message = (
+            "Aucune collecte validée disponible."
+            if base_state == store.BASE_UNINITIALIZED
+            else "Base Cyberwatch incohérente : " + "; ".join(base_problems)
+        )
+        return {
+            "initialized": False,
+            "message": message,
+            "run": {},
+            "counts": {"ok": 0, "partial": 0, "fail": 0, "skipped": 0},
+            "sources": [],
+            "blind_spots": [],
+            "entities": [],
+            "history": [],
+            "focus_locations": config.FOCUS_LOCATIONS,
+            "labels": {"status": status.STATUS_LABELS, "run_status": status.RUN_STATUS_LABELS},
+        }
+
     run_log = store.load_run_log()
     run_sources = store.load_run_sources()
     entity_watch = store.load_entity_watch()
@@ -76,7 +96,7 @@ def status_payload() -> dict:
 
     current = [row for row in run_sources if row.get("Run_ID") == last_run_id]
 
-    health_rows = []
+    source_rows = []
     for row in current:
         source_id = row.get("Source_ID", "")
         meta = metadata.get(source_id, {})
@@ -87,7 +107,7 @@ def status_payload() -> dict:
         items_seen = _to_int(row.get("Items_seen"))
         units_done = _to_int(row.get("Units_Done"))
 
-        health_rows.append(
+        source_rows.append(
             {
                 "id": source_id,
                 "layer": row.get("Layer", meta.get("layer", "")),
@@ -129,7 +149,7 @@ def status_payload() -> dict:
             }
         )
 
-    health_rows.sort(
+    source_rows.sort(
         key=lambda row: (-status.STATUS_SEVERITY.get(row["status"], 0), row["id"])
     )
 
@@ -146,7 +166,7 @@ def status_payload() -> dict:
                 else ""
             ),
         }
-        for row in health_rows
+        for row in source_rows
         if row["status"] in (status.PARTIAL, status.FAIL)
     ]
 
@@ -159,7 +179,6 @@ def status_payload() -> dict:
             "incidents": _to_int(row.get("Incidents_Count")),
             "new_items": _to_int(row.get("New_Items")),
             "new_incidents": _to_int(row.get("New_Incidents")),
-            "health": _to_int(row.get("Health_Score")),
             "overall": row.get("Overall_Status", ""),
         }
         for row in run_log[-60:]
@@ -181,7 +200,7 @@ def status_payload() -> dict:
     ]
 
     bonjour = next(
-        (row for row in health_rows if row["id"] == "BONJOURLAFUITE"), None
+        (row for row in source_rows if row["id"] == "BONJOURLAFUITE"), None
     )
     bonjour_payload = {}
     if bonjour:
@@ -197,6 +216,7 @@ def status_payload() -> dict:
         }
 
     return {
+        "initialized": True,
         "method_id": last_run.get("Method_ID", config.METHOD_ID),
         "run": {
             "id": last_run_id,
@@ -206,7 +226,6 @@ def status_payload() -> dict:
             "target_end": last_run.get("Target_End", ""),
             "layers": last_run.get("Layers", ""),
             "overall": last_run.get("Overall_Status", ""),
-            "health": _to_int(last_run.get("Health_Score")),
             "items": _to_int(last_run.get("Items_Count")),
             "incidents": _to_int(last_run.get("Incidents_Count")),
             "new_items": _to_int(last_run.get("New_Items")),
@@ -224,7 +243,7 @@ def status_payload() -> dict:
             "skipped": _to_int(last_run.get("Sources_SKIPPED")),
         },
         "bonjourlafuite": bonjour_payload,
-        "sources": health_rows,
+        "sources": source_rows,
         "blind_spots": blind,
         "entities": watch,
         "history": history,

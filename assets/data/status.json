@@ -1,0 +1,31 @@
+{
+ "blind_spots": [],
+ "counts": {
+  "fail": 0,
+  "ok": 0,
+  "partial": 0,
+  "skipped": 0
+ },
+ "entities": [],
+ "focus_locations": [
+  "La Réunion",
+  "Mayotte"
+ ],
+ "history": [],
+ "initialized": false,
+ "labels": {
+  "run_status": {
+   "BROKEN": "Au moins une source active n'a pas abouti.",
+   "OK": "Toutes les sources actives ont abouti."
+  },
+  "status": {
+   "FAIL": "Énumération impossible",
+   "OK": "Protocole exécuté intégralement",
+   "PARTIAL": "Protocole exécuté partiellement",
+   "SKIPPED": "Hors périmètre de ce run"
+  }
+ },
+ "message": "Aucune collecte validée disponible.",
+ "run": {},
+ "sources": []
+}

@@ -15,8 +15,8 @@
     sort: { key: "date", dir: -1 },
   };
 
-  //: Libellés courts des niveaux de run, pour la pastille.
-  const LABELS = { HEALTHY: "complète", DEGRADED: "partielle", BROKEN: "incomplète" };
+  //: Libellés courts du statut global, pour la pastille.
+  const LABELS = { OK: "OK", BROKEN: "BROKEN" };
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -383,6 +383,12 @@
     const pill = $("#run-pill");
     const text = $("#run-pill-text");
 
+    if (data && data.initialized === false) {
+      pill.dataset.status = "";
+      text.textContent = "Base non initialisée";
+      return;
+    }
+
     if (!data || !data.run.id) {
       pill.dataset.status = "";
       text.textContent = "Aucune collecte";
@@ -421,6 +427,17 @@
   }
 
   function renderGeneral() {
+    if (state.status && state.status.initialized === false) {
+      $("#kpi-incidents").textContent = "—";
+      $("#kpi-incidents-note").textContent = state.status.message || "Aucune collecte validée disponible.";
+      $("#table-count").textContent = "Base non initialisée";
+      $("#incidents-table tbody").innerHTML = "<tr><td colspan=\"6\">Aucune collecte validée disponible.</td></tr>";
+      ["#chart-month", "#chart-location", "#chart-sector", "#chart-threat"].forEach((id) => {
+        const chart = $(id);
+        if (chart) chart.textContent = "";
+      });
+      return;
+    }
     const rows = applyFilters(state.incidents);
     const quickButtons = [
       ["#f-ocean-indien", "Voir l’Océan Indien"],

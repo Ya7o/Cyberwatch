@@ -99,18 +99,12 @@ def reason_text(code: str) -> str:
 # Statut global d'un run
 # --------------------------------------------------------------------------
 
-HEALTHY = "HEALTHY"
-DEGRADED = "DEGRADED"
 BROKEN = "BROKEN"
 
 RUN_STATUS_LABELS = {
-    HEALTHY: "Toutes les sources planifiées ont abouti.",
-    DEGRADED: "Base utilisable, mais certaines sources sont incomplètes ou en échec.",
-    BROKEN: "Une source centrale est en échec : ne pas conclure sur les tendances.",
+    OK: "Toutes les sources actives ont abouti.",
+    BROKEN: "Au moins une source active n'a pas abouti.",
 }
-
-#: En dessous de ce score, le run est déclaré BROKEN quelle que soit la couche.
-BROKEN_SCORE_THRESHOLD = 50
 
 
 @dataclass
@@ -142,11 +136,6 @@ class SourceOutcome:
     def zero_is_trusted(self) -> bool:
         """Un zéro n'a de sens que si le protocole est allé au bout."""
         return self.status == OK and self.items_collected == 0
-
-    @property
-    def counts_towards_health(self) -> bool:
-        """Les sources hors périmètre ne pénalisent pas le score."""
-        return self.status != SKIPPED
 
 
 def compute_coverage(units_done: int, units_expected: int) -> int:
@@ -182,43 +171,9 @@ def resolve_status(
     return PARTIAL, coverage
 
 
-def health_score(outcomes: list[SourceOutcome]) -> int:
-    """Score 0–100 : moyenne des couvertures pondérée par couche.
-
-    Les sources `SKIPPED` sont exclues du calcul — ne pas avoir interrogé une
-    couche non planifiée n'est pas un défaut de couverture.
-    """
-    total_weight = 0
-    weighted = 0
-    for outcome in outcomes:
-        if not outcome.counts_towards_health:
-            continue
-        weight = config.LAYER_WEIGHTS.get(outcome.layer, 1)
-        if weight <= 0:
-            continue
-        total_weight += weight
-        weighted += weight * outcome.coverage
-    if total_weight == 0:
-        return 0
-    return int(round(weighted / total_weight))
-
-
 def overall_status(outcomes: list[SourceOutcome]) -> str:
-    """Statut global du run selon les trois niveaux motivés du plan."""
-    considered = [o for o in outcomes if o.counts_towards_health]
-    if not considered:
-        return BROKEN
-
-    core_failed = any(
-        o.layer == config.LAYER_CORE and o.status == FAIL for o in considered
-    )
-    if core_failed:
-        return BROKEN
-    if health_score(outcomes) < BROKEN_SCORE_THRESHOLD:
-        return BROKEN
-    if any(o.status in (PARTIAL, FAIL) for o in considered):
-        return DEGRADED
-    return HEALTHY
+    """Un run n'est OK que si toutes ses sources actives sont OK."""
+    return OK if outcomes and all(o.status == OK for o in outcomes) else BROKEN
 
 
 def blind_spots(outcomes: list[SourceOutcome]) -> list[dict]:

@@ -213,7 +213,7 @@
 
   function patchRunLabels() {
     const data = state.status;
-    if (!data || !data.run) return;
+    if (!data || !data.run || data.initialized === false) return;
     const run = data.run;
     const c = data.counts || { ok: 0, partial: 0, fail: 0, skipped: 0 };
     const totalSources = (data.sources || []).length || c.ok + c.partial + c.fail + c.skipped;

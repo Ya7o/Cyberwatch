@@ -1,17 +1,12 @@
 name: Collecte
 
-# Deux cadences, un seul workflow :
-#   - tous les jours  : sources directes uniquement (~70 requêtes, 1-2 min) ;
-#   - le lundi        : balayage complet, couches de veille comprises (~130 requêtes).
-# Les couches non planifiées ne sont pas en erreur : elles sont marquées SKIPPED,
-# ce que le modèle de statuts distingue explicitement d'un échec.
-#
 # Les heures cron sont en UTC. La Réunion est à UTC+4.
+# Le full scan hebdomadaire sera réintroduit lorsque les couches Watch seront
+# réactivées. Avec les cinq sources V0, une collecte quotidienne suffit.
 
 on:
   schedule:
     - cron: "0 4 * * *"    # 08 h à La Réunion — sources directes
-    - cron: "0 3 * * 1"    # lundi 07 h — balayage complet
   workflow_dispatch:
     inputs:
       mode:
@@ -25,6 +20,10 @@ on:
         default: all
       start:
         description: "Début de fenêtre AAAA-MM-JJ (optionnel)"
+        type: string
+        default: ""
+      as_of:
+        description: "Cutoff ISO 8601 (optionnel)"
         type: string
         default: ""
       source:
@@ -62,14 +61,18 @@ jobs:
             echo "mode=${{ inputs.mode }}"     >> "$GITHUB_OUTPUT"
             echo "layers=${{ inputs.layers }}" >> "$GITHUB_OUTPUT"
             echo "start=${{ inputs.start }}"   >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event.schedule }}" = "0 3 * * 1" ]; then
-            echo "mode=maj"  >> "$GITHUB_OUTPUT"
-            echo "layers=all" >> "$GITHUB_OUTPUT"
-            echo "start="     >> "$GITHUB_OUTPUT"
           else
             echo "mode=maj" >> "$GITHUB_OUTPUT"
-            echo "layers=core,local_media" >> "$GITHUB_OUTPUT"
+            echo "layers=all" >> "$GITHUB_OUTPUT"
             echo "start=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Vérifier le bootstrap avant MAJ
+        if: steps.scope.outputs.mode == 'maj'
+        run: |
+          if [ ! -f data/snapshot.json ] || [ ! -f data/items.csv ] || [ ! -f data/incidents.csv ]; then
+            echo "::error::Aucune baseline de snapshot valide. Initialisation requise via un CREATE manuel."
+            exit 1
           fi
 
       - name: Distinguer les modes qui écrivent des données
@@ -89,6 +92,9 @@ jobs:
           ARGS=""
           if [ -n "${{ steps.scope.outputs.start }}" ]; then
             ARGS="--start ${{ steps.scope.outputs.start }}"
+          fi
+          if [ -n "${{ inputs.as_of }}" ]; then
+            ARGS="$ARGS --as-of ${{ inputs.as_of }}"
           fi
           if [ "${{ steps.scope.outputs.mode }}" = "replay" ]; then
             python -m cyberwatch replay $ARGS

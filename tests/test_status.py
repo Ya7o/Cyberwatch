@@ -77,46 +77,21 @@ class TestZeroIsTrusted:
         ).zero_is_trusted
 
 
-class TestHealthScore:
-    def test_toutes_sources_ok(self):
-        outcomes = [
-            outcome("A", config.LAYER_CORE, status.OK, 100),
-            outcome("B", config.LAYER_REGIONAL_WATCH, status.OK, 100),
-        ]
-        assert status.health_score(outcomes) == 100
-
-    def test_ponderation_des_couches_centrales(self):
-        """Une source centrale pèse trois fois plus qu'une source de veille."""
-        outcomes = [
-            outcome("core", config.LAYER_CORE, status.OK, 100),
-            outcome("watch", config.LAYER_REGIONAL_WATCH, status.FAIL, 0),
-        ]
-        assert status.health_score(outcomes) == 75
-
-    def test_skipped_exclu_du_calcul(self):
-        """Ne pas avoir interrogé une couche non planifiée n'est pas un défaut."""
-        outcomes = [
-            outcome("A", config.LAYER_CORE, status.OK, 100),
-            outcome("B", config.LAYER_ENTITY_WATCH, status.SKIPPED, 0),
-        ]
-        assert status.health_score(outcomes) == 100
-
-
 class TestOverallStatus:
-    def test_healthy(self):
+    def test_ok_si_toutes_sources_ok(self):
         outcomes = [
             outcome("A", config.LAYER_CORE, status.OK, 100),
-            outcome("B", config.LAYER_ENTITY_WATCH, status.SKIPPED, 0),
+            outcome("B", config.LAYER_ENTITY_WATCH, status.OK, 100),
         ]
-        assert status.overall_status(outcomes) == status.HEALTHY
+        assert status.overall_status(outcomes) == status.OK
 
-    def test_degraded_si_source_secondaire_partielle(self):
+    def test_broken_si_source_secondaire_partielle(self):
         outcomes = [
             outcome("A", config.LAYER_CORE, status.OK, 100),
             outcome("B", config.LAYER_CORE, status.OK, 100),
             outcome("C", config.LAYER_REGIONAL_WATCH, status.PARTIAL, 60),
         ]
-        assert status.overall_status(outcomes) == status.DEGRADED
+        assert status.overall_status(outcomes) == status.BROKEN
 
     def test_broken_si_source_centrale_en_echec(self):
         outcomes = [
@@ -126,10 +101,10 @@ class TestOverallStatus:
         ]
         assert status.overall_status(outcomes) == status.BROKEN
 
-    def test_broken_si_score_trop_bas(self):
+    def test_broken_si_source_skipped(self):
         outcomes = [
-            outcome("A", config.LAYER_CORE, status.PARTIAL, 20),
-            outcome("B", config.LAYER_REGIONAL_WATCH, status.PARTIAL, 20),
+            outcome("A", config.LAYER_CORE, status.OK, 100),
+            outcome("B", config.LAYER_REGIONAL_WATCH, status.SKIPPED, 0),
         ]
         assert status.overall_status(outcomes) == status.BROKEN
 

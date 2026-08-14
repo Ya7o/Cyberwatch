@@ -40,6 +40,10 @@ ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
 
+BASE_UNINITIALIZED = "UNINITIALIZED"
+BASE_VALID = "VALID"
+BASE_INCOHERENT = "INCOHERENT"
+
 
 # --------------------------------------------------------------------------
 # Primitives CSV
@@ -163,8 +167,11 @@ def load_snapshot(path: Path | None = None) -> dict:
     target = path or SNAPSHOT_JSON
     if not target.exists():
         return {}
-    with target.open(encoding="utf-8") as handle:
-        payload = json.load(handle)
+    try:
+        with target.open(encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return {}
     return payload if isinstance(payload, dict) else {}
 
 
@@ -183,3 +190,51 @@ def load_baseline(path: Path | None = None) -> dict:
 
 def save_baseline(payload: dict, path: Path | None = None) -> None:
     write_json(path or BASELINE_JSON, payload)
+
+
+def snapshot_state() -> tuple[str, list[str]]:
+    """Détermine si le corpus publié est absent, valide ou incohérent.
+
+    Une base neuve n'est pas une corruption : aucun des trois fichiers de
+    snapshot n'existe. Dès qu'un seul existe, les trois et leur provenance
+    doivent être cohérents.
+    """
+    required = {
+        "data/snapshot.json": SNAPSHOT_JSON,
+        "data/items.csv": ITEMS_CSV,
+        "data/incidents.csv": INCIDENTS_CSV,
+    }
+    present = {name: path.exists() for name, path in required.items()}
+    if not any(present.values()):
+        # Un run BROKEN peut laisser des journaux de diagnostic sans constituer
+        # un snapshot. Seul un run déclaré OK sans snapshot est incohérent.
+        if any(row.get("Overall_Status") == "OK" for row in load_run_log()):
+            return BASE_INCOHERENT, [
+                "RUN_LOG indique un run OK mais aucun snapshot courant n'existe"
+            ]
+        return BASE_UNINITIALIZED, []
+
+    problems = [f"{name} absent" for name, exists in present.items() if not exists]
+    if problems:
+        return BASE_INCOHERENT, problems
+
+    snapshot = load_snapshot()
+    if not snapshot:
+        return BASE_INCOHERENT, ["data/snapshot.json est illisible ou vide"]
+
+    # Import local : store reste le seul module responsable des fichiers et
+    # n'impose pas identity à l'import du paquet.
+    from . import identity
+
+    items = load_items()
+    incidents = load_incidents()
+    actual = {
+        "Items_Count": len(items),
+        "Incidents_Count": len(incidents),
+        "Items_Hash": identity.items_hash(items),
+        "Incidents_Hash": identity.incidents_hash(incidents),
+    }
+    for key, value in actual.items():
+        if str(snapshot.get(key, "")) != str(value):
+            problems.append(f"provenance snapshot incohérente : {key}")
+    return (BASE_VALID if not problems else BASE_INCOHERENT), problems
