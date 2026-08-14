@@ -25,6 +25,7 @@ from cyberwatch.collectors.newsrss import (
     mentions_entity,
 )
 from cyberwatch.collectors.ransomware_live import RansomwareLiveCollector
+import cyberwatch.collectors.ransomware_live as ransomware_live
 from cyberwatch.collectors.wordpress import WordPressCollector, strip_html
 from cyberwatch.http import Budget, FetchResult
 
@@ -426,6 +427,23 @@ class TestRansomwareLive:
                           collector="ransomware_live", params={"countries": ["FR"]})
         result = RansomwareLiveCollector().collect(client, spec, WINDOW)
         assert result.resolve()[0] == status.FAIL
+
+    def test_api_429_est_reprise_apres_le_delai_source(self, monkeypatch):
+        responses = iter([
+            FetchResult(False, "", 429, "", status.REASON_HTTP_429),
+            ok(RANSOMWARE_PAYLOAD),
+        ])
+        client = FakeClient({"ransomware.live": lambda _url: next(responses)})
+        spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi",
+                          collector="ransomware_live", params={"countries": ["FR"]})
+        waits = []
+        monkeypatch.setattr(ransomware_live.time, "sleep", waits.append)
+
+        result = RansomwareLiveCollector().collect(client, spec, WINDOW)
+
+        assert result.resolve()[0] == status.OK
+        assert waits == [config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS]
+        assert "rate_limit_retries=1" in result.comment
 
 
 # --------------------------------------------------------------------------

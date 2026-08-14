@@ -13,6 +13,7 @@ celle qui répond est enregistrée dans `RUN_SOURCES`.
 from __future__ import annotations
 
 import re
+import time
 
 from .. import config, status
 from ..normalize import parse_date
@@ -88,6 +89,7 @@ class RansomwareLiveCollector(Collector):
         working_template = None
         seen: set[tuple[str, str]] = set()
         recognized = 0
+        rate_limit_retries = 0
 
         for country in countries:
             if budget.exhausted:
@@ -103,12 +105,20 @@ class RansomwareLiveCollector(Collector):
             for template in templates:
                 url = template.format(country=country)
                 response = client.fetch(url, budget)
+                # L'API publique applique une limite d'une minute à certains
+                # endpoints. Une seule reprise lente respecte cette limite sans
+                # masquer l'échec : si elle échoue encore, la source reste FAIL.
+                if response.reason_code == status.REASON_HTTP_429:
+                    rate_limit_retries += 1
+                    time.sleep(config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS)
+                    response = client.fetch(url, budget)
                 if not response.ok:
                     # Une fois le bon point d'entrée connu, un 404 sur un pays
                     # signifie « aucune victime enregistrée », pas un échec de
                     # protocole : le pays a bien été interrogé.
                     if working_template and response.status_code == 404:
                         empty_country = True
+                    result.reason_code = response.reason_code
                     continue
 
                 payload = response.json()
@@ -155,6 +165,8 @@ class RansomwareLiveCollector(Collector):
         result.items_in_window = len(result.entries)
         result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
         result.comment = f"items_seen={recognized}; items_in_window={result.items_in_window}"
+        if rate_limit_retries:
+            result.comment += f"; rate_limit_retries={rate_limit_retries}"
         return result
 
 

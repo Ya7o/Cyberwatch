@@ -197,4 +197,6 @@ def test_initialize_workflow_runs_validations_before_publication():
     workflow = (store.ROOT / ".github" / "workflows" / "initialize.yml").read_text(encoding="utf-8")
     for command in ("cyberwatch create", "cyberwatch check", "cyberwatch test-repeat", "cyberwatch test-live-repeat", "cyberwatch baseline", "cyberwatch build-site"):
         assert command in workflow
+    assert "Attendre la limite Ransomware.live" in workflow
+    assert "sleep 65" in workflow
     assert workflow.index("cyberwatch baseline") < workflow.index("Publier la baseline")

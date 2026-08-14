@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-from cyberwatch import cli, status
+from cyberwatch import cli, config, status
 
 
 def test_live_repeat_compares_two_isolated_runs(monkeypatch):
@@ -21,12 +21,15 @@ def test_live_repeat_compares_two_isolated_runs(monkeypatch):
         ),
     ]
     monkeypatch.setattr(cli, "execute", lambda *args, **kwargs: reports.pop(0))
+    waits = []
+    monkeypatch.setattr(cli.time, "sleep", waits.append)
     proof = {}
     monkeypatch.setattr(cli.store, "save_live_repeat", lambda payload: proof.update(payload))
     args = SimpleNamespace(as_of="2026-08-14T00:00:00+04:00", start=None, layers="all")
     assert cli.cmd_test_live_repeat(args) == 0
     assert proof["Result"] == "PASS"
     assert proof["Items_Hash_A"] == proof["Items_Hash_B"] == "items"
+    assert waits == [config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS]
 
 
 def test_live_repeat_failure_records_no_valid_proof(monkeypatch):
@@ -43,6 +46,7 @@ def test_live_repeat_failure_records_no_valid_proof(monkeypatch):
         ),
     ]
     monkeypatch.setattr(cli, "execute", lambda *args, **kwargs: reports.pop(0))
+    monkeypatch.setattr(cli.time, "sleep", lambda _seconds: None)
     proof = {}
     monkeypatch.setattr(cli.store, "save_live_repeat", lambda payload: proof.update(payload))
     invalidated = []

@@ -129,7 +129,10 @@ CORE_SOURCES = [
         collector="ransomware_live",
         active=True,
         default_threat=config.THREAT_RANSOMWARE,
-        params={"countries": ["FR", "RE", "YT", "MU", "MG", "SC", "KM"]},
+        params={
+            "countries": ["FR", "RE", "YT", "MU", "MG", "SC", "KM"],
+            "live_repeat_cooldown_seconds": config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS,
+        },
         protocol=(
             "Interroger l'API pour chaque pays du périmètre : organisation, "
             "date, groupe, pays, secteur si disponible."

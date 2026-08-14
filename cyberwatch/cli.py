@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import random
 import sys
+import time
 
 from . import config, enrichment, identity, site, sources, status, store
 from .collectors.base import Window
@@ -262,6 +263,16 @@ def cmd_test_live_repeat(args) -> int:
         MODE_CREATE, first_context.as_of, first_context.target_start, _layers_from(args.layers)
     )
     first = execute(first_context, persist=False)
+    cooldown = max(
+        (
+            int(spec.params.get("live_repeat_cooldown_seconds", 0))
+            for spec in sources.active_sources(first_context.layers)
+        ),
+        default=0,
+    )
+    if cooldown:
+        print(f"Attente rate-limit : {cooldown}s avant CREATE B.")
+        time.sleep(cooldown)
     second = execute(second_context, persist=False)
     fields = ("status", "units_done", "units_expected", "items_seen", "items_in_window", "items_collected")
     source_state = lambda report: {
