@@ -200,7 +200,7 @@ def entry_to_item(
         sector = classify_sector(*sector_texts, given=sector_hint)
     if location == config.LOC_INCONNU:
         location = classify_location(
-            text,
+            text, organisation,
             entity=territories.get(searchable(organisation), ""),
             default=spec.location_rule,
         )

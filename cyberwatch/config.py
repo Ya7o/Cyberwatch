@@ -103,6 +103,10 @@ THREAT_RULES: list[tuple[str, list[str]]] = [
         "fuite de donnees", "fuite massive", "exfiltration", "data breach",
         "donnees exposees", "donnees personnelles exposees", "base de donnees exposee",
         "vol de donnees", "donnees derobees", "leak", "violation de donnees",
+        "mis en vente", "mise en vente", "en vente", "donnees diffusees",
+        "diffusees publiquement", "donnees revendiquees", "documents exposes",
+        "comptes exposes", "utilisateurs exposes", "coordonnees exposees",
+        "pieces d identite exposees",
     ]),
     (THREAT_PHISHING, [
         "phishing", "hameconnage", "fraude", "arnaque", "escroquerie",

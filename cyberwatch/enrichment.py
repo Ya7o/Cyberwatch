@@ -9,7 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from . import config, store
-from .normalize import organisation_key, searchable
+from .normalize import classify_location, classify_threat, organisation_key, searchable
+from .identity import sort_items
 from .model import Item
 
 
@@ -87,4 +88,39 @@ def enrich_items(items: list[Item], reference: dict[str, Enrichment]) -> dict[st
             report["location"] += 1
         if entry and (item.Sector != before_sector or item.Location != before_location):
             report["ocean_indian" if entry.scope == "Océan Indien" else "france"] += 1
+    return report
+
+
+def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
+    """Complète uniquement menace/localisation inconnues, sans changer d'identité.
+
+    Les localisations réutilisées sont calculées avant toute écriture : le
+    résultat est donc indépendant de l'ordre des items.
+    """
+    known_locations: dict[str, set[str]] = {}
+    for item in items:
+        if item.Organisation_Key and item.Location != config.LOC_INCONNU:
+            known_locations.setdefault(item.Organisation_Key, set()).add(item.Location)
+
+    report = {"threat": 0, "location_rule": 0, "location_reused": 0}
+    for item in sort_items(items):
+        if item.Threat == config.THREAT_UNKNOWN:
+            threat = classify_threat(item.Title, item.Threat_Raw)
+            if threat != config.THREAT_UNKNOWN:
+                item.Threat = threat
+                report["threat"] += 1
+
+        if item.Location != config.LOC_INCONNU:
+            continue
+        _sector, location = enrich_unknowns(item.Organisation_Raw, item.Sector, item.Location, reference)
+        if location == config.LOC_INCONNU:
+            location = classify_location(item.Title, item.Organisation_Raw)
+        if location != config.LOC_INCONNU:
+            item.Location = location
+            report["location_rule"] += 1
+            continue
+        candidates = known_locations.get(item.Organisation_Key, set())
+        if len(candidates) == 1:
+            item.Location = next(iter(candidates))
+            report["location_reused"] += 1
     return report

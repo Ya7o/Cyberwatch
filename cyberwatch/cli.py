@@ -17,7 +17,7 @@ import argparse
 import random
 import sys
 
-from . import config, identity, site, sources, status, store
+from . import config, enrichment, identity, site, sources, status, store
 from .collectors.base import Window
 from .collectors.cyberattaque_org import repair_existing_identities
 from .dedup import build_incidents
@@ -140,6 +140,22 @@ def cmd_repair_identities(args) -> int:
     store.save_incidents(incidents)
     site.build()
     print(f"Réparation des identités : {changed} item(s) corrigé(s), {len(incidents)} incidents reconstruits.")
+    return 0
+
+
+def cmd_backfill_unknowns(args) -> int:
+    """Réapplique les règles aux seules menaces/localisations inconnues."""
+    items = store.load_items()
+    before_ids = [item.Item_ID for item in items]
+    report = enrichment.backfill_unknowns(items, enrichment.load_reference())
+    if before_ids != [item.Item_ID for item in items]:
+        print("Backfill annulé : un Item_ID aurait été modifié.")
+        return 1
+    incidents = build_incidents(items)
+    store.save_items(identity.sort_items(items))
+    store.save_incidents(incidents)
+    site.build()
+    print(f"Backfill inconnus : menace={report['threat']}, localisation règles={report['location_rule']}, localisation réutilisée={report['location_reused']}; incidents={len(incidents)}.")
     return 0
 
 
@@ -592,6 +608,11 @@ def build_parser() -> argparse.ArgumentParser:
         "repair-identities", help="Appliquer les corrections déterministes aux ITEMS existants."
     )
     repair.set_defaults(func=cmd_repair_identities)
+
+    backfill = subparsers.add_parser(
+        "backfill-unknowns", help="Compléter uniquement Menace/Localisation inconnues."
+    )
+    backfill.set_defaults(func=cmd_backfill_unknowns)
 
     repeat = subparsers.add_parser("test-repeat", help="Test de répétabilité (§27).")
     repeat.set_defaults(func=cmd_test_repeat)
