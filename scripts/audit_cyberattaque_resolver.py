@@ -28,6 +28,30 @@ from cyberwatch.normalize import find_known_entity, organisation_key, searchable
 from cyberwatch.runner import _existing_organisations
 
 ARTICLE_FIXTURE = ROOT / "tests/fixtures/cyberattaque_org_articles_2026-08-14.json"
+COMMITS = {
+    "dbd85": "dbd85eaa790f10fa581a1dbbb349cddc0749f305",
+    "caa133": "caa133874a00bccf25e07077d7684bb1586c9e11",
+    "final": "519d292d7ebc9950f222e557683e8945c6df6d50",
+}
+
+
+def _historical_results() -> dict[str, dict[tuple[str, str], dict]]:
+    """Exécute chaque SHA dans son worktree, sans importer son code ici."""
+    results = {}
+    for label, sha in COMMITS.items():
+        with tempfile.TemporaryDirectory(prefix="cw-resolver-") as directory:
+            tree = Path(directory) / label
+            subprocess.run(["git", "worktree", "add", "--detach", str(tree), sha], cwd=ROOT, check=True, capture_output=True)
+            output = Path(directory) / "result.json"
+            try:
+                subprocess.run([sys.executable, str(ROOT / "scripts/cyberattaque_benchmark_worker.py"), "--code-root", str(tree), "--fixture", str(ARTICLE_FIXTURE), "--items", str(ROOT / "data/items.csv"), "--output", str(output)], cwd=ROOT, check=True, capture_output=True)
+            finally:
+                subprocess.run(["git", "worktree", "remove", "--force", str(tree)], cwd=ROOT, check=True, capture_output=True)
+            rows = json.loads(output.read_text(encoding="utf-8"))
+            if len(rows) != 408 or any(row["Benchmark_Commit"] != sha for row in rows):
+                raise SystemExit(f"Worker historique invalide : {label}")
+            results[label] = {(row["Source_Item_ID"], row["URL"]): row for row in rows}
+    return results
 
 def _reference() -> list[dict[str, str]]:
     with tempfile.NamedTemporaryFile(suffix=".csv") as handle:
@@ -84,6 +108,8 @@ def main() -> int:
             "article_count": len(entries), "articles": [entry.__dict__ for entry in entries],
         }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         print(f"captured={ARTICLE_FIXTURE}; articles={len(entries)}")
+    historical = _historical_results()
+    print("dbd85_sha=" + COMMITS["dbd85"]); print("caa133_sha=" + COMMITS["caa133"]); print("final_sha=" + COMMITS["final"])
     by_id = {entry.source_item_id: entry for entry in entries}
     by_url = {entry.url: entry for entry in entries}
     # Corpus causal : autres sources exclusivement, à D ou avant. L'article
@@ -105,9 +131,9 @@ def main() -> int:
         candidates = [item for item in all_items if item.Published_Date <= entry.published]
         index = _existing_organisations(candidates)
         close, outside = _candidate_details(entry, index)
-        final = direct or organisation_from_cyberattaque_entry(entry, known, index)
-        # État caa1338 simulé : même logique V2, puis le fallback générique P0.
-        current = final or find_known_entity(f"{entry.title} {entry.summary}", known)
+        final = historical["final"].get((ref["Source_Item_ID"], ref["URL"]), {}).get("Organisation", "")
+        current = historical["caa133"].get((ref["Source_Item_ID"], ref["URL"]), {}).get("Organisation", "")
+        dbd = historical["dbd85"].get((ref["Source_Item_ID"], ref["URL"]), {}).get("Organisation", "")
         if negated:
             mode, state = "NEGATED", "NEGATED"
         elif multi:
@@ -133,7 +159,7 @@ def main() -> int:
             "NEGATED_OR_DISPUTED" if mode == "NEGATED" else "MULTI" if mode == "MULTI"
             else "SEMANTIC_DIFFERENCE_ACCEPTED" if not final else "CANONICALISATION"
         )
-        rows.append({**ref, "Current_Organisation": current, "Deterministic_Organisation": final,
+        rows.append({**ref, "Dbd85_Organisation": dbd, "Dbd85_Status": "SINGLE" if dbd else "NO_VICTIM", "Caa133_Organisation": current, "Caa133_Status": "SINGLE" if current else "NO_VICTIM", "Final_Organisation": final, "Final_Status": state, "Current_Organisation": current, "Deterministic_Organisation": final,
                      "Deterministic_Status": state, "Resolution_Mode": mode,
                      "Resolver_Candidate": "" if not candidate else candidate.organisation,
                      "Resolver_Sources": "" if not candidate else ",".join(candidate.sources),
@@ -141,7 +167,7 @@ def main() -> int:
                      "Resolver_Date_Delta": "" if not candidate else str(close[0][1]),
                      "Diff_Classification": classification,
                      "Match": "MATCH" if match else "DIFF"})
-    baseline_match = sum(organisation_key(r["Baseline_Organisation"]) == organisation_key(r["LLM_Organisation"]) for r in rows)
+    baseline_match = sum(organisation_key(r["Dbd85_Organisation"]) == organisation_key(r["LLM_Organisation"]) for r in rows)
     current_match = sum(organisation_key(r.get("Current_Organisation", "")) == organisation_key(r["LLM_Organisation"]) for r in rows)
     final_match = sum(r["Match"] == "MATCH" for r in rows)
     print(f"articles_total={len(rows)}")

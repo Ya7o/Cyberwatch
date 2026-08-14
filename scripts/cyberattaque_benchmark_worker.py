@@ -10,6 +10,8 @@ from types import SimpleNamespace
 def main() -> int:
     p = argparse.ArgumentParser(); p.add_argument('--code-root', required=True); p.add_argument('--fixture', required=True); p.add_argument('--items', required=True); p.add_argument('--output', required=True)
     a = p.parse_args(); root = str(Path(a.code_root).resolve()); sys.path.insert(0, root)
+    import subprocess
+    commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
     from cyberwatch import sources, watchlists
     from cyberwatch.collectors.base import RawEntry
     from cyberwatch.runner import entry_to_item
@@ -29,7 +31,7 @@ def main() -> int:
         kwargs = {}
         if 'existing_orgs' in params: kwargs['existing_orgs'] = index
         item = entry_to_item(entry, spec, '2026-08-14T00:00:00+04:00', known, {}, **kwargs)
-        rows.append({'Source_Item_ID': entry.source_item_id, 'URL': entry.url, 'Organisation': '' if item is None else item.Organisation_Raw,
+        rows.append({'Benchmark_Commit': commit, 'Source_Item_ID': entry.source_item_id, 'URL': entry.url, 'Organisation': '' if item is None else item.Organisation_Raw,
                      'Status': 'NO_VICTIM' if item is None else 'SINGLE'})
     Path(a.output).write_text(json.dumps(rows, ensure_ascii=False, sort_keys=True), encoding='utf-8')
     return 0
