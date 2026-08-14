@@ -110,9 +110,27 @@ jobs:
               --layers "${{ steps.scope.outputs.layers }}" $ARGS
           fi
 
+      - name: Compléter les champs inconnus
+        if: steps.kind.outputs.writes == 'true'
+        run: python -m cyberwatch backfill-unknowns
+
       - name: Récapitulatif du run
         if: always() && steps.kind.outputs.writes == 'true'
         run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Qualité de la base
+        if: steps.kind.outputs.writes == 'true'
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          from cyberwatch import config, store
+
+          incidents = store.load_incidents()
+          print("\n### Qualité DB")
+          print(f"- Incidents : {len(incidents)}")
+          print(f"- Menace inconnue : {sum(i.Menace == config.THREAT_UNKNOWN for i in incidents)}")
+          print(f"- Secteur inconnu : {sum(i.Secteur == config.SECTOR_UNKNOWN for i in incidents)}")
+          print(f"- Localisation inconnue : {sum(i.Localisation == config.LOC_INCONNU for i in incidents)}")
+          PY
 
       - name: Contrôles et répétabilité
         if: steps.kind.outputs.writes == 'true'
