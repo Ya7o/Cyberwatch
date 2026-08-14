@@ -26,7 +26,7 @@ def make_item():
     ) -> Item:
         key = organisation_key(org)
         return Item(
-            Item_ID=item_id(source, published, key, url),
+            Item_ID=item_id(source, published, key, url, source_item_id),
             Source_ID=source,
             Source_Item_ID=source_item_id,
             Published_Date=published,

@@ -52,6 +52,9 @@ class RawEntry:
 
     title: str = ""
     url: str = ""
+    #: Identifiant natif stable fourni par la source lorsqu'il existe. Il ne
+    #: doit jamais être synthétisé à partir d'un nom, d'une date ou d'une URL.
+    source_item_id: str = ""
     published: str = ""
     summary: str = ""
     event_date: str = ""

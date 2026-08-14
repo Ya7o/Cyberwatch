@@ -208,8 +208,15 @@ def entry_to_item(
     key = organisation_key(organisation)
 
     return Item(
-        Item_ID=identity.item_id(spec.source_id, entry.published, key, entry.url),
+        Item_ID=identity.item_id(
+            spec.source_id,
+            entry.published,
+            key,
+            entry.url,
+            entry.source_item_id,
+        ),
         Source_ID=spec.source_id,
+        Source_Item_ID=entry.source_item_id,
         Published_Date=entry.published,
         Event_Date=entry.event_date,
         Organisation_Raw=organisation,

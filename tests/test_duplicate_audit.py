@@ -10,9 +10,10 @@ def test_included_name_is_reported_when_all_strict_conditions_match(make_item):
     candidates = find_duplicate_candidates(items)
     assert len(candidates) == 1
     assert candidates[0].days_apart == 2
+    assert candidates[0].reason_code == "DUPLICATE_CANDIDATE_NAME_CONTAINMENT"
 
 
-def test_unknown_threat_is_compatible(make_item):
+def test_unknown_threat_is_not_required_for_compatibility(make_item):
     items = [
         make_item(source="A", org="Atol", url="https://a", threat=config.THREAT_UNKNOWN),
         make_item(source="B", org="Atol Mon Opticien", url="https://b", threat="Fuite de données"),
@@ -20,28 +21,30 @@ def test_unknown_threat_is_compatible(make_item):
     assert len(find_duplicate_candidates(items)) == 1
 
 
-def test_different_known_threats_are_not_reported(make_item):
+def test_different_known_threats_are_still_reported(make_item):
     items = [
         make_item(source="A", org="Biosynex", url="https://a", threat="Intrusion"),
         make_item(source="B", org="Biosynex France", url="https://b", threat="Fuite de données"),
     ]
-    assert find_duplicate_candidates(items) == []
+    assert len(find_duplicate_candidates(items)) == 1
 
 
-def test_generic_short_name_is_excluded(make_item):
+def test_generic_institutional_names_remain_auditable(make_item):
     items = [
         make_item(source="A", org="Service de santé", url="https://a"),
         make_item(source="B", org="Service de santé de Paris", url="https://b"),
     ]
-    assert find_duplicate_candidates(items) == []
+    candidates = find_duplicate_candidates(items)
+    assert len(candidates) == 1
+    assert candidates[0].short.Organisation_Raw == "Service de santé"
 
 
-def test_generic_word_in_the_long_name_is_also_excluded(make_item):
+def test_generic_word_in_long_name_does_not_hide_candidate(make_item):
     items = [
         make_item(source="A", org="Sapeurs pompiers", url="https://a"),
         make_item(source="B", org="Fédération des sapeurs pompiers", url="https://b"),
     ]
-    assert find_duplicate_candidates(items) == []
+    assert len(find_duplicate_candidates(items)) == 1
 
 
 def test_same_source_or_date_over_three_days_is_excluded(make_item):

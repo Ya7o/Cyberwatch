@@ -1,23 +1,18 @@
-"""Détection conservative des doublons d'organisation à examiner.
+"""Détection conservatrice des doublons d'organisation à examiner.
 
 Ce module ne modifie jamais les items et ne rapproche aucune identité : il
-produit uniquement des candidats étayés par des indices reproductibles.
+produit uniquement des candidats étayés par des indices reproductibles. La
+menace et la catégorie de l'organisation ne servent pas de filtre d'identité :
+deux sources peuvent qualifier différemment le même événement, et les victimes
+institutionnelles doivent rester auditables comme les autres.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config
 from .model import Item
 from .normalize import date_or_empty
-
-
-GENERIC_ORGANISATION_WORDS = frozenset({
-    "agence", "association", "centre", "clinique", "commune", "departement",
-    "direction", "ecole", "federation", "groupe", "hopital", "mairie",
-    "ministere", "office", "region", "service", "societe", "universite", "ville",
-})
 
 
 @dataclass(frozen=True)
@@ -27,6 +22,7 @@ class DuplicateCandidate:
     short: Item
     long: Item
     days_apart: int
+    reason_code: str = "DUPLICATE_CANDIDATE_NAME_CONTAINMENT"
 
 
 def _contains_word_sequence(long_key: str, short_key: str) -> bool:
@@ -35,52 +31,67 @@ def _contains_word_sequence(long_key: str, short_key: str) -> bool:
     if not short_words or len(short_words) >= len(long_words):
         return False
     width = len(short_words)
-    return any(long_words[index:index + width] == short_words
-               for index in range(len(long_words) - width + 1))
-
-
-def _has_generic_word(key: str) -> bool:
-    return any(word in GENERIC_ORGANISATION_WORDS for word in key.split())
-
-
-
-def _compatible_threats(left: Item, right: Item) -> bool:
-    return left.Threat == right.Threat or config.THREAT_UNKNOWN in {left.Threat, right.Threat}
+    return any(
+        long_words[index:index + width] == short_words
+        for index in range(len(long_words) - width + 1)
+    )
 
 
 def find_duplicate_candidates(items: list[Item], max_days: int = 3) -> list[DuplicateCandidate]:
-    """Retourne les candidats satisfaisant les critères d'audit stricts.
+    """Retourne des candidats d'audit sans jamais ordonner leur fusion.
 
-    Les deux sources doivent être distinctes, les noms doivent avoir une
-    inclusion de mots entière, et une paire ne peut être retenue qu'avec la
-    même menace (ou une menace inconnue). Aucun résultat n'est une instruction
-    de fusion.
+    Critères strictement déterministes : sources distinctes, dates à moins de
+    `max_days` et inclusion d'une séquence entière de mots d'organisation. La
+    menace n'est pas un critère d'identité et aucun mot générique (agence,
+    fédération, université, ville...) n'est exclu : ces cas doivent précisément
+    rester visibles dans l'audit.
     """
     candidates: list[DuplicateCandidate] = []
-    ordered = sorted(items, key=lambda item: (
-        item.Published_Date, item.Source_ID, item.Item_ID, item.URL,
-    ))
+    ordered = sorted(
+        items,
+        key=lambda item: (
+            item.Published_Date,
+            item.Source_ID,
+            item.Item_ID,
+            item.URL,
+        ),
+    )
+
     for index, left in enumerate(ordered):
         left_date = date_or_empty(left.best_date)
         if not left.Organisation_Key or not left_date:
             continue
+
         for right in ordered[index + 1:]:
             if left.Source_ID == right.Source_ID:
                 continue
+
             right_date = date_or_empty(right.best_date)
             if not right.Organisation_Key or not right_date:
                 continue
+
             days_apart = abs((left_date - right_date).days)
-            if days_apart > max_days or not _compatible_threats(left, right):
+            if days_apart > max_days:
                 continue
-            short, long = sorted((left, right), key=lambda item: (
-                len(item.Organisation_Key.split()), len(item.Organisation_Key), item.Organisation_Key,
-            ))
-            if _has_generic_word(short.Organisation_Key) or _has_generic_word(long.Organisation_Key):
-                continue
+
+            short, long = sorted(
+                (left, right),
+                key=lambda item: (
+                    len(item.Organisation_Key.split()),
+                    len(item.Organisation_Key),
+                    item.Organisation_Key,
+                ),
+            )
             if _contains_word_sequence(long.Organisation_Key, short.Organisation_Key):
                 candidates.append(DuplicateCandidate(short, long, days_apart))
-    return sorted(candidates, key=lambda candidate: (
-        candidate.short.Organisation_Key, candidate.long.Organisation_Key,
-        candidate.days_apart, candidate.short.Source_ID, candidate.long.Source_ID,
-    ))
+
+    return sorted(
+        candidates,
+        key=lambda candidate: (
+            candidate.short.Organisation_Key,
+            candidate.long.Organisation_Key,
+            candidate.days_apart,
+            candidate.short.Source_ID,
+            candidate.long.Source_ID,
+        ),
+    )

@@ -21,16 +21,22 @@ def _sha256(payload: str) -> str:
 
 
 def item_id(source_id: str, published_date: str, organisation_key: str, url: str, source_item_id: str = "") -> str:
-    """`ITM-` + 16 premiers caractères hexadécimaux du SHA256 (§7)."""
-    parts = [
-        source_id or "",
-        published_date or "",
-        organisation_key or "",
-        url or "",
-    ]
+    """Retourne un identifiant d'item déterministe et, si possible, stable.
+
+    Lorsqu'une source fournit un identifiant natif, celui-ci devient l'identité
+    de référence de l'item : une correction de date, d'organisation ou d'URL ne
+    doit pas fabriquer artificiellement un nouvel item. Sans identifiant natif,
+    le schéma historique reste inchangé pour préserver les identifiants existants.
+    """
     if source_item_id:
-        parts.append(source_item_id)
-    payload = SEP.join(parts)
+        payload = SEP.join([source_id or "", "SOURCE_ITEM", source_item_id])
+    else:
+        payload = SEP.join([
+            source_id or "",
+            published_date or "",
+            organisation_key or "",
+            url or "",
+        ])
     return "ITM-" + _sha256(payload)[:16]
 
 

@@ -15,6 +15,15 @@ MERGE = "MERGE"
 KEEP_SEPARATE = "KEEP_SEPARATE"
 NO_DECISION = "NO_DECISION"
 
+# Une URL n'est un identifiant fort que pour une source dont le contrat indique
+# qu'elle pointe vers une page/item unique. La règle est volontairement fermée :
+# toute nouvelle source doit être ajoutée explicitement après vérification.
+UNIQUE_ITEM_URL_SOURCES = frozenset({
+    "BONJOURLAFUITE",
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES",
+})
+
 RECURRENCE_MARKERS = (
     "nouvelle cyberattaque", "nouvelle attaque", "nouvelle fuite", "a nouveau",
     "de nouveau", "une nouvelle fois", "frappe une nouvelle fois",
@@ -36,7 +45,13 @@ def _recurrence(item: Item) -> bool:
 
 
 def _same_unique_url(left: Item, right: Item) -> bool:
-    return bool(left.URL and left.URL == right.URL and left.Source_ID != "RANSOMWARE_LIVE" and right.Source_ID != "RANSOMWARE_LIVE")
+    """Vrai seulement si l'URL est un identifiant d'item pour cette source."""
+    return bool(
+        left.URL
+        and left.URL == right.URL
+        and left.Source_ID == right.Source_ID
+        and left.Source_ID in UNIQUE_ITEM_URL_SOURCES
+    )
 
 
 def decide_merge(left: Item, right: Item) -> DedupDecision:
@@ -45,26 +60,37 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
         if left.Source_Item_ID == right.Source_Item_ID:
             return DedupDecision(MERGE, "INCIDENT_MERGE_SOURCE_ITEM_ID")
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID")
+
+    # Un identifiant source identique est la seule preuve autorisée à passer
+    # devant une mention explicite de récidive.
     if _recurrence(left) or _recurrence(right):
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_RECURRENCE_MARKER")
+
     if left.Organisation_Key != right.Organisation_Key:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
 
     left_date, right_date = date_or_empty(left.best_date), date_or_empty(right.best_date)
     if not left_date or not right_date:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
+
     days = abs((left_date - right_date).days)
     if left.Event_Date and left.Event_Date == right.Event_Date and left.Source_ID != right.Source_ID:
         return DedupDecision(MERGE, "INCIDENT_MERGE_EVENT_DATE", ("event_date",))
+
     if days <= 3:
-        alias_used = (_base_organisation_key(left.Organisation_Raw) != left.Organisation_Key
-                      or _base_organisation_key(right.Organisation_Raw) != right.Organisation_Key)
+        alias_used = (
+            _base_organisation_key(left.Organisation_Raw) != left.Organisation_Key
+            or _base_organisation_key(right.Organisation_Raw) != right.Organisation_Key
+        )
         return DedupDecision(
-            MERGE, "INCIDENT_MERGE_ALIAS" if alias_used else "INCIDENT_MERGE_CANONICAL_NAME",
+            MERGE,
+            "INCIDENT_MERGE_ALIAS" if alias_used else "INCIDENT_MERGE_CANONICAL_NAME",
             (f"days={days}",),
         )
+
     if days <= config.INCIDENT_GAP_DAYS and _same_unique_url(left, right):
         return DedupDecision(MERGE, "INCIDENT_MERGE_UNIQUE_URL", (f"days={days}",))
+
     return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_TIME_GAP", (f"days={days}",))
 
 
@@ -77,7 +103,10 @@ def group_components(items: list[Item]) -> list[list[Item]]:
 
     components: list[list[Item]] = []
     for org_key in sorted(by_org):
-        group = sorted(by_org[org_key], key=lambda item: (item.best_date, item.Source_ID, item.URL, item.Item_ID))
+        group = sorted(
+            by_org[org_key],
+            key=lambda item: (item.best_date, item.Source_ID, item.URL, item.Item_ID),
+        )
         current: list[Item] = []
         anchor: Item | None = None
         for item in group:
@@ -100,7 +129,11 @@ def _component_dates(component: list[Item]) -> tuple[str, str]:
     if event_dates:
         return event_dates[0], config.DATE_BASIS_EVENT
     published_dates = sorted(item.Published_Date for item in component if item.Published_Date)
-    return (published_dates[0], config.DATE_BASIS_PUBLICATION) if published_dates else ("", config.DATE_BASIS_PUBLICATION)
+    return (
+        (published_dates[0], config.DATE_BASIS_PUBLICATION)
+        if published_dates
+        else ("", config.DATE_BASIS_PUBLICATION)
+    )
 
 
 def _majority(values: list[str], fallback: str) -> str:
@@ -124,16 +157,26 @@ def build_incidents(items: list[Item]) -> list[Incident]:
         date, basis = _component_dates(ordered)
         incidents.append(Incident(
             Incident_ID=incident_id(ordered[0].Organisation_Key, date, ordered[0].Item_ID),
-            Date=date, Date_Basis=basis,
-            Organisation=_majority([item.Organisation_Raw for item in ordered], ordered[0].Organisation_Raw or ""),
+            Date=date,
+            Date_Basis=basis,
+            Organisation=_majority(
+                [item.Organisation_Raw for item in ordered],
+                ordered[0].Organisation_Raw or "",
+            ),
             Secteur=_majority([item.Sector for item in ordered], config.SECTOR_UNKNOWN),
             Menace=_priority_threat([item.Threat for item in ordered]),
             Localisation=_majority([item.Location for item in ordered], config.LOC_INCONNU),
             Sources=" | ".join(sorted({item.Source_ID for item in ordered if item.Source_ID})),
             Source_URLs=" | ".join(sorted({item.URL for item in ordered if item.URL})),
             Items_Count=len(ordered),
-            First_seen=min((item.Collected_As_Of for item in ordered if item.Collected_As_Of), default=""),
-            Last_seen=max((item.Collected_As_Of for item in ordered if item.Collected_As_Of), default=""),
+            First_seen=min(
+                (item.Collected_As_Of for item in ordered if item.Collected_As_Of),
+                default="",
+            ),
+            Last_seen=max(
+                (item.Collected_As_Of for item in ordered if item.Collected_As_Of),
+                default="",
+            ),
         ))
     return sort_incidents(incidents)
 
