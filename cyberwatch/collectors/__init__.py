@@ -9,7 +9,6 @@ from .jsonld import JsonLdCollector
 from .mediawatch import MediaWatchCollector
 from .newsrss import NewsRssCollector
 from .ransomware_live import RansomwareLiveCollector
-from .frenchbreaches import FrenchBreachesCollector
 from .bonjourlafuite import BonjourLaFuiteCollector
 from .cyberattaque_org import CyberattaqueOrgCollector
 from .kwezi import KweziCollector
@@ -23,7 +22,6 @@ REGISTRY: dict[str, type[Collector]] = {
     "newsrss": NewsRssCollector,
     "mediawatch": MediaWatchCollector,
     "ransomware_live": RansomwareLiveCollector,
-    "frenchbreaches": FrenchBreachesCollector,
     "bonjourlafuite": BonjourLaFuiteCollector,
     "cyberattaque_org": CyberattaqueOrgCollector,
     "kwezi": KweziCollector,

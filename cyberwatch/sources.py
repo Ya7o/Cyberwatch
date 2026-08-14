@@ -59,14 +59,17 @@ CORE_SOURCES = [
         source_id="FRENCHBREACHES",
         layer=config.LAYER_CORE,
         zone=config.LOC_FRANCE,
-        start_url="https://frenchbreaches.com/archives",
-        collector="frenchbreaches",
+        start_url="https://frenchbreaches.com/feed.xml",
+        collector="feed",
         active=True,
         default_threat=config.THREAT_LEAK,
         location_rule=config.LOC_INCONNU,
-        params={"title_is_organisation": True},
+        params={
+            "title_is_organisation": True,
+            "feed_url": "https://frenchbreaches.com/feed.xml",
+        },
         protocol=(
-            "Parcourir l'archive des alertes de fuite, descendre jusqu'à "
+            "Lire le flux RSS complet des alertes de fuite, descendre jusqu'à "
             "TARGET_START, relever date, organisation, titre, menace et URL."
         ),
         success_test=(

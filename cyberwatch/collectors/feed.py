@@ -128,6 +128,11 @@ class FeedCollector(Collector):
             result.access_method = f"feed:{feed_url}"
             in_window = [e for e in entries if window.contains(e.published)]
             result.entries = in_window
+            # Ces compteurs décrivent le flux avant puis après le filtre
+            # temporel. Ils ne doivent jamais être déduits de `entries`, qui
+            # ne contient volontairement que la fenêtre demandée.
+            result.items_seen = len(entries)
+            result.items_in_window = len(in_window)
             result.units_done = 1
             result.units_expected = 1
 

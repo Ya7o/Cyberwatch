@@ -497,7 +497,12 @@ def cmd_probe(args) -> int:
     print()
 
     print("3. Flux RSS / Atom")
-    candidates = discover_feeds(client, spec.start_url, budget)[:6]
+    # Une source peut déclarer son flux de référence. Le probe doit tester ce
+    # contrat exact au lieu de fabriquer des URLs à partir de son chemin RSS.
+    explicit_feed = spec.params.get("feed_url")
+    candidates = [explicit_feed] if explicit_feed else discover_feeds(
+        client, spec.start_url, budget
+    )[:6]
     for feed_url in candidates:
         response = client.fetch(feed_url, budget)
         if not response.ok:

@@ -213,6 +213,21 @@ class TestFeed:
         result = FeedCollector().collect(client, spec, window)
         assert result.reached_boundary is True
         assert result.resolve() == (status.OK, 100)
+        assert result.items_seen == 2
+        assert result.items_in_window == 1
+
+    def test_flux_conserve_seen_avant_filtre_temporel(self):
+        window = Window("2026-03-05", "2026-08-12")
+        client = FakeClient({"exemple.re": ok(RSS_FEED)})
+        spec = SourceSpec("TEST", config.LAYER_LOCAL_MEDIA, "La Réunion",
+                          "https://exemple.re/cyber", "feed",
+                          params={"feed_url": "https://exemple.re/feed/"})
+
+        result = FeedCollector().collect(client, spec, window)
+
+        assert result.items_seen == 2
+        assert result.items_in_window == 1
+        assert len(result.entries) == 1
 
     def test_flux_trop_court_donne_partial(self):
         """Un flux qui ne redescend pas jusqu'à la borne n'est jamais OK."""
