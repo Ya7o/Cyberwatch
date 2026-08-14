@@ -22,23 +22,6 @@ from . import config
 LEGAL_FORMS = {"sas", "sarl", "sa", "eurl"}
 INCIDENT_SUFFIXES = {"pirate", "piratee", "pirates", "piratees", "revendique", "revendiquee"}
 
-# Variantes observées sur plusieurs sources pour le même incident et validées
-# manuellement. Cette table reste volontairement courte : elle ne doit pas
-# devenir un rapprochement flou de noms proches.
-_LEGACY_ALIASES = {
-    "move up formation": "moveup formation",
-    "kams paris": "kamsparis",
-    "easy lounge": "easylounge",
-    "alumn force": "alumnforce",
-    "unis cite": "uniscite",
-    "keep cool": "keepcool",
-    "store pas cher": "storepascher",
-    # Variantes exactes corroborées par plusieurs sources le même jour.
-    "actini group": "actini",
-    "chambre de commerce et de l industrie nice cote d azur": "chambre de commerce et d industrie nice cote d azur",
-    "ministere de l education nationale": "education nationale",
-}
-
 _DOMAIN_SUFFIX_RE = re.compile(r"\.(?:fr|com|net|org|eu|io|app)$", flags=re.IGNORECASE)
 
 _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)

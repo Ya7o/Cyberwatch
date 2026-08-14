@@ -230,6 +230,36 @@ def cmd_test_repeat(args) -> int:
     return 0 if passed else 1
 
 
+def cmd_test_live_repeat(args) -> int:
+    """Exécute deux CREATE LIVE isolés, sans modifier la base locale."""
+    first_context = make_run_context(
+        MODE_CREATE, args.as_of, args.start, _layers_from(args.layers)
+    )
+    second_context = make_run_context(
+        MODE_CREATE, args.as_of, args.start, _layers_from(args.layers)
+    )
+    first = execute(first_context, persist=False)
+    second = execute(second_context, persist=False)
+    source_state = lambda report: [
+        (outcome.source_id, outcome.status, outcome.items_seen,
+         outcome.items_in_window, outcome.items_collected)
+        for outcome in report.outcomes
+    ]
+    checks = [
+        ("Statuts et compteurs sources", source_state(first), source_state(second)),
+        ("Items_Hash", first.items_hash, second.items_hash),
+        ("Incidents_Hash", first.incidents_hash, second.incidents_hash),
+    ]
+    healthy = first.overall == status.OK and second.overall == status.OK
+    passed = healthy and all(left == right for _, left, right in checks)
+    print("TEST REPETABILITE LIVE CREATE A/B")
+    for label, left, right in checks:
+        print(f"  {'PASS' if left == right else 'FAIL'}  {label}")
+    print(f"  {'PASS' if healthy else 'FAIL'}  Sources des deux runs OK")
+    print("  RESULTAT :", "PASS" if passed else "FAIL")
+    return 0 if passed else 1
+
+
 def cmd_diagnose(args) -> int:
     """Sonde chaque source et mesure son coût réel, sans écrire la base.
 
@@ -645,6 +675,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     repeat = subparsers.add_parser("test-repeat", help="Test de répétabilité (§27).")
     repeat.set_defaults(func=cmd_test_repeat)
+
+    live_repeat = subparsers.add_parser(
+        "test-live-repeat",
+        help="Deux CREATE live isolés, sans modifier le snapshot local.",
+    )
+    add_common(live_repeat)
+    live_repeat.set_defaults(func=cmd_test_live_repeat)
 
     diagnose = subparsers.add_parser(
         "diagnose", help="Sonder les sources et mesurer le coût réel."

@@ -512,7 +512,11 @@ class RunReport:
     requests: int = 0
 
 
-def execute(context: RunContext, offline: bool = False) -> RunReport:
+def execute(
+    context: RunContext,
+    offline: bool = False,
+    persist: bool = True,
+) -> RunReport:
     """Exécute un run complet et écrit la base.
 
     `offline=True` correspond au mode `REPLAY` (§26) : aucun accès Web, on
@@ -589,11 +593,12 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
         report.overall = status.BROKEN
     report.duration = round(time.monotonic() - started, 1)
 
-    _persist(
-        report,
-        watch_rows if not offline else [],
-        persist_snapshot=offline or (report.overall == status.OK and not report.problems),
-    )
+    if persist:
+        _persist(
+            report,
+            watch_rows if not offline else [],
+            persist_snapshot=offline or (report.overall == status.OK and not report.problems),
+        )
     return report
 
 
