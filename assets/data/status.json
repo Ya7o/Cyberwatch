@@ -1,5 +1,22 @@
 {
- "blind_spots": [],
+ "blind_spots": [
+  {
+   "coverage": 0,
+   "detail": "",
+   "id": "JOURNAL_DE_MAYOTTE",
+   "layer": "LOCAL_MEDIA_DIRECT",
+   "reason": "Couche non planifiée pour ce run (balayage hebdomadaire).",
+   "status": "NOT_COVERED"
+  },
+  {
+   "coverage": 0,
+   "detail": "",
+   "id": "MAYOTTE_HEBDO_NUMERIQUE",
+   "layer": "LOCAL_MEDIA_DIRECT",
+   "reason": "Couche non planifiée pour ce run (balayage hebdomadaire).",
+   "status": "NOT_COVERED"
+  }
+ ],
  "bonjourlafuite": {
   "error": "",
   "items_collected": 315,
@@ -15,6 +32,18 @@
   "ok": 5,
   "partial": 0,
   "skipped": 0
+ },
+ "coverage_groups": {
+  "MAYOTTE_LOCAL": {
+   "coverage": "PARTIAL",
+   "expected": 3,
+   "failed": 2,
+   "historical_complete": 1,
+   "live_partial": 0,
+   "ok": 1,
+   "partial": 0,
+   "queried": 1
+  }
  },
  "entities": [
   {
@@ -1282,6 +1311,7 @@
   },
   "status": {
    "FAIL": "Énumération impossible",
+   "NOT_COVERED": "Source attendue mais non activée",
    "OK": "Protocole exécuté intégralement",
    "PARTIAL": "Protocole exécuté partiellement",
    "SKIPPED": "Hors périmètre de ce run"
@@ -1307,6 +1337,58 @@
   "target_start": "2026-01-01"
  },
  "sources": [
+  {
+   "access_method": "",
+   "calls": 0,
+   "comment": "Source locale requise mais absente du dernier run.",
+   "coverage": 0,
+   "duration": "",
+   "error": "",
+   "id": "JOURNAL_DE_MAYOTTE",
+   "items": 0,
+   "items_collected": 0,
+   "items_in_window": 0,
+   "items_seen": 0,
+   "last_recognized_date": "",
+   "last_recognized_org": "",
+   "last_run": "2026-08-14T17:36:59+04:00",
+   "latest_item": "",
+   "layer": "LOCAL_MEDIA_DIRECT",
+   "reason": "Couche non planifiée pour ce run (balayage hebdomadaire).",
+   "reason_code": "LAYER_NOT_SCHEDULED",
+   "status": "NOT_COVERED",
+   "units_done": 0,
+   "units_expected": 0,
+   "url": "https://lejournaldemayotte.yt/",
+   "zero_is_trusted": false,
+   "zone": "Mayotte"
+  },
+  {
+   "access_method": "",
+   "calls": 0,
+   "comment": "Source locale requise mais absente du dernier run.",
+   "coverage": 0,
+   "duration": "",
+   "error": "",
+   "id": "MAYOTTE_HEBDO_NUMERIQUE",
+   "items": 0,
+   "items_collected": 0,
+   "items_in_window": 0,
+   "items_seen": 0,
+   "last_recognized_date": "",
+   "last_recognized_org": "",
+   "last_run": "2026-08-14T17:36:59+04:00",
+   "latest_item": "",
+   "layer": "LOCAL_MEDIA_DIRECT",
+   "reason": "Couche non planifiée pour ce run (balayage hebdomadaire).",
+   "reason_code": "LAYER_NOT_SCHEDULED",
+   "status": "NOT_COVERED",
+   "units_done": 0,
+   "units_expected": 0,
+   "url": "https://www.mayottehebdo.com/actualite/numerique/",
+   "zero_is_trusted": false,
+   "zone": "Mayotte"
+  },
   {
    "access_method": "bonjourlafuite-html-v0",
    "calls": 1,

@@ -38,12 +38,12 @@ REUNION_MEDIA = [
     "la1ere.francetvinfo.fr/reunion",
 ]
 
-MAYOTTE_MEDIA = [
-    "www.linfokwezi.fr",
-    "mayottehebdo.com",
-    "lejournaldemayotte.yt",
-    "la1ere.francetvinfo.fr/mayotte",
-]
+# Lot 1 : seuls les trois éditeurs déclarés dans LOCAL_MEDIA_SOURCES sont
+# couverts. La 1ère Mayotte reste une candidate hors périmètre, non injectée
+# dans les watchers afin de ne pas modifier implicitement leur coût ni la
+# provenance éditoriale des incidents.
+MAYOTTE_MEDIA: list[str] = []
+MAYOTTE_CANDIDATE_MEDIA = ["la1ere.francetvinfo.fr/mayotte"]
 
 MAURICE_MEDIA = ["defimedia.info", "lexpress.mu", "www.lemauricien.com"]
 MADAGASCAR_MEDIA = ["lexpress.mg", "midi-madagasikara.mg"]
@@ -240,10 +240,36 @@ LOCAL_MEDIA_SOURCES = [
         collector="kwezi",
         active=True,
         location_rule=config.LOC_INCONNU,
-        params={"categories": "numerique", "include_content": True},
+        params={"categories": "numerique", "include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "linfokwezi", "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
         protocol="Lire la rubrique Numérique jusqu'à la borne, retenir les contenus cyber.",
         success_test="Liste parcourue jusqu'à la borne, chaque item daté avec URL.",
         notes="Incident créé uniquement si une organisation victime est nommée.",
+    ),
+    SourceSpec(
+        source_id="MAYOTTE_HEBDO_NUMERIQUE",
+        layer=config.LAYER_LOCAL_MEDIA,
+        zone=config.LOC_MAYOTTE,
+        start_url="https://www.mayottehebdo.com/actualite/numerique/",
+        collector="wordpress",
+        active=True,
+        location_rule=config.LOC_INCONNU,
+        params={"categories": "numerique", "include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "mayottehebdo", "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
+        protocol="API WordPress de la rubrique Numérique, paginée jusqu'à la borne.",
+        success_test="API WordPress complète jusqu'à TARGET_START ; aucun article cyber sans victime n'est matérialisé.",
+        notes="Média mahorais local ; Mayotte est un défaut de source de dernier rang.",
+    ),
+    SourceSpec(
+        source_id="JOURNAL_DE_MAYOTTE",
+        layer=config.LAYER_LOCAL_MEDIA,
+        zone=config.LOC_MAYOTTE,
+        start_url="https://lejournaldemayotte.yt/",
+        collector="wordpress",
+        active=True,
+        location_rule=config.LOC_INCONNU,
+        params={"include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "lejournaldemayotte", "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
+        protocol="API WordPress complète, paginée jusqu'à la borne ; qualification cyber ensuite.",
+        success_test="Toutes les pages WordPress jusqu'à TARGET_START sont parcourues ; aucun article cyber sans victime n'est matérialisé.",
+        notes="Média mahorais généraliste ; pas de défaut territorial implicite.",
     ),
 ]
 
@@ -269,7 +295,7 @@ _WATCH_NOTE = (
 )
 
 
-def _watch(source_id, zone, media, entities, layer, require_entity=True, notes=""):
+def _watch(source_id, zone, media, entities, layer, require_entity=True, notes="", active=False):
     """Source de veille : flux directs des médias + entités surveillées."""
     return SourceSpec(
         source_id=source_id,
@@ -277,7 +303,7 @@ def _watch(source_id, zone, media, entities, layer, require_entity=True, notes="
         zone=zone,
         start_url=f"https://{media[0]}/" if media else "",
         collector="mediawatch",
-        active=False,
+        active=active,
         location_rule=zone if zone in config.LOCATIONS else "",
         params={
             "domains": media,
@@ -322,6 +348,7 @@ REGIONAL_WATCH_SOURCES = [
         config.LAYER_REGIONAL_WATCH,
         require_entity=False,
         notes="Tout contenu cyber mahorais, sans exiger une entité de la liste.",
+        active=False,
     ),
     _watch(
         "MAURITIUS_REGIONAL_WATCH",

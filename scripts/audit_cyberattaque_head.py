@@ -44,13 +44,16 @@ def write(rows,path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',default='/tmp/cyberattaque_head.csv');p.add_argument('--check',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--output',default='/tmp/cyberattaque_head.csv');p.add_argument('--check',action='store_true');p.add_argument('--max-high-confidence-diff',type=int,default=37,help='Régression maximale acceptée contre le golden versionné.');a=p.parse_args()
     rows=run(); h=write(rows,a.output); modes={m:sum(r['Resolution_Mode']==m for r in rows) for m in ('NEGATED','MULTI','DIRECT','NO_VICTIM','MISSING')}; exact=sum(r['Match']=='MATCH' for r in rows)
+    high_diff=sum(r['Match']=='DIFF' and r['Golden_Confidence']=='HIGH' for r in rows)
     print(f'articles_total={len(rows)}');print(f'exact_match={exact}');print(f'diff={len(rows)-exact}');
     for k,v in modes.items(): print(f'{k.lower()}={v}')
-    print('high_confidence_match='+str(sum(r['Match']=='MATCH' and r['Golden_Confidence']=='HIGH' for r in rows)));print('high_confidence_diff='+str(sum(r['Match']=='DIFF' and r['Golden_Confidence']=='HIGH' for r in rows)));print('medium_confidence_match='+str(sum(r['Match']=='MATCH' and r['Golden_Confidence']=='MEDIUM' for r in rows)));print('medium_confidence_diff='+str(sum(r['Match']=='DIFF' and r['Golden_Confidence']=='MEDIUM' for r in rows)));print('benchmark_hash='+h)
+    print('high_confidence_match='+str(sum(r['Match']=='MATCH' and r['Golden_Confidence']=='HIGH' for r in rows)));print('high_confidence_diff='+str(high_diff));print('medium_confidence_match='+str(sum(r['Match']=='MATCH' and r['Golden_Confidence']=='MEDIUM' for r in rows)));print('medium_confidence_diff='+str(sum(r['Match']=='DIFF' and r['Golden_Confidence']=='MEDIUM' for r in rows)));print('benchmark_hash='+h)
     if a.check:
         with tempfile.NamedTemporaryFile(suffix='.csv') as f:
             if h != write(run(),f.name): raise SystemExit('benchmark non déterministe')
+        if high_diff > a.max_high_confidence_diff:
+            raise SystemExit(f'quality regression: high-confidence differences {high_diff} > {a.max_high_confidence_diff}')
         print('check=PASS')
 if __name__=='__main__': main()

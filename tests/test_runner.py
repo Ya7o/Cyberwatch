@@ -267,6 +267,7 @@ class TestCreateRepartDeZero:
         )
         report = runner.execute(context, offline=True)
         assert report.items == []
+        assert report.overall == status.OK
 
     def test_maj_conserve_le_stock(self, tmp_path, monkeypatch, make_item):
         from cyberwatch import runner, store
@@ -282,6 +283,7 @@ class TestCreateRepartDeZero:
         )
         report = runner.execute(context, offline=True)
         assert len(report.items) == 1
+        assert report.overall == status.OK
 
 
 class TestFauxPositifFourriere:

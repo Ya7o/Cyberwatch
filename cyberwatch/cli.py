@@ -36,6 +36,7 @@ from .runner import (
     repair_item_integrity,
     save_snapshot_provenance,
 )
+from .qualification import qualify
 
 
 def _layers_from(value: str) -> list[str]:
@@ -197,18 +198,18 @@ def cmd_backfill_unknowns(args) -> int:
     """Réapplique les règles aux seules menaces/localisations inconnues."""
     items = store.load_items()
     before_ids = [item.Item_ID for item in items]
-    report = enrichment.backfill_unknowns(items, enrichment.load_reference())
+    qualified = qualify(items)
     if before_ids != [item.Item_ID for item in items]:
         print("Backfill annulé : un Item_ID aurait été modifié.")
         return 1
-    incidents = build_incidents(items)
-    store.save_items(identity.sort_items(items))
+    items, incidents = qualified.items, qualified.incidents
+    store.save_items(items)
     store.save_incidents(incidents)
     save_snapshot_provenance(
         store.load_items(), store.load_incidents(), operation="BACKFILL_UNKNOWNS",
     )
     site.build()
-    print(f"Backfill inconnus : menace={report['threat']}, localisation règles={report['location_rule']}, localisation réutilisée={report['location_reused']}; incidents={len(incidents)}.")
+    print(f"Qualification finale : {qualified.changes}; incidents={len(incidents)}.")
     return 0
 
 
@@ -578,7 +579,15 @@ def cmd_probe_media(args) -> int:
                 domains.append((spec.zone, domain))
     if args.only:
         wanted = {d.strip() for d in args.only.split(",")}
-        domains = [(z, d) for z, d in domains if d in wanted]
+        selected = [(z, d) for z, d in domains if d in wanted]
+        # Les sources directes n'ont pas forcément `params.domains`. Accepter
+        # leur Source_ID rend le probe réutilisable sans les déguiser en watcher.
+        for spec in sources.ALL_SOURCES:
+            if spec.source_id in wanted and spec.start_url:
+                candidate = (spec.zone, spec.start_url)
+                if candidate not in selected:
+                    selected.append(candidate)
+        domains = selected
 
     context = make_run_context(MODE_DIAGNOSE, args.as_of, args.start)
     window = context.window

@@ -19,6 +19,7 @@ import subprocess
 from dataclasses import dataclass, field
 
 from . import config, enrichment, identity, sources, status, store, watchlists
+from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
     is_negated_incident,
@@ -237,7 +238,7 @@ def entry_to_item(
         return None
 
     text = f"{entry.title} {entry.summary}"
-    if spec.source_id == "KWEZI_NUMERIQUE":
+    if spec.params.get("include_content"):
         text = f"{text} {entry.content}"
 
     # Le garde-fou de vocabulaire protège des rubriques généralistes, où tout
@@ -281,7 +282,7 @@ def entry_to_item(
 
     # Kwezi mesure tous les articles de rubrique, mais ne matérialise dans
     # ITEMS que ceux dont la victime est déterminée sans heuristique variable.
-    if spec.source_id in {"KWEZI_NUMERIQUE", "CYBERATTAQUE_ORG"} and not organisation:
+    if (spec.source_id == "CYBERATTAQUE_ORG" or spec.params.get("require_victim")) and not organisation:
         return None
 
     sector_hint = ""
@@ -383,15 +384,17 @@ def run_source(
         return outcome, [], []
 
     items: list[Item] = []
-    kwez_articles_cyber = 0
+    requires_victim = bool(spec.params.get("require_victim"))
+    articles_cyber = 0
+    articles_rejected_no_victim = 0
     cyberattaque_rejected_negated = 0
     cyberattaque_rejected_multi = 0
     cyberattaque_rejected_no_victim = 0
     for entry in result.entries:
-        if spec.source_id == "KWEZI_NUMERIQUE" and looks_cyber(
+        if requires_victim and looks_cyber(
             entry.title, entry.summary, entry.content
         ):
-            kwez_articles_cyber += 1
+            articles_cyber += 1
         if spec.source_id == "CYBERATTAQUE_ORG" and is_negated_incident(
             entry.title, entry.summary, entry.content
         ):
@@ -407,6 +410,8 @@ def run_source(
         )
         if item is not None:
             items.append(item)
+        elif requires_victim:
+            articles_rejected_no_victim += 1
         elif spec.source_id == "CYBERATTAQUE_ORG":
             cyberattaque_rejected_no_victim += 1
 
@@ -426,10 +431,12 @@ def run_source(
     outcome.items_collected = len(items)
     outcome.access_method = result.access_method
     outcome.comment = result.comment
-    if spec.source_id == "KWEZI_NUMERIQUE":
+    if spec.params.get("local_media_metrics"):
         extra = (
-            f"articles_cyber={kwez_articles_cyber}; "
-            f"victims_identified={len(items)}"
+            f"articles_cyber={articles_cyber}; "
+            f"victims_identified={len(items)}; "
+            f"items_created={len(items)}; "
+            f"articles_rejected_no_victim={articles_rejected_no_victim}"
         )
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     if spec.source_id == "CYBERATTAQUE_ORG":
@@ -619,6 +626,23 @@ class RunReport:
     requests: int = 0
 
 
+def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
+    """Indique si le contrat de source interdit la publication du snapshot.
+
+    Le contrat par défaut reste historique et strict : seul ``OK`` permet de
+    publier. Une source explicitement déclarée ``live_watch`` peut rester
+    ``PARTIAL`` lorsque son RSS permet la veille courante sans fournir
+    l'historique complet. Son état reste visible dans RUN_SOURCES et le
+    dashboard ; il n'est jamais transformé en ``OK``.
+    """
+    if outcome.status == status.OK:
+        return False
+    return not (
+        outcome.status == status.PARTIAL
+        and spec.params.get("publication_contract") == "live_watch"
+    )
+
+
 def execute(
     context: RunContext,
     offline: bool = False,
@@ -688,22 +712,28 @@ def execute(
         report.new_items = new_count
         report.requests = run_budget.requests_made
 
-    report.incidents = build_incidents(report.items)
+    # All producing paths converge here: no workflow may add a business
+    # transformation after this point.
+    qualified = qualify(report.items)
+    report.items = qualified.items
+    report.incidents = qualified.incidents
     report.new_incidents = len(
         [i for i in report.incidents if i.Incident_ID not in previous_ids]
     )
-    report.items_hash = identity.items_hash(report.items)
-    report.incidents_hash = identity.incidents_hash(report.incidents)
-    # Le statut global est volontairement binaire : tout le périmètre actif
-    # doit être OK, sinon le run est BROKEN et ne peut pas publier un snapshot.
-    report.overall = (
-        status.OK
-        if report.outcomes and all(o.status == status.OK for o in report.outcomes)
-        else status.BROKEN
+    report.items_hash = qualified.items_hash
+    report.incidents_hash = qualified.incidents_hash
+    # Le contrat historique est strict. Une veille RSS explicitement déclarée
+    # ``live_watch`` peut en revanche être PARTIAL sans empêcher le snapshot :
+    # le dashboard l'expose alors comme couverture incomplète.
+    report.overall = status.OK if offline else (
+        status.OK if report.outcomes and not any(
+            outcome_blocks_snapshot(outcome, sources.by_id(outcome.source_id))
+            for outcome in report.outcomes
+        ) else status.BROKEN
     )
-    report.problems = pre_export_checks(
-        report.items, report.incidents, report.outcomes
-    )
+    report.problems = pre_export_checks(report.items, report.incidents, report.outcomes)
+    if offline:
+        report.problems = [p for p in report.problems if "RUN_SOURCES" not in p]
     if report.problems:
         report.overall = status.BROKEN
     report.duration = round(time.monotonic() - started, 1)

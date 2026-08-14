@@ -35,7 +35,7 @@ from .. import config, status
 from ..normalize import _contains, looks_cyber, searchable
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
 from .feed import discover_feeds, parse_feed
-from .wordpress import entry_from_post, discover_endpoint
+from .wordpress import entry_from_post, discover_endpoint, total_pages_of
 
 
 def mentions(text_blob: str, labels: list[str]) -> str:
@@ -233,9 +233,11 @@ class MediaWatchCollector(Collector):
         """
         base = domain if domain.startswith("http") else f"https://{domain}/"
 
-        entries = self._read_wordpress(client, spec, base, window, budget)
+        entries, complete, reason = self._read_wordpress(
+            client, spec, base, window, budget
+        )
         if entries is not None:
-            return entries, status.REASON_OK, True
+            return entries, reason, complete
 
         last_reason = status.REASON_NO_FEED
         for feed_url in discover_feeds(client, base, budget)[:5]:
@@ -261,14 +263,16 @@ class MediaWatchCollector(Collector):
         """
         endpoint = discover_endpoint(client, base, budget)
         if not endpoint:
-            return None
+            return None, False, status.REASON_NO_FEED
 
         entries: list[RawEntry] = []
         seen_ids: set[int] = set()
         answered = False
+        complete = True
 
         for term in config.MEDIA_SEARCH_TERMS:
             if budget.exhausted or client.run_budget.exhausted:
+                complete = False
                 break
             query = {
                 "search": term,
@@ -277,27 +281,47 @@ class MediaWatchCollector(Collector):
                 "order": "desc",
                 "after": f"{window.start}T00:00:00",
                 "before": f"{window.end}T23:59:59",
-                "_fields": "id,date,link,title,excerpt",
+                "_fields": "id,date,link,title,excerpt" + (",content" if spec.params.get("include_content") else ""),
             }
-            response = client.fetch(f"{endpoint}/posts?{urlencode(query)}", budget)
-            if not response.ok:
-                continue
-            payload = response.json()
-            if not isinstance(payload, list):
-                continue
-            answered = True
-            for post in payload:
-                post_id = post.get("id")
-                if post_id in seen_ids:
-                    continue
-                seen_ids.add(post_id)
-                entry = entry_from_post(post, spec)
-                if entry:
-                    entries.append(entry)
+            page = 1
+            while True:
+                query["page"] = str(page)
+                response = client.fetch(
+                    f"{endpoint}/posts?{urlencode(query)}", budget
+                )
+                if not response.ok:
+                    complete = False
+                    break
+                payload = response.json()
+                pages = total_pages_of(response)
+                if not isinstance(payload, list) or pages is None:
+                    complete = False
+                    break
+                answered = True
+                for post in payload:
+                    post_id = post.get("id")
+                    if post_id in seen_ids:
+                        continue
+                    seen_ids.add(post_id)
+                    entry = entry_from_post(post, spec)
+                    if entry:
+                        entries.append(entry)
+                if page >= pages:
+                    break
+                if budget.exhausted or client.run_budget.exhausted:
+                    complete = False
+                    break
+                page += 1
+            if not complete:
+                break
 
         # Une API qui répond sans rien trouver est un zéro vérifié, pas un échec :
         # on ne retombe pas sur le flux, qui serait moins profond.
-        return entries if answered else None
+        if not answered:
+            return None, False, status.REASON_NO_FEED
+        return entries, complete, (
+            status.REASON_OK if complete else status.REASON_INCOMPLETE
+        )
 
     @staticmethod
     def _failure_comment(failures: dict[str, int], domains: list[str]) -> str:

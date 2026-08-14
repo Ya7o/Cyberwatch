@@ -217,7 +217,7 @@
     const run = data.run;
     const c = data.counts || { ok: 0, partial: 0, fail: 0, skipped: 0 };
     const totalSources = (data.sources || []).length || c.ok + c.partial + c.fail + c.skipped;
-    const needsAttention = c.partial + c.fail;
+    const needsAttention = (data.blind_spots || []).length;
     if ($("#run-pill-text")) $("#run-pill-text").textContent = needsAttention ? `Sources : ${c.ok}/${totalSources} opérationnelles · ${needsAttention} à vérifier` : `Sources : ${c.ok}/${totalSources} opérationnelles`;
     if ($("#run-pill")) $("#run-pill").title = "Voir l’état détaillé des sources";
     if ($("#reliability-summary")) $("#reliability-summary").textContent = needsAttention ? `${c.ok}/${totalSources} sources opérationnelles · ${needsAttention} à vérifier` : `${c.ok}/${totalSources} sources opérationnelles · aucune anomalie signalée`;

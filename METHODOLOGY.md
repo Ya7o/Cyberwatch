@@ -3,6 +3,32 @@
 **`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-2`**
 **Périmètre :** France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles, Comores.
 
+## Pipeline canonique de qualification
+
+Chaque snapshot, CREATE, MAJ, REPLAY ou réparation locale, passe par le même
+traitement offline : intégrité des items, enrichissement déterministe,
+reconstruction des incidents, contrôles pré-export, hashes et persistance
+atomique. Les workflows GitHub n'ajoutent aucune transformation métier.
+
+`data/quality_baseline.json` versionne les métriques de qualité. Le gate refuse
+une hausse d'inconnus, un candidat de menace résoluble conservé inconnu ou une
+suppression inexpliquée ; toute mise à jour de cette référence est visible dans
+Git et doit être volontairement revue.
+
+## Couverture locale Mayotte
+
+Kwezi Numérique, Mayotte Hebdo Numérique et Journal de Mayotte sont lus par
+les collecteurs génériques WordPress/MediaWatch avec un corps d'article lorsque
+nécessaire. Un article de rubrique numérique n'est matérialisé que s'il est
+cyber et nomme une victime déterminée. La localisation structurée, le
+référentiel et l'entité reconnue priment ; aucun défaut territorial mahorais
+n'est appliqué tant qu'un audit de corpus ne l'a pas justifié. Le tableau de
+statut expose toute source locale déclarée requise mais absente comme
+`NOT_COVERED`. Les trois médias sont des archives WordPress paginées : un
+`PARTIAL` empêche la publication. Les watchers Mayotte restent désactivés dans
+ce lot ; La 1ère Mayotte est une candidate explicitement hors périmètre, pas
+une quatrième source implicite.
+
 ## Initialisation et référence
 
 Un **snapshot** est le dernier corpus techniquement valide : ITEMS, INCIDENTS
@@ -150,8 +176,10 @@ Organisation_Key = NFKD → sans accents → minuscules → sans ponctuation
                    → espaces normalisés → retrait des formes juridiques isolées
                      (SAS, SARL, SA, EURL)
 
-Item_ID     = "ITM-" + SHA256(Source_ID|Published_Date|Organisation_Key|URL)[:16]
-Incident_ID = "INC-" + SHA256(Organisation_Key|Component_Start_Date)[:12].upper()
+Item_ID     = "ITM-" + SHA256(Source_ID|Source_Item_ID)[:16]
+              lorsque la source fournit un identifiant natif stable ; sinon
+              SHA256(Source_ID|Published_Date|Organisation_Key|URL)[:16].
+Incident_ID = "INC-" + SHA256(Organisation_Key|Anchor_Item_ID)[:12].upper()
 ```
 
 Aucun rapprochement flou, aucune fusion assistée par IA. Deux libellés qui ne se
@@ -163,7 +191,8 @@ normalisent pas à l'identique restent deux organisations distinctes :
 ## 4. Déduplication et datation
 
 1. Grouper par `Organisation_Key`.
-2. Trier par `Published_Date`, `Source_ID`, `URL`, `Item_ID`.
+2. Trier par date, `Source_ID`, `URL`, `Item_ID`; l'ancre du composant est
+   l'item canonique retenu par le moteur, pas seulement sa date.
 3. Regrouper les items successifs dont l'écart est **inférieur ou égal à 14 jours**.
 4. Un écart supérieur ouvre un nouvel incident.
 

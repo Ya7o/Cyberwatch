@@ -13,6 +13,8 @@ if str(ROOT) not in sys.path:
 from cyberwatch import config
 from cyberwatch.enrichment import _UNKNOWN_LEAK_MARKERS
 from cyberwatch.normalize import classify_threat, searchable
+from cyberwatch.quality import compare as compare_quality, metrics as quality_metrics
+from cyberwatch.model import Item
 
 FIELDS = ("Organisation_Raw", "Organisation_Key", "Threat", "Sector", "Location")
 UNKNOWN = "Inconnu"
@@ -43,7 +45,7 @@ def diff(before, after):
         added.append({"key": value, "status": "ADDED", "source": row["Source_ID"], "source_item_id": row["Source_Item_ID"], "published": row["Published_Date"], "organisation": row["Organisation_Raw"], "title": row["Title"]})
     for value in sorted(set(old) - set(new)):
         row = old[value]
-        removed.append({"key": value, "status": "REMOVED", "source": row["Source_ID"], "source_item_id": row["Source_Item_ID"], "published": row["Published_Date"], "organisation": row["Organisation_Raw"], "title": row["Title"]})
+        removed.append({"key": value, "status": "REMOVED", "reason": "UNEXPLAINED", "source": row["Source_ID"], "source_item_id": row["Source_Item_ID"], "published": row["Published_Date"], "organisation": row["Organisation_Raw"], "title": row["Title"]})
     for k in sorted(set(old)&set(new)):
         for field in FIELDS:
             if old[k][field]!=new[k][field]: changes.append({"key":k,"source":old[k]["Source_ID"],"source_item_id":old[k]["Source_Item_ID"],"published":old[k]["Published_Date"],"organisation":old[k]["Organisation_Raw"],"title":old[k]["Title"],"field":field,"before":old[k][field],"after":new[k][field]})
@@ -93,7 +95,7 @@ def threat_backfill_candidates(rows):
     return sorted(candidates, key=lambda value: (value["source_id"], value["source_item_id"], value["title"]))
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--items');p.add_argument('--before');p.add_argument('--after');p.add_argument('--check',action='store_true');p.add_argument('--metrics', action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--items');p.add_argument('--before');p.add_argument('--after');p.add_argument('--check',action='store_true');p.add_argument('--metrics', action='store_true');p.add_argument('--quality-baseline', default=str(ROOT / 'data' / 'quality_baseline.json'));p.add_argument('--check-regression', action='store_true');a=p.parse_args()
     if bool(a.before) != bool(a.after):
         p.error("--before et --after doivent être fournis ensemble")
     rows=load(a.items or a.after)
@@ -101,6 +103,7 @@ def main():
     result=run_audit(rows, before_rows)
     result["threat_backfill_candidates"] = threat_backfill_candidates(rows)
     result["threat_backfill_candidates_total"] = len(result["threat_backfill_candidates"])
+    result["quality_metrics"] = quality_metrics([Item.from_row(row) for row in rows])
     blob=canonical(result); digest=hashlib.sha256(blob.encode()).hexdigest(); print(blob); print('audit_hash='+digest)
     if a.metrics:
         for name, value in result["global"].items():
@@ -113,6 +116,21 @@ def main():
         shuffled_result = run_audit(shuffled, before_rows)
         shuffled_result["threat_backfill_candidates"] = threat_backfill_candidates(shuffled)
         shuffled_result["threat_backfill_candidates_total"] = len(shuffled_result["threat_backfill_candidates"])
+        shuffled_result["quality_metrics"] = quality_metrics([Item.from_row(row) for row in shuffled])
         if canonical(shuffled_result)!=canonical(result): raise SystemExit('audit non déterministe')
         print('check=PASS')
+    if a.check_regression:
+        baseline_path = Path(a.quality_baseline)
+        if not baseline_path.exists():
+            raise SystemExit('quality baseline missing: ' + str(baseline_path))
+        baseline = json.loads(baseline_path.read_text(encoding='utf-8'))
+        problems = compare_quality(result['quality_metrics'], baseline['metrics'])
+        if result['threat_backfill_candidates_total']:
+            problems.append('deterministic threat candidates still unknown')
+        if before_rows is not None and any(row['reason'] == 'UNEXPLAINED' for row in result['removed']):
+            problems.append('unexplained removed rows')
+        if problems:
+            print('quality=FAIL')
+            raise SystemExit('\n'.join(problems))
+        print('quality=PASS')
 if __name__=='__main__': main()

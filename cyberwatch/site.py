@@ -49,6 +49,10 @@ def _source_metadata() -> dict[str, dict]:
             "url": spec.start_url,
             "notes": spec.notes,
             "success_test": spec.success_test,
+            "active": spec.active,
+            "coverage_required": bool(spec.params.get("coverage_required")),
+            "coverage_group": spec.params.get("coverage_group", ""),
+            "publication_contract": spec.params.get("publication_contract", "historical_required"),
         }
         for spec in sources.ALL_SOURCES
     }
@@ -62,6 +66,33 @@ def _comment_metric(comment: str, key: str) -> str:
         if token.startswith(prefix):
             return token[len(prefix):].strip()
     return ""
+
+
+def _coverage_groups(rows: list[dict], metadata: dict[str, dict]) -> dict[str, dict]:
+    """Agrège les sources requises sans masquer celles absentes du run."""
+    groups: dict[str, list[dict]] = {}
+    for row in rows:
+        group = metadata.get(row["id"], {}).get("coverage_group", "")
+        if group:
+            groups.setdefault(group, []).append(row)
+    payload = {}
+    for group, members in groups.items():
+        statuses = [row["status"] for row in members]
+        queried = sum(value != status.NOT_COVERED for value in statuses)
+        partial = statuses.count(status.PARTIAL)
+        failed = sum(value in (status.FAIL, status.NOT_COVERED) for value in statuses)
+        payload[group] = {
+            "expected": len(members), "queried": queried,
+            "ok": statuses.count(status.OK), "partial": partial, "failed": failed,
+            "historical_complete": statuses.count(status.OK),
+            "live_partial": sum(
+                row["status"] == status.PARTIAL
+                and metadata[row["id"]].get("publication_contract") == "live_watch"
+                for row in members
+            ),
+            "coverage": "COMPLETE" if queried == len(members) and not partial and not failed else "PARTIAL",
+        }
+    return payload
 
 
 def status_payload() -> dict:
@@ -149,6 +180,23 @@ def status_payload() -> dict:
             }
         )
 
+    # Une veille régionale déclarée mais désactivée est un angle mort produit,
+    # pas un silence : le dashboard doit pouvoir le rendre visible.
+    present = {row["id"] for row in source_rows}
+    for source_id, meta in metadata.items():
+        if source_id in present or not meta.get("coverage_required"):
+            continue
+        reason_code = status.REASON_LAYER_NOT_SCHEDULED if meta.get("active") else status.REASON_SOURCE_INACTIVE
+        source_rows.append({
+            "id": source_id, "layer": meta["layer"], "zone": meta["zone"], "url": meta["url"],
+            "status": status.NOT_COVERED, "coverage": 0, "reason_code": reason_code,
+            "reason": status.reason_text(reason_code), "items": 0, "items_seen": 0,
+            "items_collected": 0, "items_in_window": 0, "units_done": 0, "units_expected": 0,
+            "calls": 0, "latest_item": "", "last_recognized_date": "", "last_recognized_org": "",
+            "access_method": "", "duration": "", "comment": "Source locale requise mais absente du dernier run.",
+            "last_run": last_run.get("As_Of", ""), "error": "", "zero_is_trusted": False,
+        })
+
     source_rows.sort(
         key=lambda row: (-status.STATUS_SEVERITY.get(row["status"], 0), row["id"])
     )
@@ -167,7 +215,7 @@ def status_payload() -> dict:
             ),
         }
         for row in source_rows
-        if row["status"] in (status.PARTIAL, status.FAIL)
+        if row["status"] in (status.NOT_COVERED, status.PARTIAL, status.FAIL)
     ]
 
     history = [
@@ -245,6 +293,7 @@ def status_payload() -> dict:
         "bonjourlafuite": bonjour_payload,
         "sources": source_rows,
         "blind_spots": blind,
+        "coverage_groups": _coverage_groups(source_rows, metadata),
         "entities": watch,
         "history": history,
         "focus_locations": config.FOCUS_LOCATIONS,

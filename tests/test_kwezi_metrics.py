@@ -4,7 +4,7 @@ from cyberwatch.collectors.kwezi import KweziCollector
 from cyberwatch.collectors.wordpress import WordPressCollector
 
 
-SPEC = SourceSpec("KWEZI_NUMERIQUE", config.LAYER_LOCAL_MEDIA, config.LOC_MAYOTTE)
+SPEC = SourceSpec("KWEZI_NUMERIQUE", config.LAYER_LOCAL_MEDIA, config.LOC_MAYOTTE, params={"include_content": True, "require_victim": True, "local_media_metrics": True})
 
 
 def test_kwezi_preserves_metrics_before_window_filter(monkeypatch):
@@ -51,7 +51,7 @@ def test_kwezi_diagnostic_distingue_cyber_victimes_et_items(monkeypatch):
 
     spec = SourceSpec(
         "KWEZI_NUMERIQUE", config.LAYER_LOCAL_MEDIA, config.LOC_MAYOTTE,
-        collector="fake",
+        collector="fake", params={"include_content": True, "require_victim": True, "local_media_metrics": True},
     )
     monkeypatch.setattr(runner, "get_collector", lambda name: Collector())
     context = runner.make_run_context(

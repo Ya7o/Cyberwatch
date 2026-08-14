@@ -722,7 +722,7 @@ class TestMediaWatch:
                 }
             ]
         )
-        return FakeClient({"media.yt/wp-json/wp/v2/posts": ok(payload)})
+        return FakeClient({"media.yt/wp-json/wp/v2/posts": ok(payload, {"X-WP-TotalPages": "1"})})
 
     def test_api_wordpress_preferee_au_flux(self):
         from cyberwatch.collectors.mediawatch import MediaWatchCollector
@@ -748,6 +748,33 @@ class TestMediaWatch:
         result = MediaWatchCollector().collect(client, spec, WINDOW)
 
         assert result.entries == []
+        assert result.resolve() == (status.OK, 100)
+
+    def test_api_wordpress_parcourt_toutes_les_pages_de_recherche(self):
+        """Une API >100 résultats n'est complète qu'après la page finale."""
+        from cyberwatch.collectors.mediawatch import MediaWatchCollector
+
+        def posts(url):
+            page = 2 if "page=2" in url else 1
+            start, stop = (101, 102) if page == 2 else (1, 101)
+            payload = [
+                {
+                    "id": identifier,
+                    "date": "2026-02-01T08:00:00",
+                    "link": f"https://media.yt/{identifier}",
+                    "title": {"rendered": f"Cyberattaque CHU de Mayotte {identifier}"},
+                    "excerpt": {"rendered": "Incident informatique."},
+                }
+                for identifier in range(start, stop)
+            ]
+            return ok(json.dumps(payload), {"X-WP-TotalPages": "2"})
+
+        client = FakeClient({"media.yt/wp-json/wp/v2/posts": posts})
+        spec = self._spec(["media.yt"], [], require_entity=False)
+        result = MediaWatchCollector().collect(client, spec, WINDOW)
+
+        assert len(result.entries) == 101
+        assert any("page=2" in url for url in client.calls)
         assert result.resolve() == (status.OK, 100)
 
     def test_media_sans_api_reste_limite_a_son_flux(self):

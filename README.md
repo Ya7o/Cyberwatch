@@ -1,9 +1,14 @@
 # Cyberwatch V0
 
-V0 valide une chaîne de collecte volontairement simple et déterministe :
-**BonjourLaFuite → ITEMS → normalisation → déduplication → INCIDENTS → dashboard**.
-BonjourLaFuite est la seule source active ; les autres collecteurs sont conservés,
-mais désactivés.
+Cyberwatch applique une chaîne déterministe : **collecte → normalisation →
+qualification canonique offline → déduplication → quality gates → hashes →
+snapshot/dashboard**. Les sept sources actives sont BonjourLaFuite,
+Cyberattaque.org, FrenchBreaches, Kwezi Numérique, Mayotte Hebdo Numérique,
+Journal de Mayotte et Ransomware.live. La 1ère Mayotte n'est pas activée dans
+la couverture locale du Lot 1.
+
+La qualité est vérifiée offline par :
+`python scripts/audit_data_quality.py --items data/items.csv --check --check-regression`.
 
 **Dashboard : https://ya7o.github.io/Cyberwatch/**
 
@@ -90,6 +95,7 @@ Trois champs sont donc publiés pour chaque source :
 | `PARTIAL` | Protocole interrompu, avec sa couverture chiffrée (« 68 % ») | information incomplète |
 | `FAIL` | Énumération impossible | information indisponible |
 | `SKIPPED` | Hors périmètre de ce run — **pas une erreur** | sans objet |
+| `NOT_COVERED` | Source attendue inactive ou absente du dernier run | angle mort visible |
 
 Le dashboard grise les zéros non fiables et liste les angles morts de chaque run.
 Détail complet dans [`METHODOLOGY.md`](METHODOLOGY.md).

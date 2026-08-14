@@ -8,7 +8,7 @@ from cyberwatch.runner import entry_to_item
 AS_OF = "2026-08-14T00:00:00+04:00"
 SPEC = SourceSpec(
     "KWEZI_NUMERIQUE", config.LAYER_LOCAL_MEDIA, config.LOC_MAYOTTE,
-    params={"include_content": True},
+    params={"include_content": True, "require_victim": True},
 )
 
 
@@ -52,7 +52,7 @@ def test_entite_connue_dans_le_corps_est_reconnue():
     assert item.Location == config.LOC_MAYOTTE
 
 
-def test_article_cyber_national_non_force_a_mayotte():
+def test_article_cyber_without_explicit_other_location_stays_unknown_without_source_default():
     item = _item(
         _entry(content="Entreprise nationale est victime d'une cyberattaque."),
         known={"entreprise nationale": "Entreprise nationale"},

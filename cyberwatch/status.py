@@ -30,15 +30,17 @@ OK = "OK"
 PARTIAL = "PARTIAL"
 FAIL = "FAIL"
 SKIPPED = "SKIPPED"
+NOT_COVERED = "NOT_COVERED"
 
 #: Ordre de sévérité croissante, utilisé pour trier et agréger.
-STATUS_SEVERITY = {OK: 0, SKIPPED: 1, PARTIAL: 2, FAIL: 3}
+STATUS_SEVERITY = {OK: 0, SKIPPED: 1, NOT_COVERED: 2, PARTIAL: 3, FAIL: 4}
 
 STATUS_LABELS = {
     OK: "Protocole exécuté intégralement",
     PARTIAL: "Protocole exécuté partiellement",
     FAIL: "Énumération impossible",
     SKIPPED: "Hors périmètre de ce run",
+    NOT_COVERED: "Source attendue mais non activée",
 }
 
 # --------------------------------------------------------------------------
