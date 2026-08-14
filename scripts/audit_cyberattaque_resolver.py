@@ -62,8 +62,11 @@ def main() -> int:
     parser.add_argument("--output", type=Path, help="CSV détaillé (sinon /tmp).")
     parser.add_argument("--offline", action="store_true", help="Utilise exclusivement la fixture versionnée.")
     parser.add_argument("--capture", action="store_true", help="Capture la fixture WordPress explicitement.")
+    parser.add_argument("--check", action="store_true", help="Valide la structure offline et la reproductibilité.")
     args = parser.parse_args()
     reference = _reference()
+    if len(reference) != 408:
+        raise SystemExit("Golden set invalide : 408 décisions attendues.")
     if args.offline:
         payload = json.loads(ARTICLE_FIXTURE.read_text(encoding="utf-8"))
         if payload.get("article_count") != 408:
@@ -154,6 +157,12 @@ def main() -> int:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader(); writer.writerows(rows)
     print(f"report={output}")
+    if args.check:
+        # Les entrées causales sont toutes filtrées à D ou avant ; la moindre
+        # donnée future serait donc une erreur structurelle du benchmark.
+        if any(row.get("Future_Data_Used") == "YES" for row in rows):
+            raise SystemExit("Benchmark causal invalide : donnée future détectée.")
+        print("check=PASS")
     return 0
 
 

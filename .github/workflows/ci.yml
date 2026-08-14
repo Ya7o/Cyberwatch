@@ -19,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -41,6 +43,9 @@ jobs:
 
       - name: Test de répétabilité (§27)
         run: python -m cyberwatch test-repeat
+
+      - name: Benchmark Cyberattaque resolver offline
+        run: python scripts/audit_cyberattaque_resolver.py --offline --check
 
       - name: Contrôles structurels (§29)
         run: python -m cyberwatch check --allow-uninitialized
