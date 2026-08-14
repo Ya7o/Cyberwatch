@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 import subprocess
 import sys
@@ -25,6 +26,8 @@ from cyberwatch.collectors.cyberattaque_org import (
 from cyberwatch.http import Budget, HttpClient
 from cyberwatch.normalize import find_known_entity, organisation_key, searchable
 from cyberwatch.runner import _existing_organisations
+
+ARTICLE_FIXTURE = ROOT / "tests/fixtures/cyberattaque_org_articles_2026-08-14.json"
 
 def _reference() -> list[dict[str, str]]:
     with tempfile.NamedTemporaryFile(suffix=".csv") as handle:
@@ -57,15 +60,32 @@ def _candidate_details(entry, index):
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, help="CSV détaillé (sinon /tmp).")
+    parser.add_argument("--offline", action="store_true", help="Utilise exclusivement la fixture versionnée.")
+    parser.add_argument("--capture", action="store_true", help="Capture la fixture WordPress explicitement.")
     args = parser.parse_args()
     reference = _reference()
-    spec = sources.by_id("CYBERATTAQUE_ORG")
-    result = CyberattaqueOrgCollector().collect(
-        HttpClient(Budget(80, 300)), spec, Window("2026-01-01", "2026-08-14")
-    )
-    by_id = {entry.source_item_id: entry for entry in result.entries}
-    by_url = {entry.url: entry for entry in result.entries}
-    index = _existing_organisations(store.load_items())
+    if args.offline:
+        payload = json.loads(ARTICLE_FIXTURE.read_text(encoding="utf-8"))
+        if payload.get("article_count") != 408:
+            raise SystemExit("Fixture Cyberattaque.org invalide : 408 articles attendus.")
+        from cyberwatch.collectors.base import RawEntry
+        entries = [RawEntry(**row) for row in payload["articles"]]
+    else:
+        spec = sources.by_id("CYBERATTAQUE_ORG")
+        entries = CyberattaqueOrgCollector().collect(
+            HttpClient(Budget(80, 300)), spec, Window("2026-01-01", "2026-08-14")
+        ).entries
+    if args.capture:
+        ARTICLE_FIXTURE.write_text(json.dumps({
+            "source": "Cyberattaque.org WordPress API", "captured_at": "2026-08-14",
+            "article_count": len(entries), "articles": [entry.__dict__ for entry in entries],
+        }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        print(f"captured={ARTICLE_FIXTURE}; articles={len(entries)}")
+    by_id = {entry.source_item_id: entry for entry in entries}
+    by_url = {entry.url: entry for entry in entries}
+    # Corpus causal : autres sources exclusivement, à D ou avant. L'article
+    # Cyberattaque.org n'est jamais sa propre preuve, ni celle d'un autre.
+    all_items = [item for item in store.load_items() if item.Source_ID != "CYBERATTAQUE_ORG"]
     known = watchlists.known_organisations()
     rows = []
     counters = Counter()
@@ -79,6 +99,8 @@ def main() -> int:
         negated = is_negated_incident(entry.title, entry.summary, entry.content)
         multi = is_obvious_multi(entry.title, entry.summary, entry.content)
         direct = organisation_from_cyberattaque_entry(entry, known, {}) if not (negated or multi) else ""
+        candidates = [item for item in all_items if item.Published_Date <= entry.published]
+        index = _existing_organisations(candidates)
         close, outside = _candidate_details(entry, index)
         final = direct or organisation_from_cyberattaque_entry(entry, known, index)
         # État caa1338 simulé : même logique V2, puis le fallback générique P0.

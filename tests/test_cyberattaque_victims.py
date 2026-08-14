@@ -1,5 +1,8 @@
 """Règles déterministes de victimes Cyberattaque.org."""
 
+import json
+from pathlib import Path
+
 from cyberwatch import config, sources
 from cyberwatch.collectors.base import RawEntry, SourceSpec
 from cyberwatch.collectors.cyberattaque_org import (
@@ -226,3 +229,11 @@ def test_multi_couvre_les_groupes_explicitement_aggreges():
     assert is_obvious_multi("Son-Video.com & EasyLounge : données exposées")
     assert is_obvious_multi("Alerte régionale", "Plusieurs ARS concernées")
     assert is_obvious_multi("Cyberattaque à Rennes", "Ville de Rennes et Rennes Métropole affectées")
+
+
+def test_fixture_benchmark_cyberattaque_est_complete_et_figee():
+    fixture = Path(__file__).parent / "fixtures/cyberattaque_org_articles_2026-08-14.json"
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    assert payload["source"] == "Cyberattaque.org WordPress API"
+    assert payload["article_count"] == 408
+    assert len(payload["articles"]) == 408
