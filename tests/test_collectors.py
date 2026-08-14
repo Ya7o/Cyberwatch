@@ -24,7 +24,7 @@ from cyberwatch.collectors.newsrss import (
     entity_queries,
     mentions_entity,
 )
-from cyberwatch.collectors.ransomware_live import RansomwareLiveCollector
+from cyberwatch.collectors.ransomware_live import RansomwareLiveCollector, _entry_from_record
 import cyberwatch.collectors.ransomware_live as ransomware_live
 from cyberwatch.collectors.wordpress import WordPressCollector, strip_html
 from cyberwatch.http import Budget, FetchResult
@@ -408,6 +408,18 @@ class TestNewsRss:
 
 
 class TestRansomwareLive:
+    def test_date_discovered_est_prioritaire_comme_sur_la_carte_publique(self):
+        entry = _entry_from_record({
+            "victim": "Entreprise Alpha",
+            "country": "FR",
+            "discovered": "2026-08-12T16:28:01+00:00",
+            "published": "2025-12-31T12:00:00+00:00",
+            "attackdate": "2025-11-30",
+        }, SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi"), "FR")
+
+        assert entry is not None
+        assert entry.published == "2026-08-12"
+
     def test_collecte_et_filtrage_fenetre(self):
         client = FakeClient({"ransomware.live": ok(RANSOMWARE_PAYLOAD)})
         spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi",

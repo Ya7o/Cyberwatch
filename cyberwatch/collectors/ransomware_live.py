@@ -39,7 +39,10 @@ ENDPOINT_TEMPLATES = [
 #: Noms de champs rencontrés selon les versions de l'API.
 FIELD_ALIASES = {
     "organisation": ["victim", "post_title", "company", "name", "title"],
-    "date": ["attackdate", "attack_date", "published", "discovered", "date",
+    # La carte publique ransomware.live date ses victimes par « Discovered ».
+    # Cette date rend nos compteurs comparables à la source ; les anciens
+    # formats restent couverts par les replis suivants.
+    "date": ["discovered", "published", "attackdate", "attack_date", "date",
              "publishedDate", "discovered_date"],
     "group": ["group_name", "group", "gang", "ransomware_group"],
     "country": ["country", "country_code", "victim_country"],
