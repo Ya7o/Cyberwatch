@@ -35,11 +35,21 @@ _STRONG_BEFORE = tuple(re.compile(pattern, re.I) for pattern in (
     rf"{_START}{_NAME}\s+confirme\s+avoir\s+subi\b",
     rf"{_START}{_NAME}\s+(?:touch(?:é|ée|e)?|frapp(?:é|ée|e)?|pirat(?:é|ée)|cibl(?:é|ée|e)?|paralys(?:é|ée|e)?)\s+(?:par|après|apres)\b",
     rf"{_START}{_NAME}\s+pirat(?:é|ée)(?=\s*[:,.!]|$)",
+    rf"{_START}{_NAME}\s+fait\s+face\s+[àa]\s+(?:une?\s+importante\s+)?"
+    r"(?:cyberattaque|attaque\s+(?:informatique|par\s+(?:ransomware|rançongiciel))|"
+    r"(?:un\s+)?(?:ransomware|rançongiciel))\b",
 ))
 _FEDERATION_MEMBERS = re.compile(
     r"\b\d[\d\s.,]*\s+membres\s+de\s+la\s+(?P<organisation>"
     r"F[eé]d[eé]ration\s+Fran[cç]aise\s+de\s+[A-Za-zÀ-ÖØ-öø-ÿ'’ -]{2,50}?)\s+"
     r"(?:diffus(?:é|e)s?|expos(?:é|e)s?)\b", re.I,
+)
+_MUNICIPAL_FACES_ATTACK = re.compile(
+    r"\b(?:la\s+)?(?P<organisation>(?:mairie|ville)\s+de\s+"
+    r"[A-Za-zÀ-ÖØ-öø-ÿ'’ -]{2,60}?)\s+fait\s+face\s+[àa]\s+"
+    r"(?:une?\s+importante\s+)?(?:cyberattaque|attaque\s+(?:informatique|"
+    r"par\s+(?:ransomware|rançongiciel))|(?:un\s+)?(?:ransomware|rançongiciel))\b",
+    re.I,
 )
 _PREFIX_EDITORIAL = re.compile(
     r"^(?:cyberattaque|attaque|fuite\s+de\s+donnees|une\s+cyberattaque|"
@@ -84,6 +94,7 @@ def _clean_candidate(value: str) -> str:
     candidate = clean_organisation(value)
     candidate = re.sub(r"^(?:la|le)\s+(?=(?:mairie|ville|federation)\b)", "", candidate, flags=re.I)
     candidate = re.sub(r"^l[’'](?=(?:mairie|ville|federation)\b)", "", candidate, flags=re.I)
+    candidate = re.sub(r"^le\s+(?=domaine\s+des\s+tournels\b)", "", candidate, flags=re.I)
     blob = searchable(candidate)
     if not candidate or len(candidate.split()) > 10:
         return ""
@@ -104,7 +115,11 @@ def _clean_candidate(value: str) -> str:
         return ""
     if blob.endswith(" est"):
         return ""
-    if blob in {"un prestataire", "une entreprise", "un site", "la ville", "la mairie"}:
+    if blob in {
+        "un prestataire", "une entreprise", "un site", "la ville", "la mairie",
+        "une plateforme", "un service", "un logiciel", "une bibliotheque",
+        "un paquet npm", "un compte", "une api", "un outil", "un systeme", "un hebergeur",
+    }:
         return ""
     if blob.startswith(("mairie ", "ville ", "federation ")):
         candidate = candidate[:1].upper() + candidate[1:]
@@ -112,7 +127,7 @@ def _clean_candidate(value: str) -> str:
 
 
 def _strong_relation(text: str) -> str:
-    for pattern in (*_STRONG_AFTER, *_STRONG_BEFORE, _FEDERATION_MEMBERS):
+    for pattern in (*_STRONG_AFTER, *_STRONG_BEFORE, _FEDERATION_MEMBERS, _MUNICIPAL_FACES_ATTACK):
         match = pattern.search(text or "")
         if match:
             candidate = _clean_candidate(match.group("organisation"))
@@ -132,14 +147,30 @@ def _safe_prefix(title: str) -> str:
 
 
 def organisation_from_cyberattaque_entry(entry: RawEntry, known_orgs: dict[str, str]) -> str:
-    """Victime technique explicitement établie dans un article Cyberattaque.org.
-
-    Les relations fortes ont priorité sur le préfixe du titre : ainsi `Steam :`
-    ne masque pas `cyberattaque contre CEVA Logistics` dans l'extrait.
-    """
+    """Organisation principalement concernée par l'article Cyberattaque.org."""
     texts = (entry.title or "", entry.summary or "", entry.content or "")
     if is_negated_incident(*texts):
         return ""
+    # Une confirmation nommée après une accroche est une preuve plus forte que
+    # l'accroche elle-même (ex. « ... : l'Armurerie X confirme ... »).
+    after_colon = _AFTER_COLON_CONFIRMS.search(entry.title or "")
+    if after_colon:
+        organisation = _clean_candidate(after_colon.group(1))
+        if organisation:
+            return organisation
+    head = (entry.title or "").split(":", 1)[0].strip()
+    legacy = _LEGACY_EDITORIAL_TAIL.match(head)
+    if legacy:
+        organisation = _clean_candidate(legacy.group(1))
+        if organisation:
+            return organisation
+    # Le titre d'un article est la meilleure indication de son sujet : une
+    # relation vers un prestataire dans l'extrait ou le corps ne l'écrase pas.
+    organisation = _safe_prefix(entry.title)
+    if organisation:
+        return organisation
+    # Sans organisation fiable dans le titre, les relations explicites servent
+    # de fallback, d'abord dans le titre puis dans l'extrait et le corps.
     for position, text in enumerate(texts):
         organisation = _strong_relation(text)
         if organisation:
@@ -153,22 +184,7 @@ def organisation_from_cyberattaque_entry(entry: RawEntry, known_orgs: dict[str, 
             key = searchable(organisation)
             if key in known_orgs or key.startswith(("mairie de ", "ville de ", "federation ")):
                 return organisation
-    after_colon = _AFTER_COLON_CONFIRMS.search(entry.title or "")
-    if after_colon:
-        organisation = _clean_candidate(after_colon.group(1))
-        if organisation:
-            return organisation
-    # Les anciens marqueurs ne parcourent jamais la partie après `:` : celui-ci
-    # sépare l'organisation de l'accroche, il ne fait pas partie de son nom.
-    head = (entry.title or "").split(":", 1)[0].strip()
-    legacy = _LEGACY_EDITORIAL_TAIL.match(head)
-    if legacy:
-        organisation = _clean_candidate(legacy.group(1))
-        if organisation:
-            return organisation
-    # Le préfixe reste utile pour les titres de chronologie, mais seulement après
-    # tous les indices de victime directe.
-    return _safe_prefix(entry.title)
+    return ""
 
 
 def organisation_from_title(title: str) -> str:

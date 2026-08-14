@@ -42,10 +42,18 @@ def test_ville_de_gagny_est_lue_dans_la_relation_explicite():
     assert organisation_from_cyberattaque_entry(raw, {}) == "Ville de Gagny"
 
 
+def test_relation_explicite_est_un_fallback_si_titre_narratif():
+    raw = entry(
+        "Cyberattaque dans une collectivité",
+        "La Ville de Test confirme avoir subi une cyberattaque.",
+    )
+    assert organisation_from_cyberattaque_entry(raw, {}) == "Ville de Test"
+
+
 def test_mairie_de_drancy_est_lue_dans_le_contenu():
     raw = entry(
         "Cyberattaque à Drancy : tous les serveurs débranchés",
-        content="La mairie de Drancy a été victime d'une cyberattaque mardi.",
+        content="La mairie de Drancy fait face à une importante attaque par rançongiciel.",
     )
     assert organisation_from_cyberattaque_entry(raw, {}) == "Mairie de Drancy"
 
@@ -61,6 +69,12 @@ def test_mairie_eyguieres_est_extraite_sans_conserver_la_phrase():
     ) == "Mairie d’Eyguières"
 
 
+def test_domaine_des_tournels_reste_normalise():
+    assert organisation_from_cyberattaque_entry(
+        entry("Le Domaine des Tournels ciblé par une cyberattaque"), {}
+    ) == "Domaine des Tournels"
+
+
 def test_federation_est_extraite_depuis_impact_chiffre_strict():
     raw = entry("284 461 membres de la Fédération Française de Bridge diffusés après une faille de sécurité")
     assert organisation_from_cyberattaque_entry(raw, {}) == "Fédération Française de Bridge"
@@ -73,12 +87,17 @@ def test_accroches_et_multi_victimes_ne_deviennent_pas_des_organisations():
     assert organisation_from_cyberattaque_entry(entry("Le site de Pierrefitte-sur-Loire mis hors ligne après une cyberattaque"), {}) == ""
 
 
-def test_victime_technique_directe_prime_sur_marque_affectee():
-    raw = entry(
-        "Steam : noms et adresses de clients exposés",
-        "Valve avertit les clients de Steam après une cyberattaque contre CEVA Logistics.",
+def test_organisation_principale_du_titre_prime_sur_le_tiers_technique():
+    cases = (
+        ("Steam : noms, adresses et commandes de clients européens exposés après une cyberattaque", "Valve avertit des clients européens de Steam après une cyberattaque contre CEVA Logistics.", "Steam"),
+        ("Spiko : pièces d’identité et selfies de clients exposés après une cyberattaque chez Onfido", "", "Spiko"),
+        ("OpenAI : des données internes compromises après l’installation de la bibliothèque piégée TanStack", "Compromission supply-chain via un paquet npm TanStack.", "OpenAI"),
+        ("Centres Sociaux de France : les données revendiquées après une compromission de RezoFed", "", "Centres Sociaux de France"),
+        ("Toulouse FC : les abonnés exposés après une cyberattaque chez un prestataire", "", "Toulouse FC"),
+        ("Lidl : les coordonnées de clients exposés après une cyberattaque chez un prestataire", "", "Lidl"),
     )
-    assert organisation_from_cyberattaque_entry(raw, {}) == "CEVA Logistics"
+    for title, summary, expected in cases:
+        assert organisation_from_cyberattaque_entry(entry(title, summary), {}) == expected
 
 
 def test_dementis_explicites_ne_creent_pas_item():
