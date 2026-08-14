@@ -31,3 +31,18 @@ def test_audit_diff_ne_suit_que_les_champs_de_qualification():
     assert result["changed_rows"] == 1
     assert result["changed_threat"] == 1
     assert result["changes"][0]["field"] == "Threat"
+
+
+def test_audit_diff_signale_ajouts_et_suppressions():
+    result = audit.run_audit([row("2")], [row("1")])
+    assert result["added_rows"] == 1
+    assert result["removed_rows"] == 1
+    assert result["added"][0]["status"] == "ADDED"
+    assert result["removed"][0]["status"] == "REMOVED"
+
+
+def test_audit_signale_les_agregats_numeriques_simples():
+    rows = [row("1"), row("2")]
+    rows[0]["Organisation_Raw"] = "4 SDIS"
+    rows[1]["Organisation_Raw"] = "11 agences"
+    assert audit.summary(rows)["aggregates"] == ["11 agences", "4 SDIS"]

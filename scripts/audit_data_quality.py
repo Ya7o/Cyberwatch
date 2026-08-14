@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit offline déterministe des champs de qualité ITEMS."""
 from __future__ import annotations
-import argparse, csv, hashlib, json, random
+import argparse, csv, hashlib, json, random, re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -28,25 +28,38 @@ def summary(rows):
     for row in rows: sources[row["Source_ID"]].append(row)
     def stats(values):
         return {"items":len(values), "threat_unknown":sum(r["Threat"]==UNKNOWN for r in values), "sector_unknown":sum(r["Sector"]==UNKNOWN for r in values), "location_unknown":sum(r["Location"]==UNKNOWN for r in values), "organisation_empty":sum(not r["Organisation_Raw"] for r in values)}
-    return {"global":stats(rows), "sources":{s:stats(v) for s,v in sorted(sources.items())}, "threat":dict(sorted(Counter(r["Threat"] for r in rows).items())), "sector":dict(sorted(Counter(r["Sector"] for r in rows).items())), "location":dict(sorted(Counter(r["Location"] for r in rows).items())), "aggregates":sorted({r["Organisation_Raw"] for r in rows if any(x in r["Organisation_Raw"].lower() for x in ("&", "/", " et "))})}
+    aggregate = re.compile(r"\b\d+\s+(?:sdis|agences?|écoles?|ecoles?|hôpitaux?|hopitaux?)\b", re.I)
+    return {"global":stats(rows), "sources":{s:stats(v) for s,v in sorted(sources.items())}, "threat":dict(sorted(Counter(r["Threat"] for r in rows).items())), "sector":dict(sorted(Counter(r["Sector"] for r in rows).items())), "location":dict(sorted(Counter(r["Location"] for r in rows).items())), "aggregates":sorted({r["Organisation_Raw"] for r in rows if any(x in r["Organisation_Raw"].lower() for x in ("&", "/", " et ")) or aggregate.search(r["Organisation_Raw"] or "")})}
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 def diff(before, after):
     old={key(r):r for r in before}; new={key(r):r for r in after}; changes=[]
+    added=[]
+    removed=[]
+    for value in sorted(set(new) - set(old)):
+        row = new[value]
+        added.append({"key": value, "status": "ADDED", "source": row["Source_ID"], "source_item_id": row["Source_Item_ID"], "published": row["Published_Date"], "organisation": row["Organisation_Raw"], "title": row["Title"]})
+    for value in sorted(set(old) - set(new)):
+        row = old[value]
+        removed.append({"key": value, "status": "REMOVED", "source": row["Source_ID"], "source_item_id": row["Source_Item_ID"], "published": row["Published_Date"], "organisation": row["Organisation_Raw"], "title": row["Title"]})
     for k in sorted(set(old)&set(new)):
         for field in FIELDS:
             if old[k][field]!=new[k][field]: changes.append({"key":k,"source":old[k]["Source_ID"],"source_item_id":old[k]["Source_Item_ID"],"published":old[k]["Published_Date"],"organisation":old[k]["Organisation_Raw"],"title":old[k]["Title"],"field":field,"before":old[k][field],"after":new[k][field]})
-    return changes
+    return changes, added, removed
 
 
 def run_audit(rows, before_rows=None):
     """Return the complete, order-independent audit payload."""
     result = summary(rows)
     if before_rows is not None:
-        changes = diff(before_rows, rows)
+        changes, added, removed = diff(before_rows, rows)
         result["changes"] = changes
+        result["added"] = added
+        result["removed"] = removed
+        result["added_rows"] = len(added)
+        result["removed_rows"] = len(removed)
         result["changed_rows"] = len({tuple(change["key"]) for change in changes})
         for field in FIELDS:
             result[f"changed_{field.lower()}"] = sum(change["field"] == field for change in changes)
@@ -92,7 +105,7 @@ def main():
     if a.metrics:
         for name, value in result["global"].items():
             print(f"{name}={value}")
-        for name in ("changed_rows",) + tuple(f"changed_{field.lower()}" for field in FIELDS):
+        for name in ("added_rows", "removed_rows", "changed_rows") + tuple(f"changed_{field.lower()}" for field in FIELDS):
             if name in result:
                 print(f"{name}={result[name]}")
     if a.check:

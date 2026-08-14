@@ -92,9 +92,10 @@ def cmd_create(args) -> int:
         MODE_CREATE, args.as_of, args.start, _layers_from(args.layers)
     )
     print(f"CREATE {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
-    report = execute(context)
+    transient = getattr(args, "transient", False)
+    report = execute(context, persist=not transient)
     _print_summary(report)
-    if report.overall != status.BROKEN:
+    if report.overall != status.BROKEN and not transient:
         site.build()
     return 0 if report.overall != status.BROKEN else 1
 
@@ -118,9 +119,10 @@ def cmd_maj(args) -> int:
         print(f"ERREUR : {error}")
         return 1
     print(f"MAJ {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
-    report = execute(context)
+    transient = getattr(args, "transient", False)
+    report = execute(context, persist=not transient)
     _print_summary(report)
-    if report.overall != status.BROKEN:
+    if report.overall != status.BROKEN and not transient:
         site.build()
     return 0 if report.overall != status.BROKEN else 1
 
@@ -783,6 +785,10 @@ def build_parser() -> argparse.ArgumentParser:
                 help="Couches à exécuter : core, local_media, watch, all "
                      "(séparées par des virgules).",
             )
+        sub.add_argument(
+            "--transient", action="store_true",
+            help="Exécuter sans écrire snapshot, historiques ni dashboard.",
+        )
 
     create = subparsers.add_parser("create", help="Construire la base depuis zéro.")
     add_common(create)

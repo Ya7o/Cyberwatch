@@ -47,6 +47,9 @@ jobs:
       - name: Benchmark Cyberattaque.org offline
         run: python scripts/audit_cyberattaque_head.py --check
 
+      - name: Audit qualité des données offline
+        run: python scripts/audit_data_quality.py --items data/items.csv --check
+
       - name: Contrôles structurels (§29)
         run: python -m cyberwatch check --allow-uninitialized
 
