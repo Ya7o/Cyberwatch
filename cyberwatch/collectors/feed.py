@@ -84,10 +84,12 @@ def parse_feed(text: str, spec: SourceSpec) -> list[RawEntry]:
             continue
 
         summary = strip_html(raw.get("summary", "") or raw.get("description", ""))
+        native_id = raw.get("id") or raw.get("guid") or ""
         entries.append(
             RawEntry(
                 title=strip_html(raw.get("title", "")),
                 url=raw.get("link", "") or "",
+                source_item_id=str(native_id).strip(),
                 published=published,
                 summary=summary,
                 threat=spec.default_threat,
@@ -130,8 +132,6 @@ class FeedCollector(Collector):
             result.units_expected = 1
 
             oldest = min(e.published for e in entries)
-            # La borne n'est atteinte que si le flux remonte avant le début de
-            # la fenêtre : sinon des entrées plus anciennes existent hors flux.
             if oldest <= window.start:
                 result.reached_boundary = True
             else:
