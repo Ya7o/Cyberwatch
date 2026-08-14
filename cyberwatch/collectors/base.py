@@ -109,6 +109,9 @@ class CollectResult:
     watch_rows: list[dict] = field(default_factory=list)
     #: Compteur structurel indépendant des entrées conservées dans la fenêtre.
     items_seen: int | None = None
+    #: Sous-ensemble structurellement reconnu dans la fenêtre demandée. Cette
+    #: mesure ne représente jamais une unité technique du protocole.
+    items_in_window: int | None = None
 
     def resolve(self) -> tuple[str, int]:
         """Traduit le compte rendu en couple (statut, couverture).

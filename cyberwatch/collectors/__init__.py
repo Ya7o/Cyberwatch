@@ -10,6 +10,7 @@ from .mediawatch import MediaWatchCollector
 from .newsrss import NewsRssCollector
 from .ransomware_live import RansomwareLiveCollector
 from .frenchbreaches import FrenchBreachesCollector
+from .bonjourlafuite import BonjourLaFuiteCollector
 from .cyberattaque_org import CyberattaqueOrgCollector
 from .kwezi import KweziCollector
 from .wordpress import WordPressCollector
@@ -23,14 +24,18 @@ REGISTRY: dict[str, type[Collector]] = {
     "mediawatch": MediaWatchCollector,
     "ransomware_live": RansomwareLiveCollector,
     "frenchbreaches": FrenchBreachesCollector,
+    "bonjourlafuite": BonjourLaFuiteCollector,
     "cyberattaque_org": CyberattaqueOrgCollector,
     "kwezi": KweziCollector,
 }
 
 
 def get_collector(name: str) -> Collector:
-    """Instancie le collecteur déclaré par une source."""
-    collector_class = REGISTRY.get(name, AutodetectCollector)
+    """Instancie le collecteur déclaré par une source, sans repli implicite."""
+    try:
+        collector_class = REGISTRY[name]
+    except KeyError as exc:
+        raise ValueError(f"Collecteur inconnu : {name}") from exc
     return collector_class()
 
 

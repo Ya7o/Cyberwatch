@@ -124,14 +124,13 @@ class RansomwareLiveCollector(Collector):
                     entry = _entry_from_record(record, spec, country)
                     if entry is None:
                         continue
-                    if not window.contains(entry.published):
-                        continue
                     signature = (entry.organisation.lower(), entry.published)
                     if signature in seen:
                         continue
                     seen.add(signature)
                     recognized += 1
-                    result.entries.append(entry)
+                    if window.contains(entry.published):
+                        result.entries.append(entry)
                 break
 
             if fetched or empty_country:
@@ -153,9 +152,9 @@ class RansomwareLiveCollector(Collector):
         )
         result.calls = budget.requests_made
         result.items_seen = recognized
+        result.items_in_window = len(result.entries)
         result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
-        result.units_done = len(result.entries)
-        result.comment = f"items_seen={recognized}; items_in_window={len(result.entries)}"
+        result.comment = f"items_seen={recognized}; items_in_window={result.items_in_window}"
         return result
 
 

@@ -126,6 +126,7 @@ class SourceOutcome:
     units_expected: int = 0
     calls: int = 0
     items_seen: int = 0
+    items_in_window: int = 0
     items_collected: int = 0
     new_items: int = 0
     latest_item_date: str = ""

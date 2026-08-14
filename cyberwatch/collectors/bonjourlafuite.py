@@ -172,8 +172,10 @@ class BonjourLaFuiteCollector(Collector):
         result.status_override = status.OK
         result.reason_code = status.REASON_OK
         result.entries = _RecognizedEntries(in_window, seen)
-        result.units_done = len(in_window)  # exposé comme Items_in_window par le site
-        result.units_expected = 0
+        result.items_seen = seen
+        result.items_in_window = len(in_window)
+        result.units_done = 1
+        result.units_expected = 1
         result.comment = (
             f"items_in_window={len(in_window)}; "
             f"last_recognized_date={latest.published}; "

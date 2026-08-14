@@ -79,16 +79,18 @@ class CyberattaqueOrgCollector(WordPressCollector):
     name = "cyberattaque_org"
     def collect(self, client, spec, window):
         result = super().collect(client, spec, window)
-        items_seen = len(result.entries)
+        items_seen = result.items_seen if result.items_seen is not None else len(result.entries)
         for entry in result.entries:
             entry.organisation = organisation_from_title(entry.title)
         # L'article reste compté pour mesurer la couverture de la source, mais
         # sans victime nommée il ne peut pas devenir un incident.
         result.entries = [entry for entry in result.entries if entry.organisation]
         result.items_seen = items_seen
-        result.units_done = items_seen
-        result.status_override = status.OK if result.entries else status.FAIL
-        if not result.entries and result.reason_code == status.REASON_OK:
-            result.reason_code = status.REASON_PARSE_ERROR
-        result.comment = f"items_seen={result.items_seen}; items_in_window={len(result.entries)}"
+        # `items_in_window` est celui de la réponse structurée avant rejet
+        # métier des titres ne nommant pas une victime.
+        # Une page WordPress lisible reste saine même si aucun titre ne permet
+        # d'identifier une victime ; la qualification métier est distincte du
+        # succès technique de la source.
+        result.status_override = status.OK if result.reason_code == status.REASON_OK else status.FAIL
+        result.comment = f"items_seen={result.items_seen}; items_in_window={result.items_in_window}"
         return result

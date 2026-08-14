@@ -89,8 +89,6 @@ class WordPressCollector(Collector):
             "per_page": "100",
             "orderby": "date",
             "order": "desc",
-            "after": f"{window.start}T00:00:00",
-            "before": f"{window.end}T23:59:59",
             "_fields": "id,date,link,title,excerpt,categories",
         }
 
@@ -113,6 +111,7 @@ class WordPressCollector(Collector):
 
         page = 1
         total_pages = None
+        recognized = 0
 
         while page <= config.MAX_PAGES_PER_SOURCE:
             query["page"] = str(page)
@@ -137,13 +136,22 @@ class WordPressCollector(Collector):
                 result.reason_code = status.REASON_PARSE_ERROR
                 break
 
+            reached_time_boundary = False
             for post in payload:
                 entry = entry_from_post(post, spec)
                 if entry:
-                    result.entries.append(entry)
+                    recognized += 1
+                    if window.contains(entry.published):
+                        result.entries.append(entry)
+                    elif window.is_before_start(entry.published):
+                        reached_time_boundary = True
 
             result.units_done = page
 
+            if reached_time_boundary:
+                result.reached_boundary = True
+                result.units_expected = result.units_done
+                break
             if not payload:
                 result.reached_boundary = True
                 break
@@ -159,6 +167,8 @@ class WordPressCollector(Collector):
             result.reason_code = status.REASON_BUDGET_SOURCE
 
         result.calls = budget.requests_made
+        result.items_seen = recognized
+        result.items_in_window = len(result.entries)
         if result.units_expected == 0:
             result.units_expected = max(1, result.units_done)
         return result
@@ -192,6 +202,7 @@ def entry_from_post(post: dict, spec: SourceSpec) -> RawEntry | None:
     return RawEntry(
         title=title,
         url=link,
+        source_item_id=str(post.get("id") or ""),
         published=published,
         summary=summary,
         threat=spec.default_threat,

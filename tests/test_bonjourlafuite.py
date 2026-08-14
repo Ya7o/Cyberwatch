@@ -91,7 +91,10 @@ class TestStatusV0:
 
         assert source_status == status.OK
         assert len(result.entries) == 2
-        assert result.units_done == 2
+        assert result.units_done == 1
+        assert result.units_expected == 1
+        assert result.items_seen == 2
+        assert result.items_in_window == 2
         assert result.reached_boundary is False
 
     def test_aucun_item_dans_la_fenetre_reste_ok(self):
@@ -101,7 +104,8 @@ class TestStatusV0:
         assert source_status == status.OK
         assert len(result.entries) == 2  # Items_seen : toute la page reconnue
         assert list(result.entries) == []  # rien à matérialiser hors fenêtre
-        assert result.units_done == 0  # Items_in_window
+        assert result.units_done == 1
+        assert result.items_in_window == 0
 
     def test_page_lue_sans_item_reconnu_donne_fail(self):
         result = collect("<html><body><h1>Bonjour</h1></body></html>")
@@ -148,7 +152,8 @@ class TestRunnerMetrics:
 
         assert outcome.status == status.OK
         assert outcome.items_seen == 2
-        assert outcome.units_done == 1  # Items_in_window
+        assert outcome.units_done == 1  # unité technique : lecture de timeline
+        assert outcome.items_in_window == 1
         assert outcome.items_collected == 1
         assert len(items) == 1
 

@@ -61,8 +61,9 @@ class FrenchBreachesCollector(Collector):
         if not seen:
             result.status_override = status.FAIL; result.reason_code = status.REASON_PARSE_ERROR; return result
         result.entries = [entry for entry in seen if window.contains(entry.published)]
-        result.units_done = len(result.entries); result.status_override = status.OK
+        result.units_done = 1; result.units_expected = 1; result.status_override = status.OK
         result.comment = f"items_seen={len(seen)}; items_in_window={len(result.entries)}"
         # runner reads this explicit number, unlike the iterable population.
         result.items_seen = len(seen)
+        result.items_in_window = len(result.entries)
         return result

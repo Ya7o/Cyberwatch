@@ -8,9 +8,9 @@ class KweziCollector(WordPressCollector):
     def collect(self, client, spec, window):
         result = super().collect(client, spec, window)
         result.items_seen = len(result.entries)
-        result.units_done = len(result.entries)
-        result.status_override = status.OK if result.entries else status.FAIL
-        if not result.entries and result.reason_code == status.REASON_OK:
-            result.reason_code = status.REASON_PARSE_ERROR
-        result.comment = f"articles_seen={result.items_seen}; items_in_window={len(result.entries)}"
+        result.items_in_window = len(result.entries)
+        # Une réponse WordPress valide mais vide est un zéro vérifié, pas une
+        # indisponibilité de la source.
+        result.status_override = status.OK if result.reason_code == status.REASON_OK else status.FAIL
+        result.comment = f"articles_seen={result.items_seen}; items_in_window={result.items_in_window}"
         return result

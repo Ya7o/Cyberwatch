@@ -289,6 +289,11 @@ def run_source(
     outcome.units_expected = result.units_expected
     outcome.calls = result.calls
     outcome.items_seen = result.items_seen if result.items_seen is not None else len(result.entries)
+    outcome.items_in_window = (
+        result.items_in_window
+        if result.items_in_window is not None
+        else len(result.entries)
+    )
     outcome.items_collected = len(items)
     outcome.access_method = result.access_method
     outcome.comment = result.comment
@@ -492,9 +497,6 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
                 item.Source_ID == outcome.source_id and item.Item_ID not in existing_item_ids
                 for item in collected
             )
-            outcome.items_collected = sum(
-                item.Source_ID == outcome.source_id for item in merged
-            )
         report.items = merged
         report.new_items = new_count
         report.requests = run_budget.requests_made
@@ -540,7 +542,7 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
                     "Units_Done": o.units_done,
                     "Units_Expected": o.units_expected,
                     "Items_seen": o.items_seen,
-                    "Items_in_window": o.units_done,
+                    "Items_in_window": o.items_in_window,
                     "Items_collected": o.items_collected,
                     "New_items": o.new_items,
                     "Latest_item_date": o.latest_item_date,
@@ -582,7 +584,7 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
             "New_Incidents": report.new_incidents,
             "Source_Status": "OK" if report.overall == "OK" else status.FAIL,
             "Items_seen": sum(o.items_seen for o in report.outcomes),
-            "Items_in_window": sum(o.units_done for o in report.outcomes),
+            "Items_in_window": sum(o.items_in_window for o in report.outcomes),
             "Sources_OK": counts.get(status.OK, 0),
             "Sources_PARTIAL": counts.get(status.PARTIAL, 0),
             "Sources_FAIL": counts.get(status.FAIL, 0),
