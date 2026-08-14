@@ -42,3 +42,11 @@ sa fenêtre temporelle et sa dépendance au snapshot.
 **RESOLVER RETIRÉ.** La qualification revient au pipeline explicable :
 `NEGATED → MULTI → DIRECT → NO_VICTIM`. Aucun remplacement heuristique n'a été
 ajouté ; une simple mention d'organisation reste insuffisante.
+
+## Corrections P0 après retrait
+
+Les seules règles locales ajoutées sont : démenti explicite lorsque aucune
+preuve technique ne permet de confirmer une compromission, variantes fortes de
+« confirme avoir été/être victime », et rejet du sujet non organisationnel
+Chat Control. Les cas Hugging Face, Pierrefitte-sur-Loire et Orisha/CIM restent
+volontairement hors périmètre. Aucun service n'est remappé vers son opérateur.

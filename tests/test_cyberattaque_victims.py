@@ -114,6 +114,21 @@ def test_dementis_explicites_ne_creent_pas_item():
         assert item(raw) is None
 
 
+def test_dmp_sans_preuve_technique_est_rejete():
+    raw = entry("Mon Espace Santé : une fuite évoquée", "Aucune preuve technique ne permet de confirmer la compromission.")
+    assert is_negated_incident(raw.title, raw.summary, raw.content)
+    assert item(raw) is None
+
+
+def test_confirmations_de_victime_sont_des_relations_fortes():
+    assert organisation_from_cyberattaque_entry(entry("Direction générale des Finances publiques confirme avoir été victime d'une cyberattaque"), {}) == "Direction générale des Finances publiques"
+    assert organisation_from_cyberattaque_entry(entry("Ville de Test confirme être victime d'une cyberattaque"), {}) == "Ville de Test"
+
+
+def test_chat_control_n_est_pas_une_organisation():
+    assert organisation_from_cyberattaque_entry(entry("Chat Control : une proposition controversée"), {}) == ""
+
+
 def test_organisations_numeriques_et_id_wordpress_sont_preserves():
     first = item(entry("1001Coques : victimes d'une cyberattaque"))
     second = item(entry("5doigts2pieds.fr piraté : données exposées"))

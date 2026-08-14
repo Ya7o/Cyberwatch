@@ -20,6 +20,9 @@ _NEGATED_INCIDENTS = (
     "fausse alerte", "ne correspond pas aux donnees", "ne provient pas de",
     "aucune compromission", "aucune intrusion", "revendication dementie",
     "incident dementi",
+    "aucune preuve technique ne permet de confirmer",
+    "aucune preuve ne permet de confirmer",
+    "il ne s agit pas d une fuite confirmee",
 )
 _OBVIOUS_MULTI = (
     re.compile(r"^\s*\d+\s+SDIS\b", re.I),
@@ -40,6 +43,7 @@ _STRONG_AFTER = tuple(re.compile(pattern, re.I) for pattern in (
 _STRONG_BEFORE = tuple(re.compile(pattern, re.I) for pattern in (
     rf"{_START}{_NAME}\s+(?:a\s+(?:ete|été)\s+)?victime\s+d(?:['’]une?\s+|e\s+\w+\s+)",
     rf"{_START}{_NAME}\s+confirme\s+avoir\s+subi\b",
+    rf"{_START}{_NAME}\s+confirme\s+(?:avoir\s+[ée]t[ée]|[êe]tre)\s+victime\b",
     rf"{_START}{_NAME}\s+(?:touch(?:é|ée|e)?|frapp(?:é|ée|e)?|pirat(?:é|ée)|cibl(?:é|ée|e)?|paralys(?:é|ée|e)?)\s+(?:par|après|apres)\b",
     rf"{_START}{_NAME}\s+pirat(?:é|ée)(?=\s*[:,.!]|$)",
     rf"{_START}{_NAME}\s+fait\s+face\s+[àa]\s+(?:une?\s+importante\s+)?"
@@ -113,6 +117,8 @@ def _clean_candidate(value: str) -> str:
     candidate = re.sub(r"^l[’'](?=(?:mairie|ville|federation)\b)", "", candidate, flags=re.I)
     candidate = re.sub(r"^le\s+(?=domaine\s+des\s+tournels\b)", "", candidate, flags=re.I)
     blob = searchable(candidate)
+    if blob == "chat control":
+        return ""
     if not candidate or len(candidate.split()) > 10:
         return ""
     # Une relation n'autorise pas à prendre une description éditoriale telle que
