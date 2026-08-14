@@ -93,7 +93,7 @@ def cmd_create(args) -> int:
     )
     print(f"CREATE {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
     transient = getattr(args, "transient", False)
-    report = execute(context, persist=not transient)
+    report = execute(context, persist=False) if transient else execute(context)
     _print_summary(report)
     if report.overall != status.BROKEN and not transient:
         site.build()
@@ -120,7 +120,7 @@ def cmd_maj(args) -> int:
         return 1
     print(f"MAJ {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
     transient = getattr(args, "transient", False)
-    report = execute(context, persist=not transient)
+    report = execute(context, persist=False) if transient else execute(context)
     _print_summary(report)
     if report.overall != status.BROKEN and not transient:
         site.build()
