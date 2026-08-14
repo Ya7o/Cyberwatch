@@ -61,7 +61,7 @@ _MUNICIPAL_FACES_ATTACK = re.compile(
     re.I,
 )
 _PREFIX_EDITORIAL = re.compile(
-    r"^(?:cyberattaque|attaque|fuite\s+de\s+donnees|une\s+cyberattaque|"
+    r"^(?:cyberattaque|attaque|une?\s+attaque(?:\s+informatique)?|fuite\s+de\s+donnees|une\s+cyberattaque|"
     r"nouvelle\s+cyberattaque|des\s+millions\s+de|les\s+(?:donnees|adresses)\s+de)\b",
     re.I,
 )

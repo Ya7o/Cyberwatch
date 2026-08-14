@@ -176,6 +176,23 @@ def test_resolver_est_utilise_uniquement_apres_les_regles_directes():
     assert resolved.Organisation_Raw == "Hugging Face"
 
 
+def test_cyberattaque_ne_contourne_pas_le_resolver_par_entite_connue():
+    raw = entry(
+        "Rapport technique sur un prestataire",
+        "Air Austral est cité parmi plusieurs clients de la société.",
+    )
+    assert entry_to_item(raw, SPEC, AS_OF, {"air austral": "Air Austral"}, {}) is None
+
+
+def test_fallback_entite_connue_reste_disponible_pour_les_autres_sources():
+    spec = SourceSpec("TEST_SOURCE", config.LAYER_CORE, config.LOC_FRANCE,
+                      params={"scope_is_cyber": True})
+    raw = entry("Rapport technique sur un prestataire", "Air Austral est cité.")
+    resolved = entry_to_item(raw, spec, AS_OF, {"air austral": "Air Austral"}, {})
+    assert resolved is not None
+    assert resolved.Organisation_Raw == "Air Austral"
+
+
 def test_index_resolver_requiert_deux_sources_et_est_independant_de_l_ordre(make_item):
     from cyberwatch.runner import MODE_CREATE, MODE_MAJ, _existing_organisations, _resolver_organisations, make_run_context
 

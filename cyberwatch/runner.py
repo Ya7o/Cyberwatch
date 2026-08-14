@@ -311,7 +311,10 @@ def entry_to_item(
     if not organisation and spec.params.get("title_is_organisation"):
         organisation = organisation_from_entry_title(entry.title)
 
-    if not organisation:
+    # Cyberattaque.org a son propre contrat conservateur : DIRECT ou resolver
+    # temporel unique, sinon NO_VICTIM. Le fallback générique chercherait une
+    # simple mention d'entité et contournerait ces garde-fous.
+    if not organisation and spec.source_id != "CYBERATTAQUE_ORG":
         organisation = find_known_entity(text, known_orgs)
 
     if not organisation and spec.source_id == "KWEZI_NUMERIQUE":
@@ -319,7 +322,7 @@ def entry_to_item(
 
     # Kwezi mesure tous les articles de rubrique, mais ne matérialise dans
     # ITEMS que ceux dont la victime est déterminée sans heuristique variable.
-    if spec.source_id == "KWEZI_NUMERIQUE" and not organisation:
+    if spec.source_id in {"KWEZI_NUMERIQUE", "CYBERATTAQUE_ORG"} and not organisation:
         return None
 
     sector_hint = ""
