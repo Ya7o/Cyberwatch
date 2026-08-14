@@ -445,6 +445,22 @@ class TestRansomwareLive:
         assert waits == [config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS]
         assert "rate_limit_retries=1" in result.comment
 
+    def test_pays_404_apres_endpoint_valide_est_vide_et_reste_ok(self):
+        def response(url):
+            if url.endswith("/FR"):
+                return ok(RANSOMWARE_PAYLOAD)
+            return FetchResult(False, "", 404, "", status.REASON_HTTP_404)
+
+        client = FakeClient({"ransomware.live": response})
+        spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi",
+                          collector="ransomware_live", params={"countries": ["FR", "RE"]})
+
+        result = RansomwareLiveCollector().collect(client, spec, WINDOW)
+
+        assert result.resolve()[0] == status.OK
+        assert result.reason_code == status.REASON_OK
+        assert result.units_done == result.units_expected == 2
+
 
 # --------------------------------------------------------------------------
 # Plafonds de volumétrie

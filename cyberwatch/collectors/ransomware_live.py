@@ -118,7 +118,8 @@ class RansomwareLiveCollector(Collector):
                     # protocole : le pays a bien été interrogé.
                     if working_template and response.status_code == 404:
                         empty_country = True
-                    result.reason_code = response.reason_code
+                    else:
+                        result.reason_code = response.reason_code
                     continue
 
                 payload = response.json()
