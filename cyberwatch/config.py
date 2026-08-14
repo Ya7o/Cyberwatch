@@ -292,7 +292,7 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "logistique", "logistics", "fret", "maritime", "shipping",
     ]),
     (SECTOR_SPORT, [
-        "federation francaise de", "club sportif", "federation sportive", "sport", "fitness", "stade",
+        "federation francaise de", "federation francaise d ", "club sportif", "federation sportive", "sport", "fitness", "stade",
         "olympique", "football",
     ]),
     (SECTOR_RETAIL, [

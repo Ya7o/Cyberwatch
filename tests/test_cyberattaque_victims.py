@@ -27,6 +27,16 @@ def entry(title, summary="", content=""):
     )
 
 
+def fixture_entry(source_item_id: str) -> RawEntry:
+    fixture = Path(__file__).parent / "fixtures/cyberattaque_org_articles_2026-08-14.json"
+    payload = json.loads(fixture.read_text(encoding="utf-8"))
+    article = next(article for article in payload["articles"] if article["source_item_id"] == source_item_id)
+    return RawEntry(
+        title=article["title"], summary=article["summary"], content=article["content"],
+        published=article["published"], url=article["url"], source_item_id=article["source_item_id"],
+    )
+
+
 def item(raw):
     return entry_to_item(raw, SPEC, AS_OF, {}, {})
 
@@ -120,6 +130,12 @@ def test_dmp_sans_preuve_technique_est_rejete():
     assert item(raw) is None
 
 
+def test_vrai_article_dmp_1555_est_negated_depuis_le_contenu():
+    raw = fixture_entry("1555")
+    assert is_negated_incident(raw.title, raw.summary, raw.content)
+    assert item(raw) is None
+
+
 def test_confirmations_de_victime_sont_des_relations_fortes():
     assert organisation_from_cyberattaque_entry(entry("Direction générale des Finances publiques confirme avoir été victime d'une cyberattaque"), {}) == "Direction générale des Finances publiques"
     assert organisation_from_cyberattaque_entry(entry("Ville de Test confirme être victime d'une cyberattaque"), {}) == "Ville de Test"
@@ -164,6 +180,13 @@ def test_multi_couvre_les_groupes_explicitement_aggreges():
     assert is_obvious_multi("Son-Video.com & EasyLounge : données exposées")
     assert is_obvious_multi("Alerte régionale", "Plusieurs ARS concernées")
     assert is_obvious_multi("Cyberattaque à Rennes", "Ville de Rennes et Rennes Métropole affectées")
+
+
+def test_vrai_article_ars_276_est_multi_et_ne_cree_pas_d_item():
+    raw = fixture_entry("276")
+    assert is_obvious_multi(raw.title, raw.summary, raw.content)
+    assert organisation_from_cyberattaque_entry(raw, {}) == ""
+    assert item(raw) is None
 
 
 def test_fixture_benchmark_cyberattaque_est_complete_et_figee():

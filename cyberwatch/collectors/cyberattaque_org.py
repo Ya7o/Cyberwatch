@@ -109,6 +109,10 @@ def is_obvious_multi(title: str, summary: str = "", content: str = "") -> bool:
     if any(pattern.search(title or "") for pattern in _OBVIOUS_MULTI):
         return True
     blob = searchable(" ".join((title, summary, content)))
+    # Article 276 : une campagne explicitement agrégée (ARS, 130 hôpitaux,
+    # AP-HP). « ARS » seul reste volontairement insuffisant.
+    if searchable(title).startswith("ars ") and "130 hopitaux" in blob and "ap hp" in blob:
+        return True
     if "ville de rennes" in blob and "rennes metropole" in blob:
         return True
     return bool(re.search(r"\b(?:plusieurs|different(?:es|s))\s+ars\b", blob))
