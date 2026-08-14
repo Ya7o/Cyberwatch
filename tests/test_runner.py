@@ -13,6 +13,7 @@ from cyberwatch.runner import (
     entry_to_item,
     make_run_context,
     pre_export_checks,
+    repair_item_integrity,
 )
 
 SPEC = SourceSpec(
@@ -216,6 +217,14 @@ class TestPreExportChecks:
         problems = pre_export_checks([item, item], [], [])
         assert any("Item_ID dupliqué" in p for p in problems)
 
+    def test_item_id_recalcule_et_cle_naturelle_detectes(self, make_item):
+        left = make_item(url="https://example.test/a")
+        right = make_item(url="https://example.test/a")
+        right.Item_ID = "ITM-invalide"
+        problems = pre_export_checks([left, right], build_incidents([left, right]), [])
+        assert any("Item_ID invalide" in p for p in problems)
+        assert any("Clé naturelle dupliquée" in p for p in problems)
+
     def test_source_active_sans_ligne_detectee(self, make_item):
         problems = pre_export_checks([make_item()], [], [])
         assert any("sans ligne RUN_SOURCES" in p for p in problems)
@@ -226,6 +235,17 @@ class TestPreExportChecks:
         ]
         problems = pre_export_checks([], [], outcomes)
         assert any("OK sans couverture complète" in p for p in problems)
+
+
+class TestRepairItemIntegrity:
+    def test_recalcul_et_dedoublonnage_exact(self, make_item):
+        first = make_item(url="https://example.test/a")
+        duplicate = make_item(url="https://example.test/a")
+        duplicate.Item_ID = "ITM-obsolete"
+        repaired, report = repair_item_integrity([first, duplicate])
+        assert len(repaired) == 1
+        assert report["duplicates_removed"] == 1
+        assert repaired[0].Item_ID != "ITM-obsolete"
 
 
 class TestCreateRepartDeZero:

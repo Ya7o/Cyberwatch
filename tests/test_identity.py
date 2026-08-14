@@ -29,14 +29,14 @@ class TestIdentifiers:
         assert base != item_id("SRC", "2026-01-01", "org", "https://b")
 
     def test_incident_id_deterministe_et_majuscule(self):
-        value = incident_id("chu de la reunion", "2026-03-01")
-        assert value == incident_id("chu de la reunion", "2026-03-01")
+        value = incident_id("chu de la reunion", "ITM-A")
+        assert value == incident_id("chu de la reunion", "ITM-A")
         assert value.startswith("INC-")
         assert len(value) == 16  # « INC- » + 12 caractères
         assert value[4:] == value[4:].upper()
 
     def test_incidents_same_date_can_have_distinct_deterministic_ids(self):
-        assert incident_id("org", "2026-01-01", "ITM-A") != incident_id("org", "2026-01-01", "ITM-B")
+        assert incident_id("org", "ITM-A") != incident_id("org", "ITM-B")
 
     def test_separateur_non_ambigu(self):
         """Un découpage différent ne doit pas produire le même identifiant."""

@@ -40,12 +40,14 @@ def item_id(source_id: str, published_date: str, organisation_key: str, url: str
     return "ITM-" + _sha256(payload)[:16]
 
 
-def incident_id(organisation_key: str, component_start_date: str, anchor_item_id: str = "") -> str:
-    """`INC-` + 12 premiers caractères hexadécimaux en majuscules du SHA256 (§7)."""
-    parts = [organisation_key or "", component_start_date or ""]
-    if anchor_item_id:
-        parts.append(anchor_item_id)
-    payload = SEP.join(parts)
+def incident_id(organisation_key: str, anchor_item_id: str) -> str:
+    """Identité d'incident indépendante de sa date affichée.
+
+    L'ancre est l'item canonique de la composante. Une Event_Date découverte
+    après la première collecte peut ainsi corriger la date sans renommer
+    l'incident.
+    """
+    payload = SEP.join([organisation_key or "", anchor_item_id or ""])
     return "INC-" + _sha256(payload)[:12].upper()
 
 

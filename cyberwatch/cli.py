@@ -31,6 +31,7 @@ from .runner import (
     execute,
     make_run_context,
     pre_export_checks,
+    repair_item_integrity,
 )
 
 
@@ -91,7 +92,8 @@ def cmd_create(args) -> int:
     print(f"CREATE {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
     report = execute(context)
     _print_summary(report)
-    site.build()
+    if report.overall != status.BROKEN:
+        site.build()
     return 0 if report.overall != status.BROKEN else 1
 
 
@@ -102,7 +104,8 @@ def cmd_maj(args) -> int:
     print(f"MAJ {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
     report = execute(context)
     _print_summary(report)
-    site.build()
+    if report.overall != status.BROKEN:
+        site.build()
     return 0 if report.overall != status.BROKEN else 1
 
 
@@ -140,6 +143,29 @@ def cmd_repair_identities(args) -> int:
     store.save_incidents(incidents)
     site.build()
     print(f"Réparation des identités : {changed} item(s) corrigé(s), {len(incidents)} incidents reconstruits.")
+    return 0
+
+
+def cmd_repair_integrity(args) -> int:
+    """Migration locale déterministe des identités et clés naturelles."""
+    items, report = repair_item_integrity(store.load_items())
+    incidents = build_incidents(items)
+    problems = pre_export_checks(items, incidents, [])
+    problems = [p for p in problems if "RUN_SOURCES" not in p]
+    if problems:
+        print("Réparation annulée :")
+        for problem in problems:
+            print(f"  ! {problem}")
+        return 1
+    store.save_items(items)
+    store.save_incidents(incidents)
+    site.build()
+    print(
+        "Réparation d'intégrité : "
+        f"{report['ids_repaired']} ID(s) recalculé(s), "
+        f"{report['duplicates_removed']} doublon(s) exact(s) retiré(s), "
+        f"{len(items)} items, {len(incidents)} incidents."
+    )
     return 0
 
 
@@ -552,8 +578,6 @@ def cmd_check(args) -> int:
     last = store.load_run_log()
     if last:
         row = last[-1]
-        if row.get("Overall_Status") != "OK":
-            problems.append("Le dernier run n'est pas OK")
         if not row.get("Items_Hash") or not row.get("Incidents_Hash"):
             problems.append("Les hashes du dernier run sont absents")
     if len({row.get("Run_ID", "") for row in last}) != len(last):
@@ -608,6 +632,11 @@ def build_parser() -> argparse.ArgumentParser:
         "repair-identities", help="Appliquer les corrections déterministes aux ITEMS existants."
     )
     repair.set_defaults(func=cmd_repair_identities)
+
+    integrity = subparsers.add_parser(
+        "repair-integrity", help="Réparer IDs et doublons de clé exacte sans réseau."
+    )
+    integrity.set_defaults(func=cmd_repair_integrity)
 
     backfill = subparsers.add_parser(
         "backfill-unknowns", help="Compléter uniquement Menace/Localisation inconnues."

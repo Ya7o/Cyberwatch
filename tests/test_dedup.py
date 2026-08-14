@@ -68,6 +68,13 @@ class TestComponents:
 
 
 class TestIncidentFields:
+    def test_event_date_added_later_ne_change_pas_incident_id(self, make_item):
+        initial = make_item(published="2026-03-10", url="https://a/1")
+        enriched = make_item(
+            published="2026-03-10", event="2026-03-05", url="https://a/1"
+        )
+        assert build_incidents([initial])[0].Incident_ID == build_incidents([enriched])[0].Incident_ID
+
     def test_date_basis_event_prioritaire(self, make_item):
         """§12 — si un Event_Date existe, il fait foi."""
         items = [make_item(published="2026-03-10", event="2026-03-05")]

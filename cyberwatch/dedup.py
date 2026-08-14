@@ -156,7 +156,7 @@ def build_incidents(items: list[Item]) -> list[Incident]:
         ordered = sort_items(component)
         date, basis = _component_dates(ordered)
         incidents.append(Incident(
-            Incident_ID=incident_id(ordered[0].Organisation_Key, date, ordered[0].Item_ID),
+            Incident_ID=incident_id(ordered[0].Organisation_Key, ordered[0].Item_ID),
             Date=date,
             Date_Basis=basis,
             Organisation=_majority(

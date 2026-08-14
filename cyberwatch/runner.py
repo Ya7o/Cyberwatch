@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import datetime as dt
 import time
+from collections import defaultdict
 from dataclasses import dataclass, field
 
 from . import config, enrichment, identity, sources, status, store, watchlists
@@ -38,6 +39,40 @@ MODE_CREATE = "CREATE"
 MODE_MAJ = "MAJ"
 MODE_REPLAY = "REPLAY"
 MODE_DIAGNOSE = "DIAGNOSE"
+
+
+def repair_item_integrity(items: list[Item]) -> tuple[list[Item], dict[str, int]]:
+    """Répare les IDs et élimine seulement les doublons de clé exacte.
+
+    Cette migration locale ne rapproche jamais deux organisations différentes.
+    Pour une clé naturelle dupliquée, elle conserve la ligne la plus renseignée
+    puis applique un ordre canonique pour briser les égalités.
+    """
+    groups: dict[tuple[str, str, str, str], list[Item]] = defaultdict(list)
+    for item in items:
+        groups[(item.Source_ID, item.Published_Date, item.Organisation_Key, item.URL)].append(item)
+
+    repaired: list[Item] = []
+    dropped = 0
+    changed = 0
+    for key in sorted(groups):
+        candidates = groups[key]
+        if len(candidates) > 1:
+            dropped += len(candidates) - 1
+        def quality(item: Item) -> tuple:
+            values = item.to_row()
+            populated = sum(bool(value) for name, value in values.items() if name != "Item_ID")
+            return (-populated, tuple(values[name] for name in sorted(values)))
+        item = sorted(candidates, key=quality)[0]
+        expected = identity.item_id(
+            item.Source_ID, item.Published_Date, item.Organisation_Key,
+            item.URL, item.Source_Item_ID,
+        )
+        if item.Item_ID != expected:
+            changed += 1
+            item.Item_ID = expected
+        repaired.append(item)
+    return identity.sort_items(repaired), {"ids_repaired": changed, "duplicates_removed": dropped}
 
 
 @dataclass
@@ -393,6 +428,29 @@ def pre_export_checks(
     if len(item_ids) != len(set(item_ids)):
         problems.append("Item_ID dupliqué détecté dans ITEMS")
 
+    natural_keys: dict[tuple[str, str, str, str], list[Item]] = defaultdict(list)
+    for item in items:
+        expected = identity.item_id(
+            item.Source_ID,
+            item.Published_Date,
+            item.Organisation_Key,
+            item.URL,
+            item.Source_Item_ID,
+        )
+        if item.Item_ID != expected:
+            problems.append(f"Item_ID invalide : {item.Item_ID}")
+        natural_keys[(item.Source_ID, item.Published_Date, item.Organisation_Key, item.URL)].append(item)
+
+    duplicate_keys = {
+        key: entries for key, entries in natural_keys.items()
+        if len(entries) > 1
+    }
+    for key, entries in duplicate_keys.items():
+        problems.append(
+            "Clé naturelle dupliquée : " + " | ".join(key)
+            + f" ({len(entries)} items)"
+        )
+
     incident_ids = [i.Incident_ID for i in incidents]
     if len(incident_ids) != len(set(incident_ids)):
         problems.append("Incident_ID dupliqué détecté dans INCIDENTS")
@@ -400,6 +458,21 @@ def pre_export_checks(
     for incident in incidents:
         if not incident.Sources:
             problems.append(f"Incident sans source : {incident.Incident_ID}")
+
+    duplicated_org_dates = {
+        (item.Organisation_Key, item.best_date)
+        for entries in duplicate_keys.values()
+        for item in entries
+    }
+    for incident in incidents:
+        if (
+            (organisation_key(incident.Organisation), incident.Date) in duplicated_org_dates
+            and incident.Items_Count > 1
+        ):
+            # Le contrôle de clé naturelle ci-dessus est la preuve primaire ;
+            # cet avertissement rend visible l'impact potentiel dans INCIDENTS.
+            problems.append(f"Incident potentiellement gonflé : {incident.Incident_ID}")
+            break
 
     seen_sources = {o.source_id for o in outcomes}
     for spec in sources.ALL_SOURCES:
@@ -512,18 +585,27 @@ def execute(context: RunContext, offline: bool = False) -> RunReport:
     report.problems = pre_export_checks(
         report.items, report.incidents, report.outcomes
     )
+    if report.problems:
+        report.overall = status.BROKEN
     report.duration = round(time.monotonic() - started, 1)
 
-    _persist(report, watch_rows if not offline else [])
+    _persist(
+        report,
+        watch_rows if not offline else [],
+        persist_snapshot=offline or (report.overall == status.OK and not report.problems),
+    )
     return report
 
 
-def _persist(report: RunReport, watch_rows: list[dict]) -> None:
+def _persist(
+    report: RunReport,
+    watch_rows: list[dict],
+    *,
+    persist_snapshot: bool,
+) -> None:
     """Écrit la base, les journaux et l'état de veille."""
     context = report.context
 
-    store.save_items(report.items)
-    store.save_incidents(report.incidents)
     store.save_sources(sources.to_rows())
 
     if report.outcomes:
@@ -554,18 +636,22 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
             ]
         )
 
-        store.save_entity_watch(
-            build_entity_watch(
-                watch_rows,
-                report.incidents,
-                context.as_of,
-                store.load_entity_watch(),
+        if persist_snapshot:
+            store.save_entity_watch(
+                build_entity_watch(
+                    watch_rows,
+                    report.incidents,
+                    context.as_of,
+                    store.load_entity_watch(),
+                )
             )
-        )
 
     # REPLAY est une transformation locale : il ne constitue pas une collecte
     # et ne doit donc pas remplacer l'état OK/FAIL de la dernière collecte.
     if not report.outcomes:
+        if persist_snapshot:
+            store.save_items(report.items)
+            store.save_incidents(report.incidents)
         return
 
     counts = status.status_counts(report.outcomes)
@@ -597,3 +683,6 @@ def _persist(report: RunReport, watch_rows: list[dict]) -> None:
             "Notes": " ; ".join(report.problems),
         }
     )
+    if persist_snapshot:
+        store.save_items(report.items)
+        store.save_incidents(report.incidents)

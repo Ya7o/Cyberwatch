@@ -14,6 +14,7 @@ from cyberwatch.normalize import load_organisation_aliases, organisation_acronym
     ("FFHandball", "Fédération Française de Handball"),
     ("Nantes Métropole", "Métropole de Nantes"),
     ("Rennes Métropole", "Métropole de Rennes"),
+    ("Cyberattaque à Gagny", "Ville de Gagny"),
 ])
 def test_versioned_aliases_are_exact(left, right):
     assert organisation_key(left) == organisation_key(right)
