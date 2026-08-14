@@ -20,6 +20,10 @@ from dataclasses import dataclass, field
 
 from . import config, enrichment, identity, sources, status, store, watchlists
 from .collectors import get_collector
+from .collectors.cyberattaque_org import (
+    is_negated_incident,
+    organisation_from_cyberattaque_entry,
+)
 from .collectors.base import RawEntry, SourceSpec, Window
 from .dedup import build_incidents, merge_items
 from .http import Budget, HttpClient
@@ -247,9 +251,16 @@ def entry_to_item(
 
     # Organisation : fournie par la source, sinon lue dans le titre, sinon
     # reconnue parmi les entités surveillées. Jamais devinée.
-    organisation = clean_organisation(entry.organisation) or organisation_from_title(
-        entry.title
-    )
+    if spec.source_id == "CYBERATTAQUE_ORG":
+        if is_negated_incident(entry.title, entry.summary, entry.content):
+            return None
+        organisation = clean_organisation(entry.organisation) or organisation_from_cyberattaque_entry(
+            entry, known_orgs
+        )
+    else:
+        organisation = clean_organisation(entry.organisation) or organisation_from_title(
+            entry.title
+        )
 
     # Certaines sources publient l'organisation comme titre de l'entrée : les
     # chronologies de fuites et les listes de victimes nomment chaque entrée
@@ -369,16 +380,25 @@ def run_source(
 
     items: list[Item] = []
     kwez_articles_cyber = 0
+    cyberattaque_rejected_negated = 0
+    cyberattaque_rejected_no_victim = 0
     for entry in result.entries:
         if spec.source_id == "KWEZI_NUMERIQUE" and looks_cyber(
             entry.title, entry.summary, entry.content
         ):
             kwez_articles_cyber += 1
+        if spec.source_id == "CYBERATTAQUE_ORG" and is_negated_incident(
+            entry.title, entry.summary, entry.content
+        ):
+            cyberattaque_rejected_negated += 1
+            continue
         item = entry_to_item(
             entry, spec, context.as_of, known_orgs, entity_index, territories, reference
         )
         if item is not None:
             items.append(item)
+        elif spec.source_id == "CYBERATTAQUE_ORG":
+            cyberattaque_rejected_no_victim += 1
 
     source_status, coverage = result.resolve()
     outcome.status = source_status
@@ -400,6 +420,13 @@ def run_source(
         extra = (
             f"articles_cyber={kwez_articles_cyber}; "
             f"victims_identified={len(items)}"
+        )
+        outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
+    if spec.source_id == "CYBERATTAQUE_ORG":
+        extra = (
+            f"victims_identified={len(items)}; "
+            f"articles_rejected_no_victim={cyberattaque_rejected_no_victim}; "
+            f"articles_rejected_negated={cyberattaque_rejected_negated}"
         )
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)

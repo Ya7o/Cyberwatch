@@ -109,7 +109,7 @@ CORE_SOURCES = [
         collector="cyberattaque_org",
         active=True,
         location_rule=config.LOC_FRANCE,
-        params={"categories": "attaque", "scope_is_cyber": True},
+        params={"categories": "attaque", "scope_is_cyber": True, "include_content": True},
         protocol=(
             "Parcourir séquentiellement la pagination sans sauter de page, "
             "jusqu'à une date antérieure à TARGET_START."
@@ -118,7 +118,8 @@ CORE_SOURCES = [
         notes=(
             "La catégorie « attaque » du site ne publie que des incidents : son "
             "périmètre fait foi, le garde-fou de vocabulaire ne s'y applique pas. "
-            "Organisation déduite du texte précédant « : » dans le titre."
+            "Victime extraite seulement depuis une relation explicite ou un préfixe "
+            "de titre non rédactionnel."
         ),
     ),
     SourceSpec(
