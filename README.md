@@ -37,6 +37,23 @@ Un `CREATE` BROKEN ne publie pas de snapshot. Une fois la baseline créée, la
 collecte quotidienne de 08:00 heure Réunion peut lancer `python -m cyberwatch maj`.
 Le full scan hebdomadaire ne sera réintroduit qu'avec les couches Watch.
 
+### Initialisation officielle
+
+La voie GitHub Actions officielle est **Initialize Baseline**. Elle fige un même
+`AS_OF` et, si fourni, un même `start`, puis exécute sans publication intermédiaire :
+
+`CREATE → check → test-repeat → test-live-repeat → baseline → build-site → publication`.
+
+`data/live_repeat.json` est la preuve de la dernière répétabilité LIVE. Une
+baseline est refusée sans preuve `PASS` correspondant exactement au snapshot
+(commit, sources actives, fenêtre et hashes). Un snapshot est donc un corpus
+techniquement valide ; une baseline est ce snapshot validé comme référence.
+Une MAJ remplace le snapshot, mais ne réécrit jamais la baseline.
+
+Le workflow **Collecte** reste dédié à `MAJ`. Un `CREATE` manuel depuis ce
+workflow peut aider au diagnostic, mais il ne publie pas de première base sans
+baseline : utiliser **Initialize Baseline**.
+
 > Cette base ne prétend pas représenter toutes les cyberattaques réelles. Elle vise
 > la liste la plus large possible des incidents *publiquement listés*, avec une
 > **couverture mesurable** et un protocole **reproductible**.

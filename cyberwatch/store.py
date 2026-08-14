@@ -39,6 +39,7 @@ ENTITY_WATCH_CSV = DATA_DIR / "entity_watch.csv"
 ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
+LIVE_REPEAT_JSON = DATA_DIR / "live_repeat.json"
 
 BASE_UNINITIALIZED = "UNINITIALIZED"
 BASE_VALID = "VALID"
@@ -190,6 +191,31 @@ def load_baseline(path: Path | None = None) -> dict:
 
 def save_baseline(payload: dict, path: Path | None = None) -> None:
     write_json(path or BASELINE_JSON, payload)
+
+
+def load_live_repeat(path: Path | None = None) -> dict:
+    target = path or LIVE_REPEAT_JSON
+    if not target.exists():
+        return {}
+    try:
+        with target.open(encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def save_live_repeat(payload: dict, path: Path | None = None) -> None:
+    write_json(path or LIVE_REPEAT_JSON, payload)
+
+
+def invalidate_matching_live_repeat(attempt: dict, path: Path | None = None) -> None:
+    """Retire seulement la preuve du même essai lorsqu'il vient d'échouer."""
+    target = path or LIVE_REPEAT_JSON
+    existing = load_live_repeat(target)
+    keys = ("Code_Commit", "As_Of", "Target_Start", "Target_End")
+    if existing and all(existing.get(key) == attempt.get(key) for key in keys):
+        target.unlink(missing_ok=True)
 
 
 def snapshot_state() -> tuple[str, list[str]]:

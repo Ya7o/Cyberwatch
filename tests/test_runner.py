@@ -261,6 +261,7 @@ class TestCreateRepartDeZero:
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
+        store.save_snapshot({"As_Of": "2026-08-10T10:00:00+04:00"})
         context = runner.make_run_context(
             runner.MODE_CREATE, as_of="2026-08-12T10:00:00+04:00"
         )
@@ -275,6 +276,7 @@ class TestCreateRepartDeZero:
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
+        store.save_snapshot({"As_Of": "2026-08-10T10:00:00+04:00"})
         context = runner.make_run_context(
             runner.MODE_MAJ, as_of="2026-08-12T10:00:00+04:00"
         )

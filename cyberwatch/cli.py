@@ -29,6 +29,7 @@ from .runner import (
     MODE_MAJ,
     MODE_REPLAY,
     execute,
+    code_commit,
     make_run_context,
     pre_export_checks,
     repair_item_integrity,
@@ -108,9 +109,13 @@ def cmd_maj(args) -> int:
             for detail in details:
                 print(f"  ! {detail}")
         return 1
-    context = make_run_context(
-        MODE_MAJ, args.as_of, args.start, _layers_from(args.layers)
-    )
+    try:
+        context = make_run_context(
+            MODE_MAJ, args.as_of, args.start, _layers_from(args.layers)
+        )
+    except ValueError as error:
+        print(f"ERREUR : {error}")
+        return 1
     print(f"MAJ {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
     report = execute(context)
     _print_summary(report)
@@ -291,6 +296,29 @@ def cmd_test_live_repeat(args) -> int:
             print(f"GLOBAL DIFFERENCE\n{label} A : {left}\n{label} B : {right}")
     print(f"  {'PASS' if sources_ok else 'FAIL'}  Sources des deux runs OK")
     print("  RESULTAT :", "PASS" if passed else "FAIL")
+    proof = {
+        "Result": "PASS" if passed else "FAIL",
+        "Validated_At": first_context.as_of,
+        "As_Of": first_context.as_of,
+        "Target_Start": first_context.target_start,
+        "Target_End": first_context.target_end,
+        "Code_Commit": code_commit(),
+        "Sources_Active": sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active),
+        "Items_Count_A": len(first.items),
+        "Items_Count_B": len(second.items),
+        "Incidents_Count_A": len(first.incidents),
+        "Incidents_Count_B": len(second.incidents),
+        "Items_Hash_A": first.items_hash,
+        "Items_Hash_B": second.items_hash,
+        "Incidents_Hash_A": first.incidents_hash,
+        "Incidents_Hash_B": second.incidents_hash,
+    }
+    if passed:
+        store.save_live_repeat(proof)
+    else:
+        # Une preuve n'est écrite que pour PASS. Un échec retire uniquement la
+        # preuve du même essai, sans effacer une trace historique distincte.
+        store.invalidate_matching_live_repeat(proof)
     return 0 if passed else 1
 
 
@@ -298,14 +326,43 @@ def cmd_baseline(args) -> int:
     """Fige la provenance validée comme baseline officielle."""
     if cmd_check(args) != 0:
         return 1
-    snapshot = store.load_snapshot()
-    if not snapshot:
-        print("Baseline annulée : provenance snapshot absente.")
+    if cmd_test_repeat(args) != 0:
+        print("Baseline refusée : test-repeat en échec.")
         return 1
-    snapshot["Baseline"] = True
-    snapshot["Baseline_Validated_At"] = args.as_of or snapshot.get("As_Of", "")
-    store.save_snapshot(snapshot)
-    baseline = dict(snapshot)
+    snapshot = store.load_snapshot()
+    proof = store.load_live_repeat()
+    if not proof or proof.get("Result") != "PASS":
+        print("Baseline refusée : aucune preuve de répétabilité LIVE correspondant au snapshot courant.")
+        return 1
+    expected_sources = sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active)
+    matching = {
+        "Code_Commit": proof.get("Code_Commit") == snapshot.get("Code_Commit"),
+        "Sources_Active": proof.get("Sources_Active") == expected_sources == snapshot.get("Sources_Active"),
+        "As_Of": proof.get("As_Of") == snapshot.get("As_Of"),
+        "Target_Start": proof.get("Target_Start") == snapshot.get("Target_Start"),
+        "Target_End": proof.get("Target_End") == snapshot.get("Target_End"),
+        "Items_Hash": proof.get("Items_Hash_A") == proof.get("Items_Hash_B") == snapshot.get("Items_Hash"),
+        "Incidents_Hash": proof.get("Incidents_Hash_A") == proof.get("Incidents_Hash_B") == snapshot.get("Incidents_Hash"),
+    }
+    failed = [name for name, ok in matching.items() if not ok]
+    if failed:
+        print("Baseline refusée : preuve Live Repeat non correspondante (" + ", ".join(failed) + ").")
+        return 1
+    baseline = {
+        "Baseline": True,
+        "Validated_At": args.as_of or proof.get("Validated_At") or snapshot.get("As_Of", ""),
+        "Code_Commit": snapshot.get("Code_Commit", ""),
+        "Run_ID": snapshot.get("Run_ID", ""),
+        "As_Of": snapshot.get("As_Of", ""),
+        "Target_Start": snapshot.get("Target_Start", ""),
+        "Target_End": snapshot.get("Target_End", ""),
+        "Sources_Active": expected_sources,
+        "Items_Count": snapshot.get("Items_Count", 0),
+        "Incidents_Count": snapshot.get("Incidents_Count", 0),
+        "Items_Hash": snapshot.get("Items_Hash", ""),
+        "Incidents_Hash": snapshot.get("Incidents_Hash", ""),
+        "Live_Repeat_Validated": True,
+    }
     store.save_baseline(baseline)
     print("Baseline enregistrée.")
     return 0

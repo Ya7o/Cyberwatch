@@ -71,7 +71,7 @@ jobs:
         if: steps.scope.outputs.mode == 'maj'
         run: |
           if [ ! -f data/snapshot.json ] || [ ! -f data/items.csv ] || [ ! -f data/incidents.csv ]; then
-            echo "::error::Aucune baseline de snapshot valide. Initialisation requise via un CREATE manuel."
+            echo "::error::Aucun snapshot valide. Initialisation requise via le workflow Initialize Baseline."
             exit 1
           fi
 
@@ -148,6 +148,10 @@ jobs:
       - name: Publier les données
         if: steps.kind.outputs.writes == 'true'
         run: |
+          if [ "${{ steps.scope.outputs.mode }}" = "create" ] && [ ! -f data/baseline.json ]; then
+            echo "::error::CREATE non publiable sans baseline. Utiliser le workflow Initialize Baseline."
+            exit 1
+          fi
           git config user.name  "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data assets/data

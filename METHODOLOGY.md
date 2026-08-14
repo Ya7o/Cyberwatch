@@ -3,6 +3,15 @@
 **`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-2`**
 **Périmètre :** France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles, Comores.
 
+## Initialisation et référence
+
+Un **snapshot** est le dernier corpus techniquement valide : ITEMS, INCIDENTS
+et provenance cohérente. Une **baseline** est un snapshot également validé par
+`test-repeat` et `test-live-repeat`. La preuve LIVE est conservée dans
+`data/live_repeat.json` et doit correspondre au commit, aux sources actives, à
+la fenêtre et aux hashes du snapshot avant que `baseline` puisse l'accepter.
+Une MAJ actualise le snapshot mais ne réécrit pas la baseline.
+
 Ce document décrit la méthode telle qu'elle est **réellement exécutée par le code**.
 Il reprend la méthodologie d'origine (`SIMPLE-SOURCING-1`) et consigne, sans les
 masquer, les écarts introduits par le passage à l'exécution automatique.

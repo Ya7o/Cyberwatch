@@ -43,7 +43,7 @@ MODE_REPLAY = "REPLAY"
 MODE_DIAGNOSE = "DIAGNOSE"
 
 
-def _code_commit() -> str:
+def code_commit() -> str:
     if os.getenv("GITHUB_SHA"):
         return os.environ["GITHUB_SHA"]
     try:
@@ -71,7 +71,7 @@ def save_snapshot_provenance(
         "Incidents_Count": len(incidents),
         "Items_Hash": identity.items_hash(items),
         "Incidents_Hash": identity.incidents_hash(incidents),
-        "Code_Commit": _code_commit(),
+        "Code_Commit": code_commit(),
         "Sources_Active": sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active),
         "Baseline": False,
     }
@@ -139,8 +139,9 @@ def make_run_context(
     """Fige les paramètres du run.
 
     `CREATE` sans période démarre au 1er janvier de l'année de `AS_OF` (§6).
-    `MAJ` rejoue volontairement les 30 derniers jours depuis le dernier run, ce
-    chevauchement permettant de récupérer ajouts tardifs et corrections.
+    `MAJ` rejoue volontairement les 30 derniers jours depuis le dernier run ou,
+    à défaut, depuis la provenance du snapshot. Ce chevauchement permet de
+    récupérer ajouts tardifs et corrections.
     """
     now = (
         dt.datetime.fromisoformat(as_of)
@@ -153,8 +154,11 @@ def make_run_context(
     if target_start:
         start = target_start
     elif mode == MODE_MAJ:
-        previous = _last_run_as_of()
-        anchor = previous or now.date()
+        anchor = _last_run_as_of() or _snapshot_as_of()
+        if anchor is None:
+            raise ValueError(
+                "Snapshot valide mais As_Of exploitable absent : MAJ impossible."
+            )
         start = (anchor - dt.timedelta(days=config.MAJ_OVERLAP_DAYS)).isoformat()
     else:
         start = dt.date(now.year, 1, 1).isoformat()
@@ -186,6 +190,17 @@ def _last_run_as_of() -> dt.date | None:
         return None
     try:
         return dt.datetime.fromisoformat(stamps[-1]).date()
+    except ValueError:
+        return None
+
+
+def _snapshot_as_of() -> dt.date | None:
+    """Ancre une MAJ sur la provenance si le journal de run est absent."""
+    value = store.load_snapshot().get("As_Of", "")
+    if not value:
+        return None
+    try:
+        return dt.datetime.fromisoformat(value).date()
     except ValueError:
         return None
 
