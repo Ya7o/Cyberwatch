@@ -24,6 +24,14 @@ from cyberwatch.normalize import organisation_key
 from cyberwatch.site import incidents_payload
 
 
+def _canonical_content(item) -> dict[str, str]:
+    """Contenu devant être identique pour consolider deux anciens Item_ID."""
+    row = item.to_row()
+    row.pop("Item_ID", None)
+    row.pop("Collected_As_Of", None)
+    return row
+
+
 def main() -> int:
     items = store.load_items()
     before_incidents = store.load_incidents()
@@ -48,34 +56,36 @@ def main() -> int:
             item.URL,
             item.Source_Item_ID,
         )
-        by_new_id[new_item_id].append(
-            {
-                "old_id": old_id,
-                "source": item.Source_ID,
-                "source_item_id": item.Source_Item_ID,
-                "date": item.Published_Date,
-                "raw": item.Organisation_Raw,
-                "old_key": old_key,
-                "new_key": item.Organisation_Key,
-                "url": item.URL,
-            }
-        )
         if new_item_id != old_id:
-            item.Item_ID = new_item_id
             changed_item_ids += 1
+        by_new_id[new_item_id].append((old_id, item))
 
-    collisions = {
-        item_id: rows for item_id, rows in by_new_id.items() if len(rows) > 1
-    }
-    if collisions:
-        print("REBUILD_DEDUP_ABORT collisions after canonicalisation")
-        for item_id in sorted(collisions):
-            print("COLLISION " + item_id + " " + json.dumps(
-                collisions[item_id], sort_keys=True, ensure_ascii=False
-            ))
-        return 1
+    rebuilt_items = []
+    collapsed_items = 0
+    for new_item_id in sorted(by_new_id):
+        members = sorted(by_new_id[new_item_id], key=lambda pair: pair[0])
+        if len(members) > 1:
+            reference = _canonical_content(members[0][1])
+            if any(_canonical_content(item) != reference for _, item in members[1:]):
+                print("REBUILD_DEDUP_ABORT non-identical Item_ID collision " + new_item_id)
+                for old_id, item in members:
+                    print("COLLISION_ROW " + json.dumps(
+                        {"old_id": old_id, **item.to_row()},
+                        sort_keys=True,
+                        ensure_ascii=False,
+                    ))
+                return 1
+            collapsed_items += len(members) - 1
 
-    items = identity.sort_items(items)
+        chosen = members[0][1]
+        chosen.Item_ID = new_item_id
+        collected = sorted(
+            item.Collected_As_Of for _, item in members if item.Collected_As_Of
+        )
+        chosen.Collected_As_Of = collected[0] if collected else ""
+        rebuilt_items.append(chosen)
+
+    items = identity.sort_items(rebuilt_items)
     incidents = build_incidents(items)
     after_hash = identity.incidents_hash(incidents)
 
@@ -84,7 +94,9 @@ def main() -> int:
     store.write_json(store.SITE_DATA_DIR / "incidents.json", incidents_payload(incidents))
 
     audit = {
-        "items": len(items),
+        "items_before": sum(len(rows) for rows in by_new_id.values()),
+        "items_after": len(items),
+        "items_collapsed_exact_duplicates": collapsed_items,
         "incidents_before": len(before_incidents),
         "incidents_after": len(incidents),
         "incident_delta": len(incidents) - len(before_incidents),
