@@ -8,6 +8,14 @@ incidents et régénère uniquement le JSON des incidents du dashboard.
 from __future__ import annotations
 
 import json
+import sys
+from pathlib import Path
+
+# Permet l'exécution directe `python scripts/rebuild_dedup.py` depuis la racine
+# sans installation du package.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from cyberwatch import identity, store
 from cyberwatch.dedup import build_incidents
