@@ -14,6 +14,8 @@ from __future__ import annotations
 import datetime as dt
 import time
 from collections import defaultdict
+import os
+import subprocess
 from dataclasses import dataclass, field
 
 from . import config, enrichment, identity, sources, status, store, watchlists
@@ -39,6 +41,42 @@ MODE_CREATE = "CREATE"
 MODE_MAJ = "MAJ"
 MODE_REPLAY = "REPLAY"
 MODE_DIAGNOSE = "DIAGNOSE"
+
+
+def _code_commit() -> str:
+    if os.getenv("GITHUB_SHA"):
+        return os.environ["GITHUB_SHA"]
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=store.ROOT, text=True
+        ).strip()
+    except Exception:
+        return ""
+
+
+def save_snapshot_provenance(
+    items: list[Item], incidents: list[Incident], *, operation: str,
+    run_id: str = "", mode: str = "", as_of: str = "",
+    target_start: str = "", target_end: str = "",
+) -> dict:
+    """Enregistre la provenance du snapshot déjà écrit sur disque."""
+    payload = {
+        "As_Of": as_of,
+        "Operation": operation,
+        "Run_ID": run_id,
+        "Mode": mode,
+        "Target_Start": target_start,
+        "Target_End": target_end,
+        "Items_Count": len(items),
+        "Incidents_Count": len(incidents),
+        "Items_Hash": identity.items_hash(items),
+        "Incidents_Hash": identity.incidents_hash(incidents),
+        "Code_Commit": _code_commit(),
+        "Sources_Active": sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active),
+        "Baseline": False,
+    }
+    store.save_snapshot(payload)
+    return payload
 
 
 def repair_item_integrity(items: list[Item]) -> tuple[list[Item], dict[str, int]]:
@@ -657,6 +695,11 @@ def _persist(
         if persist_snapshot:
             store.save_items(report.items)
             store.save_incidents(report.incidents)
+            save_snapshot_provenance(
+                store.load_items(), store.load_incidents(), operation="REPLAY",
+                run_id=context.run_id, mode=context.mode, as_of=context.as_of,
+                target_start=context.target_start, target_end=context.target_end,
+            )
         return
 
     counts = status.status_counts(report.outcomes)
@@ -691,3 +734,8 @@ def _persist(
     if persist_snapshot:
         store.save_items(report.items)
         store.save_incidents(report.incidents)
+        save_snapshot_provenance(
+            store.load_items(), store.load_incidents(), operation=context.mode,
+            run_id=context.run_id, mode=context.mode, as_of=context.as_of,
+            target_start=context.target_start, target_end=context.target_end,
+        )

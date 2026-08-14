@@ -126,3 +126,18 @@ Chaque source déclare son URL, son protocole et son test de succès dans
 
 Le dépôt doit être public pour bénéficier de Pages et des minutes Actions
 gratuites.
+# Fiabilité du snapshot
+
+`test-repeat` vérifie hors réseau que le même jeu `ITEMS` produit les mêmes
+`INCIDENTS`. `test-live-repeat` effectue deux CREATE isolés avec un cutoff figé
+et compare statuts, unités, compteurs et hashes, sans écrire de fichier.
+
+`data/snapshot.json` est la provenance du snapshot publié : opération, run,
+fenêtre, compteurs, hashes et commit producteur. `check` relit les CSV et
+échoue si cette provenance ne correspond plus. Un run BROKEN reste journalisé,
+mais ne remplace jamais cette provenance. `data/baseline.json` est créé par
+`python -m cyberwatch baseline` après validation.
+
+Les métriques sont figées : `Items_seen` est reconnu avant filtres,
+`Items_in_window` est son sous-ensemble temporel, `Items_collected` est
+matérialisé dans Cyberwatch, et `Units_*` mesure le protocole technique.

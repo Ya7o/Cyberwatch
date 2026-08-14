@@ -37,6 +37,8 @@ RUN_SOURCES_CSV = DATA_DIR / "run_sources.csv"
 RUN_LOG_CSV = DATA_DIR / "run_log.csv"
 ENTITY_WATCH_CSV = DATA_DIR / "entity_watch.csv"
 ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
+SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
+BASELINE_JSON = DATA_DIR / "baseline.json"
 
 
 # --------------------------------------------------------------------------
@@ -155,3 +157,29 @@ def load_run_sources(path: Path | None = None) -> list[dict]:
 
 def load_run_log(path: Path | None = None) -> list[dict]:
     return read_csv(path or RUN_LOG_CSV)
+
+
+def load_snapshot(path: Path | None = None) -> dict:
+    target = path or SNAPSHOT_JSON
+    if not target.exists():
+        return {}
+    with target.open(encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return payload if isinstance(payload, dict) else {}
+
+
+def save_snapshot(payload: dict, path: Path | None = None) -> None:
+    write_json(path or SNAPSHOT_JSON, payload)
+
+
+def load_baseline(path: Path | None = None) -> dict:
+    target = path or BASELINE_JSON
+    if not target.exists():
+        return {}
+    with target.open(encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return payload if isinstance(payload, dict) else {}
+
+
+def save_baseline(payload: dict, path: Path | None = None) -> None:
+    write_json(path or BASELINE_JSON, payload)

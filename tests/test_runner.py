@@ -257,7 +257,7 @@ class TestCreateRepartDeZero:
         from cyberwatch import runner, store
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
-                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV"):
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
@@ -271,7 +271,7 @@ class TestCreateRepartDeZero:
         from cyberwatch import runner, store
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
-                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV"):
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])

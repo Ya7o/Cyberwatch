@@ -32,6 +32,7 @@ from .runner import (
     make_run_context,
     pre_export_checks,
     repair_item_integrity,
+    save_snapshot_provenance,
 )
 
 
@@ -141,6 +142,9 @@ def cmd_repair_identities(args) -> int:
     incidents = build_incidents(items)
     store.save_items(identity.sort_items(items))
     store.save_incidents(incidents)
+    save_snapshot_provenance(
+        store.load_items(), store.load_incidents(), operation="REPAIR_IDENTITIES",
+    )
     site.build()
     print(f"Réparation des identités : {changed} item(s) corrigé(s), {len(incidents)} incidents reconstruits.")
     return 0
@@ -159,6 +163,9 @@ def cmd_repair_integrity(args) -> int:
         return 1
     store.save_items(items)
     store.save_incidents(incidents)
+    save_snapshot_provenance(
+        store.load_items(), store.load_incidents(), operation="REPAIR_INTEGRITY",
+    )
     site.build()
     print(
         "Réparation d'intégrité : "
@@ -180,6 +187,9 @@ def cmd_backfill_unknowns(args) -> int:
     incidents = build_incidents(items)
     store.save_items(identity.sort_items(items))
     store.save_incidents(incidents)
+    save_snapshot_provenance(
+        store.load_items(), store.load_incidents(), operation="BACKFILL_UNKNOWNS",
+    )
     site.build()
     print(f"Backfill inconnus : menace={report['threat']}, localisation règles={report['location_rule']}, localisation réutilisée={report['location_reused']}; incidents={len(incidents)}.")
     return 0
@@ -232,32 +242,63 @@ def cmd_test_repeat(args) -> int:
 
 def cmd_test_live_repeat(args) -> int:
     """Exécute deux CREATE LIVE isolés, sans modifier la base locale."""
-    first_context = make_run_context(
-        MODE_CREATE, args.as_of, args.start, _layers_from(args.layers)
-    )
+    first_context = make_run_context(MODE_CREATE, args.as_of, args.start, _layers_from(args.layers))
     second_context = make_run_context(
-        MODE_CREATE, args.as_of, args.start, _layers_from(args.layers)
+        MODE_CREATE, first_context.as_of, first_context.target_start, _layers_from(args.layers)
     )
     first = execute(first_context, persist=False)
     second = execute(second_context, persist=False)
-    source_state = lambda report: [
-        (outcome.source_id, outcome.status, outcome.items_seen,
-         outcome.items_in_window, outcome.items_collected)
+    fields = ("status", "units_done", "units_expected", "items_seen", "items_in_window", "items_collected")
+    source_state = lambda report: {
+        outcome.source_id: {field: getattr(outcome, field) for field in fields}
         for outcome in report.outcomes
-    ]
+    }
     checks = [
-        ("Statuts et compteurs sources", source_state(first), source_state(second)),
+        ("Sources", source_state(first), source_state(second)),
+        ("Items_Count", len(first.items), len(second.items)),
+        ("Incidents_Count", len(first.incidents), len(second.incidents)),
         ("Items_Hash", first.items_hash, second.items_hash),
         ("Incidents_Hash", first.incidents_hash, second.incidents_hash),
     ]
     healthy = first.overall == status.OK and second.overall == status.OK
     passed = healthy and all(left == right for _, left, right in checks)
-    print("TEST REPETABILITE LIVE CREATE A/B")
+    print("LIVE REPETITION")
+    print(f"AS_OF : {first_context.as_of}")
+    print(f"TARGET_START : {first_context.target_start}")
+    print(f"TARGET_END : {first_context.target_end}")
+    left_sources, right_sources = source_state(first), source_state(second)
+    print("SOURCE                  A      B")
+    for source_id in sorted(set(left_sources) | set(right_sources)):
+        left = left_sources.get(source_id, {})
+        right = right_sources.get(source_id, {})
+        print(f"{source_id:23} {left.get('status', 'ABSENT'):6} {right.get('status', 'ABSENT'):6}")
+        for field in fields:
+            if left.get(field) != right.get(field):
+                print(f"SOURCE DIFFERENCE\nSource : {source_id}\nChamp : {field}\nRun A : {left.get(field)}\nRun B : {right.get(field)}")
     for label, left, right in checks:
         print(f"  {'PASS' if left == right else 'FAIL'}  {label}")
+        if label != "Sources" and left != right:
+            print(f"GLOBAL DIFFERENCE\n{label} A : {left}\n{label} B : {right}")
     print(f"  {'PASS' if healthy else 'FAIL'}  Sources des deux runs OK")
     print("  RESULTAT :", "PASS" if passed else "FAIL")
     return 0 if passed else 1
+
+
+def cmd_baseline(args) -> int:
+    """Fige la provenance validée comme baseline officielle."""
+    if cmd_check(args) != 0:
+        return 1
+    snapshot = store.load_snapshot()
+    if not snapshot:
+        print("Baseline annulée : provenance snapshot absente.")
+        return 1
+    snapshot["Baseline"] = True
+    snapshot["Baseline_Validated_At"] = args.as_of or snapshot.get("As_Of", "")
+    store.save_snapshot(snapshot)
+    baseline = dict(snapshot)
+    store.save_baseline(baseline)
+    print("Baseline enregistrée.")
+    return 0
 
 
 def cmd_diagnose(args) -> int:
@@ -618,6 +659,19 @@ def cmd_check(args) -> int:
         problems.append("Couple Run_ID / Source_ID dupliqué dans RUN_SOURCES")
     if any(not item.Organisation_Key for item in items):
         problems.append("Organisation_Key vide dans ITEMS")
+    snapshot = store.load_snapshot()
+    if not snapshot:
+        problems.append("Provenance snapshot absente")
+    else:
+        actual = {
+            "Items_Count": len(items),
+            "Incidents_Count": len(incidents),
+            "Items_Hash": identity.items_hash(items),
+            "Incidents_Hash": identity.incidents_hash(incidents),
+        }
+        for key, value in actual.items():
+            if str(snapshot.get(key, "")) != str(value):
+                problems.append(f"Provenance snapshot incohérente : {key}")
 
     print(f"Contrôles avant export (§29) — {len(items)} items, {len(incidents)} incidents")
     if not problems:
@@ -682,6 +736,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     add_common(live_repeat)
     live_repeat.set_defaults(func=cmd_test_live_repeat)
+
+    baseline = subparsers.add_parser("baseline", help="Enregistrer la baseline du snapshot validé.")
+    baseline.add_argument("--as-of", dest="as_of", help="Date de validation ISO 8601.")
+    baseline.set_defaults(func=cmd_baseline)
 
     diagnose = subparsers.add_parser(
         "diagnose", help="Sonder les sources et mesurer le coût réel."

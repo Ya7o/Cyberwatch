@@ -1,0 +1,39 @@
+name: Live Repeat
+
+on:
+  workflow_dispatch:
+    inputs:
+      as_of:
+        description: Cutoff ISO 8601 optionnel
+        required: false
+        type: string
+      start:
+        description: Debut de fenetre AAAA-MM-JJ optionnel
+        required: false
+        type: string
+      layers:
+        description: Couches (defaut all)
+        required: false
+        default: all
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  repeat-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Live repetition
+        run: |
+          ARGS="--layers '${{ inputs.layers }}'"
+          [ -n "${{ inputs.as_of }}" ] && ARGS="$ARGS --as-of '${{ inputs.as_of }}'"
+          [ -n "${{ inputs.start }}" ] && ARGS="$ARGS --start '${{ inputs.start }}'"
+          python -m cyberwatch test-live-repeat $ARGS | tee -a "$GITHUB_STEP_SUMMARY"
