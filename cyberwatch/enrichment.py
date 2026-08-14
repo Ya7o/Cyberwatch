@@ -9,9 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from . import config, store
-from .normalize import classify_location, classify_threat, organisation_key, searchable
 from .identity import sort_items
 from .model import Item
+from .normalize import classify_location, classify_threat, organisation_key, searchable
 
 
 @dataclass(frozen=True)
@@ -91,36 +91,61 @@ def enrich_items(items: list[Item], reference: dict[str, Enrichment]) -> dict[st
     return report
 
 
+# Marqueurs volontairement courts, appliqués uniquement aux menaces encore
+# inconnues. Ils couvrent les formulations où le nom de l'objet et l'action
+# sont séparés ("données de 12 000 agents diffusées", par exemple).
+_UNKNOWN_LEAK_MARKERS = ("fuite", "expos", "diffus", "revendiqu")
+
+
+def _backfill_unknown_threat(item: Item) -> str:
+    threat = classify_threat(item.Title, item.Threat_Raw)
+    if threat != config.THREAT_UNKNOWN:
+        return threat
+    title = searchable(item.Title)
+    if any(marker in title for marker in _UNKNOWN_LEAK_MARKERS):
+        return config.THREAT_LEAK
+    return config.THREAT_UNKNOWN
+
+
 def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
     """Complète uniquement menace/localisation inconnues, sans changer d'identité.
 
-    Les localisations réutilisées sont calculées avant toute écriture : le
-    résultat est donc indépendant de l'ordre des items.
+    Première passe : règles directes. Deuxième passe : réutilisation d'une
+    localisation unique déjà connue pour la même Organisation_Key. Cette
+    séparation rend le résultat déterministe et complet en une seule exécution.
     """
-    known_locations: dict[str, set[str]] = {}
-    for item in items:
-        if item.Organisation_Key and item.Location != config.LOC_INCONNU:
-            known_locations.setdefault(item.Organisation_Key, set()).add(item.Location)
-
     report = {"threat": 0, "location_rule": 0, "location_reused": 0}
-    for item in sort_items(items):
+    ordered = sort_items(items)
+
+    for item in ordered:
         if item.Threat == config.THREAT_UNKNOWN:
-            threat = classify_threat(item.Title, item.Threat_Raw)
+            threat = _backfill_unknown_threat(item)
             if threat != config.THREAT_UNKNOWN:
                 item.Threat = threat
                 report["threat"] += 1
 
         if item.Location != config.LOC_INCONNU:
             continue
-        _sector, location = enrich_unknowns(item.Organisation_Raw, item.Sector, item.Location, reference)
+        _sector, location = enrich_unknowns(
+            item.Organisation_Raw, item.Sector, item.Location, reference
+        )
         if location == config.LOC_INCONNU:
             location = classify_location(item.Title, item.Organisation_Raw)
         if location != config.LOC_INCONNU:
             item.Location = location
             report["location_rule"] += 1
+
+    known_locations: dict[str, set[str]] = {}
+    for item in ordered:
+        if item.Organisation_Key and item.Location != config.LOC_INCONNU:
+            known_locations.setdefault(item.Organisation_Key, set()).add(item.Location)
+
+    for item in ordered:
+        if item.Location != config.LOC_INCONNU:
             continue
         candidates = known_locations.get(item.Organisation_Key, set())
         if len(candidates) == 1:
             item.Location = next(iter(candidates))
             report["location_reused"] += 1
+
     return report
