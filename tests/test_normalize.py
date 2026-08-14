@@ -124,6 +124,25 @@ class TestThreatTaxonomy:
             assert classify_threat(text) in config.THREATS
 
 
+class TestSectorTaxonomy:
+    """Les marqueurs de secteur restent discriminants."""
+
+    @pytest.mark.parametrize(
+        "organisation,expected",
+        [
+            ("Fédération Hospitalière de France", config.SECTOR_UNKNOWN),
+            ("Fédération Française des Sapeurs-Pompiers", config.SECTOR_ADMIN),
+            ("Fédération Française de Tennis", config.SECTOR_SPORT),
+            ("Fédération Française d’Athlétisme", config.SECTOR_SPORT),
+            ("Fédération Française d’ULM", config.SECTOR_SPORT),
+            ("On Air Fitness", config.SECTOR_SPORT),
+            ("Air Austral", config.SECTOR_TRANSPORT),
+        ],
+    )
+    def test_marqueurs_federation_et_air(self, organisation, expected):
+        assert classify_sector(organisation) == expected
+
+
 class TestLooksCyber:
     """Garde-fou d'ingestion : un contenu non cyber n'entre pas dans la base."""
 
