@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 # Permet l'exécution directe `python scripts/rebuild_dedup.py` depuis la racine
@@ -30,10 +31,13 @@ def main() -> int:
 
     changed_keys = 0
     changed_item_ids = 0
+    by_new_id = defaultdict(list)
 
     for item in items:
+        old_id = item.Item_ID
+        old_key = item.Organisation_Key
         new_key = organisation_key(item.Organisation_Raw)
-        if new_key != item.Organisation_Key:
+        if new_key != old_key:
             item.Organisation_Key = new_key
             changed_keys += 1
 
@@ -44,16 +48,31 @@ def main() -> int:
             item.URL,
             item.Source_Item_ID,
         )
-        if new_item_id != item.Item_ID:
+        by_new_id[new_item_id].append(
+            {
+                "old_id": old_id,
+                "source": item.Source_ID,
+                "source_item_id": item.Source_Item_ID,
+                "date": item.Published_Date,
+                "raw": item.Organisation_Raw,
+                "old_key": old_key,
+                "new_key": item.Organisation_Key,
+                "url": item.URL,
+            }
+        )
+        if new_item_id != old_id:
             item.Item_ID = new_item_id
             changed_item_ids += 1
 
-    item_ids = [item.Item_ID for item in items]
-    if len(item_ids) != len(set(item_ids)):
-        duplicates = sorted(
-            item_id for item_id in set(item_ids) if item_ids.count(item_id) > 1
-        )
-        print("REBUILD_DEDUP_ABORT collision Item_ID:", ",".join(duplicates[:20]))
+    collisions = {
+        item_id: rows for item_id, rows in by_new_id.items() if len(rows) > 1
+    }
+    if collisions:
+        print("REBUILD_DEDUP_ABORT collisions after canonicalisation")
+        for item_id in sorted(collisions):
+            print("COLLISION " + item_id + " " + json.dumps(
+                collisions[item_id], sort_keys=True, ensure_ascii=False
+            ))
         return 1
 
     items = identity.sort_items(items)
