@@ -6,11 +6,9 @@ from pathlib import Path
 from cyberwatch import config, sources
 from cyberwatch.collectors.base import RawEntry, SourceSpec
 from cyberwatch.collectors.cyberattaque_org import (
-    ExistingOrganisation,
     is_negated_incident,
     is_obvious_multi,
     organisation_from_cyberattaque_entry,
-    resolve_existing_organisation,
 )
 from cyberwatch.runner import entry_to_item
 
@@ -31,11 +29,6 @@ def entry(title, summary="", content=""):
 
 def item(raw):
     return entry_to_item(raw, SPEC, AS_OF, {}, {})
-
-
-def existing(name, published="2026-08-11", sources=("BONJOURLAFUITE", "FRENCHBREACHES")):
-    from cyberwatch.normalize import organisation_key
-    return ExistingOrganisation(name, organisation_key(name), (published,), sources)
 
 
 def test_prefixes_et_recidives_restent_des_victimes():
@@ -134,51 +127,6 @@ def test_cyberattaque_demande_le_contenu_dans_la_requete_wordpress_existante():
     assert spec.params["include_content"] is True
 
 
-def test_resolver_reutilise_une_unique_organisation_existante_exacte():
-    raw = entry(
-        "Incident sans préfixe exploitable",
-        content="L'infrastructure Hugging Face a été compromise.",
-    )
-    assert resolve_existing_organisation(
-        raw, {"hugging face": existing("Hugging Face"), "steam": existing("Steam")}
-    ) == "Hugging Face"
-
-
-def test_resolver_refuse_un_nom_nouveau_ou_plusieurs_candidats():
-    assert resolve_existing_organisation(
-        entry("Incident chez une organisation absente"),
-        {"hugging face": existing("Hugging Face")},
-    ) == ""
-
-
-def test_resolver_exige_date_proche_et_accepte_nom_court_unique():
-    raw = entry("CIM confirme une intrusion")
-    assert resolve_existing_organisation(raw, {"cim": existing("CIM", "2026-08-11")}) == "CIM"
-    assert resolve_existing_organisation(raw, {"cim": existing("CIM", "2026-07-28")}) == ""
-    assert resolve_existing_organisation(raw, {"cim": existing("CIM", "2026-07-03")}) == ""
-
-
-def test_resolver_refuse_deux_candidats_proches_et_ignore_hors_fenetre():
-    raw = entry("Hugging Face et Steam sont cites")
-    assert resolve_existing_organisation(raw, {
-        "hugging face": existing("Hugging Face"),
-        "steam": existing("Steam"),
-    }) == ""
-    assert resolve_existing_organisation(raw, {
-        "hugging face": existing("Hugging Face"),
-        "steam": existing("Steam", "2026-07-01"),
-    }) == "Hugging Face"
-
-
-def test_resolver_est_utilise_uniquement_apres_les_regles_directes():
-    raw = entry("Titre narratif", content="Hugging Face confirme une intrusion.")
-    resolved = entry_to_item(
-        raw, SPEC, AS_OF, {}, {}, existing_orgs={"hugging face": existing("Hugging Face")}
-    )
-    assert resolved is not None
-    assert resolved.Organisation_Raw == "Hugging Face"
-
-
 def test_cyberattaque_ne_contourne_pas_le_resolver_par_entite_connue():
     raw = entry(
         "Rapport technique sur un prestataire",
@@ -194,34 +142,6 @@ def test_fallback_entite_connue_reste_disponible_pour_les_autres_sources():
     resolved = entry_to_item(raw, spec, AS_OF, {"air austral": "Air Austral"}, {})
     assert resolved is not None
     assert resolved.Organisation_Raw == "Air Austral"
-
-
-def test_index_resolver_requiert_deux_sources_et_est_independant_de_l_ordre(make_item):
-    from cyberwatch.runner import MODE_CREATE, MODE_MAJ, _existing_organisations, _resolver_organisations, make_run_context
-
-    first = make_item(source="BONJOURLAFUITE", org="Hugging Face")
-    second = make_item(source="FRENCHBREACHES", org="Hugging Face")
-    lone = make_item(source="CYBERATTAQUE_ORG", org="Nom historique erroné")
-    assert _existing_organisations([first, second, lone]) == _existing_organisations([lone, second, first])
-    index = _existing_organisations([first, second, lone])
-    assert index["hugging face"].organisation == "Hugging Face"
-    assert "nom historique errone" not in index
-    assert resolve_existing_organisation(
-        entry("Hugging Face et Steam sont cités dans cet article."),
-        {"hugging face": existing("Hugging Face"), "steam company": existing("Steam Company")},
-    ) == "Hugging Face"
-    assert resolve_existing_organisation(
-        entry("Hugging Face et Centres Sociaux de France sont cités."),
-        {
-            "hugging face": existing("Hugging Face"),
-            "centres sociaux de france": existing("Centres Sociaux de France"),
-        },
-    ) == ""
-    create_context = make_run_context(MODE_CREATE, as_of=AS_OF)
-    maj_context = make_run_context(MODE_MAJ, as_of=AS_OF)
-    # Même corpus proposé au runner : CREATE l'ignore, MAJ seulement l'indexe.
-    assert _resolver_organisations(create_context, [first, second]) == {}
-    assert _resolver_organisations(maj_context, [first, second]) == index
 
 
 def test_multi_couvre_les_groupes_explicitement_aggreges():

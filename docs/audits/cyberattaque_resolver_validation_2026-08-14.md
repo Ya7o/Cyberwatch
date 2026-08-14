@@ -32,9 +32,13 @@ Le seul match resolver causal est l'article « 678 438 lignes de données
 fiscales… », rattaché à la Direction générale des Finances publiques avec des
 confirmations BonjourLaFuite/FrenchBreaches datées du même jour.
 
-## Limites et décision
+## Décision de simplification
 
-Le resolver est causal, déterministe et ne crée pas de faux positif dans le
-corpus figé. Son apport est toutefois limité à un seul article causalement
-confirmé. **VALIDÉ MAIS INUTILE** : conserver le code simple en MAJ, sans
-ajouter de règles ou d'heuristiques supplémentaires.
+Le benchmark historique a finalement établi 367/408 pour `dbd85`, puis
+366/408 pour la version avec resolver et 366/408 pour le code final évalué.
+Le resolver n'a donc apporté aucun gain global mesurable justifiant son index,
+sa fenêtre temporelle et sa dépendance au snapshot.
+
+**RESOLVER RETIRÉ.** La qualification revient au pipeline explicable :
+`NEGATED → MULTI → DIRECT → NO_VICTIM`. Aucun remplacement heuristique n'a été
+ajouté ; une simple mention d'organisation reste insuffisante.
