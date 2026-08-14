@@ -191,7 +191,7 @@
       $("#incidents-table")?.closest(".table-scroll")?.insertAdjacentElement("afterend", pager);
     }
     pager.innerHTML = `<span>Page ${state.page} / ${pages}</span><div class="audit-pager-actions">
-      <label>Lignes <select id="audit-page-size"><option>25</option><option>50</option><option>100</option></select></label>
+      <label>Lignes <select id="audit-page-size"><option>25</option><option>50</option><option>100</option><option>500</option><option>1000</option></select></label>
       <button id="audit-prev" type="button" ${state.page <= 1 ? "disabled" : ""}>Précédent</button>
       <button id="audit-next" type="button" ${state.page >= pages ? "disabled" : ""}>Suivant</button></div>`;
     $("#audit-page-size").value = String(state.pageSize);
