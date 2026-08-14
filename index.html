@@ -105,41 +105,15 @@
     </figure>
   </section>
 
-  <!-- La fiabilité de la collecte reste consultable, mais elle n'est pas le
-       sujet : elle attend repliée en bas de page. -->
-  <details class="card reliability" id="fiabilite">
-    <summary>
-      <span class="reliability-title">État des sources</span>
-      <span class="reliability-summary" id="reliability-summary"></span>
-    </summary>
+  <section class="card reliability" id="fiabilite" aria-labelledby="sources-title">
+    <h2 id="sources-title">État des sources</h2>
+    <div id="sources-list" class="sources-list" aria-live="polite"></div>
 
-    <div class="reliability-body">
-      <p class="muted">
-        Un <strong>zéro vérifié</strong> signifie que le protocole est allé au bout sans
-        rien trouver. Un zéro grisé signifie que l'information est indisponible.
-        Sur les périodes concernées par un angle mort, un zéro ne veut pas dire
-        « aucun incident » mais « on ne sait pas ».
-      </p>
-
-      <div id="blindspots" hidden>
-        <h3 class="reliability-h3">Angles morts du dernier run</h3>
-        <ul id="blindspots-list" class="blindspots-list"></ul>
-      </div>
-
-      <h3 class="reliability-h3">Sources</h3>
-      <div class="table-scroll">
-        <table class="data-table" id="sources-table">
-          <thead>
-            <tr>
-              <th>Source</th><th>Couche</th><th>Statut</th><th>Couverture</th>
-              <th>Items</th><th>Accès</th><th>Détail</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </details>
+    <!-- Compatibilité avec le rendu historique : ces conteneurs restent invisibles. -->
+    <span id="reliability-summary" hidden></span>
+    <div id="blindspots" hidden><ul id="blindspots-list"></ul></div>
+    <table id="sources-table" hidden><thead><tr></tr></thead><tbody></tbody></table>
+  </section>
 
 </div>
 

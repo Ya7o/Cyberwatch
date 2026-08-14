@@ -70,6 +70,7 @@
       .audit-pager button,.audit-pager select{font:inherit;font-size:13px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-primary)}
       .audit-pager{justify-content:space-between;margin-top:12px}.audit-pager-actions{display:flex;gap:8px;align-items:center}.audit-pager button:disabled{opacity:.45}
       .source-name{font-weight:650}.source-meta,.source-control{font-size:11.5px;color:var(--text-secondary)}
+      .sources-list{display:flex;gap:9px 18px;flex-wrap:wrap;margin-top:12px}.source-state{display:inline-flex;align-items:center;gap:7px;font-size:14px}.source-led{width:9px;height:9px;border-radius:50%;background:var(--text-muted);box-shadow:0 0 0 2px var(--surface)}.source-led--ok{background:var(--ok,#2f9e44)}.source-led--attention{background:var(--warn,#d99a00)}.source-led--fail{background:var(--danger,#d64545)}
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
       .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
       #sources-table{table-layout:auto!important}#sources-table td,#sources-table th{width:auto!important;vertical-align:top}.source-measures{white-space:normal!important}
@@ -201,31 +202,12 @@
 
   function renderSources() {
     const rows = ((state.status && state.status.sources) || []).slice();
-    const head = $("#sources-table thead tr");
-    if (head) head.innerHTML = "<th>Source</th><th>Statut</th><th>Mesures</th><th>Dernier item</th><th>Accès</th><th>Détail</th>";
-    const tbody = $("#sources-table tbody");
-    if (!tbody) return;
-    tbody.innerHTML = rows.map((source) => {
-      const url = safeUrl(source.url);
-      const name = sourceLabel(source.id);
-      const sourceName = url ? `<a class="source-name" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>` : `<span class="source-name">${esc(name)}</span>`;
-      const seen = source.items_seen ?? 0;
-      const inWindow = source.items_in_window ?? source.items_collected ?? source.items ?? 0;
-      const saved = source.items_collected ?? source.items ?? 0;
-      const measures = seen === saved
-        ? `${saved} entrées enregistrées`
-        : `${seen} reçues · ${inWindow} retenues · ${saved} uniques`;
-      const control = source.id === "BONJOURLAFUITE" ? "Statut OK/FAIL spécifique · pas de couverture générique" : (source.status === "SKIPPED" ? "Hors périmètre du run" : `Couverture ${source.coverage}%`);
-      const latest = source.id === "BONJOURLAFUITE" ? [source.last_recognized_org, source.last_recognized_date].filter(Boolean).join(" · ") : (source.latest_item || "—");
-      const detail = source.status === "FAIL" ? (source.error || source.comment || source.reason || "Échec") : (source.comment || source.reason || "");
-      return `<tr>
-        <td data-label="Source">${sourceName}<div class="source-meta">${esc(source.id)} · ${esc(source.layer || "")}</div></td>
-        <td data-label="Statut"><span class="chip" data-status="${esc(source.status)}">${esc(source.status)}</span><div class="source-control">${esc(control)}</div></td>
-        <td data-label="Mesures" class="source-measures" title="Reçues : entrées fournies par la source. Retenues : entrées dans le périmètre. Uniques : entrées enregistrées après dédoublonnage.">${esc(measures)}</td>
-        <td data-label="Dernier item">${esc(latest)}</td>
-        <td data-label="Accès" class="cell-clip">${esc(source.access_method || "—")}</td>
-        <td data-label="Détail" class="cell-detail">${esc(detail)}</td>
-      </tr>`;
+    const list = $("#sources-list");
+    if (!list) return;
+    list.innerHTML = rows.map((source) => {
+      const status = String(source.status || "SKIPPED").toUpperCase();
+      const level = status === "OK" ? "ok" : (status === "FAIL" ? "fail" : "attention");
+      return `<span class="source-state"><span class="source-led source-led--${level}" role="img" aria-label="${esc(status)}" title="${esc(status)}"></span>${esc(sourceLabel(source.id))}</span>`;
     }).join("");
   }
 
