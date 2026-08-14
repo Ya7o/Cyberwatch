@@ -33,6 +33,7 @@ from .normalize import (
     find_known_entity,
     looks_cyber,
     organisation_from_entry_title,
+    organisation_from_kwezi_incident_text,
     organisation_from_title,
     organisation_key,
 )
@@ -231,6 +232,8 @@ def entry_to_item(
         return None
 
     text = f"{entry.title} {entry.summary}"
+    if spec.source_id == "KWEZI_NUMERIQUE":
+        text = f"{text} {entry.content}"
 
     # Le garde-fou de vocabulaire protège des rubriques généralistes, où tout
     # n'est pas cyber. Il ne s'applique pas aux sources dont le périmètre entier
@@ -257,6 +260,9 @@ def entry_to_item(
 
     if not organisation:
         organisation = find_known_entity(text, known_orgs)
+
+    if not organisation and spec.source_id == "KWEZI_NUMERIQUE":
+        organisation = organisation_from_kwezi_incident_text(entry.content)
 
     # Kwezi mesure tous les articles de rubrique, mais ne matérialise dans
     # ITEMS que ceux dont la victime est déterminée sans heuristique variable.
@@ -362,7 +368,12 @@ def run_source(
         return outcome, [], []
 
     items: list[Item] = []
+    kwez_articles_cyber = 0
     for entry in result.entries:
+        if spec.source_id == "KWEZI_NUMERIQUE" and looks_cyber(
+            entry.title, entry.summary, entry.content
+        ):
+            kwez_articles_cyber += 1
         item = entry_to_item(
             entry, spec, context.as_of, known_orgs, entity_index, territories, reference
         )
@@ -385,6 +396,12 @@ def run_source(
     outcome.items_collected = len(items)
     outcome.access_method = result.access_method
     outcome.comment = result.comment
+    if spec.source_id == "KWEZI_NUMERIQUE":
+        extra = (
+            f"articles_cyber={kwez_articles_cyber}; "
+            f"victims_identified={len(items)}"
+        )
+        outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)
     outcome.latest_item_date = max((i.Published_Date for i in items), default="")
 

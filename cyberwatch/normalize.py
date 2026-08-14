@@ -521,6 +521,37 @@ def organisation_from_entry_title(title: str, max_words: int = 12) -> str:
     return candidate
 
 
+_KWEZI_MUNICIPAL_VICTIM_PATTERNS = (
+    re.compile(
+        r"\b(?P<organisation>mairie\s+de\s+[a-zà-öø-ÿ'’ -]{2,60}?)\s+"
+        r"(?:a\s+(?:ete|été)|est)\s+(?:la\s+)?victime\s+d(?:'une\s+|e\s+une\s+)"
+        r"(?:cyberattaque|attaque\s+informatique)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\b(?:une\s+)?cyberattaque\s+contre\s+(?P<organisation>mairie\s+de\s+"
+        r"[a-zà-öø-ÿ'’ -]{2,60}?)(?:[,. ;:]|$)",
+        re.IGNORECASE,
+    ),
+)
+
+
+def organisation_from_kwezi_incident_text(text: str) -> str:
+    """Victime Kwezi seulement, extraite de tournures municipales explicites.
+
+    Cette règle ne généralise pas les groupes nominaux : elle accepte uniquement
+    « Mairie de X » lorsque la phrase affirme explicitement une cyberattaque.
+    """
+    for pattern in _KWEZI_MUNICIPAL_VICTIM_PATTERNS:
+        match = pattern.search(text or "")
+        if not match:
+            continue
+        candidate = clean_organisation(match.group("organisation"))
+        if candidate and searchable(candidate).startswith("mairie de "):
+            return candidate
+    return ""
+
+
 def find_known_entity(text: str, entities: dict[str, str]) -> str:
     """Première entité connue trouvée dans un texte.
 

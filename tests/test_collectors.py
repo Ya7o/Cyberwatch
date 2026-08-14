@@ -26,7 +26,7 @@ from cyberwatch.collectors.newsrss import (
 )
 from cyberwatch.collectors.ransomware_live import RansomwareLiveCollector, _entry_from_record
 import cyberwatch.collectors.ransomware_live as ransomware_live
-from cyberwatch.collectors.wordpress import WordPressCollector, strip_html
+from cyberwatch.collectors.wordpress import WordPressCollector, entry_from_post, strip_html
 from cyberwatch.http import Budget, FetchResult
 
 WINDOW = Window("2026-01-01", "2026-08-12")
@@ -190,6 +190,39 @@ class TestWordPress:
         result = WordPressCollector().collect(client, spec, WINDOW)
         assert result.reason_code == status.REASON_NO_FEED
         assert result.resolve()[0] == status.FAIL
+
+    def test_content_est_optionnel_et_vient_de_la_meme_requete(self):
+        payload = json.dumps([{
+            "id": 42, "date": "2026-04-10T09:00:00", "link": "https://exemple.re/a",
+            "title": {"rendered": "Services perturbés"},
+            "excerpt": {"rendered": "Situation inhabituelle."},
+            "content": {"rendered": "<p>La mairie est victime d'une cyberattaque.</p>"},
+        }])
+        client = FakeClient({
+            "categories?slug=numerique": ok('[{"id": 7}]'),
+            "/posts?": ok(payload, {"X-WP-TotalPages": "1"}),
+        })
+        spec = SourceSpec("KWEZI_NUMERIQUE", config.LAYER_LOCAL_MEDIA, "Mayotte",
+                          "https://exemple.re/numerique/", "wordpress",
+                          params={"wp_endpoint": "https://exemple.re/wp-json/wp/v2",
+                                  "categories": "numerique", "include_content": True})
+
+        result = WordPressCollector().collect(client, spec, WINDOW)
+
+        assert len(client.calls) == 2
+        assert "content%2Ccategories" in client.calls[-1]
+        assert result.entries[0].content == "La mairie est victime d'une cyberattaque."
+        assert result.entries[0].source_item_id == "42"
+
+    def test_content_reste_vide_pour_les_autres_collecteurs_wordpress(self):
+        post = {
+            "id": 9, "date": "2026-04-10", "link": "https://exemple.re/a",
+            "title": {"rendered": "Cyberattaque.org : incident"},
+            "excerpt": {"rendered": "Extrait"},
+            "content": {"rendered": "<p>Corps non demandé</p>"},
+        }
+        spec = SourceSpec("CYBERATTAQUE_ORG", config.LAYER_CORE, "France")
+        assert entry_from_post(post, spec).content == ""
 
 
 # --------------------------------------------------------------------------

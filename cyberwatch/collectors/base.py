@@ -57,6 +57,10 @@ class RawEntry:
     source_item_id: str = ""
     published: str = ""
     summary: str = ""
+    #: Corps complet d'un article lorsque la source le demande explicitement.
+    #: Il reste distinct de l'extrait (`summary`) afin de ne pas changer la
+    #: sémantique des collecteurs qui ne l'utilisent pas.
+    content: str = ""
     event_date: str = ""
     organisation: str = ""
     sector: str = ""

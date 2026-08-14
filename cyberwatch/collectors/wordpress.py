@@ -69,6 +69,7 @@ class WordPressCollector(Collector):
       - `categories`   : slug de catégorie à filtrer ;
       - `tags`         : slug d'étiquette à filtrer ;
       - `search`       : mots-clés de recherche côté serveur.
+      - `include_content` : demander `content.rendered` dans la même réponse.
     """
 
     name = "wordpress"
@@ -91,6 +92,8 @@ class WordPressCollector(Collector):
             "order": "desc",
             "_fields": "id,date,link,title,excerpt,categories",
         }
+        if spec.params.get("include_content"):
+            query["_fields"] = "id,date,link,title,excerpt,content,categories"
 
         for taxonomy, key in (("categories", "categories"), ("tags", "tags")):
             slug = spec.params.get(key)
@@ -197,6 +200,9 @@ def entry_from_post(post: dict, spec: SourceSpec) -> RawEntry | None:
 
     title = strip_html((post.get("title") or {}).get("rendered", ""))
     summary = strip_html((post.get("excerpt") or {}).get("rendered", ""))
+    content = ""
+    if spec.params.get("include_content"):
+        content = strip_html((post.get("content") or {}).get("rendered", ""))
     link = post.get("link") or ""
 
     return RawEntry(
@@ -205,5 +211,6 @@ def entry_from_post(post: dict, spec: SourceSpec) -> RawEntry | None:
         source_item_id=str(post.get("id") or ""),
         published=published,
         summary=summary,
+        content=content,
         threat=spec.default_threat,
     )
