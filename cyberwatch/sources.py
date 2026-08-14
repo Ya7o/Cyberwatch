@@ -108,7 +108,7 @@ CORE_SOURCES = [
         start_url="https://www.cyberattaque.org/type/attaque/",
         collector="cyberattaque_org",
         active=True,
-        location_rule=config.LOC_FRANCE,
+        location_rule=config.LOC_INCONNU,
         params={"categories": "attaque", "scope_is_cyber": True, "include_content": True},
         protocol=(
             "Parcourir séquentiellement la pagination sans sauter de page, "

@@ -350,7 +350,7 @@ class TestTerritoireDeLEntite:
         assert item.Location == config.LOC_REUNION
         assert item.Sector == config.SECTOR_TRANSPORT
 
-    def test_organisation_inconnue_garde_la_regle_de_la_source(self):
+    def test_organisation_inconnue_ne_recoit_pas_un_defaut_france(self):
         from cyberwatch import sources, watchlists
 
         spec = sources.by_id("CYBERATTAQUE_ORG")
@@ -362,7 +362,7 @@ class TestTerritoireDeLEntite:
         item = entry_to_item(
             entry, spec, AS_OF, {}, {}, watchlists.entity_territories()
         )
-        assert item.Location == config.LOC_FRANCE
+        assert item.Location == config.LOC_INCONNU
 
     def test_localisation_de_la_source_prime_sur_l_entite(self):
         """Une localisation explicitement fournie reste au rang 1."""

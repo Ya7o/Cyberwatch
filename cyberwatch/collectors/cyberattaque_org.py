@@ -98,6 +98,9 @@ def is_negated_incident(*texts: str) -> bool:
     content = searchable(texts[2] if len(texts) > 2 else "")
     return any(marker in content for marker in (
         "fausse alerte", "revendication dementie", "incident dementi",
+        "aucune preuve technique ne permet de confirmer",
+        "aucune preuve ne permet de confirmer",
+        "il ne s agit pas d une fuite confirmee",
     ))
 
 

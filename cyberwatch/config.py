@@ -287,12 +287,12 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "douane", "revenue authority", "microfinance",
     ]),
     (SECTOR_TRANSPORT, [
-        "compagnie aerienne", "airlines", "airways", "air ", "aeroport",
+        "compagnie aerienne", "airlines", "airways", "aeroport", "air austral",
         "airport", "port maritime", "grand port", "portuaire", "transport",
         "logistique", "logistics", "fret", "maritime", "shipping",
     ]),
     (SECTOR_SPORT, [
-        "federation", "club sportif", "sport", "fitness", "stade",
+        "federation francaise de", "club sportif", "federation sportive", "sport", "fitness", "stade",
         "olympique", "football",
     ]),
     (SECTOR_RETAIL, [
