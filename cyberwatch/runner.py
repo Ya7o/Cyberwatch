@@ -22,6 +22,7 @@ from . import config, enrichment, identity, sources, status, store, watchlists
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
     is_negated_incident,
+    is_obvious_multi,
     organisation_from_cyberattaque_entry,
 )
 from .collectors.base import RawEntry, SourceSpec, Window
@@ -116,6 +117,27 @@ def repair_item_integrity(items: list[Item]) -> tuple[list[Item], dict[str, int]
             item.Item_ID = expected
         repaired.append(item)
     return identity.sort_items(repaired), {"ids_repaired": changed, "duplicates_removed": dropped}
+
+
+def _existing_organisations(items: list[Item]) -> dict[str, str]:
+    """Index stable des organisations confirmées par au moins deux sources."""
+    by_key: dict[str, list[str]] = defaultdict(list)
+    sources_by_key: dict[str, set[str]] = defaultdict(set)
+    for item in items:
+        if item.Organisation_Key and item.Organisation_Raw:
+            by_key[item.Organisation_Key].append(item.Organisation_Raw)
+            sources_by_key[item.Organisation_Key].add(item.Source_ID)
+    index: dict[str, str] = {}
+    for key, labels in by_key.items():
+        # Une ancienne erreur de titre Cyberattaque.org ne doit jamais devenir
+        # sa propre preuve. Une seconde source indépendante est requise.
+        if len(sources_by_key[key]) < 2:
+            continue
+        counts: dict[str, int] = defaultdict(int)
+        for label in labels:
+            counts[label] += 1
+        index[key] = sorted(counts, key=lambda label: (-counts[label], label))[0]
+    return index
 
 
 @dataclass
@@ -223,6 +245,7 @@ def entry_to_item(
     entity_index: dict,
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
+    existing_orgs: dict[str, str] | None = None,
 ) -> Item | None:
     """Convertit une entrée brute en item normalisé, ou `None` si hors périmètre.
 
@@ -254,8 +277,10 @@ def entry_to_item(
     if spec.source_id == "CYBERATTAQUE_ORG":
         if is_negated_incident(entry.title, entry.summary, entry.content):
             return None
+        if is_obvious_multi(entry.title):
+            return None
         organisation = clean_organisation(entry.organisation) or organisation_from_cyberattaque_entry(
-            entry, known_orgs
+            entry, known_orgs, existing_orgs
         )
     else:
         organisation = clean_organisation(entry.organisation) or organisation_from_title(
@@ -349,6 +374,7 @@ def run_source(
     entity_index: dict,
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
+    existing_orgs: dict[str, str] | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     """Exécute une source et rend son compte rendu, ses items et sa veille."""
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -381,6 +407,7 @@ def run_source(
     items: list[Item] = []
     kwez_articles_cyber = 0
     cyberattaque_rejected_negated = 0
+    cyberattaque_rejected_multi = 0
     cyberattaque_rejected_no_victim = 0
     for entry in result.entries:
         if spec.source_id == "KWEZI_NUMERIQUE" and looks_cyber(
@@ -392,8 +419,12 @@ def run_source(
         ):
             cyberattaque_rejected_negated += 1
             continue
+        if spec.source_id == "CYBERATTAQUE_ORG" and is_obvious_multi(entry.title):
+            cyberattaque_rejected_multi += 1
+            continue
         item = entry_to_item(
-            entry, spec, context.as_of, known_orgs, entity_index, territories, reference
+            entry, spec, context.as_of, known_orgs, entity_index, territories, reference,
+            existing_orgs,
         )
         if item is not None:
             items.append(item)
@@ -426,7 +457,8 @@ def run_source(
         extra = (
             f"victims_identified={len(items)}; "
             f"articles_rejected_no_victim={cyberattaque_rejected_no_victim}; "
-            f"articles_rejected_negated={cyberattaque_rejected_negated}"
+            f"articles_rejected_negated={cyberattaque_rejected_negated}; "
+            f"articles_rejected_multi={cyberattaque_rejected_multi}"
         )
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)
@@ -630,7 +662,8 @@ def execute(
     # `Item_ID` et laisserait sinon cohabiter chaque item avec sa version
     # périmée. `MAJ` conserve au contraire le stock et n'y ajoute que le
     # nouveau (§25).
-    existing_items = [] if context.mode == MODE_CREATE else store.load_items()
+    snapshot_items = store.load_items()
+    existing_items = [] if context.mode == MODE_CREATE else snapshot_items
     existing_item_ids = {item.Item_ID for item in existing_items}
 
     if offline:
@@ -644,6 +677,7 @@ def execute(
         entity_index = watchlists.entity_index()
         territories = watchlists.entity_territories()
         reference = enrichment.load_reference()
+        existing_orgs = _existing_organisations(snapshot_items)
 
         collected: list[Item] = []
         watch_rows: list[dict] = []
@@ -652,7 +686,8 @@ def execute(
         # désactivés ; le pipeline doit appeler exactement BonjourLaFuite.
         for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
-                client, spec, context, known_orgs, entity_index, territories, reference
+                client, spec, context, known_orgs, entity_index, territories, reference,
+                existing_orgs,
             )
             report.outcomes.append(outcome)
             collected.extend(items)

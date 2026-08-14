@@ -21,6 +21,11 @@ _NEGATED_INCIDENTS = (
     "aucune compromission", "aucune intrusion", "revendication dementie",
     "incident dementi",
 )
+_OBVIOUS_MULTI = (
+    re.compile(r"^\s*\d+\s+SDIS\b", re.I),
+    re.compile(r"^\s*Fuite\s+de\s+donn[eé]es\s+scolaires\b", re.I),
+    re.compile(r"^\s*Polices\s+municipales\s*:", re.I),
+)
 
 # La capture s'arrête à une ponctuation éditoriale : elle ne transforme jamais
 # une phrase entière en organisation.
@@ -90,6 +95,11 @@ def is_negated_incident(*texts: str) -> bool:
     ))
 
 
+def is_obvious_multi(title: str) -> bool:
+    """Campagnes agrégées qui ne peuvent pas devenir un ITEM unique."""
+    return any(pattern.search(title or "") for pattern in _OBVIOUS_MULTI)
+
+
 def _clean_candidate(value: str) -> str:
     candidate = clean_organisation(value)
     candidate = re.sub(r"^(?:la|le)\s+(?=(?:mairie|ville|federation)\b)", "", candidate, flags=re.I)
@@ -146,10 +156,34 @@ def _safe_prefix(title: str) -> str:
     return _clean_candidate(head)
 
 
-def organisation_from_cyberattaque_entry(entry: RawEntry, known_orgs: dict[str, str]) -> str:
+def resolve_existing_organisation(entry: RawEntry, existing_orgs: dict[str, str]) -> str:
+    """Retourne une unique organisation déjà présente dans la base.
+
+    Il ne s'agit pas d'un rapprochement flou : chaque clé est cherchée telle
+    quelle, comme des mots entiers, dans l'article. Les noms très courts et les
+    articles où deux organisations existantes sont citées restent volontairement
+    non résolus.
+    """
+    blob = searchable(" ".join((entry.title, entry.summary, entry.content)))
+    candidates: list[tuple[str, str]] = []
+    for key, organisation in sorted(existing_orgs.items()):
+        if len(key) < 8 or len(key.split()) < 2:
+            continue
+        if re.search(rf"(?<!\w){re.escape(key)}(?!\w)", blob):
+            candidates.append((key, organisation))
+    return candidates[0][1] if len(candidates) == 1 else ""
+
+
+def organisation_from_cyberattaque_entry(
+    entry: RawEntry,
+    known_orgs: dict[str, str],
+    existing_orgs: dict[str, str] | None = None,
+) -> str:
     """Organisation principalement concernée par l'article Cyberattaque.org."""
     texts = (entry.title or "", entry.summary or "", entry.content or "")
     if is_negated_incident(*texts):
+        return ""
+    if is_obvious_multi(entry.title):
         return ""
     # Une confirmation nommée après une accroche est une preuve plus forte que
     # l'accroche elle-même (ex. « ... : l'Armurerie X confirme ... »).
@@ -184,7 +218,7 @@ def organisation_from_cyberattaque_entry(entry: RawEntry, known_orgs: dict[str, 
             key = searchable(organisation)
             if key in known_orgs or key.startswith(("mairie de ", "ville de ", "federation ")):
                 return organisation
-    return ""
+    return resolve_existing_organisation(entry, existing_orgs or {})
 
 
 def organisation_from_title(title: str) -> str:

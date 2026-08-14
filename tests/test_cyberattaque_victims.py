@@ -5,6 +5,7 @@ from cyberwatch.collectors.base import RawEntry, SourceSpec
 from cyberwatch.collectors.cyberattaque_org import (
     is_negated_incident,
     organisation_from_cyberattaque_entry,
+    resolve_existing_organisation,
 )
 from cyberwatch.runner import entry_to_item
 
@@ -121,3 +122,52 @@ def test_organisations_numeriques_et_id_wordpress_sont_preserves():
 def test_cyberattaque_demande_le_contenu_dans_la_requete_wordpress_existante():
     spec = sources.by_id("CYBERATTAQUE_ORG")
     assert spec.params["include_content"] is True
+
+
+def test_resolver_reutilise_une_unique_organisation_existante_exacte():
+    raw = entry(
+        "Incident sans préfixe exploitable",
+        content="L'infrastructure Hugging Face a été compromise.",
+    )
+    assert resolve_existing_organisation(
+        raw, {"hugging face": "Hugging Face", "steam": "Steam"}
+    ) == "Hugging Face"
+
+
+def test_resolver_refuse_un_nom_nouveau_ou_plusieurs_candidats():
+    assert resolve_existing_organisation(
+        entry("Incident chez une organisation absente"),
+        {"hugging face": "Hugging Face"},
+    ) == ""
+
+
+def test_resolver_est_utilise_uniquement_apres_les_regles_directes():
+    raw = entry("Titre narratif", content="Hugging Face confirme une intrusion.")
+    resolved = entry_to_item(
+        raw, SPEC, AS_OF, {}, {}, existing_orgs={"hugging face": "Hugging Face"}
+    )
+    assert resolved is not None
+    assert resolved.Organisation_Raw == "Hugging Face"
+
+
+def test_index_resolver_requiert_deux_sources_et_est_independant_de_l_ordre(make_item):
+    from cyberwatch.runner import _existing_organisations
+
+    first = make_item(source="BONJOURLAFUITE", org="Hugging Face")
+    second = make_item(source="FRENCHBREACHES", org="Hugging Face")
+    lone = make_item(source="CYBERATTAQUE_ORG", org="Nom historique erroné")
+    assert _existing_organisations([first, second, lone]) == _existing_organisations([lone, second, first])
+    index = _existing_organisations([first, second, lone])
+    assert index.get("hugging face") == "Hugging Face"
+    assert "nom historique errone" not in index
+    assert resolve_existing_organisation(
+        entry("Hugging Face et Steam sont cités dans cet article."),
+        {"hugging face": "Hugging Face", "steam company": "Steam Company"},
+    ) == "Hugging Face"
+    assert resolve_existing_organisation(
+        entry("Hugging Face et Centres Sociaux de France sont cités."),
+        {
+            "hugging face": "Hugging Face",
+            "centres sociaux de france": "Centres Sociaux de France",
+        },
+    ) == ""
