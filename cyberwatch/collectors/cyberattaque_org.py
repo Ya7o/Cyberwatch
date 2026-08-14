@@ -7,6 +7,8 @@ organisation n'est rendue que lorsqu'elle est explicitement reliée à l'inciden
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
+from datetime import date
 
 from .. import status
 from ..identity import item_id
@@ -25,6 +27,8 @@ _OBVIOUS_MULTI = (
     re.compile(r"^\s*\d+\s+SDIS\b", re.I),
     re.compile(r"^\s*Fuite\s+de\s+donn[eé]es\s+scolaires\b", re.I),
     re.compile(r"^\s*Polices\s+municipales\s*:", re.I),
+    re.compile(r"^\s*G7\s+d[’'][EÉ]vian\b", re.I),
+    re.compile(r"^\s*Son-Video\.com\s*&\s*EasyLounge\b", re.I),
 )
 
 # La capture s'arrête à une ponctuation éditoriale : elle ne transforme jamais
@@ -95,9 +99,24 @@ def is_negated_incident(*texts: str) -> bool:
     ))
 
 
-def is_obvious_multi(title: str) -> bool:
+def is_obvious_multi(title: str, summary: str = "", content: str = "") -> bool:
     """Campagnes agrégées qui ne peuvent pas devenir un ITEM unique."""
-    return any(pattern.search(title or "") for pattern in _OBVIOUS_MULTI)
+    if any(pattern.search(title or "") for pattern in _OBVIOUS_MULTI):
+        return True
+    blob = searchable(" ".join((title, summary, content)))
+    if "ville de rennes" in blob and "rennes metropole" in blob:
+        return True
+    return bool(re.search(r"\b(?:plusieurs|different(?:es|s))\s+ars\b", blob))
+
+
+@dataclass(frozen=True)
+class ExistingOrganisation:
+    """Organisation déjà confirmée, avec sa provenance temporelle."""
+
+    organisation: str
+    organisation_key: str
+    dates: tuple[str, ...]
+    sources: tuple[str, ...]
 
 
 def _clean_candidate(value: str) -> str:
@@ -156,34 +175,44 @@ def _safe_prefix(title: str) -> str:
     return _clean_candidate(head)
 
 
-def resolve_existing_organisation(entry: RawEntry, existing_orgs: dict[str, str]) -> str:
+def resolve_existing_organisation(
+    entry: RawEntry, existing_orgs: dict[str, ExistingOrganisation]
+) -> str:
     """Retourne une unique organisation déjà présente dans la base.
 
     Il ne s'agit pas d'un rapprochement flou : chaque clé est cherchée telle
-    quelle, comme des mots entiers, dans l'article. Les noms très courts et les
-    articles où deux organisations existantes sont citées restent volontairement
-    non résolus.
+    quelle, comme des mots entiers, dans l'article. L'article doit aussi être à
+    ±14 jours d'un item ayant confirmé l'organisation.
     """
     blob = searchable(" ".join((entry.title, entry.summary, entry.content)))
-    candidates: list[tuple[str, str]] = []
+    try:
+        published = date.fromisoformat((entry.published or "")[:10])
+    except ValueError:
+        return ""
+    candidates: list[ExistingOrganisation] = []
     for key, organisation in sorted(existing_orgs.items()):
-        if len(key) < 8 or len(key.split()) < 2:
-            continue
         if re.search(rf"(?<!\w){re.escape(key)}(?!\w)", blob):
-            candidates.append((key, organisation))
-    return candidates[0][1] if len(candidates) == 1 else ""
+            dates: list[date] = []
+            for value in organisation.dates:
+                try:
+                    dates.append(date.fromisoformat(value[:10]))
+                except ValueError:
+                    continue
+            if any(abs((published - candidate_date).days) <= 14 for candidate_date in dates):
+                candidates.append(organisation)
+    return candidates[0].organisation if len(candidates) == 1 else ""
 
 
 def organisation_from_cyberattaque_entry(
     entry: RawEntry,
     known_orgs: dict[str, str],
-    existing_orgs: dict[str, str] | None = None,
+    existing_orgs: dict[str, ExistingOrganisation] | None = None,
 ) -> str:
     """Organisation principalement concernée par l'article Cyberattaque.org."""
     texts = (entry.title or "", entry.summary or "", entry.content or "")
     if is_negated_incident(*texts):
         return ""
-    if is_obvious_multi(entry.title):
+    if is_obvious_multi(*texts):
         return ""
     # Une confirmation nommée après une accroche est une preuve plus forte que
     # l'accroche elle-même (ex. « ... : l'Armurerie X confirme ... »).
