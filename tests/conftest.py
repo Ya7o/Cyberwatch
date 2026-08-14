@@ -13,6 +13,7 @@ def make_item():
 
     def _make(
         source="FRENCHBREACHES",
+        source_item_id="",
         published="2026-03-01",
         org="CHU de La Réunion",
         url="https://example.org/a",
@@ -27,6 +28,7 @@ def make_item():
         return Item(
             Item_ID=item_id(source, published, key, url),
             Source_ID=source,
+            Source_Item_ID=source_item_id,
             Published_Date=published,
             Event_Date=event,
             Organisation_Raw=org,

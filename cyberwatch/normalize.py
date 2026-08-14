@@ -6,9 +6,11 @@ rend le `REPLAY` (§26) et le test de répétabilité (§27) possibles.
 
 from __future__ import annotations
 
+import csv
 import datetime as dt
 import re
 import unicodedata
+from pathlib import Path
 
 from . import config
 
@@ -23,7 +25,7 @@ INCIDENT_SUFFIXES = {"pirate", "piratee", "pirates", "piratees", "revendique", "
 # Variantes observées sur plusieurs sources pour le même incident et validées
 # manuellement. Cette table reste volontairement courte : elle ne doit pas
 # devenir un rapprochement flou de noms proches.
-ORGANISATION_ALIASES = {
+_LEGACY_ALIASES = {
     "move up formation": "moveup formation",
     "kams paris": "kamsparis",
     "easy lounge": "easylounge",
@@ -37,7 +39,7 @@ ORGANISATION_ALIASES = {
     "ministere de l education nationale": "education nationale",
 }
 
-_DOMAIN_SUFFIX_RE = re.compile(r"\.(?:fr|com|net|org|eu|io)$", flags=re.IGNORECASE)
+_DOMAIN_SUFFIX_RE = re.compile(r"\.(?:fr|com|net|org|eu|io|app)$", flags=re.IGNORECASE)
 
 _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _SPACES_RE = re.compile(r"\s+")
@@ -47,6 +49,41 @@ def strip_accents(text: str) -> str:
     """Décomposition NFKD puis retrait des marques diacritiques."""
     decomposed = unicodedata.normalize("NFKD", text)
     return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+
+
+def _base_organisation_key(raw: str) -> str:
+    text = _DOMAIN_SUFFIX_RE.sub("", strip_accents(str(raw or "")).strip()).lower()
+    text = _SPACES_RE.sub(" ", _PUNCT_RE.sub(" ", text)).strip()
+    tokens = [token for token in text.split() if token and token not in LEGAL_FORMS]
+    while tokens and tokens[-1] in INCIDENT_SUFFIXES:
+        tokens.pop()
+    return re.sub(r"(?<=[a-z])\s+(?=\d)", "", " ".join(tokens))
+
+
+def load_organisation_aliases(path: Path | None = None) -> dict[str, str]:
+    """Charge le référentiel versionné ; tout conflit est une erreur explicite."""
+    alias_path = path or Path(__file__).resolve().parents[1] / "data" / "organisation_aliases.csv"
+    aliases: dict[str, str] = {}
+    with alias_path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            alias = _base_organisation_key(row.get("alias", ""))
+            canonical = _base_organisation_key(row.get("canonical", ""))
+            if not alias or not canonical:
+                raise ValueError(f"Alias organisation incomplet : {row}")
+            if alias in aliases and aliases[alias] != canonical:
+                raise ValueError(f"Alias organisation conflictuel : {alias}")
+            aliases[alias] = canonical
+    return aliases
+
+
+ORGANISATION_ALIASES = load_organisation_aliases()
+_ACRONYM_STOPWORDS = {"de", "du", "des", "la", "le", "les", "d", "l", "a", "au", "aux", "pour", "en", "et", "a"}
+
+
+def organisation_acronym(name: str) -> str:
+    """Acronyme exact d'un libellé, sans aucune recherche approximative."""
+    words = _base_organisation_key(name).split()
+    return "".join(word[0].upper() for word in words if word and word not in _ACRONYM_STOPWORDS)
 
 
 def organisation_key(raw: str) -> str:
@@ -63,17 +100,7 @@ def organisation_key(raw: str) -> str:
         return ""
     # Les sources alternent entre une marque et son domaine public
     # ("Booking" / "Booking.com"). Seul un suffixe final est retiré.
-    text = _DOMAIN_SUFFIX_RE.sub("", strip_accents(str(raw)).strip())
-    text = text.lower()
-    text = _PUNCT_RE.sub(" ", text)
-    text = _SPACES_RE.sub(" ", text).strip()
-    if not text:
-        return ""
-    tokens = [t for t in text.split(" ") if t and t not in LEGAL_FORMS]
-    while tokens and tokens[-1] in INCIDENT_SUFFIXES:
-        tokens.pop()
-    text = " ".join(tokens)
-    text = re.sub(r"(?<=[a-z])\s+(?=\d)", "", text)
+    text = _base_organisation_key(raw)
     return ORGANISATION_ALIASES.get(text, text)
 
 

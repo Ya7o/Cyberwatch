@@ -70,7 +70,7 @@ def repair_existing_identities(items: list[Item]) -> tuple[list[Item], int]:
             continue
         item.Organisation_Raw = organisation
         item.Organisation_Key = key
-        item.Item_ID = item_id(item.Source_ID, item.Published_Date, key, item.URL)
+        item.Item_ID = item_id(item.Source_ID, item.Published_Date, key, item.URL, item.Source_Item_ID)
         repaired.append(item)
         changed += 1
     return repaired, changed

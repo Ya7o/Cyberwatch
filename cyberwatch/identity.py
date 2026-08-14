@@ -20,20 +20,26 @@ def _sha256(payload: str) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
-def item_id(source_id: str, published_date: str, organisation_key: str, url: str) -> str:
+def item_id(source_id: str, published_date: str, organisation_key: str, url: str, source_item_id: str = "") -> str:
     """`ITM-` + 16 premiers caractères hexadécimaux du SHA256 (§7)."""
-    payload = SEP.join([
+    parts = [
         source_id or "",
         published_date or "",
         organisation_key or "",
         url or "",
-    ])
+    ]
+    if source_item_id:
+        parts.append(source_item_id)
+    payload = SEP.join(parts)
     return "ITM-" + _sha256(payload)[:16]
 
 
-def incident_id(organisation_key: str, component_start_date: str) -> str:
+def incident_id(organisation_key: str, component_start_date: str, anchor_item_id: str = "") -> str:
     """`INC-` + 12 premiers caractères hexadécimaux en majuscules du SHA256 (§7)."""
-    payload = SEP.join([organisation_key or "", component_start_date or ""])
+    parts = [organisation_key or "", component_start_date or ""]
+    if anchor_item_id:
+        parts.append(anchor_item_id)
+    payload = SEP.join(parts)
     return "INC-" + _sha256(payload)[:12].upper()
 
 

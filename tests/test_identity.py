@@ -35,6 +35,9 @@ class TestIdentifiers:
         assert len(value) == 16  # « INC- » + 12 caractères
         assert value[4:] == value[4:].upper()
 
+    def test_incidents_same_date_can_have_distinct_deterministic_ids(self):
+        assert incident_id("org", "2026-01-01", "ITM-A") != incident_id("org", "2026-01-01", "ITM-B")
+
     def test_separateur_non_ambigu(self):
         """Un découpage différent ne doit pas produire le même identifiant."""
         assert item_id("A", "B", "C", "D") != item_id("A|B", "C", "D", "")

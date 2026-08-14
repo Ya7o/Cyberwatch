@@ -17,6 +17,7 @@ from dataclasses import asdict, dataclass, field
 ITEM_COLUMNS = [
     "Item_ID",
     "Source_ID",
+    "Source_Item_ID",
     "Published_Date",
     "Event_Date",
     "Organisation_Raw",
@@ -37,6 +38,7 @@ class Item:
 
     Item_ID: str = ""
     Source_ID: str = ""
+    Source_Item_ID: str = ""
     Published_Date: str = ""
     Event_Date: str = ""
     Organisation_Raw: str = ""

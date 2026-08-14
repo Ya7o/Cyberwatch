@@ -1,25 +1,25 @@
 """Déduplication (§11), date du dashboard (§12) et fusion de MAJ (§25)."""
 
 from cyberwatch import config
-from cyberwatch.dedup import build_incidents, group_components, merge_items
+from cyberwatch.dedup import KEEP_SEPARATE, MERGE, build_incidents, decide_merge, group_components, merge_items
 
 
 class TestComponents:
-    """§11 — composantes à écart de 14 jours au plus."""
+    """Composantes déterministes, ancrées et conservatrices."""
 
     def test_items_rapproches_forment_un_incident(self, make_item):
         items = [
             make_item(published="2026-03-01", url="https://a/1"),
-            make_item(published="2026-03-10", url="https://a/2", source="LINFO_CYBER"),
+            make_item(published="2026-03-03", url="https://a/2", source="LINFO_CYBER"),
         ]
         assert len(build_incidents(items)) == 1
 
-    def test_borne_exacte_14_jours_inclus(self, make_item):
+    def test_ecart_14_jours_sans_signal_fort_reste_separe(self, make_item):
         items = [
             make_item(published="2026-01-01", url="https://a/1"),
             make_item(published="2026-01-15", url="https://a/2"),
         ]
-        assert len(build_incidents(items)) == 1
+        assert len(build_incidents(items)) == 2
 
     def test_ecart_15_jours_ouvre_un_nouvel_incident(self, make_item):
         items = [
@@ -28,14 +28,13 @@ class TestComponents:
         ]
         assert len(build_incidents(items)) == 2
 
-    def test_chaine_de_proche_en_proche(self, make_item):
-        """Trois items espacés de 10 jours forment une seule chaîne."""
+    def test_chaine_j0_j14_j28_ne_depasse_pas_la_fenetre_ancree(self, make_item):
         items = [
             make_item(published="2026-01-01", url="https://a/1"),
-            make_item(published="2026-01-11", url="https://a/2"),
-            make_item(published="2026-01-21", url="https://a/3"),
+            make_item(published="2026-01-15", url="https://a/2"),
+            make_item(published="2026-01-29", url="https://a/3"),
         ]
-        assert len(build_incidents(items)) == 1
+        assert len(build_incidents(items)) == 3
 
     def test_organisations_differentes_jamais_fusionnees(self, make_item):
         """« Un faux doublon est préférable à une fusion non reproductible » (§11)."""
@@ -49,6 +48,23 @@ class TestComponents:
         """Pas d'organisation nommée, pas d'incident."""
         items = [make_item(org="", url="https://a/1")]
         assert build_incidents(items) == []
+
+    def test_recurrence_explicit_keeps_same_organisation_separate(self, make_item):
+        left = make_item(published="2026-01-01", title="Son-Video victime d'une attaque", url="https://a")
+        right = make_item(published="2026-01-02", title="Son-Video frappé une nouvelle fois", url="https://b")
+        assert decide_merge(left, right).action == KEEP_SEPARATE
+        assert len(build_incidents([left, right])) == 2
+
+    def test_event_date_merges_despite_threat_difference(self, make_item):
+        left = make_item(source="A", event="2026-01-01", published="2026-01-02", threat="Intrusion", url="https://a")
+        right = make_item(source="B", event="2026-01-01", published="2026-01-20", threat="Fuite de données", url="https://b")
+        assert decide_merge(left, right).action == MERGE
+        assert len(build_incidents([left, right])) == 1
+
+    def test_conflicting_native_source_ids_are_kept_separate(self, make_item):
+        left = make_item(source="A", source_item_id="one", url="https://a")
+        right = make_item(source="A", source_item_id="two", url="https://b", published="2026-01-02")
+        assert decide_merge(left, right).reason_code == "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID"
 
 
 class TestIncidentFields:
@@ -86,7 +102,7 @@ class TestIncidentFields:
         items = [
             make_item(url="https://a/1", collected="2026-01-01T00:00:00+04:00"),
             make_item(url="https://a/2", collected="2026-02-01T00:00:00+04:00",
-                      published="2026-03-05"),
+                      published="2026-03-03"),
         ]
         incident = build_incidents(items)[0]
         assert incident.First_seen == "2026-01-01T00:00:00+04:00"
