@@ -14,6 +14,7 @@ from .normalize import _base_organisation_key, date_or_empty, searchable
 MERGE = "MERGE"
 KEEP_SEPARATE = "KEEP_SEPARATE"
 NO_DECISION = "NO_DECISION"
+PREFERRED_QUALIFICATION_SOURCE = "VEILLE_LLM"
 
 # Une URL n'est un identifiant fort que pour une source dont le contrat indique
 # qu'elle pointe vers une page/item unique. La règle est volontairement fermée :
@@ -145,6 +146,24 @@ def _majority(values: list[str], fallback: str) -> str:
     return min(value for value, count in counts.items() if count == top)
 
 
+def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str) -> str:
+    """Préfère VEILLE_LLM pour les champs qu'elle qualifie plus précisément.
+
+    La priorité ne s'applique que si VEILLE_LLM fournit une valeur connue.
+    Sinon, la majorité historique de toutes les sources reste inchangée.
+    """
+    preferred = [
+        getattr(item, field_name)
+        for item in ordered
+        if item.Source_ID == PREFERRED_QUALIFICATION_SOURCE
+        and getattr(item, field_name)
+        and getattr(item, field_name) != fallback
+    ]
+    if preferred:
+        return _majority(preferred, fallback)
+    return _majority([getattr(item, field_name) for item in ordered], fallback)
+
+
 def _priority_threat(values: list[str]) -> str:
     known = [value for value in values if value and value in config.THREATS]
     return min(known, key=config.THREATS.index) if known else config.THREAT_UNKNOWN
@@ -165,6 +184,7 @@ def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
             evidence.append(item)
     return evidence or ordered
 
+
 def build_incidents(items: list[Item]) -> list[Incident]:
     incidents: list[Incident] = []
     for component in group_components(items):
@@ -179,9 +199,9 @@ def build_incidents(items: list[Item]) -> list[Incident]:
                 [item.Organisation_Raw for item in ordered],
                 ordered[0].Organisation_Raw or "",
             ),
-            Secteur=_majority([item.Sector for item in ordered], config.SECTOR_UNKNOWN),
+            Secteur=_preferred_qualification(ordered, "Sector", config.SECTOR_UNKNOWN),
             Menace=_priority_threat([item.Threat for item in ordered]),
-            Localisation=_majority([item.Location for item in ordered], config.LOC_INCONNU),
+            Localisation=_preferred_qualification(ordered, "Location", config.LOC_INCONNU),
             Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),
             Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),
             Items_Count=len(ordered),
