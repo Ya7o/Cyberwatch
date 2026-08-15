@@ -51,6 +51,7 @@
       FRENCHBREACHES: "FrenchBreaches",
       CYBERATTAQUE_ORG: "Cyberattaque.org",
       RANSOMWARE_LIVE: "Ransomware.live",
+      VEILLE_LLM: "Veille LLM",
       CERT_MU_ALERTS: "CERT-MU",
       KWEZI_NUMERIQUE: "Kwezi",
       MAYOTTE_HEBDO_NUMERIQUE: "Mayotte Hebdo",
@@ -114,6 +115,7 @@
 
   function filteredIncidents() {
     const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";
+    const veilleLlmOnly = $("#f-veille-llm")?.getAttribute("aria-pressed") === "true";
     const press = pressOnly ? mahoranPressSources() : null;
     return state.incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
@@ -122,6 +124,7 @@
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
       if (press && !(incident.sources || []).some((source) => press.has(source))) return false;
+      if (veilleLlmOnly && !(incident.provenance_tags || []).includes("veille_llm")) return false;
       if ((automotive || largeRetail) && !(
         (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
         || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))

@@ -150,10 +150,26 @@ def _priority_threat(values: list[str]) -> str:
     return min(known, key=config.THREATS.index) if known else config.THREAT_UNKNOWN
 
 
+def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
+    """Écarte les apports analytiques du compteur de corroboration.
+
+    Si un incident n'existe que dans une source analytique, celle-ci reste
+    affichée comme source unique afin de ne jamais créer un incident sans source.
+    """
+    from . import sources
+
+    evidence = []
+    for item in ordered:
+        spec = sources.by_id(item.Source_ID)
+        if not (spec and spec.params.get("non_evidence_source")):
+            evidence.append(item)
+    return evidence or ordered
+
 def build_incidents(items: list[Item]) -> list[Incident]:
     incidents: list[Incident] = []
     for component in group_components(items):
         ordered = sort_items(component)
+        evidence = _incident_evidence_items(ordered)
         date, basis = _component_dates(ordered)
         incidents.append(Incident(
             Incident_ID=incident_id(ordered[0].Organisation_Key, ordered[0].Item_ID),
@@ -166,8 +182,8 @@ def build_incidents(items: list[Item]) -> list[Incident]:
             Secteur=_majority([item.Sector for item in ordered], config.SECTOR_UNKNOWN),
             Menace=_priority_threat([item.Threat for item in ordered]),
             Localisation=_majority([item.Location for item in ordered], config.LOC_INCONNU),
-            Sources=" | ".join(sorted({item.Source_ID for item in ordered if item.Source_ID})),
-            Source_URLs=" | ".join(sorted({item.URL for item in ordered if item.URL})),
+            Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),
+            Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),
             Items_Count=len(ordered),
             First_seen=min(
                 (item.Collected_As_Of for item in ordered if item.Collected_As_Of),

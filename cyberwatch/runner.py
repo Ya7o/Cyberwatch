@@ -738,7 +738,16 @@ def execute(
                 f"calls={outcome.calls:4}  {outcome.reason_code}"
             )
 
-        merged, new_count = merge_items(existing_items, collected)
+        replacement_source_ids = {
+            spec.source_id for spec in sources.active_sources(context.layers)
+            if spec.params.get("replace_snapshot")
+        }
+        merge_base = [
+            item for item in existing_items
+            if item.Source_ID not in replacement_source_ids
+        ]
+        merged, _ = merge_items(merge_base, collected)
+        new_count = sum(item.Item_ID not in existing_item_ids for item in collected)
         for outcome in report.outcomes:
             outcome.new_items = sum(
                 item.Source_ID == outcome.source_id and item.Item_ID not in existing_item_ids

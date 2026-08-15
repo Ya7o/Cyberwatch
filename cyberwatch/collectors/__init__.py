@@ -13,6 +13,7 @@ from .bonjourlafuite import BonjourLaFuiteCollector
 from .cyberattaque_org import CyberattaqueOrgCollector
 from .kwezi import KweziCollector
 from .wordpress import WordPressCollector
+from .veillellm import VeilleLlmCollector
 
 REGISTRY: dict[str, type[Collector]] = {
     "autodetect": AutodetectCollector,
@@ -25,6 +26,7 @@ REGISTRY: dict[str, type[Collector]] = {
     "bonjourlafuite": BonjourLaFuiteCollector,
     "cyberattaque_org": CyberattaqueOrgCollector,
     "kwezi": KweziCollector,
+    "veillellm": VeilleLlmCollector,
 }
 
 

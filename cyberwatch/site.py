@@ -14,12 +14,14 @@ sont, elles, le compte rendu brut du collecteur du dernier run.
 
 from __future__ import annotations
 
-from . import config, sources, status, store
-from .model import Incident
+from . import config, identity, sources, status, store
+from .dedup import group_components
+from .model import Incident, Item
 
 
-def incidents_payload(incidents: list[Incident]) -> list[dict]:
+def incidents_payload(incidents: list[Incident], provenance_tags: dict[str, list[str]] | None = None) -> list[dict]:
     """Incidents au format compact attendu par le dashboard."""
+    provenance_tags = provenance_tags or {}
     payload = []
     for incident in incidents:
         payload.append(
@@ -36,10 +38,31 @@ def incidents_payload(incidents: list[Incident]) -> list[dict]:
                 "items": incident.Items_Count,
                 "first_seen": incident.First_seen,
                 "last_seen": incident.Last_seen,
+                "provenance_tags": provenance_tags.get(incident.Incident_ID, []),
             }
         )
     return payload
 
+
+def _provenance_tags_by_incident(items: list[Item]) -> dict[str, list[str]]:
+    """Expose les imports analytiques sans les transformer en corroboration."""
+    payload: dict[str, list[str]] = {}
+    for component in group_components(items):
+        ordered = identity.sort_items(component)
+        if not ordered:
+            continue
+        incident_id = identity.incident_id(
+            ordered[0].Organisation_Key, ordered[0].Item_ID
+        )
+        tags = set()
+        for item in ordered:
+            spec = sources.by_id(item.Source_ID)
+            tag = spec.params.get("dashboard_filter") if spec else ""
+            if tag:
+                tags.add(str(tag))
+        if tags:
+            payload[incident_id] = sorted(tags)
+    return payload
 
 def _source_metadata() -> dict[str, dict]:
     return {
@@ -348,7 +371,8 @@ def _to_int(value) -> int:
 def build() -> tuple[int, int]:
     """Écrit les données du site. Renvoie (nb incidents, nb sources)."""
     incidents = store.load_incidents()
-    payload = incidents_payload(incidents)
+    items = store.load_items()
+    payload = incidents_payload(incidents, _provenance_tags_by_incident(items))
     state = status_payload()
 
     store.write_json(store.SITE_DATA_DIR / "incidents.json", payload)

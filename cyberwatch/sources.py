@@ -360,6 +360,37 @@ ENTITY_WATCH_SOURCES = [
 # --------------------------------------------------------------------------
 
 REGIONAL_WATCH_SOURCES = [
+    SourceSpec(
+        source_id="VEILLE_LLM",
+        layer=config.LAYER_REGIONAL_WATCH,
+        zone="La Réunion / Mayotte",
+        start_url="https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
+        collector="veillellm",
+        active=True,
+        location_rule=config.LOC_INCONNU,
+        params={
+            "path": "sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
+            "min_score": 50,
+            "scope_is_cyber": True,
+            "replace_snapshot": True,
+            "non_evidence_source": True,
+            "dashboard_filter": "veille_llm",
+        },
+        protocol=(
+            "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "
+            "le record_count et les URLs de référence ; importer les dossiers dont le "
+            "score cyberattaque est >= 50, y compris les découvertes historiques tardives."
+        ),
+        success_test=(
+            "JSON valide, record_count cohérent, tous les dossiers structurés ; "
+            "les signaux <50 restent hors INCIDENTS."
+        ),
+        notes=(
+            "Source analytique issue de Veille LLM. Snapshot remplacé à chaque run ; "
+            "elle ne compte pas comme corroboration éditoriale supplémentaire lorsqu'une "
+            "source directe couvre déjà le même incident."
+        ),
+    ),
     _watch(
         "MAYOTTE_MEDIA_WATCH",
         config.LOC_MAYOTTE,
