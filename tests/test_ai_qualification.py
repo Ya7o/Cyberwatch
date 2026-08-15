@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from cyberwatch import ai, config, runner, store
+from cyberwatch import ai, config, org_enrichment, runner, store
 from cyberwatch.collectors.base import RawEntry, SourceSpec
 
 SPEC = SourceSpec(
@@ -31,6 +31,7 @@ def _isolate_ai_csvs(tmp_path, monkeypatch):
     """`ai.finish_run` persiste le cache : jamais vers les vrais fichiers du dépôt."""
     monkeypatch.setattr(store, "AI_QUALIFICATIONS_CSV", tmp_path / "ai_qualifications.csv")
     monkeypatch.setattr(store, "AI_USAGE_CSV", tmp_path / "ai_usage.csv")
+    monkeypatch.setattr(store, "ORG_ENRICHMENT_CACHE_CSV", tmp_path / "org_enrichment_cache.csv")
 
 
 def _field(value: str, confidence: float = 0.9, evidence: str = "preuve") -> dict:
@@ -467,6 +468,10 @@ class TestIdentitySafety:
             ai.requests, "post",
             lambda *a, **k: pytest.fail("REPLAY ne doit jamais appeler OpenAI"),
         )
+        monkeypatch.setattr(
+            org_enrichment.requests, "get",
+            lambda *a, **k: pytest.fail("REPLAY ne doit jamais appeler l'enrichissement"),
+        )
         item = make_item()
         store.save_items([item])
         store.save_incidents(runner.build_incidents([item]))
@@ -495,6 +500,7 @@ def _isolate_store(tmp_path, monkeypatch):
         "ENTITY_WATCH_CSV": tmp_path / "entity_watch.csv",
         "AI_QUALIFICATIONS_CSV": tmp_path / "ai_qualifications.csv",
         "AI_USAGE_CSV": tmp_path / "ai_usage.csv",
+        "ORG_ENRICHMENT_CACHE_CSV": tmp_path / "org_enrichment_cache.csv",
         "SNAPSHOT_JSON": tmp_path / "snapshot.json",
         "BASELINE_JSON": tmp_path / "baseline.json",
         "SITE_DATA_DIR": tmp_path / "site-data",
@@ -645,3 +651,390 @@ class TestReportIntegration:
         assert "### Qualification IA" in output
         assert "Candidats : **3**" in output
         assert "Statut : **OK**" in output
+
+
+# --------------------------------------------------------------------------
+# Pipeline Secteur (§12 METHODOLOGY.md) : preuve stricte côté LLM
+# --------------------------------------------------------------------------
+
+
+class TestSectorEvidenceGrounding:
+    def test_evidence_ancree_et_descriptive_est_appliquee(self, make_item, monkeypatch):
+        item = make_item(sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="Scalingo victime d'une fuite de données",
+            summary="Scalingo est un hébergeur cloud qui propose des services de déploiement d'applications.",
+            content="Aucune rançon n'a été payée.",
+            published="2026-06-01",
+            organisation="Scalingo",
+        )
+        monkeypatch.setattr(
+            ai, "_call_openai",
+            lambda *a, **k: _payload(sector=_field(
+                "Numérique / Technologie",
+                evidence="hébergeur cloud qui propose des services de déploiement d'applications",
+            )),
+        )
+        state = enabled_state()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == "Numérique / Technologie"
+        assert state.calls_succeeded == 1
+        assert state.sector_evidence_rejected == 0
+
+    def test_rejet_sector_seul_ne_casse_pas_threat_dans_le_meme_appel(self, make_item, monkeypatch):
+        """Non-régression critique : un appel combiné Threat+Sector où seul
+        Sector est rejeté doit conserver la décision Threat valide."""
+        item = make_item(threat=config.THREAT_UNKNOWN, sector=config.SECTOR_UNKNOWN)
+        monkeypatch.setattr(
+            ai, "_call_openai",
+            lambda *a, **k: _payload(
+                threat=_field("Ransomware", evidence="rançongiciel"),
+                sector=_field("Santé", evidence="preuve hors contexte"),
+            ),
+        )
+        state = enabled_state()
+
+        ai.qualify_item(item, ENTRY, SPEC, state)
+
+        assert item.Threat == "Ransomware"
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.calls_succeeded == 1
+        assert state.calls_failed == 0
+        assert state.sector_evidence_rejected == 1
+
+    def test_evidence_reduite_au_nom_de_lorganisation_est_rejetee(self, make_item, monkeypatch):
+        """Cas Bloctel : le nom de l'organisation seul n'est jamais une preuve."""
+        item = make_item(org="Bloctel", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="Bloctel victime d'une fuite de données",
+            summary="Les numéros de téléphone des inscrits ont été compromis.",
+            content="Bloctel n'a pas communiqué sur l'origine de l'attaque.",
+            published="2026-06-01",
+            organisation="Bloctel",
+        )
+        monkeypatch.setattr(
+            ai, "_call_openai",
+            lambda *a, **k: _payload(sector=_field("Numérique / Technologie", evidence="Bloctel")),
+        )
+        state = enabled_state()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.sector_evidence_rejected == 1
+
+    def test_evidence_de_vocabulaire_incident_meme_ancree_est_rejetee(self, make_item, monkeypatch):
+        """Cas Savills : le seul récit de l'attaque, même cité mot pour mot
+        dans le contexte, ne prouve jamais l'activité de la victime."""
+        item = make_item(org="Savills France", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="Savills France victime d'un rançongiciel",
+            summary="Le groupe LockBit revendique l'attaque contre Savills France.",
+            content="Aucune rançon n'a été payée.",
+            published="2026-06-01",
+            organisation="Savills France",
+        )
+        monkeypatch.setattr(
+            ai, "_call_openai",
+            lambda *a, **k: _payload(
+                sector=_field("Numérique / Technologie", evidence="Le groupe LockBit revendique l'attaque"),
+            ),
+        )
+        state = enabled_state()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.sector_evidence_rejected == 1
+
+
+# --------------------------------------------------------------------------
+# Pipeline Secteur (§12 METHODOLOGY.md) : escalade enrichissement gratuit
+# --------------------------------------------------------------------------
+
+
+def enabled_state_with_enrichment(**overrides) -> ai.AiRunState:
+    defaults = dict(enabled=True, api_key="test-key", model=ai.DEFAULT_MODEL,
+                     org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True, max_calls=200))
+    defaults.update(overrides)
+    return ai.AiRunState(**defaults)
+
+
+class TestSectorEnrichmentEscalation:
+    def test_contexte_source_explicite_najamais_appelle_lenrichissement(self, make_item, monkeypatch):
+        """Cas Scalingo/Bureau Vallée : Sector résolu depuis le contexte
+        source, l'escalade enrichissement ne doit même pas être tentée."""
+        item = make_item(sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="Bureau Vallée victime d'une fuite de données",
+            summary="Bureau Vallée est une enseigne de distribution de fournitures de bureau.",
+            content="Aucune rançon n'a été payée.",
+            published="2026-06-01",
+            organisation="Bureau Vallée",
+        )
+        monkeypatch.setattr(
+            ai, "_call_openai",
+            lambda *a, **k: _payload(sector=_field(
+                "Commerce / Distribution",
+                evidence="enseigne de distribution de fournitures de bureau",
+            )),
+        )
+        monkeypatch.setattr(
+            org_enrichment, "resolve",
+            lambda *a, **k: pytest.fail("enrichissement inattendu : Sector déjà résolu"),
+        )
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == "Commerce / Distribution"
+
+    def test_sans_enrichissement_active_ransomware_seul_reste_inconnu(self, make_item, monkeypatch):
+        """Cas Savills sans enrichissement (état par défaut, opt-in) : aucun
+        appel n'est tenté, Sector reste Inconnu."""
+        item = make_item(org="Savills France", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="Savills France victime d'un rançongiciel",
+            summary="Le groupe LockBit revendique l'attaque.",
+            published="2026-06-01",
+            organisation="Savills France",
+        )
+        monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
+        monkeypatch.setattr(
+            org_enrichment, "resolve",
+            lambda *a, **k: pytest.fail("enrichissement désactivé : aucun appel attendu"),
+        )
+        state = enabled_state()  # org_enrichment.enabled reste False par défaut
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == config.SECTOR_UNKNOWN
+
+    def test_activite_immobiliere_enrichie_mappe_construction_btp(self, make_item, monkeypatch):
+        """Cas Savills avec enrichissement réussi : classify_sector() réel
+        (non mocké) doit suffire, sans second appel LLM."""
+        item = make_item(org="Savills France", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Savills France victime d'un rançongiciel",
+                          summary="Le groupe LockBit revendique l'attaque.",
+                          published="2026-06-01", organisation="Savills France")
+        monkeypatch.setattr(
+            ai, "_call_openai",
+            lambda *a, **k: _payload(sector=_field("Numérique / Technologie", evidence="LockBit revendique")),
+        )
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Savills France",
+            Matched_Name="Savills France SAS", Company_ID="123456789",
+            Activity_Code="6831Z", Activity_Label="Agences immobilières",
+            Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        monkeypatch.setattr(
+            ai, "_call_openai_activity_sector",
+            lambda *a, **k: pytest.fail("mapping déterministe suffisant : aucun appel LLM attendu"),
+        )
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == "Construction / BTP"
+        assert state.sector_resolved_enriched_deterministic == 1
+        assert state.sector_resolved_enriched_llm == 0
+
+    def test_plusieurs_candidats_ambigus_najamais_de_choix_arbitraire(self, make_item, monkeypatch):
+        """Cas Gédimat : AMBIGUOUS ne doit jamais résoudre Sector."""
+        item = make_item(org="Gédimat", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Gédimat victime d'une fuite de données",
+                          summary="Des données clients ont été exposées.",
+                          published="2026-06-01", organisation="Gédimat")
+        monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Gédimat",
+            Match_Status=org_enrichment.AMBIGUOUS, Fetched_At="2026-08-15",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == config.SECTOR_UNKNOWN
+
+    def test_activite_non_mappable_declinee_par_le_llm_reste_inconnu(self, make_item, monkeypatch):
+        """Cas Bloctel enrichi : une activité sans mapping déterministe clair
+        et déclinée par le LLM d'activité reste Inconnu, mise en cache pour
+        ne jamais retenter une classification déjà infructueuse."""
+        item = make_item(org="Bloctel", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Bloctel victime d'une fuite de données",
+                          summary="Les numéros de téléphone des inscrits ont été compromis.",
+                          published="2026-06-01", organisation="Bloctel")
+        monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Bloctel",
+            Matched_Name="Opposetel", Company_ID="987654321", Activity_Code="8299Z",
+            Activity_Label="Gestion de bases de données de prospection commerciale",
+            Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        monkeypatch.setattr(
+            ai, "_call_openai_activity_sector",
+            lambda *a, **k: _payload(sector=_field(config.SECTOR_UNKNOWN)),
+        )
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Via"] == "llm_declined"
+
+    def test_libelle_distribution_mappe_directement_sans_appel_llm(self, make_item, monkeypatch):
+        """Cas Intermarché/Magasins U : mapping déterministe direct."""
+        item = make_item(org="Intermarché Testville", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Intermarché Testville victime d'une fuite de données",
+                          summary="Des données clients ont été exposées.",
+                          published="2026-06-01", organisation="Intermarché Testville")
+        monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Intermarché Testville",
+            Matched_Name="Intermarché Testville", Company_ID="111222333", Activity_Code="4711D",
+            Activity_Label="Supermarchés",
+            Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        monkeypatch.setattr(
+            ai, "_call_openai_activity_sector",
+            lambda *a, **k: pytest.fail("mapping déterministe suffisant : aucun appel LLM attendu"),
+        )
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == "Commerce / Distribution"
+        assert state.sector_resolved_enriched_deterministic == 1
+
+    def test_cache_deja_valide_ne_rappelle_ni_http_ni_llm(self, make_item, monkeypatch):
+        item = make_item(org="Scalingo", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Scalingo victime d'une fuite de données",
+                          summary="Le groupe LockBit revendique l'attaque.",
+                          published="2026-06-01", organisation="Scalingo")
+        monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Scalingo",
+            Matched_Name="Scalingo", Company_ID="111111111", Activity_Code="6311Z",
+            Activity_Label="Hébergement de données et services associés",
+            Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-14",
+            Validated_Sector="Numérique / Technologie", Validated_Via="deterministic",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        monkeypatch.setattr(
+            ai, "_call_openai_activity_sector",
+            lambda *a, **k: pytest.fail("secteur déjà validé : aucun appel LLM attendu"),
+        )
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == "Numérique / Technologie"
+        assert state.sector_resolved_enrichment_cache == 1
+        assert state.sector_resolved_enriched_deterministic == 0
+
+    def test_sans_cle_openai_le_mapping_deterministe_fonctionne_quand_meme(self, make_item, monkeypatch):
+        item = make_item(org="Intermarché Testville", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Intermarché Testville victime d'une fuite de données",
+                          summary="Des données clients ont été exposées.",
+                          published="2026-06-01", organisation="Intermarché Testville")
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Intermarché Testville",
+            Activity_Label="Supermarchés", Match_Status=org_enrichment.MATCHED,
+            Fetched_At="2026-08-15",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        state = ai.AiRunState(
+            enabled=False,
+            org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True, max_calls=200),
+        )
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == "Commerce / Distribution"
+
+    def test_sans_cle_openai_et_activite_non_mappable_reste_inconnu_sans_crash(self, make_item, monkeypatch):
+        item = make_item(org="Bloctel", sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(title="Bloctel victime d'une fuite de données",
+                          summary="Les numéros de téléphone des inscrits ont été compromis.",
+                          published="2026-06-01", organisation="Bloctel")
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item.Organisation_Key, Query_Name="Bloctel",
+            Activity_Label="Gestion de bases de données de prospection commerciale",
+            Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
+        )
+        monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
+        state = ai.AiRunState(
+            enabled=False,
+            org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True, max_calls=200),
+        )
+
+        ai.qualify_item(item, entry, SPEC, state)
+
+        assert item.Sector == config.SECTOR_UNKNOWN
+
+
+# --------------------------------------------------------------------------
+# Pipeline Secteur (§12 METHODOLOGY.md) : métriques ai_usage.csv
+# --------------------------------------------------------------------------
+
+
+class TestSectorMetrics:
+    def test_nouvelles_colonnes_ai_usage_refletent_chaque_voie_de_resolution(self, make_item, monkeypatch):
+        # Un item résolu par le contexte source.
+        item_llm = make_item(source_item_id="a", org="Scalingo", sector=config.SECTOR_UNKNOWN)
+        entry_llm = RawEntry(
+            title="Scalingo victime d'une fuite de données",
+            summary="Scalingo est un hébergeur cloud.",
+            published="2026-06-01", organisation="Scalingo",
+        )
+        # Un item résolu par mapping déterministe après enrichissement.
+        item_enriched = make_item(source_item_id="b", org="Savills France", sector=config.SECTOR_UNKNOWN)
+        entry_enriched = RawEntry(
+            title="Savills France victime d'un rançongiciel",
+            summary="Le groupe LockBit revendique l'attaque.",
+            published="2026-06-01", organisation="Savills France",
+        )
+        record = org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=item_enriched.Organisation_Key, Query_Name="Savills France",
+            Activity_Label="Agences immobilières", Match_Status=org_enrichment.MATCHED,
+            Fetched_At="2026-08-15",
+        )
+
+        def fake_call_openai(item_, entry_, spec_, requested, state_):
+            if item_.Item_ID == item_llm.Item_ID:
+                return _payload(sector=_field("Numérique / Technologie", evidence="hébergeur cloud"))
+            return _payload()
+
+        monkeypatch.setattr(ai, "_call_openai", fake_call_openai)
+        monkeypatch.setattr(
+            ai.org_enrichment, "resolve",
+            lambda org_key, *a, **k: record if org_key == item_enriched.Organisation_Key else None,
+        )
+        state = enabled_state_with_enrichment()
+
+        ai.qualify_item(item_llm, entry_llm, SPEC, state)
+        ai.qualify_item(item_enriched, entry_enriched, SPEC, state)
+
+        row = ai.finish_run(
+            state, "RUN-TEST", "2026-08-15T00:00:00+04:00", "MAJ",
+            sector_pre_stats={"initial_unknown": 5, "resolved_reference": 1, "resolved_deterministic": 1},
+        )
+
+        assert row["Sector_Initial_Unknown"] == 5
+        assert row["Sector_Resolved_Reference"] == 1
+        assert row["Sector_Resolved_Deterministic"] == 1
+        assert row["Sector_Resolved_Source_LLM"] == 1
+        assert row["Sector_Resolved_Enriched_Deterministic"] == 1
+        assert row["Sector_Resolved_Enriched_LLM"] == 0
+        assert row["Sector_Enrichment_Cache_Hit"] == 0
+        # 5 (avant tout) - 1 (référence) - 1 (déterministe) - 1 (LLM source)
+        # - 1 (enrichi déterministe) = 1 restant, cohérent avec le seul item
+        # non couvert par ce scénario à deux items.
+        assert row["Sector_Remaining_Unknown"] == 1
+        assert row["Org_Enrichment_Calls"] == 0

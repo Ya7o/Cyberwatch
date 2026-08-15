@@ -296,9 +296,10 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "olympique", "football",
     ]),
     (SECTOR_RETAIL, [
-        "cci", "chambre de commerce", "commerce", "distribution", "enseigne",
-        "supermarche", "hypermarche", "magasin", "retail", "boutique",
-        "e commerce", "chambre de metiers",
+        "cci", "chambre de commerce", "commerce", "commerces", "distribution",
+        "enseigne", "supermarche", "supermarches", "hypermarche",
+        "hypermarches", "magasin", "magasins", "retail", "boutique",
+        "boutiques", "e commerce", "chambre de metiers",
         # Concessions et négoce, relevés dans la base réelle.
         "concession", "concessionnaire", "automobiles", "garage",
         "grande surface", "centre commercial", "negoce", "grossiste",
@@ -318,6 +319,10 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
     ]),
     (SECTOR_CONSTRUCTION, [
         "batiment", "btp", "travaux publics", "construction", "immobilier",
+        # Accord au féminin/pluriel : les libellés d'activité officiels
+        # (ex. NAF 68.31Z « Agences immobilières ») fléchissent l'adjectif,
+        # ce que le motif "immobilier" seul ne matche pas (limite de mot).
+        "immobiliers", "immobiliere", "immobilieres", "agence immobiliere",
         "maconnerie", "charpente", "promoteur immobilier",
         "immo", "habitat", "logement", "hlm", "bailleur social", "foncier",
     ]),
