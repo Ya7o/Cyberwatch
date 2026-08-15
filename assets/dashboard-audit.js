@@ -47,6 +47,14 @@
       RANSOMWARE_LIVE: "Ransomware.live",
       CERT_MU_ALERTS: "CERT-MU",
       KWEZI_NUMERIQUE: "Kwezi",
+      MAYOTTE_HEBDO_NUMERIQUE: "Mayotte Hebdo",
+      JOURNAL_DE_MAYOTTE: "Journal de Mayotte",
+      MAYOTTE_FM: "Mayotte FM",
+      MAYOTTE_LA_1ERE: "Mayotte La 1ère",
+      FLASH_INFOS_MAYOTTE: "Flash Infos Mayotte",
+      FRANCE_MAYOTTE_MATIN: "France Mayotte Matin",
+      LES_NOUVELLES_DE_MAYOTTE: "Les Nouvelles de Mayotte",
+      RMV_ACTUALITES: "RMV Actualités",
     };
     if (labels[id]) return labels[id];
     return String(id || "Source").toLowerCase().split("_")

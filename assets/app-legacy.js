@@ -330,6 +330,14 @@
       CYBERATTAQUE_ORG: "Cyberattaque.org",
       RANSOMWARE_LIVE: "Ransomware.live",
       KWEZI_NUMERIQUE: "Kwezi",
+      MAYOTTE_HEBDO_NUMERIQUE: "Mayotte Hebdo",
+      JOURNAL_DE_MAYOTTE: "Journal de Mayotte",
+      MAYOTTE_FM: "Mayotte FM",
+      MAYOTTE_LA_1ERE: "Mayotte La 1ère",
+      FLASH_INFOS_MAYOTTE: "Flash Infos Mayotte",
+      FRANCE_MAYOTTE_MATIN: "France Mayotte Matin",
+      LES_NOUVELLES_DE_MAYOTTE: "Les Nouvelles de Mayotte",
+      RMV_ACTUALITES: "RMV Actualités",
     };
     return labels[id] || id;
   }
@@ -566,6 +574,11 @@
     if (!options) return;
     const sources = new Set();
     state.incidents.forEach((incident) => (incident.sources || []).forEach((source) => sources.add(source)));
+    // Une source sans incident (zéro contrôlé) ou temporairement inaccessible
+    // reste un filtre visible : son absence du corpus n'est jamais un oubli.
+    (state.status?.sources || []).forEach((source) => {
+      if (source.id) sources.add(source.id);
+    });
     options.innerHTML = Array.from(sources).sort()
       .map((source) => `<label><input type="checkbox" value="${esc(source)}">${esc(sourceLabel(source))}</label>`).join("");
   }
