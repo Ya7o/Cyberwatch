@@ -12,12 +12,24 @@ def _spec(source_id):
 
 
 def test_mayotte_direct_sources_are_declared_with_strict_victim_policy():
-    for source_id in ("KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE", "JOURNAL_DE_MAYOTTE"):
+    for source_id in ("KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE", "JOURNAL_DE_MAYOTTE", "MAYOTTE_FM"):
         spec = _spec(source_id)
         assert spec.active is True
         assert spec.location_rule == config.LOC_INCONNU
         assert spec.params.get("require_victim") is True
     assert _spec("JOURNAL_DE_MAYOTTE").params.get("publication_contract") is None
+    assert _spec("MAYOTTE_HEBDO_NUMERIQUE").params["publisher_id"] == "somapresse"
+    assert _spec("FLASH_INFOS_MAYOTTE").params["publisher_id"] == "somapresse"
+
+
+def test_every_audited_mahorais_candidate_has_an_explicit_decision():
+    import csv
+    from pathlib import Path
+
+    rows = list(csv.DictReader((Path(__file__).parents[1] / "data" / "mayotte_media_inventory.csv").open(encoding="utf-8")))
+    assert {row["Decision"] for row in rows} >= {"DIRECT", "WATCH", "CANDIDATE_INACCESSIBLE", "INACTIVE"}
+    assert all(row["Preuve"] and row["Actif_2026"] for row in rows)
+    assert {"L'Info Kwezi", "Mayotte Hebdo", "Journal de Mayotte", "Mayotte La 1ère", "Flash Infos Mayotte", "Les Nouvelles de Mayotte", "France Mayotte Matin"} <= {row["Media"] for row in rows}
 
 
 def test_mayotte_default_is_used_only_after_no_explicit_location():
@@ -30,6 +42,24 @@ def test_mayotte_default_is_used_only_after_no_explicit_location():
     assert item.Location == config.LOC_FRANCE
 
 
+def test_preventive_mamoudzou_alert_without_victim_does_not_create_incident():
+    spec = _spec("KWEZI_NUMERIQUE")
+    item = entry_to_item(
+        RawEntry(title="La Ville de Mamoudzou alerte sur les escroqueries via le téléphone", content="Des faux profils ciblent les habitants.", published="2026-04-07", url="https://x", source_item_id="alert"),
+        spec, "2026-08-15T00:00:00+04:00", {"mairie de mamoudzou": "Mairie de Mamoudzou"}, {}, {}, enrichment.load_reference(),
+    )
+    assert item is None
+
+
+def test_explicit_mamoudzou_cyberattack_remains_an_incident():
+    spec = _spec("KWEZI_NUMERIQUE")
+    item = entry_to_item(
+        RawEntry(title="La ville de Mamoudzou renforce sa sécurité suite à une cyberattaque", content="La mairie de Mamoudzou a été victime d'une cyberattaque.", published="2026-06-11", url="https://x", source_item_id="incident"),
+        spec, "2026-08-15T00:00:00+04:00", {"mairie de mamoudzou": "Mairie de Mamoudzou"}, {}, {}, enrichment.load_reference(),
+    )
+    assert item is not None
+
+
 def test_required_mayotte_source_absent_is_exposed_as_not_covered(monkeypatch):
     monkeypatch.setattr(site.store, "snapshot_state", lambda: (site.store.BASE_VALID, []))
     monkeypatch.setattr(site.store, "load_run_log", lambda: [{"Run_ID": "run"}])
@@ -38,7 +68,8 @@ def test_required_mayotte_source_absent_is_exposed_as_not_covered(monkeypatch):
     payload = site.status_payload()
     assert any(row["id"] == "KWEZI_NUMERIQUE" and row["status"] == status.NOT_COVERED for row in payload["sources"])
     coverage = payload["coverage_groups"]["MAYOTTE_LOCAL"]
-    assert coverage["expected"] == 3
+    # Quatre titres directement collectables et cinq angles morts documentés.
+    assert coverage["expected"] == 9
     assert coverage["queried"] == 0
     assert coverage["coverage"] == "PARTIAL"
 
@@ -46,12 +77,12 @@ def test_required_mayotte_source_absent_is_exposed_as_not_covered(monkeypatch):
 def test_mayotte_watcher_excludes_direct_publishers():
     direct = {
         urlparse(_spec(source_id).start_url).netloc.removeprefix("www.")
-        for source_id in ("KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE", "JOURNAL_DE_MAYOTTE")
+        for source_id in ("KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE", "JOURNAL_DE_MAYOTTE", "MAYOTTE_FM")
     }
     watched = {domain.split("/", 1)[0].removeprefix("www.") for domain in sources.MAYOTTE_MEDIA}
     assert not direct & watched
     assert sources.MAYOTTE_MEDIA == []
-    assert "la1ere.francetvinfo.fr/mayotte" in sources.MAYOTTE_CANDIDATE_MEDIA
+    assert "la1ere.franceinfo.fr/mayotte" in sources.MAYOTTE_CANDIDATE_MEDIA
 
 
 def test_mamoudzou_multi_source_converges_through_explicit_aliases():

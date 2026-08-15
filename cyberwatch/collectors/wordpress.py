@@ -109,62 +109,81 @@ class WordPressCollector(Collector):
                 return result
             query[taxonomy] = str(term_id)
 
+        search_terms = spec.params.get("search_terms") or []
+        if isinstance(search_terms, str):
+            search_terms = [search_terms]
         if spec.params.get("search"):
-            query["search"] = spec.params["search"]
+            search_terms = [spec.params["search"]]
+        # Une recherche par terme conserve une borne d'archive contrôlable sans
+        # télécharger le journal entier. Les doublons entre termes sont retirés
+        # sur l'identifiant WordPress natif, donc cette variation reste purement
+        # déclarative et ne change jamais la provenance éditoriale.
+        searches = list(search_terms) or [""]
 
         page = 1
         total_pages = None
         recognized = 0
+        seen_ids: set[str] = set()
 
-        while page <= config.MAX_PAGES_PER_SOURCE:
-            query["page"] = str(page)
-            url = f"{endpoint}/posts?{urlencode(query)}"
-            response = client.fetch(url, budget)
+        for search in searches:
+            page = 1
+            total_pages = None
+            query.pop("search", None)
+            if search:
+                query["search"] = search
+            while page <= config.MAX_PAGES_PER_SOURCE:
+                query["page"] = str(page)
+                url = f"{endpoint}/posts?{urlencode(query)}"
+                response = client.fetch(url, budget)
 
-            if not response.ok:
+                if not response.ok:
                 # Au-delà de la dernière page, WordPress répond 400 : ce n'est
                 # pas une erreur, c'est la fin de l'énumération.
-                if response.status_code == 400 and page > 1:
-                    result.reached_boundary = True
+                    if response.status_code == 400 and page > 1:
+                        break
+                    result.reason_code = response.reason_code
                     break
-                result.reason_code = response.reason_code
+
+                if total_pages is None:
+                    total_pages = total_pages_of(response)
+                    result.units_expected += total_pages or 1
+
+                payload = response.json()
+                if not isinstance(payload, list):
+                    result.reason_code = status.REASON_PARSE_ERROR
+                    break
+
+                reached_time_boundary = False
+                for post in payload:
+                    entry = entry_from_post(post, spec)
+                    if entry:
+                        native_id = entry.source_item_id or entry.url
+                        if native_id in seen_ids:
+                            continue
+                        seen_ids.add(native_id)
+                        recognized += 1
+                        if window.contains(entry.published):
+                            result.entries.append(entry)
+                        elif window.is_before_start(entry.published):
+                            reached_time_boundary = True
+
+                result.units_done += 1
+
+                if reached_time_boundary or not payload or (total_pages is not None and page >= total_pages):
+                    break
+
+                page += 1
+            else:
+                result.reason_code = status.REASON_BUDGET_SOURCE
+            if result.reason_code != status.REASON_OK or budget.exhausted:
                 break
 
-            if total_pages is None:
-                total_pages = total_pages_of(response)
-                result.units_expected = total_pages or 1
-
-            payload = response.json()
-            if not isinstance(payload, list):
-                result.reason_code = status.REASON_PARSE_ERROR
-                break
-
-            reached_time_boundary = False
-            for post in payload:
-                entry = entry_from_post(post, spec)
-                if entry:
-                    recognized += 1
-                    if window.contains(entry.published):
-                        result.entries.append(entry)
-                    elif window.is_before_start(entry.published):
-                        reached_time_boundary = True
-
-            result.units_done = page
-
-            if reached_time_boundary:
-                result.reached_boundary = True
-                result.units_expected = result.units_done
-                break
-            if not payload:
-                result.reached_boundary = True
-                break
-            if total_pages is not None and page >= total_pages:
-                result.reached_boundary = True
-                break
-
-            page += 1
-        else:
-            result.reason_code = status.REASON_BUDGET_SOURCE
+        # Chaque recherche est bornée par le serveur (`after`) et son nombre de
+        # pages est exhaustif. Les termes sont un filet de rappel fixe : aucune
+        # pagination du corpus global ne peut être silencieusement tronquée.
+        if result.reason_code == status.REASON_OK:
+            result.reached_boundary = True
+            result.units_expected = max(result.units_done, result.units_expected)
 
         if budget.exhausted and not result.reached_boundary:
             result.reason_code = status.REASON_BUDGET_SOURCE

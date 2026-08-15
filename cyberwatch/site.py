@@ -144,6 +144,7 @@ def status_payload() -> dict:
                 "layer": row.get("Layer", meta.get("layer", "")),
                 "zone": meta.get("zone", ""),
                 "url": meta.get("url", ""),
+                "notes": meta.get("notes", ""),
                 "status": row_status,
                 "coverage": coverage,
                 "reason_code": row.get("Reason_Code", ""),
@@ -193,7 +194,9 @@ def status_payload() -> dict:
             "reason": status.reason_text(reason_code), "items": 0, "items_seen": 0,
             "items_collected": 0, "items_in_window": 0, "units_done": 0, "units_expected": 0,
             "calls": 0, "latest_item": "", "last_recognized_date": "", "last_recognized_org": "",
-            "access_method": "", "duration": "", "comment": "Source locale requise mais absente du dernier run.",
+            "access_method": "", "duration": "", "comment": (
+                meta.get("notes", "") if not meta.get("active") else "Source locale requise mais absente du dernier run."
+            ),
             "last_run": last_run.get("As_Of", ""), "error": "", "zero_is_trusted": False,
         })
 

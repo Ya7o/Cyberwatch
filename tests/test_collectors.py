@@ -224,6 +224,14 @@ class TestWordPress:
         spec = SourceSpec("CYBERATTAQUE_ORG", config.LAYER_CORE, "France")
         assert entry_from_post(post, spec).content == ""
 
+    def test_recherches_declaratives_sont_dedupliquees_par_identifiant_natif(self):
+        client = FakeClient({"/wp-json/wp/v2/posts": ok(WP_POSTS, {"X-WP-TotalPages": "1"})})
+        spec = SourceSpec("TEST", config.LAYER_LOCAL_MEDIA, "Mayotte", "https://exemple.fr/", "wordpress", params={"search_terms": ["cyberattaque", "piratage"]})
+        result = WordPressCollector().collect(client, spec, WINDOW)
+        assert result.resolve() == (status.OK, 100)
+        assert len(result.entries) == 2
+        assert sum("search=" in url for url in client.calls) == 2
+
 
 # --------------------------------------------------------------------------
 # Flux RSS / Atom

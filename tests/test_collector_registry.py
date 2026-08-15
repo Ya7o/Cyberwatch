@@ -5,7 +5,6 @@ from cyberwatch.collectors import get_collector
 from cyberwatch.collectors.bonjourlafuite import BonjourLaFuiteCollector
 from cyberwatch.collectors.cyberattaque_org import CyberattaqueOrgCollector
 from cyberwatch.collectors.feed import FeedCollector
-from cyberwatch.collectors.kwezi import KweziCollector
 from cyberwatch.collectors.ransomware_live import RansomwareLiveCollector
 from cyberwatch.collectors.wordpress import WordPressCollector
 
@@ -16,9 +15,10 @@ def test_active_sources_route_to_their_declared_collector():
         "FRENCHBREACHES": FeedCollector,
         "CYBERATTAQUE_ORG": CyberattaqueOrgCollector,
         "RANSOMWARE_LIVE": RansomwareLiveCollector,
-        "KWEZI_NUMERIQUE": KweziCollector,
+        "KWEZI_NUMERIQUE": WordPressCollector,
         "MAYOTTE_HEBDO_NUMERIQUE": WordPressCollector,
         "JOURNAL_DE_MAYOTTE": WordPressCollector,
+        "MAYOTTE_FM": WordPressCollector,
     }
     for spec in sources.active_sources():
         assert type(get_collector(spec.collector)) is expected[spec.source_id]

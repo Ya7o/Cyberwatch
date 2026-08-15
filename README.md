@@ -4,8 +4,9 @@ Cyberwatch applique une chaîne déterministe : **collecte → normalisation →
 qualification canonique offline → déduplication → quality gates → hashes →
 snapshot/dashboard**. Les sept sources actives sont BonjourLaFuite,
 Cyberattaque.org, FrenchBreaches, Kwezi Numérique, Mayotte Hebdo Numérique,
-Journal de Mayotte et Ransomware.live. La 1ère Mayotte n'est pas activée dans
-la couverture locale du Lot 1.
+Journal de Mayotte, Mayotte FM et Ransomware.live. L'inventaire vérifié de la
+presse mahoraise et les angles morts techniques sont versionnés dans
+`data/mayotte_media_inventory.csv`.
 
 La qualité est vérifiée offline par :
 `python scripts/audit_data_quality.py --items data/items.csv --check --check-regression`.

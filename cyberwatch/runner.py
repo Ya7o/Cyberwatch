@@ -50,6 +50,36 @@ MODE_REPLAY = "REPLAY"
 MODE_DIAGNOSE = "DIAGNOSE"
 
 
+def _local_title_names_a_victim(entry: RawEntry, organisation: str) -> bool:
+    """Évite de transformer une alerte préventive en incident subi.
+
+    Les médias locaux citent souvent une mairie parce qu'elle alerte ses
+    administrés contre une arnaque. Une entité reconnue dans ce contexte n'est
+    pas une victime. Pour les sources à ``require_victim``, une relation doit
+    donc être visible dans le titre : cyberattaque/incident visant l'entité,
+    ou formulation explicite de victime. Le corps reste disponible pour
+    extraire l'organisation mais ne peut pas à lui seul inverser ce sens.
+    """
+    title = searchable(entry.title)
+    org = searchable(organisation)
+    if not title or not org:
+        return False
+    body = searchable(f"{entry.summary} {entry.content}")
+    if org in body and any(marker in body for marker in (
+        "victime d une cyberattaque", "victime d une attaque informatique",
+        "a subi une cyberattaque", "a ete cyberattaque",
+    )):
+        return True
+    warning = any(marker in title for marker in (
+        "alerte", "met en garde", "faux profil", "faux numero", "escroc", "escroquer",
+    ))
+    incident = any(marker in title for marker in (
+        "cyberattaque", "incident de cybersecurite", "attaque informatique",
+        "piratage", "rancongiciel", "ransomware", "victime",
+    ))
+    return incident and not (warning and "victime" not in title)
+
+
 def code_commit() -> str:
     if os.getenv("GITHUB_SHA"):
         return os.environ["GITHUB_SHA"]
@@ -283,6 +313,8 @@ def entry_to_item(
     # Kwezi mesure tous les articles de rubrique, mais ne matérialise dans
     # ITEMS que ceux dont la victime est déterminée sans heuristique variable.
     if (spec.source_id == "CYBERATTAQUE_ORG" or spec.params.get("require_victim")) and not organisation:
+        return None
+    if spec.params.get("require_victim") and not _local_title_names_a_victim(entry, organisation):
         return None
 
     sector_hint = ""
@@ -535,6 +567,7 @@ def pre_export_checks(
     items: list[Item],
     incidents: list[Incident],
     outcomes: list[status.SourceOutcome],
+    expected_source_ids: set[str] | None = None,
 ) -> list[str]:
     """Contrôles du §29. Renvoie la liste des anomalies détectées."""
     problems: list[str] = []
@@ -590,8 +623,11 @@ def pre_export_checks(
             break
 
     seen_sources = {o.source_id for o in outcomes}
+    expected_source_ids = expected_source_ids or {
+        spec.source_id for spec in sources.ALL_SOURCES if spec.active
+    }
     for spec in sources.ALL_SOURCES:
-        if spec.active and spec.source_id not in seen_sources:
+        if spec.source_id in expected_source_ids and spec.source_id not in seen_sources:
             problems.append(f"Source active sans ligne RUN_SOURCES : {spec.source_id}")
 
     for outcome in outcomes:
@@ -731,7 +767,12 @@ def execute(
             for outcome in report.outcomes
         ) else status.BROKEN
     )
-    report.problems = pre_export_checks(report.items, report.incidents, report.outcomes)
+    selected_source_ids = {
+        spec.source_id for spec in sources.active_sources(context.layers)
+    }
+    report.problems = pre_export_checks(
+        report.items, report.incidents, report.outcomes, selected_source_ids
+    )
     if offline:
         report.problems = [p for p in report.problems if "RUN_SOURCES" not in p]
     if report.problems:

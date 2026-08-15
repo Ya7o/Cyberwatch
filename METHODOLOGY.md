@@ -17,17 +17,17 @@ Git et doit être volontairement revue.
 
 ## Couverture locale Mayotte
 
-Kwezi Numérique, Mayotte Hebdo Numérique et Journal de Mayotte sont lus par
-les collecteurs génériques WordPress/MediaWatch avec un corps d'article lorsque
+Kwezi Numérique, Mayotte Hebdo Numérique, Journal de Mayotte et Mayotte FM sont lus par
+le collecteur générique WordPress avec un corps d'article lorsque
 nécessaire. Un article de rubrique numérique n'est matérialisé que s'il est
 cyber et nomme une victime déterminée. La localisation structurée, le
 référentiel et l'entité reconnue priment ; aucun défaut territorial mahorais
 n'est appliqué tant qu'un audit de corpus ne l'a pas justifié. Le tableau de
 statut expose toute source locale déclarée requise mais absente comme
-`NOT_COVERED`. Les trois médias sont des archives WordPress paginées : un
+`NOT_COVERED`. Les quatre médias sont des archives WordPress paginées : un
 `PARTIAL` empêche la publication. Les watchers Mayotte restent désactivés dans
-ce lot ; La 1ère Mayotte est une candidate explicitement hors périmètre, pas
-une quatrième source implicite.
+ce lot car ils dupliqueraient les chemins directs ; les titres non collectables
+sont des angles morts explicites dans `data/mayotte_media_inventory.csv`.
 
 ## Initialisation et référence
 
