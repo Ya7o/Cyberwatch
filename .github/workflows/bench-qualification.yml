@@ -28,6 +28,25 @@ permissions:
   contents: read
 
 jobs:
+  probe-org-schema:
+    # Diagnostic gratuit, sans IA : verifie le schema reel de
+    # recherche-entreprises.api.gouv.fr (jamais accessible depuis le bac a
+    # sable de developpement, cf. commentaire dans org_enrichment.py). Aide a
+    # detecter une derive de schema avant qu'elle ne degrade silencieusement
+    # l'enrichissement Secteur (§12 METHODOLOGY.md).
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Interroger l'API et publier le schema brut
+        continue-on-error: true
+        run: |
+          {
+            echo "## Schema recherche-entreprises.api.gouv.fr (diagnostic)"
+            echo '```json'
+            curl -sS "https://recherche-entreprises.api.gouv.fr/search?q=Scalingo&per_page=1" | python3 -m json.tool
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
   bench:
     runs-on: ubuntu-latest
     timeout-minutes: 45
