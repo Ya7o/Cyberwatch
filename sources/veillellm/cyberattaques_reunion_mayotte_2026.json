@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "scope": ["La Réunion", "Mayotte"],
+    "year": 2026,
+    "generated_at": "2026-08-15",
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à une cyberattaque confirmée par la victime, une autorité compétente ou plusieurs sources indépendantes solides.",
+    "record_count": 7
+  },
+  "incidents": [
+    {
+      "date": "2026-02-19",
+      "organisation": "EPF Réunion / VALGO",
+      "territoire": "La Réunion",
+      "localisation": "Sainte-Marie",
+      "secteur": "Établissement public / foncier",
+      "type_menace": "Exfiltration et fuite de données revendiquées via un tiers",
+      "acteur": "incransom",
+      "statut": "Revendication non corroborée",
+      "score_cyberattaque": 65,
+      "impact_connu": "Des données attribuées à l'EPF Réunion sont citées dans une fuite revendiquée visant VALGO ; volume global revendiqué de 279 Go.",
+      "sources": ["https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"],
+      "synthese": "Ancrage réunionnais explicite dans la revendication, sans confirmation publique retrouvée de l'EPF Réunion.",
+      "evolution": "baseline_2026"
+    },
+    {
+      "date": "2026-04-24",
+      "organisation": "STOR Solutions",
+      "territoire": "La Réunion",
+      "localisation": "Sainte-Clotilde / Saint-Denis",
+      "secteur": "Datacenter / cloud / hébergement",
+      "type_menace": "Intrusion revendiquée dans des consoles et infrastructures de supervision",
+      "acteur": "Non identifié publiquement",
+      "statut": "Revendication avec éléments techniques",
+      "score_cyberattaque": 75,
+      "impact_connu": "Captures présentées comme provenant de consoles réseau, cartographies d'architecture et supervision électrique ; ampleur revendiquée non confirmée.",
+      "sources": ["https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"],
+      "synthese": "Cible locale clairement identifiée et éléments techniques publiés, mais absence de confirmation publique de STOR Solutions.",
+      "evolution": "baseline_2026"
+    },
+    {
+      "date": "2026-05-31",
+      "organisation": "Air Austral",
+      "territoire": "La Réunion",
+      "localisation": "Sainte-Marie",
+      "secteur": "Transport aérien",
+      "type_menace": "Compromission et diffusion de données relatives à des salariés",
+      "acteur": "ChimeraZ",
+      "statut": "Cyberattaque confirmée ; attribution et ampleur partiellement non corroborées",
+      "score_cyberattaque": 100,
+      "impact_connu": "Publication de données professionnelles attribuées à des salariés ; l'existence de l'incident a été rapportée comme confirmée par la compagnie, mais le volume exact reste incertain.",
+      "sources": [
+        "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/",
+        "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
+      ],
+      "synthese": "Score de 100 % appliqué uniquement à l'existence de la cyberattaque, pas à l'attribution ni à l'ampleur revendiquée.",
+      "evolution": "baseline_2026"
+    },
+    {
+      "date": "2026-06-11",
+      "organisation": "Ville de Mamoudzou",
+      "territoire": "Mayotte",
+      "localisation": "Mamoudzou",
+      "secteur": "Collectivité territoriale / administration",
+      "type_menace": "Incident de cybersécurité affectant la messagerie avec envoi de courriels non sollicités",
+      "acteur": "Inconnu",
+      "statut": "Confirmé officiellement",
+      "score_cyberattaque": 100,
+      "impact_connu": "Messagerie affectée, envoi de courriels non sollicités, mesures conservatoires et correctives ; aucune fuite de données personnelles identifiée à ce stade selon la Ville ; déclaration à la CNIL.",
+      "sources": ["https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/"],
+      "synthese": "Incident confirmé directement par la Ville de Mamoudzou.",
+      "evolution": "baseline_2026"
+    },
+    {
+      "date": "2026-06-29",
+      "organisation": "Le Quotidien de La Réunion",
+      "territoire": "La Réunion",
+      "localisation": "La Réunion",
+      "secteur": "Presse / médias",
+      "type_menace": "Incident informatique perturbant la production",
+      "acteur": "Non identifié",
+      "statut": "Incident informatique confirmé ; origine cyber non démontrée",
+      "score_cyberattaque": 30,
+      "impact_connu": "Édition du journal réduite de 32 à 16 pages à la suite d'un incident informatique.",
+      "sources": ["https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"],
+      "synthese": "Impact informatique réel, mais aucun élément public suffisamment solide ne démontre une action malveillante.",
+      "evolution": "baseline_2026"
+    },
+    {
+      "date": "2026-06-29",
+      "organisation": "EGEP Réunion",
+      "territoire": "La Réunion",
+      "localisation": "Saint-Joseph",
+      "secteur": "Artisanat / installation électrique",
+      "type_menace": "Fuite de documents et données d'un environnement client Axonaut revendiquée",
+      "acteur": "0xSec",
+      "statut": "Revendication non corroborée",
+      "score_cyberattaque": 60,
+      "impact_connu": "EGEP Réunion est citée parmi des entreprises dont des documents ou bases liés à Axonaut auraient été compromis ; vecteur d'accès non établi.",
+      "sources": ["https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"],
+      "synthese": "Ancrage local explicite dans la revendication, sans confirmation indépendante et sans preuve qu'Axonaut lui-même ait été compromis.",
+      "evolution": "baseline_2026"
+    },
+    {
+      "date": "2026-06-30",
+      "organisation": "Lycée polyvalent Paul Moreau",
+      "territoire": "La Réunion",
+      "localisation": "Bras-Panon",
+      "secteur": "Éducation",
+      "type_menace": "Exfiltration revendiquée d'une base d'élèves et de données Pix",
+      "acteur": "0xSec",
+      "statut": "Revendication crédible avec échantillons ; non confirmée officiellement",
+      "score_cyberattaque": 80,
+      "impact_connu": "L'auteur revendique 716 enregistrements et publie des échantillons comprenant des données scolaires et d'identification.",
+      "sources": ["https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"],
+      "synthese": "Échantillons cohérents et établissement précisément identifié, mais absence de confirmation du lycée, du rectorat ou d'une autorité.",
+      "evolution": "baseline_2026"
+    }
+  ]
+}
