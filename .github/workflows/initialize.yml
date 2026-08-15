@@ -1,4 +1,4 @@
-name: Validate historical Mayotte coverage
+name: Backfill Mayotte press history
 
 on:
   push:
@@ -7,10 +7,14 @@ on:
       - ".github/initialize-trigger"
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: mayotte-history-backfill
+  cancel-in-progress: false
 
 jobs:
-  validate-mayotte:
+  backfill-mayotte:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -21,53 +25,47 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-      - name: Valider la collecte historique Mayotte
+      - name: Backfill presse mahoraise
+        run: |
+          python -m cyberwatch maj \
+            --layers local_media \
+            --start 2026-01-01 \
+            --as-of 2026-08-15T09:37:00+04:00
+      - name: Contrôles
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python -m cyberwatch build-site
+      - name: Vérifier Mamoudzou
         run: |
           python - <<'PY'
-          from cyberwatch import config, status
-          from cyberwatch.runner import MODE_CREATE, execute, make_run_context
+          from cyberwatch import store
 
-          context = make_run_context(
-              MODE_CREATE,
-              "2026-08-15T09:37:00+04:00",
-              "2026-01-01",
-              [config.LAYER_LOCAL_MEDIA],
-          )
-          report = execute(context, persist=False)
-
-          print(f"RUN={report.context.run_id}")
-          print(f"WINDOW={report.context.target_start}->{report.context.target_end}")
-          print(f"OVERALL={report.overall}")
-          print(f"ITEMS={len(report.items)} INCIDENTS={len(report.incidents)}")
-          print("SOURCES")
-          for outcome in report.outcomes:
-              print(
-                  f"{outcome.source_id}|{outcome.status}|coverage={outcome.coverage}|"
-                  f"calls={outcome.calls}|seen={outcome.items_seen}|"
-                  f"in_window={outcome.items_in_window}|items={outcome.items_collected}"
-              )
-
-          print("ITEMS_MAYOTTE")
-          for item in report.items:
-              print(
-                  f"{item.Source_ID}|published={item.Published_Date}|event={item.Event_Date}|"
-                  f"org_raw={item.Organisation_Raw}|org_key={item.Organisation_Key}|"
-                  f"location={item.Location}|{item.Item_ID}|{item.URL}"
-              )
-
-          mamoudzou = [
-              incident for incident in report.incidents
+          matches = [
+              incident for incident in store.load_incidents()
               if "mamoudzou" in (incident.Organisation or "").lower()
+              and incident.Date.startswith("2026-06-11")
           ]
-          print(f"MAMOUDZOU_COUNT={len(mamoudzou)}")
-          for incident in mamoudzou:
-              print(
-                  f"MAMOUDZOU|{incident.Incident_ID}|{incident.Date}|"
-                  f"{incident.Organisation}|{incident.Localisation}|"
-                  f"items={incident.Items_Count}|sources={incident.Sources}|urls={incident.Source_URLs}"
-              )
-
-          assert report.overall == status.OK, f"Collecte Mayotte non OK: {report.overall}"
-          assert all(outcome.status == status.OK for outcome in report.outcomes)
-          assert mamoudzou, "Le cas Mamoudzou attendu n'a pas été retrouvé dans la collecte historique Mayotte"
+          assert matches, "Incident Mamoudzou du 11 juin 2026 absent après backfill"
+          incident = matches[0]
+          print(
+              f"MAMOUDZOU|{incident.Incident_ID}|{incident.Date}|{incident.Organisation}|"
+              f"{incident.Localisation}|items={incident.Items_Count}|sources={incident.Sources}|"
+              f"urls={incident.Source_URLs}"
+          )
+          expected = {"JOURNAL_DE_MAYOTTE", "KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE"}
+          actual = {part.strip() for part in incident.Sources.split("|") if part.strip()}
+          assert expected <= actual, f"Sources Mamoudzou incomplètes: {actual}"
           PY
+      - name: Publier le backfill
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data assets/data
+          if git diff --staged --quiet; then
+            echo "Aucun changement de données à publier."
+            exit 0
+          fi
+          git commit -m "data: backfill Mayotte press history"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
