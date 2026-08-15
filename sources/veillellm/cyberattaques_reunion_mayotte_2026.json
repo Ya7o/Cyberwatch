@@ -7,17 +7,23 @@
     "year": 2026,
     "generated_at": "2026-08-15",
     "record_count": 12,
+    "schema": "cyberwatch-canonical-v1",
     "watch_result": {
-      "new_incidents": 4,
+      "new_incidents": 0,
       "enriched_incidents": 0,
-      "corrected_incidents": 0,
-      "note": "Test renforcé : ajout de Saint-Leu (dossier numérique introuvable), Saint-Paul (PBO fibre vandalisé), panne des numéros d’urgence à Mayotte et vandalisme du réseau Orange à Saint-Denis."
+      "corrected_incidents": 12,
+      "note": "Normalisation des champs territoire, secteur et type_menace selon les valeurs canoniques Cyberwatch."
     },
     "coverage": {
-      "method": "Balayage ciblé des communes de La Réunion et Mayotte avec termes cyber, panne, incident, indisponibilité, perte de données et atteintes aux infrastructures numériques.",
-      "limitations": "Les réseaux sociaux ne sont pas exhaustivement indexés par les moteurs accessibles ; certains incidents non publics peuvent rester invisibles."
+      "method": "Balayage ciblé des communes de La Réunion et Mayotte, sources officielles, presse, OSINT et réseaux sociaux accessibles.",
+      "limitations": "Les publications individuelles de certains réseaux sociaux peuvent être mal indexées ou non récupérables ; ces trous de couverture doivent être signalés et recherchés via reprises, caches et sources secondaires."
     },
-    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à une cyberattaque confirmée par la victime, une autorité compétente ou plusieurs sources indépendantes solides. Les sabotages physiques et pannes peuvent être conservés avec un score cyber faible lorsqu'ils affectent directement les services numériques."
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
+    "normalisation": {
+      "type_menace_obligatoire": true,
+      "secteur_obligatoire": true,
+      "territoire_obligatoire": true
+    }
   },
   "incidents": [
     {
@@ -25,8 +31,8 @@
       "organisation": "Commune de Saint-Leu",
       "territoire": "La Réunion",
       "localisation": "Saint-Leu",
-      "secteur": "Collectivité territoriale / administration",
-      "type_menace": "Perte ou indisponibilité signalée d’un dossier administratif numérique archivé",
+      "secteur": "Administration / Collectivité",
+      "type_menace": "Inconnu",
       "acteur": "Non identifié",
       "statut": "Incident de donnée numérique signalé ; origine cyber non démontrée",
       "score_cyberattaque": 15,
@@ -34,16 +40,16 @@
       "sources": [
         "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
       ],
-      "synthese": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique à la mairie de Saint-Leu. Aucun élément public ne démontre une intrusion, une suppression malveillante ou une cyberattaque.",
-      "evolution": "nouveau"
+      "synthese": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique. Aucun élément public ne démontre une cyberattaque.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-02-04",
       "organisation": "Infrastructure fibre multi-opérateurs / PBO",
       "territoire": "La Réunion",
       "localisation": "Saint-Paul — Le Ruisseau, Bois-de-Nèfles",
-      "secteur": "Télécommunications",
-      "type_menace": "Vandalisme physique d’un point de branchement optique avec coupures Internet et téléphonie",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
       "acteur": "Inconnu",
       "statut": "Atteinte malveillante physique confirmée ; cyberattaque non démontrée",
       "score_cyberattaque": 10,
@@ -51,16 +57,16 @@
       "sources": [
         "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
       ],
-      "synthese": "L’atteinte est volontaire et vise une infrastructure numérique, mais les éléments disponibles décrivent un sabotage physique et non une attaque logique contre un système informatique.",
-      "evolution": "nouveau"
+      "synthese": "Sabotage physique d’une infrastructure télécom ; aucune compromission logique documentée.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-02-19",
       "organisation": "EPF Réunion / VALGO",
       "territoire": "La Réunion",
       "localisation": "Sainte-Marie",
-      "secteur": "Établissement public / foncier",
-      "type_menace": "Exfiltration et fuite de données revendiquées via un tiers",
+      "secteur": "Administration / Collectivité",
+      "type_menace": "Fuite de données",
       "acteur": "incransom",
       "statut": "Revendication non corroborée",
       "score_cyberattaque": 65,
@@ -68,16 +74,16 @@
       "sources": [
         "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
       ],
-      "synthese": "Ancrage réunionnais explicite dans la revendication, sans confirmation publique retrouvée de l'EPF Réunion.",
-      "evolution": "inchange"
+      "synthese": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-04-24",
       "organisation": "STOR Solutions",
       "territoire": "La Réunion",
       "localisation": "Sainte-Clotilde / Saint-Denis",
-      "secteur": "Datacenter / cloud / hébergement",
-      "type_menace": "Intrusion revendiquée dans des consoles et infrastructures de supervision",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Intrusion",
       "acteur": "Non identifié publiquement",
       "statut": "Revendication avec éléments techniques",
       "score_cyberattaque": 75,
@@ -85,16 +91,16 @@
       "sources": [
         "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
       ],
-      "synthese": "Cible locale clairement identifiée et éléments techniques publiés, mais absence de confirmation publique de STOR Solutions.",
-      "evolution": "inchange"
+      "synthese": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-05-31",
       "organisation": "Air Austral",
       "territoire": "La Réunion",
       "localisation": "Sainte-Marie",
-      "secteur": "Transport aérien",
-      "type_menace": "Compromission et diffusion de données relatives à des salariés",
+      "secteur": "Transport / Logistique",
+      "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Incident rapporté comme confirmé par la compagnie ; attribution et ampleur non corroborées",
       "score_cyberattaque": 100,
@@ -104,16 +110,16 @@
         "https://frenchbreaches.com/alertes/air-austral-mpvvb04ho44kuefgda",
         "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
       ],
-      "synthese": "Le score de 100 % porte uniquement sur l'existence de l'incident, sur la base de la confirmation rapportée par Le Quotidien ; la revendication ChimeraZ, le vecteur et le volume restent à distinguer de cette confirmation.",
-      "evolution": "inchange"
+      "synthese": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-06-11",
       "organisation": "Ville de Mamoudzou",
       "territoire": "Mayotte",
       "localisation": "Mamoudzou",
-      "secteur": "Collectivité territoriale / administration",
-      "type_menace": "Incident de cybersécurité affectant la messagerie avec envoi de courriels non sollicités",
+      "secteur": "Administration / Collectivité",
+      "type_menace": "Compromission de compte / messagerie",
       "acteur": "Inconnu",
       "statut": "Confirmé officiellement",
       "score_cyberattaque": 100,
@@ -122,16 +128,16 @@
         "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
         "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
       ],
-      "synthese": "Incident confirmé directement par la Ville de Mamoudzou ; la presse locale confirme les perturbations de messagerie et les mesures de réponse.",
-      "evolution": "inchange"
+      "synthese": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-06-13",
       "organisation": "Commune de Ouangani",
       "territoire": "Mayotte",
       "localisation": "Ouangani",
-      "secteur": "Collectivité territoriale / administration",
-      "type_menace": "Incident informatique perturbant plusieurs services municipaux",
+      "secteur": "Administration / Collectivité",
+      "type_menace": "Inconnu",
       "acteur": "Non identifié",
       "statut": "Incident informatique confirmé ; origine cyber non démontrée",
       "score_cyberattaque": 25,
@@ -139,16 +145,16 @@
       "sources": [
         "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
       ],
-      "synthese": "La commune a signalé un incident informatique le 13 juin. Aucun élément public retrouvé ne permet de conclure à une action malveillante ; le cas est conservé comme signal faible à surveiller.",
-      "evolution": "inchange"
+      "synthese": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-06-29",
       "organisation": "Le Quotidien de La Réunion",
       "territoire": "La Réunion",
       "localisation": "La Réunion",
-      "secteur": "Presse / médias",
-      "type_menace": "Incident informatique perturbant la production",
+      "secteur": "Inconnu",
+      "type_menace": "Inconnu",
       "acteur": "Non identifié",
       "statut": "Incident informatique confirmé ; origine cyber non démontrée",
       "score_cyberattaque": 30,
@@ -156,16 +162,16 @@
       "sources": [
         "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
       ],
-      "synthese": "Impact informatique réel, mais aucun élément public suffisamment solide ne démontre une action malveillante.",
-      "evolution": "inchange"
+      "synthese": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-06-29",
       "organisation": "EGEP Réunion",
       "territoire": "La Réunion",
       "localisation": "Saint-Joseph",
-      "secteur": "Artisanat / installation électrique",
-      "type_menace": "Fuite de documents et données d'un environnement client Axonaut revendiquée",
+      "secteur": "Construction / BTP",
+      "type_menace": "Fuite de données",
       "acteur": "0xSec",
       "statut": "Revendication non corroborée",
       "score_cyberattaque": 60,
@@ -173,16 +179,16 @@
       "sources": [
         "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
       ],
-      "synthese": "Ancrage local explicite et échantillons revendiqués, mais aucune confirmation indépendante de l'authenticité complète ou de l'origine de la compromission.",
-      "evolution": "inchange"
+      "synthese": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-06-30",
       "organisation": "Lycée polyvalent Paul Moreau",
       "territoire": "La Réunion",
       "localisation": "Bras-Panon",
-      "secteur": "Éducation",
-      "type_menace": "Exfiltration revendiquée d'une base d'élèves et de données Pix",
+      "secteur": "Éducation / Formation",
+      "type_menace": "Fuite de données",
       "acteur": "0xSec",
       "statut": "Revendication crédible avec échantillons ; non confirmée officiellement",
       "score_cyberattaque": 80,
@@ -190,16 +196,16 @@
       "sources": [
         "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
       ],
-      "synthese": "Échantillons cohérents et établissement précisément identifié, mais l'origine exacte de la compromission et l'authenticité complète de la base ne sont pas confirmées indépendamment.",
-      "evolution": "inchange"
+      "synthese": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-07-04",
       "organisation": "Orange / SFR et services d’urgence",
       "territoire": "Mayotte",
       "localisation": "Mayotte — impact multi-secteurs",
-      "secteur": "Télécommunications / services d’urgence",
-      "type_menace": "Panne réseau rendant certains appels vers les numéros d’urgence 15, 17 et 18 injoignables",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
       "acteur": "Non identifié",
       "statut": "Panne réseau confirmée officiellement ; origine cyber non démontrée",
       "score_cyberattaque": 10,
@@ -207,16 +213,16 @@
       "sources": [
         "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
       ],
-      "synthese": "Incident numérique critique par son impact sur les secours, mais aucune information publique ne relie la panne à une action malveillante ou cyber.",
-      "evolution": "nouveau"
+      "synthese": "Panne télécom confirmée avec impact sur les numéros d’urgence ; aucune information publique ne permet de qualifier une menace cyber.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-07-09",
       "organisation": "Orange Réunion",
       "territoire": "La Réunion",
       "localisation": "Saint-Denis — impact dans l’île",
-      "secteur": "Télécommunications",
-      "type_menace": "Vandalisme volontaire d’installations réseau provoquant des perturbations mobile, fixe et Internet",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
       "acteur": "Inconnu",
       "statut": "Actes malveillants physiques confirmés par l’opérateur ; cyberattaque logique non démontrée",
       "score_cyberattaque": 15,
@@ -226,8 +232,8 @@
         "https://imazpress.com/toute-l-actu/actes-de-vandalisme-sur-le-reseau-orange-perturbations-sur-les-services-mobile-et-fixe-dans-toute-l-ile",
         "https://www.linfo.re/la-reunion/societe/des-actes-de-vandalisme-perturbent-le-reseau-orange-a-la-reunion"
       ],
-      "synthese": "L’acte malveillant est confirmé par Orange, mais les sources décrivent un sabotage physique d’infrastructure et non une compromission informatique ; le score cyber reste donc faible.",
-      "evolution": "nouveau"
+      "synthese": "Sabotage physique confirmé d’infrastructures télécom ; aucune compromission informatique documentée.",
+      "evolution": "corrige"
     }
   ]
 }
