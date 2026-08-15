@@ -20,6 +20,24 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-15",
+  "first_seen": "2026-08-15T14:22:34.410008+04:00",
+  "id": "INC-2EC7AB82A87C",
+  "items": 1,
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
+  "location": "Inconnu",
+  "org": "Fédération Française de Karaté",
+  "sector": "Sport",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-karat-msu63ykvxde9hwoosba"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-15",
   "first_seen": "2026-08-15T09:23:33.353683+04:00",
   "id": "INC-3E55A2062762",
   "items": 1,
@@ -4665,13 +4683,13 @@
   "first_seen": "2026-08-14T18:00:00+04:00",
   "id": "INC-495DC2D3F076",
   "items": 2,
-  "last_seen": "2026-08-15T11:56:00+04:00",
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
    ],
    "score": 80,
-   "summary": "Échantillons cohérents et établissement précisément identifié, mais l'origine exacte de la compromission et l'authenticité complète de la base ne sont pas confirmées indépendamment."
+   "summary": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle."
   },
   "location": "La Réunion",
   "org": "Lycée polyvalent Paul Moreau",
@@ -4855,20 +4873,20 @@
  {
   "basis": "EVENT",
   "date": "2026-06-29",
-  "first_seen": "2026-08-15T11:56:00+04:00",
+  "first_seen": "2026-08-15T14:22:34.410008+04:00",
   "id": "INC-8ED480A79AA7",
   "items": 1,
-  "last_seen": "2026-08-15T11:56:00+04:00",
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
    ],
    "score": 60,
-   "summary": "Ancrage local explicite et échantillons revendiqués, mais aucune confirmation indépendante de l'authenticité complète ou de l'origine de la compromission."
+   "summary": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission."
   },
   "location": "La Réunion",
   "org": "EGEP Réunion",
-  "sector": "Inconnu",
+  "sector": "Construction / BTP",
   "sources": [
    "VEILLE_LLM"
   ],
@@ -6644,17 +6662,17 @@
  {
   "basis": "EVENT",
   "date": "2026-06-11",
-  "first_seen": "2026-08-15T11:56:00+04:00",
+  "first_seen": "2026-08-15T14:22:34.410008+04:00",
   "id": "INC-8C2C274A1222",
   "items": 1,
-  "last_seen": "2026-08-15T11:56:00+04:00",
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
   "local": {
    "references": [
     "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
     "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
    ],
    "score": 100,
-   "summary": "Incident confirmé directement par la Ville de Mamoudzou ; la presse locale confirme les perturbations de messagerie et les mesures de réponse."
+   "summary": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique."
   },
   "location": "Mayotte",
   "org": "Ville de Mamoudzou",
@@ -7759,7 +7777,7 @@
   "first_seen": "2026-08-14T18:00:00+04:00",
   "id": "INC-47B24BB72BA7",
   "items": 3,
-  "last_seen": "2026-08-15T11:56:00+04:00",
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
   "local": {
    "references": [
     "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/",
@@ -7767,7 +7785,7 @@
     "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
    ],
    "score": 100,
-   "summary": "Le score de 100 % porte uniquement sur l'existence de l'incident, sur la base de la confirmation rapportée par Le Quotidien ; la revendication ChimeraZ, le vecteur et le volume restent à distinguer de cette confirmation."
+   "summary": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation."
   },
   "location": "La Réunion",
   "org": "Air Austral",
@@ -11573,13 +11591,13 @@
   "first_seen": "2026-08-14T18:00:00+04:00",
   "id": "INC-73E635BC9E27",
   "items": 2,
-  "last_seen": "2026-08-15T11:56:00+04:00",
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
   "local": {
    "references": [
     "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
    ],
    "score": 75,
-   "summary": "Cible locale clairement identifiée et éléments techniques publiés, mais absence de confirmation publique de STOR Solutions."
+   "summary": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime."
   },
   "location": "La Réunion",
   "org": "STOR Solutions",
@@ -17400,20 +17418,20 @@
  {
   "basis": "EVENT",
   "date": "2026-02-19",
-  "first_seen": "2026-08-15T11:56:00+04:00",
+  "first_seen": "2026-08-15T14:22:34.410008+04:00",
   "id": "INC-78669787EE80",
   "items": 1,
-  "last_seen": "2026-08-15T11:56:00+04:00",
+  "last_seen": "2026-08-15T14:22:34.410008+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
    ],
    "score": 65,
-   "summary": "Ancrage réunionnais explicite dans la revendication, sans confirmation publique retrouvée de l'EPF Réunion."
+   "summary": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF."
   },
   "location": "La Réunion",
   "org": "EPF Réunion / VALGO",
-  "sector": "Construction / BTP",
+  "sector": "Administration / Collectivité",
   "sources": [
    "VEILLE_LLM"
   ],
