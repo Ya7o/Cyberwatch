@@ -1,0 +1,62 @@
+name: Finalize v0.7.28 target
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/retarget-release-trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - name: Nettoyer le helper et publier la release finale
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -f .github/workflows/retarget-release-once.yml .github/retarget-release-trigger
+          git add -A
+          git commit -m "chore: finalize v0.7.28 release"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          FINAL_SHA=$(git rev-parse HEAD)
+
+          gh release delete v0.7.28 --repo "$GITHUB_REPOSITORY" --yes
+          gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/tags/v0.7.28" || true
+
+          gh release create v0.7.28 \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$FINAL_SHA" \
+            --title "v0.7.28 — Lot 1 Mayotte stabilisé" \
+            --notes-file - <<'EOF'
+          ## Mayotte
+          - Couverture presse mahoraise stabilisée avec 4 sources directes actives.
+          - Historique 2026 validé et intégré par backfill ciblé.
+          - Incident Mamoudzou du 11 juin confirmé par Journal de Mayotte, Kwezi et Mayotte Hebdo : 1 incident, 3 sources éditoriales.
+          - État opérationnel final : 8 sources actives OK, 0 PARTIAL, 0 FAIL.
+
+          ## Simplification
+          - Live Repeat supprimé.
+          - CI allégée aux contrôles utiles.
+          - Baseline et CREATE simplifiés.
+          - Filtre « Presse mahoraise » intégré au dashboard.
+
+          ## Validation
+          - 389 tests passent.
+          - `check` PASS.
+          - `test-repeat` PASS.
+          - Collecte historique Mayotte : 4/4 sources directes OK.
+          - MAJ complète post-backfill : 8/8 sources actives OK.
+          - GitHub Pages PASS.
+          EOF
+
+          echo "FINAL_SHA=$FINAL_SHA"
