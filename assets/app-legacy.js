@@ -501,41 +501,10 @@ const quickButtons = [
     }).join("");
   }
 
-  function renderSources() {
-    const rows = (state.status && state.status.sources) || [];
-    const tbody = $("#sources-table tbody");
-
-    tbody.innerHTML = rows.map((source) => {
-      // Un zéro n'est un vrai zéro que si le protocole est allé au bout.
-      let itemsCell;
-      if (source.status === "SKIPPED") {
-        itemsCell = `<span class="zero-untrusted" title="Source hors périmètre de ce run">—</span>`;
-      } else if (source.items === 0) {
-        itemsCell = source.zero_is_trusted
-          ? `<span class="zero-trusted" title="Protocole complet : aucun incident sur la période">0 vérifié</span>`
-          : `<span class="zero-untrusted" title="Protocole incomplet : information indisponible">indisponible</span>`;
-      } else {
-        itemsCell = `<span class="zero-trusted">${source.items}</span>`;
-      }
-
-      const detail = source.comment || source.reason || "";
-      const access = source.access_method || "—";
-      return `<tr>
-        <td title="${esc(source.id)} — ${esc(source.url)}">${esc(source.id)}</td>
-        <td title="${esc(source.layer)}">${esc(source.layer)}</td>
-        <td><span class="chip" data-status="${esc(source.status)}">${esc(source.status)}</span></td>
-        <td>
-          <div class="coverage">
-            <span class="coverage-track"><span class="coverage-fill" style="width:${source.coverage}%"></span></span>
-            <span class="coverage-num">${source.coverage}%</span>
-          </div>
-        </td>
-        <td class="num">${itemsCell}</td>
-        <td class="cell-clip" title="${esc(access)}">${esc(access)}</td>
-        <td class="cell-detail">${esc(detail)}</td>
-      </tr>`;
-    }).join("");
-  }
+  // Rendu remplacé par le détail homogène de `dashboard-audit.js`
+  // (`#sources-detail-table`, mêmes 6 champs pour toute source) : plus
+  // aucun conteneur `#sources-table` dans le DOM, rien à faire ici.
+  function renderSources() {}
 
 
   function render() {

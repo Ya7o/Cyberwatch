@@ -74,15 +74,15 @@
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
       .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
       .local-analysis{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}.local-analysis p{margin:6px 0 0}.local-score{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis .evidence-links{margin-top:7px}
-      #sources-table{table-layout:auto!important}#sources-table td,#sources-table th{width:auto!important;vertical-align:top}.source-measures{white-space:normal!important}
+      .source-measures{white-space:normal!important}
       @media(max-width:700px){
         .topbar-inner{align-items:flex-start}.brand-sub{max-width:190px}.run-pill{white-space:normal;text-align:left}
         .incidents-card .table-scroll,.reliability .table-scroll{overflow:visible;max-height:none}
-        #incidents-table thead,#sources-table thead,#sources-detail-table thead{display:none}
-        #incidents-table,#incidents-table tbody,#incidents-table tr,#incidents-table td,#sources-table,#sources-table tbody,#sources-table tr,#sources-table td,#sources-detail-table,#sources-detail-table tbody,#sources-detail-table tr,#sources-detail-table td{display:block;width:100%}
-        #incidents-table tr,#sources-table tr,#sources-detail-table tr{padding:11px 0;border-bottom:1px solid var(--grid)}
-        #incidents-table td,#sources-table td,#sources-detail-table td{border:0!important;padding:3px 0!important;white-space:normal!important;max-width:none!important;overflow:visible!important;width:auto!important}
-        #incidents-table td[data-label]::before,#sources-table td[data-label]::before,#sources-detail-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
+        #incidents-table thead,#sources-detail-table thead{display:none}
+        #incidents-table,#incidents-table tbody,#incidents-table tr,#incidents-table td,#sources-detail-table,#sources-detail-table tbody,#sources-detail-table tr,#sources-detail-table td{display:block;width:100%}
+        #incidents-table tr,#sources-detail-table tr{padding:11px 0;border-bottom:1px solid var(--grid)}
+        #incidents-table td,#sources-detail-table td{border:0!important;padding:3px 0!important;white-space:normal!important;max-width:none!important;overflow:visible!important;width:auto!important}
+        #incidents-table td[data-label]::before,#sources-detail-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
         #incidents-table .org-cell{font-size:16px;font-weight:650;padding-bottom:7px!important}#incidents-table .org-cell::before{display:none}
         #incidents-table .sources-cell::before{display:block;margin-bottom:4px}
         .audit-pager{align-items:flex-start}.audit-pager-actions{width:100%;justify-content:space-between}
