@@ -848,8 +848,10 @@ class TestSectorEnrichmentEscalation:
         assert item.Sector == config.SECTOR_UNKNOWN
 
     def test_activite_immobiliere_enrichie_mappe_construction_btp(self, make_item, monkeypatch):
-        """Cas Savills avec enrichissement réussi : classify_sector() réel
-        (non mocké) doit suffire, sans second appel LLM."""
+        """Cas Savills avec enrichissement réussi : org_enrichment.NAF_SECTIONS
+        (non mocké) doit suffire, sans second appel LLM — la seule
+        information que fournit réellement l'API est le titre de section
+        NAF "Activités immobilières" (cf. org_enrichment.py)."""
         item = make_item(org="Savills France", sector=config.SECTOR_UNKNOWN)
         entry = RawEntry(title="Savills France victime d'un rançongiciel",
                           summary="Le groupe LockBit revendique l'attaque.",
@@ -861,14 +863,10 @@ class TestSectorEnrichmentEscalation:
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item.Organisation_Key, Query_Name="Savills France",
             Matched_Name="Savills France SAS", Company_ID="123456789",
-            Activity_Code="6831Z", Activity_Label="Agences immobilières",
+            Activity_Code="68.31Z", Activity_Label="Activités immobilières",
             Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
         )
         monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
-        monkeypatch.setattr(
-            ai, "_call_openai_activity_sector",
-            lambda *a, **k: pytest.fail("mapping déterministe suffisant : aucun appel LLM attendu"),
-        )
         state = enabled_state_with_enrichment()
 
         ai.qualify_item(item, entry, SPEC, state)
@@ -895,9 +893,11 @@ class TestSectorEnrichmentEscalation:
 
         assert item.Sector == config.SECTOR_UNKNOWN
 
-    def test_activite_non_mappable_declinee_par_le_llm_reste_inconnu(self, make_item, monkeypatch):
-        """Cas Bloctel enrichi : une activité sans mapping déterministe clair
-        et déclinée par le LLM d'activité reste Inconnu, mise en cache pour
+    def test_activite_non_mappable_reste_inconnu_sans_appel_llm(self, make_item, monkeypatch):
+        """Cas Bloctel enrichi : une section NAF sans correspondance claire
+        (ici "Autres activités de services") reste Inconnu, sans appel LLM
+        supplémentaire (la table NAF_SECTIONS couvre les 21 valeurs
+        possibles de façon exhaustive et déjà tranchée) — mise en cache pour
         ne jamais retenter une classification déjà infructueuse."""
         item = make_item(org="Bloctel", sector=config.SECTOR_UNKNOWN)
         entry = RawEntry(title="Bloctel victime d'une fuite de données",
@@ -906,21 +906,17 @@ class TestSectorEnrichmentEscalation:
         monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item.Organisation_Key, Query_Name="Bloctel",
-            Matched_Name="Opposetel", Company_ID="987654321", Activity_Code="8299Z",
-            Activity_Label="Gestion de bases de données de prospection commerciale",
+            Matched_Name="Opposetel", Company_ID="987654321", Activity_Code="82.99Z",
+            Activity_Label="Autres activités de services",
             Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
         )
         monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
-        monkeypatch.setattr(
-            ai, "_call_openai_activity_sector",
-            lambda *a, **k: _payload(sector=_field(config.SECTOR_UNKNOWN)),
-        )
         state = enabled_state_with_enrichment()
 
         ai.qualify_item(item, entry, SPEC, state)
 
         assert item.Sector == config.SECTOR_UNKNOWN
-        assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Via"] == "llm_declined"
+        assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Via"] == "no_deterministic_match"
 
     def test_libelle_distribution_mappe_directement_sans_appel_llm(self, make_item, monkeypatch):
         """Cas Intermarché/Magasins U : mapping déterministe direct."""
@@ -931,15 +927,11 @@ class TestSectorEnrichmentEscalation:
         monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item.Organisation_Key, Query_Name="Intermarché Testville",
-            Matched_Name="Intermarché Testville", Company_ID="111222333", Activity_Code="4711D",
-            Activity_Label="Supermarchés",
+            Matched_Name="Intermarché Testville", Company_ID="111222333", Activity_Code="47.11D",
+            Activity_Label="Commerce ; réparation d'automobiles et de motocycles",
             Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
         )
         monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
-        monkeypatch.setattr(
-            ai, "_call_openai_activity_sector",
-            lambda *a, **k: pytest.fail("mapping déterministe suffisant : aucun appel LLM attendu"),
-        )
         state = enabled_state_with_enrichment()
 
         ai.qualify_item(item, entry, SPEC, state)
@@ -955,16 +947,12 @@ class TestSectorEnrichmentEscalation:
         monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: _payload())
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item.Organisation_Key, Query_Name="Scalingo",
-            Matched_Name="Scalingo", Company_ID="111111111", Activity_Code="6311Z",
-            Activity_Label="Hébergement de données et services associés",
+            Matched_Name="Scalingo", Company_ID="111111111", Activity_Code="63.11Z",
+            Activity_Label="Information et communication",
             Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-14",
             Validated_Sector="Numérique / Technologie", Validated_Via="deterministic",
         )
         monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
-        monkeypatch.setattr(
-            ai, "_call_openai_activity_sector",
-            lambda *a, **k: pytest.fail("secteur déjà validé : aucun appel LLM attendu"),
-        )
         state = enabled_state_with_enrichment()
 
         ai.qualify_item(item, entry, SPEC, state)
@@ -980,7 +968,8 @@ class TestSectorEnrichmentEscalation:
                           published="2026-06-01", organisation="Intermarché Testville")
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item.Organisation_Key, Query_Name="Intermarché Testville",
-            Activity_Label="Supermarchés", Match_Status=org_enrichment.MATCHED,
+            Activity_Label="Commerce ; réparation d'automobiles et de motocycles",
+            Match_Status=org_enrichment.MATCHED,
             Fetched_At="2026-08-15",
         )
         monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
@@ -1000,7 +989,7 @@ class TestSectorEnrichmentEscalation:
                           published="2026-06-01", organisation="Bloctel")
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item.Organisation_Key, Query_Name="Bloctel",
-            Activity_Label="Gestion de bases de données de prospection commerciale",
+            Activity_Label="Autres activités de services",
             Match_Status=org_enrichment.MATCHED, Fetched_At="2026-08-15",
         )
         monkeypatch.setattr(ai.org_enrichment, "resolve", lambda *a, **k: record)
@@ -1037,7 +1026,7 @@ class TestSectorMetrics:
         )
         record = org_enrichment.OrgEnrichmentRecord(
             Organisation_Key=item_enriched.Organisation_Key, Query_Name="Savills France",
-            Activity_Label="Agences immobilières", Match_Status=org_enrichment.MATCHED,
+            Activity_Label="Activités immobilières", Match_Status=org_enrichment.MATCHED,
             Fetched_At="2026-08-15",
         )
 

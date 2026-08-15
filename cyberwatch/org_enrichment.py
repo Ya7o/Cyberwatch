@@ -15,6 +15,16 @@ Comme `ai.py::_call_openai`, l'appel HTTP est indépendant de
 `cyberwatch/http.py` (`HttpClient`/`Budget`) : la dimension de budget ici est
 un nombre d'appels par run, pas du respect de robots.txt ou de politesse
 inter-hôtes propre à un collecteur.
+
+Schéma réel vérifié le 2026-08-15 via un run GitHub Actions (le domaine est
+hors politique réseau du bac à sable de développement, `probe-org-schema`
+dans `bench-qualification.yml`) : chaque résultat porte `siren`,
+`nom_complet` (souvent "Nom commercial (Raison sociale)", à éviter pour le
+matching), `nom_raison_sociale` (dénomination légale nue, préférée),
+`activite_principale` (code NAF **nu**, ex. "63.11Z" — jamais un objet
+{code, libelle}) et `section_activite_principale` (une lettre A-U). L'API ne
+renvoie **aucun libellé d'activité détaillé** : `NAF_SECTION_LABELS` fournit
+le seul texte officiel disponible, au niveau section (grossier mais stable).
 """
 
 from __future__ import annotations
@@ -25,11 +35,72 @@ from dataclasses import asdict, dataclass, field, fields
 
 import requests
 
-from . import store
+from . import config, store
 from .normalize import organisation_key
 
 ORG_ENRICHMENT_URL = "https://recherche-entreprises.api.gouv.fr/search"
 ORG_ENRICHMENT_RESULTS_PER_QUERY = 5
+
+#: Titres officiels des 21 sections de la nomenclature NAF Rév. 2 (INSEE), et
+#: mapping déterministe explicite vers la taxonomie Secteur de Cyberwatch —
+#: volontairement une table dédiée à ce texte officiel plutôt qu'un appel à
+#: `normalize.classify_sector()` : ce dernier est réglé sur du texte libre
+#: d'article et fait déjà correspondre "distribution" à Commerce, ce qui
+#: classerait à tort les sections D/E (« Production et distribution
+#: d'électricité... ») en Commerce au lieu d'Énergie (constaté à l'exécution
+#: du premier benchmark réel). Sans correspondance claire -> Inconnu, jamais
+#: une catégorie forcée (mêmes principes que classify_sector). Fixe et
+#: grossier (une lettre -> un texte) plutôt qu'une table par code NAF
+#: (~700 entrées) : l'API de recherche ne renvoie de toute façon aucun
+#: libellé plus précis (cf. docstring de module).
+NAF_SECTIONS: dict[str, tuple[str, str]] = {
+    "A": ("Agriculture, sylviculture et pêche", config.SECTOR_UNKNOWN),
+    "B": ("Industries extractives", config.SECTOR_UNKNOWN),
+    "C": ("Industrie manufacturière", config.SECTOR_INDUSTRY),
+    "D": (
+        "Production et distribution d'électricité, de gaz, de vapeur et d'air conditionné",
+        config.SECTOR_ENERGY,
+    ),
+    "E": (
+        "Production et distribution d'eau ; assainissement, gestion des déchets et dépollution",
+        config.SECTOR_ENERGY,
+    ),
+    "F": ("Construction", config.SECTOR_CONSTRUCTION),
+    "G": ("Commerce ; réparation d'automobiles et de motocycles", config.SECTOR_RETAIL),
+    "H": ("Transports et entreposage", config.SECTOR_TRANSPORT),
+    "I": ("Hébergement et restauration", config.SECTOR_UNKNOWN),
+    "J": ("Information et communication", config.SECTOR_TECH),
+    "K": ("Activités financières et d'assurance", config.SECTOR_FINANCE),
+    # Politique Immobilier -> Construction/BTP documentée en METHODOLOGY.md §12 :
+    # la taxonomie Cyberwatch n'a pas de secteur "Immobilier" dédié.
+    "L": ("Activités immobilières", config.SECTOR_CONSTRUCTION),
+    # M/N : mêmes activités « de services aux entreprises » que celles déjà
+    # regroupées sous SECTOR_SERVICES via ACTIVITY_TO_SECTOR (ransomware.live
+    # "business services"/"legal services"/"accounting"...).
+    "M": ("Activités spécialisées, scientifiques et techniques", config.SECTOR_SERVICES),
+    "N": ("Activités de services administratifs et de soutien", config.SECTOR_SERVICES),
+    "O": ("Administration publique", config.SECTOR_ADMIN),
+    "P": ("Enseignement", config.SECTOR_EDUCATION),
+    "Q": ("Santé humaine et action sociale", config.SECTOR_HEALTH),
+    "R": ("Arts, spectacles et activités récréatives", config.SECTOR_UNKNOWN),
+    "S": ("Autres activités de services", config.SECTOR_UNKNOWN),
+    "T": ("Activités des ménages en tant qu'employeurs", config.SECTOR_UNKNOWN),
+    "U": ("Activités extra-territoriales", config.SECTOR_UNKNOWN),
+}
+
+NAF_SECTION_LABELS: dict[str, str] = {letter: label for letter, (label, _sector) in NAF_SECTIONS.items()}
+_LABEL_TO_SECTOR: dict[str, str] = {label: sector for label, sector in NAF_SECTIONS.values()}
+
+
+def sector_for_activity_label(activity_label: str) -> str:
+    """Secteur Cyberwatch déterministe pour un `Activity_Label` (titre de
+    section NAF officiel), ou `Inconnu`.
+
+    Ne devine jamais : une section sans correspondance claire (ambiguë ou
+    hors taxonomie) renvoie `Inconnu`, jamais un appel LLM ni une catégorie
+    forcée — cohérent avec la politique générale du pipeline Secteur.
+    """
+    return _LABEL_TO_SECTOR.get(activity_label, config.SECTOR_UNKNOWN)
 
 
 def _env_int(name: str, default: int) -> int:
@@ -170,6 +241,12 @@ def _match(query_name: str, payload: dict) -> tuple[str, dict]:
     Ne considère que les candidats dont le nom normalisé est **exactement**
     égal à celui recherché — jamais de correspondance floue, jamais le
     premier résultat retourné par l'API.
+
+    `nom_raison_sociale` (dénomination légale nue, ex. "SCALINGO") est
+    préféré à `nom_complet` : ce dernier compose souvent la forme
+    "Nom commercial (Raison sociale)" (vérifié sur une réponse réelle de
+    l'API, ex. "SCALINGO (SCALINGO)"), dont la parenthèse ferait échouer
+    l'égalité de clé normalisée même pour une correspondance évidente.
     """
     query_key = organisation_key(query_name)
     if not query_key:
@@ -183,7 +260,7 @@ def _match(query_name: str, payload: dict) -> tuple[str, dict]:
     for candidate in results:
         if not isinstance(candidate, dict):
             continue
-        name = candidate.get("nom_complet") or candidate.get("nom_raison_sociale") or ""
+        name = candidate.get("nom_raison_sociale") or candidate.get("nom_complet") or ""
         if organisation_key(str(name)) == query_key:
             exact.append(candidate)
 
@@ -198,15 +275,17 @@ def _match(query_name: str, payload: dict) -> tuple[str, dict]:
 
 
 def _record_from_candidate(org_key: str, query_name: str, candidate: dict, fetched_at: str) -> OrgEnrichmentRecord:
-    activity = candidate.get("activite_principale")
-    activity_code, activity_label = "", ""
-    if isinstance(activity, dict):
-        activity_code = str(activity.get("code") or "")
-        activity_label = str(activity.get("libelle") or "")
-    elif isinstance(activity, str):
-        activity_code = activity
+    # `activite_principale` est un code NAF nu (ex. "63.11Z"), jamais un objet
+    # {code, libelle} : l'API de recherche ne renvoie aucun libellé d'activité
+    # détaillé (vérifié sur une réponse réelle, cf. commentaire de tête de
+    # module). Le seul texte officiel disponible est le titre de la section
+    # NAF (une lettre, `section_activite_principale`) via NAF_SECTION_LABELS —
+    # volontairement grossier : 21 entrées fixes, jamais une table par code.
+    activity_code = str(candidate.get("activite_principale") or "")
+    section = str(candidate.get("section_activite_principale") or "")
+    activity_label = NAF_SECTION_LABELS.get(section, "")
 
-    matched_name = str(candidate.get("nom_complet") or candidate.get("nom_raison_sociale") or "")
+    matched_name = str(candidate.get("nom_raison_sociale") or candidate.get("nom_complet") or "")
     siren = str(candidate.get("siren") or "")
     return OrgEnrichmentRecord(
         Organisation_Key=org_key,

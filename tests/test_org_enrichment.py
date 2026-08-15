@@ -32,11 +32,20 @@ def enabled_state(**overrides) -> org_enrichment.OrgEnrichmentState:
     return org_enrichment.OrgEnrichmentState(**defaults)
 
 
-def _result(nom_complet, siren, code="6311Z", libelle="Hébergement de données et services associés"):
+def _result(nom_raison_sociale, siren, code="63.11Z", section="J"):
+    """Forme réelle vérifiée le 2026-08-15 (run GitHub Actions `probe-org-schema`,
+    domaine hors politique réseau du bac à sable) : `nom_complet` compose
+    souvent "Nom commercial (Raison sociale)" (à éviter pour le matching),
+    `activite_principale` est un code NAF nu (jamais un objet code/libelle),
+    aucun libellé d'activité détaillé n'est renvoyé — seul
+    `section_activite_principale` (une lettre) permet d'en dériver un via
+    `org_enrichment.NAF_SECTION_LABELS`."""
     return {
-        "nom_complet": nom_complet,
+        "nom_complet": f"{nom_raison_sociale} ({nom_raison_sociale})",
+        "nom_raison_sociale": nom_raison_sociale,
         "siren": siren,
-        "activite_principale": {"code": code, "libelle": libelle},
+        "activite_principale": code,
+        "section_activite_principale": section,
     }
 
 
@@ -52,9 +61,29 @@ class TestMatching:
         record = org_enrichment.resolve("scalingo", "Scalingo", "2026-08-15", state)
 
         assert record.Match_Status == "MATCHED"
-        assert record.Activity_Label == "Hébergement de données et services associés"
+        assert record.Activity_Label == "Information et communication"
+        assert record.Activity_Code == "63.11Z"
         assert record.Company_ID == "111111111"
         assert state.calls_matched == 1
+
+    def test_nom_complet_avec_parenthese_najamais_appliquee_au_matching(self, monkeypatch):
+        """`nom_complet` compose "Nom (Raison sociale)" : matcher dessus
+        casserait une correspondance évidente (constaté sur une réponse
+        réelle de l'API). `nom_raison_sociale` doit primer."""
+        payload = {"results": [{
+            "nom_complet": "SCALINGO (SCALINGO)", "nom_raison_sociale": "SCALINGO",
+            "siren": "111111111", "activite_principale": "63.11Z",
+            "section_activite_principale": "J",
+        }]}
+        monkeypatch.setattr(
+            org_enrichment.requests, "get",
+            lambda *a, **k: _FakeResponse(200, payload),
+        )
+        state = enabled_state()
+
+        record = org_enrichment.resolve("scalingo", "Scalingo", "2026-08-15", state)
+
+        assert record.Match_Status == "MATCHED"
 
     def test_aucun_resultat_est_not_found(self, monkeypatch):
         monkeypatch.setattr(

@@ -289,6 +289,9 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_TRANSPORT, [
         "compagnie aerienne", "airlines", "airways", "aeroport", "air austral",
         "airport", "port maritime", "grand port", "portuaire", "transport",
+        # "transports" (pluriel) : libellé officiel de la section H de la
+        # nomenclature NAF ("Transports et entreposage", cf. org_enrichment.py).
+        "transports", "entreposage",
         "logistique", "logistics", "fret", "maritime", "shipping",
     ]),
     (SECTOR_SPORT, [

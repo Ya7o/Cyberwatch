@@ -30,7 +30,7 @@ from . import config, org_enrichment, store
 from .collectors.base import RawEntry, SourceSpec
 from .identity import SEP
 from .model import Item
-from .normalize import classify_sector, organisation_key, searchable
+from .normalize import organisation_key, searchable
 
 # --------------------------------------------------------------------------
 # Modèle et tarification
@@ -102,18 +102,6 @@ SYSTEM_PROMPT = (
     "cybercriminel, etc.)."
 )
 
-#: Prompt du deuxième appel possible pour Secteur (§12 METHODOLOGY.md) : ne
-#: reçoit qu'un libellé d'activité officiel, jamais de nom d'organisation ni
-#: de récit d'incident — impossible d'y deviner un secteur autrement qu'en
-#: classifiant le texte reçu.
-ACTIVITY_SECTOR_SYSTEM_PROMPT = (
-    "Tu classes un libellé d'activité économique officiel dans une taxonomie "
-    "fermée de secteurs. Tu ne reçois ni nom d'organisation ni récit "
-    "d'incident : réponds uniquement à partir du libellé fourni. Si ce "
-    "libellé ne correspond clairement à aucun secteur de la liste, réponds "
-    "Inconnu plutôt que de deviner."
-)
-
 
 def _env_int(name: str, default: int) -> int:
     value = os.getenv(name)
@@ -180,6 +168,11 @@ class AiRunState:
     sector_evidence_rejected: int = 0
     sector_resolved_enrichment_cache: int = 0
     sector_resolved_enriched_deterministic: int = 0
+    #: Toujours 0 : l'enrichissement gratuit ne fournit qu'un des 21 titres
+    #: de section NAF, déjà classés de façon exhaustive et déterministe
+    #: (org_enrichment.NAF_SECTIONS) — aucun second appel LLM n'est déclenché
+    #: (§12 METHODOLOGY.md). Colonne conservée pour la forme de la métrique
+    #: `Sector_Resolved_Enriched_LLM` (data/ai_usage.csv).
     sector_resolved_enriched_llm: int = 0
 
     started: float = field(default_factory=time.monotonic)
@@ -351,12 +344,7 @@ def _extract_usage(payload: dict) -> dict:
 
 
 def _post_openai(body: dict, state: AiRunState) -> dict:
-    """POST unique et indépendant, retry borné sur 429/5xx/timeout (§9).
-
-    Partagé par `_call_openai` (premier appel, contexte source) et
-    `_call_openai_activity_sector` (deuxième appel possible, libellé
-    d'activité seul, §12) — même contrat, seul le corps de la requête diffère.
-    """
+    """POST unique et indépendant, retry borné sur 429/5xx/timeout (§9)."""
     headers = {
         "Authorization": f"Bearer {state.api_key}",
         "Content-Type": "application/json",
@@ -403,30 +391,6 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
         # de raisonnement (famille gpt-5) peut consommer tout
         # `max_output_tokens` en jetons de raisonnement internes et renvoyer
         # un HTTP 200 sans aucun message (cf. `_extract_output_json`).
-        "reasoning": {"effort": "minimal"},
-        "max_output_tokens": state.max_output_tokens,
-    }
-    return _post_openai(body, state)
-
-
-def _call_openai_activity_sector(activity_label: str, state: AiRunState) -> dict:
-    """Deuxième appel possible pour Secteur (§12) : ne transmet QUE le
-    libellé d'activité officiel obtenu par enrichissement — jamais de nom
-    d'organisation, jamais de contexte d'incident."""
-    body = {
-        "model": state.model,
-        "input": [
-            {"role": "system", "content": ACTIVITY_SECTOR_SYSTEM_PROMPT},
-            {"role": "user", "content": f"Libellé d'activité officiel : {activity_label}"},
-        ],
-        "text": {
-            "format": {
-                "type": "json_schema",
-                "name": "cyberwatch_activity_sector",
-                "schema": _build_schema(["Sector"]),
-                "strict": True,
-            }
-        },
         "reasoning": {"effort": "minimal"},
         "max_output_tokens": state.max_output_tokens,
     }
@@ -659,65 +623,30 @@ def _escalate_sector(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRun
         # tentative à chaque run.
         return
 
-    # a) mapping déterministe gratuit — réutilise classify_sector() tel
-    #    quel, aucune nouvelle table NAF à maintenir.
-    sector = classify_sector(given=record.Activity_Label)
-    if sector != config.SECTOR_UNKNOWN:
-        item.Sector = sector
-        record.Validated_Sector = sector
-        record.Validated_Via = "deterministic"
-        org_state.cache[item.Organisation_Key] = asdict(record)
-        state.sector_resolved_enriched_deterministic += 1
-        state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
-        return
-
-    # b) dernier recours : un unique appel LLM scopé exclusivement au
-    #    libellé d'activité (aucun nom d'organisation, aucun contexte
-    #    d'incident) — budget partagé avec le premier appel.
-    if not state.enabled:
-        return
-    if state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
-        state.budget_stopped = True
-        state.calls_budget_blocked += 1
-        return
-    state.calls_attempted += 1
-    try:
-        payload = _call_openai_activity_sector(record.Activity_Label, state)
-        raw = _extract_output_json(payload)
-    except AiCallError as exc:
-        state.calls_failed += 1
-        print(f"Qualification IA : appel secteur-activité échoué pour {item.Item_ID} ({exc}).")
-        return
-
-    usage = _extract_usage(payload)
-    state.input_tokens += usage["input_tokens"]
-    state.cached_input_tokens += usage["cached_input_tokens"]
-    state.output_tokens += usage["output_tokens"]
-    state.reasoning_tokens += usage["reasoning_tokens"]
-    state.total_tokens += usage["total_tokens"]
-    cost = _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
-    state.estimated_cost_usd += cost
-
-    decision, _rejected = _validate(raw, ["Sector"], record.Activity_Label, "")
-    if "Sector" not in decision:
-        state.calls_failed += 1
-        record.Validated_Via = "llm_declined"
+    # Mapping déterministe — table dédiée aux 21 sections NAF
+    # (org_enrichment.NAF_SECTIONS), pas classify_sector() : ce dernier est
+    # réglé sur du texte libre d'article et fait correspondre "distribution"
+    # à Commerce, ce qui classerait à tort "Production et distribution
+    # d'électricité..." en Commerce au lieu d'Énergie (constaté au premier
+    # benchmark réel, cf. org_enrichment.py).
+    #
+    # Aucun appel LLM supplémentaire : le seul texte que l'API gratuite
+    # fournit est l'un des 21 titres de section NAF, déjà classés de façon
+    # exhaustive et délibérée par NAF_SECTIONS (y compris vers Inconnu quand
+    # aucune correspondance n'est claire) — payer un appel pour reclassifier
+    # une valeur déjà connue violerait le principe « jamais de LLM pour
+    # confirmer une valeur fiable déterministe » (§11).
+    sector = org_enrichment.sector_for_activity_label(record.Activity_Label)
+    if sector == config.SECTOR_UNKNOWN:
+        record.Validated_Via = "no_deterministic_match"
         org_state.cache[item.Organisation_Key] = asdict(record)
         return
 
-    state.calls_succeeded += 1
-    value = decision["Sector"]
-    confidence = decision["Sector_Confidence"]
-    if value == config.SECTOR_UNKNOWN or confidence < THRESHOLD_SECTOR:
-        record.Validated_Via = "llm_declined"
-        org_state.cache[item.Organisation_Key] = asdict(record)
-        return
-
-    item.Sector = value
-    record.Validated_Sector = value
-    record.Validated_Via = "llm"
+    item.Sector = sector
+    record.Validated_Sector = sector
+    record.Validated_Via = "deterministic"
     org_state.cache[item.Organisation_Key] = asdict(record)
-    state.sector_resolved_enriched_llm += 1
+    state.sector_resolved_enriched_deterministic += 1
     state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
 
 

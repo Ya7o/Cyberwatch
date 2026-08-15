@@ -444,13 +444,31 @@ Sector Inconnu après déterministe + référentiel ?
          (`normalize.organisation_key`) ; plusieurs entités légales
          distinctes partageant ce nom (ex. franchises) → AMBIGUOUS, Sector
          reste Inconnu, jamais de choix arbitraire
-  → libellé d'activité officiel obtenu (cache ou HTTP frais) →
-       classify_sector(given=libellé) d'abord (règles déterministes
-       existantes, coût nul, aucune nouvelle table NAF) → si toujours
-       Inconnu, un unique appel OpenAI classique scopé exclusivement à ce
-       libellé (ni nom d'organisation, ni récit d'incident transmis)
-  → aucune activité fiable obtenue → Inconnu reste Inconnu, jamais deviné
+  → titre de section NAF obtenu (cache ou HTTP frais, cf. note API) →
+       mapping déterministe via `org_enrichment.NAF_SECTIONS` (21 entrées
+       fixes, coût nul, aucun appel LLM — la table couvre les 21 valeurs
+       possibles de façon exhaustive, y compris vers Inconnu)
+  → aucune activité fiable obtenue, ou section sans correspondance claire →
+       Inconnu reste Inconnu, jamais deviné
 ```
+
+**Note API (corrigée après le premier run réel du 2026-08-15)** : le plan
+initial prévoyait un libellé d'activité détaillé par code NAF, classifié en
+dernier recours par un second appel OpenAI scopé. La réponse réelle de
+`recherche-entreprises.api.gouv.fr` (vérifiée via le job `probe-org-schema`
+de `bench-qualification.yml`, seule voie réseau capable d'atteindre ce
+domaine) ne fournit **aucun libellé d'activité détaillé** : `activite_principale`
+est un code NAF nu (ex. `"63.11Z"`), jamais un objet `{code, libelle}`. Le
+seul texte officiel disponible est le titre de la section NAF à une lettre
+(`section_activite_principale`, A à U), exploité via `NAF_SECTION_LABELS`.
+Comme cette section ne peut prendre que 21 valeurs, `NAF_SECTIONS` les
+tranche toutes explicitement et **aucun second appel LLM n'a lieu** —
+l'appeler aurait payé pour reclassifier une valeur déjà connue de façon
+déterministe, contraire au §11 (« jamais de LLM pour confirmer une valeur
+fiable »). Le même run a aussi révélé que `nom_complet` compose souvent
+« Nom commercial (Raison sociale) » : le matching utilise `nom_raison_sociale`
+en priorité pour éviter qu'une parenthèse ne casse une correspondance
+évidente.
 
 **Preuve stricte côté LLM (`ai.py::_validate`/`_sector_evidence_reason`)** :
 chaque champ demandé est désormais validé indépendamment (un rejet sur
@@ -476,21 +494,20 @@ fait jamais échouer la collecte.
 `Organisation_Key`, sans TTL — cohérent avec `ai_qualifications.csv` et
 `enrichment_reference.csv`. `MATCHED`/`AMBIGUOUS`/`NOT_FOUND` sont
 permanents (jamais retentés) ; `ERROR` ne l'est jamais (retenté à chaque
-run). `Validated_Sector`/`Validated_Via` (`deterministic`/`llm`/
-`llm_declined`) évitent tout nouvel appel — HTTP ou OpenAI — une fois un
-secteur validé ou une classification LLM déjà tentée sans succès.
+run). `Validated_Sector`/`Validated_Via` (`deterministic` ou
+`no_deterministic_match`) évitent toute nouvelle requête HTTP une fois un
+secteur validé ou une section NAF déjà classée sans correspondance.
 
 **Politique Immobilier → Construction / BTP** : la taxonomie Cyberwatch n'a
-pas de secteur « Immobilier » dédié. Une activité immobilière (agence,
-gestion de biens) tombe dans « Construction / BTP » via les motifs déjà
-existants de `SECTOR_RULES`/`ACTIVITY_TO_SECTOR` — politique documentée
-explicitement ici, pas laissée à la discrétion implicite du LLM
-d'activité, qui ne reçoit qu'une taxonomie fermée et répond `Inconnu` si
-aucune valeur ne correspond clairement.
+pas de secteur « Immobilier » dédié. La section NAF L (« Activités
+immobilières ») est explicitement mappée vers « Construction / BTP » dans
+`org_enrichment.NAF_SECTIONS` — politique documentée ici, pas laissée à la
+discrétion d'un LLM.
 
-**Budget** : partagé avec le §11 (mêmes compteurs `calls_attempted`/
-`estimated_cost_usd` par run) — un seul modèle de budget, pas de plafond
-séparé à gérer. L'enrichissement HTTP a son propre plafond
+**Budget** : le mapping NAF_SECTIONS étant déterministe et sans appel LLM,
+le pipeline Secteur ne consomme le budget OpenAI (mêmes compteurs
+`calls_attempted`/`estimated_cost_usd` que le §11) que pour la tentative sur
+le contexte source. L'enrichissement HTTP a son propre plafond
 (`ORG_ENRICHMENT_MAX_CALLS_PER_RUN`, défaut 200), indépendant du budget
 OpenAI.
 
@@ -499,7 +516,8 @@ OpenAI.
 `Sector_Resolved_Deterministic`, `Sector_Resolved_Source_LLM`,
 `Sector_Evidence_Rejected`, `Sector_Enrichment_Cache_Hit`,
 `Sector_Enrichment_Http_Attempted/Matched/Ambiguous/Not_Found/Error`,
-`Sector_Resolved_Enriched_Deterministic`, `Sector_Resolved_Enriched_LLM`,
+`Sector_Resolved_Enriched_Deterministic`, `Sector_Resolved_Enriched_LLM`
+(toujours 0, conservée pour la forme — cf. note API ci-dessus),
 `Sector_Remaining_Unknown`, `Org_Enrichment_Calls`,
 `Org_Enrichment_Duration_s`, `Org_Enrichment_Cache_Hit_Rate`.
 
