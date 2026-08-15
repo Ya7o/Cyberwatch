@@ -1,22 +1,32 @@
-name: Backfill Mayotte press history
+name: Initialize Baseline
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/initialize-trigger"
+  workflow_dispatch:
+    inputs:
+      as_of:
+        description: "Cutoff ISO 8601 (optionnel)"
+        type: string
+        default: ""
+      start:
+        description: "Début AAAA-MM-JJ (optionnel ; 1er janvier par défaut)"
+        type: string
+        default: ""
+      layers:
+        description: "Couches à exécuter"
+        type: string
+        default: "all"
 
 permissions:
   contents: write
 
 concurrency:
-  group: mayotte-history-backfill
+  group: initialize-baseline
   cancel-in-progress: false
 
 jobs:
-  backfill-mayotte:
+  initialize:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0 (Node 24)
@@ -24,48 +34,41 @@ jobs:
           python-version: "3.11"
           cache: pip
       - name: Installer les dépendances
-        run: pip install -r requirements.txt
-      - name: Backfill presse mahoraise
         run: |
-          python -m cyberwatch maj \
-            --layers local_media \
-            --start 2026-01-01 \
-            --as-of 2026-08-15T09:37:00+04:00
-      - name: Contrôles
+          pip install -r requirements.txt
+      - name: Figer le contexte d'initialisation
         run: |
-          python -m cyberwatch check
-          python -m cyberwatch test-repeat
-          python -m cyberwatch build-site
-      - name: Vérifier Mamoudzou
+          AS_OF="${{ inputs.as_of }}"
+          if [ -z "$AS_OF" ]; then AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"; fi
+          echo "AS_OF=$AS_OF" >> "$GITHUB_ENV"
+          echo "TARGET_START=${{ inputs.start }}" >> "$GITHUB_ENV"
+          echo "LAYERS=${{ inputs.layers }}" >> "$GITHUB_ENV"
+      - name: Tests unitaires
+        run: python -m pytest tests/ -q
+      - name: CREATE contrôlé
         run: |
-          python - <<'PY'
-          from cyberwatch import store
-
-          matches = [
-              incident for incident in store.load_incidents()
-              if "mamoudzou" in (incident.Organisation or "").lower()
-              and incident.Date.startswith("2026-06-11")
-          ]
-          assert matches, "Incident Mamoudzou du 11 juin 2026 absent après backfill"
-          incident = matches[0]
-          print(
-              f"MAMOUDZOU|{incident.Incident_ID}|{incident.Date}|{incident.Organisation}|"
-              f"{incident.Localisation}|items={incident.Items_Count}|sources={incident.Sources}|"
-              f"urls={incident.Source_URLs}"
-          )
-          expected = {"JOURNAL_DE_MAYOTTE", "KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE"}
-          actual = {part.strip() for part in incident.Sources.split("|") if part.strip()}
-          assert expected <= actual, f"Sources Mamoudzou incomplètes: {actual}"
-          PY
-      - name: Publier le backfill
+          ARGS=(--as-of "$AS_OF" --layers "$LAYERS")
+          if [ -n "$TARGET_START" ]; then ARGS+=(--start "$TARGET_START"); fi
+          python -m cyberwatch create "${ARGS[@]}"
+      - name: Check strict
+        run: python -m cyberwatch check
+      - name: Test de répétabilité offline
+        run: python -m cyberwatch test-repeat
+      - name: Créer la baseline
+        run: python -m cyberwatch baseline --as-of "$AS_OF"
+      - name: Construire le dashboard
+        run: python -m cyberwatch build-site
+      - name: Check final strict
+        run: python -m cyberwatch check
+      - name: Publier la baseline
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data assets/data
           if git diff --staged --quiet; then
-            echo "Aucun changement de données à publier."
+            echo "Aucun artefact à publier."
             exit 0
           fi
-          git commit -m "data: backfill Mayotte press history"
+          git commit -m "data: initialize baseline ${AS_OF}"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
