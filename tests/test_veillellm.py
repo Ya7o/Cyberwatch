@@ -1,3 +1,5 @@
+import json
+
 from cyberwatch import config, identity, site, sources
 from cyberwatch.collectors import get_collector
 from cyberwatch.collectors.base import Window
@@ -32,16 +34,27 @@ def test_veille_llm_source_is_active_analytical_snapshot():
 
 def test_veille_llm_imports_full_snapshot_and_rejects_weak_signals():
     spec = sources.by_id("VEILLE_LLM")
-    result = get_collector(spec.collector).collect(
-        None, spec, Window("2026-07-25", "2026-08-15")
-    )
+    window = Window("2026-07-25", "2026-08-15")
+    result = get_collector(spec.collector).collect(None, spec, window)
+
+    with open(spec.params["path"], encoding="utf-8") as handle:
+        snapshot = json.load(handle)
+    records = snapshot["incidents"]
+    min_score = int(spec.params["min_score"])
+    expected = [
+        record for record in records
+        if int(record["score_cyberattaque"]) >= min_score
+        and record["date"] <= window.end
+    ]
+    weak_organisations = {
+        record["organisation"] for record in records
+        if int(record["score_cyberattaque"]) < min_score
+    }
+
     assert result.resolve() == ("OK", 100)
-    assert result.items_seen == 8
-    assert len(result.entries) == 6
-    organisations = {entry.organisation for entry in result.entries}
-    assert "Commune de Ouangani" not in organisations
-    assert "Le Quotidien de La Réunion" not in organisations
-    assert "Ville de Mamoudzou" in organisations
+    assert result.items_seen == len(records) == int(snapshot["metadata"]["record_count"])
+    assert len(result.entries) == len(expected)
+    assert not ({entry.organisation for entry in result.entries} & weak_organisations)
     assert all(
         entry.location in {config.LOC_REUNION, config.LOC_MAYOTTE}
         for entry in result.entries
