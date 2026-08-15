@@ -22,14 +22,15 @@ import hashlib
 import json
 import os
 import time
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 
 import requests
 
-from . import config, store
+from . import config, org_enrichment, store
 from .collectors.base import RawEntry, SourceSpec
 from .identity import SEP
 from .model import Item
+from .normalize import classify_sector, organisation_key, searchable
 
 # --------------------------------------------------------------------------
 # Modèle et tarification
@@ -57,7 +58,7 @@ PRICING = {
     DEFAULT_MODEL: {"input": 0.05, "output": 0.40},
 }
 
-PROMPT_VERSION = "2026-08-15.1"
+PROMPT_VERSION = "2026-08-15.2"
 SCHEMA_VERSION = "1"
 
 OPENAI_URL = "https://api.openai.com/v1/responses"
@@ -93,7 +94,24 @@ SYSTEM_PROMPT = (
     "fourni justifiant la valeur choisie (une phrase maximum), jamais une "
     "justification longue. Pour la localisation, n'indique un territoire que "
     "s'il est explicitement soutenu par le texte fourni : ne déduis jamais "
-    "un territoire du seul nom ou secteur d'activité d'une organisation."
+    "un territoire du seul nom ou secteur d'activité d'une organisation. "
+    "Pour le secteur, n'indique une valeur que si le contexte décrit "
+    "explicitement l'activité de l'organisation (ce qu'elle fait, vend, gère "
+    "ou exploite) : ne déduis jamais un secteur du seul nom de l'organisation, "
+    "ni du vocabulaire de l'incident (rançongiciel, fuite de données, groupe "
+    "cybercriminel, etc.)."
+)
+
+#: Prompt du deuxième appel possible pour Secteur (§12 METHODOLOGY.md) : ne
+#: reçoit qu'un libellé d'activité officiel, jamais de nom d'organisation ni
+#: de récit d'incident — impossible d'y deviner un secteur autrement qu'en
+#: classifiant le texte reçu.
+ACTIVITY_SECTOR_SYSTEM_PROMPT = (
+    "Tu classes un libellé d'activité économique officiel dans une taxonomie "
+    "fermée de secteurs. Tu ne reçois ni nom d'organisation ni récit "
+    "d'incident : réponds uniquement à partir du libellé fourni. Si ce "
+    "libellé ne correspond clairement à aucun secteur de la liste, réponds "
+    "Inconnu plutôt que de deviner."
 )
 
 
@@ -153,6 +171,17 @@ class AiRunState:
     total_tokens: int = 0
     estimated_cost_usd: float = 0.0
 
+    #: Pipeline Secteur (§12 METHODOLOGY.md) — enrichissement et métriques
+    #: dédiées, distinctes des compteurs génériques ci-dessus.
+    org_enrichment: "org_enrichment.OrgEnrichmentState" = field(
+        default_factory=org_enrichment.OrgEnrichmentState
+    )
+    sector_resolved_source_llm: int = 0
+    sector_evidence_rejected: int = 0
+    sector_resolved_enrichment_cache: int = 0
+    sector_resolved_enriched_deterministic: int = 0
+    sector_resolved_enriched_llm: int = 0
+
     started: float = field(default_factory=time.monotonic)
 
 
@@ -171,6 +200,7 @@ def start_run() -> AiRunState:
         max_cost=_env_float("AI_MAX_ESTIMATED_COST_USD_PER_RUN", 1.00),
         max_context_chars=_env_int("AI_MAX_CONTEXT_CHARS", 4000),
         max_output_tokens=_env_int("AI_MAX_OUTPUT_TOKENS", 600),
+        org_enrichment=org_enrichment.start_state(),
     )
     if not state.enabled:
         print("Qualification IA désactivée : OPENAI_API_KEY absente.")
@@ -237,7 +267,11 @@ def _build_schema(requested: list[str]) -> dict:
 
 
 def _user_content(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[str], max_chars: int) -> str:
+    """Structuré en 3 sections (§12 METHODOLOGY.md) pour que le modèle ne
+    confonde jamais métadonnées/récit d'incident avec une preuve d'activité
+    métier : seule la section B peut justifier une valeur de Secteur."""
     lines = [
+        "=== A. Métadonnées (jamais une preuve d'activité métier) ===",
         f"Source_ID: {item.Source_ID}",
         f"Organisation_Raw: {item.Organisation_Raw}",
         f"Published_Date: {item.Published_Date}",
@@ -246,12 +280,21 @@ def _user_content(item: Item, entry: RawEntry, spec: SourceSpec, requested: list
         f"Threat actuel: {item.Threat}",
         f"Sector actuel: {item.Sector}",
         f"Location actuelle: {item.Location}",
+        "",
+        "=== B. Contexte brut (seule source de preuve admissible) ===",
         f"Titre: {entry.title}",
         f"Contexte: {_context(entry, max_chars)}",
         "",
-        "Champs à qualifier (uniquement ceux-ci, les autres sont déjà connus "
-        "et ne doivent pas être reconsidérés) : " + ", ".join(requested),
+        "=== C. Champs à qualifier ===",
+        "Uniquement ceux-ci, les autres sont déjà connus et ne doivent pas "
+        "être reconsidérés : " + ", ".join(requested),
     ]
+    if "Sector" in requested:
+        lines.append(
+            "Pour Secteur : la valeur ne peut être choisie que si la section B "
+            "décrit explicitement l'activité de l'organisation. Si la section B "
+            "ne contient aucune description d'activité, réponds Inconnu pour Secteur."
+        )
     return "\n".join(lines)
 
 
@@ -307,30 +350,13 @@ def _extract_usage(payload: dict) -> dict:
     }
 
 
-def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[str], state: AiRunState) -> dict:
-    """POST unique et indépendant, retry borné sur 429/5xx/timeout (§9)."""
-    body = {
-        "model": state.model,
-        "input": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": _user_content(item, entry, spec, requested, state.max_context_chars)},
-        ],
-        "text": {
-            "format": {
-                "type": "json_schema",
-                "name": "cyberwatch_qualification",
-                "schema": _build_schema(requested),
-                "strict": True,
-            }
-        },
-        # "minimal" : la tâche est une classification fermée sur un contexte
-        # court, pas un raisonnement à plusieurs étapes. Sans ceci, un modèle
-        # de raisonnement (famille gpt-5) peut consommer tout
-        # `max_output_tokens` en jetons de raisonnement internes et renvoyer
-        # un HTTP 200 sans aucun message (cf. `_extract_output_json`).
-        "reasoning": {"effort": "minimal"},
-        "max_output_tokens": state.max_output_tokens,
-    }
+def _post_openai(body: dict, state: AiRunState) -> dict:
+    """POST unique et indépendant, retry borné sur 429/5xx/timeout (§9).
+
+    Partagé par `_call_openai` (premier appel, contexte source) et
+    `_call_openai_activity_sector` (deuxième appel possible, libellé
+    d'activité seul, §12) — même contrat, seul le corps de la requête diffère.
+    """
     headers = {
         "Authorization": f"Bearer {state.api_key}",
         "Content-Type": "application/json",
@@ -357,35 +383,152 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
         raise AiCallError(f"HTTP {response.status_code}: {response.text[:200]}")
 
 
-def _validate(raw: dict, requested: list[str], context: str) -> dict | None:
-    """Valide strictement la réponse (§6). Tout échec => réponse rejetée."""
+def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[str], state: AiRunState) -> dict:
+    body = {
+        "model": state.model,
+        "input": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": _user_content(item, entry, spec, requested, state.max_context_chars)},
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "cyberwatch_qualification",
+                "schema": _build_schema(requested),
+                "strict": True,
+            }
+        },
+        # "minimal" : la tâche est une classification fermée sur un contexte
+        # court, pas un raisonnement à plusieurs étapes. Sans ceci, un modèle
+        # de raisonnement (famille gpt-5) peut consommer tout
+        # `max_output_tokens` en jetons de raisonnement internes et renvoyer
+        # un HTTP 200 sans aucun message (cf. `_extract_output_json`).
+        "reasoning": {"effort": "minimal"},
+        "max_output_tokens": state.max_output_tokens,
+    }
+    return _post_openai(body, state)
+
+
+def _call_openai_activity_sector(activity_label: str, state: AiRunState) -> dict:
+    """Deuxième appel possible pour Secteur (§12) : ne transmet QUE le
+    libellé d'activité officiel obtenu par enrichissement — jamais de nom
+    d'organisation, jamais de contexte d'incident."""
+    body = {
+        "model": state.model,
+        "input": [
+            {"role": "system", "content": ACTIVITY_SECTOR_SYSTEM_PROMPT},
+            {"role": "user", "content": f"Libellé d'activité officiel : {activity_label}"},
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "cyberwatch_activity_sector",
+                "schema": _build_schema(["Sector"]),
+                "strict": True,
+            }
+        },
+        "reasoning": {"effort": "minimal"},
+        "max_output_tokens": state.max_output_tokens,
+    }
+    return _post_openai(body, state)
+
+
+_SECTOR_INCIDENT_VOCAB: set[str] | None = None
+
+
+def _sector_incident_vocab() -> set[str]:
+    """Vocabulaire d'incident (rançongiciel, fuite, groupe cybercriminel...),
+    construit une fois à partir des tables déjà existantes et testées de
+    `config.py` — aucune nouvelle liste de mots à maintenir ici."""
+    global _SECTOR_INCIDENT_VOCAB
+    if _SECTOR_INCIDENT_VOCAB is None:
+        markers = set(config.CYBER_PREFIXES) | set(config.CYBER_PHRASES) | set(config.RANSOMWARE_GROUPS)
+        for _threat, patterns in config.THREAT_RULES:
+            markers.update(patterns)
+        _SECTOR_INCIDENT_VOCAB = markers
+    return _SECTOR_INCIDENT_VOCAB
+
+
+def _looks_like_bare_org_name(evidence: str, organisation_key_: str) -> bool:
+    """Vrai si l'evidence ne décrit rien de plus que le nom de l'organisation
+    lui-même (§12 : « le simple nom de l'entreprise » n'est jamais une preuve)."""
+    return bool(organisation_key_) and organisation_key(evidence) == organisation_key_
+
+
+def _looks_like_incident_narrative(evidence_searchable: str) -> bool:
+    """Vrai si l'evidence s'appuie sur le vocabulaire de la menace plutôt que
+    sur l'activité de la victime. Générique (aucun cas par source) : couvre
+    RANSOMWARE_LIVE (nom de groupe, "rançongiciel"...) sans code dédié."""
+    return any(marker in evidence_searchable for marker in _sector_incident_vocab())
+
+
+def _sector_evidence_reason(evidence: str, organisation_key_: str, context_lower: str) -> str | None:
+    """`None` si l'evidence est recevable comme preuve d'activité métier,
+    sinon le motif du rejet. Volontairement un simple test de sous-chaîne
+    (même rigueur que Location) : sur une evidence courte (≤200 car.),
+    sur-rejeter est le mode de défaillance sûr — Inconnu reste préférable à
+    un secteur deviné."""
+    trimmed = (evidence or "").strip()
+    if not trimmed:
+        return "empty"
+    if trimmed.lower() not in context_lower:
+        return "not_grounded"
+    if _looks_like_bare_org_name(trimmed, organisation_key_):
+        return "org_name_only"
+    if _looks_like_incident_narrative(searchable(trimmed)):
+        return "incident_vocabulary"
+    return None
+
+
+def _validate(
+    raw: dict, requested: list[str], context: str, organisation_key_: str
+) -> tuple[dict, dict[str, str]]:
+    """Valide chaque champ demandé indépendamment (§6/§12).
+
+    Un champ rejeté n'invalide plus les autres champs de la même réponse
+    combinée : sinon un rejet de Secteur (preuve stricte, nouvelle) casserait
+    Threat/Location déjà validés dans le même appel. Renvoie (décision
+    partielle, motif de rejet par champ rejeté).
+    """
     decision: dict = {}
+    rejected: dict[str, str] = {}
     context_lower = context.lower()
     for field_name in requested:
         json_key, taxonomy, unknown, _ = FIELD_SPECS[field_name]
         entry = raw.get(json_key)
         if not isinstance(entry, dict):
-            return None
+            rejected[field_name] = "malformed"
+            continue
         value = entry.get("value")
         confidence = entry.get("confidence")
         evidence = entry.get("evidence")
         if not isinstance(value, str) or value not in taxonomy:
-            return None
+            rejected[field_name] = "bad_enum"
+            continue
         if isinstance(confidence, bool) or not isinstance(confidence, (int, float)):
-            return None
+            rejected[field_name] = "bad_confidence"
+            continue
         confidence = float(confidence)
         if not 0.0 <= confidence <= 1.0:
-            return None
+            rejected[field_name] = "bad_confidence"
+            continue
         if not isinstance(evidence, str) or len(evidence) > EVIDENCE_MAX_CHARS:
-            return None
+            rejected[field_name] = "bad_evidence"
+            continue
         if field_name == "Location" and value != unknown:
             trimmed = evidence.strip()
             if not trimmed or trimmed.lower() not in context_lower:
-                return None
+                rejected[field_name] = "not_grounded"
+                continue
+        if field_name == "Sector" and value != unknown:
+            reason = _sector_evidence_reason(evidence, organisation_key_, context_lower)
+            if reason:
+                rejected[field_name] = reason
+                continue
         decision[field_name] = value
         decision[f"{field_name}_Confidence"] = confidence
         decision[f"{field_name}_Evidence"] = evidence
-    return decision
+    return decision, rejected
 
 
 def _apply_decision(item: Item, requested: list[str], decision: dict, state: AiRunState) -> None:
@@ -406,11 +549,14 @@ def _apply_decision(item: Item, requested: list[str], decision: dict, state: AiR
 def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
     """Complète Threat/Sector/Location de `item` s'ils sont encore Inconnu.
 
-    Ne fait jamais rien si `state.enabled` est faux (clé absente), si la
-    source est explicitement exclue (`skip_ai_qualification`), ou si aucun
-    des trois champs n'est encore Inconnu (zéro appel dans ce cas).
+    Ne fait jamais rien si la source est explicitement exclue
+    (`skip_ai_qualification`), ou si aucun des trois champs n'est encore
+    Inconnu (zéro appel dans ce cas). Le premier appel LLM (contexte source)
+    n'a lieu que si `state.enabled` (clé OpenAI présente) ; l'escalade
+    Secteur (§12) peut ensuite intervenir même sans clé si l'enrichissement
+    obtient un libellé d'activité mappable déterministiquement.
     """
-    if not state.enabled or spec.params.get("skip_ai_qualification"):
+    if spec.params.get("skip_ai_qualification"):
         return
 
     requested = [
@@ -424,28 +570,123 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     for name in requested:
         state.unknown_before[name] = state.unknown_before.get(name, 0) + 1
 
-    input_hash = _input_hash(item, entry, requested, state.model, state.max_context_chars)
-    cache_key = (item.Item_ID, input_hash)
+    if state.enabled:
+        input_hash = _input_hash(item, entry, requested, state.model, state.max_context_chars)
+        cache_key = (item.Item_ID, input_hash)
 
-    cached = state.cache.get(cache_key)
-    if cached is not None:
-        state.cache_hits += 1
-        _apply_decision(item, requested, _decision_from_row(cached), state)
+        cached = state.cache.get(cache_key)
+        if cached is not None:
+            state.cache_hits += 1
+            _apply_and_count_sector(item, requested, _decision_from_row(cached), state)
+        elif state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
+            state.budget_stopped = True
+            state.calls_budget_blocked += 1
+        else:
+            state.calls_attempted += 1
+            context = _context(entry, state.max_context_chars)
+            raw = None
+            payload = None
+            try:
+                payload = _call_openai(item, entry, spec, requested, state)
+                raw = _extract_output_json(payload)
+            except AiCallError as exc:
+                state.calls_failed += 1
+                print(f"Qualification IA : appel échoué pour {item.Item_ID} ({exc}).")
+
+            if raw is not None:
+                usage = _extract_usage(payload)
+                state.input_tokens += usage["input_tokens"]
+                state.cached_input_tokens += usage["cached_input_tokens"]
+                state.output_tokens += usage["output_tokens"]
+                state.reasoning_tokens += usage["reasoning_tokens"]
+                state.total_tokens += usage["total_tokens"]
+                cost = _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
+                state.estimated_cost_usd += cost
+
+                decision, rejected = _validate(raw, requested, context, item.Organisation_Key)
+                if rejected.get("Sector") in ("not_grounded", "org_name_only", "incident_vocabulary", "empty"):
+                    state.sector_evidence_rejected += 1
+                if not decision:
+                    state.calls_failed += 1
+                    print(f"Qualification IA : réponse invalide pour {item.Item_ID}, Inconnu conservé.")
+                else:
+                    state.calls_succeeded += 1
+                    row = _row_from_decision(item, input_hash, requested, decision, state.model, usage, cost)
+                    state.cache[cache_key] = row
+                    _apply_and_count_sector(item, requested, decision, state)
+
+    if "Sector" in requested and item.Sector == config.SECTOR_UNKNOWN:
+        _escalate_sector(item, entry, spec, state)
+
+
+def _apply_and_count_sector(item: Item, requested: list[str], decision: dict, state: AiRunState) -> None:
+    """`_apply_decision` (inchangé) puis comptabilise une résolution Secteur
+    par contexte source — premier appel LLM, qu'il vienne d'un cache hit ou
+    d'un appel frais."""
+    was_unknown = "Sector" in requested and item.Sector == config.SECTOR_UNKNOWN
+    _apply_decision(item, requested, decision, state)
+    if was_unknown and item.Sector != config.SECTOR_UNKNOWN:
+        state.sector_resolved_source_llm += 1
+
+
+def _escalate_sector(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
+    """Enrichissement gratuit d'entreprise pour Secteur (§12 METHODOLOGY.md),
+    déclenché uniquement si Secteur est toujours Inconnu après la tentative
+    sur le contexte source. Ne lève jamais, ne devine jamais : toute étape
+    infructueuse laisse Secteur à Inconnu.
+    """
+    if item.Sector != config.SECTOR_UNKNOWN:
+        return
+    org_state = state.org_enrichment
+    if not org_state.enabled:
         return
 
+    record = org_enrichment.resolve(
+        item.Organisation_Key, item.Organisation_Raw, item.Collected_As_Of, org_state
+    )
+    if record is None or record.Match_Status != org_enrichment.MATCHED or not record.Activity_Label:
+        # AMBIGUOUS/NOT_FOUND/ERROR/budget épuisé -> Inconnu reste Inconnu,
+        # jamais de choix arbitraire.
+        return
+
+    if record.Validated_Sector:
+        item.Sector = record.Validated_Sector
+        state.sector_resolved_enrichment_cache += 1
+        state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
+        return
+    if record.Validated_Via == "llm_declined":
+        # Déjà tenté par le passé, jamais concluant : pas de nouvelle
+        # tentative à chaque run.
+        return
+
+    # a) mapping déterministe gratuit — réutilise classify_sector() tel
+    #    quel, aucune nouvelle table NAF à maintenir.
+    sector = classify_sector(given=record.Activity_Label)
+    if sector != config.SECTOR_UNKNOWN:
+        item.Sector = sector
+        record.Validated_Sector = sector
+        record.Validated_Via = "deterministic"
+        org_state.cache[item.Organisation_Key] = asdict(record)
+        state.sector_resolved_enriched_deterministic += 1
+        state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
+        return
+
+    # b) dernier recours : un unique appel LLM scopé exclusivement au
+    #    libellé d'activité (aucun nom d'organisation, aucun contexte
+    #    d'incident) — budget partagé avec le premier appel.
+    if not state.enabled:
+        return
     if state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
         state.budget_stopped = True
         state.calls_budget_blocked += 1
         return
-
     state.calls_attempted += 1
-    context = _context(entry, state.max_context_chars)
     try:
-        payload = _call_openai(item, entry, spec, requested, state)
+        payload = _call_openai_activity_sector(record.Activity_Label, state)
         raw = _extract_output_json(payload)
     except AiCallError as exc:
         state.calls_failed += 1
-        print(f"Qualification IA : appel échoué pour {item.Item_ID} ({exc}).")
+        print(f"Qualification IA : appel secteur-activité échoué pour {item.Item_ID} ({exc}).")
         return
 
     usage = _extract_usage(payload)
@@ -457,16 +698,27 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     cost = _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
     state.estimated_cost_usd += cost
 
-    decision = _validate(raw, requested, context)
-    if decision is None:
+    decision, _rejected = _validate(raw, ["Sector"], record.Activity_Label, "")
+    if "Sector" not in decision:
         state.calls_failed += 1
-        print(f"Qualification IA : réponse invalide pour {item.Item_ID}, Inconnu conservé.")
+        record.Validated_Via = "llm_declined"
+        org_state.cache[item.Organisation_Key] = asdict(record)
         return
 
     state.calls_succeeded += 1
-    row = _row_from_decision(item, input_hash, requested, decision, state.model, usage, cost)
-    state.cache[cache_key] = row
-    _apply_decision(item, requested, decision, state)
+    value = decision["Sector"]
+    confidence = decision["Sector_Confidence"]
+    if value == config.SECTOR_UNKNOWN or confidence < THRESHOLD_SECTOR:
+        record.Validated_Via = "llm_declined"
+        org_state.cache[item.Organisation_Key] = asdict(record)
+        return
+
+    item.Sector = value
+    record.Validated_Sector = value
+    record.Validated_Via = "llm"
+    org_state.cache[item.Organisation_Key] = asdict(record)
+    state.sector_resolved_enriched_llm += 1
+    state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
 
 
 def _row_from_decision(item: Item, input_hash: str, requested: list[str], decision: dict,
@@ -506,11 +758,25 @@ def _decision_from_row(row: dict) -> dict:
     return decision
 
 
-def finish_run(state: AiRunState, run_id: str, as_of: str, mode: str) -> dict:
-    """Persiste le cache mis à jour et construit la ligne `ai_usage.csv`."""
+def finish_run(
+    state: AiRunState, run_id: str, as_of: str, mode: str, sector_pre_stats: dict | None = None
+) -> dict:
+    """Persiste le cache mis à jour et construit la ligne `ai_usage.csv`.
+
+    `sector_pre_stats` (§12 METHODOLOGY.md) porte les compteurs déterministes
+    calculés en amont dans `runner.py` (avant tout appel IA) :
+    `initial_unknown`/`resolved_reference`/`resolved_deterministic`. Optionnel
+    pour rester rétro-compatible avec les appels existants à 4 arguments.
+    """
     if state.enabled:
         rows = sorted(state.cache.values(), key=lambda r: (r.get("Item_ID", ""), r.get("Input_Hash", "")))
         store.save_ai_qualifications(rows)
+
+    if state.org_enrichment.enabled:
+        org_rows = sorted(
+            state.org_enrichment.cache.values(), key=lambda r: r.get("Organisation_Key", "")
+        )
+        store.save_org_enrichment_cache(org_rows)
 
     if not state.enabled:
         run_status = "DISABLED"
@@ -524,6 +790,27 @@ def finish_run(state: AiRunState, run_id: str, as_of: str, mode: str) -> dict:
         run_status = "OK"
 
     still_unknown = sum(state.unknown_before.values()) - sum(state.qualified.values())
+
+    pre = sector_pre_stats or {}
+    sector_initial_unknown = pre.get("initial_unknown", 0)
+    sector_resolved_reference = pre.get("resolved_reference", 0)
+    sector_resolved_deterministic = pre.get("resolved_deterministic", 0)
+    org_state = state.org_enrichment
+    org_calls_total = (
+        org_state.calls_matched + org_state.calls_ambiguous
+        + org_state.calls_not_found + org_state.calls_error
+    )
+    org_lookups = org_calls_total + org_state.cache_hits
+    org_cache_hit_rate = round(org_state.cache_hits / org_lookups, 4) if org_lookups else 0.0
+    sector_remaining_unknown = (
+        sector_initial_unknown
+        - sector_resolved_reference
+        - sector_resolved_deterministic
+        - state.sector_resolved_source_llm
+        - state.sector_resolved_enrichment_cache
+        - state.sector_resolved_enriched_deterministic
+        - state.sector_resolved_enriched_llm
+    )
 
     return {
         "Run_ID": run_id,
@@ -552,4 +839,21 @@ def finish_run(state: AiRunState, run_id: str, as_of: str, mode: str) -> dict:
         "Estimated_Cost_USD": round(state.estimated_cost_usd, 6),
         "Duration_s": round(time.monotonic() - state.started, 1),
         "Status": run_status,
+        "Sector_Initial_Unknown": sector_initial_unknown,
+        "Sector_Resolved_Reference": sector_resolved_reference,
+        "Sector_Resolved_Deterministic": sector_resolved_deterministic,
+        "Sector_Resolved_Source_LLM": state.sector_resolved_source_llm,
+        "Sector_Evidence_Rejected": state.sector_evidence_rejected,
+        "Sector_Enrichment_Cache_Hit": state.sector_resolved_enrichment_cache,
+        "Sector_Enrichment_Http_Attempted": org_state.calls_attempted,
+        "Sector_Enrichment_Http_Matched": org_state.calls_matched,
+        "Sector_Enrichment_Http_Ambiguous": org_state.calls_ambiguous,
+        "Sector_Enrichment_Http_Not_Found": org_state.calls_not_found,
+        "Sector_Enrichment_Http_Error": org_state.calls_error,
+        "Sector_Resolved_Enriched_Deterministic": state.sector_resolved_enriched_deterministic,
+        "Sector_Resolved_Enriched_LLM": state.sector_resolved_enriched_llm,
+        "Sector_Remaining_Unknown": sector_remaining_unknown,
+        "Org_Enrichment_Calls": org_state.calls_attempted,
+        "Org_Enrichment_Duration_s": round(org_state.duration_seconds, 3),
+        "Org_Enrichment_Cache_Hit_Rate": org_cache_hit_rate,
     }

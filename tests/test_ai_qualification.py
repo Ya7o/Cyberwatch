@@ -127,13 +127,25 @@ class TestOverwritePolicy:
 
     def test_confidence_insuffisante_garde_inconnu(self, make_item, monkeypatch):
         item = make_item(sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="La mairie de Testville victime d'un rançongiciel",
+            summary="La mairie gère les services municipaux de l'état civil et de l'urbanisme.",
+            content="Le groupe LockBit revendique l'attaque. Aucune rançon n'a été payée.",
+            published="2026-06-01",
+            organisation="Mairie de Testville",
+        )
         monkeypatch.setattr(
             ai, "_call_openai",
-            lambda *a, **k: _payload(sector=_field("Santé", confidence=0.2)),
+            lambda *a, **k: _payload(
+                sector=_field(
+                    "Santé", confidence=0.2,
+                    evidence="gère les services municipaux de l'état civil et de l'urbanisme",
+                )
+            ),
         )
         state = enabled_state()
 
-        ai.qualify_item(item, ENTRY, SPEC, state)
+        ai.qualify_item(item, entry, SPEC, state)
 
         assert item.Sector == config.SECTOR_UNKNOWN
         # La réponse était structurée et valide : c'est un succès d'appel,
@@ -532,14 +544,26 @@ class TestPerSourceBehavior:
     def test_ransomware_live_ne_requalifie_jamais_threat_ni_location_deja_structures(self, make_item, monkeypatch):
         item = make_item(source="RANSOMWARE_LIVE", threat="Ransomware", location="France métropolitaine",
                           sector=config.SECTOR_UNKNOWN)
+        entry = RawEntry(
+            title="Usine Testville victime d'un rançongiciel",
+            summary="L'usine produit des pièces automobiles pour l'industrie.",
+            content="Le groupe LockBit revendique l'attaque. Aucune rançon n'a été payée.",
+            published="2026-06-01",
+            organisation="Usine Testville",
+        )
         monkeypatch.setattr(
             ai, "_call_openai",
-            lambda *a, **k: _payload(sector=_field("Industrie / Manufacture")),
+            lambda *a, **k: _payload(
+                sector=_field(
+                    "Industrie / Manufacture",
+                    evidence="produit des pièces automobiles pour l'industrie",
+                )
+            ),
         )
         spec = SourceSpec(source_id="RANSOMWARE_LIVE", layer=config.LAYER_CORE, zone="Multi",
                            collector="ransomware_live")
 
-        ai.qualify_item(item, ENTRY, spec, enabled_state())
+        ai.qualify_item(item, entry, spec, enabled_state())
 
         assert item.Threat == "Ransomware"
         assert item.Location == "France métropolitaine"
