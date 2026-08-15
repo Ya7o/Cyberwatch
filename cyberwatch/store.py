@@ -18,6 +18,7 @@ from .model import (
     ENTITY_WATCH_COLUMNS,
     INCIDENT_COLUMNS,
     ITEM_COLUMNS,
+    ORG_ENRICHMENT_CACHE_COLUMNS,
     RUN_LOG_COLUMNS,
     RUN_SOURCE_COLUMNS,
     SOURCE_COLUMNS,
@@ -41,6 +42,7 @@ ENTITY_WATCH_CSV = DATA_DIR / "entity_watch.csv"
 ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
 AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
+ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
 
@@ -175,6 +177,14 @@ def append_ai_usage(row: dict, path: Path | None = None) -> None:
     """Ajoute la synthèse d'usage IA du run courant à l'historique `AI_USAGE`."""
     target = path or AI_USAGE_CSV
     write_csv(target, AI_USAGE_COLUMNS, read_csv(target) + [row])
+
+
+def load_org_enrichment_cache(path: Path | None = None) -> list[dict]:
+    return read_csv(path or ORG_ENRICHMENT_CACHE_CSV)
+
+
+def save_org_enrichment_cache(rows: list[dict], path: Path | None = None) -> None:
+    write_csv(path or ORG_ENRICHMENT_CACHE_CSV, ORG_ENRICHMENT_CACHE_COLUMNS, rows)
 
 
 def load_run_log(path: Path | None = None) -> list[dict]:

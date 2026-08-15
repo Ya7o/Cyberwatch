@@ -279,4 +279,43 @@ AI_USAGE_COLUMNS = [
     "Estimated_Cost_USD",
     "Duration_s",
     "Status",
+    # Pipeline Secteur (§12 METHODOLOGY.md) : additives, en fin de liste pour
+    # rester rétro-compatibles avec les anciennes lignes (store.read_csv
+    # tolère les colonnes absentes via row.get(col, "")).
+    "Sector_Initial_Unknown",
+    "Sector_Resolved_Reference",
+    "Sector_Resolved_Deterministic",
+    "Sector_Resolved_Source_LLM",
+    "Sector_Evidence_Rejected",
+    "Sector_Enrichment_Cache_Hit",
+    "Sector_Enrichment_Http_Attempted",
+    "Sector_Enrichment_Http_Matched",
+    "Sector_Enrichment_Http_Ambiguous",
+    "Sector_Enrichment_Http_Not_Found",
+    "Sector_Enrichment_Http_Error",
+    "Sector_Resolved_Enriched_Deterministic",
+    "Sector_Resolved_Enriched_LLM",
+    "Sector_Remaining_Unknown",
+    "Org_Enrichment_Calls",
+    "Org_Enrichment_Duration_s",
+    "Org_Enrichment_Cache_Hit_Rate",
+]
+
+# --------------------------------------------------------------------------
+# ORG_ENRICHMENT_CACHE — cache d'enrichissement gratuit d'entreprise (Sector)
+# --------------------------------------------------------------------------
+
+ORG_ENRICHMENT_CACHE_COLUMNS = [
+    "Organisation_Key",
+    "Query_Name",
+    "Matched_Name",
+    "Company_ID",
+    "Activity_Code",
+    "Activity_Label",
+    "Evidence_Source",
+    "Evidence_URL",
+    "Match_Status",
+    "Fetched_At",
+    "Validated_Sector",
+    "Validated_Via",
 ]
