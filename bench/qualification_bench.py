@@ -20,12 +20,14 @@ import json
 import os
 import time
 from collections import defaultdict
+from dataclasses import asdict
 from pathlib import Path
 
-from cyberwatch import ai, config, enrichment, sources, watchlists
+from cyberwatch import ai, config, enrichment, org_enrichment, sources, watchlists
 from cyberwatch.collectors import get_collector
-from cyberwatch.collectors.base import Window
+from cyberwatch.collectors.base import RawEntry, Window
 from cyberwatch.http import Budget, HttpClient
+from cyberwatch.model import Item
 from cyberwatch.runner import entry_to_item
 
 SOURCE_IDS = (
@@ -109,7 +111,49 @@ def _latest_pairs(result, spec, as_of: str, per_source: int, known_orgs, entity_
     return pairs[:per_source], len(pairs)
 
 
-def run(per_source: int, output_dir: Path, start: str | None = None) -> dict:
+def _freeze_payload(
+    as_of: str, start: str, end: str, per_source: int, selected_specs, samples, collection_meta
+) -> dict:
+    """Capture T0 (items normalisés + entrées brutes) pour un rejeu identique."""
+    return {
+        "as_of": as_of,
+        "window": {"start": start, "end": end},
+        "per_source": per_source,
+        "sources": [spec.source_id for spec in selected_specs],
+        "collection_meta": collection_meta,
+        "samples": {
+            spec.source_id: [
+                {"item_row": item.to_row(), "entry": asdict(entry)}
+                for item, entry in samples[spec.source_id]
+            ]
+            for spec in selected_specs
+        },
+    }
+
+
+def _load_frozen_samples(path: Path, selected_specs) -> tuple[dict, dict]:
+    """Reconstruit `samples`/`collection_meta` depuis un fichier `--freeze-to`,
+    sans jamais retraverser `collector.collect()`/`entry_to_item` : le T0 rejoué
+    doit être strictement identique à celui capturé, indépendant d'une évolution
+    ultérieure de `normalize.py`/`enrichment.py`."""
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    frozen_samples = payload.get("samples", {})
+    samples = {}
+    for spec in selected_specs:
+        rows = frozen_samples.get(spec.source_id, [])
+        samples[spec.source_id] = [
+            (Item.from_row(row["item_row"]), RawEntry(**row["entry"])) for row in rows
+        ]
+    return samples, payload.get("collection_meta", {})
+
+
+def run(
+    per_source: int,
+    output_dir: Path,
+    start: str | None = None,
+    freeze_to: Path | None = None,
+    replay_from: Path | None = None,
+) -> dict:
     api_key = os.getenv("OPENAI_API_KEY", "")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY absente : benchmark LLM impossible")
@@ -131,61 +175,78 @@ def run(per_source: int, output_dir: Path, start: str | None = None) -> dict:
             raise RuntimeError(f"Source inactive, benchmark non comparable : {source_id}")
         selected_specs.append(spec)
 
-    known_orgs = watchlists.known_organisations()
-    entity_index = watchlists.entity_index()
-    territories = watchlists.entity_territories()
-    reference = enrichment.load_reference()
-
-    run_budget = Budget(max_requests=1200, max_seconds=1800, label="qualification-bench")
-    client = HttpClient(run_budget=run_budget)
-
-    samples: dict[str, list[tuple]] = {}
-    collection_meta: dict[str, dict] = {}
-
     print(f"BENCH_AS_OF={as_of}")
     print(f"BENCH_WINDOW={start}..{end}")
     print(f"BENCH_PER_SOURCE={per_source}")
 
-    for spec in selected_specs:
-        started = time.monotonic()
-        collector = get_collector(spec.collector)
-        result = collector.collect(client, spec, window)
-        status_name, coverage = result.resolve()
-        pairs, valid_count = _latest_pairs(
-            result,
-            spec,
-            as_of,
-            per_source,
-            known_orgs,
-            entity_index,
-            territories,
-            reference,
-        )
-        duration = round(time.monotonic() - started, 1)
-        samples[spec.source_id] = pairs
-        collection_meta[spec.source_id] = {
-            "collector_status": status_name,
-            "collector_coverage": coverage,
-            "raw_entries": len(result.entries),
-            "valid_normalized_items": valid_count,
-            "sample_size": len(pairs),
-            "calls": result.calls,
-            "duration_s": duration,
-            "sample_latest": pairs[0][0].best_date if pairs else "",
-            "sample_oldest": pairs[-1][0].best_date if pairs else "",
-        }
-        print(
-            "COLLECT "
-            f"source={spec.source_id} status={status_name} coverage={coverage} "
-            f"raw={len(result.entries)} valid={valid_count} sample={len(pairs)} "
-            f"latest={collection_meta[spec.source_id]['sample_latest']} "
-            f"oldest={collection_meta[spec.source_id]['sample_oldest']} "
-            f"duration_s={duration}"
-        )
-        if len(pairs) < per_source:
-            raise RuntimeError(
-                f"Echantillon insuffisant pour {spec.source_id}: {len(pairs)}/{per_source}"
+    if replay_from:
+        samples, collection_meta = _load_frozen_samples(Path(replay_from), selected_specs)
+        for spec in selected_specs:
+            pairs = samples.get(spec.source_id, [])
+            print(f"REPLAY source={spec.source_id} sample={len(pairs)} (depuis {replay_from})")
+            if len(pairs) < per_source:
+                raise RuntimeError(
+                    f"Echantillon fige insuffisant pour {spec.source_id}: {len(pairs)}/{per_source}"
+                )
+    else:
+        known_orgs = watchlists.known_organisations()
+        entity_index = watchlists.entity_index()
+        territories = watchlists.entity_territories()
+        reference = enrichment.load_reference()
+
+        run_budget = Budget(max_requests=1200, max_seconds=1800, label="qualification-bench")
+        client = HttpClient(run_budget=run_budget)
+
+        samples = {}
+        collection_meta = {}
+
+        for spec in selected_specs:
+            started = time.monotonic()
+            collector = get_collector(spec.collector)
+            result = collector.collect(client, spec, window)
+            status_name, coverage = result.resolve()
+            pairs, valid_count = _latest_pairs(
+                result,
+                spec,
+                as_of,
+                per_source,
+                known_orgs,
+                entity_index,
+                territories,
+                reference,
             )
+            duration = round(time.monotonic() - started, 1)
+            samples[spec.source_id] = pairs
+            collection_meta[spec.source_id] = {
+                "collector_status": status_name,
+                "collector_coverage": coverage,
+                "raw_entries": len(result.entries),
+                "valid_normalized_items": valid_count,
+                "sample_size": len(pairs),
+                "calls": result.calls,
+                "duration_s": duration,
+                "sample_latest": pairs[0][0].best_date if pairs else "",
+                "sample_oldest": pairs[-1][0].best_date if pairs else "",
+            }
+            print(
+                "COLLECT "
+                f"source={spec.source_id} status={status_name} coverage={coverage} "
+                f"raw={len(result.entries)} valid={valid_count} sample={len(pairs)} "
+                f"latest={collection_meta[spec.source_id]['sample_latest']} "
+                f"oldest={collection_meta[spec.source_id]['sample_oldest']} "
+                f"duration_s={duration}"
+            )
+            if len(pairs) < per_source:
+                raise RuntimeError(
+                    f"Echantillon insuffisant pour {spec.source_id}: {len(pairs)}/{per_source}"
+                )
+
+        if freeze_to:
+            freeze_path = Path(freeze_to)
+            freeze_path.parent.mkdir(parents=True, exist_ok=True)
+            frozen = _freeze_payload(as_of, start, end, per_source, selected_specs, samples, collection_meta)
+            freeze_path.write_text(json.dumps(frozen, ensure_ascii=False, indent=2), encoding="utf-8")
+            print(f"FROZEN_SAMPLE={freeze_path}")
 
     # Photographie immuable T0 avant tout appel LLM.
     before_by_id = {}
@@ -209,6 +270,11 @@ def run(per_source: int, output_dir: Path, start: str | None = None) -> dict:
         max_context_chars=_env_int("AI_MAX_CONTEXT_CHARS", 4000),
         max_output_tokens=_env_int("AI_MAX_OUTPUT_TOKENS", 600),
         cache={},
+        org_enrichment=org_enrichment.OrgEnrichmentState(
+            enabled=True,
+            max_calls=_env_int("ORG_ENRICHMENT_MAX_CALLS_PER_RUN", 200),
+            cache={},
+        ),
     )
 
     after_by_id = {}
@@ -321,6 +387,20 @@ def run(per_source: int, output_dir: Path, start: str | None = None) -> dict:
             "total_tokens": state.total_tokens,
             "estimated_cost_usd": round(state.estimated_cost_usd, 6),
             "duration_s": llm_duration,
+            "sector_evidence_rejected": state.sector_evidence_rejected,
+            "sector_resolved_source_llm": state.sector_resolved_source_llm,
+            "sector_resolved_enrichment_cache": state.sector_resolved_enrichment_cache,
+            "sector_resolved_enriched_deterministic": state.sector_resolved_enriched_deterministic,
+            "sector_resolved_enriched_llm": state.sector_resolved_enriched_llm,
+        },
+        "org_enrichment": {
+            "calls_attempted": state.org_enrichment.calls_attempted,
+            "calls_matched": state.org_enrichment.calls_matched,
+            "calls_ambiguous": state.org_enrichment.calls_ambiguous,
+            "calls_not_found": state.org_enrichment.calls_not_found,
+            "calls_error": state.org_enrichment.calls_error,
+            "cache_hits": state.org_enrichment.cache_hits,
+            "duration_seconds": round(state.org_enrichment.duration_seconds, 3),
         },
         "summary": summary_rows,
         "changed_count": len(changed_rows),
@@ -355,6 +435,21 @@ def run(per_source: int, output_dir: Path, start: str | None = None) -> dict:
     md.append(f"- Duree LLM: {llm_duration:.1f}s")
     md.append(f"- Valeurs effectivement changees: {len(changed_rows)} items")
     md.append("")
+    md.append("## Pipeline Secteur (§12 METHODOLOGY.md)")
+    md.append("")
+    md.append(f"- Preuve rejetee (contexte source): {state.sector_evidence_rejected}")
+    md.append(f"- Resolu par contexte source (LLM): {state.sector_resolved_source_llm}")
+    md.append(f"- Resolu par cache d'enrichissement: {state.sector_resolved_enrichment_cache}")
+    md.append(f"- Resolu par mapping deterministe enrichi: {state.sector_resolved_enriched_deterministic}")
+    md.append(f"- Resolu par LLM d'activite enrichi: {state.sector_resolved_enriched_llm}")
+    org = payload["org_enrichment"]
+    md.append(
+        f"- Enrichissement HTTP: {org['calls_attempted']} appels "
+        f"(matched={org['calls_matched']}, ambigus={org['calls_ambiguous']}, "
+        f"introuvables={org['calls_not_found']}, erreurs={org['calls_error']}, "
+        f"cache_hits={org['cache_hits']}, duree={org['duration_seconds']:.1f}s)"
+    )
+    md.append("")
     md.append("## Collecte")
     md.append("")
     for source_id in SOURCE_IDS:
@@ -385,10 +480,28 @@ def main() -> int:
     parser.add_argument("--per-source", type=int, default=30)
     parser.add_argument("--output", default="bench_output")
     parser.add_argument("--start", default="")
+    parser.add_argument(
+        "--freeze-to", default="",
+        help="Capture l'echantillon T0 (items+entrees) dans ce fichier JSON, "
+             "pour un rejeu strictement comparable via --replay-from.",
+    )
+    parser.add_argument(
+        "--replay-from", default="",
+        help="Rejoue le benchmark sur un echantillon T0 fige par --freeze-to, "
+             "sans retraverser la collecte ni entry_to_item.",
+    )
     args = parser.parse_args()
     if args.per_source <= 0:
         parser.error("--per-source doit etre > 0")
-    run(args.per_source, Path(args.output), args.start or None)
+    if args.freeze_to and args.replay_from:
+        parser.error("--freeze-to et --replay-from sont mutuellement exclusifs")
+    run(
+        args.per_source,
+        Path(args.output),
+        args.start or None,
+        freeze_to=Path(args.freeze_to) if args.freeze_to else None,
+        replay_from=Path(args.replay_from) if args.replay_from else None,
+    )
     return 0
 
 
