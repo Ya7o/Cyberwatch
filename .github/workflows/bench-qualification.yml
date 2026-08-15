@@ -44,7 +44,9 @@ jobs:
           AI_MAX_OUTPUT_TOKENS: "600"
           PER_SOURCE: ${{ inputs.per_source || '30' }}
           BENCH_START: ${{ inputs.start || '' }}
+          PYTHONPATH: .
         run: |
+          set -o pipefail
           mkdir -p bench_output
           ARGS="--per-source ${PER_SOURCE} --output bench_output"
           if [ -n "$BENCH_START" ]; then
