@@ -254,6 +254,7 @@ def entry_to_item(
     entity_index: dict,
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
+    sector_stats: dict | None = None,
 ) -> Item | None:
     """Convertit une entrée brute en item normalisé, ou `None` si hors périmètre.
 
@@ -332,11 +333,23 @@ def entry_to_item(
     # consultés qu'en dernier recours.
     sector = classify_sector(given=entry.sector)
     location = classify_location(given=entry.location)
+
+    # Pipeline Secteur (§12 METHODOLOGY.md) : chaque étape déterministe qui
+    # résout Sector depuis Inconnu s'instrumente ici, avant tout appel IA.
+    sector_was_unknown = sector == config.SECTOR_UNKNOWN
+    if sector_stats is not None and sector_was_unknown:
+        sector_stats["initial_unknown"] = sector_stats.get("initial_unknown", 0) + 1
+
     sector, location = enrichment.enrich_unknowns(organisation, sector, location, reference or {})
+
+    if sector_stats is not None and sector_was_unknown and sector != config.SECTOR_UNKNOWN:
+        sector_stats["resolved_reference"] = sector_stats.get("resolved_reference", 0) + 1
 
     sector_texts = (organisation,) if spec.params.get("title_is_organisation") else (organisation, text)
     if sector == config.SECTOR_UNKNOWN:
         sector = classify_sector(*sector_texts, given=sector_hint)
+        if sector_stats is not None and sector != config.SECTOR_UNKNOWN:
+            sector_stats["resolved_deterministic"] = sector_stats.get("resolved_deterministic", 0) + 1
     if location == config.LOC_INCONNU:
         location = classify_location(
             text, organisation,
@@ -384,6 +397,7 @@ def run_source(
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
     ai_state: ai.AiRunState | None = None,
+    sector_stats: dict | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     """Exécute une source et rend son compte rendu, ses items et sa veille."""
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -437,6 +451,7 @@ def run_source(
             continue
         item = entry_to_item(
             entry, spec, context.as_of, known_orgs, entity_index, territories, reference,
+            sector_stats,
         )
         if item is not None:
             items.append(item)
@@ -734,6 +749,7 @@ def execute(
         # atteinte ici) ni pour diagnose/probe (qui appellent `run_source`
         # sans `ai_state`, resté à `None` par défaut).
         ai_state = ai.start_run()
+        sector_stats = {"initial_unknown": 0, "resolved_reference": 0, "resolved_deterministic": 0}
 
         collected: list[Item] = []
         watch_rows: list[dict] = []
@@ -742,6 +758,7 @@ def execute(
         for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
                 client, spec, context, known_orgs, entity_index, territories, reference, ai_state,
+                sector_stats,
             )
             report.outcomes.append(outcome)
             collected.extend(items)
@@ -771,7 +788,9 @@ def execute(
         report.items = merged
         report.new_items = new_count
         report.requests = run_budget.requests_made
-        report.ai_usage = ai.finish_run(ai_state, context.run_id, context.as_of, context.mode)
+        report.ai_usage = ai.finish_run(
+            ai_state, context.run_id, context.as_of, context.mode, sector_stats
+        )
 
     # All producing paths converge here: no workflow may add a business
     # transformation after this point.

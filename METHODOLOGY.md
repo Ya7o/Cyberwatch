@@ -1,6 +1,6 @@
 # Méthodologie exécutable OBS-FR-OI
 
-**`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-3`**
+**`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-4`**
 **Périmètre :** France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles, Comores.
 
 ## Pipeline canonique de qualification
@@ -408,3 +408,104 @@ structurée ; seul Sector peut légitimement rester Inconnu et devenir
 « CREATE contrôlé »), vers la variable d'environnement standard
 `OPENAI_API_KEY` — c'est la seule chose que lit le code Python. `ci.yml` ne
 reçoit jamais ce secret ; ses tests mockent systématiquement l'appel réseau.
+
+## 12. Pipeline Secteur : preuve stricte et enrichissement gratuit
+
+Un benchmark réel (120 items frais, hors Veille LLM) a montré que le filet
+de rattrapage §11, appliqué sans discernement à `Sector`, devine trop
+souvent à partir du seul nom de l'organisation ou du vocabulaire de
+l'incident (rançongiciel, fuite de données, groupe cybercriminel) faute de
+description métier explicite dans le contexte source — précision mesurée de
+62,5 % sur les valeurs injectées. Ce chantier resserre `Sector`
+spécifiquement, sans toucher `Threat`/`Location`/la déduplication/la
+priorité Veille LLM/les défauts France métropolitaine.
+
+**Aucune recherche Web OpenAI n'est utilisée. L'API OpenAI ne sert qu'à de
+la classification textuelle classique** (`POST /v1/responses`, même modèle,
+même mécanisme que le §11) — jamais un outil de recherche, jamais un agent.
+Toute information externe est récupérée directement par Cyberwatch, en HTTP
+simple, vers une API publique gratuite.
+
+**Pipeline**, déclenché uniquement quand `Sector` est encore `Inconnu` après
+les règles déterministes et le backfill (§11 inchangé) :
+
+```
+Sector Inconnu après déterministe + référentiel ?
+  → non : arrêt, coût nul
+  → oui → tentative LLM sur le contexte source (§11), preuve stricte :
+       l'evidence doit décrire l'activité de l'organisation, être ancrée
+       dans le contexte transmis, jamais réduite au nom de l'organisation,
+       jamais issue du vocabulaire de l'incident
+  → Sector toujours Inconnu (réponse Inconnu ou preuve rejetée) →
+       cache d'enrichissement (data/org_enrichment_cache.csv, clé
+       Organisation_Key) déjà validé ? → oui : appliqué, coût nul
+       → non → requête gratuite recherche-entreprises.api.gouv.fr,
+         correspondance UNIQUEMENT sur égalité exacte de nom normalisé
+         (`normalize.organisation_key`) ; plusieurs entités légales
+         distinctes partageant ce nom (ex. franchises) → AMBIGUOUS, Sector
+         reste Inconnu, jamais de choix arbitraire
+  → libellé d'activité officiel obtenu (cache ou HTTP frais) →
+       classify_sector(given=libellé) d'abord (règles déterministes
+       existantes, coût nul, aucune nouvelle table NAF) → si toujours
+       Inconnu, un unique appel OpenAI classique scopé exclusivement à ce
+       libellé (ni nom d'organisation, ni récit d'incident transmis)
+  → aucune activité fiable obtenue → Inconnu reste Inconnu, jamais deviné
+```
+
+**Preuve stricte côté LLM (`ai.py::_validate`/`_sector_evidence_reason`)** :
+chaque champ demandé est désormais validé indépendamment (un rejet sur
+`Sector` n'invalide plus `Threat`/`Location` décidés dans le même appel).
+Pour `Sector`, une evidence est rejetée si elle est absente du contexte
+transmis, si elle se réduit au nom de l'organisation (`organisation_key`
+identique), ou si elle relève du vocabulaire d'incident (préfixes/phrases
+cyber, groupes de rançongiciel, motifs de `THREAT_RULES`) — même ancrée
+dans le contexte. `RANSOMWARE_LIVE` (contexte quasi exclusivement composé de
+ce vocabulaire) en bénéficie automatiquement, sans cas spécial par source.
+
+**Enrichissement gratuit (`cyberwatch/org_enrichment.py`)** : appel HTTP
+direct (`requests`, indépendant de `http.py`/`HttpClient` — la dimension de
+budget ici est un nombre d'appels par run, pas du respect de robots.txt) vers
+`recherche-entreprises.api.gouv.fr` (API publique française, sans clé). Un
+candidat n'est retenu que si son nom normalisé est **exactement** égal à
+celui recherché — jamais de correspondance floue, jamais le premier
+résultat. Panne réseau/HTTP/JSON → `ERROR`, jamais mise en cache (retentée
+au run suivant), `Sector` reste `Inconnu` — une panne d'enrichissement ne
+fait jamais échouer la collecte.
+
+**Cache d'enrichissement** : `data/org_enrichment_cache.csv`, clé
+`Organisation_Key`, sans TTL — cohérent avec `ai_qualifications.csv` et
+`enrichment_reference.csv`. `MATCHED`/`AMBIGUOUS`/`NOT_FOUND` sont
+permanents (jamais retentés) ; `ERROR` ne l'est jamais (retenté à chaque
+run). `Validated_Sector`/`Validated_Via` (`deterministic`/`llm`/
+`llm_declined`) évitent tout nouvel appel — HTTP ou OpenAI — une fois un
+secteur validé ou une classification LLM déjà tentée sans succès.
+
+**Politique Immobilier → Construction / BTP** : la taxonomie Cyberwatch n'a
+pas de secteur « Immobilier » dédié. Une activité immobilière (agence,
+gestion de biens) tombe dans « Construction / BTP » via les motifs déjà
+existants de `SECTOR_RULES`/`ACTIVITY_TO_SECTOR` — politique documentée
+explicitement ici, pas laissée à la discrétion implicite du LLM
+d'activité, qui ne reçoit qu'une taxonomie fermée et répond `Inconnu` si
+aucune valeur ne correspond clairement.
+
+**Budget** : partagé avec le §11 (mêmes compteurs `calls_attempted`/
+`estimated_cost_usd` par run) — un seul modèle de budget, pas de plafond
+séparé à gérer. L'enrichissement HTTP a son propre plafond
+(`ORG_ENRICHMENT_MAX_CALLS_PER_RUN`, défaut 200), indépendant du budget
+OpenAI.
+
+**Nouvelles métriques** (`data/ai_usage.csv`, additives en fin de colonnes) :
+`Sector_Initial_Unknown`, `Sector_Resolved_Reference`,
+`Sector_Resolved_Deterministic`, `Sector_Resolved_Source_LLM`,
+`Sector_Evidence_Rejected`, `Sector_Enrichment_Cache_Hit`,
+`Sector_Enrichment_Http_Attempted/Matched/Ambiguous/Not_Found/Error`,
+`Sector_Resolved_Enriched_Deterministic`, `Sector_Resolved_Enriched_LLM`,
+`Sector_Remaining_Unknown`, `Org_Enrichment_Calls`,
+`Org_Enrichment_Duration_s`, `Org_Enrichment_Cache_Hit_Rate`.
+
+**Panne non bloquante et REPLAY** : mêmes garanties que le §11 —
+`ORG_ENRICHMENT_ENABLED=0` ou absence de résultat exploitable laisse
+`Sector` à `Inconnu` sans jamais faire échouer la collecte ; `REPLAY` ne
+traverse jamais `run_source`/`entry_to_item`, donc n'appelle jamais
+l'enrichissement, même si les clés/variables d'environnement sont
+présentes.
