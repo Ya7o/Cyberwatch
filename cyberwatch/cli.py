@@ -607,6 +607,31 @@ def cmd_report(args) -> int:
             f"| {row.get('Reason', '').replace('|', '/')} |"
         )
 
+    ai_usage = next(
+        (r for r in reversed(store.read_csv(store.AI_USAGE_CSV)) if r.get("Run_ID") == run_id),
+        None,
+    )
+    if ai_usage:
+        print()
+        print("### Qualification IA")
+        print()
+        print(f"- Candidats : **{ai_usage.get('Candidates', 0)}** "
+              f"(cache : {ai_usage.get('Cache_Hits', 0)})")
+        print(f"- Appels API : **{ai_usage.get('Calls_Succeeded', 0)} réussis / "
+              f"{ai_usage.get('Calls_Failed', 0)} échoués / "
+              f"{ai_usage.get('Calls_Budget_Blocked', 0)} bloqués par budget** "
+              f"(tentés : {ai_usage.get('Calls_Attempted', 0)})")
+        print(f"- Tokens : {ai_usage.get('Input_Tokens', 0)} entrée / "
+              f"{ai_usage.get('Output_Tokens', 0)} sortie "
+              f"({ai_usage.get('Total_Tokens', 0)} total)")
+        print(f"- Coût estimé : **${ai_usage.get('Estimated_Cost_USD', 0)}** "
+              f"({ai_usage.get('Model', '')})")
+        print(f"- Qualifiés : Threat {ai_usage.get('Threat_Qualified', 0)} · "
+              f"Sector {ai_usage.get('Sector_Qualified', 0)} · "
+              f"Location {ai_usage.get('Location_Qualified', 0)}")
+        print(f"- Encore Inconnu après IA : **{ai_usage.get('Still_Unknown', 0)}**")
+        print(f"- Statut : **{ai_usage.get('Status', '')}**")
+
     notes = last.get("Notes", "")
     if notes:
         print()

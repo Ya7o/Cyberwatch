@@ -46,6 +46,8 @@ jobs:
       - name: Tests unitaires
         run: python -m pytest tests/ -q
       - name: CREATE contrôlé
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
         run: |
           ARGS=(--as-of "$AS_OF" --layers "$LAYERS")
           if [ -n "$TARGET_START" ]; then ARGS+=(--start "$TARGET_START"); fi

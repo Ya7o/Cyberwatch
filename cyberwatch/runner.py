@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import config, enrichment, identity, sources, status, store, watchlists
+from . import ai, config, enrichment, identity, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -383,6 +383,7 @@ def run_source(
     entity_index: dict,
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
+    ai_state: ai.AiRunState | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     """Exécute une source et rend son compte rendu, ses items et sa veille."""
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -439,6 +440,8 @@ def run_source(
         )
         if item is not None:
             items.append(item)
+            if ai_state is not None:
+                ai.qualify_item(item, entry, spec, ai_state)
         elif requires_victim:
             articles_rejected_no_victim += 1
         elif spec.source_id == "CYBERATTAQUE_ORG":
@@ -657,6 +660,7 @@ class RunReport:
     problems: list[str] = field(default_factory=list)
     duration: float = 0.0
     requests: int = 0
+    ai_usage: dict = field(default_factory=dict)
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -716,13 +720,19 @@ def execute(
         # CREATE ne peut jamais consulter des ITEMS éventuellement présents sur
         # disque : son résultat doit être identique sur base vide ou non.
 
+        # Filet de rattrapage LLM (§ qualification IA) : uniquement pour une
+        # collecte réelle, jamais pour REPLAY (branche `offline`, jamais
+        # atteinte ici) ni pour diagnose/probe (qui appellent `run_source`
+        # sans `ai_state`, resté à `None` par défaut).
+        ai_state = ai.start_run()
+
         collected: list[Item] = []
         watch_rows: list[dict] = []
 
         # Exécuter uniquement les sources actives des couches demandées.
         for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
-                client, spec, context, known_orgs, entity_index, territories, reference,
+                client, spec, context, known_orgs, entity_index, territories, reference, ai_state,
             )
             report.outcomes.append(outcome)
             collected.extend(items)
@@ -752,6 +762,7 @@ def execute(
         report.items = merged
         report.new_items = new_count
         report.requests = run_budget.requests_made
+        report.ai_usage = ai.finish_run(ai_state, context.run_id, context.as_of, context.mode)
 
     # All producing paths converge here: no workflow may add a business
     # transformation after this point.
@@ -884,6 +895,8 @@ def _persist(
             "Notes": " ; ".join(report.problems),
         }
     )
+    if report.ai_usage:
+        store.append_ai_usage(report.ai_usage)
     if persist_snapshot:
         store.save_items(report.items)
         store.save_incidents(report.incidents)

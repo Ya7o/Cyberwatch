@@ -57,6 +57,11 @@ class _BonjourHtmlParser(HTMLParser):
         self._h2_parts: list[str] = []
         self._anchor_href = ""
         self._anchor_parts: list[str] = []
+        #: Texte libre du bloc courant ("Via", "Données concernées", ...),
+        #: déjà présent sur la page téléchargée : sert de contexte pour la
+        #: qualification (règles déterministes puis, en dernier recours, le
+        #: filet de rattrapage LLM), jamais une requête HTTP supplémentaire.
+        self._extra_parts: list[str] = []
 
     def handle_starttag(self, tag: str, attrs):
         lowered = tag.lower()
@@ -87,20 +92,27 @@ class _BonjourHtmlParser(HTMLParser):
             self._h2_parts.append(text)
             return
 
-        if self._anchor_href:
+        in_anchor = bool(self._anchor_href)
+        if in_anchor:
             self._anchor_parts.append(text)
 
         parsed = parse_date(text)
         if parsed:
             self.pending_date = parsed
+        elif not in_anchor and self.current is not None:
+            # Ni une date, ni le libellé d'un lien : texte libre du bloc en
+            # cours ("Via : ...", "Données concernées : ...", etc.).
+            self._extra_parts.append(text)
 
     def _finish_heading(self) -> None:
         raw = " ".join(self._h2_parts).strip()
         self._in_h2 = False
         self._h2_parts = []
+        self._flush_extra()
 
         organisation = clean_organisation(raw)
         if not self.pending_date or not organisation:
+            self.current = None
             return
 
         entry = RawEntry(
@@ -112,6 +124,16 @@ class _BonjourHtmlParser(HTMLParser):
         self.current = entry
         # Une date ne peut reconnaître qu'un seul bloc.
         self.pending_date = ""
+
+    def _flush_extra(self) -> None:
+        """Attache le texte libre accumulé au bloc qui se termine."""
+        if self.current is not None and self._extra_parts:
+            self.current.summary = " ".join(self._extra_parts).strip()
+        self._extra_parts = []
+
+    def finalize(self) -> None:
+        """À appeler une fois le flux entièrement parcouru (dernier bloc)."""
+        self._flush_extra()
 
     def _finish_anchor(self) -> None:
         label = " ".join(self._anchor_parts).strip().lower()
@@ -131,6 +153,7 @@ def parse_timeline(html: str, base_url: str) -> list[RawEntry]:
     parser = _BonjourHtmlParser(base_url)
     parser.feed(html or "")
     parser.close()
+    parser.finalize()
     return parser.entries
 
 

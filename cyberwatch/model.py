@@ -219,3 +219,63 @@ class WatchedEntity:
     kind: str = "critique"  # « commune » ou « critique »
     sector_hint: str = ""
     aliases: list[str] = field(default_factory=list)
+
+
+# --------------------------------------------------------------------------
+# AI_QUALIFICATIONS — cache/provenance du filet de rattrapage LLM
+# --------------------------------------------------------------------------
+
+AI_QUALIFICATIONS_COLUMNS = [
+    "Item_ID",
+    "Source_ID",
+    "Input_Hash",
+    "Model",
+    "Prompt_Version",
+    "Threat",
+    "Threat_Confidence",
+    "Threat_Evidence",
+    "Sector",
+    "Sector_Confidence",
+    "Sector_Evidence",
+    "Location",
+    "Location_Confidence",
+    "Location_Evidence",
+    "Input_Tokens",
+    "Cached_Input_Tokens",
+    "Output_Tokens",
+    "Total_Tokens",
+    "Estimated_Cost_USD",
+]
+
+# --------------------------------------------------------------------------
+# AI_USAGE — une ligne de synthèse par run concernant l'usage LLM
+# --------------------------------------------------------------------------
+
+AI_USAGE_COLUMNS = [
+    "Run_ID",
+    "As_Of",
+    "Mode",
+    "Model",
+    "Prompt_Version",
+    "Candidates",
+    "Cache_Hits",
+    "Calls_Attempted",
+    "Calls_Succeeded",
+    "Calls_Failed",
+    "Calls_Budget_Blocked",
+    "Threat_Unknown_Before",
+    "Threat_Qualified",
+    "Sector_Unknown_Before",
+    "Sector_Qualified",
+    "Location_Unknown_Before",
+    "Location_Qualified",
+    "Still_Unknown",
+    "Input_Tokens",
+    "Cached_Input_Tokens",
+    "Output_Tokens",
+    "Reasoning_Tokens",
+    "Total_Tokens",
+    "Estimated_Cost_USD",
+    "Duration_s",
+    "Status",
+]

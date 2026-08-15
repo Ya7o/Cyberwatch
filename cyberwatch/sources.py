@@ -300,6 +300,10 @@ REGIONAL_WATCH_SOURCES = [
             "scope_is_cyber": True,
             "replace_snapshot": True,
             "non_evidence_source": True,
+            # Déjà issue d'une analyse LLM structurée (territoire, secteur,
+            # menace, synthèse, score) : ne pas faire interpréter la sortie
+            # d'un LLM par un second LLM.
+            "skip_ai_qualification": True,
         },
         protocol=(
             "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "

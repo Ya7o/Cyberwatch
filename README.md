@@ -61,6 +61,23 @@ La MAJ utilise une fenêtre glissante de 21 jours pour les sources réseau et re
 toujours le snapshot Veille LLM complet afin d'intégrer les découvertes locales
 historiques tardives.
 
+### Qualification IA (filet de rattrapage, facultatif)
+
+`cyberwatch/ai.py` complète, uniquement s'ils sont encore `Inconnu` après les
+règles déterministes, les champs Threat/Sector/Location d'un item — jamais
+une valeur déjà connue, jamais l'identité (`Item_ID`/`Organisation_Key`).
+Le code lit uniquement la variable d'environnement standard
+`OPENAI_API_KEY` ; en CI et en local sans cette variable, la qualification
+est simplement désactivée et la collecte continue normalement. Détail
+complet : `METHODOLOGY.md` §11.
+
+```bash
+export OPENAI_API_KEY=sk-...   # optionnel ; absent = qualification désactivée
+python -m cyberwatch maj
+```
+
+`REPLAY` n'appelle jamais l'API, même si `OPENAI_API_KEY` est présente.
+
 ## Validation
 
 La CI obligatoire reste volontairement légère :
@@ -81,6 +98,8 @@ qualité restent disponibles manuellement mais ne bloquent pas chaque push.
 - `data/run_sources.csv` / `data/run_log.csv` : journal des collectes ;
 - `data/snapshot.json` : provenance et hashes du snapshot courant ;
 - `data/baseline.json` : référence locale facultative ;
+- `data/ai_qualifications.csv` : cache/provenance des décisions du filet de rattrapage LLM ;
+- `data/ai_usage.csv` : une ligne d'usage (appels, tokens, coût estimé) par run ;
 - `sources/veillellm/cyberattaques_reunion_mayotte_2026.json` : veille locale analytique.
 
 Le projet liste des incidents publiquement documentés ; il ne prétend pas recenser

@@ -1,6 +1,6 @@
 # Méthodologie exécutable OBS-FR-OI
 
-**`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-2`**
+**`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-3`**
 **Périmètre :** France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles, Comores.
 
 ## Pipeline canonique de qualification
@@ -9,6 +9,11 @@ Chaque snapshot, CREATE, MAJ, REPLAY ou réparation locale, passe par le même
 traitement offline : intégrité des items, enrichissement déterministe,
 reconstruction des incidents, contrôles pré-export, hashes et persistance
 atomique. Les workflows GitHub n'ajoutent aucune transformation métier.
+
+Une étape supplémentaire existe désormais **avant** ce tronc commun offline,
+uniquement pendant une collecte réseau réelle (`create`/`maj`, jamais
+`replay`) : un filet de rattrapage LLM peut compléter Threat/Sector/Location
+encore `Inconnu` après les règles déterministes. Voir §11.
 
 `data/quality_baseline.json` versionne les métriques de qualité, comparées par
 `python scripts/audit_data_quality.py --check-regression` : hausse d'inconnus,
@@ -322,3 +327,83 @@ Ces constats proviennent de runs en conditions réelles, pas d'hypothèses.
 
 Le principe commun : **chaque limite rencontrée est inscrite dans le statut de la
 source plutôt que contournée ou masquée.**
+
+---
+
+## 11. Qualification LLM des champs Inconnu (filet de rattrapage)
+
+`cyberwatch/ai.py` complète, en dernier recours seulement, les champs
+`Threat`/`Sector`/`Location` d'un item encore `Inconnu` **après** les règles
+déterministes (`normalize.py`) et le backfill (`enrichment.py`). Il ne
+touche jamais `Item_ID`, `Organisation_Key`, `Incident_ID` ni une valeur déjà
+connue — le §3 (« aucun rapprochement flou, aucune fusion assistée par IA »)
+reste entier : l'identité et la déduplication restent purement
+déterministes, seule la qualification d'un champ décrivant l'incident peut
+recourir au LLM, et seulement s'il est encore inconnu.
+
+**Ordre d'exécution**, par item, dans `runner.entry_to_item`/`run_source` :
+
+```
+entrée brute (RawEntry)
+→ règles déterministes (normalize.py)
+→ backfill (enrichment.py)
+→ Item construit, Item_ID figé
+→ si Threat/Sector/Location encore Inconnu : filet de rattrapage LLM
+→ sinon aucun appel API
+→ validation stricte (taxonomie fermée, confiance, preuve)
+→ cache (data/ai_qualifications.csv)
+→ ITEMS → dédup déterministe existante → INCIDENTS
+```
+
+**Modèle** : `gpt-5-nano-2026-03-17` (défaut, overridable par `OPENAI_MODEL`),
+appelé via l'API Responses d'OpenAI avec Structured Outputs, en HTTPS direct
+(`requests`, pas de SDK). Snapshot et tarifs retenus par recherche web le
+2026-08-15 — la documentation officielle était inaccessible depuis
+l'environnement d'exécution au moment de l'implémentation ; à corriger si un
+usage réel les contredit.
+
+**Politique stricte** : Structured Outputs avec schéma fermé sur les
+taxonomies de `config.py` (`Inconnu` est une réponse valide), seuils de
+confiance par champ (Location plus stricte), et pour Location une preuve
+(`evidence`) qui doit apparaître dans le contexte transmis — jamais une
+déduction de connaissance générale sur l'organisation. Toute réponse
+invalide, insuffisamment confiante ou mal formée est ignorée : le champ reste
+`Inconnu`, l'échec est journalisé, rien n'est inventé.
+
+**Cache** : `data/ai_qualifications.csv`, clé `(Item_ID, Input_Hash)`. Le
+`Input_Hash` intègre le contexte transmis, les champs demandés, le modèle,
+la version de prompt et de schéma — tout changement de l'un d'eux invalide
+naturellement les décisions concernées sans purge manuelle.
+
+**Usage et coût** : `data/ai_usage.csv` porte une ligne de synthèse par run
+(candidats, cache hits, appels, tokens, coût estimé, statut), résumée dans
+`python -m cyberwatch report`. Garde-fous par variables d'environnement
+(`AI_MAX_CALLS_PER_RUN`, `AI_MAX_ESTIMATED_COST_USD_PER_RUN`,
+`AI_MAX_CONTEXT_CHARS`, `AI_MAX_OUTPUT_TOKENS`) : un plafond atteint arrête
+les nouveaux appels sans casser la collecte, les champs restants demeurant
+`Inconnu`.
+
+**Panne non bloquante** : l'absence de `OPENAI_API_KEY`, une panne réseau
+définitive ou un modèle qui refuse le format ne font jamais échouer une
+collecte — la qualification est simplement désactivée ou dégradée pour ce
+run (`ai_usage.Status = DISABLED/API_ERROR/DEGRADED`), journalisé, et le
+run continue. La qualification LLM est facultative ; la collecte reste la
+fonction critique.
+
+**`REPLAY` reste strictement offline** : il ne traverse jamais
+`run_source`/`entry_to_item` (il ne fait que relire `ITEMS` et reconstruire
+`INCIDENTS`), donc n'appelle jamais l'API — même si `OPENAI_API_KEY` est
+présente. `test-repeat` reste lui aussi entièrement offline et déterministe.
+
+**Sources exclues** : une source déjà issue d'une analyse LLM structurée
+(ex. Veille LLM, §Couverture locale Réunion / Mayotte) porte
+`params={"skip_ai_qualification": True}` : elle n'est jamais reproposée à un
+second LLM. `RANSOMWARE_LIVE` fournit déjà Threat/Location de façon
+structurée ; seul Sector peut légitimement rester Inconnu et devenir
+éligible.
+
+**Secret GitHub** : `secrets.Cyberwatchapi` est mappé, uniquement dans les
+étapes de collecte réelle (`collect.yml` : « Collecter » ; `initialize.yml` :
+« CREATE contrôlé »), vers la variable d'environnement standard
+`OPENAI_API_KEY` — c'est la seule chose que lit le code Python. `ci.yml` ne
+reçoit jamais ce secret ; ses tests mockent systématiquement l'appel réseau.

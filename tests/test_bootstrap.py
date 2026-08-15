@@ -172,3 +172,34 @@ def test_initialize_workflow_runs_validations_before_publication():
     assert "test-live-repeat" not in workflow
     assert "sleep 65" not in workflow
     assert workflow.index("cyberwatch baseline") < workflow.index("Publier la baseline")
+
+
+def _step_name_immediately_before(workflow: str, marker: str) -> str:
+    """Nom de la dernière étape (`- name: ...`) déclarée avant `marker`."""
+    before = workflow[:workflow.index(marker)]
+    last_step_line = [line for line in before.splitlines() if "- name:" in line][-1]
+    return last_step_line.split("- name:", 1)[1].strip()
+
+
+def test_collect_workflow_maps_openai_secret_only_on_the_collect_step():
+    workflow = (store.ROOT / ".github" / "workflows" / "collect.yml").read_text(encoding="utf-8")
+    marker = "OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}"
+    assert marker in workflow
+    # Un seul mapping dans tout le fichier : uniquement l'étape "Collecter".
+    assert workflow.count("secrets.Cyberwatchapi") == 1
+    assert _step_name_immediately_before(workflow, marker) == "Collecter"
+
+
+def test_initialize_workflow_maps_openai_secret_only_on_the_create_step():
+    workflow = (store.ROOT / ".github" / "workflows" / "initialize.yml").read_text(encoding="utf-8")
+    marker = "OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}"
+    assert marker in workflow
+    assert workflow.count("secrets.Cyberwatchapi") == 1
+    assert _step_name_immediately_before(workflow, marker) == "CREATE contrôlé"
+
+
+def test_ci_workflow_never_receives_the_openai_secret():
+    workflow = (store.ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "Cyberwatchapi" not in workflow
+    assert "OPENAI_API_KEY" not in workflow
+    assert "env:" not in workflow

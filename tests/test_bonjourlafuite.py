@@ -173,3 +173,55 @@ class TestRunnerMetrics:
         assert outcome.items_collected == 0
         assert items == []
         assert outcome.status == status.OK
+
+
+HTML_WITH_EXTRA_CONTEXT = """
+<html><body>
+  <section>
+    <p>10 août 2026</p>
+    <h2>🟢 Intermarché</h2>
+    <p>Via Twitter</p>
+    <p>Données concernées : noms, emails, mots de passe hashés</p>
+    <a href="https://example.test/intermarche">Source</a>
+  </section>
+  <section>
+    <p>9 août 2026</p>
+    <h2>🔴 Société Exemple</h2>
+    <a href="/source-exemple">Source</a>
+  </section>
+</body></html>
+"""
+
+
+class TestExtraContext:
+    """Capture, sans requête supplémentaire, le texte libre du bloc (Via,
+    Données concernées, ...) déjà présent sur la page téléchargée : c'est le
+    contexte que le filet de rattrapage LLM pourra exploiter."""
+
+    def test_via_et_donnees_concernees_alimentent_summary(self):
+        entries = parse_timeline(HTML_WITH_EXTRA_CONTEXT, SPEC.start_url)
+
+        assert entries[0].organisation == "Intermarché"
+        assert "Via Twitter" in entries[0].summary
+        assert "Données concernées" in entries[0].summary
+        assert "noms, emails, mots de passe hashés" in entries[0].summary
+
+    def test_bloc_sans_texte_libre_garde_summary_vide(self):
+        entries = parse_timeline(HTML_WITH_EXTRA_CONTEXT, SPEC.start_url)
+
+        assert entries[1].organisation == "Société Exemple"
+        assert entries[1].summary == ""
+
+    def test_le_libelle_du_lien_source_n_entre_pas_dans_le_summary(self):
+        entries = parse_timeline(HTML_WITH_EXTRA_CONTEXT, SPEC.start_url)
+
+        assert "Source" not in entries[0].summary.split(":")[0].split()
+
+    def test_aucune_requete_http_supplementaire(self):
+        client = FakeClient(html=HTML_WITH_EXTRA_CONTEXT)
+
+        BonjourLaFuiteCollector().collect(
+            client, SPEC, Window("2026-08-01", "2026-08-31")
+        )
+
+        assert client.budget.requests_made == 1

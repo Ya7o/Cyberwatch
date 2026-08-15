@@ -13,6 +13,8 @@ import tempfile
 from pathlib import Path
 
 from .model import (
+    AI_QUALIFICATIONS_COLUMNS,
+    AI_USAGE_COLUMNS,
     ENTITY_WATCH_COLUMNS,
     INCIDENT_COLUMNS,
     ITEM_COLUMNS,
@@ -37,6 +39,8 @@ RUN_SOURCES_CSV = DATA_DIR / "run_sources.csv"
 RUN_LOG_CSV = DATA_DIR / "run_log.csv"
 ENTITY_WATCH_CSV = DATA_DIR / "entity_watch.csv"
 ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
+AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
+AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
 
@@ -157,6 +161,20 @@ def load_entity_watch(path: Path | None = None) -> list[dict]:
 
 def load_run_sources(path: Path | None = None) -> list[dict]:
     return read_csv(path or RUN_SOURCES_CSV)
+
+
+def load_ai_qualifications(path: Path | None = None) -> list[dict]:
+    return read_csv(path or AI_QUALIFICATIONS_CSV)
+
+
+def save_ai_qualifications(rows: list[dict], path: Path | None = None) -> None:
+    write_csv(path or AI_QUALIFICATIONS_CSV, AI_QUALIFICATIONS_COLUMNS, rows)
+
+
+def append_ai_usage(row: dict, path: Path | None = None) -> None:
+    """Ajoute la synthèse d'usage IA du run courant à l'historique `AI_USAGE`."""
+    target = path or AI_USAGE_CSV
+    write_csv(target, AI_USAGE_COLUMNS, read_csv(target) + [row])
 
 
 def load_run_log(path: Path | None = None) -> list[dict]:

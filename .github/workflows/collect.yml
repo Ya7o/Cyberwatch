@@ -88,6 +88,8 @@ jobs:
 
       - name: Collecter
         id: run
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
         run: |
           ARGS=""
           if [ -n "${{ steps.scope.outputs.start }}" ]; then
