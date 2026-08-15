@@ -1,0 +1,86 @@
+name: Refresh Veille LLM once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/refresh-veillellm-trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        run: |
+          python -m pytest tests/ -q
+          node --check assets/app.js
+          node --check assets/app-legacy.js
+          node --check assets/dashboard-audit.js
+      - name: MAJ sur le snapshot courant
+        run: python -m cyberwatch maj --layers all --as-of 2026-08-15T11:40:00+04:00
+      - name: Validation
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python -m cyberwatch build-site
+          python - <<'PY'
+          import json
+          from cyberwatch import sources, store
+          from cyberwatch.collectors import get_collector
+          from cyberwatch.collectors.base import Window
+
+          spec = sources.by_id('VEILLE_LLM')
+          result = get_collector(spec.collector).collect(
+              None, spec, Window('2026-07-25', '2026-08-15')
+          )
+          with open(spec.params['path'], encoding='utf-8') as handle:
+              raw = json.load(handle)
+          assert result.items_seen == raw['metadata']['record_count'] == 12
+          assert len(result.entries) == 6
+
+          llm = [item for item in store.load_items() if item.Source_ID == 'VEILLE_LLM']
+          assert len(llm) == 6
+
+          with open('assets/data/status.json', encoding='utf-8') as handle:
+              status = json.load(handle)
+          assert status['counts']['ok'] == 9, status['counts']
+          assert status['counts']['partial'] == 0 and status['counts']['fail'] == 0
+
+          with open('assets/data/incidents.json', encoding='utf-8') as handle:
+              incidents = json.load(handle)
+          tagged = [row for row in incidents if 'veille_llm' in row.get('provenance_tags', [])]
+          assert len(tagged) == 6, len(tagged)
+          mamoudzou = [
+              row for row in tagged
+              if 'mamoudzou' in row.get('org', '').lower() and row.get('date') == '2026-06-11'
+          ]
+          assert mamoudzou
+          assert set(mamoudzou[0]['sources']) == {
+              'JOURNAL_DE_MAYOTTE', 'KWEZI_NUMERIQUE', 'MAYOTTE_HEBDO_NUMERIQUE'
+          }, mamoudzou[0]
+          print(
+              f"SNAPSHOT={result.items_seen} ACCEPTED={len(llm)} "
+              f"TAGGED={len(tagged)} SOURCES_OK={status['counts']['ok']}"
+          )
+          PY
+      - name: Publier et nettoyer
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/refresh-veillellm-once.yml .github/refresh-veillellm-trigger
+          git add -A
+          git commit -m "data: refresh Veille LLM snapshot"
+          git pull --rebase origin main
+          git push origin HEAD:main
