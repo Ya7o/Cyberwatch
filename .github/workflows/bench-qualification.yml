@@ -96,6 +96,23 @@ jobs:
             cat bench_output/summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      - name: Publier l'echantillon fige dans les logs du job (base64)
+        # Le stockage blob des artefacts et l'API de recherche d'entreprises
+        # sont tous deux hors politique reseau du bac a sable de developpement
+        # (cf. org_enrichment.py) : seuls les logs texte du job sont lisibles
+        # depuis cette session. Necessaire pour committer l'echantillon T0
+        # dans bench/frozen/ sans passer par le telechargement d'artefact.
+        if: env.BENCH_FREEZE_TO != ''
+        env:
+          BENCH_FREEZE_TO: ${{ inputs.freeze_to || '' }}
+        run: |
+          if [ -f "$BENCH_FREEZE_TO" ]; then
+            echo "=== FROZEN_SAMPLE_BASE64_START ==="
+            base64 -w0 "$BENCH_FREEZE_TO"
+            echo
+            echo "=== FROZEN_SAMPLE_BASE64_END ==="
+          fi
+
       - name: Conserver les preuves du benchmark
         if: always()
         uses: actions/upload-artifact@v4
