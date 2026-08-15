@@ -631,6 +631,19 @@ def cmd_report(args) -> int:
               f"Location {ai_usage.get('Location_Qualified', 0)}")
         print(f"- Encore Inconnu après IA : **{ai_usage.get('Still_Unknown', 0)}**")
         print(f"- Statut : **{ai_usage.get('Status', '')}**")
+        if ai_usage.get("Sector_Initial_Unknown"):
+            print(
+                f"- Secteur (§12) : {ai_usage.get('Sector_Initial_Unknown', 0)} inconnus initiaux → "
+                f"référentiel {ai_usage.get('Sector_Resolved_Reference', 0)} · "
+                f"règles {ai_usage.get('Sector_Resolved_Deterministic', 0)} · "
+                f"contexte source {ai_usage.get('Sector_Resolved_Source_LLM', 0)} · "
+                f"enrichi {int(ai_usage.get('Sector_Resolved_Enriched_Deterministic', 0) or 0) + int(ai_usage.get('Sector_Resolved_Enriched_LLM', 0) or 0)} "
+                f"→ **{ai_usage.get('Sector_Remaining_Unknown', 0)} restants**"
+            )
+            print(
+                f"- Enrichissement gratuit : {ai_usage.get('Org_Enrichment_Calls', 0)} appels HTTP, "
+                f"taux de cache {ai_usage.get('Org_Enrichment_Cache_Hit_Rate', 0)}"
+            )
 
     notes = last.get("Notes", "")
     if notes:
