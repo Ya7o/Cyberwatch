@@ -142,7 +142,9 @@ class TestDashboardSourcesSection:
             assert expected in body
 
     def test_veille_llm_affiche_veillellmreyt_dans_le_dashboard(self):
-        for path in ("assets/dashboard-audit.js", "assets/app-legacy.js"):
-            js = self._read(path)
-            assert 'VEILLE_LLM: "veillellmReYt"' in js
-            assert 'VEILLE_LLM: "Veille LLM"' not in js
+        # app-legacy.js ne rend plus les incidents/sources (rendu unique par
+        # dashboard-audit.js, cf. suppression du double rendu) : n'a donc
+        # plus besoin de sa propre correspondance de libellés de source.
+        js = self._read("assets/dashboard-audit.js")
+        assert 'VEILLE_LLM: "veillellmReYt"' in js
+        assert 'VEILLE_LLM: "Veille LLM"' not in js

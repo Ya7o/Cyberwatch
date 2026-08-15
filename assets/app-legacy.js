@@ -323,17 +323,6 @@
     return String(value || "").trim().toLocaleLowerCase("fr-FR");
   }
 
-  function sourceLabel(id) {
-    const labels = {
-      BONJOURLAFUITE: "BonjourLaFuite",
-      FRENCHBREACHES: "FrenchBreaches",
-      CYBERATTAQUE_ORG: "Cyberattaque.org",
-      RANSOMWARE_LIVE: "Ransomware.live",
-      VEILLE_LLM: "veillellmReYt",
-    };
-    return labels[id] || id;
-  }
-
 function applyFilters(incidents) {
   const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
   return incidents.filter((incident) => {
@@ -373,7 +362,14 @@ function monthsRange(incidents) {
    *
    * Le détail — angles morts et santé de chaque source — vit dans la section
    * repliée en bas de page : l'information reste accessible sans occuper
-   * l'écran d'accueil, dont le sujet est les incidents. */
+   * l'écran d'accueil, dont le sujet est les incidents.
+   *
+   * Le texte/statut normal de la pastille est rendu une seule fois par
+   * `dashboard-audit.js` (`patchRunLabels`) : le dupliquer ici provoquait un
+   * flash visible au chargement (deux rendus successifs se remplaçant l'un
+   * l'autre). Cette fonction ne garde que ce que `dashboard-audit.js` ne
+   * couvre pas : les deux états où aucune donnée de run n'existe encore, et
+   * la case à cocher des angles morts. */
   function renderRunPill() {
     const data = state.status;
     const pill = $("#run-pill");
@@ -388,28 +384,10 @@ function monthsRange(incidents) {
     if (!data || !data.run.id) {
       pill.dataset.status = "";
       text.textContent = "Aucune collecte";
-      $("#reliability-summary").textContent =
-        "La première collecte automatique n'a pas encore eu lieu.";
       return;
     }
 
-    const run = data.run;
-    const c = data.counts;
-    const totalSources = (data.sources || []).length || c.ok + c.partial + c.fail + c.skipped;
-    const needsAttention = c.partial + c.fail;
-    pill.dataset.status = run.overall;
-    text.textContent = needsAttention
-      ? `Sources : ${c.ok}/${totalSources} opérationnelles · ${needsAttention} à vérifier`
-      : `Sources : ${c.ok}/${totalSources} opérationnelles`;
-    pill.title = "Voir l’état détaillé des sources";
-
-
     const spots = data.blind_spots || [];
-    $("#reliability-summary").textContent =
-      needsAttention
-        ? `${c.ok}/${totalSources} sources opérationnelles · ${needsAttention} à vérifier`
-        : `${c.ok}/${totalSources} sources opérationnelles · aucune anomalie signalée`;
-
     const box = $("#blindspots");
     if (!spots.length) {
       box.hidden = true;
@@ -464,53 +442,14 @@ const quickButtons = [
     barChartH($("#chart-threat"), countBy(rows, "threat"));
     $("#sector-note").textContent = knownNote(rows, "sector", "secteur");
 
-    renderIncidentsTable($("#incidents-table tbody"), rows, $("#table-count"));
+    // Le tableau des incidents (tri, pagination, compteur) est rendu une
+    // seule fois par `dashboard-audit.js` (`renderIncidentTable`) : le
+    // dupliquer ici provoquait un flash visible au chargement.
   }
-
-  function renderIncidentsTable(tbody, rows, counter) {
-    const { key, dir } = state.sort;
-    const sorted = rows.slice().sort((a, b) => {
-      const left = key === "items" ? a.sources.length : a[key] || "";
-      const right = key === "items" ? b.sources.length : b[key] || "";
-      if (left < right) return -dir;
-      if (left > right) return dir;
-      return 0;
-    });
-
-    const LIMIT = 300;
-    const shown = sorted.slice(0, LIMIT);
-    if (counter) {
-      counter.textContent = sorted.length > LIMIT
-        ? `${shown.length} incidents affichés sur ${sorted.length}`
-        : `${sorted.length} incident${sorted.length > 1 ? "s" : ""}`;
-    }
-
-    tbody.innerHTML = shown.map((incident) => {
-      const link = incident.urls[0]
-        ? `<a href="${esc(incident.urls[0])}" target="_blank" rel="noopener">${esc(incident.org || "Organisation inconnue")}</a>`
-        : esc(incident.org || "Organisation inconnue");
-      const basis = incident.basis === "EVENT" ? "date d'événement" : "date de publication";
-      return `<tr>
-        <td class="num" title="${esc(basis)}">${esc(incident.date || "—")}</td>
-        <td class="wrap-cell">${link}</td>
-        <td>${esc(incident.location)}</td>
-        <td>${esc(incident.sector)}</td>
-        <td>${esc(incident.threat)}</td>
-        <td class="num" title="${esc(incident.sources.join(", "))}">${incident.sources.length}</td>
-      </tr>`;
-    }).join("");
-  }
-
-  // Rendu remplacé par le détail homogène de `dashboard-audit.js`
-  // (`#sources-detail-table`, mêmes 6 champs pour toute source) : plus
-  // aucun conteneur `#sources-table` dans le DOM, rien à faire ici.
-  function renderSources() {}
-
 
   function render() {
     renderRunPill();
     renderGeneral();
-    renderSources();
   }
 
   // ----------------------------------------------------------- interactions
@@ -524,6 +463,10 @@ const quickButtons = [
     }));
   }
 
+  // Le tri lui-même (lecture d'`aria-sort`, re-rendu du tableau) vit dans
+  // `dashboard-audit.js` : cette fonction ne fait que gérer le clic —
+  // basculer les attributs `aria-sort` — et prévenir le rendu unique via
+  // le même événement que les filtres rapides.
   function setupSorting() {
     $$("#incidents-table th[data-sort]").forEach((th) => {
       th.addEventListener("click", () => {
@@ -536,7 +479,7 @@ const quickButtons = [
           other.setAttribute("aria-sort", other === th
             ? (state.sort.dir === 1 ? "ascending" : "descending") : "none");
         });
-        render();
+        document.dispatchEvent(new Event("cyberwatch:filters-changed"));
       });
     });
   }
