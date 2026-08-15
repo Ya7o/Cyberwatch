@@ -50,8 +50,9 @@ jobs:
           print("ITEMS_MAYOTTE")
           for item in report.items:
               print(
-                  f"{item.Source_ID}|{item.Date}|{item.Organisation}|"
-                  f"{item.Localisation}|{item.Item_ID}|{item.URL}"
+                  f"{item.Source_ID}|published={item.Published_Date}|event={item.Event_Date}|"
+                  f"org_raw={item.Organisation_Raw}|org_key={item.Organisation_Key}|"
+                  f"location={item.Location}|{item.Item_ID}|{item.URL}"
               )
 
           mamoudzou = [
@@ -63,12 +64,10 @@ jobs:
               print(
                   f"MAMOUDZOU|{incident.Incident_ID}|{incident.Date}|"
                   f"{incident.Organisation}|{incident.Localisation}|"
-                  f"items={incident.Items_Count}|sources={incident.Sources}"
+                  f"items={incident.Items_Count}|sources={incident.Sources}|urls={incident.Source_URLs}"
               )
 
           assert report.overall == status.OK, f"Collecte Mayotte non OK: {report.overall}"
           assert all(outcome.status == status.OK for outcome in report.outcomes)
-          assert any("mamoudzou" in (item.Organisation or "").lower() for item in report.items), (
-              "Le cas Mamoudzou attendu n'a pas été retrouvé dans la collecte historique Mayotte"
-          )
+          assert mamoudzou, "Le cas Mamoudzou attendu n'a pas été retrouvé dans la collecte historique Mayotte"
           PY
