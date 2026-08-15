@@ -1,6 +1,8 @@
 name: Initialize Baseline
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       as_of:
@@ -25,6 +27,7 @@ concurrency:
 
 jobs:
   initialize:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'chore: run historical Mayotte baseline'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -38,11 +41,19 @@ jobs:
           pip install -r requirements.txt
       - name: Figer le contexte d'initialisation
         run: |
-          AS_OF="${{ inputs.as_of }}"
-          if [ -z "$AS_OF" ]; then AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"; fi
+          if [ "${{ github.event_name }}" = "push" ]; then
+            AS_OF="2026-08-15T09:37:00+04:00"
+            TARGET_START="2026-01-01"
+            LAYERS="all"
+          else
+            AS_OF="${{ inputs.as_of }}"
+            if [ -z "$AS_OF" ]; then AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"; fi
+            TARGET_START="${{ inputs.start }}"
+            LAYERS="${{ inputs.layers }}"
+          fi
           echo "AS_OF=$AS_OF" >> "$GITHUB_ENV"
-          echo "TARGET_START=${{ inputs.start }}" >> "$GITHUB_ENV"
-          echo "LAYERS=${{ inputs.layers }}" >> "$GITHUB_ENV"
+          echo "TARGET_START=$TARGET_START" >> "$GITHUB_ENV"
+          echo "LAYERS=$LAYERS" >> "$GITHUB_ENV"
       - name: Tests unitaires
         run: python -m pytest tests/ -q
       - name: CREATE contrôlé
