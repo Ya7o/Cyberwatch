@@ -330,52 +330,28 @@
       CYBERATTAQUE_ORG: "Cyberattaque.org",
       RANSOMWARE_LIVE: "Ransomware.live",
       VEILLE_LLM: "Veille LLM",
-      KWEZI_NUMERIQUE: "Kwezi",
-      MAYOTTE_HEBDO_NUMERIQUE: "Mayotte Hebdo",
-      JOURNAL_DE_MAYOTTE: "Journal de Mayotte",
-      MAYOTTE_FM: "Mayotte FM",
-      MAYOTTE_LA_1ERE: "Mayotte La 1ère",
-      FLASH_INFOS_MAYOTTE: "Flash Infos Mayotte",
-      FRANCE_MAYOTTE_MATIN: "France Mayotte Matin",
-      LES_NOUVELLES_DE_MAYOTTE: "Les Nouvelles de Mayotte",
-      RMV_ACTUALITES: "RMV Actualités",
     };
     return labels[id] || id;
   }
 
-  /** Presse mahoraise directe : dérivée des métadonnées de sources
-   * (zone Mayotte + couche LOCAL_MEDIA_DIRECT), jamais une liste codée en dur.
-   * Exclut naturellement les candidates (angles morts, à confirmer, arrêtées),
-   * dont la couche est CANDIDATE_DISABLED. */
-  function mahoranPressSources() {
-    return new Set(
-      ((state.status && state.status.sources) || [])
-        .filter((source) => source.zone === "Mayotte" && source.layer === "LOCAL_MEDIA_DIRECT")
-        .map((source) => source.id)
-    );
-  }
+function applyFilters(incidents) {
+  const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
+  return incidents.filter((incident) => {
+    const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+    const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
+    const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
+    const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+    if (ocean && !oceanLocations.has(incident.location)) return false;
+    if (localOnly && !incident.local) return false;
+    if ((automotive || largeRetail) && !(
+      (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
+      || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
+    )) return false;
+    return true;
+  });
+}
 
-  function applyFilters(incidents) {
-    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";
-    const veilleLlmOnly = $("#f-veille-llm")?.getAttribute("aria-pressed") === "true";
-    const press = pressOnly ? mahoranPressSources() : null;
-    return incidents.filter((incident) => {
-      const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
-      const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
-      const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
-      const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
-      if (ocean && !oceanLocations.has(incident.location)) return false;
-      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;
-      if (veilleLlmOnly && !(incident.provenance_tags || []).includes("veille_llm")) return false;
-      if ((automotive || largeRetail) && !(
-        (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
-        || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
-      )) return false;
-      return true;
-    });
-  }
-
-  function monthsRange(incidents) {
+function monthsRange(incidents) {
     const keys = incidents.map((i) => monthKey(i.date)).filter(Boolean);
     if (!keys.length) return [];
     const min = keys.reduce((a, b) => (a < b ? a : b));
@@ -459,13 +435,12 @@
       return;
     }
     const rows = applyFilters(state.incidents);
-    const quickButtons = [
-      ["#f-ocean-indien", "Voir l’Océan Indien"],
-      ["#f-auto", "Concessions automobiles"],
-      ["#f-grande-distrib", "Grande distribution"],
-      ["#f-presse-mahoraise", "Presse mahoraise"],
-      ["#f-veille-llm", "Veille LLM"],
-    ];
+const quickButtons = [
+  ["#f-ocean-indien", "Voir l’Océan Indien"],
+  ["#f-auto", "Concessions automobiles"],
+  ["#f-grande-distrib", "Grande distribution"],
+  ["#f-local", "Local"],
+];
     quickButtons.forEach(([id, label]) => {
       const button = $(id);
       if (button) button.textContent = button.getAttribute("aria-pressed") === "true" ? `${label} · ${rows.length}` : label;
@@ -562,45 +537,17 @@
     }).join("");
   }
 
-  /** Couverture presse mahoraise : résumé compact + détail repliable, dérivés
-   * de `coverage_groups.MAYOTTE_LOCAL` et des lignes de sources zone Mayotte.
-   * Statique vis-à-vis des filtres (pas de dépendance à `applyFilters`), donc
-   * pas besoin d'être rejoué par le cycle de patch de dashboard-audit.js. */
-  function renderMayotteCoverage() {
-    const box = $("#mayotte-coverage");
-    if (!box) return;
-    const coverage = state.status && state.status.coverage_groups && state.status.coverage_groups.MAYOTTE_LOCAL;
-    if (!coverage) { box.hidden = true; box.innerHTML = ""; return; }
-    const mahoran = (state.status.sources || []).filter((source) => source.zone === "Mayotte");
-    const listItem = (source) => `<li><strong>${esc(sourceLabel(source.id))}</strong>${source.reason ? ` — ${esc(source.reason)}` : ""}</li>`;
-    const section = (title, items) => items.length
-      ? `<div class="mayotte-coverage-group"><p>${esc(title)}</p><ul>${items.map(listItem).join("")}</ul></div>`
-      : "";
-    const groups = [
-      section("Collectées", mahoran.filter((source) => source.layer === "LOCAL_MEDIA_DIRECT")),
-      section("Angles morts", mahoran.filter((source) => source.candidate_status === "BLIND_SPOT")),
-      section("À confirmer", mahoran.filter((source) => source.candidate_status === "TO_CONFIRM")),
-      section("Arrêté", mahoran.filter((source) => source.candidate_status === "CEASED")),
-    ].join("");
-    const parts = [`${coverage.collected} collectée${coverage.collected === 1 ? "" : "s"}`];
-    if (coverage.blind_spot) parts.push(`${coverage.blind_spot} angle${coverage.blind_spot === 1 ? "" : "s"} mort${coverage.blind_spot === 1 ? "" : "s"}`);
-    if (coverage.to_confirm) parts.push(`${coverage.to_confirm} à confirmer`);
-    if (coverage.ceased) parts.push(`${coverage.ceased} arrêté${coverage.ceased === 1 ? "" : "s"}`);
-    box.hidden = false;
-    box.innerHTML = `<summary>Presse mahoraise — ${esc(parts.join(" · "))}</summary><div class="mayotte-coverage-detail">${groups}</div>`;
-  }
 
   function render() {
     renderRunPill();
     renderGeneral();
     renderSources();
-    renderMayotteCoverage();
   }
 
   // ----------------------------------------------------------- interactions
 
   function setupFilters() {
-    ["#f-ocean-indien", "#f-auto", "#f-grande-distrib", "#f-presse-mahoraise", "#f-veille-llm"].forEach((id) => $(id)?.addEventListener("click", (event) => {
+    ["#f-ocean-indien", "#f-auto", "#f-grande-distrib", "#f-local"].forEach((id) => $(id)?.addEventListener("click", (event) => {
       const button = event.currentTarget;
       button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
       document.dispatchEvent(new Event("cyberwatch:filters-changed"));

@@ -19,13 +19,6 @@
     "système u", "super u",
   ]);
   const orgKey = (value) => String(value || "").trim().toLocaleLowerCase("fr-FR");
-  /** Même dérivation qu'app-legacy.js : zone Mayotte + couche LOCAL_MEDIA_DIRECT,
-   * jamais une liste codée en dur ; exclut les candidates (angles morts, etc.). */
-  const mahoranPressSources = () => new Set(
-    ((state.status && state.status.sources) || [])
-      .filter((source) => source.zone === "Mayotte" && source.layer === "LOCAL_MEDIA_DIRECT")
-      .map((source) => source.id)
-  );
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[ch]));
@@ -53,15 +46,6 @@
       RANSOMWARE_LIVE: "Ransomware.live",
       VEILLE_LLM: "Veille LLM",
       CERT_MU_ALERTS: "CERT-MU",
-      KWEZI_NUMERIQUE: "Kwezi",
-      MAYOTTE_HEBDO_NUMERIQUE: "Mayotte Hebdo",
-      JOURNAL_DE_MAYOTTE: "Journal de Mayotte",
-      MAYOTTE_FM: "Mayotte FM",
-      MAYOTTE_LA_1ERE: "Mayotte La 1ère",
-      FLASH_INFOS_MAYOTTE: "Flash Infos Mayotte",
-      FRANCE_MAYOTTE_MATIN: "France Mayotte Matin",
-      LES_NOUVELLES_DE_MAYOTTE: "Les Nouvelles de Mayotte",
-      RMV_ACTUALITES: "RMV Actualités",
     };
     if (labels[id]) return labels[id];
     return String(id || "Source").toLowerCase().split("_")
@@ -88,6 +72,7 @@
       .sources-list{display:flex;gap:9px 18px;flex-wrap:wrap;margin-top:12px}.source-state{display:inline-flex;align-items:center;gap:7px;font-size:14px}.source-led{width:9px;height:9px;border-radius:50%;background:var(--text-muted);box-shadow:0 0 0 2px var(--surface)}.source-led--ok{background:var(--ok,#2f9e44)}.source-led--attention{background:var(--warn,#d99a00)}.source-led--fail{background:var(--danger,#d64545)}
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
       .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
+      .local-analysis{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}.local-analysis p{margin:6px 0 0}.local-score{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis .evidence-links{margin-top:7px}
       #sources-table{table-layout:auto!important}#sources-table td,#sources-table th{width:auto!important;vertical-align:top}.source-measures{white-space:normal!important}
       @media(max-width:700px){
         .topbar-inner{align-items:flex-start}.brand-sub{max-width:190px}.run-pill{white-space:normal;text-align:left}
@@ -113,27 +98,24 @@
 
   }
 
-  function filteredIncidents() {
-    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";
-    const veilleLlmOnly = $("#f-veille-llm")?.getAttribute("aria-pressed") === "true";
-    const press = pressOnly ? mahoranPressSources() : null;
-    return state.incidents.filter((incident) => {
-      const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
-      const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
-      const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
-      const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
-      if (ocean && !oceanLocations.has(incident.location)) return false;
-      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;
-      if (veilleLlmOnly && !(incident.provenance_tags || []).includes("veille_llm")) return false;
-      if ((automotive || largeRetail) && !(
-        (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
-        || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
-      )) return false;
-      return true;
-    });
-  }
+function filteredIncidents() {
+  const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
+  return state.incidents.filter((incident) => {
+    const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+    const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
+    const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
+    const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+    if (ocean && !oceanLocations.has(incident.location)) return false;
+    if (localOnly && !incident.local) return false;
+    if ((automotive || largeRetail) && !(
+      (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
+      || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
+    )) return false;
+    return true;
+  });
+}
 
-  function currentSort() {
+function currentSort() {
     const active = $$("#incidents-table th[data-sort]").find((th) => ["ascending", "descending"].includes(th.getAttribute("aria-sort")));
     if (!active) return { key: "date", dir: -1 };
     return { key: active.dataset.sort, dir: active.getAttribute("aria-sort") === "ascending" ? 1 : -1 };
@@ -175,6 +157,16 @@
     tableObserver.observe(tbody, { childList: true, subtree: false });
   }
 
+function renderLocalAnalysis(incident, enabled) {
+  const local = incident.local;
+  if (!enabled || !local) return "";
+  const references = [...new Set((local.references || []).map(safeUrl).filter(Boolean))];
+  const links = references.length
+    ? `<div class="evidence-links"><span>Références :</span>${references.slice(0, 4).map((url, i) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(url)}">${esc(host(url))}${references.length > 1 ? ` ${i + 1}` : ""}</a>`).join("")}${references.length > 4 ? `<span>+${references.length - 4}</span>` : ""}</div>`
+    : "";
+  return `<div class="local-analysis"><span class="local-score">Score cyberattaque : ${esc(local.score)}/100</span><p><strong>Synthèse :</strong> ${esc(local.summary || "—")}</p>${links}</div>`;
+}
+
   function renderIncidentTable() {
     const tbody = $("#incidents-table tbody");
     if (!tbody || !state.incidents.length) return;
@@ -189,10 +181,11 @@
     const start = (state.page - 1) * state.pageSize;
     const shown = rows.slice(start, start + state.pageSize);
 
+    const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
     tableObserver?.disconnect();
     tbody.innerHTML = shown.map((incident) => `<tr>
       <td data-label="Date" class="num">${esc(incident.date || "—")}</td>
-      <td data-label="Organisation" class="wrap-cell org-cell">${esc(incident.org || "Organisation inconnue")}</td>
+      <td data-label="Organisation" class="wrap-cell org-cell">${esc(incident.org || "Organisation inconnue")}${renderLocalAnalysis(incident, localOnly)}</td>
       <td data-label="Territoire">${esc(incident.location || "—")}</td>
       <td data-label="Secteur">${esc(incident.sector || "—")}</td>
       <td data-label="Menace">${esc(incident.threat || "—")}</td>

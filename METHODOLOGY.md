@@ -16,19 +16,23 @@ candidat de menace résoluble conservé inconnu, suppression inexpliquée. Cet
 audit est un outil d'investigation manuelle, pas un gate obligatoire de CI ;
 toute mise à jour de la référence reste visible dans Git.
 
-## Couverture locale Mayotte
+## Couverture locale Réunion / Mayotte
 
-Kwezi Numérique, Mayotte Hebdo Numérique, Journal de Mayotte et Mayotte FM sont lus par
-le collecteur générique WordPress avec un corps d'article lorsque
-nécessaire. Un article de rubrique numérique n'est matérialisé que s'il est
-cyber et nomme une victime déterminée. La localisation structurée, le
-référentiel et l'entité reconnue priment ; aucun défaut territorial mahorais
-n'est appliqué tant qu'un audit de corpus ne l'a pas justifié. Le tableau de
-statut expose toute source locale déclarée requise mais absente comme
-`NOT_COVERED`. Les quatre médias sont des archives WordPress paginées : un
-`PARTIAL` empêche la publication. Les watchers Mayotte restent désactivés dans
-ce lot car ils dupliqueraient les chemins directs ; les titres non collectables
-sont des angles morts explicites dans `data/mayotte_media_inventory.csv`.
+La couverture locale est fournie par le snapshot versionné **Veille LLM**
+(`sources/veillellm/cyberattaques_reunion_mayotte_2026.json`). Il est relu en
+totalité à chaque run afin qu'une découverte historique tardive soit intégrée
+sans dépendre de la fenêtre réseau de MAJ. Seuls les dossiers dont le score
+`score_cyberattaque >= 50` sont matérialisés dans `ITEMS`.
+
+Veille LLM est une source analytique : ses références documentaires sont exposées
+au dashboard mais ne gonflent jamais le compteur de corroboration éditoriale.
+Lorsqu'un incident est déjà couvert par une source directe, `Sources` reste fondé
+sur les sources directes. Lorsqu'il n'existe que dans Veille LLM, celle-ci reste
+la source unique afin qu'aucun incident ne soit dépourvu de provenance.
+
+Les collecteurs presse Mayotte du Lot 1 ont été retirés après observation de faux
+positifs d'extraction de victime dans des articles généralistes. La précision du
+corpus prime sur une couverture technique plus large mais bruitée.
 
 ## Initialisation et référence
 

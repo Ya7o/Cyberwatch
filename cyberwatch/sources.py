@@ -19,7 +19,7 @@ dans `METHODOLOGY.md` :
 
 from __future__ import annotations
 
-from . import config, status, watchlists
+from . import config, watchlists
 from .collectors.base import SourceSpec
 from .model import SOURCE_COLUMNS
 
@@ -38,20 +38,6 @@ REUNION_MEDIA = [
     "la1ere.francetvinfo.fr/reunion",
 ]
 
-# Lot 1 Mayotte : les titres exploitables sont collectés directement. Les
-# watchers restent réservés aux domaines sans archive historique directe, afin
-# qu'un même article ne puisse jamais devenir deux sources par deux chemins.
-MAYOTTE_MEDIA: list[str] = []
-MAYOTTE_CANDIDATE_MEDIA = [
-    "la1ere.franceinfo.fr/mayotte",
-    "rmv.yt/actualites",
-    "www.mayottehebdo.com/lire-flash-info/",
-    "www.lavoixdefrance.fr/author/lvdf_mayotte/",
-]
-
-# Les termes restent fixes : ils constituent un rappel large mais déterministe
-# pour les archives de presse généraliste sans rapatrier tout le journal.
-MAYOTTE_CYBER_SEARCH_TERMS = list(config.MEDIA_SEARCH_TERMS)
 
 MAURICE_MEDIA = ["defimedia.info", "lexpress.mu", "www.lemauricien.com"]
 MADAGASCAR_MEDIA = ["lexpress.mg", "midi-madagasikara.mg"]
@@ -239,58 +225,6 @@ LOCAL_MEDIA_SOURCES = [
             "articles réunionnais restent atteints par REUNION_ENTITY_WATCH."
         ),
     ),
-    SourceSpec(
-        source_id="KWEZI_NUMERIQUE",
-        layer=config.LAYER_LOCAL_MEDIA,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://www.linfokwezi.fr/numerique/",
-        collector="wordpress",
-        active=True,
-        location_rule=config.LOC_INCONNU,
-        params={"include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "kwezi", "publication_id": "linfokwezi", "search_terms": MAYOTTE_CYBER_SEARCH_TERMS, "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
-        protocol="Interroger l'API WordPress sur les termes cyber fixes, paginés jusqu'à la borne.",
-        success_test="Toutes les réponses WordPress des recherches cyber sont paginées ; aucun article sans victime n'est matérialisé.",
-        notes="Incident créé uniquement si une organisation victime est nommée.",
-    ),
-    SourceSpec(
-        source_id="MAYOTTE_HEBDO_NUMERIQUE",
-        layer=config.LAYER_LOCAL_MEDIA,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://www.mayottehebdo.com/actualite/numerique/",
-        collector="wordpress",
-        active=True,
-        location_rule=config.LOC_INCONNU,
-        params={"include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "somapresse", "publication_id": "mayottehebdo", "search_terms": MAYOTTE_CYBER_SEARCH_TERMS, "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
-        protocol="API WordPress, recherches cyber fixes et paginées jusqu'à la borne.",
-        success_test="API WordPress complète jusqu'à TARGET_START ; aucun article cyber sans victime n'est matérialisé.",
-        notes="Média mahorais local ; Mayotte est un défaut de source de dernier rang.",
-    ),
-    SourceSpec(
-        source_id="JOURNAL_DE_MAYOTTE",
-        layer=config.LAYER_LOCAL_MEDIA,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://lejournaldemayotte.yt/",
-        collector="wordpress",
-        active=True,
-        location_rule=config.LOC_INCONNU,
-        params={"wp_endpoint": "https://lejournaldemayotte.yt/wp-json/wp/v2", "include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "lejournaldemayotte", "publication_id": "lejournaldemayotte", "search_terms": MAYOTTE_CYBER_SEARCH_TERMS, "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
-        protocol="API WordPress, recherches cyber fixes et paginées jusqu'à la borne.",
-        success_test="Toutes les pages WordPress jusqu'à TARGET_START sont parcourues ; aucun article cyber sans victime n'est matérialisé.",
-        notes="Média mahorais généraliste ; pas de défaut territorial implicite.",
-    ),
-    SourceSpec(
-        source_id="MAYOTTE_FM",
-        layer=config.LAYER_LOCAL_MEDIA,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://mayottefm.fr/category/news/",
-        collector="wordpress",
-        active=True,
-        location_rule=config.LOC_INCONNU,
-        params={"include_content": True, "require_victim": True, "local_media_metrics": True, "publisher_id": "mayottefm", "publication_id": "mayottefm", "search_terms": MAYOTTE_CYBER_SEARCH_TERMS, "coverage_required": True, "coverage_group": "MAYOTTE_LOCAL"},
-        protocol="API WordPress, recherches cyber fixes et paginées jusqu'à la borne.",
-        success_test="Toutes les réponses WordPress des recherches cyber sont paginées ; zéro sans victime est contrôlé.",
-        notes="Radio mahoraise publiant une rubrique d'actualité locale distincte.",
-    ),
 ]
 
 # --------------------------------------------------------------------------
@@ -345,14 +279,6 @@ ENTITY_WATCH_SOURCES = [
         config.LAYER_ENTITY_WATCH,
         notes="24 communes et 20 entités critiques de La Réunion.",
     ),
-    _watch(
-        "MAYOTTE_ENTITY_WATCH",
-        config.LOC_MAYOTTE,
-        MAYOTTE_MEDIA,
-        watchlists.MAYOTTE_ENTITIES,
-        config.LAYER_ENTITY_WATCH,
-        notes="17 communes et les entités critiques de Mayotte.",
-    ),
 ]
 
 # --------------------------------------------------------------------------
@@ -374,7 +300,6 @@ REGIONAL_WATCH_SOURCES = [
             "scope_is_cyber": True,
             "replace_snapshot": True,
             "non_evidence_source": True,
-            "dashboard_filter": "veille_llm",
         },
         protocol=(
             "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "
@@ -386,20 +311,10 @@ REGIONAL_WATCH_SOURCES = [
             "les signaux <50 restent hors INCIDENTS."
         ),
         notes=(
-            "Source analytique issue de Veille LLM. Snapshot remplacé à chaque run ; "
+            "Source locale analytique issue de Veille LLM pour La Réunion et Mayotte. Snapshot remplacé à chaque run ; "
             "elle ne compte pas comme corroboration éditoriale supplémentaire lorsqu'une "
             "source directe couvre déjà le même incident."
         ),
-    ),
-    _watch(
-        "MAYOTTE_MEDIA_WATCH",
-        config.LOC_MAYOTTE,
-        MAYOTTE_MEDIA,
-        [],
-        config.LAYER_REGIONAL_WATCH,
-        require_entity=False,
-        notes="Tout contenu cyber mahorais, sans exiger une entité de la liste.",
-        active=False,
     ),
     _watch(
         "MAURITIUS_REGIONAL_WATCH",
@@ -443,71 +358,6 @@ REGIONAL_WATCH_SOURCES = [
 # --------------------------------------------------------------------------
 
 DISABLED_SOURCES = [
-    SourceSpec(
-        source_id="MAYOTTE_LA_1ERE",
-        layer=config.LAYER_DISABLED,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://la1ere.franceinfo.fr/mayotte/",
-        collector="autodetect",
-        active=False,
-        location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_BLIND_SPOT, "publisher_id": "france_televisions", "publication_id": "mayotte_la_1ere"},
-        protocol="Découvrir un transport public paginé (WordPress, RSS/Atom ou HTML/JSON-LD) et parcourir l'archive cyber jusqu'à la borne.",
-        success_test="Archive publique paginée et datée jusqu'à TARGET_START.",
-        notes="Audit live 2026-08-15 : page active (HTTP 200), mais aucun RSS/API WordPress ; autodetect ne lit que deux entrées et aucune pagination valide. Angle mort CANDIDATE_INACCESSIBLE sans contournement.",
-    ),
-    SourceSpec(
-        source_id="FLASH_INFOS_MAYOTTE",
-        layer=config.LAYER_DISABLED,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://www.mayottehebdo.com/lire-flash-info/",
-        collector="autodetect",
-        active=False,
-        location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_BLIND_SPOT, "publisher_id": "somapresse", "publication_id": "flash_infos"},
-        protocol="Lire les numéros publics du quotidien sans abonnement et en extraire les articles éditoriaux distincts.",
-        success_test="Numéros courants publics, datés et intégralement énumérables.",
-        notes="Actif en 2026 mais newsletter payante Somapresse ; la page publique ne présente que des anciens numéros (dernier observé 2025-09-24). Les articles web Somapresse déjà lus sous Mayotte Hebdo ne sont pas une seconde corroboration.",
-    ),
-    SourceSpec(
-        source_id="LES_NOUVELLES_DE_MAYOTTE",
-        layer=config.LAYER_DISABLED,
-        zone=config.LOC_MAYOTTE,
-        start_url="",
-        collector="autodetect",
-        active=False,
-        location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_CEASED, "publisher_id": "dm_editions", "publication_id": "les_nouvelles_de_mayotte"},
-        protocol="Aucun : titre arrêté.",
-        success_test="Réactiver seulement si une nouvelle rédaction publie une archive d'information publique.",
-        notes="INACTIVE : cessation de diffusion annoncée pour le 19 avril 2024. Les annonces légales ultérieures sous ce nom ne constituent pas une presse d'information cyber.",
-    ),
-    SourceSpec(
-        source_id="FRANCE_MAYOTTE_MATIN",
-        layer=config.LAYER_DISABLED,
-        zone=config.LOC_MAYOTTE,
-        start_url="",
-        collector="autodetect",
-        active=False,
-        location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_TO_CONFIRM, "publisher_id": "kwezi", "publication_id": "france_mayotte_matin"},
-        protocol="Découvrir une archive publique propre au titre et l'énumérer jusqu'à la borne.",
-        success_test="URL publique stable, articles datés et archive paginée.",
-        notes="Activité papier signalée en 2026 (Actif_2026=INCERTAIN dans l'inventaire), mais aucune URL éditoriale publique techniquement collectable retrouvée pendant l'audit. Statut à confirmer, distinct d'un angle mort technique confirmé ; ne pas confondre avec L'Info Kwezi du même groupe.",
-    ),
-    SourceSpec(
-        source_id="RMV_ACTUALITES",
-        layer=config.LAYER_DISABLED,
-        zone=config.LOC_MAYOTTE,
-        start_url="https://rmv.yt/actualites",
-        collector="autodetect",
-        active=False,
-        location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_BLIND_SPOT, "publisher_id": "rmv", "publication_id": "rmv_actualites"},
-        protocol="Découvrir une archive publique paginée et datée des actualités RMV.",
-        success_test="Pagination ou API publique prouvant la borne historique.",
-        notes="Actif en 2026 (HTTP 200, actualités datées) ; ni RSS ni WordPress REST, et le HTML expose seulement une sélection non paginable. Angle mort CANDIDATE_INACCESSIBLE.",
-    ),
     SourceSpec(
         source_id="HACKMAGEDDON",
         layer=config.LAYER_DISABLED,

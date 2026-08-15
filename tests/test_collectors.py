@@ -202,7 +202,7 @@ class TestWordPress:
             "categories?slug=numerique": ok('[{"id": 7}]'),
             "/posts?": ok(payload, {"X-WP-TotalPages": "1"}),
         })
-        spec = SourceSpec("KWEZI_NUMERIQUE", config.LAYER_LOCAL_MEDIA, "Mayotte",
+        spec = SourceSpec("TEST_LOCAL_MEDIA", config.LAYER_LOCAL_MEDIA, "Mayotte",
                           "https://exemple.re/numerique/", "wordpress",
                           params={"wp_endpoint": "https://exemple.re/wp-json/wp/v2",
                                   "categories": "numerique", "include_content": True})

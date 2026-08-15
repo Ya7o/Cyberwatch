@@ -39,7 +39,6 @@ from .normalize import (
     find_known_entity,
     looks_cyber,
     organisation_from_entry_title,
-    organisation_from_kwezi_incident_text,
     organisation_from_title,
     organisation_key,
 )
@@ -307,11 +306,9 @@ def entry_to_item(
     if not organisation and spec.source_id != "CYBERATTAQUE_ORG":
         organisation = find_known_entity(text, known_orgs)
 
-    if not organisation and spec.source_id == "KWEZI_NUMERIQUE":
-        organisation = organisation_from_kwezi_incident_text(entry.content)
 
-    # Kwezi mesure tous les articles de rubrique, mais ne matérialise dans
-    # ITEMS que ceux dont la victime est déterminée sans heuristique variable.
+    # Les sources qui exigent une victime ne matérialisent que les entrées
+    # dont la victime est déterminée sans heuristique variable.
     if (spec.source_id == "CYBERATTAQUE_ORG" or spec.params.get("require_victim")) and not organisation:
         return None
     if spec.params.get("require_victim") and not _local_title_names_a_victim(entry, organisation):
@@ -722,8 +719,7 @@ def execute(
         collected: list[Item] = []
         watch_rows: list[dict] = []
 
-        # V0 mono-source : ne jamais exécuter ni journaliser les collecteurs
-        # désactivés ; le pipeline doit appeler exactement BonjourLaFuite.
+        # Exécuter uniquement les sources actives des couches demandées.
         for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
                 client, spec, context, known_orgs, entity_index, territories, reference,

@@ -14,55 +14,109 @@ sont, elles, le compte rendu brut du collecteur du dernier run.
 
 from __future__ import annotations
 
+import json
+
 from . import config, identity, sources, status, store
 from .dedup import group_components
 from .model import Incident, Item
+from .normalize import organisation_key
 
 
-def incidents_payload(incidents: list[Incident], provenance_tags: dict[str, list[str]] | None = None) -> list[dict]:
+def incidents_payload(
+    incidents: list[Incident],
+    local_analysis: dict[str, dict] | None = None,
+) -> list[dict]:
     """Incidents au format compact attendu par le dashboard."""
-    provenance_tags = provenance_tags or {}
+    local_analysis = local_analysis or {}
     payload = []
     for incident in incidents:
-        payload.append(
-            {
-                "id": incident.Incident_ID,
-                "date": incident.Date,
-                "basis": incident.Date_Basis,
-                "org": incident.Organisation,
-                "sector": incident.Secteur,
-                "threat": incident.Menace,
-                "location": incident.Localisation,
-                "sources": [s for s in incident.Sources.split(" | ") if s],
-                "urls": [u for u in incident.Source_URLs.split(" | ") if u],
-                "items": incident.Items_Count,
-                "first_seen": incident.First_seen,
-                "last_seen": incident.Last_seen,
-                "provenance_tags": provenance_tags.get(incident.Incident_ID, []),
-            }
-        )
+        row = {
+            "id": incident.Incident_ID,
+            "date": incident.Date,
+            "basis": incident.Date_Basis,
+            "org": incident.Organisation,
+            "sector": incident.Secteur,
+            "threat": incident.Menace,
+            "location": incident.Localisation,
+            "sources": [s for s in incident.Sources.split(" | ") if s],
+            "urls": [u for u in incident.Source_URLs.split(" | ") if u],
+            "items": incident.Items_Count,
+            "first_seen": incident.First_seen,
+            "last_seen": incident.Last_seen,
+        }
+        analysis = local_analysis.get(incident.Incident_ID)
+        if analysis:
+            row["local"] = analysis
+        payload.append(row)
     return payload
 
 
-def _provenance_tags_by_incident(items: list[Item]) -> dict[str, list[str]]:
-    """Expose les imports analytiques sans les transformer en corroboration."""
-    payload: dict[str, list[str]] = {}
+def _local_analysis_by_incident(items: list[Item]) -> dict[str, dict]:
+    """Joint le snapshot Veille LLM aux incidents sans en faire une preuve éditoriale."""
+    spec = sources.by_id("VEILLE_LLM")
+    if spec is None:
+        return {}
+    relative = str(spec.params.get("path") or "").strip()
+    if not relative:
+        return {}
+    path = (store.ROOT / relative).resolve()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError):
+        return {}
+
+    records = data.get("incidents") or []
+    min_score = int(spec.params.get("min_score", 50))
+    by_key: dict[tuple[str, str], dict] = {}
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        try:
+            score = int(record.get("score_cyberattaque"))
+        except (TypeError, ValueError):
+            continue
+        if score < min_score:
+            continue
+        organisation = str(record.get("organisation") or "").strip()
+        date = str(record.get("date") or "").strip()
+        summary = str(record.get("synthese") or "").strip()
+        refs = record.get("sources") or []
+        references = [
+            str(url).strip() for url in refs
+            if str(url).strip().startswith(("https://", "http://"))
+        ]
+        if not organisation or not date or not summary:
+            continue
+        by_key[(organisation_key(organisation), date)] = {
+            "score": score,
+            "summary": summary,
+            "references": references,
+        }
+
+    payload: dict[str, dict] = {}
     for component in group_components(items):
         ordered = identity.sort_items(component)
         if not ordered:
             continue
+        llm_items = [item for item in ordered if item.Source_ID == "VEILLE_LLM"]
+        if not llm_items:
+            continue
         incident_id = identity.incident_id(
             ordered[0].Organisation_Key, ordered[0].Item_ID
         )
-        tags = set()
-        for item in ordered:
-            spec = sources.by_id(item.Source_ID)
-            tag = spec.params.get("dashboard_filter") if spec else ""
-            if tag:
-                tags.add(str(tag))
-        if tags:
-            payload[incident_id] = sorted(tags)
+        matches = []
+        for item in llm_items:
+            key = (item.Organisation_Key, item.Event_Date or item.Published_Date)
+            analysis = by_key.get(key)
+            if analysis:
+                matches.append(analysis)
+        if matches:
+            payload[incident_id] = max(
+                matches,
+                key=lambda value: (value["score"], value["summary"]),
+            )
     return payload
+
 
 def _source_metadata() -> dict[str, dict]:
     return {
@@ -372,7 +426,7 @@ def build() -> tuple[int, int]:
     """Écrit les données du site. Renvoie (nb incidents, nb sources)."""
     incidents = store.load_incidents()
     items = store.load_items()
-    payload = incidents_payload(incidents, _provenance_tags_by_incident(items))
+    payload = incidents_payload(incidents, _local_analysis_by_incident(items))
     state = status_payload()
 
     store.write_json(store.SITE_DATA_DIR / "incidents.json", payload)
