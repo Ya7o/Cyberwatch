@@ -34,20 +34,25 @@ from .model import Item
 # --------------------------------------------------------------------------
 # Modèle et tarification
 #
-# Snapshot et tarifs choisis via recherche web le 2026-08-15 : la
-# documentation officielle (developers.openai.com, openai.com, openrouter.ai)
-# est inaccessible depuis cet environnement (politique réseau du bac à
-# sable). Ces valeurs ne sont donc PAS vérifiées sur une source primaire —
-# à corriger si la réponse API réelle (nom de modèle refusé) ou une facture
-# les contredit. `OPENAI_MODEL` reste overridable sans toucher au code.
+# Le snapshot daté "gpt-5-nano-2026-03-17" (issu d'une recherche web, faute
+# d'accès à la doc officielle depuis ce bac à sable) a été rejeté par l'API
+# réelle le 2026-08-15 : HTTP 400 model_not_found, confirmé sur un run
+# GitHub Actions réel (secrets.Cyberwatchapi). On retombe donc sur l'alias
+# flottant "gpt-5-nano" : moins figé qu'un snapshot vérifié, mais un alias
+# qui résout vers un modèle réellement existant vaut mieux qu'un snapshot
+# deviné et refusé par l'API. À épingler sur un snapshot exact dès qu'il est
+# possible de le vérifier sur la documentation officielle. `OPENAI_MODEL`
+# reste overridable sans toucher au code.
 # --------------------------------------------------------------------------
 
-DEFAULT_MODEL = "gpt-5-nano-2026-03-17"
+DEFAULT_MODEL = "gpt-5-nano"
 
-#: Dollars US par million de tokens. `cached_input` n'est volontairement pas
-#: utilisé dans le calcul de coût (voir `_estimate_cost`) : à défaut d'un
-#: tarif remisé vérifié, tous les tokens d'entrée sont comptés au tarif
-#: plein, ce qui majore l'estimation au lieu de la sous-évaluer.
+#: Dollars US par million de tokens. Tarif de "gpt-5-nano" trouvé par
+#: recherche web (non vérifié sur la doc officielle, cf. ci-dessus) :
+#: $0.05 / $0.40 par 1M tokens (input/output). `cached_input` n'est
+#: volontairement pas utilisé dans le calcul de coût (voir `_estimate_cost`) :
+#: à défaut d'un tarif remisé vérifié, tous les tokens d'entrée sont comptés
+#: au tarif plein, ce qui majore l'estimation au lieu de la sous-évaluer.
 PRICING = {
     DEFAULT_MODEL: {"input": 0.05, "output": 0.40},
 }
