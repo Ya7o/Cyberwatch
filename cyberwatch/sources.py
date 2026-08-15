@@ -61,13 +61,25 @@ CORE_SOURCES = [
         params={
             "title_is_organisation": True,
             "feed_url": "https://frenchbreaches.com/feed.xml",
+            # Vérifié via `probe` le 2026-08-15 : pas d'API REST WordPress,
+            # pas de pagination de flux (/page/2/, ?page=2, ?paged=2-> 404),
+            # pas de JSON-LD. Le flux plafonne à 100 entrées ; sa plus
+            # ancienne recule avec le temps (2026-01-01 atteint le 08-14,
+            # seulement le 2026-07-18 le 08-15). Exiger la borne bloquerait
+            # tout CREATE dès que la fenêtre demandée dépasse ce que le site
+            # expose, sans qu'aucune requête ne puisse jamais y remédier.
+            "feed_has_no_pagination": True,
         },
         protocol=(
-            "Lire le flux RSS complet des alertes de fuite, descendre jusqu'à "
-            "TARGET_START, relever date, organisation, titre, menace et URL."
+            "Lire le flux RSS complet des alertes de fuite ; relever date, "
+            "organisation, titre, menace et URL de chaque entrée offerte par "
+            "le flux. Le flux ne pagine pas : au-delà de sa plus ancienne "
+            "entrée, une période plus profonde est structurellement hors de "
+            "portée (vérifié par `probe`, pas de contournement)."
         ),
         success_test=(
-            "Borne de date atteinte et toutes les entrées de la fenêtre énumérées."
+            "Toutes les entrées offertes par le flux sont énumérées, quelle "
+            "que soit la profondeur réellement atteinte."
         ),
         notes=(
             "Chaque entrée est nommée d'après l'organisation touchée : le titre "

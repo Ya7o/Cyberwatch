@@ -286,6 +286,38 @@ class TestFeed:
         assert coverage < 100
         assert "ne remonte que" in result.comment
 
+    def test_flux_sans_pagination_declaree_nest_jamais_bloquant(self):
+        """`feed_has_no_pagination` (posé uniquement après vérification via
+        `probe` qu'aucun autre chemin n'existe) : la source reste OK même
+        sans atteindre la borne, au lieu de bloquer indéfiniment le run."""
+        window = Window("2025-01-01", "2026-08-12")
+        client = FakeClient({"exemple.re": ok(RSS_FEED)})
+        spec = SourceSpec("TEST", config.LAYER_LOCAL_MEDIA, "La Réunion",
+                          "https://exemple.re/cyber", "feed",
+                          params={"feed_url": "https://exemple.re/feed/",
+                                  "feed_has_no_pagination": True})
+        result = FeedCollector().collect(client, spec, window)
+
+        assert result.reached_boundary is True
+        assert result.resolve() == (status.OK, 100)
+        assert "sans pagination" in result.comment
+        # Toutes les entrées réellement offertes par le flux restent captées :
+        # aucune entrée n'est fabriquée, seule l'exigence de borne est levée.
+        assert result.items_seen == 2
+
+    def test_sans_le_drapeau_le_comportement_par_defaut_est_inchange(self):
+        """Sans `feed_has_no_pagination`, un autre flux court reste PARTIAL :
+        l'exemption ne s'applique jamais implicitement à toutes les sources."""
+        window = Window("2025-01-01", "2026-08-12")
+        client = FakeClient({"exemple.re": ok(RSS_FEED)})
+        spec = SourceSpec("TEST", config.LAYER_LOCAL_MEDIA, "La Réunion",
+                          "https://exemple.re/cyber", "feed",
+                          params={"feed_url": "https://exemple.re/feed/"})
+        result = FeedCollector().collect(client, spec, window)
+
+        assert result.reached_boundary is False
+        assert result.resolve()[0] == status.PARTIAL
+
 
 # --------------------------------------------------------------------------
 # JSON-LD et repli sur les balises time

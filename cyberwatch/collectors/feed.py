@@ -7,6 +7,16 @@ Limite structurelle assumée : un flux ne publie que ses dernières entrées. S'
 ne redescend pas jusqu'au début de la fenêtre demandée, la source est déclarée
 `PARTIAL` avec une couverture estimée sur la part de fenêtre réellement vue —
 jamais `OK`, qui laisserait croire à une énumération complète.
+
+Exception explicite, à poser dans `spec.params` seulement après vérification
+qu'aucun autre chemin d'accès n'existe (§ `probe`) : `feed_has_no_pagination`
+déclare qu'un flux donné n'offre structurellement aucun moyen de remonter
+plus loin (ni API REST, ni pagination de flux, ni JSON-LD) — la source est
+alors `OK` dès que toutes les entrées qu'il expose sont captées, même si la
+fenêtre demandée va plus loin. Même mécanisme que `status_override` pour
+BonjourLaFuite (`base.py`) : le protocole redéfinit lui-même ce que signifie
+« complet » plutôt que de forcer une couverture qu'aucune requête ne peut
+jamais obtenir.
 """
 
 from __future__ import annotations
@@ -139,6 +149,17 @@ class FeedCollector(Collector):
             oldest = min(e.published for e in entries)
             if oldest <= window.start:
                 result.reached_boundary = True
+            elif spec.params.get("feed_has_no_pagination"):
+                # Vérifié via `probe` : aucun chemin (API REST, pagination de
+                # flux, JSON-LD) ne permet de remonter plus loin. Toutes les
+                # entrées offertes par le flux sont captées ; exiger la borne
+                # bloquerait cette source indéfiniment sans qu'aucune requête
+                # ne puisse jamais la satisfaire.
+                result.reached_boundary = True
+                result.comment = (
+                    f"Flux sans pagination disponible : {len(entries)} entrées "
+                    f"captées (la plus ancienne remonte au {oldest})."
+                )
             else:
                 result.units_expected = 100
                 result.units_done = coverage_from_days(entries, window)
