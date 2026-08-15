@@ -1,36 +1,18 @@
-name: Initialize Baseline
+name: Validate historical Mayotte coverage
 
 on:
   push:
     branches: [main]
     paths:
       - ".github/initialize-trigger"
-  workflow_dispatch:
-    inputs:
-      as_of:
-        description: "Cutoff ISO 8601 (optionnel)"
-        type: string
-        default: ""
-      start:
-        description: "Début AAAA-MM-JJ (optionnel ; 1er janvier par défaut)"
-        type: string
-        default: ""
-      layers:
-        description: "Couches à exécuter"
-        type: string
-        default: "all"
 
 permissions:
-  contents: write
-
-concurrency:
-  group: initialize-baseline
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  initialize:
+  validate-mayotte:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0 (Node 24)
@@ -38,49 +20,55 @@ jobs:
           python-version: "3.11"
           cache: pip
       - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Valider la collecte historique Mayotte
         run: |
-          pip install -r requirements.txt
-      - name: Figer le contexte d'initialisation
-        run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            AS_OF="2026-08-15T09:37:00+04:00"
-            TARGET_START="2026-01-01"
-            LAYERS="all"
-          else
-            AS_OF="${{ inputs.as_of }}"
-            if [ -z "$AS_OF" ]; then AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"; fi
-            TARGET_START="${{ inputs.start }}"
-            LAYERS="${{ inputs.layers }}"
-          fi
-          echo "AS_OF=$AS_OF" >> "$GITHUB_ENV"
-          echo "TARGET_START=$TARGET_START" >> "$GITHUB_ENV"
-          echo "LAYERS=$LAYERS" >> "$GITHUB_ENV"
-      - name: Tests unitaires
-        run: python -m pytest tests/ -q
-      - name: CREATE contrôlé
-        run: |
-          ARGS=(--as-of "$AS_OF" --layers "$LAYERS")
-          if [ -n "$TARGET_START" ]; then ARGS+=(--start "$TARGET_START"); fi
-          python -m cyberwatch create "${ARGS[@]}"
-      - name: Check strict
-        run: python -m cyberwatch check
-      - name: Test de répétabilité offline
-        run: python -m cyberwatch test-repeat
-      - name: Créer la baseline
-        run: python -m cyberwatch baseline --as-of "$AS_OF"
-      - name: Construire le dashboard
-        run: python -m cyberwatch build-site
-      - name: Check final strict
-        run: python -m cyberwatch check
-      - name: Publier la baseline
-        run: |
-          git config user.name "cyberwatch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data assets/data
-          if git diff --staged --quiet; then
-            echo "Aucun artefact à publier."
-            exit 0
-          fi
-          git commit -m "data: initialize baseline ${AS_OF}"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          python - <<'PY'
+          from cyberwatch import config, status
+          from cyberwatch.runner import MODE_CREATE, execute, make_run_context
+
+          context = make_run_context(
+              MODE_CREATE,
+              "2026-08-15T09:37:00+04:00",
+              "2026-01-01",
+              [config.LAYER_LOCAL_MEDIA],
+          )
+          report = execute(context, persist=False)
+
+          print(f"RUN={report.context.run_id}")
+          print(f"WINDOW={report.context.target_start}->{report.context.target_end}")
+          print(f"OVERALL={report.overall}")
+          print(f"ITEMS={len(report.items)} INCIDENTS={len(report.incidents)}")
+          print("SOURCES")
+          for outcome in report.outcomes:
+              print(
+                  f"{outcome.source_id}|{outcome.status}|coverage={outcome.coverage}|"
+                  f"calls={outcome.calls}|seen={outcome.items_seen}|"
+                  f"in_window={outcome.items_in_window}|items={outcome.items_collected}"
+              )
+
+          print("ITEMS_MAYOTTE")
+          for item in report.items:
+              print(
+                  f"{item.Source_ID}|{item.Date}|{item.Organisation}|"
+                  f"{item.Localisation}|{item.Item_ID}|{item.URL}"
+              )
+
+          mamoudzou = [
+              incident for incident in report.incidents
+              if "mamoudzou" in (incident.Organisation or "").lower()
+          ]
+          print(f"MAMOUDZOU_COUNT={len(mamoudzou)}")
+          for incident in mamoudzou:
+              print(
+                  f"MAMOUDZOU|{incident.Incident_ID}|{incident.Date}|"
+                  f"{incident.Organisation}|{incident.Localisation}|"
+                  f"items={incident.Items_Count}|sources={incident.Sources}"
+              )
+
+          assert report.overall == status.OK, f"Collecte Mayotte non OK: {report.overall}"
+          assert all(outcome.status == status.OK for outcome in report.outcomes)
+          assert any("mamoudzou" in (item.Organisation or "").lower() for item in report.items), (
+              "Le cas Mamoudzou attendu n'a pas été retrouvé dans la collecte historique Mayotte"
+          )
+          PY
