@@ -345,7 +345,10 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
 INCIDENT_GAP_DAYS = 14
 
 # Chevauchement rejoué à chaque MAJ (§6).
-MAJ_OVERLAP_DAYS = 30
+# Une MAJ quotidienne reprend trois semaines : assez pour les publications
+# tardives/corrigées, tout en restant couvert par le flux FrenchBreaches
+# (qui expose publiquement environ 28 jours d'historique).
+MAJ_OVERLAP_DAYS = 21
 
 DATE_BASIS_EVENT = "EVENT"
 DATE_BASIS_PUBLICATION = "PUBLICATION"

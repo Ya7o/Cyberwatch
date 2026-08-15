@@ -85,6 +85,12 @@ def test_mayotte_watcher_excludes_direct_publishers():
     assert "la1ere.franceinfo.fr/mayotte" in sources.MAYOTTE_CANDIDATE_MEDIA
 
 
+def test_journal_de_mayotte_uses_verified_wordpress_endpoint():
+    assert _spec("JOURNAL_DE_MAYOTTE").params["wp_endpoint"] == (
+        "https://lejournaldemayotte.yt/wp-json/wp/v2"
+    )
+
+
 def test_mamoudzou_multi_source_converges_through_explicit_aliases():
     known = {
         "ville de mamoudzou": "Ville de Mamoudzou",

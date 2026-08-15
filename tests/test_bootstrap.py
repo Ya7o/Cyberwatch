@@ -169,7 +169,7 @@ def test_maj_uses_snapshot_as_of_when_run_log_is_absent(tmp_path, monkeypatch, m
     valid_snapshot(make_item, as_of="2026-08-10T08:00:00+04:00")
 
     context = make_run_context(MODE_MAJ, as_of="2026-08-14T08:00:00+04:00")
-    assert context.target_start == "2026-07-11"
+    assert context.target_start == "2026-07-20"
 
 
 def test_maj_refuses_snapshot_without_usable_as_of(tmp_path, monkeypatch, make_item, capsys):

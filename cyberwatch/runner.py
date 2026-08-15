@@ -176,7 +176,7 @@ def make_run_context(
     """Fige les paramètres du run.
 
     `CREATE` sans période démarre au 1er janvier de l'année de `AS_OF` (§6).
-    `MAJ` rejoue volontairement les 30 derniers jours depuis le dernier run ou,
+    `MAJ` rejoue volontairement les 21 derniers jours depuis le dernier run ou,
     à défaut, depuis la provenance du snapshot. Ce chevauchement permet de
     récupérer ajouts tardifs et corrections.
     """
