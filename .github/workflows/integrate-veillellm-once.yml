@@ -48,6 +48,23 @@ jobs:
           path.write_text(text, encoding='utf-8')
           PY
           python .github/scripts/integrate_veillellm.py
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('tests/test_collector_registry.py')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace(
+              'from cyberwatch.collectors.wordpress import WordPressCollector\n',
+              'from cyberwatch.collectors.wordpress import WordPressCollector\nfrom cyberwatch.collectors.veillellm import VeilleLlmCollector\n',
+              1,
+          )
+          text = text.replace(
+              '        "MAYOTTE_FM": WordPressCollector,\n',
+              '        "MAYOTTE_FM": WordPressCollector,\n        "VEILLE_LLM": VeilleLlmCollector,\n',
+              1,
+          )
+          path.write_text(text, encoding='utf-8')
+          PY
           python -m py_compile cyberwatch/collectors/veillellm.py cyberwatch/dedup.py cyberwatch/runner.py cyberwatch/site.py
       - name: Tests avant collecte
         run: |
