@@ -131,7 +131,7 @@ class AiRunState:
     max_calls: int = 2000
     max_cost: float = 1.00
     max_context_chars: int = 4000
-    max_output_tokens: int = 300
+    max_output_tokens: int = 600
 
     cache: dict[tuple[str, str], dict] = field(default_factory=dict)
 
@@ -170,7 +170,7 @@ def start_run() -> AiRunState:
         max_calls=_env_int("AI_MAX_CALLS_PER_RUN", 2000),
         max_cost=_env_float("AI_MAX_ESTIMATED_COST_USD_PER_RUN", 1.00),
         max_context_chars=_env_int("AI_MAX_CONTEXT_CHARS", 4000),
-        max_output_tokens=_env_int("AI_MAX_OUTPUT_TOKENS", 300),
+        max_output_tokens=_env_int("AI_MAX_OUTPUT_TOKENS", 600),
     )
     if not state.enabled:
         print("Qualification IA désactivée : OPENAI_API_KEY absente.")
@@ -268,7 +268,20 @@ def _extract_output_json(payload: dict) -> dict:
             if text:
                 break
     if not text:
-        raise AiCallError("réponse sans texte structuré")
+        # Diagnostic explicite : un modèle de raisonnement (famille gpt-5) peut
+        # consommer tout `max_output_tokens` en jetons de raisonnement internes
+        # avant de produire le message final, auquel cas l'API répond 200 avec
+        # `status: "incomplete"` et aucun item "message" — jamais une erreur
+        # HTTP. `reasoning.effort: "minimal"` (cf. `_call_openai`) et une marge
+        # de tokens suffisante limitent ce cas ; s'il se reproduit malgré tout,
+        # le statut/la raison sont journalisés ici pour éviter une nouvelle
+        # supposition à l'aveugle.
+        status = payload.get("status")
+        reason = (payload.get("incomplete_details") or {}).get("reason")
+        detail = f"status={status}"
+        if reason:
+            detail += f", incomplete_reason={reason}"
+        raise AiCallError(f"réponse sans texte structuré ({detail})")
     try:
         parsed = json.loads(text)
     except json.JSONDecodeError as exc:
@@ -310,6 +323,12 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
                 "strict": True,
             }
         },
+        # "minimal" : la tâche est une classification fermée sur un contexte
+        # court, pas un raisonnement à plusieurs étapes. Sans ceci, un modèle
+        # de raisonnement (famille gpt-5) peut consommer tout
+        # `max_output_tokens` en jetons de raisonnement internes et renvoyer
+        # un HTTP 200 sans aucun message (cf. `_extract_output_json`).
+        "reasoning": {"effort": "minimal"},
         "max_output_tokens": state.max_output_tokens,
     }
     headers = {

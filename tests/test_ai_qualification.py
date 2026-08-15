@@ -278,6 +278,31 @@ class TestNetworkRobustness:
         assert item.Threat == config.THREAT_UNKNOWN
         assert state.calls_failed == 1
 
+    def test_reponse_200_sans_message_incomplete_est_geree_proprement(self, make_item, monkeypatch):
+        # Cas réel observé en production (run GitHub Actions du 2026-08-15) :
+        # un modèle de raisonnement peut consommer tout `max_output_tokens` en
+        # jetons de raisonnement internes et renvoyer un HTTP 200 sans aucun
+        # item "message" (`status: "incomplete"`). Doit être traité comme un
+        # échec d'appel propre, jamais comme un crash ni une valeur inventée.
+        item = make_item(threat=config.THREAT_UNKNOWN)
+        incomplete_payload = {
+            "status": "incomplete",
+            "incomplete_details": {"reason": "max_output_tokens"},
+            "output": [{"type": "reasoning", "summary": []}],
+            "usage": {"input_tokens": 100, "output_tokens": 600, "total_tokens": 700},
+        }
+        monkeypatch.setattr(
+            ai.requests, "post",
+            lambda *a, **k: _FakeResponse(200, json.dumps(incomplete_payload)),
+        )
+        state = enabled_state()
+
+        ai.qualify_item(item, ENTRY, SPEC, state)
+
+        assert item.Threat == config.THREAT_UNKNOWN
+        assert state.calls_failed == 1
+        assert state.calls_succeeded == 0
+
     def test_panne_definitive_le_run_continue_sans_rien_inventer(self, make_item, monkeypatch):
         item = make_item(threat=config.THREAT_UNKNOWN, sector=config.SECTOR_UNKNOWN)
         monkeypatch.setattr(ai.requests, "post", lambda *a, **k: _FakeResponse(500, ""))
