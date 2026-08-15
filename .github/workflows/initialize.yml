@@ -3,6 +3,8 @@ name: Initialize Baseline
 on:
   push:
     branches: [main]
+    paths:
+      - ".github/initialize-trigger"
   workflow_dispatch:
     inputs:
       as_of:
@@ -27,7 +29,6 @@ concurrency:
 
 jobs:
   initialize:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'chore: run historical Mayotte baseline'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
