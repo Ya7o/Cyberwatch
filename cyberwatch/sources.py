@@ -57,7 +57,7 @@ CORE_SOURCES = [
         collector="feed",
         active=True,
         default_threat=config.THREAT_LEAK,
-        location_rule=config.LOC_INCONNU,
+        location_rule=config.LOC_FRANCE,
         params={
             "title_is_organisation": True,
             "feed_url": "https://frenchbreaches.com/feed.xml",
@@ -94,7 +94,7 @@ CORE_SOURCES = [
         start_url="https://bonjourlafuite.eu.org/",
         collector="bonjourlafuite",
         default_threat=config.THREAT_LEAK,
-        location_rule=config.LOC_INCONNU,
+        location_rule=config.LOC_FRANCE,
         params={"title_is_organisation": True},
         protocol=(
             "Parcourir la timeline : date, organisation, via, données concernées, "
@@ -104,6 +104,7 @@ CORE_SOURCES = [
         notes=(
             "Chaque bloc de la chronologie est nommé d'après l'organisation "
             "touchée : le titre de l'entrée est l'organisation. "
+            "Localisation par défaut France métropolitaine sauf indication contraire. "
             "Page de contrôle de volume : https://bonjourlafuite.eu.org/stats.html"
         ),
     ),
