@@ -1,0 +1,148 @@
+"""Dashboard : détail des sources homogène, `latest_item_org` généralisé."""
+
+from __future__ import annotations
+
+import re
+
+import pytest
+
+from cyberwatch import site, store
+
+
+def _isolate_store(tmp_path, monkeypatch):
+    mapping = {
+        "RUN_LOG_CSV": tmp_path / "run_log.csv",
+        "RUN_SOURCES_CSV": tmp_path / "run_sources.csv",
+        "ENTITY_WATCH_CSV": tmp_path / "entity_watch.csv",
+        "SOURCES_CSV": tmp_path / "sources.csv",
+    }
+    for name, path in mapping.items():
+        monkeypatch.setattr(store, name, path)
+    monkeypatch.setattr(store, "snapshot_state", lambda: (store.BASE_VALID, []))
+
+
+def _seed_run(monkeypatch, tmp_path, sources_rows):
+    _isolate_store(tmp_path, monkeypatch)
+    store.append_run_log({
+        "Run_ID": "RUN-TEST", "As_Of": "2026-08-15T00:00:00+04:00", "Mode": "MAJ",
+        "Overall_Status": "OK", "Sources_OK": len(sources_rows), "Sources_PARTIAL": 0,
+        "Sources_FAIL": 0, "Sources_SKIPPED": 0,
+    })
+    for row in sources_rows:
+        base = {
+            "Run_ID": "RUN-TEST", "As_Of": "2026-08-15T00:00:00+04:00",
+            "Status": "OK", "Coverage": 100, "Reason_Code": "OK", "Reason": "OK",
+            "Calls": 1, "Units_Done": 1, "Units_Expected": 1,
+            "Items_seen": 0, "Items_in_window": 0, "Items_collected": 0, "New_items": 0,
+            "Latest_item_date": "", "Latest_Item_Org": "", "Access_Method": "", "Duration_s": 1.0,
+            "Comment": "",
+        }
+        base.update(row)
+        store.append_run_sources([base])
+
+
+class TestLatestItemOrgGeneralized:
+    def test_toutes_les_sources_exposent_latest_item_org_de_facon_uniforme(self, tmp_path, monkeypatch):
+        """Aucun traitement spécial par source_id : le champ vient directement
+        de la colonne générique `Latest_Item_Org` pour toute source."""
+        _seed_run(monkeypatch, tmp_path, [
+            {
+                "Source_ID": "BONJOURLAFUITE", "Layer": "CORE_DIRECT",
+                "Items_seen": 9, "Items_in_window": 3,
+                "Latest_item_date": "2026-08-13", "Latest_Item_Org": "France VAE",
+            },
+            {
+                "Source_ID": "FRENCHBREACHES", "Layer": "CORE_DIRECT",
+                "Items_seen": 77, "Items_in_window": 12,
+                "Latest_item_date": "2026-08-14", "Latest_Item_Org": "Société Dupont",
+            },
+        ])
+
+        payload = site.status_payload()
+        by_id = {row["id"]: row for row in payload["sources"]}
+
+        assert by_id["BONJOURLAFUITE"]["latest_item_org"] == "France VAE"
+        assert by_id["BONJOURLAFUITE"]["latest_item"] == "2026-08-13"
+        assert by_id["FRENCHBREACHES"]["latest_item_org"] == "Société Dupont"
+        assert by_id["FRENCHBREACHES"]["latest_item"] == "2026-08-14"
+
+    def test_items_seen_et_items_in_window_passent_tels_quels(self, tmp_path, monkeypatch):
+        _seed_run(monkeypatch, tmp_path, [
+            {
+                "Source_ID": "CYBERATTAQUE_ORG", "Layer": "CORE_DIRECT",
+                "Items_seen": 64, "Items_in_window": 21,
+            },
+        ])
+
+        payload = site.status_payload()
+        row = next(r for r in payload["sources"] if r["id"] == "CYBERATTAQUE_ORG")
+        assert row["items_seen"] == 64
+        assert row["items_in_window"] == 21
+
+    def test_plus_de_bloc_bonjourlafuite_special_dans_le_payload(self, tmp_path, monkeypatch):
+        """`_local_analysis_by_incident`/`status_payload` ne portent plus de
+        clé dédiée : le détail générique par source suffit."""
+        _seed_run(monkeypatch, tmp_path, [
+            {"Source_ID": "BONJOURLAFUITE", "Layer": "CORE_DIRECT"},
+        ])
+
+        payload = site.status_payload()
+        assert "bonjourlafuite" not in payload
+
+    def test_source_sans_item_a_des_champs_vides(self, tmp_path, monkeypatch):
+        _seed_run(monkeypatch, tmp_path, [
+            {"Source_ID": "RANSOMWARE_LIVE", "Layer": "CORE_DIRECT"},
+        ])
+
+        payload = site.status_payload()
+        row = next(r for r in payload["sources"] if r["id"] == "RANSOMWARE_LIVE")
+        assert row["latest_item"] == ""
+        assert row["latest_item_org"] == ""
+
+
+class TestDashboardSourcesSection:
+    """Vue globale compacte (nom + couleur seulement) et détail homogène
+    (mêmes six champs pour toute source) accessible sous la vue globale."""
+
+    def _read(self, path):
+        return open(path, encoding="utf-8").read()
+
+    def test_vue_globale_reste_compacte_sans_metriques(self):
+        js = self._read("assets/dashboard-audit.js")
+        match = re.search(
+            r"function renderSources\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
+        )
+        assert match, "renderSources() introuvable"
+        body = match.group(1)
+        # La vue globale ne construit que nom + LED de statut : aucune
+        # métrique (items_seen, items_in_window, latest_item...) ne doit
+        # apparaître avant l'appel au rendu du détail.
+        compact_part = body.split("renderSourceDetail(rows)")[0]
+        for forbidden in ("items_seen", "items_in_window", "latest_item"):
+            assert forbidden not in compact_part
+
+    def test_detail_accessible_sous_la_vue_globale_avec_les_six_champs(self):
+        html = self._read("index.html")
+        assert '<div id="sources-list"' in html
+        list_pos = html.index('id="sources-list"')
+        detail_pos = html.index('class="sources-detail"')
+        assert detail_pos > list_pos, "le détail doit suivre la vue globale"
+        assert "<summary>" in html
+
+        js = self._read("assets/dashboard-audit.js")
+        match = re.search(
+            r"function renderSourceDetail\(rows\)\s*\{(.*?)\n  \}", js, re.DOTALL
+        )
+        assert match, "renderSourceDetail() introuvable"
+        body = match.group(1)
+        for expected in (
+            "sourceLabel(source.id)", "source.status", "source.latest_item",
+            "source.latest_item_org", "source.items_seen", "source.items_in_window",
+        ):
+            assert expected in body
+
+    def test_veille_llm_affiche_veillellmreyt_dans_le_dashboard(self):
+        for path in ("assets/dashboard-audit.js", "assets/app-legacy.js"):
+            js = self._read(path)
+            assert 'VEILLE_LLM: "veillellmReYt"' in js
+            assert 'VEILLE_LLM: "Veille LLM"' not in js

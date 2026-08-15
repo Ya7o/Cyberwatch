@@ -480,7 +480,16 @@ def run_source(
         )
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)
-    outcome.latest_item_date = max((i.Published_Date for i in items), default="")
+    # Tri par (date, Item_ID) : déterministe même en cas d'égalité de date,
+    # généralisé à toutes les sources (auparavant réservé à BonjourLaFuite,
+    # qui le déduisait d'un texte libre dans `Comment`).
+    if items:
+        latest_item = max(items, key=lambda i: (i.Published_Date, i.Item_ID))
+        outcome.latest_item_date = latest_item.Published_Date
+        outcome.latest_item_org = latest_item.Organisation_Raw
+    else:
+        outcome.latest_item_date = ""
+        outcome.latest_item_org = ""
 
     watch_rows = []
     for row in result.watch_rows:
@@ -835,6 +844,7 @@ def _persist(
                     "Items_collected": o.items_collected,
                     "New_items": o.new_items,
                     "Latest_item_date": o.latest_item_date,
+                    "Latest_Item_Org": o.latest_item_org,
                     "Access_Method": o.access_method,
                     "Duration_s": o.duration_seconds,
                     "Comment": o.comment,

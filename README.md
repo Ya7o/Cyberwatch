@@ -17,11 +17,12 @@ Le pipeline actif est volontairement réduit à cinq sources :
 - Veille LLM (`sources/veillellm/cyberattaques_reunion_mayotte_2026.json`)
 
 Veille LLM constitue la couverture locale analytique **La Réunion + Mayotte**.
-Le snapshot complet est relu à chaque MAJ ; seuls les dossiers dont le
-`score_cyberattaque >= 50` sont matérialisés. Les références documentaires du
-JSON restent visibles dans le filtre **Local**, mais Veille LLM ne compte pas
-comme une corroboration éditoriale supplémentaire lorsqu'un incident existe déjà
-dans une source directe.
+Le snapshot complet est relu à chaque MAJ ; tous les dossiers valides sont
+matérialisés, quel que soit leur `score_cyberattaque` — le score reste une
+information affichée, jamais un critère d'exclusion. Les références
+documentaires du JSON restent visibles dans le filtre **Local**, mais Veille
+LLM ne compte pas comme une corroboration éditoriale supplémentaire lorsqu'un
+incident existe déjà dans une source directe.
 
 Les anciens collecteurs presse Mayotte (Kwezi, Mayotte Hebdo, Journal de Mayotte,
 Mayotte FM) ont été retirés : l'extraction automatique de victime dans la presse

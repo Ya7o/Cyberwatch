@@ -188,7 +188,6 @@ class BonjourLaFuiteCollector(Collector):
             return result
 
         in_window = [entry for entry in recognized if window.contains(entry.published)]
-        latest = max(recognized, key=lambda entry: entry.published)
 
         # V0 : statut purement fonctionnel, indépendant de la fenêtre et de la
         # matérialisation finale dans ITEMS. reached_boundary reste donc False.
@@ -199,9 +198,5 @@ class BonjourLaFuiteCollector(Collector):
         result.items_in_window = len(in_window)
         result.units_done = 1
         result.units_expected = 1
-        result.comment = (
-            f"items_in_window={len(in_window)}; "
-            f"last_recognized_date={latest.published}; "
-            f"last_recognized_org={latest.organisation or latest.title}"
-        )
+        result.comment = f"items_in_window={len(in_window)}"
         return result

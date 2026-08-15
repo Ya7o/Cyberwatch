@@ -32,8 +32,12 @@ def test_veille_llm_source_is_active_local_snapshot():
     assert spec.zone == "La Réunion / Mayotte"
 
 
-def test_veille_llm_imports_full_snapshot_and_rejects_weak_signals():
+def test_veille_llm_imports_full_snapshot_regardless_of_score():
+    """Le score cyberattaque est affichable, jamais un critère d'exclusion :
+    tous les dossiers valides et non futurs sont importés, y compris les
+    scores faibles (<50)."""
     spec = sources.by_id("VEILLE_LLM")
+    assert "min_score" not in spec.params
     with open(spec.params["path"], encoding="utf-8") as handle:
         raw = json.load(handle)
     result = get_collector(spec.collector).collect(
@@ -41,13 +45,29 @@ def test_veille_llm_imports_full_snapshot_and_rejects_weak_signals():
     )
     assert result.resolve() == ("OK", 100)
     assert result.items_seen == raw["metadata"]["record_count"] == len(raw["incidents"])
-    expected = [
-        row for row in raw["incidents"]
-        if int(row["score_cyberattaque"]) >= spec.params["min_score"]
-        and row["date"] <= "2026-08-15"
-    ]
+    expected = [row for row in raw["incidents"] if row["date"] <= "2026-08-15"]
     assert len(result.entries) == len(expected)
+    # Le corpus de test contient des scores <50 : ils doivent bien être
+    # retenus (aucun `weak`/`min_score` ne les élimine plus).
+    assert any(int(row["score_cyberattaque"]) < 50 for row in expected)
     assert all(entry.location in {config.LOC_REUNION, config.LOC_MAYOTTE} for entry in result.entries)
+
+
+def test_veille_llm_low_score_item_is_retained_and_visible():
+    """Un item Veille LLM avec un score < 50 reste importé et visible dans
+    ITEMS — le score n'est jamais un filtre d'exclusion."""
+    spec = sources.by_id("VEILLE_LLM")
+    with open(spec.params["path"], encoding="utf-8") as handle:
+        raw = json.load(handle)
+    low_score_records = [r for r in raw["incidents"] if int(r["score_cyberattaque"]) < 50]
+    assert low_score_records, "fixture attendue avec au moins un score <50"
+
+    result = get_collector(spec.collector).collect(
+        None, spec, Window("2026-01-01", "2026-08-15")
+    )
+    low_score_orgs = {r["organisation"] for r in low_score_records}
+    entry_orgs = {entry.organisation for entry in result.entries}
+    assert low_score_orgs & entry_orgs == low_score_orgs
 
 
 def test_veille_llm_does_not_inflate_direct_source_count():

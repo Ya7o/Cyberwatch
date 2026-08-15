@@ -5,11 +5,11 @@ Deux fichiers seulement, pour que la page reste simple et se charge d'un bloc :
 - `incidents.json` : la liste des incidents, que le dashboard filtre et agrège
   côté navigateur ;
 - `status.json`    : santé du dernier run, angles morts, état de veille par
-  entité, historique des runs et état fonctionnel BonjourLaFuite V0.
+  entité, historique des runs et état de chaque source (mêmes champs pour
+  toutes, sans traitement spécial par source).
 
 Aucun agrégat métier n'est précalculé : les KPI et graphiques sont recalculés à
-chaque changement de filtre dans le navigateur. Les métriques BonjourLaFuite
-sont, elles, le compte rendu brut du collecteur du dernier run.
+chaque changement de filtre dans le navigateur.
 """
 
 from __future__ import annotations
@@ -66,7 +66,6 @@ def _local_analysis_by_incident(items: list[Item]) -> dict[str, dict]:
         return {}
 
     records = data.get("incidents") or []
-    min_score = int(spec.params.get("min_score", 50))
     by_key: dict[tuple[str, str], dict] = {}
     for record in records:
         if not isinstance(record, dict):
@@ -75,8 +74,8 @@ def _local_analysis_by_incident(items: list[Item]) -> dict[str, dict]:
             score = int(record.get("score_cyberattaque"))
         except (TypeError, ValueError):
             continue
-        if score < min_score:
-            continue
+        # Le score reste une information affichable, jamais un critère
+        # d'exclusion : tous les dossiers valides sont importés et joints.
         organisation = str(record.get("organisation") or "").strip()
         date = str(record.get("date") or "").strip()
         summary = str(record.get("synthese") or "").strip()
@@ -146,16 +145,6 @@ _CANDIDATE_REASON_TEXT = {
 }
 
 
-def _comment_metric(comment: str, key: str) -> str:
-    """Lit une métrique `cle=valeur` du commentaire machine du collecteur."""
-    prefix = f"{key}="
-    for part in (comment or "").split(";"):
-        token = part.strip()
-        if token.startswith(prefix):
-            return token[len(prefix):].strip()
-    return ""
-
-
 def _coverage_groups(rows: list[dict], metadata: dict[str, dict]) -> dict[str, dict]:
     """Agrège les sources requises sans masquer celles absentes du run.
 
@@ -195,7 +184,7 @@ def _coverage_groups(rows: list[dict], metadata: dict[str, dict]) -> dict[str, d
 
 
 def status_payload() -> dict:
-    """Santé du dernier run, angles morts, veille et état BonjourLaFuite."""
+    """Santé du dernier run, angles morts, veille et état de chaque source."""
     base_state, base_problems = store.snapshot_state()
     if base_state != store.BASE_VALID:
         message = (
@@ -261,25 +250,11 @@ def status_payload() -> dict:
                 "units_expected": _to_int(row.get("Units_Expected")),
                 "calls": _to_int(row.get("Calls")),
                 "latest_item": row.get("Latest_item_date", ""),
-                "last_recognized_date": (
-                    _comment_metric(comment, "last_recognized_date")
-                    if source_id == "BONJOURLAFUITE"
-                    else row.get("Latest_item_date", "")
-                ),
-                "last_recognized_org": (
-                    _comment_metric(comment, "last_recognized_org")
-                    if source_id == "BONJOURLAFUITE"
-                    else ""
-                ),
+                "latest_item_org": row.get("Latest_Item_Org", ""),
                 "access_method": row.get("Access_Method", ""),
                 "duration": row.get("Duration_s", ""),
                 "comment": comment,
                 "last_run": last_run.get("As_Of", ""),
-                "error": (
-                    (comment or row.get("Reason", ""))
-                    if source_id == "BONJOURLAFUITE" and row_status == status.FAIL
-                    else ""
-                ),
                 # Un zéro n'est un vrai zéro que si le protocole est allé au bout.
                 "zero_is_trusted": row_status == status.OK and items == 0,
             }
@@ -300,11 +275,11 @@ def status_payload() -> dict:
             "status": status.NOT_COVERED, "coverage": 0, "reason_code": reason_code,
             "reason": reason, "items": 0, "items_seen": 0,
             "items_collected": 0, "items_in_window": 0, "units_done": 0, "units_expected": 0,
-            "calls": 0, "latest_item": "", "last_recognized_date": "", "last_recognized_org": "",
+            "calls": 0, "latest_item": "", "latest_item_org": "",
             "access_method": "", "duration": "", "comment": (
                 meta.get("notes", "") if not meta.get("active") else "Source locale requise mais absente du dernier run."
             ),
-            "last_run": last_run.get("As_Of", ""), "error": "", "zero_is_trusted": False,
+            "last_run": last_run.get("As_Of", ""), "zero_is_trusted": False,
         })
 
     source_rows.sort(
@@ -357,22 +332,6 @@ def status_payload() -> dict:
         for row in entity_watch
     ]
 
-    bonjour = next(
-        (row for row in source_rows if row["id"] == "BONJOURLAFUITE"), None
-    )
-    bonjour_payload = {}
-    if bonjour:
-        bonjour_payload = {
-            "status": bonjour["status"],
-            "items_seen": bonjour["items_seen"],
-            "items_in_window": bonjour["items_in_window"],
-            "items_collected": bonjour["items_collected"],
-            "last_recognized_date": bonjour["last_recognized_date"],
-            "last_recognized_org": bonjour["last_recognized_org"],
-            "last_run": bonjour["last_run"],
-            "error": bonjour["error"],
-        }
-
     return {
         "initialized": True,
         "method_id": last_run.get("Method_ID", config.METHOD_ID),
@@ -400,7 +359,6 @@ def status_payload() -> dict:
             "fail": _to_int(last_run.get("Sources_FAIL")),
             "skipped": _to_int(last_run.get("Sources_SKIPPED")),
         },
-        "bonjourlafuite": bonjour_payload,
         "sources": source_rows,
         "blind_spots": blind,
         "coverage_groups": _coverage_groups(source_rows, metadata),

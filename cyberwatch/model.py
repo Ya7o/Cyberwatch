@@ -156,6 +156,7 @@ RUN_SOURCE_COLUMNS = [
     "Items_collected",
     "New_items",
     "Latest_item_date",
+    "Latest_Item_Org",
     "Access_Method",
     "Duration_s",
     "Comment",

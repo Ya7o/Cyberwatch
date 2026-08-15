@@ -296,7 +296,6 @@ REGIONAL_WATCH_SOURCES = [
         location_rule=config.LOC_INCONNU,
         params={
             "path": "sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
-            "min_score": 50,
             "scope_is_cyber": True,
             "replace_snapshot": True,
             "non_evidence_source": True,
@@ -307,12 +306,12 @@ REGIONAL_WATCH_SOURCES = [
         },
         protocol=(
             "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "
-            "le record_count et les URLs de référence ; importer les dossiers dont le "
-            "score cyberattaque est >= 50, y compris les découvertes historiques tardives."
+            "le record_count et les URLs de référence ; importer tous les dossiers valides, "
+            "quel que soit leur score cyberattaque, y compris les découvertes historiques tardives."
         ),
         success_test=(
-            "JSON valide, record_count cohérent, tous les dossiers structurés ; "
-            "les signaux <50 restent hors INCIDENTS."
+            "JSON valide, record_count cohérent, tous les dossiers structurés importés ; "
+            "le score cyberattaque reste une information affichée, jamais un filtre d'exclusion."
         ),
         notes=(
             "Source locale analytique issue de Veille LLM pour La Réunion et Mayotte. Snapshot remplacé à chaque run ; "

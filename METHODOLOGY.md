@@ -26,8 +26,9 @@ toute mise à jour de la référence reste visible dans Git.
 La couverture locale est fournie par le snapshot versionné **Veille LLM**
 (`sources/veillellm/cyberattaques_reunion_mayotte_2026.json`). Il est relu en
 totalité à chaque run afin qu'une découverte historique tardive soit intégrée
-sans dépendre de la fenêtre réseau de MAJ. Seuls les dossiers dont le score
-`score_cyberattaque >= 50` sont matérialisés dans `ITEMS`.
+sans dépendre de la fenêtre réseau de MAJ. Tous les dossiers valides sont
+matérialisés dans `ITEMS`, quel que soit leur `score_cyberattaque` : le score
+reste une information affichée au dashboard, jamais un critère d'exclusion.
 
 Veille LLM est une source analytique : ses références documentaires sont exposées
 au dashboard mais ne gonflent jamais le compteur de corroboration éditoriale.

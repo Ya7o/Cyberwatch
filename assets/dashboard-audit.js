@@ -44,7 +44,7 @@
       FRENCHBREACHES: "FrenchBreaches",
       CYBERATTAQUE_ORG: "Cyberattaque.org",
       RANSOMWARE_LIVE: "Ransomware.live",
-      VEILLE_LLM: "Veille LLM",
+      VEILLE_LLM: "veillellmReYt",
       CERT_MU_ALERTS: "CERT-MU",
     };
     if (labels[id]) return labels[id];
@@ -70,6 +70,7 @@
       .audit-pager{justify-content:space-between;margin-top:12px}.audit-pager-actions{display:flex;gap:8px;align-items:center}.audit-pager button:disabled{opacity:.45}
       .source-name{font-weight:650}.source-meta,.source-control{font-size:11.5px;color:var(--text-secondary)}
       .sources-list{display:flex;gap:9px 18px;flex-wrap:wrap;margin-top:12px}.source-state{display:inline-flex;align-items:center;gap:7px;font-size:14px}.source-led{width:9px;height:9px;border-radius:50%;background:var(--text-muted);box-shadow:0 0 0 2px var(--surface)}.source-led--ok{background:var(--ok,#2f9e44)}.source-led--attention{background:var(--warn,#d99a00)}.source-led--fail{background:var(--danger,#d64545)}
+      .sources-detail{margin-top:14px}.sources-detail>summary{cursor:pointer;font-size:13px;color:var(--text-secondary);list-style:none}.sources-detail>summary::-webkit-details-marker{display:none}.sources-detail>summary::before{content:"▸";color:var(--text-muted);font-size:12px;margin-right:6px}.sources-detail[open]>summary::before{content:"▾"}.sources-detail .table-scroll{margin-top:10px}
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
       .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
       .local-analysis{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}.local-analysis p{margin:6px 0 0}.local-score{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis .evidence-links{margin-top:7px}
@@ -77,11 +78,11 @@
       @media(max-width:700px){
         .topbar-inner{align-items:flex-start}.brand-sub{max-width:190px}.run-pill{white-space:normal;text-align:left}
         .incidents-card .table-scroll,.reliability .table-scroll{overflow:visible;max-height:none}
-        #incidents-table thead,#sources-table thead{display:none}
-        #incidents-table,#incidents-table tbody,#incidents-table tr,#incidents-table td,#sources-table,#sources-table tbody,#sources-table tr,#sources-table td{display:block;width:100%}
-        #incidents-table tr,#sources-table tr{padding:11px 0;border-bottom:1px solid var(--grid)}
-        #incidents-table td,#sources-table td{border:0!important;padding:3px 0!important;white-space:normal!important;max-width:none!important;overflow:visible!important;width:auto!important}
-        #incidents-table td[data-label]::before,#sources-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
+        #incidents-table thead,#sources-table thead,#sources-detail-table thead{display:none}
+        #incidents-table,#incidents-table tbody,#incidents-table tr,#incidents-table td,#sources-table,#sources-table tbody,#sources-table tr,#sources-table td,#sources-detail-table,#sources-detail-table tbody,#sources-detail-table tr,#sources-detail-table td{display:block;width:100%}
+        #incidents-table tr,#sources-table tr,#sources-detail-table tr{padding:11px 0;border-bottom:1px solid var(--grid)}
+        #incidents-table td,#sources-table td,#sources-detail-table td{border:0!important;padding:3px 0!important;white-space:normal!important;max-width:none!important;overflow:visible!important;width:auto!important}
+        #incidents-table td[data-label]::before,#sources-table td[data-label]::before,#sources-detail-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
         #incidents-table .org-cell{font-size:16px;font-weight:650;padding-bottom:7px!important}#incidents-table .org-cell::before{display:none}
         #incidents-table .sources-cell::before{display:block;margin-bottom:4px}
         .audit-pager{align-items:flex-start}.audit-pager-actions{width:100%;justify-content:space-between}
@@ -211,14 +212,39 @@ function renderLocalAnalysis(incident, enabled) {
     $("#audit-page-size")?.addEventListener("change", (event) => { state.pageSize = Number(event.target.value) || 50; state.page = 1; renderIncidentTable(); });
   }
 
+  function statusLevel(status) {
+    const upper = String(status || "SKIPPED").toUpperCase();
+    return upper === "OK" ? "ok" : (upper === "FAIL" ? "fail" : "attention");
+  }
+
   function renderSources() {
     const rows = ((state.status && state.status.sources) || []).slice();
     const list = $("#sources-list");
-    if (!list) return;
-    list.innerHTML = rows.map((source) => {
-      const status = String(source.status || "SKIPPED").toUpperCase();
-      const level = status === "OK" ? "ok" : (status === "FAIL" ? "fail" : "attention");
-      return `<span class="source-state"><span class="source-led source-led--${level}" role="img" aria-label="${esc(status)}" title="${esc(status)}"></span>${esc(sourceLabel(source.id))}</span>`;
+    if (list) {
+      list.innerHTML = rows.map((source) => {
+        const level = statusLevel(source.status);
+        const label = String(source.status || "SKIPPED").toUpperCase();
+        return `<span class="source-state"><span class="source-led source-led--${level}" role="img" aria-label="${esc(label)}" title="${esc(label)}"></span>${esc(sourceLabel(source.id))}</span>`;
+      }).join("");
+    }
+    renderSourceDetail(rows);
+  }
+
+  /** Détail homogène : mêmes six champs pour chaque source, sans cas
+   * particulier — accessible sous la vue globale compacte via <details>. */
+  function renderSourceDetail(rows) {
+    const tbody = $("#sources-detail-table tbody");
+    if (!tbody) return;
+    tbody.innerHTML = rows.map((source) => {
+      const label = String(source.status || "SKIPPED").toUpperCase();
+      return `<tr>
+        <td data-label="Source">${esc(sourceLabel(source.id))}</td>
+        <td data-label="Statut"><span class="chip" data-status="${esc(label)}">${esc(label)}</span></td>
+        <td data-label="Dernier item">${esc(formatDate(source.latest_item))}</td>
+        <td data-label="Organisation">${esc(source.latest_item_org || "—")}</td>
+        <td data-label="Items vus" class="num">${esc(source.items_seen ?? "—")}</td>
+        <td data-label="Items dans la fenêtre" class="num">${esc(source.items_in_window ?? "—")}</td>
+      </tr>`;
     }).join("");
   }
 

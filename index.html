@@ -106,6 +106,25 @@
     <h2 id="sources-title">État des sources</h2>
     <div id="sources-list" class="sources-list" aria-live="polite"></div>
 
+    <details class="sources-detail">
+      <summary>Détail des sources</summary>
+      <div class="table-scroll">
+        <table class="data-table" id="sources-detail-table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Statut</th>
+              <th>Dernier item</th>
+              <th>Organisation</th>
+              <th>Items vus</th>
+              <th>Items dans la fenêtre</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+
     <!-- Compatibilité avec le rendu historique : ces conteneurs restent invisibles. -->
     <span id="reliability-summary" hidden></span>
     <div id="blindspots" hidden><ul id="blindspots-list"></ul></div>

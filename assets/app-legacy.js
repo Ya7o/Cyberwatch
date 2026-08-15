@@ -329,7 +329,7 @@
       FRENCHBREACHES: "FrenchBreaches",
       CYBERATTAQUE_ORG: "Cyberattaque.org",
       RANSOMWARE_LIVE: "Ransomware.live",
-      VEILLE_LLM: "Veille LLM",
+      VEILLE_LLM: "veillellmReYt",
     };
     return labels[id] || id;
   }

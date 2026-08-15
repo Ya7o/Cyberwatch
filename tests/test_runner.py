@@ -4,16 +4,18 @@ import datetime as dt
 
 import pytest
 
-from cyberwatch import config, status, watchlists
-from cyberwatch.collectors.base import RawEntry, SourceSpec
+from cyberwatch import config, identity, runner, status, watchlists
+from cyberwatch.collectors.base import CollectResult, RawEntry, SourceSpec
 from cyberwatch.dedup import build_incidents
 from cyberwatch.runner import (
     MODE_CREATE,
+    RunContext,
     build_entity_watch,
     entry_to_item,
     make_run_context,
     pre_export_checks,
     repair_item_integrity,
+    run_source,
 )
 
 SPEC = SourceSpec(
@@ -380,3 +382,93 @@ class TestTerritoireDeLEntite:
             watchlists.entity_territories(),
         )
         assert item.Location == config.LOC_MAURICE
+
+
+class _FakeCollector:
+    """Renvoie des entrées fixes, indépendamment de la source déclarée.
+
+    Permet de tester `run_source` sans réseau : le contrat testé est le calcul
+    de `latest_item_date`/`latest_item_org`, généralisé à toute source (plus
+    de traitement spécial BonjourLaFuite).
+    """
+
+    def __init__(self, entries):
+        self._entries = entries
+
+    def collect(self, client, spec, window):
+        return CollectResult(
+            entries=self._entries, reached_boundary=True,
+            units_done=1, units_expected=1,
+        )
+
+
+class TestLatestItemGeneralized:
+    """`latest_item_date`/`latest_item_org` : mêmes champs pour toute source,
+    calculés depuis les items réellement matérialisés, tri déterministe."""
+
+    SPEC = SourceSpec(
+        source_id="GENERIC_SOURCE", layer=config.LAYER_CORE, zone=config.LOC_FRANCE,
+        default_threat=config.THREAT_UNKNOWN,
+    )
+    CONTEXT = RunContext(
+        run_id="RUN-TEST", as_of=AS_OF, target_start="2026-01-01",
+        target_end="2026-08-15", mode=MODE_CREATE, layers=[config.LAYER_CORE],
+    )
+
+    def _run(self, entries, spec=None, monkeypatch=None):
+        assert monkeypatch is not None
+        monkeypatch.setattr(runner, "get_collector", lambda name: _FakeCollector(entries))
+        outcome, items, _ = run_source(
+            None, spec or self.SPEC, self.CONTEXT, {}, {},
+        )
+        return outcome, items
+
+    def test_latest_item_date_et_org_correspondent_au_dernier_item(self, monkeypatch):
+        entries = [
+            RawEntry(title="A", organisation="Org A", published="2026-06-01", url="https://x/a"),
+            RawEntry(title="B", organisation="Org B", published="2026-06-03", url="https://x/b"),
+        ]
+        outcome, items = self._run(entries, monkeypatch=monkeypatch)
+
+        assert len(items) == 2
+        assert outcome.latest_item_date == "2026-06-03"
+        assert outcome.latest_item_org == "Org B"
+
+    def test_determinisme_en_cas_degalite_de_date(self, monkeypatch):
+        """Deux items publiés le même jour : le départage par Item_ID est
+        stable d'un run à l'autre, jamais un artefact d'ordre d'itération."""
+        entries = [
+            RawEntry(title="C", organisation="Org C", published="2026-06-03", url="https://x/c"),
+            RawEntry(title="D", organisation="Org D", published="2026-06-03", url="https://x/d"),
+        ]
+        outcome1, items1 = self._run(entries, monkeypatch=monkeypatch)
+        outcome2, items2 = self._run(list(reversed(entries)), monkeypatch=monkeypatch)
+
+        winner = max(items1, key=lambda i: (i.Published_Date, i.Item_ID))
+        assert outcome1.latest_item_date == winner.Published_Date
+        assert outcome1.latest_item_org == winner.Organisation_Raw
+        # Même résultat quel que soit l'ordre d'entrée des entrées sources.
+        assert outcome1.latest_item_date == outcome2.latest_item_date
+        assert outcome1.latest_item_org == outcome2.latest_item_org
+
+    def test_aucun_item_laisse_les_champs_vides(self, monkeypatch):
+        outcome, items = self._run([], monkeypatch=monkeypatch)
+        assert items == []
+        assert outcome.latest_item_date == ""
+        assert outcome.latest_item_org == ""
+
+    def test_bonjourlafuite_nest_plus_un_cas_special(self, monkeypatch):
+        """Même mécanique générique pour BonjourLaFuite : plus de dépendance
+        au texte libre du commentaire du collecteur."""
+        spec = SourceSpec(
+            source_id="BONJOURLAFUITE", layer=config.LAYER_CORE, zone=config.LOC_FRANCE,
+            default_threat=config.THREAT_LEAK,
+            params={"title_is_organisation": True},
+        )
+        entries = [
+            RawEntry(title="France VAE", organisation="France VAE", published="2026-08-13", url="https://x/e"),
+        ]
+        outcome, items = self._run(entries, spec=spec, monkeypatch=monkeypatch)
+
+        assert outcome.latest_item_date == "2026-08-13"
+        assert outcome.latest_item_org == "France VAE"

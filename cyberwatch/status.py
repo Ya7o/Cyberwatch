@@ -143,6 +143,7 @@ class SourceOutcome:
     items_collected: int = 0
     new_items: int = 0
     latest_item_date: str = ""
+    latest_item_org: str = ""
     access_method: str = ""
     duration_seconds: float = 0.0
     comment: str = ""

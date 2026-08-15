@@ -43,9 +43,7 @@ class VeilleLlmCollector(Collector):
                 f"record_count incohérent: {declared} déclaré, {len(records)} lu"
             )
 
-        min_score = int(spec.params.get("min_score", 50))
         entries: list[RawEntry] = []
-        weak = 0
         future = 0
         requested_window_hits = 0
 
@@ -85,9 +83,9 @@ class VeilleLlmCollector(Collector):
             if date > window.end:
                 future += 1
                 continue
-            if score < min_score:
-                weak += 1
-                continue
+            # Le score reste une information affichable (transmise dans le
+            # résumé ci-dessous), jamais un critère d'exclusion : tous les
+            # dossiers valides sont importés, quel que soit leur score.
             if window.contains(date):
                 requested_window_hits += 1
 
@@ -123,8 +121,7 @@ class VeilleLlmCollector(Collector):
             access_method="repository_json",
             comment=(
                 f"snapshot_records={len(records)}; accepted={len(entries)}; "
-                f"weak_below_{min_score}={weak}; future={future}; "
-                f"requested_window_hits={requested_window_hits}"
+                f"future={future}; requested_window_hits={requested_window_hits}"
             ),
             items_seen=len(records),
             items_in_window=requested_window_hits,
