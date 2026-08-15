@@ -6,16 +6,54 @@
     ],
     "year": 2026,
     "generated_at": "2026-08-15",
-    "record_count": 8,
+    "record_count": 12,
     "watch_result": {
-      "new_incidents": 1,
-      "enriched_incidents": 2,
+      "new_incidents": 4,
+      "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Test de la routine quotidienne : ajout de la commune de Ouangani ; enrichissement des sources Air Austral et Ville de Mamoudzou."
+      "note": "Test renforcé : ajout de Saint-Leu (dossier numérique introuvable), Saint-Paul (PBO fibre vandalisé), panne des numéros d’urgence à Mayotte et vandalisme du réseau Orange à Saint-Denis."
     },
-    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à une cyberattaque confirmée par la victime, une autorité compétente ou plusieurs sources indépendantes solides. Le score ne vaut pas confirmation des détails, de l'attribution ou de l'ampleur."
+    "coverage": {
+      "method": "Balayage ciblé des communes de La Réunion et Mayotte avec termes cyber, panne, incident, indisponibilité, perte de données et atteintes aux infrastructures numériques.",
+      "limitations": "Les réseaux sociaux ne sont pas exhaustivement indexés par les moteurs accessibles ; certains incidents non publics peuvent rester invisibles."
+    },
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à une cyberattaque confirmée par la victime, une autorité compétente ou plusieurs sources indépendantes solides. Les sabotages physiques et pannes peuvent être conservés avec un score cyber faible lorsqu'ils affectent directement les services numériques."
   },
   "incidents": [
+    {
+      "date": "2026-02-04",
+      "organisation": "Commune de Saint-Leu",
+      "territoire": "La Réunion",
+      "localisation": "Saint-Leu",
+      "secteur": "Collectivité territoriale / administration",
+      "type_menace": "Perte ou indisponibilité signalée d’un dossier administratif numérique archivé",
+      "acteur": "Non identifié",
+      "statut": "Incident de donnée numérique signalé ; origine cyber non démontrée",
+      "score_cyberattaque": 15,
+      "impact_connu": "Une administrée a appris que son dossier numérique de renouvellement de passeport et de carte d’identité, déposé plusieurs mois auparavant et présenté comme archivé, était introuvable ; elle a dû recommencer ses démarches.",
+      "sources": [
+        "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
+      ],
+      "synthese": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique à la mairie de Saint-Leu. Aucun élément public ne démontre une intrusion, une suppression malveillante ou une cyberattaque.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-02-04",
+      "organisation": "Infrastructure fibre multi-opérateurs / PBO",
+      "territoire": "La Réunion",
+      "localisation": "Saint-Paul — Le Ruisseau, Bois-de-Nèfles",
+      "secteur": "Télécommunications",
+      "type_menace": "Vandalisme physique d’un point de branchement optique avec coupures Internet et téléphonie",
+      "acteur": "Inconnu",
+      "statut": "Atteinte malveillante physique confirmée ; cyberattaque non démontrée",
+      "score_cyberattaque": 10,
+      "impact_connu": "Un point de branchement optique a été retrouvé ouvert et endommagé, privant de nombreux abonnés de plusieurs opérateurs d’Internet et de téléphonie.",
+      "sources": [
+        "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
+      ],
+      "synthese": "L’atteinte est volontaire et vise une infrastructure numérique, mais les éléments disponibles décrivent un sabotage physique et non une attaque logique contre un système informatique.",
+      "evolution": "nouveau"
+    },
     {
       "date": "2026-02-19",
       "organisation": "EPF Réunion / VALGO",
@@ -67,7 +105,7 @@
         "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
       ],
       "synthese": "Le score de 100 % porte uniquement sur l'existence de l'incident, sur la base de la confirmation rapportée par Le Quotidien ; la revendication ChimeraZ, le vecteur et le volume restent à distinguer de cette confirmation.",
-      "evolution": "enrichi"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-11",
@@ -85,7 +123,7 @@
         "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
       ],
       "synthese": "Incident confirmé directement par la Ville de Mamoudzou ; la presse locale confirme les perturbations de messagerie et les mesures de réponse.",
-      "evolution": "enrichi"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-13",
@@ -102,7 +140,7 @@
         "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
       ],
       "synthese": "La commune a signalé un incident informatique le 13 juin. Aucun élément public retrouvé ne permet de conclure à une action malveillante ; le cas est conservé comme signal faible à surveiller.",
-      "evolution": "nouveau"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-29",
@@ -154,6 +192,42 @@
       ],
       "synthese": "Échantillons cohérents et établissement précisément identifié, mais l'origine exacte de la compromission et l'authenticité complète de la base ne sont pas confirmées indépendamment.",
       "evolution": "inchange"
+    },
+    {
+      "date": "2026-07-04",
+      "organisation": "Orange / SFR et services d’urgence",
+      "territoire": "Mayotte",
+      "localisation": "Mayotte — impact multi-secteurs",
+      "secteur": "Télécommunications / services d’urgence",
+      "type_menace": "Panne réseau rendant certains appels vers les numéros d’urgence 15, 17 et 18 injoignables",
+      "acteur": "Non identifié",
+      "statut": "Panne réseau confirmée officiellement ; origine cyber non démontrée",
+      "score_cyberattaque": 10,
+      "impact_connu": "Certains usagers ne pouvaient plus joindre les numéros courts 15, 17 et 18 en raison d’une panne affectant les réseaux SFR et Orange ; des numéros alternatifs ont été publiés par la préfecture.",
+      "sources": [
+        "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
+      ],
+      "synthese": "Incident numérique critique par son impact sur les secours, mais aucune information publique ne relie la panne à une action malveillante ou cyber.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-07-09",
+      "organisation": "Orange Réunion",
+      "territoire": "La Réunion",
+      "localisation": "Saint-Denis — impact dans l’île",
+      "secteur": "Télécommunications",
+      "type_menace": "Vandalisme volontaire d’installations réseau provoquant des perturbations mobile, fixe et Internet",
+      "acteur": "Inconnu",
+      "statut": "Actes malveillants physiques confirmés par l’opérateur ; cyberattaque logique non démontrée",
+      "score_cyberattaque": 15,
+      "impact_connu": "Des installations du réseau Orange à Saint-Denis ont été volontairement dégradées, provoquant des perturbations des services mobile, fixe et Internet, avec des effets signalés dans l’île.",
+      "sources": [
+        "https://www.zinfos974.com/vandalisme-des-perturbations-sur-les-reseaux-mobile-et-fixe-dorange-a-la-reunion/",
+        "https://imazpress.com/toute-l-actu/actes-de-vandalisme-sur-le-reseau-orange-perturbations-sur-les-services-mobile-et-fixe-dans-toute-l-ile",
+        "https://www.linfo.re/la-reunion/societe/des-actes-de-vandalisme-perturbent-le-reseau-orange-a-la-reunion"
+      ],
+      "synthese": "L’acte malveillant est confirmé par Orange, mais les sources décrivent un sabotage physique d’infrastructure et non une compromission informatique ; le score cyber reste donc faible.",
+      "evolution": "nouveau"
     }
   ]
 }
