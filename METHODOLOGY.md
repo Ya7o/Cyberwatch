@@ -179,6 +179,10 @@ Six fichiers CSV dans `data/` :
 
 Colonnes exactes : voir `cyberwatch/model.py`, qui fait foi.
 
+Un septième fichier, **`source_facts.csv`, est auxiliaire** (§13) : il ne fait
+pas partie de la base canonique ci-dessus, n'entre dans aucun hash
+(`Items_Hash`/`Incidents_Hash`), et `REPLAY` ne le lit ni ne l'écrit jamais.
+
 ---
 
 ## 3. Identifiants déterministes
@@ -527,3 +531,88 @@ OpenAI.
 traverse jamais `run_source`/`entry_to_item`, donc n'appelle jamais
 l'enrichissement, même si les clés/variables d'environnement sont
 présentes.
+
+## 13. Faits source : provenance déclarative, jamais canonique
+
+Cyberwatch collecte davantage d'informations que ce qu'il conserve dans
+`ITEMS`/`INCIDENTS` : `RawEntry` (interne à un collecteur) transporte
+`summary`/`content` riches, mais `Item` ne garde que l'identité, les dates,
+l'organisation, `Threat`/`Sector`/`Location`, le titre et l'URL. Les **faits
+source**, dans `data/source_facts.csv` (schéma `SOURCE_FACT_COLUMNS` de
+`cyberwatch/model.py`), conservent les faits supplémentaires **explicitement
+publiés** par les sources déjà collectées — sans nouvelle requête réseau, sans
+appel OpenAI, sans recherche Internet.
+
+**Principe absolu** : *un fait source décrit ce qu'une source publie ; il ne
+devient jamais une connaissance supposée sur l'organisation.*
+
+### Qualification canonique vs faits source
+
+| | Qualification canonique (`Item`) | Faits source (`source_facts.csv`) |
+|---|---|---|
+| Colonnes | `Threat`, `Sector`, `Location` | `Threat_Actor`, `Third_Party`, `Affected_Count`, `Data_Types_JSON`, `Vulnerabilities_JSON`, … (voir `model.py`) |
+| Rôle | Alimente la vue incident dédupliquée du dashboard | Provenance déclarative, un fait par `(Item_ID, Source_ID)` |
+| Résolution de contradiction | Une taxonomie fermée tranche (§4) | **Aucune** : chaque source garde sa formulation |
+| Décidé par l'IA ? | Jamais l'identité ; Threat/Sector/Location seulement via le filet §11/§12 | Jamais — extraction déterministe uniquement |
+
+Une contradiction entre sources **n'est jamais résolue** dans cette couche.
+Pas de « dernier gagne », pas de majorité automatique, pas de fusion
+arbitraire. Exemple attendu et légitime :
+
+```
+FrenchBreaches   : Affected_Count_Raw = "environ 1 000 comptes"
+BonjourLaFuite   : Affected_Count_Raw = "1 023 personnes"
+```
+Les deux lignes coexistent dans `source_facts.csv`, chacune reliée à son
+propre `Item_ID`.
+
+### Politique d'extraction (`cyberwatch/source_facts.py`)
+
+Quatre niveaux de confiance, du plus sûr au plus prudent :
+1. champ structuré transmis directement par la source (`RawEntry.source_metadata`,
+   ou champs déjà structurés comme `organisation`/`sector` pour Ransomware.live
+   et Veille LLM) ;
+2. structure syntaxique explicite propre à la source (« Via X »,
+   « Données concernées : … », `CVE-AAAA-NNNNN`) ;
+3. extraction déterministe prudente depuis `summary`/`content`, vocabulaire
+   fermé (unités de quantité, verbes de compromission explicites) ;
+4. sinon : champ vide. La précision prime sur le taux de remplissage — en
+   cas d'ambiguïté, rien n'est deviné (ex. « 2,8 millions d'enregistrements »
+   ne devient jamais un nombre de personnes).
+
+`extract_source_fact(item, entry, spec) -> dict | None` fonctionne
+uniquement à partir de ces trois objets, sans accès réseau. Elle n'est
+invoquée par `runner.run_source()` que pour un `RawEntry` ayant produit un
+`Item` valide (un article rejeté — hors périmètre, non cyber, sans victime
+obligatoire — ne crée aucun fait).
+
+**Aucune recherche Web OpenAI, aucun appel OpenAI supplémentaire** : cette
+couche est strictement déterministe, distincte du filet de rattrapage LLM
+(§11) et du pipeline Secteur (§12), qu'elle ne modifie jamais.
+
+### Champs supportés par source
+
+| Source | Champs alimentés |
+|---|---|
+| **BONJOURLAFUITE** | `Claim_Status_Raw` (marqueur brut, jamais interprété en `Claim_Status`), `Third_Party` (« Via … »), `Data_Types_JSON`/`Affected_Count*` (« Données concernées : … »), `Evidence_URLs_JSON` (tous les liens « Source » du bloc, y compris ceux au-delà du premier qui reste seul à fixer `Item.URL`) |
+| **FRENCHBREACHES** | `Claim_Status`/`Claim_Status_Raw`, `Affected_Count`/`Unit`/`Raw`, `Data_Volume_Raw`, `File_Count`, `Data_Types_JSON`, `Threat_Actor`, `Third_Party`, `Vulnerabilities_JSON`, `CVSS_Raw`, `Activity_Description` — depuis `entry.summary`/`title` uniquement, aucune page détail chargée |
+| **CYBERATTAQUE_ORG** | Mêmes champs que FrenchBreaches (hors statut) plus `Victim_Website` — `Third_Party`/`Threat_Actor` exigent une relation explicite de compromission (prestataire compromis, hébergeur affecté, plateforme tierce à l'origine, fournisseur explicitement impliqué) ; une simple co-mention ne suffit jamais |
+| **RANSOMWARE_LIVE** | `Threat_Actor` (groupe), `Source_Sector_Raw`, `Attack_Date`/`Discovered_Date` distinctes (au lieu d'être fusionnées comme `Published_Date`), `Victim_Website`, `Evidence_URLs_JSON` (site victime et URL de revendication, quand distincts) |
+| **VEILLE_LLM** | `Fine_Location` (localisation précise, distincte de `Location` = territoire), `Threat_Actor`, `Claim_Status_Raw`, `Cyberattack_Score`, `Impact`, `Summary`, `Evolution`, `Evidence_URLs_JSON`, `Source_Sector_Raw` — recopie directe du snapshot déjà structuré, aucun second LLM (`skip_ai_qualification` reste inchangé) |
+
+`Evidence_JSON` relie un champ renseigné à la preuve brute qui le justifie
+(ex. `{"Affected_Count_Raw": "environ 90 000 personnes"}`) ; `Source_Metadata_JSON`
+conserve, pour traçabilité, la donnée structurée transmise par le collecteur.
+
+### CREATE / MAJ / REPLAY
+
+- **CREATE** reconstruit `source_facts.csv` depuis zéro, comme `items.csv`.
+- **MAJ** conserve les faits historiques et ne remplace que ceux dont
+  l'`Item_ID` est recollecté (fusion par `Item_ID`, `source_facts.merge_source_facts`)
+  — aucun doublon, idempotent à fenêtre inchangée.
+- **REPLAY** reste entièrement offline (§26) : il ne possède pas les
+  `RawEntry` nécessaires pour recalculer les faits, donc `source_facts.csv`
+  n'est **ni lu ni réécrit** — il reste tel quel entre deux `REPLAY`.
+
+`Items_Hash`/`Incidents_Hash` ne changent pas : `source_facts.csv` n'entre
+dans aucun calcul de hash canonique (V1, volontairement).

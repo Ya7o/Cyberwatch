@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, enrichment, identity, sources, status, store, watchlists
+from . import ai, config, enrichment, identity, source_facts, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -398,6 +398,7 @@ def run_source(
     reference: dict[str, enrichment.Enrichment] | None = None,
     ai_state: ai.AiRunState | None = None,
     sector_stats: dict | None = None,
+    fact_rows: list[dict] | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     """Exécute une source et rend son compte rendu, ses items et sa veille."""
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -457,6 +458,10 @@ def run_source(
             items.append(item)
             if ai_state is not None:
                 ai.qualify_item(item, entry, spec, ai_state)
+            if fact_rows is not None:
+                fact = source_facts.extract_source_fact(item, entry, spec)
+                if fact is not None:
+                    fact_rows.append(fact)
         elif requires_victim:
             articles_rejected_no_victim += 1
         elif spec.source_id == "CYBERATTAQUE_ORG":
@@ -685,6 +690,9 @@ class RunReport:
     duration: float = 0.0
     requests: int = 0
     ai_usage: dict = field(default_factory=dict)
+    #: Faits source (§13 METHODOLOGY.md) : jamais peuplé pour REPLAY
+    #: (branche `offline`), jamais inclus dans un hash canonique.
+    source_facts: list[dict] = field(default_factory=list)
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -753,12 +761,13 @@ def execute(
 
         collected: list[Item] = []
         watch_rows: list[dict] = []
+        new_fact_rows: list[dict] = []
 
         # Exécuter uniquement les sources actives des couches demandées.
         for spec in sources.active_sources(context.layers):
             outcome, items, rows = run_source(
                 client, spec, context, known_orgs, entity_index, territories, reference, ai_state,
-                sector_stats,
+                sector_stats, new_fact_rows,
             )
             report.outcomes.append(outcome)
             collected.extend(items)
@@ -787,6 +796,16 @@ def execute(
             )
         report.items = merged
         report.new_items = new_count
+
+        # Même filtre replace_snapshot que pour les items ci-dessus (VEILLE_LLM) :
+        # CREATE repart de zéro (§13 METHODOLOGY.md), MAJ conserve les facts
+        # historiques et remplace uniquement par Item_ID recollecté.
+        existing_facts = [] if context.mode == MODE_CREATE else store.load_source_facts()
+        facts_base = [
+            row for row in existing_facts
+            if row.get("Source_ID") not in replacement_source_ids
+        ]
+        report.source_facts = source_facts.merge_source_facts(facts_base, new_fact_rows)
         report.requests = run_budget.requests_made
         report.ai_usage = ai.finish_run(
             ai_state, context.run_id, context.as_of, context.mode, sector_stats
@@ -929,6 +948,9 @@ def _persist(
     if persist_snapshot:
         store.save_items(report.items)
         store.save_incidents(report.incidents)
+        # Jeu auxiliaire (§13 METHODOLOGY.md) : jamais écrit par REPLAY (branche
+        # `not report.outcomes` ci-dessus), jamais inclus dans un hash canonique.
+        store.save_source_facts(report.source_facts)
         save_snapshot_provenance(
             store.load_items(), store.load_incidents(), operation=context.mode,
             run_id=context.run_id, mode=context.mode, as_of=context.as_of,

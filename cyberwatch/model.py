@@ -319,3 +319,41 @@ ORG_ENRICHMENT_CACHE_COLUMNS = [
     "Validated_Sector",
     "Validated_Via",
 ]
+
+# --------------------------------------------------------------------------
+# SOURCE_FACTS — faits supplémentaires publiés par une source pour un item.
+# Jeu auxiliaire : décrit ce qu'une source publie, jamais une connaissance
+# canonique sur l'organisation (Threat/Sector/Location n'en dépendent pas).
+# --------------------------------------------------------------------------
+
+SOURCE_FACT_COLUMNS = [
+    "Item_ID",
+    "Source_ID",
+    "Claim_Status",
+    "Claim_Status_Raw",
+    "Threat_Actor",
+    "Third_Party",
+    "Fine_Location",
+    "Source_Sector_Raw",
+    "Activity_Description",
+    "Affected_Count",
+    "Affected_Unit",
+    "Affected_Count_Raw",
+    "Data_Volume_Raw",
+    "File_Count",
+    "Data_Types_JSON",
+    "Vulnerabilities_JSON",
+    "CVSS_Raw",
+    "Attack_Date",
+    "Discovered_Date",
+    "Victim_Website",
+    "Cyberattack_Score",
+    "Impact",
+    "Summary",
+    "Evolution",
+    "Evidence_URLs_JSON",
+    "Evidence_JSON",
+    "Source_Metadata_JSON",
+    "Extraction_Method",
+    "Extraction_Version",
+]

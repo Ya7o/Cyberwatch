@@ -22,6 +22,7 @@ from .model import (
     RUN_LOG_COLUMNS,
     RUN_SOURCE_COLUMNS,
     SOURCE_COLUMNS,
+    SOURCE_FACT_COLUMNS,
     Incident,
     Item,
 )
@@ -43,6 +44,9 @@ ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
 AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
 ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
+#: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
+#: inclus dans Items_Hash/Incidents_Hash.
+SOURCE_FACTS_CSV = DATA_DIR / "source_facts.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
 
@@ -189,6 +193,14 @@ def save_org_enrichment_cache(rows: list[dict], path: Path | None = None) -> Non
 
 def load_run_log(path: Path | None = None) -> list[dict]:
     return read_csv(path or RUN_LOG_CSV)
+
+
+def load_source_facts(path: Path | None = None) -> list[dict]:
+    return read_csv(path or SOURCE_FACTS_CSV)
+
+
+def save_source_facts(rows: list[dict], path: Path | None = None) -> None:
+    write_csv(path or SOURCE_FACTS_CSV, SOURCE_FACT_COLUMNS, rows)
 
 
 def load_snapshot(path: Path | None = None) -> dict:

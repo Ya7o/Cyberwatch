@@ -463,6 +463,21 @@ def clean_organisation(raw: str) -> str:
     return text.strip(" -–—•\t")
 
 
+_LEADING_DECORATIVE_RE = re.compile(rf"^(?:{_DECORATIVE_RE.pattern})+")
+
+
+def leading_decorative_marker(raw: str) -> str:
+    """Préfixe décoratif en tête d'un libellé brut (pastille de statut), tel
+    qu'il apparaît avant que `clean_organisation` ne le retire.
+
+    Ne donne aucun sens au marqueur : c'est à l'appelant de décider si un
+    marqueur brut suffit (§13 METHODOLOGY.md, faits source — jamais de
+    statut canonique sans vérification explicite de la légende de couleur).
+    """
+    match = _LEADING_DECORATIVE_RE.match(str(raw or ""))
+    return match.group(0).strip() if match else ""
+
+
 def _cut_at_incident(text: str) -> str:
     """Tronque un libellé au premier marqueur de récit d'incident."""
     blob = searchable(text)

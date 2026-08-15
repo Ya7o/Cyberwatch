@@ -15,6 +15,7 @@ def _isolate_store(tmp_path, monkeypatch):
         "RUN_SOURCES_CSV": tmp_path / "run_sources.csv",
         "ENTITY_WATCH_CSV": tmp_path / "entity_watch.csv",
         "SOURCES_CSV": tmp_path / "sources.csv",
+        "SOURCE_FACTS_CSV": tmp_path / "source_facts.csv",
     }
     for name, path in mapping.items():
         monkeypatch.setattr(store, name, path)

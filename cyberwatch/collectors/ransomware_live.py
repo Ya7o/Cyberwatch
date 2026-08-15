@@ -204,6 +204,21 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
 
     title = f"{organisation} revendiqué par {group}" if group else organisation
 
+    # `_first_field` ne garde que le premier alias qui répond ; les variantes
+    # de date/URL perdues sont préservées ici pour la couche `source_facts`
+    # (§13 METHODOLOGY.md), sans changer la sémantique historique de
+    # `published`/`url`/`sector`/`location` ci-dessus.
+    source_metadata = {
+        "group": group,
+        "discovered": _first_field(record, ["discovered", "discovered_date"]),
+        "attackdate": _first_field(
+            record, ["attackdate", "attack_date", "publishedDate"]
+        ),
+        "website": _first_field(record, ["website"]),
+        "claim_url": _first_field(record, ["post_url", "claim_url"]),
+        "sector_raw": _first_field(record, FIELD_ALIASES["sector"]),
+    }
+
     return RawEntry(
         title=title,
         url=_normalise_url(_first_field(record, FIELD_ALIASES["url"])),
@@ -213,4 +228,5 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
         sector=_first_field(record, FIELD_ALIASES["sector"]),
         location=location,
         threat=config.THREAT_RANSOMWARE,
+        source_metadata=source_metadata,
     )

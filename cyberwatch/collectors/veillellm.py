@@ -99,6 +99,21 @@ class VeilleLlmCollector(Collector):
             if actor:
                 summary_parts.append(f"Acteur: {actor}")
 
+            # Champs bruts du record, préservés pour la couche `source_facts`
+            # (§13 METHODOLOGY.md) sans changer `summary`/`content` historiques
+            # ci-dessous : `evolution` n'était même pas lu auparavant.
+            source_metadata = {
+                "localisation": str(record.get("localisation") or "").strip(),
+                "acteur": actor,
+                "statut": str(record.get("statut") or "").strip(),
+                "score_cyberattaque": score,
+                "impact_connu": str(record.get("impact_connu") or "").strip(),
+                "synthese": str(record.get("synthese") or "").strip(),
+                "sources": evidence,
+                "evolution": str(record.get("evolution") or "").strip(),
+                "secteur": str(record.get("secteur") or "").strip(),
+            }
+
             entries.append(RawEntry(
                 title=f"{organisation} : {threat}",
                 url=spec.start_url,
@@ -110,6 +125,7 @@ class VeilleLlmCollector(Collector):
                 threat=threat,
                 summary=". ".join(part for part in summary_parts if part),
                 content="Références documentaires: " + " | ".join(evidence),
+                source_metadata=source_metadata,
             ))
 
         return CollectResult(

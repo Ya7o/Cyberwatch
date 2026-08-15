@@ -72,6 +72,10 @@ class RawEntry:
     location: str = ""
     threat: str = ""
     entity: str = ""
+    #: Donnée déjà structurée transmise par un collecteur (JSON API, snapshot
+    #: JSON) sans être aplatie dans `summary`/`content`. Rétrocompatible :
+    #: absent des anciens appels positionnels, il vaut alors `{}`.
+    source_metadata: dict = field(default_factory=dict)
 
 
 @dataclass

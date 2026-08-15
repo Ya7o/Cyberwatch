@@ -259,7 +259,8 @@ class TestCreateRepartDeZero:
         from cyberwatch import runner, store
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
-                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON"):
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
+                     "SOURCE_FACTS_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
@@ -275,7 +276,8 @@ class TestCreateRepartDeZero:
         from cyberwatch import runner, store
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
-                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON"):
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
+                     "SOURCE_FACTS_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
@@ -286,6 +288,92 @@ class TestCreateRepartDeZero:
         report = runner.execute(context, offline=True)
         assert len(report.items) == 1
         assert report.overall == status.OK
+
+
+class TestSourceFactsPersistence:
+    """§13 METHODOLOGY.md : CREATE peuple `source_facts.csv`, MAJ fusionne
+    par `Item_ID` sans doublon, REPLAY ne le touche jamais.
+
+    VEILLE_LLM est la seule source active de `LAYER_REGIONAL_WATCH` et son
+    collecteur lit un snapshot JSON local (aucun accès réseau) : ces tests
+    exercent `runner.execute()` en mode non `offline` sans mock HTTP.
+    """
+
+    def _isolate(self, tmp_path, monkeypatch):
+        from cyberwatch import store
+
+        # Le mode non `offline` traverse aussi `ai.py`/`org_enrichment.py`
+        # (même sans clé API : Status=DISABLED est tout de même journalisé) :
+        # isoler ces CSV est requis pour ne jamais écrire dans data/ réel.
+        for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
+                     "SOURCE_FACTS_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",
+                     "ORG_ENRICHMENT_CACHE_CSV"):
+            monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
+
+    def test_create_peuple_source_facts(self, tmp_path, monkeypatch):
+        from cyberwatch import runner, store
+
+        self._isolate(tmp_path, monkeypatch)
+        context = runner.make_run_context(
+            runner.MODE_CREATE, as_of="2026-08-15T10:00:00+04:00",
+            target_start="2000-01-01", layers=[config.LAYER_REGIONAL_WATCH],
+        )
+        report = runner.execute(context, offline=False)
+
+        assert report.overall == status.OK
+        facts = store.load_source_facts()
+        assert facts
+        assert all(row["Source_ID"] == "VEILLE_LLM" for row in facts)
+        veille_item_ids = {i.Item_ID for i in report.items if i.Source_ID == "VEILLE_LLM"}
+        assert {row["Item_ID"] for row in facts} <= veille_item_ids
+        assert all(row["Fine_Location"] or row["Threat_Actor"] for row in facts)
+
+    def test_maj_fusionne_sans_doublon(self, tmp_path, monkeypatch):
+        from cyberwatch import runner, store
+
+        self._isolate(tmp_path, monkeypatch)
+        first_context = runner.make_run_context(
+            runner.MODE_CREATE, as_of="2026-08-15T10:00:00+04:00",
+            target_start="2000-01-01", layers=[config.LAYER_REGIONAL_WATCH],
+        )
+        runner.execute(first_context, offline=False)
+        first_facts = store.load_source_facts()
+
+        second_context = runner.make_run_context(
+            runner.MODE_MAJ, as_of="2026-08-16T10:00:00+04:00",
+            target_start="2000-01-01", layers=[config.LAYER_REGIONAL_WATCH],
+        )
+        runner.execute(second_context, offline=False)
+        second_facts = store.load_source_facts()
+
+        item_ids = [row["Item_ID"] for row in second_facts]
+        assert len(item_ids) == len(set(item_ids))
+        assert len(second_facts) == len(first_facts)
+
+    def test_replay_n_ecrit_jamais_source_facts(self, tmp_path, monkeypatch, make_item):
+        from cyberwatch import runner, store
+
+        self._isolate(tmp_path, monkeypatch)
+        store.save_items([make_item()])
+        store.save_snapshot({"As_Of": "2026-08-10T10:00:00+04:00"})
+        store.save_source_facts([{"Item_ID": "sentinel", "Source_ID": "X"}])
+
+        def _boom(*_args, **_kwargs):
+            raise AssertionError("REPLAY ne doit jamais écrire source_facts.csv")
+
+        monkeypatch.setattr(store, "save_source_facts", _boom)
+        context = runner.make_run_context(
+            runner.MODE_REPLAY, as_of="2026-08-12T10:00:00+04:00"
+        )
+        report = runner.execute(context, offline=True)
+
+        assert report.overall == status.OK
+        # Le fichier isolé n'a pas été rouvert : la sentinelle reste telle quelle.
+        facts = store.load_source_facts()
+        assert len(facts) == 1
+        assert facts[0]["Item_ID"] == "sentinel"
+        assert facts[0]["Source_ID"] == "X"
 
 
 class TestFauxPositifFourriere:

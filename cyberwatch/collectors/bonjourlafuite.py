@@ -12,12 +12,19 @@ jamais du statut de la source.
 
 from __future__ import annotations
 
+import re
 from html.parser import HTMLParser
 from urllib.parse import urljoin
 
 from .. import status
-from ..normalize import clean_organisation, parse_date
+from ..normalize import clean_organisation, leading_decorative_marker, parse_date
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
+
+#: Reconnaissance structurelle du texte libre du bloc ("Via X",
+#: "Données concernées : ..."), en plus de l'aplatissement historique dans
+#: `summary` — pour la couche `source_facts` (§13 METHODOLOGY.md).
+_VIA_RE = re.compile(r"^via\b[:\s]*(.+)$", re.I)
+_DATA_TYPES_RE = re.compile(r"^donn[ée]es?\s+concern[ée]es?\b[:\s]*(.+)$", re.I)
 
 
 class _RecognizedEntries(list):
@@ -103,6 +110,12 @@ class _BonjourHtmlParser(HTMLParser):
             # Ni une date, ni le libellé d'un lien : texte libre du bloc en
             # cours ("Via : ...", "Données concernées : ...", etc.).
             self._extra_parts.append(text)
+            via = _VIA_RE.match(text)
+            if via:
+                self.current.source_metadata["third_party_raw"] = via.group(1).strip()
+            data_types = _DATA_TYPES_RE.match(text)
+            if data_types:
+                self.current.source_metadata["data_types_raw"] = data_types.group(1).strip()
 
     def _finish_heading(self) -> None:
         raw = " ".join(self._h2_parts).strip()
@@ -120,6 +133,11 @@ class _BonjourHtmlParser(HTMLParser):
             organisation=organisation,
             published=self.pending_date,
         )
+        # Marqueur brut (pastille de statut) capturé avant que le nettoyage
+        # ne le retire — jamais interprété ici, cf. `leading_decorative_marker`.
+        claim_status_raw = leading_decorative_marker(raw)
+        if claim_status_raw:
+            entry.source_metadata["claim_status_raw"] = claim_status_raw
         self.entries.append(entry)
         self.current = entry
         # Une date ne peut reconnaître qu'un seul bloc.
@@ -137,13 +155,17 @@ class _BonjourHtmlParser(HTMLParser):
 
     def _finish_anchor(self) -> None:
         label = " ".join(self._anchor_parts).strip().lower()
-        if (
-            self.current is not None
-            and not self.current.url
-            and self._anchor_href
-            and label.startswith("source")
-        ):
-            self.current.url = urljoin(self.base_url, self._anchor_href)
+        if self.current is not None and self._anchor_href and label.startswith("source"):
+            resolved = urljoin(self.base_url, self._anchor_href)
+            # Comportement historique inchangé : seul le premier lien
+            # "Source" devient `entry.url` (Item_ID en dépend). Tous les
+            # liens "Source" du bloc sont en revanche conservés pour la
+            # couche `source_facts` (§13 METHODOLOGY.md).
+            if not self.current.url:
+                self.current.url = resolved
+            urls = self.current.source_metadata.setdefault("source_urls", [])
+            if resolved not in urls:
+                urls.append(resolved)
         self._anchor_href = ""
         self._anchor_parts = []
 
