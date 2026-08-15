@@ -1,0 +1,466 @@
+name: Integrate Veille LLM once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/integrate-veillellm-trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Intégrer la source et le filtre
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"motif introuvable dans {path}: {old[:100]!r}")
+              p.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          collector = '''"""Import déterministe du snapshot JSON produit par Veille LLM.
+
+          Cette source est analytique : elle peut ajouter ou enrichir un incident,
+          mais elle ne constitue pas une corroboration éditoriale indépendante quand
+          l'incident possède déjà une source directe.
+          """
+
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          from .. import store
+          from ..normalize import date_or_empty
+          from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
+
+
+          class VeilleLlmCollector(Collector):
+              """Lit le snapshot complet afin de récupérer aussi les découvertes tardives."""
+
+              name = "veillellm"
+
+              def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
+                  relative = str(spec.params.get("path") or "").strip()
+                  if not relative:
+                      raise ValueError("Chemin Veille LLM absent")
+
+                  root = store.ROOT.resolve()
+                  path = (root / relative).resolve()
+                  if root not in path.parents:
+                      raise ValueError("Chemin Veille LLM hors dépôt")
+                  if not path.is_file():
+                      raise FileNotFoundError(relative)
+
+                  data = json.loads(path.read_text(encoding="utf-8"))
+                  metadata = data.get("metadata") or {}
+                  records = data.get("incidents")
+                  if not isinstance(records, list):
+                      raise ValueError("incidents doit être une liste")
+
+                  declared = metadata.get("record_count")
+                  if declared is not None and int(declared) != len(records):
+                      raise ValueError(
+                          f"record_count incohérent: {declared} déclaré, {len(records)} lu"
+                      )
+
+                  min_score = int(spec.params.get("min_score", 50))
+                  entries: list[RawEntry] = []
+                  weak = 0
+                  future = 0
+                  requested_window_hits = 0
+
+                  for index, record in enumerate(records, start=1):
+                      if not isinstance(record, dict):
+                          raise ValueError(f"incident #{index} invalide")
+
+                      date = str(record.get("date") or "").strip()
+                      organisation = str(record.get("organisation") or "").strip()
+                      territory = str(record.get("territoire") or "").strip()
+                      threat = str(record.get("type_menace") or "").strip()
+                      if date_or_empty(date) is None:
+                          raise ValueError(f"date invalide incident #{index}: {date!r}")
+                      if not organisation or not territory or not threat:
+                          raise ValueError(f"champs obligatoires absents incident #{index}")
+
+                      raw_score = record.get("score_cyberattaque")
+                      if isinstance(raw_score, bool):
+                          raise ValueError(f"score invalide incident #{index}")
+                      try:
+                          score = int(raw_score)
+                      except (TypeError, ValueError) as exc:
+                          raise ValueError(f"score invalide incident #{index}") from exc
+                      if not 0 <= score <= 100:
+                          raise ValueError(f"score hors bornes incident #{index}: {score}")
+
+                      evidence = record.get("sources") or []
+                      if not isinstance(evidence, list) or not evidence:
+                          raise ValueError(f"aucune source de référence incident #{index}")
+                      evidence = [
+                          str(url).strip() for url in evidence
+                          if str(url).strip().startswith(("https://", "http://"))
+                      ]
+                      if not evidence:
+                          raise ValueError(f"aucune URL de référence valide incident #{index}")
+
+                      if date > window.end:
+                          future += 1
+                          continue
+                      if score < min_score:
+                          weak += 1
+                          continue
+                      if window.contains(date):
+                          requested_window_hits += 1
+
+                      summary_parts = [
+                          str(record.get("statut") or "").strip(),
+                          str(record.get("synthese") or "").strip(),
+                          str(record.get("impact_connu") or "").strip(),
+                          f"Score Veille LLM: {score}/100",
+                      ]
+                      actor = str(record.get("acteur") or "").strip()
+                      if actor:
+                          summary_parts.append(f"Acteur: {actor}")
+
+                      entries.append(RawEntry(
+                          title=f"{organisation} : {threat}",
+                          url=spec.start_url,
+                          published=date,
+                          event_date=date,
+                          organisation=organisation,
+                          sector=str(record.get("secteur") or "").strip(),
+                          location=territory,
+                          threat=threat,
+                          summary=". ".join(part for part in summary_parts if part),
+                          content="Références documentaires: " + " | ".join(evidence),
+                      ))
+
+                  return CollectResult(
+                      entries=entries,
+                      reached_boundary=True,
+                      units_done=len(records),
+                      units_expected=len(records),
+                      calls=0,
+                      access_method="repository_json",
+                      comment=(
+                          f"snapshot_records={len(records)}; accepted={len(entries)}; "
+                          f"weak_below_{min_score}={weak}; future={future}; "
+                          f"requested_window_hits={requested_window_hits}"
+                      ),
+                      items_seen=len(records),
+                      items_in_window=requested_window_hits,
+                  )
+          '''
+          # Retirer l'indentation du heredoc Python.
+          collector = "\n".join(line[10:] if line.startswith("          ") else line for line in collector.splitlines()) + "\n"
+          Path("cyberwatch/collectors/veillellm.py").write_text(collector, encoding="utf-8")
+
+          replace(
+              "cyberwatch/collectors/__init__.py",
+              "from .wordpress import WordPressCollector\n",
+              "from .wordpress import WordPressCollector\nfrom .veillellm import VeilleLlmCollector\n",
+          )
+          replace(
+              "cyberwatch/collectors/__init__.py",
+              '    "kwezi": KweziCollector,\n',
+              '    "kwezi": KweziCollector,\n    "veillellm": VeilleLlmCollector,\n',
+          )
+
+          source_block = '''REGIONAL_WATCH_SOURCES = [
+              SourceSpec(
+                  source_id="VEILLE_LLM",
+                  layer=config.LAYER_REGIONAL_WATCH,
+                  zone="La Réunion / Mayotte",
+                  start_url="https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
+                  collector="veillellm",
+                  active=True,
+                  location_rule=config.LOC_INCONNU,
+                  params={
+                      "path": "sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
+                      "min_score": 50,
+                      "scope_is_cyber": True,
+                      "non_evidence_source": True,
+                      "dashboard_filter": "veille_llm",
+                  },
+                  protocol=(
+                      "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "
+                      "le record_count et les URLs de référence ; importer les dossiers dont le "
+                      "score cyberattaque est >= 50, y compris les découvertes historiques tardives."
+                  ),
+                  success_test=(
+                      "JSON valide, record_count cohérent, tous les dossiers structurés ; "
+                      "les signaux <50 restent hors INCIDENTS."
+                  ),
+                  notes=(
+                      "Source analytique issue de Veille LLM. Elle sert d'apport/enrichissement "
+                      "Réunion-Mayotte et ne compte pas comme corroboration éditoriale "
+                      "supplémentaire lorsqu'une source directe couvre déjà le même incident."
+                  ),
+              ),
+          '''
+          source_block = "\n".join(line[10:] if line.startswith("          ") else line for line in source_block.splitlines()) + "\n    _watch("
+          replace(
+              "cyberwatch/sources.py",
+              "REGIONAL_WATCH_SOURCES = [\n    _watch(",
+              source_block,
+          )
+
+          helper = '''\n\ndef _incident_evidence_items(ordered: list[Item]) -> list[Item]:
+              """Écarte les apports analytiques du compteur de corroboration.
+
+              Si un incident n'existe que dans une source analytique, celle-ci reste
+              affichée comme source unique afin de ne jamais créer un incident sans source.
+              """
+              from . import sources
+
+              evidence = []
+              for item in ordered:
+                  spec = sources.by_id(item.Source_ID)
+                  if not (spec and spec.params.get("non_evidence_source")):
+                      evidence.append(item)
+              return evidence or ordered
+          '''
+          helper = "\n".join(line[10:] if line.startswith("          ") else line for line in helper.splitlines())
+          replace(
+              "cyberwatch/dedup.py",
+              "\ndef build_incidents(items: list[Item]) -> list[Incident]:\n",
+              helper + "\n\ndef build_incidents(items: list[Item]) -> list[Incident]:\n",
+          )
+          replace(
+              "cyberwatch/dedup.py",
+              "        ordered = sort_items(component)\n        date, basis = _component_dates(ordered)\n",
+              "        ordered = sort_items(component)\n        evidence = _incident_evidence_items(ordered)\n        date, basis = _component_dates(ordered)\n",
+          )
+          replace(
+              "cyberwatch/dedup.py",
+              '            Sources=" | ".join(sorted({item.Source_ID for item in ordered if item.Source_ID})),\n            Source_URLs=" | ".join(sorted({item.URL for item in ordered if item.URL})),\n',
+              '            Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),\n            Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),\n',
+          )
+
+          replace(
+              "cyberwatch/site.py",
+              "from . import config, sources, status, store\nfrom .model import Incident\n",
+              "from . import config, identity, sources, status, store\nfrom .dedup import group_components\nfrom .model import Incident, Item\n",
+          )
+          replace(
+              "cyberwatch/site.py",
+              "def incidents_payload(incidents: list[Incident]) -> list[dict]:\n    \"\"\"Incidents au format compact attendu par le dashboard.\"\"\"\n    payload = []\n",
+              "def incidents_payload(incidents: list[Incident], provenance_tags: dict[str, list[str]] | None = None) -> list[dict]:\n    \"\"\"Incidents au format compact attendu par le dashboard.\"\"\"\n    provenance_tags = provenance_tags or {}\n    payload = []\n",
+          )
+          replace(
+              "cyberwatch/site.py",
+              '                "last_seen": incident.Last_seen,\n',
+              '                "last_seen": incident.Last_seen,\n                "provenance_tags": provenance_tags.get(incident.Incident_ID, []),\n',
+          )
+          provenance_helper = '''\n\ndef _provenance_tags_by_incident(items: list[Item]) -> dict[str, list[str]]:
+              """Expose au dashboard les imports analytiques sans gonfler `Sources`."""
+              payload: dict[str, list[str]] = {}
+              for component in group_components(items):
+                  ordered = identity.sort_items(component)
+                  if not ordered:
+                      continue
+                  incident_id = identity.incident_id(
+                      ordered[0].Organisation_Key, ordered[0].Item_ID
+                  )
+                  tags = set()
+                  for item in ordered:
+                      spec = sources.by_id(item.Source_ID)
+                      tag = spec.params.get("dashboard_filter") if spec else ""
+                      if tag:
+                          tags.add(str(tag))
+                  if tags:
+                      payload[incident_id] = sorted(tags)
+              return payload
+          '''
+          provenance_helper = "\n".join(line[10:] if line.startswith("          ") else line for line in provenance_helper.splitlines())
+          replace(
+              "cyberwatch/site.py",
+              "\ndef _source_metadata() -> dict[str, dict]:\n",
+              provenance_helper + "\n\ndef _source_metadata() -> dict[str, dict]:\n",
+          )
+          replace(
+              "cyberwatch/site.py",
+              "    incidents = store.load_incidents()\n    payload = incidents_payload(incidents)\n",
+              "    incidents = store.load_incidents()\n    items = store.load_items()\n    payload = incidents_payload(incidents, _provenance_tags_by_incident(items))\n",
+          )
+
+          replace(
+              "assets/app-legacy.js",
+              '      RANSOMWARE_LIVE: "Ransomware.live",\n',
+              '      RANSOMWARE_LIVE: "Ransomware.live",\n      VEILLE_LLM: "Veille LLM",\n',
+          )
+          replace(
+              "assets/app-legacy.js",
+              '    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";\n    const press = pressOnly ? mahoranPressSources() : null;\n',
+              '    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";\n    const veilleLlmOnly = $("#f-veille-llm")?.getAttribute("aria-pressed") === "true";\n    const press = pressOnly ? mahoranPressSources() : null;\n',
+          )
+          replace(
+              "assets/app-legacy.js",
+              "      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;\n",
+              "      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;\n      if (veilleLlmOnly && !(incident.provenance_tags || []).includes(\"veille_llm\")) return false;\n",
+          )
+          replace(
+              "assets/app-legacy.js",
+              '      ["#f-presse-mahoraise", "Presse mahoraise"],\n',
+              '      ["#f-presse-mahoraise", "Presse mahoraise"],\n      ["#f-veille-llm", "Veille LLM"],\n',
+          )
+          replace(
+              "assets/app-legacy.js",
+              '["#f-ocean-indien", "#f-auto", "#f-grande-distrib", "#f-presse-mahoraise"].forEach',
+              '["#f-ocean-indien", "#f-auto", "#f-grande-distrib", "#f-presse-mahoraise", "#f-veille-llm"].forEach',
+          )
+
+          replace(
+              "assets/dashboard-audit.js",
+              '      RANSOMWARE_LIVE: "Ransomware.live",\n',
+              '      RANSOMWARE_LIVE: "Ransomware.live",\n      VEILLE_LLM: "Veille LLM",\n',
+          )
+          replace(
+              "assets/dashboard-audit.js",
+              '    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";\n    const press = pressOnly ? mahoranPressSources() : null;\n',
+              '    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";\n    const veilleLlmOnly = $("#f-veille-llm")?.getAttribute("aria-pressed") === "true";\n    const press = pressOnly ? mahoranPressSources() : null;\n',
+          )
+          replace(
+              "assets/dashboard-audit.js",
+              "      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;\n",
+              "      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;\n      if (veilleLlmOnly && !(incident.provenance_tags || []).includes(\"veille_llm\")) return false;\n",
+          )
+
+          replace(
+              "index.html",
+              '    <button id="f-presse-mahoraise" class="btn-quick" type="button" aria-pressed="false">Presse mahoraise</button>\n',
+              '    <button id="f-presse-mahoraise" class="btn-quick" type="button" aria-pressed="false">Presse mahoraise</button>\n    <button id="f-veille-llm" class="btn-quick" type="button" aria-pressed="false">Veille LLM</button>\n',
+          )
+
+          tests = '''from cyberwatch import config, identity, site, sources
+          from cyberwatch.collectors import get_collector
+          from cyberwatch.collectors.base import Window
+          from cyberwatch.dedup import build_incidents
+          from cyberwatch.model import Item
+
+
+          def _item(source_id, org="STOR Solutions", date="2026-04-24", url="https://example.test/a"):
+              key = "stor solutions"
+              return Item(
+                  Item_ID=identity.item_id(source_id, date, key, url, ""),
+                  Source_ID=source_id,
+                  Published_Date=date,
+                  Event_Date=date,
+                  Organisation_Raw=org,
+                  Organisation_Key=key,
+                  Threat="Intrusion",
+                  Location=config.LOC_REUNION,
+                  URL=url,
+              )
+
+
+          def test_veille_llm_source_is_active_and_analytical():
+              spec = sources.by_id("VEILLE_LLM")
+              assert spec is not None and spec.active
+              assert spec.collector == "veillellm"
+              assert spec.layer == config.LAYER_REGIONAL_WATCH
+              assert spec.params["non_evidence_source"] is True
+              assert spec.params["dashboard_filter"] == "veille_llm"
+
+
+          def test_veille_llm_imports_full_snapshot_and_rejects_weak_signals():
+              spec = sources.by_id("VEILLE_LLM")
+              result = get_collector(spec.collector).collect(
+                  None, spec, Window("2026-07-25", "2026-08-15")
+              )
+              assert result.resolve() == ("OK", 100)
+              assert result.items_seen == 8
+              assert len(result.entries) == 6
+              organisations = {entry.organisation for entry in result.entries}
+              assert "Commune de Ouangani" not in organisations
+              assert "Le Quotidien de La Réunion" not in organisations
+              assert "Ville de Mamoudzou" in organisations
+              assert all(entry.location in {config.LOC_REUNION, config.LOC_MAYOTTE} for entry in result.entries)
+
+
+          def test_veille_llm_does_not_inflate_direct_source_count():
+              direct = _item("CYBERATTAQUE_ORG", url="https://www.cyberattaque.org/stor/")
+              analytic = _item("VEILLE_LLM", url="https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json")
+              incident = build_incidents([direct, analytic])[0]
+              assert incident.Sources == "CYBERATTAQUE_ORG"
+              assert incident.Items_Count == 2
+              assert "veillellm" not in incident.Source_URLs.lower()
+
+
+          def test_veille_llm_remains_source_when_it_is_the_only_evidence():
+              incident = build_incidents([_item("VEILLE_LLM")])[0]
+              assert incident.Sources == "VEILLE_LLM"
+
+
+          def test_dashboard_payload_exposes_veille_llm_provenance_tag():
+              item = _item("VEILLE_LLM")
+              incident = build_incidents([item])[0]
+              tags = site._provenance_tags_by_incident([item])
+              payload = site.incidents_payload([incident], tags)[0]
+              assert payload["provenance_tags"] == ["veille_llm"]
+
+
+          def test_dashboard_has_veille_llm_filter():
+              html = open("index.html", encoding="utf-8").read()
+              legacy = open("assets/app-legacy.js", encoding="utf-8").read()
+              audit = open("assets/dashboard-audit.js", encoding="utf-8").read()
+              assert 'id="f-veille-llm"' in html
+              assert 'provenance_tags || []).includes("veille_llm")' in legacy
+              assert 'provenance_tags || []).includes("veille_llm")' in audit
+          '''
+          tests = "\n".join(line[10:] if line.startswith("          ") else line for line in tests.splitlines()) + "\n"
+          Path("tests/test_veillellm.py").write_text(tests, encoding="utf-8")
+          PY
+      - name: Tests avant collecte
+        run: |
+          python -m pytest tests/ -q
+          node --check assets/app.js
+          node --check assets/app-legacy.js
+          node --check assets/dashboard-audit.js
+      - name: MAJ complète avec Veille LLM
+        run: python -m cyberwatch maj --layers all --as-of 2026-08-15T11:23:00+04:00
+      - name: Contrôles finaux
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python -m cyberwatch build-site
+          python - <<'PY'
+          import json
+          from cyberwatch import store
+
+          items = store.load_items()
+          llm = [item for item in items if item.Source_ID == "VEILLE_LLM"]
+          assert len(llm) == 6, len(llm)
+          with open("assets/data/incidents.json", encoding="utf-8") as f:
+              incidents = json.load(f)
+          tagged = [row for row in incidents if "veille_llm" in row.get("provenance_tags", [])]
+          assert tagged, "aucun incident taggé veille_llm"
+          assert any("Mamoudzou" in row.get("org", "") for row in tagged)
+          print(f"VEILLE_LLM_ITEMS={len(llm)} TAGGED_INCIDENTS={len(tagged)}")
+          PY
+      - name: Commit et push
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/integrate-veillellm-once.yml .github/integrate-veillellm-trigger
+          git add -A
+          git commit -m "feat: integrate Veille LLM source"
+          git pull --rebase origin main
+          git push origin HEAD:main
