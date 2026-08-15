@@ -166,6 +166,14 @@ a { color: var(--series-1); }
 .blindspots-list li { margin-bottom: 4px; }
 .blindspots-list strong { color: var(--text-primary); }
 
+.mayotte-coverage { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-secondary); }
+.mayotte-coverage > summary { cursor: pointer; font-weight: 630; color: var(--text-primary); }
+.mayotte-coverage-detail { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 14px 24px; }
+.mayotte-coverage-group p { margin: 0 0 4px; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--text-muted); }
+.mayotte-coverage-group ul { margin: 0; padding-left: 16px; }
+.mayotte-coverage-group li { margin-bottom: 3px; }
+.mayotte-coverage-group strong { color: var(--text-primary); }
+
 /* --------------------------------------------------------- action rapide */
 
 .quick-actions {
@@ -182,11 +190,6 @@ a { color: var(--series-1); }
 }
 .btn-quick:hover, .btn-quick[aria-pressed="true"] { color: var(--text-primary); border-color: var(--series-1); }
 .btn-quick[aria-pressed="true"] { background: color-mix(in srgb, var(--series-1) 12%, var(--surface)); }
-.source-filter { display: inline-flex; align-items: center; gap: 8px; flex: 1 0 100%; margin: 4px 0 0; padding: 0; border: 0; color: var(--text-secondary); font-size: 13px; }
-.source-filter legend { padding: 0; }
-.source-filter-options { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.source-filter-options label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; white-space: nowrap; }
-.source-filter-options input { accent-color: var(--series-1); }
 
 /* ------------------------------------------------------------------- KPI */
 
@@ -369,10 +372,7 @@ a { color: var(--series-1); }
   .wrap { padding: 0 14px; }
   .quick-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .btn-quick { min-width: 0; padding: 10px 6px; }
-  .source-filter { grid-column: 1 / -1; display: block; margin-top: 6px; }
-  .source-filter legend { margin-bottom: 7px; }
-  .source-filter-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; }
-  .source-filter-options label { min-height: 28px; }
+  .mayotte-coverage-detail { gap: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

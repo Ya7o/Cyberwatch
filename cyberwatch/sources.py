@@ -19,7 +19,7 @@ dans `METHODOLOGY.md` :
 
 from __future__ import annotations
 
-from . import config, watchlists
+from . import config, status, watchlists
 from .collectors.base import SourceSpec
 from .model import SOURCE_COLUMNS
 
@@ -140,7 +140,6 @@ CORE_SOURCES = [
         default_threat=config.THREAT_RANSOMWARE,
         params={
             "countries": ["FR", "RE", "YT", "MU", "MG", "SC", "KM"],
-            "live_repeat_cooldown_seconds": config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS,
         },
         protocol=(
             "Interroger l'API pour chaque pays du périmètre : organisation, "
@@ -421,7 +420,7 @@ DISABLED_SOURCES = [
         collector="autodetect",
         active=False,
         location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "publisher_id": "france_televisions", "publication_id": "mayotte_la_1ere"},
+        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_BLIND_SPOT, "publisher_id": "france_televisions", "publication_id": "mayotte_la_1ere"},
         protocol="Découvrir un transport public paginé (WordPress, RSS/Atom ou HTML/JSON-LD) et parcourir l'archive cyber jusqu'à la borne.",
         success_test="Archive publique paginée et datée jusqu'à TARGET_START.",
         notes="Audit live 2026-08-15 : page active (HTTP 200), mais aucun RSS/API WordPress ; autodetect ne lit que deux entrées et aucune pagination valide. Angle mort CANDIDATE_INACCESSIBLE sans contournement.",
@@ -434,7 +433,7 @@ DISABLED_SOURCES = [
         collector="autodetect",
         active=False,
         location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "publisher_id": "somapresse", "publication_id": "flash_infos"},
+        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_BLIND_SPOT, "publisher_id": "somapresse", "publication_id": "flash_infos"},
         protocol="Lire les numéros publics du quotidien sans abonnement et en extraire les articles éditoriaux distincts.",
         success_test="Numéros courants publics, datés et intégralement énumérables.",
         notes="Actif en 2026 mais newsletter payante Somapresse ; la page publique ne présente que des anciens numéros (dernier observé 2025-09-24). Les articles web Somapresse déjà lus sous Mayotte Hebdo ne sont pas une seconde corroboration.",
@@ -447,7 +446,7 @@ DISABLED_SOURCES = [
         collector="autodetect",
         active=False,
         location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "publisher_id": "dm_editions", "publication_id": "les_nouvelles_de_mayotte"},
+        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_CEASED, "publisher_id": "dm_editions", "publication_id": "les_nouvelles_de_mayotte"},
         protocol="Aucun : titre arrêté.",
         success_test="Réactiver seulement si une nouvelle rédaction publie une archive d'information publique.",
         notes="INACTIVE : cessation de diffusion annoncée pour le 19 avril 2024. Les annonces légales ultérieures sous ce nom ne constituent pas une presse d'information cyber.",
@@ -460,10 +459,10 @@ DISABLED_SOURCES = [
         collector="autodetect",
         active=False,
         location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "publisher_id": "kwezi", "publication_id": "france_mayotte_matin"},
+        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_TO_CONFIRM, "publisher_id": "kwezi", "publication_id": "france_mayotte_matin"},
         protocol="Découvrir une archive publique propre au titre et l'énumérer jusqu'à la borne.",
         success_test="URL publique stable, articles datés et archive paginée.",
-        notes="Activité papier signalée en 2026, mais aucune URL éditoriale publique techniquement collectable retrouvée pendant l'audit. Angle mort CANDIDATE_INACCESSIBLE ; ne pas confondre avec L'Info Kwezi du même groupe.",
+        notes="Activité papier signalée en 2026 (Actif_2026=INCERTAIN dans l'inventaire), mais aucune URL éditoriale publique techniquement collectable retrouvée pendant l'audit. Statut à confirmer, distinct d'un angle mort technique confirmé ; ne pas confondre avec L'Info Kwezi du même groupe.",
     ),
     SourceSpec(
         source_id="RMV_ACTUALITES",
@@ -473,7 +472,7 @@ DISABLED_SOURCES = [
         collector="autodetect",
         active=False,
         location_rule=config.LOC_INCONNU,
-        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "publisher_id": "rmv", "publication_id": "rmv_actualites"},
+        params={"coverage_required": True, "coverage_group": "MAYOTTE_LOCAL", "candidate_status": status.CANDIDATE_BLIND_SPOT, "publisher_id": "rmv", "publication_id": "rmv_actualites"},
         protocol="Découvrir une archive publique paginée et datée des actualités RMV.",
         success_test="Pagination ou API publique prouvant la borne historique.",
         notes="Actif en 2026 (HTTP 200, actualités datées) ; ni RSS ni WordPress REST, et le HTML expose seulement une sélection non paginable. Angle mort CANDIDATE_INACCESSIBLE.",

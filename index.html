@@ -45,10 +45,7 @@
     <button id="f-ocean-indien" class="btn-quick" type="button" aria-pressed="false">Voir l’Océan Indien</button>
     <button id="f-auto" class="btn-quick" type="button" aria-pressed="false">Concessions automobiles</button>
     <button id="f-grande-distrib" class="btn-quick" type="button" aria-pressed="false">Grande distribution</button>
-    <fieldset class="source-filter" id="f-sources">
-      <legend>Sources</legend>
-      <span class="source-filter-options" aria-live="polite"></span>
-    </fieldset>
+    <button id="f-presse-mahoraise" class="btn-quick" type="button" aria-pressed="false">Presse mahoraise</button>
   </section>
 
   <section class="card">
@@ -108,6 +105,8 @@
   <section class="card reliability" id="fiabilite" aria-labelledby="sources-title">
     <h2 id="sources-title">État des sources</h2>
     <div id="sources-list" class="sources-list" aria-live="polite"></div>
+
+    <details id="mayotte-coverage" class="mayotte-coverage" hidden></details>
 
     <!-- Compatibilité avec le rendu historique : ces conteneurs restent invisibles. -->
     <span id="reliability-summary" hidden></span>

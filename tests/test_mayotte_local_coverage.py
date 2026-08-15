@@ -66,12 +66,47 @@ def test_required_mayotte_source_absent_is_exposed_as_not_covered(monkeypatch):
     monkeypatch.setattr(site.store, "load_run_sources", lambda: [])
     monkeypatch.setattr(site.store, "load_entity_watch", lambda: [])
     payload = site.status_payload()
-    assert any(row["id"] == "KWEZI_NUMERIQUE" and row["status"] == status.NOT_COVERED for row in payload["sources"])
+    kwezi = next(row for row in payload["sources"] if row["id"] == "KWEZI_NUMERIQUE")
+    assert kwezi["status"] == status.NOT_COVERED
+    # Les 4 sources directes sont réellement absentes du run (aucune preuve
+    # qu'elles ont tourné) : c'est un vrai échec de couverture, pas un
+    # candidat non activé.
+    assert kwezi["candidate_status"] == ""
     coverage = payload["coverage_groups"]["MAYOTTE_LOCAL"]
-    # Quatre titres directement collectables et cinq angles morts documentés.
+    # Quatre titres directement collectables et cinq candidates documentées.
     assert coverage["expected"] == 9
-    assert coverage["queried"] == 0
+    assert coverage["collected"] == 0
+    assert coverage["blind_spot"] == 3
+    assert coverage["to_confirm"] == 1
+    assert coverage["ceased"] == 1
+    # Les 4 sources directes absentes du run comptent contre la couverture.
+    assert coverage["broken"] == 4
     assert coverage["coverage"] == "PARTIAL"
+
+
+def test_mayotte_coverage_is_complete_when_only_candidates_are_absent(monkeypatch):
+    """4 sources directes OK + 5 candidates non activées = couverture complète.
+
+    Un angle mort technique, une source à confirmer ou un titre arrêté ne
+    doivent jamais faire échouer `coverage` (§13/§16 Lot 1 Mayotte).
+    """
+    direct_ids = ("KWEZI_NUMERIQUE", "MAYOTTE_HEBDO_NUMERIQUE", "JOURNAL_DE_MAYOTTE", "MAYOTTE_FM")
+    monkeypatch.setattr(site.store, "snapshot_state", lambda: (site.store.BASE_VALID, []))
+    monkeypatch.setattr(site.store, "load_run_log", lambda: [{"Run_ID": "run"}])
+    monkeypatch.setattr(site.store, "load_run_sources", lambda: [
+        {"Run_ID": "run", "Source_ID": source_id, "Status": status.OK, "Coverage": "100"}
+        for source_id in direct_ids
+    ])
+    monkeypatch.setattr(site.store, "load_entity_watch", lambda: [])
+    payload = site.status_payload()
+    coverage = payload["coverage_groups"]["MAYOTTE_LOCAL"]
+    assert coverage["expected"] == 9
+    assert coverage["collected"] == 4
+    assert coverage["blind_spot"] == 3
+    assert coverage["to_confirm"] == 1
+    assert coverage["ceased"] == 1
+    assert coverage["broken"] == 0
+    assert coverage["coverage"] == "COMPLETE"
 
 
 def test_mayotte_watcher_excludes_direct_publishers():

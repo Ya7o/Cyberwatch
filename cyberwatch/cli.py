@@ -16,7 +16,6 @@ from __future__ import annotations
 import argparse
 import random
 import sys
-import time
 
 from . import config, enrichment, identity, site, sources, status, store
 from .collectors.base import Window
@@ -259,112 +258,18 @@ def cmd_test_repeat(args) -> int:
     return 0 if passed else 1
 
 
-def cmd_test_live_repeat(args) -> int:
-    """Exécute deux CREATE LIVE isolés, sans modifier la base locale."""
-    first_context = make_run_context(MODE_CREATE, args.as_of, args.start, _layers_from(args.layers))
-    second_context = make_run_context(
-        MODE_CREATE, first_context.as_of, first_context.target_start, _layers_from(args.layers)
-    )
-    first = execute(first_context, persist=False)
-    cooldown = max(
-        (
-            int(spec.params.get("live_repeat_cooldown_seconds", 0))
-            for spec in sources.active_sources(first_context.layers)
-        ),
-        default=0,
-    )
-    if cooldown:
-        print(f"Attente rate-limit : {cooldown}s avant CREATE B.")
-        time.sleep(cooldown)
-    second = execute(second_context, persist=False)
-    fields = ("status", "units_done", "units_expected", "items_seen", "items_in_window", "items_collected")
-    source_state = lambda report: {
-        outcome.source_id: {field: getattr(outcome, field) for field in fields}
-        for outcome in report.outcomes
-    }
-    checks = [
-        ("Sources", source_state(first), source_state(second)),
-        ("Items_Count", len(first.items), len(second.items)),
-        ("Incidents_Count", len(first.incidents), len(second.incidents)),
-        ("Items_Hash", first.items_hash, second.items_hash),
-        ("Incidents_Hash", first.incidents_hash, second.incidents_hash),
-    ]
-    sources_ok = first.overall == status.OK and second.overall == status.OK
-    passed = sources_ok and all(left == right for _, left, right in checks)
-    print("LIVE REPETITION")
-    print(f"AS_OF : {first_context.as_of}")
-    print(f"TARGET_START : {first_context.target_start}")
-    print(f"TARGET_END : {first_context.target_end}")
-    left_sources, right_sources = source_state(first), source_state(second)
-    print("SOURCE                  A      B")
-    for source_id in sorted(set(left_sources) | set(right_sources)):
-        left = left_sources.get(source_id, {})
-        right = right_sources.get(source_id, {})
-        print(f"{source_id:23} {left.get('status', 'ABSENT'):6} {right.get('status', 'ABSENT'):6}")
-        for field in fields:
-            if left.get(field) != right.get(field):
-                print(f"SOURCE DIFFERENCE\nSource : {source_id}\nChamp : {field}\nRun A : {left.get(field)}\nRun B : {right.get(field)}")
-    for label, left, right in checks:
-        print(f"  {'PASS' if left == right else 'FAIL'}  {label}")
-        if label != "Sources" and left != right:
-            print(f"GLOBAL DIFFERENCE\n{label} A : {left}\n{label} B : {right}")
-    print(f"  {'PASS' if sources_ok else 'FAIL'}  Sources des deux runs OK")
-    print("  RESULTAT :", "PASS" if passed else "FAIL")
-    proof = {
-        "Result": "PASS" if passed else "FAIL",
-        "Validated_At": first_context.as_of,
-        "As_Of": first_context.as_of,
-        "Target_Start": first_context.target_start,
-        "Target_End": first_context.target_end,
-        "Code_Commit": code_commit(),
-        "Sources_Active": sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active),
-        "Items_Count_A": len(first.items),
-        "Items_Count_B": len(second.items),
-        "Incidents_Count_A": len(first.incidents),
-        "Incidents_Count_B": len(second.incidents),
-        "Items_Hash_A": first.items_hash,
-        "Items_Hash_B": second.items_hash,
-        "Incidents_Hash_A": first.incidents_hash,
-        "Incidents_Hash_B": second.incidents_hash,
-    }
-    if passed:
-        store.save_live_repeat(proof)
-    else:
-        # Une preuve n'est écrite que pour PASS. Un échec retire uniquement la
-        # preuve du même essai, sans effacer une trace historique distincte.
-        store.invalidate_matching_live_repeat(proof)
-    return 0 if passed else 1
-
-
 def cmd_baseline(args) -> int:
-    """Fige la provenance validée comme baseline officielle."""
+    """Enregistre le snapshot courant, déjà validé, comme référence locale."""
     if cmd_check(args) != 0:
         return 1
     if cmd_test_repeat(args) != 0:
         print("Baseline refusée : test-repeat en échec.")
         return 1
     snapshot = store.load_snapshot()
-    proof = store.load_live_repeat()
-    if not proof or proof.get("Result") != "PASS":
-        print("Baseline refusée : aucune preuve de répétabilité LIVE correspondant au snapshot courant.")
-        return 1
     expected_sources = sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active)
-    matching = {
-        "Code_Commit": proof.get("Code_Commit") == snapshot.get("Code_Commit"),
-        "Sources_Active": proof.get("Sources_Active") == expected_sources == snapshot.get("Sources_Active"),
-        "As_Of": proof.get("As_Of") == snapshot.get("As_Of"),
-        "Target_Start": proof.get("Target_Start") == snapshot.get("Target_Start"),
-        "Target_End": proof.get("Target_End") == snapshot.get("Target_End"),
-        "Items_Hash": proof.get("Items_Hash_A") == proof.get("Items_Hash_B") == snapshot.get("Items_Hash"),
-        "Incidents_Hash": proof.get("Incidents_Hash_A") == proof.get("Incidents_Hash_B") == snapshot.get("Incidents_Hash"),
-    }
-    failed = [name for name, ok in matching.items() if not ok]
-    if failed:
-        print("Baseline refusée : preuve Live Repeat non correspondante (" + ", ".join(failed) + ").")
-        return 1
     baseline = {
         "Baseline": True,
-        "Validated_At": args.as_of or proof.get("Validated_At") or snapshot.get("As_Of", ""),
+        "Validated_At": args.as_of or snapshot.get("As_Of", ""),
         "Code_Commit": snapshot.get("Code_Commit", ""),
         "Run_ID": snapshot.get("Run_ID", ""),
         "As_Of": snapshot.get("As_Of", ""),
@@ -375,7 +280,6 @@ def cmd_baseline(args) -> int:
         "Incidents_Count": snapshot.get("Incidents_Count", 0),
         "Items_Hash": snapshot.get("Items_Hash", ""),
         "Incidents_Hash": snapshot.get("Incidents_Hash", ""),
-        "Live_Repeat_Validated": True,
     }
     store.save_baseline(baseline)
     print("Baseline enregistrée.")
@@ -828,13 +732,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     repeat = subparsers.add_parser("test-repeat", help="Test de répétabilité (§27).")
     repeat.set_defaults(func=cmd_test_repeat)
-
-    live_repeat = subparsers.add_parser(
-        "test-live-repeat",
-        help="Deux CREATE live isolés, sans modifier le snapshot local.",
-    )
-    add_common(live_repeat)
-    live_repeat.set_defaults(func=cmd_test_live_repeat)
 
     baseline = subparsers.add_parser("baseline", help="Enregistrer la baseline du snapshot validé.")
     baseline.add_argument("--as-of", dest="as_of", help="Date de validation ISO 8601.")

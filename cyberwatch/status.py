@@ -98,6 +98,23 @@ def reason_text(code: str) -> str:
 
 
 # --------------------------------------------------------------------------
+# Statut des sources candidates (non activées) — pourquoi elles ne tournent
+# pas, sans les confondre avec un échec de collecte (§13/§16 du Lot 1
+# Mayotte : un titre arrêté ou incertain n'est pas un échec de couverture).
+# --------------------------------------------------------------------------
+
+CANDIDATE_BLIND_SPOT = "BLIND_SPOT"
+CANDIDATE_TO_CONFIRM = "TO_CONFIRM"
+CANDIDATE_CEASED = "CEASED"
+
+CANDIDATE_STATUS_LABELS = {
+    CANDIDATE_BLIND_SPOT: "Angle mort technique",
+    CANDIDATE_TO_CONFIRM: "Activité à confirmer",
+    CANDIDATE_CEASED: "Titre arrêté",
+}
+
+
+# --------------------------------------------------------------------------
 # Statut global d'un run
 # --------------------------------------------------------------------------
 

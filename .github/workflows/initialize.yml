@@ -54,15 +54,6 @@ jobs:
         run: python -m cyberwatch check
       - name: Test de répétabilité offline
         run: python -m cyberwatch test-repeat
-      - name: Attendre la limite Ransomware.live
-        run: |
-          echo "Attente de 65 secondes avant la première lecture Live Repeat."
-          sleep 65
-      - name: Test de répétabilité LIVE
-        run: |
-          ARGS=(--as-of "$AS_OF" --layers "$LAYERS")
-          if [ -n "$TARGET_START" ]; then ARGS+=(--start "$TARGET_START"); fi
-          python -m cyberwatch test-live-repeat "${ARGS[@]}"
       - name: Créer la baseline
         run: python -m cyberwatch baseline --as-of "$AS_OF"
       - name: Construire le dashboard

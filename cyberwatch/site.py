@@ -52,10 +52,21 @@ def _source_metadata() -> dict[str, dict]:
             "active": spec.active,
             "coverage_required": bool(spec.params.get("coverage_required")),
             "coverage_group": spec.params.get("coverage_group", ""),
+            "candidate_status": spec.params.get("candidate_status", ""),
             "publication_contract": spec.params.get("publication_contract", "historical_required"),
         }
         for spec in sources.ALL_SOURCES
     }
+
+
+#: Une source candidate non activée n'est pas un échec de collecte (§13 Lot 1
+#: Mayotte) : un angle mort technique, une activité à confirmer et un titre
+#: arrêté sont trois situations distinctes, jamais confondues avec un run cassé.
+_CANDIDATE_REASON_TEXT = {
+    status.CANDIDATE_BLIND_SPOT: "Source active mais techniquement inaccessible (angle mort).",
+    status.CANDIDATE_TO_CONFIRM: "Activité actuelle non confirmée.",
+    status.CANDIDATE_CEASED: "Titre arrêté.",
+}
 
 
 def _comment_metric(comment: str, key: str) -> str:
@@ -69,7 +80,14 @@ def _comment_metric(comment: str, key: str) -> str:
 
 
 def _coverage_groups(rows: list[dict], metadata: dict[str, dict]) -> dict[str, dict]:
-    """Agrège les sources requises sans masquer celles absentes du run."""
+    """Agrège les sources requises sans masquer celles absentes du run.
+
+    Un titre arrêté ou à activité incertaine n'est pas un échec de couverture
+    (§13 Lot 1 Mayotte) : seule une source réellement active et cassée compte
+    contre `coverage`. Les candidates non activées sont réparties par
+    `candidate_status` (angle mort technique / à confirmer / arrêté), affichées
+    à titre informatif sans jamais faire passer le groupe en `PARTIAL`.
+    """
     groups: dict[str, list[dict]] = {}
     for row in rows:
         group = metadata.get(row["id"], {}).get("coverage_group", "")
@@ -77,20 +95,24 @@ def _coverage_groups(rows: list[dict], metadata: dict[str, dict]) -> dict[str, d
             groups.setdefault(group, []).append(row)
     payload = {}
     for group, members in groups.items():
-        statuses = [row["status"] for row in members]
-        queried = sum(value != status.NOT_COVERED for value in statuses)
-        partial = statuses.count(status.PARTIAL)
-        failed = sum(value in (status.FAIL, status.NOT_COVERED) for value in statuses)
+        candidate_of = lambda row: metadata.get(row["id"], {}).get("candidate_status", "")
+        collected = sum(row["status"] == status.OK for row in members)
+        blind_spot = sum(candidate_of(row) == status.CANDIDATE_BLIND_SPOT for row in members)
+        to_confirm = sum(candidate_of(row) == status.CANDIDATE_TO_CONFIRM for row in members)
+        ceased = sum(candidate_of(row) == status.CANDIDATE_CEASED for row in members)
+        broken = sum(
+            row["status"] in (status.FAIL, status.PARTIAL)
+            or (row["status"] == status.NOT_COVERED and not candidate_of(row))
+            for row in members
+        )
         payload[group] = {
-            "expected": len(members), "queried": queried,
-            "ok": statuses.count(status.OK), "partial": partial, "failed": failed,
-            "historical_complete": statuses.count(status.OK),
-            "live_partial": sum(
-                row["status"] == status.PARTIAL
-                and metadata[row["id"]].get("publication_contract") == "live_watch"
-                for row in members
-            ),
-            "coverage": "COMPLETE" if queried == len(members) and not partial and not failed else "PARTIAL",
+            "expected": len(members),
+            "collected": collected,
+            "blind_spot": blind_spot,
+            "to_confirm": to_confirm,
+            "ceased": ceased,
+            "broken": broken,
+            "coverage": "COMPLETE" if not broken else "PARTIAL",
         }
     return payload
 
@@ -114,7 +136,11 @@ def status_payload() -> dict:
             "entities": [],
             "history": [],
             "focus_locations": config.FOCUS_LOCATIONS,
-            "labels": {"status": status.STATUS_LABELS, "run_status": status.RUN_STATUS_LABELS},
+            "labels": {
+                "status": status.STATUS_LABELS,
+                "run_status": status.RUN_STATUS_LABELS,
+                "candidate_status": status.CANDIDATE_STATUS_LABELS,
+            },
         }
 
     run_log = store.load_run_log()
@@ -145,6 +171,7 @@ def status_payload() -> dict:
                 "zone": meta.get("zone", ""),
                 "url": meta.get("url", ""),
                 "notes": meta.get("notes", ""),
+                "candidate_status": meta.get("candidate_status", ""),
                 "status": row_status,
                 "coverage": coverage,
                 "reason_code": row.get("Reason_Code", ""),
@@ -187,11 +214,14 @@ def status_payload() -> dict:
     for source_id, meta in metadata.items():
         if source_id in present or not meta.get("coverage_required"):
             continue
+        candidate_status = meta.get("candidate_status", "")
         reason_code = status.REASON_LAYER_NOT_SCHEDULED if meta.get("active") else status.REASON_SOURCE_INACTIVE
+        reason = _CANDIDATE_REASON_TEXT.get(candidate_status) or status.reason_text(reason_code)
         source_rows.append({
             "id": source_id, "layer": meta["layer"], "zone": meta["zone"], "url": meta["url"],
+            "candidate_status": candidate_status,
             "status": status.NOT_COVERED, "coverage": 0, "reason_code": reason_code,
-            "reason": status.reason_text(reason_code), "items": 0, "items_seen": 0,
+            "reason": reason, "items": 0, "items_seen": 0,
             "items_collected": 0, "items_in_window": 0, "units_done": 0, "units_expected": 0,
             "calls": 0, "latest_item": "", "last_recognized_date": "", "last_recognized_org": "",
             "access_method": "", "duration": "", "comment": (
@@ -303,6 +333,7 @@ def status_payload() -> dict:
         "labels": {
             "status": status.STATUS_LABELS,
             "run_status": status.RUN_STATUS_LABELS,
+            "candidate_status": status.CANDIDATE_STATUS_LABELS,
         },
     }
 

@@ -1,6 +1,6 @@
 import pytest
 
-from cyberwatch import sources
+from cyberwatch import config, sources
 from cyberwatch.collectors import get_collector
 from cyberwatch.collectors.bonjourlafuite import BonjourLaFuiteCollector
 from cyberwatch.collectors.cyberattaque_org import CyberattaqueOrgCollector
@@ -35,3 +35,27 @@ def test_frenchbreaches_uses_its_explicit_complete_rss_feed():
 def test_unknown_collector_fails_fast():
     with pytest.raises(ValueError, match="Collecteur inconnu : collecteur_inexistant"):
         get_collector("collecteur_inexistant")
+
+
+def test_source_ids_are_unique():
+    ids = [spec.source_id for spec in sources.ALL_SOURCES]
+    assert len(ids) == len(set(ids))
+
+
+def test_every_source_declares_a_known_layer():
+    known_layers = {layer for group in config.LAYER_GROUPS.values() for layer in group} | {
+        config.LAYER_DISABLED
+    }
+    for spec in sources.ALL_SOURCES:
+        assert spec.layer in known_layers, f"{spec.source_id}: couche inconnue ({spec.layer})"
+
+
+def test_every_active_source_documents_protocol_and_success_test():
+    for spec in sources.active_sources():
+        assert spec.protocol, f"{spec.source_id}: protocole non documenté"
+        assert spec.success_test, f"{spec.source_id}: test de succès non documenté"
+
+
+def test_full_scan_budget_stays_within_run_limit():
+    budget = sum(sources.expected_units(spec) for spec in sources.active_sources())
+    assert budget <= config.MAX_REQUESTS_PER_RUN

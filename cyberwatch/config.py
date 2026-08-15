@@ -361,8 +361,8 @@ HTTP_TIMEOUT_SECONDS = 20
 HTTP_MAX_RETRIES = 2
 HTTP_POLITE_DELAY_SECONDS = 1.0
 # L'API publique ransomware.live limite certains endpoints à une lecture par
-# minute. Ce délai est employé seulement par son collecteur et entre les deux
-# CREATE du Live Repeat ; il ne modifie pas la collecte quotidienne.
+# minute. Ce délai n'est employé que par son collecteur, lors d'un vrai 429 ;
+# il ne modifie pas la collecte quotidienne des autres sources.
 RANSOMWARE_LIVE_RATE_LIMIT_SECONDS = 65
 HTTP_USER_AGENT = (
     "CyberwatchBot/1.0 (+https://github.com/Ya7o/Cyberwatch; "

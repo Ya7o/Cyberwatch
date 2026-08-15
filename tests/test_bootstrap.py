@@ -18,7 +18,6 @@ def isolate_store(tmp_path, monkeypatch):
         "ENTITY_WATCH_CSV": tmp_path / "entity_watch.csv",
         "SNAPSHOT_JSON": tmp_path / "snapshot.json",
         "BASELINE_JSON": tmp_path / "baseline.json",
-        "LIVE_REPEAT_JSON": tmp_path / "live_repeat.json",
         "SITE_DATA_DIR": tmp_path / "site-data",
     }
     for name, path in mapping.items():
@@ -117,51 +116,24 @@ def test_report_uses_status_and_not_a_score(tmp_path, monkeypatch, capsys):
     assert "Score de couverture" not in output
 
 
-def matching_live_repeat():
-    snapshot = store.load_snapshot()
-    return {
-        "Result": "PASS",
-        "Validated_At": snapshot["As_Of"],
-        "As_Of": snapshot["As_Of"],
-        "Target_Start": snapshot["Target_Start"],
-        "Target_End": snapshot["Target_End"],
-        "Code_Commit": snapshot["Code_Commit"],
-        "Sources_Active": snapshot["Sources_Active"],
-        "Items_Hash_A": snapshot["Items_Hash"],
-        "Items_Hash_B": snapshot["Items_Hash"],
-        "Incidents_Hash_A": snapshot["Incidents_Hash"],
-        "Incidents_Hash_B": snapshot["Incidents_Hash"],
-    }
-
-
-def test_baseline_refuses_missing_live_repeat(tmp_path, monkeypatch, make_item, capsys):
+def test_baseline_accepts_valid_snapshot_without_live_repeat(tmp_path, monkeypatch, make_item):
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item)
-
-    assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 1
-    assert "aucune preuve de répétabilité LIVE" in capsys.readouterr().out
-
-
-def test_baseline_accepts_matching_live_repeat(tmp_path, monkeypatch, make_item):
-    isolate_store(tmp_path, monkeypatch)
-    valid_snapshot(make_item)
-    store.save_live_repeat(matching_live_repeat())
 
     assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 0
     baseline = store.load_baseline()
     assert baseline["Baseline"] is True
-    assert baseline["Live_Repeat_Validated"] is True
+    assert "Live_Repeat_Validated" not in baseline
     assert baseline["Items_Hash"] == store.load_snapshot()["Items_Hash"]
 
 
-def test_baseline_refuses_obsolete_live_repeat(tmp_path, monkeypatch, make_item):
+def test_baseline_refuses_when_test_repeat_fails(tmp_path, monkeypatch, make_item):
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item)
-    for field in ("Items_Hash_A", "Incidents_Hash_A", "Code_Commit", "Sources_Active"):
-        proof = matching_live_repeat()
-        proof[field] = "obsolete" if field != "Sources_Active" else []
-        store.save_live_repeat(proof)
-        assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 1
+    monkeypatch.setattr(cli, "cmd_test_repeat", lambda args: 1)
+
+    assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 1
+    assert not store.BASELINE_JSON.exists()
 
 
 def test_maj_uses_snapshot_as_of_when_run_log_is_absent(tmp_path, monkeypatch, make_item):
@@ -187,16 +159,16 @@ def test_collect_workflow_has_one_daily_cron():
     assert 'cron: "0 3 * * 1"' not in workflow
 
 
-def test_collect_workflow_cannot_publish_first_create_without_baseline():
+def test_collect_workflow_publishes_create_without_requiring_baseline():
     workflow = (store.ROOT / ".github" / "workflows" / "collect.yml").read_text(encoding="utf-8")
-    assert "CREATE non publiable sans baseline" in workflow
-    assert "Initialize Baseline" in workflow
+    assert "CREATE non publiable sans baseline" not in workflow
+    assert workflow.index("cyberwatch check") < workflow.index("Publier les données")
 
 
 def test_initialize_workflow_runs_validations_before_publication():
     workflow = (store.ROOT / ".github" / "workflows" / "initialize.yml").read_text(encoding="utf-8")
-    for command in ("cyberwatch create", "cyberwatch check", "cyberwatch test-repeat", "cyberwatch test-live-repeat", "cyberwatch baseline", "cyberwatch build-site"):
+    for command in ("cyberwatch create", "cyberwatch check", "cyberwatch test-repeat", "cyberwatch baseline", "cyberwatch build-site"):
         assert command in workflow
-    assert "Attendre la limite Ransomware.live" in workflow
-    assert "sleep 65" in workflow
+    assert "test-live-repeat" not in workflow
+    assert "sleep 65" not in workflow
     assert workflow.index("cyberwatch baseline") < workflow.index("Publier la baseline")

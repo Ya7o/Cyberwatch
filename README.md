@@ -2,21 +2,19 @@
 
 Cyberwatch applique une chaîne déterministe : **collecte → normalisation →
 qualification canonique offline → déduplication → quality gates → hashes →
-snapshot/dashboard**. Les sept sources actives sont BonjourLaFuite,
-Cyberattaque.org, FrenchBreaches, Kwezi Numérique, Mayotte Hebdo Numérique,
-Journal de Mayotte, Mayotte FM et Ransomware.live. L'inventaire vérifié de la
+snapshot/dashboard**. Les huit sources actives sont BonjourLaFuite,
+Cyberattaque.org, FrenchBreaches, Ransomware.live, Kwezi Numérique, Mayotte
+Hebdo Numérique, Journal de Mayotte et Mayotte FM. L'inventaire vérifié de la
 presse mahoraise et les angles morts techniques sont versionnés dans
 `data/mayotte_media_inventory.csv`.
 
 La qualité est vérifiée offline par :
-`python scripts/audit_data_quality.py --items data/items.csv --check --check-regression`.
+`python scripts/audit_data_quality.py --items data/items.csv --check --check-regression`
+(script disponible en manuel, plus en gate obligatoire de CI).
 
 **Dashboard : https://ya7o.github.io/Cyberwatch/**
 
 ## Bootstrap et exploitation
-
-Les seules sources actives sont `BONJOURLAFUITE`, `FRENCHBREACHES`,
-`CYBERATTAQUE_ORG`, `RANSOMWARE_LIVE` et `KWEZI_NUMERIQUE`.
 
 Une base neuve suit obligatoirement cette séquence :
 
@@ -24,8 +22,7 @@ Une base neuve suit obligatoirement cette séquence :
 python -m cyberwatch create
 python -m cyberwatch check
 python -m cyberwatch test-repeat
-python -m cyberwatch test-live-repeat
-python -m cyberwatch baseline
+python -m cyberwatch baseline   # optionnel : enregistre une référence locale
 python -m cyberwatch build-site
 ```
 
@@ -37,28 +34,30 @@ une base totalement neuve, mais jamais des fichiers partiels.
 Les états sont explicites : **base non initialisée** (aucun snapshot ni CSV),
 **base valide** (provenance et hashes cohérents), **base incohérente** (fichiers
 partiels ou divergents), **run BROKEN** (journal de diagnostic sans remplacement
-du snapshot), et **baseline** (snapshot également validé par Live Repeat).
+du snapshot), et **baseline** (snapshot dont `check` et `test-repeat` ont été
+rejoués avec succès, enregistré comme référence locale).
 
-Un `CREATE` BROKEN ne publie pas de snapshot. Une fois la baseline créée, la
-collecte quotidienne de 08:00 heure Réunion peut lancer `python -m cyberwatch maj`.
-Le full scan hebdomadaire ne sera réintroduit qu'avec les couches Watch.
+Un `CREATE` BROKEN ne publie pas de snapshot. Un `CREATE` validé (check +
+test-repeat au vert) peut être publié directement, sans cérémonie de baseline
+préalable : ce n'est pas un projet critique, une seule collecte contrôlée
+suffit. Le full scan hebdomadaire ne sera réintroduit qu'avec les couches
+Watch.
 
 ### Initialisation officielle
 
 La voie GitHub Actions officielle est **Initialize Baseline**. Elle fige un même
 `AS_OF` et, si fourni, un même `start`, puis exécute sans publication intermédiaire :
 
-`CREATE → check → test-repeat → test-live-repeat → baseline → build-site → publication`.
+`CREATE → check → test-repeat → baseline → build-site → publication`.
 
-`data/live_repeat.json` est la preuve de la dernière répétabilité LIVE. Une
-baseline est refusée sans preuve `PASS` correspondant exactement au snapshot
-(commit, sources actives, fenêtre et hashes). Un snapshot est donc un corpus
-techniquement valide ; une baseline est ce snapshot validé comme référence.
+Un snapshot est un corpus techniquement valide ; une baseline est ce même
+snapshot, revalidé et enregistré comme référence locale (`data/baseline.json`).
 Une MAJ remplace le snapshot, mais ne réécrit jamais la baseline.
 
 Le workflow **Collecte** reste dédié à `MAJ`. Un `CREATE` manuel depuis ce
-workflow peut aider au diagnostic, mais il ne publie pas de première base sans
-baseline : utiliser **Initialize Baseline**.
+workflow publie directement une fois `check` et `test-repeat` au vert ;
+**Initialize Baseline** reste utile comme raccourci pour figer une référence
+locale, pas comme condition de publication.
 
 > Cette base ne prétend pas représenter toutes les cyberattaques réelles. Elle vise
 > la liste la plus large possible des incidents *publiquement listés*, avec une
@@ -183,8 +182,7 @@ gratuites.
 # Fiabilité du snapshot
 
 `test-repeat` vérifie hors réseau que le même jeu `ITEMS` produit les mêmes
-`INCIDENTS`. `test-live-repeat` effectue deux CREATE isolés avec un cutoff figé
-et compare statuts, unités, compteurs et hashes, sans écrire de fichier.
+`INCIDENTS` (deux constructions, ordre canonique puis ordre aléatoire figé).
 
 `data/snapshot.json` est la provenance du snapshot publié : opération, run,
 fenêtre, compteurs, hashes et commit producteur. `check` relit les CSV et

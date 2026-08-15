@@ -19,7 +19,13 @@
     "système u", "super u",
   ]);
   const orgKey = (value) => String(value || "").trim().toLocaleLowerCase("fr-FR");
-  const selectedSources = () => new Set($$("#f-sources input[type='checkbox']:checked").map((input) => input.value));
+  /** Même dérivation qu'app-legacy.js : zone Mayotte + couche LOCAL_MEDIA_DIRECT,
+   * jamais une liste codée en dur ; exclut les candidates (angles morts, etc.). */
+  const mahoranPressSources = () => new Set(
+    ((state.status && state.status.sources) || [])
+      .filter((source) => source.zone === "Mayotte" && source.layer === "LOCAL_MEDIA_DIRECT")
+      .map((source) => source.id)
+  );
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[ch]));
@@ -107,14 +113,15 @@
   }
 
   function filteredIncidents() {
+    const pressOnly = $("#f-presse-mahoraise")?.getAttribute("aria-pressed") === "true";
+    const press = pressOnly ? mahoranPressSources() : null;
     return state.incidents.filter((incident) => {
       const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
       const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
       const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
-      const sources = selectedSources();
       const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
       if (ocean && !oceanLocations.has(incident.location)) return false;
-      if (sources.size && !(incident.sources || []).some((source) => sources.has(source))) return false;
+      if (press && !(incident.sources || []).some((source) => press.has(source))) return false;
       if ((automotive || largeRetail) && !(
         (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
         || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))

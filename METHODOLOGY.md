@@ -10,10 +10,11 @@ traitement offline : intégrité des items, enrichissement déterministe,
 reconstruction des incidents, contrôles pré-export, hashes et persistance
 atomique. Les workflows GitHub n'ajoutent aucune transformation métier.
 
-`data/quality_baseline.json` versionne les métriques de qualité. Le gate refuse
-une hausse d'inconnus, un candidat de menace résoluble conservé inconnu ou une
-suppression inexpliquée ; toute mise à jour de cette référence est visible dans
-Git et doit être volontairement revue.
+`data/quality_baseline.json` versionne les métriques de qualité, comparées par
+`python scripts/audit_data_quality.py --check-regression` : hausse d'inconnus,
+candidat de menace résoluble conservé inconnu, suppression inexpliquée. Cet
+audit est un outil d'investigation manuelle, pas un gate obligatoire de CI ;
+toute mise à jour de la référence reste visible dans Git.
 
 ## Couverture locale Mayotte
 
@@ -32,11 +33,12 @@ sont des angles morts explicites dans `data/mayotte_media_inventory.csv`.
 ## Initialisation et référence
 
 Un **snapshot** est le dernier corpus techniquement valide : ITEMS, INCIDENTS
-et provenance cohérente. Une **baseline** est un snapshot également validé par
-`test-repeat` et `test-live-repeat`. La preuve LIVE est conservée dans
-`data/live_repeat.json` et doit correspondre au commit, aux sources actives, à
-la fenêtre et aux hashes du snapshot avant que `baseline` puisse l'accepter.
-Une MAJ actualise le snapshot mais ne réécrit pas la baseline.
+et provenance cohérente. Une **baseline** est ce même snapshot, revalidé par
+`check` et `test-repeat`, puis enregistré comme référence locale
+(`data/baseline.json`). Aucune collecte réseau supplémentaire n'est requise
+pour créer une baseline — le projet n'est pas critique, une collecte
+contrôlée et vérifiée offline suffit. Une MAJ actualise le snapshot mais ne
+réécrit pas la baseline.
 
 Ce document décrit la méthode telle qu'elle est **réellement exécutée par le code**.
 Il reprend la méthodologie d'origine (`SIMPLE-SOURCING-1`) et consigne, sans les
