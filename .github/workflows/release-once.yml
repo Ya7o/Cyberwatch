@@ -1,0 +1,42 @@
+name: Publish v0.7.28
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/release-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publier la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v0.7.28 \
+            --repo "$GITHUB_REPOSITORY" \
+            --target 73d9f847b89707f49a45b3018f537388c8c852d6 \
+            --title "v0.7.28 — Lot 1 Mayotte stabilisé" \
+            --notes-file - <<'EOF'
+          ## Mayotte
+          - Couverture presse mahoraise stabilisée avec 4 sources directes actives.
+          - Historique 2026 validé et intégré par backfill ciblé, sans reconstruire les sources à historique public limité.
+          - Incident Mamoudzou du 11 juin confirmé par Journal de Mayotte, Kwezi et Mayotte Hebdo : 1 incident, 3 sources éditoriales.
+
+          ## Simplification
+          - Live Repeat supprimé.
+          - CI allégée aux contrôles utiles.
+          - Baseline et CREATE simplifiés.
+          - Filtre « Presse mahoraise » intégré au dashboard.
+
+          ## Validation
+          - 389 tests passent.
+          - `check` PASS.
+          - `test-repeat` PASS.
+          - Collecte historique Mayotte : 4/4 sources directes OK.
+          - GitHub Pages PASS.
+          EOF
