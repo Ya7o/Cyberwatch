@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/backfill-cyberwatch-2026.yml'
       - 'sources/veillellm/backfill_global_sources_v2.py'
+      - 'sources/veillellm/normalize_global_backfill.py'
   workflow_dispatch:
 
 permissions:
@@ -30,6 +31,9 @@ jobs:
 
       - name: Rebuild 2026 baselines
         run: python sources/veillellm/backfill_global_sources_v2.py
+
+      - name: Validate and normalize canonical fields
+        run: python sources/veillellm/normalize_global_backfill.py
 
       - name: Commit backfill data
         run: |
