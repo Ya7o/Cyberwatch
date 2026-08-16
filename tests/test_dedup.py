@@ -55,6 +55,23 @@ class TestComponents:
         assert decide_merge(left, right).action == KEEP_SEPARATE
         assert len(build_incidents([left, right])) == 2
 
+    def test_recurrence_same_day_is_corroboration_not_new_boundary(self, make_item):
+        recurrent = make_item(
+            source="CYBERATTAQUE_ORG",
+            published="2026-08-12",
+            title="Son-Video frappé une nouvelle fois par une cyberattaque",
+            url="https://a",
+        )
+        corroboration = make_item(
+            source="RANSOMWARE_LIVE",
+            published="2026-08-12",
+            title="Son-Video revendiqué par majinahanashi",
+            url="https://b",
+        )
+        assert decide_merge(recurrent, corroboration).action == MERGE
+        assert decide_merge(corroboration, recurrent).action == MERGE
+        assert len(build_incidents([recurrent, corroboration])) == 1
+
     def test_event_date_merges_despite_threat_difference(self, make_item):
         left = make_item(source="A", event="2026-01-01", published="2026-01-02", threat="Intrusion", url="https://a")
         right = make_item(source="B", event="2026-01-01", published="2026-01-20", threat="Fuite de données", url="https://b")
@@ -111,14 +128,10 @@ class TestIncidentFields:
         ]
         assert build_incidents(items)[0].Menace == config.THREAT_ACCOUNT
 
-    def test_son_video_recidive_reste_verrouillee_separee(self, make_item):
-        """Verrouillage (§stabilisation pré-release) : les items Son-Video
-        réels partagent tous Organisation_Key='son video', et deux d'entre
-        eux (CYBERATTAQUE_ORG, RANSOMWARE_LIVE) partagent même la même date
-        — sans le marqueur de récidive ("frappé une nouvelle fois"), rien
-        d'autre n'empêcherait leur fusion. Ce test fige le comportement
-        protecteur existant (`RECURRENCE_MARKERS`/`_recurrence`) : aucun
-        alias, aucun changement de code n'est nécessaire ni souhaité ici."""
+    def test_son_video_recidive_separe_avril_et_consolide_aout(self, make_item):
+        """La récidive ouvre l'épisode d'août par rapport à avril, sans
+        empêcher Cyberattaque.org et Ransomware.live de corroborer le même
+        épisode du 12 août."""
         items = [
             make_item(source="BONJOURLAFUITE", org="Son-Vidéo.com", published="2026-04-10",
                       threat="Fuite de données", title="Son-Vidéo.com", url="https://a"),
@@ -132,13 +145,80 @@ class TestIncidentFields:
             make_item(source="RANSOMWARE_LIVE", org="SON VIDEO", published="2026-08-12",
                       threat="Ransomware", title="SON VIDEO revendiqué par majinahanashi", url="https://d"),
         ]
-        assert len({item.Organisation_Key for item in items}) == 1  # même clé pour les 4
+        assert len({item.Organisation_Key for item in items}) == 1
 
         incidents = build_incidents(items)
 
-        assert len(incidents) == 3
-        by_date = sorted(inc.Date for inc in incidents)
-        assert by_date == ["2026-04-10", "2026-08-12", "2026-08-12"]
+        assert len(incidents) == 2
+        assert [inc.Date for inc in incidents] == ["2026-08-12", "2026-04-10"]
+        august = next(inc for inc in incidents if inc.Date == "2026-08-12")
+        assert august.Items_Count == 2
+        assert august.Sources == "CYBERATTAQUE_ORG | RANSOMWARE_LIVE"
+
+    def test_dgfip_2eme_cyberattaque_ouvre_un_nouvel_episode(self, make_item):
+        """Le 14/08 est explicitement une 2ème cyberattaque : elle reste
+        distincte du 12/08, mais sa corroboration FrenchBreaches du même jour
+        rejoint bien le nouvel épisode."""
+        items = [
+            make_item(
+                source="FRENCHBREACHES",
+                org="Direction générale des Finances publiques",
+                published="2026-08-12",
+                threat="Fuite de données",
+                title="Direction générale des Finances publiques (DGFiP)",
+                url="https://a",
+            ),
+            make_item(
+                source="CYBERATTAQUE_ORG",
+                org="DGFiP",
+                published="2026-08-14",
+                threat="Fuite de données",
+                title="DGFiP : une 2ème cyberattaque revendiquée, plus de 2 millions de personnes concernées",
+                url="https://b",
+            ),
+            make_item(
+                source="FRENCHBREACHES",
+                org="Direction générale des Finances publiques",
+                published="2026-08-14",
+                threat="Fuite de données",
+                title="Direction générale des Finances publiques (SPDC)",
+                url="https://c",
+            ),
+        ]
+
+        incidents = build_incidents(items)
+
+        assert len(incidents) == 2
+        by_date = {inc.Date: inc for inc in incidents}
+        assert by_date["2026-08-12"].Items_Count == 1
+        assert by_date["2026-08-14"].Items_Count == 2
+        assert by_date["2026-08-14"].Sources == "CYBERATTAQUE_ORG | FRENCHBREACHES"
+
+    def test_france_casse_nouvelle_fuite_peut_etre_corroboree_le_meme_jour(self, make_item):
+        items = [
+            make_item(
+                source="CYBERATTAQUE_ORG",
+                org="FranceCasse",
+                published="2026-08-16",
+                threat="Fuite de données",
+                title="FranceCasse : 500 comptes clients exposés dans une nouvelle fuite",
+                url="https://a",
+            ),
+            make_item(
+                source="FRENCHBREACHES",
+                org="France-Casse",
+                published="2026-08-16",
+                threat="Fuite de données",
+                title="France-Casse",
+                url="https://b",
+            ),
+        ]
+
+        incidents = build_incidents(items)
+
+        assert len(incidents) == 1
+        assert incidents[0].Items_Count == 2
+        assert incidents[0].Sources == "CYBERATTAQUE_ORG | FRENCHBREACHES"
 
     def test_sources_et_urls_triees(self, make_item):
         items = [

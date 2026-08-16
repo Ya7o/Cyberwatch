@@ -28,7 +28,9 @@ UNIQUE_ITEM_URL_SOURCES = frozenset({
 RECURRENCE_MARKERS = (
     "nouvelle cyberattaque", "nouvelle attaque", "nouvelle fuite", "a nouveau",
     "de nouveau", "une nouvelle fois", "frappe une nouvelle fois",
-    "deuxieme attaque", "second incident", "new attack", "attacked again",
+    "deuxieme cyberattaque", "deuxieme attaque", "deuxieme fuite",
+    "2eme cyberattaque", "2e cyberattaque", "2eme attaque", "2e attaque",
+    "2eme fuite", "2e fuite", "second incident", "new attack", "attacked again",
     "breached again", "another breach", "second attack", "new breach",
 )
 
@@ -55,6 +57,23 @@ def _recurrence(item: Item) -> bool:
     return any(marker in blob for marker in RECURRENCE_MARKERS)
 
 
+def _recurrence_boundary(left: Item, right: Item) -> bool:
+    """Vrai seulement si l'item le plus récent annonce explicitement une récidive.
+
+    Un marqueur de récidive décrit la relation avec un épisode antérieur ; il
+    ne doit pas empêcher deux sources datées du même jour de corroborer ce
+    nouvel épisode. La règle reste symétrique : l'ordre des arguments ne change
+    pas la décision, seul l'item chronologiquement le plus récent peut ouvrir
+    une frontière.
+    """
+    left_date = date_or_empty(left.best_date)
+    right_date = date_or_empty(right.best_date)
+    if not left_date or not right_date or left_date == right_date:
+        return False
+    later = right if right_date > left_date else left
+    return _recurrence(later)
+
+
 def _same_unique_url(left: Item, right: Item) -> bool:
     """Vrai seulement si l'URL est un identifiant d'item pour cette source."""
     return bool(
@@ -72,9 +91,9 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
             return DedupDecision(MERGE, "INCIDENT_MERGE_SOURCE_ITEM_ID")
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID")
 
-    # Un identifiant source identique est la seule preuve autorisée à passer
-    # devant une mention explicite de récidive.
-    if _recurrence(left) or _recurrence(right):
+    # Une récidive ouvre une frontière avec un épisode antérieur, mais deux
+    # publications du même jour peuvent décrire ce même nouvel épisode.
+    if _recurrence_boundary(left, right):
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_RECURRENCE_MARKER")
 
     left_key = _effective_organisation_key(left)
