@@ -11,6 +11,14 @@
     "revenu", "salaire", "patrimoine",
   ];
 
+  const PERSONAL_EXACT = new Set([
+    "nom", "prenom", "nom et prenom", "nom, prenom", "nom / prenom",
+  ]);
+  const PERSONAL_MARKERS = [
+    "e-mail", "email", "telephone", "adresse postale", "date de naissance",
+    "numero client", "identifiant client", "coordonnees personnelles",
+  ];
+
   const normalize = (value) => String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -22,7 +30,10 @@
     if (values.some((value) => SENSITIVE_MARKERS.some((marker) => value.includes(marker)))) {
       return ["sensitive", "Données sensibles"];
     }
-    if (values.length) return ["personal", "Données personnelles"];
+    if (values.some((value) =>
+    PERSONAL_EXACT.has(value.trim()) || PERSONAL_MARKERS.some((marker) => value.includes(marker))
+  )) return ["personal", "Données personnelles"];
+    if (values.length) return ["unknown", "Données non qualifiées"];
 
     const factsText = normalize(cell.querySelector(".incident-facts")?.textContent || "");
     if (/donnees touchees|volume|fichiers/.test(factsText)) {

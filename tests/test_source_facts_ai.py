@@ -81,7 +81,7 @@ def test_grounding_et_cache(monkeypatch, tmp_path):
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     entry = RawEntry(
         title="Exemple SA",
-        content="Exemple SA confirme une fuite de données revendiquée par LockBit. 138 000 personnes confirmées, adresses e-mail exposées.",
+        content="Exemple SA confirme une fuite de don~ées revendiquée par LockBit. 138 000 personnes confirmées, adresses e-mail exposées.",
     )
     first = sfa.enrich(_item(), entry)
     second = sfa.enrich(_item(), entry)
@@ -125,3 +125,27 @@ def test_autres_sources_jamais_envoyees_au_llm(monkeypatch, tmp_path):
     item = _item("BONJOURLAFUITE")
     assert sfa.enrich(item, RawEntry(title="X", content="Données")) is None
     assert not called
+
+
+def test_acteur_et_tiers_doivent_etre_nommes_dans_evidence(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
+    sfa.reset_runtime_for_tests()
+    output = _empty_output()
+    output["threat_actor"] = {"value": "LockBit", "confidence": .99, "evidence": "incident confirmé"}
+    output["third_party"] = {"value": "Example Cloud", "confidence": .99, "evidence": "via un prestataire externe"}
+    monkeypatch.setattr(sfa, "_post_openai", lambda *_: _payload(output))
+    result = sfa.enrich(_item(), RawEntry(title="Exemple", content="incident confirmé via un prestataire externe"))
+    assert "threat_actor" not in result
+    assert "third_party" not in result
+
+
+def test_tiers_nomme_dans_evidence_est_accepte(monkeypatch, tmp_path):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
+    sfa.reset_runtime_for_tests()
+    output = _empty_output()
+    output["third_party"] = {"value": "Example Cloud", "confidence": .99, "evidence": "prestataire Example Cloud"}
+    monkeypatch.setattr(sfa, "_post_openai", lambda *_: _payload(output))
+    result = sfa.enrich(_item(), RawEntry(title="Exemple", content="incident via le prestataire Example Cloud"))
+    assert result["third_party"]["value"] == "Example Cloud"

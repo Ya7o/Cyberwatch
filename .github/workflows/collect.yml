@@ -141,6 +141,11 @@ jobs:
         run: |
           python -m cyberwatch check
           python -m cyberwatch test-repeat
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check \
+            --check-regression
           python -m cyberwatch build-site
 
       - name: Publier les données

@@ -262,7 +262,13 @@ def _valid_confidence(value) -> float | None:
     return number
 
 
-def _normalize_fact(raw, context: str, *, require_value: bool = True) -> dict | None:
+def _normalize_fact(
+    raw,
+    context: str,
+    *,
+    require_value: bool = True,
+    require_value_in_evidence: bool = False,
+) -> dict | None:
     if not isinstance(raw, dict):
         return None
     value = str(raw.get("value") or "").strip()
@@ -273,6 +279,8 @@ def _normalize_fact(raw, context: str, *, require_value: bool = True) -> dict | 
     if require_value and not value:
         return None
     if not evidence or len(evidence) > MAX_EVIDENCE_CHARS or not _grounded(evidence, context):
+        return None
+    if require_value_in_evidence and searchable(value) not in searchable(evidence):
         return None
     return {"value": value, "confidence": confidence, "evidence": evidence}
 
@@ -294,8 +302,13 @@ def _normalize_evidence_fact(raw, context: str) -> dict | None:
 
 def _normalize(raw: dict, context: str) -> dict:
     result: dict = {}
-    for key in ("summary", "activity_description", "threat_actor", "third_party", "impact"):
+    for key in ("summary", "activity_description", "impact"):
         fact = _normalize_fact(raw.get(key), context)
+        if fact:
+            result[key] = fact
+
+    for key in ("threat_actor", "third_party"):
+        fact = _normalize_fact(raw.get(key), context, require_value_in_evidence=True)
         if fact:
             result[key] = fact
 
