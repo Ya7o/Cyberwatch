@@ -7,3 +7,7 @@ def test_couche_criticite_est_chargee_et_conditionnelle():
     assert "Données non qualifiées" in js
     assert "incident-data-value" in js
     assert "SENSITIVE_MARKERS" in js
+
+    assert "PERSONAL_EXACT" in js
+    assert "PERSONAL_MARKERS" in js
+    assert 'if (values.length) return ["unknown", "Données non qualifiées"]' in js
