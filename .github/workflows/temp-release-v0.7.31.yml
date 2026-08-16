@@ -1,0 +1,48 @@
+name: Release v0.7.31
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Validation complète
+        run: |
+          python -m pytest tests/ -q
+          node --check assets/app.js
+          node --check assets/app-legacy.js
+          node --check assets/dashboard-audit.js
+          python -m cyberwatch test-repeat
+          python -m cyberwatch check --allow-uninitialized
+      - name: Nettoyer le workflow temporaire
+        run: |
+          rm .github/workflows/temp-release-v0.7.31.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "release: v0.7.31 localisation entreprise finalisée"
+          git push origin HEAD:main
+      - name: Publier la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v0.7.31 \
+            --target "$(git rev-parse HEAD)" \
+            --title "v0.7.31 — localisation entreprise finalisée" \
+            --notes "Finalisation fonctionnelle de Location : l'enrichissement organisation est désormais déclenché si Sector ou Location est Inconnu et un unique match exact peut alimenter les deux champs (NAF pour Sector, département du siège pour Location). Les valeurs connues ne sont jamais écrasées. Les nombres 974/976 isolés ne sont plus des preuves géographiques ; seuls les codes postaux 974xx/976xx, les mentions de département et les indices territoriaux explicites sont retenus. Aucun nouveau champ métier, aucun fuzzy matching et aucun appel OpenAI supplémentaire. VEILLE_LLM et les localisations structurées restent prioritaires. Validation : 553 tests, syntaxe dashboard, répétabilité et contrôles structurels PASS."
