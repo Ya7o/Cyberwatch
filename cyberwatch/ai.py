@@ -165,9 +165,6 @@ def _context(entry: RawEntry, max_chars: int) -> str:
     return " ".join(part for part in parts if part).strip()[:max_chars]
 
 
-# Complément conservateur de l'extracteur partagé existant. Ces formes décrivent
-# explicitement une activité mais ne sont pas toutes couvertes par les patrons
-# historiques de normalize.extract_activity_description().
 _EXPLICIT_ACTIVITY_FALLBACKS = (
     re.compile(
         r"\b(?:est|sont)\s+(?:un|une|des|le|la|les)?\s*"
@@ -176,8 +173,8 @@ _EXPLICIT_ACTIVITY_FALLBACKS = (
         re.I,
     ),
     re.compile(
-        r"\b(?:gère|gere|exploite|fournit|propose)\s+(?:un|une|des|du|de la|les)?\s*"
-        r"[^.!?]{5,180}",
+        r"\b(?:gère|gere|exploite|fournit|propose|produit)\s+"
+        r"(?:un|une|des|du|de la|les)?\s*[^.!?]{5,180}",
         re.I,
     ),
 )
@@ -201,6 +198,16 @@ def _sector_llm_worth_calling(
 ) -> bool:
     del spec, organisation_key_
     return bool(_sector_activity_context(entry, max_chars))
+
+
+def _sector_skip_is_structural(
+    item: Item, entry: RawEntry, spec: SourceSpec, max_chars: int
+) -> bool:
+    """Compte séparément les skips structurels historiques."""
+    if spec.source_id == "BONJOURLAFUITE":
+        return True
+    context = _context(entry, max_chars)
+    return bool(item.Organisation_Key) and organisation_key(context) == item.Organisation_Key
 
 
 def _input_hash(item: Item, entry: RawEntry, requested: list[str], model: str, max_chars: int) -> str:
@@ -370,7 +377,6 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
 
 
 def _call_openai_sector_label(activity_label: str, state: AiRunState) -> dict:
-    """Phase 3 historique : LLM minimal sur le seul libellé NAF officiel."""
     body = {
         "model": state.model,
         "input": [
@@ -502,7 +508,6 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     if spec.params.get("skip_ai_qualification"):
         return
 
-    # Stabilisation Location v0.7.32 : métriques avant enrichissement/fallback.
     initially_unknown = [
         name for name in ("Threat", "Sector", "Location")
         if getattr(item, name) == FIELD_SPECS[name][2]
@@ -512,12 +517,9 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     for name in initially_unknown:
         state.unknown_before[name] = state.unknown_before.get(name, 0) + 1
 
-    # Phase 1 : enrichissement entreprise exact, partagé Sector/Location.
     if item.Sector == config.SECTOR_UNKNOWN or item.Location == config.LOC_INCONNU:
         _escalate_org_enrichment_deterministic(item, entry, spec, state)
 
-    # Le défaut géographique de source reste après l'enrichissement et avant le
-    # LLM, comme dans la stabilisation Location intégrée sur main.
     if (
         item.Location == config.LOC_INCONNU
         and spec.location_rule in config.LOCATIONS
@@ -543,7 +545,9 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     call_requested = requested
     if sector_requested and not sector_activity:
         call_requested = [name for name in requested if name != "Sector"]
-        state.sector_llm_skipped += 1
+        state.sector_evidence_rejected += 1
+        if _sector_skip_is_structural(item, entry, spec, state.max_context_chars):
+            state.sector_llm_skipped += 1
 
     if call_requested and state.enabled:
         input_hash = _input_hash(
@@ -582,9 +586,7 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                 raw = _extract_output_json(payload)
             except AiCallError as exc:
                 state.calls_failed += 1
-                print(
-                    f"Qualification IA : appel échoué pour {item.Item_ID} ({exc})."
-                )
+                print(f"Qualification IA : appel échoué pour {item.Item_ID} ({exc}).")
 
             if raw is not None:
                 usage = _extract_usage(payload)
@@ -616,10 +618,7 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                     state.sector_evidence_rejected += 1
                 if not decision:
                     state.calls_failed += 1
-                    print(
-                        f"Qualification IA : réponse invalide pour {item.Item_ID}, "
-                        "Inconnu conservé."
-                    )
+                    print(f"Qualification IA : réponse invalide pour {item.Item_ID}, Inconnu conservé.")
                 else:
                     state.calls_succeeded += 1
                     row = _row_from_decision(
@@ -639,7 +638,6 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                         state,
                     )
 
-    # Phase 3 historique : conservée pour comparaison au benchmark ultérieur.
     if sector_requested and item.Sector == config.SECTOR_UNKNOWN:
         _escalate_sector_llm(item, entry, spec, state)
 
@@ -735,9 +733,7 @@ def _escalate_sector_llm(
         raw = _extract_output_json(payload)
     except AiCallError as exc:
         state.calls_failed += 1
-        print(
-            f"Qualification IA : escalade Secteur échouée pour {item.Item_ID} ({exc})."
-        )
+        print(f"Qualification IA : escalade Secteur échouée pour {item.Item_ID} ({exc}).")
         return
 
     usage = _extract_usage(payload)
@@ -764,11 +760,7 @@ def _escalate_sector_llm(
 
     updated = dict(record_row)
     updated["Cache_Version"] = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
-    if (
-        value
-        and value != config.SECTOR_UNKNOWN
-        and confidence >= FIELD_SPECS["Sector"][3]
-    ):
+    if value and value != config.SECTOR_UNKNOWN and confidence >= FIELD_SPECS["Sector"][3]:
         state.calls_succeeded += 1
         item.Sector = value
         updated["Validated_Sector"] = value
@@ -813,12 +805,8 @@ def _row_from_decision(
     }
     for name in requested:
         row[name] = decision.get(name, "")
-        row[f"{name}_Confidence"] = decision.get(
-            f"{name}_Confidence", ""
-        )
-        row[f"{name}_Evidence"] = decision.get(
-            f"{name}_Evidence", ""
-        )
+        row[f"{name}_Confidence"] = decision.get(f"{name}_Confidence", "")
+        row[f"{name}_Evidence"] = decision.get(f"{name}_Evidence", "")
     return row
 
 
@@ -828,14 +816,10 @@ def _decision_from_row(row: dict) -> dict:
         if row.get(name):
             decision[name] = row[name]
             try:
-                decision[f"{name}_Confidence"] = float(
-                    row.get(f"{name}_Confidence") or 0
-                )
+                decision[f"{name}_Confidence"] = float(row.get(f"{name}_Confidence") or 0)
             except (TypeError, ValueError):
                 decision[f"{name}_Confidence"] = 0.0
-            decision[f"{name}_Evidence"] = row.get(
-                f"{name}_Evidence", ""
-            )
+            decision[f"{name}_Evidence"] = row.get(f"{name}_Evidence", "")
     return decision
 
 
@@ -885,11 +869,7 @@ def finish_run(
         + org_state.calls_error
     )
     org_lookups = org_calls_total + org_state.cache_hits
-    org_cache_hit_rate = (
-        round(org_state.cache_hits / org_lookups, 4)
-        if org_lookups
-        else 0.0
-    )
+    org_cache_hit_rate = round(org_state.cache_hits / org_lookups, 4) if org_lookups else 0.0
     sector_remaining_unknown = (
         sector_initial_unknown
         - sector_resolved_reference
