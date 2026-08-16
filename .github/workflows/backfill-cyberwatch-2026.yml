@@ -6,7 +6,7 @@ on:
       - '.github/workflows/backfill-cyberwatch-2026.yml'
       - 'sources/veillellm/backfill_global_sources_v2.py'
       - 'sources/veillellm/normalize_global_backfill.py'
-      - 'sources/veillellm/enrich_global_fields.py'
+      - 'sources/veillellm/enrich_global_fields_fast.py'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ permissions:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
         run: python sources/veillellm/normalize_global_backfill.py
 
       - name: Enrich sector threat and location from sources and web research
-        run: python sources/veillellm/enrich_global_fields.py
+        run: python sources/veillellm/enrich_global_fields_fast.py
 
       - name: Commit enriched backfill data
         run: |
@@ -52,4 +52,5 @@ jobs:
             exit 0
           fi
           git commit -m "Enrich 2026 global Cyberwatch sector threat and location"
+          git pull --rebase origin main
           git push origin HEAD:main
