@@ -1,0 +1,43 @@
+name: Temp Location Stabilisation
+
+'on':
+  push:
+    branches:
+      - agent/location-stabilisation-order-metrics
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Appliquer le correctif
+        run: python .github/scripts/apply_location_stabilisation.py
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Tests ciblés Location et IA
+        run: python -m pytest tests/test_location_resolution.py tests/test_ai_qualification.py -q
+      - name: Suite complète
+        run: python -m pytest tests/ -q
+      - name: Répétabilité et structure
+        run: |
+          python -m cyberwatch test-repeat
+          python -m cyberwatch check --allow-uninitialized
+          git diff --check
+      - name: Committer le correctif validé
+        run: |
+          rm .github/workflows/temp-location-stabilisation.yml
+          rm .github/scripts/apply_location_stabilisation.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cyberwatch/runner.py cyberwatch/ai.py cyberwatch/config.py tests/test_location_resolution.py .github/workflows/temp-location-stabilisation.yml .github/scripts/apply_location_stabilisation.py
+          git commit -m "Stabilise l'ordre de qualification Location"
+          git push origin HEAD:${GITHUB_REF_NAME}
