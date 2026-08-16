@@ -118,6 +118,26 @@
       ],
       "method": "targeted primary-source research of residual public bodies, software/SaaS, finance, sport, health, BTP/engineering, telecom, commerce and transport organisations",
       "evidence_policy": "primary or official evidence only; genuine taxonomy gaps remain Inconnu"
+    },
+    "company_research_v8": {
+      "before_sector_unknown": 21,
+      "resolved_sector_unknown": 5,
+      "remaining_sector_unknown": 16,
+      "other_data_corrections": 5,
+      "applied_to": [
+        "Evy",
+        "EVA.gg",
+        "HeyPulse",
+        "EVA.gg",
+        "Batigam",
+        "HPA Guide",
+        "Groupe CGA",
+        "Ankama",
+        "ADEMI",
+        "Vranken-Pommery"
+      ],
+      "method": "high-confidence residual mapping from official company/service sites, official registries, source-native sector metadata only when corroborated by actual victim activity, plus apostrophe-safe identity matching",
+      "evidence_policy": "no source-native label is accepted when it conflicts with actual victim activity; genuine taxonomy gaps remain Inconnu"
     }
   },
   "incidents": [
@@ -177,7 +197,7 @@
       "date": "2026-08-16",
       "organisation": "Evy",
       "territoire": "France",
-      "localisation": "France",
+      "localisation": "Paris, Île-de-France",
       "secteur": "Finance / Assurance",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
@@ -185,7 +205,9 @@
       "score_cyberattaque": 65,
       "impact_connu": "Evy, entreprise française spécialisée dans les services d’assurance et de protection de produits, fait l’objet d’une revendication de…",
       "sources": [
-        "https://www.cyberattaque.org/evy-13-870-comptes-et-contrats-dassurance-revendiques-dans-une-fuite/"
+        "https://www.cyberattaque.org/evy-13-870-comptes-et-contrats-dassurance-revendiques-dans-une-fuite/",
+        "https://www.evy.eu/fr",
+        "https://www.evy.eu/fr/legal-notice"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Evy : 13 870 comptes et contrats d’assurance revendiqués dans une fuite",
       "evolution": "nouveau"
@@ -287,7 +309,9 @@
       "score_cyberattaque": 60,
       "impact_connu": "EVA (Esports Virtual Arenas) fait face à une nouvelle revendication de fuite de données, quelques jours seulement après…",
       "sources": [
-        "https://www.cyberattaque.org/eva-gg-nantes-cyberattaque/"
+        "https://www.cyberattaque.org/eva-gg-nantes-cyberattaque/",
+        "https://www.eva.gg/",
+        "https://www.eva.gg/fr-FR/franchise"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — EVA.gg : 20 274 comptes exposés quelques jours après une première fuite",
       "evolution": "nouveau"
@@ -450,14 +474,15 @@
       "organisation": "HeyPulse",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "HeyPulse fait l’objet d’une importante fuite de données revendiquée le 11 août 2026. Un acteur affirme avoir récupéré…",
       "sources": [
-        "https://www.cyberattaque.org/heypulse-la-base-client-et-le-code-source-en-fuite-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/heypulse-la-base-client-et-le-code-source-en-fuite-apres-une-cyberattaque/",
+        "https://www.heypulse.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — HeyPulse : la base client et le code source en fuite après une cyberattaque",
       "evolution": "nouveau"
@@ -1585,14 +1610,16 @@
       "organisation": "EVA.gg",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une fuite de données attribuée à EVA.gg a été revendiquée le 16 juillet 2026. L’auteur affirme avoir récupéré…",
       "sources": [
-        "https://www.cyberattaque.org/eva-gg-70-424-comptes-et-119-361-reservations-revendiques-apres-lexploitation-de-son-api-graphql/"
+        "https://www.cyberattaque.org/eva-gg-70-424-comptes-et-119-361-reservations-revendiques-apres-lexploitation-de-son-api-graphql/",
+        "https://www.eva.gg/",
+        "https://www.eva.gg/fr-FR/franchise"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — EVA.gg : 70 424 comptes et 119 361 réservations revendiqués après l’exploitation de son API GraphQL",
       "evolution": "nouveau"
@@ -2535,7 +2562,8 @@
       "score_cyberattaque": 60,
       "impact_connu": "Une importante fuite de données attribuée à Batigam, entreprise spécialisée dans les travaux de construction et de rénovation,…",
       "sources": [
-        "https://www.cyberattaque.org/batigam-pres-de-28-000-documents-techniques-en-fuitent-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/batigam-pres-de-28-000-documents-techniques-en-fuitent-apres-une-cyberattaque/",
+        "https://frenchbreaches.com/alertes/batigam-mqxlcx6bsh0ei7abtc8"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Batigam : près de 28 000 documents techniques en fuitent après une cyberattaque",
       "evolution": "nouveau"
@@ -3876,14 +3904,16 @@
       "organisation": "HPA Guide",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une base de données attribuée à hpaguide.fr circule actuellement sur un forum cybercriminel. Le site, spécialisé dans l’hôtellerie…",
       "sources": [
-        "https://www.cyberattaque.org/hpa-guide-les-coordonnees-de-milliers-de-campings-francais-diffusees-apres-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/hpa-guide-les-coordonnees-de-milliers-de-campings-francais-diffusees-apres-une-fuite-de-donnees/",
+        "https://www.hpa-guide.fr/mentions-legales",
+        "https://www.hpa-guide.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — HPA Guide : les coordonnées de milliers de campings français diffusées après une fuite de données",
       "evolution": "nouveau"
@@ -4944,14 +4974,15 @@
       "organisation": "Groupe CGA",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le groupe DumpsecV2 affirme détenir une base de données attribuée au groupe CGA, acteur important de la distribution…",
       "sources": [
-        "https://www.cyberattaque.org/groupe-cga-65-000-clients-et-2-500-employes-presents-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/groupe-cga-65-000-clients-et-2-500-employes-presents-dans-une-fuite-de-donnees/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/cga-gestion-479056897"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Groupe CGA : 65 000 clients et 2 500 employés présents dans une fuite de données",
       "evolution": "nouveau"
@@ -5167,14 +5198,16 @@
       "organisation": "Ankama",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Transport / Logistique",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "L’éditeur français de jeux vidéo Ankama informe ses utilisateurs avoir été victime d’une cyberattaque ayant entraîné un accès…",
       "sources": [
-        "https://www.cyberattaque.org/ankama-les-coordonnees-de-ses-clients-exposees-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/ankama-les-coordonnees-de-ses-clients-exposees-apres-une-cyberattaque/",
+        "https://www.ankama.com/fr/groupe",
+        "https://jobs.ankama.com/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Ankama : les coordonnées de ses clients exposées après une cyberattaque",
       "evolution": "nouveau"
@@ -5201,14 +5234,15 @@
       "organisation": "ADEMI",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une base de données attribuée à ADEMI, un système de pesage agricole, circule actuellement en ligne, exposant des…",
       "sources": [
-        "https://www.cyberattaque.org/ademi-cyberattaque-dans-un-systeme-de-pesage-agricole/"
+        "https://www.cyberattaque.org/ademi-cyberattaque-dans-un-systeme-de-pesage-agricole/",
+        "https://www.ademi-pesage.com/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ADEMI : cyberattaque dans un système de pesage agricole",
       "evolution": "nouveau"
@@ -6300,14 +6334,15 @@
       "organisation": "Vranken-Pommery",
       "territoire": "France",
       "localisation": "Reims",
-      "secteur": "Inconnu",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Incident tiers",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "Le groupe champenois Vranken-Pommery a confirmé avoir été indirectement touché par une cyberattaque visant son prestataire de billetterie…",
       "sources": [
-        "https://www.cyberattaque.org/vranken-pommery-les-donnees-clients-exposees-apres-une-cyberattaque-sur-la-billetterie/"
+        "https://www.cyberattaque.org/vranken-pommery-les-donnees-clients-exposees-apres-une-cyberattaque-sur-la-billetterie/",
+        "https://www.vrankenpommery.com/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Vranken-Pommery : les données clients exposées après une cyberattaque sur la billetterie",
       "evolution": "nouveau"
