@@ -21,11 +21,13 @@ jobs:
           python-version: "3.11"
           cache: pip
       - name: Appliquer le patch
-        run: python .github/scripts/apply_location_fix.py
+        run: |
+          python .github/scripts/apply_location_fix.py
+          python .github/scripts/apply_location_test_adjustment.py
       - name: Installer les dépendances
         run: pip install -r requirements.txt
       - name: Tests ciblés
-        run: python -m pytest tests/test_location_resolution.py tests/test_ai_qualification.py -q
+        run: python -m pytest tests/test_location_resolution.py tests/test_ai_qualification.py tests/test_backfill_unknowns.py -q
       - name: Suite complète
         run: python -m pytest tests/ -q
       - name: Répétabilité et structure
@@ -36,6 +38,7 @@ jobs:
         run: |
           rm .github/workflows/temp-location-org-enrichment.yml
           rm .github/scripts/apply_location_fix.py
+          rm .github/scripts/apply_location_test_adjustment.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
