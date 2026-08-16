@@ -95,6 +95,29 @@
       ],
       "method": "targeted manual verification from official company/service websites, official French company register and explicit legal/company pages",
       "evidence_policy": "only high-confidence residual cases; evidence URLs retained in incident sources"
+    },
+    "company_research_v7": {
+      "before_sector_unknown": 27,
+      "resolved_sector_unknown": 6,
+      "remaining_sector_unknown": 21,
+      "other_data_corrections": 7,
+      "applied_to": [
+        "Xplor Resamania",
+        "ResaClick",
+        "TakTikimmo",
+        "JeVeuxAider.gouv.fr",
+        "Smartbox",
+        "Transitions Pro Centre-Val de Loire",
+        "La Mie Câline Biscarrosse",
+        "ImmoJeune",
+        "AlumnForce",
+        "Or en Cash",
+        "Ledger",
+        "La Centrale de Financement",
+        "Intoxalock"
+      ],
+      "method": "targeted primary-source research of residual public bodies, software/SaaS, finance, sport, health, BTP/engineering, telecom, commerce and transport organisations",
+      "evidence_policy": "primary or official evidence only; genuine taxonomy gaps remain Inconnu"
     }
   },
   "incidents": [
@@ -923,14 +946,15 @@
       "organisation": "Xplor Resamania",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Sport",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Xplor Resamania fait l’objet d’une importante revendication publiée le 1er août 2026. Le hacker 84City affirme diffuser une…",
       "sources": [
-        "https://www.cyberattaque.org/xplor-resamania-527-millions-de-dossiers-dadherents-de-salles-de-sport-revendiques/"
+        "https://www.cyberattaque.org/xplor-resamania-527-millions-de-dossiers-dadherents-de-salles-de-sport-revendiques/",
+        "https://www.resamania.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Xplor Resamania : 5,27 millions de dossiers d’adhérents de salles de sport en fuite",
       "evolution": "nouveau"
@@ -1197,14 +1221,15 @@
       "organisation": "ResaClick",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "La plateforme française ResaClick fait l’objet d’une revendication publiée le 27 juillet 2026. Le hacker weykofa affirme avoir…",
       "sources": [
-        "https://www.cyberattaque.org/resaclick-cyberattaque-fuite-donnees/"
+        "https://www.cyberattaque.org/resaclick-cyberattaque-fuite-donnees/",
+        "https://resaclick.net/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ResaClick : les données personnelles de 10 263 utilisateurs diffusées en ligne",
       "evolution": "nouveau"
@@ -2955,14 +2980,15 @@
       "organisation": "TakTikimmo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Construction / BTP",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker ChimeraZ avait annoncé un « black June » pour l’immobilier, il revendique maintenant la publication d’une base de…",
       "sources": [
-        "https://www.cyberattaque.org/taktikimmo-pres-de-94-000-annonces-immobilieres-revendiquees-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/taktikimmo-pres-de-94-000-annonces-immobilieres-revendiquees-dans-une-fuite-de-donnees/",
+        "https://taktikimmo.com/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — TakTikimmo : près de 94 000 annonces immobilières revendiquées dans une fuite de données",
       "evolution": "nouveau"
@@ -3048,7 +3074,8 @@
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker Misere revendique l’extraction d’une importante base de données attribuée à JeVeuxAider.gouv.fr, la plateforme officielle de la…",
       "sources": [
-        "https://www.cyberattaque.org/jeveuxaider-gouv-fr-plus-de-558-000-benevoles-potentiellement-concernes-par-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/jeveuxaider-gouv-fr-plus-de-558-000-benevoles-potentiellement-concernes-par-une-fuite-de-donnees/",
+        "https://www.jeveuxaider.gouv.fr/mentions-legales"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — JeVeuxAider.gouv.fr : plus de 558 000 bénévoles concernés par une fuite de données",
       "evolution": "nouveau"
@@ -3213,14 +3240,15 @@
       "organisation": "Smartbox",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une importante fuite de données attribuée à Smartbox, spécialiste européen des coffrets cadeaux et expériences de loisirs, a…",
       "sources": [
-        "https://www.cyberattaque.org/smartbox-plus-de-60-000-comptes-et-200-000-contrats-exposes-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/smartbox-plus-de-60-000-comptes-et-200-000-contrats-exposes-dans-une-fuite-de-donnees/",
+        "https://www.smartbox.com/fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Smartbox : plus de 60 000 comptes et 200 000 contrats exposés dans une fuite de données",
       "evolution": "nouveau"
@@ -4226,15 +4254,16 @@
       "date": "2026-05-17",
       "organisation": "Transitions Pro Centre-Val de Loire",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Olivet, Centre-Val de Loire",
+      "secteur": "Éducation / Formation",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Transitions Pro Centre-Val de Loire, organisme chargé d’accompagner les salariés dans leurs projets de reconversion professionnelle, est visé…",
       "sources": [
-        "https://www.cyberattaque.org/transitions-pro-centre-val-de-loire-des-dizaines-de-go-de-donnees-menacees-apres-un-ransomware/"
+        "https://www.cyberattaque.org/transitions-pro-centre-val-de-loire-des-dizaines-de-go-de-donnees-menacees-apres-un-ransomware/",
+        "https://www.transitionspro-cvl.fr/nos-dispositifs-et-services/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Transitions Pro Centre-Val de Loire : des dizaines de Go de données menacées après un ransomware",
       "evolution": "nouveau"
@@ -5565,16 +5594,17 @@
     {
       "date": "2026-04-23",
       "organisation": "La Mie Câline Biscarrosse",
-      "territoire": "Inconnu",
-      "localisation": "Cagnes-sur-Mer",
-      "secteur": "Inconnu",
+      "territoire": "France",
+      "localisation": "Biscarrosse, Nouvelle-Aquitaine",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Un hacker affirme avoir compromis le site interne de La Mie Câline de Biscarrosse, avec publication d’une base…",
       "sources": [
-        "https://www.cyberattaque.org/la-mie-caline-biscarrosse-les-donnees-et-acces-administrateur-diffuses-publiquement/"
+        "https://www.cyberattaque.org/la-mie-caline-biscarrosse-les-donnees-et-acces-administrateur-diffuses-publiquement/",
+        "https://www.lamiecaline.com/boutiques/biscarosse/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — La Mie Câline Biscarrosse : les données et accès administrateur diffusés publiquement",
       "evolution": "nouveau"
@@ -6079,15 +6109,16 @@
       "date": "2026-04-14",
       "organisation": "ImmoJeune",
       "territoire": "France",
-      "localisation": "Marseille",
-      "secteur": "Construction / BTP",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "ImmoJeune confirme, dans un email envoyé aux utilisateurs, un incident de sécurité ayant entraîné un accès non autorisé…",
       "sources": [
-        "https://www.cyberattaque.org/immojeune-fuite-de-donnees-confirmee-apres-un-acces-frauduleux/"
+        "https://www.cyberattaque.org/immojeune-fuite-de-donnees-confirmee-apres-un-acces-frauduleux/",
+        "https://www.immojeune.com/mentions-legales.html"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ImmoJeune : fuite de données confirmée après un accès frauduleux",
       "evolution": "nouveau"
@@ -6506,15 +6537,16 @@
       "date": "2026-04-06",
       "organisation": "AlumnForce",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "La plateforme AlumnForce, spécialisée dans la gestion de réseaux d’anciens élèves et de communautés professionnelles, serait au cœur…",
       "sources": [
-        "https://www.cyberattaque.org/alumnforce-2-7-millions-etudiants-exposes/"
+        "https://www.cyberattaque.org/alumnforce-2-7-millions-etudiants-exposes/",
+        "https://www.alumnforce.com/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — AlumnForce : 2,7 millions d’étudiants et diplômés exposés",
       "evolution": "nouveau"
@@ -6596,14 +6628,15 @@
       "organisation": "Or en Cash",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "Or en Cash confirme avoir été victime d’une fuite de données suite à un incident de sécurité, quelques…",
       "sources": [
-        "https://www.cyberattaque.org/or-en-cash-nouvelle-fuite-de-donnees-confirmee-dans-lachat-revente-dor/"
+        "https://www.cyberattaque.org/or-en-cash-nouvelle-fuite-de-donnees-confirmee-dans-lachat-revente-dor/",
+        "https://www.orencash.fr/qui-sommes-nous/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Or en Cash : nouvelle fuite de données confirmée dans l’achat/revente d’or",
       "evolution": "nouveau"
@@ -6630,14 +6663,15 @@
       "organisation": "Ledger",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "La base de données clients de Ledger, issue d’une fuite survenue en janvier 2026 via le prestataire Global-e,…",
       "sources": [
-        "https://www.cyberattaque.org/ledger-105-000-detenteurs-francais-de-cryptomonnaies-exposes/"
+        "https://www.cyberattaque.org/ledger-105-000-detenteurs-francais-de-cryptomonnaies-exposes/",
+        "https://www.ledger.com/fr/the-company"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Ledger : 105 000 détenteurs français de cryptomonnaies exposés",
       "evolution": "nouveau"
@@ -6943,15 +6977,16 @@
       "date": "2026-03-30",
       "organisation": "La Centrale de Financement",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "La société La Centrale de Financement est victime d’une fuite massive de données issue de son réseau interne….",
       "sources": [
-        "https://www.cyberattaque.org/la-centrale-de-financement-387-go-de-donnees-en-fuite/"
+        "https://www.cyberattaque.org/la-centrale-de-financement-387-go-de-donnees-en-fuite/",
+        "https://www.lacentraledefinancement.fr/mentions-legales/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — La Centrale de Financement : 387 Go de données en fuite",
       "evolution": "nouveau"
@@ -7182,15 +7217,16 @@
       "date": "2026-03-23",
       "organisation": "Intoxalock",
       "territoire": "États-Unis",
-      "localisation": "États-Unis",
-      "secteur": "Inconnu",
+      "localisation": "Des Moines, Iowa",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une cyberattaque vise actuellement l’entreprise américaine Intoxalock, spécialisée dans les éthylotests connectés empêchant le démarrage des véhicules en…",
       "sources": [
-        "https://www.cyberattaque.org/intoxalock-une-cyberattaque-bloque-des-voitures-aux-etats-unis/"
+        "https://www.cyberattaque.org/intoxalock-une-cyberattaque-bloque-des-voitures-aux-etats-unis/",
+        "https://www.intoxalock.com/about"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Intoxalock : une cyberattaque bloque des voitures aux États-Unis",
       "evolution": "nouveau"

@@ -89,6 +89,51 @@
       ],
       "method": "targeted manual verification from official company/service websites, official French company register and explicit legal/company pages",
       "evidence_policy": "only high-confidence residual cases; evidence URLs retained in incident sources"
+    },
+    "company_research_v7": {
+      "before_sector_unknown": 80,
+      "resolved_sector_unknown": 34,
+      "remaining_sector_unknown": 46,
+      "other_data_corrections": 1,
+      "applied_to": [
+        "Xplor Resamania",
+        "Resaclick",
+        "Ingénierie Système Inter-Instituts (CNRS)",
+        "Établissement pénitentiaire pour mineurs de Le Pontet",
+        "l'Ordre national des pédicures-podologues",
+        "Taktikimmo",
+        "JeVeuxAider.gouv.fr",
+        "Smartbox",
+        "Ev@lang",
+        "Alumn Force",
+        "Or en Cash",
+        "La Centrale de Financement",
+        "Bibliothèque Nationale de France (BnF)",
+        "Ordoclic",
+        "Mon Bureau Numerique",
+        "Immojeune",
+        "Unibail (Westfield)",
+        "Eiffage",
+        "Dalet",
+        "Olympique de Marseille",
+        "Réglo Mobile (E.Leclerc)",
+        "Voyages Privés",
+        "Socloz",
+        "CNRS",
+        "Voyages Robin",
+        "saint-georges-le-flechard",
+        "Multi-Agences Immobilières Françaises - 500gb",
+        "FranceCasse.fr",
+        "Techni-Contact",
+        "Pix Orga (scolaire)",
+        "StorePasCher",
+        "Groupe Fondasol",
+        "SOS Oxygène",
+        "Ledger (via prestataire Global-e)",
+        "Trescal"
+      ],
+      "method": "targeted primary-source research of residual public bodies, software/SaaS, finance, sport, health, BTP/engineering, telecom, commerce and transport organisations",
+      "evidence_policy": "primary or official evidence only; genuine taxonomy gaps remain Inconnu"
     }
   },
   "incidents": [
@@ -1035,14 +1080,15 @@
       "organisation": "Xplor Resamania",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/xplor-resamania-ms9zix0ogp9u7xkgvu5"
+        "https://frenchbreaches.com/alertes/xplor-resamania-ms9zix0ogp9u7xkgvu5",
+        "https://www.resamania.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Xplor Resamania.",
       "evolution": "nouveau"
@@ -1257,14 +1303,15 @@
       "organisation": "Resaclick",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/resaclick-ms4chtqzaljdepplkxm"
+        "https://frenchbreaches.com/alertes/resaclick-ms4chtqzaljdepplkxm",
+        "https://resaclick.net/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Resaclick.",
       "evolution": "nouveau"
@@ -1616,14 +1663,15 @@
       "organisation": "Ingénierie Système Inter-Instituts (CNRS)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/ing-nierie-syst-me-inter-instituts-cnrs-mrz668bqrtpfbmgcof9"
+        "https://frenchbreaches.com/alertes/ing-nierie-syst-me-inter-instituts-cnrs-mrz668bqrtpfbmgcof9",
+        "https://emploi.cnrs.fr/Pages/Presentation.aspx?lang=FR"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Ingénierie Système Inter-Instituts (CNRS).",
       "evolution": "nouveau"
@@ -3157,15 +3205,16 @@
       "date": "2026-06-30",
       "organisation": "Établissement pénitentiaire pour mineurs de Le Pontet",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Le Pontet, Vaucluse",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/tablissement-p-nitentiaire-pour-mineurs-de-le-pontet-mr04vhyz1u2f8ey5hrj"
+        "https://frenchbreaches.com/alertes/tablissement-p-nitentiaire-pour-mineurs-de-le-pontet-mr04vhyz1u2f8ey5hrj",
+        "https://www.apij.justice.fr/nos-projets/les-operations-penitentiaires/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Établissement pénitentiaire pour mineurs de Le Pontet.",
       "evolution": "nouveau"
@@ -3259,15 +3308,16 @@
       "date": "2026-06-29",
       "organisation": "l'Ordre national des pédicures-podologues",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/l-ordre-national-des-p-dicures-podologues-mqylxsx2stahq7zy2tb"
+        "https://frenchbreaches.com/alertes/l-ordre-national-des-p-dicures-podologues-mqylxsx2stahq7zy2tb",
+        "https://www.onpp.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — l'Ordre national des pédicures-podologues.",
       "evolution": "nouveau"
@@ -3932,14 +3982,15 @@
       "organisation": "Taktikimmo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/taktikimmo-mqie9ibsvuo6mera8fc"
+        "https://frenchbreaches.com/alertes/taktikimmo-mqie9ibsvuo6mera8fc",
+        "https://taktikimmo.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Taktikimmo.",
       "evolution": "nouveau"
@@ -4019,14 +4070,15 @@
       "organisation": "JeVeuxAider.gouv.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/jeveuxaider-gouv-fr-mqeg2t0qixdt06zw3dr"
+        "https://frenchbreaches.com/alertes/jeveuxaider-gouv-fr-mqeg2t0qixdt06zw3dr",
+        "https://www.jeveuxaider.gouv.fr/mentions-legales"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — JeVeuxAider.gouv.fr.",
       "evolution": "nouveau"
@@ -4223,14 +4275,15 @@
       "organisation": "Smartbox",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/smartbox-mq8np9lufggvwzpkedg"
+        "https://frenchbreaches.com/alertes/smartbox-mq8np9lufggvwzpkedg",
+        "https://www.smartbox.com/fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Smartbox.",
       "evolution": "nouveau"
@@ -6068,14 +6121,15 @@
       "organisation": "Ev@lang",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/ev-lang-moydxgq6ibo372yfp3i"
+        "https://frenchbreaches.com/alertes/ev-lang-moydxgq6ibo372yfp3i",
+        "https://www.france-education-international.fr/test/evlang"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Ev@lang.",
       "evolution": "nouveau"
@@ -7807,15 +7861,16 @@
       "date": "2026-04-06",
       "organisation": "Alumn Force",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/alumn-force-mnrolg2mf9wpgg4amy9"
+        "https://frenchbreaches.com/alertes/alumn-force-mnrolg2mf9wpgg4amy9",
+        "https://www.alumnforce.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Alumn Force.",
       "evolution": "nouveau"
@@ -7866,7 +7921,8 @@
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/or-en-cash-mnjjbpqtmu8dau5x93"
+        "https://frenchbreaches.com/alertes/or-en-cash-mnjjbpqtmu8dau5x93",
+        "https://www.orencash.fr/qui-sommes-nous/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Or en Cash.",
       "evolution": "nouveau"
@@ -8014,15 +8070,16 @@
       "date": "2026-03-30",
       "organisation": "La Centrale de Financement",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/la-centrale-de-financement-mnd0gasm4s0jipxut0v"
+        "https://frenchbreaches.com/alertes/la-centrale-de-financement-mnd0gasm4s0jipxut0v",
+        "https://www.lacentraledefinancement.fr/mentions-legales/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — La Centrale de Financement.",
       "evolution": "nouveau"
@@ -8444,15 +8501,16 @@
       "date": "2026-03-17",
       "organisation": "Bibliothèque Nationale de France (BnF)",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/bibliotheque-nationale-de-france-bnf-mmv37m7y5lrs3y07sil"
+        "https://frenchbreaches.com/alertes/bibliotheque-nationale-de-france-bnf-mmv37m7y5lrs3y07sil",
+        "https://www.bnf.fr/fr/missions-et-organisation-de-la-bnf"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Bibliothèque Nationale de France (BnF).",
       "evolution": "nouveau"
@@ -8807,14 +8865,15 @@
       "organisation": "Ordoclic",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/ordoclic-mmgx0h1r1xf5dj26wt3i"
+        "https://frenchbreaches.com/alertes/ordoclic-mmgx0h1r1xf5dj26wt3i",
+        "https://www.ordoclic.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Ordoclic.",
       "evolution": "nouveau"
@@ -8840,15 +8899,16 @@
       "date": "2026-03-06",
       "organisation": "Mon Bureau Numerique",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Grand Est",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/mon-bureau-numerique-mmffbzsxc5nh7k67k5s"
+        "https://frenchbreaches.com/alertes/mon-bureau-numerique-mmffbzsxc5nh7k67k5s",
+        "https://tribu.phm.education.gouv.fr/tribu/document/t7Swi3"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Mon Bureau Numerique.",
       "evolution": "nouveau"
@@ -8893,15 +8953,16 @@
       "date": "2026-03-05",
       "organisation": "Immojeune",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/immojeune-mmdgfeewgtugus5sv5s"
+        "https://frenchbreaches.com/alertes/immojeune-mmdgfeewgtugus5sv5s",
+        "https://www.immojeune.com/mentions-legales.html"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Immojeune.",
       "evolution": "nouveau"
@@ -8964,14 +9025,15 @@
       "organisation": "Unibail (Westfield)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/unibail-westfield-mmad6gh1p97xydh3so"
+        "https://frenchbreaches.com/alertes/unibail-westfield-mmad6gh1p97xydh3so",
+        "https://www.urw.com/fr/groupe/qui-nous-sommes"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Unibail (Westfield).",
       "evolution": "nouveau"
@@ -9171,14 +9233,15 @@
       "organisation": "Eiffage",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/eiffage-mm5je1d5a0ojsp8iuof"
+        "https://frenchbreaches.com/alertes/eiffage-mm5je1d5a0ojsp8iuof",
+        "https://www.eiffage.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Eiffage.",
       "evolution": "nouveau"
@@ -9446,14 +9509,15 @@
       "organisation": "Dalet",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/dalet-rw_UkdGc1pYUkFZMjlwYm1KaGMyVmpZWEowWld3PQ"
+        "https://frenchbreaches.com/alertes/dalet-rw_UkdGc1pYUkFZMjlwYm1KaGMyVmpZWEowWld3PQ",
+        "https://www.dalet.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Dalet.",
       "evolution": "nouveau"
@@ -9533,15 +9597,16 @@
       "date": "2026-02-23",
       "organisation": "Olympique de Marseille",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Marseille, Provence-Alpes-Côte d’Azur",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/olympique-de-marseille-mlzem6z90qu1hsp6spcm"
+        "https://frenchbreaches.com/alertes/olympique-de-marseille-mlzem6z90qu1hsp6spcm",
+        "https://www.om.fr/fr/mentions-legales"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Olympique de Marseille.",
       "evolution": "nouveau"
@@ -9792,14 +9857,15 @@
       "organisation": "Réglo Mobile (E.Leclerc)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/reglo-mobile-e-leclerc-mls0t17blhiwtcmdysg"
+        "https://frenchbreaches.com/alertes/reglo-mobile-e-leclerc-mls0t17blhiwtcmdysg",
+        "https://www.reglomobile.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Réglo Mobile (E.Leclerc).",
       "evolution": "nouveau"
@@ -9913,15 +9979,16 @@
       "date": "2026-02-16",
       "organisation": "Voyages Privés",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Aix-en-Provence, Provence-Alpes-Côte d’Azur",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/voyages-prives-mlpb2zx49bhhmc0f2r"
+        "https://frenchbreaches.com/alertes/voyages-prives-mlpb2zx49bhhmc0f2r",
+        "https://www.voyage-prive.com/info/InformationsLegales"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Voyages Privés.",
       "evolution": "nouveau"
@@ -9931,14 +9998,15 @@
       "organisation": "Socloz",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/socloz-mlplmlezxwnxow0u3v"
+        "https://frenchbreaches.com/alertes/socloz-mlplmlezxwnxow0u3v",
+        "https://www.socloz.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Socloz.",
       "evolution": "nouveau"
@@ -9999,14 +10067,15 @@
       "organisation": "CNRS",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/cnrs-mlp74bpt9y9dzgsxnoh"
+        "https://frenchbreaches.com/alertes/cnrs-mlp74bpt9y9dzgsxnoh",
+        "https://emploi.cnrs.fr/Pages/Presentation.aspx?lang=FR"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — CNRS.",
       "evolution": "nouveau"
@@ -10505,15 +10574,16 @@
       "date": "2026-02-07",
       "organisation": "Voyages Robin",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Issoire, Auvergne-Rhône-Alpes",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/voyages-robin-mlcwkf04a952nwb0k65"
+        "https://frenchbreaches.com/alertes/voyages-robin-mlcwkf04a952nwb0k65",
+        "https://www.voyages-robin.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Voyages Robin.",
       "evolution": "nouveau"
@@ -10659,15 +10729,16 @@
       "date": "2026-01-31",
       "organisation": "saint-georges-le-flechard",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Saint-Georges-le-Fléchard, Pays de la Loire",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/saint-georges-le-flechard-ml2w14u3a7qd0ka5enu"
+        "https://frenchbreaches.com/alertes/saint-georges-le-flechard-ml2w14u3a7qd0ka5enu",
+        "https://lannuaire.service-public.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — saint-georges-le-flechard.",
       "evolution": "nouveau"
@@ -10926,14 +10997,15 @@
       "organisation": "Multi-Agences Immobilières Françaises - 500gb",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/multi-agences-immobilieres-francaises-500gb-9d5fda82b9c0"
+        "https://frenchbreaches.com/alertes/multi-agences-immobilieres-francaises-500gb-9d5fda82b9c0",
+        "https://www.immojeune.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Multi-Agences Immobilières Françaises - 500gb.",
       "evolution": "nouveau"
@@ -10960,14 +11032,15 @@
       "organisation": "FranceCasse.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/francecasse-fr-f848be3b8c89"
+        "https://frenchbreaches.com/alertes/francecasse-fr-f848be3b8c89",
+        "https://www.francecasse.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — FranceCasse.fr.",
       "evolution": "nouveau"
@@ -10977,14 +11050,15 @@
       "organisation": "Techni-Contact",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/techni-contact-85fb111aa5c5"
+        "https://frenchbreaches.com/alertes/techni-contact-85fb111aa5c5",
+        "https://www.techni-contact.com/nous.html"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Techni-Contact.",
       "evolution": "nouveau"
@@ -11327,14 +11401,15 @@
       "organisation": "Pix Orga (scolaire)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/pix-orga-scolaire-aa2c6bdae01c"
+        "https://frenchbreaches.com/alertes/pix-orga-scolaire-aa2c6bdae01c",
+        "https://pix.fr/pix-orga-tos-2025-02-27/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Pix Orga (scolaire).",
       "evolution": "nouveau"
@@ -11399,15 +11474,16 @@
       "date": "2026-01-16",
       "organisation": "StorePasCher",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Pont-à-Marcq, Hauts-de-France",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/storepascher-f42a2418d296"
+        "https://frenchbreaches.com/alertes/storepascher-f42a2418d296",
+        "https://www.storepascher.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — StorePasCher.",
       "evolution": "nouveau"
@@ -11469,15 +11545,16 @@
       "date": "2026-01-15",
       "organisation": "Groupe Fondasol",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Avignon, Provence-Alpes-Côte d’Azur",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/groupe-fondasol-6f77cb2e6e3f"
+        "https://frenchbreaches.com/alertes/groupe-fondasol-6f77cb2e6e3f",
+        "https://www.groupefondasol.com/fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Groupe Fondasol.",
       "evolution": "nouveau"
@@ -11645,15 +11722,16 @@
       "date": "2026-01-10",
       "organisation": "SOS Oxygène",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Nice, Provence-Alpes-Côte d’Azur",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/sos-oxygene-55604dddd6f0"
+        "https://frenchbreaches.com/alertes/sos-oxygene-55604dddd6f0",
+        "https://www.sosoxygene.com/notre-entreprise/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — SOS Oxygène.",
       "evolution": "nouveau"
@@ -12074,14 +12152,15 @@
       "organisation": "Ledger (via prestataire Global-e)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/ledger-via-prestataire-global-e-cf566860ea7d"
+        "https://frenchbreaches.com/alertes/ledger-via-prestataire-global-e-cf566860ea7d",
+        "https://www.ledger.com/fr/the-company"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Ledger (via prestataire Global-e).",
       "evolution": "nouveau"
@@ -12176,14 +12255,15 @@
       "organisation": "Trescal",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/trescal-197be0b167cc"
+        "https://frenchbreaches.com/alertes/trescal-197be0b167cc",
+        "https://www.trescal.com/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Trescal.",
       "evolution": "nouveau"
