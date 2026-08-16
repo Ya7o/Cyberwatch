@@ -2,7 +2,9 @@
 
 Cette couche est le garde-fou de volumétrie du projet. Aucun collecteur ne fait
 d'appel réseau directement : tous passent par `HttpClient`, ce qui garantit que
-les plafonds de `config` s'appliquent partout, sans exception possible.
+les plafonds de `config` s'appliquent partout, sans exception possible. Le
+budget temps porte uniquement sur le travail HTTP, jamais sur le temps passé
+entre deux requêtes dans un enrichissement externe comme OpenAI.
 """
 
 from __future__ import annotations
@@ -40,7 +42,7 @@ class FetchResult:
 
 
 class Budget:
-    """Compteur de requêtes et de temps, avec plafonds durs.
+    """Compteur de requêtes et de temps HTTP consommé, avec plafonds durs.
 
     Un budget épuisé n'interrompt jamais brutalement le run : le collecteur en
     cours s'arrête proprement et la source est marquée `PARTIAL` avec sa
@@ -52,17 +54,18 @@ class Budget:
         self.max_seconds = max_seconds
         self.label = label
         self.requests_made = 0
-        self.started_at = time.monotonic()
+        self.seconds_spent = 0.0
 
     @property
     def elapsed(self) -> float:
-        return time.monotonic() - self.started_at
+        """Temps réellement consommé à l'intérieur de `HttpClient.fetch`."""
+        return self.seconds_spent
 
     @property
     def exhausted(self) -> bool:
         return (
             self.requests_made >= self.max_requests
-            or self.elapsed >= self.max_seconds
+            or self.seconds_spent >= self.max_seconds
         )
 
     def remaining_requests(self) -> int:
@@ -71,8 +74,11 @@ class Budget:
     def consume(self, count: int = 1) -> None:
         self.requests_made += count
 
+    def consume_seconds(self, seconds: float) -> None:
+        self.seconds_spent += max(0.0, float(seconds))
+
     def reset_clock(self) -> None:
-        self.started_at = time.monotonic()
+        self.seconds_spent = 0.0
 
 
 class HttpClient:
@@ -170,7 +176,8 @@ class HttpClient:
 
         Ne lève jamais d'exception réseau : chaque échec devient un
         `FetchResult` porteur d'un code de raison exploitable par le modèle de
-        statuts.
+        statuts. Le temps consommé par les budgets correspond uniquement à cet
+        appel (attente polie et retries compris), pas à l'âge global du run.
         """
         if self.run_budget.exhausted:
             return FetchResult(False, url, reason_code=status.REASON_BUDGET_RUN)
@@ -184,76 +191,82 @@ class HttpClient:
         started = time.monotonic()
         tried_fallback_ua = False
 
-        while attempt <= config.HTTP_MAX_RETRIES:
-            self._wait_politely(host)
-            self.run_budget.consume()
+        try:
+            while attempt <= config.HTTP_MAX_RETRIES:
+                self._wait_politely(host)
+                self.run_budget.consume()
+                if source_budget is not None:
+                    source_budget.consume()
+
+                request_headers = dict(headers or {})
+                if host in self._fallback_hosts:
+                    request_headers["User-Agent"] = config.HTTP_USER_AGENT_FALLBACK
+
+                try:
+                    response = self.session.get(
+                        url, timeout=self.timeout, headers=request_headers
+                    )
+                except requests.Timeout:
+                    attempt += 1
+                    if attempt > config.HTTP_MAX_RETRIES:
+                        return FetchResult(
+                            False, url, reason_code=status.REASON_TIMEOUT,
+                            elapsed=time.monotonic() - started,
+                        )
+                    time.sleep(2 ** attempt)
+                    continue
+                except requests.RequestException:
+                    attempt += 1
+                    if attempt > config.HTTP_MAX_RETRIES:
+                        return FetchResult(
+                            False, url, reason_code=status.REASON_HTTP_ERROR,
+                            elapsed=time.monotonic() - started,
+                        )
+                    time.sleep(2 ** attempt)
+                    continue
+
+                code = response.status_code
+                elapsed = time.monotonic() - started
+
+                if code == 200:
+                    return FetchResult(
+                        True, url, code, response.text, status.REASON_OK, elapsed,
+                        dict(response.headers),
+                    )
+
+                # 429 et 5xx : temporaires, on retente avec un recul croissant.
+                if code == 429 or 500 <= code < 600:
+                    attempt += 1
+                    if attempt > config.HTTP_MAX_RETRIES:
+                        reason = (
+                            status.REASON_HTTP_429 if code == 429
+                            else status.REASON_HTTP_ERROR
+                        )
+                        return FetchResult(False, url, code, "", reason, elapsed)
+                    time.sleep(2 ** attempt)
+                    continue
+
+                # 403 alors que le robots.txt autorise le chemin : le refus vient
+                # d'un pare-feu qui filtre sur l'agent, pas d'une politique
+                # d'exclusion. On réessaie une fois en se présentant sous une forme
+                # que ces pare-feux acceptent, sans masquer l'identité du projet.
+                if code == 403 and not tried_fallback_ua and host not in self._fallback_hosts:
+                    tried_fallback_ua = True
+                    self._fallback_hosts.add(host)
+                    continue
+
+                reason = {
+                    403: status.REASON_HTTP_403,
+                    404: status.REASON_HTTP_404,
+                }.get(code, status.REASON_HTTP_ERROR)
+                return FetchResult(False, url, code, "", reason, elapsed)
+
+            return FetchResult(False, url, reason_code=status.REASON_HTTP_ERROR)
+        finally:
+            spent = time.monotonic() - started
+            self.run_budget.consume_seconds(spent)
             if source_budget is not None:
-                source_budget.consume()
-
-            request_headers = dict(headers or {})
-            if host in self._fallback_hosts:
-                request_headers["User-Agent"] = config.HTTP_USER_AGENT_FALLBACK
-
-            try:
-                response = self.session.get(
-                    url, timeout=self.timeout, headers=request_headers
-                )
-            except requests.Timeout:
-                attempt += 1
-                if attempt > config.HTTP_MAX_RETRIES:
-                    return FetchResult(
-                        False, url, reason_code=status.REASON_TIMEOUT,
-                        elapsed=time.monotonic() - started,
-                    )
-                time.sleep(2 ** attempt)
-                continue
-            except requests.RequestException:
-                attempt += 1
-                if attempt > config.HTTP_MAX_RETRIES:
-                    return FetchResult(
-                        False, url, reason_code=status.REASON_HTTP_ERROR,
-                        elapsed=time.monotonic() - started,
-                    )
-                time.sleep(2 ** attempt)
-                continue
-
-            code = response.status_code
-            elapsed = time.monotonic() - started
-
-            if code == 200:
-                return FetchResult(
-                    True, url, code, response.text, status.REASON_OK, elapsed,
-                    dict(response.headers),
-                )
-
-            # 429 et 5xx : temporaires, on retente avec un recul croissant.
-            if code == 429 or 500 <= code < 600:
-                attempt += 1
-                if attempt > config.HTTP_MAX_RETRIES:
-                    reason = (
-                        status.REASON_HTTP_429 if code == 429
-                        else status.REASON_HTTP_ERROR
-                    )
-                    return FetchResult(False, url, code, "", reason, elapsed)
-                time.sleep(2 ** attempt)
-                continue
-
-            # 403 alors que le robots.txt autorise le chemin : le refus vient
-            # d'un pare-feu qui filtre sur l'agent, pas d'une politique
-            # d'exclusion. On réessaie une fois en se présentant sous une forme
-            # que ces pare-feux acceptent, sans masquer l'identité du projet.
-            if code == 403 and not tried_fallback_ua and host not in self._fallback_hosts:
-                tried_fallback_ua = True
-                self._fallback_hosts.add(host)
-                continue
-
-            reason = {
-                403: status.REASON_HTTP_403,
-                404: status.REASON_HTTP_404,
-            }.get(code, status.REASON_HTTP_ERROR)
-            return FetchResult(False, url, code, "", reason, elapsed)
-
-        return FetchResult(False, url, reason_code=status.REASON_HTTP_ERROR)
+                source_budget.consume_seconds(spent)
 
     def source_budget(self) -> Budget:
         """Nouveau budget dédié à une source, dérivé des plafonds de config."""
