@@ -204,7 +204,8 @@ SECTORS = [
 
 #: Correspondance des libellés d'activité anglophones de ransomware.live vers
 #: la taxonomie française. Appliquée uniquement au secteur explicitement fourni
-#: par la source, jamais au texte libre d'un article.
+#: par la source, jamais au texte libre d'un article. Les catégories trop larges
+#: pour notre taxonomie restent volontairement Inconnu.
 ACTIVITY_TO_SECTOR = {
     "manufacturing": SECTOR_INDUSTRY,
     "industrial machinery": SECTOR_INDUSTRY,
@@ -215,11 +216,9 @@ ACTIVITY_TO_SECTOR = {
     "aerospace defense": SECTOR_INDUSTRY,
     "electronics": SECTOR_INDUSTRY,
     "food beverages": SECTOR_INDUSTRY,
-    "agriculture": SECTOR_INDUSTRY,
     "construction": SECTOR_CONSTRUCTION,
     "real estate": SECTOR_CONSTRUCTION,
     "business services": SECTOR_SERVICES,
-    "consumer services": SECTOR_SERVICES,
     "legal services": SECTOR_SERVICES,
     "law firms": SECTOR_SERVICES,
     "accounting": SECTOR_SERVICES,
@@ -243,7 +242,6 @@ ACTIVITY_TO_SECTOR = {
     "government": SECTOR_ADMIN,
     "government administration": SECTOR_ADMIN,
     "public administration": SECTOR_ADMIN,
-    "non profit": SECTOR_ADMIN,
     "it services": SECTOR_TECH,
     "information technology": SECTOR_TECH,
     "software": SECTOR_TECH,
@@ -253,12 +251,38 @@ ACTIVITY_TO_SECTOR = {
     "energy": SECTOR_ENERGY,
     "utilities": SECTOR_ENERGY,
     "oil gas": SECTOR_ENERGY,
-    "hospitality": SECTOR_RETAIL,
     "sports": SECTOR_SPORT,
 }
 
-# Motifs testés sur limites de mots, texte désaccentué et en minuscules.
-SECTOR_RULES: list[tuple[str, list[str]]] = [
+#: Motifs autorisés sur le nom de l'organisation uniquement. Ils doivent être
+#: quasi auto-descriptifs : aucun marqueur de marque générique (tech, immo,
+#: formation, finance, distribution...) n'est admis ici.
+SECTOR_NAME_RULES: list[tuple[str, list[str]]] = [
+    (SECTOR_ADMIN, [
+        "mairie de", "ville de", "commune de", "ministere de", "ministere des",
+        "prefecture de", "conseil departemental", "conseil regional",
+        "departement de", "police nationale", "police municipale",
+        "gendarmerie nationale", "sapeurs pompiers",
+        "service departemental d incendie",
+    ]),
+    (SECTOR_HEALTH, [
+        "centre hospitalier", "hopital de", "clinique de", "clinique du",
+        "hospices civils",
+    ]),
+    (SECTOR_EDUCATION, [
+        "universite de", "ecole de", "ecole superieure", "college de",
+        "lycee", "academie de", "rectorat de",
+    ]),
+    (SECTOR_FINANCE, ["banque de", "caisse d epargne", "credit agricole"]),
+    (SECTOR_SPORT, [
+        "federation francaise de", "federation francaise d ",
+        "federation sportive", "stade francais",
+    ]),
+]
+
+# Motifs testés sur limites de mots, texte désaccentué et en minuscules. Cette
+# table est réservée à une description d'activité explicite, jamais au nom seul.
+SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_ADMIN, [
         "mairie", "ville de", "commune", "communaute d agglomeration",
         "departement", "region", "ministere", "prefecture", "prefet",
@@ -289,37 +313,27 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_TRANSPORT, [
         "compagnie aerienne", "airlines", "airways", "aeroport", "air austral",
         "airport", "port maritime", "grand port", "portuaire", "transport",
-        # "transports" (pluriel) : libellé officiel de la section H de la
-        # nomenclature NAF ("Transports et entreposage", cf. org_enrichment.py).
-        "transports", "entreposage",
-        "logistique", "logistics", "fret", "maritime", "shipping",
+        "transports", "entreposage", "logistique", "logistics", "fret",
+        "maritime", "shipping",
     ]),
     (SECTOR_SPORT, [
-        "federation francaise de", "federation francaise d ", "club sportif", "federation sportive", "sport", "fitness",
-        # "stade" retiré (§Sector) : faux positif systématique sur « à ce
-        # stade » (marqueur de discours), pas un stade sportif.
-        "olympique", "football",
+        "federation francaise de", "federation francaise d ", "club sportif",
+        "federation sportive", "sport", "fitness", "olympique", "football",
     ]),
     (SECTOR_RETAIL, [
         "cci", "chambre de commerce", "commerce", "commerces", "distribution",
         "enseigne", "supermarche", "supermarches", "hypermarche",
         "hypermarches", "magasin", "magasins", "retail", "boutique",
-        "boutiques", "e commerce", "chambre de metiers",
-        # Concessions et négoce, relevés dans la base réelle.
-        "concession", "concessionnaire", "automobiles", "garage",
-        "grande surface", "centre commercial", "negoce", "grossiste",
+        "boutiques", "e commerce", "chambre de metiers", "concession",
+        "concessionnaire", "automobiles", "garage", "grande surface",
+        "centre commercial", "negoce", "grossiste",
     ]),
     (SECTOR_TECH, [
-        # "systemes"/"systems"/"digital"/"web"/"internet" retirés (§Sector) :
-        # omniprésents dans tout récit d'incident cyber, quel que soit le
-        # secteur réel de la victime ("systèmes piratés", "site web", "des
-        # données publiées sur internet"...), jamais une preuve d'activité.
-        "technologies", "technology", "reseaux",
-        "editeur de logiciels", "esn",
+        "technologies", "technology", "reseaux", "editeur de logiciels", "esn",
         "cloud", "logiciel", "software", "saas", "numerique", "telecom",
-        "telecommunication", "operateur mobile", "technologie",
-        "tech", "informatique", "hebergeur", "datacenter", "orange", "sfr",
-        "zeop", "emtel", "telma", "airtel",
+        "telecommunication", "operateur mobile", "technologie", "tech",
+        "informatique", "hebergeur", "datacenter", "orange", "sfr", "zeop",
+        "emtel", "telma", "airtel",
     ]),
     (SECTOR_ENERGY, [
         "energie", "energy", "electricite", "electricity", "edf", "eau",
@@ -328,12 +342,9 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
     ]),
     (SECTOR_CONSTRUCTION, [
         "batiment", "btp", "travaux publics", "construction", "immobilier",
-        # Accord au féminin/pluriel : les libellés d'activité officiels
-        # (ex. NAF 68.31Z « Agences immobilières ») fléchissent l'adjectif,
-        # ce que le motif "immobilier" seul ne matche pas (limite de mot).
         "immobiliers", "immobiliere", "immobilieres", "agence immobiliere",
-        "maconnerie", "charpente", "promoteur immobilier",
-        "immo", "habitat", "logement", "hlm", "bailleur social", "foncier",
+        "maconnerie", "charpente", "promoteur immobilier", "immo", "habitat",
+        "logement", "hlm", "bailleur social", "foncier",
     ]),
     (SECTOR_INDUSTRY, [
         "industrie", "industriel", "manufacture", "usine", "fonderie",
@@ -343,15 +354,14 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_SERVICES, [
         "cabinet d avocats", "cabinet comptable", "expertise comptable",
         "notaire", "huissier", "conseil en", "interim", "recrutement",
-        "nettoyage", "securite privee",
-        # "association"/"syndicat" retirés (§Sector) : désignent souvent un
-        # tiers mentionné dans le récit (ex. "un syndicat de police a réagi"),
-        # pas nécessairement l'activité de la victime. "mutuelle" retiré ici
-        # aussi : doublon mort avec SECTOR_FINANCE, testée en premier.
-        "ordre des", "avocats",
-        "groupement", "cooperative", "chambre syndicale",
+        "nettoyage", "securite privee", "ordre des", "avocats", "groupement",
+        "cooperative", "chambre syndicale",
     ]),
 ]
+
+# Compatibilité pour les consommateurs historiques ; le nouveau pipeline
+# appelle explicitement la table adaptée à la nature de la preuve.
+SECTOR_RULES = SECTOR_ACTIVITY_RULES
 
 # --------------------------------------------------------------------------
 # Déduplication et dates (§11, §12)
