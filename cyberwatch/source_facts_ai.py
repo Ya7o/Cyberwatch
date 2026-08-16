@@ -28,8 +28,8 @@ from .normalize import searchable
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-08-16.source-facts.4"
-SCHEMA_VERSION = "4"
+PROMPT_VERSION = "2026-08-16.source-facts.5"
+SCHEMA_VERSION = "5"
 CONFIDENCE_THRESHOLD = 0.70
 MAX_EVIDENCE_CHARS = 300
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
@@ -45,9 +45,6 @@ summary est une synthèse factuelle courte, sans conseil ni spéculation.
 
 _LLM_FIELDS = ("summary", "threat_actor", "third_party", "data_types")
 
-# La simple présence de "ransomware" ou "groupe" ne justifie jamais un appel.
-# Le déclencheur vise seulement une attribution explicite non couverte par les
-# regex déterministes de source_facts.py.
 _ACTOR_TRIGGER = re.compile(
     r"\b(?:attribu[ée]e?|imput[ée]e?|associ[ée]e?)\s+(?:à|a|au|aux)\s+"
     r"(?:(?:un|le)\s+)?(?:(?:groupe|collectif|gang|acteur)\s+)?[A-Za-z0-9][\w.&'’+-]{2,40}"
@@ -56,8 +53,6 @@ _ACTOR_TRIGGER = re.compile(
     re.I,
 )
 
-# Un tiers doit être relié explicitement à l'incident. Une co-mention ou un
-# simple "via" éditorial ne déclenche rien.
 _THIRD_PARTY_TRIGGER = re.compile(
     r"\b(?:prestataire|fournisseur|h[ée]bergeur|sous[- ]traitant|plateforme\s+tierce)\b"
     r".{0,100}\b(?:compromis|affect[ée]|touch[ée]|incident|attaque|origine|intrusion)\w*\b"
@@ -66,8 +61,6 @@ _THIRD_PARTY_TRIGGER = re.compile(
     re.I,
 )
 
-# Si aucun type connu n'est détecté mais qu'une liste de données touchées est
-# explicitement introduite, le LLM peut encore qualifier une catégorie rare.
 _SEMANTIC_DATA_TYPES_TRIGGER = re.compile(
     r"\b(?:donn[ée]es?|informations?)\s+"
     r"(?:concern[ée]es?|expos[ée]es?|vol[ée]es?|d[ée]rob[ée]es?|compromises?|fuit[ée]es?)\s*[:\-]",
@@ -105,9 +98,6 @@ _DATA_TYPE_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
     ("données personnelles", re.compile(r"\bdonn[ée]es?\s+personnelles?\b", re.I)),
 )
 
-# Impact : lorsqu'une conséquence opérationnelle est explicitement formulée,
-# conserver la phrase source elle-même est plus précis et plus rapide qu'une
-# reformulation LLM.
 _IMPACT_TRIGGER = re.compile(
     r"\b(?:indisponibilit|interruption|perturbation|paralysie|hors\s+ligne|"
     r"services?\s+d[ée]grad[ée]s?|syst[èe]mes?\s+indisponibles?|"
@@ -181,6 +171,7 @@ class _Runtime:
         self.output_tokens = 0
         self.durations: list[float] = []
         self.fields_requested: Counter[str] = Counter()
+        self.error_reasons: Counter[str] = Counter()
         self.cache_path = _cache_path()
         self.stats_path = _stats_path()
         self.cache = self._load_cache()
@@ -228,6 +219,7 @@ class _Runtime:
             "output_tokens": self.output_tokens,
             "estimated_cost_usd": round(self.cost, 6),
             "fields_requested": dict(sorted(self.fields_requested.items())),
+            "error_reasons": dict(sorted(self.error_reasons.items())),
         }
 
     def save_stats(self) -> None:
@@ -361,7 +353,11 @@ def _extract_output_text(payload: dict) -> str:
         for part in output.get("content", []) or []:
             if isinstance(part, dict) and part.get("type") in {"output_text", "text"} and part.get("text"):
                 return str(part["text"])
-    raise SourceFactsAiError("réponse OpenAI sans output_text")
+    status_value = str(payload.get("status") or "")
+    incomplete = payload.get("incomplete_details") or {}
+    reason = str(incomplete.get("reason") or "") if isinstance(incomplete, dict) else ""
+    detail = f"status={status_value},reason={reason}" if status_value or reason else "no_output_text"
+    raise SourceFactsAiError(detail)
 
 
 def _post_openai(body: dict, runtime: _Runtime) -> dict:
@@ -372,13 +368,13 @@ def _post_openai(body: dict, runtime: _Runtime) -> dict:
             response = requests.post(OPENAI_URL, json=body, headers=headers, timeout=20)
         except requests.Timeout:
             runtime.timeouts += 1
-            last_error = "Timeout"
+            last_error = "timeout"
         except requests.RequestException as exc:
             last_error = type(exc).__name__
         else:
             if response.status_code == 200:
                 return response.json()
-            last_error = f"HTTP {response.status_code}"
+            last_error = f"HTTP_{response.status_code}"
             if response.status_code == 429:
                 runtime.http_429 += 1
             elif response.status_code >= 500:
@@ -388,7 +384,7 @@ def _post_openai(body: dict, runtime: _Runtime) -> dict:
         if attempt < 2:
             runtime.retries += 1
             time.sleep(2 ** (attempt + 1))
-    raise SourceFactsAiError(last_error or "appel OpenAI échoué")
+    raise SourceFactsAiError(last_error or "api_error")
 
 
 def _usage(payload: dict) -> tuple[int, int]:
@@ -536,8 +532,33 @@ def fields_needed_for_ai(item: Item, entry: RawEntry) -> set[str]:
 
 
 def _max_output_tokens(runtime: _Runtime, fields: set[str]) -> int:
-    estimate = 100 + sum(180 if field == "data_types" else 90 for field in fields)
-    return min(runtime.max_output_tokens, max(180, estimate))
+    # Le benchmark v4 a montré des réponses 200 sans output_text sur 8/20
+    # Cyberattaque.org avec un plafond ~280. Un minimum 600 évite cette
+    # troncature sans augmenter les tokens réellement générés lorsque la
+    # réponse structurée se termine naturellement.
+    estimate = 300 + sum(220 if field == "data_types" else 140 for field in fields)
+    return min(runtime.max_output_tokens, max(600, estimate))
+
+
+def _error_category(exc: Exception) -> str:
+    if isinstance(exc, json.JSONDecodeError):
+        return "json_decode"
+    if isinstance(exc, SourceFactsAiError):
+        text = str(exc)
+        if "max_output_tokens" in text or "max_output" in text:
+            return "max_output_tokens"
+        if "no_output_text" in text or "status=" in text:
+            return "no_output_text"
+        if text.startswith("HTTP_"):
+            return text
+        if text == "timeout":
+            return "timeout"
+        return "source_facts_ai_error"
+    if isinstance(exc, TypeError):
+        return "type_error"
+    if isinstance(exc, ValueError):
+        return "value_error"
+    return type(exc).__name__
 
 
 def enrich(item: Item, entry: RawEntry) -> dict | None:
@@ -593,7 +614,7 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         payload = _post_openai(body, runtime)
         raw = json.loads(_extract_output_text(payload))
         if not isinstance(raw, dict):
-            raise SourceFactsAiError("réponse JSON non objet")
+            raise SourceFactsAiError("response_not_object")
         normalized = _normalize(raw, context, fields)
         input_tokens, output_tokens = _usage(payload)
         runtime.input_tokens += input_tokens
@@ -601,8 +622,9 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         runtime.cost += _usage_cost(payload, runtime.model)
         runtime.calls_succeeded += 1
         runtime.cache[key] = normalized
-    except (SourceFactsAiError, ValueError, TypeError, json.JSONDecodeError):
+    except (SourceFactsAiError, ValueError, TypeError, json.JSONDecodeError) as exc:
         runtime.calls_failed += 1
+        runtime.error_reasons[_error_category(exc)] += 1
     finally:
         runtime.durations.append(time.monotonic() - started)
         runtime.progress()
