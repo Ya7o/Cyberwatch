@@ -1,0 +1,46 @@
+name: Backfill Cyberwatch 2026
+
+on:
+  push:
+    paths:
+      - '.github/workflows/backfill-cyberwatch-2026.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install collector dependencies
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4
+
+      - name: Rebuild 2026 baselines
+        run: python sources/veillellm/backfill_global_sources.py
+
+      - name: Commit backfill data
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "cyberwatch-bot@users.noreply.github.com"
+          git add sources/veillellm/cyberattaque_org_2026.csv \
+                  sources/veillellm/cyberattaque_org_2026.json \
+                  sources/veillellm/frenchbreaches_2026.csv \
+                  sources/veillellm/frenchbreaches_2026.json
+          if git diff --cached --quiet; then
+            echo "No data changes"
+            exit 0
+          fi
+          git commit -m "Backfill 2026 Cyberattaque.org and FrenchBreaches"
+          git push origin HEAD:main
