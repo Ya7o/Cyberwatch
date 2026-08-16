@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   bootstrap:
-    if: "github.event.head_commit.message == 'ops: fix first post-release bootstrap trigger'"
+    if: "github.event.head_commit.message == 'ops: run bootstrap tests before purge'"
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -28,10 +28,11 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
+      - name: Tests unitaires pré-bootstrap
+        run: python -m pytest tests/ -q
+
       - name: État de production avant purge
         run: |
-          echo '--- fichiers data avant purge ---'
-          ls -lh data || true
           echo '--- volumétrie avant purge ---'
           python - <<'PY'
           from cyberwatch import store
@@ -76,9 +77,6 @@ jobs:
           assert not store.load_ai_qualifications()
           assert not store.load_org_enrichment_cache()
           PY
-
-      - name: Tests unitaires pré-bootstrap
-        run: python -m pytest tests/ -q
 
       - name: CREATE from scratch — 2026-01-01 à maintenant
         env:
