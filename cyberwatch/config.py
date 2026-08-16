@@ -6,7 +6,7 @@ Toutes les valeurs normatives de la méthodologie sont regroupées ici afin qu'u
 
 from __future__ import annotations
 
-METHOD_ID = "OBS-FR-OI-SIMPLE-SOURCING-5"
+METHOD_ID = "OBS-FR-OI-SIMPLE-SOURCING-6"
 
 # --------------------------------------------------------------------------
 # Périmètre géographique (§10)

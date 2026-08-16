@@ -431,10 +431,11 @@ Toute information externe est récupérée directement par Cyberwatch, en HTTP
 simple, vers une API publique gratuite.
 
 **Pipeline** (révisé — §Sector fiabilité, voir note de révision en fin de
-section), déclenché uniquement quand `Sector` est encore `Inconnu` après les
-règles déterministes et le backfill (§11 inchangé). L'enrichissement gratuit
-et déterministe passe désormais **avant** tout appel LLM — un LLM ne doit
-être qu'un dernier recours, jamais l'étape automatique :
+section) : l'enrichissement organisation est déclenché quand `Sector` **ou**
+`Location` est encore `Inconnu` après les règles déterministes et le backfill.
+Un unique match exact peut alimenter les deux champs : section NAF pour Sector,
+département du siège pour Location. L'enrichissement gratuit et déterministe
+passe **avant** tout appel LLM — un LLM ne doit être qu'un dernier recours :
 
 ```
 Sector Inconnu après déterministe + référentiel ?

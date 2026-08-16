@@ -51,7 +51,7 @@ def test_backfill_location_uses_only_safe_text_hints(make_item):
     reunion = make_item(
         source="CYBERATTAQUE_ORG",
         location=config.LOC_INCONNU,
-        org="Association 974",
+        org="Association du département 974",
         title="Incident",
         url="https://reunion",
     )
