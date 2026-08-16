@@ -146,26 +146,110 @@ def _has_cyber_marker(blob: str) -> bool:
 # Menace (§8)
 # --------------------------------------------------------------------------
 
+# Les catégories spécifiques sont résolues avant Intrusion, qui regroupe des
+# termes très génériques (cyberattaque, piratage, hacking...). L'ordre conserve
+# les priorités métier historiques à l'exception volontaire de Fuite, désormais
+# plus spécifique qu'une intrusion générique.
+_THREAT_SPECIFIC_PRIORITY = (
+    config.THREAT_RANSOMWARE,
+    config.THREAT_DDOS,
+    config.THREAT_MALWARE,
+    config.THREAT_ACCOUNT,
+    config.THREAT_LEAK,
+    config.THREAT_PHISHING,
+    config.THREAT_THIRD_PARTY,
+)
+
+# Quelques formulations explicites observées dans les titres réels mais absentes
+# de la table historique. Elles restent volontairement limitées à la fuite de
+# données : aucune heuristique ouverte ni synonymie approximative.
+_THREAT_EXTRA_PATTERNS = {
+    config.THREAT_LEAK: (
+        "donnees volees",
+        "donnees exfiltrees",
+        "donnees publiees",
+        "data leak",
+        "fichiers diffuses",
+    ),
+}
+
+# Négations conservatrices : uniquement des formulations explicites qui ont
+# produit des faux positifs réels. Elles sont masquées avant la recherche de
+# candidats ; une autre mention positive située ailleurs dans le texte reste
+# donc exploitable.
+_THREAT_NEGATION_PATTERNS = (
+    re.compile(r"\b(?:aucune|aucun|pas de|sans)\s+fuite(?: de donnees)?\b"),
+    re.compile(r"\baucune\s+donnee(?:s)?(?: [a-z]+){0,4}\s+exposee(?:s)?\b"),
+    re.compile(r"\b(?:aucune|aucun|pas de|sans)\s+compromission\b"),
+    re.compile(r"\bcyberattaque\s+non\s+(?:demontree|demontre)\b"),
+    re.compile(r"\borigine\s+cyber\s+non\s+(?:demontree|demontre)\b"),
+    re.compile(
+        r"\baucun\s+element(?: [a-z]+){0,4}\s+"
+        r"(?:ne\s+)?(?:demontre|demontrant)\s+une\s+cyberattaque\b"
+    ),
+)
+
+
+def _has_threat_negation(blob: str) -> bool:
+    return any(pattern.search(blob) for pattern in _THREAT_NEGATION_PATTERNS)
+
+
+def _without_negated_threat_claims(blob: str) -> str:
+    cleaned = blob
+    for pattern in _THREAT_NEGATION_PATTERNS:
+        cleaned = pattern.sub(" ", cleaned)
+    return _SPACES_RE.sub(" ", cleaned).strip()
+
+
+def _matched_threats(blob: str) -> set[str]:
+    matched: set[str] = set()
+    for threat, patterns in config.THREAT_RULES:
+        if any(_contains(blob, pattern) for pattern in patterns):
+            matched.add(threat)
+    for threat, patterns in _THREAT_EXTRA_PATTERNS.items():
+        if any(_contains(blob, pattern) for pattern in patterns):
+            matched.add(threat)
+    return matched
+
 
 def classify_threat(*texts: str, default: str = "") -> str:
-    """Menace normalisée, selon l'ordre de priorité strict du §8.
+    """Menace normalisée selon spécificité, négation et contexte de source.
 
-    Le premier motif rencontré dans l'ordre des règles l'emporte, quelle que
-    soit sa position dans le texte : la priorité est celle de la méthode, pas
-    celle de la phrase.
+    Les preuves spécifiques sont évaluées avant les marqueurs génériques
+    d'intrusion. Un défaut de source reste le repli : un simple « piratage » ou
+    « cyberattaque » ne peut donc plus transformer une source de fuites en
+    Intrusion. Le défaut Ransomware est un contrat univoque et fait toujours foi.
     """
     blob = searchable(" ".join(t for t in texts if t))
     if not blob:
         return default or config.THREAT_UNKNOWN
 
-    for threat, patterns in config.THREAT_RULES:
-        for pattern in patterns:
-            if _contains(blob, pattern):
-                return threat
+    had_negation = _has_threat_negation(blob)
+    evidence = _without_negated_threat_claims(blob)
+    matched = _matched_threats(evidence)
 
+    # ransomware.live est la seule source utilisant ce défaut aujourd'hui ;
+    # le contrat de la source est plus fort que le vocabulaire de sa description.
+    if default == config.THREAT_RANSOMWARE:
+        return config.THREAT_RANSOMWARE
+
+    for threat in _THREAT_SPECIFIC_PRIORITY:
+        if threat in matched:
+            return threat
+
+    # Un défaut de source (notamment Fuite de données) bat uniquement les
+    # signaux génériques. Les preuves spécifiques ci-dessus peuvent toujours
+    # l'écraser.
     if default:
         return default
-    if _has_cyber_marker(blob):
+
+    if config.THREAT_INTRUSION in matched:
+        return config.THREAT_INTRUSION
+    # Si le seul signal cyber restant vient d'une formulation explicitement
+    # négative, mieux vaut conserver Inconnu que fabriquer Autre cyber.
+    if had_negation and not matched:
+        return config.THREAT_UNKNOWN
+    if _has_cyber_marker(evidence):
         return config.THREAT_OTHER
     return config.THREAT_UNKNOWN
 
