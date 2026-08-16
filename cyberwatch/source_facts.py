@@ -44,13 +44,16 @@ def _loads_json(raw: str):
 
 
 _CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.I)
-_CVSS_RE = re.compile(r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:\.\d)?)(?:\s*/\s*10)?\b", re.I)
+_CVSS_RE = re.compile(
+    r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:\.\d)?)(?:\s*/\s*10)?\b",
+    re.I,
+)
 _VOLUME_RE = re.compile(r"\b\d[\d\s ,.]*\s*(?:Ko|Mo|Go|To|KB|MB|GB|TB)\b", re.I)
 _FILE_COUNT_RE = re.compile(r"\b(\d[\d\s .,]*)\s*(?:fichiers?|documents?)\b", re.I)
 
 
 def _extract_cves(*texts: str) -> list[str]:
-    return sorted({m.upper() for text in texts for m in _CVE_RE.findall(text or "")})
+    return sorted({match.upper() for text in texts for match in _CVE_RE.findall(text or "")})
 
 
 def _extract_cvss(*texts: str) -> str:
@@ -73,7 +76,13 @@ def _extract_file_count(*texts: str) -> str:
     for text in texts:
         match = _FILE_COUNT_RE.search(text or "")
         if match:
-            digits = match.group(1).replace(" ", "").replace(" ", "").replace(".", "").replace(",", "")
+            digits = (
+                match.group(1)
+                .replace(" ", "")
+                .replace(" ", "")
+                .replace(".", "")
+                .replace(",", "")
+            )
             if digits.isdigit():
                 return digits
     return ""
@@ -180,17 +189,47 @@ def _valid_third_party(candidate: str, organisation: str = "") -> str:
     return candidate
 
 
+_ACTIVITY_BRIDGES = {
+    "",
+    "est",
+    "est un",
+    "est une",
+    "est un acteur",
+    "est une entreprise",
+    "est une societe",
+    "est un groupe",
+    "est une association",
+    "est un organisme",
+    "est une plateforme",
+}
+
+
 def _extract_victim_activity(organisation: str, *texts: str) -> str:
-    """Extrait une activité uniquement dans un segment qui nomme la victime."""
+    """Extrait une activité explicitement rattachée à la victime.
+
+    La présence de la victime dans la même phrase ne suffit pas : dans
+    ``un forum spécialisé dans les fuites revendique X``, l'activité décrit
+    le forum. La victime doit précéder l'expression métier et n'en être séparée
+    que par un connecteur fermé (``est``, ``est une entreprise``, ponctuation).
+    """
     org = searchable(organisation)
     if not org:
         return ""
     for text in texts:
         for segment in re.split(r"(?<=[.!?;])\s+|\n+", text or ""):
-            if org not in searchable(segment):
+            segment_norm = searchable(segment)
+            org_pos = segment_norm.find(org)
+            if org_pos < 0:
                 continue
             activity = extract_activity_description(segment)
-            if activity:
+            if not activity:
+                continue
+            activity_norm = searchable(activity)
+            activity_pos = segment_norm.find(activity_norm)
+            if activity_pos < 0 or activity_pos < org_pos + len(org):
+                continue
+            bridge = segment_norm[org_pos + len(org):activity_pos].strip(" ,-:()")
+            if bridge in _ACTIVITY_BRIDGES:
                 return activity
     return ""
 
@@ -311,7 +350,9 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     if file_count:
         fact["File_Count"] = file_count
 
-    actor, actor_evidence = _first_valid_match(_ACTOR_PATTERNS, text, _valid_actor, organisation)
+    actor, actor_evidence = _first_valid_match(
+        _ACTOR_PATTERNS, text, _valid_actor, organisation
+    )
     if actor:
         fact["Threat_Actor"] = actor
         evidence["Threat_Actor"] = actor_evidence
@@ -349,7 +390,8 @@ _CO_THREAT_ACTOR_RE = tuple(re.compile(pattern, re.I) for pattern in (
 ))
 _WEBSITE_RE = re.compile(
     r"\bsite\s+(?:officiel\s+|web\s+)?(?:de\s+la\s+victime\s+)?[:\s]+"
-    r"((?:https?://)?(?:www\.)?[\w-]+\.[a-z]{2,6}(?:/\S*)?)", re.I,
+    r"((?:https?://)?(?:www\.)?[\w-]+\.[a-z]{2,6}(?:/\S*)?)",
+    re.I,
 )
 
 
@@ -401,7 +443,9 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
             fact["Victim_Website"] = website
             evidence["Victim_Website"] = website_match.group(0).strip()
 
-    activity = _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
+    activity = _extract_victim_activity(
+        organisation, entry.title, entry.summary, entry.content
+    )
     if activity:
         fact["Activity_Description"] = activity
     return _finalize(fact, entry, evidence)
@@ -416,9 +460,11 @@ def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict
     if group:
         fact["Threat_Actor"] = group
         evidence["Threat_Actor"] = meta.get("group", "")
+
     sector_raw = meta.get("sector_raw", "")
     if sector_raw:
         fact["Source_Sector_Raw"] = sector_raw
+
     discovered = parse_date(meta.get("discovered", ""))
     if discovered:
         fact["Discovered_Date"] = discovered
@@ -444,14 +490,18 @@ def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | Non
 
     if meta.get("localisation", ""):
         fact["Fine_Location"] = meta["localisation"]
+
     actor = _valid_actor(meta.get("acteur", ""), entry.organisation or item.Organisation_Raw)
     if actor:
         fact["Threat_Actor"] = actor
+
     if meta.get("statut", ""):
         fact["Claim_Status_Raw"] = meta["statut"]
+
     score = meta.get("score_cyberattaque")
     if score is not None and str(score) != "":
         fact["Cyberattack_Score"] = str(score)
+
     if meta.get("impact_connu", ""):
         fact["Impact"] = meta["impact_connu"]
     if meta.get("synthese", ""):
@@ -462,6 +512,7 @@ def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | Non
         fact["Source_Sector_Raw"] = meta["secteur"]
     if meta.get("sources"):
         fact["Evidence_URLs_JSON"] = _dumps_json(meta["sources"])
+
     return _finalize(fact, entry, {})
 
 
