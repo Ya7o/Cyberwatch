@@ -19,6 +19,8 @@ jobs:
     if: github.repository == 'Ya7o/Cyberwatch'
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      PYTHONUNBUFFERED: "1"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -47,27 +49,13 @@ jobs:
             data/run_log.csv \
             data/run_sources.csv \
             data/ai_usage.csv \
+            data/source_facts_ai_usage.json \
             data/snapshot.json \
             data/baseline.json \
             data/entity_watch.csv
           rm -rf assets/data
           mkdir -p assets/data
           echo "Référentiels et caches versionnés conservés ; aucun fichier publié n'est encore modifié."
-
-      - name: Élargir uniquement le budget temps du rebuild
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path("cyberwatch/config.py")
-          text = path.read_text(encoding="utf-8")
-          old_source = "MAX_SECONDS_PER_SOURCE = 180"
-          old_run = "MAX_SECONDS_PER_RUN = 45 * 60"
-          if text.count(old_source) != 1 or text.count(old_run) != 1:
-              raise SystemExit("Bornes temps HTTP inattendues")
-          text = text.replace(old_source, "MAX_SECONDS_PER_SOURCE = 15 * 60", 1)
-          text = text.replace(old_run, "MAX_SECONDS_PER_RUN = 80 * 60", 1)
-          path.write_text(text, encoding="utf-8")
-          PY
 
       - name: CREATE from scratch
         env:
@@ -76,6 +64,8 @@ jobs:
           AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+          SOURCE_FACTS_AI_PROGRESS_EVERY: "25"
+          SOURCE_FACTS_AI_CHECKPOINT_EVERY: "25"
         run: |
           python -m cyberwatch create \
             --as-of "$AS_OF" \
@@ -113,6 +103,8 @@ jobs:
           cat data/run_sources.csv
           echo "===== AI USAGE ====="
           cat data/ai_usage.csv || true
+          echo "===== SOURCE FACTS AI USAGE ====="
+          cat data/source_facts_ai_usage.json || true
 
       - name: Exporter la DB validée
         uses: actions/upload-artifact@v4
@@ -124,3 +116,21 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 1
+
+      - name: Exporter les diagnostics même en échec
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rebuild-baseline-diagnostics-${{ github.run_id }}
+          path: |
+            data/run_log.csv
+            data/run_sources.csv
+            data/ai_usage.csv
+            data/source_facts_ai_usage.json
+            data/source_facts_ai_cache.json
+            data/items.csv
+            data/incidents.csv
+            data/source_facts.csv
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 2
