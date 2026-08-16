@@ -42,6 +42,18 @@
       "resolved": 27,
       "remaining_canonical_inconnu": 71,
       "method": "source + DuckDuckGo + Bing; no forced mapping when evidence/taxonomy insufficient"
+    },
+    "company_research_v3": {
+      "before_sector_unknown": 71,
+      "resolved": 18,
+      "remaining_sector_unknown": 53,
+      "resolved_by": {
+        "registry": 18,
+        "official_site": 0,
+        "secondary_corroborated": 0
+      },
+      "method": "exact French public company registry/APE -> official company website and legal/about/activity pages -> corroborated secondary company sources",
+      "evidence_policy": "no forced mapping; search engines are discovery only; evidence URL retained in sources"
     }
   },
   "incidents": [
@@ -50,14 +62,15 @@
       "organisation": "Motoculture Cravero",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "La série de fuites liée à la compromission de BlgCloud continue. Les cybercriminels publient cette fois les données…",
       "sources": [
-        "https://www.cyberattaque.org/motoculture-cravero-49-168-fichiers-et-les-donnees-de-plus-de-8-500-personnes-diffuses/"
+        "https://www.cyberattaque.org/motoculture-cravero-49-168-fichiers-et-les-donnees-de-plus-de-8-500-personnes-diffuses/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/440381499"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Motoculture Cravero : 49 168 fichiers et les données de plus de 8 500 personnes diffusés",
       "evolution": "nouveau"
@@ -1019,14 +1032,15 @@
       "organisation": "Supreme Body",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une base de données attribuée à Supreme Body a été diffusée gratuitement le 27 juillet 2026 par une…",
       "sources": [
-        "https://www.cyberattaque.org/supreme-body-les-comptes-clients-diffuses-en-ligne-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/supreme-body-les-comptes-clients-diffuses-en-ligne-apres-une-cyberattaque/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/448245670"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Supreme Body : les comptes clients diffusés en ligne après une cyberattaque",
       "evolution": "nouveau"
@@ -1551,14 +1565,15 @@
       "organisation": "Actiale",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une fuite de données attribuée à Actiale a été revendiquée le 15 juillet 2026. Le dépôt annoncé contiendrait…",
       "sources": [
-        "https://www.cyberattaque.org/actiale-229-978-missions-en-fuite-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/actiale-229-978-missions-en-fuite-apres-une-cyberattaque/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/982040875"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Actiale : 229 978 missions en fuite après une cyberattaque",
       "evolution": "nouveau"
@@ -1789,14 +1804,15 @@
       "organisation": "Bebeboutik",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une fuite de données attribuée au portail professionnel sales.bebeboutik.fr a été revendiquée sur un forum cybercriminel le 10…",
       "sources": [
-        "https://www.cyberattaque.org/bebeboutik-500-000-enregistrements-et-14-go-de-donnees-commerciales-en-fuite/"
+        "https://www.cyberattaque.org/bebeboutik-500-000-enregistrements-et-14-go-de-donnees-commerciales-en-fuite/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/750289167"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Bebeboutik : 500 000 enregistrements et 1,4 Go de données commerciales en fuite",
       "evolution": "nouveau"
@@ -2027,14 +2043,15 @@
       "organisation": "Mille et Une Listes",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une fuite de données attribuée à Mille et Une Listes, plateforme française de listes de mariage et de…",
       "sources": [
-        "https://www.cyberattaque.org/mille-et-une-listes-214-527-comptes-en-fuite-apres-une-faille-de-securite/"
+        "https://www.cyberattaque.org/mille-et-une-listes-214-527-comptes-en-fuite-apres-une-faille-de-securite/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/422891960"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Mille et Une Listes : 214 527 comptes en fuite après une faille de sécurité",
       "evolution": "nouveau"
@@ -2044,14 +2061,15 @@
       "organisation": "Mifarma",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Mifarma informe ses clients d’un incident de sécurité ayant exposé certaines données personnelles. Selon une notification adressée aux…",
       "sources": [
-        "https://www.cyberattaque.org/mifarma-donnees-clients-et-produits-achetes-exposes-apres-une-faille-chez-un-partenaire-technique/"
+        "https://www.cyberattaque.org/mifarma-donnees-clients-et-produits-achetes-exposes-apres-une-faille-chez-un-partenaire-technique/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/890711872"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Mifarma : données clients et produits achetés exposés après une faille chez un partenaire technique",
       "evolution": "nouveau"
@@ -2916,14 +2934,15 @@
       "organisation": "Autosur",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Les hackers ChimeraZ et misere revendiquent la publication d’une base de données attribuée à Autosur, l’un des principaux…",
       "sources": [
-        "https://www.cyberattaque.org/autosur-63-000-controles-techniques-revendiques-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/autosur-63-000-controles-techniques-revendiques-dans-une-fuite-de-donnees/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/922681952"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Autosur : 63 000 contrôles techniques revendiqués dans une fuite de données",
       "evolution": "nouveau"
@@ -3498,14 +3517,15 @@
       "organisation": "Carvivo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une base de données attribuée à Carvivo circule actuellement sur un forum cybercriminel. L’auteur de la publication affirme…",
       "sources": [
-        "https://www.cyberattaque.org/carvivo-15-millions-dautomobilistes-revendiques-dans-une-fuite-massive/"
+        "https://www.cyberattaque.org/carvivo-15-millions-dautomobilistes-revendiques-dans-une-fuite-massive/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/819173634"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Carvivo : 15 millions d’automobilistes revendiqués dans une fuite massive",
       "evolution": "nouveau"
@@ -3821,14 +3841,15 @@
       "organisation": "Nature & Cie",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une base de données attribuée à Nature & Cie, PME française spécialisée dans les produits alimentaires bio et…",
       "sources": [
-        "https://www.cyberattaque.org/nature-cie-des-donnees-commerciales-liees-a-biocoop-naturalia-et-la-vie-claire-exposees-apres-une-fuite/"
+        "https://www.cyberattaque.org/nature-cie-des-donnees-commerciales-liees-a-biocoop-naturalia-et-la-vie-claire-exposees-apres-une-fuite/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/893916577"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Nature & Cie : des données commerciales liées à Biocoop, Naturalia et La Vie Claire exposées après une fuite",
       "evolution": "nouveau"
@@ -4178,14 +4199,15 @@
       "organisation": "Djaboo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Un important volume de données attribué au site djaboo.com a été publié sur un forum cybercriminel le 15…",
       "sources": [
-        "https://www.cyberattaque.org/djaboo-plus-de-25-go-de-fichiers-internes-sensibles-publies-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/djaboo-plus-de-25-go-de-fichiers-internes-sensibles-publies-apres-une-cyberattaque/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/925055501"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Djaboo : plus de 25 Go de fichiers internes sensibles publiés après une cyberattaque",
       "evolution": "nouveau"
@@ -5253,14 +5275,15 @@
       "organisation": "Exclusive Networks",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Ransomware",
       "acteur": "Qilin",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le groupe de ransomware Qilin affirme avoir compromis les systèmes de Exclusive Networks, acteur international spécialisé dans la…",
       "sources": [
-        "https://www.cyberattaque.org/exclusive-networks-cyberattaque-chez-un-acteur-cle-des-solutions-de-cybersecurite/"
+        "https://www.cyberattaque.org/exclusive-networks-cyberattaque-chez-un-acteur-cle-des-solutions-de-cybersecurite/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/401196464"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Exclusive Networks : cyberattaque chez un acteur clé des solutions de cybersécurité",
       "evolution": "nouveau"
@@ -5408,14 +5431,15 @@
       "organisation": "Agence de services et de paiement (ASP)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "L’Agence de services et de paiement (ASP), organisme public chargé du versement de nombreuses aides de l’État, confirme…",
       "sources": [
-        "https://www.cyberattaque.org/agence-de-services-et-de-paiement-asp-fuite-de-donnees-sensibles-nir-et-iban-exposes/"
+        "https://www.cyberattaque.org/agence-de-services-et-de-paiement-asp-fuite-de-donnees-sensibles-nir-et-iban-exposes/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/130006372"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Agence de services et de paiement (ASP): fuite de données sensibles, NIR et IBAN exposés",
       "evolution": "nouveau"
@@ -5884,14 +5908,15 @@
       "organisation": "ETAI (Infopro Digital Automotive)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker ChimeraZ affirme détenir et diffuser une base de données attribuée à ETAI, marque appartenant à infopro…",
       "sources": [
-        "https://www.cyberattaque.org/etai-infopro-digital-automotive-6-600-garages-exposes/"
+        "https://www.cyberattaque.org/etai-infopro-digital-automotive-6-600-garages-exposes/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/806420360"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ETAI (Infopro Digital Automotive) : 6 600 garages exposés dans une fuite",
       "evolution": "nouveau"
@@ -6430,14 +6455,15 @@
       "organisation": "Nosho",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "À la suite de notre article publié le 5 avril 2026, la société Nosho a souhaité apporter plusieurs…",
       "sources": [
-        "https://www.cyberattaque.org/nosho-133-000-utilisateurs-compromis-une-nouvelle-fuite-qui-fragilise-le-secteur-medical/"
+        "https://www.cyberattaque.org/nosho-133-000-utilisateurs-compromis-une-nouvelle-fuite-qui-fragilise-le-secteur-medical/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/990546418"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Nosho : 133 000 utilisateurs compromis, une nouvelle fuite qui fragilise le secteur médical",
       "evolution": "nouveau"
@@ -6483,14 +6509,15 @@
       "organisation": "Veuve Clicquot",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "La maison de champagne Veuve Clicquot a été victime d’une cyberattaque de type ransomware touchant le système de…",
       "sources": [
-        "https://www.cyberattaque.org/veuve-clicquot-les-donnees-de-visiteurs-compromises-apres-une-cyberattaque-sur-la-billetterie/"
+        "https://www.cyberattaque.org/veuve-clicquot-les-donnees-de-visiteurs-compromises-apres-une-cyberattaque-sur-la-billetterie/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/329702591"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Veuve Clicquot : les données de visiteurs compromises après une cyberattaque sur la billetterie",
       "evolution": "nouveau"
@@ -6636,14 +6663,15 @@
       "organisation": "Under Armour",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "Under Armour confirme avoir été victime d’une fuite massive de données impliquant plus de 72 millions de clients,…",
       "sources": [
-        "https://www.cyberattaque.org/under-armour-marque-avertit-clients-francais-fuite-72-millions-comptes/"
+        "https://www.cyberattaque.org/under-armour-marque-avertit-clients-francais-fuite-72-millions-comptes/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/492198460"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Under Armour : la marque avertit ses clients français après la fuite de 72 millions de comptes",
       "evolution": "nouveau"
@@ -6687,14 +6715,15 @@
       "organisation": "Gold Union",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Gold Union, acteur majeur de l’achat et de la vente d’or et d’argent en France, est au cœur…",
       "sources": [
-        "https://www.cyberattaque.org/gold-union-fuite-critique-avec-documents-didentite-et-donnees-bancaires-exposes/"
+        "https://www.cyberattaque.org/gold-union-fuite-critique-avec-documents-didentite-et-donnees-bancaires-exposes/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/393472766"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Gold Union : plus de 120 000 acheteurs d’or exposés avec pièces d’identité et transactions",
       "evolution": "nouveau"
@@ -6981,14 +7010,15 @@
       "organisation": "Allopneus",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "Allopneus a confirmé un incident de sécurité dans un email adressé à ses clients le 27 mars 2026….",
       "sources": [
-        "https://www.cyberattaque.org/allopneus-453-000-clients-touches-par-une-fuite-massive/"
+        "https://www.cyberattaque.org/allopneus-453-000-clients-touches-par-une-fuite-massive/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/327125878"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Allopneus : 453 000 clients exposés après une cyberattaque",
       "evolution": "nouveau"

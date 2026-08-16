@@ -42,6 +42,18 @@
       "resolved": 57,
       "remaining_canonical_inconnu": 135,
       "method": "source + DuckDuckGo + Bing; no forced mapping when evidence/taxonomy insufficient"
+    },
+    "company_research_v3": {
+      "before_sector_unknown": 135,
+      "resolved": 37,
+      "remaining_sector_unknown": 98,
+      "resolved_by": {
+        "registry": 37,
+        "official_site": 0,
+        "secondary_corroborated": 0
+      },
+      "method": "exact French public company registry/APE -> official company website and legal/about/activity pages -> corroborated secondary company sources",
+      "evidence_policy": "no forced mapping; search engines are discovery only; evidence URL retained in sources"
     }
   },
   "incidents": [
@@ -203,14 +215,15 @@
       "organisation": "Scalingo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf"
+        "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/808665483"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Scalingo.",
       "evolution": "nouveau"
@@ -866,14 +879,15 @@
       "organisation": "Voxaly",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/voxaly-msde9mck0bpdloz5u6j7"
+        "https://frenchbreaches.com/alertes/voxaly-msde9mck0bpdloz5u6j7",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/489522540"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Voxaly.",
       "evolution": "nouveau"
@@ -934,14 +948,15 @@
       "organisation": "TERVEO",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/terveo-msb0jbxnwduz5ngrumi"
+        "https://frenchbreaches.com/alertes/terveo-msb0jbxnwduz5ngrumi",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/824692347"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — TERVEO.",
       "evolution": "nouveau"
@@ -1750,14 +1765,15 @@
       "organisation": "BeBunk",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/bebunk-mrvzhnzsr6prb25581"
+        "https://frenchbreaches.com/alertes/bebunk-mrvzhnzsr6prb25581",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/892121559"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — BeBunk.",
       "evolution": "nouveau"
@@ -2231,14 +2247,15 @@
       "organisation": "Tendance Roadster",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/tendance-roadster-mrf095u5d9q9lipyo4"
+        "https://frenchbreaches.com/alertes/tendance-roadster-mrf095u5d9q9lipyo4",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/512085382"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Tendance Roadster.",
       "evolution": "nouveau"
@@ -2556,14 +2573,15 @@
       "organisation": "Mille et Une Listes",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/mille-et-une-listes-mrb0520lv7hu64eqzic"
+        "https://frenchbreaches.com/alertes/mille-et-une-listes-mrb0520lv7hu64eqzic",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/422891960"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Mille et Une Listes.",
       "evolution": "nouveau"
@@ -3411,14 +3429,15 @@
       "organisation": "Secours populaire français Nord",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/secours-populaire-fran-ais-nord-mqtr9bwg5gebiu8ttdd"
+        "https://frenchbreaches.com/alertes/secours-populaire-fran-ais-nord-mqtr9bwg5gebiu8ttdd",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/899159008"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Secours populaire français Nord.",
       "evolution": "nouveau"
@@ -3496,14 +3515,15 @@
       "organisation": "Digit RE Group",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/digit-re-group-mqrzcypg3kj1hj8ptql"
+        "https://frenchbreaches.com/alertes/digit-re-group-mqrzcypg3kj1hj8ptql",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/798979852"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Digit RE Group.",
       "evolution": "nouveau"
@@ -3581,14 +3601,15 @@
       "organisation": "Carvivo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/carvivo-mqqxto6weagkfzusoqr"
+        "https://frenchbreaches.com/alertes/carvivo-mqqxto6weagkfzusoqr",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/819173634"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Carvivo.",
       "evolution": "nouveau"
@@ -5475,14 +5496,15 @@
       "organisation": "Camping-Car Plus",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/camping-car-plus-mphcbx01k97kdeiihzr"
+        "https://frenchbreaches.com/alertes/camping-car-plus-mphcbx01k97kdeiihzr",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/307050138"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Camping-Car Plus.",
       "evolution": "nouveau"
@@ -5562,14 +5584,15 @@
       "organisation": "Almerys",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/almerys-mpfwljdi36y8238mlfs"
+        "https://frenchbreaches.com/alertes/almerys-mpfwljdi36y8238mlfs",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/432701639"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Almerys.",
       "evolution": "nouveau"
@@ -5630,14 +5653,15 @@
       "organisation": "Djaboo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/djaboo-mp8f8di2zk5rhgw4z9"
+        "https://frenchbreaches.com/alertes/djaboo-mp8f8di2zk5rhgw4z9",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/925055501"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Djaboo.",
       "evolution": "nouveau"
@@ -6157,14 +6181,15 @@
       "organisation": "BookMyName",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/bookmyname-mou11ubprlmych9lcc9"
+        "https://frenchbreaches.com/alertes/bookmyname-mou11ubprlmych9lcc9",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/433115904"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — BookMyName.",
       "evolution": "nouveau"
@@ -6310,14 +6335,15 @@
       "organisation": "Profil Search",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/profil-search-mopvcouuhkdyk7dfs2o"
+        "https://frenchbreaches.com/alertes/profil-search-mopvcouuhkdyk7dfs2o",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/791341951"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Profil Search.",
       "evolution": "nouveau"
@@ -8930,14 +8956,15 @@
       "organisation": "Florajet",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/florajet-mmafn52xjfkapk0pcp"
+        "https://frenchbreaches.com/alertes/florajet-mmafn52xjfkapk0pcp",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/509078598"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Florajet.",
       "evolution": "nouveau"
@@ -9032,14 +9059,15 @@
       "organisation": "Be Atex",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/be-atex-mm816u2v30cw537vhve"
+        "https://frenchbreaches.com/alertes/be-atex-mm816u2v30cw537vhve",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/507766558"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Be Atex.",
       "evolution": "nouveau"
@@ -9049,14 +9077,15 @@
       "organisation": "UNSS",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/unss-mm5l4muptu35rk5qa2"
+        "https://frenchbreaches.com/alertes/unss-mm5l4muptu35rk5qa2",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/315578187"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — UNSS.",
       "evolution": "nouveau"
@@ -9236,14 +9265,15 @@
       "organisation": "Cegedim",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/cegedim-mm3wuo703h191qrotlj"
+        "https://frenchbreaches.com/alertes/cegedim-mm3wuo703h191qrotlj",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/350422622"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Cegedim.",
       "evolution": "nouveau"
@@ -9425,14 +9455,15 @@
       "organisation": "Ayomi",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/ayomi-mm11wae7hwekr1q7x7"
+        "https://frenchbreaches.com/alertes/ayomi-mm11wae7hwekr1q7x7",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/838170918"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Ayomi.",
       "evolution": "nouveau"
@@ -9512,14 +9543,15 @@
       "organisation": "Innovorder",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/innovorder-mlwczljdmb10pphp2o"
+        "https://frenchbreaches.com/alertes/innovorder-mlwczljdmb10pphp2o",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/804818482"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Innovorder.",
       "evolution": "nouveau"
@@ -9769,14 +9801,15 @@
       "organisation": "Direction Générale des Finances Publiques",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/direction-generale-des-finances-publiques-mlsb563td3sb6g2voxn"
+        "https://frenchbreaches.com/alertes/direction-generale-des-finances-publiques-mlsb563td3sb6g2voxn",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/130004955"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Direction Générale des Finances Publiques.",
       "evolution": "nouveau"
@@ -9786,14 +9819,15 @@
       "organisation": "Cyrillus",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/cyrillus-mlsb7gnmf8nei8fgsh"
+        "https://frenchbreaches.com/alertes/cyrillus-mlsb7gnmf8nei8fgsh",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/421022997"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Cyrillus.",
       "evolution": "nouveau"
@@ -9820,14 +9854,15 @@
       "organisation": "Adidas",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/adidas-mlpsnb6mte2hwrugiwl"
+        "https://frenchbreaches.com/alertes/adidas-mlpsnb6mte2hwrugiwl",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/085480069"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Adidas.",
       "evolution": "nouveau"
@@ -9956,14 +9991,15 @@
       "organisation": "Voyageurs du monde",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/voyageurs-du-monde-mlmft30slv06s5gqwp"
+        "https://frenchbreaches.com/alertes/voyageurs-du-monde-mlmft30slv06s5gqwp",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/315459016"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Voyageurs du monde.",
       "evolution": "nouveau"
@@ -10044,14 +10080,15 @@
       "organisation": "Gustave-Auto",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/gustave-auto-mlksxb6ahlsblb1bkck"
+        "https://frenchbreaches.com/alertes/gustave-auto-mlksxb6ahlsblb1bkck",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/808499040"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Gustave-Auto.",
       "evolution": "nouveau"
@@ -10078,14 +10115,15 @@
       "organisation": "IFAPME",
       "territoire": "Belgique",
       "localisation": "Belgique",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/ifapme-mljdutarctws1xjua8o"
+        "https://frenchbreaches.com/alertes/ifapme-mljdutarctws1xjua8o",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/908501356"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — IFAPME.",
       "evolution": "nouveau"
@@ -10267,14 +10305,15 @@
       "organisation": "Prozon",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/prozon-mlf9nhskbrfoi2okij"
+        "https://frenchbreaches.com/alertes/prozon-mlf9nhskbrfoi2okij",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/823128392"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Prozon.",
       "evolution": "nouveau"
@@ -10335,14 +10374,15 @@
       "organisation": "Atalian",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/atalian-mlf7z5mrgy54z0zaf16"
+        "https://frenchbreaches.com/alertes/atalian-mlf7z5mrgy54z0zaf16",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/572181170"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Atalian.",
       "evolution": "nouveau"
@@ -10403,14 +10443,15 @@
       "organisation": "Immo-pop",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/immo-pop-mle5gjge8y903581cxj"
+        "https://frenchbreaches.com/alertes/immo-pop-mle5gjge8y903581cxj",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/820359727"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Immo-pop.",
       "evolution": "nouveau"
@@ -10675,14 +10716,15 @@
       "organisation": "OpQuast",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/opquast-ml3wnhujuz5o13gsn7b"
+        "https://frenchbreaches.com/alertes/opquast-ml3wnhujuz5o13gsn7b",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/433890704"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — OpQuast.",
       "evolution": "nouveau"
@@ -10763,14 +10805,15 @@
       "organisation": "Association Nationale des Premiers Secours (ANPS)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/association-nationale-des-premiers-secours-anps-ml1d0cp2m2pi7bxu3nf"
+        "https://frenchbreaches.com/alertes/association-nationale-des-premiers-secours-anps-ml1d0cp2m2pi7bxu3nf",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/431701028"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Association Nationale des Premiers Secours (ANPS).",
       "evolution": "nouveau"
@@ -10819,14 +10862,15 @@
       "organisation": "Reseau.site",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/reseau-site-a554d6121b81"
+        "https://frenchbreaches.com/alertes/reseau-site-a554d6121b81",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/852610633"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Reseau.site.",
       "evolution": "nouveau"
@@ -10941,14 +10985,15 @@
       "organisation": "Livre en Poche",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/livre-en-poche-516f73252e12"
+        "https://frenchbreaches.com/alertes/livre-en-poche-516f73252e12",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/914375076"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Livre en Poche.",
       "evolution": "nouveau"
@@ -11026,14 +11071,15 @@
       "organisation": "Scoring.fit",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/scoring-fit-d13d3e0be632"
+        "https://frenchbreaches.com/alertes/scoring-fit-d13d3e0be632",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/820989903"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Scoring.fit.",
       "evolution": "nouveau"
@@ -11148,14 +11194,15 @@
       "organisation": "Syma Mobile",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/syma-mobile-0c0a8a5ad258"
+        "https://frenchbreaches.com/alertes/syma-mobile-0c0a8a5ad258",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/440697753"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Syma Mobile.",
       "evolution": "nouveau"
@@ -11199,14 +11246,15 @@
       "organisation": "Under Armour",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/under-armour-643071c26f29"
+        "https://frenchbreaches.com/alertes/under-armour-643071c26f29",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/492198460"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Under Armour.",
       "evolution": "nouveau"
@@ -11461,14 +11509,15 @@
       "organisation": "Zurflüh-Feller",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/zurfluh-feller-ml5h33bikg7opmhdq1"
+        "https://frenchbreaches.com/alertes/zurfluh-feller-ml5h33bikg7opmhdq1",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/876750043"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Zurflüh-Feller.",
       "evolution": "nouveau"
