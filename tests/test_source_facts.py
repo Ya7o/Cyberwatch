@@ -241,6 +241,10 @@ class TestFrenchBreaches:
             ("Cloué", "Groupe Cloué est cité dans l'article."),
             ("Exemple", "Fuite revendiquée par un."),
             ("Exemple", "Incident revendiqué par le hacker."),
+            # §stabilisation pré-release : reproduction exacte du cas signalé
+            # — un mot générique de menace n'est jamais un nom d'acteur.
+            ("Exemple", "La fuite a été revendiquée par le groupe Ransomware."),
+            ("Exemple", "L'attaque a été revendiquée par le groupe Rançongiciel."),
         )
         for organisation, summary in cases:
             entry = RawEntry(title=organisation, organisation=organisation, summary=summary)
@@ -281,6 +285,14 @@ class TestCyberattaqueOrg:
         assert fact["Third_Party"] == "BlgCloud"
         assert fact["Threat_Actor"] == "LockBit"
 
+    def test_acteur_generique_rancongiciel_nest_jamais_un_acteur(self):
+        entry = RawEntry(
+            title="Société Exemple", organisation="Société Exemple",
+            content="Le groupe Rançongiciel a revendiqué l'attaque.",
+        )
+        fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG"), entry, self.SPEC)
+        assert fact is None or fact["Threat_Actor"] == ""
+
     def test_simple_co_mention_ne_suffit_pas(self):
         entry = RawEntry(title="Société Exemple", organisation="Société Exemple", summary="La société travaille avec le prestataire BlgCloud.")
         fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG"), entry, self.SPEC)
@@ -316,6 +328,11 @@ class TestRansomwareLive:
     def test_groupe_devient_threat_actor(self):
         fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), self._entry(), self.SPEC)
         assert fact["Threat_Actor"] == "LockBit"
+
+    def test_groupe_generique_ransomware_nest_jamais_un_acteur(self):
+        entry = self._entry(group="Ransomware")
+        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), entry, self.SPEC)
+        assert fact is None or fact["Threat_Actor"] == ""
 
     def test_dates_distinctes_preservees(self):
         fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), self._entry(), self.SPEC)
@@ -366,7 +383,7 @@ class TestVeilleLlm:
         raise AssertionError("aucun record structuré avec acteur identifié n'a produit de fait complet")
 
     def test_sentinetelles_acteur_non_identifiees_sont_vides(self):
-        for actor in ("Inconnu", "Non identifié", "Non identifié publiquement"):
+        for actor in ("Inconnu", "Non identifié", "Non identifié publiquement", "Ransomware", "Rançongiciel"):
             entry = RawEntry(
                 title="X", organisation="X",
                 source_metadata={"acteur": actor, "statut": "signalé"},

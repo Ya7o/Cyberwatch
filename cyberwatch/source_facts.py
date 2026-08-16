@@ -164,6 +164,12 @@ _ACTOR_SENTINELS = {
     "", "un", "une", "le", "la", "les", "hacker", "le hacker", "un hacker",
     "attaquant", "l attaquant", "l'attaquant", "auteur", "inconnu", "non identifie",
     "non identifie publiquement", "n a", "na",
+    # §stabilisation pré-release : catégories génériques de menace qui ne
+    # sont jamais un nom d'acteur — cas réel corrigé, "revendiquée par le
+    # groupe Ransomware" produisait Threat_Actor="Ransomware". Un vrai groupe
+    # nommé (LockBit, Qilin, Akira...) ne matche jamais ces entrées.
+    "ransomware", "rancongiciel", "cybercriminel", "cybercriminels",
+    "pirate", "pirates",
 }
 
 
