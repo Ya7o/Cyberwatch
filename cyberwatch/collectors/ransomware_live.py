@@ -9,7 +9,6 @@ victimes de rançongiciel avec organisation, pays, groupe et date.
 L'API ayant connu plusieurs versions, plusieurs formes d'URL sont essayées et
 celle qui répond est enregistrée dans `RUN_SOURCES`.
 """
-
 from __future__ import annotations
 
 import re
@@ -105,7 +104,15 @@ class RansomwareLiveCollector(Collector):
                     if working_template and response.status_code == 404:
                         empty_country = True
                     else:
+                        # Conserver la vraie cause, notamment BUDGET_RUN : le
+                        # précédent code la remplaçait par HTTP_ERROR lorsque
+                        # aucun endpoint n'avait encore pu être interrogé.
                         result.reason_code = response.reason_code
+                    if response.reason_code in {
+                        status.REASON_BUDGET_RUN,
+                        status.REASON_BUDGET_SOURCE,
+                    }:
+                        break
                     continue
 
                 payload = response.json()
@@ -130,10 +137,13 @@ class RansomwareLiveCollector(Collector):
                         result.entries.append(entry)
                 break
 
+            if result.reason_code in {status.REASON_BUDGET_RUN, status.REASON_BUDGET_SOURCE}:
+                break
             if fetched or empty_country:
                 result.units_done += 1
             elif working_template is None:
-                result.reason_code = status.REASON_HTTP_ERROR
+                if result.reason_code == status.REASON_OK:
+                    result.reason_code = status.REASON_HTTP_ERROR
                 result.comment = "Aucun point d'entrée de l'API ransomware.live n'a répondu"
                 break
 
@@ -149,7 +159,8 @@ class RansomwareLiveCollector(Collector):
         result.items_seen = recognized
         result.items_in_window = len(result.entries)
         result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
-        result.comment = f"items_seen={recognized}; items_in_window={result.items_in_window}"
+        base_comment = f"items_seen={recognized}; items_in_window={result.items_in_window}"
+        result.comment = f"{result.comment}; {base_comment}" if result.comment else base_comment
         if rate_limit_retries:
             result.comment += f"; rate_limit_retries={rate_limit_retries}"
         return result
@@ -184,8 +195,6 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
     source_metadata = {
         "group": group,
         "discovered": _first_field(record, ["discovered", "discovered_date"]),
-        # Une date de publication n'est pas une date d'attaque : seuls les
-        # champs explicitement sémantisés attackdate/attack_date sont retenus.
         "attackdate": _first_field(record, ["attackdate", "attack_date"]),
         "website": _first_field(record, ["website"]),
         "claim_url": _first_field(record, ["post_url", "claim_url"]),
