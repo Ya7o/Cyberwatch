@@ -7,6 +7,7 @@ from cyberwatch.normalize import (
     classify_location,
     classify_sector,
     classify_threat,
+    extract_activity_description,
     find_known_entity,
     looks_cyber,
     organisation_from_title,
@@ -216,6 +217,74 @@ class TestSector:
 
     def test_toutes_les_valeurs_sont_dans_la_liste(self):
         assert classify_sector("n importe quoi") in config.SECTORS
+
+
+class TestSectorRulesResserrees:
+    """§Sector fiabilité : mots isolés retirés car omniprésents dans tout
+    récit d'incident cyber, jamais une preuve d'activité de la victime."""
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            "à ce stade, aucune donnée n'a fuité",
+            "les enquêteurs ignorent à ce stade l'ampleur de la fuite",
+        ],
+    )
+    def test_stade_marqueur_de_discours_najamais_sport(self, text):
+        assert classify_sector("", text) != config.SECTOR_SPORT
+
+    @pytest.mark.parametrize(
+        "text",
+        [
+            "le site web de l'entreprise a été piraté",
+            "des données publiées sur internet",
+            "une transformation digitale en cours",
+            "les systèmes ont été compromis",
+        ],
+    )
+    def test_vocabulaire_incident_najamais_tech(self, text):
+        assert classify_sector("", text) != config.SECTOR_TECH
+
+    def test_association_syndicat_najamais_services(self):
+        assert classify_sector("", "un syndicat de police a réagi à l'incident") != config.SECTOR_SERVICES
+        assert classify_sector("", "une association de victimes s'est constituée") != config.SECTOR_SERVICES
+
+    def test_mutuelle_reste_reconnue_via_finance(self):
+        # Le doublon mort dans SECTOR_SERVICES a été retiré, pas la règle
+        # elle-même (déjà couverte par SECTOR_FINANCE, testée en premier).
+        assert classify_sector("", "la mutuelle rembourse ses adhérents") == config.SECTOR_FINANCE
+
+
+class TestExtractActivityDescription:
+    """§Sector fiabilité : formulation métier explicite uniquement, jamais
+    le récit de l'incident — partagée entre `runner.py` et `source_facts.py`."""
+
+    def test_specialisee_dans(self):
+        text = "Bureau Vallée est une enseigne spécialisée dans la vente de fournitures de bureau."
+        assert "vente de fournitures de bureau" in extract_activity_description(text)
+
+    def test_editeur_de(self):
+        text = "La société est éditeur de logiciels de comptabilité."
+        assert "logiciels de comptabilité" in extract_activity_description(text)
+
+    def test_club_de_football(self):
+        text = "Le club de football professionnel a confirmé la fuite."
+        assert "football" in extract_activity_description(text)
+
+    def test_etablissement_de_sante(self):
+        text = "L'établissement de santé a été visé par un rançongiciel."
+        assert extract_activity_description(text) != ""
+
+    def test_texte_de_revendication_ransomware_renvoie_vide(self):
+        assert extract_activity_description("Groupe : LockBit") == ""
+        assert extract_activity_description("X revendiqué par LockBit") == ""
+
+    def test_absence_de_declencheur_renvoie_vide(self):
+        assert extract_activity_description("à ce stade, aucune donnée n'a fuité") == ""
+
+    def test_plusieurs_textes_premier_match_gagne(self):
+        result = extract_activity_description("", "acteur de la distribution automobile")
+        assert "distribution automobile" in result
 
 
 class TestLocation:

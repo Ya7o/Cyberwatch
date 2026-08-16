@@ -168,12 +168,16 @@ class AiRunState:
     sector_evidence_rejected: int = 0
     sector_resolved_enrichment_cache: int = 0
     sector_resolved_enriched_deterministic: int = 0
-    #: Toujours 0 : l'enrichissement gratuit ne fournit qu'un des 21 titres
-    #: de section NAF, déjà classés de façon exhaustive et déterministe
-    #: (org_enrichment.NAF_SECTIONS) — aucun second appel LLM n'est déclenché
-    #: (§12 METHODOLOGY.md). Colonne conservée pour la forme de la métrique
-    #: `Sector_Resolved_Enriched_LLM` (data/ai_usage.csv).
+    #: Dernier recours (§Sector fiabilité) : l'enrichissement gratuit fournit
+    #: un des 21 titres de section NAF, mais celui-ci n'est pas mappable par
+    #: `org_enrichment.NAF_SECTIONS` (Inconnu) -> un appel LLM minimal, borné
+    #: au seul libellé officiel (jamais le récit de l'incident), tente une
+    #: dernière classification. Voir `_escalate_sector_llm`.
     sector_resolved_enriched_llm: int = 0
+    #: LLM sur contexte source jamais tenté pour Secteur faute de description
+    #: d'activité métier exploitable (§9) — distinct de
+    #: `sector_evidence_rejected`, qui compte un appel fait puis rejeté.
+    sector_llm_skipped: int = 0
 
     started: float = field(default_factory=time.monotonic)
 
@@ -222,6 +226,27 @@ def _context(entry: RawEntry, max_chars: int) -> str:
     parts = [entry.title, entry.summary, entry.content]
     text = " ".join(part for part in parts if part).strip()
     return text[:max_chars]
+
+
+def _sector_llm_worth_calling(
+    entry: RawEntry, spec: SourceSpec, organisation_key_: str, max_chars: int
+) -> bool:
+    """Le LLM Sector (Phase 2, contexte source) n'est un dernier recours que
+    s'il reste, au-delà du seul nom de l'organisation, un contexte à
+    interpréter (§9) — la preuve stricte post-appel (`_sector_evidence_reason`)
+    reste le vrai filtre de qualité, volontairement pas dupliquée ici.
+
+    BonjourLaFuite ne l'atteint jamais : son contenu se limite
+    structurellement à l'organisation, une date et une liste de données
+    compromises (jamais une description d'activité) — seuls l'enrichissement
+    (Phase 1) et le LLM sur libellé enrichi (Phase 3) s'y appliquent.
+    """
+    if spec.source_id == "BONJOURLAFUITE":
+        return False
+    trimmed = _context(entry, max_chars).strip()
+    if not trimmed:
+        return False
+    return not _looks_like_bare_org_name(trimmed, organisation_key_)
 
 
 def _input_hash(item: Item, entry: RawEntry, requested: list[str], model: str, max_chars: int) -> str:
@@ -397,6 +422,39 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
     return _post_openai(body, state)
 
 
+def _call_openai_sector_label(activity_label: str, state: AiRunState) -> dict:
+    """Appel LLM minimal (Phase 3, §Sector fiabilité) : la seule preuve
+    possible est le libellé de section NAF officiel, jamais le récit de
+    l'incident — distinct de `_user_content`, qui suppose un `Item` complet
+    avec métadonnées incident."""
+    body = {
+        "model": state.model,
+        "input": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": (
+                "=== Contexte (libellé d'activité officiel, source externe "
+                "vérifiée, jamais un récit d'incident) ===\n"
+                f"{activity_label}\n\n"
+                "=== Champ à qualifier ===\n"
+                "Secteur uniquement, à partir de ce seul libellé d'activité "
+                "officiel. Si ce libellé ne correspond clairement à aucun "
+                "secteur de la taxonomie, réponds Inconnu."
+            )},
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "cyberwatch_qualification",
+                "schema": _build_schema(["Sector"]),
+                "strict": True,
+            }
+        },
+        "reasoning": {"effort": "minimal"},
+        "max_output_tokens": state.max_output_tokens,
+    }
+    return _post_openai(body, state)
+
+
 _SECTOR_INCIDENT_VOCAB: set[str] | None = None
 
 
@@ -515,13 +573,23 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
 
     Ne fait jamais rien si la source est explicitement exclue
     (`skip_ai_qualification`), ou si aucun des trois champs n'est encore
-    Inconnu (zéro appel dans ce cas). Le premier appel LLM (contexte source)
-    n'a lieu que si `state.enabled` (clé OpenAI présente) ; l'escalade
-    Secteur (§12) peut ensuite intervenir même sans clé si l'enrichissement
-    obtient un libellé d'activité mappable déterministiquement.
+    Inconnu (zéro appel dans ce cas). Pour Secteur (§Sector fiabilité),
+    l'enrichissement organisation gratuit et déterministe (Phase 1) est
+    toujours tenté en premier, avant tout appel LLM — un LLM ne doit être
+    qu'un dernier recours. Le LLM sur contexte source (Phase 2) n'est
+    lui-même tenté pour Secteur que s'il reste une description d'activité
+    métier exploitable dans le contexte (jamais pour deviner depuis le seul
+    nom de l'organisation ou le vocabulaire de l'incident) ; Threat/Location
+    continuent d'y être demandés normalement. Un dernier recours (Phase 3,
+    `_escalate_sector_llm`) tente un appel LLM minimal, borné au seul
+    libellé d'activité obtenu par l'enrichissement, quand celui-ci existe
+    mais n'est pas mappable déterministiquement.
     """
     if spec.params.get("skip_ai_qualification"):
         return
+
+    if item.Sector == config.SECTOR_UNKNOWN:
+        _escalate_sector_deterministic(item, entry, spec, state)
 
     requested = [
         name for name in ("Threat", "Sector", "Location")
@@ -534,14 +602,22 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     for name in requested:
         state.unknown_before[name] = state.unknown_before.get(name, 0) + 1
 
-    if state.enabled:
-        input_hash = _input_hash(item, entry, requested, state.model, state.max_context_chars)
+    sector_requested = "Sector" in requested
+    call_requested = requested
+    if sector_requested and not _sector_llm_worth_calling(
+        entry, spec, item.Organisation_Key, state.max_context_chars
+    ):
+        call_requested = [name for name in requested if name != "Sector"]
+        state.sector_llm_skipped += 1
+
+    if call_requested and state.enabled:
+        input_hash = _input_hash(item, entry, call_requested, state.model, state.max_context_chars)
         cache_key = (item.Item_ID, input_hash)
 
         cached = state.cache.get(cache_key)
         if cached is not None:
             state.cache_hits += 1
-            _apply_and_count_sector(item, requested, _decision_from_row(cached), state)
+            _apply_and_count_sector(item, call_requested, _decision_from_row(cached), state)
         elif state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
             state.budget_stopped = True
             state.calls_budget_blocked += 1
@@ -551,7 +627,7 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
             raw = None
             payload = None
             try:
-                payload = _call_openai(item, entry, spec, requested, state)
+                payload = _call_openai(item, entry, spec, call_requested, state)
                 raw = _extract_output_json(payload)
             except AiCallError as exc:
                 state.calls_failed += 1
@@ -567,7 +643,7 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                 cost = _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
                 state.estimated_cost_usd += cost
 
-                decision, rejected = _validate(raw, requested, context, item.Organisation_Key)
+                decision, rejected = _validate(raw, call_requested, context, item.Organisation_Key)
                 if rejected.get("Sector") in ("not_grounded", "org_name_only", "incident_vocabulary", "empty"):
                     state.sector_evidence_rejected += 1
                 if not decision:
@@ -575,12 +651,12 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                     print(f"Qualification IA : réponse invalide pour {item.Item_ID}, Inconnu conservé.")
                 else:
                     state.calls_succeeded += 1
-                    row = _row_from_decision(item, input_hash, requested, decision, state.model, usage, cost)
+                    row = _row_from_decision(item, input_hash, call_requested, decision, state.model, usage, cost)
                     state.cache[cache_key] = row
-                    _apply_and_count_sector(item, requested, decision, state)
+                    _apply_and_count_sector(item, call_requested, decision, state)
 
-    if "Sector" in requested and item.Sector == config.SECTOR_UNKNOWN:
-        _escalate_sector(item, entry, spec, state)
+    if sector_requested and item.Sector == config.SECTOR_UNKNOWN:
+        _escalate_sector_llm(item, entry, spec, state)
 
 
 def _apply_and_count_sector(item: Item, requested: list[str], decision: dict, state: AiRunState) -> None:
@@ -593,11 +669,12 @@ def _apply_and_count_sector(item: Item, requested: list[str], decision: dict, st
         state.sector_resolved_source_llm += 1
 
 
-def _escalate_sector(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
-    """Enrichissement gratuit d'entreprise pour Secteur (§12 METHODOLOGY.md),
-    déclenché uniquement si Secteur est toujours Inconnu après la tentative
-    sur le contexte source. Ne lève jamais, ne devine jamais : toute étape
-    infructueuse laisse Secteur à Inconnu.
+def _escalate_sector_deterministic(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
+    """Phase 1 (§Sector fiabilité) : enrichissement gratuit d'entreprise +
+    mapping NAF déterministe, toujours tenté avant tout appel LLM — jamais
+    de LLM ici. Ne lève jamais, ne devine jamais : une étape infructueuse
+    laisse Secteur à Inconnu (`_escalate_sector_llm`, Phase 3, pourra
+    ensuite prendre le relais en dernier recours).
     """
     if item.Sector != config.SECTOR_UNKNOWN:
         return
@@ -618,10 +695,6 @@ def _escalate_sector(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRun
         state.sector_resolved_enrichment_cache += 1
         state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
         return
-    if record.Validated_Via == "llm_declined":
-        # Déjà tenté par le passé, jamais concluant : pas de nouvelle
-        # tentative à chaque run.
-        return
 
     # Mapping déterministe — table dédiée aux 21 sections NAF
     # (org_enrichment.NAF_SECTIONS), pas classify_sector() : ce dernier est
@@ -629,25 +702,80 @@ def _escalate_sector(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRun
     # à Commerce, ce qui classerait à tort "Production et distribution
     # d'électricité..." en Commerce au lieu d'Énergie (constaté au premier
     # benchmark réel, cf. org_enrichment.py).
-    #
-    # Aucun appel LLM supplémentaire : le seul texte que l'API gratuite
-    # fournit est l'un des 21 titres de section NAF, déjà classés de façon
-    # exhaustive et délibérée par NAF_SECTIONS (y compris vers Inconnu quand
-    # aucune correspondance n'est claire) — payer un appel pour reclassifier
-    # une valeur déjà connue violerait le principe « jamais de LLM pour
-    # confirmer une valeur fiable déterministe » (§11).
     sector = org_enrichment.sector_for_activity_label(record.Activity_Label)
     if sector == config.SECTOR_UNKNOWN:
-        record.Validated_Via = "no_deterministic_match"
-        org_state.cache[item.Organisation_Key] = asdict(record)
+        # Pas de correspondance déterministe : `record` reste en cache tel
+        # que `resolve()` l'y a déjà placé (Activity_Label, Match_Status...).
+        # `_escalate_sector_llm` (Phase 3) pourra le relire sans nouvelle
+        # requête HTTP.
         return
 
     item.Sector = sector
     record.Validated_Sector = sector
     record.Validated_Via = "deterministic"
+    record.Cache_Version = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
     org_state.cache[item.Organisation_Key] = asdict(record)
     state.sector_resolved_enriched_deterministic += 1
     state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
+
+
+def _escalate_sector_llm(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
+    """Phase 3, dernier recours (§Sector fiabilité) : l'enrichissement
+    gratuit (Phase 1) a trouvé une entreprise mais un libellé de section NAF
+    non mappable déterministiquement -> un appel LLM minimal, borné au seul
+    libellé officiel (jamais le récit de l'incident). Ne lève jamais.
+    """
+    if item.Sector != config.SECTOR_UNKNOWN or not state.enabled:
+        return
+    org_state = state.org_enrichment
+    record_row = org_state.cache.get(item.Organisation_Key)
+    if not record_row or record_row.get("Match_Status") != org_enrichment.MATCHED:
+        return
+    activity_label = record_row.get("Activity_Label", "")
+    if not activity_label or record_row.get("Validated_Via") == "llm_declined":
+        # Déjà tenté par le passé, jamais concluant : pas de nouvelle
+        # tentative à chaque run.
+        return
+    if state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
+        return
+
+    state.calls_attempted += 1
+    try:
+        payload = _call_openai_sector_label(activity_label, state)
+        raw = _extract_output_json(payload)
+    except AiCallError as exc:
+        state.calls_failed += 1
+        print(f"Qualification IA : escalade Secteur (libellé enrichi) échouée pour {item.Item_ID} ({exc}).")
+        return
+
+    usage = _extract_usage(payload)
+    state.input_tokens += usage["input_tokens"]
+    state.cached_input_tokens += usage["cached_input_tokens"]
+    state.output_tokens += usage["output_tokens"]
+    state.reasoning_tokens += usage["reasoning_tokens"]
+    state.total_tokens += usage["total_tokens"]
+    state.estimated_cost_usd += _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
+
+    # Contexte = le libellé lui-même : la preuve stricte (_validate) exige
+    # que l'evidence renvoyée soit ancrée dans ce seul texte, jamais dans un
+    # récit d'incident.
+    decision, _rejected = _validate(raw, ["Sector"], activity_label, item.Organisation_Key)
+    value = decision.get("Sector")
+    confidence = decision.get("Sector_Confidence", 0.0)
+
+    updated = dict(record_row)
+    updated["Cache_Version"] = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
+    if value and value != config.SECTOR_UNKNOWN and confidence >= FIELD_SPECS["Sector"][3]:
+        state.calls_succeeded += 1
+        item.Sector = value
+        updated["Validated_Sector"] = value
+        updated["Validated_Via"] = "llm"
+        state.sector_resolved_enriched_llm += 1
+        state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
+    else:
+        state.calls_failed += 1
+        updated["Validated_Via"] = "llm_declined"
+    org_state.cache[item.Organisation_Key] = updated
 
 
 def _row_from_decision(item: Item, input_hash: str, requested: list[str], decision: dict,
@@ -694,8 +822,9 @@ def finish_run(
 
     `sector_pre_stats` (§12 METHODOLOGY.md) porte les compteurs déterministes
     calculés en amont dans `runner.py` (avant tout appel IA) :
-    `initial_unknown`/`resolved_reference`/`resolved_deterministic`. Optionnel
-    pour rester rétro-compatible avec les appels existants à 4 arguments.
+    `resolved_native`/`initial_unknown`/`resolved_reference`/
+    `resolved_deterministic`. Optionnel pour rester rétro-compatible avec les
+    appels existants à 4 arguments.
     """
     if state.enabled:
         rows = sorted(state.cache.values(), key=lambda r: (r.get("Item_ID", ""), r.get("Input_Hash", "")))
@@ -721,6 +850,7 @@ def finish_run(
     still_unknown = sum(state.unknown_before.values()) - sum(state.qualified.values())
 
     pre = sector_pre_stats or {}
+    sector_resolved_native = pre.get("resolved_native", 0)
     sector_initial_unknown = pre.get("initial_unknown", 0)
     sector_resolved_reference = pre.get("resolved_reference", 0)
     sector_resolved_deterministic = pre.get("resolved_deterministic", 0)
@@ -782,6 +912,8 @@ def finish_run(
         "Sector_Resolved_Enriched_Deterministic": state.sector_resolved_enriched_deterministic,
         "Sector_Resolved_Enriched_LLM": state.sector_resolved_enriched_llm,
         "Sector_Remaining_Unknown": sector_remaining_unknown,
+        "Sector_Resolved_Native": sector_resolved_native,
+        "Sector_LLM_Skipped_No_Evidence": state.sector_llm_skipped,
         "Org_Enrichment_Calls": org_state.calls_attempted,
         "Org_Enrichment_Duration_s": round(org_state.duration_seconds, 3),
         "Org_Enrichment_Cache_Hit_Rate": org_cache_hit_rate,

@@ -315,6 +315,15 @@ class TestCyberattaqueOrg:
         assert json.loads(fact["Vulnerabilities_JSON"]) == ["CVE-2026-72898"]
         assert "9.8" in fact["CVSS_Raw"]
 
+    def test_activity_description_peuplee(self):
+        entry = RawEntry(
+            title="Société Exemple victime d'une cyberattaque",
+            summary="",
+            content="Société Exemple est une entreprise spécialisée dans la vente de matériel médical.",
+        )
+        fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG"), entry, self.SPEC)
+        assert "vente de matériel médical" in fact["Activity_Description"]
+
 
 # --------------------------------------------------------------------------
 # RANSOMWARE_LIVE

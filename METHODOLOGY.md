@@ -430,28 +430,36 @@ même mécanisme que le §11) — jamais un outil de recherche, jamais un agent.
 Toute information externe est récupérée directement par Cyberwatch, en HTTP
 simple, vers une API publique gratuite.
 
-**Pipeline**, déclenché uniquement quand `Sector` est encore `Inconnu` après
-les règles déterministes et le backfill (§11 inchangé) :
+**Pipeline** (révisé — §Sector fiabilité, voir note de révision en fin de
+section), déclenché uniquement quand `Sector` est encore `Inconnu` après les
+règles déterministes et le backfill (§11 inchangé). L'enrichissement gratuit
+et déterministe passe désormais **avant** tout appel LLM — un LLM ne doit
+être qu'un dernier recours, jamais l'étape automatique :
 
 ```
 Sector Inconnu après déterministe + référentiel ?
   → non : arrêt, coût nul
-  → oui → tentative LLM sur le contexte source (§11), preuve stricte :
-       l'evidence doit décrire l'activité de l'organisation, être ancrée
-       dans le contexte transmis, jamais réduite au nom de l'organisation,
-       jamais issue du vocabulaire de l'incident
-  → Sector toujours Inconnu (réponse Inconnu ou preuve rejetée) →
-       cache d'enrichissement (data/org_enrichment_cache.csv, clé
-       Organisation_Key) déjà validé ? → oui : appliqué, coût nul
+  → oui → Phase 1 : cache d'enrichissement (data/org_enrichment_cache.csv,
+       clé Organisation_Key) déjà validé ? → oui : appliqué, coût nul
        → non → requête gratuite recherche-entreprises.api.gouv.fr,
          correspondance UNIQUEMENT sur égalité exacte de nom normalisé
          (`normalize.organisation_key`) ; plusieurs entités légales
          distinctes partageant ce nom (ex. franchises) → AMBIGUOUS, Sector
          reste Inconnu, jamais de choix arbitraire
-  → titre de section NAF obtenu (cache ou HTTP frais, cf. note API) →
-       mapping déterministe via `org_enrichment.NAF_SECTIONS` (21 entrées
-       fixes, coût nul, aucun appel LLM — la table couvre les 21 valeurs
-       possibles de façon exhaustive, y compris vers Inconnu)
+       → titre de section NAF obtenu (cache ou HTTP frais, cf. note API) →
+         mapping déterministe via `org_enrichment.NAF_SECTIONS` (21 entrées
+         fixes, coût nul) → Sector résolu, arrêt
+  → Sector toujours Inconnu → Phase 2 : LLM sur le contexte source (§11),
+       tenté seulement si le contexte dépasse le seul nom de l'organisation
+       (§9 routage — BonjourLaFuite ne l'atteint jamais, contenu
+       structurellement pauvre, cf. plus bas) ; preuve stricte : l'evidence
+       doit décrire l'activité de l'organisation, être ancrée dans le
+       contexte transmis, jamais réduite au nom de l'organisation, jamais
+       issue du vocabulaire de l'incident
+  → Sector toujours Inconnu, mais un libellé de section NAF a été obtenu en
+       Phase 1 sans correspondance déterministe claire → Phase 3, dernier
+       recours : un appel LLM minimal, borné au seul libellé officiel
+       (jamais le récit de l'incident) — voir note de révision
   → aucune activité fiable obtenue, ou section sans correspondance claire →
        Inconnu reste Inconnu, jamais deviné
 ```
@@ -466,10 +474,20 @@ est un code NAF nu (ex. `"63.11Z"`), jamais un objet `{code, libelle}`. Le
 seul texte officiel disponible est le titre de la section NAF à une lettre
 (`section_activite_principale`, A à U), exploité via `NAF_SECTION_LABELS`.
 Comme cette section ne peut prendre que 21 valeurs, `NAF_SECTIONS` les
-tranche toutes explicitement et **aucun second appel LLM n'a lieu** —
-l'appeler aurait payé pour reclassifier une valeur déjà connue de façon
-déterministe, contraire au §11 (« jamais de LLM pour confirmer une valeur
-fiable »). Le même run a aussi révélé que `nom_complet` compose souvent
+tranche presque toutes explicitement, sans appel LLM — payer un appel pour
+reclassifier une valeur déjà connue de façon déterministe violerait le §11
+(« jamais de LLM pour confirmer une valeur fiable »). **Révision (§Sector
+fiabilité)** : pour les libellés que `NAF_SECTIONS` renvoie à `Inconnu`
+faute de correspondance claire (ex. « Autres activités de services »), un
+dernier recours borné (`ai.py::_escalate_sector_llm`) tente désormais un
+appel LLM minimal dont la seule preuve possible est ce libellé officiel
+lui-même — jamais le récit de l'incident. Décision explicite : ce chemin
+avait été volontairement écarté au run du 2026-08-15 (paragraphe
+initialement écrit ici), mais reste borné aux mêmes garde-fous que le §11
+(taxonomie fermée, evidence ancrée, `Inconnu` si confiance insuffisante) et
+au même budget OpenAI. Le résultat (`llm` ou `llm_declined`, jamais
+retenté) est mis en cache au même titre que la voie déterministe
+(`Validated_Via`). Le même run a aussi révélé que `nom_complet` compose souvent
 « Nom commercial (Raison sociale) » : le matching utilise `nom_raison_sociale`
 en priorité pour éviter qu'une parenthèse ne casse une correspondance
 évidente.
@@ -495,12 +513,24 @@ au run suivant), `Sector` reste `Inconnu` — une panne d'enrichissement ne
 fait jamais échouer la collecte.
 
 **Cache d'enrichissement** : `data/org_enrichment_cache.csv`, clé
-`Organisation_Key`, sans TTL — cohérent avec `ai_qualifications.csv` et
-`enrichment_reference.csv`. `MATCHED`/`AMBIGUOUS`/`NOT_FOUND` sont
-permanents (jamais retentés) ; `ERROR` ne l'est jamais (retenté à chaque
-run). `Validated_Sector`/`Validated_Via` (`deterministic` ou
-`no_deterministic_match`) évitent toute nouvelle requête HTTP une fois un
-secteur validé ou une section NAF déjà classée sans correspondance.
+`Organisation_Key`. `ERROR` n'est jamais mis en cache (retenté à chaque
+run). `MATCHED`/`AMBIGUOUS`/`NOT_FOUND` sont durables par défaut, mais
+**versionnés** (§Sector fiabilité) plutôt que strictement permanents :
+`Cache_Version` (colonne additive, `org_enrichment.ORG_ENRICHMENT_CACHE_VERSION`,
+bump si `_match`/`NAF_SECTIONS` change matériellement) est comparée au
+chargement du cache (`start_state()`). Un `NOT_FOUND`/`AMBIGUOUS` dont la
+version diffère est ignoré (nouvelle requête HTTP au prochain `resolve()`) —
+un résultat négatif ancien ne doit jamais bloquer définitivement une
+meilleure résolution après un changement de logique. Un `MATCHED` reste
+chargé quelle que soit sa version (données d'entreprise durables, jamais
+retenté par HTTP), mais `Validated_Sector`/`Validated_Via` sont
+réinitialisés si la version diffère, pour laisser une nouvelle chance au
+mapping NAF/à l'escalade LLM. `Validated_Via` prend désormais quatre
+valeurs : `""` (jamais tenté), `"deterministic"`, `"llm"`, `"llm_declined"`
+(déjà tenté par le LLM minimal, jamais concluant — jamais retenté à
+version de cache inchangée). Pas de TTL par ailleurs : cohérent avec
+`ai_qualifications.csv`/`enrichment_reference.csv`, sans infrastructure
+supplémentaire.
 
 **Politique Immobilier → Construction / BTP** : la taxonomie Cyberwatch n'a
 pas de secteur « Immobilier » dédié. La section NAF L (« Activités
@@ -515,15 +545,22 @@ le contexte source. L'enrichissement HTTP a son propre plafond
 (`ORG_ENRICHMENT_MAX_CALLS_PER_RUN`, défaut 200), indépendant du budget
 OpenAI.
 
-**Nouvelles métriques** (`data/ai_usage.csv`, additives en fin de colonnes) :
+**Métriques** (`data/ai_usage.csv`, additives en fin de colonnes) :
 `Sector_Initial_Unknown`, `Sector_Resolved_Reference`,
-`Sector_Resolved_Deterministic`, `Sector_Resolved_Source_LLM`,
-`Sector_Evidence_Rejected`, `Sector_Enrichment_Cache_Hit`,
+`Sector_Resolved_Deterministic` (règle sur organisation + description
+d'activité étroitement extraite, jamais l'article complet — cf. §Sector
+fiabilité), `Sector_Resolved_Source_LLM`, `Sector_Evidence_Rejected`,
+`Sector_Enrichment_Cache_Hit`,
 `Sector_Enrichment_Http_Attempted/Matched/Ambiguous/Not_Found/Error`,
 `Sector_Resolved_Enriched_Deterministic`, `Sector_Resolved_Enriched_LLM`
-(toujours 0, conservée pour la forme — cf. note API ci-dessus),
-`Sector_Remaining_Unknown`, `Org_Enrichment_Calls`,
-`Org_Enrichment_Duration_s`, `Org_Enrichment_Cache_Hit_Rate`.
+(désormais réellement peuplée : dernier recours borné au libellé NAF, cf.
+ci-dessus), `Sector_Remaining_Unknown`, `Org_Enrichment_Calls`,
+`Org_Enrichment_Duration_s`, `Org_Enrichment_Cache_Hit_Rate`, et deux
+compteurs additionnels (§Sector fiabilité) : `Sector_Resolved_Native`
+(résolution directe depuis un champ structuré de la source, ex.
+`entry.sector` RANSOMWARE_LIVE, invisible jusqu'ici) et
+`Sector_LLM_Skipped_No_Evidence` (LLM sur contexte source jamais tenté,
+routage pré-appel — distinct d'un appel fait puis rejeté).
 
 **Panne non bloquante et REPLAY** : mêmes garanties que le §11 —
 `ORG_ENRICHMENT_ENABLED=0` ou absence de résultat exploitable laisse
@@ -531,6 +568,34 @@ OpenAI.
 traverse jamais `run_source`/`entry_to_item`, donc n'appelle jamais
 l'enrichissement, même si les clés/variables d'environnement sont
 présentes.
+
+**Note de révision (§Sector fiabilité)** : un audit a identifié qu'une
+règle déterministe pouvait classifier `Sector` à partir de vocabulaire
+d'incident non représentatif de l'activité de la victime — cas concret :
+pour `CYBERATTAQUE_ORG` (seule source combinant `include_content=True` sans
+secteur structuré ni `title_is_organisation`), le fallback déterministe
+scannait l'article complet, et le mot isolé « stade » (règle Sport)
+matchait dans « à ce stade, aucune donnée... ». Corrections apportées,
+volontairement resserrées (pas de refonte du pipeline Secteur) :
+- `config.SECTOR_RULES` perd les mots isolés les plus dangereux, omniprésents
+  dans tout récit d'incident cyber sans jamais décrire une activité :
+  `stade`, `web`, `internet`, `digital`, `systemes`/`systems` (Sport/Tech),
+  `association`, `syndicat` (Services, + un doublon mort `mutuelle`).
+- Le fallback déterministe (`runner.py::entry_to_item`) ne reçoit plus
+  jamais l'article complet : uniquement l'organisation et, si présente, une
+  description d'activité **étroitement extraite**
+  (`normalize.extract_activity_description`, vocabulaire de déclencheurs
+  fermé — « spécialisée dans », « éditeur de », « club de football »...).
+  Cette même fonction alimente aussi `source_facts.py::Activity_Description`
+  (y compris désormais pour `CYBERATTAQUE_ORG`, qui ne la remplissait pas) :
+  une seule implémentation, deux usages.
+- Le LLM sur contexte source (§ ci-dessus, Phase 2) n'est plus tenté que si
+  le contexte dépasse le seul nom de l'organisation ; BonjourLaFuite ne
+  l'atteint jamais (contenu structurellement pauvre : organisation, date,
+  liste de données compromises — jamais une description d'activité).
+- `VEILLE_LLM` n'est concerné par aucun de ces changements (source
+  analytique séparée, comportement et priorité de déduplication
+  `dedup._preferred_qualification` inchangés).
 
 ## 13. Faits source : provenance déclarative, jamais canonique
 

@@ -299,6 +299,10 @@ AI_USAGE_COLUMNS = [
     "Org_Enrichment_Calls",
     "Org_Enrichment_Duration_s",
     "Org_Enrichment_Cache_Hit_Rate",
+    # §Sector (fiabilité) : additives, mêmes garanties de rétrocompatibilité
+    # que le bloc ci-dessus.
+    "Sector_Resolved_Native",
+    "Sector_LLM_Skipped_No_Evidence",
 ]
 
 # --------------------------------------------------------------------------
@@ -318,6 +322,11 @@ ORG_ENRICHMENT_CACHE_COLUMNS = [
     "Fetched_At",
     "Validated_Sector",
     "Validated_Via",
+    # §Sector (fiabilité) : version de la logique de matching/mapping ayant
+    # produit cette ligne — permet d'invalider ciblément un résultat négatif
+    # ancien (org_enrichment.ORG_ENRICHMENT_CACHE_VERSION) sans TTL ni infra
+    # supplémentaire. Additive, rétrocompatible (row.get(col, "")).
+    "Cache_Version",
 ]
 
 # --------------------------------------------------------------------------

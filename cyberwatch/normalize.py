@@ -239,6 +239,44 @@ def classify_sector(*texts: str, given: str = "") -> str:
     return config.SECTOR_UNKNOWN
 
 
+#: Formulations explicites d'activité métier ("X spécialisée dans Y", "éditeur
+#: de Y"...) : capturent la phrase entière (déclencheur inclus), jamais
+#: seulement le complément, pour garder la formulation exacte de la source.
+_ACTIVITY_LEADIN_RE = re.compile(
+    r"\b(?:sp[ée]cialis[ée]e?\s+dans|[ée]diteur\s+de|acteur\s+de|"
+    r"fournisseur\s+de|fabricant\s+de|distributeur\s+de|enseigne\s+de)"
+    r"\s+([^,.;:\n]{3,80})",
+    re.I,
+)
+#: Groupes nominaux auto-descriptifs : la phrase elle-même est déjà une
+#: description d'activité, vocabulaire fermé (même esprit que `LEGAL_FORMS`).
+_ACTIVITY_NOUN_RE = re.compile(
+    r"\b(club\s+de\s+football(?:\s+professionnel)?|club\s+sportif|"
+    r"[ée]tablissement\s+de\s+sant[ée]|centre\s+de\s+formation|"
+    r"organisme\s+public|association\s+sportive)\b",
+    re.I,
+)
+
+
+def extract_activity_description(*texts: str) -> str:
+    """Formulation métier explicite (§9/§Sector), jamais le récit de
+    l'incident.
+
+    Vocabulaire de déclencheurs fermé, à l'image de `_UNIT_MAP` de
+    `source_facts.py` : mieux vaut rater une description réelle formulée
+    autrement que promouvoir une phrase d'incident en preuve d'activité.
+    Chaîne vide si aucun déclencheur n'est présent — jamais de best-effort.
+    """
+    for text in texts:
+        if not text:
+            continue
+        for pattern in (_ACTIVITY_LEADIN_RE, _ACTIVITY_NOUN_RE):
+            match = pattern.search(text)
+            if match:
+                return match.group(0).strip()
+    return ""
+
+
 # --------------------------------------------------------------------------
 # Localisation (§10)
 # --------------------------------------------------------------------------

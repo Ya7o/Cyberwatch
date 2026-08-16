@@ -36,6 +36,7 @@ from .normalize import (
     classify_sector,
     classify_threat,
     clean_organisation,
+    extract_activity_description,
     find_known_entity,
     looks_cyber,
     organisation_from_entry_title,
@@ -336,6 +337,8 @@ def entry_to_item(
 
     # Pipeline Secteur (§12 METHODOLOGY.md) : chaque étape déterministe qui
     # résout Sector depuis Inconnu s'instrumente ici, avant tout appel IA.
+    if sector_stats is not None and sector != config.SECTOR_UNKNOWN:
+        sector_stats["resolved_native"] = sector_stats.get("resolved_native", 0) + 1
     sector_was_unknown = sector == config.SECTOR_UNKNOWN
     if sector_stats is not None and sector_was_unknown:
         sector_stats["initial_unknown"] = sector_stats.get("initial_unknown", 0) + 1
@@ -345,7 +348,18 @@ def entry_to_item(
     if sector_stats is not None and sector_was_unknown and sector != config.SECTOR_UNKNOWN:
         sector_stats["resolved_reference"] = sector_stats.get("resolved_reference", 0) + 1
 
-    sector_texts = (organisation,) if spec.params.get("title_is_organisation") else (organisation, text)
+    # Le fallback déterministe ne scanne plus jamais l'article complet
+    # (§12 METHODOLOGY.md) : un mot isolé du récit d'incident ("à ce stade",
+    # "site web piraté"...) ne doit jamais valoir preuve d'activité. Seule une
+    # formulation métier étroitement extraite (`extract_activity_description`)
+    # accompagne l'organisation. VEILLE_LLM garde son comportement historique
+    # (source déjà structurée, cf. §13) : `entry.sector` la résout presque
+    # toujours en amont, ce chemin n'est qu'un filet de sécurité inchangé.
+    if spec.source_id == "VEILLE_LLM":
+        sector_texts = (organisation, text)
+    else:
+        activity_description = extract_activity_description(text)
+        sector_texts = (organisation, activity_description) if activity_description else (organisation,)
     if sector == config.SECTOR_UNKNOWN:
         sector = classify_sector(*sector_texts, given=sector_hint)
         if sector_stats is not None and sector != config.SECTOR_UNKNOWN:

@@ -295,7 +295,9 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "logistique", "logistics", "fret", "maritime", "shipping",
     ]),
     (SECTOR_SPORT, [
-        "federation francaise de", "federation francaise d ", "club sportif", "federation sportive", "sport", "fitness", "stade",
+        "federation francaise de", "federation francaise d ", "club sportif", "federation sportive", "sport", "fitness",
+        # "stade" retiré (§Sector) : faux positif systématique sur « à ce
+        # stade » (marqueur de discours), pas un stade sportif.
         "olympique", "football",
     ]),
     (SECTOR_RETAIL, [
@@ -308,10 +310,14 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "grande surface", "centre commercial", "negoce", "grossiste",
     ]),
     (SECTOR_TECH, [
-        "technologies", "technology", "systemes", "systems", "reseaux",
-        "digital", "web", "editeur de logiciels", "esn",
+        # "systemes"/"systems"/"digital"/"web"/"internet" retirés (§Sector) :
+        # omniprésents dans tout récit d'incident cyber, quel que soit le
+        # secteur réel de la victime ("systèmes piratés", "site web", "des
+        # données publiées sur internet"...), jamais une preuve d'activité.
+        "technologies", "technology", "reseaux",
+        "editeur de logiciels", "esn",
         "cloud", "logiciel", "software", "saas", "numerique", "telecom",
-        "telecommunication", "operateur mobile", "internet", "technologie",
+        "telecommunication", "operateur mobile", "technologie",
         "tech", "informatique", "hebergeur", "datacenter", "orange", "sfr",
         "zeop", "emtel", "telma", "airtel",
     ]),
@@ -338,8 +344,11 @@ SECTOR_RULES: list[tuple[str, list[str]]] = [
         "cabinet d avocats", "cabinet comptable", "expertise comptable",
         "notaire", "huissier", "conseil en", "interim", "recrutement",
         "nettoyage", "securite privee",
-        # Structures associatives et ordres professionnels.
-        "association", "ordre des", "syndicat", "avocats", "mutuelle",
+        # "association"/"syndicat" retirés (§Sector) : désignent souvent un
+        # tiers mentionné dans le récit (ex. "un syndicat de police a réagi"),
+        # pas nécessairement l'activité de la victime. "mutuelle" retiré ici
+        # aussi : doublon mort avec SECTOR_FINANCE, testée en premier.
+        "ordre des", "avocats",
         "groupement", "cooperative", "chambre syndicale",
     ]),
 ]

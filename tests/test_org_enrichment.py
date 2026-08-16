@@ -300,3 +300,64 @@ class TestPersistence:
         monkeypatch.setenv("ORG_ENRICHMENT_ENABLED", "0")
         state = org_enrichment.start_state()
         assert state.enabled is False
+
+
+class TestCacheVersioning:
+    """§Sector fiabilité : un `NOT_FOUND`/`AMBIGUOUS` en cache ne doit jamais
+    devenir une réponse négative permanente après un changement de logique."""
+
+    def test_not_found_version_perimee_est_ignore(self, monkeypatch):
+        monkeypatch.setenv("ORG_ENRICHMENT_ENABLED", "1")
+        store.save_org_enrichment_cache([{
+            "Organisation_Key": "orgx", "Query_Name": "Org X",
+            "Match_Status": "NOT_FOUND", "Fetched_At": "2026-08-10",
+            "Cache_Version": "",
+        }])
+
+        state = org_enrichment.start_state()
+
+        assert "orgx" not in state.cache
+
+    def test_not_found_meme_version_reste_charge(self, monkeypatch):
+        monkeypatch.setenv("ORG_ENRICHMENT_ENABLED", "1")
+        store.save_org_enrichment_cache([{
+            "Organisation_Key": "orgx", "Query_Name": "Org X",
+            "Match_Status": "NOT_FOUND", "Fetched_At": "2026-08-10",
+            "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
+        }])
+
+        state = org_enrichment.start_state()
+
+        assert "orgx" in state.cache
+
+    def test_matched_version_perimee_conserve_donnees_reinitialise_validation(self, monkeypatch):
+        monkeypatch.setenv("ORG_ENRICHMENT_ENABLED", "1")
+        store.save_org_enrichment_cache([{
+            "Organisation_Key": "scalingo", "Query_Name": "Scalingo",
+            "Matched_Name": "Scalingo", "Company_ID": "111", "Activity_Code": "6311Z",
+            "Activity_Label": "Information et communication", "Evidence_Source": "test",
+            "Evidence_URL": "", "Match_Status": "MATCHED", "Fetched_At": "2026-08-10",
+            "Validated_Sector": "Numérique / Technologie", "Validated_Via": "deterministic",
+            "Cache_Version": "",
+        }])
+
+        state = org_enrichment.start_state()
+
+        assert "scalingo" in state.cache
+        row = state.cache["scalingo"]
+        assert row["Activity_Label"] == "Information et communication"
+        assert row["Company_ID"] == "111"
+        assert row["Validated_Sector"] == ""
+        assert row["Validated_Via"] == ""
+        assert row["Cache_Version"] == org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
+
+    def test_resolve_stampe_la_version_courante(self, monkeypatch):
+        monkeypatch.setattr(
+            org_enrichment.requests, "get",
+            lambda *a, **k: _FakeResponse(200, payload={"results": []}),
+        )
+        state = enabled_state()
+
+        record = org_enrichment.resolve("orgx", "Org X", "2026-08-15", state)
+
+        assert record.Cache_Version == org_enrichment.ORG_ENRICHMENT_CACHE_VERSION

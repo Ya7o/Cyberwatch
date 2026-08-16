@@ -123,6 +123,13 @@ def _env_bool(name: str, default: bool) -> bool:
 ORG_ENRICHMENT_TIMEOUT_SECONDS = _env_int("ORG_ENRICHMENT_TIMEOUT_SECONDS", 10)
 ORG_ENRICHMENT_MAX_RETRIES = _env_int("ORG_ENRICHMENT_MAX_RETRIES", 1)
 
+#: Bump uniquement si le matching (`_match`) ou le mapping NAF->Secteur
+#: (`NAF_SECTIONS`) change matériellement (§Sector fiabilité). Un
+#: `NOT_FOUND`/`AMBIGUOUS` en cache dont la version diffère est ignoré au
+#: chargement (nouvelle tentative HTTP) plutôt que traité comme définitif —
+#: sans TTL ni infrastructure supplémentaire.
+ORG_ENRICHMENT_CACHE_VERSION = "1"
+
 MATCHED = "MATCHED"
 AMBIGUOUS = "AMBIGUOUS"
 NOT_FOUND = "NOT_FOUND"
@@ -154,6 +161,8 @@ class OrgEnrichmentRecord:
     #: "" (pas encore tenté) / "deterministic" / "llm" / "llm_declined"
     #: (déjà tenté, jamais concluant : ne jamais retenter à chaque run).
     Validated_Via: str = ""
+    #: Version de la logique ayant produit cette ligne (`ORG_ENRICHMENT_CACHE_VERSION`).
+    Cache_Version: str = ""
 
 
 @dataclass
@@ -183,7 +192,16 @@ class OrgEnrichmentState:
 
 def start_state() -> OrgEnrichmentState:
     """Prépare l'état du run : coupe-circuit indépendant de `OPENAI_API_KEY`,
-    charge le cache existant."""
+    charge le cache existant.
+
+    Un `NOT_FOUND`/`AMBIGUOUS` dont `Cache_Version` ne correspond plus à
+    `ORG_ENRICHMENT_CACHE_VERSION` est ignoré (nouvelle tentative HTTP au
+    prochain `resolve()`) : un résultat négatif ancien ne doit jamais bloquer
+    définitivement une meilleure résolution après un changement de logique.
+    Un `MATCHED` reste chargé (données d'entreprise durables), mais
+    `Validated_Sector`/`Validated_Via` sont réinitialisés dans ce cas pour
+    laisser une nouvelle chance au mapping/à l'escalade LLM mis à jour.
+    """
     state = OrgEnrichmentState(
         enabled=_env_bool("ORG_ENRICHMENT_ENABLED", True),
         max_calls=_env_int("ORG_ENRICHMENT_MAX_CALLS_PER_RUN", 200),
@@ -192,8 +210,16 @@ def start_state() -> OrgEnrichmentState:
         return state
     for row in store.load_org_enrichment_cache():
         key = row.get("Organisation_Key", "")
-        if key:
-            state.cache[key] = row
+        if not key:
+            continue
+        if row.get("Cache_Version") != ORG_ENRICHMENT_CACHE_VERSION:
+            if row.get("Match_Status") in (NOT_FOUND, AMBIGUOUS):
+                continue
+            row = dict(row)
+            row["Validated_Sector"] = ""
+            row["Validated_Via"] = ""
+            row["Cache_Version"] = ORG_ENRICHMENT_CACHE_VERSION
+        state.cache[key] = row
     return state
 
 
@@ -297,6 +323,7 @@ def _record_from_candidate(org_key: str, query_name: str, candidate: dict, fetch
         Evidence_URL=(f"{ORG_ENRICHMENT_URL}?q={siren}" if siren else ""),
         Match_Status=MATCHED,
         Fetched_At=fetched_at,
+        Cache_Version=ORG_ENRICHMENT_CACHE_VERSION,
     )
 
 
@@ -345,6 +372,7 @@ def resolve(
             Query_Name=organisation_raw,
             Match_Status=status,
             Fetched_At=fetched_at,
+            Cache_Version=ORG_ENRICHMENT_CACHE_VERSION,
         )
 
     state.cache[org_key] = asdict(record)

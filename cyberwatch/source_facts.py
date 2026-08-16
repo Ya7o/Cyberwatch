@@ -26,7 +26,12 @@ import re
 
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
-from .normalize import clean_organisation, parse_date, strip_accents
+from .normalize import (
+    clean_organisation,
+    extract_activity_description,
+    parse_date,
+    strip_accents,
+)
 
 #: Bump uniquement si les règles d'extraction changent matériellement
 #: (même esprit que `config.METHOD_ID`, mais scope local à ce module —
@@ -71,10 +76,6 @@ _CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.I)
 _CVSS_RE = re.compile(r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:\.\d)?)(?:\s*/\s*10)?\b", re.I)
 _VOLUME_RE = re.compile(r"\b\d[\d\s ,.]*\s*(?:Ko|Mo|Go|To|KB|MB|GB|TB)\b", re.I)
 _FILE_COUNT_RE = re.compile(r"\b(\d[\d\s .,]*)\s*(?:fichiers?|documents?)\b", re.I)
-_ACTIVITY_RE = re.compile(
-    r"\b(?:sp[ée]cialis[ée]e?\s+dans|[ée]diteur\s+de|acteur\s+de)\s+([^,.;:\n]{3,80})",
-    re.I,
-)
 
 
 def _extract_cves(*texts: str) -> list[str]:
@@ -105,14 +106,6 @@ def _extract_file_count(*texts: str) -> str:
             digits = match.group(1).replace(" ", "").replace(" ", "").replace(".", "").replace(",", "")
             if digits.isdigit():
                 return digits
-    return ""
-
-
-def _activity_description(*texts: str) -> str:
-    for text in texts:
-        match = _ACTIVITY_RE.search(text or "")
-        if match:
-            return match.group(0).strip()
     return ""
 
 
@@ -355,7 +348,7 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     if cvss:
         fact["CVSS_Raw"] = cvss
 
-    activity = _activity_description(text)
+    activity = extract_activity_description(text)
     if activity:
         fact["Activity_Description"] = activity
 
@@ -437,6 +430,10 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
         if website:
             fact["Victim_Website"] = website
             evidence["Victim_Website"] = website_match.group(0).strip()
+
+    activity = extract_activity_description(text)
+    if activity:
+        fact["Activity_Description"] = activity
 
     return _finalize(fact, entry, evidence)
 
