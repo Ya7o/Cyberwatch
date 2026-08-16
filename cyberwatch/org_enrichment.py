@@ -1,4 +1,4 @@
-"""Enrichissement gratuit d'entreprise pour `Sector`, uniquement (§12 METHODOLOGY.md).
+"""Enrichissement gratuit d'entreprise réutilisé pour `Sector` et `Location` (§12 METHODOLOGY.md).
 
 Quand le contexte source ne décrit pas l'activité de l'organisation, ce
 module interroge l'API publique française `recherche-entreprises.api.gouv.fr`
@@ -103,6 +103,25 @@ def sector_for_activity_label(activity_label: str) -> str:
     return _LABEL_TO_SECTOR.get(activity_label, config.SECTOR_UNKNOWN)
 
 
+def location_for_headquarters_department(department: str) -> str:
+    """Mappe uniquement les départements couverts sans extrapolation.
+
+    974/976 sont les deux territoires ultramarins de la taxonomie ciblée ;
+    les départements 01-95 (ainsi que 2A/2B) valent France métropolitaine.
+    Les autres codes restent Inconnu.
+    """
+    value = str(department or "").strip().upper()
+    if value == "974":
+        return config.LOC_REUNION
+    if value == "976":
+        return config.LOC_MAYOTTE
+    if value in {"2A", "2B"}:
+        return config.LOC_FRANCE
+    if value.isdigit() and 1 <= int(value) <= 95:
+        return config.LOC_FRANCE
+    return config.LOC_INCONNU
+
+
 def _env_int(name: str, default: int) -> int:
     value = os.getenv(name)
     if not value:
@@ -150,6 +169,7 @@ class OrgEnrichmentRecord:
     Company_ID: str = ""
     Activity_Code: str = ""
     Activity_Label: str = ""
+    Headquarters_Department: str = ""
     Evidence_Source: str = "recherche-entreprises.api.gouv.fr"
     Evidence_URL: str = ""
     Match_Status: str = ""
@@ -310,6 +330,10 @@ def _record_from_candidate(org_key: str, query_name: str, candidate: dict, fetch
     activity_code = str(candidate.get("activite_principale") or "")
     section = str(candidate.get("section_activite_principale") or "")
     activity_label = NAF_SECTION_LABELS.get(section, "")
+    headquarters = candidate.get("siege")
+    headquarters_department = (
+        str(headquarters.get("departement") or "") if isinstance(headquarters, dict) else ""
+    )
 
     matched_name = str(candidate.get("nom_raison_sociale") or candidate.get("nom_complet") or "")
     siren = str(candidate.get("siren") or "")
@@ -320,6 +344,7 @@ def _record_from_candidate(org_key: str, query_name: str, candidate: dict, fetch
         Company_ID=siren,
         Activity_Code=activity_code,
         Activity_Label=activity_label,
+        Headquarters_Department=headquarters_department,
         Evidence_URL=(f"{ORG_ENRICHMENT_URL}?q={siren}" if siren else ""),
         Match_Status=MATCHED,
         Fetched_At=fetched_at,
