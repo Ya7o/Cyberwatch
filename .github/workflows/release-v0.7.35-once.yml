@@ -8,7 +8,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write
 
 concurrency:
   group: release-v0.7.35-stabilization
@@ -36,7 +36,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          # Lot 1 — un acteur/tiers LLM doit être nommé dans sa propre evidence.
           path = Path("cyberwatch/source_facts.py")
           text = path.read_text(encoding="utf-8")
           anchor = '''def _ai_text(ai_result: dict, key: str) -> tuple[str, str]:
@@ -72,7 +71,6 @@ jobs:
               raise SystemExit("test_source_facts_llm_grounding.py existe déjà")
           test_path.write_text('''from cyberwatch import source_facts as sf\n\n\ndef test_acteur_llm_doit_etre_nomme_dans_evidence():\n    ok = {"threat_actor": {"value": "LockBit", "evidence": "attaque revendiquée par LockBit"}}\n    bad = {"threat_actor": {"value": "LockBit", "evidence": "l incident a été confirmé"}}\n    assert sf._ai_grounded_name(ok, "threat_actor") == ("LockBit", "attaque revendiquée par LockBit")\n    assert sf._ai_grounded_name(bad, "threat_actor") == ("", "")\n\n\ndef test_tiers_llm_doit_etre_nomme_dans_evidence():\n    ok = {"third_party": {"value": "Example Cloud", "evidence": "via son prestataire Example Cloud"}}\n    bad = {"third_party": {"value": "Example Cloud", "evidence": "via un prestataire externe"}}\n    assert sf._ai_grounded_name(ok, "third_party")[0] == "Example Cloud"\n    assert sf._ai_grounded_name(bad, "third_party") == ("", "")\n\n\ndef test_acteurs_reels_restent_acceptes_et_generique_rejete():\n    for actor in ("LockBit", "Qilin", "Akira"):\n        value, evidence = sf._ai_grounded_name(\n            {"threat_actor": {"value": actor, "evidence": f"revendiquée par {actor}"}},\n            "threat_actor",\n        )\n        assert sf._valid_actor(value, "Victime SA") == actor\n        assert evidence\n    value, _ = sf._ai_grounded_name(\n        {"threat_actor": {"value": "ransomware", "evidence": "revendiquée par le groupe ransomware"}},\n        "threat_actor",\n    )\n    assert sf._valid_actor(value, "Victime SA") == ""\n''', encoding="utf-8")
 
-          # Lot 2 — la présence d'un type de donnée ne suffit plus à affirmer "personnelles".
           path = Path("assets/data-sensitivity.js")
           text = path.read_text(encoding="utf-8")
           marker = '\n\n  const normalize = (value) => String(value || "")'
@@ -106,7 +104,6 @@ jobs:
           new = old + '    assert "PERSONAL_EXACT" in js\n    assert "PERSONAL_MARKERS" in js\n    assert \'if (values.length) return ["unknown", "Données non qualifiées"]\' in js\n'
           path.write_text(text.replace(old, new, 1), encoding="utf-8")
 
-          # Lot 3 — même gate sémantique sur les MAJ que sur Initialize Baseline.
           path = Path(".github/workflows/collect.yml")
           text = path.read_text(encoding="utf-8")
           old = '''          python -m cyberwatch check
@@ -135,25 +132,25 @@ jobs:
           node --check assets/data-sensitivity.js
           python -m cyberwatch test-repeat
           python -m cyberwatch check --allow-uninitialized
-      - name: Committer sur main et retirer le workflow one-shot
+      - name: Committer le code sur main
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/workflows/release-v0.7.35-once.yml
           git add cyberwatch/source_facts.py assets/data-sensitivity.js tests/test_source_facts_llm_grounding.py tests/test_data_sensitivity_asset.py .github/workflows/collect.yml
           git commit -m "fix: verrouille les derniers gates avant rebuild"
           git pull --rebase origin main
           git push origin HEAD:main
           echo "TARGET_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-      - name: Attendre la CI officielle du commit final
+      - name: Déclencher et attendre la CI officielle
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
+          gh workflow run ci.yml --repo "$REPO" --ref main
           run_id=""
           for _ in $(seq 1 30); do
-            run_id="$(gh run list --repo "$REPO" --workflow ci.yml --commit "$TARGET_SHA" --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+            run_id="$(gh run list --repo "$REPO" --workflow ci.yml --event workflow_dispatch --limit 10 --json databaseId,headSha --jq '.[] | select(.headSha == env.TARGET_SHA) | .databaseId' | head -n1)"
             [ -n "$run_id" ] && break
             sleep 2
           done
@@ -181,5 +178,17 @@ jobs:
           - Collecte quotidienne : le gate audit_data_quality --check --check-regression est désormais obligatoire avant build-site et publication.
           - Aucun changement du pipeline canonique Threat / Sector / Location ni de la logique de déduplication.
           - Aucun OpenAI Search ajouté.
-          - Release créée uniquement après validation complète locale du workflow et succès de la CI officielle du commit final.
           EOF
+      - name: Retirer le workflow one-shot
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          path='.github/workflows/release-v0.7.35-once.yml'
+          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq .sha)"
+          gh api --method DELETE "repos/$REPO/contents/$path" \
+            -f message='chore: retire le workflow one-shot v0.7.35' \
+            -f sha="$sha" \
+            -f branch=main
