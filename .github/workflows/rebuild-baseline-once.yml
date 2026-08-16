@@ -1,11 +1,13 @@
 name: Rebuild Baseline (one-shot)
 
-# Trigger one-shot enregistré sur main.
+# Le workflow est versionné sur main mais ne se déclenche que lorsqu'un commit
+# explicite touche le marqueur .github/rebuild-request. Ainsi un merge de code
+# ne peut jamais lancer par accident un CREATE réseau long/coûteux.
 on:
   push:
     branches: [main]
     paths:
-      - ".github/workflows/rebuild-baseline-once.yml"
+      - ".github/rebuild-request"
 
 permissions:
   contents: read
