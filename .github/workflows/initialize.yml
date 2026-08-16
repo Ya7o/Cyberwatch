@@ -56,6 +56,13 @@ jobs:
         run: python -m cyberwatch check
       - name: Test de répétabilité offline
         run: python -m cyberwatch test-repeat
+      - name: Gate qualité pré-release
+        run: |
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check \
+            --check-regression
       - name: Créer la baseline
         run: python -m cyberwatch baseline --as-of "$AS_OF"
       - name: Construire le dashboard
