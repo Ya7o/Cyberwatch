@@ -95,6 +95,51 @@ class TestIncidentFields:
         ]
         assert build_incidents(items)[0].Menace == config.THREAT_RANSOMWARE
 
+    def test_fuite_domine_intrusion_generique(self, make_item):
+        """§stabilisation pré-release : une menace spécifique (Fuite) gagne
+        toujours sur le palier générique (Intrusion), quel que soit l'ordre."""
+        items = [
+            make_item(source="A", published="2026-03-01", url="https://a/1", threat=config.THREAT_LEAK),
+            make_item(source="B", published="2026-03-03", url="https://a/2", threat=config.THREAT_INTRUSION),
+        ]
+        assert build_incidents(items)[0].Menace == config.THREAT_LEAK
+
+    def test_compromission_domine_intrusion_generique(self, make_item):
+        items = [
+            make_item(source="A", published="2026-03-01", url="https://a/1", threat=config.THREAT_ACCOUNT),
+            make_item(source="B", published="2026-03-03", url="https://a/2", threat=config.THREAT_INTRUSION),
+        ]
+        assert build_incidents(items)[0].Menace == config.THREAT_ACCOUNT
+
+    def test_son_video_recidive_reste_verrouillee_separee(self, make_item):
+        """Verrouillage (§stabilisation pré-release) : les items Son-Video
+        réels partagent tous Organisation_Key='son video', et deux d'entre
+        eux (CYBERATTAQUE_ORG, RANSOMWARE_LIVE) partagent même la même date
+        — sans le marqueur de récidive ("frappé une nouvelle fois"), rien
+        d'autre n'empêcherait leur fusion. Ce test fige le comportement
+        protecteur existant (`RECURRENCE_MARKERS`/`_recurrence`) : aucun
+        alias, aucun changement de code n'est nécessaire ni souhaité ici."""
+        items = [
+            make_item(source="BONJOURLAFUITE", org="Son-Vidéo.com", published="2026-04-10",
+                      threat="Fuite de données", title="Son-Vidéo.com", url="https://a"),
+            make_item(source="FRENCHBREACHES", org="Son-Video", published="2026-04-10",
+                      threat="Intrusion", title="Son-Video", url="https://b"),
+            make_item(source="CYBERATTAQUE_ORG", org="Son-Video.com", published="2026-08-12",
+                      threat="Ransomware",
+                      title="Son-Video.com frappé une nouvelle fois par une cyberattaque : "
+                            "10 382 fichiers internes publiés",
+                      url="https://c"),
+            make_item(source="RANSOMWARE_LIVE", org="SON VIDEO", published="2026-08-12",
+                      threat="Ransomware", title="SON VIDEO revendiqué par majinahanashi", url="https://d"),
+        ]
+        assert len({item.Organisation_Key for item in items}) == 1  # même clé pour les 4
+
+        incidents = build_incidents(items)
+
+        assert len(incidents) == 3
+        by_date = sorted(inc.Date for inc in incidents)
+        assert by_date == ["2026-04-10", "2026-08-12", "2026-08-12"]
+
     def test_sources_et_urls_triees(self, make_item):
         items = [
             make_item(source="ZINFOS974_CYBER", url="https://z/1", published="2026-03-01"),

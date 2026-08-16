@@ -1,5 +1,9 @@
 from cyberwatch import config
-from cyberwatch.duplicate_audit import find_duplicate_candidates
+from cyberwatch.duplicate_audit import (
+    DUPLICATE_CANDIDATE_CONCATENATION,
+    DUPLICATE_CANDIDATE_PERMUTATION,
+    find_duplicate_candidates,
+)
 
 
 def test_included_name_is_reported_when_all_strict_conditions_match(make_item):
@@ -68,3 +72,30 @@ def test_realistic_sub_entities_remain_only_candidates_not_merges(make_item):
     candidates = find_duplicate_candidates(items)
     assert len(candidates) == 1
     assert candidates[0].short.Organisation_Raw == "City Pro"
+
+
+def test_exact_concatenation_is_reported(make_item):
+    """Même principe que « france casse » / « francecasse » (désormais
+    résolu par un alias, cf. data/organisation_aliases.csv) : mêmes lettres,
+    espace en moins, non couvert par l'inclusion de mots (nombre de mots
+    différent, pas de sous-séquence contiguë)."""
+    items = [
+        make_item(source="A", org="Globex Alpha", published="2026-08-16", url="https://a"),
+        make_item(source="B", org="GlobexAlpha", published="2026-08-16", url="https://b"),
+    ]
+    candidates = find_duplicate_candidates(items)
+    assert len(candidates) == 1
+    assert candidates[0].reason_code == DUPLICATE_CANDIDATE_CONCATENATION
+
+
+def test_exact_permutation_is_reported(make_item):
+    """Même principe que « cravero motoculture » / « motoculture cravero »
+    (désormais résolu par un alias) : mêmes mots, ordre différent, non
+    couvert par l'inclusion de mots (même longueur)."""
+    items = [
+        make_item(source="A", org="Solutions Globex", published="2026-08-16", url="https://a"),
+        make_item(source="B", org="Globex Solutions", published="2026-08-16", url="https://b"),
+    ]
+    candidates = find_duplicate_candidates(items)
+    assert len(candidates) == 1
+    assert candidates[0].reason_code == DUPLICATE_CANDIDATE_PERMUTATION

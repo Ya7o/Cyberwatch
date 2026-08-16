@@ -15,6 +15,15 @@ from cyberwatch.normalize import load_organisation_aliases, organisation_acronym
     ("Nantes Métropole", "Métropole de Nantes"),
     ("Rennes Métropole", "Métropole de Rennes"),
     ("Cyberattaque à Gagny", "Ville de Gagny"),
+    # Stabilisation pré-release : permutation/concaténation certaines
+    # observées dans les données réelles, non résolues par la seule
+    # normalisation déterministe (§7).
+    ("Motoculture Cravero", "Cravero Motoculture"),
+    ("FranceCasse", "France Casse"),
+    ("DGFiP", "Direction Générale des Finances Publiques"),
+    ("Lebonmateriel.fr", "Le Bon Matériel"),
+    ("Allopneus", "Allo Pneus"),
+    ("MaGestionLocative", "Ma Gestion Locative"),
 ])
 def test_versioned_aliases_are_exact(left, right):
     assert organisation_key(left) == organisation_key(right)

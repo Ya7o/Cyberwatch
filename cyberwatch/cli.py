@@ -672,7 +672,7 @@ def cmd_audit_duplicates(args) -> int:
         print(f"  Menaces   : {short.Threat} / {long.Threat}")
         print(f"  Sources   : {short.Source_ID} / {long.Source_ID}")
         print(f"  URLs      : {short.URL} | {long.URL}")
-        print("  Motif     : inclusion de mots, sources différentes, date et menace compatibles")
+        print(f"  Motif     : {candidate.reason_code} — sources différentes, date compatible")
     return 0
 
 
