@@ -139,3 +139,96 @@ def test_existing_sector_enrichment_cache_can_feed_location_before_llm(tmp_path,
 
     enrichment.backfill_unknowns([item], {})
     assert item.Location == config.LOC_MAYOTTE
+
+
+
+def test_bare_974_976_are_not_geographic_evidence():
+    assert classify_location("974 dossiers compromis") == config.LOC_INCONNU
+    assert classify_location("976 comptes exposés") == config.LOC_INCONNU
+
+
+def test_postal_codes_and_department_context_are_geographic_evidence():
+    assert classify_location("Victime située au 97400 Saint-Denis") == config.LOC_REUNION
+    assert classify_location("Entreprise du département 974") == config.LOC_REUNION
+    assert classify_location("Victime située au 97600 Mamoudzou") == config.LOC_MAYOTTE
+    assert classify_location("Entreprise du département 976") == config.LOC_MAYOTTE
+
+
+def test_org_enrichment_can_resolve_location_when_sector_is_already_known(monkeypatch):
+    item = _item("CYBERATTAQUE_ORG", "Cyberattaque confirmée", org="Org Location Seule")
+    item.Sector = config.SECTOR_TECH
+    calls = []
+
+    def fake_resolve(org_key, organisation_raw, fetched_at, state):
+        calls.append((org_key, organisation_raw))
+        return org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=org_key,
+            Query_Name=organisation_raw,
+            Matched_Name=organisation_raw,
+            Match_Status=org_enrichment.MATCHED,
+            Headquarters_Department="974",
+            Fetched_At=fetched_at,
+        )
+
+    monkeypatch.setattr(org_enrichment, "resolve", fake_resolve)
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    spec = sources.by_id("CYBERATTAQUE_ORG")
+    assert spec is not None
+    entry = RawEntry(title=item.Title, published=item.Published_Date, summary="Incident confirmé.", url=item.URL)
+    ai.qualify_item(item, entry, spec, state)
+    assert len(calls) == 1
+    assert item.Sector == config.SECTOR_TECH
+    assert item.Location == config.LOC_REUNION
+
+
+def test_one_org_enrichment_resolves_sector_and_location_together(monkeypatch):
+    item = _item("CYBERATTAQUE_ORG", "Cyberattaque confirmée", org="Org Double Enrichissement")
+    calls = []
+
+    def fake_resolve(org_key, organisation_raw, fetched_at, state):
+        calls.append((org_key, organisation_raw))
+        return org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=org_key,
+            Query_Name=organisation_raw,
+            Matched_Name=organisation_raw,
+            Match_Status=org_enrichment.MATCHED,
+            Activity_Label="Information et communication",
+            Headquarters_Department="976",
+            Fetched_At=fetched_at,
+        )
+
+    monkeypatch.setattr(org_enrichment, "resolve", fake_resolve)
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    spec = sources.by_id("CYBERATTAQUE_ORG")
+    assert spec is not None
+    entry = RawEntry(title=item.Title, published=item.Published_Date, summary="Incident confirmé.", url=item.URL)
+    ai.qualify_item(item, entry, spec, state)
+    assert len(calls) == 1
+    assert item.Sector == config.SECTOR_TECH
+    assert item.Location == config.LOC_MAYOTTE
+
+
+def test_org_enrichment_never_overwrites_known_location(monkeypatch):
+    item = _item(
+        "CYBERATTAQUE_ORG", "Cyberattaque confirmée", org="Org Location Connue", location=config.LOC_REUNION
+    )
+
+    def fake_resolve(org_key, organisation_raw, fetched_at, state):
+        return org_enrichment.OrgEnrichmentRecord(
+            Organisation_Key=org_key,
+            Query_Name=organisation_raw,
+            Matched_Name=organisation_raw,
+            Match_Status=org_enrichment.MATCHED,
+            Activity_Label="Information et communication",
+            Headquarters_Department="75",
+            Fetched_At=fetched_at,
+        )
+
+    monkeypatch.setattr(org_enrichment, "resolve", fake_resolve)
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    spec = sources.by_id("CYBERATTAQUE_ORG")
+    assert spec is not None
+    entry = RawEntry(title=item.Title, published=item.Published_Date, summary="Incident confirmé.", url=item.URL)
+    ai.qualify_item(item, entry, spec, state)
+    assert item.Sector == config.SECTOR_TECH
+    assert item.Location == config.LOC_REUNION

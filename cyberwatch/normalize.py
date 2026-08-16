@@ -286,8 +286,8 @@ def extract_activity_description(*texts: str) -> str:
 #: ``paris``...) sont volontairement exclus : mieux vaut conserver Inconnu ou
 #: le défaut de la source que fabriquer une localisation.
 LOCATION_HINTS: list[tuple[str, list[str]]] = [
-    (config.LOC_REUNION, ["974", "saint denis de la reunion", "reunionnais", "reunionnaise"]),
-    (config.LOC_MAYOTTE, ["mayotte", "976", "mamoudzou", "mahorais", "mahoraise"]),
+    (config.LOC_REUNION, ["saint denis de la reunion", "reunionnais", "reunionnaise"]),
+    (config.LOC_MAYOTTE, ["mayotte", "mamoudzou", "mahorais", "mahoraise"]),
     (config.LOC_MAURICE, ["mauritius", "mauricien", "mauricienne", "port louis", "rodrigues"]),
     (config.LOC_MADAGASCAR, ["madagascar", "malgache", "antananarivo", "tananarive"]),
     (config.LOC_SEYCHELLES, ["seychelles", "seychellois", "seychelloise", "victoria mahe"]),
@@ -298,6 +298,10 @@ LOCATION_HINTS: list[tuple[str, list[str]]] = [
 #: Le nom propre garde une majuscule à « Réunion », contrairement à la réunion
 #: de travail. Le test reste sensible à la casse pour éviter ce faux positif.
 _REUNION_PROPER_NAME_RE = re.compile(r"\b(?:La R[ée]union|LA R[ÉE]UNION)\b")
+_REUNION_POSTAL_RE = re.compile(r"\b974\d{2}\b")
+_MAYOTTE_POSTAL_RE = re.compile(r"\b976\d{2}\b")
+_REUNION_DEPARTMENT_RE = re.compile(r"\bdepartement\s+(?:de\s+)?974\b")
+_MAYOTTE_DEPARTMENT_RE = re.compile(r"\bdepartement\s+(?:de\s+)?976\b")
 
 
 def _location_from_text(*texts: str) -> str:
@@ -307,6 +311,10 @@ def _location_from_text(*texts: str) -> str:
     if _REUNION_PROPER_NAME_RE.search(raw):
         return config.LOC_REUNION
     blob = searchable(raw)
+    if _REUNION_POSTAL_RE.search(blob) or _REUNION_DEPARTMENT_RE.search(blob):
+        return config.LOC_REUNION
+    if _MAYOTTE_POSTAL_RE.search(blob) or _MAYOTTE_DEPARTMENT_RE.search(blob):
+        return config.LOC_MAYOTTE
     for location, hints in LOCATION_HINTS:
         for hint in hints:
             if _contains(blob, hint):

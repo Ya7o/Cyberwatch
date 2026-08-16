@@ -588,8 +588,8 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     if spec.params.get("skip_ai_qualification"):
         return
 
-    if item.Sector == config.SECTOR_UNKNOWN:
-        _escalate_sector_deterministic(item, entry, spec, state)
+    if item.Sector == config.SECTOR_UNKNOWN or item.Location == config.LOC_INCONNU:
+        _escalate_org_enrichment_deterministic(item, entry, spec, state)
 
     requested = [
         name for name in ("Threat", "Sector", "Location")
@@ -669,14 +669,17 @@ def _apply_and_count_sector(item: Item, requested: list[str], decision: dict, st
         state.sector_resolved_source_llm += 1
 
 
-def _escalate_sector_deterministic(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
-    """Phase 1 (§Sector fiabilité) : enrichissement gratuit d'entreprise +
-    mapping NAF déterministe, toujours tenté avant tout appel LLM — jamais
-    de LLM ici. Ne lève jamais, ne devine jamais : une étape infructueuse
-    laisse Secteur à Inconnu (`_escalate_sector_llm`, Phase 3, pourra
-    ensuite prendre le relais en dernier recours).
+def _escalate_org_enrichment_deterministic(
+    item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState
+) -> None:
+    """Enrichissement organisation unique pour Sector et Location.
+
+    Un seul `resolve()` est tenté lorsque l'un des deux champs est encore
+    inconnu. Le même match exact peut fournir le secteur via la section NAF
+    et la localisation via le département du siège. Aucune valeur déjà connue
+    n'est écrasée et AMBIGUOUS/NOT_FOUND/ERROR ne produisent aucune inférence.
     """
-    if item.Sector != config.SECTOR_UNKNOWN:
+    if item.Sector != config.SECTOR_UNKNOWN and item.Location != config.LOC_INCONNU:
         return
     org_state = state.org_enrichment
     if not org_state.enabled:
@@ -685,9 +688,18 @@ def _escalate_sector_deterministic(item: Item, entry: RawEntry, spec: SourceSpec
     record = org_enrichment.resolve(
         item.Organisation_Key, item.Organisation_Raw, item.Collected_As_Of, org_state
     )
-    if record is None or record.Match_Status != org_enrichment.MATCHED or not record.Activity_Label:
-        # AMBIGUOUS/NOT_FOUND/ERROR/budget épuisé -> Inconnu reste Inconnu,
-        # jamais de choix arbitraire.
+    if record is None or record.Match_Status != org_enrichment.MATCHED:
+        return
+
+    if item.Location == config.LOC_INCONNU:
+        location = org_enrichment.location_for_headquarters_department(
+            record.Headquarters_Department
+        )
+        if location != config.LOC_INCONNU:
+            item.Location = location
+            state.qualified["Location"] = state.qualified.get("Location", 0) + 1
+
+    if item.Sector != config.SECTOR_UNKNOWN or not record.Activity_Label:
         return
 
     if record.Validated_Sector:
@@ -696,18 +708,8 @@ def _escalate_sector_deterministic(item: Item, entry: RawEntry, spec: SourceSpec
         state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
         return
 
-    # Mapping déterministe — table dédiée aux 21 sections NAF
-    # (org_enrichment.NAF_SECTIONS), pas classify_sector() : ce dernier est
-    # réglé sur du texte libre d'article et fait correspondre "distribution"
-    # à Commerce, ce qui classerait à tort "Production et distribution
-    # d'électricité..." en Commerce au lieu d'Énergie (constaté au premier
-    # benchmark réel, cf. org_enrichment.py).
     sector = org_enrichment.sector_for_activity_label(record.Activity_Label)
     if sector == config.SECTOR_UNKNOWN:
-        # Pas de correspondance déterministe : `record` reste en cache tel
-        # que `resolve()` l'y a déjà placé (Activity_Label, Match_Status...).
-        # `_escalate_sector_llm` (Phase 3) pourra le relire sans nouvelle
-        # requête HTTP.
         return
 
     item.Sector = sector
