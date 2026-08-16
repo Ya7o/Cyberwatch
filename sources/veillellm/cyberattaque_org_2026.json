@@ -54,6 +54,17 @@
       },
       "method": "exact French public company registry/APE -> official company website and legal/about/activity pages -> corroborated secondary company sources",
       "evidence_policy": "no forced mapping; search engines are discovery only; evidence URL retained in sources"
+    },
+    "company_research_v4": {
+      "before_sector_unknown": 53,
+      "resolved": 6,
+      "remaining_sector_unknown": 47,
+      "resolved_by": {
+        "official_site": 4,
+        "registry_from_legal_notice": 2
+      },
+      "method": "incident-source outgoing links/domain -> official site/legal notice -> SIREN/APE public registry -> exact SIREN search -> official-site search -> exact LinkedIn industry fallback",
+      "evidence_policy": "no forced taxonomy mapping; SIREN/APE validated against French public registry; official/secondary evidence URL retained"
     }
   },
   "incidents": [
@@ -1975,14 +1986,15 @@
       "organisation": "Association.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Énergie / Utilities",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une base de données présentée comme provenant d’Association.fr a été publiée sur un forum cybercriminel le 9 juillet…",
       "sources": [
-        "https://www.cyberattaque.org/association-fr-160-000-dirigeants-associatifs-et-des-iban-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/association-fr-160-000-dirigeants-associatifs-et-des-iban-dans-une-fuite-de-donnees/",
+        "https://www.association.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Association.fr : la fuite revendiquée ne correspond pas aux données du site",
       "evolution": "nouveau"
@@ -2368,14 +2380,15 @@
       "organisation": "ONPP",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une base de données attribuée au site onpp.fr, le portail officiel de l’Ordre national des pédicures-podologues, a été…",
       "sources": [
-        "https://www.cyberattaque.org/onpp-8-048-fiches-de-pedicures-podologues-revendiquees-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/onpp-8-048-fiches-de-pedicures-podologues-revendiquees-dans-une-fuite-de-donnees/",
+        "https://www.onpp.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ONPP : 8 048 fiches de pédicures-podologues revendiquées dans une fuite de données",
       "evolution": "nouveau"
@@ -2402,14 +2415,15 @@
       "organisation": "Classic Days",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une fuite de données attribuée au site classic-days.fr a été revendiquée sur un forum cybercriminel le 28 juin…",
       "sources": [
-        "https://www.cyberattaque.org/classic-days-11-go-de-donnees-clients-avec-les-mots-de-passe-en-clair-en-fuite/"
+        "https://www.cyberattaque.org/classic-days-11-go-de-donnees-clients-avec-les-mots-de-passe-en-clair-en-fuite/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/434894846"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Classic Days : 11 Go de données clients avec les mots de passe en clair en fuite",
       "evolution": "nouveau"
@@ -2762,14 +2776,15 @@
       "organisation": "France-Terrain.com",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le cybercriminel ChimeraZ revendique la publication d’une base de données attribuée à France-Terrain.com, un portail spécialisé dans la…",
       "sources": [
-        "https://www.cyberattaque.org/france-terrain-com-une-base-interne-revendiquee-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/france-terrain-com-une-base-interne-revendiquee-dans-une-fuite-de-donnees/",
+        "https://france-terrain.com/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — France-Terrain.com : une base interne revendiquée dans une fuite de données",
       "evolution": "nouveau"
@@ -4338,14 +4353,15 @@
       "organisation": "Woop",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une base de données attribuée au site français woopit.fr est actuellement proposée à la vente sur un forum…",
       "sources": [
-        "https://www.cyberattaque.org/woop-plus-de-256-000-utilisateurs-exposes-avec-coordonnees-et-donnees-bancaires/"
+        "https://www.cyberattaque.org/woop-plus-de-256-000-utilisateurs-exposes-avec-coordonnees-et-donnees-bancaires/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/852036631"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Woop : plus de 256 000 utilisateurs exposés avec coordonnées et données bancaires",
       "evolution": "nouveau"
@@ -4918,14 +4934,15 @@
       "organisation": "Service Civique",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Un hacker a mis en ligne une base de données attribuée à service-civique.gouv.fr, la plateforme officielle du Service…",
       "sources": [
-        "https://www.cyberattaque.org/service-civique-des-contacts-dorganismes-publics-et-associatifs-publies-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/service-civique-des-contacts-dorganismes-publics-et-associatifs-publies-apres-une-cyberattaque/",
+        "https://www.service-civique.gouv.fr"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Service Civique : des contacts d’organismes publics et associatifs publiés après une cyberattaque",
       "evolution": "nouveau"

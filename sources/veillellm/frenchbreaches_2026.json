@@ -54,6 +54,17 @@
       },
       "method": "exact French public company registry/APE -> official company website and legal/about/activity pages -> corroborated secondary company sources",
       "evidence_policy": "no forced mapping; search engines are discovery only; evidence URL retained in sources"
+    },
+    "company_research_v4": {
+      "before_sector_unknown": 98,
+      "resolved": 3,
+      "remaining_sector_unknown": 95,
+      "resolved_by": {
+        "official_site": 1,
+        "registry_from_legal_notice": 2
+      },
+      "method": "incident-source outgoing links/domain -> official site/legal notice -> SIREN/APE public registry -> exact SIREN search -> official-site search -> exact LinkedIn industry fallback",
+      "evidence_policy": "no forced taxonomy mapping; SIREN/APE validated against French public registry; official/secondary evidence URL retained"
     }
   },
   "incidents": [
@@ -10098,14 +10109,15 @@
       "organisation": "ChezSwitch.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Énergie / Utilities",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/chezswitch-fr-mlkskmc7zehhwbaiurg"
+        "https://frenchbreaches.com/alertes/chezswitch-fr-mlkskmc7zehhwbaiurg",
+        "https://www.chezswitch.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — ChezSwitch.fr.",
       "evolution": "nouveau"
@@ -10167,14 +10179,15 @@
       "organisation": "ThermoPoudre.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/thermopoudre-fr-mlimjtqeyzfikt9c3ph"
+        "https://frenchbreaches.com/alertes/thermopoudre-fr-mlimjtqeyzfikt9c3ph",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/884381047"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — ThermoPoudre.fr.",
       "evolution": "nouveau"
@@ -11651,14 +11664,15 @@
       "organisation": "Audiophonics.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/audiophonics-fr-5b68f55bb565"
+        "https://frenchbreaches.com/alertes/audiophonics-fr-5b68f55bb565",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/484107412"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Audiophonics.fr.",
       "evolution": "nouveau"
