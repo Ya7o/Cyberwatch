@@ -52,6 +52,21 @@ def test_pas_de_cle_pas_dappel(monkeypatch, tmp_path):
     assert not called
 
 
+def test_types_de_donnees_deterministes_sans_api(monkeypatch, tmp_path):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
+    sfa.reset_runtime_for_tests()
+    entry = RawEntry(
+        title="Exemple",
+        content="Une fuite a exposé des adresses e-mail et des numéros de téléphone.",
+    )
+    result = sfa.enrich(_item(), entry)
+    values = {fact["value"] for fact in result["data_types"]}
+    assert "adresses e-mail" in values
+    assert "numéros de téléphone" in values
+    assert sfa.runtime_stats()["calls_attempted"] == 0
+
+
 def test_preflight_deterministe_evite_appel(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     called = []
@@ -66,47 +81,12 @@ def test_preflight_deterministe_evite_appel(monkeypatch, tmp_path):
     assert sfa.runtime_stats()["items_skipped_no_missing_fields"] == 1
 
 
-def test_schema_dynamique_ne_demande_que_faits_utiles(monkeypatch, tmp_path):
+def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     bodies = []
 
     def fake_post(body, _runtime):
         bodies.append(body)
-        return _payload(_output_for(
-            body,
-            summary={
-                "value": "Des données de contact ont été exposées.",
-                "confidence": .9,
-                "evidence": "adresses e-mail et numéros de téléphone ont été exposés",
-            },
-            data_types=[
-                {
-                    "value": "adresses e-mail",
-                    "confidence": .92,
-                    "evidence": "adresses e-mail et numéros de téléphone ont été exposés",
-                }
-            ],
-        ))
-
-    monkeypatch.setattr(sfa, "_post_openai", fake_post)
-    entry = RawEntry(
-        title="Exemple SA",
-        content="Des adresses e-mail et numéros de téléphone ont été exposés.",
-    )
-    result = sfa.enrich(_item(), entry)
-    assert len(bodies) == 1
-    props = set(bodies[0]["text"]["format"]["schema"]["properties"])
-    assert props == {"summary", "data_types"}
-    assert result["data_types"][0]["value"] == "adresses e-mail"
-
-
-def test_acteur_non_deterministe_est_demande_et_grounde(monkeypatch, tmp_path):
-    _configure(monkeypatch, tmp_path)
-
-    def fake_post(body, _runtime):
-        assert set(body["text"]["format"]["schema"]["properties"]) == {
-            "summary", "threat_actor"
-        }
         return _payload(_output_for(
             body,
             summary={
@@ -122,8 +102,12 @@ def test_acteur_non_deterministe_est_demande_et_grounde(monkeypatch, tmp_path):
         ))
 
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
-    entry = RawEntry(title="Exemple", content="L'attaque a été attribuée à LockBit.")
-    result = sfa.enrich(_item(), entry)
+    result = sfa.enrich(
+        _item(), RawEntry(title="Exemple", content="L'attaque a été attribuée à LockBit.")
+    )
+    assert len(bodies) == 1
+    props = set(bodies[0]["text"]["format"]["schema"]["properties"])
+    assert props == {"summary", "threat_actor"}
     assert result["threat_actor"]["value"] == "LockBit"
 
 
@@ -141,7 +125,7 @@ def test_evidence_non_presente_est_rejetee(monkeypatch, tmp_path):
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     result = sfa.enrich(
         _item(), RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")
-    )
+    ) or {}
     assert "threat_actor" not in result
 
 
@@ -152,7 +136,7 @@ def test_acteur_et_tiers_doivent_etre_nommes_dans_evidence(monkeypatch, tmp_path
         return _payload(_output_for(
             body,
             threat_actor={"value": "LockBit", "confidence": .99, "evidence": "incident attribué"},
-            third_party={"value": "Example Cloud", "confidence": .99, "evidence": "via un prestataire externe"},
+            third_party={"value": "Example Cloud", "confidence": .99, "evidence": "via le prestataire externe"},
         ))
 
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
@@ -160,9 +144,12 @@ def test_acteur_et_tiers_doivent_etre_nommes_dans_evidence(monkeypatch, tmp_path
         _item(),
         RawEntry(
             title="Exemple",
-            content="incident attribué à LockBit via un prestataire externe Example Cloud",
+            content=(
+                "Incident attribué à LockBit. La victime indique être hébergée via le "
+                "prestataire externe Example Cloud, affecté par l'incident."
+            ),
         ),
-    )
+    ) or {}
     assert "threat_actor" not in result
     assert "third_party" not in result
 
@@ -173,11 +160,17 @@ def test_cache_et_changement_contenu(monkeypatch, tmp_path):
 
     def fake_post(body, _runtime):
         calls.append(1)
-        return _payload(_output_for(body))
+        actor = "LockBit" if "LockBit" in json.dumps(body) else "Qilin"
+        evidence = f"attaque a été attribuée à {actor}"
+        return _payload(_output_for(
+            body,
+            summary={"value": evidence, "confidence": .9, "evidence": evidence},
+            threat_actor={"value": actor, "confidence": .9, "evidence": evidence},
+        ))
 
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
-    first = RawEntry(title="Exemple", content="Des adresses e-mail ont été exposées.")
-    second = RawEntry(title="Exemple", content="Des numéros de téléphone ont été exposés.")
+    first = RawEntry(title="Exemple", content="L'attaque a été attribuée à LockBit.")
+    second = RawEntry(title="Exemple", content="L'attaque a été attribuée à Qilin.")
     sfa.enrich(_item(), first)
     sfa.enrich(_item(), first)
     sfa.enrich(_item(), second)
@@ -193,14 +186,18 @@ def test_budget_appels_est_respecte(monkeypatch, tmp_path):
     monkeypatch.setenv("SOURCE_FACTS_AI_MAX_CALLS_PER_RUN", "1")
     sfa.reset_runtime_for_tests()
     calls = []
-    monkeypatch.setattr(
-        sfa, "_post_openai", lambda body, _runtime: calls.append(1) or _payload(_output_for(body))
-    )
-    sfa.enrich(_item(), RawEntry(title="A", content="Des adresses e-mail ont été exposées."))
+
+    def fake_post(body, _runtime):
+        calls.append(1)
+        return _payload(_output_for(body))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    sfa.enrich(_item(), RawEntry(title="A", content="L'attaque a été attribuée à LockBit."))
     item2 = _item()
     item2.Item_ID = "ITM-ai-2"
-    sfa.enrich(item2, RawEntry(title="B", content="Des téléphones ont été exposés."))
+    sfa.enrich(item2, RawEntry(title="B", content="L'attaque a été attribuée à Qilin."))
     assert len(calls) == 1
+    assert sfa.runtime_stats()["calls_budget_blocked"] == 1
 
 
 def test_autres_sources_jamais_envoyees_au_llm(monkeypatch, tmp_path):
