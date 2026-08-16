@@ -316,6 +316,7 @@ ORG_ENRICHMENT_CACHE_COLUMNS = [
     "Company_ID",
     "Activity_Code",
     "Activity_Label",
+    "Headquarters_Department",
     "Evidence_Source",
     "Evidence_URL",
     "Match_Status",

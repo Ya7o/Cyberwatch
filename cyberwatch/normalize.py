@@ -281,17 +281,37 @@ def extract_activity_description(*texts: str) -> str:
 # Localisation (§10)
 # --------------------------------------------------------------------------
 
-#: Indices textuels par territoire, testés uniquement en dernier recours.
+#: Indices textuels suffisamment spécifiques pour qualifier un territoire.
+#: Les mots ambigus pris isolément (``reunion``, ``maurice``, ``francais``,
+#: ``paris``...) sont volontairement exclus : mieux vaut conserver Inconnu ou
+#: le défaut de la source que fabriquer une localisation.
 LOCATION_HINTS: list[tuple[str, list[str]]] = [
-    (config.LOC_REUNION, ["la reunion", "reunion", "974", "saint denis de la reunion",
-                          "reunionnais", "reunionnaise"]),
+    (config.LOC_REUNION, ["974", "saint denis de la reunion", "reunionnais", "reunionnaise"]),
     (config.LOC_MAYOTTE, ["mayotte", "976", "mamoudzou", "mahorais", "mahoraise"]),
-    (config.LOC_MAURICE, ["maurice", "mauritius", "mauricien", "port louis", "rodrigues"]),
+    (config.LOC_MAURICE, ["mauritius", "mauricien", "mauricienne", "port louis", "rodrigues"]),
     (config.LOC_MADAGASCAR, ["madagascar", "malgache", "antananarivo", "tananarive"]),
-    (config.LOC_SEYCHELLES, ["seychelles", "seychellois", "victoria mahe"]),
+    (config.LOC_SEYCHELLES, ["seychelles", "seychellois", "seychelloise", "victoria mahe"]),
     (config.LOC_COMORES, ["comores", "comorien", "comorienne", "moroni", "anjouan"]),
-    (config.LOC_FRANCE, ["france", "francais", "hexagone", "metropole", "paris"]),
+    (config.LOC_FRANCE, ["france metropolitaine"]),
 ]
+
+#: Le nom propre garde une majuscule à « Réunion », contrairement à la réunion
+#: de travail. Le test reste sensible à la casse pour éviter ce faux positif.
+_REUNION_PROPER_NAME_RE = re.compile(r"\b(?:La R[ée]union|LA R[ÉE]UNION)\b")
+
+
+def _location_from_text(*texts: str) -> str:
+    raw = " ".join(t for t in texts if t)
+    if not raw:
+        return config.LOC_INCONNU
+    if _REUNION_PROPER_NAME_RE.search(raw):
+        return config.LOC_REUNION
+    blob = searchable(raw)
+    for location, hints in LOCATION_HINTS:
+        for hint in hints:
+            if _contains(blob, hint):
+                return location
+    return config.LOC_INCONNU
 
 
 def classify_location(
@@ -300,44 +320,35 @@ def classify_location(
     entity: str = "",
     default: str = "",
 ) -> str:
-    """Localisation normalisée, selon la priorité du §10.
+    """Localisation normalisée, du signal le plus fort au plus faible.
 
     1. localisation explicitement structurée par la source (`given`) ;
-    2. **territoire de l'entité surveillée reconnue** (`entity`) ;
-    3. règle fixe du collecteur (`default`) ;
-    4. indice textuel ;
+    2. territoire de l'entité surveillée reconnue (`entity`) ;
+    3. indice territorial textuel suffisamment spécifique ;
+    4. règle fixe du collecteur (`default`) ;
     5. `Inconnu`.
 
-    Le rang 2 traduit un fait : une entité de la liste de surveillance appartient
-    à son territoire quelle que soit la source qui la mentionne. Sans lui, un
-    incident touchant Air Austral et relayé par une source nationale était classé
-    « France métropolitaine » à cause de la règle fixe de cette source.
-
-    Un simple mot géographique dans un texte ne suffit jamais à requalifier un
-    incident : les rangs 1 à 3 priment toujours sur l'indice textuel.
+    L'indice textuel précède volontairement le défaut : une victime décrite
+    comme réunionnaise ou mahoraise doit corriger le défaut France d'une source
+    nationale. Les marqueurs ambigus ne figurent pas dans ``LOCATION_HINTS``.
     """
     if given:
         cleaned = given.strip()
         if cleaned in config.LOCATIONS:
             return cleaned
-        blob = searchable(cleaned)
-        for location, hints in LOCATION_HINTS:
-            for hint in hints:
-                if _contains(blob, hint):
-                    return location
+        location = _location_from_text(cleaned)
+        if location != config.LOC_INCONNU:
+            return location
 
     if entity and entity in config.LOCATIONS:
         return entity
 
+    location = _location_from_text(*texts)
+    if location != config.LOC_INCONNU:
+        return location
+
     if default and default in config.LOCATIONS:
         return default
-
-    blob = searchable(" ".join(t for t in texts if t))
-    if blob:
-        for location, hints in LOCATION_HINTS:
-            for hint in hints:
-                if _contains(blob, hint):
-                    return location
 
     return config.LOC_INCONNU
 

@@ -1,4 +1,11 @@
-from cyberwatch import config, enrichment
+import pytest
+
+from cyberwatch import config, enrichment, store
+
+
+@pytest.fixture(autouse=True)
+def _isolate_org_cache(tmp_path, monkeypatch):
+    monkeypatch.setattr(store, "ORG_ENRICHMENT_CACHE_CSV", tmp_path / "org_enrichment_cache.csv")
 
 
 def test_backfill_threat_from_explicit_leak_phrases(make_item):
@@ -33,82 +40,93 @@ def test_backfill_never_overwrites_known_threat(make_item):
     assert item.Threat == config.THREAT_RANSOMWARE
 
 
-def test_backfill_location_uses_title_and_organisation(make_item):
+def test_backfill_location_uses_only_safe_text_hints(make_item):
     paris = make_item(
+        source="CYBERATTAQUE_ORG",
         org="Organisation Paris",
         location=config.LOC_INCONNU,
         title="Incident à Paris",
         url="https://paris",
     )
     reunion = make_item(
+        source="CYBERATTAQUE_ORG",
         location=config.LOC_INCONNU,
         org="Association 974",
         title="Incident",
         url="https://reunion",
     )
     mayotte = make_item(
+        source="CYBERATTAQUE_ORG",
         location=config.LOC_INCONNU,
         org="Service Mayotte",
         title="Incident",
         url="https://mayotte",
     )
     enrichment.backfill_unknowns([paris, reunion, mayotte], {})
-    assert paris.Location == config.LOC_FRANCE
+    assert paris.Location == config.LOC_INCONNU
     assert reunion.Location == config.LOC_REUNION
     assert mayotte.Location == config.LOC_MAYOTTE
 
 
-def test_backfill_reuses_only_one_known_location(make_item):
+def test_backfill_does_not_reuse_one_known_location(make_item):
     known = make_item(
-        org="Organisation Alpha",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Alpha Sans Cache",
         location=config.LOC_FRANCE,
         url="https://known",
     )
     unknown = make_item(
-        org="Organisation Alpha",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Alpha Sans Cache",
         location=config.LOC_INCONNU,
         url="https://unknown",
     )
     enrichment.backfill_unknowns([known, unknown], {})
-    assert unknown.Location == config.LOC_FRANCE
+    assert unknown.Location == config.LOC_INCONNU
 
 
-def test_backfill_reuses_location_found_during_same_run(make_item):
+def test_backfill_does_not_propagate_location_found_during_same_run(make_item):
     explicit = make_item(
-        org="Organisation Beta",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Beta Sans Cache",
         location=config.LOC_INCONNU,
-        title="Incident à Paris",
+        title="Entreprise réunionnaise victime d'un incident",
         url="https://explicit",
     )
     unknown = make_item(
-        org="Organisation Beta",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Beta Sans Cache",
         location=config.LOC_INCONNU,
         title="Incident",
         url="https://unknown-beta",
     )
     enrichment.backfill_unknowns([explicit, unknown], {})
-    assert explicit.Location == config.LOC_FRANCE
-    assert unknown.Location == config.LOC_FRANCE
+    assert explicit.Location == config.LOC_REUNION
+    assert unknown.Location == config.LOC_INCONNU
 
 
 def test_backfill_keeps_conflicting_or_existing_location(make_item):
     france = make_item(
-        org="Organisation",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Conflit Sans Cache",
         location=config.LOC_FRANCE,
         url="https://fr",
     )
     mayotte = make_item(
-        org="Organisation",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Conflit Sans Cache",
         location=config.LOC_MAYOTTE,
         url="https://yt",
     )
     unknown = make_item(
-        org="Organisation",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Conflit Sans Cache",
         location=config.LOC_INCONNU,
         url="https://unknown",
     )
     fixed = make_item(
-        org="Organisation",
+        source="CYBERATTAQUE_ORG",
+        org="Organisation Conflit Sans Cache",
         location=config.LOC_REUNION,
         url="https://fixed",
     )

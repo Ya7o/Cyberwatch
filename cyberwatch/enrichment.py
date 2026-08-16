@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, store
+from . import config, org_enrichment, store, watchlists
 from .identity import sort_items
 from .model import Item
 from .normalize import classify_location, classify_threat, organisation_key, searchable
@@ -107,15 +107,52 @@ def _backfill_unknown_threat(item: Item) -> str:
     return config.THREAT_UNKNOWN
 
 
-def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
-    """Complète uniquement menace/localisation inconnues, sans changer d'identité.
+def _cached_api_locations() -> dict[str, str]:
+    """Localisations exploitables déjà présentes dans le cache entreprise.
 
-    Première passe : règles directes. Deuxième passe : réutilisation d'une
-    localisation unique déjà connue pour la même Organisation_Key. Cette
-    séparation rend le résultat déterministe et complet en une seule exécution.
+    Lecture locale uniquement : REPLAY ne déclenche jamais de réseau.
     """
-    report = {"threat": 0, "location_rule": 0, "location_reused": 0}
+    result: dict[str, str] = {}
+    for row in store.load_org_enrichment_cache():
+        if row.get("Match_Status") != org_enrichment.MATCHED:
+            continue
+        location = org_enrichment.location_for_headquarters_department(
+            row.get("Headquarters_Department", "")
+        )
+        key = row.get("Organisation_Key", "")
+        if key and location != config.LOC_INCONNU:
+            result[key] = location
+    return result
+
+
+def _source_location_default(source_id: str) -> str:
+    # Import local pour garder ce module de qualification indépendant de
+    # l'inventaire des collecteurs à l'import.
+    from . import sources
+
+    spec = sources.by_id(source_id)
+    if spec and spec.location_rule in config.LOCATIONS:
+        return spec.location_rule
+    return ""
+
+
+def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
+    """Complète menace/localisation inconnues avec la même logique hors-ligne.
+
+    Pour Location : référentiel/watchlist -> indice territorial sûr -> cache de
+    l'API entreprise déjà alimenté -> défaut de la source. Aucun appel réseau
+    et aucune propagation aveugle d'une localisation d'un item vers un autre.
+    """
+    report = {
+        "threat": 0,
+        "location_rule": 0,
+        "location_api": 0,
+        "location_default": 0,
+        "location_reused": 0,
+    }
     ordered = sort_items(items)
+    api_locations = _cached_api_locations()
+    territories = watchlists.entity_territories()
 
     for item in ordered:
         if item.Threat == config.THREAT_UNKNOWN:
@@ -126,26 +163,32 @@ def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> di
 
         if item.Location != config.LOC_INCONNU:
             continue
+
         _sector, location = enrich_unknowns(
             item.Organisation_Raw, item.Sector, item.Location, reference
         )
         if location == config.LOC_INCONNU:
+            location = territories.get(searchable(item.Organisation_Raw), config.LOC_INCONNU)
+            if location != config.LOC_INCONNU:
+                report["location_rule"] += 1
+
+        if location == config.LOC_INCONNU:
             location = classify_location(item.Title, item.Organisation_Raw)
+            if location != config.LOC_INCONNU:
+                report["location_rule"] += 1
+
+        if location == config.LOC_INCONNU:
+            location = api_locations.get(item.Organisation_Key, config.LOC_INCONNU)
+            if location != config.LOC_INCONNU:
+                report["location_api"] += 1
+
+        if location == config.LOC_INCONNU:
+            default = _source_location_default(item.Source_ID)
+            if default:
+                location = default
+                report["location_default"] += 1
+
         if location != config.LOC_INCONNU:
             item.Location = location
-            report["location_rule"] += 1
-
-    known_locations: dict[str, set[str]] = {}
-    for item in ordered:
-        if item.Organisation_Key and item.Location != config.LOC_INCONNU:
-            known_locations.setdefault(item.Organisation_Key, set()).add(item.Location)
-
-    for item in ordered:
-        if item.Location != config.LOC_INCONNU:
-            continue
-        candidates = known_locations.get(item.Organisation_Key, set())
-        if len(candidates) == 1:
-            item.Location = next(iter(candidates))
-            report["location_reused"] += 1
 
     return report
