@@ -8,8 +8,9 @@ rattrapage LLM (`ai.py`) une description métier explicite à classifier.
 
 Aucune correspondance floue n'est tentée : un candidat n'est retenu que si
 son nom normalisé (`normalize.organisation_key`) est **exactement** égal à
-celui recherché. Plusieurs entités légales distinctes partageant ce même nom
-normalisé (ex. franchises) donnent `AMBIGUOUS`, jamais un choix arbitraire.
+celui recherché, via la raison sociale ou un nom commercial explicite.
+Plusieurs entités légales distinctes partageant ce même nom normalisé donnent
+`AMBIGUOUS`, jamais un choix arbitraire.
 
 Comme `ai.py::_call_openai`, l'appel HTTP est indépendant de
 `cyberwatch/http.py` (`HttpClient`/`Budget`) : la dimension de budget ici est
@@ -19,8 +20,8 @@ inter-hôtes propre à un collecteur.
 Schéma réel vérifié le 2026-08-15 via un run GitHub Actions (le domaine est
 hors politique réseau du bac à sable de développement, `probe-org-schema`
 dans `bench-qualification.yml`) : chaque résultat porte `siren`,
-`nom_complet` (souvent "Nom commercial (Raison sociale)", à éviter pour le
-matching), `nom_raison_sociale` (dénomination légale nue, préférée),
+`nom_complet` (souvent "Nom commercial (Raison sociale)"),
+`nom_raison_sociale` (dénomination légale nue),
 `activite_principale` (code NAF **nu**, ex. "63.11Z" — jamais un objet
 {code, libelle}) et `section_activite_principale` (une lettre A-U). L'API ne
 renvoie **aucun libellé d'activité détaillé** : `NAF_SECTION_LABELS` fournit
@@ -97,19 +98,13 @@ def sector_for_activity_label(activity_label: str) -> str:
     section NAF officiel), ou `Inconnu`.
 
     Ne devine jamais : une section sans correspondance claire (ambiguë ou
-    hors taxonomie) renvoie `Inconnu`, jamais un appel LLM ni une catégorie
-    forcée — cohérent avec la politique générale du pipeline Secteur.
+    hors taxonomie) renvoie `Inconnu`, jamais une catégorie forcée.
     """
     return _LABEL_TO_SECTOR.get(activity_label, config.SECTOR_UNKNOWN)
 
 
 def location_for_headquarters_department(department: str) -> str:
-    """Mappe uniquement les départements couverts sans extrapolation.
-
-    974/976 sont les deux territoires ultramarins de la taxonomie ciblée ;
-    les départements 01-95 (ainsi que 2A/2B) valent France métropolitaine.
-    Les autres codes restent Inconnu.
-    """
+    """Mappe uniquement les départements couverts sans extrapolation."""
     value = str(department or "").strip().upper()
     if value == "974":
         return config.LOC_REUNION
@@ -142,12 +137,11 @@ def _env_bool(name: str, default: bool) -> bool:
 ORG_ENRICHMENT_TIMEOUT_SECONDS = _env_int("ORG_ENRICHMENT_TIMEOUT_SECONDS", 10)
 ORG_ENRICHMENT_MAX_RETRIES = _env_int("ORG_ENRICHMENT_MAX_RETRIES", 1)
 
-#: Bump uniquement si le matching (`_match`) ou le mapping NAF->Secteur
-#: (`NAF_SECTIONS`) change matériellement (§Sector fiabilité). Un
-#: `NOT_FOUND`/`AMBIGUOUS` en cache dont la version diffère est ignoré au
-#: chargement (nouvelle tentative HTTP) plutôt que traité comme définitif —
-#: sans TTL ni infrastructure supplémentaire.
-ORG_ENRICHMENT_CACHE_VERSION = "1"
+#: Version 2 : le matcher accepte aussi les noms commerciaux exacts, toujours
+#: sans fuzzy matching. Les anciens NOT_FOUND/AMBIGUOUS doivent donc être
+#: retentés ; les MATCHED restent durables mais leur validation Sector est
+#: recalculée si nécessaire.
+ORG_ENRICHMENT_CACHE_VERSION = "2"
 
 MATCHED = "MATCHED"
 AMBIGUOUS = "AMBIGUOUS"
@@ -174,28 +168,14 @@ class OrgEnrichmentRecord:
     Evidence_URL: str = ""
     Match_Status: str = ""
     Fetched_At: str = ""
-    #: Secteur Cyberwatch validé pour cette organisation, une fois obtenu
-    #: (déterministe ou LLM) — évite toute nouvelle classification tant que
-    #: le cache est valide.
     Validated_Sector: str = ""
-    #: "" (pas encore tenté) / "deterministic" / "llm" / "llm_declined"
-    #: (déjà tenté, jamais concluant : ne jamais retenter à chaque run).
     Validated_Via: str = ""
-    #: Version de la logique ayant produit cette ligne (`ORG_ENRICHMENT_CACHE_VERSION`).
     Cache_Version: str = ""
 
 
 @dataclass
 class OrgEnrichmentState:
-    """État mutable d'un run pour l'enrichissement organisation.
-
-    `enabled` vaut `False` par défaut, volontairement à l'opposé de
-    `AiRunState.enabled` (qui reflète l'état réel de l'environnement) : sans
-    ce défaut sûr, chaque test existant construisant un `AiRunState` avec un
-    `Sector` encore `Inconnu` se mettrait à déclencher de vrais appels réseau
-    non mockés dès que `ai.qualify_item` escalade vers l'enrichissement.
-    Seul `start_state()` (le seul chemin de production réel) l'active.
-    """
+    """État mutable d'un run pour l'enrichissement organisation."""
 
     enabled: bool = False
     max_calls: int = 200
@@ -211,17 +191,7 @@ class OrgEnrichmentState:
 
 
 def start_state() -> OrgEnrichmentState:
-    """Prépare l'état du run : coupe-circuit indépendant de `OPENAI_API_KEY`,
-    charge le cache existant.
-
-    Un `NOT_FOUND`/`AMBIGUOUS` dont `Cache_Version` ne correspond plus à
-    `ORG_ENRICHMENT_CACHE_VERSION` est ignoré (nouvelle tentative HTTP au
-    prochain `resolve()`) : un résultat négatif ancien ne doit jamais bloquer
-    définitivement une meilleure résolution après un changement de logique.
-    Un `MATCHED` reste chargé (données d'entreprise durables), mais
-    `Validated_Sector`/`Validated_Via` sont réinitialisés dans ce cas pour
-    laisser une nouvelle chance au mapping/à l'escalade LLM mis à jour.
-    """
+    """Prépare l'état du run et charge le cache existant."""
     state = OrgEnrichmentState(
         enabled=_env_bool("ORG_ENRICHMENT_ENABLED", True),
         max_calls=_env_int("ORG_ENRICHMENT_MAX_CALLS_PER_RUN", 200),
@@ -244,12 +214,6 @@ def start_state() -> OrgEnrichmentState:
 
 
 def _fetch(query_name: str, state: OrgEnrichmentState) -> dict:
-    """GET unique et indépendant, retry borné sur 429/5xx/timeout.
-
-    Ne retourne jamais autre chose qu'un dict JSON valide ; toute panne
-    (réseau, HTTP, JSON) lève `OrgEnrichmentError`, jamais une exception non
-    gérée qui remonterait jusqu'à la collecte.
-    """
     params = {"q": query_name, "per_page": ORG_ENRICHMENT_RESULTS_PER_QUERY}
     attempt = 0
     while True:
@@ -281,19 +245,31 @@ def _fetch(query_name: str, state: OrgEnrichmentState) -> dict:
         raise OrgEnrichmentError(f"HTTP {response.status_code}: {response.text[:200]}")
 
 
+def _candidate_names(candidate: dict) -> list[str]:
+    """Noms explicitement fournis par l'API, sans rapprochement approximatif."""
+    names: list[str] = []
+
+    def add(value) -> None:
+        text = str(value or "").strip()
+        if text and text not in names:
+            names.append(text)
+
+    add(candidate.get("nom_raison_sociale"))
+    add(candidate.get("nom_commercial"))
+    commercial_names = candidate.get("noms_commerciaux") or []
+    if isinstance(commercial_names, list):
+        for value in commercial_names:
+            add(value)
+
+    complete = str(candidate.get("nom_complet") or "").strip()
+    add(complete)
+    if complete.endswith(")") and "(" in complete:
+        add(complete.rsplit("(", 1)[0].strip())
+    return names
+
+
 def _match(query_name: str, payload: dict) -> tuple[str, dict]:
-    """Renvoie (Match_Status, candidat_ou_vide).
-
-    Ne considère que les candidats dont le nom normalisé est **exactement**
-    égal à celui recherché — jamais de correspondance floue, jamais le
-    premier résultat retourné par l'API.
-
-    `nom_raison_sociale` (dénomination légale nue, ex. "SCALINGO") est
-    préféré à `nom_complet` : ce dernier compose souvent la forme
-    "Nom commercial (Raison sociale)" (vérifié sur une réponse réelle de
-    l'API, ex. "SCALINGO (SCALINGO)"), dont la parenthèse ferait échouer
-    l'égalité de clé normalisée même pour une correspondance évidente.
-    """
+    """Match exact raison sociale OU nom commercial, avec SIREN unique."""
     query_key = organisation_key(query_name)
     if not query_key:
         return NOT_FOUND, {}
@@ -306,27 +282,20 @@ def _match(query_name: str, payload: dict) -> tuple[str, dict]:
     for candidate in results:
         if not isinstance(candidate, dict):
             continue
-        name = candidate.get("nom_raison_sociale") or candidate.get("nom_complet") or ""
-        if organisation_key(str(name)) == query_key:
+        if any(organisation_key(name) == query_key for name in _candidate_names(candidate)):
             exact.append(candidate)
 
     if not exact:
         return NOT_FOUND, {}
 
-    distinct_sirens = {str(c.get("siren") or "") for c in exact}
-    if len(distinct_sirens) > 1:
+    distinct_sirens = {str(c.get("siren") or "").strip() for c in exact}
+    if "" in distinct_sirens or len(distinct_sirens) > 1:
         return AMBIGUOUS, {}
 
     return MATCHED, exact[0]
 
 
 def _record_from_candidate(org_key: str, query_name: str, candidate: dict, fetched_at: str) -> OrgEnrichmentRecord:
-    # `activite_principale` est un code NAF nu (ex. "63.11Z"), jamais un objet
-    # {code, libelle} : l'API de recherche ne renvoie aucun libellé d'activité
-    # détaillé (vérifié sur une réponse réelle, cf. commentaire de tête de
-    # module). Le seul texte officiel disponible est le titre de la section
-    # NAF (une lettre, `section_activite_principale`) via NAF_SECTION_LABELS —
-    # volontairement grossier : 21 entrées fixes, jamais une table par code.
     activity_code = str(candidate.get("activite_principale") or "")
     section = str(candidate.get("section_activite_principale") or "")
     activity_label = NAF_SECTION_LABELS.get(section, "")
@@ -355,13 +324,7 @@ def _record_from_candidate(org_key: str, query_name: str, candidate: dict, fetch
 def resolve(
     org_key: str, organisation_raw: str, fetched_at: str, state: OrgEnrichmentState
 ) -> OrgEnrichmentRecord | None:
-    """Point d'entrée unique. Ne lève jamais d'exception.
-
-    `None` signifie « aucune information disponible » (désactivé, clé vide,
-    budget épuisé) : l'appelant doit alors laisser `Sector` à `Inconnu`.
-    Un enregistrement `AMBIGUOUS`/`NOT_FOUND`/`ERROR` (statut sans
-    `Activity_Label`) doit être traité de la même façon par l'appelant.
-    """
+    """Point d'entrée unique. Ne lève jamais d'exception."""
     if not state.enabled or not org_key or not organisation_raw:
         return None
 
