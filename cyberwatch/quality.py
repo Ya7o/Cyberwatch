@@ -26,19 +26,29 @@ def metrics(items: list[Item]) -> dict:
 
 
 def compare(current: dict, baseline: dict) -> list[str]:
-    """Return regressions for comparable scopes, with absolute counts primary."""
+    """Return regressions only for scopes whose item population is comparable.
+
+    Absolute unknown counts are meaningful only when the scope contains the
+    same number of items as the recorded baseline. A CREATE can legitimately
+    change source depth or perimeter; comparing 395 current rows with 390 old
+    rows would otherwise turn normal coverage changes into false regressions.
+
+    Precision guards that do not depend on population size (deterministic
+    threat candidates, actor sentinels, exact duplicate candidates) are
+    enforced separately by ``scripts/audit_data_quality.py`` and remain hard
+    blockers regardless of this comparison.
+    """
     problems: list[str] = []
     for scope in ("global", *sorted(current.get("sources", {}))):
         now = current["global"] if scope == "global" else current["sources"][scope]
         old = baseline.get("global", {}) if scope == "global" else baseline.get("sources", {}).get(scope, {})
+        if not old or old.get("items") != now.get("items"):
+            continue
         for field in ("threat_unknown", "sector_unknown", "location_unknown"):
             if field not in old:
                 continue
             if now[field] > old[field]:
-                problems.append(f"quality regression {scope}: {field} absolute {old[field]} -> {now[field]}")
-            # A ratio is diagnostic only when the item population did not
-            # change; otherwise a perimeter change makes it non-comparable.
-            ratio = f"{field}_ratio"
-            if old.get("items") == now.get("items") and ratio in old and now.get(ratio, 0) > old[ratio]:
-                problems.append(f"quality regression {scope}: {field} ratio {old[ratio]:.4f} -> {now[ratio]:.4f}")
+                problems.append(
+                    f"quality regression {scope}: {field} absolute {old[field]} -> {now[field]}"
+                )
     return problems
