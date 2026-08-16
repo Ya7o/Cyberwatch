@@ -19,7 +19,6 @@ from .. import config, status
 from ..normalize import parse_date
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
 
-#: Codes pays du périmètre, tels qu'ils apparaissent dans l'API.
 COUNTRY_TO_LOCATION = {
     "FR": config.LOC_FRANCE,
     "RE": config.LOC_REUNION,
@@ -30,18 +29,13 @@ COUNTRY_TO_LOCATION = {
     "KM": config.LOC_COMORES,
 }
 
-#: Modèles d'URL essayés, du plus précis au plus général.
 ENDPOINT_TEMPLATES = [
     "https://api.ransomware.live/v2/countryvictims/{country}",
     "https://api.ransomware.live/countryvictims/{country}",
 ]
 
-#: Noms de champs rencontrés selon les versions de l'API.
 FIELD_ALIASES = {
     "organisation": ["victim", "post_title", "company", "name", "title"],
-    # La carte publique ransomware.live date ses victimes par « Discovered ».
-    # Cette date rend nos compteurs comparables à la source ; les anciens
-    # formats restent couverts par les replis suivants.
     "date": ["discovered", "published", "attackdate", "attack_date", "date",
              "publishedDate", "discovered_date"],
     "group": ["group_name", "group", "gang", "ransomware_group"],
@@ -60,7 +54,6 @@ def _first_field(record: dict, aliases: list[str]) -> str:
 
 
 def _victim_name(value: str) -> str:
-    """Transforme un domaine victime en libellé stable, sans heuristique Web."""
     raw = (value or "").strip()
     lowered = raw.lower().removeprefix("www.")
     labels = lowered.split(".")
@@ -78,8 +71,6 @@ def _normalise_url(value: str) -> str:
 
 
 class RansomwareLiveCollector(Collector):
-    """Énumère les victimes de rançongiciel des pays du périmètre."""
-
     name = "ransomware_live"
 
     def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
@@ -99,26 +90,18 @@ class RansomwareLiveCollector(Collector):
                 result.reason_code = status.REASON_BUDGET_SOURCE
                 break
 
-            templates = (
-                [working_template] if working_template else ENDPOINT_TEMPLATES
-            )
+            templates = [working_template] if working_template else ENDPOINT_TEMPLATES
             fetched = False
             empty_country = False
 
             for template in templates:
                 url = template.format(country=country)
                 response = client.fetch(url, budget)
-                # L'API publique applique une limite d'une minute à certains
-                # endpoints. Une seule reprise lente respecte cette limite sans
-                # masquer l'échec : si elle échoue encore, la source reste FAIL.
                 if response.reason_code == status.REASON_HTTP_429:
                     rate_limit_retries += 1
                     time.sleep(config.RANSOMWARE_LIVE_RATE_LIMIT_SECONDS)
                     response = client.fetch(url, budget)
                 if not response.ok:
-                    # Une fois le bon point d'entrée connu, un 404 sur un pays
-                    # signifie « aucune victime enregistrée », pas un échec de
-                    # protocole : le pays a bien été interrogé.
                     if working_template and response.status_code == 404:
                         empty_country = True
                     else:
@@ -150,12 +133,10 @@ class RansomwareLiveCollector(Collector):
             if fetched or empty_country:
                 result.units_done += 1
             elif working_template is None:
-                # Aucun modèle d'URL ne répond : l'API n'est pas joignable.
                 result.reason_code = status.REASON_HTTP_ERROR
                 result.comment = "Aucun point d'entrée de l'API ransomware.live n'a répondu"
                 break
 
-            # Un point d'entrée global renvoie déjà toutes les victimes.
             if working_template and "{country}" not in working_template:
                 result.units_done = result.units_expected
                 break
@@ -175,7 +156,6 @@ class RansomwareLiveCollector(Collector):
 
 
 def _records_from(payload):
-    """Liste d'enregistrements, quelle que soit l'enveloppe renvoyée."""
     if isinstance(payload, list):
         return payload
     if isinstance(payload, dict):
@@ -197,23 +177,16 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
         return None
 
     group = _first_field(record, FIELD_ALIASES["group"])
-    record_country = (
-        _first_field(record, FIELD_ALIASES["country"]) or country
-    ).upper()[:2]
+    record_country = (_first_field(record, FIELD_ALIASES["country"]) or country).upper()[:2]
     location = COUNTRY_TO_LOCATION.get(record_country, spec.location_rule)
-
     title = f"{organisation} revendiqué par {group}" if group else organisation
 
-    # `_first_field` ne garde que le premier alias qui répond ; les variantes
-    # de date/URL perdues sont préservées ici pour la couche `source_facts`
-    # (§13 METHODOLOGY.md), sans changer la sémantique historique de
-    # `published`/`url`/`sector`/`location` ci-dessus.
     source_metadata = {
         "group": group,
         "discovered": _first_field(record, ["discovered", "discovered_date"]),
-        "attackdate": _first_field(
-            record, ["attackdate", "attack_date", "publishedDate"]
-        ),
+        # Une date de publication n'est pas une date d'attaque : seuls les
+        # champs explicitement sémantisés attackdate/attack_date sont retenus.
+        "attackdate": _first_field(record, ["attackdate", "attack_date"]),
         "website": _first_field(record, ["website"]),
         "claim_url": _first_field(record, ["post_url", "claim_url"]),
         "sector_raw": _first_field(record, FIELD_ALIASES["sector"]),
