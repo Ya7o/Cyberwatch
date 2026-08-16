@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 
 from . import config
-from .normalize import searchable
+from .normalize import organisation_key, searchable
 
 
 def _contains(haystack: str, needle: str) -> bool:
@@ -39,8 +39,34 @@ def classify_source_sector(given: str = "") -> str:
     return config.ACTIVITY_TO_SECTOR.get(searchable(cleaned), config.SECTOR_UNKNOWN)
 
 
+def _watchlist_sector(organisation: str) -> str:
+    """Secteur d'une entité de veille exactement reconnue, aliases inclus.
+
+    La watchlist est un référentiel versionné et explicite : l'utiliser ici ne
+    réintroduit aucune heuristique sur les mots du nom. Une organisation hors
+    référentiel reste inconnue.
+    """
+    key = organisation_key(organisation)
+    if not key:
+        return config.SECTOR_UNKNOWN
+
+    # Import local pour éviter de coupler l'initialisation du module de
+    # politique Sector à celle des listes de veille.
+    from . import watchlists
+
+    for entity in watchlists.ALL_ENTITIES:
+        if organisation_key(entity.name) == key:
+            return entity.sector_hint or config.SECTOR_UNKNOWN
+        if any(organisation_key(alias) == key for alias in entity.aliases):
+            return entity.sector_hint or config.SECTOR_UNKNOWN
+    return config.SECTOR_UNKNOWN
+
+
 def classify_sector_name(organisation: str) -> str:
-    """Classe un nom d'organisation avec le sous-ensemble de règles sûres."""
+    """Classe un nom uniquement avec des preuves nominatives sûres."""
+    sector = _watchlist_sector(organisation)
+    if sector != config.SECTOR_UNKNOWN:
+        return sector
     return _from_rules(organisation, config.SECTOR_NAME_RULES)
 
 
