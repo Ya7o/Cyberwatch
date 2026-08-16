@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, org_enrichment, store
+from . import config, org_enrichment, store, watchlists
 from .identity import sort_items
 from .model import Item
 from .normalize import classify_location, classify_threat, organisation_key, searchable
@@ -139,9 +139,9 @@ def _source_location_default(source_id: str) -> str:
 def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
     """Complète menace/localisation inconnues avec la même logique hors-ligne.
 
-    Pour Location : référentiel -> indice territorial sûr -> cache de l'API
-    entreprise déjà alimenté -> défaut de la source. Aucun appel réseau et
-    aucune propagation aveugle d'une localisation d'un item vers un autre.
+    Pour Location : référentiel/watchlist -> indice territorial sûr -> cache de
+    l'API entreprise déjà alimenté -> défaut de la source. Aucun appel réseau
+    et aucune propagation aveugle d'une localisation d'un item vers un autre.
     """
     report = {
         "threat": 0,
@@ -152,6 +152,7 @@ def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> di
     }
     ordered = sort_items(items)
     api_locations = _cached_api_locations()
+    territories = watchlists.entity_territories()
 
     for item in ordered:
         if item.Threat == config.THREAT_UNKNOWN:
@@ -166,6 +167,11 @@ def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> di
         _sector, location = enrich_unknowns(
             item.Organisation_Raw, item.Sector, item.Location, reference
         )
+        if location == config.LOC_INCONNU:
+            location = territories.get(searchable(item.Organisation_Raw), config.LOC_INCONNU)
+            if location != config.LOC_INCONNU:
+                report["location_rule"] += 1
+
         if location == config.LOC_INCONNU:
             location = classify_location(item.Title, item.Organisation_Raw)
             if location != config.LOC_INCONNU:
