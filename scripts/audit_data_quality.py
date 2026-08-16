@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import config
+from cyberwatch import config, duplicate_audit, source_facts as sf
 from cyberwatch.enrichment import _UNKNOWN_LEAK_MARKERS
 from cyberwatch.normalize import classify_threat, searchable
 from cyberwatch.quality import compare as compare_quality, metrics as quality_metrics
@@ -21,6 +21,12 @@ UNKNOWN = "Inconnu"
 
 def load(path):
     return list(csv.DictReader(Path(path).open(encoding="utf-8", newline="")))
+
+def load_optional(path):
+    """Comme `load`, mais renvoie une liste vide si le fichier est absent —
+    `source_facts.csv` peut ne pas encore exister sur un dépôt non initialisé."""
+    p = Path(path)
+    return load(p) if p.exists() else []
 
 def key(row):
     return (row["Source_ID"], row["Source_Item_ID"]) if row.get("Source_Item_ID") else (row["Source_ID"], row["URL"], row["Published_Date"])
@@ -94,16 +100,68 @@ def threat_backfill_candidates(rows):
             })
     return sorted(candidates, key=lambda value: (value["source_id"], value["source_item_id"], value["title"]))
 
+
+def actor_sentinel_candidates(source_fact_rows):
+    """§stabilisation pré-release : lignes de `source_facts.csv` dont
+    `Threat_Actor` est un mot générique (jamais un nom d'acteur réel, cf.
+    `source_facts._ACTOR_SENTINELS`). Bloquant (--check-regression) :
+    contrairement au taux d'Inconnu, c'est une valeur fausse publiable, pas
+    un manque de complétude."""
+    candidates = []
+    for row in source_fact_rows:
+        actor = row.get("Threat_Actor", "")
+        if actor and searchable(actor) in sf._ACTOR_SENTINELS:
+            candidates.append({
+                "item_id": row.get("Item_ID", ""),
+                "source_id": row.get("Source_ID", ""),
+                "threat_actor": actor,
+            })
+    return sorted(candidates, key=lambda value: (value["source_id"], value["item_id"]))
+
+
+def duplicate_high_confidence_candidates(items):
+    """§stabilisation pré-release : sous-ensemble « haute confiance »
+    (concaténation/permutation EXACTES, `duplicate_audit.
+    HIGH_CONFIDENCE_REASON_CODES`) des candidats de `cyberwatch.
+    duplicate_audit` — jamais l'inclusion de mots, volontairement non
+    bloquante (trop de faux positifs institutionnels légitimes)."""
+    candidates = duplicate_audit.find_duplicate_candidates(items)
+    high_confidence = [
+        candidate for candidate in candidates
+        if candidate.reason_code in duplicate_audit.HIGH_CONFIDENCE_REASON_CODES
+    ]
+    return sorted(
+        (
+            {
+                "reason_code": candidate.reason_code,
+                "short": candidate.short.Organisation_Raw,
+                "long": candidate.long.Organisation_Raw,
+                "short_source": candidate.short.Source_ID,
+                "long_source": candidate.long.Source_ID,
+                "days_apart": candidate.days_apart,
+            }
+            for candidate in high_confidence
+        ),
+        key=lambda value: (value["short"], value["long"], value["short_source"], value["long_source"]),
+    )
+
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--items');p.add_argument('--before');p.add_argument('--after');p.add_argument('--check',action='store_true');p.add_argument('--metrics', action='store_true');p.add_argument('--quality-baseline', default=str(ROOT / 'data' / 'quality_baseline.json'));p.add_argument('--check-regression', action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--items');p.add_argument('--before');p.add_argument('--after');p.add_argument('--check',action='store_true');p.add_argument('--metrics', action='store_true');p.add_argument('--quality-baseline', default=str(ROOT / 'data' / 'quality_baseline.json'));p.add_argument('--check-regression', action='store_true');p.add_argument('--source-facts', default=str(ROOT / 'data' / 'source_facts.csv'));a=p.parse_args()
     if bool(a.before) != bool(a.after):
         p.error("--before et --after doivent être fournis ensemble")
     rows=load(a.items or a.after)
     before_rows = load(a.before) if a.before else None
+    source_fact_rows = load_optional(a.source_facts)
+    items = [Item.from_row(row) for row in rows]
     result=run_audit(rows, before_rows)
     result["threat_backfill_candidates"] = threat_backfill_candidates(rows)
     result["threat_backfill_candidates_total"] = len(result["threat_backfill_candidates"])
-    result["quality_metrics"] = quality_metrics([Item.from_row(row) for row in rows])
+    result["actor_sentinel_candidates"] = actor_sentinel_candidates(source_fact_rows)
+    result["actor_sentinel_candidates_total"] = len(result["actor_sentinel_candidates"])
+    result["duplicate_high_confidence_candidates"] = duplicate_high_confidence_candidates(items)
+    result["duplicate_high_confidence_candidates_total"] = len(result["duplicate_high_confidence_candidates"])
+    result["quality_metrics"] = quality_metrics(items)
     blob=canonical(result); digest=hashlib.sha256(blob.encode()).hexdigest(); print(blob); print('audit_hash='+digest)
     if a.metrics:
         for name, value in result["global"].items():
@@ -113,10 +171,16 @@ def main():
                 print(f"{name}={result[name]}")
     if a.check:
         shuffled=list(rows); random.Random(42).shuffle(shuffled)
+        shuffled_facts=list(source_fact_rows); random.Random(43).shuffle(shuffled_facts)
+        shuffled_items=[Item.from_row(row) for row in shuffled]
         shuffled_result = run_audit(shuffled, before_rows)
         shuffled_result["threat_backfill_candidates"] = threat_backfill_candidates(shuffled)
         shuffled_result["threat_backfill_candidates_total"] = len(shuffled_result["threat_backfill_candidates"])
-        shuffled_result["quality_metrics"] = quality_metrics([Item.from_row(row) for row in shuffled])
+        shuffled_result["actor_sentinel_candidates"] = actor_sentinel_candidates(shuffled_facts)
+        shuffled_result["actor_sentinel_candidates_total"] = len(shuffled_result["actor_sentinel_candidates"])
+        shuffled_result["duplicate_high_confidence_candidates"] = duplicate_high_confidence_candidates(shuffled_items)
+        shuffled_result["duplicate_high_confidence_candidates_total"] = len(shuffled_result["duplicate_high_confidence_candidates"])
+        shuffled_result["quality_metrics"] = quality_metrics(shuffled_items)
         if canonical(shuffled_result)!=canonical(result): raise SystemExit('audit non déterministe')
         print('check=PASS')
     if a.check_regression:
@@ -127,6 +191,10 @@ def main():
         problems = compare_quality(result['quality_metrics'], baseline['metrics'])
         if result['threat_backfill_candidates_total']:
             problems.append('deterministic threat candidates still unknown')
+        if result['actor_sentinel_candidates_total']:
+            problems.append('acteurs sentinelles génériques détectés dans source_facts.csv')
+        if result['duplicate_high_confidence_candidates_total']:
+            problems.append('doublons haute confiance (concaténation/permutation) non résolus')
         if before_rows is not None and any(row['reason'] == 'UNEXPLAINED' for row in result['removed']):
             problems.append('unexplained removed rows')
         if problems:

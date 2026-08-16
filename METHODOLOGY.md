@@ -682,3 +682,109 @@ conserve, pour traçabilité, la donnée structurée transmise par le collecteur
 
 `Items_Hash`/`Incidents_Hash` ne changent pas : `source_facts.csv` n'entre
 dans aucun calcul de hash canonique (V1, volontairement).
+
+## 14. Stabilisation pré-release : couverture historique, doublons certains, gate qualité
+
+Un audit pré-release a distingué deux catégories de défaut : ceux qui
+réduisent la complétude (taux d'`Inconnu`, non traités ici) et ceux qui
+rendent une donnée publiée **trompeuse ou fausse** — seuls ces derniers sont
+corrigés ici (pas de fuzzy matching, pas de nouvelle heuristique ouverte,
+pas de refonte de la déduplication).
+
+### 14.1 Couverture historique (`History_Status`)
+
+Un protocole peut aboutir (`Status=OK`) sans que l'historique collecté
+couvre la fenêtre demandée depuis son début — cas de FrenchBreaches
+(`feed_has_no_pagination`), dont la profondeur réelle recule avec le
+temps. `Status`/`Coverage`/`Reason` ne devaient jamais porter cette
+question en plus de la leur (cf. docstring de `status.py`) :
+`History_Status` (`COMPLETE`/`TRUNCATED`/`UNKNOWN`) et
+`Oldest_Available_Date` forment un axe orthogonal, calculé génériquement
+dans `runner._resolve_history_status()` (aucune condition sur `source_id` :
+ne devient `TRUNCATED` que si un collecteur renseigne
+`CollectResult.oldest_available_date` et que celle-ci est postérieure au
+début de fenêtre malgré `Status=OK`). Propagé dans `run_sources.csv`
+(colonnes additives) puis `assets/data/status.json`. Le dashboard affiche
+un signal discret (infobulle sur le chip Statut existant), pas de colonne
+supplémentaire — respecte l'invariant « mêmes six champs pour toute
+source sans traitement spécial » du détail des sources.
+
+### 14.2 Doublons inter-sources certains
+
+Deux mécanismes distincts, jamais mélangés :
+
+- **Alias certains** (`data/organisation_aliases.csv`) : la seule façon
+  sanctionnée d'unifier deux libellés différents pour la même organisation
+  — `organisation_key()` reste sans rapprochement flou (§7). Chaque alias
+  ajouté est confirmé par les données réelles (deux `Organisation_Key`
+  distinctes pour la même organisation) et couvert par un test de
+  régression dédié (`tests/test_organisation_aliases.py`). Un nouvel alias
+  s'applique immédiatement à la déduplication d'items déjà collectés grâce
+  à `dedup._effective_organisation_key()`, qui recalcule la clé courante à
+  partir d'`Organisation_Raw` plutôt que de dépendre uniquement de
+  `Organisation_Key` figé à la collecte.
+- **Candidats d'audit** (`cyberwatch/duplicate_audit.py`) : signale sans
+  jamais fusionner. Au signal historique (inclusion contiguë de mots)
+  s'ajoutent deux signaux de correspondance EXACTE sur l'ensemble des mots
+  — concaténation (`DUPLICATE_CANDIDATE_CONCATENATION`, « france casse » /
+  « francecasse ») et permutation (`DUPLICATE_CANDIDATE_PERMUTATION`,
+  « cravero motoculture » / « motoculture cravero ») — regroupés sous
+  `HIGH_CONFIDENCE_REASON_CODES`, seuls exploitables par un gate bloquant
+  (§14.4) : contrairement à l'inclusion, ils n'ont pas de faux positif
+  institutionnel connu (une sous-entité distincte ne partage jamais
+  exactement les mêmes mots que son entité mère).
+
+Le marqueur de récidive (`dedup.RECURRENCE_MARKERS`) reste la seule garde
+contre une fusion erronée d'attaques réellement distinctes sur la même
+organisation (Son-Video : deux incidents en 2026, verrouillés par un test
+dédié) — aucun alias ne doit jamais contourner cette protection.
+
+### 14.3 `Threat_Actor` : sentinelles génériques
+
+`source_facts._ACTOR_SENTINELS` (déjà existant pour filtrer les mots de
+remplissage — « un », « le hacker », « inconnu »...) est étendu avec un
+vocabulaire fermé de catégories génériques de menace qui ne sont jamais un
+nom d'acteur : ransomware, rançongiciel, cybercriminel(s), pirate(s) — cas
+réel corrigé, « revendiquée par le groupe Ransomware » produisait
+`Threat_Actor="Ransomware"`. Un vrai groupe nommé (LockBit, Qilin, Akira...)
+n'est jamais affecté par construction. `_valid_actor()` reste le point
+d'entrée unique pour les 4 extracteurs concernés (FRENCHBREACHES,
+CYBERATTAQUE_ORG, RANSOMWARE_LIVE, VEILLE_LLM).
+
+### 14.4 Gate qualité : checklist manuelle de release
+
+`scripts/audit_data_quality.py` reste volontairement hors CI (`ci.yml`
+inchangé — les audits spécialisés restent manuels, jamais un gate
+obligatoire, cf. §5). Deux contrôles bloquants supplémentaires, au même
+niveau que `threat_backfill_candidates` déjà en place, activés via
+`--check-regression` :
+- `actor_sentinel_candidates` (§14.3) — toute ligne `source_facts.csv`
+  dont `Threat_Actor` est une sentinelle générique fait échouer le
+  contrôle ;
+- `duplicate_high_confidence_candidates` (§14.2) — tout candidat
+  concaténation/permutation exacte non résolu par un alias fait échouer le
+  contrôle. L'inclusion de mots (containment) reste volontairement **non**
+  bloquante : trop de faux positifs institutionnels légitimes pour
+  interdire une release à chaque cas ambigu.
+
+**Checklist obligatoire avant toute release**, exécutée à la main (jamais
+par la CI) :
+```
+pytest
+python -m cyberwatch check --allow-uninitialized
+python -m cyberwatch test-repeat
+python scripts/audit_data_quality.py --items data/items.csv \
+    --source-facts data/source_facts.csv --check --check-regression
+python -m cyberwatch build-site
+python -m cyberwatch check --allow-uninitialized
+```
+Un candidat détecté aujourd'hui (avant correction de la donnée déjà
+publiée) est attendu, pas un bug : ce gate documente précisément ce qui
+reste à corriger, avant de faire à nouveau confiance à
+`quality_baseline.json`.
+
+**Méthode** : les nouveaux alias (§14.2) changent réellement
+`Organisation_Key`, donc `Items_Hash`/`Incidents_Hash`, au prochain run
+réel → `METHOD_ID` bumpé de `OBS-FR-OI-SIMPLE-SOURCING-7` à `-8`.
+`History_Status`/les sentinelles `Threat_Actor` n'entrent dans aucun hash
+canonique et n'auraient pas justifié ce bump à eux seuls.
