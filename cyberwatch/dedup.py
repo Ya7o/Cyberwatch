@@ -164,9 +164,29 @@ def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str
     return _majority([getattr(item, field_name) for item in ordered], fallback)
 
 
+# Priorité métier dédiée à l'agrégation Incident. Elle ne réutilise pas l'ordre
+# historique de config.THREATS : une preuve spécifique de fuite ou de
+# compromission de compte doit battre un simple signal générique d'intrusion.
+_INCIDENT_THREAT_PRIORITY = (
+    config.THREAT_RANSOMWARE,
+    config.THREAT_DDOS,
+    config.THREAT_MALWARE,
+    config.THREAT_ACCOUNT,
+    config.THREAT_LEAK,
+    config.THREAT_PHISHING,
+    config.THREAT_THIRD_PARTY,
+    config.THREAT_INTRUSION,
+    config.THREAT_OTHER,
+    config.THREAT_UNKNOWN,
+)
+
+
 def _priority_threat(values: list[str]) -> str:
-    known = [value for value in values if value and value in config.THREATS]
-    return min(known, key=config.THREATS.index) if known else config.THREAT_UNKNOWN
+    known = {value for value in values if value and value in config.THREATS}
+    for threat in _INCIDENT_THREAT_PRIORITY:
+        if threat in known:
+            return threat
+    return config.THREAT_UNKNOWN
 
 
 def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
