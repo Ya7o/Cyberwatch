@@ -141,10 +141,13 @@ class _BonjourHtmlParser(HTMLParser):
                 if cleaned and cleaned not in values:
                     values.append(cleaned)
             if values:
-                self.current.source_metadata["data_types"] = values
-                # Champ brut conservé pour la compatibilité, le comptage et
-                # l'audit. Le séparateur « ; » ne détruit pas les virgules
-                # appartenant à un libellé source.
+                # Plusieurs valeurs successives correspondent au format en
+                # bulles du site actuel : leurs limites sont significatives.
+                # Une valeur unique reste sur le chemin historique via
+                # data_types_raw afin de conserver la compatibilité des
+                # anciens blocs textuels « noms, emails, téléphones ».
+                if len(values) > 1:
+                    self.current.source_metadata["data_types"] = values
                 self.current.source_metadata["data_types_raw"] = " ; ".join(values)
         self._collecting_data_types = False
         self._data_type_parts = []
