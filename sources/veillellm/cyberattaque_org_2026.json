@@ -65,6 +65,18 @@
       },
       "method": "incident-source outgoing links/domain -> official site/legal notice -> SIREN/APE public registry -> exact SIREN search -> official-site search -> exact LinkedIn industry fallback",
       "evidence_policy": "no forced taxonomy mapping; SIREN/APE validated against French public registry; official/secondary evidence URL retained"
+    },
+    "company_research_v5": {
+      "before_sector_unknown": 47,
+      "resolved": 13,
+      "remaining_sector_unknown": 34,
+      "resolved_by": {
+        "manual_official": 2,
+        "source_explicit_activity": 3,
+        "fuzzy_registry_with_evidence": 8
+      },
+      "method": "manual official evidence for known misses + explicit victim activity in incident source + conservative fuzzy French public-registry match requiring source/legal-name evidence or near-exact unique match",
+      "evidence_policy": "no forced mapping; unresolved taxonomy gaps remain Inconnu"
     }
   },
   "incidents": [
@@ -530,7 +542,7 @@
     },
     {
       "date": "2026-08-09",
-      "organisation": "Impact Centre Chrétien frappé par Qilin",
+      "organisation": "Impact Centre Chrétien",
       "territoire": "France",
       "localisation": "France",
       "secteur": "Inconnu",
@@ -720,7 +732,7 @@
       "organisation": "Détenteurs d’armes à nouveau dans le viseur",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -873,14 +885,15 @@
       "organisation": "Groupe T2MC",
       "territoire": "France",
       "localisation": "Île-de-France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une fuite particulièrement sensible frappe le Groupe T2MC. Le 1er août 2026, un acteur utilisant le pseudonyme Alduinn…",
       "sources": [
-        "https://www.cyberattaque.org/groupe-t2mc-82-000-cartes-didentite-et-rib-exposes-dans-une-fuite-massive/"
+        "https://www.cyberattaque.org/groupe-t2mc-82-000-cartes-didentite-et-rib-exposes-dans-une-fuite-massive/",
+        "https://www.groupet2mc.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Groupe T2MC : 82 000 cartes d’identité et RIB exposés dans une fuite massive",
       "evolution": "nouveau"
@@ -1111,15 +1124,16 @@
       "date": "2026-07-28",
       "organisation": "ERDIL",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Besançon, Bourgogne-Franche-Comté",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Phishing / fraude",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "L’éditeur français ERDIL fait l’objet d’une revendication publiée le 28 juillet 2026. Un hacker se présentant sous le…",
       "sources": [
-        "https://www.cyberattaque.org/erdil-270-contacts-professionnels-et-les-comptes-wordpress-en-fuite/"
+        "https://www.cyberattaque.org/erdil-270-contacts-professionnels-et-les-comptes-wordpress-en-fuite/",
+        "https://www.erdil.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ERDIL : 270 contacts professionnels et les comptes WordPress en fuite",
       "evolution": "nouveau"
@@ -1969,14 +1983,15 @@
       "organisation": "Atout France",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une fuite de données attribuée à Atout France, l’agence chargée du développement touristique de la France, a été…",
       "sources": [
-        "https://www.cyberattaque.org/atout-france-plus-de-400-000-comptes-et-plusieurs-acces-administrateurs-revendiques-apres-une-faille-idor/"
+        "https://www.cyberattaque.org/atout-france-plus-de-400-000-comptes-et-plusieurs-acces-administrateurs-revendiques-apres-une-faille-idor/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/431959956"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Atout France : plus de 400 000 comptes et plusieurs accès administrateurs revendiqués après une faille IDOR",
       "evolution": "nouveau"
@@ -2674,14 +2689,15 @@
       "organisation": "Carvivo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Quelques semaines après la publication d’une base contenant environ 15 millions de personnes revendiquées, une nouvelle fuite attribuée…",
       "sources": [
-        "https://www.cyberattaque.org/carvivo-fuite-de-36-millions-de-journaux-dactivite-apres-une-nouvelle-cyberattaque/"
+        "https://www.cyberattaque.org/carvivo-fuite-de-36-millions-de-journaux-dactivite-apres-une-nouvelle-cyberattaque/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/819173634"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Carvivo : fuite de 3,6 millions de journaux d’activité après une nouvelle cyberattaque",
       "evolution": "nouveau"
@@ -2725,7 +2741,7 @@
       "organisation": "La Région Occitanie",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2898,14 +2914,15 @@
       "organisation": "Bien’ici",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "0xSec",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Un utilisateur opérant sous le pseudonyme 0xSec affirme avoir mis la main sur plusieurs exports de données associés…",
       "sources": [
-        "https://www.cyberattaque.org/bienici-les-prospects-de-six-agences-immobilieres-diffusees-en-fuite/"
+        "https://www.cyberattaque.org/bienici-les-prospects-de-six-agences-immobilieres-diffusees-en-fuite/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/488073412"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Bien’ici : les prospects de six agences immobilières diffusées en fuite",
       "evolution": "nouveau"
@@ -3190,14 +3207,15 @@
       "organisation": "Jestimo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une nouvelle fuite revendiquée par le cybercriminel ChimeraZ vise Jestimo, une solution utilisée par de nombreuses agences immobilières…",
       "sources": [
-        "https://www.cyberattaque.org/jestimo-155-000-proprietaires-et-vendeurs-exposes-dans-une-fuite-de-donnees-immobilieres/"
+        "https://www.cyberattaque.org/jestimo-155-000-proprietaires-et-vendeurs-exposes-dans-une-fuite-de-donnees-immobilieres/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/504816828"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Jestimo : 155 000 propriétaires et vendeurs exposés dans une fuite de données immobilières",
       "evolution": "nouveau"
@@ -3459,17 +3477,18 @@
     },
     {
       "date": "2026-06-05",
-      "organisation": "Goodvest victime d’une cyberattaque",
+      "organisation": "Goodvest",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "La société française Goodvest, spécialisée dans l’épargne responsable et l’investissement durable, informe ses clients avoir été victime d’une…",
       "sources": [
-        "https://www.cyberattaque.org/goodvest-victime-dune-cyberattaque-des-donnees-patrimoniales-de-clients-exposees/"
+        "https://www.cyberattaque.org/goodvest-victime-dune-cyberattaque-des-donnees-patrimoniales-de-clients-exposees/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/889263117"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Goodvest victime d’une cyberattaque : des données patrimoniales de clients exposées",
       "evolution": "nouveau"
@@ -3567,14 +3586,15 @@
       "organisation": "SeLoger",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Un acteur cybercriminel se présentant comme affilié au groupe LAPSUS$ affirme avoir compromis SeLoger.com et propose à la…",
       "sources": [
-        "https://www.cyberattaque.org/seloger-45-millions-de-comptes-revendiques-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/seloger-45-millions-de-comptes-revendiques-dans-une-fuite-de-donnees/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/425074481"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — SeLoger : 4,5 millions de comptes revendiqués dans une fuite de données",
       "evolution": "nouveau"
@@ -3973,7 +3993,7 @@
     },
     {
       "date": "2026-05-23",
-      "organisation": "Avea Vacances victime d’une cyberattaque",
+      "organisation": "Avea Vacances",
       "territoire": "France",
       "localisation": "France",
       "secteur": "Inconnu",
@@ -4109,7 +4129,7 @@
     },
     {
       "date": "2026-05-20",
-      "organisation": "GitHub touché par une cyberattaque, près de 4 000 dépôts internes privés en fuite",
+      "organisation": "GitHub",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
       "secteur": "Inconnu",
@@ -4197,14 +4217,15 @@
       "organisation": "Gîtes de France",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Le réseau Gîtes de France, acteur historique des locations de vacances et du tourisme rural en France, a…",
       "sources": [
-        "https://www.cyberattaque.org/gites-de-france-les-reservations-de-389-000-clients-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/gites-de-france-les-reservations-de-389-000-clients-dans-une-fuite-de-donnees/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/399664259"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Gîtes de France : les réservations de 389 000 clients dans une fuite de données",
       "evolution": "nouveau"
@@ -6028,7 +6049,7 @@
       "organisation": "ImmoJeune",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -6663,14 +6684,15 @@
       "organisation": "Adobe",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Adobe serait visé par une fuite massive de données revendiquée par le hacker Mr. Raccoon, impliquant plus de…",
       "sources": [
-        "https://www.cyberattaque.org/adobe-13-millions-de-tickets-de-support-en-fuite-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/adobe-13-millions-de-tickets-de-support-en-fuite-apres-une-cyberattaque/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/949079610"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Adobe : 13 millions de tickets de support en fuite après une cyberattaque",
       "evolution": "nouveau"

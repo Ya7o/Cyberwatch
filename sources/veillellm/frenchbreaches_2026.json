@@ -65,6 +65,18 @@
       },
       "method": "incident-source outgoing links/domain -> official site/legal notice -> SIREN/APE public registry -> exact SIREN search -> official-site search -> exact LinkedIn industry fallback",
       "evidence_policy": "no forced taxonomy mapping; SIREN/APE validated against French public registry; official/secondary evidence URL retained"
+    },
+    "company_research_v5": {
+      "before_sector_unknown": 95,
+      "resolved": 15,
+      "remaining_sector_unknown": 80,
+      "resolved_by": {
+        "manual_official": 2,
+        "source_explicit_activity": 10,
+        "fuzzy_registry_with_evidence": 3
+      },
+      "method": "manual official evidence for known misses + explicit victim activity in incident source + conservative fuzzy French public-registry match requiring source/legal-name evidence or near-exact unique match",
+      "evidence_policy": "no forced mapping; unresolved taxonomy gaps remain Inconnu"
     }
   },
   "incidents": [
@@ -244,7 +256,7 @@
       "organisation": "France VAE",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -703,7 +715,7 @@
       "organisation": "Actini Group",
       "territoire": "France",
       "localisation": "Haute-Savoie",
-      "secteur": "Inconnu",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -737,7 +749,7 @@
       "organisation": "Stade Français Paris",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1028,14 +1040,15 @@
       "organisation": "Groupe T2MC",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/groupe-t2mc-msatleltiim1uf4u47g"
+        "https://frenchbreaches.com/alertes/groupe-t2mc-msatleltiim1uf4u47g",
+        "https://www.groupet2mc.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Groupe T2MC.",
       "evolution": "nouveau"
@@ -1316,15 +1329,16 @@
       "date": "2026-07-28",
       "organisation": "Erdil",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Besançon, Bourgogne-Franche-Comté",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/erdil-ms4edb2tfxahd3apfc"
+        "https://frenchbreaches.com/alertes/erdil-ms4edb2tfxahd3apfc",
+        "https://www.erdil.fr/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Erdil.",
       "evolution": "nouveau"
@@ -1470,14 +1484,15 @@
       "organisation": "Driveco",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/driveco-ms0wsz8la08oz17ytnb"
+        "https://frenchbreaches.com/alertes/driveco-ms0wsz8la08oz17ytnb",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/818943938"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Driveco.",
       "evolution": "nouveau"
@@ -2602,7 +2617,7 @@
       "organisation": "Mifarma (Atida)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -3492,7 +3507,7 @@
       "organisation": "Apimo",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -4470,7 +4485,7 @@
       "organisation": "Au Vieux Campeur",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -4674,7 +4689,7 @@
       "organisation": "Vacansoleil",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -5886,7 +5901,7 @@
       "organisation": "Best Western Hotels",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -10162,14 +10177,15 @@
       "organisation": "Derbez",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/derbez-mljgnjkmhrjwey6432"
+        "https://frenchbreaches.com/alertes/derbez-mljgnjkmhrjwey6432",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/493468516"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Derbez.",
       "evolution": "nouveau"
@@ -10559,14 +10575,15 @@
       "organisation": "CNG (Centre National de Gestion)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/cng-centre-national-de-gestion-ml9ql2hyavwl1ny8sv"
+        "https://frenchbreaches.com/alertes/cng-centre-national-de-gestion-ml9ql2hyavwl1ny8sv",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/130003742"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — CNG (Centre National de Gestion).",
       "evolution": "nouveau"
@@ -11119,7 +11136,7 @@
       "organisation": "Fédération Nationale des Sapeurs-Pompiers de France (FNSPF)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -11225,7 +11242,7 @@
       "organisation": "Delko",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
