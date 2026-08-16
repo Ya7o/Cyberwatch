@@ -46,4 +46,5 @@ jobs:
           git add sources/veillellm/cyberattaque_org_2026.csv sources/veillellm/cyberattaque_org_2026.json sources/veillellm/frenchbreaches_2026.csv sources/veillellm/frenchbreaches_2026.json
           if git diff --cached --quiet; then echo "No data changes"; exit 0; fi
           git commit -m "Resolve additional 2026 sectors from company identity evidence"
+          git pull --rebase origin main
           git push origin HEAD:main
