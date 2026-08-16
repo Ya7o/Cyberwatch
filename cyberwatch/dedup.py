@@ -146,11 +146,23 @@ def _majority(values: list[str], fallback: str) -> str:
     return min(value for value, count in counts.items() if count == top)
 
 
+def _strict_majority(values: list[str], fallback: str) -> str:
+    """Majorité sans tie-break arbitraire : une égalité conserve Inconnu."""
+    meaningful = [value for value in values if value and value != fallback]
+    if not meaningful:
+        return fallback
+    counts = Counter(meaningful)
+    top = max(counts.values())
+    winners = sorted(value for value, count in counts.items() if count == top)
+    return winners[0] if len(winners) == 1 else fallback
+
+
 def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str) -> str:
     """Préfère VEILLE_LLM pour les champs qu'elle qualifie plus précisément.
 
     La priorité ne s'applique que si VEILLE_LLM fournit une valeur connue.
-    Sinon, la majorité historique de toutes les sources reste inchangée.
+    Sinon, la majorité historique reste inchangée, sauf pour Sector où une
+    égalité conserve désormais Inconnu plutôt qu'un choix alphabétique.
     """
     preferred = [
         getattr(item, field_name)
@@ -161,7 +173,10 @@ def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str
     ]
     if preferred:
         return _majority(preferred, fallback)
-    return _majority([getattr(item, field_name) for item in ordered], fallback)
+    values = [getattr(item, field_name) for item in ordered]
+    if field_name == "Sector":
+        return _strict_majority(values, fallback)
+    return _majority(values, fallback)
 
 
 # Priorité métier dédiée à l'agrégation Incident. Elle ne réutilise pas l'ordre
