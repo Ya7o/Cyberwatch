@@ -325,11 +325,13 @@
 
 function applyFilters(incidents) {
   const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
+  const selectedSource = $("#f-source")?.value || "";
   return incidents.filter((incident) => {
     const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
     const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
     const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
     const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+    if (selectedSource && !(incident.sources || []).includes(selectedSource)) return false;
     if (ocean && !oceanLocations.has(incident.location)) return false;
     if (localOnly && !incident.local) return false;
     if ((automotive || largeRetail) && !(
@@ -461,6 +463,10 @@ const quickButtons = [
       document.dispatchEvent(new Event("cyberwatch:filters-changed"));
       render();
     }));
+    $("#f-source")?.addEventListener("change", () => {
+      document.dispatchEvent(new Event("cyberwatch:filters-changed"));
+      render();
+    });
   }
 
   // Le tri lui-même (lecture d'`aria-sort`, re-rendu du tableau) vit dans

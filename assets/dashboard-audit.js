@@ -108,11 +108,13 @@
 
 function filteredIncidents() {
   const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
+  const selectedSource = $("#f-source")?.value || "";
   return state.incidents.filter((incident) => {
     const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
     const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
     const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
     const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+    if (selectedSource && !(incident.sources || []).includes(selectedSource)) return false;
     if (ocean && !oceanLocations.has(incident.location)) return false;
     if (localOnly && !incident.local) return false;
     if ((automotive || largeRetail) && !(
