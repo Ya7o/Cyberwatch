@@ -9,7 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from . import config
-from .golden import MatchResult, REFERENCE_FIELDS, _iso_date, _split_multi, evaluate, match_golden
+from .golden import MatchResult, REFERENCE_FIELDS, _iso_date, _split_multi, evaluate
 from .normalize import organisation_key
 
 MANUAL_MATCH_COLUMNS = ["Golden_ID", "Challenger", "Source_URL", "Notes"]
@@ -61,30 +61,30 @@ _LOCATION_ALIASES = {
 
 
 def normalize_challenger_location(value: str) -> str:
-    """Ramène le territoire d'un export LLM à la nomenclature Cyberwatch.
-
-    Les territoires hors périmètre sont volontairement ramenés à Inconnu : le
-    benchmark ne doit pas inventer une nouvelle taxonomie uniquement pour un
-    challenger.
-    """
+    """Ramène le territoire d'un export LLM à la nomenclature Cyberwatch."""
     cleaned = str(value or "").strip()
     if cleaned in config.LOCATIONS:
         return cleaned
     return _LOCATION_ALIASES.get(cleaned.lower(), config.LOC_INCONNU)
 
 
+def _taxonomy_value(value: str, allowed: list[str], unknown: str) -> str:
+    cleaned = str(value or "").strip()
+    return cleaned if cleaned in allowed else unknown
+
+
 def canonical_challenger_row(row: dict[str, str], challenger: str) -> dict[str, str]:
     organisation = (row.get("organisation") or row.get("Organisation") or "").strip()
+    sector = row.get("secteur") or row.get("Secteur") or ""
+    threat = row.get("type_menace") or row.get("Menace") or ""
     return {
         "Challenger": challenger,
         "Date": (row.get("date") or row.get("Date") or "").strip(),
         "Organisation": organisation,
         "Organisation_Key": organisation_key(organisation),
         "Source_URLs": (row.get("source_urls") or row.get("Source_URLs") or "").strip(),
-        "Secteur": (row.get("secteur") or row.get("Secteur") or config.SECTOR_UNKNOWN).strip()
-        or config.SECTOR_UNKNOWN,
-        "Menace": (row.get("type_menace") or row.get("Menace") or config.THREAT_UNKNOWN).strip()
-        or config.THREAT_UNKNOWN,
+        "Secteur": _taxonomy_value(sector, config.SECTORS, config.SECTOR_UNKNOWN),
+        "Menace": _taxonomy_value(threat, config.THREATS, config.THREAT_UNKNOWN),
         "Localisation": normalize_challenger_location(
             row.get("territoire") or row.get("Localisation") or ""
         ),
@@ -119,8 +119,6 @@ def _challenger_score(
     current_date = _iso_date(challenger_row.get("Date", ""))
     days = abs((gold_date - current_date).days) if gold_date and current_date else 999999
 
-    # L'URL de la source est une preuve d'identité plus forte que l'ordre des
-    # mots dans le nom (ex. "Motoculture Cravero" / "Cravero Motoculture").
     if url_overlap:
         return (3, url_overlap, -days)
 
@@ -271,12 +269,10 @@ def _pairwise_field(
         if db_by_id[golden_id]["Match_Status"] == "MATCHED"
         and challenger_by_id[golden_id]["Match_Status"] == "MATCHED"
     ]
-    db_match = f"{label}_Match"
-    ch_match = f"{label}_Match"
     both = db_only = challenger_only = neither = 0
     for golden_id in common_ids:
-        db_ok = bool(db_by_id[golden_id][db_match])
-        ch_ok = bool(challenger_by_id[golden_id][ch_match])
+        db_ok = bool(db_by_id[golden_id][f"{label}_Match"])
+        ch_ok = bool(challenger_by_id[golden_id][f"{label}_Match"])
         if db_ok and ch_ok:
             both += 1
         elif db_ok:
