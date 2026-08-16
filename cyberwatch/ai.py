@@ -1,19 +1,14 @@
 """Filet de rattrapage LLM pour Threat/Sector/Location encore `Inconnu`.
 
-Principe absolu : ce module n'intervient **jamais** avant que les règles
-déterministes (`normalize.py`) et le backfill (`enrichment.py`) aient eu leur
-mot à dire. Il ne touche que les champs encore `Inconnu` après cela, ne peut
-jamais écraser une valeur déjà connue, et son absence (clé API manquante,
-panne réseau, budget épuisé) ne bloque jamais une collecte : les champs
-concernés restent simplement `Inconnu`.
+Principe absolu : ce module n'intervient jamais avant les règles déterministes
+et le référentiel. Il ne touche que les champs encore `Inconnu`, ne peut jamais
+écraser une valeur connue et reste non bloquant en cas d'absence de clé, panne
+réseau ou budget épuisé.
 
-Aucun appel n'est fait pendant `REPLAY` : ce module n'est sollicité que par
-`runner.execute()` dans sa branche réseau (`offline=False`), jamais dans la
-branche hors-ligne qui reconstruit `INCIDENTS` depuis `ITEMS`.
-
-Le modèle est appelé directement en HTTPS via `requests` (l'API Responses
-d'OpenAI, Structured Outputs) — pas de SDK, `requests` est déjà une
-dépendance du projet.
+Pour `Sector`, le LLM est un classifieur de preuve métier : il n'est demandé que
+lorsqu'une description d'activité explicite a été extraite de la source et son
+evidence doit être ancrée dans cette description, jamais seulement dans le
+récit cyber ou le nom de l'organisation.
 """
 
 from __future__ import annotations
@@ -21,6 +16,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import time
 from dataclasses import asdict, dataclass, field
 
@@ -30,52 +26,23 @@ from . import config, org_enrichment, store
 from .collectors.base import RawEntry, SourceSpec
 from .identity import SEP
 from .model import Item
-from .normalize import organisation_key, searchable
-
-# --------------------------------------------------------------------------
-# Modèle et tarification
-#
-# Le snapshot daté "gpt-5-nano-2026-03-17" (issu d'une recherche web, faute
-# d'accès à la doc officielle depuis ce bac à sable) a été rejeté par l'API
-# réelle le 2026-08-15 : HTTP 400 model_not_found, confirmé sur un run
-# GitHub Actions réel (secrets.Cyberwatchapi). On retombe donc sur l'alias
-# flottant "gpt-5-nano" : moins figé qu'un snapshot vérifié, mais un alias
-# qui résout vers un modèle réellement existant vaut mieux qu'un snapshot
-# deviné et refusé par l'API. À épingler sur un snapshot exact dès qu'il est
-# possible de le vérifier sur la documentation officielle. `OPENAI_MODEL`
-# reste overridable sans toucher au code.
-# --------------------------------------------------------------------------
+from .normalize import extract_activity_description, organisation_key, searchable
 
 DEFAULT_MODEL = "gpt-5-nano"
+PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
 
-#: Dollars US par million de tokens. Tarif de "gpt-5-nano" trouvé par
-#: recherche web (non vérifié sur la doc officielle, cf. ci-dessus) :
-#: $0.05 / $0.40 par 1M tokens (input/output). `cached_input` n'est
-#: volontairement pas utilisé dans le calcul de coût (voir `_estimate_cost`) :
-#: à défaut d'un tarif remisé vérifié, tous les tokens d'entrée sont comptés
-#: au tarif plein, ce qui majore l'estimation au lieu de la sous-évaluer.
-PRICING = {
-    DEFAULT_MODEL: {"input": 0.05, "output": 0.40},
-}
-
-PROMPT_VERSION = "2026-08-15.2"
-SCHEMA_VERSION = "1"
+PROMPT_VERSION = "2026-08-16.1"
+SCHEMA_VERSION = "2"
 
 OPENAI_URL = "https://api.openai.com/v1/responses"
 OPENAI_TIMEOUT_SECONDS = 20
 OPENAI_MAX_RETRIES = 2
-
 EVIDENCE_MAX_CHARS = 200
 
-#: Seuils de confiance par champ. Location est plus stricte : une mauvaise
-#: localisation est plus visible et plus gênante qu'un secteur approximatif.
-#: Modifier un seuil doit s'accompagner d'un bump de `SCHEMA_VERSION`, sinon
-#: d'anciennes décisions en cache resteraient appliquées sous l'ancien seuil.
 THRESHOLD_THREAT = 0.6
 THRESHOLD_SECTOR = 0.6
 THRESHOLD_LOCATION = 0.75
 
-#: Nom du champ Item -> (clé JSON, taxonomie fermée, sentinelle Inconnu, seuil).
 FIELD_SPECS = {
     "Threat": ("threat", config.THREATS, config.THREAT_UNKNOWN, THRESHOLD_THREAT),
     "Sector": ("sector", config.SECTORS, config.SECTOR_UNKNOWN, THRESHOLD_SECTOR),
@@ -84,22 +51,14 @@ FIELD_SPECS = {
 
 SYSTEM_PROMPT = (
     "Tu es un classificateur strict pour un observatoire d'incidents cyber. "
-    "On te donne le contexte brut d'un article ou d'un enregistrement déjà "
-    "reconnu comme un incident cyber ; certains champs sont encore inconnus. "
     "Réponds uniquement à partir du texte fourni, jamais de connaissance "
     "générale supposée sur l'organisation citée. Si le contexte ne permet pas "
-    "de trancher avec confiance, réponds Inconnu plutôt que de deviner : "
-    "Inconnu est toujours une réponse valide et préférable à une erreur. "
-    "L'evidence doit être une très courte citation ou paraphrase du texte "
-    "fourni justifiant la valeur choisie (une phrase maximum), jamais une "
-    "justification longue. Pour la localisation, n'indique un territoire que "
-    "s'il est explicitement soutenu par le texte fourni : ne déduis jamais "
-    "un territoire du seul nom ou secteur d'activité d'une organisation. "
-    "Pour le secteur, n'indique une valeur que si le contexte décrit "
-    "explicitement l'activité de l'organisation (ce qu'elle fait, vend, gère "
-    "ou exploite) : ne déduis jamais un secteur du seul nom de l'organisation, "
-    "ni du vocabulaire de l'incident (rançongiciel, fuite de données, groupe "
-    "cybercriminel, etc.)."
+    "de trancher avec confiance, réponds Inconnu plutôt que de deviner. "
+    "Pour la localisation, n'indique un territoire que s'il est explicitement "
+    "soutenu par le texte fourni. Pour le secteur, n'indique une valeur que si "
+    "la section Activity_Description décrit explicitement l'activité de "
+    "l'organisation ; le nom de l'organisation et le récit cyber ne sont "
+    "jamais des preuves métier."
 )
 
 
@@ -124,13 +83,11 @@ def _env_float(name: str, default: float) -> float:
 
 
 class AiCallError(Exception):
-    """Échec (réseau, HTTP ou format) d'un appel à l'API OpenAI."""
+    pass
 
 
 @dataclass
 class AiRunState:
-    """État mutable d'un run : budget, cache, compteurs d'usage."""
-
     enabled: bool
     api_key: str = ""
     model: str = DEFAULT_MODEL
@@ -138,9 +95,7 @@ class AiRunState:
     max_cost: float = 1.00
     max_context_chars: int = 4000
     max_output_tokens: int = 600
-
     cache: dict[tuple[str, str], dict] = field(default_factory=dict)
-
     candidates: int = 0
     cache_hits: int = 0
     calls_attempted: int = 0
@@ -148,19 +103,14 @@ class AiRunState:
     calls_failed: int = 0
     calls_budget_blocked: int = 0
     budget_stopped: bool = False
-
     unknown_before: dict[str, int] = field(default_factory=dict)
     qualified: dict[str, int] = field(default_factory=dict)
-
     input_tokens: int = 0
     cached_input_tokens: int = 0
     output_tokens: int = 0
     reasoning_tokens: int = 0
     total_tokens: int = 0
     estimated_cost_usd: float = 0.0
-
-    #: Pipeline Secteur (§12 METHODOLOGY.md) — enrichissement et métriques
-    #: dédiées, distinctes des compteurs génériques ci-dessus.
     org_enrichment: "org_enrichment.OrgEnrichmentState" = field(
         default_factory=org_enrichment.OrgEnrichmentState
     )
@@ -168,26 +118,12 @@ class AiRunState:
     sector_evidence_rejected: int = 0
     sector_resolved_enrichment_cache: int = 0
     sector_resolved_enriched_deterministic: int = 0
-    #: Dernier recours (§Sector fiabilité) : l'enrichissement gratuit fournit
-    #: un des 21 titres de section NAF, mais celui-ci n'est pas mappable par
-    #: `org_enrichment.NAF_SECTIONS` (Inconnu) -> un appel LLM minimal, borné
-    #: au seul libellé officiel (jamais le récit de l'incident), tente une
-    #: dernière classification. Voir `_escalate_sector_llm`.
     sector_resolved_enriched_llm: int = 0
-    #: LLM sur contexte source jamais tenté pour Secteur faute de description
-    #: d'activité métier exploitable (§9) — distinct de
-    #: `sector_evidence_rejected`, qui compte un appel fait puis rejeté.
     sector_llm_skipped: int = 0
-
     started: float = field(default_factory=time.monotonic)
 
 
 def start_run() -> AiRunState:
-    """Prépare l'état du run : détecte la clé, charge le cache existant.
-
-    L'absence de `OPENAI_API_KEY` n'est jamais une erreur : la qualification
-    est simplement désactivée pour ce run, journalisée, et le run continue.
-    """
     api_key = os.getenv("OPENAI_API_KEY", "")
     state = AiRunState(
         enabled=bool(api_key),
@@ -211,8 +147,10 @@ def start_run() -> AiRunState:
 def _pricing_for(model: str) -> dict:
     rates = PRICING.get(model)
     if rates is None:
-        print(f"Qualification IA : tarif inconnu pour le modèle '{model}', "
-              f"estimation basée sur {DEFAULT_MODEL}.")
+        print(
+            f"Qualification IA : tarif inconnu pour le modèle '{model}', "
+            f"estimation basée sur {DEFAULT_MODEL}."
+        )
         rates = PRICING[DEFAULT_MODEL]
     return rates
 
@@ -224,29 +162,45 @@ def _estimate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
 
 def _context(entry: RawEntry, max_chars: int) -> str:
     parts = [entry.title, entry.summary, entry.content]
-    text = " ".join(part for part in parts if part).strip()
-    return text[:max_chars]
+    return " ".join(part for part in parts if part).strip()[:max_chars]
+
+
+# Complément conservateur de l'extracteur partagé existant. Ces formes décrivent
+# explicitement une activité mais ne sont pas toutes couvertes par les patrons
+# historiques de normalize.extract_activity_description().
+_EXPLICIT_ACTIVITY_FALLBACKS = (
+    re.compile(
+        r"\b(?:est|sont)\s+(?:un|une|des|le|la|les)?\s*"
+        r"(?:hébergeur|hebergeur|opérateur|operateur|gestionnaire|fournisseur|prestataire|cabinet)\b"
+        r"[^.!?]{0,180}",
+        re.I,
+    ),
+    re.compile(
+        r"\b(?:gère|gere|exploite|fournit|propose)\s+(?:un|une|des|du|de la|les)?\s*"
+        r"[^.!?]{5,180}",
+        re.I,
+    ),
+)
+
+
+def _sector_activity_context(entry: RawEntry, max_chars: int) -> str:
+    """Seule preuve source recevable pour Sector."""
+    context = _context(entry, max_chars)
+    activity = extract_activity_description(context)
+    if activity:
+        return activity
+    for pattern in _EXPLICIT_ACTIVITY_FALLBACKS:
+        match = pattern.search(context)
+        if match:
+            return match.group(0).strip()
+    return ""
 
 
 def _sector_llm_worth_calling(
     entry: RawEntry, spec: SourceSpec, organisation_key_: str, max_chars: int
 ) -> bool:
-    """Le LLM Sector (Phase 2, contexte source) n'est un dernier recours que
-    s'il reste, au-delà du seul nom de l'organisation, un contexte à
-    interpréter (§9) — la preuve stricte post-appel (`_sector_evidence_reason`)
-    reste le vrai filtre de qualité, volontairement pas dupliquée ici.
-
-    BonjourLaFuite ne l'atteint jamais : son contenu se limite
-    structurellement à l'organisation, une date et une liste de données
-    compromises (jamais une description d'activité) — seuls l'enrichissement
-    (Phase 1) et le LLM sur libellé enrichi (Phase 3) s'y appliquent.
-    """
-    if spec.source_id == "BONJOURLAFUITE":
-        return False
-    trimmed = _context(entry, max_chars).strip()
-    if not trimmed:
-        return False
-    return not _looks_like_bare_org_name(trimmed, organisation_key_)
+    del spec, organisation_key_
+    return bool(_sector_activity_context(entry, max_chars))
 
 
 def _input_hash(item: Item, entry: RawEntry, requested: list[str], model: str, max_chars: int) -> str:
@@ -285,11 +239,10 @@ def _build_schema(requested: list[str]) -> dict:
 
 
 def _user_content(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[str], max_chars: int) -> str:
-    """Structuré en 3 sections (§12 METHODOLOGY.md) pour que le modèle ne
-    confonde jamais métadonnées/récit d'incident avec une preuve d'activité
-    métier : seule la section B peut justifier une valeur de Secteur."""
+    del spec
+    activity = _sector_activity_context(entry, max_chars)
     lines = [
-        "=== A. Métadonnées (jamais une preuve d'activité métier) ===",
+        "=== A. Métadonnées ===",
         f"Source_ID: {item.Source_ID}",
         f"Organisation_Raw: {item.Organisation_Raw}",
         f"Published_Date: {item.Published_Date}",
@@ -299,19 +252,20 @@ def _user_content(item: Item, entry: RawEntry, spec: SourceSpec, requested: list
         f"Sector actuel: {item.Sector}",
         f"Location actuelle: {item.Location}",
         "",
-        "=== B. Contexte brut (seule source de preuve admissible) ===",
+        "=== B. Contexte incident (Threat/Location uniquement) ===",
         f"Titre: {entry.title}",
         f"Contexte: {_context(entry, max_chars)}",
         "",
+        "=== B2. Activity_Description (SEULE preuve admissible pour Sector) ===",
+        activity or "(absente)",
+        "",
         "=== C. Champs à qualifier ===",
-        "Uniquement ceux-ci, les autres sont déjà connus et ne doivent pas "
-        "être reconsidérés : " + ", ".join(requested),
+        ", ".join(requested),
     ]
     if "Sector" in requested:
         lines.append(
-            "Pour Secteur : la valeur ne peut être choisie que si la section B "
-            "décrit explicitement l'activité de l'organisation. Si la section B "
-            "ne contient aucune description d'activité, réponds Inconnu pour Secteur."
+            "Pour Sector, l'evidence doit être une sous-chaîne de B2. Si B2 est "
+            "absente ou insuffisante, réponds Inconnu."
         )
     return "\n".join(lines)
 
@@ -329,19 +283,9 @@ def _extract_output_json(payload: dict) -> dict:
             if text:
                 break
     if not text:
-        # Diagnostic explicite : un modèle de raisonnement (famille gpt-5) peut
-        # consommer tout `max_output_tokens` en jetons de raisonnement internes
-        # avant de produire le message final, auquel cas l'API répond 200 avec
-        # `status: "incomplete"` et aucun item "message" — jamais une erreur
-        # HTTP. `reasoning.effort: "minimal"` (cf. `_call_openai`) et une marge
-        # de tokens suffisante limitent ce cas ; s'il se reproduit malgré tout,
-        # le statut/la raison sont journalisés ici pour éviter une nouvelle
-        # supposition à l'aveugle.
         status = payload.get("status")
         reason = (payload.get("incomplete_details") or {}).get("reason")
-        detail = f"status={status}"
-        if reason:
-            detail += f", incomplete_reason={reason}"
+        detail = f"status={status}" + (f", incomplete_reason={reason}" if reason else "")
         raise AiCallError(f"réponse sans texte structuré ({detail})")
     try:
         parsed = json.loads(text)
@@ -369,7 +313,6 @@ def _extract_usage(payload: dict) -> dict:
 
 
 def _post_openai(body: dict, state: AiRunState) -> dict:
-    """POST unique et indépendant, retry borné sur 429/5xx/timeout (§9)."""
     headers = {
         "Authorization": f"Bearer {state.api_key}",
         "Content-Type": "application/json",
@@ -377,14 +320,18 @@ def _post_openai(body: dict, state: AiRunState) -> dict:
     attempt = 0
     while True:
         try:
-            response = requests.post(OPENAI_URL, json=body, headers=headers, timeout=OPENAI_TIMEOUT_SECONDS)
+            response = requests.post(
+                OPENAI_URL,
+                json=body,
+                headers=headers,
+                timeout=OPENAI_TIMEOUT_SECONDS,
+            )
         except requests.RequestException as exc:
             attempt += 1
             if attempt > OPENAI_MAX_RETRIES:
                 raise AiCallError(f"réseau: {type(exc).__name__}") from exc
             time.sleep(2 ** attempt)
             continue
-
         if response.status_code == 200:
             return response.json()
         if response.status_code == 429 or 500 <= response.status_code < 600:
@@ -401,7 +348,12 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
         "model": state.model,
         "input": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": _user_content(item, entry, spec, requested, state.max_context_chars)},
+            {
+                "role": "user",
+                "content": _user_content(
+                    item, entry, spec, requested, state.max_context_chars
+                ),
+            },
         ],
         "text": {
             "format": {
@@ -411,11 +363,6 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
                 "strict": True,
             }
         },
-        # "minimal" : la tâche est une classification fermée sur un contexte
-        # court, pas un raisonnement à plusieurs étapes. Sans ceci, un modèle
-        # de raisonnement (famille gpt-5) peut consommer tout
-        # `max_output_tokens` en jetons de raisonnement internes et renvoyer
-        # un HTTP 200 sans aucun message (cf. `_extract_output_json`).
         "reasoning": {"effort": "minimal"},
         "max_output_tokens": state.max_output_tokens,
     }
@@ -423,23 +370,19 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
 
 
 def _call_openai_sector_label(activity_label: str, state: AiRunState) -> dict:
-    """Appel LLM minimal (Phase 3, §Sector fiabilité) : la seule preuve
-    possible est le libellé de section NAF officiel, jamais le récit de
-    l'incident — distinct de `_user_content`, qui suppose un `Item` complet
-    avec métadonnées incident."""
+    """Phase 3 historique : LLM minimal sur le seul libellé NAF officiel."""
     body = {
         "model": state.model,
         "input": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": (
-                "=== Contexte (libellé d'activité officiel, source externe "
-                "vérifiée, jamais un récit d'incident) ===\n"
-                f"{activity_label}\n\n"
-                "=== Champ à qualifier ===\n"
-                "Secteur uniquement, à partir de ce seul libellé d'activité "
-                "officiel. Si ce libellé ne correspond clairement à aucun "
-                "secteur de la taxonomie, réponds Inconnu."
-            )},
+            {
+                "role": "user",
+                "content": (
+                    "=== Activity_Description officielle ===\n"
+                    f"{activity_label}\n\n"
+                    "Sector uniquement. Si le libellé est trop large, réponds Inconnu."
+                ),
+            },
         ],
         "text": {
             "format": {
@@ -459,9 +402,6 @@ _SECTOR_INCIDENT_VOCAB: set[str] | None = None
 
 
 def _sector_incident_vocab() -> set[str]:
-    """Vocabulaire d'incident (rançongiciel, fuite, groupe cybercriminel...),
-    construit une fois à partir des tables déjà existantes et testées de
-    `config.py` — aucune nouvelle liste de mots à maintenir ici."""
     global _SECTOR_INCIDENT_VOCAB
     if _SECTOR_INCIDENT_VOCAB is None:
         markers = set(config.CYBER_PREFIXES) | set(config.CYBER_PHRASES) | set(config.RANSOMWARE_GROUPS)
@@ -472,24 +412,14 @@ def _sector_incident_vocab() -> set[str]:
 
 
 def _looks_like_bare_org_name(evidence: str, organisation_key_: str) -> bool:
-    """Vrai si l'evidence ne décrit rien de plus que le nom de l'organisation
-    lui-même (§12 : « le simple nom de l'entreprise » n'est jamais une preuve)."""
     return bool(organisation_key_) and organisation_key(evidence) == organisation_key_
 
 
 def _looks_like_incident_narrative(evidence_searchable: str) -> bool:
-    """Vrai si l'evidence s'appuie sur le vocabulaire de la menace plutôt que
-    sur l'activité de la victime. Générique (aucun cas par source) : couvre
-    RANSOMWARE_LIVE (nom de groupe, "rançongiciel"...) sans code dédié."""
     return any(marker in evidence_searchable for marker in _sector_incident_vocab())
 
 
 def _sector_evidence_reason(evidence: str, organisation_key_: str, context_lower: str) -> str | None:
-    """`None` si l'evidence est recevable comme preuve d'activité métier,
-    sinon le motif du rejet. Volontairement un simple test de sous-chaîne
-    (même rigueur que Location) : sur une evidence courte (≤200 car.),
-    sur-rejeter est le mode de défaillance sûr — Inconnu reste préférable à
-    un secteur deviné."""
     trimmed = (evidence or "").strip()
     if not trimmed:
         return "empty"
@@ -503,27 +433,25 @@ def _sector_evidence_reason(evidence: str, organisation_key_: str, context_lower
 
 
 def _validate(
-    raw: dict, requested: list[str], context: str, organisation_key_: str
+    raw: dict,
+    requested: list[str],
+    context: str,
+    organisation_key_: str,
+    sector_context: str = "",
 ) -> tuple[dict, dict[str, str]]:
-    """Valide chaque champ demandé indépendamment (§6/§12).
-
-    Un champ rejeté n'invalide plus les autres champs de la même réponse
-    combinée : sinon un rejet de Secteur (preuve stricte, nouvelle) casserait
-    Threat/Location déjà validés dans le même appel. Renvoie (décision
-    partielle, motif de rejet par champ rejeté).
-    """
     decision: dict = {}
     rejected: dict[str, str] = {}
     context_lower = context.lower()
+    sector_context_lower = (sector_context or context).lower()
     for field_name in requested:
         json_key, taxonomy, unknown, _ = FIELD_SPECS[field_name]
-        entry = raw.get(json_key)
-        if not isinstance(entry, dict):
+        response_field = raw.get(json_key)
+        if not isinstance(response_field, dict):
             rejected[field_name] = "malformed"
             continue
-        value = entry.get("value")
-        confidence = entry.get("confidence")
-        evidence = entry.get("evidence")
+        value = response_field.get("value")
+        confidence = response_field.get("confidence")
+        evidence = response_field.get("evidence")
         if not isinstance(value, str) or value not in taxonomy:
             rejected[field_name] = "bad_enum"
             continue
@@ -543,7 +471,11 @@ def _validate(
                 rejected[field_name] = "not_grounded"
                 continue
         if field_name == "Sector" and value != unknown:
-            reason = _sector_evidence_reason(evidence, organisation_key_, context_lower)
+            reason = _sector_evidence_reason(
+                evidence,
+                organisation_key_,
+                sector_context_lower,
+            )
             if reason:
                 rejected[field_name] = reason
                 continue
@@ -558,39 +490,19 @@ def _apply_decision(item: Item, requested: list[str], decision: dict, state: AiR
         _, _, unknown, threshold = FIELD_SPECS[field_name]
         value = decision.get(field_name)
         confidence = decision.get(f"{field_name}_Confidence", 0.0)
-        if value is None or value == unknown:
-            continue
-        if confidence < threshold:
+        if value is None or value == unknown or confidence < threshold:
             continue
         if getattr(item, field_name) != unknown:
-            continue  # Valeur déjà connue entre-temps : jamais écrasée.
+            continue
         setattr(item, field_name, value)
         state.qualified[field_name] = state.qualified.get(field_name, 0) + 1
 
 
 def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
-    """Complète Threat/Sector/Location de `item` s'ils sont encore Inconnu.
-
-    Ne fait jamais rien si la source est explicitement exclue
-    (`skip_ai_qualification`), ou si aucun des trois champs n'est encore
-    Inconnu (zéro appel dans ce cas). Pour Secteur (§Sector fiabilité),
-    l'enrichissement organisation gratuit et déterministe (Phase 1) est
-    toujours tenté en premier, avant tout appel LLM — un LLM ne doit être
-    qu'un dernier recours. Le LLM sur contexte source (Phase 2) n'est
-    lui-même tenté pour Secteur que s'il reste une description d'activité
-    métier exploitable dans le contexte (jamais pour deviner depuis le seul
-    nom de l'organisation ou le vocabulaire de l'incident) ; Threat/Location
-    continuent d'y être demandés normalement. Un dernier recours (Phase 3,
-    `_escalate_sector_llm`) tente un appel LLM minimal, borné au seul
-    libellé d'activité obtenu par l'enrichissement, quand celui-ci existe
-    mais n'est pas mappable déterministiquement.
-    """
     if spec.params.get("skip_ai_qualification"):
         return
 
-    # Les métriques décrivent l'état à l'entrée du pipeline de qualification,
-    # avant que l'enrichissement entreprise ou un fallback de source ne puisse
-    # résoudre un champ. Cela garantit Unknown_Before >= Qualified par champ.
+    # Stabilisation Location v0.7.32 : métriques avant enrichissement/fallback.
     initially_unknown = [
         name for name in ("Threat", "Sector", "Location")
         if getattr(item, name) == FIELD_SPECS[name][2]
@@ -600,12 +512,12 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     for name in initially_unknown:
         state.unknown_before[name] = state.unknown_before.get(name, 0) + 1
 
+    # Phase 1 : enrichissement entreprise exact, partagé Sector/Location.
     if item.Sector == config.SECTOR_UNKNOWN or item.Location == config.LOC_INCONNU:
         _escalate_org_enrichment_deterministic(item, entry, spec, state)
 
-    # Le défaut géographique déclaré par la source est plus faible qu'un match
-    # entreprise exact, mais doit rester avant le LLM : pas d'appel OpenAI pour
-    # conclure France lorsque la source le garantit déjà par contrat.
+    # Le défaut géographique de source reste après l'enrichissement et avant le
+    # LLM, comme dans la stabilisation Location intégrée sur main.
     if (
         item.Location == config.LOC_INCONNU
         and spec.location_rule in config.LOCATIONS
@@ -623,21 +535,34 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
 
     state.candidates += 1
     sector_requested = "Sector" in requested
+    sector_activity = (
+        _sector_activity_context(entry, state.max_context_chars)
+        if sector_requested
+        else ""
+    )
     call_requested = requested
-    if sector_requested and not _sector_llm_worth_calling(
-        entry, spec, item.Organisation_Key, state.max_context_chars
-    ):
+    if sector_requested and not sector_activity:
         call_requested = [name for name in requested if name != "Sector"]
         state.sector_llm_skipped += 1
 
     if call_requested and state.enabled:
-        input_hash = _input_hash(item, entry, call_requested, state.model, state.max_context_chars)
+        input_hash = _input_hash(
+            item,
+            entry,
+            call_requested,
+            state.model,
+            state.max_context_chars,
+        )
         cache_key = (item.Item_ID, input_hash)
-
         cached = state.cache.get(cache_key)
         if cached is not None:
             state.cache_hits += 1
-            _apply_and_count_sector(item, call_requested, _decision_from_row(cached), state)
+            _apply_and_count_sector(
+                item,
+                call_requested,
+                _decision_from_row(cached),
+                state,
+            )
         elif state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
             state.budget_stopped = True
             state.calls_budget_blocked += 1
@@ -647,11 +572,19 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
             raw = None
             payload = None
             try:
-                payload = _call_openai(item, entry, spec, call_requested, state)
+                payload = _call_openai(
+                    item,
+                    entry,
+                    spec,
+                    call_requested,
+                    state,
+                )
                 raw = _extract_output_json(payload)
             except AiCallError as exc:
                 state.calls_failed += 1
-                print(f"Qualification IA : appel échoué pour {item.Item_ID} ({exc}).")
+                print(
+                    f"Qualification IA : appel échoué pour {item.Item_ID} ({exc})."
+                )
 
             if raw is not None:
                 usage = _extract_usage(payload)
@@ -660,29 +593,63 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                 state.output_tokens += usage["output_tokens"]
                 state.reasoning_tokens += usage["reasoning_tokens"]
                 state.total_tokens += usage["total_tokens"]
-                cost = _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
+                cost = _estimate_cost(
+                    state.model,
+                    usage["input_tokens"],
+                    usage["output_tokens"],
+                )
                 state.estimated_cost_usd += cost
 
-                decision, rejected = _validate(raw, call_requested, context, item.Organisation_Key)
-                if rejected.get("Sector") in ("not_grounded", "org_name_only", "incident_vocabulary", "empty"):
+                decision, rejected = _validate(
+                    raw,
+                    call_requested,
+                    context,
+                    item.Organisation_Key,
+                    sector_context=sector_activity,
+                )
+                if rejected.get("Sector") in (
+                    "not_grounded",
+                    "org_name_only",
+                    "incident_vocabulary",
+                    "empty",
+                ):
                     state.sector_evidence_rejected += 1
                 if not decision:
                     state.calls_failed += 1
-                    print(f"Qualification IA : réponse invalide pour {item.Item_ID}, Inconnu conservé.")
+                    print(
+                        f"Qualification IA : réponse invalide pour {item.Item_ID}, "
+                        "Inconnu conservé."
+                    )
                 else:
                     state.calls_succeeded += 1
-                    row = _row_from_decision(item, input_hash, call_requested, decision, state.model, usage, cost)
+                    row = _row_from_decision(
+                        item,
+                        input_hash,
+                        call_requested,
+                        decision,
+                        state.model,
+                        usage,
+                        cost,
+                    )
                     state.cache[cache_key] = row
-                    _apply_and_count_sector(item, call_requested, decision, state)
+                    _apply_and_count_sector(
+                        item,
+                        call_requested,
+                        decision,
+                        state,
+                    )
 
+    # Phase 3 historique : conservée pour comparaison au benchmark ultérieur.
     if sector_requested and item.Sector == config.SECTOR_UNKNOWN:
         _escalate_sector_llm(item, entry, spec, state)
 
 
-def _apply_and_count_sector(item: Item, requested: list[str], decision: dict, state: AiRunState) -> None:
-    """`_apply_decision` (inchangé) puis comptabilise une résolution Secteur
-    par contexte source — premier appel LLM, qu'il vienne d'un cache hit ou
-    d'un appel frais."""
+def _apply_and_count_sector(
+    item: Item,
+    requested: list[str],
+    decision: dict,
+    state: AiRunState,
+) -> None:
     was_unknown = "Sector" in requested and item.Sector == config.SECTOR_UNKNOWN
     _apply_decision(item, requested, decision, state)
     if was_unknown and item.Sector != config.SECTOR_UNKNOWN:
@@ -690,15 +657,12 @@ def _apply_and_count_sector(item: Item, requested: list[str], decision: dict, st
 
 
 def _escalate_org_enrichment_deterministic(
-    item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState
+    item: Item,
+    entry: RawEntry,
+    spec: SourceSpec,
+    state: AiRunState,
 ) -> None:
-    """Enrichissement organisation unique pour Sector et Location.
-
-    Un seul `resolve()` est tenté lorsque l'un des deux champs est encore
-    inconnu. Le même match exact peut fournir le secteur via la section NAF
-    et la localisation via le département du siège. Aucune valeur déjà connue
-    n'est écrasée et AMBIGUOUS/NOT_FOUND/ERROR ne produisent aucune inférence.
-    """
+    del entry, spec
     if item.Sector != config.SECTOR_UNKNOWN and item.Location != config.LOC_INCONNU:
         return
     org_state = state.org_enrichment
@@ -706,7 +670,10 @@ def _escalate_org_enrichment_deterministic(
         return
 
     record = org_enrichment.resolve(
-        item.Organisation_Key, item.Organisation_Raw, item.Collected_As_Of, org_state
+        item.Organisation_Key,
+        item.Organisation_Raw,
+        item.Collected_As_Of,
+        org_state,
     )
     if record is None or record.Match_Status != org_enrichment.MATCHED:
         return
@@ -741,12 +708,13 @@ def _escalate_org_enrichment_deterministic(
     state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
 
 
-def _escalate_sector_llm(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunState) -> None:
-    """Phase 3, dernier recours (§Sector fiabilité) : l'enrichissement
-    gratuit (Phase 1) a trouvé une entreprise mais un libellé de section NAF
-    non mappable déterministiquement -> un appel LLM minimal, borné au seul
-    libellé officiel (jamais le récit de l'incident). Ne lève jamais.
-    """
+def _escalate_sector_llm(
+    item: Item,
+    entry: RawEntry,
+    spec: SourceSpec,
+    state: AiRunState,
+) -> None:
+    del entry, spec
     if item.Sector != config.SECTOR_UNKNOWN or not state.enabled:
         return
     org_state = state.org_enrichment
@@ -755,8 +723,8 @@ def _escalate_sector_llm(item: Item, entry: RawEntry, spec: SourceSpec, state: A
         return
     activity_label = record_row.get("Activity_Label", "")
     if not activity_label or record_row.get("Validated_Via") == "llm_declined":
-        # Déjà tenté par le passé, jamais concluant : pas de nouvelle
-        # tentative à chaque run.
+        return
+    if record_row.get("Validated_Via") in ("deterministic", "llm"):
         return
     if state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
         return
@@ -767,7 +735,9 @@ def _escalate_sector_llm(item: Item, entry: RawEntry, spec: SourceSpec, state: A
         raw = _extract_output_json(payload)
     except AiCallError as exc:
         state.calls_failed += 1
-        print(f"Qualification IA : escalade Secteur (libellé enrichi) échouée pour {item.Item_ID} ({exc}).")
+        print(
+            f"Qualification IA : escalade Secteur échouée pour {item.Item_ID} ({exc})."
+        )
         return
 
     usage = _extract_usage(payload)
@@ -776,18 +746,29 @@ def _escalate_sector_llm(item: Item, entry: RawEntry, spec: SourceSpec, state: A
     state.output_tokens += usage["output_tokens"]
     state.reasoning_tokens += usage["reasoning_tokens"]
     state.total_tokens += usage["total_tokens"]
-    state.estimated_cost_usd += _estimate_cost(state.model, usage["input_tokens"], usage["output_tokens"])
+    state.estimated_cost_usd += _estimate_cost(
+        state.model,
+        usage["input_tokens"],
+        usage["output_tokens"],
+    )
 
-    # Contexte = le libellé lui-même : la preuve stricte (_validate) exige
-    # que l'evidence renvoyée soit ancrée dans ce seul texte, jamais dans un
-    # récit d'incident.
-    decision, _rejected = _validate(raw, ["Sector"], activity_label, item.Organisation_Key)
+    decision, _rejected = _validate(
+        raw,
+        ["Sector"],
+        activity_label,
+        item.Organisation_Key,
+        sector_context=activity_label,
+    )
     value = decision.get("Sector")
     confidence = decision.get("Sector_Confidence", 0.0)
 
     updated = dict(record_row)
     updated["Cache_Version"] = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
-    if value and value != config.SECTOR_UNKNOWN and confidence >= FIELD_SPECS["Sector"][3]:
+    if (
+        value
+        and value != config.SECTOR_UNKNOWN
+        and confidence >= FIELD_SPECS["Sector"][3]
+    ):
         state.calls_succeeded += 1
         item.Sector = value
         updated["Validated_Sector"] = value
@@ -800,17 +781,30 @@ def _escalate_sector_llm(item: Item, entry: RawEntry, spec: SourceSpec, state: A
     org_state.cache[item.Organisation_Key] = updated
 
 
-def _row_from_decision(item: Item, input_hash: str, requested: list[str], decision: dict,
-                        model: str, usage: dict, cost: float) -> dict:
+def _row_from_decision(
+    item: Item,
+    input_hash: str,
+    requested: list[str],
+    decision: dict,
+    model: str,
+    usage: dict,
+    cost: float,
+) -> dict:
     row = {
         "Item_ID": item.Item_ID,
         "Source_ID": item.Source_ID,
         "Input_Hash": input_hash,
         "Model": model,
         "Prompt_Version": PROMPT_VERSION,
-        "Threat": "", "Threat_Confidence": "", "Threat_Evidence": "",
-        "Sector": "", "Sector_Confidence": "", "Sector_Evidence": "",
-        "Location": "", "Location_Confidence": "", "Location_Evidence": "",
+        "Threat": "",
+        "Threat_Confidence": "",
+        "Threat_Evidence": "",
+        "Sector": "",
+        "Sector_Confidence": "",
+        "Sector_Evidence": "",
+        "Location": "",
+        "Location_Confidence": "",
+        "Location_Evidence": "",
         "Input_Tokens": usage["input_tokens"],
         "Cached_Input_Tokens": usage["cached_input_tokens"],
         "Output_Tokens": usage["output_tokens"],
@@ -819,8 +813,12 @@ def _row_from_decision(item: Item, input_hash: str, requested: list[str], decisi
     }
     for name in requested:
         row[name] = decision.get(name, "")
-        row[f"{name}_Confidence"] = decision.get(f"{name}_Confidence", "")
-        row[f"{name}_Evidence"] = decision.get(f"{name}_Evidence", "")
+        row[f"{name}_Confidence"] = decision.get(
+            f"{name}_Confidence", ""
+        )
+        row[f"{name}_Evidence"] = decision.get(
+            f"{name}_Evidence", ""
+        )
     return row
 
 
@@ -830,31 +828,35 @@ def _decision_from_row(row: dict) -> dict:
         if row.get(name):
             decision[name] = row[name]
             try:
-                decision[f"{name}_Confidence"] = float(row.get(f"{name}_Confidence") or 0)
+                decision[f"{name}_Confidence"] = float(
+                    row.get(f"{name}_Confidence") or 0
+                )
             except (TypeError, ValueError):
                 decision[f"{name}_Confidence"] = 0.0
-            decision[f"{name}_Evidence"] = row.get(f"{name}_Evidence", "")
+            decision[f"{name}_Evidence"] = row.get(
+                f"{name}_Evidence", ""
+            )
     return decision
 
 
 def finish_run(
-    state: AiRunState, run_id: str, as_of: str, mode: str, sector_pre_stats: dict | None = None
+    state: AiRunState,
+    run_id: str,
+    as_of: str,
+    mode: str,
+    sector_pre_stats: dict | None = None,
 ) -> dict:
-    """Persiste le cache mis à jour et construit la ligne `ai_usage.csv`.
-
-    `sector_pre_stats` (§12 METHODOLOGY.md) porte les compteurs déterministes
-    calculés en amont dans `runner.py` (avant tout appel IA) :
-    `resolved_native`/`initial_unknown`/`resolved_reference`/
-    `resolved_deterministic`. Optionnel pour rester rétro-compatible avec les
-    appels existants à 4 arguments.
-    """
     if state.enabled:
-        rows = sorted(state.cache.values(), key=lambda r: (r.get("Item_ID", ""), r.get("Input_Hash", "")))
+        rows = sorted(
+            state.cache.values(),
+            key=lambda r: (r.get("Item_ID", ""), r.get("Input_Hash", "")),
+        )
         store.save_ai_qualifications(rows)
 
     if state.org_enrichment.enabled:
         org_rows = sorted(
-            state.org_enrichment.cache.values(), key=lambda r: r.get("Organisation_Key", "")
+            state.org_enrichment.cache.values(),
+            key=lambda r: r.get("Organisation_Key", ""),
         )
         store.save_org_enrichment_cache(org_rows)
 
@@ -870,7 +872,6 @@ def finish_run(
         run_status = "OK"
 
     still_unknown = sum(state.unknown_before.values()) - sum(state.qualified.values())
-
     pre = sector_pre_stats or {}
     sector_resolved_native = pre.get("resolved_native", 0)
     sector_initial_unknown = pre.get("initial_unknown", 0)
@@ -878,11 +879,17 @@ def finish_run(
     sector_resolved_deterministic = pre.get("resolved_deterministic", 0)
     org_state = state.org_enrichment
     org_calls_total = (
-        org_state.calls_matched + org_state.calls_ambiguous
-        + org_state.calls_not_found + org_state.calls_error
+        org_state.calls_matched
+        + org_state.calls_ambiguous
+        + org_state.calls_not_found
+        + org_state.calls_error
     )
     org_lookups = org_calls_total + org_state.cache_hits
-    org_cache_hit_rate = round(org_state.cache_hits / org_lookups, 4) if org_lookups else 0.0
+    org_cache_hit_rate = (
+        round(org_state.cache_hits / org_lookups, 4)
+        if org_lookups
+        else 0.0
+    )
     sector_remaining_unknown = (
         sector_initial_unknown
         - sector_resolved_reference
