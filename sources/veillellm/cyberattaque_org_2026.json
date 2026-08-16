@@ -77,6 +77,24 @@
       },
       "method": "manual official evidence for known misses + explicit victim activity in incident source + conservative fuzzy French public-registry match requiring source/legal-name evidence or near-exact unique match",
       "evidence_policy": "no forced mapping; unresolved taxonomy gaps remain Inconnu"
+    },
+    "company_research_v6": {
+      "before_sector_unknown": 34,
+      "resolved_sector_unknown": 7,
+      "remaining_sector_unknown": 27,
+      "other_data_corrections": 1,
+      "applied_to": [
+        "CLCV",
+        "Productly.app",
+        "Apps.education.fr",
+        "GitHub",
+        "MediaVacances",
+        "CalendrIDEL",
+        "Easy Cash",
+        "Rituals"
+      ],
+      "method": "targeted manual verification from official company/service websites, official French company register and explicit legal/company pages",
+      "evidence_policy": "only high-confidence residual cases; evidence URLs retained in incident sources"
     }
   },
   "incidents": [
@@ -577,8 +595,8 @@
     {
       "date": "2026-08-09",
       "organisation": "CLCV",
-      "territoire": "États-Unis",
-      "localisation": "États-Unis",
+      "territoire": "France",
+      "localisation": "Montrouge, Île-de-France",
       "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
@@ -586,7 +604,9 @@
       "score_cyberattaque": 65,
       "impact_connu": "Une importante fuite de données est revendiquée contre la CLCV, association nationale de consommateurs et usagers. Le 8…",
       "sources": [
-        "https://www.cyberattaque.org/cyberattaque-association-nationale-de-consommateurs-et-usagers/"
+        "https://www.cyberattaque.org/cyberattaque-association-nationale-de-consommateurs-et-usagers/",
+        "https://www.clcv.org/",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/784244139"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — CLCV : 80 031 dossiers de consommateurs revendiqués avec leurs litiges et coordonnées",
       "evolution": "nouveau"
@@ -1279,14 +1299,15 @@
       "organisation": "Productly.app",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker weykofa revendique, le 24 juillet 2026, le piratage de Productly et l’extraction de 57 403 comptes…",
       "sources": [
-        "https://www.cyberattaque.org/productly-app-57-403-comptes-exposes-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/productly-app-57-403-comptes-exposes-apres-une-cyberattaque/",
+        "https://productly.app/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Productly.app : 57 403 comptes exposés après une cyberattaque",
       "evolution": "nouveau"
@@ -2809,15 +2830,17 @@
       "date": "2026-06-22",
       "organisation": "Apps.education.fr",
       "territoire": "France",
-      "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "localisation": "France",
+      "secteur": "Éducation / Formation",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker se présentant sous le pseudonyme misere revendique la diffusion d’une base de données attribuée à apps.education.fr,…",
       "sources": [
-        "https://www.cyberattaque.org/apps-education-fr-plus-de-143-000-comptes-dagents-et-personnels-de-leducation-nationale-en-fuite-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/apps-education-fr-plus-de-143-000-comptes-dagents-et-personnels-de-leducation-nationale-en-fuite-apres-une-cyberattaque/",
+        "https://projet.apps.education.fr/",
+        "https://projet.apps.education.fr/mentions-legales/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Apps.education.fr : plus de 143 000 comptes d’agents et personnels de l’Éducation nationale en fuite après une cyberattaque",
       "evolution": "nouveau"
@@ -4130,16 +4153,18 @@
     {
       "date": "2026-05-20",
       "organisation": "GitHub",
-      "territoire": "Inconnu",
-      "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "territoire": "États-Unis",
+      "localisation": "San Francisco, Californie",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "GitHub, la plateforme de développement utilisée par des millions de développeurs dans le monde, a confirmé avoir été…",
       "sources": [
-        "https://www.cyberattaque.org/github-touche-par-une-cyberattaque-pres-de-4-000-depots-prives-internes-en-fuite/"
+        "https://www.cyberattaque.org/github-touche-par-une-cyberattaque-pres-de-4-000-depots-prives-internes-en-fuite/",
+        "https://github.com/about",
+        "https://www.pappers.fr/entreprise/github-inc-800813156"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — GitHub touché par une cyberattaque, près de 4 000 dépôts internes privés en fuite",
       "evolution": "nouveau"
@@ -4165,15 +4190,17 @@
       "date": "2026-05-18",
       "organisation": "MediaVacances",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Lambersart, Hauts-de-France",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Le site de MediaVacances, plateforme française spécialisée dans les locations de vacances entre particuliers, fait l’objet d’une importante…",
       "sources": [
-        "https://www.cyberattaque.org/media-vacances-256-000-clients-exposes-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/media-vacances-256-000-clients-exposes-dans-une-fuite-de-donnees/",
+        "https://www.mediavacances.com/company.php",
+        "https://www.mediavacances.com/who.php"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — MediaVacances : 256 000 factures exposées dans une fuite de données",
       "evolution": "nouveau"
@@ -4530,14 +4557,15 @@
       "organisation": "CalendrIDEL",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Des données attribuées à CalendrIDEL, une plateforme française destinée aux infirmiers libéraux, ont été publiées sur un forum…",
       "sources": [
-        "https://www.cyberattaque.org/calendridel-les-donnees-de-1-400-infirmiers-liberaux-diffusees-publiquement/"
+        "https://www.cyberattaque.org/calendridel-les-donnees-de-1-400-infirmiers-liberaux-diffusees-publiquement/",
+        "https://www.calendridel.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — CalendrIDEL : les données de 1 400 infirmiers libéraux diffusées publiquement",
       "evolution": "nouveau"
@@ -5090,16 +5118,17 @@
     {
       "date": "2026-04-30",
       "organisation": "Easy Cash",
-      "territoire": "Inconnu",
+      "territoire": "France",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une nouvelle fuite de données attribuée à Easy Cash circule actuellement sur des forums spécialisés, avec un volume…",
       "sources": [
-        "https://www.cyberattaque.org/easy-cash-une-nouvelle-fuite-massive-de-17-millions-de-donnees/"
+        "https://www.cyberattaque.org/easy-cash-une-nouvelle-fuite-massive-de-17-millions-de-donnees/",
+        "https://www.easycash.fr/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Easy Cash : une nouvelle fuite massive de 17 millions de données",
       "evolution": "nouveau"
@@ -5606,14 +5635,16 @@
       "organisation": "Rituals",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Rituals, marque internationale spécialisée dans les cosmétiques, parfums d’intérieur et produits bien-être, a informé ses clients par email…",
       "sources": [
-        "https://www.cyberattaque.org/rituals-les-donnees-personnelles-des-clients-en-fuite-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/rituals-les-donnees-personnelles-des-clients-en-fuite-apres-une-cyberattaque/",
+        "https://www.rituals.com/fr-fr/stores",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/804544674"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Rituals : les données personnelles des clients en fuite après une cyberattaque",
       "evolution": "nouveau"

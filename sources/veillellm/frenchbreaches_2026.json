@@ -77,6 +77,18 @@
       },
       "method": "manual official evidence for known misses + explicit victim activity in incident source + conservative fuzzy French public-registry match requiring source/legal-name evidence or near-exact unique match",
       "evidence_policy": "no forced mapping; unresolved taxonomy gaps remain Inconnu"
+    },
+    "company_research_v6": {
+      "before_sector_unknown": 80,
+      "resolved_sector_unknown": 0,
+      "remaining_sector_unknown": 80,
+      "other_data_corrections": 2,
+      "applied_to": [
+        "MediaVacances",
+        "Rituals"
+      ],
+      "method": "targeted manual verification from official company/service websites, official French company register and explicit legal/company pages",
+      "evidence_policy": "only high-confidence residual cases; evidence URLs retained in incident sources"
     }
   },
   "incidents": [
@@ -5644,15 +5656,17 @@
       "date": "2026-05-18",
       "organisation": "MediaVacances",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "localisation": "Lambersart, Hauts-de-France",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/mediavacances-mpbjztyzp0097l7y4of"
+        "https://frenchbreaches.com/alertes/mediavacances-mpbjztyzp0097l7y4of",
+        "https://www.mediavacances.com/company.php",
+        "https://www.mediavacances.com/who.php"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — MediaVacances.",
       "evolution": "nouveau"
@@ -7032,7 +7046,9 @@
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/rituals-mo9vbxw8ody64tzy8q"
+        "https://frenchbreaches.com/alertes/rituals-mo9vbxw8ody64tzy8q",
+        "https://www.rituals.com/fr-fr/stores",
+        "https://annuaire-entreprises.data.gouv.fr/entreprise/804544674"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Rituals.",
       "evolution": "nouveau"
