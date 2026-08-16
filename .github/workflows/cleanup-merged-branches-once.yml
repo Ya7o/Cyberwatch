@@ -1,0 +1,42 @@
+name: Cleanup merged branches (one-shot)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-merged-branches-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.repository == 'Ya7o/Cyberwatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Supprimer les branches déjà fusionnées
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for ref in \
+            'agent/data-quality-overrides' \
+            'agent/release-recurrence-gate' \
+            'fix/bonjourlafuite-data-types'
+          do
+            gh api --method DELETE "repos/$REPO/git/refs/heads/$ref" >/dev/null 2>&1 || true
+          done
+
+      - name: Retirer ce workflow one-shot
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          path='.github/workflows/cleanup-merged-branches-once.yml'
+          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq .sha)"
+          gh api --method DELETE "repos/$REPO/contents/$path" \
+            -f message='chore: retire le workflow one-shot de nettoyage des branches' \
+            -f sha="$sha" \
+            -f branch=main
