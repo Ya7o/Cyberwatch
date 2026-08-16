@@ -36,7 +36,13 @@
       "secteur",
       "type_menace",
       "localisation"
-    ]
+    ],
+    "deep_sector_research": {
+      "before": 98,
+      "resolved": 27,
+      "remaining_canonical_inconnu": 71,
+      "method": "source + DuckDuckGo + Bing; no forced mapping when evidence/taxonomy insufficient"
+    }
   },
   "incidents": [
     {
@@ -877,7 +883,7 @@
       "organisation": "CCI Nice Côte d’Azur",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -1098,7 +1104,7 @@
       "organisation": "Allo.Solar",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Autre cyber",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -1149,7 +1155,7 @@
       "organisation": "Cartogip",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Ransomware",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -1251,14 +1257,16 @@
       "organisation": "Alpissimmo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker misere revendique, depuis le 24 juillet 2026, l’extraction d’environ 600 formulaires depuis le site alpissimmo.fr. Les…",
       "sources": [
-        "https://www.cyberattaque.org/alpissimmo-pres-de-600-projets-de-vacances-exposes-avec-coordonnees-et-dates-de-sejour/"
+        "https://www.cyberattaque.org/alpissimmo-pres-de-600-projets-de-vacances-exposes-avec-coordonnees-et-dates-de-sejour/",
+        "https://www.bing.com/ck/a?!&&p=44923e903f341bce437f92929b491ffc83d01c7411e3e375bd13c0b3895c0f34JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=3171e639-39fa-61b4-2784-f18e38276075&u=a1aHR0cHM6Ly93d3cubWljcm9zb2Z0LmNvbS9lbi11cy8_bXNvY2tpZD0zMTcxZTYzOTM5ZmE2MWI0Mjc4NGYxOGUzODI3NjA3NQ&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=1dabc741f13e13a38b3bd4cf30a850fa5b5b0146620b70a94e3ac2fec7f3d0a8JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=3171e639-39fa-61b4-2784-f18e38276075&u=a1aHR0cHM6Ly9teWFjY291bnQubWljcm9zb2Z0LmNvbS8&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Alpissimmo : près de 600 projets de vacances exposés avec coordonnées et dates de séjour",
       "evolution": "nouveau"
@@ -1472,14 +1480,17 @@
       "organisation": "Sapeurs Pompiers (FNSPF)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une double revendication vise Pompiers.fr et la Fédération nationale des sapeurs-pompiers de France (FNSPF). Les publications annoncent la…",
       "sources": [
-        "https://www.cyberattaque.org/sapeurs-pompiers-fnspf-124-807-pompiers-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/sapeurs-pompiers-fnspf-124-807-pompiers-dans-une-fuite-de-donnees/",
+        "https://www.bing.com/ck/a?!&&p=e00bc8f4efe21bfe24f9c55e40ca57e32c54dfcca0c5dfb972df643e31fe1c09JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly9lcy53aWtpaG93LmNvbS9jb3Nhcy1kaXZlcnRpZGFzLXF1ZS1wcmVndW50YXJsZS1hLWFsZXhh&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=84787cd50b7c504e8f38dc4c67838feab1e3cd1644983a8f7bb04157d93ad5b0JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly93d3cueW91dHViZS5jb20vc2hvcnRzL25pelVBcVQwVE93&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=24d63cbce280c3fa6fa331dc3f02d94b3eddb02845a9d511464a5620cded0ca7JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly9taW5vcmlrY2hpcm9wcmFjdGljLmNvbS8&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Sapeurs Pompiers (FNSPF) : 124 807 pompiers dans une fuite de données",
       "evolution": "nouveau"
@@ -1676,7 +1687,7 @@
       "organisation": "KeepCool",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1727,7 +1738,7 @@
       "organisation": "Betrail",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2322,7 +2333,7 @@
       "organisation": "Polices municipales",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -2475,14 +2486,17 @@
       "organisation": "Secours populaire (59)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une nouvelle revendication de fuite de données cible le Secours populaire du Nord (59). Sur un forum cybercriminel,…",
       "sources": [
-        "https://www.cyberattaque.org/secours-populaire-59-les-donnees-de-familles-et-de-salaries-en-fuite/"
+        "https://www.cyberattaque.org/secours-populaire-59-les-donnees-de-familles-et-de-salaries-en-fuite/",
+        "https://www.bing.com/ck/a?!&&p=c57176200de38c6f27a5e522f9930bcd9b80c3aa0dbe4c475f5f25b17673ac10JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly9sZWFybmluZ25ldHdvcmsuY2lzY28uY29tL3MvY2NuYS1leGFtLXRvcGljcw&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=a0eae764165642db76f62093e8d6765fdeaefd9819121909ab9909a023710fd8JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly9sZWFybmluZ25ldHdvcmsuY2lzY28uY29tL3Mv&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=24f85e1bf862f57fe6b2c78b261b132b655decea9fcfd2cf1194269a0c2f2b77JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly9naXRodWIuY29tL2Rhbm55LWF2aWxhL0xpYnJlQ2hhdA&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Secours populaire (59) : les données de familles et de salariés en fuite",
       "evolution": "nouveau"
@@ -2509,7 +2523,7 @@
       "organisation": "Henley",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2764,14 +2778,16 @@
       "organisation": "Ouest France Immo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker ChimeraZ revendique la publication d’une base de données attribuée à Ouestfrance-Immo.pro, une plateforme professionnelle liée aux…",
       "sources": [
-        "https://www.cyberattaque.org/ouest-france-immo-plus-de-12-000-agences-immobilieres-revendiquees-dans-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/ouest-france-immo-plus-de-12-000-agences-immobilieres-revendiquees-dans-une-fuite-de-donnees/",
+        "https://www.bing.com/ck/a?!&&p=a7cf379a2c8b96097a89bdd6a171369a9e106975a61834b3c1ef42ac0b4e56edJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=2a4fa0ba-b4ef-6989-05f8-b70db5d868dc&u=a1aHR0cHM6Ly9zY2hvbGFyLmdvb2dsZS5jb20vP2hsPXB0LUJS&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=5d422fa27aeeafc88465799bd81957210680f3f3074b0840f3500100594200c9JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=2a4fa0ba-b4ef-6989-05f8-b70db5d868dc&u=a1aHR0cHM6Ly9zY2hvbGFyLmdvb2dsZS5jb20vP2hsPWVz&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Ouest France Immo : plus de 12 000 agences immobilières revendiquées dans une fuite de données",
       "evolution": "nouveau"
@@ -2798,7 +2814,7 @@
       "organisation": "Iron Bodyfit",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -3087,14 +3103,16 @@
       "organisation": "HomePad",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le hacker ChimeraZ revendique l’accès à des données issues de HomePad, une solution utilisée par les professionnels de…",
       "sources": [
-        "https://www.cyberattaque.org/homepad-plus-de-625-000-locataires-et-proprietaires-concernes-par-une-fuite-de-donnees/"
+        "https://www.cyberattaque.org/homepad-plus-de-625-000-locataires-et-proprietaires-concernes-par-une-fuite-de-donnees/",
+        "https://www.bing.com/ck/a?!&&p=ecf56819b0b77cb2fc910658a8e87bcd3841ccb5d96e30e6be7bb9c153e442a5JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=19ad3658-fb9e-6cfc-1dfd-21effa676d8e&u=a1aHR0cHM6Ly93d3cud2VsbHNmYXJnby5jb20v&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=70f1afebc800568b5ccf3b0eaf5d4ab08b6da5b81055e0bcf15070d385c9ae07JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=19ad3658-fb9e-6cfc-1dfd-21effa676d8e&u=a1aHR0cHM6Ly93d3cud2VsbHNmYXJnby5jb20vbW9iaWxlLW9ubGluZS1iYW5raW5nLw&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — HomePad : plus de 625 000 locataires concernés par une fuite de données",
       "evolution": "nouveau"
@@ -3461,14 +3479,16 @@
       "organisation": "Osmose",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une base de données attribuée à Osmose, plateforme utilisée au sein du réseau France Services, a été publiée…",
       "sources": [
-        "https://www.cyberattaque.org/osmose-11-000-profils-dagents-france-services-diffuses-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/osmose-11-000-profils-dagents-france-services-diffuses-apres-une-cyberattaque/",
+        "https://www.bing.com/ck/a?!&&p=5dd53b5cb4bf76e1778d0fc9ee8701b6d30c97665ac78934f6faae52e3211f1aJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly93d3cub3Ntb3NlLmNvbS8&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=d98b974a63f0f2e9d76e4edaa6a3c76aeab13526e769d80b975247b373a83894JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly93d3cub3Ntb3NlLmNvbS9jb250YWN0LXVz&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Osmose : 11 000 profils d’agents France services diffusés après une cyberattaque",
       "evolution": "nouveau"
@@ -3937,7 +3957,7 @@
       "organisation": "Atoa.io",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4175,14 +4195,16 @@
       "organisation": "Pierre & Vacances",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
       "score_cyberattaque": 100,
       "impact_connu": "Le groupe français Pierre & Vacances-Center Parcs a reconnu avoir été victime d’un incident de sécurité ayant conduit…",
       "sources": [
-        "https://www.cyberattaque.org/maeva-pierre-vacances-center-parcs-cyberattque-fuite-donnees/"
+        "https://www.cyberattaque.org/maeva-pierre-vacances-center-parcs-cyberattque-fuite-donnees/",
+        "https://www.bing.com/ck/a?!&&p=4c1d77e88ee441ca9f49ced947fc423945ce41a0c1d72e6466a9c2a66a451a66JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGllcnJl&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=3e5e51bfe56afaa8e10a1b11d520ef608df1e3bc3ca84568837428c115b5a51bJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUGllcnJlLF9Tb3V0aF9EYWtvdGE&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Pierre & Vacances : 4,5 millions de vacanciers exposés dans une fuite massive de données",
       "evolution": "nouveau"
@@ -4328,14 +4350,16 @@
       "organisation": "Le Domaine des Tournels ciblé par une cyberattaque",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Ransomware",
       "acteur": "Qilin",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le groupe de ransomware Qilin affirme avoir compromis les systèmes du Domaine des Tournels, un établissement situé dans…",
       "sources": [
-        "https://www.cyberattaque.org/le-domaine-des-tournels-cible-par-une-cyberattaque/"
+        "https://www.cyberattaque.org/le-domaine-des-tournels-cible-par-une-cyberattaque/",
+        "https://www.bing.com/ck/a?!&&p=476cbfd226e4949111dbcbd4488e0e1671040f1f9023f9d3452498a20ae48d26JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly93d3cuZ29vZ2xlLnVzLw&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=4559f0f1d5b9b87b3876a9963a060eb94ff1f13935b159f388ee175e6ea65213JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=131a40fd-3acd-6759-2184-574a3b59663c&u=a1aHR0cHM6Ly93d3cubWVycmlhbS13ZWJzdGVyLmNvbS9kaWN0aW9uYXJ5L0xF&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Le Domaine des Tournels ciblé par une cyberattaque",
       "evolution": "nouveau"
@@ -5263,14 +5287,16 @@
       "organisation": "Sejourneur.com",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Le hacker ChimeraZ a mis en ligne la base de données de Sejourneur.com, plateforme spécialisée dans la gestion…",
       "sources": [
-        "https://www.cyberattaque.org/sejourneur-com-53-000-reservations-milliers-factures-fuite-de-donnees/"
+        "https://www.cyberattaque.org/sejourneur-com-53-000-reservations-milliers-factures-fuite-de-donnees/",
+        "https://www.bing.com/ck/a?!&&p=41d55479bfeabcd5564e1667af651625e8399909152cbc99cb7953f4482c5c2bJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=0edd3d74-69b7-6a93-0766-2ac368526ba1&u=a1aHR0cHM6Ly93d3cubG9uZWx5cGxhbmV0LmNvbS9hcnRpY2xlcy93aGVyZS10by1nby1pbi1zdW1tZXI&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=26cf9496a484fbe5da1b31c5014393ef94bfc8eab825df4408f066dec2e110a3JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=0edd3d74-69b7-6a93-0766-2ac368526ba1&u=a1aHR0cHM6Ly93d3cudHJhdmVsYW5kbGVpc3VyZS5jb20vdHJpcC1pZGVhcy9zdW1tZXItdmFjYXRpb25zL3N1bW1lci12YWNhdGlvbi1pZGVhcw&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Sejourneur.com : 53 000 réservations et des milliers de factures dans une fuite de données",
       "evolution": "nouveau"
@@ -5484,7 +5510,7 @@
       "organisation": "Bodyhit",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -5994,7 +6020,7 @@
       "organisation": "Basic-Fit",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -6062,14 +6088,16 @@
       "organisation": "Booking.com",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Transport / Logistique",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Un incident de sécurité aurait affecté Booking.com, avec un accès non autorisé à des données liées à des…",
       "sources": [
-        "https://www.cyberattaque.org/booking-com-les-donnees-de-reservation-de-ses-clients-exposees/"
+        "https://www.cyberattaque.org/booking-com-les-donnees-de-reservation-de-ses-clients-exposees/",
+        "https://www.bing.com/ck/a?!&&p=505cb746cdc97a7fd69b644bf10bc60821f2a160ba8d110956142267bd6a3dadJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly93d3cuYm9va2luZy5jb20vP21zb2NraWQ9MDQ0YjE3OGE3YTk5NmQ0MTNmYTEwMDNkN2I1YjZjMjk&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=e361fcdbd143441f2c241f62a7954bf0e4a2264eccf025f0741cda6720676833JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=044b178a-7a99-6d41-3fa1-003d7b5b6c29&u=a1aHR0cHM6Ly93d3cuYm9va2luZy5jb20vaW5kZXguZW4tZ2IuaHRtbD9tc29ja2lkPTA0NGIxNzhhN2E5OTZkNDEzZmExMDAzZDdiNWI2YzI5&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Booking.com : les données de réservation de ses clients exposées",
       "evolution": "nouveau"
@@ -6436,14 +6464,16 @@
       "organisation": "ARS",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Le groupe DumpSec affirme mettre en vente une base massive concernant 35 millions de Français, présentée comme issue…",
       "sources": [
-        "https://www.cyberattaque.org/cyberattaque-hopitaux-et-aphp-ars/"
+        "https://www.cyberattaque.org/cyberattaque-hopitaux-et-aphp-ars/",
+        "https://www.bing.com/ck/a?!&&p=df7030db98397c566003e182d01fa50fac8cdb7b76701a93e930ea0069ce666bJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=39b856cd-a1fb-6145-1288-417aa0d660eb&u=a1aHR0cHM6Ly9hcnN0ZWNobmljYS5jb20v&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=2a46d62ffc7235eb626115c2f57961d3f863fd68d25f7e4015d84703a39f1c27JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=39b856cd-a1fb-6145-1288-417aa0d660eb&u=a1aHR0cHM6Ly93d3cuYWR2YW5jZWRyYWQuY29tLw&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ARS : 35 millions de patients concernés par une fuite de données, 130 hôpitaux et AP-HP ciblés",
       "evolution": "nouveau"
@@ -6674,7 +6704,7 @@
       "organisation": "Fédération Nationale des Chasseurs",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -6691,14 +6721,17 @@
       "organisation": "Vacancéole",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Vacancéole, spécialiste de la location de vacances en France, a été victime d’un incident de sécurité impliquant un…",
       "sources": [
-        "https://www.cyberattaque.org/vacanceole-nouvelle-fuite-de-clients-dans-le-secteur-du-tourisme/"
+        "https://www.cyberattaque.org/vacanceole-nouvelle-fuite-de-clients-dans-le-secteur-du-tourisme/",
+        "https://www.bing.com/ck/a?!&&p=2801c1b1dcd9dde761fc4ca26b02b34eb31e6b0e1904dc288c756ebea3607438JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=39b856cd-a1fb-6145-1288-417aa0d660eb&u=a1aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g_dj1uVmJoTEhraWoxVQ&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=b6ff85634c4e6f00e2d271194c19fbffa05d21711acf31aff08457eb8e863e51JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=39b856cd-a1fb-6145-1288-417aa0d660eb&u=a1aHR0cHM6Ly93d3cucmVkZGl0LmNvbS9yL3N0ZXBoZW5raW5nL2NvbW1lbnRzLzE1bnV0ajcvcGVubnlfd2lzZV9kaWRfbm90aGluZ193cm9uZy8&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=ae78be657bc36c97cd0b85db1a0be677d32555c435a443fdda75455b9d3dcd2bJmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=39b856cd-a1fb-6145-1288-417aa0d660eb&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20vP2hsPWVu&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Vacancéole : nouvelle fuite de clients dans le secteur du tourisme",
       "evolution": "nouveau"
@@ -6793,14 +6826,16 @@
       "organisation": "Le Petit Vapoteur",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
       "score_cyberattaque": 65,
       "impact_connu": "Une fuite de données d’ampleur exceptionnelle viserait Le Petit Vapoteur. Un hacker affirme avoir compromis l’intégralité de la…",
       "sources": [
-        "https://www.cyberattaque.org/le-petit-vapoteur-33-millions-de-clients-exposes/"
+        "https://www.cyberattaque.org/le-petit-vapoteur-33-millions-de-clients-exposes/",
+        "https://www.bing.com/ck/a?!&&p=e50a9a4348e9fec22642bfdfa0977a669488f23303f899bc14330444d78fb978JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=3ab1b6c1-a053-63a4-2f10-a176a1f66223&u=a1aHR0cHM6Ly93d3cuZ29vZ2xlLnVzLw&ntb=1",
+        "https://www.bing.com/ck/a?!&&p=98adcd5b8d4977c3913c2b6083de27b973e2424dda8a55238e8e21cee37509c3JmltdHM9MTc4NjgzODQwMA&ptn=3&ver=2&hsh=4&fclid=3ab1b6c1-a053-63a4-2f10-a176a1f66223&u=a1aHR0cHM6Ly93d3cubWVycmlhbS13ZWJzdGVyLmNvbS9kaWN0aW9uYXJ5L0xF&ntb=1"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Le Petit Vapoteur : 3,3 millions de clients exposés",
       "evolution": "nouveau"
@@ -6827,7 +6862,7 @@
       "organisation": "Iliad (Free)",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -6878,7 +6913,7 @@
       "organisation": "Scalian",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
