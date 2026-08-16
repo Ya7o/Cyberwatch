@@ -6,6 +6,7 @@ on:
       - '.github/workflows/backfill-cyberwatch-2026.yml'
       - 'sources/veillellm/backfill_global_sources_v2.py'
       - 'sources/veillellm/normalize_global_backfill.py'
+      - 'sources/veillellm/enrich_global_fields.py'
   workflow_dispatch:
 
 permissions:
@@ -14,7 +15,7 @@ permissions:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,7 +36,10 @@ jobs:
       - name: Validate and normalize canonical fields
         run: python sources/veillellm/normalize_global_backfill.py
 
-      - name: Commit backfill data
+      - name: Enrich sector threat and location from sources and web research
+        run: python sources/veillellm/enrich_global_fields.py
+
+      - name: Commit enriched backfill data
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "cyberwatch-bot@users.noreply.github.com"
@@ -47,5 +51,5 @@ jobs:
             echo "No data changes"
             exit 0
           fi
-          git commit -m "Backfill 2026 Cyberattaque.org and FrenchBreaches"
+          git commit -m "Enrich 2026 global Cyberwatch sector threat and location"
           git push origin HEAD:main
