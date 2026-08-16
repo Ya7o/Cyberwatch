@@ -67,6 +67,9 @@ jobs:
           mkdir -p assets/data
           echo "Référentiels et caches versionnés conservés ; aucun fichier publié n'est encore modifié."
 
+      - name: Vérifier l'état UNINITIALIZED après purge
+        run: python -m cyberwatch check --allow-uninitialized
+
       - name: CREATE from scratch
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
@@ -84,6 +87,29 @@ jobs:
 
       - name: Check strict
         run: python -m cyberwatch check
+
+      - name: Vérifier la projection ITEMS vers INCIDENTS
+        run: |
+          python - <<'PY'
+          from cyberwatch import identity, store
+          from cyberwatch.dedup import build_incidents
+
+          items = store.load_items()
+          persisted = store.load_incidents()
+          rebuilt = build_incidents(items)
+          persisted_hash = identity.incidents_hash(persisted)
+          rebuilt_hash = identity.incidents_hash(rebuilt)
+          if len(persisted) != len(rebuilt) or persisted_hash != rebuilt_hash:
+              raise SystemExit(
+                  "INCIDENTS incohérent avec build_incidents(ITEMS): "
+                  f"persisted={len(persisted)}/{persisted_hash[:16]} "
+                  f"rebuilt={len(rebuilt)}/{rebuilt_hash[:16]}"
+              )
+          print(
+              f"Projection incidents PASS: {len(items)} items -> "
+              f"{len(persisted)} incidents ({persisted_hash[:16]})"
+          )
+          PY
 
       - name: Test de répétabilité offline
         run: python -m cyberwatch test-repeat
