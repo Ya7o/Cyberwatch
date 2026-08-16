@@ -29,7 +29,7 @@ jobs:
           if [ "$status" -ne 0 ]; then
             python - <<'PY'
           from pathlib import Path
-          text = "\n".join(Path("/tmp/pytest-sector.log").read_text(errors="replace").splitlines()[-120:])
+          text = "\n".join(Path("/tmp/pytest-sector.log").read_text(errors="replace").splitlines()[-400:])
           text = text.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
           print(f"::error file=tests,title=Pytest Sector diagnostic::{text}")
           PY
