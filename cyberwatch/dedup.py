@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from . import config
 from .identity import incident_id, sort_incidents, sort_items
 from .model import Incident, Item
-from .normalize import _base_organisation_key, date_or_empty, searchable
+from .normalize import _base_organisation_key, date_or_empty, organisation_key, searchable
 
 
 MERGE = "MERGE"
@@ -40,6 +40,16 @@ class DedupDecision:
     signals: tuple[str, ...] = ()
 
 
+def _effective_organisation_key(item: Item) -> str:
+    """Clé de regroupement courante sans réécrire l'identité historique Item.
+
+    Un nouvel alias versionné doit pouvoir corriger la déduplication d'anciens
+    items dont ``Organisation_Key`` a été calculé avant cet alias. Le fallback
+    conserve le comportement historique pour un item sans libellé brut.
+    """
+    return organisation_key(item.Organisation_Raw) or item.Organisation_Key
+
+
 def _recurrence(item: Item) -> bool:
     blob = searchable(f"{item.Title} {item.Threat_Raw}")
     return any(marker in blob for marker in RECURRENCE_MARKERS)
@@ -67,7 +77,9 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
     if _recurrence(left) or _recurrence(right):
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_RECURRENCE_MARKER")
 
-    if left.Organisation_Key != right.Organisation_Key:
+    left_key = _effective_organisation_key(left)
+    right_key = _effective_organisation_key(right)
+    if left_key != right_key:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
 
     left_date, right_date = date_or_empty(left.best_date), date_or_empty(right.best_date)
@@ -80,8 +92,8 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
 
     if days <= 3:
         alias_used = (
-            _base_organisation_key(left.Organisation_Raw) != left.Organisation_Key
-            or _base_organisation_key(right.Organisation_Raw) != right.Organisation_Key
+            _base_organisation_key(left.Organisation_Raw) != left_key
+            or _base_organisation_key(right.Organisation_Raw) != right_key
         )
         return DedupDecision(
             MERGE,
@@ -99,8 +111,9 @@ def group_components(items: list[Item]) -> list[list[Item]]:
     """Construit des composantes ancrées ; aucune ne chaîne au-delà de 14 jours."""
     by_org: dict[str, list[Item]] = defaultdict(list)
     for item in items:
-        if item.Organisation_Key:
-            by_org[item.Organisation_Key].append(item)
+        effective_key = _effective_organisation_key(item)
+        if effective_key:
+            by_org[effective_key].append(item)
 
     components: list[list[Item]] = []
     for org_key in sorted(by_org):
@@ -227,7 +240,7 @@ def build_incidents(items: list[Item]) -> list[Incident]:
         evidence = _incident_evidence_items(ordered)
         date, basis = _component_dates(ordered)
         incidents.append(Incident(
-            Incident_ID=incident_id(ordered[0].Organisation_Key, ordered[0].Item_ID),
+            Incident_ID=incident_id(_effective_organisation_key(ordered[0]), ordered[0].Item_ID),
             Date=date,
             Date_Basis=basis,
             Organisation=_majority(
