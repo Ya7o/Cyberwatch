@@ -1,0 +1,37 @@
+name: Deep sector enrichment 2026
+
+on:
+  push:
+    paths:
+      - '.github/workflows/deep-sector-enrichment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests beautifulsoup4
+      - name: Deep research unresolved sectors
+        run: python sources/veillellm/deep_enrich_unknown_sectors.py
+      - name: Commit enriched datasets
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "cyberwatch-bot@users.noreply.github.com"
+          git add sources/veillellm/cyberattaque_org_2026.csv \
+                  sources/veillellm/cyberattaque_org_2026.json \
+                  sources/veillellm/frenchbreaches_2026.csv \
+                  sources/veillellm/frenchbreaches_2026.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Deep-enrich unresolved 2026 sectors"
+          git pull --rebase origin main
+          git push origin HEAD:main
