@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Refreshed after primary-source enrichment v7.
 import json
 from pathlib import Path
 for stem in ('cyberattaque_org_2026','frenchbreaches_2026'):
