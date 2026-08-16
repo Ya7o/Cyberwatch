@@ -1,11 +1,12 @@
 """Couche HTTP : politesse, reprises, robots.txt et plafonds durs.
 
 Cette couche est le garde-fou de volumétrie du projet. Aucun collecteur ne fait
-d'appel réseau directement : tous passent par ``HttpClient``. Le budget temps
-mesure désormais uniquement le temps passé dans les fetch HTTP (politesse et
-retries inclus), jamais le temps passé dans les enrichissements OpenAI entre
-deux requêtes.
+d'appel réseau directement : tous passent par `HttpClient`, ce qui garantit que
+les plafonds de `config` s'appliquent partout, sans exception possible. Le
+budget temps porte uniquement sur le travail HTTP, jamais sur le temps passé
+entre deux requêtes dans un enrichissement externe comme OpenAI.
 """
+
 from __future__ import annotations
 
 import time
@@ -20,6 +21,8 @@ from . import config, status
 
 @dataclass
 class FetchResult:
+    """Résultat d'une requête, y compris en échec — jamais d'exception nue."""
+
     ok: bool
     url: str
     status_code: int = 0
@@ -29,7 +32,9 @@ class FetchResult:
     headers: dict = field(default_factory=dict)
 
     def json(self):
+        """Corps interprété en JSON, ou `None` si le corps n'en est pas."""
         import json
+
         try:
             return json.loads(self.text)
         except (ValueError, TypeError):
@@ -37,7 +42,12 @@ class FetchResult:
 
 
 class Budget:
-    """Compteur de requêtes et de temps HTTP consommé, avec plafonds durs."""
+    """Compteur de requêtes et de temps HTTP consommé, avec plafonds durs.
+
+    Un budget épuisé n'interrompt jamais brutalement le run : le collecteur en
+    cours s'arrête proprement et la source est marquée `PARTIAL` avec sa
+    couverture réelle. Les données déjà collectées sont conservées.
+    """
 
     def __init__(self, max_requests: int, max_seconds: float, label: str = ""):
         self.max_requests = max_requests
@@ -48,7 +58,7 @@ class Budget:
 
     @property
     def elapsed(self) -> float:
-        """Temps réellement consommé dans ``HttpClient.fetch``."""
+        """Temps réellement consommé à l'intérieur de `HttpClient.fetch`."""
         return self.seconds_spent
 
     @property
@@ -75,7 +85,7 @@ class HttpClient:
     """Client HTTP unique du projet.
 
     Trois garanties : un délai de politesse par domaine, un plafond de requêtes
-    global et par source, et un respect du ``robots.txt`` de chaque site.
+    global et par source, et un respect du `robots.txt` de chaque site.
     """
 
     def __init__(
@@ -91,6 +101,7 @@ class HttpClient:
         self.polite_delay = polite_delay
         self.timeout = timeout
         self.respect_robots = respect_robots
+
         self.session = requests.Session()
         self.session.headers.update(
             {
@@ -100,7 +111,13 @@ class HttpClient:
         )
         self._last_request_at: dict[str, float] = {}
         self._robots_cache: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+        #: Hôtes ayant refusé l'agent identifié : on y emploie directement le
+        #: repli, pour ne pas gaspiller une requête sur deux.
         self._fallback_hosts: set[str] = set()
+
+    # ------------------------------------------------------------------
+    # robots.txt
+    # ------------------------------------------------------------------
 
     def _robots_for(self, url: str):
         parsed = urlparse(url)
@@ -111,17 +128,22 @@ class HttpClient:
         parser = urllib.robotparser.RobotFileParser()
         parser.set_url(f"{origin}/robots.txt")
         try:
-            response = self.session.get(f"{origin}/robots.txt", timeout=self.timeout)
+            response = self.session.get(
+                f"{origin}/robots.txt", timeout=self.timeout
+            )
             if response.status_code == 200:
                 parser.parse(response.text.splitlines())
             else:
+                # Pas de robots.txt exploitable : le site n'interdit rien.
                 parser = None
         except requests.RequestException:
             parser = None
+
         self._robots_cache[origin] = parser
         return parser
 
     def allowed(self, url: str) -> bool:
+        """Vrai si le `robots.txt` du site autorise ce chemin."""
         if not self.respect_robots:
             return True
         parser = self._robots_for(url)
@@ -131,6 +153,10 @@ class HttpClient:
             return parser.can_fetch(config.HTTP_USER_AGENT, url)
         except Exception:
             return True
+
+    # ------------------------------------------------------------------
+    # Requête
+    # ------------------------------------------------------------------
 
     def _wait_politely(self, host: str) -> None:
         last = self._last_request_at.get(host)
@@ -146,11 +172,12 @@ class HttpClient:
         source_budget: Budget | None = None,
         headers: dict | None = None,
     ) -> FetchResult:
-        """Récupère une URL en respectant les budgets HTTP.
+        """Récupère une URL en respectant tous les plafonds.
 
-        Le temps consommé est comptabilisé uniquement pendant cet appel. Un
-        enrichissement LLM de plusieurs minutes entre deux fetch ne peut donc
-        plus épuiser artificiellement le budget d'une source suivante.
+        Ne lève jamais d'exception réseau : chaque échec devient un
+        `FetchResult` porteur d'un code de raison exploitable par le modèle de
+        statuts. Le temps consommé par les budgets correspond uniquement à cet
+        appel (attente polie et retries compris), pas à l'âge global du run.
         """
         if self.run_budget.exhausted:
             return FetchResult(False, url, reason_code=status.REASON_BUDGET_RUN)
@@ -175,7 +202,6 @@ class HttpClient:
                 if host in self._fallback_hosts:
                     request_headers["User-Agent"] = config.HTTP_USER_AGENT_FALLBACK
 
-                attempt_started = time.monotonic()
                 try:
                     response = self.session.get(
                         url, timeout=self.timeout, headers=request_headers
@@ -201,7 +227,6 @@ class HttpClient:
 
                 code = response.status_code
                 elapsed = time.monotonic() - started
-                del attempt_started
 
                 if code == 200:
                     return FetchResult(
@@ -209,14 +234,22 @@ class HttpClient:
                         dict(response.headers),
                     )
 
+                # 429 et 5xx : temporaires, on retente avec un recul croissant.
                 if code == 429 or 500 <= code < 600:
                     attempt += 1
                     if attempt > config.HTTP_MAX_RETRIES:
-                        reason = status.REASON_HTTP_429 if code == 429 else status.REASON_HTTP_ERROR
+                        reason = (
+                            status.REASON_HTTP_429 if code == 429
+                            else status.REASON_HTTP_ERROR
+                        )
                         return FetchResult(False, url, code, "", reason, elapsed)
                     time.sleep(2 ** attempt)
                     continue
 
+                # 403 alors que le robots.txt autorise le chemin : le refus vient
+                # d'un pare-feu qui filtre sur l'agent, pas d'une politique
+                # d'exclusion. On réessaie une fois en se présentant sous une forme
+                # que ces pare-feux acceptent, sans masquer l'identité du projet.
                 if code == 403 and not tried_fallback_ua and host not in self._fallback_hosts:
                     tried_fallback_ua = True
                     self._fallback_hosts.add(host)
@@ -236,6 +269,7 @@ class HttpClient:
                 source_budget.consume_seconds(spent)
 
     def source_budget(self) -> Budget:
+        """Nouveau budget dédié à une source, dérivé des plafonds de config."""
         return Budget(
             config.MAX_REQUESTS_PER_SOURCE, config.MAX_SECONDS_PER_SOURCE, "source"
         )
