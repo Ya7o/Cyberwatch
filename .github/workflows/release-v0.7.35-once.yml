@@ -1,4 +1,4 @@
-name: Release v0.7.35 stabilization (one-shot)
+name: Prepare v0.7.35 stabilization branch (one-shot)
 
 on:
   push:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  stabilize-and-release:
+  prepare:
     if: github.repository == 'Ya7o/Cyberwatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -93,8 +93,7 @@ jobs:
               PERSONAL_EXACT.has(value.trim()) || PERSONAL_MARKERS.some((marker) => value.includes(marker))
             )) return ["personal", "Données personnelles"];
               if (values.length) return ["unknown", "Données non qualifiées"];'''
-          text = text.replace(old, new, 1)
-          path.write_text(text, encoding="utf-8")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
 
           path = Path("tests/test_data_sensitivity_asset.py")
           text = path.read_text(encoding="utf-8")
@@ -132,22 +131,21 @@ jobs:
           node --check assets/data-sensitivity.js
           python -m cyberwatch test-repeat
           python -m cyberwatch check --allow-uninitialized
-      - name: Committer le code sur main
+      - name: Pousser la branche technique
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add cyberwatch/source_facts.py assets/data-sensitivity.js tests/test_source_facts_llm_grounding.py tests/test_data_sensitivity_asset.py .github/workflows/collect.yml
           git commit -m "fix: verrouille les derniers gates avant rebuild"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git push origin HEAD:agent/pre-rebuild-finalization-v0735
           echo "TARGET_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-      - name: Déclencher et attendre la CI officielle
+      - name: CI explicite sur la branche
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          gh workflow run ci.yml --repo "$REPO" --ref main
+          gh workflow run ci.yml --repo "$REPO" --ref agent/pre-rebuild-finalization-v0735
           run_id=""
           for _ in $(seq 1 30); do
             run_id="$(gh run list --repo "$REPO" --workflow ci.yml --event workflow_dispatch --limit 10 --json databaseId,headSha --jq '.[] | select(.headSha == env.TARGET_SHA) | .databaseId' | head -n1)"
@@ -156,39 +154,3 @@ jobs:
           done
           [ -n "$run_id" ] || { echo "CI Tests introuvable pour $TARGET_SHA" >&2; exit 1; }
           gh run watch "$run_id" --repo "$REPO" --exit-status
-      - name: Publier v0.7.35
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          if gh release view v0.7.35 --repo "$REPO" >/dev/null 2>&1; then
-            echo "v0.7.35 existe déjà" >&2
-            exit 1
-          fi
-          gh release create v0.7.35 \
-            --repo "$REPO" \
-            --target "$TARGET_SHA" \
-            --title "v0.7.35 — derniers garde-fous pré-rebuild" \
-            --notes-file - <<'EOF'
-          Stabilisation finale du code avant reconstruction de la base depuis zéro.
-
-          - Source facts V3 : Threat_Actor et Third_Party issus du LLM ne sont publiés que si leur valeur est explicitement nommée dans l'evidence source ; le fallback déterministe reste inchangé.
-          - Dashboard : la présence d'un type de donnée ne suffit plus à conclure « Données personnelles » ; les types non reconnus restent « Données non qualifiées ».
-          - Collecte quotidienne : le gate audit_data_quality --check --check-regression est désormais obligatoire avant build-site et publication.
-          - Aucun changement du pipeline canonique Threat / Sector / Location ni de la logique de déduplication.
-          - Aucun OpenAI Search ajouté.
-          EOF
-      - name: Retirer le workflow one-shot
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          path='.github/workflows/release-v0.7.35-once.yml'
-          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq .sha)"
-          gh api --method DELETE "repos/$REPO/contents/$path" \
-            -f message='chore: retire le workflow one-shot v0.7.35' \
-            -f sha="$sha" \
-            -f branch=main
