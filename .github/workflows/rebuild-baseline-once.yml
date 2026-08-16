@@ -30,6 +30,14 @@ jobs:
           python-version: "3.11"
           cache: pip
 
+      - name: Restaurer le cache Source Facts IA
+        uses: actions/cache/restore@v4
+        with:
+          path: data/source_facts_ai_cache.json
+          key: source-facts-ai-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            source-facts-ai-${{ runner.os }}-
+
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
@@ -118,6 +126,13 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 1
+
+      - name: Sauver le cache Source Facts IA
+        if: always() && hashFiles('data/source_facts_ai_cache.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: data/source_facts_ai_cache.json
+          key: source-facts-ai-${{ runner.os }}-${{ github.run_id }}
 
       - name: Exporter les diagnostics même en échec
         if: always()
