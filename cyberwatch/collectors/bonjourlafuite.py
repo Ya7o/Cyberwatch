@@ -27,8 +27,10 @@ class _BonjourHtmlParser(HTMLParser):
     """Parse la timeline sans dépendre des classes CSS.
 
     Les libellés ``Via`` et ``Données concernées`` peuvent être séparés de
-    leur valeur par des balises HTML (strong/span/p). Un petit état de champ
-    permet de conserver la valeur suivante sans nouvelle requête réseau.
+    leur valeur par des balises HTML. Pour ``Données concernées``, la page
+    expose aussi des listes de bulles successives : elles sont conservées
+    individuellement jusqu'à la fin du bloc (source, date ou incident suivant)
+    afin de ne jamais perdre les valeurs après la première bulle.
     """
 
     def __init__(self, base_url: str):
@@ -43,14 +45,19 @@ class _BonjourHtmlParser(HTMLParser):
         self._anchor_parts: list[str] = []
         self._extra_parts: list[str] = []
         self._pending_field: str | None = None
+        self._collecting_data_types = False
+        self._data_type_parts: list[str] = []
 
     def handle_starttag(self, tag: str, attrs):
         lowered = tag.lower()
         if lowered == "h2":
+            self._flush_data_types()
             self._in_h2 = True
             self._h2_parts = []
             self._pending_field = None
         elif lowered == "a":
+            # Sur BonjourLaFuite, le lien « Source » clôt le bloc de bulles.
+            self._flush_data_types()
             self._anchor_href = ""
             self._anchor_parts = []
             self._pending_field = None
@@ -80,6 +87,7 @@ class _BonjourHtmlParser(HTMLParser):
 
         parsed = parse_date(text)
         if parsed:
+            self._flush_data_types()
             self.pending_date = parsed
             self._pending_field = None
             return
@@ -90,6 +98,7 @@ class _BonjourHtmlParser(HTMLParser):
 
         via = _VIA_RE.match(text)
         if via:
+            self._flush_data_types()
             value = via.group(1).strip()
             if value:
                 self.current.source_metadata["via_raw"] = value
@@ -100,19 +109,48 @@ class _BonjourHtmlParser(HTMLParser):
 
         data_types = _DATA_TYPES_RE.match(text)
         if data_types:
+            self._flush_data_types()
             value = data_types.group(1).strip()
             if value:
+                # Compatibilité avec l'ancien format sur une seule ligne :
+                # source_facts applique alors le découpage historique.
                 self.current.source_metadata["data_types_raw"] = value
                 self._pending_field = None
             else:
-                self._pending_field = "data_types_raw"
+                # Le site actuel rend chaque type dans une bulle distincte.
+                self._collecting_data_types = True
+                self._data_type_parts = []
+                self._pending_field = None
             return
 
         if self._pending_field:
             self.current.source_metadata[self._pending_field] = text
             self._pending_field = None
+            return
+
+        if self._collecting_data_types:
+            self._data_type_parts.append(text)
+
+    def _flush_data_types(self) -> None:
+        if not self._collecting_data_types:
+            return
+        if self.current is not None and self._data_type_parts:
+            values: list[str] = []
+            for value in self._data_type_parts:
+                cleaned = " ".join(value.split()).strip(" .")
+                if cleaned and cleaned not in values:
+                    values.append(cleaned)
+            if values:
+                self.current.source_metadata["data_types"] = values
+                # Champ brut conservé pour la compatibilité, le comptage et
+                # l'audit. Le séparateur « ; » ne détruit pas les virgules
+                # appartenant à un libellé source.
+                self.current.source_metadata["data_types_raw"] = " ; ".join(values)
+        self._collecting_data_types = False
+        self._data_type_parts = []
 
     def _finish_heading(self) -> None:
+        self._flush_data_types()
         raw = " ".join(self._h2_parts).strip()
         self._in_h2 = False
         self._h2_parts = []
@@ -143,6 +181,7 @@ class _BonjourHtmlParser(HTMLParser):
         self._pending_field = None
 
     def finalize(self) -> None:
+        self._flush_data_types()
         self._flush_extra()
 
     def _finish_anchor(self) -> None:
