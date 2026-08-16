@@ -1,0 +1,71 @@
+name: Release v0.7.33 (one-shot)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/release-v0.7.33-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.repository == 'Ya7o/Cyberwatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Supprimer les branches mergées
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for ref in \
+            agent/stabilise-source-facts-release \
+            agent/stabilize-source-facts-dashboard \
+            agent/location-stabilisation-order-metrics \
+            agent/stabilise-threat-release \
+            agent/sector-stabilization
+          do
+            if gh api "repos/$REPO/git/ref/heads/$ref" >/dev/null 2>&1; then
+              gh api --method DELETE "repos/$REPO/git/refs/heads/$ref"
+            fi
+          done
+
+      - name: Publier la release v0.7.33
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.7.33 --repo "$REPO" >/dev/null 2>&1; then
+            exit 0
+          fi
+          gh release create v0.7.33 \
+            --repo "$REPO" \
+            --target 54f314e340a5f6347bbe31c02f9ad3766082719f \
+            --title "v0.7.33 — stabilisation enrichissement et qualifications" \
+            --notes-file - <<'EOF'
+          Stabilisation indispensable avant reconstruction de la base depuis zéro.
+
+          - Enrichissement natif par source durci et rendu déterministe.
+          - Dashboard : affichage conditionnel des détails réellement disponibles, sans champs vides artificiels.
+          - Qualification Location stabilisée avec priorité à l’enrichissement organisation exact avant fallback source.
+          - Qualification Threat fiabilisée avec priorité métier déterministe à la déduplication.
+          - Qualification Sector fiabilisée : mappings conservateurs, enrichissement NAF exact, LLM borné aux descriptions d’activité explicites et égalités conservées en Inconnu.
+          - Aucun nouvel appel OpenAI Search introduit par ces stabilisations.
+          - Validation finale : workflow Tests PASS sur main avant publication.
+          EOF
+
+      - name: Retirer ce workflow one-shot
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          path='.github/workflows/release-v0.7.33-once.yml'
+          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq .sha)"
+          gh api --method DELETE "repos/$REPO/contents/$path" \
+            -f message='chore: retire le workflow one-shot v0.7.33' \
+            -f sha="$sha" \
+            -f branch=main
