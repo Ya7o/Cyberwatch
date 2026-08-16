@@ -18,6 +18,21 @@
     "auchan", "intermarché", "intermarché drive", "lidl", "magasins u",
     "système u", "super u",
   ]);
+  const DATA_TYPE_GROUP_ORDER = [
+    "Identité & coordonnées",
+    "Profession / formation",
+    "Finance & transactions",
+    "Santé",
+    "Accès & authentification",
+    "Autres",
+  ];
+  const DATA_TYPE_GROUP_RULES = [
+    ["Santé", ["sante", "medical", "medic", "patient", "diagnostic", "patholog", "ordonnance", "traitement", "vaccin"]],
+    ["Finance & transactions", ["iban", "rib", "bancair", "carte de paiement", "carte bancaire", "paiement", "transaction", "financement", "factur", "revenu", "salaire"]],
+    ["Accès & authentification", ["mot de passe", "password", "hash", "identifiant", "login", "token", "authent", "cle api", "secret", "otp"]],
+    ["Profession / formation", ["certification", "qualification", "experience", "evaluation", "formation", "parcours professionnel", "emploi", "poste", "metier", "profession"]],
+    ["Identité & coordonnées", ["nom", "prenom", "genre", "email", "e-mail", "adresse", "telephone", "mobile", "naissance", "nationalite", "departement", "pays", "ville", "identite", "numero client"]],
+  ];
   const orgKey = (value) => String(value || "").trim().toLocaleLowerCase("fr-FR");
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -64,6 +79,21 @@
     return Number.isFinite(number) ? number.toLocaleString("fr-FR") : String(value || "");
   }
 
+  function normalizedDataType(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase("fr-FR");
+  }
+
+  function dataTypeGroup(value) {
+    const normalized = normalizedDataType(value);
+    for (const [label, keywords] of DATA_TYPE_GROUP_RULES) {
+      if (keywords.some((keyword) => normalized.includes(keyword))) return label;
+    }
+    return "Autres";
+  }
+
   function installCss() {
     if ($("#dashboard-audit-css")) return;
     const style = document.createElement("style");
@@ -79,6 +109,7 @@
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
       .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
       .incident-facts{margin-top:8px;font-size:12px;font-weight:400;line-height:1.4}.incident-facts>summary{cursor:pointer;color:var(--text-secondary);list-style:none;width:max-content;max-width:100%}.incident-facts>summary::-webkit-details-marker{display:none}.incident-facts>summary::before{content:"▸";color:var(--text-muted);margin-right:5px}.incident-facts[open]>summary::before{content:"▾"}.incident-facts-list{display:grid;gap:7px;margin-top:7px}.incident-fact{padding:8px 9px;border:1px solid var(--border);border-radius:8px;background:var(--plane)}.incident-fact-source{font-weight:650;margin-bottom:4px}.incident-fact-row{display:flex;gap:6px;align-items:flex-start;margin-top:2px}.incident-fact-label{color:var(--text-muted);flex:0 0 auto}.incident-fact-value{min-width:0;overflow-wrap:anywhere}.incident-fact-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.incident-fact-links a{font-size:11.5px}
+      .incident-data-types{margin-top:7px}.incident-data-types-title{color:var(--text-muted);margin-bottom:3px}.incident-data-group{margin-top:4px}.incident-data-group>summary{cursor:pointer;list-style:none;font-weight:600}.incident-data-group>summary::-webkit-details-marker{display:none}.incident-data-group>summary::before{content:"▸";color:var(--text-muted);margin-right:5px}.incident-data-group[open]>summary::before{content:"▾"}.incident-data-values{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.incident-data-value{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--surface);overflow-wrap:anywhere}
       .local-analysis{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}.local-analysis p{margin:6px 0 0}.local-score{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis .evidence-links{margin-top:7px}
       .source-measures{white-space:normal!important}
       @media(max-width:700px){
@@ -92,6 +123,7 @@
         #incidents-table .org-cell{font-size:16px;font-weight:650;padding-bottom:7px!important}#incidents-table .org-cell::before{display:none}
         #incidents-table .sources-cell::before{display:block;margin-bottom:4px}
         .incident-facts,.incident-fact{font-size:12.5px}.incident-fact-row{display:block}.incident-fact-label{display:block}
+        .incident-data-group>summary{padding:2px 0}
         .audit-pager{align-items:flex-start}.audit-pager-actions{width:100%;justify-content:space-between}
       }
     `;
@@ -161,6 +193,24 @@ function currentSort() {
     return `<div class="incident-fact-row"><span class="incident-fact-label">${esc(label)} :</span><span class="incident-fact-value">${esc(value)}</span></div>`;
   }
 
+  function renderDataTypes(values) {
+    if (!Array.isArray(values) || !values.length) return "";
+    const groups = new Map(DATA_TYPE_GROUP_ORDER.map((label) => [label, []]));
+    const seen = new Set();
+    values.forEach((value) => {
+      const cleaned = String(value || "").trim();
+      if (!cleaned || seen.has(cleaned)) return;
+      seen.add(cleaned);
+      groups.get(dataTypeGroup(cleaned)).push(cleaned);
+    });
+    const rendered = DATA_TYPE_GROUP_ORDER.map((label) => {
+      const items = groups.get(label) || [];
+      if (!items.length) return "";
+      return `<details class="incident-data-group"><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${items.map((value) => `<span class="incident-data-value">${esc(value)}</span>`).join("")}</div></details>`;
+    }).filter(Boolean).join("");
+    return rendered ? `<div class="incident-data-types"><div class="incident-data-types-title">Données exposées :</div>${rendered}</div>` : "";
+  }
+
   function claimStatusLabel(value) {
     return ({
       claimed: "Revendiqué",
@@ -202,7 +252,7 @@ function currentSort() {
       factRow("Données touchées", affectedLabel(fact)),
       factRow("Volume", fact.data_volume),
       factRow("Fichiers", fact.file_count !== undefined ? formatNumber(fact.file_count) : ""),
-      factRow("Types de données", Array.isArray(fact.data_types) ? fact.data_types.join(", ") : ""),
+      renderDataTypes(fact.data_types),
       factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""),
       factRow("CVSS", fact.cvss),
       factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""),

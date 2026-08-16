@@ -274,14 +274,26 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
 
     # "Via" est une provenance brute, pas une preuve suffisante d'implication
     # d'un tiers. Elle reste dans Source_Metadata_JSON sans peupler Third_Party.
-    data_types_raw = meta.get("data_types_raw", "")
-    if data_types_raw:
+    data_types_raw = str(meta.get("data_types_raw") or "").strip()
+    structured = meta.get("data_types")
+    data_types: list[str] = []
+    if isinstance(structured, list):
+        for value in structured:
+            cleaned = str(value or "").strip()
+            if cleaned and cleaned not in data_types:
+                data_types.append(cleaned)
+    elif data_types_raw:
         data_types = _split_list(data_types_raw)
-        if data_types:
-            fact["Data_Types_JSON"] = _dumps_json(data_types)
-            evidence["Data_Types_JSON"] = data_types_raw
 
-    count, unit, raw_count = _parse_count_phrase(data_types_raw or entry.summary)
+    if data_types:
+        fact["Data_Types_JSON"] = _dumps_json(data_types)
+        # Quand le collecteur fournit les bulles structurées, on conserve
+        # cette liste comme preuve afin qu'une virgule ou « et » interne à un
+        # libellé ne soit jamais interprété comme un séparateur.
+        evidence["Data_Types_JSON"] = data_types if isinstance(structured, list) else data_types_raw
+
+    count_text = data_types_raw or " ; ".join(data_types) or entry.summary
+    count, unit, raw_count = _parse_count_phrase(count_text)
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
