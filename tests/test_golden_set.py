@@ -3,6 +3,7 @@ from pathlib import Path
 from cyberwatch import config
 from cyberwatch.golden import blind_candidates, evaluate, match_golden, validate_file, validate_golden
 from cyberwatch.golden_challengers import (
+    canonical_challenger_row,
     canonical_challenger_rows,
     compare_challengers,
     match_challenger,
@@ -110,6 +111,15 @@ def test_challenger_location_is_mapped_to_cyberwatch_taxonomy():
     assert normalize_challenger_location("France") == config.LOC_FRANCE
     assert normalize_challenger_location("La Réunion") == config.LOC_REUNION
     assert normalize_challenger_location("États-Unis") == config.LOC_INCONNU
+
+
+def test_challenger_values_outside_taxonomy_become_unknown():
+    row = canonical_challenger_row(
+        _challenger(secteur="Secteur libre", type_menace="Attaque magique"),
+        "FRENCHBREACHES_LLM",
+    )
+    assert row["Secteur"] == config.SECTOR_UNKNOWN
+    assert row["Menace"] == config.THREAT_UNKNOWN
 
 
 def test_challenger_source_url_beats_name_word_order():
