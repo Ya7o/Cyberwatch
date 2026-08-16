@@ -1,0 +1,32 @@
+name: Populate golden v1
+
+on:
+  push:
+    branches:
+      - agent/populate-golden-v1
+
+permissions:
+  contents: write
+
+jobs:
+  populate:
+    if: github.actor != 'github-actions[bot]' && github.actor != 'cyberwatch-bot'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/populate-golden-v1
+      - name: Generate golden set
+        run: python scripts/_write_golden_v1.py
+      - name: Commit golden set
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "cyberwatch-bot@users.noreply.github.com"
+          git add data/golden/qualification_golden.csv
+          if git diff --cached --quiet; then
+            echo "No golden change to commit"
+            exit 0
+          fi
+          git commit -m "data: populate qualification golden v1"
+          git push origin HEAD:agent/populate-golden-v1
