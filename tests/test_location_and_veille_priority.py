@@ -2,7 +2,7 @@
 
 import pytest
 
-from cyberwatch import config, sources
+from cyberwatch import ai, config, org_enrichment, sources
 from cyberwatch.collectors.base import RawEntry
 from cyberwatch.dedup import build_incidents
 from cyberwatch.runner import entry_to_item
@@ -14,13 +14,14 @@ def test_french_leak_sources_default_to_france(source_id):
     assert spec is not None
     assert spec.location_rule == config.LOC_FRANCE
 
+    entry = RawEntry(
+        title="Organisation Exemple",
+        published="2026-08-15",
+        summary="Fuite de données confirmée.",
+        url=f"https://example.test/{source_id.lower()}",
+    )
     item = entry_to_item(
-        RawEntry(
-            title="Organisation Exemple",
-            published="2026-08-15",
-            summary="Fuite de données confirmée.",
-            url=f"https://example.test/{source_id.lower()}",
-        ),
+        entry,
         spec,
         "2026-08-15T16:30:00+04:00",
         known_orgs={},
@@ -30,6 +31,14 @@ def test_french_leak_sources_default_to_france(source_id):
     )
 
     assert item is not None
+    # Le défaut source est volontairement différé pour laisser une chance à
+    # l'enrichissement entreprise de fournir 974/976 en priorité.
+    assert item.Location == config.LOC_INCONNU
+    state = ai.AiRunState(
+        enabled=False,
+        org_enrichment=org_enrichment.OrgEnrichmentState(enabled=False),
+    )
+    ai.qualify_item(item, entry, spec, state)
     assert item.Location == config.LOC_FRANCE
 
 

@@ -588,8 +588,31 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
     if spec.params.get("skip_ai_qualification"):
         return
 
+    # Les métriques décrivent l'état à l'entrée du pipeline de qualification,
+    # avant que l'enrichissement entreprise ou un fallback de source ne puisse
+    # résoudre un champ. Cela garantit Unknown_Before >= Qualified par champ.
+    initially_unknown = [
+        name for name in ("Threat", "Sector", "Location")
+        if getattr(item, name) == FIELD_SPECS[name][2]
+    ]
+    if not initially_unknown:
+        return
+    for name in initially_unknown:
+        state.unknown_before[name] = state.unknown_before.get(name, 0) + 1
+
     if item.Sector == config.SECTOR_UNKNOWN or item.Location == config.LOC_INCONNU:
         _escalate_org_enrichment_deterministic(item, entry, spec, state)
+
+    # Le défaut géographique déclaré par la source est plus faible qu'un match
+    # entreprise exact, mais doit rester avant le LLM : pas d'appel OpenAI pour
+    # conclure France lorsque la source le garantit déjà par contrat.
+    if (
+        item.Location == config.LOC_INCONNU
+        and spec.location_rule in config.LOCATIONS
+        and spec.location_rule != config.LOC_INCONNU
+    ):
+        item.Location = spec.location_rule
+        state.qualified["Location"] = state.qualified.get("Location", 0) + 1
 
     requested = [
         name for name in ("Threat", "Sector", "Location")
@@ -599,9 +622,6 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
         return
 
     state.candidates += 1
-    for name in requested:
-        state.unknown_before[name] = state.unknown_before.get(name, 0) + 1
-
     sector_requested = "Sector" in requested
     call_requested = requested
     if sector_requested and not _sector_llm_worth_calling(

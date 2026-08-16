@@ -1,6 +1,6 @@
 """Qualification Location minimale : priorité et enrichissement sans appel dédié."""
 
-from cyberwatch import ai, config, enrichment, org_enrichment, sources, store
+from cyberwatch import ai, config, enrichment, org_enrichment, runner, sources, store
 from cyberwatch.collectors.base import RawEntry
 from cyberwatch.model import Item
 from cyberwatch.normalize import classify_location, organisation_key
@@ -232,3 +232,248 @@ def test_org_enrichment_never_overwrites_known_location(monkeypatch):
     ai.qualify_item(item, entry, spec, state)
     assert item.Sector == config.SECTOR_TECH
     assert item.Location == config.LOC_REUNION
+
+
+def _live_item(source_id: str, org: str, *, summary: str = "", location: str = ""):
+    spec = sources.by_id(source_id)
+    assert spec is not None
+    entry = RawEntry(
+        title=org,
+        published="2026-08-16",
+        summary=summary,
+        organisation=org,
+        location=location,
+        url=f"https://example.test/{source_id.lower()}",
+    )
+    item = runner.entry_to_item(entry, spec, "2026-08-16T11:00:00+04:00", {}, {})
+    assert item is not None
+    return item, entry, spec
+
+
+def _org_record(org_key: str, organisation_raw: str, fetched_at: str, *, department: str, status: str = org_enrichment.MATCHED):
+    return org_enrichment.OrgEnrichmentRecord(
+        Organisation_Key=org_key,
+        Query_Name=organisation_raw,
+        Matched_Name=organisation_raw if status == org_enrichment.MATCHED else "",
+        Match_Status=status,
+        Headquarters_Department=department,
+        Fetched_At=fetched_at,
+    )
+
+
+def test_live_frenchbreaches_org_api_beats_france_default(monkeypatch):
+    item, entry, spec = _live_item("FRENCHBREACHES", "Société Réunion Test")
+    assert item.Location == config.LOC_INCONNU
+
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="974"
+        ),
+    )
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_REUNION
+
+
+def test_live_bonjourlafuite_org_api_beats_france_default(monkeypatch):
+    item, entry, spec = _live_item("BONJOURLAFUITE", "Société Archipel Test")
+    assert item.Location == config.LOC_INCONNU
+
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="976"
+        ),
+    )
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_MAYOTTE
+
+
+def test_live_french_source_metropolitan_headquarters_stays_france(monkeypatch):
+    item, entry, spec = _live_item("FRENCHBREACHES", "Société Paris Test")
+    calls = []
+
+    def fake_resolve(org_key, organisation_raw, fetched_at, state):
+        calls.append(org_key)
+        return _org_record(org_key, organisation_raw, fetched_at, department="75")
+
+    monkeypatch.setattr(org_enrichment, "resolve", fake_resolve)
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert calls == [item.Organisation_Key]
+    assert item.Location == config.LOC_FRANCE
+
+
+def test_live_french_source_not_found_falls_back_to_france_without_openai(monkeypatch):
+    item, entry, spec = _live_item("FRENCHBREACHES", "Société Introuvable Test")
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="", status=org_enrichment.NOT_FOUND
+        ),
+    )
+    monkeypatch.setattr(ai, "_call_openai", lambda *a, **k: (_ for _ in ()).throw(AssertionError("appel OpenAI inattendu")))
+    state = ai.AiRunState(
+        enabled=True,
+        api_key="test",
+        org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True),
+    )
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_FRANCE
+    assert state.calls_attempted == 0
+
+
+def test_live_french_source_ambiguous_falls_back_to_france(monkeypatch):
+    item, entry, spec = _live_item("BONJOURLAFUITE", "Société Ambiguë Test")
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="", status=org_enrichment.AMBIGUOUS
+        ),
+    )
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_FRANCE
+
+
+def test_live_explicit_reunion_is_never_overwritten_by_metropolitan_api(monkeypatch):
+    item, entry, spec = _live_item(
+        "FRENCHBREACHES",
+        "Société Locale Test",
+        summary="Cette entreprise réunionnaise confirme une fuite de données.",
+    )
+    assert item.Location == config.LOC_REUNION
+
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="75"
+        ),
+    )
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_REUNION
+
+
+def test_live_structured_location_is_never_overwritten_by_org_api(monkeypatch):
+    item, entry, spec = _live_item(
+        "RANSOMWARE_LIVE",
+        "Victime Structurée Test",
+        location=config.LOC_REUNION,
+    )
+    item.Sector = config.SECTOR_UNKNOWN
+    assert item.Location == config.LOC_REUNION
+
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="75"
+        ),
+    )
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_REUNION
+
+
+def test_live_cyberattaque_without_org_match_keeps_location_unknown(monkeypatch):
+    item, entry, spec = _live_item("CYBERATTAQUE_ORG", "Victime Sans Match Test")
+    item.Threat = config.THREAT_LEAK
+    item.Sector = config.SECTOR_TECH
+    monkeypatch.setattr(org_enrichment, "resolve", lambda *a, **k: None)
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_INCONNU
+
+
+def test_location_metrics_count_org_resolution_from_initial_unknown(monkeypatch):
+    item, entry, spec = _live_item("CYBERATTAQUE_ORG", "Victime Métrique API")
+    item.Threat = config.THREAT_LEAK
+    item.Sector = config.SECTOR_TECH
+    monkeypatch.setattr(
+        org_enrichment,
+        "resolve",
+        lambda org_key, organisation_raw, fetched_at, state: _org_record(
+            org_key, organisation_raw, fetched_at, department="974"
+        ),
+    )
+    monkeypatch.setattr(store, "save_org_enrichment_cache", lambda rows: None)
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+
+    ai.qualify_item(item, entry, spec, state)
+    usage = ai.finish_run(state, "RUN-TEST-LOCATION-API", item.Collected_As_Of, "CREATE")
+
+    assert state.unknown_before.get("Location") == 1
+    assert state.qualified.get("Location") == 1
+    assert usage["Location_Unknown_Before"] == 1
+    assert usage["Location_Qualified"] == 1
+    assert usage["Still_Unknown"] == 0
+
+
+def test_location_metrics_count_llm_resolution_after_org_miss(monkeypatch):
+    item, entry, spec = _live_item(
+        "CYBERATTAQUE_ORG",
+        "Victime Métrique LLM",
+        summary="L'organisation indique être basée à Maurice.",
+    )
+    item.Threat = config.THREAT_LEAK
+    item.Sector = config.SECTOR_TECH
+    assert item.Location == config.LOC_INCONNU
+    monkeypatch.setattr(org_enrichment, "resolve", lambda *a, **k: None)
+    monkeypatch.setattr(
+        ai,
+        "_call_openai",
+        lambda *a, **k: {
+            "output": [{
+                "type": "message",
+                "content": [{
+                    "type": "output_text",
+                    "text": '{"location":{"value":"Maurice","confidence":0.95,"evidence":"basée à Maurice"}}',
+                }],
+            }],
+            "usage": {"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
+        },
+    )
+    state = ai.AiRunState(
+        enabled=True,
+        api_key="test",
+        org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True),
+    )
+
+    ai.qualify_item(item, entry, spec, state)
+
+    assert item.Location == config.LOC_MAURICE
+    assert state.unknown_before.get("Location") == 1
+    assert state.qualified.get("Location") == 1
+
+
+def test_location_metrics_ignore_already_known_location(monkeypatch):
+    item, entry, spec = _live_item(
+        "RANSOMWARE_LIVE",
+        "Victime Métrique Connue",
+        location=config.LOC_REUNION,
+    )
+    item.Threat = config.THREAT_RANSOMWARE
+    item.Sector = config.SECTOR_TECH
+    monkeypatch.setattr(org_enrichment, "resolve", lambda *a, **k: (_ for _ in ()).throw(AssertionError("resolve inattendu")))
+    state = ai.AiRunState(enabled=False, org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+
+    ai.qualify_item(item, entry, spec, state)
+
+    assert state.unknown_before.get("Location", 0) == 0
+    assert state.qualified.get("Location", 0) == 0

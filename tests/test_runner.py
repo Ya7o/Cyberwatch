@@ -41,7 +41,9 @@ class TestEntryToItem:
         assert item.Organisation_Key == "mairie de saint leu"
         assert item.Threat == config.THREAT_LEAK
         assert item.Sector == config.SECTOR_ADMIN
-        assert item.Location == config.LOC_REUNION
+        # `entry_to_item` conserve désormais le défaut source pour l'étape
+        # suivante du pipeline afin que l'enrichissement entreprise reste prioritaire.
+        assert item.Location == config.LOC_INCONNU
         assert item.Item_ID.startswith("ITM-")
 
     def test_entree_non_cyber_ecartee(self):

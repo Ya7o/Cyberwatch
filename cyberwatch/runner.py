@@ -365,10 +365,12 @@ def entry_to_item(
         if sector_stats is not None and sector != config.SECTOR_UNKNOWN:
             sector_stats["resolved_deterministic"] = sector_stats.get("resolved_deterministic", 0) + 1
     if location == config.LOC_INCONNU:
+        # Le défaut de source est volontairement différé : un match entreprise
+        # exact doit pouvoir fournir 974/976 avant le fallback France des
+        # sources nationales. Les indices explicites restent prioritaires.
         location = classify_location(
             text, organisation,
             entity=territories.get(searchable(organisation), ""),
-            default=spec.location_rule,
         )
 
     key = organisation_key(organisation)
@@ -472,6 +474,15 @@ def run_source(
             items.append(item)
             if ai_state is not None:
                 ai.qualify_item(item, entry, spec, ai_state)
+            # Les appels hors pipeline IA (diagnose/probe/tests ciblés) gardent
+            # le comportement historique : le défaut source reste un dernier
+            # recours, mais il n'est plus appliqué avant l'enrichissement live.
+            if (
+                item.Location == config.LOC_INCONNU
+                and spec.location_rule in config.LOCATIONS
+                and spec.location_rule != config.LOC_INCONNU
+            ):
+                item.Location = spec.location_rule
             if fact_rows is not None:
                 fact = source_facts.extract_source_fact(item, entry, spec)
                 if fact is not None:
