@@ -54,6 +54,21 @@ jobs:
           mkdir -p assets/data
           echo "Référentiels et caches versionnés conservés ; aucun fichier publié n'est encore modifié."
 
+      - name: Élargir uniquement le budget temps du rebuild
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("cyberwatch/config.py")
+          text = path.read_text(encoding="utf-8")
+          old_source = "MAX_SECONDS_PER_SOURCE = 180"
+          old_run = "MAX_SECONDS_PER_RUN = 45 * 60"
+          if text.count(old_source) != 1 or text.count(old_run) != 1:
+              raise SystemExit("Bornes temps HTTP inattendues")
+          text = text.replace(old_source, "MAX_SECONDS_PER_SOURCE = 15 * 60", 1)
+          text = text.replace(old_run, "MAX_SECONDS_PER_RUN = 80 * 60", 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+
       - name: CREATE from scratch
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
