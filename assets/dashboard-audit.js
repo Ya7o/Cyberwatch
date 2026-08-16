@@ -314,9 +314,16 @@ function renderLocalAnalysis(incident, enabled) {
     if (!tbody) return;
     tbody.innerHTML = rows.map((source) => {
       const label = String(source.status || "SKIPPED").toUpperCase();
+      // Signal discret (§stabilisation pré-release) : un protocole peut
+      // aboutir (OK) avec un historique réel plus court que la fenêtre
+      // demandée — jamais un angle mort technique, juste une profondeur
+      // connue à afficher. Générique pour toute source, vide sinon.
+      const historyTitle = source.history_status === "TRUNCATED" && source.oldest_available_date
+        ? `Historique disponible depuis le ${formatDate(source.oldest_available_date)}`
+        : "";
       return `<tr>
         <td data-label="Source">${esc(sourceLabel(source.id))}</td>
-        <td data-label="Statut"><span class="chip" data-status="${esc(label)}">${esc(label)}</span></td>
+        <td data-label="Statut"><span class="chip" data-status="${esc(label)}" title="${esc(historyTitle)}">${esc(label)}</span></td>
         <td data-label="Dernier item">${esc(formatDate(source.latest_item))}</td>
         <td data-label="Organisation">${esc(source.latest_item_org || "—")}</td>
         <td data-label="Items vus" class="num">${esc(source.items_seen ?? "—")}</td>

@@ -120,6 +120,13 @@ class CollectResult:
     #: Sous-ensemble structurellement reconnu dans la fenêtre demandée. Cette
     #: mesure ne représente jamais une unité technique du protocole.
     items_in_window: int | None = None
+    #: Date (AAAA-MM-JJ) de l'entrée la plus ancienne effectivement offerte
+    #: par la source dans ce run, quand un collecteur peut la calculer.
+    #: Distinct de `reached_boundary` : un flux peut être `OK` (borne
+    #: acceptée via un protocole propre, ex. `feed_has_no_pagination`) tout en
+    #: ayant une profondeur réelle plus courte que la fenêtre demandée — ce
+    #: champ permet de le documenter sans reconsidérer `Status`/`Coverage`.
+    oldest_available_date: str = ""
 
     def resolve(self) -> tuple[str, int]:
         """Traduit le compte rendu en couple (statut, couverture).

@@ -147,6 +147,7 @@ class FeedCollector(Collector):
             result.units_expected = 1
 
             oldest = min(e.published for e in entries)
+            result.oldest_available_date = oldest
             if oldest <= window.start:
                 result.reached_boundary = True
             elif spec.params.get("feed_has_no_pagination"):

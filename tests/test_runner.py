@@ -5,7 +5,7 @@ import datetime as dt
 import pytest
 
 from cyberwatch import config, identity, runner, status, watchlists
-from cyberwatch.collectors.base import CollectResult, RawEntry, SourceSpec
+from cyberwatch.collectors.base import CollectResult, RawEntry, SourceSpec, Window
 from cyberwatch.dedup import build_incidents
 from cyberwatch.runner import (
     MODE_CREATE,
@@ -144,6 +144,49 @@ class TestEntryToItem:
         )
         item = entry_to_item(entry, SPEC, AS_OF, {}, index)
         assert item.Sector == config.SECTOR_TRANSPORT
+
+
+class TestHistoryStatus:
+    """§stabilisation pré-release — axe orthogonal à Status/Coverage."""
+
+    WINDOW = Window("2026-01-01", "2026-08-12")
+
+    def test_borne_reellement_atteinte_donne_complete(self):
+        result = CollectResult(reached_boundary=True, oldest_available_date="2025-12-01")
+        history_status, oldest = runner._resolve_history_status(result, status.OK, self.WINDOW)
+        assert history_status == status.HISTORY_COMPLETE
+        assert oldest == "2025-12-01"
+
+    def test_ok_malgre_profondeur_plus_courte_donne_truncated(self):
+        """Cas FrenchBreaches : `feed_has_no_pagination` fait accepter la
+        borne (Status=OK) alors que le flux ne remonte pas jusqu'au début de
+        la fenêtre demandée — History_Status le documente sans reconsidérer
+        Status/Coverage."""
+        result = CollectResult(reached_boundary=True, oldest_available_date="2026-07-21")
+        history_status, oldest = runner._resolve_history_status(result, status.OK, self.WINDOW)
+        assert history_status == status.HISTORY_TRUNCATED
+        assert oldest == "2026-07-21"
+
+    def test_sans_date_connue_donne_unknown(self):
+        result = CollectResult(reached_boundary=True)
+        history_status, oldest = runner._resolve_history_status(result, status.OK, self.WINDOW)
+        assert history_status == status.HISTORY_UNKNOWN
+        assert oldest == ""
+
+    def test_statut_non_ok_donne_unknown_meme_avec_une_date(self):
+        """Une source PARTIAL/FAIL ne revendique aucune complétude
+        historique, même si une date la plus ancienne a pu être calculée."""
+        result = CollectResult(reached_boundary=False, oldest_available_date="2026-07-21")
+        history_status, oldest = runner._resolve_history_status(result, status.PARTIAL, self.WINDOW)
+        assert history_status == status.HISTORY_UNKNOWN
+        assert oldest == "2026-07-21"
+
+    def test_generique_sans_condition_sur_source_id(self):
+        """Aucune règle spécifique à FRENCHBREACHES : seule la présence
+        d'`oldest_available_date` déclenche le calcul."""
+        result = CollectResult(reached_boundary=True, oldest_available_date="2026-07-21")
+        history_status, _ = runner._resolve_history_status(result, status.OK, self.WINDOW)
+        assert history_status == status.HISTORY_TRUNCATED
 
 
 class TestRunContext:

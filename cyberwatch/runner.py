@@ -26,7 +26,7 @@ from .collectors.cyberattaque_org import (
     is_obvious_multi,
     organisation_from_cyberattaque_entry,
 )
-from .collectors.base import RawEntry, SourceSpec, Window
+from .collectors.base import CollectResult, RawEntry, SourceSpec, Window
 from .dedup import build_incidents, merge_items
 from .http import Budget, HttpClient
 from .model import Incident, Item
@@ -348,6 +348,22 @@ def entry_to_item(
     )
 
 
+def _resolve_history_status(result: CollectResult, source_status: str, window: Window) -> tuple[str, str]:
+    """Couverture historique réelle (§stabilisation pré-release), orthogonale
+    à `Status`/`Coverage` : générique, ne dépend d'aucun `source_id` — ne
+    devient `TRUNCATED` que si un collecteur a explicitement renseigné
+    `oldest_available_date` (aujourd'hui seul `feed.py` le fait, via
+    `feed_has_no_pagination`) et que celle-ci est postérieure au début de la
+    fenêtre demandée malgré un `Status=OK`."""
+    if not result.oldest_available_date:
+        return status.HISTORY_UNKNOWN, ""
+    if source_status != status.OK:
+        return status.HISTORY_UNKNOWN, result.oldest_available_date
+    if result.oldest_available_date > window.start:
+        return status.HISTORY_TRUNCATED, result.oldest_available_date
+    return status.HISTORY_COMPLETE, result.oldest_available_date
+
+
 def run_source(
     client: HttpClient,
     spec: SourceSpec,
@@ -432,6 +448,9 @@ def run_source(
     outcome.status = source_status
     outcome.coverage = coverage
     outcome.reason_code = result.reason_code
+    outcome.history_status, outcome.oldest_available_date = _resolve_history_status(
+        result, source_status, context.window
+    )
     outcome.units_done = result.units_done
     outcome.units_expected = result.units_expected
     outcome.calls = result.calls
@@ -739,6 +758,8 @@ def _persist(
                 "Access_Method": o.access_method,
                 "Duration_s": o.duration_seconds,
                 "Comment": o.comment,
+                "History_Status": o.history_status,
+                "Oldest_Available_Date": o.oldest_available_date,
             }
             for o in report.outcomes
         ])

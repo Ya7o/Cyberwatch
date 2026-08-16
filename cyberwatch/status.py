@@ -44,6 +44,27 @@ STATUS_LABELS = {
 }
 
 # --------------------------------------------------------------------------
+# Couverture historique — axe orthogonal à Status/Coverage (§stabilisation
+# pré-release). Un protocole peut aboutir (`Status=OK`) sans que l'historique
+# collecté couvre la fenêtre demandée depuis son début : c'est le cas d'un
+# flux sans pagination (`feed_has_no_pagination`), dont la profondeur réelle
+# recule avec le temps. Mélanger cette information dans `Status`/`Reason`
+# reproduirait exactement le défaut que ce module corrige déjà pour
+# Status/Coverage/Reason (cf. docstring ci-dessus) : ne jamais surcharger un
+# champ avec deux questions différentes.
+# --------------------------------------------------------------------------
+
+#: L'historique collecté remonte réellement jusqu'au début de la fenêtre demandée.
+HISTORY_COMPLETE = "COMPLETE"
+#: `Status=OK` malgré une profondeur réelle plus courte que la fenêtre demandée
+#: (protocole propre à la source, ex. `feed_has_no_pagination`, qui accepte la
+#: borne sans jamais la reconsidérer comme un incident de collecte).
+HISTORY_TRUNCATED = "TRUNCATED"
+#: Aucune date fiable pour juger la profondeur réelle (collecteur qui ne
+#: renseigne pas `oldest_available_date`, ou protocole non `OK`).
+HISTORY_UNKNOWN = "UNKNOWN"
+
+# --------------------------------------------------------------------------
 # Codes de raison — machine + phrase française associée
 # --------------------------------------------------------------------------
 
@@ -147,6 +168,8 @@ class SourceOutcome:
     access_method: str = ""
     duration_seconds: float = 0.0
     comment: str = ""
+    history_status: str = HISTORY_UNKNOWN
+    oldest_available_date: str = ""
 
     @property
     def reason(self) -> str:

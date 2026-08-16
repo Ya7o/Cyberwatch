@@ -160,6 +160,11 @@ RUN_SOURCE_COLUMNS = [
     "Access_Method",
     "Duration_s",
     "Comment",
+    # Couverture historique (§stabilisation pré-release) : additives, en fin
+    # de liste pour rester rétro-compatibles (store.read_csv tolère les
+    # anciennes lignes sans ces colonnes via row.get(col, "")).
+    "History_Status",
+    "Oldest_Available_Date",
 ]
 
 # --------------------------------------------------------------------------

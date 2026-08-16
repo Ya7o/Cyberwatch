@@ -101,6 +101,37 @@ class TestLatestItemOrgGeneralized:
         assert row["latest_item_org"] == ""
 
 
+class TestHistoryStatusPayload:
+    """§stabilisation pré-release — propagation vers `assets/data/status.json`."""
+
+    def test_history_status_et_oldest_available_date_propages(self, tmp_path, monkeypatch):
+        _seed_run(monkeypatch, tmp_path, [
+            {
+                "Source_ID": "FRENCHBREACHES", "Layer": "CORE_DIRECT",
+                "History_Status": "TRUNCATED", "Oldest_Available_Date": "2026-07-21",
+            },
+        ])
+
+        payload = site.status_payload()
+        row = next(r for r in payload["sources"] if r["id"] == "FRENCHBREACHES")
+
+        assert row["history_status"] == "TRUNCATED"
+        assert row["oldest_available_date"] == "2026-07-21"
+
+    def test_absence_de_colonne_historique_reste_unknown(self, tmp_path, monkeypatch):
+        """Compatibilité ascendante : une ligne `run_sources.csv` antérieure
+        à ce chantier n'a pas ces colonnes — jamais une erreur, `UNKNOWN`."""
+        _seed_run(monkeypatch, tmp_path, [
+            {"Source_ID": "BONJOURLAFUITE", "Layer": "CORE_DIRECT"},
+        ])
+
+        payload = site.status_payload()
+        row = next(r for r in payload["sources"] if r["id"] == "BONJOURLAFUITE")
+
+        assert row["history_status"] == "UNKNOWN"
+        assert row["oldest_available_date"] == ""
+
+
 class TestDashboardSourcesSection:
     """Vue globale compacte (nom + couleur seulement) et détail homogène
     (mêmes six champs pour toute source) accessible sous la vue globale."""

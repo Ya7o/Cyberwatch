@@ -366,6 +366,13 @@ def status_payload() -> dict:
                 "access_method": row.get("Access_Method", ""),
                 "duration": row.get("Duration_s", ""),
                 "comment": comment,
+                # `or` plutôt que `.get(col, default)` : une ligne déjà
+                # écrite avec la colonne présente mais vide (avant que ce
+                # run ne calcule réellement History_Status) doit retomber
+                # sur UNKNOWN au même titre qu'une colonne absente d'un
+                # ancien run_sources.csv antérieur à ce chantier.
+                "history_status": row.get("History_Status") or status.HISTORY_UNKNOWN,
+                "oldest_available_date": row.get("Oldest_Available_Date") or "",
                 "last_run": last_run.get("As_Of", ""),
                 # Un zéro n'est un vrai zéro que si le protocole est allé au bout.
                 "zero_is_trusted": row_status == status.OK and items == 0,
@@ -391,6 +398,7 @@ def status_payload() -> dict:
             "access_method": "", "duration": "", "comment": (
                 meta.get("notes", "") if not meta.get("active") else "Source locale requise mais absente du dernier run."
             ),
+            "history_status": status.HISTORY_UNKNOWN, "oldest_available_date": "",
             "last_run": last_run.get("As_Of", ""), "zero_is_trusted": False,
         })
 

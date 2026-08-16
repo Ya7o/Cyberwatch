@@ -285,6 +285,7 @@ class TestFeed:
         assert source_status == status.PARTIAL
         assert coverage < 100
         assert "ne remonte que" in result.comment
+        assert result.oldest_available_date == "2026-01-05"
 
     def test_flux_sans_pagination_declaree_nest_jamais_bloquant(self):
         """`feed_has_no_pagination` (posé uniquement après vérification via
@@ -304,6 +305,9 @@ class TestFeed:
         # Toutes les entrées réellement offertes par le flux restent captées :
         # aucune entrée n'est fabriquée, seule l'exigence de borne est levée.
         assert result.items_seen == 2
+        # La profondeur réelle reste documentée (§stabilisation pré-release),
+        # y compris quand le protocole reste OK malgré une borne non atteinte.
+        assert result.oldest_available_date == "2026-01-05"
 
     def test_sans_le_drapeau_le_comportement_par_defaut_est_inchange(self):
         """Sans `feed_has_no_pagination`, un autre flux court reste PARTIAL :
