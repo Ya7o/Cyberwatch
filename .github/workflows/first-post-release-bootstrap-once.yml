@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   bootstrap:
-    if: github.event.head_commit.message == 'ops: first post-release bootstrap v0.7.33'
+    if: "github.event.head_commit.message == 'ops: fix first post-release bootstrap trigger'"
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
