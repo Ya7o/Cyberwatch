@@ -59,6 +59,11 @@
     return date.toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" });
   }
 
+  function formatNumber(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number.toLocaleString("fr-FR") : String(value || "");
+  }
+
   function installCss() {
     if ($("#dashboard-audit-css")) return;
     const style = document.createElement("style");
@@ -73,6 +78,7 @@
       .sources-detail{margin-top:14px}.sources-detail>summary{cursor:pointer;font-size:13px;color:var(--text-secondary);list-style:none}.sources-detail>summary::-webkit-details-marker{display:none}.sources-detail>summary::before{content:"▸";color:var(--text-muted);font-size:12px;margin-right:6px}.sources-detail[open]>summary::before{content:"▾"}.sources-detail .table-scroll{margin-top:10px}
       .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
       .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
+      .incident-facts{margin-top:8px;font-size:12px;font-weight:400;line-height:1.4}.incident-facts>summary{cursor:pointer;color:var(--text-secondary);list-style:none;width:max-content;max-width:100%}.incident-facts>summary::-webkit-details-marker{display:none}.incident-facts>summary::before{content:"▸";color:var(--text-muted);margin-right:5px}.incident-facts[open]>summary::before{content:"▾"}.incident-facts-list{display:grid;gap:7px;margin-top:7px}.incident-fact{padding:8px 9px;border:1px solid var(--border);border-radius:8px;background:var(--plane)}.incident-fact-source{font-weight:650;margin-bottom:4px}.incident-fact-row{display:flex;gap:6px;align-items:flex-start;margin-top:2px}.incident-fact-label{color:var(--text-muted);flex:0 0 auto}.incident-fact-value{min-width:0;overflow-wrap:anywhere}.incident-fact-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.incident-fact-links a{font-size:11.5px}
       .local-analysis{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}.local-analysis p{margin:6px 0 0}.local-score{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis .evidence-links{margin-top:7px}
       .source-measures{white-space:normal!important}
       @media(max-width:700px){
@@ -85,6 +91,7 @@
         #incidents-table td[data-label]::before,#sources-detail-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
         #incidents-table .org-cell{font-size:16px;font-weight:650;padding-bottom:7px!important}#incidents-table .org-cell::before{display:none}
         #incidents-table .sources-cell::before{display:block;margin-bottom:4px}
+        .incident-facts,.incident-fact{font-size:12.5px}.incident-fact-row{display:block}.incident-fact-label{display:block}
         .audit-pager{align-items:flex-start}.audit-pager-actions{width:100%;justify-content:space-between}
       }
     `;
@@ -147,6 +154,74 @@ function currentSort() {
     return `<div class="source-badges">${badges}</div>${evidence}`;
   }
 
+  function factRow(label, value) {
+    if (value === undefined || value === null || value === "") return "";
+    return `<div class="incident-fact-row"><span class="incident-fact-label">${esc(label)} :</span><span class="incident-fact-value">${esc(value)}</span></div>`;
+  }
+
+  function claimStatusLabel(value) {
+    return ({
+      claimed: "Revendiqué",
+      confirmed: "Confirmé",
+      unconfirmed: "Non confirmé",
+      denied: "Démenti",
+    })[value] || value;
+  }
+
+  function affectedLabel(fact) {
+    if (fact.affected_count_raw) return fact.affected_count_raw;
+    if (fact.affected_count === undefined || fact.affected_count === null) return "";
+    const units = {
+      people: "personnes", accounts: "comptes", users: "utilisateurs",
+      clients: "clients", records: "enregistrements", files: "fichiers",
+    };
+    const unit = units[fact.affected_unit] || fact.affected_unit || "";
+    return `${formatNumber(fact.affected_count)}${unit ? ` ${unit}` : ""}`;
+  }
+
+  function factLinks(fact) {
+    const links = [];
+    const victim = safeUrl(fact.victim_website);
+    if (victim) links.push(`<a href="${esc(victim)}" target="_blank" rel="noopener noreferrer">Site victime · ${esc(host(victim))}</a>`);
+    const evidence = [...new Set((fact.evidence_urls || []).map(safeUrl).filter(Boolean))];
+    evidence.slice(0, 4).forEach((url) => {
+      if (url !== victim) links.push(`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Preuve · ${esc(host(url))}</a>`);
+    });
+    return links.length ? `<div class="incident-fact-links">${links.join("")}</div>` : "";
+  }
+
+  function renderSourceFact(fact) {
+    if (!fact || !fact.source) return "";
+    const rows = [
+      factRow("Statut", fact.claim_status ? claimStatusLabel(fact.claim_status) : ""),
+      factRow("Acteur", fact.threat_actor),
+      factRow("Tiers impliqué", fact.third_party),
+      factRow("Localisation précise", fact.fine_location),
+      factRow("Données touchées", affectedLabel(fact)),
+      factRow("Volume", fact.data_volume),
+      factRow("Fichiers", fact.file_count !== undefined ? formatNumber(fact.file_count) : ""),
+      factRow("Types de données", Array.isArray(fact.data_types) ? fact.data_types.join(", ") : ""),
+      factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""),
+      factRow("CVSS", fact.cvss),
+      factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""),
+      factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""),
+      factRow("Score cyberattaque", fact.cyberattack_score !== undefined ? `${esc(fact.cyberattack_score)}/100` : ""),
+      factRow("Impact", fact.impact),
+      factRow("Synthèse", fact.summary),
+      factRow("Évolution", fact.evolution),
+    ].filter(Boolean);
+    const links = factLinks(fact);
+    if (!rows.length && !links) return "";
+    return `<div class="incident-fact"><div class="incident-fact-source">${esc(sourceLabel(fact.source))}</div>${rows.join("")}${links}</div>`;
+  }
+
+  function renderSourceFacts(incident) {
+    const facts = Array.isArray(incident.facts) ? incident.facts : [];
+    const rendered = facts.map(renderSourceFact).filter(Boolean);
+    if (!rendered.length) return "";
+    return `<details class="incident-facts"><summary>Détails disponibles</summary><div class="incident-facts-list">${rendered.join("")}</div></details>`;
+  }
+
   function observeTable() {
     const tbody = $("#incidents-table tbody");
     if (!tbody) return;
@@ -186,7 +261,7 @@ function renderLocalAnalysis(incident, enabled) {
     tableObserver?.disconnect();
     tbody.innerHTML = shown.map((incident) => `<tr>
       <td data-label="Date" class="num">${esc(incident.date || "—")}</td>
-      <td data-label="Organisation" class="wrap-cell org-cell">${esc(incident.org || "Organisation inconnue")}${renderLocalAnalysis(incident, localOnly)}</td>
+      <td data-label="Organisation" class="wrap-cell org-cell">${esc(incident.org || "Organisation inconnue")}${renderSourceFacts(incident)}${renderLocalAnalysis(incident, localOnly)}</td>
       <td data-label="Territoire">${esc(incident.location || "—")}</td>
       <td data-label="Secteur">${esc(incident.sector || "—")}</td>
       <td data-label="Menace">${esc(incident.threat || "—")}</td>
