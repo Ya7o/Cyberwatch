@@ -12,15 +12,17 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     env:
       PYTHONUNBUFFERED: "1"
       OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
       AI_MAX_CALLS_PER_RUN: "0"
       ORG_ENRICHMENT_ENABLED: "0"
-      SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
+      SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "20"
       SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.25"
-      PREFLIGHT_REVISION: "4"
+      SOURCE_FACTS_AI_PROGRESS_EVERY: "5"
+      SOURCE_FACTS_AI_CHECKPOINT_EVERY: "5"
+      BENCHMARK_REVISION: "4-latency"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -29,7 +31,7 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
 
-      - name: Préflight FrenchBreaches — zéro appel
+      - name: Latence FrenchBreaches — 20 appels max
         env:
           SOURCE_FACTS_AI_CACHE_PATH: /tmp/source-facts-fb-cache.json
           SOURCE_FACTS_AI_STATS_PATH: /tmp/source-facts-fb-stats.json
@@ -52,7 +54,7 @@ jobs:
           print("FB_STATS", source_facts_ai.runtime_stats(), flush=True)
           PY
 
-      - name: Préflight Cyberattaque.org — zéro appel
+      - name: Latence Cyberattaque.org — 20 appels max
         env:
           SOURCE_FACTS_AI_CACHE_PATH: /tmp/source-facts-co-cache.json
           SOURCE_FACTS_AI_STATS_PATH: /tmp/source-facts-co-stats.json
@@ -79,7 +81,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: source-facts-preflight-v4
+          name: source-facts-latency-v4
           path: |
             /tmp/source-facts-fb-stats.json
             /tmp/source-facts-co-stats.json
