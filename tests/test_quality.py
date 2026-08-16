@@ -30,13 +30,13 @@ def test_population_change_is_not_a_quality_regression(make_item):
 
 def test_source_scope_is_compared_when_its_population_is_unchanged(make_item):
     baseline = quality.metrics([
-        make_item(source_id="CYBERATTAQUE_ORG", threat="Ransomware", sector="Santé", location="France"),
-        make_item(source_id="BONJOURLAFUITE", threat="Ransomware", sector="Santé", location="France"),
+        make_item(source="CYBERATTAQUE_ORG", threat="Ransomware", sector="Santé", location="France"),
+        make_item(source="BONJOURLAFUITE", threat="Ransomware", sector="Santé", location="France"),
     ])
     current = quality.metrics([
-        make_item(source_id="CYBERATTAQUE_ORG", threat="Ransomware", sector="Inconnu", location="France"),
-        make_item(source_id="BONJOURLAFUITE", threat="Ransomware", sector="Santé", location="France"),
-        make_item(source_id="BONJOURLAFUITE", threat="Ransomware", sector="Santé", location="France"),
+        make_item(source="CYBERATTAQUE_ORG", threat="Ransomware", sector="Inconnu", location="France"),
+        make_item(source="BONJOURLAFUITE", threat="Ransomware", sector="Santé", location="France"),
+        make_item(source="BONJOURLAFUITE", threat="Ransomware", sector="Santé", location="France"),
     ])
     problems = quality.compare(current, baseline)
     assert any("CYBERATTAQUE_ORG" in problem and "sector_unknown" in problem for problem in problems)
