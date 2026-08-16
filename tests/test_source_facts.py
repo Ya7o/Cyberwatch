@@ -1,27 +1,18 @@
-"""Faits source (§13 METHODOLOGY.md) : extraction déterministe, offline,
-jamais canonique. Un fait décrit ce qu'une source publie, jamais une
-connaissance supposée sur l'organisation."""
-
+"""Faits source (§13) : extraction déterministe, offline et non canonique."""
 from __future__ import annotations
 
 import json
 
 from cyberwatch import source_facts as sf
-from cyberwatch.collectors.base import RawEntry, SourceSpec
+from cyberwatch.collectors.base import RawEntry, SourceSpec, Window
 from cyberwatch.collectors.bonjourlafuite import parse_timeline
 from cyberwatch.collectors.ransomware_live import _entry_from_record
 from cyberwatch.collectors.veillellm import VeilleLlmCollector
-from cyberwatch.collectors.base import Window
 from cyberwatch.model import Item, SOURCE_FACT_COLUMNS
 
 
 def make_item(source_id="FRENCHBREACHES", item_id="ITM-test"):
     return Item(Item_ID=item_id, Source_ID=source_id)
-
-
-# --------------------------------------------------------------------------
-# JSON déterministe
-# --------------------------------------------------------------------------
 
 
 class TestJson:
@@ -45,11 +36,6 @@ class TestJson:
     def test_loads_chaine_vide_ou_invalide(self):
         assert sf._loads_json("") is None
         assert sf._loads_json("{invalide") is None
-
-
-# --------------------------------------------------------------------------
-# merge_source_facts
-# --------------------------------------------------------------------------
 
 
 class TestMergeSourceFacts:
@@ -80,32 +66,20 @@ class TestMergeSourceFacts:
         assert once == twice
 
     def test_ligne_sans_item_id_ignoree(self):
-        merged = sf.merge_source_facts([], [{"Source_ID": "X"}])
-        assert merged == []
+        assert sf.merge_source_facts([], [{"Source_ID": "X"}]) == []
 
     def test_tri_deterministe(self):
         merged = sf.merge_source_facts([], [{"Item_ID": "B"}, {"Item_ID": "A"}])
         assert [row["Item_ID"] for row in merged] == ["A", "B"]
 
 
-# --------------------------------------------------------------------------
-# Rétrocompatibilité RawEntry
-# --------------------------------------------------------------------------
-
-
 class TestRawEntryBackwardCompat:
     def test_source_metadata_par_defaut_vide(self):
-        entry = RawEntry(title="X", url="https://example.test")
-        assert entry.source_metadata == {}
+        assert RawEntry(title="X", url="https://example.test").source_metadata == {}
 
     def test_construction_avec_metadata(self):
         entry = RawEntry(title="X", source_metadata={"k": "v"})
         assert entry.source_metadata == {"k": "v"}
-
-
-# --------------------------------------------------------------------------
-# extract_source_fact : source inconnue / item sans rien à extraire
-# --------------------------------------------------------------------------
 
 
 class TestDispatch:
@@ -131,22 +105,31 @@ class TestDispatch:
         fact = sf.extract_source_fact(item, entry, spec)
         assert set(fact.keys()) == set(SOURCE_FACT_COLUMNS)
 
+    def test_erreur_extracteur_est_non_bloquante(self):
+        original = sf._EXTRACTORS["FRENCHBREACHES"]
+        sf._EXTRACTORS["FRENCHBREACHES"] = lambda *_args: (_ for _ in ()).throw(RuntimeError("boom"))
+        try:
+            fact = sf.extract_source_fact(
+                make_item(), RawEntry(title="X"),
+                SourceSpec(source_id="FRENCHBREACHES", layer="core", zone="France"),
+            )
+            assert fact is None
+        finally:
+            sf._EXTRACTORS["FRENCHBREACHES"] = original
 
-# --------------------------------------------------------------------------
-# BONJOURLAFUITE
-# --------------------------------------------------------------------------
+    def test_version_extracteur_v2(self):
+        assert sf.SOURCE_FACTS_VERSION == "2"
+
 
 BONJOUR_HTML = """
-<html><body>
-  <section>
-    <p>10 août 2026</p>
-    <h2>🟢 Intermarché</h2>
-    <p>Via Twitter</p>
-    <p>Données concernées : noms, emails, mots de passe hashés</p>
-    <a href="https://example.test/intermarche">Source</a>
-    <a href="https://example.test/intermarche-2">Source</a>
-  </section>
-</body></html>
+<html><body><section>
+  <p>10 août 2026</p>
+  <h2>🟢 Intermarché</h2>
+  <p>Via Twitter</p>
+  <p>Données concernées : noms, emails, mots de passe hashés</p>
+  <a href="https://example.test/intermarche">Source</a>
+  <a href="https://example.test/intermarche-2">Source</a>
+</section></body></html>
 """
 
 
@@ -158,137 +141,139 @@ class TestBonjourLaFuite:
     )
 
     def _entry(self, html=BONJOUR_HTML):
-        entries = parse_timeline(html, self.SPEC.start_url)
-        return entries[0]
+        return parse_timeline(html, self.SPEC.start_url)[0]
 
-    def test_via_alimente_third_party(self):
+    def test_via_reste_provenance_brute(self):
         entry = self._entry()
         fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC)
-        assert fact["Third_Party"] == "Twitter"
+        assert entry.source_metadata["via_raw"] == "Twitter"
+        assert fact["Third_Party"] == ""
 
     def test_donnees_concernees_alimente_data_types(self):
         entry = self._entry()
         fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC)
-        assert json.loads(fact["Data_Types_JSON"]) == [
-            "noms", "emails", "mots de passe hashés",
-        ]
+        assert json.loads(fact["Data_Types_JSON"]) == ["noms", "emails", "mots de passe hashés"]
+
+    def test_donnees_concernees_fragmentee(self):
+        html = """
+        <p>10 août 2026</p><h2>🟢 Exemple</h2>
+        <p><strong>Données concernées :</strong></p>
+        <p>Noms, emails, téléphones</p>
+        <a href="/preuve">Source</a>
+        """
+        entry = self._entry(html)
+        fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC)
+        assert entry.source_metadata["data_types_raw"] == "Noms, emails, téléphones"
+        assert json.loads(fact["Data_Types_JSON"]) == ["Noms", "emails", "téléphones"]
+
+    def test_via_fragmente(self):
+        html = """
+        <p>10 août 2026</p><h2>Exemple</h2>
+        <p><strong>Via :</strong></p><p>Telegram</p>
+        <a href="/preuve">Source</a>
+        """
+        entry = self._entry(html)
+        assert entry.source_metadata["via_raw"] == "Telegram"
 
     def test_toutes_les_urls_source_conservees(self):
         entry = self._entry()
         fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC)
-        urls = json.loads(fact["Evidence_URLs_JSON"])
-        assert urls == [
-            "https://example.test/intermarche",
-            "https://example.test/intermarche-2",
+        assert json.loads(fact["Evidence_URLs_JSON"]) == [
+            "https://example.test/intermarche", "https://example.test/intermarche-2"
         ]
 
     def test_entry_url_reste_le_premier_lien(self):
-        entry = self._entry()
-        assert entry.url == "https://example.test/intermarche"
+        assert self._entry().url == "https://example.test/intermarche"
 
     def test_claim_status_raw_capture_sans_claim_status_canonique(self):
-        entry = self._entry()
-        fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC)
+        fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), self._entry(), self.SPEC)
         assert fact["Claim_Status_Raw"] == "🟢"
         assert fact["Claim_Status"] == ""
 
     def test_bloc_sans_via_ni_donnees_concernees(self):
-        html = """
-        <p>9 août 2026</p><h2>Société Exemple</h2>
-        <a href="/source-exemple">Source</a>
-        """
-        entries = parse_timeline(html, self.SPEC.start_url)
-        entry = entries[0]
+        html = '<p>9 août 2026</p><h2>Société Exemple</h2><a href="/source-exemple">Source</a>'
+        entry = self._entry(html)
         fact = sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC)
         assert fact["Third_Party"] == ""
         assert fact["Data_Types_JSON"] == ""
-        assert json.loads(fact["Evidence_URLs_JSON"]) == [
-            "https://bonjourlafuite.eu.org/source-exemple"
-        ]
-
-    def test_aucune_requete_http_supplementaire(self):
-        # Le parseur ne fait qu'analyser le HTML déjà téléchargé (source_facts
-        # ne prend jamais `client`/`spec.start_url` en entrée réseau).
-        entry = self._entry()
-        assert sf.extract_source_fact(make_item("BONJOURLAFUITE"), entry, self.SPEC) is not None
-
-
-# --------------------------------------------------------------------------
-# FRENCHBREACHES
-# --------------------------------------------------------------------------
+        assert json.loads(fact["Evidence_URLs_JSON"]) == ["https://bonjourlafuite.eu.org/source-exemple"]
 
 
 class TestFrenchBreaches:
     SPEC = SourceSpec(source_id="FRENCHBREACHES", layer="core", zone="France")
 
     def test_quantite_avec_unite_reconnue(self):
-        entry = RawEntry(
-            title="Fuite chez Exemple SA",
-            summary="La fuite expose 2,8 millions d'enregistrements clients.",
-        )
+        entry = RawEntry(title="Fuite chez Exemple SA", summary="La fuite expose 2,8 millions d'enregistrements clients.")
         fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
         assert fact["Affected_Count"] == "2800000"
         assert fact["Affected_Unit"] == "records"
         assert fact["Affected_Count_Raw"] == "2,8 millions d'enregistrements"
 
-    def test_quantite_ambigue_laisse_champs_vides_sauf_raw(self):
-        entry = RawEntry(
-            title="Fuite chez Exemple SA",
-            summary="Le préjudice est estimé à 2,8 millions d'euros.",
-        )
-        fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
-        assert fact["Affected_Count"] == ""
-        assert fact["Affected_Unit"] == ""
-        assert fact["Affected_Count_Raw"] == "2,8 millions d'euros"
+    def test_quantite_ambigue_est_totalement_ignoree(self):
+        entry = RawEntry(title="Fuite", summary="Le préjudice est estimé à 2,8 millions d'euros.")
+        assert sf.extract_source_fact(make_item(), entry, self.SPEC) is None
+
+    def test_faux_comptages_reels_sont_ignores(self):
+        for text in ("1er", "27 juillet", "25 ans", "40 devient", "5doigts", "8h", "00h", "2019 diffusée"):
+            assert sf._parse_count_phrase(text) == ("", "", "")
+
+    def test_volume_ne_devient_pas_affected_count(self):
+        for text in ("13,8 Go", "3,4 Go", "261,4 Mo"):
+            assert sf._parse_count_phrase(text) == ("", "", "")
+            assert sf._extract_volume(text) == text
 
     def test_cve_explicite(self):
-        entry = RawEntry(
-            title="Fuite chez Exemple SA",
-            summary="La vulnérabilité CVE-2026-72898 a été exploitée.",
-        )
-        fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
+        fact = sf.extract_source_fact(make_item(), RawEntry(title="Fuite", summary="CVE-2026-72898 exploitée."), self.SPEC)
         assert json.loads(fact["Vulnerabilities_JSON"]) == ["CVE-2026-72898"]
 
     def test_acteur_et_tiers_explicites(self):
         entry = RawEntry(
-            title="Fuite chez Exemple SA",
-            summary=(
-                "La fuite, revendiquée par le groupe ShinyHunters, "
-                "provient via la plateforme BlgCloud."
-            ),
+            title="Fuite chez Exemple SA", organisation="Exemple SA",
+            summary="La fuite, revendiquée par le groupe ShinyHunters, provient via la plateforme BlgCloud.",
         )
         fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
         assert fact["Threat_Actor"] == "ShinyHunters"
         assert fact["Third_Party"] == "BlgCloud"
 
+    def test_faux_acteurs_reels_sont_rejetes(self):
+        cases = (
+            ("ENGIE", "Le groupe ENGIE publie un communiqué sur la fuite."),
+            ("Cloué", "Groupe Cloué est cité dans l'article."),
+            ("Exemple", "Fuite revendiquée par un."),
+            ("Exemple", "Incident revendiqué par le hacker."),
+        )
+        for organisation, summary in cases:
+            entry = RawEntry(title=organisation, organisation=organisation, summary=summary)
+            fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
+            assert fact is None or fact["Threat_Actor"] == ""
+
+    def test_activity_doit_nommer_la_victime(self):
+        entry = RawEntry(
+            title="Fédération X", organisation="Fédération X",
+            summary="Un forum spécialisé dans les fuites de données revendique Fédération X.",
+        )
+        fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
+        assert fact is None or fact["Activity_Description"] == ""
+
+    def test_activity_victime_explicitement_ancree(self):
+        entry = RawEntry(
+            title="Scalingo", organisation="Scalingo",
+            summary="Scalingo est une entreprise spécialisée dans l'hébergement cloud.",
+        )
+        fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
+        assert "hébergement cloud" in fact["Activity_Description"]
+
     def test_statut_non_confirme_distingue_de_confirme(self):
-        entry = RawEntry(title="Fuite chez Exemple SA", summary="Non confirmée par la société.")
-        fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
+        fact = sf.extract_source_fact(make_item(), RawEntry(title="Fuite", summary="Non confirmée par la société."), self.SPEC)
         assert fact["Claim_Status"] == "unconfirmed"
-
-    def test_pas_de_page_detail_chargee(self):
-        # `entry.content` reste vide pour FrenchBreaches (feed.py ne le peuple
-        # jamais) : l'extraction ne doit se fonder que sur summary/title.
-        entry = RawEntry(title="Fuite chez Exemple", summary="2,8 millions d'enregistrements", content="")
-        assert entry.content == ""
-        fact = sf.extract_source_fact(make_item(), entry, self.SPEC)
-        assert fact["Affected_Count"] == "2800000"
-
-
-# --------------------------------------------------------------------------
-# CYBERATTAQUE_ORG
-# --------------------------------------------------------------------------
 
 
 class TestCyberattaqueOrg:
-    SPEC = SourceSpec(
-        source_id="CYBERATTAQUE_ORG", layer="core", zone="France",
-        params={"include_content": True},
-    )
+    SPEC = SourceSpec(source_id="CYBERATTAQUE_ORG", layer="core", zone="France", params={"include_content": True})
 
     def test_relation_explicite_prestataire_compromis(self):
         entry = RawEntry(
-            title="Société Exemple victime d'une cyberattaque",
+            title="Société Exemple victime d'une cyberattaque", organisation="Société Exemple",
             summary="Le prestataire BlgCloud a été compromis, exposant les données.",
             content="Le groupe LockBit a revendiqué l'attaque.",
         )
@@ -297,102 +282,72 @@ class TestCyberattaqueOrg:
         assert fact["Threat_Actor"] == "LockBit"
 
     def test_simple_co_mention_ne_suffit_pas(self):
-        entry = RawEntry(
-            title="Société Exemple victime d'une cyberattaque",
-            summary="La société travaille habituellement avec le prestataire BlgCloud.",
-            content="",
-        )
+        entry = RawEntry(title="Société Exemple", organisation="Société Exemple", summary="La société travaille avec le prestataire BlgCloud.")
         fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG"), entry, self.SPEC)
         assert fact is None or fact["Third_Party"] == ""
 
     def test_cve_et_cvss(self):
-        entry = RawEntry(
-            title="Société Exemple victime d'une cyberattaque",
-            summary="",
-            content="CVE-2026-72898 exploitée, score CVSS 9.8.",
-        )
+        entry = RawEntry(title="Société Exemple", content="CVE-2026-72898 exploitée, score CVSS 9.8.")
         fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG"), entry, self.SPEC)
         assert json.loads(fact["Vulnerabilities_JSON"]) == ["CVE-2026-72898"]
         assert "9.8" in fact["CVSS_Raw"]
 
-    def test_activity_description_peuplee(self):
+    def test_activity_description_peuplee_si_victime_nommee(self):
         entry = RawEntry(
-            title="Société Exemple victime d'une cyberattaque",
-            summary="",
+            title="Société Exemple", organisation="Société Exemple",
             content="Société Exemple est une entreprise spécialisée dans la vente de matériel médical.",
         )
         fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG"), entry, self.SPEC)
         assert "vente de matériel médical" in fact["Activity_Description"]
 
 
-# --------------------------------------------------------------------------
-# RANSOMWARE_LIVE
-# --------------------------------------------------------------------------
-
-
 class TestRansomwareLive:
-    SPEC = SourceSpec(
-        source_id="RANSOMWARE_LIVE", layer="core", zone="Multi",
-        location_rule="France métropolitaine",
-    )
+    SPEC = SourceSpec(source_id="RANSOMWARE_LIVE", layer="core", zone="Multi", location_rule="France métropolitaine")
 
     def _entry(self, **overrides):
         record = {
-            "victim": "Exemple SA",
-            "discovered": "2026-08-10",
-            "attackdate": "2026-08-01",
-            "group": "LockBit",
-            "country": "FR",
-            "sector": "Santé",
-            "website": "exemple.fr",
+            "victim": "Exemple SA", "discovered": "2026-08-10", "attackdate": "2026-08-01",
+            "group": "LockBit", "country": "FR", "sector": "Santé", "website": "exemple.fr",
             "post_url": "https://leaksite.example/exemple-sa",
         }
         record.update(overrides)
         return _entry_from_record(record, self.SPEC, "FR")
 
     def test_groupe_devient_threat_actor(self):
-        entry = self._entry()
-        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), entry, self.SPEC)
+        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), self._entry(), self.SPEC)
         assert fact["Threat_Actor"] == "LockBit"
 
     def test_dates_distinctes_preservees(self):
-        entry = self._entry()
-        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), entry, self.SPEC)
+        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), self._entry(), self.SPEC)
         assert fact["Discovered_Date"] == "2026-08-10"
         assert fact["Attack_Date"] == "2026-08-01"
 
-    def test_website_et_claim_url_distincts(self):
-        entry = self._entry()
+    def test_published_date_ne_devient_pas_attack_date(self):
+        entry = self._entry(attackdate="", publishedDate="2026-08-02")
+        assert entry.source_metadata["attackdate"] == ""
         fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), entry, self.SPEC)
+        assert fact["Attack_Date"] == ""
+
+    def test_website_et_preuve_sont_separes(self):
+        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), self._entry(), self.SPEC)
         assert fact["Victim_Website"] == "https://exemple.fr"
-        urls = json.loads(fact["Evidence_URLs_JSON"])
-        assert "https://exemple.fr" in urls
-        assert "https://leaksite.example/exemple-sa" in urls
+        assert json.loads(fact["Evidence_URLs_JSON"]) == ["https://leaksite.example/exemple-sa"]
 
     def test_secteur_brut_preserve(self):
-        entry = self._entry()
-        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), entry, self.SPEC)
+        fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), self._entry(), self.SPEC)
         assert fact["Source_Sector_Raw"] == "Santé"
 
     def test_published_url_sector_location_inchanges(self):
-        # La sémantique historique de `RawEntry` (Item_ID en dépend) ne change
-        # pas : seule `source_metadata` gagne les variantes perdues.
         entry = self._entry()
         assert entry.published == "2026-08-10"
         assert entry.url == "https://leaksite.example/exemple-sa"
         assert entry.sector == "Santé"
 
 
-# --------------------------------------------------------------------------
-# VEILLE_LLM
-# --------------------------------------------------------------------------
-
-
 class TestVeilleLlm:
     SPEC = SourceSpec(
         source_id="VEILLE_LLM", layer="regional_watch", zone="La Réunion / Mayotte",
-        start_url="https://example.test/snapshot.json", collector="veillellm",
-        location_rule="Inconnu",
+        start_url="https://example.test/snapshot.json", collector="veillellm", location_rule="Inconnu",
         params={"path": "sources/veillellm/cyberattaques_reunion_mayotte_2026.json"},
     )
 
@@ -401,32 +356,30 @@ class TestVeilleLlm:
         return result.entries
 
     def test_acteur_localisation_fine_score_impact_sources_evolution(self):
-        entries = self._entries()
-        assert entries
-        found = False
-        for entry in entries:
+        for entry in self._entries():
             fact = sf.extract_source_fact(make_item("VEILLE_LLM"), entry, self.SPEC)
-            if fact is None:
-                continue
-            if fact["Fine_Location"] and fact["Evolution"]:
-                found = True
-                assert fact["Fine_Location"] != entry.location  # fine != territoire
-                assert fact["Threat_Actor"]
+            if fact and fact["Fine_Location"] and fact["Evolution"] and fact["Threat_Actor"]:
                 assert fact["Cyberattack_Score"]
                 assert fact["Impact"]
                 assert fact["Evidence_URLs_JSON"]
-                break
-        assert found, "aucun record du snapshot réel n'a produit de fait complet"
+                return
+        raise AssertionError("aucun record structuré avec acteur identifié n'a produit de fait complet")
+
+    def test_sentinetelles_acteur_non_identifiees_sont_vides(self):
+        for actor in ("Inconnu", "Non identifié", "Non identifié publiquement"):
+            entry = RawEntry(
+                title="X", organisation="X",
+                source_metadata={"acteur": actor, "statut": "signalé"},
+            )
+            fact = sf.extract_source_fact(make_item("VEILLE_LLM"), entry, self.SPEC)
+            assert fact["Threat_Actor"] == ""
+            assert actor in fact["Source_Metadata_JSON"]
 
     def test_fine_location_distincte_de_location_historique(self):
-        entries = self._entries()
-        entry = next(e for e in entries if e.source_metadata.get("localisation"))
+        entry = next(e for e in self._entries() if e.source_metadata.get("localisation"))
         fact = sf.extract_source_fact(make_item("VEILLE_LLM"), entry, self.SPEC)
-        # Comportement historique inchangé : `entry.location` reste le
-        # territoire, jamais écrasé par la localisation précise.
         assert entry.location != fact["Fine_Location"] or entry.location == ""
 
     def test_aucun_second_appel_llm(self):
-        # `source_facts.py` n'importe jamais `ai.py`.
         import cyberwatch.source_facts as module
         assert "ai" not in module.__dict__ or module.__dict__["ai"] is None
