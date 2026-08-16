@@ -1,46 +1,23 @@
 """Collecteur RSS / Atom.
 
-Deuxième chemin d'accès par ordre de préférence. Le schéma est standard, donc
-aucun sélecteur propre au site n'est nécessaire.
-
-Limite structurelle assumée : un flux ne publie que ses dernières entrées. S'il
-ne redescend pas jusqu'au début de la fenêtre demandée, la source est déclarée
-`PARTIAL` avec une couverture estimée sur la part de fenêtre réellement vue —
-jamais `OK`, qui laisserait croire à une énumération complète.
-
-Exception explicite, à poser dans `spec.params` seulement après vérification
-qu'aucun autre chemin d'accès n'existe (§ `probe`) : `feed_has_no_pagination`
-déclare qu'un flux donné n'offre structurellement aucun moyen de remonter
-plus loin (ni API REST, ni pagination de flux, ni JSON-LD) — la source est
-alors `OK` dès que toutes les entrées qu'il expose sont captées, même si la
-fenêtre demandée va plus loin. Même mécanisme que `status_override` pour
-BonjourLaFuite (`base.py`) : le protocole redéfinit lui-même ce que signifie
-« complet » plutôt que de forcer une couverture qu'aucune requête ne peut
-jamais obtenir.
+Le flux reste l'autorité d'énumération. Pour FrenchBreaches uniquement, les
+entrées déjà retenues dans la fenêtre peuvent ensuite être hydratées avec leur
+page détaillée afin d'alimenter la couche auxiliaire ``source_facts``. Un échec
+de cette hydratation n'altère jamais le statut de collecte du flux.
 """
-
 from __future__ import annotations
 
 import re
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 
 import feedparser
 
 from .. import status
 from ..normalize import parse_date
-from .base import (
-    CollectResult,
-    Collector,
-    RawEntry,
-    SourceSpec,
-    Window,
-    coverage_from_days,
-)
+from .base import CollectResult, Collector, RawEntry, SourceSpec, Window, coverage_from_days
 from .wordpress import origin_of, strip_html
 
-#: Chemins de flux les plus répandus, essayés dans cet ordre.
 COMMON_FEED_PATHS = ["feed/", "rss", "rss.xml", "feed.xml", "atom.xml", "index.xml"]
-
 _FEED_LINK_RE = re.compile(
     r"""<link[^>]+type=["']application/(?:rss|atom)\+xml["'][^>]*>""",
     flags=re.IGNORECASE,
@@ -49,9 +26,7 @@ _HREF_RE = re.compile(r"""href=["']([^"']+)["']""", flags=re.IGNORECASE)
 
 
 def discover_feeds(client, page_url: str, source_budget=None) -> list[str]:
-    """URLs de flux d'une page, par autodécouverte puis chemins conventionnels."""
     candidates: list[str] = []
-
     response = client.fetch(page_url, source_budget)
     if response.ok:
         for tag in _FEED_LINK_RE.findall(response.text):
@@ -74,25 +49,15 @@ def discover_feeds(client, page_url: str, source_budget=None) -> list[str]:
 
 
 def parse_feed(text: str, spec: SourceSpec) -> list[RawEntry]:
-    """Entrées brutes d'un flux RSS ou Atom."""
     parsed = feedparser.parse(text)
     entries = []
     for raw in parsed.entries:
-        published = parse_date(
-            raw.get("published")
-            or raw.get("updated")
-            or raw.get("created")
-            or ""
-        )
+        published = parse_date(raw.get("published") or raw.get("updated") or raw.get("created") or "")
         if not published and raw.get("published_parsed"):
             import time as _time
-
-            published = parse_date(
-                _time.strftime("%Y-%m-%d", raw["published_parsed"])
-            )
+            published = parse_date(_time.strftime("%Y-%m-%d", raw["published_parsed"]))
         if not published:
             continue
-
         summary = strip_html(raw.get("summary", "") or raw.get("description", ""))
         native_id = raw.get("id") or raw.get("guid") or ""
         entries.append(
@@ -108,9 +73,26 @@ def parse_feed(text: str, spec: SourceSpec) -> list[RawEntry]:
     return entries
 
 
-class FeedCollector(Collector):
-    """Lit le premier flux exploitable trouvé pour la source."""
+def _hydrate_frenchbreaches_details(client, entries: list[RawEntry], budget) -> tuple[int, int]:
+    """Ajoute le texte des pages détaillées sans changer l'énumération du flux."""
+    attempted = 0
+    hydrated = 0
+    for entry in entries:
+        if budget.exhausted or not entry.url:
+            break
+        attempted += 1
+        response = client.fetch(entry.url, budget)
+        if not response.ok:
+            continue
+        text = " ".join(strip_html(response.text).split())
+        if not text:
+            continue
+        entry.content = text[:40000]
+        hydrated += 1
+    return attempted, hydrated
 
+
+class FeedCollector(Collector):
     name = "feed"
 
     def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
@@ -118,15 +100,12 @@ class FeedCollector(Collector):
         result = CollectResult(access_method="feed")
 
         explicit = spec.params.get("feed_url")
-        candidates = [explicit] if explicit else discover_feeds(
-            client, spec.start_url, budget
-        )
+        candidates = [explicit] if explicit else discover_feeds(client, spec.start_url, budget)
 
         for feed_url in candidates:
             if budget.exhausted:
                 result.reason_code = status.REASON_BUDGET_SOURCE
                 break
-
             response = client.fetch(feed_url, budget)
             if not response.ok:
                 continue
@@ -136,26 +115,18 @@ class FeedCollector(Collector):
                 continue
 
             result.access_method = f"feed:{feed_url}"
-            in_window = [e for e in entries if window.contains(e.published)]
+            in_window = [entry for entry in entries if window.contains(entry.published)]
             result.entries = in_window
-            # Ces compteurs décrivent le flux avant puis après le filtre
-            # temporel. Ils ne doivent jamais être déduits de `entries`, qui
-            # ne contient volontairement que la fenêtre demandée.
             result.items_seen = len(entries)
             result.items_in_window = len(in_window)
             result.units_done = 1
             result.units_expected = 1
 
-            oldest = min(e.published for e in entries)
+            oldest = min(entry.published for entry in entries)
             result.oldest_available_date = oldest
             if oldest <= window.start:
                 result.reached_boundary = True
             elif spec.params.get("feed_has_no_pagination"):
-                # Vérifié via `probe` : aucun chemin (API REST, pagination de
-                # flux, JSON-LD) ne permet de remonter plus loin. Toutes les
-                # entrées offertes par le flux sont captées ; exiger la borne
-                # bloquerait cette source indéfiniment sans qu'aucune requête
-                # ne puisse jamais la satisfaire.
                 result.reached_boundary = True
                 result.comment = (
                     f"Flux sans pagination disponible : {len(entries)} entrées "
@@ -168,6 +139,12 @@ class FeedCollector(Collector):
                     f"Le flux ne remonte que jusqu'au {oldest} ; "
                     f"début de fenêtre demandé : {window.start}"
                 )
+
+            if spec.source_id == "FRENCHBREACHES" and in_window:
+                attempted, hydrated = _hydrate_frenchbreaches_details(client, in_window, budget)
+                detail = f"details_hydrates={hydrated}/{attempted}"
+                result.comment = f"{result.comment}; {detail}" if result.comment else detail
+
             result.calls = budget.requests_made
             return result
 

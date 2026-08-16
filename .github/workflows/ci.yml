@@ -1,7 +1,7 @@
 name: Tests
 
-# Les tests ne touchent jamais le réseau : ils exercent le moteur déterministe
-# et les parseurs sur des échantillons de formats standards.
+# Les tests unitaires ne touchent jamais le réseau : les appels HTTP/LLM sont
+# simulés et les parseurs s'exercent sur des échantillons figés.
 
 on:
   push:
@@ -39,6 +39,7 @@ jobs:
           node --check assets/app.js
           node --check assets/app-legacy.js
           node --check assets/dashboard-audit.js
+          node --check assets/data-sensitivity.js
 
       - name: Test de répétabilité (§27)
         run: python -m cyberwatch test-repeat

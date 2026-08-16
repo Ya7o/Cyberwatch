@@ -1,14 +1,16 @@
-"""Faits source par article (§13 METHODOLOGY.md).
+"""Faits supplémentaires publiés par chaque source.
 
-Couche auxiliaire, strictement offline : elle conserve uniquement des faits
-explicitement publiés par la source et ne modifie jamais Threat/Sector/Location.
-La précision prime sur le taux de remplissage : une extraction ambiguë reste vide.
+Couche auxiliaire et non canonique : elle ne modifie jamais Threat/Sector/Location.
+Pour FrenchBreaches et Cyberattaque.org, le LLM comprend le récit puis cette
+couche valide mécaniquement les faits candidats. Les autres sources restent
+strictement déterministes/structurées.
 """
 from __future__ import annotations
 
 import json
 import re
 
+from . import source_facts_ai
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import (
@@ -20,7 +22,7 @@ from .normalize import (
     strip_accents,
 )
 
-SOURCE_FACTS_VERSION = "2"
+SOURCE_FACTS_VERSION = "3"
 
 _BASE_COLUMNS = {
     "Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version",
@@ -45,7 +47,7 @@ def _loads_json(raw: str):
 
 _CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.I)
 _CVSS_RE = re.compile(
-    r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:\.\d)?)(?:\s*/\s*10)?\b",
+    r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:[.,]\d)?)(?:\s*/\s*10)?\b",
     re.I,
 )
 _VOLUME_RE = re.compile(r"\b\d[\d\s ,.]*\s*(?:Ko|Mo|Go|To|KB|MB|GB|TB)\b", re.I)
@@ -72,19 +74,16 @@ def _extract_volume(*texts: str) -> str:
     return ""
 
 
+def _digits(raw: str) -> str:
+    cleaned = (raw or "").replace(" ", "").replace(" ", "").replace(".", "").replace(",", "")
+    return cleaned if cleaned.isdigit() else ""
+
+
 def _extract_file_count(*texts: str) -> str:
     for text in texts:
         match = _FILE_COUNT_RE.search(text or "")
         if match:
-            digits = (
-                match.group(1)
-                .replace(" ", "")
-                .replace(" ", "")
-                .replace(".", "")
-                .replace(",", "")
-            )
-            if digits.isdigit():
-                return digits
+            return _digits(match.group(1))
     return ""
 
 
@@ -95,6 +94,9 @@ def _split_list(text: str) -> list[str]:
 
 _UNIT_MAP = {
     "personne": "people", "personnes": "people",
+    "victime": "people", "victimes": "people",
+    "membre": "people", "membres": "people",
+    "agent": "people", "agents": "people",
     "compte": "accounts", "comptes": "accounts",
     "utilisateur": "users", "utilisateurs": "users",
     "client": "clients", "clients": "clients",
@@ -110,7 +112,7 @@ _UNIT_MAP = {
 }
 
 _COUNT_RE = re.compile(
-    r"(?:environ\s+|plus\s+de\s+|pr[eè]s\s+de\s+)?"
+    r"(?:environ\s+|plus\s+de\s+|pr[eè]s\s+de\s+|jusqu['’]?[àa]\s+)?"
     r"(?P<number>\d[\d\s .,]*\d|\d)\s*"
     r"(?P<scale>million[s]?|millier[s]?|mille)?\s*"
     r"(?:de\s+|d['’])?\s*"
@@ -133,20 +135,18 @@ def _to_number(raw_number: str, scale: str) -> int | None:
 
 
 def _parse_count_phrase(text: str) -> tuple[str, str, str]:
-    """Retourne uniquement un nombre dont l'unité appartient au vocabulaire fermé."""
+    """Retourne le premier comptage dont l'unité appartient au vocabulaire fermé."""
     if not text:
         return "", "", ""
-    match = _COUNT_RE.search(text)
-    if not match:
-        return "", "", ""
-    unit_word = strip_accents(match.group("unit") or "").lower().rstrip(".,;:")
-    canonical_unit = _UNIT_MAP.get(unit_word, "")
-    if not canonical_unit:
-        return "", "", ""
-    number = _to_number(match.group("number"), match.group("scale") or "")
-    if number is None:
-        return "", "", ""
-    return str(number), canonical_unit, match.group(0).strip()
+    for match in _COUNT_RE.finditer(text):
+        unit_word = strip_accents(match.group("unit") or "").lower().rstrip(".,;:")
+        canonical_unit = _UNIT_MAP.get(unit_word, "")
+        if not canonical_unit:
+            continue
+        number = _to_number(match.group("number"), match.group("scale") or "")
+        if number is not None:
+            return str(number), canonical_unit, match.group(0).strip()
+    return "", "", ""
 
 
 def _clean_span(raw: str) -> str:
@@ -163,13 +163,8 @@ def _normalise_url(value: str) -> str:
 _ACTOR_SENTINELS = {
     "", "un", "une", "le", "la", "les", "hacker", "le hacker", "un hacker",
     "attaquant", "l attaquant", "l'attaquant", "auteur", "inconnu", "non identifie",
-    "non identifie publiquement", "n a", "na",
-    # §stabilisation pré-release : catégories génériques de menace qui ne
-    # sont jamais un nom d'acteur — cas réel corrigé, "revendiquée par le
-    # groupe Ransomware" produisait Threat_Actor="Ransomware". Un vrai groupe
-    # nommé (LockBit, Qilin, Akira...) ne matche jamais ces entrées.
-    "ransomware", "rancongiciel", "cybercriminel", "cybercriminels",
-    "pirate", "pirates",
+    "non identifie publiquement", "n a", "na", "n/a",
+    "ransomware", "rancongiciel", "cybercriminel", "cybercriminels", "pirate", "pirates",
 }
 
 
@@ -196,28 +191,13 @@ def _valid_third_party(candidate: str, organisation: str = "") -> str:
 
 
 _ACTIVITY_BRIDGES = {
-    "",
-    "est",
-    "est un",
-    "est une",
-    "est un acteur",
-    "est une entreprise",
-    "est une societe",
-    "est un groupe",
-    "est une association",
-    "est un organisme",
+    "", "est", "est un", "est une", "est un acteur", "est une entreprise",
+    "est une societe", "est un groupe", "est une association", "est un organisme",
     "est une plateforme",
 }
 
 
 def _extract_victim_activity(organisation: str, *texts: str) -> str:
-    """Extrait une activité explicitement rattachée à la victime.
-
-    La présence de la victime dans la même phrase ne suffit pas : dans
-    ``un forum spécialisé dans les fuites revendique X``, l'activité décrit
-    le forum. La victime doit précéder l'expression métier et n'en être séparée
-    que par un connecteur fermé (``est``, ``est une entreprise``, ponctuation).
-    """
     org = searchable(organisation)
     if not org:
         return ""
@@ -232,12 +212,95 @@ def _extract_victim_activity(organisation: str, *texts: str) -> str:
                 continue
             activity_norm = searchable(activity)
             activity_pos = segment_norm.find(activity_norm)
-            if activity_pos < 0 or activity_pos < org_pos + len(org):
+            if activity_pos < org_pos + len(org):
                 continue
             bridge = segment_norm[org_pos + len(org):activity_pos].strip(" ,-:()")
             if bridge in _ACTIVITY_BRIDGES:
                 return activity
     return ""
+
+
+def _ai_activity(ai_result: dict, organisation: str) -> tuple[str, str]:
+    candidate = ai_result.get("activity_description") if isinstance(ai_result, dict) else None
+    if not isinstance(candidate, dict):
+        return "", ""
+    value = str(candidate.get("value") or "").strip()
+    evidence = str(candidate.get("evidence") or "").strip()
+    if not value or not evidence or searchable(organisation) not in searchable(evidence):
+        return "", ""
+    return value, evidence
+
+
+def _ai_text(ai_result: dict, key: str) -> tuple[str, str]:
+    candidate = ai_result.get(key) if isinstance(ai_result, dict) else None
+    if not isinstance(candidate, dict):
+        return "", ""
+    return str(candidate.get("value") or "").strip(), str(candidate.get("evidence") or "").strip()
+
+
+_STATUS_PRIORITY = {"confirmed": 4, "reported": 3, "claimed": 2, "unknown": 1}
+
+
+def _ordered_ai_evidence(ai_result: dict, key: str) -> list[dict]:
+    values = ai_result.get(key) if isinstance(ai_result, dict) else None
+    if not isinstance(values, list):
+        return []
+    return sorted(
+        (value for value in values if isinstance(value, dict)),
+        key=lambda value: (
+            _STATUS_PRIORITY.get(str(value.get("status") or "unknown"), 0),
+            float(value.get("confidence") or 0),
+        ),
+        reverse=True,
+    )
+
+
+def _ai_count(ai_result: dict) -> tuple[str, str, str, str]:
+    for candidate in _ordered_ai_evidence(ai_result, "affected_counts"):
+        evidence = str(candidate.get("evidence") or "").strip()
+        count, unit, raw = _parse_count_phrase(evidence)
+        if count:
+            return count, unit, raw, str(candidate.get("status") or "unknown")
+    return "", "", "", ""
+
+
+def _ai_volume(ai_result: dict) -> tuple[str, str]:
+    for candidate in _ordered_ai_evidence(ai_result, "data_volumes"):
+        evidence = str(candidate.get("evidence") or "").strip()
+        value = _extract_volume(evidence)
+        if value:
+            return value, evidence
+    return "", ""
+
+
+def _ai_file_count(ai_result: dict) -> tuple[str, str]:
+    for candidate in _ordered_ai_evidence(ai_result, "file_counts"):
+        evidence = str(candidate.get("evidence") or "").strip()
+        value = _extract_file_count(evidence)
+        if value:
+            return value, evidence
+    return "", ""
+
+
+def _ai_data_types(ai_result: dict) -> tuple[list[str], dict[str, str]]:
+    values = ai_result.get("data_types") if isinstance(ai_result, dict) else None
+    if not isinstance(values, list):
+        return [], {}
+    result: list[str] = []
+    evidence: dict[str, str] = {}
+    seen = set()
+    for candidate in values:
+        if not isinstance(candidate, dict):
+            continue
+        value = str(candidate.get("value") or "").strip(" .")
+        proof = str(candidate.get("evidence") or "").strip()
+        key = searchable(value)
+        if not value or not proof or key in seen:
+            continue
+        seen.add(key)
+        result.append(value)
+        evidence[value] = proof
+    return result, evidence
 
 
 def _blank_fact(item: Item, spec: SourceSpec) -> dict:
@@ -262,18 +325,20 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
     return fact
 
 
+_BLF_STATUS = {"🟢": "confirmed", "🟠": "claimed", "🔴": "unconfirmed"}
+
+
 def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
     meta = entry.source_metadata or {}
 
-    claim_status_raw = meta.get("claim_status_raw", "")
+    claim_status_raw = str(meta.get("claim_status_raw") or "").strip()
     if claim_status_raw:
         fact["Claim_Status_Raw"] = claim_status_raw
+        fact["Claim_Status"] = _BLF_STATUS.get(claim_status_raw, "")
         evidence["Claim_Status_Raw"] = claim_status_raw
 
-    # "Via" est une provenance brute, pas une preuve suffisante d'implication
-    # d'un tiers. Elle reste dans Source_Metadata_JSON sans peupler Third_Party.
     data_types_raw = str(meta.get("data_types_raw") or "").strip()
     structured = meta.get("data_types")
     data_types: list[str] = []
@@ -284,16 +349,13 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
                 data_types.append(cleaned)
     elif data_types_raw:
         data_types = _split_list(data_types_raw)
-
     if data_types:
         fact["Data_Types_JSON"] = _dumps_json(data_types)
-        # Quand le collecteur fournit les bulles structurées, on conserve
-        # cette liste comme preuve afin qu'une virgule ou « et » interne à un
-        # libellé ne soit jamais interprété comme un séparateur.
         evidence["Data_Types_JSON"] = data_types if isinstance(structured, list) else data_types_raw
 
-    count_text = data_types_raw or " ; ".join(data_types) or entry.summary
-    count, unit, raw_count = _parse_count_phrase(count_text)
+    count, unit, raw_count = _parse_count_phrase(entry.summary)
+    if not count:
+        count, unit, raw_count = _parse_count_phrase(data_types_raw or " ; ".join(data_types))
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
@@ -343,44 +405,104 @@ def _first_valid_match(patterns, text: str, validator, organisation: str) -> tup
     return "", ""
 
 
+_FB_SECTOR_RE = re.compile(
+    r"\bSecteur\s*[:\-]?\s*([A-Za-zÀ-ÖØ-öø-ÿ/&'’ -]{2,60}?)(?=\s+(?:Fuite|Incident|Qu['’]|Donn[ée]es|Publi[ée]|Victime|Description|Risques?)\b|[.;]|$)",
+    re.I,
+)
+
+
+def _native_frenchbreaches_sector(text: str) -> str:
+    match = _FB_SECTOR_RE.search(text or "")
+    return " ".join(match.group(1).split()).strip(" -:;.") if match else ""
+
+
 def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
-    text = f"{entry.title} {entry.summary}"
+    text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
     organisation = entry.organisation or item.Organisation_Raw
+    ai_result = source_facts_ai.enrich(item, entry) or {}
 
     canonical, raw = _claim_status(text)
     if raw:
         fact["Claim_Status"] = canonical
         fact["Claim_Status_Raw"] = raw
+        evidence["Claim_Status"] = raw
+    else:
+        ai_status, ai_status_evidence = _ai_text(ai_result, "claim_status")
+        if ai_status in {"confirmed", "claimed", "unconfirmed", "denied"}:
+            fact["Claim_Status"] = ai_status
+            evidence["Claim_Status"] = ai_status_evidence
 
-    count, unit, raw_count = _parse_count_phrase(text)
+    sector_raw = _native_frenchbreaches_sector(entry.content)
+    if sector_raw:
+        fact["Source_Sector_Raw"] = sector_raw
+        evidence["Source_Sector_Raw"] = sector_raw
+
+    native_count = _parse_count_phrase(entry.content)
+    if native_count[0]:
+        count, unit, raw_count = native_count
+        evidence["Affected_Count_Raw"] = raw_count
+    else:
+        count, unit, raw_count, count_status = _ai_count(ai_result)
+        if count:
+            evidence["Affected_Count_Raw"] = {"text": raw_count, "status": count_status}
+        else:
+            count, unit, raw_count = _parse_count_phrase(text)
+            if count:
+                evidence["Affected_Count_Raw"] = raw_count
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
         fact["Affected_Count_Raw"] = raw_count
-        evidence["Affected_Count_Raw"] = raw_count
 
-    volume = _extract_volume(text)
+    volume, volume_evidence = _ai_volume(ai_result)
+    if not volume:
+        volume = _extract_volume(text)
     if volume:
         fact["Data_Volume_Raw"] = volume
-    file_count = _extract_file_count(text)
+        if volume_evidence:
+            evidence["Data_Volume_Raw"] = volume_evidence
+
+    file_count, file_evidence = _ai_file_count(ai_result)
+    if not file_count:
+        file_count = _extract_file_count(text)
     if file_count:
         fact["File_Count"] = file_count
+        if file_evidence:
+            evidence["File_Count"] = file_evidence
 
-    actor, actor_evidence = _first_valid_match(
-        _ACTOR_PATTERNS, text, _valid_actor, organisation
-    )
+    actor, actor_evidence = _ai_text(ai_result, "threat_actor")
+    actor = _valid_actor(actor, organisation)
+    if not actor:
+        actor, actor_evidence = _first_valid_match(_ACTOR_PATTERNS, text, _valid_actor, organisation)
     if actor:
         fact["Threat_Actor"] = actor
         evidence["Threat_Actor"] = actor_evidence
 
-    third_party, third_party_evidence = _first_valid_match(
-        _THIRD_PARTY_PATTERNS, text, _valid_third_party, organisation
-    )
+    third_party, third_party_evidence = _ai_text(ai_result, "third_party")
+    third_party = _valid_third_party(third_party, organisation)
+    if not third_party:
+        third_party, third_party_evidence = _first_valid_match(
+            _THIRD_PARTY_PATTERNS, text, _valid_third_party, organisation
+        )
     if third_party:
         fact["Third_Party"] = third_party
         evidence["Third_Party"] = third_party_evidence
+
+    data_types, data_evidence = _ai_data_types(ai_result)
+    if data_types:
+        fact["Data_Types_JSON"] = _dumps_json(data_types)
+        evidence["Data_Types_JSON"] = data_evidence
+
+    summary, summary_evidence = _ai_text(ai_result, "summary")
+    if summary:
+        fact["Summary"] = summary
+        evidence["Summary"] = summary_evidence
+    impact, impact_evidence = _ai_text(ai_result, "impact")
+    if impact:
+        fact["Impact"] = impact
+        evidence["Impact"] = impact_evidence
 
     cves = _extract_cves(text)
     if cves:
@@ -390,9 +512,13 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     if cvss:
         fact["CVSS_Raw"] = cvss
 
-    activity = _extract_victim_activity(organisation, entry.title, entry.summary)
+    activity, activity_evidence = _ai_activity(ai_result, organisation)
+    if not activity:
+        activity = _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
     if activity:
         fact["Activity_Description"] = activity
+        if activity_evidence:
+            evidence["Activity_Description"] = activity_evidence
     return _finalize(fact, entry, evidence)
 
 
@@ -416,36 +542,79 @@ _WEBSITE_RE = re.compile(
 def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
-    text = f"{entry.title} {entry.summary} {entry.content}"
+    text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
     organisation = entry.organisation or item.Organisation_Raw
+    ai_result = source_facts_ai.enrich(item, entry) or {}
 
-    third_party, third_party_evidence = _first_valid_match(
-        _CO_THIRD_PARTY_RE, text, _valid_third_party, organisation
-    )
-    if third_party:
-        fact["Third_Party"] = third_party
-        evidence["Third_Party"] = third_party_evidence
-
-    actor, actor_evidence = _first_valid_match(
-        _CO_THREAT_ACTOR_RE, text, _valid_actor, organisation
-    )
+    actor, actor_evidence = _ai_text(ai_result, "threat_actor")
+    actor = _valid_actor(actor, organisation)
+    if not actor:
+        actor, actor_evidence = _first_valid_match(_CO_THREAT_ACTOR_RE, text, _valid_actor, organisation)
     if actor:
         fact["Threat_Actor"] = actor
         evidence["Threat_Actor"] = actor_evidence
 
-    count, unit, raw_count = _parse_count_phrase(text)
+    third_party, third_party_evidence = _ai_text(ai_result, "third_party")
+    third_party = _valid_third_party(third_party, organisation)
+    if not third_party:
+        third_party, third_party_evidence = _first_valid_match(
+            _CO_THIRD_PARTY_RE, text, _valid_third_party, organisation
+        )
+    if third_party:
+        fact["Third_Party"] = third_party
+        evidence["Third_Party"] = third_party_evidence
+
+    ai_status, ai_status_evidence = _ai_text(ai_result, "claim_status")
+    if ai_status in {"confirmed", "claimed", "unconfirmed", "denied"}:
+        fact["Claim_Status"] = ai_status
+        evidence["Claim_Status"] = ai_status_evidence
+    else:
+        canonical, raw = _claim_status(text)
+        if raw:
+            fact["Claim_Status"] = canonical
+            fact["Claim_Status_Raw"] = raw
+
+    count, unit, raw_count, count_status = _ai_count(ai_result)
+    if not count:
+        count, unit, raw_count = _parse_count_phrase(text)
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
         fact["Affected_Count_Raw"] = raw_count
-        evidence["Affected_Count_Raw"] = raw_count
+        evidence["Affected_Count_Raw"] = (
+            {"text": raw_count, "status": count_status} if count_status else raw_count
+        )
 
-    volume = _extract_volume(text)
+    volume, volume_evidence = _ai_volume(ai_result)
+    if not volume:
+        volume = _extract_volume(text)
     if volume:
         fact["Data_Volume_Raw"] = volume
-    file_count = _extract_file_count(text)
+        if volume_evidence:
+            evidence["Data_Volume_Raw"] = volume_evidence
+
+    file_count, file_evidence = _ai_file_count(ai_result)
+    if not file_count:
+        file_count = _extract_file_count(text)
     if file_count:
         fact["File_Count"] = file_count
+        if file_evidence:
+            evidence["File_Count"] = file_evidence
+
+    data_types, data_evidence = _ai_data_types(ai_result)
+    if data_types:
+        fact["Data_Types_JSON"] = _dumps_json(data_types)
+        evidence["Data_Types_JSON"] = data_evidence
+
+    summary, summary_evidence = _ai_text(ai_result, "summary")
+    if summary:
+        fact["Summary"] = summary
+        evidence["Summary"] = summary_evidence
+    impact, impact_evidence = _ai_text(ai_result, "impact")
+    if impact:
+        fact["Impact"] = impact
+        evidence["Impact"] = impact_evidence
+
     cves = _extract_cves(text)
     if cves:
         fact["Vulnerabilities_JSON"] = _dumps_json(cves)
@@ -461,11 +630,13 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
             fact["Victim_Website"] = website
             evidence["Victim_Website"] = website_match.group(0).strip()
 
-    activity = _extract_victim_activity(
-        organisation, entry.title, entry.summary, entry.content
-    )
+    activity, activity_evidence = _ai_activity(ai_result, organisation)
+    if not activity:
+        activity = _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
     if activity:
         fact["Activity_Description"] = activity
+        if activity_evidence:
+            evidence["Activity_Description"] = activity_evidence
     return _finalize(fact, entry, evidence)
 
 
@@ -478,22 +649,18 @@ def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict
     if group:
         fact["Threat_Actor"] = group
         evidence["Threat_Actor"] = meta.get("group", "")
-
     sector_raw = meta.get("sector_raw", "")
     if sector_raw:
         fact["Source_Sector_Raw"] = sector_raw
-
     discovered = parse_date(meta.get("discovered", ""))
     if discovered:
         fact["Discovered_Date"] = discovered
     attackdate = parse_date(meta.get("attackdate", ""))
     if attackdate:
         fact["Attack_Date"] = attackdate
-
     website = _normalise_url(meta.get("website", ""))
     if website:
         fact["Victim_Website"] = website
-
     claim_url = _normalise_url(meta.get("claim_url", ""))
     if claim_url:
         fact["Evidence_URLs_JSON"] = _dumps_json([claim_url])
@@ -505,21 +672,16 @@ def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | Non
     meta = entry.source_metadata or {}
     if not meta:
         return None
-
     if meta.get("localisation", ""):
         fact["Fine_Location"] = meta["localisation"]
-
     actor = _valid_actor(meta.get("acteur", ""), entry.organisation or item.Organisation_Raw)
     if actor:
         fact["Threat_Actor"] = actor
-
     if meta.get("statut", ""):
         fact["Claim_Status_Raw"] = meta["statut"]
-
     score = meta.get("score_cyberattaque")
     if score is not None and str(score) != "":
         fact["Cyberattack_Score"] = str(score)
-
     if meta.get("impact_connu", ""):
         fact["Impact"] = meta["impact_connu"]
     if meta.get("synthese", ""):
@@ -530,7 +692,6 @@ def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | Non
         fact["Source_Sector_Raw"] = meta["secteur"]
     if meta.get("sources"):
         fact["Evidence_URLs_JSON"] = _dumps_json(meta["sources"])
-
     return _finalize(fact, entry, {})
 
 
