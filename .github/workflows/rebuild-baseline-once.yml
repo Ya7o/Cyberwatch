@@ -1,0 +1,110 @@
+name: Rebuild Baseline (one-shot)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rebuild-baseline-once.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rebuild-baseline-one-shot
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    if: github.repository == 'Ya7o/Cyberwatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Figer le contexte du rebuild
+        run: |
+          AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"
+          echo "AS_OF=$AS_OF" >> "$GITHUB_ENV"
+          echo "Rebuild AS_OF=$AS_OF ; START=2026-01-01 ; LAYERS=all"
+
+      - name: Tests unitaires
+        run: python -m pytest tests/ -q
+
+      - name: Purge locale des artefacts reconstructibles
+        run: |
+          rm -f \
+            data/items.csv \
+            data/incidents.csv \
+            data/source_facts.csv \
+            data/run_log.csv \
+            data/run_sources.csv \
+            data/ai_usage.csv \
+            data/snapshot.json \
+            data/baseline.json \
+            data/entity_watch.csv
+          rm -rf assets/data
+          mkdir -p assets/data
+          echo "Référentiels et caches versionnés conservés ; aucun fichier publié n'est encore modifié."
+
+      - name: CREATE from scratch
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          AI_MAX_CALLS_PER_RUN: "3000"
+          AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
+          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+        run: |
+          python -m cyberwatch create \
+            --as-of "$AS_OF" \
+            --start "2026-01-01" \
+            --layers "all"
+
+      - name: Check strict
+        run: python -m cyberwatch check
+
+      - name: Test de répétabilité offline
+        run: python -m cyberwatch test-repeat
+
+      - name: Gate qualité pré-publication
+        run: |
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check \
+            --check-regression
+
+      - name: Créer la baseline
+        run: python -m cyberwatch baseline --as-of "$AS_OF"
+
+      - name: Construire le dashboard
+        run: python -m cyberwatch build-site
+
+      - name: Check final strict
+        run: python -m cyberwatch check
+
+      - name: Résumé du rebuild
+        run: |
+          echo "===== RUN LOG ====="
+          cat data/run_log.csv
+          echo "===== RUN SOURCES ====="
+          cat data/run_sources.csv
+          echo "===== AI USAGE ====="
+          cat data/ai_usage.csv || true
+
+      - name: Exporter la DB validée
+        uses: actions/upload-artifact@v4
+        with:
+          name: rebuild-baseline-output
+          path: |
+            data/
+            assets/data/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
