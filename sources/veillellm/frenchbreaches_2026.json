@@ -162,6 +162,24 @@
       ],
       "method": "high-confidence residual mapping from official company/service sites, official registries, source-native sector metadata only when corroborated by actual victim activity, plus apostrophe-safe identity matching",
       "evidence_policy": "no source-native label is accepted when it conflicts with actual victim activity; genuine taxonomy gaps remain Inconnu"
+    },
+    "company_research_v9": {
+      "before_sector_unknown": 28,
+      "resolved_sector_unknown": 6,
+      "remaining_sector_unknown": 22,
+      "other_data_corrections": 2,
+      "applied_to": [
+        "Bloctel",
+        "ADN Tourisme",
+        "Service de remplacement agricole",
+        "Vaucluse Provence Attractivité",
+        "AirClaim",
+        "YggTorrent",
+        "SOS 33 Bordeaux",
+        "Breach Forums"
+      ],
+      "method": "final defensible residuals: public-service mission, professional/B2B service function, official medical service, and explicitly digital platform activity",
+      "evidence_policy": "remaining Inconnu values are retained when activity is outside the canonical taxonomy or identity/activity is still insufficiently evidenced"
     }
   },
   "incidents": [
@@ -905,14 +923,16 @@
       "organisation": "Bloctel",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Sport",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/bloctel-mshxaq0ysyd27ca7f6"
+        "https://frenchbreaches.com/alertes/bloctel-mshxaq0ysyd27ca7f6",
+        "https://www.bloctel.gouv.fr/CGU",
+        "https://www.bloctel.gouv.fr/mentions-legales"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Bloctel.",
       "evolution": "nouveau"
@@ -5435,15 +5455,17 @@
       "date": "2026-05-26",
       "organisation": "ADN Tourisme",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Paris, Île-de-France",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/adn-tourisme-mpmd7sanxdxila9fm6"
+        "https://frenchbreaches.com/alertes/adn-tourisme-mpmd7sanxdxila9fm6",
+        "https://www.adn-tourisme.fr/services/",
+        "https://www.adn-tourisme.fr/qui-sommes-nous/missions/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — ADN Tourisme.",
       "evolution": "nouveau"
@@ -6106,14 +6128,15 @@
       "organisation": "Service de remplacement agricole",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/service-de-remplacement-agricole-moz1ic59c83njcho2rl"
+        "https://frenchbreaches.com/alertes/service-de-remplacement-agricole-moz1ic59c83njcho2rl",
+        "https://servicederemplacement.fr/se-faire-remplacer"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Service de remplacement agricole.",
       "evolution": "nouveau"
@@ -8040,15 +8063,17 @@
       "date": "2026-03-31",
       "organisation": "Vaucluse Provence Attractivité",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "localisation": "Vaucluse, Provence-Alpes-Côte d’Azur",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/vaucluse-provence-attractivite-mnetg8x4b65ef10h5wd"
+        "https://frenchbreaches.com/alertes/vaucluse-provence-attractivite-mnetg8x4b65ef10h5wd",
+        "https://vaucluseprovence-attractivite.com/qui-sommes-nous/nos-missions/invest/",
+        "https://vaucluseprovence-attractivite.com/qui-sommes-nous/nos-missions/"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Vaucluse Provence Attractivité.",
       "evolution": "nouveau"
@@ -8856,14 +8881,17 @@
       "organisation": "AirClaim",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/airclaim-mmhj7yzoe5edwsrkgx8"
+        "https://frenchbreaches.com/alertes/airclaim-mmhj7yzoe5edwsrkgx8",
+        "https://airclaim.com/fr/",
+        "https://airclaim.com/fr/terms-conditions/",
+        "https://frenchbreaches.com/blog/cyberattaques-en-70-jours-commerce-sport-et-administrations-dans-le-viseur-des-hackers"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — AirClaim.",
       "evolution": "nouveau"
@@ -9014,14 +9042,16 @@
       "organisation": "YggTorrent",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/yggtorrent-mmbdkzjwlyidplvtf3"
+        "https://frenchbreaches.com/alertes/yggtorrent-mmbdkzjwlyidplvtf3",
+        "https://www.yggtorrent.support/",
+        "https://frenchbreaches.com/blog/cyberattaques-en-70-jours-commerce-sport-et-administrations-dans-le-viseur-des-hackers"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — YggTorrent.",
       "evolution": "nouveau"
@@ -10571,15 +10601,17 @@
       "date": "2026-02-08",
       "organisation": "SOS 33 Bordeaux",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Bordeaux, Nouvelle-Aquitaine",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/sos-33-bordeaux-mlefo67j8jldh3kv9x8"
+        "https://frenchbreaches.com/alertes/sos-33-bordeaux-mlefo67j8jldh3kv9x8",
+        "https://www.sosmedecins-bordeaux.com/",
+        "https://www.sosmedecins-bordeaux.com/mentions-legales"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — SOS 33 Bordeaux.",
       "evolution": "nouveau"
@@ -11812,14 +11844,15 @@
       "organisation": "Breach Forums",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
       "score_cyberattaque": 50,
       "impact_connu": "Alerte référencée dans l’archive 2026 de FrenchBreaches ; détails à enrichir depuis la fiche source.",
       "sources": [
-        "https://frenchbreaches.com/alertes/breach-forums-2545474106f8"
+        "https://frenchbreaches.com/alertes/breach-forums-2545474106f8",
+        "https://frenchbreaches.com/blog/cyberattaques-en-70-jours-commerce-sport-et-administrations-dans-le-viseur-des-hackers"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Breach Forums.",
       "evolution": "nouveau"

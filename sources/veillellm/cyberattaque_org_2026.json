@@ -138,6 +138,19 @@
       ],
       "method": "high-confidence residual mapping from official company/service sites, official registries, source-native sector metadata only when corroborated by actual victim activity, plus apostrophe-safe identity matching",
       "evidence_policy": "no source-native label is accepted when it conflicts with actual victim activity; genuine taxonomy gaps remain Inconnu"
+    },
+    "company_research_v9": {
+      "before_sector_unknown": 16,
+      "resolved_sector_unknown": 3,
+      "remaining_sector_unknown": 13,
+      "other_data_corrections": 0,
+      "applied_to": [
+        "Bloctel",
+        "Monservicederemplacement.fr",
+        "Vaucluse Provence Attractivité"
+      ],
+      "method": "final defensible residuals: public-service mission, professional/B2B service function, official medical service, and explicitly digital platform activity",
+      "evidence_policy": "remaining Inconnu values are retained when activity is outside the canonical taxonomy or identity/activity is still insufficiently evidenced"
     }
   },
   "incidents": [
@@ -817,14 +830,16 @@
       "organisation": "Bloctel",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Le service public Bloctel, utilisé par les Français pour s’opposer au démarchage téléphonique, fait l’objet d’une importante revendication…",
       "sources": [
-        "https://www.cyberattaque.org/bloctel-3-millions-de-numeros-en-fuite/"
+        "https://www.cyberattaque.org/bloctel-3-millions-de-numeros-en-fuite/",
+        "https://www.bloctel.gouv.fr/CGU",
+        "https://www.bloctel.gouv.fr/mentions-legales"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Bloctel : 3 millions de numéros en fuite à cinq jours de la fin du service",
       "evolution": "nouveau"
@@ -4685,14 +4700,15 @@
       "organisation": "Monservicederemplacement.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Une base de données attribuée à Monservicederemplacement.fr, plateforme liée au Service de Remplacement France, circule actuellement en ligne…",
       "sources": [
-        "https://www.cyberattaque.org/monservicederemplacement-fr-pres-de-185-000-personnes-exposees-dans-une-fuite-de-donnees-sensibles/"
+        "https://www.cyberattaque.org/monservicederemplacement-fr-pres-de-185-000-personnes-exposees-dans-une-fuite-de-donnees-sensibles/",
+        "https://servicederemplacement.fr/se-faire-remplacer"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Monservicederemplacement.fr : près de 185 000 personnes exposées dans une fuite de données sensibles",
       "evolution": "nouveau"
@@ -6959,15 +6975,17 @@
       "date": "2026-03-31",
       "organisation": "Vaucluse Provence Attractivité",
       "territoire": "France",
-      "localisation": "France",
-      "secteur": "Inconnu",
+      "localisation": "Vaucluse, Provence-Alpes-Côte d’Azur",
+      "secteur": "Services aux entreprises",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
       "score_cyberattaque": 60,
       "impact_connu": "Vaucluse Provence Attractivité, organisme public en charge de la promotion touristique et économique du territoire, a été victime…",
       "sources": [
-        "https://www.cyberattaque.org/vaucluse-provence-attractivite-des-clients-cibles-apres-une-cyberattaque/"
+        "https://www.cyberattaque.org/vaucluse-provence-attractivite-des-clients-cibles-apres-une-cyberattaque/",
+        "https://vaucluseprovence-attractivite.com/qui-sommes-nous/nos-missions/invest/",
+        "https://vaucluseprovence-attractivite.com/qui-sommes-nous/nos-missions/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Vaucluse Provence Attractivité : des clients ciblés après une cyberattaque",
       "evolution": "nouveau"
