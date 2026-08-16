@@ -12,11 +12,12 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     env:
       PYTHONUNBUFFERED: "1"
       OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
       AI_MAX_CALLS_PER_RUN: "0"
+      ORG_ENRICHMENT_ENABLED: "0"
       SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "20"
       SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.25"
       SOURCE_FACTS_AI_PROGRESS_EVERY: "5"
@@ -36,7 +37,9 @@ jobs:
         run: |
           rm -f /tmp/source-facts-fb-cache.json /tmp/source-facts-fb-stats.json
           python - <<'PY'
-          from cyberwatch import runner, source_facts_ai
+          from cyberwatch import runner, source_facts_ai, sources
+          spec = next(s for s in sources.ALL_SOURCES if s.source_id == "FRENCHBREACHES")
+          sources.ALL_SOURCES = [spec]
           source_facts_ai.TARGET_SOURCES = {"FRENCHBREACHES"}
           ctx = runner.make_run_context(
               runner.MODE_CREATE,
@@ -46,7 +49,7 @@ jobs:
           )
           report = runner.execute(ctx)
           source_facts_ai._flush_runtime()
-          print("FB_REPORT", len(report.items), report.overall_status, flush=True)
+          print("FB_REPORT", len(report.items), report.overall, round(report.duration, 2), flush=True)
           print("FB_STATS", source_facts_ai.runtime_stats(), flush=True)
           PY
 
@@ -57,8 +60,9 @@ jobs:
         run: |
           rm -f /tmp/source-facts-co-cache.json /tmp/source-facts-co-stats.json
           python - <<'PY'
-          from cyberwatch import runner, source_facts_ai
-          source_facts_ai.reset_runtime_for_tests()
+          from cyberwatch import runner, source_facts_ai, sources
+          spec = next(s for s in sources.ALL_SOURCES if s.source_id == "CYBERATTAQUE_ORG")
+          sources.ALL_SOURCES = [spec]
           source_facts_ai.TARGET_SOURCES = {"CYBERATTAQUE_ORG"}
           ctx = runner.make_run_context(
               runner.MODE_CREATE,
@@ -68,7 +72,7 @@ jobs:
           )
           report = runner.execute(ctx)
           source_facts_ai._flush_runtime()
-          print("CO_REPORT", len(report.items), report.overall_status, flush=True)
+          print("CO_REPORT", len(report.items), report.overall, round(report.duration, 2), flush=True)
           print("CO_STATS", source_facts_ai.runtime_stats(), flush=True)
           PY
 
