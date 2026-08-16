@@ -1,24 +1,9 @@
 """Faits source par article (§13 METHODOLOGY.md).
 
-Un fait source décrit ce qu'une source publie explicitement pour un item —
-jamais une connaissance canonique sur l'organisation. `Threat`/`Sector`/
-`Location` (qualification canonique, `Item`) n'en dépendent jamais et cette
-couche ne les modifie jamais.
-
-Extraction strictement offline : aucun accès réseau, aucun appel OpenAI,
-aucune recherche Web. Politique en 4 niveaux de confiance, du plus sûr au
-plus prudent :
-  1. champ structuré transmis directement par la source (`entry.source_metadata`
-     ou champs déjà structurés de `RawEntry` comme `organisation`/`sector`) ;
-  2. structure syntaxique explicite propre à la source ("Via X",
-     "Données concernées : ...", "CVE-AAAA-NNNNN") ;
-  3. extraction déterministe prudente depuis `summary`/`content`, vocabulaire
-     fermé (unités, verbes de compromission explicites) ;
-  4. sinon : champ vide. Jamais de déduction à partir d'une connaissance
-     externe, jamais de valeur "probable" — la précision prime sur le taux
-     de remplissage.
+Couche auxiliaire, strictement offline : elle conserve uniquement des faits
+explicitement publiés par la source et ne modifie jamais Threat/Sector/Location.
+La précision prime sur le taux de remplissage : une extraction ambiguë reste vide.
 """
-
 from __future__ import annotations
 
 import json
@@ -29,14 +14,13 @@ from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import (
     clean_organisation,
     extract_activity_description,
+    organisation_key,
     parse_date,
+    searchable,
     strip_accents,
 )
 
-#: Bump uniquement si les règles d'extraction changent matériellement
-#: (même esprit que `config.METHOD_ID`, mais scope local à ce module —
-#: `source_facts.csv` n'entre dans aucun hash canonique).
-SOURCE_FACTS_VERSION = "1"
+SOURCE_FACTS_VERSION = "2"
 
 _BASE_COLUMNS = {
     "Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version",
@@ -44,22 +28,13 @@ _BASE_COLUMNS = {
 }
 
 
-# --------------------------------------------------------------------------
-# JSON déterministe
-# --------------------------------------------------------------------------
-
-
 def _dumps_json(value) -> str:
-    """Sérialisation JSON canonique, `""` pour une valeur vide (convention
-    CSV existante : cellule vide = absence)."""
     if not value:
         return ""
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
 def _loads_json(raw: str):
-    """Inverse tolérant de `_dumps_json` : `None` sur chaîne vide ou JSON
-    invalide (jamais d'exception, réservé aux tests de round-trip)."""
     if not raw:
         return None
     try:
@@ -68,19 +43,17 @@ def _loads_json(raw: str):
         return None
 
 
-# --------------------------------------------------------------------------
-# Motifs communs à plusieurs sources
-# --------------------------------------------------------------------------
-
 _CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.I)
-_CVSS_RE = re.compile(r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:\.\d)?)(?:\s*/\s*10)?\b", re.I)
+_CVSS_RE = re.compile(
+    r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:\.\d)?)(?:\s*/\s*10)?\b",
+    re.I,
+)
 _VOLUME_RE = re.compile(r"\b\d[\d\s ,.]*\s*(?:Ko|Mo|Go|To|KB|MB|GB|TB)\b", re.I)
 _FILE_COUNT_RE = re.compile(r"\b(\d[\d\s .,]*)\s*(?:fichiers?|documents?)\b", re.I)
 
 
 def _extract_cves(*texts: str) -> list[str]:
-    found = {match.upper() for text in texts for match in _CVE_RE.findall(text or "")}
-    return sorted(found)
+    return sorted({match.upper() for text in texts for match in _CVE_RE.findall(text or "")})
 
 
 def _extract_cvss(*texts: str) -> str:
@@ -103,22 +76,23 @@ def _extract_file_count(*texts: str) -> str:
     for text in texts:
         match = _FILE_COUNT_RE.search(text or "")
         if match:
-            digits = match.group(1).replace(" ", "").replace(" ", "").replace(".", "").replace(",", "")
+            digits = (
+                match.group(1)
+                .replace(" ", "")
+                .replace(" ", "")
+                .replace(".", "")
+                .replace(",", "")
+            )
             if digits.isdigit():
                 return digits
     return ""
 
 
 def _split_list(text: str) -> list[str]:
-    """Découpe une énumération française ("noms, emails et mots de passe")
-    en éléments distincts, sans autre interprétation."""
     parts = re.split(r",|\bet\b", text or "")
     return [part.strip(" .") for part in parts if part.strip(" .")]
 
 
-#: Vocabulaire fermé et conservateur : sans correspondance, `Affected_Count`/
-#: `Affected_Unit` restent vides même si un nombre est détecté (§13 — mieux
-#: vaut ne rien affirmer qu'inventer une unité).
 _UNIT_MAP = {
     "personne": "people", "personnes": "people",
     "compte": "accounts", "comptes": "accounts",
@@ -141,7 +115,7 @@ _COUNT_RE = re.compile(
     r"(?P<scale>million[s]?|millier[s]?|mille)?\s*"
     r"(?:de\s+|d['’])?\s*"
     r"(?P<unit>[a-zàâäéèêëïîôöùûüç]+)",
-    re.IGNORECASE,
+    re.I,
 )
 
 
@@ -159,31 +133,23 @@ def _to_number(raw_number: str, scale: str) -> int | None:
 
 
 def _parse_count_phrase(text: str) -> tuple[str, str, str]:
-    """Nombre + unité explicites, ou `("", "", "")` si rien de fiable.
-
-    `raw` (troisième élément) conserve la formulation exacte même quand
-    `count`/`unit` restent vides — jamais de fausse précision sur une
-    formulation approximative ("environ 90 000 personnes").
-    """
+    """Retourne uniquement un nombre dont l'unité appartient au vocabulaire fermé."""
     if not text:
         return "", "", ""
     match = _COUNT_RE.search(text)
     if not match:
         return "", "", ""
-    raw = match.group(0).strip()
     unit_word = strip_accents(match.group("unit") or "").lower().rstrip(".,;:")
     canonical_unit = _UNIT_MAP.get(unit_word, "")
     if not canonical_unit:
-        return "", "", raw
+        return "", "", ""
     number = _to_number(match.group("number"), match.group("scale") or "")
     if number is None:
-        return "", "", raw
-    return str(number), canonical_unit, raw
+        return "", "", ""
+    return str(number), canonical_unit, match.group(0).strip()
 
 
 def _clean_span(raw: str) -> str:
-    """Nettoie un nom capturé par regex (tiers, acteur) : `clean_organisation`
-    plus la ponctuation de fin de phrase qu'une capture peut aspirer."""
     return clean_organisation(raw).rstrip(" .,;:")
 
 
@@ -194,9 +160,78 @@ def _normalise_url(value: str) -> str:
     return value
 
 
-# --------------------------------------------------------------------------
-# Gabarit commun
-# --------------------------------------------------------------------------
+_ACTOR_SENTINELS = {
+    "", "un", "une", "le", "la", "les", "hacker", "le hacker", "un hacker",
+    "attaquant", "l attaquant", "l'attaquant", "auteur", "inconnu", "non identifie",
+    "non identifie publiquement", "n a", "na",
+}
+
+
+def _valid_actor(candidate: str, organisation: str = "") -> str:
+    candidate = _clean_span(candidate)
+    normalized = searchable(candidate)
+    if not candidate or normalized in _ACTOR_SENTINELS:
+        return ""
+    if normalized.startswith(("le hacker", "un hacker", "l attaquant", "un attaquant")):
+        return ""
+    if organisation and organisation_key(candidate) == organisation_key(organisation):
+        return ""
+    return candidate
+
+
+def _valid_third_party(candidate: str, organisation: str = "") -> str:
+    candidate = _clean_span(candidate)
+    normalized = searchable(candidate)
+    if not candidate or normalized in {"un", "une", "le", "la", "les", "inconnu"}:
+        return ""
+    if organisation and organisation_key(candidate) == organisation_key(organisation):
+        return ""
+    return candidate
+
+
+_ACTIVITY_BRIDGES = {
+    "",
+    "est",
+    "est un",
+    "est une",
+    "est un acteur",
+    "est une entreprise",
+    "est une societe",
+    "est un groupe",
+    "est une association",
+    "est un organisme",
+    "est une plateforme",
+}
+
+
+def _extract_victim_activity(organisation: str, *texts: str) -> str:
+    """Extrait une activité explicitement rattachée à la victime.
+
+    La présence de la victime dans la même phrase ne suffit pas : dans
+    ``un forum spécialisé dans les fuites revendique X``, l'activité décrit
+    le forum. La victime doit précéder l'expression métier et n'en être séparée
+    que par un connecteur fermé (``est``, ``est une entreprise``, ponctuation).
+    """
+    org = searchable(organisation)
+    if not org:
+        return ""
+    for text in texts:
+        for segment in re.split(r"(?<=[.!?;])\s+|\n+", text or ""):
+            segment_norm = searchable(segment)
+            org_pos = segment_norm.find(org)
+            if org_pos < 0:
+                continue
+            activity = extract_activity_description(segment)
+            if not activity:
+                continue
+            activity_norm = searchable(activity)
+            activity_pos = segment_norm.find(activity_norm)
+            if activity_pos < 0 or activity_pos < org_pos + len(org):
+                continue
+            bridge = segment_norm[org_pos + len(org):activity_pos].strip(" ,-:()")
+            if bridge in _ACTIVITY_BRIDGES:
+                return activity
+    return ""
 
 
 def _blank_fact(item: Item, spec: SourceSpec) -> dict:
@@ -221,11 +256,6 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
     return fact
 
 
-# --------------------------------------------------------------------------
-# BONJOURLAFUITE
-# --------------------------------------------------------------------------
-
-
 def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
@@ -235,16 +265,9 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     if claim_status_raw:
         fact["Claim_Status_Raw"] = claim_status_raw
         evidence["Claim_Status_Raw"] = claim_status_raw
-    # Claim_Status canonique jamais déduit du marqueur : la légende de
-    # couleur du site n'est pas vérifiée (ambiguïté -> vide, cf. §13).
 
-    third_party_raw = meta.get("third_party_raw", "")
-    if third_party_raw:
-        third_party = _clean_span(third_party_raw)
-        if third_party:
-            fact["Third_Party"] = third_party
-            evidence["Third_Party"] = third_party_raw
-
+    # "Via" est une provenance brute, pas une preuve suffisante d'implication
+    # d'un tiers. Elle reste dans Source_Metadata_JSON sans peupler Third_Party.
     data_types_raw = meta.get("data_types_raw", "")
     if data_types_raw:
         data_types = _split_list(data_types_raw)
@@ -253,42 +276,34 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
             evidence["Data_Types_JSON"] = data_types_raw
 
     count, unit, raw_count = _parse_count_phrase(data_types_raw or entry.summary)
-    if raw_count:
-        fact["Affected_Count_Raw"] = raw_count
-        evidence["Affected_Count_Raw"] = raw_count
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
+        fact["Affected_Count_Raw"] = raw_count
+        evidence["Affected_Count_Raw"] = raw_count
 
     source_urls = meta.get("source_urls") or []
     if source_urls:
         fact["Evidence_URLs_JSON"] = _dumps_json(source_urls)
-
     return _finalize(fact, entry, evidence)
 
 
-# --------------------------------------------------------------------------
-# FRENCHBREACHES
-# --------------------------------------------------------------------------
-
 _CLAIM_STATUS_MAP = (
-    # Ordre significatif : la négation doit être testée avant la forme
-    # positive, sinon "non confirmée" matcherait aussi "confirmée".
     (re.compile(r"\bnon\s+confirm[ée]e?\b", re.I), "unconfirmed"),
     (re.compile(r"\bd[ée]menti[e]?\b", re.I), "denied"),
     (re.compile(r"\bconfirm[ée]e?\b", re.I), "confirmed"),
     (re.compile(r"\brevendiqu[ée]e?\b", re.I), "claimed"),
 )
-
-_ACTOR_RE = re.compile(
-    r"revendiqu[ée]e?\s+par\s+(?:le\s+groupe\s+)?([A-Z][\w.&'’-]{1,40})", re.I,
-)
-_GROUP_RE = re.compile(r"\bgroupe\s+([A-Z][\w.&'’-]{1,40})", re.I)
-_THIRD_PARTY_RE = re.compile(
-    r"\bvia\s+(?:la\s+plateforme\s+|le\s+prestataire\s+|l['’]h[ée]bergeur\s+)?"
-    r"([A-Z][\w.&'’-]{1,40})",
-    re.I,
-)
+_ACTOR_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
+    r"revendiqu[ée]e?\s+par\s+le\s+groupe\s+([A-Za-z0-9][\w.&'’+-]{1,40})",
+    r"\bgroupe\s+([A-Za-z0-9][\w.&'’+-]{1,40})\s+a\s+revendiqu[ée]",
+    r"revendiqu[ée]e?\s+par\s+([A-Za-z0-9][\w.&'’+-]{1,40})",
+))
+_THIRD_PARTY_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
+    r"\bvia\s+la\s+plateforme\s+([A-Za-z0-9][\w.&'’+-]{1,40})",
+    r"\bvia\s+le\s+prestataire\s+([A-Za-z0-9][\w.&'’+-]{1,40})",
+    r"\bvia\s+l['’]h[ée]bergeur\s+([A-Za-z0-9][\w.&'’+-]{1,40})",
+))
 
 
 def _claim_status(text: str) -> tuple[str, str]:
@@ -299,75 +314,79 @@ def _claim_status(text: str) -> tuple[str, str]:
     return "", ""
 
 
+def _first_valid_match(patterns, text: str, validator, organisation: str) -> tuple[str, str]:
+    for pattern in patterns:
+        match = pattern.search(text or "")
+        if not match:
+            continue
+        value = validator(match.group(1), organisation)
+        if value:
+            return value, match.group(0).strip()
+    return "", ""
+
+
 def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
     text = f"{entry.title} {entry.summary}"
+    organisation = entry.organisation or item.Organisation_Raw
 
-    status_canonical, status_raw = _claim_status(text)
-    if status_raw:
-        fact["Claim_Status"] = status_canonical
-        fact["Claim_Status_Raw"] = status_raw
+    canonical, raw = _claim_status(text)
+    if raw:
+        fact["Claim_Status"] = canonical
+        fact["Claim_Status_Raw"] = raw
 
     count, unit, raw_count = _parse_count_phrase(text)
-    if raw_count:
-        fact["Affected_Count_Raw"] = raw_count
-        evidence["Affected_Count_Raw"] = raw_count
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
+        fact["Affected_Count_Raw"] = raw_count
+        evidence["Affected_Count_Raw"] = raw_count
 
     volume = _extract_volume(text)
     if volume:
         fact["Data_Volume_Raw"] = volume
-
     file_count = _extract_file_count(text)
     if file_count:
         fact["File_Count"] = file_count
 
-    actor_match = _ACTOR_RE.search(text) or _GROUP_RE.search(text)
-    if actor_match:
-        actor = _clean_span(actor_match.group(1))
-        if actor:
-            fact["Threat_Actor"] = actor
-            evidence["Threat_Actor"] = actor_match.group(0)
+    actor, actor_evidence = _first_valid_match(
+        _ACTOR_PATTERNS, text, _valid_actor, organisation
+    )
+    if actor:
+        fact["Threat_Actor"] = actor
+        evidence["Threat_Actor"] = actor_evidence
 
-    third_party_match = _THIRD_PARTY_RE.search(text)
-    if third_party_match:
-        third_party = _clean_span(third_party_match.group(1))
-        if third_party:
-            fact["Third_Party"] = third_party
-            evidence["Third_Party"] = third_party_match.group(0)
+    third_party, third_party_evidence = _first_valid_match(
+        _THIRD_PARTY_PATTERNS, text, _valid_third_party, organisation
+    )
+    if third_party:
+        fact["Third_Party"] = third_party
+        evidence["Third_Party"] = third_party_evidence
 
     cves = _extract_cves(text)
     if cves:
         fact["Vulnerabilities_JSON"] = _dumps_json(cves)
         evidence["Vulnerabilities_JSON"] = ", ".join(cves)
-
     cvss = _extract_cvss(text)
     if cvss:
         fact["CVSS_Raw"] = cvss
 
-    activity = extract_activity_description(text)
+    activity = _extract_victim_activity(organisation, entry.title, entry.summary)
     if activity:
         fact["Activity_Description"] = activity
-
     return _finalize(fact, entry, evidence)
 
 
-# --------------------------------------------------------------------------
-# CYBERATTAQUE_ORG — relation explicite exigée pour Third_Party/Threat_Actor
-# --------------------------------------------------------------------------
-
 _CO_THIRD_PARTY_RE = tuple(re.compile(pattern, re.I) for pattern in (
-    r"\b(?:le\s+)?prestataire\s+([A-Z][\w.&'’ -]{1,40}?)\s+(?:a\s+[ée]t[ée]\s+)?compromis",
-    r"\bh[ée]berg[ée]e?\s+(?:par|chez)\s+([A-Z][\w.&'’ -]{1,40}?)(?:,|\.|;| qui| également|$)",
-    r"\bla\s+plateforme\s+tierce\s+([A-Z][\w.&'’ -]{1,40}?)\s+(?:est\s+)?[àa]\s+l['’]origine",
-    r"\bfournisseur\s+([A-Z][\w.&'’ -]{1,40}?)\s+explicitement\s+impliqu[ée]",
+    r"\b(?:le\s+)?prestataire\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)\s+(?:a\s+[ée]t[ée]\s+)?compromis",
+    r"\bh[ée]berg[ée]e?\s+(?:par|chez)\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)(?:,|\.|;| qui| également|$)",
+    r"\bla\s+plateforme\s+tierce\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)\s+(?:est\s+)?[àa]\s+l['’]origine",
+    r"\bfournisseur\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)\s+explicitement\s+impliqu[ée]",
 ))
 _CO_THREAT_ACTOR_RE = tuple(re.compile(pattern, re.I) for pattern in (
-    r"\b(?:le\s+)?groupe\s+([A-Z][\w.&'’ -]{1,40}?)\s+a\s+revendiqu[ée]",
-    r"revendiqu[ée]e?\s+par\s+(?:le\s+groupe\s+)?([A-Z][\w.&'’ -]{1,40})",
+    r"\b(?:le\s+)?groupe\s+([A-Za-z0-9][\w.&'’+-]{1,40})\s+a\s+revendiqu[ée]",
+    r"revendiqu[ée]e?\s+par\s+(?:le\s+groupe\s+)?([A-Za-z0-9][\w.&'’+-]{1,40})",
 ))
 _WEBSITE_RE = re.compile(
     r"\bsite\s+(?:officiel\s+|web\s+)?(?:de\s+la\s+victime\s+)?[:\s]+"
@@ -380,46 +399,39 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
     fact = _blank_fact(item, spec)
     evidence: dict = {}
     text = f"{entry.title} {entry.summary} {entry.content}"
+    organisation = entry.organisation or item.Organisation_Raw
 
-    for pattern in _CO_THIRD_PARTY_RE:
-        match = pattern.search(text)
-        if match:
-            third_party = _clean_span(match.group(1))
-            if third_party:
-                fact["Third_Party"] = third_party
-                evidence["Third_Party"] = match.group(0).strip()
-                break
+    third_party, third_party_evidence = _first_valid_match(
+        _CO_THIRD_PARTY_RE, text, _valid_third_party, organisation
+    )
+    if third_party:
+        fact["Third_Party"] = third_party
+        evidence["Third_Party"] = third_party_evidence
 
-    for pattern in _CO_THREAT_ACTOR_RE:
-        match = pattern.search(text)
-        if match:
-            actor = _clean_span(match.group(1))
-            if actor:
-                fact["Threat_Actor"] = actor
-                evidence["Threat_Actor"] = match.group(0).strip()
-                break
+    actor, actor_evidence = _first_valid_match(
+        _CO_THREAT_ACTOR_RE, text, _valid_actor, organisation
+    )
+    if actor:
+        fact["Threat_Actor"] = actor
+        evidence["Threat_Actor"] = actor_evidence
 
     count, unit, raw_count = _parse_count_phrase(text)
-    if raw_count:
-        fact["Affected_Count_Raw"] = raw_count
-        evidence["Affected_Count_Raw"] = raw_count
     if count:
         fact["Affected_Count"] = count
         fact["Affected_Unit"] = unit
+        fact["Affected_Count_Raw"] = raw_count
+        evidence["Affected_Count_Raw"] = raw_count
 
     volume = _extract_volume(text)
     if volume:
         fact["Data_Volume_Raw"] = volume
-
     file_count = _extract_file_count(text)
     if file_count:
         fact["File_Count"] = file_count
-
     cves = _extract_cves(text)
     if cves:
         fact["Vulnerabilities_JSON"] = _dumps_json(cves)
         evidence["Vulnerabilities_JSON"] = ", ".join(cves)
-
     cvss = _extract_cvss(text)
     if cvss:
         fact["CVSS_Raw"] = cvss
@@ -431,16 +443,12 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
             fact["Victim_Website"] = website
             evidence["Victim_Website"] = website_match.group(0).strip()
 
-    activity = extract_activity_description(text)
+    activity = _extract_victim_activity(
+        organisation, entry.title, entry.summary, entry.content
+    )
     if activity:
         fact["Activity_Description"] = activity
-
     return _finalize(fact, entry, evidence)
-
-
-# --------------------------------------------------------------------------
-# RANSOMWARE_LIVE
-# --------------------------------------------------------------------------
 
 
 def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
@@ -448,10 +456,10 @@ def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict
     evidence: dict = {}
     meta = entry.source_metadata or {}
 
-    group = meta.get("group", "")
+    group = _valid_actor(meta.get("group", ""), entry.organisation or item.Organisation_Raw)
     if group:
         fact["Threat_Actor"] = group
-        evidence["Threat_Actor"] = group
+        evidence["Threat_Actor"] = meta.get("group", "")
 
     sector_raw = meta.get("sector_raw", "")
     if sector_raw:
@@ -460,28 +468,18 @@ def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict
     discovered = parse_date(meta.get("discovered", ""))
     if discovered:
         fact["Discovered_Date"] = discovered
-
     attackdate = parse_date(meta.get("attackdate", ""))
     if attackdate:
         fact["Attack_Date"] = attackdate
 
     website = _normalise_url(meta.get("website", ""))
-    if website and website != entry.url:
+    if website:
         fact["Victim_Website"] = website
 
-    urls: list[str] = []
-    for candidate in (website, _normalise_url(meta.get("claim_url", ""))):
-        if candidate and candidate not in urls:
-            urls.append(candidate)
-    if urls:
-        fact["Evidence_URLs_JSON"] = _dumps_json(urls)
-
+    claim_url = _normalise_url(meta.get("claim_url", ""))
+    if claim_url:
+        fact["Evidence_URLs_JSON"] = _dumps_json([claim_url])
     return _finalize(fact, entry, evidence)
-
-
-# --------------------------------------------------------------------------
-# VEILLE_LLM — déjà structuré, aucune interprétation supplémentaire
-# --------------------------------------------------------------------------
 
 
 def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
@@ -490,48 +488,33 @@ def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | Non
     if not meta:
         return None
 
-    fine_location = meta.get("localisation", "")
-    if fine_location:
-        fact["Fine_Location"] = fine_location
+    if meta.get("localisation", ""):
+        fact["Fine_Location"] = meta["localisation"]
 
-    actor = meta.get("acteur", "")
+    actor = _valid_actor(meta.get("acteur", ""), entry.organisation or item.Organisation_Raw)
     if actor:
         fact["Threat_Actor"] = actor
 
-    statut = meta.get("statut", "")
-    if statut:
-        fact["Claim_Status_Raw"] = statut
+    if meta.get("statut", ""):
+        fact["Claim_Status_Raw"] = meta["statut"]
 
     score = meta.get("score_cyberattaque")
     if score is not None and str(score) != "":
         fact["Cyberattack_Score"] = str(score)
 
-    impact = meta.get("impact_connu", "")
-    if impact:
-        fact["Impact"] = impact
-
-    synthese = meta.get("synthese", "")
-    if synthese:
-        fact["Summary"] = synthese
-
-    evolution = meta.get("evolution", "")
-    if evolution:
-        fact["Evolution"] = evolution
-
-    sector_raw = meta.get("secteur", "")
-    if sector_raw:
-        fact["Source_Sector_Raw"] = sector_raw
-
-    sources_list = meta.get("sources") or []
-    if sources_list:
-        fact["Evidence_URLs_JSON"] = _dumps_json(sources_list)
+    if meta.get("impact_connu", ""):
+        fact["Impact"] = meta["impact_connu"]
+    if meta.get("synthese", ""):
+        fact["Summary"] = meta["synthese"]
+    if meta.get("evolution", ""):
+        fact["Evolution"] = meta["evolution"]
+    if meta.get("secteur", ""):
+        fact["Source_Sector_Raw"] = meta["secteur"]
+    if meta.get("sources"):
+        fact["Evidence_URLs_JSON"] = _dumps_json(meta["sources"])
 
     return _finalize(fact, entry, {})
 
-
-# --------------------------------------------------------------------------
-# API publique
-# --------------------------------------------------------------------------
 
 _EXTRACTORS = {
     "BONJOURLAFUITE": _from_bonjourlafuite,
@@ -543,22 +526,17 @@ _EXTRACTORS = {
 
 
 def extract_source_fact(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
-    """Fait source pour un item validé, ou `None` si rien d'extractible.
-
-    Fonctionne uniquement à partir de `item`/`entry`/`spec` : aucun accès
-    réseau, aucun appel OpenAI. Une source non listée dans les 5 extracteurs
-    actifs ne produit aucune ligne.
-    """
+    """Retourne un fait source ou None. Une erreur auxiliaire ne bloque jamais la collecte."""
     extractor = _EXTRACTORS.get(spec.source_id)
     if extractor is None:
         return None
-    return extractor(item, entry, spec)
+    try:
+        return extractor(item, entry, spec)
+    except Exception:
+        return None
 
 
 def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]:
-    """Fusion par `Item_ID` : `incoming` écrase `existing` sur collision,
-    tri final déterministe. Même sémantique que `dedup.merge_items`, sans
-    les champs propres aux items (§13 — MAJ idempotente)."""
     by_id: dict[str, dict] = {}
     for row in existing:
         item_id = row.get("Item_ID")
@@ -566,7 +544,6 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
             by_id[item_id] = row
     for row in incoming:
         item_id = row.get("Item_ID")
-        if not item_id:
-            continue
-        by_id[item_id] = row
+        if item_id:
+            by_id[item_id] = row
     return [by_id[key] for key in sorted(by_id)]

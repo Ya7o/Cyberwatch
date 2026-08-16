@@ -1,14 +1,4 @@
-"""Collecteur dédié à BonjourLaFuite — contrat fonctionnel V0.
-
-Cette source ne suit volontairement pas le modèle générique de couverture.
-Son statut répond à une seule question : le parseur reconnaît-il encore au
-moins un bloc de la timeline ?
-
-Un bloc est reconnu dès qu'une date valide est suivie d'un titre ``h2`` dont
-le libellé d'organisation est non vide. La fenêtre ne sert qu'à décider quels
-blocs sont transmis au runner pour matérialisation dans ITEMS ; elle ne décide
-jamais du statut de la source.
-"""
+"""Collecteur dédié à BonjourLaFuite — contrat fonctionnel V0."""
 
 from __future__ import annotations
 
@@ -20,23 +10,11 @@ from .. import status
 from ..normalize import clean_organisation, leading_decorative_marker, parse_date
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
 
-#: Reconnaissance structurelle du texte libre du bloc ("Via X",
-#: "Données concernées : ..."), en plus de l'aplatissement historique dans
-#: `summary` — pour la couche `source_facts` (§13 METHODOLOGY.md).
-_VIA_RE = re.compile(r"^via\b[:\s]*(.+)$", re.I)
-_DATA_TYPES_RE = re.compile(r"^donn[ée]es?\s+concern[ée]es?\b[:\s]*(.+)$", re.I)
+_VIA_RE = re.compile(r"^via\b[:\s]*(.*)$", re.I)
+_DATA_TYPES_RE = re.compile(r"^donn[ée]es?\s+concern[ée]es?\b[:\s]*(.*)$", re.I)
 
 
 class _RecognizedEntries(list):
-    """Itère sur les entrées de la fenêtre mais rapporte le total reconnu.
-
-    Le runner historique utilise ``len(result.entries)`` pour ``Items_seen`` et
-    itère sur la même collection pour construire ITEMS. Pour BonjourLaFuite,
-    ces deux populations sont différentes par définition : ce petit conteneur
-    conserve cette compatibilité sans faire entrer d'item hors fenêtre dans la
-    base.
-    """
-
     def __init__(self, in_window: list[RawEntry], total_seen: int):
         super().__init__(in_window)
         self.total_seen = total_seen
@@ -46,12 +24,11 @@ class _RecognizedEntries(list):
 
 
 class _BonjourHtmlParser(HTMLParser):
-    """Parse la structure sémantique stable de la timeline.
+    """Parse la timeline sans dépendre des classes CSS.
 
-    Les organisations sont publiées comme titres ``h2`` sur la page. On évite
-    volontairement les classes CSS : la reconnaissance dépend seulement de la
-    séquence ``date lisible -> h2 non vide``, ce qui est plus robuste et rend le
-    protocole facilement testable.
+    Les libellés ``Via`` et ``Données concernées`` peuvent être séparés de
+    leur valeur par des balises HTML (strong/span/p). Un petit état de champ
+    permet de conserver la valeur suivante sans nouvelle requête réseau.
     """
 
     def __init__(self, base_url: str):
@@ -64,20 +41,19 @@ class _BonjourHtmlParser(HTMLParser):
         self._h2_parts: list[str] = []
         self._anchor_href = ""
         self._anchor_parts: list[str] = []
-        #: Texte libre du bloc courant ("Via", "Données concernées", ...),
-        #: déjà présent sur la page téléchargée : sert de contexte pour la
-        #: qualification (règles déterministes puis, en dernier recours, le
-        #: filet de rattrapage LLM), jamais une requête HTTP supplémentaire.
         self._extra_parts: list[str] = []
+        self._pending_field: str | None = None
 
     def handle_starttag(self, tag: str, attrs):
         lowered = tag.lower()
         if lowered == "h2":
             self._in_h2 = True
             self._h2_parts = []
+            self._pending_field = None
         elif lowered == "a":
             self._anchor_href = ""
             self._anchor_parts = []
+            self._pending_field = None
             for key, value in attrs:
                 if key.lower() == "href" and value:
                     self._anchor_href = value
@@ -94,7 +70,6 @@ class _BonjourHtmlParser(HTMLParser):
         text = " ".join((data or "").replace("\xa0", " ").split())
         if not text:
             return
-
         if self._in_h2:
             self._h2_parts.append(text)
             return
@@ -106,21 +81,42 @@ class _BonjourHtmlParser(HTMLParser):
         parsed = parse_date(text)
         if parsed:
             self.pending_date = parsed
-        elif not in_anchor and self.current is not None:
-            # Ni une date, ni le libellé d'un lien : texte libre du bloc en
-            # cours ("Via : ...", "Données concernées : ...", etc.).
-            self._extra_parts.append(text)
-            via = _VIA_RE.match(text)
-            if via:
-                self.current.source_metadata["third_party_raw"] = via.group(1).strip()
-            data_types = _DATA_TYPES_RE.match(text)
-            if data_types:
-                self.current.source_metadata["data_types_raw"] = data_types.group(1).strip()
+            self._pending_field = None
+            return
+        if in_anchor or self.current is None:
+            return
+
+        self._extra_parts.append(text)
+
+        via = _VIA_RE.match(text)
+        if via:
+            value = via.group(1).strip()
+            if value:
+                self.current.source_metadata["via_raw"] = value
+                self._pending_field = None
+            else:
+                self._pending_field = "via_raw"
+            return
+
+        data_types = _DATA_TYPES_RE.match(text)
+        if data_types:
+            value = data_types.group(1).strip()
+            if value:
+                self.current.source_metadata["data_types_raw"] = value
+                self._pending_field = None
+            else:
+                self._pending_field = "data_types_raw"
+            return
+
+        if self._pending_field:
+            self.current.source_metadata[self._pending_field] = text
+            self._pending_field = None
 
     def _finish_heading(self) -> None:
         raw = " ".join(self._h2_parts).strip()
         self._in_h2 = False
         self._h2_parts = []
+        self._pending_field = None
         self._flush_extra()
 
         organisation = clean_organisation(raw)
@@ -133,34 +129,26 @@ class _BonjourHtmlParser(HTMLParser):
             organisation=organisation,
             published=self.pending_date,
         )
-        # Marqueur brut (pastille de statut) capturé avant que le nettoyage
-        # ne le retire — jamais interprété ici, cf. `leading_decorative_marker`.
         claim_status_raw = leading_decorative_marker(raw)
         if claim_status_raw:
             entry.source_metadata["claim_status_raw"] = claim_status_raw
         self.entries.append(entry)
         self.current = entry
-        # Une date ne peut reconnaître qu'un seul bloc.
         self.pending_date = ""
 
     def _flush_extra(self) -> None:
-        """Attache le texte libre accumulé au bloc qui se termine."""
         if self.current is not None and self._extra_parts:
             self.current.summary = " ".join(self._extra_parts).strip()
         self._extra_parts = []
+        self._pending_field = None
 
     def finalize(self) -> None:
-        """À appeler une fois le flux entièrement parcouru (dernier bloc)."""
         self._flush_extra()
 
     def _finish_anchor(self) -> None:
         label = " ".join(self._anchor_parts).strip().lower()
         if self.current is not None and self._anchor_href and label.startswith("source"):
             resolved = urljoin(self.base_url, self._anchor_href)
-            # Comportement historique inchangé : seul le premier lien
-            # "Source" devient `entry.url` (Item_ID en dépend). Tous les
-            # liens "Source" du bloc sont en revanche conservés pour la
-            # couche `source_facts` (§13 METHODOLOGY.md).
             if not self.current.url:
                 self.current.url = resolved
             urls = self.current.source_metadata.setdefault("source_urls", [])
@@ -171,7 +159,6 @@ class _BonjourHtmlParser(HTMLParser):
 
 
 def parse_timeline(html: str, base_url: str) -> list[RawEntry]:
-    """Retourne tous les blocs reconnus, sans appliquer de fenêtre temporelle."""
     parser = _BonjourHtmlParser(base_url)
     parser.feed(html or "")
     parser.close()
@@ -180,14 +167,11 @@ def parse_timeline(html: str, base_url: str) -> list[RawEntry]:
 
 
 class BonjourLaFuiteCollector(Collector):
-    """Implémente strictement la règle OK/FAIL spécifique à BonjourLaFuite."""
-
     name = "bonjourlafuite"
 
     def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
         budget = client.source_budget()
         result = CollectResult(access_method="bonjourlafuite-html-v0")
-
         response = client.fetch(spec.start_url, budget)
         result.calls = budget.requests_made
 
@@ -202,7 +186,6 @@ class BonjourLaFuiteCollector(Collector):
 
         recognized = parse_timeline(response.text, spec.start_url)
         seen = len(recognized)
-
         if seen == 0:
             result.status_override = status.FAIL
             result.reason_code = status.REASON_PARSE_ERROR
@@ -210,9 +193,6 @@ class BonjourLaFuiteCollector(Collector):
             return result
 
         in_window = [entry for entry in recognized if window.contains(entry.published)]
-
-        # V0 : statut purement fonctionnel, indépendant de la fenêtre et de la
-        # matérialisation finale dans ITEMS. reached_boundary reste donc False.
         result.status_override = status.OK
         result.reason_code = status.REASON_OK
         result.entries = _RecognizedEntries(in_window, seen)
