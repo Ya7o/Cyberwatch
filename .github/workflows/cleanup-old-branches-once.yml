@@ -1,0 +1,46 @@
+name: Cleanup old merged branches (one-shot)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-old-branches-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.repository == 'Ya7o/Cyberwatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Supprimer les anciennes branches intégrées ou obsolètes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for ref in \
+            agent/location-org-enrichment \
+            agent/location-resolution-minimal \
+            agent/release-location-stabilisation-v0.7.32 \
+            agent/sector-stabilization-wip \
+            claude/cyberwatch-source-enrichment-n960ze
+          do
+            if gh api "repos/$REPO/git/ref/heads/$ref" >/dev/null 2>&1; then
+              gh api --method DELETE "repos/$REPO/git/refs/heads/$ref"
+            fi
+          done
+
+      - name: Retirer ce workflow one-shot
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          path='.github/workflows/cleanup-old-branches-once.yml'
+          sha="$(gh api "repos/$REPO/contents/$path?ref=main" --jq .sha)"
+          gh api --method DELETE "repos/$REPO/contents/$path" \
+            -f message='chore: retire le workflow de nettoyage des branches' \
+            -f sha="$sha" \
+            -f branch=main
