@@ -52,6 +52,9 @@ jobs:
           AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+          # Les sites officiels sont enrichis ensuite par le pipeline Sector
+          # ciblé et contrôlé, pas pendant la création canonique.
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         run: |
           ARGS=(--as-of "$AS_OF" --layers "$LAYERS")
           if [ -n "$TARGET_START" ]; then ARGS+=(--start "$TARGET_START"); fi
