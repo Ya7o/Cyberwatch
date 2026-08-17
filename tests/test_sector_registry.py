@@ -1,4 +1,4 @@
-from cyberwatch import config, enrichment, sector_registry
+from cyberwatch import config, enrichment, sector_registry, sector_registry_safety
 
 
 def _policy(**enabled):
@@ -6,6 +6,10 @@ def _policy(**enabled):
     for channel, value in enabled.items():
         policy["channels"][channel]["enabled"] = value
     return policy
+
+
+def _safe(rows):
+    return sector_registry_safety.enforce_candidate_conflicts(rows)
 
 
 def test_structured_sector_propagates_to_same_exact_organisation(make_item):
@@ -22,15 +26,13 @@ def test_structured_sector_propagates_to_same_exact_organisation(make_item):
         "Source_ID": "RANSOMWARE_LIVE",
         "Source_Sector_Raw": "Technology",
     }]
-
-    registry = sector_registry.build_registry(
+    registry = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
         previous_provenance=[],
-    )
+    ))
     row = next(row for row in registry if row["Organisation_Key"] == source.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_AUTO
     assert row["Sector"] == config.SECTOR_TECH
-
     changed, provenance, conflicts = sector_registry.apply_registry([source, target], registry)
     assert changed == 1
     assert conflicts == 0
@@ -51,21 +53,20 @@ def test_registry_application_is_reversible_and_not_self_proof(make_item):
         "Item_ID": source.Item_ID, "Source_ID": "RANSOMWARE_LIVE",
         "Source_Sector_Raw": "Technology",
     }]
-    registry = sector_registry.build_registry(
+    registry = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
         previous_provenance=[],
-    )
+    ))
     _changed, provenance, _conflicts = sector_registry.apply_registry([source, target], registry)
     assert target.Sector == config.SECTOR_TECH
     assert sector_registry.restore_registry_applications([source, target], provenance) == 1
     assert target.Sector == config.SECTOR_UNKNOWN
-
-    rebuilt = sector_registry.build_registry(
+    rebuilt = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
         previous_provenance=provenance,
-    )
+    ))
     row = next(row for row in rebuilt if row["Organisation_Key"] == source.Organisation_Key)
-    assert row["Evidence_Count"] == "2"  # structured source + original known item only
+    assert row["Evidence_Count"] == "2"
 
 
 def test_disabled_consensus_is_review_then_can_be_enabled(make_item):
@@ -82,18 +83,16 @@ def test_disabled_consensus_is_review_then_can_be_enabled(make_item):
         sector=config.SECTOR_UNKNOWN, url="https://bonjourlafuite/acme",
     )
     items = [first, second, target]
-
-    registry = sector_registry.build_registry(
+    registry = _safe(sector_registry.build_registry(
         items, {}, source_fact_rows=[], org_cache_rows=[], previous_provenance=[]
-    )
+    ))
     row = next(row for row in registry if row["Organisation_Key"] == first.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_REVIEW
     assert row["Evidence_Type"] == "consensus_multi_source"
-
-    registry = sector_registry.build_registry(
+    registry = _safe(sector_registry.build_registry(
         items, {}, source_fact_rows=[], org_cache_rows=[], previous_provenance=[],
         policy=_policy(consensus_multi_source=True),
-    )
+    ))
     row = next(row for row in registry if row["Organisation_Key"] == first.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_AUTO
 
@@ -115,10 +114,10 @@ def test_conflicting_known_sector_blocks_auto_structured_propagation(make_item):
         "Item_ID": ransomware.Item_ID, "Source_ID": "RANSOMWARE_LIVE",
         "Source_Sector_Raw": "Technology",
     }]
-    registry = sector_registry.build_registry(
+    registry = _safe(sector_registry.build_registry(
         [ransomware, conflicting, target], {}, source_fact_rows=facts,
         org_cache_rows=[], previous_provenance=[],
-    )
+    ))
     row = next(row for row in registry if row["Organisation_Key"] == ransomware.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_CONFLICT
     changed, _provenance, _conflicts = sector_registry.apply_registry(
@@ -140,10 +139,10 @@ def test_manual_reference_remains_auto(make_item):
             validation_url="https://acme.example/about",
         )
     }
-    registry = sector_registry.build_registry(
+    registry = _safe(sector_registry.build_registry(
         [target], reference, source_fact_rows=[], org_cache_rows=[],
         previous_provenance=[],
-    )
+    ))
     row = next(row for row in registry if row["Organisation_Key"] == target.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_AUTO
     assert row["Sector"] == config.SECTOR_SERVICES
