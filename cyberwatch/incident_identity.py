@@ -9,6 +9,11 @@ Lorsqu'une fusion réunit plusieurs incidents déjà connus, l'identifiant dont
 l'ancre a été collectée le plus tôt survit et les autres deviennent des
 redirections. Lorsqu'un incident est scindé, seule la composante qui contient
 son ancre historique conserve l'ancien identifiant.
+
+Un rebuild peut aussi ne plus reconstruire un ancien item source. Une ancre qui
+n'appartient plus à aucune composante courante est alors retirée du registre
+avant attribution : elle ne peut ni bloquer le CREATE ni rester artificiellement
+active sans incident courant.
 """
 
 from __future__ import annotations
@@ -75,24 +80,45 @@ def _new_incident_id(org_key: str, anchor_item_id: str, occupied: set[str]) -> s
         sequence += 1
 
 
+def _current_registry_rows(
+    rows: list[dict[str, str]], items_by_id: dict[str, Item]
+) -> list[dict[str, str]]:
+    """Écarte les ancres historiques impossibles à reconstruire actuellement.
+
+    Le registre est un état de cycle de vie des incidents présents, pas une
+    archive indépendante des ITEMS. Une ligne dont l'ancre n'appartient plus à
+    aucune composante courante ferait échouer les invariants structurels sans
+    pouvoir stabiliser le moindre Incident_ID. Les redirections dont la cible a
+    elle-même disparu sont retirées avec elle.
+    """
+    current = [row for row in rows if row.get("Anchor_Item_ID") in items_by_id]
+    current_ids = {row.get("Incident_ID", "") for row in current}
+    return [
+        row for row in current
+        if not row.get("Redirect_To") or row.get("Redirect_To") in current_ids
+    ]
+
+
 def assign_incident_ids(
     components: list[list[Item]],
     registry_rows: list[dict] | None = None,
 ) -> tuple[list[str], list[dict[str, str]]]:
     """Attribue un ID stable à chaque composante et renvoie le registre mis à jour."""
-    rows = _normalise_registry(registry_rows or [])
-    records: dict[str, dict[str, str]] = {}
-    for row in rows:
-        incident = row["Incident_ID"]
-        if incident and incident not in records:
-            records[incident] = dict(row)
-
     items_by_id = {
         item.Item_ID: item
         for component in components
         for item in component
         if item.Item_ID
     }
+    rows = _current_registry_rows(
+        _normalise_registry(registry_rows or []), items_by_id
+    )
+    records: dict[str, dict[str, str]] = {}
+    for row in rows:
+        incident = row["Incident_ID"]
+        if incident and incident not in records:
+            records[incident] = dict(row)
+
     active_by_anchor: dict[str, dict[str, str]] = {}
     for row in records.values():
         if row["Anchor_Item_ID"] and not row["Redirect_To"]:
