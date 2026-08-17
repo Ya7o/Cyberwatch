@@ -1,0 +1,85 @@
+name: Replay Identity Test
+
+on:
+  push:
+    branches:
+      - "agent/replay-identity-test"
+    paths:
+      - ".github/workflows/replay-identity-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Capturer l'état avant replay
+        run: |
+          cp data/incidents.csv /tmp/incidents-before.csv
+          python - <<'PY'
+          from cyberwatch import identity, store
+          from cyberwatch.org_identity import effective_organisation_key
+
+          items = store.load_items()
+          incidents = store.load_incidents()
+          affected = [
+              item for item in items
+              if effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
+              != item.Organisation_Key
+          ]
+          print(f"BEFORE items={len(items)} incidents={len(incidents)} hash={identity.incidents_hash(incidents)}")
+          print(f"IDENTITY_ITEMS_AFFECTED={len(affected)}")
+          for item in affected[:50]:
+              effective = effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
+              print(
+                  "IDENTITY_AFFECTED "
+                  f"{item.Item_ID} | {item.Organisation_Raw} | "
+                  f"stored={item.Organisation_Key} | effective={effective} | "
+                  f"date={item.best_date} | source={item.Source_ID}"
+              )
+          PY
+
+      - name: Replay offline
+        run: python -m cyberwatch replay
+
+      - name: Comparer avant après
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          from cyberwatch import identity, store
+
+          with Path('/tmp/incidents-before.csv').open(encoding='utf-8', newline='') as handle:
+              before = list(csv.DictReader(handle))
+          after_objects = store.load_incidents()
+          after = [incident.__dict__ for incident in after_objects]
+
+          before_ids = {row['Incident_ID'] for row in before}
+          after_ids = {row['Incident_ID'] for row in after}
+          removed = sorted(before_ids - after_ids)
+          added = sorted(after_ids - before_ids)
+
+          print(f"AFTER incidents={len(after_objects)} hash={identity.incidents_hash(after_objects)}")
+          print(f"DELTA_INCIDENTS={len(after_objects) - len(before)}")
+          print(f"REMOVED_INCIDENT_IDS={len(removed)}")
+          for value in removed[:50]:
+              row = next(row for row in before if row['Incident_ID'] == value)
+              print(f"REMOVED {value} | {row.get('Date','')} | {row.get('Organisation','')} | items={row.get('Items_Count','')}")
+          print(f"ADDED_INCIDENT_IDS={len(added)}")
+          for value in added[:50]:
+              row = next(row for row in after if row['Incident_ID'] == value)
+              print(f"ADDED {value} | {row.get('Date','')} | {row.get('Organisation','')} | items={row.get('Items_Count','')}")
+          PY
+          echo "===== DIFF STAT ====="
+          git diff --stat -- data/incidents.csv assets/data || true
