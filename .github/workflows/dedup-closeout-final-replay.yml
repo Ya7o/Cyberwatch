@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m pytest tests/ -q
           python scripts/evaluate_dedup_golden.py
-      - name: Replay incidents only
+      - name: Replay incidents only from current main state
         run: |
           python - <<'PY'
           from cyberwatch import identity, incident_identity, site, store
@@ -34,8 +34,11 @@ jobs:
           old_incidents = store.load_incidents()
           old_ids = {incident.Incident_ID for incident in old_incidents}
           items_hash_before = identity.items_hash(items)
-          registry_before = store.load_incident_id_registry()
-          incidents, registry = build_incidents_with_registry(items, registry_before)
+
+          registry = store.load_incident_id_registry()
+          if not registry:
+              registry = incident_identity.bootstrap_registry(items, old_incidents)
+          incidents, registry = build_incidents_with_registry(items, registry)
 
           problems = [p for p in pre_export_checks(items, incidents, []) if 'RUN_SOURCES' not in p]
           problems.extend(incident_identity.validate_registry(registry, items, incidents))
@@ -52,14 +55,18 @@ jobs:
               incident_id for incident_id in old_ids
               if rows.get(incident_id, {}).get('Redirect_To')
           )
+          new_active = sorted(active_ids - old_ids)
           print(
               f'OLD={len(old_incidents)} NEW={len(incidents)} '
-              f'REDIRECTED_OLD={redirected_old} UNRESOLVED_OLD={unresolved_old}'
+              f'NEW_ACTIVE={new_active} REDIRECTED_OLD={redirected_old} '
+              f'UNRESOLVED_OLD={unresolved_old}'
           )
-          if len(old_incidents) != 842 or len(incidents) != 841:
-              raise SystemExit(f'expected certified transition 842->841, got {len(old_incidents)}->{len(incidents)}')
+          if len(old_incidents) != 841 or len(incidents) != 841:
+              raise SystemExit(f'expected certified transition 841->841, got {len(old_incidents)}->{len(incidents)}')
           if unresolved_old:
               raise SystemExit(f'historical IDs lost without redirect: {unresolved_old}')
+          if len(new_active) != 1:
+              raise SystemExit(f'expected one new active ID from the reviewed INSERM split, got {new_active}')
           if len(redirected_old) != 1:
               raise SystemExit(f'expected one reviewed merge redirect, got {redirected_old}')
           if identity.items_hash(items) != items_hash_before:
@@ -71,7 +78,7 @@ jobs:
               items,
               incidents,
               operation='DEDUP_CERTIFIED_REPLAY',
-              as_of='2026-08-17T16:35:00+04:00',
+              as_of='2026-08-17T16:40:00+04:00',
           )
           site.build()
           PY
@@ -142,5 +149,5 @@ jobs:
           git config user.name "cyberwatch-bot"
           git config user.email "cyberwatch-bot@users.noreply.github.com"
           git add data/incidents.csv data/incident_id_registry.csv data/snapshot.json assets/data
-          git commit -m "Publish certified dedup replay"
+          git commit -m "Publish certified dedup replay on latest main data"
           git push origin HEAD:agent/dedup-closeout

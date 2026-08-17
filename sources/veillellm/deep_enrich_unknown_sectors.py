@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Enrichit les secteurs challengers depuis des preuves de site officiel.
+"""Enrichit les secteurs challengers depuis l'activité principale officielle.
 
-Cette étape ne classe jamais à partir du récit cyber, d'un snippet de moteur de
-recherche ou d'un annuaire juridique. La découverte est déterministe : domaines
-explicitement cités ou dérivés du nom de l'organisation. Chaque URL candidate
-est ensuite téléchargée et doit passer les contrôles d'identité et d'activité de
-:mod:`cyberwatch.company_evidence` avant de devenir une preuve Sector.
+La découverte reste déterministe : domaines explicitement cités ou dérivés du
+nom de l'organisation. Une URL candidate n'est qu'une piste ; la page doit
+valider l'identité de l'organisation puis contenir une formulation décrivant son
+activité principale.
 
-Les URLs d'incident restent dans ``sources``. Les preuves Sector sont persistées
-dans des champs dédiés ``sector_evidence_*`` afin que le fallback canonique
-puisse les revalider hors ligne sans confondre raccord d'incident et preuve
-métier.
+Les formulations de fonction secondaire sont volontairement exclues. Ainsi un
+« centre de formation » interne, un « fournisseur de l'hébergement du site » ou
+un « éditeur de la plateforme » ne peuvent plus définir le secteur de la
+victime. La précision prime sur la couverture : en cas de doute, ``Inconnu``.
 """
 
 from __future__ import annotations
@@ -21,14 +20,13 @@ import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch import company_evidence, config  # noqa: E402
-from cyberwatch.normalize import searchable  # noqa: E402
+from cyberwatch.normalize import classify_sector, searchable  # noqa: E402
 
 OUT = ROOT / "sources" / "veillellm"
 ITEMS_CSV = ROOT / "data" / "items.csv"
@@ -39,24 +37,18 @@ DATASETS = {
 }
 
 COLS = [
-    "date",
-    "organisation",
-    "territoire",
-    "localisation",
-    "secteur",
-    "type_menace",
-    "acteur",
-    "statut",
-    "score_cyberattaque",
-    "impact_connu",
-    "source_urls",
-    "synthese",
-    "evolution",
+    "date", "organisation", "territoire", "localisation", "secteur",
+    "type_menace", "acteur", "statut", "score_cyberattaque", "impact_connu",
+    "source_urls", "synthese", "evolution", "sector_evidence_url",
+    "sector_evidence_text", "sector_evidence_source", "sector_evidence_type",
+]
+
+SECTOR_EVIDENCE_FIELDS = (
     "sector_evidence_url",
     "sector_evidence_text",
     "sector_evidence_source",
     "sector_evidence_type",
-]
+)
 
 MAX_WORKERS = 12
 MAX_DOMAIN_CANDIDATES = 6
@@ -72,6 +64,34 @@ _LEGAL_SUFFIXES = {
     "corporation", "company", "co", "groupe", "group", "holding",
 }
 
+# Contrairement à normalize.extract_activity_description, ce garde n'accepte
+# pas les groupes nominaux comme « centre de formation » : ils décrivent trop
+# souvent une fonction secondaire d'une entreprise dont le métier est autre.
+_PRIMARY_ACTIVITY_RE = re.compile(
+    r"\b(?:sp[ée]cialis[ée]e?\s+dans|[ée]diteur\s+de|acteur\s+de|"
+    r"fournisseur\s+de|fabricant\s+de|distributeur\s+de|enseigne\s+de)"
+    r"\s+([^,.;:\n]{3,100})",
+    re.I,
+)
+
+# Une locution grammaticalement valide peut décrire la plomberie du site ou
+# une fonction support. Ces marqueurs la rendent inadmissible comme métier de la
+# victime. Ils sont testés sur texte normalisé/désaccentué.
+_SECONDARY_ACTIVITY_MARKERS = (
+    "hebergement du site",
+    "hebergement de ce site",
+    "hebergement de la plateforme",
+    "hebergement du portail",
+    "fournisseur de l hebergement",
+    "editeur de la plateforme",
+    "editeur du site",
+    "editeur de ce site",
+    "directeur de la publication",
+    "credits photos",
+    "credit photos",
+    "banque d images",
+)
+
 
 def _url_values(value: object) -> list[str]:
     if isinstance(value, list):
@@ -82,13 +102,11 @@ def _url_values(value: object) -> list[str]:
 
 
 def incident_urls(row: dict) -> tuple[str, ...]:
-    """URLs servant au raccord incident, jamais comme preuve Sector."""
     values = row.get("sources") or row.get("source_urls") or []
     return tuple(dict.fromkeys(_url_values(values)))
 
 
 def target_unknown_urls(source_id: str, path: Path = ITEMS_CSV) -> set[str]:
-    """URLs des items production encore sans secteur pour cette source."""
     if not path.exists():
         return set()
     targets: set[str] = set()
@@ -104,42 +122,135 @@ def target_unknown_urls(source_id: str, path: Path = ITEMS_CSV) -> set[str]:
     return targets
 
 
+def has_sector_evidence(row: dict) -> bool:
+    return any(str(row.get(field) or "").strip() for field in SECTOR_EVIDENCE_FIELDS)
+
+
 def is_target_row(row: dict, target_urls: set[str]) -> bool:
-    return bool(target_urls.intersection(incident_urls(row)))
+    # Les preuves déjà appliquées sont toujours réauditées lors d'un changement
+    # de politique, même si le secteur canonique n'est donc plus Inconnu.
+    return bool(target_urls.intersection(incident_urls(row))) or has_sector_evidence(row)
+
+
+def clear_sector_evidence(row: dict) -> None:
+    for field in SECTOR_EVIDENCE_FIELDS:
+        row.pop(field, None)
+    row["secteur"] = config.SECTOR_UNKNOWN
 
 
 def apply_evidence(
     row: dict,
     evidence: company_evidence.CompanyEvidence,
 ) -> tuple[str, str]:
-    """Persiste une preuve officielle séparée et retourne (avant, après)."""
     before = str(row.get("secteur") or config.SECTOR_UNKNOWN)
     row["secteur"] = evidence.sector
     row["sector_evidence_url"] = evidence.evidence_url
     row["sector_evidence_text"] = evidence.evidence_text
     row["sector_evidence_source"] = evidence.evidence_source
-    row["sector_evidence_type"] = evidence.evidence_type
+    row["sector_evidence_type"] = "official_primary_activity"
     if before != evidence.sector and row.get("evolution") != "nouveau":
         row["evolution"] = "enrichi"
     return before, evidence.sector
 
 
+def extract_primary_activity_description(text: str) -> str:
+    """Extrait uniquement une locution susceptible de décrire le métier cœur."""
+    if not text:
+        return ""
+    match = _PRIMARY_ACTIVITY_RE.search(text)
+    if not match:
+        return ""
+    activity = match.group(0).strip()
+    blob = searchable(activity)
+    if any(marker in blob for marker in _SECONDARY_ACTIVITY_MARKERS):
+        return ""
+    return activity
+
+
+def classify_primary_activity(activity: str) -> str:
+    """Classe la locution métier, avec quelques synonymes métier non ambigus."""
+    blob = searchable(activity)
+    if not blob:
+        return config.SECTOR_UNKNOWN
+
+    # « transition énergétique » ne contient pas le token exact « énergie » et
+    # tombait auparavant sur « foncier » => BTP. Ici la formulation métier est
+    # suffisamment explicite pour rendre l'énergie prioritaire.
+    if any(
+        marker in blob
+        for marker in (
+            "transition energetique",
+            "energies renouvelables",
+            "energie renouvelable",
+            "production energetique",
+        )
+    ):
+        return config.SECTOR_ENERGY
+
+    return classify_sector(activity)
+
+
+def strict_activity_evidence(
+    evidence: company_evidence.CompanyEvidence,
+) -> company_evidence.CompanyEvidence | None:
+    activity = extract_primary_activity_description(evidence.evidence_text)
+    if not activity:
+        return None
+    sector = classify_primary_activity(activity)
+    if sector == config.SECTOR_UNKNOWN:
+        return None
+    return company_evidence.CompanyEvidence(
+        sector=sector,
+        evidence_url=evidence.evidence_url,
+        evidence_text=activity,
+        evidence_source=evidence.evidence_source,
+        evidence_type="official_primary_activity",
+    )
+
+
+def _primary_activity_from_text(
+    text: str,
+    evidence_url: str,
+) -> company_evidence.CompanyEvidence | None:
+    activity = extract_primary_activity_description(text)
+    if not activity:
+        return None
+    sector = classify_primary_activity(activity)
+    if sector == config.SECTOR_UNKNOWN:
+        return None
+    return company_evidence.CompanyEvidence(
+        sector=sector,
+        evidence_url=evidence_url,
+        evidence_text=activity,
+        evidence_source=company_evidence._domain(evidence_url) or "official_site",
+        evidence_type="official_primary_activity",
+    )
+
+
+def strict_existing_evidence(row: dict) -> company_evidence.CompanyEvidence | None:
+    url = str(row.get("sector_evidence_url") or "").strip()
+    text = str(row.get("sector_evidence_text") or "").strip()
+    if not url or not text or company_evidence._blocked(url):
+        return None
+    evidence = company_evidence.CompanyEvidence(
+        sector=str(row.get("secteur") or config.SECTOR_UNKNOWN),
+        evidence_url=url,
+        evidence_text=text,
+        evidence_source=str(row.get("sector_evidence_source") or "official_site"),
+        evidence_type=str(row.get("sector_evidence_type") or "official_site"),
+    )
+    return strict_activity_evidence(evidence)
+
+
 def _domain_guess_tokens(organisation: str) -> list[str]:
-    tokens = [
+    return [
         token
         for token in searchable(organisation).split()
         if len(token) > 1 and token not in _LEGAL_SUFFIXES
-    ]
-    return tokens[:6]
+    ][:6]
 
 
 def candidate_official_urls(row: dict) -> tuple[str, ...]:
-    """Produit des pistes déterministes ; aucune n'est encore une preuve.
-
-    On privilégie d'abord un domaine explicitement présent dans le nom ou le
-    texte source, puis des domaines simples dérivés du nom. Ces URLs ne sont
-    jamais acceptées sans téléchargement et validation d'identité/activité.
-    """
     values: list[str] = []
     discovery_text = " ".join(
         str(row.get(field) or "")
@@ -148,13 +259,10 @@ def candidate_official_urls(row: dict) -> tuple[str, ...]:
     for match in _DOMAIN_RE.finditer(discovery_text):
         values.append("https://" + match.group(1).lower())
 
-    organisation = str(row.get("organisation") or "").strip()
-    tokens = _domain_guess_tokens(organisation)
+    tokens = _domain_guess_tokens(str(row.get("organisation") or "").strip())
     if tokens:
-        slugs = []
-        hyphenated = "-".join(tokens)
-        compact = "".join(tokens)
-        for slug in (hyphenated, compact):
+        slugs: list[str] = []
+        for slug in ("-".join(tokens), "".join(tokens)):
             if slug and slug not in slugs:
                 slugs.append(slug)
         for slug in slugs:
@@ -179,75 +287,59 @@ def _domain_matches_organisation(organisation: str, url: str) -> bool:
     return any(token in domain for token in tokens)
 
 
+def _validated_page(
+    organisation: str,
+    url: str,
+) -> tuple[str, str, list[str], str] | None:
+    priority, body, links, final_url = company_evidence._page(url)
+    if not priority and not body:
+        return None
+    page_url = final_url or url
+    if company_evidence._blocked(page_url):
+        return None
+    if not _domain_matches_organisation(organisation, page_url):
+        return None
+    if not company_evidence._identity_matches(organisation, page_url, priority, body):
+        return None
+    return priority, body, links, page_url
+
+
 def validate_official_candidate(
     organisation: str,
     candidate: str,
 ) -> company_evidence.CompanyEvidence | None:
-    """Transforme une piste en preuve seulement après validation complète."""
     if company_evidence._blocked(candidate):
         return None
     if not _domain_matches_organisation(organisation, candidate):
         return None
 
-    priority, body, about_links, final_url = company_evidence._page(candidate)
-    if not priority and not body:
+    first = _validated_page(organisation, candidate)
+    if first is None:
         return None
-    evidence_url = final_url or candidate
-    if company_evidence._blocked(evidence_url):
-        return None
-    if not _domain_matches_organisation(organisation, evidence_url):
-        return None
-    if not company_evidence._identity_matches(
-        organisation, evidence_url, priority, body
-    ):
-        return None
+    priority, body, about_links, evidence_url = first
 
-    classified = company_evidence.classify_official_activity(priority)
-    if classified is None:
-        about_corpus: list[str] = []
-        about_url = ""
-        for link in about_links:
-            p_priority, p_body, _links, p_final = company_evidence._page(link)
-            if not p_priority and not p_body:
-                continue
-            page_url = p_final or link
-            if company_evidence._blocked(page_url):
-                continue
-            if not _domain_matches_organisation(organisation, page_url):
-                continue
-            if not company_evidence._identity_matches(
-                organisation, page_url, p_priority, p_body
-            ):
-                continue
-            about_corpus.extend([p_priority, p_body[:12000]])
-            if not about_url:
-                about_url = page_url
-        if about_corpus:
-            classified = company_evidence.classify_official_activity(
-                " ".join(about_corpus)
-            )
-            if classified is not None and about_url:
-                evidence_url = about_url
+    evidence = _primary_activity_from_text(priority, evidence_url)
+    if evidence is not None:
+        return evidence
 
-    if classified is None:
-        classified = company_evidence.classify_official_activity(body[:16000])
-    if classified is None:
-        return None
+    for link in about_links:
+        page = _validated_page(organisation, link)
+        if page is None:
+            continue
+        p_priority, p_body, _links, page_url = page
+        evidence = _primary_activity_from_text(
+            " ".join(part for part in (p_priority, p_body[:12000]) if part),
+            page_url,
+        )
+        if evidence is not None:
+            return evidence
 
-    sector, evidence_text = classified
-    return company_evidence.CompanyEvidence(
-        sector=sector,
-        evidence_url=evidence_url,
-        evidence_text=evidence_text,
-        evidence_source=company_evidence._domain(evidence_url) or "official_site",
-        evidence_type="official_site",
-    )
+    return _primary_activity_from_text(body[:16000], evidence_url)
 
 
 def research_official_evidence(
     row: dict,
 ) -> tuple[company_evidence.CompanyEvidence | None, int]:
-    """Teste des domaines déterministes et retourne aussi le coût de découverte."""
     organisation = str(row.get("organisation") or "").strip()
     if not organisation:
         return None, 0
@@ -292,6 +384,8 @@ def run(stem: str, source_id: str) -> dict[str, int]:
         "target_items": len(target_urls),
         "target_records": len(targets),
         "candidate_urls_tested": 0,
+        "existing_evidence_kept": 0,
+        "existing_evidence_rejected": 0,
         "evidence_found": 0,
         "resolved_unknown": 0,
         "corrected_known": 0,
@@ -299,10 +393,22 @@ def run(stem: str, source_id: str) -> dict[str, int]:
         "no_official_evidence": 0,
     }
 
+    research_targets: list[tuple[int, dict]] = []
+    for index, row in targets:
+        if has_sector_evidence(row):
+            strict = strict_existing_evidence(row)
+            if strict is not None:
+                apply_evidence(row, strict)
+                stats["existing_evidence_kept"] += 1
+                continue
+            clear_sector_evidence(row)
+            stats["existing_evidence_rejected"] += 1
+        research_targets.append((index, row))
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
             executor.submit(research_official_evidence, row): index
-            for index, row in targets
+            for index, row in research_targets
         }
         for future in as_completed(futures):
             index = futures[future]
@@ -325,12 +431,12 @@ def run(stem: str, source_id: str) -> dict[str, int]:
                 stats["verified_same"] += 1
 
     metadata = data.setdefault("metadata", {})
-    metadata["sector_evidence_v3"] = {
+    metadata["sector_evidence_v5"] = {
         **stats,
-        "method": "deterministic domain candidates + official page identity/activity validation",
+        "method": "official domain + identity + primary activity formulation",
         "evidence_policy": (
-            "candidate domains are discovery hints only; incident text, search snippets, "
-            "legal directories and source article URLs are never Sector evidence"
+            "secondary functions and website/legal boilerplate are inadmissible; "
+            "uncertain activity remains Inconnu"
         ),
     }
 
@@ -344,10 +450,10 @@ def run(stem: str, source_id: str) -> dict[str, int]:
         stem,
         "TARGET_RECORDS", stats["target_records"],
         "CANDIDATES", stats["candidate_urls_tested"],
+        "KEPT", stats["existing_evidence_kept"],
+        "REJECTED_OLD", stats["existing_evidence_rejected"],
         "EVIDENCE", stats["evidence_found"],
         "RESOLVED", stats["resolved_unknown"],
-        "CORRECTED", stats["corrected_known"],
-        "VERIFIED", stats["verified_same"],
         "NO_EVIDENCE", stats["no_official_evidence"],
         flush=True,
     )
