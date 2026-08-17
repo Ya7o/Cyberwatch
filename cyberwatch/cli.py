@@ -17,10 +17,10 @@ import argparse
 import random
 import sys
 
-from . import config, enrichment, identity, site, sources, status, store
+from . import config, enrichment, identity, incident_identity, site, sources, status, store
 from .collectors.base import Window
 from .collectors.cyberattaque_org import repair_existing_identities
-from .dedup import build_incidents
+from .dedup import build_incidents, build_incidents_with_registry
 from .duplicate_audit import find_duplicate_candidates
 from .http import Budget, HttpClient
 from .runner import (
@@ -156,9 +156,10 @@ def cmd_repair_identities(args) -> int:
     if len(ids) != len(set(ids)):
         print("Réparation annulée : collision d'Item_ID détectée.")
         return 1
-    incidents = build_incidents(items)
+    incidents, registry = build_incidents_with_registry(items, store.load_incident_id_registry())
     store.save_items(identity.sort_items(items))
     store.save_incidents(incidents)
+    store.save_incident_id_registry(registry)
     save_snapshot_provenance(
         store.load_items(), store.load_incidents(), operation="REPAIR_IDENTITIES",
     )
@@ -170,8 +171,9 @@ def cmd_repair_identities(args) -> int:
 def cmd_repair_integrity(args) -> int:
     """Migration locale déterministe des identités et clés naturelles."""
     items, report = repair_item_integrity(store.load_items())
-    incidents = build_incidents(items)
+    incidents, registry = build_incidents_with_registry(items, store.load_incident_id_registry())
     problems = pre_export_checks(items, incidents, [])
+    problems.extend(incident_identity.validate_registry(registry, items, incidents))
     problems = [p for p in problems if "RUN_SOURCES" not in p]
     if problems:
         print("Réparation annulée :")
@@ -180,6 +182,7 @@ def cmd_repair_integrity(args) -> int:
         return 1
     store.save_items(items)
     store.save_incidents(incidents)
+    store.save_incident_id_registry(registry)
     save_snapshot_provenance(
         store.load_items(), store.load_incidents(), operation="REPAIR_INTEGRITY",
     )
@@ -205,6 +208,7 @@ def cmd_backfill_unknowns(args) -> int:
     store.save_items(items)
     store.save_incidents(incidents)
     store.save_qualification_provenance(qualified.provenance)
+    store.save_incident_id_registry(qualified.incident_id_registry)
     save_snapshot_provenance(
         store.load_items(), store.load_incidents(), operation="BACKFILL_UNKNOWNS",
     )
@@ -226,13 +230,14 @@ def cmd_test_repeat(args) -> int:
         print("  Le moteur reste couvert par les tests unitaires sur fixtures.")
         return 0
 
-    build_a = build_incidents(items)
+    registry = store.load_incident_id_registry()
+    build_a, registry_a = build_incidents_with_registry(items, registry)
     hash_items_a = identity.items_hash(items)
     hash_incidents_a = identity.incidents_hash(build_a)
 
     shuffled = list(items)
     random.Random(20260812).shuffle(shuffled)
-    build_b = build_incidents(shuffled)
+    build_b, registry_b = build_incidents_with_registry(shuffled, registry)
     hash_items_b = identity.items_hash(shuffled)
     hash_incidents_b = identity.incidents_hash(build_b)
 
@@ -241,6 +246,7 @@ def cmd_test_repeat(args) -> int:
         ("Items_Hash", hash_items_a, hash_items_b),
         ("Nombre d'incidents", len(build_a), len(build_b)),
         ("Incidents_Hash", hash_incidents_a, hash_incidents_b),
+        ("Registre Incident_ID", registry_a, registry_b),
     ]
 
     print("TEST REPETABILITE (§27)")
@@ -695,6 +701,9 @@ def cmd_check(args) -> int:
     items = store.load_items()
     incidents = store.load_incidents()
     problems = pre_export_checks(items, incidents, [])
+    problems.extend(incident_identity.validate_registry(
+        store.load_incident_id_registry(), items, incidents
+    ))
     # Les contrôles portant sur RUN_SOURCES ne s'appliquent pas hors run.
     problems = [p for p in problems if "RUN_SOURCES" not in p]
 
