@@ -212,3 +212,12 @@ def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
         assert f">{title}<" in header
     for forbidden in ("Acteur", "Volume", "CVSS", "Vulnérabilités", "Vecteur", "Déroulé"):
         assert f">{forbidden}<" not in header
+
+
+def test_renderer_ui_ne_duplique_pas_affected_files_et_file_count():
+    js = open("assets/dashboard-audit.js", encoding="utf-8").read()
+    assert "function duplicatesDedicatedFileCount(fact)" in js
+    assert 'affected_unit || "").trim().toLowerCase() !== "files"' in js
+    assert 'factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact))' in js
+    # Le compteur dédié reste affiché : si les deux valeurs diffèrent, les deux lignes gardent leur sens.
+    assert 'factRow("Fichiers", fact.file_count !== undefined ? formatNumber(fact.file_count) : "")' in js

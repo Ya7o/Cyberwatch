@@ -236,6 +236,15 @@
     return `${formatNumber(fact.affected_count)}${unit ? ` ${unit}` : ""}`;
   }
 
+  function duplicatesDedicatedFileCount(fact) {
+    if (String(fact.affected_unit || "").trim().toLowerCase() !== "files") return false;
+    if (fact.affected_count === undefined || fact.affected_count === null || fact.affected_count === "") return false;
+    if (fact.file_count === undefined || fact.file_count === null || fact.file_count === "") return false;
+    const affected = Number(fact.affected_count);
+    const files = Number(fact.file_count);
+    return Number.isFinite(affected) && Number.isFinite(files) && affected === files;
+  }
+
   function factLinks(fact) {
     const links = [];
     const victim = safeUrl(fact.victim_website);
@@ -256,7 +265,7 @@
       factRow("Vecteur d'entrée", initialAccessLabel(fact.initial_access)),
       factRow("Déroulé", attackFlowLabel(fact.attack_flow)),
       factRow("Localisation précise", fact.fine_location),
-      factRow("Données touchées", affectedLabel(fact)),
+      factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)),
       factRow("Volume", fact.data_volume),
       factRow("Fichiers", fact.file_count !== undefined ? formatNumber(fact.file_count) : ""),
       renderDataTypes(fact.data_types),
