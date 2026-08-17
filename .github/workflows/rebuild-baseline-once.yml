@@ -64,6 +64,7 @@ jobs:
             data/items.csv \
             data/incidents.csv \
             data/source_facts.csv \
+            data/qualification_provenance.csv \
             data/run_log.csv \
             data/run_sources.csv \
             data/ai_usage.csv \
@@ -145,6 +146,16 @@ jobs:
           cat data/run_log.csv
           echo "===== RUN SOURCES ====="
           cat data/run_sources.csv
+          echo "===== QUALIFICATION PROVENANCE ====="
+          python - <<'PY'
+          import csv
+          from collections import Counter
+          from pathlib import Path
+          path = Path("data/qualification_provenance.csv")
+          rows = list(csv.DictReader(path.open(encoding="utf-8"))) if path.exists() else []
+          print(f"rows={len(rows)}")
+          print("decisions=", dict(Counter((r.get("Field"), r.get("Decision")) for r in rows)))
+          PY
           echo "===== AI USAGE ====="
           cat data/ai_usage.csv || true
           echo "===== SOURCE FACTS AI USAGE ====="
@@ -190,6 +201,7 @@ jobs:
             data/items.csv
             data/incidents.csv
             data/source_facts.csv
+            data/qualification_provenance.csv
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 2
