@@ -47,6 +47,18 @@
       "no_official_evidence": 53,
       "method": "official-site discovery + exact identity/activity validation via cyberwatch.company_evidence",
       "evidence_policy": "search engines are discovery-only; incident text, search snippets, legal directories and source article URLs are never Sector evidence"
+    },
+    "sector_evidence_v3": {
+      "target_items": 54,
+      "target_records": 53,
+      "candidate_urls_tested": 215,
+      "evidence_found": 17,
+      "resolved_unknown": 4,
+      "corrected_known": 9,
+      "verified_same": 4,
+      "no_official_evidence": 36,
+      "method": "deterministic domain candidates + official page identity/activity validation",
+      "evidence_policy": "candidate domains are discovery hints only; incident text, search snippets, legal directories and source article URLs are never Sector evidence"
     }
   },
   "incidents": [
@@ -327,7 +339,7 @@
       "organisation": "Publica",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -337,7 +349,11 @@
         "https://frenchbreaches.com/alertes/publica-mspyx0388ayctyrqby7"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Publica.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://publica.com/",
+      "sector_evidence_text": "ublica Publica released its iOS e-reader app Publica's CEO reporting from IPBA Publishing University Publica released a video about the project's founders Publica's CEO participated in a panel discussion on \"Blockchain for Books\" Publica wa",
+      "sector_evidence_source": "publica.com",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-12",
@@ -412,7 +428,7 @@
       "organisation": "Santé publique France",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Santé",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -422,14 +438,18 @@
         "https://frenchbreaches.com/alertes/sant-publique-france-msoz0zsj3vgi774sa0i"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Santé publique France.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.santepubliquefrance.fr/",
+      "sector_evidence_text": "016 par ordonnance et décret, c'est un établissement public administratif sous tutelle du ministère chargé de la Santé. A lire aussi Rapport annuel 2025 Programme de travail 2026 Contrat d'objectifs et de performance 2024-2028 Stratégie 20",
+      "sector_evidence_source": "santepubliquefrance.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-11",
       "organisation": "HeyPulse",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Commerce / Distribution",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -439,7 +459,11 @@
         "https://frenchbreaches.com/alertes/heypulse-msogur4agznhs274b3r"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — HeyPulse.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.heypulse.fr/",
+      "sector_evidence_text": "is Pizzeria La Bottega +700 avis en 4 mois FastFood Atelier du Buns +1200 avis en 11 mois Magasin FootKorner +800 avis en 8 mois FastFood Mc Quik +150 avis en 1 mois Patisserie SoDonuts +600 avis en 6 mois ← → Nos modules intégrés pour o",
+      "sector_evidence_source": "heypulse.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-11",
@@ -480,7 +504,7 @@
       "organisation": "Steam",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Transport / Logistique",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -490,7 +514,11 @@
         "https://frenchbreaches.com/alertes/steam-msndgcya2ase84mzxi6"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Steam.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.steam.fr/mentions-legales?lang=en",
+      "sector_evidence_text": "ontpellier Cedex 05 (France) | Téléphone : 04 99 52 62 32 | Email : siege@steam.fr . ​ L' hébergeur du site Internet est : Wix.com Inc., basé au 500 Terry A François Blvd San Francisco, CA 94158 | Téléphone : +1 415-639-9034. ​ Propriétés",
+      "sector_evidence_source": "steam.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-10",
@@ -677,7 +705,11 @@
         "https://frenchbreaches.com/alertes/blgcloud-mskjo8rlb7gngvnvb4k"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — BlgCloud.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.blgcloud.fr/",
+      "sector_evidence_text": "| L’ERP métier pour concessionnaires, loueurs et réparateurs de matériels Découvrez l'ERP SaaS de demain, conçu pour les concessionnaires, loueurs, réparateurs, importateurs et gestionnaires de flotte matériels. Profitez de notre App",
+      "sector_evidence_source": "blgcloud.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-07",
@@ -701,7 +733,7 @@
       "organisation": "Le Lien Autonomie",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Finance / Assurance",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -711,7 +743,11 @@
         "https://frenchbreaches.com/alertes/le-lien-autonomie-msj4pgh7huoc9zlfspc"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Le Lien Autonomie.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://lelienautonomie.fr/",
+      "sector_evidence_text": "e base 250€* 500€ hors crédit d’impôt Offre premium 400€* 800€ hors crédit d’impôt Le crédit d'impôt Crédit d'impôt classique Acheter un service Déclarer sa dépense Économiser 50% Crédit d'impôt immédiat Acheter un service Le Lien d",
+      "sector_evidence_source": "lelienautonomie.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-07",
@@ -745,7 +781,11 @@
         "https://frenchbreaches.com/alertes/afpa-msj805wnmw8zz6kstul"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — AFPA.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://afpa.org/",
+      "sector_evidence_text": "AFPA | Association Française de Pédiatrie Ambulatoire Association de Formation Professionnelle en Pédiatrie, l'AFPA vous propose des séminaires présentiels, des congrès et des formations en ligne. Association de Formation Professionne",
+      "sector_evidence_source": "afpa.org",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-06",
@@ -786,7 +826,7 @@
       "organisation": "INSERM",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -796,7 +836,11 @@
         "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — INSERM.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.inserm.fr/",
+      "sector_evidence_text": "ience pour la santé L'Inserm est un organisme de recherche scientifique public dédié à la santé humaine. Notre objectif : améliorer la santé par le progrès des connaissances sur le vivant et les maladies, l'innovation dans les traitements et l",
+      "sector_evidence_source": "inserm.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-06",
@@ -990,7 +1034,7 @@
       "organisation": "TERVEO",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1000,7 +1044,11 @@
         "https://frenchbreaches.com/alertes/terveo-msb0jbxnwduz5ngrumi"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — TERVEO.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://terveo.com/legal-page/mentions-legales/",
+      "sector_evidence_text": "entions légales Article 1. Éditeur du site Article 2. Directeur de publication Article 3. Hébergeur du site Article 4. Concepteurs du site Article 5. Utilisateurs Produits Partenaires À propos Contacts Assistance Inscrivez-vous à notre New",
+      "sector_evidence_source": "terveo.com",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-08-02",
@@ -1187,7 +1235,11 @@
         "https://frenchbreaches.com/alertes/engie-green-ms793t79jtz46e143go"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — ENGIE Green.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.engie-green.fr/",
+      "sector_evidence_text": "ENGIE Green - Acteur principal de la transition énergétique et fournisseur d'électricité verte leader en France ENGIE Green est un fournisseur d'énergie ou électricité verte leader en France. Notre entreprise en énergie renouvel",
+      "sector_evidence_source": "engie-green.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-30",
@@ -1279,7 +1331,7 @@
       "organisation": "Resaclick",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1289,7 +1341,11 @@
         "https://frenchbreaches.com/alertes/resaclick-ms4chtqzaljdepplkxm"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Resaclick.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://resaclick.net/mention-legales",
+      "sector_evidence_text": "cours du Danube, 77700 Serris (Val d’Europe), France Contact : via le formulaire en ligne Hebergeur Resaclick est hébergé par Scaleway SAS , située au 8 rue de la Ville l’Evêque, 75008 Paris, France. Gestion des cookies et des données pers",
+      "sector_evidence_source": "resaclick.net",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-28",
@@ -1340,7 +1396,11 @@
         "https://frenchbreaches.com/alertes/location-etudiant-ms3sftokma5qrg0nw5"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Location-Etudiant.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.location-etudiant.fr/",
+      "sector_evidence_text": "riptions et débouchés - Guide complet 2023 Parcours difficile des étudiants bègues dans l'enseignement supérieur : témoignages et défis Université de La Rochelle : adoption des congés menstruels pour le bien-être des étudiantes Trois raisons",
+      "sector_evidence_source": "location-etudiant.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-28",
@@ -1398,7 +1458,7 @@
       "organisation": "Supremebody",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1408,7 +1468,11 @@
         "https://frenchbreaches.com/alertes/supremebody-ms3m996vc34s1l50to"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Supremebody.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://supremebody.fr/content/2-mentions-legales",
+      "sector_evidence_text": "362 rue de seine 77000 Vaux le pénil SIREN 804 376 861 Pour nous contacter : cliquez ici HEBERGEUR: OVH SAS OVH 2 rue Kellermann 59100 Roubaix France PROPRIETE INTELECTUELLE Supreme Body est propriétaire des droits de propriété intellectu",
+      "sector_evidence_source": "supremebody.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-27",
@@ -1483,7 +1547,7 @@
       "organisation": "Batipro33",
       "territoire": "France",
       "localisation": "Gironde et spécialisé",
-      "secteur": "Construction / BTP",
+      "secteur": "Numérique / Technologie",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1493,7 +1557,11 @@
         "https://frenchbreaches.com/alertes/batipro33-ms2b8uma6p3przeq7wv"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Batipro33.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://batipro33.fr/mentions-legales/",
+      "sector_evidence_text": "se e-mail de contact : formation@batipro33.fr ci-après » le Directeur de publication « C. Hébergeur du site Le site BATIPRO est hébergé par : ALWAYSDATA dont le siège est situé à l’adresse suivante : 91 rue du Faubourg Saint Honoré – 75008",
+      "sector_evidence_source": "batipro33.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-25",
@@ -1517,7 +1585,7 @@
       "organisation": "Driveco",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Énergie / Utilities",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1527,7 +1595,11 @@
         "https://frenchbreaches.com/alertes/driveco-ms0wsz8la08oz17ytnb"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Driveco.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://driveco.com/",
+      "sector_evidence_text": "e, en offrant l’expérience la plus simple possible, le réseau le plus fiable ainsi qu’une énergie renouvelable. La recharge électrique du quotidien +400 stations de recharge publiques près de chez vous Cherchez votre station et lancez un",
+      "sector_evidence_source": "driveco.com",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-24",
@@ -1619,7 +1691,7 @@
       "organisation": "SKOLAE",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Services aux entreprises",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1629,7 +1701,11 @@
         "https://frenchbreaches.com/alertes/skolae-mrzem313qv3bs8qdks8"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — SKOLAE.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.skolae.fr/mentions-legales",
+      "sector_evidence_text": "ie associative SKOLAE Formation Présentation INEAD ESMAC Nos campus Relations entreprises Recrutement Alumni Recrutement stage et alternance Partenariats entreprises Taxe d’apprentissage Actualités SKOLAE recrute Notre politique RH Nos offre",
+      "sector_evidence_source": "skolae.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-24",
@@ -1670,7 +1746,7 @@
       "organisation": "Alpissimmo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Administration / Collectivité",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1680,7 +1756,11 @@
         "https://frenchbreaches.com/alertes/alpissimmo-mrzgdn49uk099slvnm"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — Alpissimmo.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.alpissimmo.fr/alpissimmo-agence-immobiliere-vente-et-location-de-vacances-1367",
+      "sector_evidence_text": "onnelle « Transactions – Gestion Immobilière – Prestations touristiques » délivrée par la CCI de Grenoble sous le numéro n°CPI38012018000028451 RESPONSABILITÉ CIVILE PROFESSIONNELLE : Generali Contrat n° AL591311 / 26963 GARANTIE DE",
+      "sector_evidence_source": "alpissimmo.fr",
+      "sector_evidence_type": "official_site"
     },
     {
       "date": "2026-07-23",
