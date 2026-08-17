@@ -171,6 +171,26 @@ def strict_activity_evidence(
     )
 
 
+def _explicit_activity_from_text(
+    text: str,
+    evidence_url: str,
+) -> company_evidence.CompanyEvidence | None:
+    """Construit une preuve uniquement à partir d'une formulation métier explicite."""
+    activity = extract_activity_description(text)
+    if not activity:
+        return None
+    sector = classify_sector(activity)
+    if sector == config.SECTOR_UNKNOWN:
+        return None
+    return company_evidence.CompanyEvidence(
+        sector=sector,
+        evidence_url=evidence_url,
+        evidence_text=activity,
+        evidence_source=company_evidence._domain(evidence_url) or "official_site",
+        evidence_type="official_explicit_activity",
+    )
+
+
 def strict_existing_evidence(row: dict) -> company_evidence.CompanyEvidence | None:
     """Réévalue hors ligne les preuves v3 déjà présentes avant tout nouvel HTTP."""
     url = str(row.get("sector_evidence_url") or "").strip()
@@ -237,70 +257,62 @@ def _domain_matches_organisation(organisation: str, url: str) -> bool:
     return any(token in domain for token in tokens)
 
 
+def _validated_page(
+    organisation: str,
+    url: str,
+) -> tuple[str, str, list[str], str] | None:
+    priority, body, links, final_url = company_evidence._page(url)
+    if not priority and not body:
+        return None
+    page_url = final_url or url
+    if company_evidence._blocked(page_url):
+        return None
+    if not _domain_matches_organisation(organisation, page_url):
+        return None
+    if not company_evidence._identity_matches(
+        organisation, page_url, priority, body
+    ):
+        return None
+    return priority, body, links, page_url
+
+
 def validate_official_candidate(
     organisation: str,
     candidate: str,
 ) -> company_evidence.CompanyEvidence | None:
-    """Transforme une piste en preuve seulement après validation complète."""
+    """Transforme une piste en preuve après identité + activité explicite.
+
+    La recherche d'activité est volontairement ordonnée : texte prioritaire de
+    la page d'accueil, pages « à propos », puis corps de la page d'accueil. On ne
+    retient jamais la classification large d'un mot-clé isolé.
+    """
     if company_evidence._blocked(candidate):
         return None
     if not _domain_matches_organisation(organisation, candidate):
         return None
 
-    priority, body, about_links, final_url = company_evidence._page(candidate)
-    if not priority and not body:
+    first = _validated_page(organisation, candidate)
+    if first is None:
         return None
-    evidence_url = final_url or candidate
-    if company_evidence._blocked(evidence_url):
-        return None
-    if not _domain_matches_organisation(organisation, evidence_url):
-        return None
-    if not company_evidence._identity_matches(
-        organisation, evidence_url, priority, body
-    ):
-        return None
+    priority, body, about_links, evidence_url = first
 
-    classified = company_evidence.classify_official_activity(priority)
-    if classified is None:
-        about_corpus: list[str] = []
-        about_url = ""
-        for link in about_links:
-            p_priority, p_body, _links, p_final = company_evidence._page(link)
-            if not p_priority and not p_body:
-                continue
-            page_url = p_final or link
-            if company_evidence._blocked(page_url):
-                continue
-            if not _domain_matches_organisation(organisation, page_url):
-                continue
-            if not company_evidence._identity_matches(
-                organisation, page_url, p_priority, p_body
-            ):
-                continue
-            about_corpus.extend([p_priority, p_body[:12000]])
-            if not about_url:
-                about_url = page_url
-        if about_corpus:
-            classified = company_evidence.classify_official_activity(
-                " ".join(about_corpus)
-            )
-            if classified is not None and about_url:
-                evidence_url = about_url
+    explicit = _explicit_activity_from_text(priority, evidence_url)
+    if explicit is not None:
+        return explicit
 
-    if classified is None:
-        classified = company_evidence.classify_official_activity(body[:16000])
-    if classified is None:
-        return None
+    for link in about_links:
+        page = _validated_page(organisation, link)
+        if page is None:
+            continue
+        p_priority, p_body, _links, page_url = page
+        explicit = _explicit_activity_from_text(
+            " ".join(part for part in (p_priority, p_body[:12000]) if part),
+            page_url,
+        )
+        if explicit is not None:
+            return explicit
 
-    sector, evidence_text = classified
-    raw = company_evidence.CompanyEvidence(
-        sector=sector,
-        evidence_url=evidence_url,
-        evidence_text=evidence_text,
-        evidence_source=company_evidence._domain(evidence_url) or "official_site",
-        evidence_type="official_site",
-    )
-    return strict_activity_evidence(raw)
+    return _explicit_activity_from_text(body[:16000], evidence_url)
 
 
 def research_official_evidence(
