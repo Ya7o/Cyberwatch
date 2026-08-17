@@ -6,11 +6,22 @@ import argparse
 import json
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+POLICY_PATH = ROOT / "data" / "sector_auto_policy.json"
+
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", required=True)
     args = parser.parse_args()
+
+    # La politique versionnée est un composant de sécurité, pas une option.
+    # Sans elle, un fallback de code ne doit jamais être considéré publiable.
+    if not POLICY_PATH.exists():
+        print("SECTOR REGISTRY POLICY: FAIL")
+        print(f"- politique versionnée absente: {POLICY_PATH}")
+        return 1
+
     report = json.loads(Path(args.json).read_text(encoding="utf-8"))
     minimum_cases = int(report.get("minimum_cases", 10))
     minimum_precision = float(report.get("minimum_precision_pct", 95.0))
