@@ -24,15 +24,17 @@ _COPULA_RE = re.compile(
     r"propose|fournit|concoit|conçoit|developpe|développe|fabrique|exploite)\b",
     re.I,
 )
-# Une relation à un tiers dans la zone immédiatement précédant le terme métier
-# annule la preuve. Le nom de la victime peut être présent plus tôt dans la
-# phrase sans être le sujet grammatical de « fabricant », « éditeur », etc.
 _THIRD_PARTY_RE = re.compile(
     r"\b(son|sa|ses|leur|leurs|notre|nos)?\s*"
     r"(fournisseur|partenaire|prestataire|sous[- ]traitant|client|hebergeur|hébergeur|"
     r"provider|partner|supplier|vendor|contractor)\b|\bavec\s+[A-ZÀ-Ý0-9]",
     re.I,
 )
+# Compléments mesurés qui corrigent uniquement des variantes morphologiques
+# absentes des regex historiques. Ils restent soumis au même garde de sujet.
+_EXTRA_PATTERNS = {
+    config.SECTOR_RETAIL: (8, r"\bsupermarch[ée]s\b"),
+}
 
 
 def _sentences(text: str) -> list[str]:
@@ -47,12 +49,8 @@ def _sentences(text: str) -> list[str]:
 def _org_is_subject(organisation: str, sentence: str, match_start: int) -> bool:
     prefix = sentence[max(0, match_start - 220):match_start]
     near_prefix = sentence[max(0, match_start - 120):match_start]
-
-    # Une mention explicite d'un tiers près du prédicat métier est éliminatoire.
-    # « notre fournisseur » ne doit pas être confondu avec « nous fournissons ».
     if _THIRD_PARTY_RE.search(near_prefix):
         return False
-
     if _FIRST_PERSON_RE.search(prefix):
         return True
 
@@ -63,11 +61,23 @@ def _org_is_subject(organisation: str, sentence: str, match_start: int) -> bool:
     required = min(2, len(tokens))
     if sum(token in normalized for token in tokens) < required:
         return False
+    return bool(_COPULA_RE.search(prefix[-140:]))
 
-    # Le nom doit être relié au prédicat par une formulation d'activité ; une
-    # simple présence au début d'une longue phrase ne suffit pas.
-    tail = prefix[-140:]
-    return bool(_COPULA_RE.search(tail))
+
+def _activity_matches(sentence: str) -> list[tuple[int, str, re.Match[str]]]:
+    matches: list[tuple[int, str, re.Match[str]]] = []
+    rules = dict(company_evidence._ACTIVITY_PATTERNS)
+    for sector, value in _EXTRA_PATTERNS.items():
+        # Le complément ne remplace pas la règle principale : il l'étend.
+        weight, pattern = value
+        match = re.search(pattern, sentence, re.I)
+        if match:
+            matches.append((weight, sector, match))
+    for sector, (weight, pattern) in rules.items():
+        match = re.search(pattern, sentence, re.I)
+        if match:
+            matches.append((weight, sector, match))
+    return matches
 
 
 def classify_subject_attributed_activity(
@@ -76,18 +86,17 @@ def classify_subject_attributed_activity(
 ) -> tuple[str, str] | None:
     """Retourne un secteur seulement si l'activité a pour sujet la victime."""
     for sentence in _sentences(text):
-        matches: list[tuple[int, str, re.Match[str]]] = []
-        for sector, (weight, pattern) in company_evidence._ACTIVITY_PATTERNS.items():
-            match = re.search(pattern, sentence, re.I)
-            if match:
-                matches.append((weight, sector, match))
+        matches = _activity_matches(sentence)
         if not matches:
             continue
         matches.sort(key=lambda row: (-row[0], row[1], row[2].start()))
         top = matches[0]
         if top[0] < 8:
             continue
-        if len(matches) > 1 and top[0] < matches[1][0] + 2:
+        # Deux motifs du même secteur ne créent pas d'ambiguïté. Deux secteurs
+        # proches, eux, rendent la preuve non automatique.
+        competing = [row for row in matches[1:] if row[1] != top[1]]
+        if competing and top[0] < competing[0][0] + 2:
             continue
         if not _org_is_subject(organisation, sentence, top[2].start()):
             continue
