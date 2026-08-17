@@ -1,4 +1,4 @@
-name: Revalidate sector fallback
+name: Revalidate sector qualifications
 
 on:
   push:
@@ -8,9 +8,16 @@ on:
       - 'cyberwatch/sector_fallback_migration.py'
       - 'cyberwatch/qualification.py'
       - 'cyberwatch/sector.py'
+      - 'cyberwatch/sector_registry.py'
+      - 'cyberwatch/sector_registry_safety.py'
       - 'cyberwatch/config.py'
       - 'cyberwatch/quality.py'
+      - 'data/sector_auto_policy.json'
+      - 'data/enrichment_reference.csv'
+      - 'data/org_enrichment_cache.csv'
       - 'scripts/audit_sector_coverage.py'
+      - 'scripts/evaluate_sector_registry.py'
+      - 'scripts/check_sector_registry_policy.py'
       - 'sources/veillellm/cyberattaque_org_2026.json'
       - 'sources/veillellm/frenchbreaches_2026.json'
       - '.github/workflows/revalidate-sector-fallback.yml'
@@ -19,7 +26,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: sector-fallback-revalidation
+  group: sector-qualification-revalidation
   cancel-in-progress: false
 
 jobs:
@@ -40,21 +47,34 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Revalider les qualifications fallback
+      - name: Golden avant requalification
+        run: |
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-before.csv \
+            --json /tmp/golden-before.json
+
+      - name: Revalider les qualifications
         run: python -m cyberwatch backfill-unknowns
 
-      - name: Mesurer la couverture Sector
+      - name: Matérialiser registre et file Sector
         run: |
           python scripts/audit_sector_coverage.py
           python scripts/audit_sector_coverage.py --output "" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Vérifier précision et politique
+        run: |
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-after.csv \
+            --json /tmp/golden-after.json
+          python scripts/check_sector_golden_regression.py \
+            /tmp/golden-before.json /tmp/golden-after.json
+          python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
+          python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
 
       - name: Vérifier le snapshot
         run: |
           python -m cyberwatch check --allow-uninitialized
           python -m cyberwatch test-repeat
-          python scripts/evaluate_golden.py \
-            --details /tmp/golden-qualification.csv \
-            --json /tmp/golden-qualification.json
 
       - name: Publier le snapshot revalidé
         run: |
@@ -66,12 +86,14 @@ jobs:
             data/incident_id_registry.csv \
             data/qualification_provenance.csv \
             data/sector_quality.json \
+            data/organisation_sector_registry.csv \
+            data/sector_enrichment_queue.csv \
             data/snapshot.json \
             assets/data
           if git diff --cached --quiet; then
             echo "Aucune qualification à republier."
             exit 0
           fi
-          git commit -m "Revalidate sector fallback qualifications"
+          git commit -m "Revalidate sector qualifications"
           git pull --rebase origin main
           git push origin HEAD:main

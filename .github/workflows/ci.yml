@@ -1,8 +1,5 @@
 name: Tests
 
-# Les tests unitaires ne touchent jamais le réseau : les appels HTTP/LLM sont
-# simulés et les parseurs s'exercent sur des échantillons figés.
-
 on:
   push:
     branches: [main]
@@ -18,18 +15,17 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 (Node 24)
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0 (Node 24)
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.11"
           cache: pip
 
       - name: Installer les dépendances
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Tests unitaires
         run: python -m pytest tests/ -q
@@ -58,11 +54,17 @@ jobs:
             --details /tmp/golden-after.csv \
             --json /tmp/golden-after.json
 
-      - name: Garde de précision Sector
+      - name: Garde de précision Sector globale
         run: |
           python scripts/check_sector_golden_regression.py \
             /tmp/golden-before.json \
             /tmp/golden-after.json
+
+      - name: Benchmark du registre Sector par canal
+        run: python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
+
+      - name: Politique d'auto-qualification Sector
+        run: python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
 
       - name: Syntaxe dashboard
         run: |

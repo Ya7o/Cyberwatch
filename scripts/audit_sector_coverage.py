@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Audit offline de la couverture Sector et des catégories ransomware.live.
-
-Le rapport mesure le stock canonique d'Inconnu, les valeurs structurées de
-ransomware.live et l'impact projeté du backfill fermé. La projection travaille
-sur une copie mémoire : exécuter ce script seul ne modifie jamais la base.
-"""
+"""Audit offline de la couverture Sector, du registre et de la file d'enrichissement."""
 from __future__ import annotations
 
 import argparse
@@ -17,13 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import quality, store
+from cyberwatch import enrichment, quality, sector_registry, sector_registry_safety, store
 from cyberwatch.qualification import backfill_structured_source_sectors
 
 
-def build_report() -> dict:
+def build_report() -> tuple[dict, list[dict], list[dict]]:
     items = store.load_items()
     facts = store.read_csv(store.SOURCE_FACTS_CSV)
+    provenance = store.load_qualification_provenance()
     current = quality.metrics(items)
     ransomware = quality.ransomware_source_sector_audit(items, facts)
 
@@ -33,8 +29,24 @@ def build_report() -> dict:
     current_global = current["global"]
     projected_global = projected["global"]
 
-    return {
-        "schema_version": 1,
+    registry = sector_registry.build_registry(
+        items,
+        enrichment.load_reference(),
+        source_fact_rows=facts,
+        org_cache_rows=store.load_org_enrichment_cache(),
+        previous_provenance=provenance,
+    )
+    sector_registry_safety.enforce_candidate_conflicts(registry)
+    queue = sector_registry.build_enrichment_queue(
+        items,
+        registry,
+        source_fact_rows=facts,
+        challenger_provenance=provenance,
+    )
+    registry_info = sector_registry.registry_summary(registry, queue)
+
+    report = {
+        "schema_version": 2,
         "snapshot": {
             "code_commit": store.load_snapshot().get("Code_Commit", ""),
             "items_hash": store.load_snapshot().get("Items_Hash", ""),
@@ -50,7 +62,10 @@ def build_report() -> dict:
             "sector_coverage_after": projected_global["sector_coverage_ratio"],
             "metrics": projected,
         },
+        "organisation_registry": registry_info,
+        "auto_policy": sector_registry.load_policy(),
     }
+    return report, registry, queue
 
 
 def print_report(report: dict) -> None:
@@ -58,8 +73,7 @@ def print_report(report: dict) -> None:
     print("SECTOR COVERAGE AUDIT")
     print(
         "global: "
-        f"items={global_metrics['items']} "
-        f"known={global_metrics['sector_known']} "
+        f"items={global_metrics['items']} known={global_metrics['sector_known']} "
         f"unknown={global_metrics['sector_unknown']} "
         f"coverage={global_metrics['sector_coverage_ratio'] * 100:.2f}% "
         f"unknown_orgs={global_metrics['sector_unknown_organisations']} "
@@ -85,9 +99,7 @@ def print_report(report: dict) -> None:
     )
     print("raw_value\titems\tcurrent_unknown\tmapped_sector")
     for raw, row in ransomware["raw_values"].items():
-        print(
-            f"{raw}\t{row['items']}\t{row['current_unknown']}\t{row['mapped_sector']}"
-        )
+        print(f"{raw}\t{row['items']}\t{row['current_unknown']}\t{row['mapped_sector']}")
 
     projection = report["structured_backfill_projection"]
     print()
@@ -98,13 +110,17 @@ def print_report(report: dict) -> None:
         f"coverage={projection['sector_coverage_before'] * 100:.2f}%"
         f"->{projection['sector_coverage_after'] * 100:.2f}%"
     )
-    projected_ransomware = projection["metrics"]["sources"].get("RANSOMWARE_LIVE", {})
-    if projected_ransomware:
-        print(
-            "RANSOMWARE_LIVE projected: "
-            f"unknown={projected_ransomware['sector_unknown']} "
-            f"coverage={projected_ransomware['sector_coverage_ratio'] * 100:.2f}%"
-        )
+
+    registry = report["organisation_registry"]
+    print()
+    print(
+        "ORGANISATION REGISTRY: "
+        f"rows={registry['registry_rows']} auto={registry['auto_rows']} "
+        f"review={registry['review_rows']} conflicts={registry['conflict_rows']} "
+        f"queue={registry['queue_organisations']}"
+    )
+    print("registry_channels=" + json.dumps(registry["registry_channels"], ensure_ascii=False, sort_keys=True))
+    print("queue_categories=" + json.dumps(registry["queue_categories"], ensure_ascii=False, sort_keys=True))
 
 
 def main() -> int:
@@ -112,11 +128,10 @@ def main() -> int:
     parser.add_argument(
         "--output",
         default=str(ROOT / "data" / "sector_quality.json"),
-        help="Rapport JSON à écrire. Utiliser une chaîne vide pour ne rien écrire.",
+        help="Rapport JSON à écrire. Chaîne vide = lecture seule.",
     )
     args = parser.parse_args()
-
-    report = build_report()
+    report, registry, queue = build_report()
     print_report(report)
     if args.output:
         target = Path(args.output)
@@ -125,7 +140,10 @@ def main() -> int:
             json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
+        sector_registry.write_outputs(registry, queue)
         print(f"json={target}")
+        print(f"registry={sector_registry._aux_path(sector_registry.REGISTRY_CSV)}")
+        print(f"queue={sector_registry._aux_path(sector_registry.QUEUE_CSV)}")
     return 0
 
 
