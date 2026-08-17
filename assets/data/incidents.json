@@ -115,6 +115,12 @@
     "affected_count": 49168,
     "affected_count_raw": "49 168 fichiers",
     "affected_unit": "files",
+    "attack_flow": [
+     {
+      "action": "Publication de données après compromission BlgCloud (Motoculture Cravero)",
+      "evidence": "Les attaquants annoncent 3,7 Go de données et 49 168 fichiers . Un peu plus de 8 500 personnes seraient concernées par les informations présentes dans cette nouvelle fuite."
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
@@ -332,6 +338,12 @@
     "affected_count": 435903,
     "affected_count_raw": "435 903 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "fuite de données exposant les enregistrements de membres/adhérents",
+      "evidence": "FrenchBreaches a identifié une base contenant 435 903 enregistrements associés à des membres ou adhérents de la fédération."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -631,6 +643,12 @@
     "affected_count": 2041778,
     "affected_count_raw": "2 041 778 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Extraction partielle de 252 149 lignes de données cadastrales via le Serveur Professionnel de Données Cadastrales (SPDC) accessible via apexappliext.dgfip.finances.gouv.fr.",
+      "evidence": "\"Le pirate revendique une extraction partielle de 252 149 lignes\""
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
      "noms et prénoms",
@@ -917,6 +935,12 @@
     "affected_count": 678000,
     "affected_count_raw": "plus de 678 000 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Intrusion et extraction de données via usurpation d’identité ayant conduit à l’accès au système et à l’extraction de données.",
+      "evidence": "L’accès, intervenu fin juin 2026 après une usurpation d’identité, a permis la consultation et l’extraction de données de particuliers et de professionnels."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1194,6 +1218,12 @@
     "affected_count": 30594,
     "affected_count_raw": "30 594 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à l’Intranet Orion",
+      "evidence": "ayant permis un accès non autorisé à son Intranet collaboratif Orion"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1201,6 +1231,7 @@
      "mots de passe",
      "données personnelles"
     ],
+    "impact": "exposition de données personnelles d’agents (noms, prénoms, fonctions, e-mails professionnels, localisation, établissement de rattachement et photographie)",
     "item_id": "ITM-d08086f886b642e8",
     "source": "FRENCHBREACHES"
    }
@@ -1227,6 +1258,12 @@
   "date": "2026-08-11",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Publication revendiquée de la base de données clients et du code source",
+      "evidence": "La compromission revendiquée ne se limite pas à la base de données. Une capture de l’arborescence diffusée par l’attaquant montre également le code source de l’application HeyPulse ."
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "identifiants",
@@ -1350,6 +1387,12 @@
     "affected_count": 1367197,
     "affected_count_raw": "1 367 197 enregistrements",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Accès initial à un outil interne via des identifiants compromis",
+      "evidence": "Selon ZeroBytes, l’accès initial aurait été obtenu à partir d’ identifiants déjà compromis."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1453,6 +1496,12 @@
   "date": "2026-08-10",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "vulnérabilité informatique susceptible d’avoir permis l’interrogation automatisée de certains enregistrements de la base",
+      "evidence": "Une vulnérabilité informatique susceptible d’avoir permis l’interrogation automatisée de certains enregistrements de la base."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -1464,6 +1513,12 @@
     "affected_count": 42000,
     "affected_count_raw": "plus de 42 000 comptes",
     "affected_unit": "accounts",
+    "attack_flow": [
+     {
+      "action": "Interrogation automatisée de certains enregistrements présents dans sa base de données",
+      "evidence": "Selon l’organisme, une vulnérabilité aurait pu permettre l’interrogation automatisée de certains enregistrements présents dans sa base de données."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -1541,8 +1596,7 @@
      "données personnelles"
     ],
     "item_id": "ITM-c4b4c011082dd04b",
-    "source": "FRENCHBREACHES",
-    "threat_actor": "diable'fire / X-VDP-X"
+    "source": "FRENCHBREACHES"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1580,6 +1634,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Fournir des informations client à CEVA Logistics pour les livraisons et expédition des commandes Steam",
+      "evidence": "\"CEVA Logistics assure notamment l’expédition du matériel Steam vers la clientèle européenne. Pour réaliser les livraisons, Valve lui transmet certaines informations relatives aux acheteurs et à leurs commandes.\""
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "mots de passe"
@@ -1628,6 +1688,12 @@
   "date": "2026-08-10",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à des données personnelles",
+      "evidence": "des personnes non autorisées ont pu accéder à certaines données personnelles traitées par la commune"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1706,8 +1772,7 @@
      "IBAN / RIB"
     ],
     "item_id": "ITM-9021b9aa28ea4a6a",
-    "source": "FRENCHBREACHES",
-    "threat_actor": "ZeroBytes"
+    "source": "FRENCHBREACHES"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1830,6 +1895,16 @@
   "date": "2026-08-08",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Exploitation d’une requête spécifique permettant de créer un compte extranet restreint",
+      "evidence": "Selon BlgCloud, l’attaque reposait sur l’exploitation d’une requête spécifique permettant de créer un compte extranet restreint."
+     },
+     {
+      "action": "Mauvaise configuration des droits attribués à ce compte extranet",
+      "evidence": "Une mauvaise configuration des droits attribués à ce compte aurait ensuite permis l’accès et l’exfiltration de certaines données."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1968,6 +2043,12 @@
   "date": "2026-08-08",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "publication de données et vente associées à deux tables (adhérents et coordonnées bancaires) par un acteur utilisant le pseudonyme yiranet",
+      "evidence": "« un acteur utilisant le pseudonyme yiranet a mis en vente ce qu’il présente comme les deux principales tables de données »"
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "données bancaires",
@@ -2370,6 +2451,12 @@
   "date": "2026-08-07",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Publication publique de contenu attribué à Reflet 2000 suite à une attaque par ransomware.",
+      "evidence": "La mise en ligne effective de fichiers attribués à Reflet 2000 montre que la phase d’extorsion a ici dépassé la simple menace."
+     }
+    ],
     "claim_status": "claimed",
     "data_volume": "23 Go",
     "item_id": "ITM-d0c4e4e46300d8ab",
@@ -2472,6 +2559,12 @@
   "date": "2026-08-06",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Extraction d’informations relatives à des commandes passées sur le site depuis 2025",
+      "evidence": "d’informations relatives à certaines commandes passées sur son site depuis 2025"
+     }
+    ],
     "claim_status": "confirmed",
     "item_id": "ITM-04a856475a59deb2",
     "source": "CYBERATTAQUE_ORG"
@@ -2556,6 +2649,7 @@
     "affected_count_raw": "plus de 42 000 comptes",
     "affected_unit": "accounts",
     "claim_status": "confirmed",
+    "impact": "données professionnelles potentiellement compromises",
     "item_id": "ITM-38f7e4f5a09b85e4",
     "source": "FRENCHBREACHES"
    }
@@ -2902,6 +2996,12 @@
     "affected_count": 14511,
     "affected_count_raw": "14 511 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Piratage de Chat Coco : messages privés, e-mails et...",
+      "evidence": "« Piratage de Chat Coco : messages privés, e-mails et... »"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -2910,6 +3010,7 @@
      "mots de passe"
     ],
     "data_volume": "440 Mo",
+    "impact": "Fuite massive de données et dégradation de la page d'accueil",
     "item_id": "ITM-84758253203f8d43",
     "source": "FRENCHBREACHES"
    }
@@ -3371,6 +3472,12 @@
     "affected_count": 5270000,
     "affected_count_raw": "5,27 millions de dossiers",
     "affected_unit": "files",
+    "attack_flow": [
+     {
+      "action": "Fuite/diffusion d’une base de données contenant des enregistrements d’adhérents et salariés.",
+      "evidence": "« Le hacker 84City affirme diffuser une base contenant 5 273 884 enregistrements liés à des adhérents et salariés de clubs de fitness utilisant la plateforme. »"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "IBAN / RIB",
@@ -3449,9 +3556,20 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Utilisation d’un compte disposant de droits administrateur pour effectuer plusieurs exports à partir de la plateforme eDRH.",
+      "evidence": "« Une fois connecté avec ce niveau d’accès, l’attaquant pouvait utiliser les fonctions légitimes de la plateforme pour récupérer des listes de candidats ou d’entreprises. »"
+     }
+    ],
     "claim_status": "confirmed",
     "item_id": "ITM-4acbbed09e3890af",
     "source": "CYBERATTAQUE_ORG"
+   },
+   {
+    "impact": "Données de candidats et d'entreprises potentiellement consultées.",
+    "item_id": "ITM-20afe79fae511313",
+    "source": "FRENCHBREACHES"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -3496,6 +3614,12 @@
     "affected_count": 243000,
     "affected_count_raw": "environ  243 000 agents",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Compte professionnel compromis utilisé par l’attaquant pour accéder à l’application",
+      "evidence": "L’intrusion aurait débuté après la compromission d’un compte professionnel. L’attaquant aurait ensuite utilisé cet accès légitime pour pénétrer dans l’application"
+     }
+    ],
     "claim_status": "confirmed",
     "item_id": "ITM-1ee6f6cbcdcfbbb3",
     "source": "CYBERATTAQUE_ORG"
@@ -3709,6 +3833,12 @@
     "affected_count": 5974,
     "affected_count_raw": "5 974 lignes",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Diffusion de cinq fichiers présentés comme issus du site marchand de l’entreprise par le hacker 0xSec.",
+      "evidence": "Le hacker 0xSec diffuse cinq fichiers présentés comme issus du site marchand de l’entreprise."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -4370,6 +4500,12 @@
     "affected_count": 1100,
     "affected_count_raw": "plus de  1 100 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "diffusion d’un fichier présenté comme l’annuaire de contacts de cartogip.fr par le hacker ChimeraZ",
+      "evidence": "Le hacker ChimeraZ revendique, depuis le 26 juillet 2026, la diffusion d’un fichier présenté comme l’annuaire de contacts de cartogip.fr."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "numéros de téléphone",
@@ -4754,6 +4890,12 @@
   "date": "2026-07-24",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à l’un de ses environnements informatiques (détection le 8 juillet 2026)",
+      "evidence": "accès non autorisé à l’un de ses environnements informatiques"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "mots de passe",
@@ -4863,6 +5005,12 @@
   "date": "2026-07-23",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Défiguration (defacement) du site et publication d'un message revendiquant la compromission",
+      "evidence": "la page d'accueil du site apparaît avoir été défigurée (defacement) et remplacée par un message revendiquant explicitement la compromission du système."
+     }
+    ],
     "claim_status": "claimed",
     "item_id": "ITM-2f2c49279b8081ec",
     "source": "FRENCHBREACHES"
@@ -4891,6 +5039,12 @@
     "affected_count": 1500,
     "affected_count_raw": "plus de 1 500 membres",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Intrusion sur l'intranet via le compte compromis d’un membre",
+      "evidence": "intrusion sur son intranet le 23 juillet 2026, réalisée à partir du compte compromis d’un membre"
+     }
+    ],
     "claim_status": "confirmed",
     "item_id": "ITM-0ad52a5ff95b695d",
     "source": "FRENCHBREACHES"
@@ -4971,6 +5125,16 @@
   "date": "2026-07-23",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Les cybercriminels bloquent une partie du système informatique et réclament une rançon.",
+      "evidence": "Les cybercriminels ont bloqué une partie de son système informatique avant de réclamer une rançon."
+     },
+     {
+      "action": "La mairie déconnecte l’ensemble des serveurs municipaux pour empêcher la propagation.",
+      "evidence": "Pour empêcher la propagation du logiciel malveillant, les équipes techniques ont dû déconnecter l’ensemble des serveurs municipaux ."
+     }
+    ],
     "data_types": [
      "mots de passe",
      "données personnelles"
@@ -5274,11 +5438,18 @@
   "date": "2026-07-17",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "accès non autorisé au système d’information",
+      "evidence": "un accès non autorisé a entraîné la compromission de certaines données personnelles."
+     }
+    ],
     "data_types": [
      "noms et prénoms",
      "mots de passe",
      "données bancaires"
     ],
+    "impact": "exposition des noms, prénoms et adresses électroniques de certains clients",
     "item_id": "ITM-71e8bf8985fa65c1",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -5406,6 +5577,16 @@
     "affected_count": 30000,
     "affected_count_raw": "plus de  30 000 lignes",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Accès via un webshell revendiqué",
+      "evidence": "Les auteurs affirment avoir obtenu un accès via un webshell."
+     },
+     {
+      "action": "Exfiltration de données: export de 29 tables de la base principale et récupération de données d’utilisateurs, de contacts et de cotisations",
+      "evidence": "exporté 29 tables de la base principale et récupéré des données d’utilisateurs, de contacts et de cotisations."
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "identifiants",
@@ -5792,6 +5973,12 @@
     "affected_count": 90000,
     "affected_count_raw": "près de 90 000 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à l’un des environnements informatiques du Groupe GES (date de détection: 8 juillet 2026)",
+      "evidence": "Le Groupe GES a confirmé avoir détecté, le 8 juillet 2026, un accès non autorisé à l’un de ses environnements informatiques."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -5826,6 +6013,12 @@
     "affected_count": 100000,
     "affected_count_raw": "100 000 dossiers",
     "affected_unit": "files",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à des documents PDF via une faille IDOR pour parcourir et récupérer des dossiers clients.",
+      "evidence": "L’auteur affirme avoir pu accéder à des centaines de milliers de documents PDF présentés comme des factures certifiées et des dossiers clients; une faille IDOR aurait permis de parcourir les documents."
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
      "noms et prénoms",
@@ -5991,6 +6184,12 @@
   "date": "2026-07-13",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "accès non autorisé détecté dans l’environnement informatique du Groupe GES le 8 juillet 2026",
+      "evidence": "Le Groupe GES a confirmé avoir détecté, le 8 juillet 2026, un accès non autorisé à l’un de ses environnements informatiques."
+     }
+    ],
     "claim_status": "confirmed",
     "item_id": "ITM-97c25ac2b10664ff",
     "source": "CYBERATTAQUE_ORG"
@@ -6293,6 +6492,12 @@
     "affected_count": 59932,
     "affected_count_raw": "59 932 enregistrements",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Fuite de données revendiquée sur un forum cybercriminel avec diffusion d’une base contenant 59 932 enregistrements.",
+      "evidence": "L’auteur affirme diffuser une base contenant 59 932 enregistrements issus de l’écosystème handisport.org et de son extranet."
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "adresses e-mail",
@@ -6474,6 +6679,12 @@
   "date": "2026-07-09",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé au compte Onfido de Spiko par un tiers via des identifiants de connexion",
+      "evidence": "Un accès non autorisé au compte Onfido de Spiko."
+     }
+    ],
     "data_types": [
      "mots de passe",
      "données bancaires",
@@ -7537,6 +7748,12 @@
     "affected_count": 31087,
     "affected_count_raw": "31 087 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Injection SQL aveugle sur le paramètre codeproduit de print-programme.php sans authentification préalable",
+      "evidence": "L’auteur affirme avoir exploité une injection SQL aveugle sur le paramètre codeproduit de la page print-programme.php, sans authentification préalable."
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "adresses e-mail",
@@ -7899,6 +8116,12 @@
   "date": "2026-06-29",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Listing de répertoires Apache laissé accessible publiquement",
+      "evidence": "listing de répertoires Apache laissé accessible publiquement"
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "mots de passe"
@@ -8043,6 +8266,12 @@
     "affected_count": 8048,
     "affected_count_raw": "8 048 enregistrements",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Publication/vente sur forum cybercriminel d’une base de données prétendument issue d’un annuaire professionnel.",
+      "evidence": "L’auteur affirme publier 8 048 enregistrements liés à des professionnels référencés dans l’annuaire de l’Ordre."
+     }
+    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "adresses e-mail",
@@ -8215,6 +8444,12 @@
     "affected_count": 28000,
     "affected_count_raw": "plus de 28 000 clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "Extraction structurée de données métier depuis le CRM Apimo (Homeloop et MD-immobilier)",
+      "evidence": "Les captures d’écran et extraits diffusés montrent qu’il ne s’agit pas d’un simple export de contacts mais d’une extraction structurée comprenant plusieurs modules du CRM."
+     }
+    ],
     "item_id": "ITM-c832da4cf95fd1f6",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -9130,6 +9365,12 @@
   "date": "2026-06-18",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Publication présumée d’une base de données attribuée à MaGestionLocative.fr par le hacker ChimeraZ sur un forum cybercriminel.",
+      "evidence": "Le hacker ChimeraZ revendique la publication d’une base de données attribuée à MaGestionLocative.fr."
+     }
+    ],
     "claim_status": "claimed",
     "data_volume": "114 Mo",
     "file_count": 79000,
@@ -9517,6 +9758,12 @@
     "affected_count": 146000,
     "affected_count_raw": "plus de  146 000 enregistrements",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "publication revendiquée d’une base de données par un acteur externe",
+      "evidence": "« Le cybercriminel ChimeraZ revendique la publication d’une base de données attribuée à Superimmo.com »"
+     }
+    ],
     "claim_status": "claimed",
     "data_volume": "27 Mo",
     "item_id": "ITM-67c04c6b5d60a618",
@@ -9634,6 +9881,12 @@
     "affected_count": 63600,
     "affected_count_raw": "plus de  63 600 membres",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "base de données publiée sur un forum cybercriminel",
+      "evidence": "\"Une base de données attribuée au Réseau National des Juniors Associations a été publiée sur un forum cybercriminel.\""
+     }
+    ],
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -9743,6 +9996,16 @@
   "date": "2026-06-13",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à une solution de gestion de la relation client utilisée par un prestataire",
+      "evidence": "D’après les informations communiquées par BYmyCAR, les données concernées sont exclusivement des informations d’identification et de contact."
+     },
+     {
+      "action": "Extraction d’un fichier contenant des données personnelles de clients",
+      "evidence": "qu’un accès non autorisé à cet outil avait permis l’extraction d’un fichier contenant des données personnelles de clients."
+     }
+    ],
     "data_types": [
      "mots de passe",
      "données bancaires",
@@ -10197,6 +10460,12 @@
   "date": "2026-06-10",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Incident détecté chez le prestataire chargé des sauvegardes",
+      "evidence": "« incident de sécurité affectant une infrastructure de sauvegarde de données »"
+     }
+    ],
     "claim_status": "claimed",
     "item_id": "ITM-b254b646ab9aef23",
     "source": "CYBERATTAQUE_ORG"
@@ -10712,6 +10981,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à une plateforme contenant des informations clients",
+      "evidence": "L’incident a été détecté le 2 juin 2026 après la découverte d’un accès non autorisé à une plateforme contenant des informations clients."
+     }
+    ],
     "data_types": [
      "mots de passe",
      "IBAN / RIB",
@@ -11122,6 +11397,12 @@
     "affected_count": 31500,
     "affected_count_raw": "plus de  31 500 enregistrements",
     "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Exposition de données par forum cybercriminel",
+      "evidence": "Des données attribuées à l’École élémentaire Montaigne de Roubaix circulent actuellement sur un forum cybercriminel."
+     }
+    ],
     "item_id": "ITM-4c1aec321d7cd504",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -12386,6 +12667,7 @@
      "numéros de téléphone"
     ],
     "file_count": 7898,
+    "impact": "7 898 fichiers PDF de factures et un fichier data.json contenant 7 898 lignes, ainsi que des informations sur des magasins franchisés et des coordonnées de responsables et gérants exposés.",
     "item_id": "ITM-eed0916e868e838d",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -12596,6 +12878,12 @@
     "affected_count": 46000,
     "affected_count_raw": "46 000 dossiers",
     "affected_unit": "files",
+    "attack_flow": [
+     {
+      "action": "Fuite de données publiée sur un forum cybercriminel contenant bases de données et documents internes.",
+      "evidence": "La fuite regrouperait plusieurs bases de données et documents internes issus des plateformes avea-vacances.fr et abv.avea.asso.fr."
+     }
+    ],
     "data_volume": "128 Mo",
     "file_count": 46000,
     "item_id": "ITM-1eb6515e2ca46a8b",
@@ -12741,6 +13029,12 @@
     "affected_count": 5900000,
     "affected_count_raw": "5,9 millions de clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "Vente/partage de base de données volée sur un forum cybercriminel",
+      "evidence": "\"est actuellement proposée à la vente sur un forum cybercriminel fréquenté par des hackers et revendeurs de données volées.\""
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "numéros de téléphone",
@@ -13427,6 +13721,16 @@
     "affected_count": 4500000,
     "affected_count_raw": "plus de  4,5 millions de clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "Accès frauduleux à la plateforme de réservation par exploitation d’une vulnérabilité IDOR",
+      "evidence": "« L’attaque aurait reposé sur une vulnérabilité de type IDOR (Insecure Direct Object Reference). »"
+     },
+     {
+      "action": "Extraction automatisée des données via des techniques de scraping massif",
+      "evidence": "« d’automatiser l’extraction des données via des techniques de scraping massif. »"
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
      "données personnelles"
@@ -13617,6 +13921,12 @@
   "date": "2026-05-13",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Compromission présumée des systèmes de A.R.Ge.Co par le groupe Anubis",
+      "evidence": "Le groupe de ransomware Anubis affirme avoir compromis les systèmes de A.R.Ge.Co"
+     }
+    ],
     "data_types": [
      "données bancaires"
     ],
@@ -13835,6 +14145,12 @@
   "date": "2026-05-13",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Intrusion via une faille de sécurité dans le logiciel utilisé pour gérer la plateforme e-commerce",
+      "evidence": "selon l’entreprise, des attaquants ont exploité une faille de sécurité dans le logiciel utilisé pour gérer la plateforme e-commerce, leur permettant d’accéder potentiellement aux données de clients."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -13878,6 +14194,7 @@
      "données bancaires",
      "données personnelles"
     ],
+    "impact": "Données personnelles et réservations potentiellement exposées (nom, prénom, email, téléphone, adresse, numéros de réservation, dates de séjour, demandes liées aux réservations).",
     "item_id": "ITM-f02e328d67075759",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -14145,6 +14462,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Compromission de deux comptes utilisateurs exploités par des tiers",
+      "evidence": "Selon la municipalité, l’incident résulte de la compromission de deux comptes utilisateurs exploités par des tiers"
+     }
+    ],
     "data_types": [
      "données personnelles"
     ],
@@ -14598,6 +14921,12 @@
     "affected_count": 4100000,
     "affected_count_raw": "4,1 millions de clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "Intrusion dans le système de gestion",
+      "evidence": "Bouygues Telecom vient de confirmer une intrusion dans son système de gestion."
+     }
+    ],
     "data_types": [
      "données personnelles"
     ],
@@ -14628,6 +14957,12 @@
   "date": "2026-05-06",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Exposition d’adresses email des clients suite à une cyberattaque",
+      "evidence": "Cetelem a confirmé avoir été victime d’une cyberattaque survenue le 20 avril 2026, ayant entraîné l’exposition d’adresses email appartenant à une partie de ses clients."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -15117,6 +15452,12 @@
     "affected_count": 80000,
     "affected_count_raw": "plus de 80 000 clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "Publication d'une base de données attribuée au site ObjetRama.fr par le hacker ChimeraZ",
+      "evidence": "\"Le hacker se faisant appeler ChimeraZ a publié une base de données attribuée au site ObjetRama.fr\""
+     }
+    ],
     "item_id": "ITM-f866f562c24dd0d0",
     "source": "CYBERATTAQUE_ORG",
     "threat_actor": "ChimeraZ",
@@ -15143,6 +15484,12 @@
   "date": "2026-05-02",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à des données personnelles via la plateforme de formation destinée aux organismes d’accueil de volontaires et de jeunes en mobilité.",
+      "evidence": "« accès non autorisé à des données personnelles a eu lieu sur sa plateforme de formation destinée aux organismes d’accueil de volontaires et de jeunes en mobilité. »"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "numéros de téléphone",
@@ -15534,6 +15881,7 @@
   "facts": [
    {
     "data_volume": "430 MB",
+    "impact": "Exposition potentielle de données personnelles et académiques de candidats internationaux (nom, email, pays, numéro de dossier, formations demandées, etc.).",
     "item_id": "ITM-091fc8637ce58920",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -15692,6 +16040,12 @@
   "date": "2026-04-28",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à certaines données personnelles liées aux comptes clients",
+      "evidence": "ayant entraîné un accès non autorisé à certaines données personnelles liées aux comptes clients"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -15993,6 +16347,7 @@
     "affected_count": 59000,
     "affected_count_raw": "59 000 membres",
     "affected_unit": "people",
+    "impact": "Exposition de profils et données personnelles sensibles des gendarmes, risques de phishing ciblé et d’usurpation d’identité",
     "item_id": "ITM-862244b6b8a1e9c0",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -16280,6 +16635,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisés aux données de l’ensemble des comptes utilisateurs du service Radiomaritime",
+      "evidence": "« accès non autorisés aux données de l’ensemble des comptes utilisateurs »"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "noms et prénoms",
@@ -16636,6 +16997,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "téléchargement non autorisé de données",
+      "evidence": "Un téléchargement non autorisé de données aurait touché certains membres de son programme client."
+     }
+    ],
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -16711,6 +17078,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à un outil de gestion et de stockage documentaire utilisé par Wazari",
+      "evidence": "...attaque externe ayant touché un outil de gestion et de stockage documentaire utilisé dans le cadre de ses activités."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "noms et prénoms",
@@ -16842,6 +17215,12 @@
   "date": "2026-04-21",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à plusieurs comptes de l’espace client magasins-u.com",
+      "evidence": "accès non autorisé à plusieurs comptes de l’espace client magasins-u.com"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "mots de passe"
@@ -17164,6 +17543,16 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Extraction non autorisée de coordonnées issues de la base de données clientes",
+      "evidence": "extraction non autorisée de coordonnées issues de sa base."
+     },
+     {
+      "action": "Démarchage via une société tierce Panda Manga à destination des clients",
+      "evidence": "emails et sollicitations sur les réseaux sociaux provenant d’une société tierce nommée Panda Manga."
+     }
+    ],
     "claim_status": "confirmed",
     "item_id": "ITM-10bc2de399feb216",
     "source": "CYBERATTAQUE_ORG"
@@ -17591,6 +17980,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Piratage informatique ciblé de la plateforme de formation en ligne e-campus",
+      "evidence": "« piratage informatique a visé la plateforme de formation en ligne e-campus »"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -17827,6 +18222,12 @@
     "affected_count": 1000000,
     "affected_count_raw": "1 million de clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à un système interne utilisé pour enregistrer les passages des membres dans les clubs",
+      "evidence": "L’incident provient d’un accès non autorisé à un système interne utilisé pour enregistrer les passages des membres dans les clubs."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -19163,6 +19564,12 @@
     "affected_count": 253000,
     "affected_count_raw": "253 000 patients",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "attaque par ransomware ayant ciblé le logiciel SOONCARE®",
+      "evidence": "YMED confirme l’incident et précise qu’il s’agit d’une attaque par ransomware ayant ciblé le logiciel SOONCARE®, notamment utilisé pour la prise de rendez-vous en ligne."
+     }
+    ],
     "claim_status": "confirmed",
     "data_volume": "132 Go",
     "file_count": 431000,
@@ -19195,6 +19602,12 @@
     "affected_count": 133000,
     "affected_count_raw": "133 000 utilisateurs",
     "affected_unit": "users",
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à une partie des données",
+      "evidence": "Une attaque sur notre base de données a permis un accès non autorisé à une partie de nos données."
+     }
+    ],
     "data_types": [
      "numéros de téléphone",
      "noms et prénoms"
@@ -19332,6 +19745,12 @@
     "source": "BONJOURLAFUITE"
    },
    {
+    "attack_flow": [
+     {
+      "action": "Phishing permettant l’accès à certains comptes",
+      "evidence": "« il s’agirait d’une campagne de phishing ayant permis l’accès à certains comptes »"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -19484,6 +19903,12 @@
   "date": "2026-04-04",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "attaque par ransomware visant le système de réservation via un prestataire externe",
+      "evidence": "La maison de champagne Veuve Clicquot a été victime d’une cyberattaque de type ransomware touchant le système de réservation de ses visites, via un prestataire externe."
+     }
+    ],
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -19576,6 +20001,12 @@
     "affected_count": 71,
     "affected_count_raw": "71 clients",
     "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "Reconnaissance et vérification de secrets, puis tentative d’étendre l’accès après récupération d’un identifiant cloud sensible",
+      "evidence": "Une fois un identifiant cloud sensible récupéré, il a pu mener de la reconnaissance, vérifier d’autres secrets et tenter d’étendre son accès."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "identifiants",
@@ -19606,6 +20037,16 @@
   "date": "2026-04-03",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à une partie du système informatique",
+      "evidence": "L’incident a impliqué un accès non autorisé à une partie de son système informatique."
+     },
+     {
+      "action": "extraction de données confirmée",
+      "evidence": "extraction de données confirmée."
+     }
+    ],
     "claim_status": "confirmed",
     "impact": "L’entreprise indique que l’attaque n’a pas provoqué de perturbation majeure de ses activités, ni d’impact significatif anticipé sur ses résultats financiers.",
     "item_id": "ITM-a5c26ee9d8b76175",
@@ -19807,10 +20248,17 @@
   "date": "2026-04-02",
   "facts": [
    {
+    "attack_flow": [
+     {
+      "action": "Ransomware Akira revendique l’attaque et menace de publication de données",
+      "evidence": "ransomware Akira . L’attaque, détectée le 2 avril 2026, s’accompagne d’une menace de publication de 50 Go de données internes."
+     }
+    ],
     "claim_status": "confirmed",
     "data_volume": "50 Go",
     "item_id": "ITM-bf749ed5ff0d8336",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Le groupe Serap est visé par une cyberattaque par le ransomware Akira, avec menace de publication de 50 Go de données internes, incluant RH, données personnelles d’employés et documents clients sur plus de 80 pays."
    },
    {
     "discovered_date": "2026-04-02",
@@ -19831,6 +20279,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
+  "summary": "Le groupe Serap est visé par une cyberattaque par le ransomware Akira, avec menace de publication de 50 Go de données internes, incluant RH, données personnelles d’employés et documents clients sur plus de 80 pays.",
   "threat": "Ransomware",
   "urls": [
    "https://groupeserap.com",
@@ -20015,6 +20464,7 @@
   "facts": [
    {
     "claim_status": "confirmed",
+    "impact": "Données clients exposées (nom, prénom, email, téléphone, dates de séjour, numéro de dossier, montant)",
     "item_id": "ITM-fd38480114ffc165",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -20793,6 +21243,12 @@
     "affected_count": 28000000,
     "affected_count_raw": "environ  28 millions de patients",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à des données personnelles hébergées chez un prestataire informatique",
+      "evidence": "Le réseau de laboratoires Cerballiance a été victime d’un accès non autorisé à des données personnelles hébergées chez un prestataire informatique."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -21147,6 +21603,16 @@
     "affected_count": 243000,
     "affected_count_raw": "243 000 agents",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "L’attaque vise la base “Compas”, un outil interne de gestion des ressources humaines dédié aux stagiaires.",
+      "evidence": "L’attaque vise la base “Compas”, un outil interne de gestion des ressources humaines dédié aux stagiaires."
+     },
+     {
+      "action": "Un échantillon des données a déjà été publié sur des plateformes de revente par un acteur se présentant sous le nom “Hexdex”.",
+      "evidence": "Un échantillon des données a déjà été publié sur des plateformes de revente par un acteur se présentant sous le nom “Hexdex”."
+     }
+    ],
     "data_types": [
      "numéros de téléphone",
      "adresses postales",
