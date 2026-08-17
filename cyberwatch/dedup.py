@@ -256,8 +256,16 @@ def build_incidents(items: list[Item]) -> list[Incident]:
         evidence = _incident_evidence_items(ordered)
         date, basis = _component_dates(ordered)
         component_key = _effective_key(ordered[0])
+        # Une résolution d'identité ne doit pas renommer un incident qui ne
+        # fusionne avec rien. Pour une vraie composante multi-items, la clé
+        # résolue devient en revanche l'identité stable de la fusion.
+        incident_key = (
+            ordered[0].Organisation_Key or component_key
+            if len(ordered) == 1
+            else component_key
+        )
         incidents.append(Incident(
-            Incident_ID=incident_id(component_key, ordered[0].Item_ID),
+            Incident_ID=incident_id(incident_key, ordered[0].Item_ID),
             Date=date,
             Date_Basis=basis,
             Organisation=_majority(
