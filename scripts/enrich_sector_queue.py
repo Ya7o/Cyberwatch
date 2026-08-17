@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import datetime as dt
 import os
+import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -18,8 +19,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import company_subject_evidence, org_enrichment, sector_registry, store
+from cyberwatch import (
+    company_subject_evidence,
+    official_site_discovery,
+    org_enrichment,
+    sector_registry,
+    store,
+)
 from cyberwatch.model import ORG_ENRICHMENT_CACHE_COLUMNS
+
+_URL_RE = re.compile(r"https?://[^\s|,;]+", re.I)
 
 
 def _env_int(name: str, default: int) -> int:
@@ -33,13 +42,31 @@ def _empty_cache_row() -> dict[str, str]:
     return {column: "" for column in ORG_ENRICHMENT_CACHE_COLUMNS}
 
 
-def _strict_official(organisation: str):
+def _hint_urls(queue_row: dict, cache_row: dict | None = None) -> tuple[str, ...]:
+    """Collecte uniquement des URL comme hints de découverte, jamais comme preuve."""
+    values: list[str] = []
+    for field in ("Evidence_URLs", "Evidence_Text"):
+        for match in _URL_RE.findall(str(queue_row.get(field) or "")):
+            if match not in values:
+                values.append(match)
+    if cache_row:
+        cached = str(cache_row.get("Evidence_URL") or "").strip()
+        if cached and cached not in values:
+            values.append(cached)
+    return tuple(values)
+
+
+def _strict_official(organisation: str, hint_urls: tuple[str, ...]):
     try:
-        return company_subject_evidence.resolve_official_site_subject_attributed(
-            organisation
+        candidates = official_site_discovery.discover_official_sites(
+            organisation, hint_urls
         )
+        evidence = company_subject_evidence.resolve_official_site_subject_attributed(
+            organisation, candidates
+        )
+        return evidence, len(candidates)
     except Exception:
-        return None
+        return None, 0
 
 
 def main() -> int:
@@ -66,11 +93,14 @@ def main() -> int:
         "registry_attempted": 0,
         "registry_matched": 0,
         "strict_official_attempted": 0,
+        "strict_official_targets_with_candidates": 0,
+        "strict_official_candidate_urls": 0,
         "strict_official_matched": 0,
+        "hinted_targets": 0,
         "cache_existing": 0,
         "official_workers": workers,
     }
-    targets: list[tuple[str, str]] = []
+    targets: list[tuple[str, str, tuple[str, ...]]] = []
 
     # Phase 1 : état partagé, donc volontairement séquentielle.
     for queue_row in selected:
@@ -78,11 +108,15 @@ def main() -> int:
         organisation = (queue_row.get("Organisation") or "").strip()
         if not key or not organisation:
             continue
-        targets.append((key, organisation))
 
         existing = state.cache.get(key)
         if existing:
             stats["cache_existing"] += 1
+        hints = _hint_urls(queue_row, existing)
+        if hints:
+            stats["hinted_targets"] += 1
+        targets.append((key, organisation, hints))
+
         record = None
         if not existing or existing.get("Match_Status") not in {
             org_enrichment.MATCHED, org_enrichment.AMBIGUOUS
@@ -100,12 +134,15 @@ def main() -> int:
     stats["strict_official_attempted"] = len(targets)
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {
-            pool.submit(_strict_official, organisation): (key, organisation)
-            for key, organisation in targets
+            pool.submit(_strict_official, organisation, hints): (key, organisation)
+            for key, organisation, hints in targets
         }
         for future in as_completed(futures):
             key, organisation = futures[future]
-            evidence = future.result()
+            evidence, candidate_count = future.result()
+            stats["strict_official_candidate_urls"] += candidate_count
+            if candidate_count:
+                stats["strict_official_targets_with_candidates"] += 1
             if evidence is not None:
                 evidence_by_key[key] = (organisation, evidence)
 
