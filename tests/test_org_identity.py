@@ -3,6 +3,7 @@
 import pytest
 
 from cyberwatch.dedup import MERGE, NO_DECISION, build_incidents, decide_merge
+from cyberwatch.identity import incident_id
 from cyberwatch.normalize import organisation_key
 from cyberwatch.org_identity import effective_organisation_key
 
@@ -76,6 +77,21 @@ def test_bare_commune_keeps_historical_identity_policy():
     assert effective_organisation_key(raw) == organisation_key(raw)
 
 
+def test_singleton_keeps_historical_incident_id_when_identity_resolves(make_item):
+    item = make_item(
+        source="SOURCE_A",
+        org="Département de l’Ardèche",
+        published="2026-04-12",
+        url="https://a.example/incident",
+    )
+    effective = effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
+    assert effective == "departement 07"
+    assert effective != item.Organisation_Key
+
+    incident = build_incidents([item])[0]
+    assert incident.Incident_ID == incident_id(item.Organisation_Key, item.Item_ID)
+
+
 def test_historical_distinct_keys_merge_at_dedup_time_without_rewriting_items(make_item):
     left = make_item(
         source="SOURCE_A",
@@ -98,6 +114,7 @@ def test_historical_distinct_keys_merge_at_dedup_time_without_rewriting_items(ma
     incidents = build_incidents([left, right])
     assert len(incidents) == 1
     assert incidents[0].Items_Count == 2
+    assert incidents[0].Incident_ID == incident_id("departement 33", left.Item_ID)
 
 
 def test_different_departments_are_not_merged(make_item):
