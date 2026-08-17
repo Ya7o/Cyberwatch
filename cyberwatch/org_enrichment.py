@@ -353,9 +353,9 @@ def resolve(
 ) -> OrgEnrichmentRecord | None:
     """Résout l'organisation sans jamais lever d'exception.
 
-    La preuve officielle n'est tentée qu'après échec/ambiguïté du registre
-    exact. Un résultat validé est ensuite partagé par ``Organisation_Key`` via
-    le cache existant.
+    La preuve officielle n'est tentée qu'après NOT_FOUND/AMBIGUOUS du registre
+    exact. Une panne du registre reste une ERROR non cachée : elle ne déclenche
+    pas une seconde famille d'appels réseau dans le même passage.
     """
     if not state.enabled or not org_key or not organisation_raw:
         return None
@@ -377,14 +377,6 @@ def resolve(
     except OrgEnrichmentError:
         state.calls_error += 1
         state.duration_seconds += time.monotonic() - started
-        _attempted, record = _official_site_fallback(
-            org_key, organisation_raw, fetched_at, state
-        )
-        if record is not None:
-            state.cache[org_key] = asdict(record)
-            return record
-        # Panne registre + absence de preuve officielle : ne pas mettre en
-        # cache un résultat négatif permanent.
         return None
     state.duration_seconds += time.monotonic() - started
 

@@ -19,7 +19,7 @@ def test_classification_officielle_intermarche_commerce():
 
 def test_page_officielle_ambigue_reste_inconnue():
     assert company_evidence.classify_official_activity(
-        "Le groupe exploite une banque et un réseau de supermarchés."
+        "Le groupe exploite une banque et un magasin de détail."
     ) is None
 
 
