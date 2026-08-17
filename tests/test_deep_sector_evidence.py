@@ -3,9 +3,12 @@ import csv
 from cyberwatch import company_evidence, config
 from sources.veillellm.deep_enrich_unknown_sectors import (
     apply_evidence,
+    candidate_official_urls,
     incident_urls,
     is_target_row,
+    research_official_evidence,
     target_unknown_urls,
+    validate_official_candidate,
 )
 
 
@@ -79,3 +82,77 @@ def test_apply_evidence_keeps_incident_sources_separate():
     assert row["sector_evidence_source"] == "exemple.fr"
     assert row["sector_evidence_type"] == "official_site"
     assert row["evolution"] == "enrichi"
+
+
+def test_candidate_urls_extract_explicit_domain_and_guess_common_domains():
+    row = {
+        "organisation": "France-Terrain.com",
+        "impact_connu": "La société utilise son portail France-Terrain.com.",
+        "synthese": "",
+    }
+    candidates = candidate_official_urls(row)
+    assert candidates[0] == "https://france-terrain.com"
+    assert any(url.endswith(".fr") for url in candidates)
+
+
+def test_candidate_urls_can_probe_single_name_without_search_engine():
+    candidates = candidate_official_urls({"organisation": "Adobe"})
+    assert "https://adobe.fr" in candidates
+    assert "https://adobe.com" in candidates
+
+
+def test_validate_candidate_rejects_domain_unrelated_to_organisation(monkeypatch):
+    monkeypatch.setattr(
+        company_evidence,
+        "_page",
+        lambda url: (_ for _ in ()).throw(AssertionError("page ne doit pas être appelée")),
+    )
+    assert validate_official_candidate("Adobe", "https://unrelated-example.com") is None
+
+
+def test_validate_candidate_requires_identity_and_activity(monkeypatch):
+    monkeypatch.setattr(
+        company_evidence,
+        "_page",
+        lambda url: (
+            "Adobe — logiciels de création",
+            "Adobe est un éditeur de logiciels et fournit des services cloud.",
+            [],
+            "https://www.adobe.com/fr/",
+        ),
+    )
+
+    evidence = validate_official_candidate("Adobe", "https://adobe.com")
+
+    assert evidence is not None
+    assert evidence.sector == config.SECTOR_TECH
+    assert evidence.evidence_source == "adobe.com"
+
+
+def test_research_stops_on_first_validated_candidate(monkeypatch):
+    monkeypatch.setattr(
+        "sources.veillellm.deep_enrich_unknown_sectors.candidate_official_urls",
+        lambda row: ("https://exemple.fr", "https://exemple.com"),
+    )
+    calls = []
+
+    def validate(org, url):
+        calls.append(url)
+        if url.endswith(".fr"):
+            return company_evidence.CompanyEvidence(
+                sector=config.SECTOR_SERVICES,
+                evidence_url=url,
+                evidence_text="cabinet de conseil",
+                evidence_source="exemple.fr",
+            )
+        return None
+
+    monkeypatch.setattr(
+        "sources.veillellm.deep_enrich_unknown_sectors.validate_official_candidate",
+        validate,
+    )
+    evidence, tested = research_official_evidence({"organisation": "Exemple"})
+
+    assert evidence is not None
+    assert tested == 1
+    assert calls == ["https://exemple.fr"]

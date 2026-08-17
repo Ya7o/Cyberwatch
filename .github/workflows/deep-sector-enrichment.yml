@@ -32,18 +32,30 @@ jobs:
         run: pip install -r requirements.txt
       - name: Rechercher uniquement des preuves Sector officielles
         run: python sources/veillellm/deep_enrich_unknown_sectors.py
-      - name: Commit enriched datasets
+      - name: Revalider la base avec les JSON enrichis du même workspace
+        run: python -m cyberwatch backfill-unknowns
+      - name: Vérifier le snapshot avant publication
+        run: |
+          python -m cyberwatch check --allow-uninitialized
+          python -m cyberwatch test-repeat
+      - name: Publier preuves et snapshot atomiquement
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "cyberwatch-bot@users.noreply.github.com"
-          git add sources/veillellm/cyberattaque_org_2026.csv \
-                  sources/veillellm/cyberattaque_org_2026.json \
-                  sources/veillellm/frenchbreaches_2026.csv \
-                  sources/veillellm/frenchbreaches_2026.json
+          git add \
+            sources/veillellm/cyberattaque_org_2026.csv \
+            sources/veillellm/cyberattaque_org_2026.json \
+            sources/veillellm/frenchbreaches_2026.csv \
+            sources/veillellm/frenchbreaches_2026.json \
+            data/items.csv \
+            data/incidents.csv \
+            data/qualification_provenance.csv \
+            data/snapshot.json \
+            assets/data
           if git diff --cached --quiet; then
-            echo "Aucune nouvelle preuve officielle."
+            echo "Aucune nouvelle preuve ou qualification à publier."
             exit 0
           fi
-          git commit -m "Enrich Sector with official-site evidence"
+          git commit -m "Enrich and revalidate Sector evidence"
           git pull --rebase origin main
           git push origin HEAD:main
