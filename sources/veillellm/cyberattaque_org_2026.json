@@ -59,6 +59,20 @@
       "no_official_evidence": 196,
       "method": "deterministic domain candidates + official page identity/activity validation",
       "evidence_policy": "candidate domains are discovery hints only; incident text, search snippets, legal directories and source article URLs are never Sector evidence"
+    },
+    "sector_evidence_v4": {
+      "target_items": 214,
+      "target_records": 291,
+      "candidate_urls_tested": 1314,
+      "existing_evidence_kept": 1,
+      "existing_evidence_rejected": 94,
+      "evidence_found": 16,
+      "resolved_unknown": 11,
+      "corrected_known": 5,
+      "verified_same": 0,
+      "no_official_evidence": 274,
+      "method": "deterministic official domain + identity + explicit activity phrase",
+      "evidence_policy": "a sector keyword alone is insufficient; stored evidence must contain an explicit activity formulation recognized by Cyberwatch, then be reclassified locally"
     }
   },
   "incidents": [
@@ -220,7 +234,7 @@
       "organisation": "France VAE",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Hébergement / Tourisme / Restauration",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -232,9 +246,9 @@
       "synthese": "Rattrapage 2026 Cyberattaque.org — France VAE : identités, parcours professionnels et données de financement exposés après un incident de sécurité",
       "evolution": "nouveau",
       "sector_evidence_url": "https://vae.gouv.fr/mentions-legales/",
-      "sector_evidence_text": "rme La plateforme « France VAE » est éditée par la Délégation générale à l'emploi et à la formation professionnelle (DGEFP), située : 14 avenue Duquesne 75007 Paris France Tel. : 01 44 38 38 38 Directeur de la publication Le directeur de publication est M",
+      "sector_evidence_text": "Éditeur de la plateforme Directeur de la publication Hébergement de la plateforme Sécurité",
       "sector_evidence_source": "vae.gouv.fr",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-08-13",
@@ -275,7 +289,7 @@
       "organisation": "Son-Video.com frappé une nouvelle fois par une cyberattaque",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -285,11 +299,7 @@
         "https://www.cyberattaque.org/son-video-com-frappe-une-nouvelle-fois-par-une-cyberattaque-10-382-fichiers-internes-publies/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Son-Video.com frappé une nouvelle fois par une cyberattaque : 10 382 fichiers internes publiés",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.son-video.com/",
-      "sector_evidence_text": "-cinéma. Conseils, guides, avis : pour acheter facilement votre équipement en ligne ou en magasin. Son-Vidéo.com est le leader français en hi-fi et home-cinéma. Conseils, guides, avis : pour acheter facilement votre équipement en ligne o",
-      "sector_evidence_source": "son-video.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-12",
@@ -313,7 +323,7 @@
       "organisation": "Leroch Distribution",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -323,11 +333,7 @@
         "https://www.cyberattaque.org/leroch-distribution-33-go-de-donnees-publiees-apres-le-piratage-de-son-compte-blgcloud/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Leroch Distribution : 3,3 Go de données publiées après le piratage de son compte BlgCloud",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://leroch-distribution.fr/",
-      "sector_evidence_text": "iale DÃMARREZ L'ANNÃE AU MEILLEUR PRIX ET PRENEZ SOIN DE VOTRE MATÃRIEL ! CONTACTER LE MAGASIN Nos Services VENTE LOCATION PIÃCES DÃTACHÃES & ENTRETIEN Nos Marques Nos Marques DÃ©couvrez notre Catalogue 2025 Retrouvez nos derniÃ¨re",
-      "sector_evidence_source": "leroch-distribution.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-12",
@@ -402,7 +408,7 @@
       "organisation": "Santé publique France",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -412,18 +418,14 @@
         "https://www.cyberattaque.org/sante-publique-france-pres-de-80-000-personnes-exposees-apres-une-faille/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Santé publique France : près de 80 000 personnes exposées après une faille",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.santepubliquefrance.fr/",
-      "sector_evidence_text": "016 par ordonnance et décret, c'est un établissement public administratif sous tutelle du ministère chargé de la Santé. A lire aussi Rapport annuel 2025 Programme de travail 2026 Contrat d'objectifs et de performance 2024-2028 Stratégie 20",
-      "sector_evidence_source": "santepubliquefrance.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-11",
       "organisation": "HeyPulse",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -433,18 +435,14 @@
         "https://www.cyberattaque.org/heypulse-la-base-client-et-le-code-source-en-fuite-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — HeyPulse : la base client et le code source en fuite après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.heypulse.fr/",
-      "sector_evidence_text": "is Pizzeria La Bottega +700 avis en 4 mois FastFood Atelier du Buns +1200 avis en 11 mois Magasin FootKorner +800 avis en 8 mois FastFood Mc Quik +150 avis en 1 mois Patisserie SoDonuts +600 avis en 6 mois ← → Nos modules intégrés pour o",
-      "sector_evidence_source": "heypulse.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-10",
       "organisation": "Steam",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -454,11 +452,7 @@
         "https://www.cyberattaque.org/steam-noms-adresses-et-commandes-de-clients-europeens-exposes-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Steam : noms, adresses et commandes de clients européens exposés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.steam.fr/mentions-legales?lang=en",
-      "sector_evidence_text": "ontpellier Cedex 05 (France) | Téléphone : 04 99 52 62 32 | Email : siege@steam.fr . ​ L' hébergeur du site Internet est : Wix.com Inc., basé au 500 Terry A François Blvd San Francisco, CA 94158 | Téléphone : +1 415-639-9034. ​ Propriétés",
-      "sector_evidence_source": "steam.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-10",
@@ -550,7 +544,7 @@
       "organisation": "Le Mans FC",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Sport",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -560,11 +554,7 @@
         "https://www.cyberattaque.org/le-mans-fc-une-base-de-2-481-enregistrements-diffusee-apres-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Le Mans FC : une base de 2 481 enregistrements diffusée après une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://lemansfc.fr/",
-      "sector_evidence_text": "LE MANS FC - Site officiel LE MANS FOOTBALL CLUB × Billetterie Partenaires principaux Ouverture billetterie & boutique Ã La PincenardiÃ¨re DU LUNDI AU VENDREDI (10H-12H, 14H-17H) Mentions",
-      "sector_evidence_source": "lemansfc.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-09",
@@ -605,7 +595,7 @@
       "organisation": "CLCV",
       "territoire": "États-Unis",
       "localisation": "États-Unis",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -615,11 +605,7 @@
         "https://www.cyberattaque.org/cyberattaque-association-nationale-de-consommateurs-et-usagers/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — CLCV : 80 031 dossiers de consommateurs revendiqués avec leurs litiges et coordonnées",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.clcv.org/",
-      "sector_evidence_text": "? À la plage : ce qui est autorisé… et ce qui ne l’est pas Incendies : que devient votre crédit immobilier si votre logement est détruit ou inhabitable ? Démarchage téléphonique : vers la fin des appels commerciaux non sollicités ? Vac",
-      "sector_evidence_source": "clcv.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-09",
@@ -643,7 +629,7 @@
       "organisation": "BlgCloud",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -653,11 +639,7 @@
         "https://www.cyberattaque.org/blgcloud-les-donnees-de-159-entreprises-pirate-des-millions-de-documents-en-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — BlgCloud : les données de 159 entreprises revendiquées, des milliers de documents en fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.blgcloud.fr/",
-      "sector_evidence_text": "| L’ERP métier pour concessionnaires, loueurs et réparateurs de matériels Découvrez l'ERP SaaS de demain, conçu pour les concessionnaires, loueurs, réparateurs, importateurs et gestionnaires de flotte matériels. Profitez de notre App",
-      "sector_evidence_source": "blgcloud.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-08",
@@ -715,7 +697,7 @@
       "organisation": "AFPA",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "Cybernox",
       "statut": "Signal documenté par la source",
@@ -725,11 +707,7 @@
         "https://www.cyberattaque.org/afpa-pirate-101-comptes-exposes-et-un-acces-administrateur-publie/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — AFPA piraté : 101 comptes exposés et un accès administrateur publié",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://afpa.org/",
-      "sector_evidence_text": "AFPA | Association Française de Pédiatrie Ambulatoire Association de Formation Professionnelle en Pédiatrie, l'AFPA vous propose des séminaires présentiels, des congrès et des formations en ligne. Association de Formation Professionne",
-      "sector_evidence_source": "afpa.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-06",
@@ -872,7 +850,7 @@
       "organisation": "Inserm",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Santé",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -882,11 +860,7 @@
         "https://www.cyberattaque.org/inserm-189-997-profils-de-professionnels-de-sante-dans-une-fuite-massive/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Inserm : 189 997 profils de professionnels de santé dans une fuite massive",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.inserm.fr/",
-      "sector_evidence_text": "ience pour la santé L'Inserm est un organisme de recherche scientifique public dédié à la santé humaine. Notre objectif : améliorer la santé par le progrès des connaissances sur le vivant et les maladies, l'innovation dans les traitements et l",
-      "sector_evidence_source": "inserm.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-03",
@@ -910,7 +884,7 @@
       "organisation": "Terveo",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -920,11 +894,7 @@
         "https://www.cyberattaque.org/terveo-les-donnees-clients-et-historiques-de-commandes-exposes-dans-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Terveo : les données clients et historiques de commandes exposés dans une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://terveo.com/legal-page/mentions-legales/",
-      "sector_evidence_text": "entions légales Article 1. Éditeur du site Article 2. Directeur de publication Article 3. Hébergeur du site Article 4. Concepteurs du site Article 5. Utilisateurs Produits Partenaires À propos Contacts Assistance Inscrivez-vous à notre New",
-      "sector_evidence_source": "terveo.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-08-02",
@@ -1033,7 +1003,7 @@
       "organisation": "ENGIE Green",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Énergie / Utilities",
+      "secteur": "Construction / BTP",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1045,9 +1015,9 @@
       "synthese": "Rattrapage 2026 Cyberattaque.org — ENGIE Green : 621 019 clients en fuite après une intrusion par injection SQL",
       "evolution": "nouveau",
       "sector_evidence_url": "https://www.engie-green.fr/",
-      "sector_evidence_text": "ENGIE Green - Acteur principal de la transition énergétique et fournisseur d'électricité verte leader en France ENGIE Green est un fournisseur d'énergie ou électricité verte leader en France. Notre entreprise en énergie renouvel",
+      "sector_evidence_text": "acteur de la transition énergétique tout en optimisant l’exploitation de votre foncier",
       "sector_evidence_source": "engie-green.fr",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-07-30",
@@ -1071,7 +1041,7 @@
       "organisation": "5doigts2pieds.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -1081,7 +1051,11 @@
         "https://www.cyberattaque.org/5doigts2pieds-fr-pirate-les-donnees-et-commandes-de-ses-clients-ont-ete-volees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — 5doigts2pieds.fr piraté : les données et commandes de ses clients ont été volées",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.5doigts2pieds.fr/fivefingers-activites-de-plein-air-homme/",
+      "sector_evidence_text": "fabricant de semelles depuis un peu moins d’un siècle",
+      "sector_evidence_source": "5doigts2pieds.fr",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-07-29",
@@ -1122,7 +1096,7 @@
       "organisation": "Location-etudiant.fr",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1132,11 +1106,7 @@
         "https://www.cyberattaque.org/location-etudiant-fr-pirate-10-go-de-donnees-en-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Location-etudiant.fr piraté : 10 Go de données en fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.location-etudiant.fr/",
-      "sector_evidence_text": "riptions et débouchés - Guide complet 2023 Parcours difficile des étudiants bègues dans l'enseignement supérieur : témoignages et défis Université de La Rochelle : adoption des congés menstruels pour le bien-être des étudiantes Trois raisons",
-      "sector_evidence_source": "location-etudiant.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-28",
@@ -1228,7 +1198,7 @@
       "organisation": "ResaClick",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1238,11 +1208,7 @@
         "https://www.cyberattaque.org/resaclick-cyberattaque-fuite-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ResaClick : les données personnelles de 10 263 utilisateurs diffusées en ligne",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://resaclick.net/mention-legales",
-      "sector_evidence_text": "cours du Danube, 77700 Serris (Val d’Europe), France Contact : via le formulaire en ligne Hebergeur Resaclick est hébergé par Scaleway SAS , située au 8 rue de la Ville l’Evêque, 75008 Paris, France. Gestion des cookies et des données pers",
-      "sector_evidence_source": "resaclick.net",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-27",
@@ -1266,7 +1232,7 @@
       "organisation": "Batipro 33",
       "territoire": "France",
       "localisation": "Gironde et certifié Qualiopi",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Construction / BTP",
       "type_menace": "Intrusion",
       "acteur": "0xSec",
       "statut": "Revendiqué / non corroboré",
@@ -1278,9 +1244,9 @@
       "synthese": "Rattrapage 2026 Cyberattaque.org — Batipro 33 piraté : 1119 personnes et cinq bases SQL internes revendiquées",
       "evolution": "nouveau",
       "sector_evidence_url": "https://batipro33.fr/mentions-legales/",
-      "sector_evidence_text": "se e-mail de contact : formation@batipro33.fr ci-après » le Directeur de publication « C. Hébergeur du site Le site BATIPRO est hébergé par : ALWAYSDATA dont le siège est situé à l’adresse suivante : 91 rue du Faubourg Saint Honoré – 75008",
+      "sector_evidence_text": "spécialisé dans l’ensemble des métiers du Bâtiment",
       "sector_evidence_source": "batipro33.fr",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-07-26",
@@ -1355,7 +1321,7 @@
       "organisation": "Alpissimmo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1365,11 +1331,7 @@
         "https://www.cyberattaque.org/alpissimmo-pres-de-600-projets-de-vacances-exposes-avec-coordonnees-et-dates-de-sejour/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Alpissimmo : près de 600 projets de vacances exposés avec coordonnées et dates de séjour",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.alpissimmo.fr/alpissimmo-agence-immobiliere-vente-et-location-de-vacances-1367",
-      "sector_evidence_text": "onnelle « Transactions – Gestion Immobilière – Prestations touristiques » délivrée par la CCI de Grenoble sous le numéro n°CPI38012018000028451 RESPONSABILITÉ CIVILE PROFESSIONNELLE : Generali Contrat n° AL591311 / 26963 GARANTIE DE",
-      "sector_evidence_source": "alpissimmo.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-25",
@@ -1393,7 +1355,7 @@
       "organisation": "Immobilière Tariot",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Compromission de compte / messagerie",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -1403,11 +1365,7 @@
         "https://www.cyberattaque.org/immobiliere-tariot-fuite-des-plans-de-logements-rib-et-dossiers-de-coproprietaires-marseillais/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Immobilière Tariot : fuite des plans de logements, RIB et dossiers de copropriétaires marseillais",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.immobilieretariot.fr/i/redac/legals",
-      "sector_evidence_text": "TVA Intracommunautaire : FR30344406848 Carte professionnelle TG n° CPI 13102015000002221 Préfecture de délivrance de la carte professionnelle : CCI Marseille Provence Capital : 190800 € Caisse garantie financière : Galian Montant garantie",
-      "sector_evidence_source": "immobilieretariot.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-23",
@@ -1482,7 +1440,7 @@
       "organisation": "BANATIC",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1492,11 +1450,7 @@
         "https://www.cyberattaque.org/banatic-plus-de-91-000-elus-et-responsables-de-collectivites-exposes-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — BANATIC : plus de 91 000 élus et responsables de collectivités exposés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://banatic.com/",
-      "sector_evidence_text": "et started quickly using our built-in templates. Get Started for free 7 day free trail No credit card required All features Built for everybody Our customizable, popup form build system makes creating your next lead engine fast and easy",
-      "sector_evidence_source": "banatic.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-20",
@@ -1656,7 +1610,7 @@
       "organisation": "Actiale",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1666,11 +1620,7 @@
         "https://www.cyberattaque.org/actiale-229-978-missions-en-fuite-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Actiale : 229 978 missions en fuite après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.actiale.fr/expertises/",
-      "sector_evidence_text": "Expertises - Groupe Actiale Aller au contenu Espace collaborateurs Espace clients Espace recrutement Espace collaborateurs Espace clients Espace recrutement Groupe Expertises Force de vente Merchandising Animation Conseils Groupe Expertises",
-      "sector_evidence_source": "actiale.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-16",
@@ -1779,7 +1729,7 @@
       "organisation": "Lidl",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Incident tiers",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -1789,11 +1739,7 @@
         "https://www.cyberattaque.org/lidl-les-coordonnees-de-clients-exposes-apres-une-cyberattaque-chez-un-prestataire/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Lidl : les coordonnées de clients exposés après une cyberattaque chez un prestataire",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.lidl.fr/",
-      "sector_evidence_text": "Lidl, ça vaut le coup. En supermarché et en ligne. Le meilleur chaque jour ça vaut le coup. Découvrez nos meilleurs produits bricolage, jardin et bien d'autres... à commander en",
-      "sector_evidence_source": "lidl.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-13",
@@ -1834,7 +1780,7 @@
       "organisation": "EIML Paris",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -1844,11 +1790,7 @@
         "https://www.cyberattaque.org/eiml-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — EIML Paris : près de 90 000 personnes exposées après la cyberattaque du Groupe GES",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://eiml-paris.fr/",
-      "sector_evidence_text": "La Grande École Internationale du Luxe | EIML Paris Rejoignez la grande école internationale de marketing et management du luxe EIML Paris. Formations spéc",
-      "sector_evidence_source": "eiml-paris.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-13",
@@ -1889,7 +1831,7 @@
       "organisation": "Litige.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1899,18 +1841,14 @@
         "https://www.cyberattaque.org/litige-fr-plus-de-2-millions-dutilisateurs-revendiques-apres-une-faille-idor/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Litige.fr : plus de 2 millions d’utilisateurs revendiqués après une faille IDOR",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.litige.fr/",
-      "sector_evidence_text": "tiges grâce à nos recours juridiques simplifiés : logement, travail, automobile, travaux, assurance, voyage... De la mise en demeure au Tribunal, seul ou avec avocat, huissier de justice, expert. Tout se fait en ligne. Réglez tous vos liti",
-      "sector_evidence_source": "litige.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-11",
       "organisation": "Bebeboutik",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -1920,11 +1858,7 @@
         "https://www.cyberattaque.org/bebeboutik-500-000-enregistrements-et-14-go-de-donnees-commerciales-en-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Bebeboutik : 500 000 enregistrements et 1,4 Go de données commerciales en fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.bebeboutik.fr",
-      "sector_evidence_text": "ebeboutik - La boutique des parents : tous les produits pour maman et bébé La plus grande boutique en ligne pour les parents : des milliers de produits de marques pour les besoins des mamans et des bébés, à prix accessible La boutique des parents",
-      "sector_evidence_source": "bebeboutik.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-09",
@@ -1982,7 +1916,7 @@
       "organisation": "SNOSM",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -1992,18 +1926,14 @@
         "https://www.cyberattaque.org/snosm-11-682-fichiers-et-code-source-en-fuite-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — SNOSM : 11 682 fichiers et code source en fuite après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://snosm.fr/fr/domaine-montagne/autres-activites",
-      "sector_evidence_text": "Accueil DOMAINE MONTAGNE AUTRES ACTIVITES AUTRES ACTIVITES Nos partenaires CONTACT SNOSM Ecole Nationale de Ski et d'Alpinisme 35 route du Bouchet 74400 Chamonix-Mont-Blanc FRANCE Tel: 04 50 55 30 14 ou 04 50 55 30 05 Mobile: 06-71-80",
-      "sector_evidence_source": "snosm.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-09",
       "organisation": "SDAG Adhésifs",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2014,10 +1944,10 @@
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — SDAG Adhésifs : 58 725 enregistrements de commandes et 3 653 clients dans une fuite de données",
       "evolution": "nouveau",
-      "sector_evidence_url": "https://www.boutique-sdag.net/",
-      "sector_evidence_text": "SDAG | Les adhésifs pour la communication visuelle Distributeur de produits destinés à la communication visuelle: films adhésifs, bâches, papiers affiches, systèmes d’affichage, décoration et films texti",
+      "sector_evidence_url": "https://www.boutique-sdag.net/content/4-a-propos-de-nous",
+      "sector_evidence_text": "Centre de formation",
       "sector_evidence_source": "boutique-sdag.net",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-07-09",
@@ -2126,7 +2056,7 @@
       "organisation": "PixartPrinting",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Transport / Logistique",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2136,11 +2066,7 @@
         "https://www.cyberattaque.org/pixartprinting-141-467-profils-clients-europeens-revendiques-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — PixartPrinting : 141 467 profils clients européens revendiqués dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.pixartprinting.com/company-profile/",
-      "sector_evidence_text": "by use Custom Roll labels Food Labels Cosmetic Labels Wine Labels Beer Labels Mailing and shipping Labels Packaging Labels Jar Labels Candle labels Water Bottle Labels Product Labels Stickers Die-Cut Stickers Round Stickers Rectangular St",
-      "sector_evidence_source": "pixartprinting.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-08",
@@ -2283,7 +2209,7 @@
       "organisation": "Lions Clubs France",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2293,11 +2219,7 @@
         "https://www.cyberattaque.org/lions-clubs-france-23-898-fiches-de-membres-exposees-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Lions Clubs France : 23 898 fiches de membres exposées après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://lions-france.org/le-lions-clubs/qui-sommes-nous/",
-      "sector_evidence_text": "pital de 15.000 euros RCS Moulins 432 050 680 – APE 7311Z Crédits photos : Lions Clubs et banque d’images Propriété intellectuelle : Le site lions-france.org est propriété du LCI-DM103. L’ensemble de ce site relève des législations fran",
-      "sector_evidence_source": "lions-france.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-05",
@@ -2372,7 +2294,7 @@
       "organisation": "Pacha Tours",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Transport / Logistique",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -2382,11 +2304,7 @@
         "https://www.cyberattaque.org/pacha-tours-31-087-personnes-passeports-pnr-et-mots-de-passe-en-clair-publies-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Pacha Tours : 31 087 personnes, passeports, PNR et mots de passe en clair publiés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.pachatours.com/",
-      "sector_evidence_text": "Tour Operator | Pacha Tours INTERNATIONAL Let us show you the world! 37 years ago, Pacha Tours was founded aiming to provide the best lodging, transporta",
-      "sector_evidence_source": "pachatours.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-07-01",
@@ -2461,7 +2379,7 @@
       "organisation": "Trenitalia",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Énergie / Utilities",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -2471,11 +2389,7 @@
         "https://www.cyberattaque.org/trenitalia-les-donnees-de-voyageurs-exposees-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Trenitalia : les données de voyageurs exposées après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://trenitalia.fr/informations/qui-sommes-nous/",
-      "sector_evidence_text": "té offre une fusion entre innovation moderne et charme naturel. Chaque coin résonne d’une énergie dynamique, faisant de chaque visite une aventure éducative. Pensez à planifier votre journée en avance, et à vous renseigner sur l’accès au",
-      "sector_evidence_source": "trenitalia.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-29",
@@ -2499,7 +2413,7 @@
       "organisation": "ONPP",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Santé",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2510,10 +2424,10 @@
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ONPP : 8 048 fiches de pédicures-podologues revendiquées dans une fuite de données",
       "evolution": "nouveau",
-      "sector_evidence_url": "https://www.onpp.fr/communication/publications/rapports-d-activites/",
-      "sector_evidence_text": "re Droits d'auteur - Etablir des liens vers le site de l'ONPP Rubrique \"Petites annonces\" Crédit Photos Conception- Hébergement Mentions légales Nous suivre sur facebook Nous contacter Espace pro OK Ordre National des pédicure-podologue",
+      "sector_evidence_url": "https://www.onpp.fr/",
+      "sector_evidence_text": "acteur de santé publique de la profession Œuvrer à l'équilibre démographique de la profess",
       "sector_evidence_source": "onpp.fr",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-06-29",
@@ -2537,7 +2451,7 @@
       "organisation": "Classic Days",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2547,11 +2461,7 @@
         "https://www.cyberattaque.org/classic-days-11-go-de-donnees-clients-avec-les-mots-de-passe-en-clair-en-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Classic Days : 11 Go de données clients avec les mots de passe en clair en fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.classic-days.fr/mentions-legales/",
-      "sector_evidence_text": "CLASSIC DAYS MAGNY-COURS 24 & 25 AVRIL 2027 Histoire Histoire du circuit La compétition L’école et les constructeurs Archives Classic Days Programme Plateaux Plateau des participants 2027 Plateau des exposants 2027 Tarifs Tarifs partic",
-      "sector_evidence_source": "classic-days.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-29",
@@ -2575,7 +2485,7 @@
       "organisation": "Air Corsica",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -2585,7 +2495,11 @@
         "https://www.cyberattaque.org/air-corsica-plus-de-12-000-fiches-dagents-et-dayants-droit-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Air Corsica : plus de 12 000 fiches d’agents et d’ayants droit dans une fuite de données",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.aircorsica.com/la-compagnie/",
+      "sector_evidence_text": "Centre de Formation",
+      "sector_evidence_source": "aircorsica.com",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-06-28",
@@ -2660,7 +2574,7 @@
       "organisation": "Insee",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Construction / BTP",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2670,11 +2584,7 @@
         "https://www.cyberattaque.org/insee-12-800-agents-de-linsee-dans-une-fuite-de-donnees-internes/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Insee : 12 800 agents de l’Insee dans une fuite de données internes",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.insee.fr/fr/information/2406147",
-      "sector_evidence_text": "aloriser ses productions Perfectionner ses méthodes et évaluer la qualité Contribuer à la construction de la statistique européenne et internationale La statistique publique Cadre juridique et institutionnel Le service statistique public Secr",
-      "sector_evidence_source": "insee.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-25",
@@ -2783,7 +2693,7 @@
       "organisation": "Century 21",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2793,11 +2703,7 @@
         "https://www.cyberattaque.org/century-21-plus-de-21-000-collaborateurs-revendiques-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Century 21 : plus de 21 000 collaborateurs revendiqués dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.century21.fr/fiches/a_propos/",
-      "sector_evidence_text": "CENTURY 21 Rentrée 2026 : se former aux métiers de l’immobilier en alternance avec le CFA Académie 21 Rejoignez le CFA Académie 21 et obtenez un diplôme reconnu par l'État tout en travaillant dans une agence CENTURY 21. Une formation prof",
-      "sector_evidence_source": "century21.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-23",
@@ -2821,7 +2727,7 @@
       "organisation": "Pulsy",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2831,18 +2737,14 @@
         "https://www.cyberattaque.org/pulsy-58-millions-de-dossiers-patients-revendiques-dans-une-fuite-visant-le-sante-du-grand-est/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Pulsy : 5,8 millions de dossiers patients revendiqués dans une fuite visant l’e-santé du Grand Est",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://pulsy.org/",
-      "sector_evidence_text": "lsy vs. hosted monitoring services Feature Pulsy (self-hosted) Pulsy Cloud Typical hosted SaaS Cost Free forever â unlimited monitors Free tier, paid plans from $12/mo Monthly subscription, limits per plan Data ownership Stays on yo",
-      "sector_evidence_source": "pulsy.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-22",
       "organisation": "Nestenn",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Construction / BTP",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -2852,7 +2754,11 @@
         "https://www.cyberattaque.org/nestenn-pres-de-29-000-leads-immobiliers-revendiques-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Nestenn : près de 29 000 leads immobiliers revendiqués dans une fuite de données",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://nestenn.com/",
+      "sector_evidence_text": "centre de formation",
+      "sector_evidence_source": "nestenn.com",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-06-22",
@@ -2876,7 +2782,7 @@
       "organisation": "Hellfest",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -2886,11 +2792,7 @@
         "https://www.cyberattaque.org/hellfest-un-fichier-de-pres-de-1-900-personnes-diffuse-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Hellfest : un fichier de près de 1 900 personnes diffusé après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://hellfest.fr/mentions-legales",
-      "sector_evidence_text": "érience Engagements - RSO Prevention - Hellcare Accessibilité Partenaires CONTACT & LÉGAL Recrutement Newsletter Mention Légales Conditions Générales de Vente Mentions légales et politique de confidentialité Mentions Légales Contact Pour tou",
-      "sector_evidence_source": "hellfest.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-22",
@@ -2914,7 +2816,7 @@
       "organisation": "France-Terrain.com",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -2924,11 +2826,7 @@
         "https://www.cyberattaque.org/france-terrain-com-une-base-interne-revendiquee-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — France-Terrain.com : une base interne revendiquée dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://france-terrain.com/",
-      "sector_evidence_text": "X France-terrain.com Accueil - Recherches - Contacts Des milliers de terrains à bâtir par commune Mise à jour permanente Nous vous proposons actuellement : 1 798 terrains individuels 7 346 terrains en lotissement 94 terrains à lotir, en",
-      "sector_evidence_source": "france-terrain.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-22",
@@ -3054,7 +2952,7 @@
       "organisation": "TakTikimmo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -3064,11 +2962,7 @@
         "https://www.cyberattaque.org/taktikimmo-pres-de-94-000-annonces-immobilieres-revendiquees-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — TakTikimmo : près de 94 000 annonces immobilières revendiquées dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://taktikimmo.com/mentions-legales/",
-      "sector_evidence_text": "S RIBAS 13770 VENELLES E-mail :contact@immup.fr Concepteur du site InternetLK-Interactive Hébergeur du site InternetOVH2 rue Kellermann – 59100 Roubaix – France+33 9 72 10 10 07 Propriété intellectuelleLa structure générale, ainsi […] Ment",
-      "sector_evidence_source": "taktikimmo.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-16",
@@ -3092,7 +2986,7 @@
       "organisation": "Autosur",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -3102,18 +2996,14 @@
         "https://www.cyberattaque.org/autosur-63-000-controles-techniques-revendiques-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Autosur : 63 000 contrôles techniques revendiqués dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.autosur.fr/a-propos-dautosur/",
-      "sector_evidence_text": "de contrôle technique de véhicules dont le poids n’excède pas 3,5 tonnes par décision du Ministère de la Transition Écologique et Solidaire en date du 26 Aout 2022, pour 10 ans, en qualité de réseau de contrôle technique de véhicules de c",
-      "sector_evidence_source": "autosur.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-15",
       "organisation": "Superimmo",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Construction / BTP",
+      "secteur": "Sport",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -3123,14 +3013,18 @@
         "https://www.cyberattaque.org/superimmo-plus-de-52-000-professionnels-revendiques-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Superimmo : plus de 52 000 professionnels revendiqués dans une fuite de données",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.superimmo.com/qui-sommes-nous",
+      "sector_evidence_text": "club de football",
+      "sector_evidence_source": "superimmo.com",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-06-15",
       "organisation": "Local’emploi",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "0xSec",
       "statut": "Revendiqué / non corroboré",
@@ -3140,18 +3034,14 @@
         "https://www.cyberattaque.org/localemploi-plus-de-12-000-candidats-et-recruteurs-revendiques-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Local’emploi : plus de 12 000 candidats et recruteurs revendiqués dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://localemploi.fr/",
-      "sector_evidence_text": "plus Nos financeurs Liens utiles MEIF PARIS SACLAY COMMUNAUTE PARIS SACLAY COMMUNAUTE DE COMMUNE DU PAYS DE LIMOURS Retrouvez-nous sur les réseaux sociaux Lien vers notre page Facebook Lien vers notre profil LinkedIn Accessibilité : par",
-      "sector_evidence_source": "localemploi.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-15",
       "organisation": "JeVeuxAider.gouv.fr",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -3161,18 +3051,14 @@
         "https://www.cyberattaque.org/jeveuxaider-gouv-fr-plus-de-558-000-benevoles-potentiellement-concernes-par-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — JeVeuxAider.gouv.fr : plus de 558 000 bénévoles concernés par une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.jeveuxaider.gouv.fr/",
-      "sector_evidence_text": "vique Trouvez une mission de bénévolat dans une association, organisation publique ou une collectivité territoriale, sur le terrain ou à distance. Plus de 30 000 missions disponibles partout en France dans 10 domaines d'action : solidarité, i",
-      "sector_evidence_source": "jeveuxaider.gouv.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-14",
       "organisation": "SSTRN",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3182,11 +3068,7 @@
         "https://www.cyberattaque.org/sstrn-plus-de-355-000-salaries-voient-leur-historique-de-medecine-du-travail-expose/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — SSTRN : plus de 355 000 salariés voient leur historique de médecine du travail exposé",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://sstrn.fr/",
-      "sector_evidence_text": "humains Responsabilité sociétale Acteur sur le territoire Plaquettes et documents Centres Recrutement Liste des offres Candidature spontanée Adhésion Adhérer au SSTRN Cotisation et tarifs Espace adhérent Rechercher Type de contenu - Tout - C",
-      "sector_evidence_source": "sstrn.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-14",
@@ -3210,7 +3092,7 @@
       "organisation": "Junior Association",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -3220,11 +3102,7 @@
         "https://www.cyberattaque.org/junior-association-plus-de-63-000-jeunes-et-responsables-associatifs-concernes-par-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Junior Association : plus de 63 000 jeunes et responsables associatifs concernés par une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://juniorassociation.org/",
-      "sector_evidence_text": "ociatif Les pratiques favorisant l'engagement associatif des mineur·es Le climat Pour une école alliée de l'engagement des mineur·es Nos actions Favoriser l’autonomie des jeunes Animer un réseau d’acteurs Promouvoir l'engagement des je",
-      "sector_evidence_source": "juniorassociation.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-14",
@@ -3265,7 +3143,7 @@
       "organisation": "BYmyCAR",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Transport / Logistique",
+      "secteur": "Inconnu",
       "type_menace": "Incident tiers",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3275,11 +3153,7 @@
         "https://www.cyberattaque.org/bymycar-un-prestataire-victime-dune-cyberattaque-les-donnees-de-clients-exposees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — BYmyCAR : un prestataire victime d’une cyberattaque, les données de clients exposées",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.bymycar.fr:443/pages/mentions-legales",
-      "sector_evidence_text": "personnel sont destinées aux services marketing, aux services commerciaux et aux services logistique de BYmyCAR et de ses concessions. Ces informations seront conservées sous une forme permettant l'identification des personnes concernées et",
-      "sector_evidence_source": "bymycar.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-12",
@@ -3337,7 +3211,7 @@
       "organisation": "Smartbox",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3347,11 +3221,7 @@
         "https://www.cyberattaque.org/smartbox-plus-de-60-000-comptes-et-200-000-contrats-exposes-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Smartbox : plus de 60 000 comptes et 200 000 contrats exposés dans une fuite de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.smartbox.com/fr/",
-      "sector_evidence_text": "l Cadeau Nouvel An Cadeau EVG Cadeau EVJF Thèmes populaires Nos collections Collection en Magasin Nouveautés Meilleures ventes Cadeau insolite A faire une fois dans sa vie Expériences à partager Par budget Cadeau pas cher Cadeau de luxe",
-      "sector_evidence_source": "smartbox.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-11",
@@ -3375,7 +3245,7 @@
       "organisation": "Toulouse FC",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Sport",
+      "secteur": "Inconnu",
       "type_menace": "Incident tiers",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3385,18 +3255,14 @@
         "https://www.cyberattaque.org/toulouse-fc-les-abonnes-exposes-apres-une-cyberattaque-chez-un-prestataire/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Toulouse FC : les abonnés exposés après une cyberattaque chez un prestataire",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.toulouse-fc.fr/",
-      "sector_evidence_text": "inspirée par la Ville Rose et l’innovation. toulouse-fc.fr Chaussettes Domicile Toulouse Football Club 2025-2026 Chaussettes Extérieur Toulouse Football Club 2024-2025 Chaussettes extérieur Toulouse Football Club 2025-2026 Maillot Domicile Fe",
-      "sector_evidence_source": "toulouse-fc.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-10",
       "organisation": "Capifrance",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -3406,11 +3272,7 @@
         "https://www.cyberattaque.org/capifrance-une-fuite-expose-les-donnees-de-pres-de-786-000-personnes/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Capifrance : une fuite expose les données de près de 786 000 personnes",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.capifrance.fr/fr/espace-presse",
-      "sector_evidence_text": "on « Les Pépites » pour booster la visibilité des biens exclusifs Capifrance accélère son recrutement en 2025 avec une opération inédite dans plusieurs grandes villes françaises Capifrance développe un outil exclusif pour ses conseillers Le",
-      "sector_evidence_source": "capifrance.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-09",
@@ -3468,7 +3330,7 @@
       "organisation": "Propriétés Privées",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -3478,11 +3340,7 @@
         "https://www.cyberattaque.org/proprietes-privees-cyberattaque-fuite-de-donnees-massive/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Propriétés Privées : plus de 2,5 millions de personnes concernées par une fuite de données massive",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.proprietes-privees.com/qui-sommes-nous",
-      "sector_evidence_text": "Agence immobilière depuis 2006 Carte professionnelle T et G n° CPI 4401 2016 000 010 388 CCI Nantes-Saint Nazaire Adhérent de la Fédération nationale de l’immobilier (FNAIM) Soumis à la loi n° 70-9 du 2 janvier 1970 et au décret n°",
-      "sector_evidence_source": "proprietes-privees.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-09",
@@ -3540,7 +3398,7 @@
       "organisation": "Boondooa",
       "territoire": "France",
       "localisation": "Annecy et spécialisée",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3550,11 +3408,7 @@
         "https://www.cyberattaque.org/boondooa-une-compromission-expose-le-code-source-et-des-donnees-internes-de-lagence-web-annecienne/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Boondooa : une compromission expose le code source et des données internes de l’agence web annécienne",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.boondooa.com/",
-      "sector_evidence_text": "érencement SEO Le développement et le design web Développement web Design web L'avenir du e-commerce à Annecy Éléments clés pour choisir une agence web à Annecy Expérience et expertise Références et réputation Les tendances actuelles en des",
-      "sector_evidence_source": "boondooa.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-09",
@@ -3578,7 +3432,7 @@
       "organisation": "Tchap",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3588,11 +3442,7 @@
         "https://www.cyberattaque.org/tchap-plus-de-73-000-agents-de-letat-et-643-000-messages-exposes-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Tchap : plus de 73 000 agents de l’État et 643 000 messages exposés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.tchap.fr/",
-      "sector_evidence_text": "e, de la Communication, du High-tech, des Apps et du Partage . Tchap Entreprise Rachat de crédit consommation : tout comprendre pour réduire vos mensualités Comment réduire le coût total de son crédit immobilier sans se tromper Impôts 2",
-      "sector_evidence_source": "tchap.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-08",
@@ -3701,7 +3551,7 @@
       "organisation": "Osmose",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3711,11 +3561,7 @@
         "https://www.cyberattaque.org/osmose-11-000-profils-dagents-france-services-diffuses-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Osmose : 11 000 profils d’agents France services diffusés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://osmose.fr/",
-      "sector_evidence_text": "Osmose — Conseil et ingénierie Digital, Data & Cloud Cabinet de conseil et d'ingénierie Digital, Data & Cloud à Bordeaux et Toulouse. Nous connectons talents et entreprises pour transformer vos projets en succès",
-      "sector_evidence_source": "osmose.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-06-03",
@@ -3773,7 +3619,7 @@
       "organisation": "Le Média Pour Tous",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -3783,11 +3629,7 @@
         "https://www.cyberattaque.org/le-media-pour-tous-les-donnees-de-13-000-comptes-membres-en-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Le Média Pour Tous : les données de 13 000 comptes membres en fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://lemediapourtous.fr/anneaux-olympiques-sur-la-tour-eiffel-pourquoi-la-proposition-danne-hidalgo-de-les-garder-apres-les-jeux-fait-grincer-des-dents/",
-      "sector_evidence_text": ": Le Média Pour Tous Association loi 1901 Directeur de la publication : Vincent Lapierre Hébergeur : 1&1 Internet SARL 7, place de la Gare BP 70109 57201 Sarreguemines Cedex Restez informé par email Vous connecter avec vos identifiants Si",
-      "sector_evidence_source": "lemediapourtous.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-31",
@@ -4083,7 +3925,7 @@
       "organisation": "Optic 2000",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Éducation / Formation",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4094,10 +3936,10 @@
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Optic 2000 : près de 8 000 factures PDF et données de franchisés en fuite",
       "evolution": "nouveau",
-      "sector_evidence_url": "https://www.optic2000.com/",
-      "sector_evidence_text": "ournable de l'optique en ligne ! ✔ Réservez en ligne ⭐ Click & Collect ! Exclusivement en magasin Nos Bons Plans Lunettes de soleil Femme Vogue Eyewear VO5512S Lunettes de soleil Enfant Kumquat K2502S Lunettes de soleil Mixte Kumquat K21",
+      "sector_evidence_url": "https://www.optic2000.com/optic-2000-enseigne-optique-de-proximite",
+      "sector_evidence_text": "centre de formation",
       "sector_evidence_source": "optic2000.com",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-05-24",
@@ -4155,7 +3997,7 @@
       "organisation": "Camping-Car Plus",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4165,11 +4007,7 @@
         "https://www.cyberattaque.org/camping-car-plus-victime-dune-fuite-de-donnees-les-mots-de-passe-exposes/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Camping-Car Plus : victime d’une fuite de données, les mots de passe exposés",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.camping-car-plus.com",
-      "sector_evidence_text": "Magasin et Accessoires pour véhicules de loisirs • Camping Car Plus Accessoires et Equipement pour votre camping-car. Equipez votre véhicule de loi",
-      "sector_evidence_source": "camping-car-plus.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-23",
@@ -4193,7 +4031,7 @@
       "organisation": "Atoa.io",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4203,11 +4041,7 @@
         "https://www.cyberattaque.org/atoa-io-les-documents-kyc-pieces-didentite-et-donnees-bancaires-exposes-apres-une-fuite-massive/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Atoa.io : les documents KYC, pièces d’identité et données bancaires exposés après une fuite massive",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.atoa.io/fr/menu_item_pages/qui-sommes-nous",
-      "sector_evidence_text": "portants permettant à la fois d’apprécier la valeur des tokens (travaux, remboursement du crédit et valorisation du bien) et reverser un loyer net attractif chaque mois. Mode de gestion locative Notre expérience fait que nous sommes fam",
-      "sector_evidence_source": "atoa.io",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-22",
@@ -4333,7 +4167,7 @@
       "organisation": "Vacances Lagrange",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Construction / BTP",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4343,7 +4177,11 @@
         "https://www.cyberattaque.org/vacances-lagrange-plus-de-44-000-vacanciers-touches-par-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Vacances Lagrange : plus de 44 000 vacanciers touchés par une fuite de données",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.vacances-lagrange.com/vacances-location-sejour-mer-montagne-campagne,qui_sommes_nous.html",
+      "sector_evidence_text": "spécialisée dans la location de vacances et l'immobilier de loisirs",
+      "sector_evidence_source": "vacances-lagrange.com",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-05-18",
@@ -4367,7 +4205,7 @@
       "organisation": "Groupe CRIT",
       "territoire": "Tunisie",
       "localisation": "Tunisie",
-      "secteur": "Énergie / Utilities",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4377,11 +4215,7 @@
         "https://www.cyberattaque.org/groupe-crit-les-documents-rh-et-des-pieces-didentite-exposes/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Groupe CRIT : les documents RH et des pièces d’identité d’une filiale tunisienne exposés",
-      "evolution": "nouveau",
-      "sector_evidence_url": "http://www.crit.fr/",
-      "sector_evidence_text": "ial dans l'isolation thermique et acoustique d'un foyer. Afin de réaliser des économies d'énergie et de gagner en confort, il est donc important de soigner son installation et d'opter pour les meilleurs matériaux du marché. 26/02/2018 Le",
-      "sector_evidence_source": "crit.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-17",
@@ -4405,7 +4239,7 @@
       "organisation": "Gîtes de France",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Hébergement / Tourisme / Restauration",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4415,7 +4249,11 @@
         "https://www.cyberattaque.org/gites-de-france-les-reservations-de-389-000-clients-dans-une-fuite-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Gîtes de France : les réservations de 389 000 clients dans une fuite de données",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.gites-de-france.com/fr/mentions-legales",
+      "sector_evidence_text": "fournisseur de l'hébergement du site www",
+      "sector_evidence_source": "gites-de-france.com",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-05-16",
@@ -4456,7 +4294,7 @@
       "organisation": "OpenAI",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -4466,11 +4304,7 @@
         "https://www.cyberattaque.org/openai-des-donnees-internes-compromises-apres-linstallation-de-la-bibliotheque-piegee-tanstack/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — OpenAI : des données internes compromises après l’installation de la bibliothèque piégée TanStack",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://openai.com/about/",
-      "sector_evidence_text": "bout Us Our Charter Careers News Support Help Center (opens in a new window) More Stories Academy Supply Co. Livestreams Podcast RSS Terms & Policies Terms of Use Privacy Policy Other Policies (opens in a new window) (opens in a new wind",
-      "sector_evidence_source": "openai.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-14",
@@ -4522,10 +4356,10 @@
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — EFC Formation : une fuite massive expose 60 000 documents administratifs et 49 000 étudiants",
       "evolution": "nouveau",
-      "sector_evidence_url": "https://www.efcformation.com/a-propos",
-      "sector_evidence_text": "ation - Une histoire tournée vers la réussite EFCformation est le premier établissement d'enseignement privé à distance spécialisé en comptabilité, gestion, paie, ressources humaines, droit et immobilier. EFCformation est le premier établisse",
+      "sector_evidence_url": "https://www.efcformation.com/",
+      "sector_evidence_text": "centre de formation",
       "sector_evidence_source": "efcformation.com",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-05-14",
@@ -4549,7 +4383,7 @@
       "organisation": "Škoda",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -4559,11 +4393,7 @@
         "https://www.cyberattaque.org/skoda-une-cyberattaque-expose-les-mots-de-passe-et-donnees-clients-de-la-boutique-en-ligne/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Škoda : une cyberattaque expose les mots de passe et données clients de la boutique en ligne",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://skoda.com/",
-      "sector_evidence_text": "Skoda.com Listening to LibriVox Happy New Year Thanksgiving ’22 Leaving Vermont Technical College Returning to older tech About Skoda.com Advertisments Tag Cloud Meta",
-      "sector_evidence_source": "skoda.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-13",
@@ -4672,7 +4502,7 @@
       "organisation": "Thales",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Transport / Logistique",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -4682,11 +4512,7 @@
         "https://www.cyberattaque.org/thales-des-milliers-dutilisateurs-diffusees-apres-une-cyberattaque-visant-le-geant-francais-de-la-defense/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Thales : des milliers de données d’employés diffusées publiquement sur un forum cybercriminel",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.thales.com/",
-      "sector_evidence_text": "nt discovery We simplify investment discovery, raising institutional capital, and trading logistics, so you can focus on your growth goals. Access strategic, curated capital raising support, investment manager sourcing, and brokerage servi",
-      "sector_evidence_source": "thales.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-12",
@@ -4727,7 +4553,7 @@
       "organisation": "CalendrIDEL",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4737,11 +4563,7 @@
         "https://www.cyberattaque.org/calendridel-les-donnees-de-1-400-infirmiers-liberaux-diffusees-publiquement/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — CalendrIDEL : les données de 1 400 infirmiers libéraux diffusées publiquement",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.calendridel.fr/apropos/f-menu",
-      "sector_evidence_text": "Norton • Pallia 10  Ressources & Fonctionnement ▼  Répertoire de Facturiers  Caisses d'assurance maladie  Répertoire professionnel global  DSI: Autorisations & Permissions  DSI: Facturation, signature et télétrans'  Avenant 11  Vid",
-      "sector_evidence_source": "calendridel.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-12",
@@ -4782,7 +4604,7 @@
       "organisation": "Kams Paris",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -4792,11 +4614,7 @@
         "https://www.cyberattaque.org/kams-paris-188-000-coordonnees-et-iban-clients-exposes-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Kams Paris : 188 000 coordonnées et IBAN clients exposés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://kamsparis.com/",
-      "sector_evidence_text": "'un parfum Livraison gratuite dès 59€ en Europe* Consultation olfactive privée offerte en magasin Pays/région France | EUR € Rechercher Allemagne EUR € Autriche EUR € Belgique EUR € Espagne EUR € France EUR € Grèce EUR € Hongrie EUR € Ir",
-      "sector_evidence_source": "kamsparis.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-09",
@@ -4888,7 +4706,7 @@
       "organisation": "Action Populaire",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Construction / BTP",
+      "secteur": "Inconnu",
       "type_menace": "Phishing / fraude",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -4898,11 +4716,7 @@
         "https://www.cyberattaque.org/action-populaire-les-donnees-liees-aux-militants-de-la-france-insoumise-dans-une-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Action Populaire : les données liées aux militants de La France Insoumise dans une fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://actionpopulaire.org/en-construction/",
-      "sector_evidence_text": "En construction - Action Zéro Pauvreté Cette page est en construction. Nous faisons de notre mieux pour qu’elle soit disponible dans les plus brefs délais.",
-      "sector_evidence_source": "actionpopulaire.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-07",
@@ -4977,7 +4791,7 @@
       "organisation": "Quiberon",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -4987,11 +4801,7 @@
         "https://www.cyberattaque.org/quiberon-les-services-municipaux-perturbes-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Quiberon : les services municipaux perturbés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.quiberon.fr/",
-      "sector_evidence_text": "rs articles et autres destinations Administratif et municipal : Services municipaux de la Mairie de Quiberon Autorisations et dÃ©marches dâurbanisme Ã Quiberon Le secteur immobilier Ã Quiberon : des opportunitÃ©s pour investir Le club",
-      "sector_evidence_source": "quiberon.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-05",
@@ -5066,7 +4876,7 @@
       "organisation": "Smallable",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "ChimeraZ",
       "statut": "Signal documenté par la source",
@@ -5076,11 +4886,7 @@
         "https://www.cyberattaque.org/smallable-pres-de-700-000-enfants-dans-une-fuite-de-donnees-publique/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Smallable : près de 700 000 enfants dans une fuite de données publique",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.smallable.com:443/fr",
-      "sector_evidence_text": "uie Ukraine Viêt Nam 0 Enfant Femme Homme Maison Beauté Fin de saison Summer Shop Back to school Marques Marques mode enfant AO76 Bobo Choses Bonpoint Búho Emile et Ida Finger in the nose Hundred Pieces Louis Louise Mini Rodini Piupiuch",
-      "sector_evidence_source": "smallable.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-04",
@@ -5172,7 +4978,7 @@
       "organisation": "Service Civique",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -5182,11 +4988,7 @@
         "https://www.cyberattaque.org/service-civique-des-contacts-dorganismes-publics-et-associatifs-publies-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Service Civique : des contacts d’organismes publics et associatifs publiés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.service-civique.gouv.fr/mentions-legales",
-      "sector_evidence_text": "nds », n’est conditionnée à aucun accord préalable. Seule la mention explicite du site du ministère dans l’intitulé du lien est souhaitée. L’autorisation de mise en place d’un lien est valable pour tout support, à l’exception de ceux diffu",
-      "sector_evidence_source": "service-civique.gouv.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-02",
@@ -5244,7 +5046,7 @@
       "organisation": "Jour de Fête",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -5254,18 +5056,14 @@
         "https://www.cyberattaque.org/jour-de-fete-543-000-comptes-clients-en-fuite-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Jour de Fête : 543 000 comptes clients en fuite après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.boutique-jourdefete.com/",
-      "sector_evidence_text": "n, Noël et tant d'autres ! Commandez en toute sécurité et retirez votre commande en 2h en magasin. Jour de Fête - Déguisements, Articles de Fête, Anniversaire et Mariage Retrouvez sur Jour de Fête un large choix de déguisements, d'articl",
-      "sector_evidence_source": "boutique-jourdefete.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-05-01",
       "organisation": "Faco Paris",
       "territoire": "France",
       "localisation": "Île-de-France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -5275,11 +5073,7 @@
         "https://www.cyberattaque.org/facoparis-plus-de-11-000-documents-sensibles-iban-et-code-source-exposes-dans-une-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Faco Paris : plus de 11 000 documents sensibles, IBAN et code source exposés dans une fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://facoparis.com/",
-      "sector_evidence_text": "REAU INTENSIVE RÉSULTATS DE L' ENQUÊTE ANONYME 2026 AUPRÈS DES ÉTUDIANTS LABELLISÉE HAPPY@SCHOOL 2026 Actualités LES CANDIDATURES SONT OUVERTES TOUT L’ÉTÉ L’extraterritorialité et le droit américain L’INFORMATION EN OPEN SOURCE AU SERVI",
-      "sector_evidence_source": "facoparis.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-30",
@@ -5541,7 +5335,7 @@
       "organisation": "Exclusive Networks",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Éducation / Formation",
       "type_menace": "Ransomware",
       "acteur": "Qilin",
       "statut": "Revendiqué / non corroboré",
@@ -5552,10 +5346,10 @@
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Exclusive Networks : cyberattaque chez un acteur clé des solutions de cybersécurité",
       "evolution": "nouveau",
-      "sector_evidence_url": "https://www.exclusive-networks.com/",
-      "sector_evidence_text": "Exclusive Networks | Global IT Cybersecurity Solutions provider Exclusive Networks are a globally trusted cybersecurity specialist and IT solutions provider. Partner with us to enhance",
+      "sector_evidence_url": "https://www.exclusive-networks.com/fr/entreprise/a-propos-de-nous",
+      "sector_evidence_text": "Centre de formation",
       "sector_evidence_source": "exclusive-networks.com",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-04-27",
@@ -5647,7 +5441,7 @@
       "organisation": "IFprofs.org",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Intrusion",
       "acteur": "ChimeraZ",
       "statut": "Revendiqué / non corroboré",
@@ -5657,11 +5451,7 @@
         "https://www.cyberattaque.org/ifprofs-org-fuite-de-90-000-comptes-sur-une-plateforme-denseignants/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — IFprofs.org : fuite de 90 000 comptes sur une plateforme d’enseignants",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://ifprofs.org/",
-      "sector_evidence_text": "IFprofs - Réseau mondial de professeurs et ressources pour l'enseignement du français Intégrez la communauté IFprofs, échangez avec des collègues enseignants et formateurs du monde entier et enrichissez votre ense",
-      "sector_evidence_source": "ifprofs.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-25",
@@ -5685,7 +5475,7 @@
       "organisation": "STOR Solutions",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Industrie / Manufacture",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -5695,7 +5485,11 @@
         "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — STOR Solutions : un hacker revendique l’accès à 120 000 onduleurs et aux systèmes du datacenter",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.stor-solutions.fr/",
+      "sector_evidence_text": "fabricant de solutions libre-service depuis 30 ans",
+      "sector_evidence_source": "stor-solutions.fr",
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-04-24",
@@ -5719,7 +5513,7 @@
       "organisation": "ANFR",
       "territoire": "États-Unis",
       "localisation": "États-Unis",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -5729,11 +5523,7 @@
         "https://www.cyberattaque.org/anfr-330-000-usagers-du-service-radiomaritime-touches-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ANFR : 330 000 usagers du service Radiomaritime touchés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.anfr.fr/accueil",
-      "sector_evidence_text": "ivité 2025 Une année 2025 marquée par les transformations du numérique, du spatial et des télécommunications. Lire la suite Voir toutes nos actualités Découvrez nos cartes de simulation L'exposition aux ondes électromagnétiques à l'échelle national",
-      "sector_evidence_source": "anfr.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-23",
@@ -5859,7 +5649,7 @@
       "organisation": "EDF",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -5869,11 +5659,7 @@
         "https://www.cyberattaque.org/edf-fuite-inquietante-dimages-de-centrales-nucleaires-francaises/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — EDF : fuite inquiétante d’images de centrales nucléaires françaises",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.edf.fr/",
-      "sector_evidence_text": "mble, accélérons l'électrification pour un avenir bas carbone À la Une Nouvel AMI pour un data center 3 idées reçues sur la pompe à chaleur Envie de passer à l’électrique ? EDF fête ses 80 ans Conflit au Moyen-Orient Le programme EPR2 L'élec",
-      "sector_evidence_source": "edf.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-21",
@@ -5897,7 +5683,7 @@
       "organisation": "Sterimed",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Santé",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -5907,11 +5693,7 @@
         "https://www.cyberattaque.org/sterimed-des-fichiers-internes-publies-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Sterimed : des fichiers internes publiés après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://sterimed.fr/fr/",
-      "sector_evidence_text": "nfection Prevention Expertise & Innovative Packaging Solutions for Infection Prevention : healthcare professionals, medical device manufacturers, sterilizable materials LE GROUPE STERIMED Le Groupe Sterimed au fil des années Sterimed, un gr",
-      "sector_evidence_source": "sterimed.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-21",
@@ -5935,7 +5717,7 @@
       "organisation": "Engie",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Énergie / Utilities",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -5945,18 +5727,14 @@
         "https://www.cyberattaque.org/engie-une-cyberattaque-revendiquee-par-un-groupe-ransomware/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Engie : une cyberattaque revendiquée par un groupe ransomware",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.engie.fr:443/",
-      "sector_evidence_text": "es locales (rÃ©seaux de chaleur et de froid), rÃ©seaux de transport et de distribution de gaz, fourniture et services Ã©nergÃ©tiques. En France, principal marchÃ© dâENGIE, cet ancrage global permet dâaccompagner durablement les p",
-      "sector_evidence_source": "engie.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-20",
       "organisation": "Gueguen Avocats",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Qilin",
       "statut": "Revendiqué / non corroboré",
@@ -5966,11 +5744,7 @@
         "https://www.cyberattaque.org/gueguen-avocats-une-fuite-de-donnees-revendiquee-avec-des-milliers-de-documents-exposes/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Gueguen Avocats : une fuite de données revendiquée avec des milliers de documents exposés",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.gueguenavocats.com/",
-      "sector_evidence_text": "es entreprises et de leurs dirigeants Gueguen Avocats, situé aux portes de Nantes, est un cabinet d’avocats d’affaires au service de l’entreprise et de leurs dirigeants depuis 1978. Découvrez notre équipe d’avocats et de juristes dynamique, dispon",
-      "sector_evidence_source": "gueguenavocats.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-20",
@@ -5994,7 +5768,7 @@
       "organisation": "Vercel",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -6004,11 +5778,7 @@
         "https://www.cyberattaque.org/vercel-incident-de-securite-confirme-apres-une-revendication-de-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Vercel : incident de sécurité confirmé après une revendication de fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://vercel.com/",
-      "sector_evidence_text": "rms Commerce Platform Engineers Design Engineers Learn Docs Blog Changelog Knowledge Base Academy Articles Community Explore Customers Marketplace Templates Partner Finder Vercel + AWS Company About Careers Press Events Startups Shipped",
-      "sector_evidence_source": "vercel.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-19",
@@ -6112,9 +5882,9 @@
       "synthese": "Rattrapage 2026 Cyberattaque.org — Gauthier Tissus : 54 Go de données internes publiées après une cyberattaque",
       "evolution": "nouveau",
       "sector_evidence_url": "https://gauthier-tissus.com/",
-      "sector_evidence_text": "Fabricant de tissus techniques pour vêtements professionnels Gauthier Tissus est un fabricant de tissus techniques pour vêtements professionnels. Tis",
+      "sector_evidence_text": "Fabricant de tissus techniques pour vêtements professionnels Gauthier Tissus est un fabricant",
       "sector_evidence_source": "gauthier-tissus.com",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-04-17",
@@ -6138,7 +5908,7 @@
       "organisation": "Filair",
       "territoire": "France",
       "localisation": "Nouvion-en-Thiérache",
-      "secteur": "Transport / Logistique",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -6148,11 +5918,7 @@
         "https://www.cyberattaque.org/filair-pres-de-50-ans-darchives-internes-publiees-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Filair : près de 50 ans d’archives internes publiées après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.filair.fr/mentions-legales-et-politique-de-confidentialite",
-      "sector_evidence_text": "on des commandes de renouvellement Maintenance et remise en conformité Optimisation de la logistique (Supply Chain) Notre expertise  Paniers autoclaves Claie de stérilisation pour poches souples Nos produits  Parcourir le catalogue par se",
-      "sector_evidence_source": "filair.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-17",
@@ -6278,7 +6044,7 @@
       "organisation": "Assuréa",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -6288,18 +6054,14 @@
         "https://www.cyberattaque.org/assurea-fuite-de-150-go-de-donnees-140k-leads-et-11k-contrats/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Assuréa : fuite de 150 Go de données (140k leads et 11k contrats)",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://assurea.fr/qui_sommes_nous",
-      "sector_evidence_text": "éficient de garanties complètes et réalisent d’importantes économies sur leurs contrats d’assurance. Assurés en portefeuille + 230 K Contrats en 2024 + 40 K Expert depuis plus de 20 ans Partenaires actifs +2300 Jean-basile ANDONIMOUTTOU Eq",
-      "sector_evidence_source": "assurea.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-14",
       "organisation": "Logis Hotels",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -6309,18 +6071,14 @@
         "https://www.cyberattaque.org/logis-hotels-598-000-membres-du-programme-fidelite-exposes-dans-une-fuite-massive/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Logis Hotels : 598 000 membres du programme fidélité exposés dans une fuite massive",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.logishotels.com/fr/footer/mentions-legales",
-      "sector_evidence_text": "5120063 au registre des opérateurs de voyages et de séjours Garantie financière: GROUPAMA ASSURANCE-CRÉDIT & CAUTION, 8-10 RUE D’ASTORG, 75008 PARIS, FRANCE Assurance de responsabilité civile professionnelle : ALLIANZ IARD, 1 COURS MICHELE",
-      "sector_evidence_source": "logishotels.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-14",
       "organisation": "ImmoJeune",
       "territoire": "France",
       "localisation": "Marseille",
-      "secteur": "Éducation / Formation",
+      "secteur": "Construction / BTP",
       "type_menace": "Intrusion",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -6331,10 +6089,10 @@
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — ImmoJeune : fuite de données confirmée après un accès frauduleux",
       "evolution": "nouveau",
-      "sector_evidence_url": "https://www.immojeune.com/",
-      "sector_evidence_text": "une.com est noté 4.8/5 selon 769 avis clients ImmoJeune Ayant été accepté dans une grande école à plus de 300km de chez mes parents, j’ai réussi à trouver un studio meublé à Paris qui correspondait à mes attentes surtout pour le budget",
+      "sector_evidence_url": "https://www.immojeune.com/decouvrir.html",
+      "sector_evidence_text": "Spécialisée dans le logement étudiant et la location",
       "sector_evidence_source": "immojeune.com",
-      "sector_evidence_type": "official_site"
+      "sector_evidence_type": "official_explicit_activity"
     },
     {
       "date": "2026-04-14",
@@ -6358,7 +6116,7 @@
       "organisation": "Basic-Fit",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Sport",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -6368,11 +6126,7 @@
         "https://www.cyberattaque.org/basic-fit-1-million-de-clients-touches-des-coordonnees-bancaires-exposees-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Basic-Fit : 1 million de clients touchés, des coordonnées bancaires exposées après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.basic-fit.com/nl-nl/homepage",
-      "sector_evidence_text": "Basic-Fit | Unlimited Access | Gym and Fitness Club Train unlimited at our gyms! With exclusive access to all our state-of-the-art clubs, and always a club nearby, you can work out wherever a",
-      "sector_evidence_source": "basic-fit.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-12",
@@ -6583,7 +6337,7 @@
       "organisation": "DB Telecom",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -6593,11 +6347,7 @@
         "https://www.cyberattaque.org/db-telecom-une-base-de-2-8-millions-dutilisateurs-mise-en-vente/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — DB Telecom : une base de 40k clients mise en vente",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.db-telecom.fr/a-propos/",
-      "sector_evidence_text": "onditions Generales De Ventes Qui sommes-nous ? Depuis 2001, DB TELECOM est opérateur de télécommunications. Notre ambition est d’être l’acteur de référence en matière de qualité de service et d’expérience client. Nous accompagnons toutes les p",
-      "sector_evidence_source": "db-telecom.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-09",
@@ -6842,7 +6592,7 @@
       "organisation": "Or en Cash",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Confirmé",
@@ -6852,11 +6602,7 @@
         "https://www.cyberattaque.org/or-en-cash-nouvelle-fuite-de-donnees-confirmee-dans-lachat-revente-dor/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Or en Cash : nouvelle fuite de données confirmée dans l’achat/revente d’or",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.orencash.fr",
-      "sector_evidence_text": "r dans l'or Pièces et lingots Fiscalité de l'or Avantages Or en Cash Travailler avec nous Recrutement Espace presse À propos d'Or en Cash Nos valeurs Notre histoire Notre charte Activité éco-responsable Fonds de dotation Nous contacter FAQ V",
-      "sector_evidence_source": "orencash.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-04",
@@ -6914,7 +6660,7 @@
       "organisation": "Alltricks",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -6924,18 +6670,14 @@
         "https://www.cyberattaque.org/alltricks-plus-de-820-000-comptes-clients-en-vente-sur-le-darknet/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Alltricks : plus de 820 000 comptes clients en vente sur le Darkweb",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.alltricks.fr",
-      "sector_evidence_text": "ients pensent de nous ! Alltricks : Tout l’univers vélo, running et outdoor Alltricks, un magasin vélo mais pas que ! Alltricks, le sport Outdoor par nature !",
-      "sector_evidence_source": "alltricks.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-03",
       "organisation": "Fountain",
       "territoire": "Belgique",
       "localisation": "Belgique",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -6945,11 +6687,7 @@
         "https://www.cyberattaque.org/fountain-intrusion-et-vol-de-donnees-lors-dune-cyberattaque-ransomware/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Fountain : intrusion et vol de données lors d’une cyberattaque ransomware",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://fountain.eu/about/",
-      "sector_evidence_text": "20 00 00 22 Nous contacter Mentions légales Cookies Politique de confidentialité Incident cybersécurité Made by akaru Mentions légales Fountain | Informations légales et conditions d’utilisation Retrouvez les mentions légales du site Fountain.",
-      "sector_evidence_source": "fountain.eu",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-03",
@@ -7007,7 +6745,7 @@
       "organisation": "Serap",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Administration / Collectivité",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Revendiqué / non corroboré",
@@ -7017,11 +6755,7 @@
         "https://www.cyberattaque.org/serap-ransomware-avec-50-go-de-donnees-menaces/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Serap : ransomware avec 50 Go de données menacés",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://serap.fr/",
-      "sector_evidence_text": "au 24 rue du général Roguet à Clichy (92). Accessible via les lignes de métro 13 (Station Mairie de Clichy) et 14 (Station Saint-Ouen), notre showroom dispose également d'un stationnement gratuit sur demande à proximité. Prenez rendez-v",
-      "sector_evidence_source": "serap.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-02",
@@ -7079,7 +6813,7 @@
       "organisation": "Vacancéole",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7089,11 +6823,7 @@
         "https://www.cyberattaque.org/vacanceole-nouvelle-fuite-de-clients-dans-le-secteur-du-tourisme/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Vacancéole : nouvelle fuite de clients dans le secteur du tourisme",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.vacanceole.com/",
-      "sector_evidence_text": "Location vacances décembre Vacancéole Vacancéole Qui sommes-nous ? Programme de fidélité Recrutement Inspirations Engagements RSE Aide / Foire aux questions Informations Informations CGV Mentions légales Nos conditions d'annulation Politiqu",
-      "sector_evidence_source": "vacanceole.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-01",
@@ -7117,7 +6847,7 @@
       "organisation": "Missions Locales",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Services aux entreprises",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7127,11 +6857,7 @@
         "https://www.cyberattaque.org/missions-locales-plus-de-500-000-jeunes-exposes-suite-a-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Missions Locales : plus de 500 000 jeunes exposés suite à une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.missions-locales.org/",
-      "sector_evidence_text": "e déplace Je garantis une intégration réussie Je veux conclure un contrat Je facilite mon recrutement Je veux faire connaître mes métiers Trouver ma Mission Locale Mission locale jeunes Bugey Plaine de l’Ain Quelques chiffres clés Ils parlen",
-      "sector_evidence_source": "missions-locales.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-04-01",
@@ -7172,7 +6898,7 @@
       "organisation": "Homair",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7182,11 +6908,7 @@
         "https://www.cyberattaque.org/homair-les-donnees-clients-exposees-apres-une-cyberattaque/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Homair : les données clients exposées après une cyberattaque",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.homair.com/",
-      "sector_evidence_text": "rmules de restauration Avant de partir Les modes de paiement Paiement en plusieurs fois L'assurance annulation Acheter un mobil-home Devenir propriétaire Campings en France Campings autour de moi Réservez vos vacances au camping Fenêtre de",
-      "sector_evidence_source": "homair.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-03-30",
@@ -7210,7 +6932,7 @@
       "organisation": "La Centrale de Financement",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7220,11 +6942,7 @@
         "https://www.cyberattaque.org/la-centrale-de-financement-387-go-de-donnees-en-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — La Centrale de Financement : 387 Go de données en fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.lacentraledefinancement.fr/",
-      "sector_evidence_text": "our vous financer Courtier en prÃªt immobilier, crÃ©dit immobilier, rachat de crÃ©dits et assurance emprunteur au meilleur taux et sans engagement. La Centrale de Financement Courtier en prÃªt immobilier, crÃ©dit immobilier, rachat de crÃ©",
-      "sector_evidence_source": "lacentraledefinancement.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-03-30",
@@ -7316,7 +7034,7 @@
       "organisation": "SIA",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Numérique / Technologie",
+      "secteur": "Inconnu",
       "type_menace": "Ransomware",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7326,18 +7044,14 @@
         "https://www.cyberattaque.org/sia-fuite-des-donnees-de-62-511-armes-en-france/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — SIA : fuite des données de 62 511 armes en France",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://sia.org/about-sia/",
-      "sector_evidence_text": "ty & 5G Spectrum Policies Space Debris, Mitigation & Sustainability Export Control Reform Cybersecurity Public Safety Remote Sensing White Papers, Reports & Testimony Membership Membership & Applications Membership Bylaws Events Events Calenda",
-      "sector_evidence_source": "sia.org",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-03-28",
       "organisation": "Mondial Tissus",
       "territoire": "Inconnu",
       "localisation": "Non documenté publiquement",
-      "secteur": "Commerce / Distribution",
+      "secteur": "Inconnu",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7347,11 +7061,7 @@
         "https://www.cyberattaque.org/mondial-tissus-365-900-clients-compromis-par-une-fuite/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Mondial Tissus : 365 900 clients compromis par une fuite",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.mondialtissus.fr/",
-      "sector_evidence_text": "! ❤️ Besoin d'aide ? Programme fidélité Mondial Tissus Que recherchez vous ? Trouver mon magasin Mon compte S'identifier Mon panier Menu Produits Nouveautés Nouveautés Nouveautés Tissus Nouveautés Tissus enfants Nouveautés Mercerie Nouv",
-      "sector_evidence_source": "mondialtissus.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-03-28",
@@ -7460,7 +7170,7 @@
       "organisation": "Intoxalock",
       "territoire": "États-Unis",
       "localisation": "États-Unis",
-      "secteur": "Finance / Assurance",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7470,18 +7180,14 @@
         "https://www.cyberattaque.org/intoxalock-une-cyberattaque-bloque-des-voitures-aux-etats-unis/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Intoxalock : une cyberattaque bloque des voitures aux États-Unis",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://www.intoxalock.com/",
-      "sector_evidence_text": "act Us Resources State Requirements Device Protection Knowledge Center How to Videos SR22 Insurance Login Intoxalock My Account Partners Login Service Center Login Call Us Login Trust Intoxalock and Regain Your Driving Privileges Getting B",
-      "sector_evidence_source": "intoxalock.com",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     },
     {
       "date": "2026-03-22",
       "organisation": "Enseignement catholique",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Éducation / Formation",
+      "secteur": "Inconnu",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
       "statut": "Signal documenté par la source",
@@ -7491,11 +7197,7 @@
         "https://www.cyberattaque.org/enseignement-catholique-une-cyberattaque-expose-15-million-de-donnees/"
       ],
       "synthese": "Rattrapage 2026 Cyberattaque.org — Enseignement catholique : une cyberattaque expose 1,5 million de données",
-      "evolution": "nouveau",
-      "sector_evidence_url": "https://enseignement-catholique.fr/",
-      "sector_evidence_text": "Accueil - Enseignement Catholique INSCRIVEZ-VOUS Á LA NEWSLETTER ECmag #433 Juin-Juillet 2026 ANNUAIRE GABRIELEspace Directeurs Diocésains mobilités des cadres Va",
-      "sector_evidence_source": "enseignement-catholique.fr",
-      "sector_evidence_type": "official_site"
+      "evolution": "nouveau"
     }
   ]
 }
