@@ -1,0 +1,61 @@
+name: Dedup Global Audit Detail
+
+on:
+  push:
+    branches:
+      - "agent/dedup-global-audit-20260817"
+    paths:
+      - ".github/workflows/dedup-global-audit-detail.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  detail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Détails candidats
+        run: |
+          python - <<'PY'
+          import csv, json
+          from collections import Counter
+          from pathlib import Path
+          from cyberwatch import store
+          from cyberwatch.dedup import group_components
+          from cyberwatch.duplicate_audit import find_audit_candidates, RISK_FALSE_MERGE, RISK_MISSED_DUPLICATE
+
+          items = store.load_items()
+          company_ids = {}
+          with Path('data/org_enrichment_cache.csv').open(encoding='utf-8', newline='') as h:
+              for r in csv.DictReader(h):
+                  if r.get('Match_Status') == 'MATCHED' and r.get('Company_ID') and r.get('Organisation_Key'):
+                      company_ids[r['Organisation_Key']] = r['Company_ID']
+          comps = group_components(items)
+          comp_of = {i.Item_ID: idx for idx,c in enumerate(comps) for i in c}
+          a3 = find_audit_candidates(items, company_ids=company_ids, max_days=3)
+          a14 = find_audit_candidates(items, company_ids=company_ids, max_days=14)
+          false3 = [c for c in a3 if c.risk_type == RISK_FALSE_MERGE]
+          missed3 = [c for c in a3 if c.risk_type == RISK_MISSED_DUPLICATE]
+          missed14 = [c for c in a14 if c.risk_type == RISK_MISSED_DUPLICATE]
+          weak_components = {comp_of[c.left.Item_ID] for c in false3} | {comp_of[c.right.Item_ID] for c in false3}
+          print('DETAIL_SUMMARY=' + json.dumps({
+              'weak_merge_pairs': len(false3),
+              'weak_merge_components': len(weak_components),
+              'missed_3d': len(missed3),
+              'missed_14d': len(missed14),
+              'missed_14d_reason_counts': dict(Counter(c.reason_code for c in missed14)),
+          }, ensure_ascii=False, sort_keys=True))
+          for tag, arr in [('MISSED3',missed3),('MISSED14',missed14)]:
+              for c in arr:
+                  print(tag + ' ' + json.dumps({
+                      'reason': c.reason_code, 'days': c.days_apart, 'company_id': c.company_id,
+                      'left': [c.left.Source_ID,c.left.best_date,c.left.Organisation_Raw,c.left.Organisation_Key,c.left.Threat,c.left.Title,c.left.Item_ID],
+                      'right': [c.right.Source_ID,c.right.best_date,c.right.Organisation_Raw,c.right.Organisation_Key,c.right.Threat,c.right.Title,c.right.Item_ID],
+                  }, ensure_ascii=False))
+          PY
