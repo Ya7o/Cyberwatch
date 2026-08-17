@@ -1,4 +1,9 @@
-from cyberwatch import company_evidence, company_subject_evidence, config
+from cyberwatch import (
+    company_evidence,
+    company_subject_evidence,
+    config,
+    official_site_discovery,
+)
 
 
 def test_subject_attribution_accepts_named_victim_activity():
@@ -35,9 +40,9 @@ def test_subject_attribution_rejects_partner_activity():
 
 def test_strict_resolver_requires_identity_and_subject(monkeypatch):
     monkeypatch.setattr(
-        company_evidence,
-        "_discover_official_sites",
-        lambda organisation: ["https://www.intermarche.com/"],
+        official_site_discovery,
+        "discover_official_sites",
+        lambda organisation, hint_urls=(): ["https://www.intermarche.com/"],
     )
     monkeypatch.setattr(
         company_evidence,
@@ -55,3 +60,42 @@ def test_strict_resolver_requires_identity_and_subject(monkeypatch):
     assert evidence is not None
     assert evidence.sector == config.SECTOR_RETAIL
     assert evidence.evidence_type == "official_subject_activity"
+
+
+def test_strict_resolver_rejects_third_party_domain_even_if_text_mentions_victim(monkeypatch):
+    monkeypatch.setattr(
+        company_evidence,
+        "_page",
+        lambda url: (
+            "Intermarché : présentation",
+            "Intermarché est une enseigne de supermarchés française.",
+            [],
+            url,
+        ),
+    )
+    evidence = company_subject_evidence.resolve_official_site_subject_attributed(
+        "Intermarché",
+        ["https://actualites-exemple.fr/intermarche"],
+    )
+    assert evidence is None
+
+
+def test_strict_resolver_accepts_acronym_domain(monkeypatch):
+    assert official_site_discovery.domain_matches_organisation(
+        "Bibliothèque Nationale de France", "https://www.bnf.fr/"
+    )
+    monkeypatch.setattr(
+        company_evidence,
+        "_page",
+        lambda url: (
+            "Bibliothèque nationale de France",
+            "La Bibliothèque Nationale de France est une institution culturelle publique.",
+            [],
+            "https://www.bnf.fr/",
+        ),
+    )
+    # Le secteur Culture n'est pas dans les motifs stricts actuels ; le test
+    # vérifie donc uniquement que le garde de domaine ne rejette pas l'acronyme.
+    assert company_subject_evidence.resolve_official_site_subject_attributed(
+        "Bibliothèque Nationale de France", ["https://www.bnf.fr/"]
+    ) is None
