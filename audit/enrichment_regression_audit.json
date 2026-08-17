@@ -1,0 +1,141 @@
+{
+  "production_changed_files": [
+    "assets/data/incidents.json",
+    "data/source_facts.csv",
+    "data/source_facts_ai_cache.json",
+    "data/source_facts_ai_usage.json"
+  ],
+  "regressions_nonempty_to_empty": {
+    "Threat_Actor": 2
+  },
+  "regression_examples": {
+    "Threat_Actor": [
+      {
+        "item_id": "ITM-c4b4c011082dd04b",
+        "source": "FRENCHBREACHES",
+        "before": "diable'fire / X-VDP-X"
+      },
+      {
+        "item_id": "ITM-9021b9aa28ea4a6a",
+        "source": "FRENCHBREACHES",
+        "before": "ZeroBytes"
+      }
+    ]
+  },
+  "changed_existing_fields": {
+    "Evidence_JSON": 79,
+    "Impact": 9
+  },
+  "hedged_impacts_count": 9,
+  "hedged_impacts": [
+    {
+      "item_id": "ITM-20afe79fae511313",
+      "source": "FRENCHBREACHES",
+      "impact": "Données de candidats et d'entreprises potentiellement consultées."
+    },
+    {
+      "item_id": "ITM-32bbbfeebe25b49b",
+      "source": "CYBERATTAQUE_ORG",
+      "impact": "Contrairement à ce que pourrait laisser penser l’ampleur des perturbations, la Communauté de Communes Pays du Mont-Blanc n’indique pas avoir été directement piratée."
+    },
+    {
+      "item_id": "ITM-38f7e4f5a09b85e4",
+      "source": "FRENCHBREACHES",
+      "impact": "données professionnelles potentiellement compromises"
+    },
+    {
+      "item_id": "ITM-3a3a1e654fe82a2b",
+      "source": "CYBERATTAQUE_ORG",
+      "impact": "L’attaque aurait entraîné l’indisponibilité des systèmes électroniques de la mairie, compliquant fortement le fonctionnement des services administratifs."
+    },
+    {
+      "item_id": "ITM-b83d200b5df2be76",
+      "source": "FRENCHBREACHES",
+      "impact": "Selon l’algorithme utilisé, la robustesse du mot de passe initial et la manière dont celui-ci a été stocké, certains hashes peuvent potentiellement faire l’objet de tentatives de cassage hors ligne."
+    },
+    {
+      "item_id": "ITM-b8f59e73458e855a",
+      "source": "FRENCHBREACHES",
+      "impact": "Scalingo a informé la CNIL Scalingo indique avoir mis son instance Metabase interne hors ligne , appliqué le correctif de sécurité et commencé la rotation des identifiants techniques potentiellement exposés."
+    },
+    {
+      "item_id": "ITM-bfc6a693480fb347",
+      "source": "FRENCHBREACHES",
+      "impact": "Selon lui, cette interruption expliquerait pourquoi la base récupérée ne contiendrait que 678 438 lignes , alors que le système accessible aurait potentiellement permis de consulter beaucoup plus de contribuables."
+    },
+    {
+      "item_id": "ITM-cd8749b027c1c9f4",
+      "source": "CYBERATTAQUE_ORG",
+      "impact": "Toutefois, selon leur ancienneté et l’algorithme utilisé, certains pourraient potentiellement faire l’objet de tentatives de cassage hors ligne."
+    },
+    {
+      "item_id": "ITM-f02e328d67075759",
+      "source": "CYBERATTAQUE_ORG",
+      "impact": "Données personnelles et réservations potentiellement exposées (nom, prénom, email, téléphone, adresse, numéros de réservation, dates de séjour, demandes liées aux réservations)."
+    }
+  ],
+  "summary_opportunity_floor": 100,
+  "summary_opportunity_examples": [
+    "ITM-04a856475a59deb2",
+    "ITM-054ef7e4c93e1e1e",
+    "ITM-091fc8637ce58920",
+    "ITM-0ad52a5ff95b695d",
+    "ITM-0dd0ead1cf4f8083",
+    "ITM-10bc2de399feb216",
+    "ITM-12efd3c9f0ff5b86",
+    "ITM-1405c2be130d1ecd",
+    "ITM-145ff5995c92a02d",
+    "ITM-157ec8180d223fb4",
+    "ITM-163615d7c9f7aa59",
+    "ITM-16baa08a1203a688",
+    "ITM-174aa1135065caa2",
+    "ITM-1eb6515e2ca46a8b",
+    "ITM-1ee6f6cbcdcfbbb3",
+    "ITM-1fdcf3bb7afcc977",
+    "ITM-20afe79fae511313",
+    "ITM-22320d2daa338297",
+    "ITM-255f58fa365fcd72",
+    "ITM-295bfefc6fc53d5e",
+    "ITM-29a6c509ea96dd94",
+    "ITM-2b8c9b61526969e0",
+    "ITM-2f2c49279b8081ec",
+    "ITM-314468b5e3fd3824",
+    "ITM-32bbbfeebe25b49b",
+    "ITM-33a67e9f40f8745d",
+    "ITM-3688aa52266b886f",
+    "ITM-386bf2c572aa1262",
+    "ITM-38f7e4f5a09b85e4",
+    "ITM-3a3a1e654fe82a2b"
+  ],
+  "explicit_initial_access_candidates_from_accepted_flows": 3,
+  "initial_access_candidates": [
+    {
+      "item_id": "ITM-0ad52a5ff95b695d",
+      "source": "FRENCHBREACHES",
+      "action": "Intrusion sur l'intranet via le compte compromis d’un membre",
+      "evidence": "intrusion sur son intranet le 23 juillet 2026, réalisée à partir du compte compromis d’un membre"
+    },
+    {
+      "item_id": "ITM-6b6b114355b4e382",
+      "source": "CYBERATTAQUE_ORG",
+      "action": "Phishing permettant l’accès à certains comptes",
+      "evidence": "« il s’agirait d’une campagne de phishing ayant permis l’accès à certains comptes »"
+    },
+    {
+      "item_id": "ITM-bfc6a693480fb347",
+      "source": "FRENCHBREACHES",
+      "action": "Intrusion et extraction de données via usurpation d’identité ayant conduit à l’accès au système et à l’extraction de données.",
+      "evidence": "L’accès, intervenu fin juin 2026 après une usurpation d’identité, a permis la consultation et l’extraction de données de particuliers et de professionnels."
+    }
+  ],
+  "projection_gaps": [
+    {
+      "item_id": "ITM-b5fdd2d18d6b6f52",
+      "source": "CYBERATTAQUE_ORG",
+      "summary": false,
+      "initial_access": false,
+      "attack_flow": true,
+      "impact": false
+    }
+  ]
+}
