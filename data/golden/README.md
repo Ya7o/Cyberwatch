@@ -18,7 +18,7 @@ Décisions autorisées :
 
 - `CONFIRMED` : la valeur a été revérifiée et reste inchangée ;
 - `CORRECTED` : une valeur est corrigée avec ancienne valeur, nouvelle valeur, preuve et motif ;
-- `REVIEW` : le cas reste litigieux et ne doit pas être présenté comme définitivement arbitré ;
+- `REVIEW` : le cas reste litigieux et est exclu de la vue effective et des scores tant que l'arbitrage n'est pas clos ;
 - `DUPLICATE` : le cas est un doublon d'un autre `Golden_ID` canonique et est retiré de la vue effective.
 
 Une correction `CORRECTED` fait passer uniquement le cas concerné à `Golden_Version >= 2`. Une ligne non revue reste en v1 : le taux de revue est donc mesurable et ne peut pas être artificiellement déclaré à 100 %.
