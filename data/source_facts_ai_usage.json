@@ -1,33 +1,31 @@
 {
-  "average_duration_seconds": 2.313,
-  "cache_hits": 0,
-  "calls_attempted": 55,
+  "average_duration_seconds": 2.166,
+  "cache_hits": 170,
+  "calls_attempted": 29,
   "calls_budget_blocked": 0,
-  "calls_failed": 1,
-  "calls_success": 54,
-  "error_reasons": {
-    "json_decode": 1
-  },
-  "estimated_cost_usd": 0.011076,
+  "calls_failed": 0,
+  "calls_success": 29,
+  "error_reasons": {},
+  "estimated_cost_usd": 0.007316,
   "fields_requested": {
-    "summary": 55,
-    "third_party": 4,
-    "threat_actor": 51
+    "summary": 29,
+    "third_party": 3,
+    "threat_actor": 26
   },
   "http_429": 0,
   "http_5xx": 0,
-  "input_tokens": 128625,
-  "items_eligible": 148,
-  "items_skipped_no_missing_fields": 93,
-  "items_would_call": 55,
-  "max_duration_seconds": 4.743,
+  "input_tokens": 102583,
+  "items_eligible": 497,
+  "items_skipped_no_missing_fields": 298,
+  "items_would_call": 199,
+  "max_duration_seconds": 4.074,
   "model": "gpt-5-nano",
-  "output_tokens": 11611,
-  "p50_duration_seconds": 2.103,
-  "p95_duration_seconds": 3.332,
+  "output_tokens": 5467,
+  "p50_duration_seconds": 2.068,
+  "p95_duration_seconds": 3.313,
   "prompt_version": "2026-08-16.source-facts.5",
   "retries": 0,
   "schema_version": "5",
   "timeouts": 0,
-  "total_duration_seconds": 127.23
+  "total_duration_seconds": 62.813
 }
