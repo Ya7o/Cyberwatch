@@ -18,7 +18,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: deep-sector-enrichment
+  group: sector-canonical-pipeline
   cancel-in-progress: false
 
 jobs:
@@ -50,6 +50,9 @@ jobs:
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS: "100"
           SECTOR_ENRICHMENT_MAX_ORGS: "80"
+          # Seules les lectures HTTP indépendantes sont parallélisées ; la
+          # résolution registre et l'écriture cache restent séquentielles.
+          SECTOR_ENRICHMENT_WORKERS: "6"
         run: python scripts/enrich_sector_queue.py
 
       - name: Requalifier via le registre et sa politique
