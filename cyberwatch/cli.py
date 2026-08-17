@@ -701,9 +701,16 @@ def cmd_check(args) -> int:
     items = store.load_items()
     incidents = store.load_incidents()
     problems = pre_export_checks(items, incidents, [])
-    problems.extend(incident_identity.validate_registry(
-        store.load_incident_id_registry(), items, incidents
-    ))
+    registry = store.load_incident_id_registry()
+    if not registry and incidents:
+        # Compatibilité de migration : un snapshot antérieur au registre
+        # reste vérifiable uniquement si chaque ID publié permet de retrouver
+        # son ancre de manière exacte et non ambiguë. Rien n'est écrit ici.
+        try:
+            registry = incident_identity.bootstrap_registry(items, incidents)
+        except ValueError as error:
+            problems.append(f'Registre Incident_ID non migrable : {error}')
+    problems.extend(incident_identity.validate_registry(registry, items, incidents))
     # Les contrôles portant sur RUN_SOURCES ne s'appliquent pas hors run.
     problems = [p for p in problems if "RUN_SOURCES" not in p]
 

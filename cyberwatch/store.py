@@ -141,13 +141,23 @@ def save_incidents(incidents: list[Incident], path: Path | None = None) -> None:
     )
 
 
+def _incident_registry_path(path: Path | None = None) -> Path:
+    if path is not None:
+        return path
+    # Suivre le répertoire du snapshot courant. Les tests et outils qui
+    # isolent ITEMS_CSV obtiennent ainsi automatiquement un registre isolé,
+    # sans risque d'écrire dans data/ réel. En production, ce chemin reste
+    # exactement data/incident_id_registry.csv.
+    return ITEMS_CSV.parent / INCIDENT_ID_REGISTRY_CSV.name
+
+
 def load_incident_id_registry(path: Path | None = None) -> list[dict]:
-    return read_csv(path or INCIDENT_ID_REGISTRY_CSV)
+    return read_csv(_incident_registry_path(path))
 
 
 def save_incident_id_registry(rows: list[dict], path: Path | None = None) -> None:
     ordered = sorted(rows, key=lambda row: (row.get('Incident_ID', ''), row.get('Anchor_Item_ID', '')))
-    write_csv(path or INCIDENT_ID_REGISTRY_CSV, REGISTRY_COLUMNS, ordered)
+    write_csv(_incident_registry_path(path), REGISTRY_COLUMNS, ordered)
 
 
 def save_sources(rows: list[dict], path: Path | None = None) -> None:
