@@ -111,6 +111,7 @@ class AiRunState:
     reasoning_tokens: int = 0
     total_tokens: int = 0
     estimated_cost_usd: float = 0.0
+    llm_duration_seconds: float = 0.0
     org_enrichment: "org_enrichment.OrgEnrichmentState" = field(
         default_factory=org_enrichment.OrgEnrichmentState
     )
@@ -324,30 +325,34 @@ def _post_openai(body: dict, state: AiRunState) -> dict:
         "Authorization": f"Bearer {state.api_key}",
         "Content-Type": "application/json",
     }
-    attempt = 0
-    while True:
-        try:
-            response = requests.post(
-                OPENAI_URL,
-                json=body,
-                headers=headers,
-                timeout=OPENAI_TIMEOUT_SECONDS,
-            )
-        except requests.RequestException as exc:
-            attempt += 1
-            if attempt > OPENAI_MAX_RETRIES:
-                raise AiCallError(f"réseau: {type(exc).__name__}") from exc
-            time.sleep(2 ** attempt)
-            continue
-        if response.status_code == 200:
-            return response.json()
-        if response.status_code == 429 or 500 <= response.status_code < 600:
-            attempt += 1
-            if attempt > OPENAI_MAX_RETRIES:
-                raise AiCallError(f"HTTP {response.status_code} après retries")
-            time.sleep(2 ** attempt)
-            continue
-        raise AiCallError(f"HTTP {response.status_code}: {response.text[:200]}")
+    started = time.monotonic()
+    try:
+        attempt = 0
+        while True:
+            try:
+                response = requests.post(
+                    OPENAI_URL,
+                    json=body,
+                    headers=headers,
+                    timeout=OPENAI_TIMEOUT_SECONDS,
+                )
+            except requests.RequestException as exc:
+                attempt += 1
+                if attempt > OPENAI_MAX_RETRIES:
+                    raise AiCallError(f"réseau: {type(exc).__name__}") from exc
+                time.sleep(2 ** attempt)
+                continue
+            if response.status_code == 200:
+                return response.json()
+            if response.status_code == 429 or 500 <= response.status_code < 600:
+                attempt += 1
+                if attempt > OPENAI_MAX_RETRIES:
+                    raise AiCallError(f"HTTP {response.status_code} après retries")
+                time.sleep(2 ** attempt)
+                continue
+            raise AiCallError(f"HTTP {response.status_code}: {response.text[:200]}")
+    finally:
+        state.llm_duration_seconds += time.monotonic() - started
 
 
 def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[str], state: AiRunState) -> dict:

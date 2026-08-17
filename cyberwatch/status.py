@@ -170,6 +170,19 @@ class SourceOutcome:
     comment: str = ""
     history_status: str = HISTORY_UNKNOWN
     oldest_available_date: str = ""
+    collect_duration_seconds: float = 0.0
+    processing_duration_seconds: float = 0.0
+    org_registry_duration_seconds: float = 0.0
+    org_registry_calls: int = 0
+    org_official_site_duration_seconds: float = 0.0
+    org_official_site_calls: int = 0
+    qualification_llm_duration_seconds: float = 0.0
+    qualification_llm_calls: int = 0
+    qualification_llm_cost_usd: float = 0.0
+    source_facts_llm_duration_seconds: float = 0.0
+    source_facts_llm_calls: int = 0
+    source_facts_llm_cost_usd: float = 0.0
+    other_processing_duration_seconds: float = 0.0
 
     @property
     def reason(self) -> str:

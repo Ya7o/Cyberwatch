@@ -165,6 +165,7 @@ class OrgEnrichmentState:
     duration_seconds: float = 0.0
     official_site_attempted: int = 0
     official_site_matched: int = 0
+    official_site_duration_seconds: float = 0.0
 
 
 def _identity_requires_confirmation(query_name: str) -> bool:
@@ -386,7 +387,11 @@ def _official_site_fallback(
         return False, None
 
     state.official_site_attempted += 1
-    evidence = company_evidence.resolve_official_site(organisation_raw)
+    started = time.monotonic()
+    try:
+        evidence = company_evidence.resolve_official_site(organisation_raw)
+    finally:
+        state.official_site_duration_seconds += time.monotonic() - started
     if evidence is None:
         return True, None
 
