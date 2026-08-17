@@ -33,9 +33,11 @@ jobs:
           old_ids = {incident.Incident_ID for incident in old_incidents}
           items_hash_before = identity.items_hash(items)
 
-          incidents, registry = build_incidents_with_registry(
-              items, store.load_incident_id_registry()
-          )
+          registry = store.load_incident_id_registry()
+          if not registry:
+              registry = incident_identity.bootstrap_registry(items, old_incidents)
+          incidents, registry = build_incidents_with_registry(items, registry)
+
           problems = pre_export_checks(items, incidents, [])
           problems = [problem for problem in problems if 'RUN_SOURCES' not in problem]
           problems.extend(incident_identity.validate_registry(registry, items, incidents))
@@ -61,7 +63,7 @@ jobs:
               items,
               incidents,
               operation='DEDUP_CLOSEOUT_REPLAY',
-              as_of='2026-08-17T16:22:00+04:00',
+              as_of='2026-08-17T16:26:00+04:00',
           )
           site.build()
           PY
