@@ -1,4 +1,65 @@
 {
+  "auto_policy": {
+    "channels": {
+      "consensus_multi_source": {
+        "enabled": false,
+        "requires_golden": true
+      },
+      "known_item_single": {
+        "enabled": false,
+        "requires_golden": true
+      },
+      "legacy_official_site": {
+        "enabled": false,
+        "requires_golden": true
+      },
+      "manual_reference": {
+        "enabled": true,
+        "requires_golden": false
+      },
+      "official_subject_activity": {
+        "enabled": false,
+        "requires_golden": true
+      },
+      "registry_exact_naf": {
+        "enabled": false,
+        "requires_golden": true
+      },
+      "registry_llm": {
+        "enabled": false,
+        "requires_golden": true
+      },
+      "structured_source": {
+        "enabled": false,
+        "requires_golden": true
+      }
+    },
+    "minimum_cases": 10,
+    "minimum_precision_pct": 95.0,
+    "schema_version": 1
+  },
+  "organisation_registry": {
+    "applications": 0,
+    "auto_rows": 170,
+    "conflict_rows": 7,
+    "queue_categories": {
+      "CONSENSUS_REVIEW": 1,
+      "JSON_CHALLENGER": 139,
+      "KNOWN_ITEM_REVIEW": 39,
+      "NO_EVIDENCE": 273,
+      "RAW_SECTOR_UNMAPPED": 52
+    },
+    "queue_organisations": 504,
+    "registry_channels": {
+      "consensus_multi_source": 44,
+      "known_item_single": 104,
+      "manual_reference": 170,
+      "registry_exact_naf": 50,
+      "structured_source": 119
+    },
+    "registry_rows": 487,
+    "review_rows": 310
+  },
   "ransomware_live": {
     "current_known": 133,
     "current_unknown": 46,
@@ -80,7 +141,7 @@
     "unknown_with_raw": 45,
     "unknown_without_raw": 1
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "sector": {
     "global": {
       "items": 1003,
@@ -182,7 +243,7 @@
     }
   },
   "snapshot": {
-    "code_commit": "6079d2c77b7311943d686d8bb6f163751a2be9ef",
+    "code_commit": "d5bdb29004855934c2d9a09622e8e0eefd513cfc",
     "incidents_hash": "bb455df59a239917207de23230121593b20bf80efc595e5285241b7ab833dfae",
     "items_hash": "f682ee5ab26e13db8e957b16c33f21e88f3f818f4f0627ccd90530bfbf2684e3"
   },
