@@ -1,0 +1,119 @@
+name: Publish v0.7.37 validated rebuild (one-shot)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-v0737-rebuild-once.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: publish-v0737-rebuild
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'Ya7o/Cyberwatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REBUILD_RUN_ID: "32011025977"
+      EXPECTED_ITEMS_HASH: "53d80905234a0d1535d16416062410289adf77da6b457ef071352160633ded56"
+      EXPECTED_INCIDENTS_HASH: "9889eba6fc33e05fb952aa8d81fc0a9c28f0b3614acf477de38bb8afc15033d5"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Télécharger le rebuild validé
+        run: |
+          rm -rf /tmp/rebuild
+          mkdir -p /tmp/rebuild
+          gh run download "$REBUILD_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name rebuild-baseline-output \
+            --dir /tmp/rebuild
+
+      - name: Copier uniquement l'état généré
+        run: |
+          install -m 0644 /tmp/rebuild/data/items.csv data/items.csv
+          install -m 0644 /tmp/rebuild/data/incidents.csv data/incidents.csv
+          install -m 0644 /tmp/rebuild/data/source_facts.csv data/source_facts.csv
+          install -m 0644 /tmp/rebuild/data/qualification_provenance.csv data/qualification_provenance.csv
+          install -m 0644 /tmp/rebuild/data/run_log.csv data/run_log.csv
+          install -m 0644 /tmp/rebuild/data/run_sources.csv data/run_sources.csv
+          install -m 0644 /tmp/rebuild/data/ai_usage.csv data/ai_usage.csv
+          install -m 0644 /tmp/rebuild/data/ai_qualifications.csv data/ai_qualifications.csv
+          install -m 0644 /tmp/rebuild/data/org_enrichment_cache.csv data/org_enrichment_cache.csv
+          install -m 0644 /tmp/rebuild/data/source_facts_ai_usage.json data/source_facts_ai_usage.json
+          install -m 0644 /tmp/rebuild/data/snapshot.json data/snapshot.json
+          install -m 0644 /tmp/rebuild/data/baseline.json data/baseline.json
+          install -m 0644 /tmp/rebuild/data/entity_watch.csv data/entity_watch.csv
+          install -m 0644 /tmp/rebuild/data/sources.csv data/sources.csv
+          mkdir -p assets/data
+          install -m 0644 /tmp/rebuild/assets/data/incidents.json assets/data/incidents.json
+          install -m 0644 /tmp/rebuild/assets/data/status.json assets/data/status.json
+
+      - name: Valider exactement le corpus reconstruit
+        run: |
+          python - <<'PY'
+          from cyberwatch import identity, store
+          from cyberwatch.dedup import build_incidents
+          items = store.load_items()
+          incidents = store.load_incidents()
+          rebuilt = build_incidents(items)
+          ih = identity.items_hash(items)
+          rh = identity.incidents_hash(incidents)
+          assert len(items) == 1003, len(items)
+          assert len(incidents) == 847, len(incidents)
+          assert ih == "53d80905234a0d1535d16416062410289adf77da6b457ef071352160633ded56", ih
+          assert rh == "9889eba6fc33e05fb952aa8d81fc0a9c28f0b3614acf477de38bb8afc15033d5", rh
+          assert identity.incidents_hash(rebuilt) == rh
+          provenance = store.load_qualification_provenance()
+          assert len(provenance) == 1134, len(provenance)
+          print(f"Validated: {len(items)} items / {len(incidents)} incidents / {len(provenance)} provenance rows")
+          PY
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check \
+            --check-regression
+
+      - name: Commit DB validée
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/items.csv data/incidents.csv data/source_facts.csv \
+            data/qualification_provenance.csv \
+            data/run_log.csv data/run_sources.csv data/ai_usage.csv \
+            data/ai_qualifications.csv data/org_enrichment_cache.csv \
+            data/source_facts_ai_usage.json data/snapshot.json data/baseline.json \
+            data/entity_watch.csv data/sources.csv \
+            assets/data/incidents.json assets/data/status.json
+          git commit -m "data: publish validated v0.7.37 clean rebuild"
+
+      - name: Revalider et publier
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check \
+            --check-regression
+          git push origin HEAD:main
