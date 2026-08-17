@@ -63,6 +63,7 @@ jobs:
           rm -f \
             data/items.csv \
             data/incidents.csv \
+            data/incident_id_registry.csv \
             data/source_facts.csv \
             data/qualification_provenance.csv \
             data/dedup_audit_candidates.csv \
@@ -208,6 +209,7 @@ jobs:
             data/source_facts_ai_cache.json
             data/items.csv
             data/incidents.csv
+            data/incident_id_registry.csv
             data/source_facts.csv
             data/qualification_provenance.csv
             data/dedup_audit_candidates.csv
