@@ -1,125 +1,212 @@
 #!/usr/bin/env python3
-import csv, html, json, re, threading
+"""Enrichit les secteurs challengers depuis des preuves de site officiel.
+
+Cette étape ne classe plus à partir du récit cyber, de snippets de moteurs de
+recherche ou d'un annuaire juridique. Les moteurs de recherche servent seulement
+à découvrir un site officiel via :mod:`cyberwatch.company_evidence` ; ce module
+vérifie ensuite l'identité sur la page officielle et exige une activité forte.
+
+Les URLs d'incident restent dans ``sources``. Les preuves Sector sont persistées
+dans des champs dédiés ``sector_evidence_*`` afin que le fallback canonique
+puisse les revalider hors ligne sans confondre raccord d'incident et preuve
+métier.
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import quote_plus, urlparse, parse_qs, unquote
-import requests
-from bs4 import BeautifulSoup
 
-OUT=Path('sources/veillellm')
-COLS=['date','organisation','territoire','localisation','secteur','type_menace','acteur','statut','score_cyberattaque','impact_connu','source_urls','synthese','evolution']
-UNKNOWN={'','Inconnu',None}
-SECTOR_VALUES={'Administration / Collectivité','Santé','Éducation / Formation','Finance / Assurance','Transport / Logistique','Sport','Commerce / Distribution','Numérique / Technologie','Énergie / Utilities','Industrie / Manufacture','Construction / BTP','Services aux entreprises','Inconnu'}
-TL=threading.local()
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-def sess():
-    if not hasattr(TL,'s'):
-        TL.s=requests.Session(); TL.s.headers.update({'User-Agent':'Mozilla/5.0 (compatible; Cyberwatch/1.0; +https://github.com/Ya7o/Cyberwatch)'})
-    return TL.s
+from cyberwatch import company_evidence, config  # noqa: E402
 
-def clean(s): return re.sub(r'\s+',' ',html.unescape(s or '')).strip()
+OUT = ROOT / "sources" / "veillellm"
+ITEMS_CSV = ROOT / "data" / "items.csv"
 
-def get_text(url):
-    try:
-        r=sess().get(url,timeout=8,allow_redirects=True)
-        if r.status_code>=400:return ''
-        soup=BeautifulSoup(r.text,'html.parser')
-        for x in soup(['script','style','noscript','svg']):x.decompose()
-        return clean(soup.get_text(' ',strip=True))[:100000]
-    except Exception:return ''
+DATASETS = {
+    "cyberattaque_org_2026": "CYBERATTAQUE_ORG",
+    "frenchbreaches_2026": "FRENCHBREACHES",
+}
 
-SECTORS=[
-('Administration / Collectivité',[r'\bmairie\b',r'\bmunicipalit',r'\bcommune de\b',r'\bville de\b',r'\bpréfecture\b',r'\bminist[eè]re\b',r'\bgovernment agency\b',r'\bpublic administration\b',r'\bcity council\b',r'\blocal authority\b']),
-('Santé',[r'\bh[oô]pital\b',r'\bhospital\b',r'\bclinique\b',r'\bclinic\b',r'\bpharmaci',r'\bpharmaceutical\b',r'\bmedical laboratory\b',r'\bhealthcare provider\b',r'\bhealth system\b',r'\behpad\b']),
-('Éducation / Formation',[r'\buniversit',r'\buniversity\b',r'\bcollege\b',r'\blycée\b',r'\bschool\b',r'\b[ée]cole\b',r'\bacadémie\b',r'\btraining provider\b',r'\bcentre de formation\b']),
-('Finance / Assurance',[r'\bbank\b',r'\bbanque\b',r'\binsurance\b',r'\bassurance\b',r'\bmutuelle\b',r'\bcredit union\b',r'\bfinancial services\b',r'\bfintech\b',r'\basset management\b']),
-('Transport / Logistique',[r'\bairline\b',r'compagnie aérienne',r'\bairport\b',r'\baéroport\b',r'\blogistics\b',r'\blogistique\b',r'\bshipping company\b',r'\bfreight\b',r'\btransport company\b',r'\btransporteur\b',r'\bpostal service\b']),
-('Sport',[r'\bsports? federation\b',r'\bfédération .*sport',r'\bfootball club\b',r'\brugby club\b',r'\bbasketball club\b',r'\btennis club\b',r'\bmotorsport federation\b']),
-('Commerce / Distribution',[r'\bretail(?:er| chain)?\b',r'\bdistribution company\b',r'\bdistributeur\b',r'\bcommerce de\b',r'\bmagasin\b',r'\bsupermarket\b',r'\bsupermarch',r'\be-commerce\b',r'\bwholesaler\b',r'\bgrossiste\b',r'\bdealership\b',r'\bconcessionnaire\b',r'\bretail company\b']),
-('Numérique / Technologie',[r'\bsoftware company\b',r'éditeur de logiciels',r'\bit services\b',r'\binformation technology company\b',r'\btechnology company\b',r'\btech company\b',r'\bcloud provider\b',r'\bhosting provider\b',r'\bhébergeur\b',r'\btelecommunications company\b',r'\btélécommunications\b',r'\bcybersecurity company\b',r'\bdatacenter\b']),
-('Énergie / Utilities',[r'\benergy company\b',r'\bénergéticien\b',r'\belectric utility\b',r'\bélectricité\b',r'\bpower company\b',r'\bwater utility\b',r'\bwater company\b',r'\bgas utility\b',r'\boil and gas\b']),
-('Industrie / Manufacture',[r'\bmanufacturer\b',r'\bmanufacturing company\b',r'\bindustrial company\b',r'\bindustriel',r'\bfabricant\b',r'\bproduction industrielle\b',r'\bautomotive supplier\b',r'\baerospace manufacturer\b',r'\bchemical manufacturer\b']),
-('Construction / BTP',[r'\bconstruction company\b',r'\bconstruction group\b',r'\bcontractor\b',r'\bbtp\b',r'\btravaux publics\b',r'\bcivil engineering\b',r'\breal estate developer\b',r'\bpromoteur immobilier\b']),
-('Services aux entreprises',[r'\bconsulting firm\b',r'\bconsultancy\b',r'cabinet de conseil',r'\blaw firm\b',r'cabinet d.avocats?',r'\baccounting firm\b',r'cabinet comptable',r'\brecruitment firm\b',r'\bstaffing company\b',r'\bprofessional services firm\b',r'\bbusiness services\b',r'\bmarketing agency\b',r'\bengineering consultancy\b'])]
+COLS = [
+    "date",
+    "organisation",
+    "territoire",
+    "localisation",
+    "secteur",
+    "type_menace",
+    "acteur",
+    "statut",
+    "score_cyberattaque",
+    "impact_connu",
+    "source_urls",
+    "synthese",
+    "evolution",
+    "sector_evidence_url",
+    "sector_evidence_text",
+    "sector_evidence_source",
+    "sector_evidence_type",
+]
 
-def infer(text):
-    low=text.lower(); scores=[]
-    for label,pats in SECTORS:
-        # require at least one strong phrase; count multiple evidence hits
-        hits=sum(1 for p in pats if re.search(p,low,re.I))
-        if hits:scores.append((hits,label))
-    scores.sort(reverse=True)
-    if not scores:return None
-    if len(scores)>1 and scores[0][0]==scores[1][0]:return None
-    return scores[0][1]
+MAX_WORKERS = 10
 
-def ddg(q):
-    try:
-        r=sess().get('https://html.duckduckgo.com/html/?q='+quote_plus(q),timeout=8)
-        if r.status_code>=400:return '',[]
-        soup=BeautifulSoup(r.text,'html.parser');parts=[];urls=[]
-        for res in soup.select('.result')[:6]:
-            a=res.select_one('.result__a');sn=res.select_one('.result__snippet')
-            if not a:continue
-            href=a.get('href','')
-            if 'uddg=' in href:
-                try:href=unquote(parse_qs(urlparse(href).query).get('uddg',[''])[0])
-                except Exception:pass
-            parts.append(clean(a.get_text(' ',strip=True))+' '+clean(sn.get_text(' ',strip=True) if sn else ''))
-            if href:urls.append(href)
-        return ' '.join(parts),urls
-    except Exception:return '',[]
 
-def bing(q):
-    try:
-        r=sess().get('https://www.bing.com/search?q='+quote_plus(q)+'&count=8',timeout=8)
-        if r.status_code>=400:return '',[]
-        soup=BeautifulSoup(r.text,'html.parser');parts=[];urls=[]
-        for li in soup.select('li.b_algo')[:6]:
-            a=li.select_one('h2 a');p=li.select_one('.b_caption p')
-            if not a:continue
-            parts.append(clean(a.get_text(' ',strip=True))+' '+clean(p.get_text(' ',strip=True) if p else ''))
-            href=a.get('href','');
-            if href:urls.append(href)
-        return ' '.join(parts),urls
-    except Exception:return '',[]
+def _url_values(value: object) -> list[str]:
+    if isinstance(value, list):
+        return [str(part).strip() for part in value if str(part).strip()]
+    if isinstance(value, str):
+        return [part.strip() for part in value.split("|") if part.strip()]
+    return []
 
-def enrich(row):
-    if row.get('secteur')!='Inconnu':return row,False
-    org=row.get('organisation','').strip(); base=' '.join([org,row.get('impact_connu',''),row.get('synthese','')])
-    for u in row.get('sources',[])[:2]:base+=' '+get_text(u)
-    v=infer(base)
-    evidence=[]
-    if not v:
-        queries=[f'"{org}" activité secteur entreprise',f'"{org}" company industry business',f'"{org}" official company about']
-        corpus=base
-        for q in queries:
-            d,du=ddg(q);b,bu=bing(q);corpus+=' '+d+' '+b;evidence+=du[:2]+bu[:2]
-            v=infer(corpus)
-            if v:break
-    if v:
-        row['secteur']=v
-        if evidence:row['sources']=list(dict.fromkeys(row.get('sources',[])+evidence[:3]))
-        if row.get('evolution')=='inchange':row['evolution']='enrichi'
-        return row,True
-    # Important: do not force a sector when taxonomy has no defensible match.
-    return row,False
 
-def run(stem):
-    jp=OUT/f'{stem}.json';cp=OUT/f'{stem}.csv';data=json.loads(jp.read_text(encoding='utf-8'));inc=data['incidents']
-    before=sum(x.get('secteur')=='Inconnu' for x in inc);changed=0
-    targets=[(idx,x) for idx,x in enumerate(inc) if x.get('secteur')=='Inconnu']
-    with ThreadPoolExecutor(max_workers=12) as ex:
-        fut={ex.submit(enrich,x):idx for idx,x in targets}
-        for f in as_completed(fut):
-            idx=fut[f];row,ch=f.result();inc[idx]=row;changed+=int(ch)
-    after=sum(x.get('secteur')=='Inconnu' for x in inc)
-    data['metadata']['deep_sector_research']={'before':before,'resolved':changed,'remaining_canonical_inconnu':after,'method':'source + DuckDuckGo + Bing; no forced mapping when evidence/taxonomy insufficient'}
-    jp.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    with cp.open('w',encoding='utf-8',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=COLS);w.writeheader()
-        for x in inc:
-            r={k:x.get(k,'') for k in COLS if k!='source_urls'};r['source_urls']=' | '.join(x.get('sources',[]));w.writerow(r)
-    print(stem,'SECTOR BEFORE',before,'RESOLVED',changed,'REMAINING',after,flush=True)
+def incident_urls(row: dict) -> tuple[str, ...]:
+    """URLs servant au raccord incident, jamais comme preuve Sector."""
+    values = row.get("sources") or row.get("source_urls") or []
+    return tuple(dict.fromkeys(_url_values(values)))
 
-for s in ('cyberattaque_org_2026','frenchbreaches_2026'):run(s)
+
+def target_unknown_urls(source_id: str, path: Path = ITEMS_CSV) -> set[str]:
+    """URLs des items production encore sans secteur pour cette source."""
+    if not path.exists():
+        return set()
+    targets: set[str] = set()
+    with path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("Source_ID") != source_id:
+                continue
+            if row.get("Sector") != config.SECTOR_UNKNOWN:
+                continue
+            url = str(row.get("URL") or "").strip()
+            if url:
+                targets.add(url)
+    return targets
+
+
+def is_target_row(row: dict, target_urls: set[str]) -> bool:
+    return bool(target_urls.intersection(incident_urls(row)))
+
+
+def apply_evidence(
+    row: dict,
+    evidence: company_evidence.CompanyEvidence,
+) -> tuple[str, str]:
+    """Persiste une preuve officielle séparée et retourne (avant, après)."""
+    before = str(row.get("secteur") or config.SECTOR_UNKNOWN)
+    row["secteur"] = evidence.sector
+    row["sector_evidence_url"] = evidence.evidence_url
+    row["sector_evidence_text"] = evidence.evidence_text
+    row["sector_evidence_source"] = evidence.evidence_source
+    row["sector_evidence_type"] = evidence.evidence_type
+    if before != evidence.sector and row.get("evolution") != "nouveau":
+        row["evolution"] = "enrichi"
+    return before, evidence.sector
+
+
+def research_official_evidence(row: dict) -> company_evidence.CompanyEvidence | None:
+    organisation = str(row.get("organisation") or "").strip()
+    if not organisation:
+        return None
+    return company_evidence.resolve_official_site(organisation)
+
+
+def write_csv(path: Path, incidents: list[dict]) -> None:
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=COLS, extrasaction="ignore")
+        writer.writeheader()
+        for row in incidents:
+            output = {column: row.get(column, "") for column in COLS}
+            output["source_urls"] = " | ".join(incident_urls(row))
+            writer.writerow(output)
+
+
+def run(stem: str, source_id: str) -> dict[str, int]:
+    json_path = OUT / f"{stem}.json"
+    csv_path = OUT / f"{stem}.csv"
+    data = json.loads(json_path.read_text(encoding="utf-8"))
+    incidents = data.get("incidents") or []
+    if not isinstance(incidents, list):
+        raise ValueError(f"{json_path}: incidents doit être une liste")
+
+    target_urls = target_unknown_urls(source_id)
+    targets = [
+        (index, row)
+        for index, row in enumerate(incidents)
+        if isinstance(row, dict) and is_target_row(row, target_urls)
+    ]
+
+    stats = {
+        "target_items": len(target_urls),
+        "target_records": len(targets),
+        "evidence_found": 0,
+        "resolved_unknown": 0,
+        "corrected_known": 0,
+        "verified_same": 0,
+        "no_official_evidence": 0,
+    }
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(research_official_evidence, row): index
+            for index, row in targets
+        }
+        for future in as_completed(futures):
+            index = futures[future]
+            try:
+                evidence = future.result()
+            except Exception:
+                evidence = None
+            if evidence is None:
+                stats["no_official_evidence"] += 1
+                continue
+
+            before, after = apply_evidence(incidents[index], evidence)
+            stats["evidence_found"] += 1
+            if before == config.SECTOR_UNKNOWN and after != config.SECTOR_UNKNOWN:
+                stats["resolved_unknown"] += 1
+            elif before != after:
+                stats["corrected_known"] += 1
+            else:
+                stats["verified_same"] += 1
+
+    metadata = data.setdefault("metadata", {})
+    metadata["sector_evidence_v2"] = {
+        **stats,
+        "method": "official-site discovery + exact identity/activity validation via cyberwatch.company_evidence",
+        "evidence_policy": (
+            "search engines are discovery-only; incident text, search snippets, legal directories "
+            "and source article URLs are never Sector evidence"
+        ),
+    }
+
+    json_path.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    write_csv(csv_path, incidents)
+
+    print(
+        stem,
+        "TARGET_RECORDS", stats["target_records"],
+        "EVIDENCE", stats["evidence_found"],
+        "RESOLVED", stats["resolved_unknown"],
+        "CORRECTED", stats["corrected_known"],
+        "VERIFIED", stats["verified_same"],
+        "NO_EVIDENCE", stats["no_official_evidence"],
+        flush=True,
+    )
+    return stats
+
+
+def main() -> None:
+    for stem, source_id in DATASETS.items():
+        run(stem, source_id)
+
+
+if __name__ == "__main__":
+    main()

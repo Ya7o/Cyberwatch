@@ -2,26 +2,35 @@ name: Deep sector enrichment 2026
 
 on:
   push:
+    branches: [main]
     paths:
+      - 'sources/veillellm/deep_enrich_unknown_sectors.py'
+      - 'cyberwatch/company_evidence.py'
       - '.github/workflows/deep-sector-enrichment.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: deep-sector-enrichment
+  cancel-in-progress: false
+
 jobs:
   enrich:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
-          python-version: '3.12'
-      - run: python -m pip install --disable-pip-version-check requests beautifulsoup4
-      - name: Deep research unresolved sectors
+          python-version: '3.11'
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Rechercher uniquement des preuves Sector officielles
         run: python sources/veillellm/deep_enrich_unknown_sectors.py
       - name: Commit enriched datasets
         run: |
@@ -31,7 +40,10 @@ jobs:
                   sources/veillellm/cyberattaque_org_2026.json \
                   sources/veillellm/frenchbreaches_2026.csv \
                   sources/veillellm/frenchbreaches_2026.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Deep-enrich unresolved 2026 sectors"
+          if git diff --cached --quiet; then
+            echo "Aucune nouvelle preuve officielle."
+            exit 0
+          fi
+          git commit -m "Enrich Sector with official-site evidence"
           git pull --rebase origin main
           git push origin HEAD:main
