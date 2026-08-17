@@ -1,0 +1,37 @@
+name: File Count Display Dedup Once
+
+on:
+  push:
+    branches:
+      - agent/fix-file-count-display-duplicate-20260817
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/fix-file-count-display-duplicate-20260817
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Apply minimal UI fix
+        run: |
+          python .github/scripts/patch_file_count_display_dedup.py
+          pytest -q tests/test_site_source_facts.py
+          node --check assets/dashboard-audit.js
+      - name: Commit clean implementation
+        run: |
+          git config user.name 'cyberwatch-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/file-count-display-dedup-once.yml .github/scripts/patch_file_count_display_dedup.py
+          git add assets/dashboard-audit.js tests/test_site_source_facts.py
+          git diff --cached --name-only
+          git commit -m 'fix: avoid duplicate file count in source facts UI'
+          git push origin HEAD:agent/fix-file-count-display-duplicate-20260817
