@@ -1,0 +1,57 @@
+name: Dedup Global Audit Post36 Detail
+
+on:
+  push:
+    branches:
+      - agent/dedup-global-audit-post36
+    paths:
+      - .github/workflows/dedup-global-audit-post36-detail.yml
+
+permissions:
+  contents: read
+
+jobs:
+  detail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: |
+          python - <<'PY'
+          import json
+          from collections import defaultdict
+          from cyberwatch import store
+          from cyberwatch.dedup import group_components, decide_merge, MERGE
+          from cyberwatch.org_identity import effective_organisation_key
+
+          items=store.load_items()
+          def eff(i): return effective_organisation_key(i.Organisation_Raw,i.Organisation_Key)
+          by_org=defaultdict(list)
+          for i in items:
+              if eff(i): by_org[eff(i)].append(i)
+          old=[]
+          for key in sorted(by_org):
+              group=sorted(by_org[key],key=lambda i:(i.best_date,i.Source_ID,i.URL,i.Item_ID))
+              current=[]; anchor=None
+              for item in group:
+                  if not current:
+                      current=[item]; anchor=item; continue
+                  if decide_merge(anchor,item).action==MERGE:
+                      current.append(item)
+                  else:
+                      old.append(current); current=[item]; anchor=item
+              if current: old.append(current)
+          new=group_components(items)
+          new_of={i.Item_ID:idx for idx,c in enumerate(new) for i in c}
+          for c in old:
+              buckets=sorted({new_of[i.Item_ID] for i in c})
+              if len(buckets)>1:
+                  print('SPLIT='+json.dumps({
+                    'key':eff(c[0]),
+                    'old_items':[[i.Source_ID,i.Source_Item_ID,i.best_date,i.Organisation_Raw,i.Title,i.Item_ID] for i in c],
+                    'new_components':buckets,
+                  },ensure_ascii=False))
+          PY
