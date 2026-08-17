@@ -568,8 +568,7 @@ def _normalize_attack_flow(raw, context: str) -> list[dict]:
             continue
         if not evidence or len(evidence) > MAX_EVIDENCE_CHARS or not _grounded(evidence, context):
             continue
-        window = _evidence_window(evidence, context)
-        if _HYPOTHETICAL_RE.search(window) or _RESPONSE_ACTION_RE.search(action) or _RESPONSE_ACTION_RE.search(evidence):
+        if _HYPOTHETICAL_RE.search(evidence) or _RESPONSE_ACTION_RE.search(action) or _RESPONSE_ACTION_RE.search(evidence):
             continue
         key = searchable(action)
         if not key or key in seen:
