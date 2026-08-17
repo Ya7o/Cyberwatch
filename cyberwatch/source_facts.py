@@ -22,7 +22,7 @@ from .normalize import (
     strip_accents,
 )
 
-SOURCE_FACTS_VERSION = "3"
+SOURCE_FACTS_VERSION = "4"
 
 _BASE_COLUMNS = {
     "Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version",
@@ -303,6 +303,34 @@ def _ai_data_types(ai_result: dict) -> tuple[list[str], dict[str, str]]:
     return result, evidence
 
 
+def _ai_initial_access(ai_result: dict) -> tuple[str, str]:
+    value, evidence = _ai_text(ai_result, "initial_access")
+    if value not in source_facts_ai.INITIAL_ACCESS_VALUES or not evidence:
+        return "", ""
+    return value, evidence
+
+
+def _ai_attack_flow(ai_result: dict) -> tuple[list[dict], list[str]]:
+    values = ai_result.get("attack_flow") if isinstance(ai_result, dict) else None
+    if not isinstance(values, list):
+        return [], []
+    result: list[dict] = []
+    evidence: list[str] = []
+    seen = set()
+    for candidate in values[:source_facts_ai.MAX_ATTACK_FLOW_STEPS]:
+        if not isinstance(candidate, dict):
+            continue
+        action = str(candidate.get("action") or "").strip()
+        proof = str(candidate.get("evidence") or "").strip()
+        key = searchable(action)
+        if not action or not proof or not key or key in seen:
+            continue
+        seen.add(key)
+        result.append({"action": action, "evidence": proof})
+        evidence.append(proof)
+    return result, evidence
+
+
 def _blank_fact(item: Item, spec: SourceSpec) -> dict:
     fact = {col: "" for col in SOURCE_FACT_COLUMNS}
     fact["Item_ID"] = item.Item_ID
@@ -416,6 +444,28 @@ def _native_frenchbreaches_sector(text: str) -> str:
     return " ".join(match.group(1).split()).strip(" -:;.") if match else ""
 
 
+def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> None:
+    initial_access, initial_evidence = _ai_initial_access(ai_result)
+    if initial_access:
+        fact["Initial_Access"] = initial_access
+        evidence["Initial_Access"] = initial_evidence
+
+    attack_flow, flow_evidence = _ai_attack_flow(ai_result)
+    if attack_flow:
+        fact["Attack_Flow_JSON"] = _dumps_json(attack_flow)
+        evidence["Attack_Flow_JSON"] = flow_evidence
+
+    summary, summary_evidence = _ai_text(ai_result, "summary")
+    if summary:
+        fact["Summary"] = summary
+        evidence["Summary"] = summary_evidence
+
+    impact, impact_evidence = _ai_text(ai_result, "impact")
+    if impact:
+        fact["Impact"] = impact
+        evidence["Impact"] = impact_evidence
+
+
 def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
@@ -495,14 +545,7 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
         fact["Data_Types_JSON"] = _dumps_json(data_types)
         evidence["Data_Types_JSON"] = data_evidence
 
-    summary, summary_evidence = _ai_text(ai_result, "summary")
-    if summary:
-        fact["Summary"] = summary
-        evidence["Summary"] = summary_evidence
-    impact, impact_evidence = _ai_text(ai_result, "impact")
-    if impact:
-        fact["Impact"] = impact
-        evidence["Impact"] = impact_evidence
+    _apply_semantic_enrichment(fact, evidence, ai_result)
 
     cves = _extract_cves(text)
     if cves:
@@ -606,14 +649,7 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
         fact["Data_Types_JSON"] = _dumps_json(data_types)
         evidence["Data_Types_JSON"] = data_evidence
 
-    summary, summary_evidence = _ai_text(ai_result, "summary")
-    if summary:
-        fact["Summary"] = summary
-        evidence["Summary"] = summary_evidence
-    impact, impact_evidence = _ai_text(ai_result, "impact")
-    if impact:
-        fact["Impact"] = impact
-        evidence["Impact"] = impact_evidence
+    _apply_semantic_enrichment(fact, evidence, ai_result)
 
     cves = _extract_cves(text)
     if cves:
