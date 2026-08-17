@@ -41,24 +41,25 @@
   "organisation_registry": {
     "applications": 0,
     "auto_rows": 170,
-    "conflict_rows": 7,
+    "conflict_rows": 20,
     "queue_categories": {
       "CONSENSUS_REVIEW": 1,
-      "JSON_CHALLENGER": 139,
-      "KNOWN_ITEM_REVIEW": 39,
-      "NO_EVIDENCE": 273,
-      "RAW_SECTOR_UNMAPPED": 52
+      "JSON_CHALLENGER": 138,
+      "KNOWN_ITEM_REVIEW": 54,
+      "NO_EVIDENCE": 258,
+      "RAW_SECTOR_UNMAPPED": 47,
+      "REGISTRY_CONFLICT": 6
     },
     "queue_organisations": 504,
     "registry_channels": {
       "consensus_multi_source": 44,
-      "known_item_single": 104,
+      "known_item_single": 94,
       "manual_reference": 170,
-      "registry_exact_naf": 50,
+      "registry_exact_naf": 81,
       "structured_source": 119
     },
-    "registry_rows": 487,
-    "review_rows": 310
+    "registry_rows": 508,
+    "review_rows": 318
   },
   "ransomware_live": {
     "current_known": 133,
@@ -145,8 +146,8 @@
   "sector": {
     "global": {
       "items": 1003,
-      "location_unknown": 36,
-      "location_unknown_ratio": 0.03589232303090728,
+      "location_unknown": 35,
+      "location_unknown_ratio": 0.03489531405782652,
       "organisations": 787,
       "sector_coverage_ratio": 0.3988035892323031,
       "sector_known": 400,
@@ -178,8 +179,8 @@
       },
       "CYBERATTAQUE_ORG": {
         "items": 397,
-        "location_unknown": 36,
-        "location_unknown_ratio": 0.0906801007556675,
+        "location_unknown": 35,
+        "location_unknown_ratio": 0.08816120906801007,
         "organisations": 391,
         "sector_coverage_ratio": 0.26700251889168763,
         "sector_known": 106,
@@ -243,17 +244,17 @@
     }
   },
   "snapshot": {
-    "code_commit": "d5bdb29004855934c2d9a09622e8e0eefd513cfc",
+    "code_commit": "94ed1180b11d6c394e5148c1d8dc564afbb3ec7a",
     "incidents_hash": "bb455df59a239917207de23230121593b20bf80efc595e5285241b7ab833dfae",
-    "items_hash": "f682ee5ab26e13db8e957b16c33f21e88f3f818f4f0627ccd90530bfbf2684e3"
+    "items_hash": "5b20e3c0d2fd8314565ebda0cfba0b628646acaa96330be061259eed7355aa49"
   },
   "structured_backfill_projection": {
     "applied": 0,
     "metrics": {
       "global": {
         "items": 1003,
-        "location_unknown": 36,
-        "location_unknown_ratio": 0.03589232303090728,
+        "location_unknown": 35,
+        "location_unknown_ratio": 0.03489531405782652,
         "organisations": 787,
         "sector_coverage_ratio": 0.3988035892323031,
         "sector_known": 400,
@@ -285,8 +286,8 @@
         },
         "CYBERATTAQUE_ORG": {
           "items": 397,
-          "location_unknown": 36,
-          "location_unknown_ratio": 0.0906801007556675,
+          "location_unknown": 35,
+          "location_unknown_ratio": 0.08816120906801007,
           "organisations": 391,
           "sector_coverage_ratio": 0.26700251889168763,
           "sector_known": 106,
