@@ -7,6 +7,10 @@ on:
       - 'cyberwatch/source_llm_fallback.py'
       - 'cyberwatch/sector_fallback_migration.py'
       - 'cyberwatch/qualification.py'
+      - 'cyberwatch/sector.py'
+      - 'cyberwatch/config.py'
+      - 'cyberwatch/quality.py'
+      - 'scripts/audit_sector_coverage.py'
       - 'sources/veillellm/cyberattaque_org_2026.json'
       - 'sources/veillellm/frenchbreaches_2026.json'
       - '.github/workflows/revalidate-sector-fallback.yml'
@@ -39,10 +43,18 @@ jobs:
       - name: Revalider les qualifications fallback
         run: python -m cyberwatch backfill-unknowns
 
+      - name: Mesurer la couverture Sector
+        run: |
+          python scripts/audit_sector_coverage.py
+          python scripts/audit_sector_coverage.py --output "" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Vérifier le snapshot
         run: |
           python -m cyberwatch check --allow-uninitialized
           python -m cyberwatch test-repeat
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-qualification.csv \
+            --json /tmp/golden-qualification.json
 
       - name: Publier le snapshot revalidé
         run: |
@@ -53,6 +65,7 @@ jobs:
             data/incidents.csv \
             data/incident_id_registry.csv \
             data/qualification_provenance.csv \
+            data/sector_quality.json \
             data/snapshot.json \
             assets/data
           if git diff --cached --quiet; then
