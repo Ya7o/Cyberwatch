@@ -12,11 +12,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch.golden import DETAIL_COLUMNS, evaluate, read_csv, validate_file, write_csv
+from cyberwatch.golden_review import apply_audit, validate_audit
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--golden", default=str(ROOT / "data" / "golden" / "qualification_golden.csv"))
+    parser.add_argument(
+        "--audit",
+        default=str(ROOT / "data" / "golden" / "qualification_golden_audit.csv"),
+        help="Journal de revue appliqué au golden avant évaluation. Vide pour désactiver.",
+    )
     parser.add_argument("--incidents", default=str(ROOT / "data" / "incidents.csv"))
     parser.add_argument("--details", default=str(ROOT / "bench" / "results" / "golden_evaluation.csv"))
     parser.add_argument("--json", dest="json_path", default="")
@@ -32,6 +38,15 @@ def main() -> None:
         raise SystemExit("golden set invalide:\n- " + "\n- ".join(problems))
 
     golden_rows = read_csv(args.golden)
+    if args.audit:
+        audit_path = Path(args.audit)
+        if audit_path.exists():
+            audit_rows = read_csv(audit_path)
+            audit_problems = validate_audit(audit_rows, golden_rows)
+            if audit_problems:
+                raise SystemExit("audit golden invalide:\n- " + "\n- ".join(audit_problems))
+            golden_rows = apply_audit(golden_rows, audit_rows)
+
     if not golden_rows:
         raise SystemExit("golden set vide: ajoutez des cas de référence avant l'évaluation")
     incidents = read_csv(args.incidents)
