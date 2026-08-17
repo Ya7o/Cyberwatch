@@ -77,7 +77,7 @@ _LEGACY_EDITORIAL_TAIL = re.compile(
     r"informe(?:\s+ses\s+clients)?\s+d['’]une\s+fuite\b|"
     r"ouvre\s+la\s+s[ée]rie\s+de\s+fuites\b|"
     r"touch(?:é|ée|e)?|victime|cibl(?:é|ée|e)?|frapp(?:é|ée|e)?|"
-    r"pirat(?:é|ée)|conteste|alerte|au cœur|sous la menace)\b",
+    r"pirat(?:é|ée)|menac(?:é|ée|e)?|conteste|alerte|au cœur|sous la menace)\b",
     re.I,
 )
 _AFTER_COLON_CONFIRMS = re.compile(
