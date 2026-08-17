@@ -662,6 +662,7 @@ class RunReport:
     requests: int = 0
     ai_usage: dict = field(default_factory=dict)
     source_facts: list[dict] = field(default_factory=list)
+    qualification_provenance: list[dict] = field(default_factory=list)
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -742,6 +743,7 @@ def execute(
     qualified = qualify(report.items)
     report.items = qualified.items
     report.incidents = qualified.incidents
+    report.qualification_provenance = qualified.provenance
     report.new_incidents = len([i for i in report.incidents if i.Incident_ID not in previous_ids])
     report.items_hash = qualified.items_hash
     report.incidents_hash = qualified.incidents_hash
@@ -856,6 +858,7 @@ def _persist(
         store.save_items(report.items)
         store.save_incidents(report.incidents)
         store.save_source_facts(report.source_facts)
+        store.save_qualification_provenance(report.qualification_provenance)
         save_snapshot_provenance(
             store.load_items(), store.load_incidents(), operation=context.mode,
             run_id=context.run_id, mode=context.mode, as_of=context.as_of,

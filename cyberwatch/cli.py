@@ -204,6 +204,7 @@ def cmd_backfill_unknowns(args) -> int:
     items, incidents = qualified.items, qualified.incidents
     store.save_items(items)
     store.save_incidents(incidents)
+    store.save_qualification_provenance(qualified.provenance)
     save_snapshot_provenance(
         store.load_items(), store.load_incidents(), operation="BACKFILL_UNKNOWNS",
     )

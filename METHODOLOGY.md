@@ -788,3 +788,8 @@ reste à corriger, avant de faire à nouveau confiance à
 réel → `METHOD_ID` bumpé de `OBS-FR-OI-SIMPLE-SOURCING-7` à `-8`.
 `History_Status`/les sentinelles `Threat_Actor` n'entrent dans aucun hash
 canonique et n'auraient pas justifié ce bump à eux seuls.
+
+
+## Qualification hybride source LLM (v0.7.37)
+
+Les exports JSON versionnés `sources/veillellm` restent des challengers analytiques. Pour `FRENCHBREACHES` et `CYBERATTAQUE_ORG`, ils peuvent compléter une `Localisation=Inconnu` sans jamais écraser une valeur connue. Un `Secteur=Inconnu` n'est complété que sur raccord par URL source exacte avec preuve externe conservée dans l'export. La `Menace` n'est jamais modifiée par ces challengers. `VEILLE_LLM` Réunion/Mayotte reste une source native distincte selon son contrat existant. Les décisions sont journalisées dans `data/qualification_provenance.csv`.

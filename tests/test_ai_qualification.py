@@ -506,6 +506,7 @@ def _isolate_store(tmp_path, monkeypatch):
         "BASELINE_JSON": tmp_path / "baseline.json",
         "SITE_DATA_DIR": tmp_path / "site-data",
         "SOURCE_FACTS_CSV": tmp_path / "source_facts.csv",
+        "QUALIFICATION_PROVENANCE_CSV": tmp_path / "qualification_provenance.csv",
     }
     for name, path in mapping.items():
         monkeypatch.setattr(store, name, path)

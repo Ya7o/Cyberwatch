@@ -26,6 +26,7 @@ from .model import (
     Incident,
     Item,
 )
+from .source_llm_fallback import QUALIFICATION_PROVENANCE_COLUMNS
 
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,6 +48,7 @@ ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
 #: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
 #: inclus dans Items_Hash/Incidents_Hash.
 SOURCE_FACTS_CSV = DATA_DIR / "source_facts.csv"
+QUALIFICATION_PROVENANCE_CSV = DATA_DIR / "qualification_provenance.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
 
@@ -201,6 +203,14 @@ def load_source_facts(path: Path | None = None) -> list[dict]:
 
 def save_source_facts(rows: list[dict], path: Path | None = None) -> None:
     write_csv(path or SOURCE_FACTS_CSV, SOURCE_FACT_COLUMNS, rows)
+
+
+def load_qualification_provenance(path: Path | None = None) -> list[dict]:
+    return read_csv(path or QUALIFICATION_PROVENANCE_CSV)
+
+
+def save_qualification_provenance(rows: list[dict], path: Path | None = None) -> None:
+    write_csv(path or QUALIFICATION_PROVENANCE_CSV, QUALIFICATION_PROVENANCE_COLUMNS, rows)
 
 
 def load_snapshot(path: Path | None = None) -> dict:

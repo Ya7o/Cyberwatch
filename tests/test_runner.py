@@ -305,7 +305,7 @@ class TestCreateRepartDeZero:
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
                      "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
-                     "SOURCE_FACTS_CSV"):
+                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
@@ -352,7 +352,7 @@ class TestSourceFactsPersistence:
         # isoler ces CSV est requis pour ne jamais écrire dans data/ réel.
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
                      "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
-                     "SOURCE_FACTS_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",
+                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",
                      "ORG_ENRICHMENT_CACHE_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
