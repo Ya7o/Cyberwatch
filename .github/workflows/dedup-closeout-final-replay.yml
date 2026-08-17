@@ -61,12 +61,12 @@ jobs:
               f'NEW_ACTIVE={new_active} REDIRECTED_OLD={redirected_old} '
               f'UNRESOLVED_OLD={unresolved_old}'
           )
-          if len(old_incidents) != 841 or len(incidents) != 841:
-              raise SystemExit(f'expected certified transition 841->841, got {len(old_incidents)}->{len(incidents)}')
+          if len(old_incidents) != 842 or len(incidents) != 841:
+              raise SystemExit(f'expected certified transition 842->841, got {len(old_incidents)}->{len(incidents)}')
           if unresolved_old:
               raise SystemExit(f'historical IDs lost without redirect: {unresolved_old}')
-          if len(new_active) != 1:
-              raise SystemExit(f'expected one new active ID from the reviewed INSERM split, got {new_active}')
+          if new_active:
+              raise SystemExit(f'unexpected new active Incident_ID: {new_active}')
           if len(redirected_old) != 1:
               raise SystemExit(f'expected one reviewed merge redirect, got {redirected_old}')
           if identity.items_hash(items) != items_hash_before:
@@ -78,7 +78,7 @@ jobs:
               items,
               incidents,
               operation='DEDUP_CERTIFIED_REPLAY',
-              as_of='2026-08-17T16:40:00+04:00',
+              as_of='2026-08-17T16:43:00+04:00',
           )
           site.build()
           PY
