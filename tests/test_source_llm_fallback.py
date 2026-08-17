@@ -290,7 +290,7 @@ def test_load_records_reads_only_structured_sector_evidence_url(tmp_path):
     assert record.evidence_urls == ("https://www.exemple.fr/a-propos",)
     assert record.activity_evidence == ("hôpital et services de santé",)
 
-    item = _item()
+    item = _item(Organisation_Key=record.organisation_key)
     stats, _ = apply_source_llm_fallback(
         [item], {"FRENCHBREACHES": [record]}
     )
