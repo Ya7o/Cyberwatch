@@ -5,6 +5,9 @@ base déterministe reproductible, et dashboard statique publié sur GitHub Pages
 """
 
 from .config import METHOD_ID
+from .sector_completion import install as _install_sector_completion
+
+_install_sector_completion()
 
 __all__ = ["METHOD_ID"]
 __version__ = "1.0.0"
