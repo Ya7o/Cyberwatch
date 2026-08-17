@@ -17,6 +17,15 @@ KEEP_SEPARATE = "KEEP_SEPARATE"
 NO_DECISION = "NO_DECISION"
 PREFERRED_QUALIFICATION_SOURCE = "VEILLE_LLM"
 
+# Un veto explicite ne doit jamais être contourné par l'item d'ancrage d'une
+# composante. Les simples écarts de dates ne sont pas des vetos forts : ils
+# restent gérés par la décision ancre -> nouvel item afin de ne pas casser les
+# corroborations légitimes déjà établies.
+STRONG_KEEP_REASON_CODES = frozenset({
+    "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID",
+    "INCIDENT_KEEP_RECURRENCE_MARKER",
+})
+
 # Une URL n'est un identifiant fort que pour une source dont le contrat indique
 # qu'elle pointe vers une page/item unique. La règle est volontairement fermée :
 # toute nouvelle source doit être ajoutée explicitement après vérification.
@@ -123,8 +132,25 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
     return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_TIME_GAP", (f"days={days}",))
 
 
+def _has_strong_component_veto(current: list[Item], incoming: Item) -> bool:
+    """Détecte un conflit explicite avec n'importe quel membre de la composante.
+
+    L'algorithme reste ancré pour la décision positive de fusion, mais un veto
+    fort est évalué paire à paire contre tous les membres. Cela empêche qu'un
+    item tiers serve de pont entre deux identifiants natifs incompatibles.
+    """
+    for member in current:
+        decision = decide_merge(member, incoming)
+        if (
+            decision.action == KEEP_SEPARATE
+            and decision.reason_code in STRONG_KEEP_REASON_CODES
+        ):
+            return True
+    return False
+
+
 def group_components(items: list[Item]) -> list[list[Item]]:
-    """Construit des composantes ancrées ; aucune ne chaîne au-delà de 14 jours."""
+    """Construit des composantes ancrées sans chaînage ni contournement de veto."""
     by_org: dict[str, list[Item]] = defaultdict(list)
     for item in items:
         key = _effective_key(item)
@@ -144,7 +170,7 @@ def group_components(items: list[Item]) -> list[list[Item]]:
                 current, anchor = [item], item
                 continue
             decision = decide_merge(anchor, item)
-            if decision.action == MERGE:
+            if decision.action == MERGE and not _has_strong_component_veto(current, item):
                 current.append(item)
             else:
                 components.append(current)

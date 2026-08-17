@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from . import config
 from .dedup import MERGE, NO_DECISION, decide_merge
 from .model import Item
 from .normalize import date_or_empty, organisation_key
@@ -129,7 +130,10 @@ def _company_id(item: Item, company_ids: dict[str, str]) -> str:
     )
 
 
-def find_duplicate_candidates(items: list[Item], max_days: int = 3) -> list[DuplicateCandidate]:
+def find_duplicate_candidates(
+    items: list[Item],
+    max_days: int = config.INCIDENT_GAP_DAYS,
+) -> list[DuplicateCandidate]:
     """Retourne des candidats d'audit sans jamais ordonner leur fusion.
 
     Critères strictement déterministes : sources distinctes, dates à moins de
@@ -137,6 +141,10 @@ def find_duplicate_candidates(items: list[Item], max_days: int = 3) -> list[Dupl
     menace n'est pas un critère d'identité et aucun mot générique (agence,
     fédération, université, ville...) n'est exclu : ces cas doivent précisément
     rester visibles dans l'audit.
+
+    La fenêtre d'audit suit la fenêtre maximale de la méthode (14 jours par
+    défaut), tandis que la fusion automatique faible reste limitée à 3 jours
+    dans ``dedup.decide_merge``. Entre J+4 et J+14, on observe sans fusionner.
     """
     candidates: list[DuplicateCandidate] = []
     ordered = sorted(
@@ -174,14 +182,6 @@ def find_duplicate_candidates(items: list[Item], max_days: int = 3) -> list[Dupl
                     item.Organisation_Key,
                 ),
             )
-            # Un seul reason_code par paire : les trois signaux ne se
-            # recouvrent jamais en pratique (containment exige une longueur
-            # de mots strictement différente avec sous-séquence contiguë,
-            # concaténation exige un nombre de mots différent avec fusion
-            # exacte des lettres, permutation exige le même nombre de mots
-            # avec un ordre différent — mutuellement exclusifs par
-            # construction), l'ordre ci-dessous ne fait que documenter la
-            # priorité en cas de doute futur.
             if _contains_word_sequence(long.Organisation_Key, short.Organisation_Key):
                 candidates.append(DuplicateCandidate(short, long, days_apart))
             elif _same_concatenated(short.Organisation_Key, long.Organisation_Key):
@@ -208,7 +208,7 @@ def find_duplicate_candidates(items: list[Item], max_days: int = 3) -> list[Dupl
 def find_audit_candidates(
     items: list[Item],
     company_ids: dict[str, str] | None = None,
-    max_days: int = 3,
+    max_days: int = config.INCIDENT_GAP_DAYS,
 ) -> list[DedupAuditCandidate]:
     """Retourne uniquement les décisions de déduplication qui méritent revue.
 
@@ -236,8 +236,6 @@ def find_audit_candidates(
         )
         key = (normalized.risk_type, left.Item_ID, right.Item_ID)
         existing = candidates.get(key)
-        # Pour les doublons manqués, le Company_ID commun est plus probant
-        # qu'une simple forme de nom et remplace donc le signal lexical.
         if (
             existing
             and existing.reason_code == DUPLICATE_CANDIDATE_SHARED_COMPANY_ID
@@ -245,8 +243,6 @@ def find_audit_candidates(
             return
         candidates[key] = normalized
 
-    # Signaux lexicaux existants, mais uniquement s'ils sont encore réellement
-    # non résolus par les aliases courants et par decide_merge().
     for lexical in find_duplicate_candidates(items, max_days=max_days):
         if _effective_key(lexical.short) == _effective_key(lexical.long):
             continue
@@ -295,8 +291,6 @@ def find_audit_candidates(
 
             if decision.action != MERGE:
                 continue
-            # Même source + même URL identifie déjà le même item éditorial :
-            # ce n'est pas un merge faible utile à challenger dans auditdedup.
             if left.Source_ID == right.Source_ID and left.URL and left.URL == right.URL:
                 continue
             if decision.reason_code == "INCIDENT_MERGE_CANONICAL_NAME":

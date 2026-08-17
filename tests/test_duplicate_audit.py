@@ -53,14 +53,14 @@ def test_generic_word_in_long_name_does_not_hide_candidate(make_item):
     assert len(find_duplicate_candidates(items)) == 1
 
 
-def test_same_source_or_date_over_three_days_is_excluded(make_item):
+def test_same_source_or_date_over_fourteen_days_is_excluded(make_item):
     same_source = [
         make_item(source="A", org="Globex", url="https://a"),
         make_item(source="A", org="Globex France", url="https://b"),
     ]
     late = [
         make_item(source="A", org="Globex", published="2026-03-01", url="https://a"),
-        make_item(source="B", org="Globex France", published="2026-03-05", url="https://b"),
+        make_item(source="B", org="Globex France", published="2026-03-16", url="https://b"),
     ]
     assert find_duplicate_candidates(same_source) == []
     assert find_duplicate_candidates(late) == []
