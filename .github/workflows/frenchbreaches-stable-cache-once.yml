@@ -24,174 +24,36 @@ jobs:
           python-version: '3.11'
           cache: pip
       - run: pip install -r requirements.txt
-
-      - name: Stabilize FrenchBreaches hydrated text
+      - name: Apply patch and test
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('cyberwatch/collectors/feed.py')
-          text = p.read_text(encoding='utf-8')
-          marker = '_HREF_RE = re.compile(r"""href=["\']([^"\']+)["\']""", flags=re.IGNORECASE)\n'
-          addition = marker + '''_DYNAMIC_BLOCK_RE = re.compile(
-              r"<(?:script|style|noscript)\\b[^>]*>.*?</(?:script|style|noscript)>",
-              flags=re.IGNORECASE | re.DOTALL,
-          )
-          _FRENCHBREACHES_SUFFIX_MARKERS = (
-              "Alertes liées",
-              "Si cet article vous a plu",
-              "← Retour aux alertes",
-          )
-
-
-          def stable_frenchbreaches_detail_text(html_text: str) -> str:
-              """Texte éditorial stable d'une fiche, sans blocs dynamiques hors article."""
-              cleaned_html = _DYNAMIC_BLOCK_RE.sub(" ", html_text or "")
-              text = " ".join(strip_html(cleaned_html).split())
-              cut = len(text)
-              for marker_text in _FRENCHBREACHES_SUFFIX_MARKERS:
-                  pos = text.find(marker_text)
-                  if pos > 0:
-                      cut = min(cut, pos)
-              return text[:cut].strip()
-
-'''
-          if marker not in text:
-              raise SystemExit('feed marker missing')
-          text = text.replace(marker, addition, 1)
-          old = '        text = " ".join(strip_html(response.text).split())\n'
-          new = '        text = stable_frenchbreaches_detail_text(response.text)\n'
-          if old not in text:
-              raise SystemExit('hydration marker missing')
-          p.write_text(text.replace(old, new, 1), encoding='utf-8')
-
-          Path('tests/test_feed_frenchbreaches_cache.py').write_text(r'''from cyberwatch.collectors.feed import stable_frenchbreaches_detail_text
-
-
-def test_frenchbreaches_detail_text_ignores_dynamic_scripts_and_related_alerts():
-    html_a = """
-      <header>FrenchBreaches</header>
-      <main><h1>Incident Acme</h1><p>Un attaquant a exfiltré des données.</p>
-      <script>window.__DATA__={nonce:'abc',now:1}</script>
-      <h2>Alertes liées</h2><div>Nouvelle alerte A 2026-08-17T10:00</div></main>
-    """
-    html_b = """
-      <header>FrenchBreaches</header>
-      <main><h1>Incident Acme</h1><p>Un attaquant a exfiltré des données.</p>
-      <script>window.__DATA__={nonce:'xyz',now:2}</script>
-      <h2>Alertes liées</h2><div>Nouvelle alerte B 2026-08-17T11:00</div></main>
-    """
-    a = stable_frenchbreaches_detail_text(html_a)
-    b = stable_frenchbreaches_detail_text(html_b)
-    assert a == b
-    assert "Un attaquant a exfiltré des données." in a
-    assert "nonce" not in a
-    assert "Alertes liées" not in a
-''', encoding='utf-8')
-          PY
+          PYTHONPATH="$PWD" python .github/scripts/patch_frenchbreaches_stable_cache.py
           PYTHONPATH="$PWD" pytest -q tests/test_feed_frenchbreaches_cache.py tests/test_source_facts_ai.py tests/test_source_facts.py tests/test_site_source_facts.py tests/test_enrichment_closeout.py
-
-      - name: First pass — migrate stable FrenchBreaches hashes
+      - name: First pass migrate stable hashes
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '100'
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: '0.10'
-        run: |
-          PYTHONPATH="$PWD" python - <<'PY'
-          import json
-          from cyberwatch import config, enrichment, site, source_facts, source_facts_ai, sources, status, store, watchlists
-          from cyberwatch.http import Budget, HttpClient
-          from cyberwatch.runner import MODE_MAJ, make_run_context, run_source
-
-          context = make_run_context(MODE_MAJ, target_start='2026-01-01', layers=config.LAYER_GROUPS['core'])
-          client = HttpClient(run_budget=Budget(config.MAX_REQUESTS_PER_RUN, config.MAX_SECONDS_PER_RUN, 'fb-stable-cache'))
-          spec = sources.by_id('FRENCHBREACHES')
-          rows = []
-          outcome, collected, _ = run_source(
-              client, spec, context, watchlists.known_organisations(), watchlists.entity_index(),
-              watchlists.entity_territories(), enrichment.load_reference(), None, None, rows,
-          )
-          print(f'FRENCHBREACHES_FIRST: status={outcome.status} coverage={outcome.coverage}% items={len(collected)} facts={len(rows)}')
-          if outcome.status != status.OK or outcome.coverage < 100:
-              raise SystemExit('FrenchBreaches incomplete')
-          existing_ids = {item.Item_ID for item in store.load_items()}
-          incoming = [row for row in rows if row.get('Item_ID') in existing_ids]
-          produced = {row.get('Item_ID') for row in incoming}
-          for item in collected:
-              if item.Item_ID in existing_ids and item.Item_ID not in produced:
-                  incoming.append({'Item_ID': item.Item_ID, 'Source_ID': item.Source_ID, 'Summary': '', 'Initial_Access': '', 'Attack_Flow_JSON': '', 'Impact': '', 'Evidence_JSON': ''})
-          store.save_source_facts(source_facts.merge_source_facts(store.load_source_facts(), incoming))
-          source_facts_ai._flush_runtime()
-          print('FIRST_PASS_STATS=' + json.dumps(source_facts_ai.runtime_stats(), ensure_ascii=False, sort_keys=True))
-          site.build()
-          PY
-
-      - name: Second pass — require zero AI cache misses
+        run: PYTHONPATH="$PWD" python .github/scripts/run_frenchbreaches_stable_first_pass.py
+      - name: Second pass require zero cache misses
         env:
           SOURCE_FACTS_AI_ENABLED: '0'
+        run: PYTHONPATH="$PWD" python .github/scripts/run_enrichment_cache_second_pass.py
+      - name: Final quality checks
         run: |
-          PYTHONPATH="$PWD" python - <<'PY'
-          import json
-          from cyberwatch import config, enrichment, source_facts_ai, sources, status, watchlists
-          from cyberwatch.http import Budget, HttpClient
-          from cyberwatch.runner import MODE_MAJ, make_run_context, run_source
-
-          context = make_run_context(MODE_MAJ, target_start='2026-01-01', layers=config.LAYER_GROUPS['core'])
-          client = HttpClient(run_budget=Budget(config.MAX_REQUESTS_PER_RUN, config.MAX_SECONDS_PER_RUN, 'stable-cache-second'))
-          for source_id in ('FRENCHBREACHES', 'CYBERATTAQUE_ORG'):
-              rows = []
-              outcome, collected, _ = run_source(
-                  client, sources.by_id(source_id), context, watchlists.known_organisations(),
-                  watchlists.entity_index(), watchlists.entity_territories(), enrichment.load_reference(),
-                  None, None, rows,
-              )
-              print(f'{source_id}_SECOND: status={outcome.status} coverage={outcome.coverage}% items={len(collected)} facts={len(rows)}')
-              if outcome.status != status.OK or outcome.coverage < 100:
-                  raise SystemExit(f'{source_id} incomplete')
-          stats = source_facts_ai.runtime_stats()
-          print('SECOND_PASS_STATS=' + json.dumps(stats, ensure_ascii=False, sort_keys=True))
-          if stats.get('calls_attempted') != 0 or stats.get('items_would_call') != 0:
-              raise SystemExit(f"second-pass cache misses={stats.get('items_would_call')} calls={stats.get('calls_attempted')}")
-          if stats.get('items_fully_cached') != 497:
-              raise SystemExit(f"expected 497 full cache hits, got {stats.get('items_fully_cached')}")
-          PY
-
-      - name: Re-run closeout quality gate
-        run: |
-          PYTHONPATH="$PWD" python - <<'PY'
-          import json, re
-          from pathlib import Path
-          from cyberwatch import store
-          target={'CYBERATTAQUE_ORG','FRENCHBREACHES'}
-          hedge=re.compile(r'\b(aurait|auraient|pourrait|pourraient|susceptible|susceptibles|potentiellement|probable|probablement|possible|possiblement|présumé|présumée|hypothèse|semblerait)\b',re.I)
-          response=re.compile(r'\b(isol|remédi|restaur|notification|réinitial|investigation|enquête|confinement|débranch|déconnect|correctif|rotation des)\w*',re.I)
-          facts=[r for r in store.load_source_facts() if r.get('Source_ID') in target]
-          incidents=json.loads(Path('assets/data/incidents.json').read_text(encoding='utf-8'))
-          bad_flow=[]; bad_impact=[]; missing_summary=[]; enriched=set()
-          for r in facts:
-              flow=json.loads(r.get('Attack_Flow_JSON') or '[]')
-              if r.get('Initial_Access') or flow or r.get('Impact'): enriched.add(r['Item_ID'])
-              for step in flow:
-                  txt=f"{step.get('action','')} {step.get('evidence','')}"
-                  if hedge.search(txt) or response.search(txt): bad_flow.append(r['Item_ID'])
-              impact=r.get('Impact') or ''
-              if impact and (hedge.search(impact) or response.search(impact)): bad_impact.append(r['Item_ID'])
-              if (r.get('Initial_Access') or flow or impact) and not r.get('Summary'): missing_summary.append(r['Item_ID'])
-          published={f.get('item_id') for i in incidents for f in (i.get('facts') or []) if f.get('item_id')}
-          report={'target_rows':len(facts),'summary_count':sum(bool(r.get('Summary')) for r in facts),'initial_access_count':sum(bool(r.get('Initial_Access')) for r in facts),'attack_flow_count':sum(bool(r.get('Attack_Flow_JSON')) for r in facts),'impact_count':sum(bool(r.get('Impact')) for r in facts),'bad_flow':bad_flow,'bad_impact':bad_impact,'summary_missing_on_enriched':missing_summary,'projection_gaps':sorted(enriched-published)}
-          Path('audit/enrichment_closeout_final.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
-          print(json.dumps(report,ensure_ascii=False,indent=2))
-          if bad_flow or bad_impact or missing_summary or report['projection_gaps'] or report['initial_access_count'] < 1: raise SystemExit('closeout regression')
-          PY
+          PYTHONPATH="$PWD" python .github/scripts/audit_enrichment_after_stable_cache.py
           python -m cyberwatch check
           python -m cyberwatch test-repeat
           PYTHONPATH="$PWD" pytest -q tests/test_feed_frenchbreaches_cache.py tests/test_source_facts_ai.py tests/test_source_facts.py tests/test_site_source_facts.py tests/test_enrichment_closeout.py
           node --check assets/dashboard-audit.js
-
       - name: Commit stable cache fix
         run: |
           git config user.name 'cyberwatch-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git rm .github/workflows/frenchbreaches-stable-cache-once.yml
+          git rm .github/workflows/frenchbreaches-stable-cache-once.yml \
+                 .github/scripts/patch_frenchbreaches_stable_cache.py \
+                 .github/scripts/run_frenchbreaches_stable_first_pass.py \
+                 .github/scripts/run_enrichment_cache_second_pass.py \
+                 .github/scripts/audit_enrichment_after_stable_cache.py
           git add cyberwatch/collectors/feed.py tests/test_feed_frenchbreaches_cache.py \
                   data/source_facts.csv data/source_facts_ai_cache.json data/source_facts_ai_usage.json \
                   assets/data/incidents.json assets/data/status.json audit/enrichment_closeout_final.json
