@@ -466,6 +466,55 @@ def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> N
         evidence["Impact"] = impact_evidence
 
 
+_INITIAL_ACCESS_LABELS = {
+    "phishing": "un hameçonnage",
+    "compromised_credentials": "des identifiants compromis",
+    "vulnerability_exploitation": "l’exploitation d’une vulnérabilité",
+    "remote_access": "un accès distant compromis",
+    "third_party": "la compromission d’un tiers",
+    "malware": "un logiciel malveillant",
+    "other": "un vecteur documenté",
+}
+
+
+def _derive_summary(fact: dict, evidence: dict) -> None:
+    if str(fact.get("Summary") or "").strip():
+        return
+    parts: list[str] = []
+    proofs: list[str] = []
+    initial = str(fact.get("Initial_Access") or "").strip()
+    if initial:
+        parts.append(f"Vecteur d’entrée documenté : {_INITIAL_ACCESS_LABELS.get(initial, initial)}.")
+        proof = evidence.get("Initial_Access")
+        if isinstance(proof, str) and proof:
+            proofs.append(proof)
+    flow = _loads_json(str(fact.get("Attack_Flow_JSON") or ""))
+    if isinstance(flow, list) and flow:
+        actions = [str(step.get("action") or "").strip() for step in flow if isinstance(step, dict)]
+        actions = [action for action in actions if action][:2]
+        if actions:
+            parts.append("Déroulé documenté : " + " → ".join(actions) + ".")
+        flow_proofs = evidence.get("Attack_Flow_JSON") or []
+        if isinstance(flow_proofs, str):
+            flow_proofs = [flow_proofs]
+        if isinstance(flow_proofs, list):
+            proofs.extend(str(value).strip() for value in flow_proofs[:2] if str(value).strip())
+    impact = str(fact.get("Impact") or "").strip()
+    if impact:
+        parts.append("Impact documenté : " + impact.rstrip(" .") + ".")
+        proof = evidence.get("Impact")
+        if isinstance(proof, str) and proof:
+            proofs.append(proof)
+    if not parts:
+        return
+    summary = " ".join(parts)
+    if len(summary) > source_facts_ai.MAX_SUMMARY_CHARS:
+        summary = summary[:source_facts_ai.MAX_SUMMARY_CHARS - 1].rsplit(" ", 1)[0].rstrip(" ,;:") + "…"
+    fact["Summary"] = summary
+    if proofs:
+        evidence["Summary"] = " | ".join(proofs)[:source_facts_ai.MAX_EVIDENCE_CHARS]
+
+
 def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
@@ -546,6 +595,7 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
         evidence["Data_Types_JSON"] = data_evidence
 
     _apply_semantic_enrichment(fact, evidence, ai_result)
+    _derive_summary(fact, evidence)
 
     cves = _extract_cves(text)
     if cves:
@@ -650,6 +700,7 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
         evidence["Data_Types_JSON"] = data_evidence
 
     _apply_semantic_enrichment(fact, evidence, ai_result)
+    _derive_summary(fact, evidence)
 
     cves = _extract_cves(text)
     if cves:
@@ -752,13 +803,42 @@ def extract_source_fact(item: Item, entry: RawEntry, spec: SourceSpec) -> dict |
 
 
 def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]:
+    refreshable = {"Summary", "Initial_Access", "Attack_Flow_JSON", "Impact"}
+    base = {"Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version", "Source_Metadata_JSON"}
+
+    def merge_row(old: dict, new: dict) -> dict:
+        merged = dict(old)
+        old_evidence = _loads_json(str(old.get("Evidence_JSON") or ""))
+        new_evidence = _loads_json(str(new.get("Evidence_JSON") or ""))
+        evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
+        for field in refreshable:
+            evidence.pop(field, None)
+        if isinstance(new_evidence, dict):
+            evidence.update(new_evidence)
+        for column in SOURCE_FACT_COLUMNS:
+            if column == "Evidence_JSON":
+                continue
+            value = new.get(column, "")
+            if column in refreshable:
+                merged[column] = value or ""
+            elif column in base:
+                if value not in (None, ""):
+                    merged[column] = value
+            elif value not in (None, ""):
+                merged[column] = value
+        merged["Evidence_JSON"] = _dumps_json(evidence)
+        return merged
+
     by_id: dict[str, dict] = {}
     for row in existing:
         item_id = row.get("Item_ID")
         if item_id:
-            by_id[item_id] = row
+            by_id[item_id] = dict(row)
     for row in incoming:
         item_id = row.get("Item_ID")
-        if item_id:
-            by_id[item_id] = row
+        if not item_id:
+            continue
+        previous = by_id.get(item_id)
+        by_id[item_id] = merge_row(previous or {}, row)
     return [by_id[key] for key in sorted(by_id)]
+

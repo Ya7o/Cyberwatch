@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import json
 
-from . import config, identity, sources, status, store
+from . import config, identity, incident_identity, sources, status, store
 from .dedup import group_components
 from .model import Incident, Item
 from .normalize import organisation_key
@@ -136,6 +136,14 @@ def _source_fact_payload(row: dict) -> dict | None:
     return payload if len(payload) > 2 else None
 
 
+def _components_with_stable_incident_ids(items: list[Item]) -> list[tuple[list[Item], str]]:
+    components = group_components(items)
+    assigned, _ = incident_identity.assign_incident_ids(
+        components, store.load_incident_id_registry()
+    )
+    return list(zip(components, assigned))
+
+
 def _source_facts_by_incident(items: list[Item], fact_rows: list[dict]) -> dict[str, list[dict]]:
     """Joint les faits aux incidents via `Item_ID`, jamais via nom/date/URL.
 
@@ -150,11 +158,10 @@ def _source_facts_by_incident(items: list[Item], fact_rows: list[dict]) -> dict[
             by_item.setdefault(str(fact["item_id"]), []).append(fact)
 
     payload: dict[str, list[dict]] = {}
-    for component in group_components(items):
+    for component, incident_id in _components_with_stable_incident_ids(items):
         ordered = identity.sort_items(component)
         if not ordered:
             continue
-        incident_id = _component_incident_id(ordered)
         facts: list[dict] = []
         for item in ordered:
             facts.extend(by_item.get(item.Item_ID, []))
@@ -263,14 +270,13 @@ def _local_analysis_by_incident(items: list[Item]) -> dict[str, dict]:
         }
 
     payload: dict[str, dict] = {}
-    for component in group_components(items):
+    for component, incident_id in _components_with_stable_incident_ids(items):
         ordered = identity.sort_items(component)
         if not ordered:
             continue
         llm_items = [item for item in ordered if item.Source_ID == "VEILLE_LLM"]
         if not llm_items:
             continue
-        incident_id = _component_incident_id(ordered)
         matches = []
         for item in llm_items:
             key = (item.Organisation_Key, item.Event_Date or item.Published_Date)
