@@ -160,9 +160,9 @@ jobs:
           git add cyberwatch/store.py cyberwatch/runner.py cyberwatch/cli.py tests/test_runner.py tests/test_ai_qualification.py METHODOLOGY.md .github/rebuild-request
           git commit -m "feat: persist hybrid qualification provenance"
 
-      - name: Rebase et revalidation
+      - name: Revalidation finale
         run: |
-          git pull --rebase origin main
+          git status --short
           python -m pytest tests/ -q
           python -m cyberwatch test-repeat
           python -m cyberwatch check --allow-uninitialized
