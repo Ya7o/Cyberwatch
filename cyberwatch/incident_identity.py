@@ -9,6 +9,13 @@ Lorsqu'une fusion réunit plusieurs incidents déjà connus, l'identifiant dont
 l'ancre a été collectée le plus tôt survit et les autres deviennent des
 redirections. Lorsqu'un incident est scindé, seule la composante qui contient
 son ancre historique conserve l'ancien identifiant.
+
+Le registre suit le corpus publié courant : une ancre qui n'existe plus dans
+ITEMS est retirée avant attribution. Si une ancienne redirection pointait vers
+une ancre retirée mais que sa propre ancre existe encore, elle redevient active
+(ou suit la chaîne vers une cible encore présente). Cela permet à un CREATE ou
+à une reconstruction après retrait de source de rester valide sans réutiliser
+une identité dont l'ancre a disparu.
 """
 
 from __future__ import annotations
@@ -37,18 +44,46 @@ def component_identity_key(component: list[Item]) -> str:
         ordered[0].Organisation_Raw,
         ordered[0].Organisation_Key,
     )
-    # Compatibilité avec la règle historique : un singleton garde sa clé stockée
-    # afin qu'une amélioration future du resolver ne le renomme pas à elle seule.
     if len(ordered) == 1:
         return ordered[0].Organisation_Key or effective
     return effective
 
 
 def _normalise_registry(rows: list[dict]) -> list[dict[str, str]]:
-    normalised: list[dict[str, str]] = []
-    for row in rows:
-        normalised.append({column: str(row.get(column, "") or "") for column in REGISTRY_COLUMNS})
-    return normalised
+    return [
+        {column: str(row.get(column, "") or "") for column in REGISTRY_COLUMNS}
+        for row in rows
+    ]
+
+
+def _registry_for_current_items(
+    rows: list[dict[str, str]], item_ids: set[str]
+) -> list[dict[str, str]]:
+    """Retire les ancres absentes et répare les redirections orphelines."""
+    all_by_id = {
+        row["Incident_ID"]: dict(row)
+        for row in rows
+        if row.get("Incident_ID")
+    }
+    kept = {
+        incident_id_: dict(row)
+        for incident_id_, row in all_by_id.items()
+        if row.get("Anchor_Item_ID") in item_ids
+    }
+    for incident_id_, row in kept.items():
+        target = row.get("Redirect_To", "")
+        seen = {incident_id_}
+        while target and target not in kept and target not in seen:
+            seen.add(target)
+            historical = all_by_id.get(target)
+            if historical is None:
+                target = ""
+                break
+            target = historical.get("Redirect_To", "")
+        if target in seen or target not in kept:
+            target = ""
+        row["Redirect_To"] = target
+    return list(kept.values())
 
 
 def _survivor_key(row: dict[str, str], items_by_id: dict[str, Item]) -> tuple[str, str, str]:
@@ -63,7 +98,6 @@ def _survivor_key(row: dict[str, str], items_by_id: dict[str, Item]) -> tuple[st
 
 
 def _new_incident_id(org_key: str, anchor_item_id: str, occupied: set[str]) -> str:
-    """Crée un ID déterministe et évite une collision avec un ID historique."""
     candidate = incident_id(org_key, anchor_item_id)
     if candidate not in occupied:
         return candidate
@@ -76,23 +110,24 @@ def _new_incident_id(org_key: str, anchor_item_id: str, occupied: set[str]) -> s
 
 
 def assign_incident_ids(
-    components: list[list[Item]],
-    registry_rows: list[dict] | None = None,
+    components: list[list[Item]], registry_rows: list[dict] | None = None,
 ) -> tuple[list[str], list[dict[str, str]]]:
     """Attribue un ID stable à chaque composante et renvoie le registre mis à jour."""
-    rows = _normalise_registry(registry_rows or [])
-    records: dict[str, dict[str, str]] = {}
-    for row in rows:
-        incident = row["Incident_ID"]
-        if incident and incident not in records:
-            records[incident] = dict(row)
-
     items_by_id = {
         item.Item_ID: item
         for component in components
         for item in component
         if item.Item_ID
     }
+    rows = _registry_for_current_items(
+        _normalise_registry(registry_rows or []), set(items_by_id)
+    )
+    records: dict[str, dict[str, str]] = {}
+    for row in rows:
+        incident = row["Incident_ID"]
+        if incident and incident not in records:
+            records[incident] = dict(row)
+
     active_by_anchor: dict[str, dict[str, str]] = {}
     for row in records.values():
         if row["Anchor_Item_ID"] and not row["Redirect_To"]:
@@ -100,7 +135,6 @@ def assign_incident_ids(
 
     occupied = set(records)
     assigned: list[str] = []
-
     for component in components:
         member_ids = {item.Item_ID for item in component if item.Item_ID}
         inherited = [
@@ -108,7 +142,6 @@ def assign_incident_ids(
             for item_id in sorted(member_ids)
             if item_id in active_by_anchor
         ]
-
         if inherited:
             survivor = min(inherited, key=lambda row: _survivor_key(row, items_by_id))
             chosen = survivor["Incident_ID"]
@@ -130,10 +163,8 @@ def assign_incident_ids(
             records[chosen] = record
             active_by_anchor[anchor.Item_ID] = record
             occupied.add(chosen)
-
         assigned.append(chosen)
 
-    # Aplatit d'éventuelles chaînes de redirection anciennes.
     for row in records.values():
         target = row["Redirect_To"]
         seen = {row["Incident_ID"]}
@@ -150,12 +181,7 @@ def assign_incident_ids(
 
 
 def bootstrap_registry(items: list[Item], incidents: list[Incident]) -> list[dict[str, str]]:
-    """Récupère sans heuristique l'ancre de chaque Incident_ID déjà publié.
-
-    La migration n'est acceptée que si chaque identifiant publié correspond à
-    exactement un couple (clé d'organisation, Item_ID) selon la formule
-    historique. Toute absence ou ambiguïté fait échouer la migration.
-    """
+    """Récupère sans heuristique l'ancre de chaque Incident_ID déjà publié."""
     candidates: dict[str, list[tuple[Item, str]]] = defaultdict(list)
     for item in items:
         effective = effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
@@ -186,9 +212,7 @@ def bootstrap_registry(items: list[Item], incidents: list[Incident]) -> list[dic
 
 
 def validate_registry(
-    rows: list[dict],
-    items: list[Item],
-    incidents: list[Incident] | None = None,
+    rows: list[dict], items: list[Item], incidents: list[Incident] | None = None,
 ) -> list[str]:
     """Contrôles structurels du registre d'identité d'incident."""
     normalised = _normalise_registry(rows)
@@ -243,5 +267,4 @@ def validate_registry(
                 "Registre Incident_ID : ancre(s) active(s) sans incident courant "
                 + ", ".join(stale[:10])
             )
-
     return problems
