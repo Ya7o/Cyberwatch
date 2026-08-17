@@ -1,0 +1,197 @@
+name: SourceFacts Backfill Once
+
+on:
+  push:
+    branches:
+      - agent/source-facts-backfill-prod-20260817
+    paths:
+      - '.github/workflows/source-facts-backfill-once.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-facts-backfill-prod
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout production main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Backfill existing SourceFacts only
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '700'
+          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: '1.00'
+          SOURCE_FACTS_AI_PROGRESS_EVERY: '50'
+        run: |
+          python - <<'PY'
+          import json
+          import os
+
+          from cyberwatch import (
+              config,
+              enrichment,
+              site,
+              source_facts,
+              source_facts_ai,
+              sources,
+              status,
+              store,
+              watchlists,
+          )
+          from cyberwatch.http import Budget, HttpClient
+          from cyberwatch.runner import MODE_MAJ, make_run_context, run_source
+
+          target_sources = ("FRENCHBREACHES", "CYBERATTAQUE_ORG")
+          existing_items = store.load_items()
+          existing_ids = {item.Item_ID for item in existing_items}
+          existing_by_source = {
+              source_id: {item.Item_ID for item in existing_items if item.Source_ID == source_id}
+              for source_id in target_sources
+          }
+
+          context = make_run_context(
+              MODE_MAJ,
+              target_start="2026-01-01",
+              layers=config.LAYER_GROUPS["core"],
+          )
+          client = HttpClient(
+              run_budget=Budget(config.MAX_REQUESTS_PER_RUN, config.MAX_SECONDS_PER_RUN, "source-facts-backfill")
+          )
+          known_orgs = watchlists.known_organisations()
+          entity_index = watchlists.entity_index()
+          territories = watchlists.entity_territories()
+          reference = enrichment.load_reference()
+
+          incoming_facts = []
+          collected_ids = set()
+          outcomes = []
+          for source_id in target_sources:
+              spec = sources.by_id(source_id)
+              if spec is None:
+                  raise SystemExit(f"Source inconnue: {source_id}")
+              source_facts_rows = []
+              outcome, collected_items, _ = run_source(
+                  client,
+                  spec,
+                  context,
+                  known_orgs,
+                  entity_index,
+                  territories,
+                  reference,
+                  None,
+                  None,
+                  source_facts_rows,
+              )
+              outcomes.append(outcome)
+              print(
+                  f"{source_id}: status={outcome.status} coverage={outcome.coverage}% "
+                  f"items={len(collected_items)} facts={len(source_facts_rows)} http_calls={outcome.calls}"
+              )
+              if outcome.status != status.OK or outcome.coverage < 100:
+                  raise SystemExit(
+                      f"Backfill annulé: {source_id} n'est pas entièrement collectable "
+                      f"({outcome.status}, {outcome.coverage}%)."
+                  )
+              collected_ids.update(item.Item_ID for item in collected_items if item.Item_ID in existing_ids)
+              incoming_facts.extend(
+                  row for row in source_facts_rows if row.get("Item_ID") in existing_ids
+              )
+
+          ai_stats = source_facts_ai.runtime_stats()
+          source_facts_ai._flush_runtime()
+          if ai_stats.get("calls_failed") or ai_stats.get("calls_budget_blocked"):
+              raise SystemExit(
+                  "Backfill annulé: appels SourceFacts AI incomplets "
+                  f"(failed={ai_stats.get('calls_failed')}, "
+                  f"budget_blocked={ai_stats.get('calls_budget_blocked')})."
+              )
+
+          existing_facts = store.load_source_facts()
+          merged_facts = source_facts.merge_source_facts(existing_facts, incoming_facts)
+          store.save_source_facts(merged_facts)
+          site.build()
+
+          by_item = {row.get("Item_ID"): row for row in merged_facts if row.get("Item_ID")}
+          lines = [
+              "## SourceFacts backfill 2026",
+              "",
+              f"- Fenêtre : 2026-01-01 → {context.target_end}",
+              f"- Faits réextraits et rattachés à des items existants : {len(incoming_facts)}",
+              f"- Items existants revus par les collecteurs : {len(collected_ids)}",
+              f"- Appels IA : {ai_stats.get('calls_attempted', 0)}",
+              f"- Cache complet : {ai_stats.get('cache_hits', 0)}",
+              f"- Hits cache par champ : {ai_stats.get('field_cache_hits', 0)}",
+              f"- Hits cache legacy : {ai_stats.get('legacy_field_cache_hits', 0)}",
+              f"- Champs invalidés/recalculés : {ai_stats.get('fields_invalidated', 0)}",
+              f"- Coût estimé : ${ai_stats.get('estimated_cost_usd', 0):.6f}",
+              "",
+              "| Source | Items DB | Revus | Facts | Summary | Initial access | Attack flow | Impact |",
+              "|---|---:|---:|---:|---:|---:|---:|---:|",
+          ]
+          for source_id in target_sources:
+              item_ids = existing_by_source[source_id]
+              rows = [by_item[item_id] for item_id in item_ids if item_id in by_item]
+              reviewed = len(item_ids & collected_ids)
+              lines.append(
+                  f"| {source_id} | {len(item_ids)} | {reviewed} | {len(rows)} | "
+                  f"{sum(bool(row.get('Summary')) for row in rows)} | "
+                  f"{sum(bool(row.get('Initial_Access')) for row in rows)} | "
+                  f"{sum(bool(row.get('Attack_Flow_JSON')) for row in rows)} | "
+                  f"{sum(bool(row.get('Impact')) for row in rows)} |"
+              )
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
+              handle.write("\n".join(lines) + "\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Validate resulting database and dashboard
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check \
+            --check-regression
+          node --check assets/dashboard-audit.js
+
+      - name: Publish SourceFacts backfill
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source_facts.csv \
+                  data/source_facts_ai_cache.json \
+                  data/source_facts_ai_usage.json \
+                  assets/data/incidents.json \
+                  assets/data/status.json
+          if git diff --staged --quiet; then
+            echo "No SourceFacts changes to publish."
+            exit 0
+          fi
+          git commit -m "data: backfill SourceFacts incident enrichment"
+          for delay in 0 2 4 8 16; do
+            [ "$delay" -gt 0 ] && sleep "$delay"
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+          done
+          echo "Failed to publish SourceFacts backfill." >&2
+          exit 1
