@@ -84,6 +84,13 @@ _AFTER_COLON_CONFIRMS = re.compile(
     r":\s*(?:l['’]\s*)?(.+?)\s+confirme\s+(?:une?\s+)?cyberattaque\b", re.I,
 )
 
+# Quelques titres éditoriaux utilisent une accroche qui n'est pas le nom de la
+# victime. L'override n'est accepté que si le vrai nom apparaît explicitement
+# dans l'extrait ou le corps de l'article.
+_TITLE_BODY_VICTIM_OVERRIDES = {
+    "amis de la police": "Amicale Police et Patrimoine",
+}
+
 
 def is_negated_incident(*texts: str) -> bool:
     """Vrai seulement pour un démenti porté par le titre ou l'extrait.
@@ -186,6 +193,10 @@ def organisation_from_cyberattaque_entry(
         return ""
     if is_obvious_multi(*texts):
         return ""
+    title_head_key = searchable((entry.title or "").split(":", 1)[0])
+    override = _TITLE_BODY_VICTIM_OVERRIDES.get(title_head_key)
+    if override and searchable(override) in searchable(" ".join(texts[1:])):
+        return override
     # Une confirmation nommée après une accroche est une preuve plus forte que
     # l'accroche elle-même (ex. « ... : l'Armurerie X confirme ... »).
     after_colon = _AFTER_COLON_CONFIRMS.search(entry.title or "")
