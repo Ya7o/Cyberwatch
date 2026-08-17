@@ -2684,6 +2684,40 @@
   "date": "2026-08-06",
   "facts": [
    {
+    "affected_count": 245812,
+    "affected_count_raw": "245 812 personnes",
+    "affected_unit": "people",
+    "claim_status": "claimed",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone",
+     "noms et prénoms",
+     "dates de naissance"
+    ],
+    "item_id": "ITM-6e76853753006061",
+    "source": "FRENCHBREACHES"
+   }
+  ],
+  "first_seen": "2026-08-17T12:34:51+04:00",
+  "id": "INC-62EA2591AEE7",
+  "items": 1,
+  "last_seen": "2026-08-17T12:34:51+04:00",
+  "location": "France métropolitaine",
+  "org": "INSERM",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-06",
+  "facts": [
+   {
     "affected_count": 2100,
     "affected_count_raw": "plus de 2 100 dossiers",
     "affected_unit": "files",
@@ -2910,20 +2944,6 @@
     "source": "CYBERATTAQUE_ORG"
    },
    {
-    "affected_count": 245812,
-    "affected_count_raw": "245 812 personnes",
-    "affected_unit": "people",
-    "claim_status": "claimed",
-    "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms",
-     "dates de naissance"
-    ],
-    "item_id": "ITM-6e76853753006061",
-    "source": "FRENCHBREACHES"
-   },
-   {
     "affected_count": 189997,
     "affected_count_raw": "189 997 personnes",
     "affected_unit": "people",
@@ -2940,10 +2960,10 @@
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-B5B0BB894D79",
-  "items": 3,
+  "items": 2,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
-  "org": "INSERM",
+  "org": "Institut national de la santé et de la recherche médicale",
   "sector": "Services aux entreprises",
   "sources": [
    "CYBERATTAQUE_ORG",
@@ -2951,7 +2971,6 @@
   ],
   "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde",
    "https://frenchbreaches.com/alertes/institut-national-de-la-sant-et-de-la-recherche-m-dicale-inserm-msd3dlb2vc2sd7sibue",
    "https://www.cyberattaque.org/inserm-189-997-profils-de-professionnels-de-sante-dans-une-fuite-massive/"
   ]
