@@ -1,0 +1,296 @@
+{
+  "ransomware_live": {
+    "current_known": 133,
+    "current_unknown": 46,
+    "items": 179,
+    "raw_values": {
+      "Agriculture and Food Production": {
+        "current_unknown": 11,
+        "items": 11,
+        "mapped_sector": "Inconnu"
+      },
+      "Education": {
+        "current_unknown": 0,
+        "items": 3,
+        "mapped_sector": "Éducation / Formation"
+      },
+      "Energy & Utilities": {
+        "current_unknown": 0,
+        "items": 6,
+        "mapped_sector": "Énergie / Utilities"
+      },
+      "Financial Services": {
+        "current_unknown": 0,
+        "items": 5,
+        "mapped_sector": "Finance / Assurance"
+      },
+      "Government & Defense": {
+        "current_unknown": 10,
+        "items": 16,
+        "mapped_sector": "Inconnu"
+      },
+      "Healthcare": {
+        "current_unknown": 0,
+        "items": 5,
+        "mapped_sector": "Santé"
+      },
+      "Hospitality": {
+        "current_unknown": 14,
+        "items": 15,
+        "mapped_sector": "Inconnu"
+      },
+      "Manufacturing": {
+        "current_unknown": 0,
+        "items": 26,
+        "mapped_sector": "Industrie / Manufacture"
+      },
+      "Not Found": {
+        "current_unknown": 6,
+        "items": 6,
+        "mapped_sector": "Inconnu"
+      },
+      "Other": {
+        "current_unknown": 4,
+        "items": 6,
+        "mapped_sector": "Inconnu"
+      },
+      "Professional Services": {
+        "current_unknown": 0,
+        "items": 33,
+        "mapped_sector": "Services aux entreprises"
+      },
+      "Retail & E-Commerce": {
+        "current_unknown": 0,
+        "items": 17,
+        "mapped_sector": "Commerce / Distribution"
+      },
+      "Technology": {
+        "current_unknown": 0,
+        "items": 19,
+        "mapped_sector": "Numérique / Technologie"
+      },
+      "Transportation": {
+        "current_unknown": 0,
+        "items": 10,
+        "mapped_sector": "Transport / Logistique"
+      }
+    },
+    "unknown_raw_mappable": 0,
+    "unknown_raw_unmapped": 45,
+    "unknown_with_raw": 45,
+    "unknown_without_raw": 1
+  },
+  "schema_version": 1,
+  "sector": {
+    "global": {
+      "items": 1003,
+      "location_unknown": 36,
+      "location_unknown_ratio": 0.03589232303090728,
+      "organisations": 787,
+      "sector_coverage_ratio": 0.3988035892323031,
+      "sector_known": 400,
+      "sector_unknown": 603,
+      "sector_unknown_items_from_repeated_organisations": 192,
+      "sector_unknown_organisation_ratio": 0.6404066073697586,
+      "sector_unknown_organisations": 504,
+      "sector_unknown_ratio": 0.6011964107676969,
+      "sector_unknown_repeated_organisations": 93,
+      "threat_unknown": 6,
+      "threat_unknown_ratio": 0.005982053838484547
+    },
+    "sources": {
+      "BONJOURLAFUITE": {
+        "items": 315,
+        "location_unknown": 0,
+        "location_unknown_ratio": 0.0,
+        "organisations": 305,
+        "sector_coverage_ratio": 0.33015873015873015,
+        "sector_known": 104,
+        "sector_unknown": 211,
+        "sector_unknown_items_from_repeated_organisations": 2,
+        "sector_unknown_organisation_ratio": 0.6885245901639344,
+        "sector_unknown_organisations": 210,
+        "sector_unknown_ratio": 0.6698412698412698,
+        "sector_unknown_repeated_organisations": 1,
+        "threat_unknown": 0,
+        "threat_unknown_ratio": 0.0
+      },
+      "CYBERATTAQUE_ORG": {
+        "items": 397,
+        "location_unknown": 36,
+        "location_unknown_ratio": 0.0906801007556675,
+        "organisations": 391,
+        "sector_coverage_ratio": 0.26700251889168763,
+        "sector_known": 106,
+        "sector_unknown": 291,
+        "sector_unknown_items_from_repeated_organisations": 2,
+        "sector_unknown_organisation_ratio": 0.7416879795396419,
+        "sector_unknown_organisations": 290,
+        "sector_unknown_ratio": 0.7329974811083123,
+        "sector_unknown_repeated_organisations": 1,
+        "threat_unknown": 0,
+        "threat_unknown_ratio": 0.0
+      },
+      "FRENCHBREACHES": {
+        "items": 100,
+        "location_unknown": 0,
+        "location_unknown_ratio": 0.0,
+        "organisations": 98,
+        "sector_coverage_ratio": 0.46,
+        "sector_known": 46,
+        "sector_unknown": 54,
+        "sector_unknown_items_from_repeated_organisations": 2,
+        "sector_unknown_organisation_ratio": 0.5408163265306123,
+        "sector_unknown_organisations": 53,
+        "sector_unknown_ratio": 0.54,
+        "sector_unknown_repeated_organisations": 1,
+        "threat_unknown": 0,
+        "threat_unknown_ratio": 0.0
+      },
+      "RANSOMWARE_LIVE": {
+        "items": 179,
+        "location_unknown": 0,
+        "location_unknown_ratio": 0.0,
+        "organisations": 173,
+        "sector_coverage_ratio": 0.7430167597765364,
+        "sector_known": 133,
+        "sector_unknown": 46,
+        "sector_unknown_items_from_repeated_organisations": 2,
+        "sector_unknown_organisation_ratio": 0.26011560693641617,
+        "sector_unknown_organisations": 45,
+        "sector_unknown_ratio": 0.2569832402234637,
+        "sector_unknown_repeated_organisations": 1,
+        "threat_unknown": 0,
+        "threat_unknown_ratio": 0.0
+      },
+      "VEILLE_LLM": {
+        "items": 12,
+        "location_unknown": 0,
+        "location_unknown_ratio": 0.0,
+        "organisations": 12,
+        "sector_coverage_ratio": 0.9166666666666666,
+        "sector_known": 11,
+        "sector_unknown": 1,
+        "sector_unknown_items_from_repeated_organisations": 0,
+        "sector_unknown_organisation_ratio": 0.08333333333333333,
+        "sector_unknown_organisations": 1,
+        "sector_unknown_ratio": 0.08333333333333333,
+        "sector_unknown_repeated_organisations": 0,
+        "threat_unknown": 6,
+        "threat_unknown_ratio": 0.5
+      }
+    }
+  },
+  "snapshot": {
+    "code_commit": "6079d2c77b7311943d686d8bb6f163751a2be9ef",
+    "incidents_hash": "bb455df59a239917207de23230121593b20bf80efc595e5285241b7ab833dfae",
+    "items_hash": "f682ee5ab26e13db8e957b16c33f21e88f3f818f4f0627ccd90530bfbf2684e3"
+  },
+  "structured_backfill_projection": {
+    "applied": 0,
+    "metrics": {
+      "global": {
+        "items": 1003,
+        "location_unknown": 36,
+        "location_unknown_ratio": 0.03589232303090728,
+        "organisations": 787,
+        "sector_coverage_ratio": 0.3988035892323031,
+        "sector_known": 400,
+        "sector_unknown": 603,
+        "sector_unknown_items_from_repeated_organisations": 192,
+        "sector_unknown_organisation_ratio": 0.6404066073697586,
+        "sector_unknown_organisations": 504,
+        "sector_unknown_ratio": 0.6011964107676969,
+        "sector_unknown_repeated_organisations": 93,
+        "threat_unknown": 6,
+        "threat_unknown_ratio": 0.005982053838484547
+      },
+      "sources": {
+        "BONJOURLAFUITE": {
+          "items": 315,
+          "location_unknown": 0,
+          "location_unknown_ratio": 0.0,
+          "organisations": 305,
+          "sector_coverage_ratio": 0.33015873015873015,
+          "sector_known": 104,
+          "sector_unknown": 211,
+          "sector_unknown_items_from_repeated_organisations": 2,
+          "sector_unknown_organisation_ratio": 0.6885245901639344,
+          "sector_unknown_organisations": 210,
+          "sector_unknown_ratio": 0.6698412698412698,
+          "sector_unknown_repeated_organisations": 1,
+          "threat_unknown": 0,
+          "threat_unknown_ratio": 0.0
+        },
+        "CYBERATTAQUE_ORG": {
+          "items": 397,
+          "location_unknown": 36,
+          "location_unknown_ratio": 0.0906801007556675,
+          "organisations": 391,
+          "sector_coverage_ratio": 0.26700251889168763,
+          "sector_known": 106,
+          "sector_unknown": 291,
+          "sector_unknown_items_from_repeated_organisations": 2,
+          "sector_unknown_organisation_ratio": 0.7416879795396419,
+          "sector_unknown_organisations": 290,
+          "sector_unknown_ratio": 0.7329974811083123,
+          "sector_unknown_repeated_organisations": 1,
+          "threat_unknown": 0,
+          "threat_unknown_ratio": 0.0
+        },
+        "FRENCHBREACHES": {
+          "items": 100,
+          "location_unknown": 0,
+          "location_unknown_ratio": 0.0,
+          "organisations": 98,
+          "sector_coverage_ratio": 0.46,
+          "sector_known": 46,
+          "sector_unknown": 54,
+          "sector_unknown_items_from_repeated_organisations": 2,
+          "sector_unknown_organisation_ratio": 0.5408163265306123,
+          "sector_unknown_organisations": 53,
+          "sector_unknown_ratio": 0.54,
+          "sector_unknown_repeated_organisations": 1,
+          "threat_unknown": 0,
+          "threat_unknown_ratio": 0.0
+        },
+        "RANSOMWARE_LIVE": {
+          "items": 179,
+          "location_unknown": 0,
+          "location_unknown_ratio": 0.0,
+          "organisations": 173,
+          "sector_coverage_ratio": 0.7430167597765364,
+          "sector_known": 133,
+          "sector_unknown": 46,
+          "sector_unknown_items_from_repeated_organisations": 2,
+          "sector_unknown_organisation_ratio": 0.26011560693641617,
+          "sector_unknown_organisations": 45,
+          "sector_unknown_ratio": 0.2569832402234637,
+          "sector_unknown_repeated_organisations": 1,
+          "threat_unknown": 0,
+          "threat_unknown_ratio": 0.0
+        },
+        "VEILLE_LLM": {
+          "items": 12,
+          "location_unknown": 0,
+          "location_unknown_ratio": 0.0,
+          "organisations": 12,
+          "sector_coverage_ratio": 0.9166666666666666,
+          "sector_known": 11,
+          "sector_unknown": 1,
+          "sector_unknown_items_from_repeated_organisations": 0,
+          "sector_unknown_organisation_ratio": 0.08333333333333333,
+          "sector_unknown_organisations": 1,
+          "sector_unknown_ratio": 0.08333333333333333,
+          "sector_unknown_repeated_organisations": 0,
+          "threat_unknown": 6,
+          "threat_unknown_ratio": 0.5
+        }
+      }
+    },
+    "sector_coverage_after": 0.3988035892323031,
+    "sector_coverage_before": 0.3988035892323031,
+    "sector_unknown_after": 603,
+    "sector_unknown_before": 603
+  }
+}
