@@ -37,6 +37,15 @@ jobs:
       - name: Golden dédup certifié
         run: python scripts/evaluate_dedup_golden.py
 
+      - name: Audit couverture Sector
+        run: python scripts/audit_sector_coverage.py --output ""
+
+      - name: Golden qualification
+        run: |
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-qualification.csv \
+            --json /tmp/golden-qualification.json
+
       - name: Syntaxe dashboard
         run: |
           node --check assets/app.js
