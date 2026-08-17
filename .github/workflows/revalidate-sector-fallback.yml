@@ -25,8 +25,11 @@ on:
 permissions:
   contents: write
 
+# Revalidation et enrichissement publient les mêmes artefacts canoniques : ils
+# doivent être strictement sérialisés pour éviter les add/add et les rebases de
+# snapshots concurrents.
 concurrency:
-  group: sector-qualification-revalidation
+  group: sector-canonical-pipeline
   cancel-in-progress: false
 
 jobs:
