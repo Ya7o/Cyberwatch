@@ -90,6 +90,10 @@ jobs:
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
           SOURCE_FACTS_AI_PROGRESS_EVERY: "25"
           SOURCE_FACTS_AI_CHECKPOINT_EVERY: "25"
+          # Les preuves de sites officiels sont recherchées par le worker
+          # deep-sector dédié, plus strict et parallélisé. Le CREATE conserve
+          # uniquement le registre public et les preuves déjà présentes en cache.
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         run: |
           python -m cyberwatch create \
             --as-of "$AS_OF" \
