@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare le golden set à la DB Cyberwatch et aux exports LLM expérimentaux."""
+"""Compare le golden à la DB et aux trois exports LLM expérimentaux."""
 from __future__ import annotations
 
 import argparse
@@ -17,6 +17,45 @@ from cyberwatch.golden_challengers import (
     compare_challengers,
     load_optional_csv,
 )
+from cyberwatch.golden_review import apply_audit, validate_audit
+
+
+def _load_records(path: str) -> list[dict[str, object]]:
+    target = Path(path)
+    if not target.exists():
+        return []
+    if target.suffix.lower() == ".csv":
+        return read_csv(target)
+    if target.suffix.lower() != ".json":
+        raise SystemExit(f"format challenger non supporté: {target}")
+
+    payload = json.loads(target.read_text(encoding="utf-8"))
+    if isinstance(payload, list):
+        rows = payload
+    elif isinstance(payload, dict):
+        rows = next(
+            (
+                payload[key]
+                for key in ("incidents", "records", "items")
+                if isinstance(payload.get(key), list)
+            ),
+            None,
+        )
+        if rows is None:
+            raise SystemExit(f"aucune liste incidents/records/items dans {target}")
+    else:
+        raise SystemExit(f"JSON challenger invalide: {target}")
+
+    normalized: list[dict[str, object]] = []
+    for raw in rows:
+        if not isinstance(raw, dict):
+            continue
+        row = dict(raw)
+        sources = row.get("sources")
+        if isinstance(sources, list) and not row.get("source_urls"):
+            row["source_urls"] = " | ".join(str(value).strip() for value in sources if str(value).strip())
+        normalized.append(row)
+    return normalized
 
 
 def _print_source(name: str, result: dict[str, object]) -> None:
@@ -37,14 +76,23 @@ def _print_source(name: str, result: dict[str, object]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--golden", default=str(ROOT / "data" / "golden" / "qualification_golden.csv"))
+    parser.add_argument(
+        "--audit",
+        default=str(ROOT / "data" / "golden" / "qualification_golden_audit.csv"),
+        help="Journal de revue appliqué au golden avant comparaison. Vide pour désactiver.",
+    )
     parser.add_argument("--incidents", default=str(ROOT / "data" / "incidents.csv"))
     parser.add_argument(
         "--frenchbreaches",
-        default=str(ROOT / "sources" / "veillellm" / "frenchbreaches_2026.csv"),
+        default=str(ROOT / "sources" / "veillellm" / "frenchbreaches_2026.json"),
     )
     parser.add_argument(
         "--cyberattaque",
-        default=str(ROOT / "sources" / "veillellm" / "cyberattaque_org_2026.csv"),
+        default=str(ROOT / "sources" / "veillellm" / "cyberattaque_org_2026.json"),
+    )
+    parser.add_argument(
+        "--reunion-mayotte",
+        default=str(ROOT / "sources" / "veillellm" / "cyberattaques_reunion_mayotte_2026.json"),
     )
     parser.add_argument(
         "--manual-matches",
@@ -67,14 +115,25 @@ def main() -> None:
         raise SystemExit("golden set invalide:\n- " + "\n- ".join(problems))
 
     golden_rows = read_csv(args.golden)
+    if args.audit:
+        audit_path = Path(args.audit)
+        if audit_path.exists():
+            audit_rows = read_csv(audit_path)
+            audit_problems = validate_audit(audit_rows, golden_rows)
+            if audit_problems:
+                raise SystemExit("audit golden invalide:\n- " + "\n- ".join(audit_problems))
+            golden_rows = apply_audit(golden_rows, audit_rows)
+
     if not golden_rows:
         raise SystemExit("golden set vide: ajoutez des cas de référence avant la comparaison")
 
     incidents = read_csv(args.incidents)
     challengers = {
-        "FRENCHBREACHES_LLM": read_csv(args.frenchbreaches),
-        "CYBERATTAQUE_ORG_LLM": read_csv(args.cyberattaque),
+        "FRENCHBREACHES_LLM_JSON": _load_records(args.frenchbreaches),
+        "CYBERATTAQUE_ORG_LLM_JSON": _load_records(args.cyberattaque),
+        "REUNION_MAYOTTE_LLM_JSON": _load_records(args.reunion_mayotte),
     }
+    challengers = {name: rows for name, rows in challengers.items() if rows}
     manual_matches = load_optional_csv(args.manual_matches)
 
     result = compare_challengers(golden_rows, incidents, challengers, manual_matches)
