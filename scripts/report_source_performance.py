@@ -2,6 +2,13 @@
 """Affiche la ventilation de performance du dernier run instrumenté."""
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from cyberwatch import store
 
 FIELDS = (
@@ -11,11 +18,13 @@ FIELDS = (
     "Other_Processing_Duration_s",
 )
 
+
 def _num(row: dict, key: str) -> float:
     try:
         return float(row.get(key) or 0)
     except (TypeError, ValueError):
         return 0.0
+
 
 def main() -> int:
     rows = store.load_run_sources()
@@ -43,6 +52,7 @@ def main() -> int:
             f"llm_cost=${q_cost + sf_cost:.6f}"
         )
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
