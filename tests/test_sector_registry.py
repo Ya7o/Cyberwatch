@@ -12,7 +12,7 @@ def _safe(rows):
     return sector_registry_safety.enforce_candidate_conflicts(rows)
 
 
-def test_structured_sector_propagates_to_same_exact_organisation(make_item):
+def _structured_fixture(make_item):
     source = make_item(
         source="RANSOMWARE_LIVE", org="Acme", sector=config.SECTOR_TECH,
         url="https://ransomware.live/acme",
@@ -26,13 +26,32 @@ def test_structured_sector_propagates_to_same_exact_organisation(make_item):
         "Source_ID": "RANSOMWARE_LIVE",
         "Source_Sector_Raw": "Technology",
     }]
+    return source, target, facts
+
+
+def test_structured_sector_propagation_is_review_by_default(make_item):
+    source, target, facts = _structured_fixture(make_item)
     registry = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
         previous_provenance=[],
     ))
     row = next(row for row in registry if row["Organisation_Key"] == source.Organisation_Key)
-    assert row["Decision"] == sector_registry.DECISION_AUTO
+    assert row["Decision"] == sector_registry.DECISION_REVIEW
     assert row["Sector"] == config.SECTOR_TECH
+    changed, provenance, _conflicts = sector_registry.apply_registry([source, target], registry)
+    assert changed == 0
+    assert provenance == []
+    assert target.Sector == config.SECTOR_UNKNOWN
+
+
+def test_structured_sector_propagation_can_only_be_enabled_by_policy(make_item):
+    source, target, facts = _structured_fixture(make_item)
+    registry = _safe(sector_registry.build_registry(
+        [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
+        previous_provenance=[], policy=_policy(structured_source=True),
+    ))
+    row = next(row for row in registry if row["Organisation_Key"] == source.Organisation_Key)
+    assert row["Decision"] == sector_registry.DECISION_AUTO
     changed, provenance, conflicts = sector_registry.apply_registry([source, target], registry)
     assert changed == 1
     assert conflicts == 0
@@ -41,21 +60,10 @@ def test_structured_sector_propagates_to_same_exact_organisation(make_item):
 
 
 def test_registry_application_is_reversible_and_not_self_proof(make_item):
-    source = make_item(
-        source="RANSOMWARE_LIVE", org="Acme", sector=config.SECTOR_TECH,
-        url="https://ransomware.live/acme",
-    )
-    target = make_item(
-        source="BONJOURLAFUITE", source_item_id="2", org="Acme",
-        sector=config.SECTOR_UNKNOWN, url="https://bonjourlafuite/acme",
-    )
-    facts = [{
-        "Item_ID": source.Item_ID, "Source_ID": "RANSOMWARE_LIVE",
-        "Source_Sector_Raw": "Technology",
-    }]
+    source, target, facts = _structured_fixture(make_item)
     registry = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
-        previous_provenance=[],
+        previous_provenance=[], policy=_policy(structured_source=True),
     ))
     _changed, provenance, _conflicts = sector_registry.apply_registry([source, target], registry)
     assert target.Sector == config.SECTOR_TECH
@@ -63,7 +71,7 @@ def test_registry_application_is_reversible_and_not_self_proof(make_item):
     assert target.Sector == config.SECTOR_UNKNOWN
     rebuilt = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
-        previous_provenance=provenance,
+        previous_provenance=provenance, policy=_policy(structured_source=True),
     ))
     row = next(row for row in rebuilt if row["Organisation_Key"] == source.Organisation_Key)
     assert row["Evidence_Count"] == "2"
@@ -116,7 +124,7 @@ def test_conflicting_known_sector_blocks_auto_structured_propagation(make_item):
     }]
     registry = _safe(sector_registry.build_registry(
         [ransomware, conflicting, target], {}, source_fact_rows=facts,
-        org_cache_rows=[], previous_provenance=[],
+        org_cache_rows=[], previous_provenance=[], policy=_policy(structured_source=True),
     ))
     row = next(row for row in registry if row["Organisation_Key"] == ransomware.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_CONFLICT
