@@ -145,6 +145,19 @@ jobs:
               }, handle, ensure_ascii=False, sort_keys=True)
           PY
 
+      - name: Preserve generated payload before publication
+        run: |
+          cp /tmp/source_facts_incoming.json data/source_facts_backfill_payload.json
+          cp /tmp/source_facts_metrics.json data/source_facts_backfill_metrics.json
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source_facts_backfill_payload.json \
+                  data/source_facts_backfill_metrics.json \
+                  data/source_facts_ai_cache.json \
+                  data/source_facts_ai_usage.json
+          git commit -m "tmp: preserve SourceFacts backfill payload"
+          git push --force origin HEAD:agent/source-facts-backfill-payload-20260817
+
       - name: Create race-safe apply helper
         run: |
           cat > /tmp/apply_source_facts_backfill.py <<'PY'
@@ -217,7 +230,7 @@ jobs:
         run: |
           git fetch origin main
           git reset --hard origin/main
-          python /tmp/apply_source_facts_backfill.py
+          PYTHONPATH="$PWD" python /tmp/apply_source_facts_backfill.py
 
       - name: Validate resulting database and dashboard
         run: |
@@ -280,7 +293,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           apply_and_commit() {
-            python /tmp/apply_source_facts_backfill.py
+            PYTHONPATH="$PWD" python /tmp/apply_source_facts_backfill.py
             python -m cyberwatch check
             python -m cyberwatch test-repeat
             git add data/source_facts.csv \
@@ -313,7 +326,9 @@ jobs:
             echo "main moved; rebuilding generated facts on the new head."
             git fetch origin main
             git reset --hard origin/main
-            if ! apply_and_commit; then
+            if apply_and_commit; then
+              :
+            else
               rc=$?
               if [ "$rc" -eq 2 ]; then
                 echo "Latest main already contains the generated SourceFacts."
