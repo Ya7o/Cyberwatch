@@ -1,0 +1,254 @@
+{
+  "scope": "incident enrichment closeout",
+  "head": "e22173230d57adcd1e948c3da6a2e502d3ab917b",
+  "parent": "a1f8aae6f4fa03bb39dcf4b3e3accd2b77a7de63",
+  "changed_files_backfill_commit": [
+    ".github/workflows/audit-enrichment-closeout-once.yml"
+  ],
+  "canonical_changed": [],
+  "source_facts": {
+    "total_rows": 990,
+    "target_rows": 484,
+    "by_source": {
+      "CYBERATTAQUE_ORG": {
+        "rows": 384,
+        "summary": 1,
+        "initial_access": 0,
+        "attack_flow": 63,
+        "impact": 28
+      },
+      "FRENCHBREACHES": {
+        "rows": 100,
+        "summary": 0,
+        "initial_access": 0,
+        "attack_flow": 8,
+        "impact": 12
+      }
+    },
+    "orphan_rows": 0,
+    "duplicate_item_rows": 0,
+    "duplicate_item_examples": []
+  },
+  "initial_access": {
+    "distribution": {},
+    "invalid_taxonomy": [],
+    "evidence_missing": 0
+  },
+  "attack_flow": {
+    "step_count_distribution": {
+      "1": 63,
+      "2": 8
+    },
+    "malformed": [],
+    "evidence_missing": 0,
+    "hedged_candidates_count": 10,
+    "hedged_candidates": [
+      {
+        "item_id": "ITM-054ef7e4c93e1e1e",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Publication présumée d’une base de données attribuée à MaGestionLocative.fr par le hacker ChimeraZ sur un forum cybercriminel.",
+        "evidence": "Le hacker ChimeraZ revendique la publication d’une base de données attribuée à MaGestionLocative.fr."
+      },
+      {
+        "item_id": "ITM-174aa1135065caa2",
+        "source": "FRENCHBREACHES",
+        "action": "Interrogation automatisée de certains enregistrements présents dans sa base de données",
+        "evidence": "Selon l’organisme, une vulnérabilité aurait pu permettre l’interrogation automatisée de certains enregistrements présents dans sa base de données."
+      },
+      {
+        "item_id": "ITM-1ee6f6cbcdcfbbb3",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Compte professionnel compromis utilisé par l’attaquant pour accéder à l’application",
+        "evidence": "L’intrusion aurait débuté après la compromission d’un compte professionnel. L’attaquant aurait ensuite utilisé cet accès légitime pour pénétrer dans l’application"
+      },
+      {
+        "item_id": "ITM-435a61c36aff8c50",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Accès non autorisé à des documents PDF via une faille IDOR pour parcourir et récupérer des dossiers clients.",
+        "evidence": "L’auteur affirme avoir pu accéder à des centaines de milliers de documents PDF présentés comme des factures certifiées et des dossiers clients; une faille IDOR aurait permis de parcourir les documents."
+      },
+      {
+        "item_id": "ITM-4bfa09a25398f690",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "vulnérabilité informatique susceptible d’avoir permis l’interrogation automatisée de certains enregistrements de la base",
+        "evidence": "Une vulnérabilité informatique susceptible d’avoir permis l’interrogation automatisée de certains enregistrements de la base."
+      },
+      {
+        "item_id": "ITM-6261906376079f45",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "téléchargement non autorisé de données",
+        "evidence": "Un téléchargement non autorisé de données aurait touché certains membres de son programme client."
+      },
+      {
+        "item_id": "ITM-79ff395b4b5864a4",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Compromission présumée des systèmes de A.R.Ge.Co par le groupe Anubis",
+        "evidence": "Le groupe de ransomware Anubis affirme avoir compromis les systèmes de A.R.Ge.Co"
+      },
+      {
+        "item_id": "ITM-ab75fc41eb5d5909",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Accès frauduleux à la plateforme de réservation par exploitation d’une vulnérabilité IDOR",
+        "evidence": "« L’attaque aurait reposé sur une vulnérabilité de type IDOR (Insecure Direct Object Reference). »"
+      },
+      {
+        "item_id": "ITM-bef54a4a3bb5c9a9",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Accès initial à un outil interne via des identifiants compromis",
+        "evidence": "Selon ZeroBytes, l’accès initial aurait été obtenu à partir d’ identifiants déjà compromis."
+      },
+      {
+        "item_id": "ITM-c2ee72fcb6ba89cb",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "Mauvaise configuration des droits attribués à ce compte extranet",
+        "evidence": "Une mauvaise configuration des droits attribués à ce compte aurait ensuite permis l’accès et l’exfiltration de certaines données."
+      }
+    ],
+    "remediation_candidates_count": 1,
+    "remediation_candidates": [
+      {
+        "item_id": "ITM-29a6c509ea96dd94",
+        "source": "CYBERATTAQUE_ORG",
+        "action": "La mairie déconnecte l’ensemble des serveurs municipaux pour empêcher la propagation.",
+        "evidence": "Pour empêcher la propagation du logiciel malveillant, les équipes techniques ont dû déconnecter l’ensemble des serveurs municipaux ."
+      }
+    ]
+  },
+  "summary": {
+    "too_long_count": 0,
+    "too_long": [],
+    "evidence_missing": 0
+  },
+  "impact": {
+    "evidence_missing": 0
+  },
+  "dashboard_projection": {
+    "incident_count": 841,
+    "incident_root_summary_count": 1,
+    "fact_field_counts": {
+      "attack_flow": 70,
+      "impact": 40,
+      "summary": 1
+    },
+    "missing_projection": {
+      "fact_missing_entirely": 1
+    }
+  },
+  "cache": {
+    "format": "source-facts-ai-field-cache-v1",
+    "entries": 497,
+    "legacy_entries": 316,
+    "field_counts": {
+      "attack_flow": 497,
+      "impact": 467,
+      "initial_access": 497,
+      "summary": 497,
+      "threat_actor": 184,
+      "third_party": 17
+    },
+    "usage": {
+      "average_duration_seconds": 3.442,
+      "cache_format": "source-facts-ai-field-cache-v1",
+      "cache_hits": 0,
+      "calls_attempted": 497,
+      "calls_budget_blocked": 0,
+      "calls_failed": 0,
+      "calls_success": 497,
+      "error_reasons": {},
+      "estimated_cost_usd": 0.101716,
+      "field_cache_hits": 172,
+      "fields_invalidated": 0,
+      "fields_requested": {
+        "attack_flow": 497,
+        "impact": 467,
+        "initial_access": 497,
+        "summary": 497,
+        "third_party": 3,
+        "threat_actor": 26
+      },
+      "fields_requested_new": {
+        "attack_flow": 497,
+        "impact": 467,
+        "initial_access": 497,
+        "summary": 497,
+        "third_party": 3,
+        "threat_actor": 26
+      },
+      "http_429": 0,
+      "http_5xx": 0,
+      "input_tokens": 731129,
+      "items_eligible": 497,
+      "items_fully_cached": 0,
+      "items_partially_cached": 170,
+      "items_skipped_no_missing_fields": 0,
+      "items_would_call": 497,
+      "legacy_field_cache_hits": 172,
+      "max_duration_seconds": 7.621,
+      "model": "gpt-5-nano",
+      "output_tokens": 162900,
+      "p50_duration_seconds": 3.294,
+      "p95_duration_seconds": 5.007,
+      "prompt_version": "2026-08-17.source-facts.6",
+      "retries": 0,
+      "schema_version": "6",
+      "timeouts": 0,
+      "total_duration_seconds": 1710.718
+    }
+  },
+  "checks": {
+    "targeted_pytest": {
+      "rc": 4,
+      "tail": [
+        "ImportError while loading conftest '/home/runner/work/Cyberwatch/Cyberwatch/tests/conftest.py'.",
+        "tests/conftest.py:5: in <module>",
+        "    from cyberwatch.identity import item_id",
+        "E   ModuleNotFoundError: No module named 'cyberwatch'"
+      ]
+    },
+    "cyberwatch_check": {
+      "rc": 0,
+      "tail": [
+        "Contrôles avant export (§29) — 1003 items, 841 incidents",
+        "  Tous les contrôles passent."
+      ]
+    },
+    "test_repeat": {
+      "rc": 0,
+      "tail": [
+        "TEST REPETABILITE (§27)",
+        "  Ordre d'entrée A : ordre canonique (1003 items)",
+        "  Ordre d'entrée B : ordre aléatoire figé",
+        "",
+        "  PASS  Nombre d'items         1003",
+        "  PASS  Items_Hash             f682ee5ab26e13db8e957b16c33f21e8",
+        "  PASS  Nombre d'incidents     841",
+        "  PASS  Incidents_Hash         bb455df59a239917207de23230121593",
+        "  PASS  Registre Incident_ID   [{'Incident_ID': 'INC-0000EC7274",
+        "",
+        "  RESULTAT : PASS"
+      ]
+    },
+    "global_quality": {
+      "rc": 1,
+      "tail": [
+        "{\"actor_sentinel_candidates\":[],\"actor_sentinel_candidates_total\":0,\"aggregates\":[\"11 agences immobilières\",\"Académie de Montpellier / CSJM\",\"Achat Or et Argent\",\"Achat or et argent\",\"Agence de Services et de Paiement\",\"Agence de services et de paiement\",\"Amicale Police et Patrimoine\",\"Bouygues Energies & Services\",\"Chambre de Commerce et d'Industrie Nice Côte d'Azur\",\"Chambre de Commerce et de l’Industrie Nice Côte d’Azur\",\"Chateau royal de Blois / Maison de la Magie\",\"EPF Réunion / VALGO\",\"FFCK et Sports de Pagaie\",\"Folet & Rivoire\",\"France Titre / ANTS\",\"FÉTIS Group & SECOM Engineering\",\"Fédération Française d'Aïkido, Aïkibudo et Associées\",\"Fédération Française d’Études et de Sports Sous-Marins\",\"Fédération Sportive et Culturelle de France\",\"Fédération Sportive et Gymnique du Travail\",\"Infrastructure fibre multi-opérateurs / PBO\",\"Institut national de la santé et de la recherche médicale\",\"KALIACT ANCHETA et Associs\",\"Mille et Une Listes\",\"Ministère des Sports, de la Jeunesse et de la Vie associative\",\"Musée des Arts et Métier\",\"Nature & Cie\",\"Nephael.com & ChloeSanchez.com\",\"Office Français de l’Immigration et de l’intégration\",\"Orange / SFR et services d’urgence\",\"PARIS & MARSEILLE\",\"Pierre & Vacances\",\"Pierre et Vacances Center Parcs\",\"Rolland & Girot Immobilier\",\"Rolland & Girot immobilier\",\"Service Départemental d'Incendie et de Secours 02\",\"Service Départemental d'Incendie et de Secours 04\",\"Service Départemental d'Incendie et de Secours 06\",\"Service Départemental d'Incendie et de Secours 40\",\"Service Départemental d'Incendie et de Secours 51\"],\"duplicate_high_confidence_candidates\":[{\"days_apart\":5,\"long\":\"My Piscine\",\"long_source\":\"BONJOURLAFUITE\",\"reason_code\":\"DUPLICATE_CANDIDATE_CONCATENATION\",\"short\":\"MyPiscine\",\"short_source\":\"CYBERATTAQUE_ORG\"}],\"duplicate_high_confidence_candidates_total\":1,\"global\":{\"items\":1003,\"location_unknown\":36,\"organisation_empty\":0,\"sector_unknown\":603,\"threat_unknown\":6},\"location\":{\"France métropolitaine\":944,\"Inconnu\":36,\"La Réunion\":14,\"Madagascar\":1,\"Maurice\":3,\"Mayotte\":4,\"Seychelles\":1},\"quality_metrics\":{\"global\":{\"items\":1003,\"location_unknown\":36,\"location_unknown_ratio\":0.03589232303090728,\"organisations\":787,\"sector_coverage_ratio\":0.3988035892323031,\"sector_known\":400,\"sector_unknown\":603,\"sector_unknown_items_from_repeated_organisations\":192,\"sector_unknown_organisation_ratio\":0.6404066073697586,\"sector_unknown_organisations\":504,\"sector_unknown_ratio\":0.6011964107676969,\"sector_unknown_repeated_organisations\":93,\"threat_unknown\":6,\"threat_unknown_ratio\":0.005982053838484547},\"sources\":{\"BONJOURLAFUITE\":{\"items\":315,\"location_unknown\":0,\"location_unknown_ratio\":0.0,\"organisations\":305,\"sector_coverage_ratio\":0.33015873015873015,\"sector_known\":104,\"sector_unknown\":211,\"sector_unknown_items_from_repeated_organisations\":2,\"sector_unknown_organisation_ratio\":0.6885245901639344,\"sector_unknown_organisations\":210,\"sector_unknown_ratio\":0.6698412698412698,\"sector_unknown_repeated_organisations\":1,\"threat_unknown\":0,\"threat_unknown_ratio\":0.0},\"CYBERATTAQUE_ORG\":{\"items\":397,\"location_unknown\":36,\"location_unknown_ratio\":0.0906801007556675,\"organisations\":391,\"sector_coverage_ratio\":0.26700251889168763,\"sector_known\":106,\"sector_unknown\":291,\"sector_unknown_items_from_repeated_organisations\":2,\"sector_unknown_organisation_ratio\":0.7416879795396419,\"sector_unknown_organisations\":290,\"sector_unknown_ratio\":0.7329974811083123,\"sector_unknown_repeated_organisations\":1,\"threat_unknown\":0,\"threat_unknown_ratio\":0.0},\"FRENCHBREACHES\":{\"items\":100,\"location_unknown\":0,\"location_unknown_ratio\":0.0,\"organisations\":98,\"sector_coverage_ratio\":0.46,\"sector_known\":46,\"sector_unknown\":54,\"sector_unknown_items_from_repeated_organisations\":2,\"sector_unknown_organisation_ratio\":0.5408163265306123,\"sector_unknown_organisations\":53,\"sector_unknown_ratio\":0.54,\"sector_unknown_repeated_organisations\":1,\"threat_unknown\":0,\"threat_unknown_ratio\":0.0},\"RANSOMWARE_LIVE\":{\"items\":179,\"location_unknown\":0,\"location_unknown_ratio\":0.0,\"organisations\":173,\"sector_coverage_ratio\":0.7430167597765364,\"sector_known\":133,\"sector_unknown\":46,\"sector_unknown_items_from_repeated_organisations\":2,\"sector_unknown_organisation_ratio\":0.26011560693641617,\"sector_unknown_organisations\":45,\"sector_unknown_ratio\":0.2569832402234637,\"sector_unknown_repeated_organisations\":1,\"threat_unknown\":0,\"threat_unknown_ratio\":0.0},\"VEILLE_LLM\":{\"items\":12,\"location_unknown\":0,\"location_unknown_ratio\":0.0,\"organisations\":12,\"sector_coverage_ratio\":0.9166666666666666,\"sector_known\":11,\"sector_unknown\":1,\"sector_unknown_items_from_repeated_organisations\":0,\"sector_unknown_organisation_ratio\":0.08333333333333333,\"sector_unknown_organisations\":1,\"sector_unknown_ratio\":0.08333333333333333,\"sector_unknown_repeated_organisations\":0,\"threat_unknown\":6,\"threat_unknown_ratio\":0.5}}},\"sector\":{\"Administration / Collectivité\":70,\"Commerce / Distribution\":57,\"Construction / BTP\":11,\"Finance / Assurance\":23,\"Inconnu\":603,\"Industrie / Manufacture\":35,\"Numérique / Technologie\":51,\"Santé\":14,\"Services aux entreprises\":48,\"Sport\":37,\"Transport / Logistique\":19,\"Éducation / Formation\":28,\"Énergie / Utilities\":7},\"sources\":{\"BONJOURLAFUITE\":{\"items\":315,\"location_unknown\":0,\"organisation_empty\":0,\"sector_unknown\":211,\"threat_unknown\":0},\"CYBERATTAQUE_ORG\":{\"items\":397,\"location_unknown\":36,\"organisation_empty\":0,\"sector_unknown\":291,\"threat_unknown\":0},\"FRENCHBREACHES\":{\"items\":100,\"location_unknown\":0,\"organisation_empty\":0,\"sector_unknown\":54,\"threat_unknown\":0},\"RANSOMWARE_LIVE\":{\"items\":179,\"location_unknown\":0,\"organisation_empty\":0,\"sector_unknown\":46,\"threat_unknown\":0},\"VEILLE_LLM\":{\"items\":12,\"location_unknown\":0,\"organisation_empty\":0,\"sector_unknown\":1,\"threat_unknown\":6}},\"threat\":{\"Compromission de compte / messagerie\":17,\"Fuite de données\":654,\"Incident tiers\":4,\"Inconnu\":6,\"Intrusion\":14,\"Malware\":7,\"Phishing / fraude\":73,\"Ransomware\":228},\"threat_backfill_candidates\":[],\"threat_backfill_candidates_total\":0}",
+        "audit_hash=00976777b402c0823eaa284f31fd0d5db580c7ca8d80f5a98fb43a079091a6ab",
+        "check=PASS",
+        "quality=FAIL",
+        "doublons haute confiance (concaténation/permutation) non résolus"
+      ]
+    }
+  },
+  "verdict": {
+    "hard_failures": [
+      "dashboard_projection_gap",
+      "targeted_tests_failed"
+    ],
+    "review_points": [
+      "attack_flow_hedged_language",
+      "attack_flow_possible_remediation",
+      "global_quality_gate_outside_scope"
+    ],
+    "closeable": false
+  }
+}
