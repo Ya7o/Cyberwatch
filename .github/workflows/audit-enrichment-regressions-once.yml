@@ -1,0 +1,110 @@
+name: Enrichment Regression Audit Once
+
+on:
+  push:
+    branches:
+      - agent/audit-enrichment-closeout-20260817
+    paths:
+      - '.github/workflows/audit-enrichment-regressions-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/audit-enrichment-closeout-20260817
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - name: Compare pre/post backfill and inspect enriched fields
+        run: |
+          mkdir -p audit
+          git show 580e0a42353a7bbff5ec8406a1d601696d96c29e:data/source_facts.csv > /tmp/source_facts_before.csv
+          python - <<'PY'
+          import csv, json, re, subprocess
+          from collections import Counter
+          from pathlib import Path
+
+          TARGET={'CYBERATTAQUE_ORG','FRENCHBREACHES'}
+          NEW={'Initial_Access','Attack_Flow_JSON','Summary'}
+          HEDGE=re.compile(r"\b(aurait|auraient|pourrait|pourraient|susceptible|susceptibles|potentiellement|possible|probable|présumé|présumée|semblerait|semble|non confirmé|non confirmée)\b",re.I)
+          IA_HINT=re.compile(r"\b(acc[èe]s initial|identifiants? compromis|compte\w* compromis|phishing|hame[cç]onnage|exploit\w*.*vuln[ée]rabilit|vuln[ée]rabilit\w*.*exploit|usurpation d.identit[ée])\b",re.I)
+
+          def rows(path):
+              with open(path,newline='',encoding='utf-8-sig') as f:return list(csv.DictReader(f))
+          before={r['Item_ID']:r for r in rows('/tmp/source_facts_before.csv') if r.get('Item_ID')}
+          after_rows=rows('data/source_facts.csv')
+          after={r['Item_ID']:r for r in after_rows if r.get('Item_ID')}
+          common=set(before)&set(after)
+
+          regressions=Counter(); examples={}
+          changed=Counter()
+          fields=[f for f in next(iter(after.values())).keys() if f not in NEW and f not in {'Extraction_Version'}]
+          for iid in common:
+              b=before[iid]; a=after[iid]
+              if a.get('Source_ID') not in TARGET: continue
+              for f in fields:
+                  bv=(b.get(f) or '').strip(); av=(a.get(f) or '').strip()
+                  if bv and not av:
+                      regressions[f]+=1
+                      examples.setdefault(f,[])
+                      if len(examples[f])<15: examples[f].append({'item_id':iid,'source':a.get('Source_ID'),'before':bv})
+                  elif bv != av:
+                      changed[f]+=1
+
+          hedged_impacts=[]; summary_opportunities=[]; ia_candidates=[]
+          for r in after_rows:
+              if r.get('Source_ID') not in TARGET: continue
+              impact=(r.get('Impact') or '').strip()
+              if impact and HEDGE.search(impact):
+                  hedged_impacts.append({'item_id':r['Item_ID'],'source':r['Source_ID'],'impact':impact})
+              flow=(r.get('Attack_Flow_JSON') or '').strip()
+              summary=(r.get('Summary') or '').strip()
+              if (flow or impact) and not summary:
+                  summary_opportunities.append(r['Item_ID'])
+              if flow:
+                  try: steps=json.loads(flow)
+                  except Exception: steps=[]
+                  for st in steps if isinstance(steps,list) else []:
+                      text=f"{st.get('action','')} {st.get('evidence','')}"
+                      if IA_HINT.search(text) and not HEDGE.search(text):
+                          ia_candidates.append({'item_id':r['Item_ID'],'source':r['Source_ID'],'action':st.get('action',''),'evidence':st.get('evidence','')})
+
+          incidents=json.loads(Path('assets/data/incidents.json').read_text(encoding='utf-8'))
+          fact_items=set()
+          for inc in incidents:
+              for f in inc.get('facts') or []:
+                  if f.get('item_id'): fact_items.add(f['item_id'])
+          projection_gap=[]
+          for r in after_rows:
+              if r.get('Source_ID') in TARGET and r.get('Item_ID') not in fact_items and any((r.get(k) or '').strip() for k in ('Summary','Initial_Access','Attack_Flow_JSON','Impact')):
+                  projection_gap.append({'item_id':r['Item_ID'],'source':r['Source_ID'],'summary':bool(r.get('Summary')),'initial_access':bool(r.get('Initial_Access')),'attack_flow':bool(r.get('Attack_Flow_JSON')),'impact':bool(r.get('Impact'))})
+
+          prod_changed=subprocess.check_output(['git','diff','--name-only','580e0a42353a7bbff5ec8406a1d601696d96c29e','a1f8aae6f4fa03bb39dcf4b3e3accd2b77a7de63'],text=True).splitlines()
+          out={
+            'production_changed_files':prod_changed,
+            'regressions_nonempty_to_empty':dict(regressions),
+            'regression_examples':examples,
+            'changed_existing_fields':dict(changed),
+            'hedged_impacts_count':len(hedged_impacts),
+            'hedged_impacts':hedged_impacts[:30],
+            'summary_opportunity_floor':len(summary_opportunities),
+            'summary_opportunity_examples':summary_opportunities[:30],
+            'explicit_initial_access_candidates_from_accepted_flows':len(ia_candidates),
+            'initial_access_candidates':ia_candidates[:30],
+            'projection_gaps':projection_gap,
+          }
+          Path('audit/enrichment_regression_audit.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+      - name: Publish diagnostic
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/enrichment_regression_audit.json
+          git commit -m "audit: publish enrichment regression diagnostics"
+          git push origin HEAD:agent/audit-enrichment-closeout-20260817
