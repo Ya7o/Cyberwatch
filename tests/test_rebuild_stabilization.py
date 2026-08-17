@@ -27,9 +27,23 @@ def test_rebuild_checks_persisted_incident_projection_before_quality_gate():
     )
 
 
+def test_rebuild_regenerates_dedup_audit_from_rebuilt_items():
+    workflow = _workflow()
+    assert "data/dedup_audit_candidates.csv" in workflow
+    assert "python scripts/export_dedup_audit.py" in workflow
+    assert "--items data/items.csv" in workflow
+    assert "--output data/dedup_audit_candidates.csv" in workflow
+    assert workflow.index("Purge locale des artefacts reconstructibles") < workflow.index(
+        "CREATE from scratch"
+    ) < workflow.index("Régénérer l'audit dedup du rebuild") < workflow.index(
+        "Exporter la DB validée"
+    )
+
+
 def test_rebuild_preserves_diagnostics_on_failure():
     workflow = _workflow()
     assert "if: always()" in workflow
     assert "data/source_facts_ai_cache.json" in workflow
     assert "data/items.csv" in workflow
     assert "data/incidents.csv" in workflow
+    assert "data/dedup_audit_candidates.csv" in workflow
