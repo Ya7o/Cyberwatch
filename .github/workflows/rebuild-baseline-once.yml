@@ -38,6 +38,14 @@ jobs:
           restore-keys: |
             source-facts-ai-${{ runner.os }}-
 
+      - name: Restaurer le cache de qualification IA canonique
+        uses: actions/cache/restore@v4
+        with:
+          path: data/ai_qualifications.csv
+          key: canonical-ai-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            canonical-ai-${{ runner.os }}-
+
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
@@ -160,6 +168,13 @@ jobs:
           path: data/source_facts_ai_cache.json
           key: source-facts-ai-${{ runner.os }}-${{ github.run_id }}
 
+      - name: Sauver le cache de qualification IA canonique
+        if: always() && hashFiles('data/ai_qualifications.csv') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: data/ai_qualifications.csv
+          key: canonical-ai-${{ runner.os }}-${{ github.run_id }}
+
       - name: Exporter les diagnostics même en échec
         if: always()
         uses: actions/upload-artifact@v4
@@ -169,6 +184,7 @@ jobs:
             data/run_log.csv
             data/run_sources.csv
             data/ai_usage.csv
+            data/ai_qualifications.csv
             data/source_facts_ai_usage.json
             data/source_facts_ai_cache.json
             data/items.csv
