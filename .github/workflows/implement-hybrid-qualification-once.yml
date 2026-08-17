@@ -1,4 +1,4 @@
-name: Implement hybrid qualification v0.7.37 (one-shot)
+name: Finalize hybrid qualification v0.7.37 (one-shot)
 
 on:
   push:
@@ -11,17 +11,16 @@ permissions:
   actions: read
 
 concurrency:
-  group: implement-hybrid-qualification-v0737
+  group: finalize-hybrid-qualification-v0737
   cancel-in-progress: false
 
 jobs:
-  implement:
+  finalize:
     if: github.repository == 'Ya7o/Cyberwatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
-      PATCH_B64: "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"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -38,19 +37,135 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Appliquer le patch vérifié
+      - name: Raccorder provenance, persistence et rebuild
         run: |
           python - <<'PY'
-          import base64, os, zlib
-          code = zlib.decompress(base64.b64decode(os.environ["PATCH_B64"])).decode("utf-8")
-          compile(code, "<hybrid-patch>", "exec")
-          exec(code)
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              target = Path(path)
+              text = target.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"marqueur absent: {path}: {old[:80]!r}")
+              target.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          # Store : fichier auxiliaire de provenance, hors hashes canoniques.
+          replace_once(
+              "cyberwatch/store.py",
+              "    Item,\n)\n\n# Racine du dépôt",
+              "    Item,\n)\nfrom .source_llm_fallback import QUALIFICATION_PROVENANCE_COLUMNS\n\n# Racine du dépôt",
+          )
+          replace_once(
+              "cyberwatch/store.py",
+              "SOURCE_FACTS_CSV = DATA_DIR / \"source_facts.csv\"\nSNAPSHOT_JSON",
+              "SOURCE_FACTS_CSV = DATA_DIR / \"source_facts.csv\"\n"
+              "QUALIFICATION_PROVENANCE_CSV = DATA_DIR / \"qualification_provenance.csv\"\n"
+              "SNAPSHOT_JSON",
+          )
+          replace_once(
+              "cyberwatch/store.py",
+              "def save_source_facts(rows: list[dict], path: Path | None = None) -> None:\n"
+              "    write_csv(path or SOURCE_FACTS_CSV, SOURCE_FACT_COLUMNS, rows)\n\n\n"
+              "def load_snapshot",
+              "def save_source_facts(rows: list[dict], path: Path | None = None) -> None:\n"
+              "    write_csv(path or SOURCE_FACTS_CSV, SOURCE_FACT_COLUMNS, rows)\n\n\n"
+              "def load_qualification_provenance(path: Path | None = None) -> list[dict]:\n"
+              "    return read_csv(path or QUALIFICATION_PROVENANCE_CSV)\n\n\n"
+              "def save_qualification_provenance(rows: list[dict], path: Path | None = None) -> None:\n"
+              "    write_csv(path or QUALIFICATION_PROVENANCE_CSV, QUALIFICATION_PROVENANCE_COLUMNS, rows)\n\n\n"
+              "def load_snapshot",
+          )
+
+          # Runner : provenance produite par qualify(), écrite avec CREATE/MAJ.
+          replace_once(
+              "cyberwatch/runner.py",
+              "    source_facts: list[dict] = field(default_factory=list)\n",
+              "    source_facts: list[dict] = field(default_factory=list)\n"
+              "    qualification_provenance: list[dict] = field(default_factory=list)\n",
+          )
+          replace_once(
+              "cyberwatch/runner.py",
+              "    report.items = qualified.items\n    report.incidents = qualified.incidents\n",
+              "    report.items = qualified.items\n    report.incidents = qualified.incidents\n"
+              "    report.qualification_provenance = qualified.provenance\n",
+          )
+          replace_once(
+              "cyberwatch/runner.py",
+              "        store.save_source_facts(report.source_facts)\n        save_snapshot_provenance(",
+              "        store.save_source_facts(report.source_facts)\n"
+              "        store.save_qualification_provenance(report.qualification_provenance)\n"
+              "        save_snapshot_provenance(",
+          )
+
+          # Backfill manuel : persiste la même provenance.
+          replace_once(
+              "cyberwatch/cli.py",
+              "    store.save_items(items)\n    store.save_incidents(incidents)\n"
+              "    save_snapshot_provenance(\n        store.load_items(), store.load_incidents(), operation=\"BACKFILL_UNKNOWNS\",",
+              "    store.save_items(items)\n    store.save_incidents(incidents)\n"
+              "    store.save_qualification_provenance(qualified.provenance)\n"
+              "    save_snapshot_provenance(\n        store.load_items(), store.load_incidents(), operation=\"BACKFILL_UNKNOWNS\",",
+          )
+
+          # Isolation tests : aucun CSV auxiliaire ne fuit vers data/ réel.
+          for path in ("tests/test_runner.py",):
+              replace_once(
+                  path,
+                  '"SOURCE_FACTS_CSV"):',
+                  '"SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV"):',
+              )
+          replace_once(
+              "tests/test_runner.py",
+              '"SOURCE_FACTS_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",',
+              '"SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",',
+          )
+          replace_once(
+              "tests/test_ai_qualification.py",
+              '"SOURCE_FACTS_CSV": tmp_path / "source_facts.csv",',
+              '"SOURCE_FACTS_CSV": tmp_path / "source_facts.csv",\n'
+              '        "QUALIFICATION_PROVENANCE_CSV": tmp_path / "qualification_provenance.csv",',
+          )
+
+          # Rebuild : purge explicitement le nouveau jeu auxiliaire.
+          replace_once(
+              ".github/workflows/rebuild-baseline-once.yml",
+              "            data/source_facts.csv \\\n            data/run_log.csv \\",
+              "            data/source_facts.csv \\\n            data/qualification_provenance.csv \\\n            data/run_log.csv \\",
+          )
+          replace_once(
+              ".github/workflows/rebuild-baseline-once.yml",
+              "            data/incidents.csv\n            data/source_facts.csv\n          include-hidden-files:",
+              "            data/incidents.csv\n            data/source_facts.csv\n"
+              "            data/qualification_provenance.csv\n          include-hidden-files:",
+          )
+
+          methodology = Path("METHODOLOGY.md")
+          text = methodology.read_text(encoding="utf-8")
+          marker = "## Qualification hybride source LLM (v0.7.37)"
+          if marker not in text:
+              text += (
+                  "\n\n" + marker + "\n\n"
+                  "Les exports JSON versionnés `sources/veillellm` restent des challengers analytiques. "
+                  "Pour `FRENCHBREACHES` et `CYBERATTAQUE_ORG`, ils peuvent compléter une "
+                  "`Localisation=Inconnu` sans jamais écraser une valeur connue. Un `Secteur=Inconnu` "
+                  "n'est complété que sur raccord par URL source exacte avec preuve externe conservée "
+                  "dans l'export. La `Menace` n'est jamais modifiée par ces challengers. `VEILLE_LLM` "
+                  "Réunion/Mayotte reste une source native distincte selon son contrat existant. Les "
+                  "décisions sont journalisées dans `data/qualification_provenance.csv`.\n"
+              )
+              methodology.write_text(text, encoding="utf-8")
+
+          # Déclenche uniquement le rebuild existant ; aucun benchmark Golden.
+          Path(".github/rebuild-request").write_text(
+              "v0.7.37 hybrid qualification rebuild\n", encoding="utf-8"
+          )
+          # Le workflow one-shot disparaît du commit fonctionnel.
+          Path(".github/workflows/implement-hybrid-qualification-once.yml").unlink()
           PY
-          python -m py_compile cyberwatch/source_llm_fallback.py cyberwatch/qualification.py
-          ! grep -R "THREAPTS\|FRENCHBREACIES\|\[recor\]" cyberwatch/source_llm_fallback.py tests/test_source_llm_fallback.py
 
       - name: Validation complète avant push
         run: |
+          python -m py_compile cyberwatch/source_llm_fallback.py cyberwatch/qualification.py cyberwatch/store.py cyberwatch/runner.py
           python -m pytest tests/ -q
           node --check assets/app.js
           node --check assets/app-legacy.js
@@ -59,12 +174,12 @@ jobs:
           python -m cyberwatch test-repeat
           python -m cyberwatch check --allow-uninitialized
 
-      - name: Commit fonctionnel
+      - name: Commit intégration
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "feat: add guarded source LLM qualification fallback"
+          git commit -m "feat: persist hybrid qualification provenance"
 
       - name: Rebase et revalidation
         run: |
@@ -86,5 +201,5 @@ jobs:
               --repo "$GITHUB_REPOSITORY" \
               --target "$SHA" \
               --title "v0.7.37 — qualification hybride source LLM" \
-              --notes "Qualification hybride conservatrice. Localisation : fallback seulement sur Inconnu pour FrenchBreaches/Cyberattaque.org. Secteur : fallback seulement sur Inconnu avec URL exacte et preuve externe. Menace : challengers JSON non autoritaires. Provenance dédiée. Tests complets avant push. Aucun benchmark Golden lancé ; le commit déclenche uniquement un rebuild CREATE propre."
+              --notes "Fallback source LLM conservateur : Localisation uniquement sur Inconnu ; Secteur uniquement sur Inconnu avec URL exacte + preuve externe ; Menace protégée. Provenance dédiée. Tests complets avant push. Aucun benchmark Golden lancé ; rebuild CREATE propre déclenché séparément."
           fi
