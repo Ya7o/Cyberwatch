@@ -1,0 +1,41 @@
+{
+  "cases": 100,
+  "matched": 87,
+  "ambiguous": 0,
+  "missing": 13,
+  "fields": {
+    "Secteur": {
+      "matched_cases": 87,
+      "correct": 46,
+      "accuracy_pct": 52.9,
+      "qualified": 51,
+      "coverage_pct": 58.6,
+      "precision_when_qualified_pct": 88.2,
+      "resolvable_unknown": 35,
+      "wrong_classification": 6,
+      "reference_unknown": 1
+    },
+    "Menace": {
+      "matched_cases": 87,
+      "correct": 66,
+      "accuracy_pct": 75.9,
+      "qualified": 87,
+      "coverage_pct": 100.0,
+      "precision_when_qualified_pct": 75.9,
+      "resolvable_unknown": 0,
+      "wrong_classification": 21,
+      "reference_unknown": 0
+    },
+    "Localisation": {
+      "matched_cases": 87,
+      "correct": 55,
+      "accuracy_pct": 63.2,
+      "qualified": 56,
+      "coverage_pct": 64.4,
+      "precision_when_qualified_pct": 98.2,
+      "resolvable_unknown": 31,
+      "wrong_classification": 1,
+      "reference_unknown": 0
+    }
+  }
+}
