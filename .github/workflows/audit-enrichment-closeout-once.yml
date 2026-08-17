@@ -1,0 +1,344 @@
+name: Enrichment Closeout Audit Once
+
+on:
+  push:
+    branches:
+      - agent/audit-enrichment-closeout-20260817
+    paths:
+      - '.github/workflows/audit-enrichment-closeout-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout audit branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/audit-enrichment-closeout-20260817
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run executable checks
+        shell: bash
+        run: |
+          set +e
+          pytest -q tests/test_source_facts_ai.py tests/test_source_facts.py tests/test_site_source_facts.py > /tmp/pytest.log 2>&1
+          echo $? > /tmp/pytest.rc
+          python -m cyberwatch check > /tmp/check.log 2>&1
+          echo $? > /tmp/check.rc
+          python -m cyberwatch test-repeat > /tmp/repeat.log 2>&1
+          echo $? > /tmp/repeat.rc
+          python scripts/audit_data_quality.py --items data/items.csv --source-facts data/source_facts.csv --check --check-regression > /tmp/global_quality.log 2>&1
+          echo $? > /tmp/global_quality.rc
+          set -e
+
+      - name: Build closeout audit
+        run: |
+          mkdir -p audit
+          python - <<'PY'
+          import csv
+          import json
+          import re
+          import subprocess
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          TARGET = {'CYBERATTAQUE_ORG', 'FRENCHBREACHES'}
+          TAXONOMY = {
+              'phishing', 'compromised_credentials', 'vulnerability_exploitation',
+              'remote_access', 'third_party', 'malware', 'other'
+          }
+          HEDGE_RE = re.compile(r"\b(aurait|auraient|pourrait|pourraient|susceptible|susceptibles|probable|probablement|possible|possiblement|semble|semblerait|présumé|présumée|présumés|présumées|hypothèse|hypothèses|non confirmé|non confirmée|aurait pu|aurait été)\b", re.I)
+          REMEDIATION_RE = re.compile(r"\b(isol(?:é|ée|er|ation)?|remédi(?:ation|er)?|restaur(?:ation|é|ée|er)?|notification|réinitial(?:isation|isé|isée|iser)?|investigation|enquête|confinement|déconnect(?:é|ée|er)?|mise hors ligne|correctif|patch)\b", re.I)
+
+          def read_csv(path):
+              with open(path, newline='', encoding='utf-8-sig') as f:
+                  return list(csv.DictReader(f))
+
+          def jload(value, default):
+              if not value:
+                  return default
+              try:
+                  return json.loads(value)
+              except Exception:
+                  return default
+
+          def rc(name):
+              try:
+                  return int(Path(f'/tmp/{name}.rc').read_text().strip())
+              except Exception:
+                  return 999
+
+          def log_tail(name, limit=25):
+              try:
+                  lines = Path(f'/tmp/{name}.log').read_text(encoding='utf-8', errors='replace').splitlines()
+                  return lines[-limit:]
+              except Exception:
+                  return []
+
+          facts = read_csv('data/source_facts.csv')
+          items = read_csv('data/items.csv')
+          target = [r for r in facts if r.get('Source_ID') in TARGET]
+          item_ids = {r.get('Item_ID') for r in items}
+          incidents = json.loads(Path('assets/data/incidents.json').read_text(encoding='utf-8'))
+          usage = jload(Path('data/source_facts_ai_usage.json').read_text(encoding='utf-8'), {})
+          cache = jload(Path('data/source_facts_ai_cache.json').read_text(encoding='utf-8'), {})
+
+          by_source = {}
+          initial_dist = Counter()
+          step_dist = Counter()
+          suspicious_hedge = []
+          suspicious_remediation = []
+          malformed_flows = []
+          evidence_missing = Counter()
+          summary_too_long = []
+          taxonomy_invalid = []
+          source_item_counts = Counter(r.get('Item_ID') for r in facts if r.get('Item_ID'))
+          duplicate_fact_items = sorted(k for k,v in source_item_counts.items() if v > 1)
+
+          for source in sorted(TARGET):
+              rows = [r for r in target if r.get('Source_ID') == source]
+              by_source[source] = {
+                  'rows': len(rows),
+                  'summary': sum(bool((r.get('Summary') or '').strip()) for r in rows),
+                  'initial_access': sum(bool((r.get('Initial_Access') or '').strip()) for r in rows),
+                  'attack_flow': sum(bool((r.get('Attack_Flow_JSON') or '').strip()) for r in rows),
+                  'impact': sum(bool((r.get('Impact') or '').strip()) for r in rows),
+              }
+
+          for r in target:
+              iid = r.get('Item_ID')
+              evidence = jload(r.get('Evidence_JSON'), {})
+              initial = (r.get('Initial_Access') or '').strip()
+              if initial:
+                  initial_dist[initial] += 1
+                  if initial not in TAXONOMY:
+                      taxonomy_invalid.append({'item_id': iid, 'source': r.get('Source_ID'), 'value': initial})
+                  if not evidence.get('Initial_Access'):
+                      evidence_missing['Initial_Access'] += 1
+
+              summary = (r.get('Summary') or '').strip()
+              if summary:
+                  if len(summary) > 320:
+                      summary_too_long.append({'item_id': iid, 'source': r.get('Source_ID'), 'length': len(summary), 'summary': summary})
+                  if not evidence.get('Summary'):
+                      evidence_missing['Summary'] += 1
+
+              impact = (r.get('Impact') or '').strip()
+              if impact and not evidence.get('Impact'):
+                  evidence_missing['Impact'] += 1
+
+              raw_flow = (r.get('Attack_Flow_JSON') or '').strip()
+              if raw_flow:
+                  flow = jload(raw_flow, None)
+                  if not isinstance(flow, list):
+                      malformed_flows.append({'item_id': iid, 'source': r.get('Source_ID'), 'reason': 'not_list'})
+                      continue
+                  step_dist[len(flow)] += 1
+                  if len(flow) > 4:
+                      malformed_flows.append({'item_id': iid, 'source': r.get('Source_ID'), 'reason': 'too_many_steps', 'steps': len(flow)})
+                  ev_list = evidence.get('Attack_Flow_JSON') or []
+                  if not isinstance(ev_list, list):
+                      ev_list = [ev_list]
+                  for step in flow:
+                      if not isinstance(step, dict):
+                          malformed_flows.append({'item_id': iid, 'source': r.get('Source_ID'), 'reason': 'step_not_object'})
+                          continue
+                      action = str(step.get('action') or '').strip()
+                      ev = str(step.get('evidence') or '').strip()
+                      if not action or not ev:
+                          malformed_flows.append({'item_id': iid, 'source': r.get('Source_ID'), 'reason': 'missing_action_or_evidence', 'step': step})
+                      if ev and ev not in ev_list:
+                          evidence_missing['Attack_Flow_JSON'] += 1
+                      text = f'{action} {ev}'
+                      if HEDGE_RE.search(text):
+                          suspicious_hedge.append({'item_id': iid, 'source': r.get('Source_ID'), 'action': action, 'evidence': ev})
+                      if REMEDIATION_RE.search(text):
+                          suspicious_remediation.append({'item_id': iid, 'source': r.get('Source_ID'), 'action': action, 'evidence': ev})
+
+          # Projection dashboard / incidents.
+          incident_fact_by_item = {}
+          incident_root_summary = 0
+          incident_enriched = Counter()
+          for inc in incidents:
+              if inc.get('summary'):
+                  incident_root_summary += 1
+              for fact in inc.get('facts') or []:
+                  iid = fact.get('item_id')
+                  if iid:
+                      incident_fact_by_item[iid] = fact
+                  for k in ('initial_access', 'attack_flow', 'impact', 'summary'):
+                      if fact.get(k):
+                          incident_enriched[k] += 1
+
+          projection_missing = Counter()
+          for r in target:
+              iid = r.get('Item_ID')
+              f = incident_fact_by_item.get(iid)
+              if not f:
+                  if any((r.get(k) or '').strip() for k in ('Summary','Initial_Access','Attack_Flow_JSON','Impact')):
+                      projection_missing['fact_missing_entirely'] += 1
+                  continue
+              mapping = {
+                  'Initial_Access': 'initial_access',
+                  'Attack_Flow_JSON': 'attack_flow',
+                  'Impact': 'impact',
+              }
+              for src, dst in mapping.items():
+                  if (r.get(src) or '').strip() and not f.get(dst):
+                      projection_missing[src] += 1
+
+          # Cache metrics.
+          cache_entries = cache.get('entries') if isinstance(cache, dict) else None
+          if not isinstance(cache_entries, dict):
+              cache_entries = {}
+          cache_field_counts = Counter()
+          for entry in cache_entries.values():
+              if isinstance(entry, dict):
+                  fields = entry.get('fields') or {}
+                  if isinstance(fields, dict):
+                      for field in fields:
+                          cache_field_counts[field] += 1
+
+          # Isolation of the production backfill commit.
+          changed = subprocess.check_output(['git','diff','--name-only','HEAD^','HEAD'], text=True).splitlines()
+          canonical_forbidden = {
+              'data/items.csv', 'data/incidents.csv', 'data/incident_id_registry.csv',
+              'data/ai_qualifications.csv', 'data/entity_aliases.csv'
+          }
+          canonical_changed = sorted(set(changed) & canonical_forbidden)
+
+          checks = {
+              'targeted_pytest': {'rc': rc('pytest'), 'tail': log_tail('pytest')},
+              'cyberwatch_check': {'rc': rc('check'), 'tail': log_tail('check')},
+              'test_repeat': {'rc': rc('repeat'), 'tail': log_tail('repeat')},
+              'global_quality': {'rc': rc('global_quality'), 'tail': log_tail('global_quality')},
+          }
+
+          result = {
+              'scope': 'incident enrichment closeout',
+              'head': subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
+              'parent': subprocess.check_output(['git','rev-parse','HEAD^'], text=True).strip(),
+              'changed_files_backfill_commit': changed,
+              'canonical_changed': canonical_changed,
+              'source_facts': {
+                  'total_rows': len(facts),
+                  'target_rows': len(target),
+                  'by_source': by_source,
+                  'orphan_rows': sum(r.get('Item_ID') not in item_ids for r in facts if r.get('Item_ID')),
+                  'duplicate_item_rows': len(duplicate_fact_items),
+                  'duplicate_item_examples': duplicate_fact_items[:20],
+              },
+              'initial_access': {
+                  'distribution': dict(initial_dist),
+                  'invalid_taxonomy': taxonomy_invalid,
+                  'evidence_missing': evidence_missing['Initial_Access'],
+              },
+              'attack_flow': {
+                  'step_count_distribution': dict(step_dist),
+                  'malformed': malformed_flows,
+                  'evidence_missing': evidence_missing['Attack_Flow_JSON'],
+                  'hedged_candidates_count': len(suspicious_hedge),
+                  'hedged_candidates': suspicious_hedge[:40],
+                  'remediation_candidates_count': len(suspicious_remediation),
+                  'remediation_candidates': suspicious_remediation[:40],
+              },
+              'summary': {
+                  'too_long_count': len(summary_too_long),
+                  'too_long': summary_too_long[:20],
+                  'evidence_missing': evidence_missing['Summary'],
+              },
+              'impact': {'evidence_missing': evidence_missing['Impact']},
+              'dashboard_projection': {
+                  'incident_count': len(incidents),
+                  'incident_root_summary_count': incident_root_summary,
+                  'fact_field_counts': dict(incident_enriched),
+                  'missing_projection': dict(projection_missing),
+              },
+              'cache': {
+                  'format': cache.get('_format') if isinstance(cache, dict) else None,
+                  'entries': len(cache_entries),
+                  'legacy_entries': len(cache.get('legacy') or {}) if isinstance(cache, dict) and isinstance(cache.get('legacy'), dict) else 0,
+                  'field_counts': dict(cache_field_counts),
+                  'usage': usage,
+              },
+              'checks': checks,
+          }
+
+          # Verdict criteria focused only on this chantier.
+          hard_failures = []
+          if canonical_changed: hard_failures.append('canonical_files_changed')
+          if result['source_facts']['orphan_rows']: hard_failures.append('orphan_source_facts')
+          if result['source_facts']['duplicate_item_rows']: hard_failures.append('duplicate_source_fact_item_ids')
+          if taxonomy_invalid: hard_failures.append('invalid_initial_access_taxonomy')
+          if evidence_missing['Initial_Access']: hard_failures.append('initial_access_without_evidence')
+          if malformed_flows: hard_failures.append('malformed_attack_flow')
+          if evidence_missing['Attack_Flow_JSON']: hard_failures.append('attack_flow_without_evidence')
+          if projection_missing: hard_failures.append('dashboard_projection_gap')
+          if rc('pytest') != 0: hard_failures.append('targeted_tests_failed')
+          if rc('check') != 0: hard_failures.append('cyberwatch_check_failed')
+          if rc('repeat') != 0: hard_failures.append('repeatability_failed')
+
+          review_points = []
+          if suspicious_hedge: review_points.append('attack_flow_hedged_language')
+          if suspicious_remediation: review_points.append('attack_flow_possible_remediation')
+          if summary_too_long: review_points.append('summary_over_length')
+          if evidence_missing['Summary']: review_points.append('summary_without_evidence')
+          if evidence_missing['Impact']: review_points.append('impact_without_evidence')
+          if rc('global_quality') != 0: review_points.append('global_quality_gate_outside_scope')
+
+          result['verdict'] = {
+              'hard_failures': hard_failures,
+              'review_points': review_points,
+              'closeable': not hard_failures,
+          }
+
+          Path('audit/enrichment_closeout_audit.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+
+          lines = [
+              '# Audit de clôture — enrichissement incident', '',
+              f"Head audité: `{result['head']}`", '',
+              f"Verdict automatique périmètre: **{'CLOSABLE' if result['verdict']['closeable'] else 'NOT CLOSABLE'}**", '',
+              '## Couverture', '',
+              '| Source | Rows | Summary | Initial access | Attack flow | Impact |',
+              '|---|---:|---:|---:|---:|---:|',
+          ]
+          for source, d in by_source.items():
+              lines.append(f"| {source} | {d['rows']} | {d['summary']} | {d['initial_access']} | {d['attack_flow']} | {d['impact']} |")
+          lines += [
+              '', '## Contrôles', '',
+              f"- SourceFacts orphelins: {result['source_facts']['orphan_rows']}",
+              f"- Item_ID dupliqués dans SourceFacts: {result['source_facts']['duplicate_item_rows']}",
+              f"- Initial_Access hors taxonomie: {len(taxonomy_invalid)}",
+              f"- Attack flow malformés: {len(malformed_flows)}",
+              f"- Attack flow sans preuve: {evidence_missing['Attack_Flow_JSON']}",
+              f"- Candidats langage hypothétique dans attack flow: {len(suspicious_hedge)}",
+              f"- Candidats remédiation dans attack flow: {len(suspicious_remediation)}",
+              f"- Gaps projection dashboard: {dict(projection_missing)}",
+              f"- Tests ciblés rc={rc('pytest')}; check rc={rc('check')}; repeat rc={rc('repeat')}; global quality rc={rc('global_quality')}",
+              '', '## Verdict', '',
+              f"- Hard failures: {hard_failures}",
+              f"- Points à revue: {review_points}",
+          ]
+          Path('audit/enrichment_closeout_audit.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+
+      - name: Publish audit result on audit branch
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/enrichment_closeout_audit.json audit/enrichment_closeout_audit.md
+          git commit -m "audit: publish enrichment closeout result"
+          git push origin HEAD:agent/audit-enrichment-closeout-20260817
