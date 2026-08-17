@@ -1,3 +1,7 @@
+import subprocess
+import sys
+from pathlib import Path
+
 from cyberwatch import ai, company_evidence, model, org_enrichment, status
 
 
@@ -30,6 +34,7 @@ def test_qualification_openai_network_time_is_timed(monkeypatch):
     class Response:
         status_code = 200
         text = ""
+
         def json(self):
             return {"ok": True}
 
@@ -39,3 +44,16 @@ def test_qualification_openai_network_time_is_timed(monkeypatch):
     state = ai.AiRunState(enabled=True, api_key="test")
     assert ai._post_openai({}, state) == {"ok": True}
     assert state.llm_duration_seconds == 2.0
+
+
+def test_report_script_runs_from_repo_root():
+    root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        [sys.executable, "scripts/report_source_performance.py"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "SOURCE_PERF" in result.stdout
