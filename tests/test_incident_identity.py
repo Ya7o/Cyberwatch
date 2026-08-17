@@ -134,6 +134,34 @@ def test_split_keeps_old_id_only_on_component_with_historical_anchor(make_item):
     assert any(row["Incident_ID"] == old_id and row["Anchor_Item_ID"] == bridge.Item_ID for row in active)
 
 
+def test_stale_registry_anchor_is_pruned_before_rebuild(make_item):
+    stale = make_item(
+        source="OLD_SOURCE",
+        org="Legacy Corp",
+        published="2026-07-01",
+        url="https://old",
+    )
+    current = make_item(
+        source="CYBERATTAQUE_ORG",
+        org="Globex",
+        published="2026-08-01",
+        url="https://current",
+    )
+    stale_id = identity.incident_id(stale.Organisation_Key, stale.Item_ID)
+    registry = [{
+        "Incident_ID": stale_id,
+        "Anchor_Item_ID": stale.Item_ID,
+        "Organisation_Key": stale.Organisation_Key,
+        "Redirect_To": "",
+    }]
+
+    incidents, updated = build_incidents_with_registry([current], registry)
+
+    assert len(incidents) == 1
+    assert all(row["Incident_ID"] != stale_id for row in updated)
+    assert validate_registry(updated, [current], incidents) == []
+
+
 def test_registry_validation_requires_one_active_anchor_per_incident(make_item):
     item = make_item(org="Globex", url="https://a")
     incident, registry = build_incidents_with_registry([item], [])
