@@ -34,6 +34,9 @@ jobs:
       - name: Tests unitaires
         run: python -m pytest tests/ -q
 
+      - name: Golden dédup certifié
+        run: python scripts/evaluate_dedup_golden.py
+
       - name: Syntaxe dashboard
         run: |
           node --check assets/app.js
