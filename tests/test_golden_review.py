@@ -42,7 +42,7 @@ def _audit(golden_id="GOLD-0001", **overrides):
         "Decision": "CORRECTED",
         "Confidence": "HIGH",
         "Evidence_URLs": "https://example.test/evidence",
-        "Evidence_Text": "des données ont été exfiltrées et publiées",
+        "Evidence_Text": "fuite de données confirmée",
         "Reason": "la fuite est une classe plus spécifique",
         "Reviewed_At": "2026-08-17",
     }
@@ -64,7 +64,7 @@ def test_audit_rejects_stale_old_value():
 def test_apply_audit_corrects_label_and_versions_only_reviewed_case():
     rows = apply_audit([_golden()], [_audit()])
     assert rows[0]["Menace_REF"] == config.THREAT_LEAK
-    assert rows[0]["Menace_Evidence"] == "des données ont été exfiltrées et publiées"
+    assert rows[0]["Menace_Evidence"] == "fuite de données confirmée"
     assert rows[0]["Golden_Version"] == "2"
     assert rows[0]["Reviewed_At"] == "2026-08-17"
 
@@ -96,9 +96,9 @@ def test_quality_report_flags_high_without_url_and_close_duplicate():
 
 
 def test_quality_report_applies_corrections_before_policy_checks():
-    row = _golden(Menace_Evidence="des données ont été exfiltrées")
+    row = _golden(Menace_Evidence="fuite de données confirmée")
     before = quality_report([row])
     assert any(finding["Code"] == "THREAT_POLICY_MISMATCH" for finding in before["findings"])
 
-    after = quality_report([row], [_audit(Evidence_Text="des données ont été exfiltrées")])
+    after = quality_report([row], [_audit(Evidence_Text="fuite de données confirmée")])
     assert not any(finding["Code"] == "THREAT_POLICY_MISMATCH" for finding in after["findings"])
