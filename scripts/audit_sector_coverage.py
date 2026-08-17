@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Audit offline de la couverture Sector et des catégories ransomware.live.
 
-Le rapport est volontairement descriptif : il mesure le stock d'Inconnu et les
-valeurs source structurées susceptibles d'être mappées, sans jamais modifier la
-base. Il peut être versionné après un rebuild afin de disposer d'un point de
-mesure exact, contrairement à l'ancienne baseline historique.
+Le rapport mesure le stock canonique d'Inconnu, les valeurs structurées de
+ransomware.live et l'impact projeté du backfill fermé. La projection travaille
+sur une copie mémoire : exécuter ce script seul ne modifie jamais la base.
 """
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import sys
 from pathlib import Path
@@ -18,11 +18,21 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch import quality, store
+from cyberwatch.qualification import backfill_structured_source_sectors
 
 
 def build_report() -> dict:
     items = store.load_items()
     facts = store.read_csv(store.SOURCE_FACTS_CSV)
+    current = quality.metrics(items)
+    ransomware = quality.ransomware_source_sector_audit(items, facts)
+
+    projected_items = copy.deepcopy(items)
+    projected_applied = backfill_structured_source_sectors(projected_items, facts)
+    projected = quality.metrics(projected_items)
+    current_global = current["global"]
+    projected_global = projected["global"]
+
     return {
         "schema_version": 1,
         "snapshot": {
@@ -30,8 +40,16 @@ def build_report() -> dict:
             "items_hash": store.load_snapshot().get("Items_Hash", ""),
             "incidents_hash": store.load_snapshot().get("Incidents_Hash", ""),
         },
-        "sector": quality.metrics(items),
-        "ransomware_live": quality.ransomware_source_sector_audit(items, facts),
+        "sector": current,
+        "ransomware_live": ransomware,
+        "structured_backfill_projection": {
+            "applied": projected_applied,
+            "sector_unknown_before": current_global["sector_unknown"],
+            "sector_unknown_after": projected_global["sector_unknown"],
+            "sector_coverage_before": current_global["sector_coverage_ratio"],
+            "sector_coverage_after": projected_global["sector_coverage_ratio"],
+            "metrics": projected,
+        },
     }
 
 
@@ -69,6 +87,23 @@ def print_report(report: dict) -> None:
     for raw, row in ransomware["raw_values"].items():
         print(
             f"{raw}\t{row['items']}\t{row['current_unknown']}\t{row['mapped_sector']}"
+        )
+
+    projection = report["structured_backfill_projection"]
+    print()
+    print(
+        "STRUCTURED BACKFILL PROJECTION: "
+        f"applied={projection['applied']} "
+        f"unknown={projection['sector_unknown_before']}->{projection['sector_unknown_after']} "
+        f"coverage={projection['sector_coverage_before'] * 100:.2f}%"
+        f"->{projection['sector_coverage_after'] * 100:.2f}%"
+    )
+    projected_ransomware = projection["metrics"]["sources"].get("RANSOMWARE_LIVE", {})
+    if projected_ransomware:
+        print(
+            "RANSOMWARE_LIVE projected: "
+            f"unknown={projected_ransomware['sector_unknown']} "
+            f"coverage={projected_ransomware['sector_coverage_ratio'] * 100:.2f}%"
         )
 
 
