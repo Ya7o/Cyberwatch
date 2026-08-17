@@ -2900,37 +2900,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
-  "facts": [
-   {
-    "affected_count": 189997,
-    "affected_count_raw": "189 997 enregistrements",
-    "affected_unit": "records",
-    "claim_status": "unconfirmed",
-    "item_id": "ITM-d48c60eacc212e96",
-    "source": "CYBERATTAQUE_ORG"
-   },
-   {
-    "affected_count": 245812,
-    "affected_count_raw": "245 812 personnes",
-    "affected_unit": "people",
-    "claim_status": "claimed",
-    "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms",
-     "dates de naissance"
-    ],
-    "item_id": "ITM-6e76853753006061",
-    "source": "FRENCHBREACHES"
-   }
-  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-E5418E147A81",
-  "items": 2,
+  "id": "INC-B5B0BB894D79",
+  "items": 3,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "INSERM",
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2938,41 +2914,8 @@
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde",
+   "https://frenchbreaches.com/alertes/institut-national-de-la-sant-et-de-la-recherche-m-dicale-inserm-msd3dlb2vc2sd7sibue",
    "https://www.cyberattaque.org/inserm-189-997-profils-de-professionnels-de-sante-dans-une-fuite-massive/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-03",
-  "facts": [
-   {
-    "affected_count": 189997,
-    "affected_count_raw": "189 997 personnes",
-    "affected_unit": "people",
-    "claim_status": "confirmed",
-    "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms",
-     "identifiants"
-    ],
-    "item_id": "ITM-6f803c07a32519a9",
-    "source": "FRENCHBREACHES"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-BB50E3347654",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "Institut national de la santé et de la recherche médicale",
-  "sector": "Services aux entreprises",
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/institut-national-de-la-sant-et-de-la-recherche-m-dicale-inserm-msd3dlb2vc2sd7sibue"
   ]
  },
  {
@@ -3006,33 +2949,6 @@
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msd3lq1z008txe7ifb90x"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-03",
-  "facts": [
-   {
-    "claim_status": "confirmed",
-    "data_volume": "160 Go",
-    "impact": "La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre.",
-    "item_id": "ITM-314468b5e3fd3824",
-    "source": "CYBERATTAQUE_ORG"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-27B5792965C7",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "Mairie de Rinxent",
-  "sector": "Administration / Collectivité",
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "threat": "Ransomware",
-  "urls": [
-   "https://www.cyberattaque.org/mairie-de-rinxent-160-go-de-donnees-revendiques-apres-une-cyberattaque/"
   ]
  },
  {
@@ -3261,56 +3177,21 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
-  "facts": [
-   {
-    "discovered_date": "2026-08-02",
-    "evidence_urls": [
-     "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a32127c5ba7d063fd8b100d461d7dcbadda8e7f2f6511bcb2522552d419d6e2/"
-    ],
-    "item_id": "ITM-da4f8844cd83aa88",
-    "source": "RANSOMWARE_LIVE",
-    "threat_actor": "krybit",
-    "victim_website": "https://www.ville-rinxent.fr"
-   }
-  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-5933664F6A95",
-  "items": 1,
+  "id": "INC-49E922069E33",
+  "items": 2,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ville-rinxent",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
+   "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
   "threat": "Ransomware",
   "urls": [
-   "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a32127c5ba7d063fd8b100d461d7dcbadda8e7f2f6511bcb2522552d419d6e2/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-01",
-  "facts": [
-   {
-    "claim_status": "confirmed",
-    "item_id": "ITM-4acbbed09e3890af",
-    "source": "CYBERATTAQUE_ORG"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-4912EE5516BF",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "CCI Nice Côte d’Azur",
-  "sector": "Inconnu",
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "threat": "Compromission de compte / messagerie",
-  "urls": [
-   "https://www.cyberattaque.org/cci-nice-cote-dazur-un-compte-administrateur-pirate-les-donnees-rh-de-candidats-exportees/"
+   "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a32127c5ba7d063fd8b100d461d7dcbadda8e7f2f6511bcb2522552d419d6e2/",
+   "https://www.cyberattaque.org/mairie-de-rinxent-160-go-de-donnees-revendiques-apres-une-cyberattaque/"
   ]
  },
  {
@@ -3490,23 +3371,30 @@
     ],
     "item_id": "ITM-3fc9eba93a38dd6e",
     "source": "BONJOURLAFUITE"
+   },
+   {
+    "claim_status": "confirmed",
+    "item_id": "ITM-4acbbed09e3890af",
+    "source": "CYBERATTAQUE_ORG"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-D928BF44651F",
-  "items": 2,
+  "items": 3,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
-  "org": "Chambre de Commerce et d'Industrie Nice Côte d'Azur",
+  "org": "CCI Nice Côte d’Azur",
   "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "threat": "Fuite de données",
+  "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://bonjourlafuite.eu.org/img/cci-nice.png",
-   "https://frenchbreaches.com/alertes/chambre-de-commerce-et-d-industrie-nice-c-te-d-azur-ms9972qijqoesdq8cu"
+   "https://frenchbreaches.com/alertes/chambre-de-commerce-et-d-industrie-nice-c-te-d-azur-ms9972qijqoesdq8cu",
+   "https://www.cyberattaque.org/cci-nice-cote-dazur-un-compte-administrateur-pirate-les-donnees-rh-de-candidats-exportees/"
   ]
  },
  {
@@ -15595,43 +15483,6 @@
   "facts": [
    {
     "claim_status": "confirmed",
-    "data_types": [
-     "Nom, prénom",
-     "Adresse email",
-     "Adresse postale",
-     "Numéro de téléphone",
-     "Numéro d’enregistrement",
-     "Date de déclaration",
-     "Nature, type et capacité du bien"
-    ],
-    "evidence_urls": [
-     "https://bonjourlafuite.eu.org/img/metropole-bordeaux.jpeg"
-    ],
-    "item_id": "ITM-6d5001bc893b17d9",
-    "source": "BONJOURLAFUITE"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-D9FF67E9089F",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "Métropole de Bordeaux",
-  "sector": "Administration / Collectivité",
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://bonjourlafuite.eu.org/img/metropole-bordeaux.jpeg"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-04-29",
-  "facts": [
-   {
-    "claim_status": "confirmed",
     "evidence_urls": [
      "https://bonjourlafuite.eu.org/img/metropole-saint-etienne.webp"
     ],
@@ -15792,29 +15643,20 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-04-27",
-  "facts": [
-   {
-    "claim_status": "claimed",
-    "data_types": [
-     "adresses e-mail"
-    ],
-    "data_volume": "3,1 Mo",
-    "item_id": "ITM-1e2583638be83a87",
-    "source": "CYBERATTAQUE_ORG"
-   }
-  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-69D8F5ECA6CA",
-  "items": 1,
+  "id": "INC-A0D8BA38C174",
+  "items": 2,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Bordeaux Métropole",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
-  "threat": "Phishing / fraude",
+  "threat": "Fuite de données",
   "urls": [
+   "https://bonjourlafuite.eu.org/img/metropole-bordeaux.jpeg",
    "https://www.cyberattaque.org/bordeaux-metropole-fuite-de-11-000-declarants-de-la-taxe-de-sejour-et-adresses-de-locations-touristiques/"
   ]
  },
@@ -16332,27 +16174,7 @@
     ],
     "item_id": "ITM-9250cae26eee3bff",
     "source": "BONJOURLAFUITE"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-BC86A29703BA",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "Agence Nationale des Fréquences",
-  "sector": "Administration / Collectivité",
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://bonjourlafuite.eu.org/img/anfr.png"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-04-24",
-  "facts": [
+   },
    {
     "claim_status": "confirmed",
     "data_types": [
@@ -16364,17 +16186,19 @@
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-0273C8ACB926",
-  "items": 1,
+  "id": "INC-BC86A29703BA",
+  "items": 2,
   "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "ANFR",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
   "threat": "Fuite de données",
   "urls": [
+   "https://bonjourlafuite.eu.org/img/anfr.png",
    "https://www.cyberattaque.org/anfr-330-000-usagers-du-service-radiomaritime-touches-apres-une-cyberattaque/"
   ]
  },
@@ -20621,38 +20445,6 @@
  },
  {
   "basis": "PUBLICATION",
-  "date": "2026-03-28",
-  "facts": [
-   {
-    "affected_count": 62511,
-    "affected_count_raw": "62 511 enregistrements",
-    "affected_unit": "records",
-    "claim_status": "confirmed",
-    "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone"
-    ],
-    "item_id": "ITM-12c2b662bcda52a1",
-    "source": "CYBERATTAQUE_ORG"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-95B888D316D9",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "SIA",
-  "sector": "Inconnu",
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://www.cyberattaque.org/sia-fuite-des-donnees-de-62-511-armes-en-france/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
   "date": "2026-03-27",
   "facts": [
    {
@@ -20795,21 +20587,35 @@
     ],
     "item_id": "ITM-93765c1fabb60a6e",
     "source": "BONJOURLAFUITE"
+   },
+   {
+    "affected_count": 62511,
+    "affected_count_raw": "62 511 enregistrements",
+    "affected_unit": "records",
+    "claim_status": "confirmed",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone"
+    ],
+    "item_id": "ITM-12c2b662bcda52a1",
+    "source": "CYBERATTAQUE_ORG"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-3CE92E7C37A7",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
-  "org": "Système d’Information sur les Armes",
+  "org": "SIA",
   "sector": "Inconnu",
   "sources": [
-   "BONJOURLAFUITE"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
   ],
   "threat": "Fuite de données",
   "urls": [
-   "https://bonjourlafuite.eu.org/img/sia.jpg"
+   "https://bonjourlafuite.eu.org/img/sia.jpg",
+   "https://www.cyberattaque.org/sia-fuite-des-donnees-de-62-511-armes-en-france/"
   ]
  },
  {
