@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 """Enrichit la file Sector sans modifier directement la vérité canonique.
 
-Le registre public sert à établir une identité exacte et des métadonnées. La
-preuve de secteur officielle utilise le résolveur avec attribution du sujet.
-Tous les résultats sont stockés dans ``org_enrichment_cache.csv`` ; seule la
-politique du registre décide ensuite si un candidat peut être appliqué.
+La résolution du registre public reste séquentielle car elle partage un état de
+budget/cache. Les lectures de sites officiels, indépendantes et read-only, sont
+parallélisées avec un petit pool borné. La politique du registre reste la seule
+couche autorisée à écrire ensuite un Sector canonique.
 """
 from __future__ import annotations
 
 import datetime as dt
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import company_subject_evidence, config, org_enrichment, sector_registry, store
+from cyberwatch import company_subject_evidence, org_enrichment, sector_registry, store
 from cyberwatch.model import ORG_ENRICHMENT_CACHE_COLUMNS
 
 
@@ -32,6 +33,15 @@ def _empty_cache_row() -> dict[str, str]:
     return {column: "" for column in ORG_ENRICHMENT_CACHE_COLUMNS}
 
 
+def _strict_official(organisation: str):
+    try:
+        return company_subject_evidence.resolve_official_site_subject_attributed(
+            organisation
+        )
+    except Exception:
+        return None
+
+
 def main() -> int:
     queue_path = store.ITEMS_CSV.parent / sector_registry.QUEUE_CSV.name
     queue = store.read_csv(queue_path)
@@ -40,15 +50,14 @@ def main() -> int:
         return 0
 
     limit = max(0, _env_int("SECTOR_ENRICHMENT_MAX_ORGS", 60))
+    workers = max(1, min(8, _env_int("SECTOR_ENRICHMENT_WORKERS", 6)))
     selected = queue[:limit] if limit else []
     state = org_enrichment.start_state()
     if not state.enabled:
-        # Ce worker a son propre budget explicite ; l'enrichissement réseau est
-        # activé ici même si la collecte courante désactive ORG_ENRICHMENT.
         state.enabled = True
     state.max_calls = max(state.max_calls, len(selected))
-    # Le fallback officiel historique n'est jamais appelé depuis resolve() :
-    # seule la version subject-attributed ci-dessous est admissible en Sprint C.
+    # Le fallback officiel historique de org_enrichment reste coupé : seul le
+    # résolveur subject-attributed peut produire une preuve officielle Sector.
     state.official_site_max_calls = 0
 
     now = dt.datetime.now(dt.timezone(dt.timedelta(hours=4))).isoformat()
@@ -59,20 +68,21 @@ def main() -> int:
         "strict_official_attempted": 0,
         "strict_official_matched": 0,
         "cache_existing": 0,
+        "official_workers": workers,
     }
+    targets: list[tuple[str, str]] = []
 
+    # Phase 1 : état partagé, donc volontairement séquentielle.
     for queue_row in selected:
         key = (queue_row.get("Organisation_Key") or "").strip()
         organisation = (queue_row.get("Organisation") or "").strip()
         if not key or not organisation:
             continue
+        targets.append((key, organisation))
 
         existing = state.cache.get(key)
         if existing:
             stats["cache_existing"] += 1
-
-        # Tente le registre exact pour conserver SIREN/NAF/localisation. Avec
-        # official_site_max_calls=0, aucun ancien moteur officiel n'intervient.
         record = None
         if not existing or existing.get("Match_Status") not in {
             org_enrichment.MATCHED, org_enrichment.AMBIGUOUS
@@ -81,23 +91,25 @@ def main() -> int:
             record = org_enrichment.resolve(key, organisation, now, state)
         elif existing.get("Match_Status") == org_enrichment.MATCHED:
             stats["registry_matched"] += 1
-
         if record is not None and record.Match_Status == org_enrichment.MATCHED:
             stats["registry_matched"] += 1
 
-        # La recherche officielle stricte est indépendante du résultat légal :
-        # elle peut confirmer une marque que le registre ne résout pas ou dont
-        # le véhicule juridique ne décrit pas correctement l'activité réelle.
-        stats["strict_official_attempted"] += 1
-        try:
-            evidence = company_subject_evidence.resolve_official_site_subject_attributed(
-                organisation
-            )
-        except Exception:
-            evidence = None
-        if evidence is None:
-            continue
+    # Phase 2 : chaque appel est une lecture HTTP indépendante. Aucun thread ne
+    # touche state.cache ; les résultats sont fusionnés séquentiellement après.
+    evidence_by_key = {}
+    stats["strict_official_attempted"] = len(targets)
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {
+            pool.submit(_strict_official, organisation): (key, organisation)
+            for key, organisation in targets
+        }
+        for future in as_completed(futures):
+            key, organisation = futures[future]
+            evidence = future.result()
+            if evidence is not None:
+                evidence_by_key[key] = (organisation, evidence)
 
+    for key, (organisation, evidence) in sorted(evidence_by_key.items()):
         stats["strict_official_matched"] += 1
         current = dict(state.cache.get(key) or _empty_cache_row())
         current.update({
