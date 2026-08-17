@@ -35,6 +35,7 @@ def _record(**kwargs):
         threat=config.THREAT_INTRUSION,
         raw_location="France",
         evidence_urls=(),
+        activity_evidence=(),
     )
     values.update(kwargs)
     return ChallengerRecord(**values)
@@ -68,7 +69,7 @@ def test_known_location_is_never_overwritten():
     assert item.Location == config.LOC_REUNION
 
 
-def test_sector_requires_exact_url_and_external_evidence():
+def test_sector_requires_exact_url_official_identity_and_activity_evidence():
     item = _item()
     record = _record(
         urls=(
@@ -76,12 +77,17 @@ def test_sector_requires_exact_url_and_external_evidence():
             "https://www.exemple.fr/activite",
         ),
         evidence_urls=("https://www.exemple.fr/activite",),
+        activity_evidence=("établissement de santé",),
     )
-    stats, _ = apply_source_llm_fallback(
+    stats, provenance = apply_source_llm_fallback(
         [item], {"FRENCHBREACHES": [record]}
     )
     assert item.Sector == config.SECTOR_HEALTH
     assert stats["llm_sector_fallback"] == 1
+    assert any(
+        row["Field"] == "Sector" and row["Decision"] == "APPLIED"
+        for row in provenance
+    )
 
 
 def test_sector_without_external_evidence_is_rejected():
@@ -91,16 +97,94 @@ def test_sector_without_external_evidence_is_rejected():
     )
     assert item.Sector == config.SECTOR_UNKNOWN
     assert stats["llm_sector_rejected"] == 1
+    assert stats["llm_sector_identity_rejected"] == 1
     assert any(
         row["Field"] == "Sector"
-        and row["Decision"] == "REJECTED_NO_STRONG_EVIDENCE"
+        and row["Decision"] == "REJECTED_IDENTITY_EVIDENCE"
+        for row in provenance
+    )
+
+
+def test_registry_or_directory_url_cannot_validate_identity():
+    item = _item(Organisation_Raw="Adobe", Organisation_Key="adobe")
+    record = _record(
+        organisation="Adobe",
+        organisation_key="adobe",
+        sector=config.SECTOR_CONSTRUCTION,
+        evidence_urls=("https://www.pappers.fr/entreprise/adobe-949079610",),
+        activity_evidence=("activités immobilières",),
+    )
+    stats, provenance = apply_source_llm_fallback(
+        [item], {"FRENCHBREACHES": [record]}
+    )
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert stats["llm_sector_identity_rejected"] == 1
+    assert any(
+        row["Field"] == "Sector"
+        and row["Decision"] == "REJECTED_IDENTITY_EVIDENCE"
+        for row in provenance
+    )
+
+
+def test_unrelated_official_domain_cannot_validate_identity():
+    item = _item(Organisation_Raw="Adobe", Organisation_Key="adobe")
+    record = _record(
+        organisation="Adobe",
+        organisation_key="adobe",
+        sector=config.SECTOR_TECH,
+        evidence_urls=("https://www.unrelated-example.com/about",),
+        activity_evidence=("éditeur de logiciels",),
+    )
+    stats, _ = apply_source_llm_fallback(
+        [item], {"FRENCHBREACHES": [record]}
+    )
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert stats["llm_sector_identity_rejected"] == 1
+
+
+def test_sector_without_explicit_activity_is_rejected():
+    item = _item()
+    record = _record(
+        evidence_urls=("https://www.exemple.fr/a-propos",),
+        activity_evidence=("Exemple accompagne ses clients depuis 20 ans.",),
+    )
+    stats, provenance = apply_source_llm_fallback(
+        [item], {"FRENCHBREACHES": [record]}
+    )
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert stats["llm_sector_activity_rejected"] == 1
+    assert any(
+        row["Field"] == "Sector"
+        and row["Decision"] == "REJECTED_NO_ACTIVITY_EVIDENCE"
+        for row in provenance
+    )
+
+
+def test_sector_conflict_between_json_and_activity_is_rejected():
+    item = _item()
+    record = _record(
+        sector=config.SECTOR_FINANCE,
+        evidence_urls=("https://www.exemple.fr/a-propos",),
+        activity_evidence=("éditeur de logiciels",),
+    )
+    stats, provenance = apply_source_llm_fallback(
+        [item], {"FRENCHBREACHES": [record]}
+    )
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert stats["llm_sector_conflict_rejected"] == 1
+    assert any(
+        row["Field"] == "Sector"
+        and row["Decision"] == "REJECTED_SECTOR_CONFLICT"
         for row in provenance
     )
 
 
 def test_known_sector_is_never_overwritten():
     item = _item(Sector=config.SECTOR_FINANCE)
-    record = _record(evidence_urls=("https://www.exemple.fr/activite",))
+    record = _record(
+        evidence_urls=("https://www.exemple.fr/activite",),
+        activity_evidence=("établissement de santé",),
+    )
     apply_source_llm_fallback([item], {"FRENCHBREACHES": [record]})
     assert item.Sector == config.SECTOR_FINANCE
 
@@ -122,6 +206,7 @@ def test_unique_org_date_can_fill_location_but_not_sector():
     record = _record(
         urls=("https://frenchbreaches.com/alertes/sans-recouvrement",),
         evidence_urls=("https://www.exemple.fr/activite",),
+        activity_evidence=("établissement de santé",),
     )
     stats, _ = apply_source_llm_fallback(
         [item], {"FRENCHBREACHES": [record]}

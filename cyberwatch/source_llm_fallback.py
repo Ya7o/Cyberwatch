@@ -3,8 +3,8 @@
 Ces exports sont des challengers analytiques, pas une nouvelle vérité globale :
 - Localisation peut compléter uniquement ``Inconnu`` pour FrenchBreaches et
   Cyberattaque.org ;
-- Secteur peut compléter ``Inconnu`` seulement avec raccord par URL exacte et
-  une preuve externe conservée dans l'export ;
+- Secteur peut compléter ``Inconnu`` seulement avec raccord par URL exacte,
+  identité officielle cohérente et activité explicite reclassée localement ;
 - Menace n'est jamais modifiée par cette couche.
 
 Toute décision appliquée ou explicitement refusée est rendue sous forme de
@@ -20,9 +20,14 @@ from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlparse
 
-from . import config
+from . import company_evidence, config
 from .model import Item
-from .normalize import organisation_key, searchable
+from .normalize import (
+    classify_sector,
+    extract_activity_description,
+    organisation_key,
+    searchable,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -56,6 +61,14 @@ QUALIFICATION_PROVENANCE_COLUMNS = [
     "Decision",
 ]
 
+_ACTIVITY_FIELDS = (
+    "sector_evidence_text",
+    "activity_evidence",
+    "activity_description",
+    "evidence_text",
+)
+_ACTIVITY_CONTEXT_FIELDS = ("impact_connu", "synthese")
+
 
 @dataclass(frozen=True)
 class ChallengerRecord:
@@ -69,6 +82,7 @@ class ChallengerRecord:
     threat: str
     raw_location: str
     evidence_urls: tuple[str, ...]
+    activity_evidence: tuple[str, ...] = ()
 
 
 def _clean_url(value: object) -> str:
@@ -82,6 +96,33 @@ def _record_urls(raw: dict) -> tuple[str, ...]:
     if not isinstance(values, list):
         return ()
     return tuple(dict.fromkeys(_clean_url(value) for value in values if _clean_url(value)))
+
+
+def _text_values(value: object) -> list[str]:
+    if isinstance(value, str):
+        text = value.strip()
+        return [text] if text else []
+    if isinstance(value, list):
+        return [str(part).strip() for part in value if str(part).strip()]
+    return []
+
+
+def _activity_evidence(raw: dict) -> tuple[str, ...]:
+    """Extrait uniquement des formulations d'activité explicites.
+
+    Les champs structurés de preuve sont prioritaires. Les textes d'incident ne
+    sont utilisables que si ``extract_activity_description`` reconnaît une
+    formulation métier fermée (``spécialisée dans``, ``éditeur de``...). Un
+    récit d'attaque générique ne peut donc jamais devenir une preuve Sector.
+    """
+    values: list[str] = []
+    for field in _ACTIVITY_FIELDS:
+        values.extend(_text_values(raw.get(field)))
+    for field in _ACTIVITY_CONTEXT_FIELDS:
+        description = extract_activity_description(str(raw.get(field) or ""))
+        if description:
+            values.append(description)
+    return tuple(dict.fromkeys(value for value in values if value))
 
 
 def canonical_location(value: object) -> str:
@@ -134,6 +175,96 @@ def _external_evidence(source_id: str, urls: tuple[str, ...]) -> tuple[str, ...]
     return tuple(dict.fromkeys(kept))
 
 
+def _host(url: str) -> str:
+    try:
+        host = (urlparse(url).hostname or "").lower()
+    except ValueError:
+        return ""
+    return host[4:] if host.startswith("www.") else host
+
+
+def _blocked_sector_evidence(url: str) -> bool:
+    host = _host(url)
+    return not host or any(
+        host == blocked or host.endswith("." + blocked)
+        for blocked in company_evidence.BLOCKED_DOMAINS
+    )
+
+
+def _organisation_tokens(value: str) -> tuple[str, ...]:
+    return tuple(
+        token
+        for token in searchable(value).split()
+        if len(token) > 2 and token not in company_evidence.STOP_TOKENS
+    )
+
+
+def _official_identity_evidence(record: ChallengerRecord) -> tuple[str, ...]:
+    """Conserve uniquement une preuve dont le domaine ressemble à l'entité.
+
+    Les registres/annuaires et réseaux sociaux sont explicitement exclus : ils
+    peuvent décrire une société homonyme ou une holding juridiquement exacte
+    mais non représentative de la victime. Le domaine doit en outre contenir au
+    moins un token distinctif du nom de l'organisation.
+    """
+    tokens = _organisation_tokens(record.organisation)
+    if not tokens:
+        return ()
+    kept: list[str] = []
+    for url in record.evidence_urls:
+        if _blocked_sector_evidence(url):
+            continue
+        host_blob = searchable(_host(url))
+        if any(token in host_blob for token in tokens):
+            kept.append(url)
+    return tuple(dict.fromkeys(kept))
+
+
+def _activity_sector(record: ChallengerRecord) -> tuple[str, tuple[str, ...]]:
+    """Reclasse localement l'activité et refuse toute preuve contradictoire."""
+    by_sector: dict[str, list[str]] = {}
+    for evidence in record.activity_evidence:
+        sector = classify_sector(evidence)
+        if sector == config.SECTOR_UNKNOWN:
+            continue
+        by_sector.setdefault(sector, []).append(evidence)
+    if len(by_sector) != 1:
+        return config.SECTOR_UNKNOWN, ()
+    sector = next(iter(by_sector))
+    return sector, tuple(dict.fromkeys(by_sector[sector]))
+
+
+def _sector_gate(
+    item: Item,
+    record: ChallengerRecord,
+    strategy: str,
+) -> tuple[str, str, str]:
+    """Retourne ``(secteur, décision, preuve)`` pour le fallback Sector."""
+    evidence_urls = _official_identity_evidence(record)
+    evidence_text = " | ".join(evidence_urls)
+
+    if strategy != "source_url":
+        return config.SECTOR_UNKNOWN, "REJECTED_NO_STRONG_EVIDENCE", evidence_text
+
+    item_key = item.Organisation_Key or organisation_key(item.Organisation_Raw)
+    if not item_key or not record.organisation_key or item_key != record.organisation_key:
+        return config.SECTOR_UNKNOWN, "REJECTED_IDENTITY_EVIDENCE", evidence_text
+
+    if not evidence_urls:
+        return config.SECTOR_UNKNOWN, "REJECTED_IDENTITY_EVIDENCE", evidence_text
+
+    derived_sector, activity = _activity_sector(record)
+    activity_text = " | ".join(activity)
+    evidence = " | ".join(part for part in (evidence_text, activity_text) if part)
+    if derived_sector == config.SECTOR_UNKNOWN:
+        return config.SECTOR_UNKNOWN, "REJECTED_NO_ACTIVITY_EVIDENCE", evidence
+
+    if derived_sector != record.sector:
+        return config.SECTOR_UNKNOWN, "REJECTED_SECTOR_CONFLICT", evidence
+
+    return derived_sector, "APPLIED", evidence
+
+
 def load_records(path: Path, source_id: str) -> list[ChallengerRecord]:
     if not path.exists():
         return []
@@ -173,6 +304,7 @@ def load_records(path: Path, source_id: str) -> list[ChallengerRecord]:
                 threat=canonical_threat(raw.get("type_menace") or raw.get("Menace")),
                 raw_location=raw_location,
                 evidence_urls=_external_evidence(source_id, urls),
+                activity_evidence=_activity_evidence(raw),
             )
         )
     return records
@@ -261,6 +393,9 @@ def apply_source_llm_fallback(
         "llm_location_fallback": 0,
         "llm_sector_fallback": 0,
         "llm_sector_rejected": 0,
+        "llm_sector_identity_rejected": 0,
+        "llm_sector_activity_rejected": 0,
+        "llm_sector_conflict_rejected": 0,
         "llm_threat_protected": 0,
         "llm_match_ambiguous": 0,
     }
@@ -312,11 +447,12 @@ def apply_source_llm_fallback(
                 )
             )
 
-        # Secteur : exact URL + preuve externe obligatoire.
+        # Secteur : le JSON propose, Cyberwatch vérifie identité et activité.
         if item.Sector == config.SECTOR_UNKNOWN and record.sector != config.SECTOR_UNKNOWN:
-            if strategy == "source_url" and record.evidence_urls:
+            derived_sector, decision, evidence = _sector_gate(item, record, strategy)
+            if decision == "APPLIED":
                 previous = item.Sector
-                item.Sector = record.sector
+                item.Sector = derived_sector
                 stats["llm_sector_fallback"] += 1
                 provenance.append(
                     _provenance_row(
@@ -326,13 +462,19 @@ def apply_source_llm_fallback(
                         record.sector,
                         item.Sector,
                         confidence="HIGH",
-                        evidence=" | ".join(record.evidence_urls),
+                        evidence=evidence,
                         strategy=strategy,
-                        decision="APPLIED",
+                        decision=decision,
                     )
                 )
             else:
                 stats["llm_sector_rejected"] += 1
+                if decision == "REJECTED_IDENTITY_EVIDENCE":
+                    stats["llm_sector_identity_rejected"] += 1
+                elif decision == "REJECTED_NO_ACTIVITY_EVIDENCE":
+                    stats["llm_sector_activity_rejected"] += 1
+                elif decision == "REJECTED_SECTOR_CONFLICT":
+                    stats["llm_sector_conflict_rejected"] += 1
                 provenance.append(
                     _provenance_row(
                         item,
@@ -341,9 +483,9 @@ def apply_source_llm_fallback(
                         record.sector,
                         item.Sector,
                         confidence="",
-                        evidence=" | ".join(record.evidence_urls),
+                        evidence=evidence,
                         strategy=strategy,
-                        decision="REJECTED_NO_STRONG_EVIDENCE",
+                        decision=decision,
                     )
                 )
 
