@@ -20,6 +20,7 @@ from . import config, identity, sources, status, store
 from .dedup import group_components
 from .model import Incident, Item
 from .normalize import organisation_key
+from .org_identity import effective_organisation_key
 
 
 _FACT_TEXT_FIELDS = {
@@ -53,6 +54,19 @@ _SUMMARY_RICHNESS_KEYS = (
     "initial_access", "attack_flow", "impact", "threat_actor",
     "data_types", "vulnerabilities", "affected_count",
 )
+
+
+def _component_incident_id(ordered: list[Item]) -> str:
+    """Reproduit exactement la politique d'identité de `dedup.build_incidents`."""
+    component_key = effective_organisation_key(
+        ordered[0].Organisation_Raw, ordered[0].Organisation_Key
+    )
+    incident_key = (
+        ordered[0].Organisation_Key or component_key
+        if len(ordered) == 1
+        else component_key
+    )
+    return identity.incident_id(incident_key, ordered[0].Item_ID)
 
 
 def _source_fact_payload(row: dict) -> dict | None:
@@ -140,9 +154,7 @@ def _source_facts_by_incident(items: list[Item], fact_rows: list[dict]) -> dict[
         ordered = identity.sort_items(component)
         if not ordered:
             continue
-        incident_id = identity.incident_id(
-            ordered[0].Organisation_Key, ordered[0].Item_ID
-        )
+        incident_id = _component_incident_id(ordered)
         facts: list[dict] = []
         for item in ordered:
             facts.extend(by_item.get(item.Item_ID, []))
@@ -258,9 +270,7 @@ def _local_analysis_by_incident(items: list[Item]) -> dict[str, dict]:
         llm_items = [item for item in ordered if item.Source_ID == "VEILLE_LLM"]
         if not llm_items:
             continue
-        incident_id = identity.incident_id(
-            ordered[0].Organisation_Key, ordered[0].Item_ID
-        )
+        incident_id = _component_incident_id(ordered)
         matches = []
         for item in llm_items:
             key = (item.Organisation_Key, item.Event_Date or item.Published_Date)
