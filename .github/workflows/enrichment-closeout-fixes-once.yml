@@ -35,7 +35,7 @@ jobs:
           PYTHONPATH="$PWD" python .github/scripts/apply_enrichment_closeout.py
           PYTHONPATH="$PWD" python .github/scripts/apply_enrichment_closeout_v2.py
           PYTHONPATH="$PWD" python .github/scripts/apply_enrichment_closeout_v3.py
-          PYTHONPATH="$PWD" python .github/scripts/apply_enrichment_closeout_v4.py
+          PYTHONPATH="$PWD" python .github/scripts/apply_enrichment_closeout_v5.py
 
       - name: Test code before data refresh
         run: |
@@ -68,6 +68,7 @@ jobs:
                  .github/scripts/apply_enrichment_closeout_v2.py \
                  .github/scripts/apply_enrichment_closeout_v3.py \
                  .github/scripts/apply_enrichment_closeout_v4.py \
+                 .github/scripts/apply_enrichment_closeout_v5.py \
                  .github/scripts/refresh_enrichment_closeout.py \
                  .github/scripts/audit_enrichment_closeout.py
           git add cyberwatch/source_facts_ai.py cyberwatch/source_facts.py cyberwatch/site.py \
