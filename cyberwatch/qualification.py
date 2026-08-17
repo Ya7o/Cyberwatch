@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, enrichment, identity, quality_overrides, source_llm_fallback
+from . import config, enrichment, identity, source_llm_fallback
 from .dedup import build_incidents
 from .model import Incident, Item
 
@@ -79,16 +79,15 @@ def stabilize_threats(items: list[Item]) -> int:
 def qualify(items: list[Item]) -> QualificationReport:
     """Applique la qualification canonique puis les fallbacks source gardés.
 
-    Les corrections manuelles auditées restent autoritaires : elles sont
-    appliquées avant la couche challenger, qui ne peut compléter que des valeurs
-    encore ``Inconnu``. Les exports LLM ne peuvent jamais modifier ``Threat``.
+    Le pipeline canonique ne contient aucune correction manuelle par ``Item_ID``.
+    La couche challenger peut uniquement compléter des valeurs encore ``Inconnu``
+    et les exports LLM ne peuvent jamais modifier ``Threat``.
     """
     ordered = identity.sort_items(items)
     reference = enrichment.load_reference()
     changes = enrichment.enrich_items(ordered, reference)
     changes.update(enrichment.backfill_unknowns(ordered, reference))
     changes["threat_stabilized"] = stabilize_threats(ordered)
-    changes.update(quality_overrides.apply_overrides(ordered))
 
     llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered)
     changes.update(llm_changes)
