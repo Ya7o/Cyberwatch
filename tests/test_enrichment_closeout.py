@@ -67,3 +67,66 @@ def test_merge_source_facts_preserve_legacy_but_clear_refreshable():
     assert evidence["Threat_Actor"] == "proof actor"
     assert "Attack_Flow_JSON" not in evidence
     assert "Impact" not in evidence
+
+
+
+def test_summary_fallback_depuis_faits_structures_sans_appel_ai():
+    fact = {
+        "Summary": "",
+        "Initial_Access": "",
+        "Attack_Flow_JSON": "",
+        "Impact": "",
+        "Data_Volume_Raw": "20,6 Go",
+        "Affected_Count_Raw": "",
+        "Affected_Unit": "",
+        "File_Count": "39000",
+        "Data_Types_JSON": json.dumps(["adresses e-mail", "données bancaires"]),
+    }
+    evidence = {
+        "Data_Volume_Raw": "20,6 Go",
+        "File_Count": "39 000 fichiers",
+        "Data_Types_JSON": {
+            "adresses e-mail": "adresses e-mail",
+            "données bancaires": "données bancaires",
+        },
+    }
+    source_facts._derive_summary(fact, evidence)
+    assert fact["Summary"] == (
+        "Éléments documentés : 20,6 Go de données et 39 000 fichiers ; "
+        "données concernées : adresses e-mail et données bancaires."
+    )
+    assert evidence["Summary"]
+
+
+def test_summary_fallback_ne_duplique_pas_un_compteur_de_fichiers():
+    fact = {
+        "Summary": "",
+        "Initial_Access": "",
+        "Attack_Flow_JSON": "",
+        "Impact": "",
+        "Data_Volume_Raw": "3,7 Go",
+        "Affected_Count_Raw": "49 168 fichiers",
+        "Affected_Unit": "files",
+        "File_Count": "49168",
+        "Data_Types_JSON": "",
+    }
+    evidence = {"Affected_Count_Raw": "49 168 fichiers"}
+    source_facts._derive_summary(fact, evidence)
+    assert fact["Summary"] == "Éléments documentés : 3,7 Go de données et 49 168 fichiers."
+
+
+def test_summary_fallback_s_abstient_sur_un_seul_type_isole():
+    fact = {
+        "Summary": "",
+        "Initial_Access": "",
+        "Attack_Flow_JSON": "",
+        "Impact": "",
+        "Data_Volume_Raw": "",
+        "Affected_Count_Raw": "",
+        "Affected_Unit": "",
+        "File_Count": "",
+        "Data_Types_JSON": json.dumps(["mots de passe"]),
+    }
+    evidence = {"Data_Types_JSON": {"mots de passe": "mots de passe"}}
+    source_facts._derive_summary(fact, evidence)
+    assert fact["Summary"] == ""

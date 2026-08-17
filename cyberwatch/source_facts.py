@@ -477,6 +477,76 @@ _INITIAL_ACCESS_LABELS = {
 }
 
 
+def _format_int_fr(value: str) -> str:
+    try:
+        return f"{int(str(value).strip()):,}".replace(",", " ")
+    except (TypeError, ValueError):
+        return str(value or "").strip()
+
+
+def _join_fr(values: list[str]) -> str:
+    values = [str(value).strip() for value in values if str(value).strip()]
+    if not values:
+        return ""
+    if len(values) == 1:
+        return values[0]
+    if len(values) == 2:
+        return f"{values[0]} et {values[1]}"
+    return ", ".join(values[:-1]) + f" et {values[-1]}"
+
+
+def _evidence_values(value) -> list[str]:
+    if isinstance(value, str):
+        return [value.strip()] if value.strip() else []
+    if isinstance(value, dict):
+        return [str(item).strip() for item in value.values() if str(item).strip()]
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return []
+
+
+def _structured_summary(fact: dict, evidence: dict) -> tuple[str, list[str]]:
+    details: list[str] = []
+    proofs: list[str] = []
+
+    volume = str(fact.get("Data_Volume_Raw") or "").strip()
+    if volume:
+        details.append(f"{volume} de données")
+        proofs.extend(_evidence_values(evidence.get("Data_Volume_Raw")) or [volume])
+
+    affected_raw = str(fact.get("Affected_Count_Raw") or "").strip()
+    affected_unit = str(fact.get("Affected_Unit") or "").strip()
+    if affected_raw:
+        details.append(affected_raw)
+        proofs.extend(_evidence_values(evidence.get("Affected_Count_Raw")) or [affected_raw])
+
+    file_count = str(fact.get("File_Count") or "").strip()
+    if file_count and affected_unit != "files":
+        details.append(f"{_format_int_fr(file_count)} fichiers")
+        proofs.extend(_evidence_values(evidence.get("File_Count")))
+
+    data_types = _loads_json(str(fact.get("Data_Types_JSON") or ""))
+    if not isinstance(data_types, list):
+        data_types = []
+    data_types = [str(value).strip() for value in data_types if str(value).strip()][:3]
+    if data_types:
+        proofs.extend(_evidence_values(evidence.get("Data_Types_JSON")))
+
+    # Un seul type de donnée sans volume ni comptage est trop pauvre pour
+    # justifier une carte de synthèse. On préfère l'abstention à un doublon UI.
+    if not details and len(data_types) < 2:
+        return "", []
+
+    if details:
+        summary = "Éléments documentés : " + _join_fr(details)
+        if data_types:
+            summary += " ; données concernées : " + _join_fr(data_types)
+        summary += "."
+    else:
+        summary = "Données concernées : " + _join_fr(data_types) + "."
+    return summary, proofs
+
+
 def _derive_summary(fact: dict, evidence: dict) -> None:
     if str(fact.get("Summary") or "").strip():
         return
@@ -505,14 +575,18 @@ def _derive_summary(fact: dict, evidence: dict) -> None:
         proof = evidence.get("Impact")
         if isinstance(proof, str) and proof:
             proofs.append(proof)
-    if not parts:
-        return
-    summary = " ".join(parts)
+    if parts:
+        summary = " ".join(parts)
+    else:
+        summary, structured_proofs = _structured_summary(fact, evidence)
+        proofs.extend(structured_proofs)
+        if not summary:
+            return
     if len(summary) > source_facts_ai.MAX_SUMMARY_CHARS:
         summary = summary[:source_facts_ai.MAX_SUMMARY_CHARS - 1].rsplit(" ", 1)[0].rstrip(" ,;:") + "…"
     fact["Summary"] = summary
     if proofs:
-        evidence["Summary"] = " | ".join(proofs)[:source_facts_ai.MAX_EVIDENCE_CHARS]
+        evidence["Summary"] = " | ".join(dict.fromkeys(proofs))[:source_facts_ai.MAX_EVIDENCE_CHARS]
 
 
 def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
