@@ -3563,7 +3563,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "5doigts2pieds",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -4351,7 +4351,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Batipro33",
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -8062,7 +8062,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ONPP",
-  "sector": "Santé",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -13124,7 +13124,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Vacances Lagrange",
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -13524,7 +13524,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "EFC Formation",
-  "sector": "Éducation / Formation",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -17289,7 +17289,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Gauthier Tissus",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -17517,45 +17517,6 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-04-15",
-  "facts": [
-   {
-    "claim_status": "confirmed",
-    "data_types": [
-     "Nom, prénom",
-     "Identifiant de compte",
-     "Adresse email",
-     "Raison sociale",
-     "SIREN",
-     "ID portail",
-     "Numéro d’habilitation et d’aggrément",
-     "Adresse postale",
-     "Numéro de téléphone"
-    ],
-    "evidence_urls": [
-     "https://bonjourlafuite.eu.org/img/france-titre.png"
-    ],
-    "item_id": "ITM-b96135c6ec8d1130",
-    "source": "BONJOURLAFUITE"
-   },
-   {
-    "affected_count": 19000000,
-    "affected_count_raw": "19 millions d’enregistrements",
-    "affected_unit": "records",
-    "claim_status": "denied",
-    "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
-     "dates de naissance",
-     "pièces d'identité",
-     "passeports",
-     "données personnelles"
-    ],
-    "item_id": "ITM-b5fdd2d18d6b6f52",
-    "source": "CYBERATTAQUE_ORG"
-   }
-  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-4DE5AB7C70B2",
   "items": 2,
@@ -18146,7 +18107,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ImmoJeune",
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -21528,37 +21489,6 @@
    {
     "claim_status": "confirmed",
     "data_types": [
-     "Ransomware"
-    ],
-    "evidence_urls": [
-     "https://bonjourlafuite.eu.org/img/mingat.png"
-    ],
-    "item_id": "ITM-9027fb4ba11d8511",
-    "source": "BONJOURLAFUITE"
-   }
-  ],
-  "first_seen": "2026-08-17T12:34:51+04:00",
-  "id": "INC-21FBE6D32B11",
-  "items": 1,
-  "last_seen": "2026-08-17T12:34:51+04:00",
-  "location": "France métropolitaine",
-  "org": "Mingat",
-  "sector": "Inconnu",
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "threat": "Ransomware",
-  "urls": [
-   "https://bonjourlafuite.eu.org/img/mingat.png"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-03-18",
-  "facts": [
-   {
-    "claim_status": "confirmed",
-    "data_types": [
      "Nom, prénom",
      "Adresse mail",
      "Information liés au compte utilisateur",
@@ -21747,27 +21677,20 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-03-16",
-  "facts": [
-   {
-    "discovered_date": "2026-03-16",
-    "item_id": "ITM-b7099e3a9061d109",
-    "source": "RANSOMWARE_LIVE",
-    "threat_actor": "akira",
-    "victim_website": "https://mingat.com"
-   }
-  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-06FD471BEFE3",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Mingat Location",
   "sector": "Transport / Logistique",
   "sources": [
+   "BONJOURLAFUITE",
    "RANSOMWARE_LIVE"
   ],
   "threat": "Ransomware",
   "urls": [
+   "https://bonjourlafuite.eu.org/img/mingat.png",
    "https://mingat.com"
   ]
  },
