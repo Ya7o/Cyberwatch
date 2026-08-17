@@ -1,0 +1,54 @@
+name: Enrichment Cache Second Pass Once
+
+on:
+  push:
+    branches:
+      - agent/enrichment-cache-second-pass-20260817
+    paths:
+      - '.github/workflows/enrichment-cache-second-pass-once.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/enrichment-cache-second-pass-20260817
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Verify unchanged items are fully served from cache
+        env:
+          SOURCE_FACTS_AI_ENABLED: '0'
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from cyberwatch import config, enrichment, source_facts_ai, sources, status, watchlists
+          from cyberwatch.http import Budget, HttpClient
+          from cyberwatch.runner import MODE_MAJ, make_run_context, run_source
+
+          context = make_run_context(MODE_MAJ, target_start="2026-01-01", layers=config.LAYER_GROUPS["core"])
+          client = HttpClient(run_budget=Budget(config.MAX_REQUESTS_PER_RUN, config.MAX_SECONDS_PER_RUN, "cache-second-pass"))
+          known_orgs = watchlists.known_organisations()
+          entity_index = watchlists.entity_index()
+          territories = watchlists.entity_territories()
+          reference = enrichment.load_reference()
+          for source_id in ("FRENCHBREACHES", "CYBERATTAQUE_ORG"):
+              spec = sources.by_id(source_id)
+              rows = []
+              outcome, collected_items, _ = run_source(client, spec, context, known_orgs, entity_index, territories, reference, None, None, rows)
+              print(f"{source_id}: status={outcome.status} coverage={outcome.coverage}% items={len(collected_items)} facts={len(rows)}")
+              if outcome.status != status.OK or outcome.coverage < 100:
+                  raise SystemExit(f"source incomplete: {source_id}")
+          stats = source_facts_ai.runtime_stats()
+          print("SECOND_PASS_STATS=" + json.dumps(stats, ensure_ascii=False, sort_keys=True))
+          if stats.get("calls_attempted") != 0:
+              raise SystemExit("unexpected AI calls during disabled second pass")
+          if stats.get("items_would_call") != 0:
+              raise SystemExit(f"cache misses on second pass: {stats.get('items_would_call')}")
+          if stats.get("items_fully_cached") < 490:
+              raise SystemExit(f"unexpectedly low full-cache coverage: {stats.get('items_fully_cached')}")
+          PY
