@@ -37,6 +37,33 @@ jobs:
       - name: Golden dédup certifié
         run: python scripts/evaluate_dedup_golden.py
 
+      - name: Audit couverture Sector — état publié
+        run: python scripts/audit_sector_coverage.py --output ""
+
+      - name: Golden qualification — état publié
+        run: |
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-before.csv \
+            --json /tmp/golden-before.json
+
+      - name: Simuler la requalification offline
+        run: python -m cyberwatch backfill-unknowns
+
+      - name: Audit couverture Sector — après requalification
+        run: python scripts/audit_sector_coverage.py --output ""
+
+      - name: Golden qualification — après requalification
+        run: |
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-after.csv \
+            --json /tmp/golden-after.json
+
+      - name: Garde de précision Sector
+        run: |
+          python scripts/check_sector_golden_regression.py \
+            /tmp/golden-before.json \
+            /tmp/golden-after.json
+
       - name: Syntaxe dashboard
         run: |
           node --check assets/app.js

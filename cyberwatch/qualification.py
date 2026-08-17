@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 from dataclasses import dataclass
 
-from . import config, enrichment, identity, source_llm_fallback, store
+from . import config, enrichment, identity, sector as sector_policy, source_llm_fallback, store
 from .dedup import build_incidents_with_registry
 from .model import Incident, Item
 from .sector_fallback_migration import restore_legacy_sector_fallbacks
@@ -86,6 +87,50 @@ def stabilize_threats(items: list[Item]) -> int:
     return changed
 
 
+def backfill_structured_source_sectors(
+    items: list[Item], source_fact_rows: list[dict[str, str]] | None = None
+) -> int:
+    """Réapplique les secteurs structurés déjà archivés dans ``source_facts``.
+
+    Sprint Sector A : les anciens items ransomware.live ne repassent pas par le
+    collecteur lors d'un simple ``backfill-unknowns``. Leur champ source
+    ``activity/sector/industry`` est pourtant conservé dans ``Source_Sector_Raw``.
+    On peut donc profiter d'un mapping taxonomique amélioré sans réseau et sans
+    texte libre.
+
+    Garde-fous : source RANSOMWARE_LIVE uniquement, secteur courant Inconnu,
+    une seule valeur brute non vide par Item_ID, et mapping fermé vers la
+    taxonomie Cyberwatch. Toute ambiguïté reste Inconnu.
+    """
+    rows = (
+        source_fact_rows
+        if source_fact_rows is not None
+        else store.read_csv(store.SOURCE_FACTS_CSV)
+    )
+    raw_by_item: dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        if row.get("Source_ID") != "RANSOMWARE_LIVE":
+            continue
+        raw = (row.get("Source_Sector_Raw") or "").strip()
+        item_id = (row.get("Item_ID") or "").strip()
+        if item_id and raw:
+            raw_by_item[item_id].add(raw)
+
+    changed = 0
+    for item in items:
+        if item.Source_ID != "RANSOMWARE_LIVE" or item.Sector != config.SECTOR_UNKNOWN:
+            continue
+        raw_values = raw_by_item.get(item.Item_ID, set())
+        if len(raw_values) != 1:
+            continue
+        candidate = sector_policy.classify_source_sector(next(iter(raw_values)))
+        if candidate == config.SECTOR_UNKNOWN:
+            continue
+        item.Sector = candidate
+        changed += 1
+    return changed
+
+
 def neutralize_sector_fallback(
     items: list[Item],
     changes: dict[str, int],
@@ -146,10 +191,11 @@ def qualify(items: list[Item]) -> QualificationReport:
     valeur courante est encore exactement celle qui avait été injectée. Une
     correction ultérieure différente reste donc protégée.
 
-    Localisation conserve son fallback mesuré comme fiable. Threat reste
-    strictement protégé. Sector est désormais diagnostique uniquement : les
-    gardes et preuves sont calculés, mais toute mutation ``APPLIED`` est annulée
-    avant construction des incidents et hachage du snapshot.
+    Les secteurs structurés ransomware.live archivés dans ``source_facts`` sont
+    ensuite rejoués avec la table taxonomique courante. Localisation conserve
+    son fallback mesuré comme fiable. Threat reste strictement protégé. Sector
+    challenger reste diagnostique uniquement : toute mutation ``APPLIED`` est
+    annulée avant construction des incidents et hachage du snapshot.
 
     Le pipeline canonique ne contient aucune correction manuelle par ``Item_ID``.
     """
@@ -164,6 +210,7 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes = enrichment.enrich_items(ordered, reference)
     changes["llm_sector_restored"] = restored
     changes.update(enrichment.backfill_unknowns(ordered, reference))
+    changes["sector_structured_source_backfill"] = backfill_structured_source_sectors(ordered)
     changes["threat_stabilized"] = stabilize_threats(ordered)
 
     llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered)

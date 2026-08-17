@@ -13,6 +13,18 @@ from . import config
 from .normalize import organisation_key, searchable
 
 
+# Catégories réellement observées dans le champ structuré ``sector`` de
+# ransomware.live lors de l'audit Sprint Sector A. Elles sont séparées de la
+# table générique ACTIVITY_TO_SECTOR pour rendre explicite qu'il s'agit de
+# libellés de taxonomie source, et non de mots-clés acceptables dans du texte
+# libre. Seules les correspondances sémantiquement univoques sont admises.
+_STRUCTURED_SOURCE_SECTOR_ALIASES = {
+    "professional services": config.SECTOR_SERVICES,
+    "technology": config.SECTOR_TECH,
+    "retail e commerce": config.SECTOR_RETAIL,
+}
+
+
 def _contains(haystack: str, needle: str) -> bool:
     pattern = r"(?<!\w)" + re.escape(needle.strip()) + r"(?!\w)"
     return re.search(pattern, haystack) is not None
@@ -36,7 +48,11 @@ def classify_source_sector(given: str = "") -> str:
         return config.SECTOR_UNKNOWN
     if cleaned in config.SECTORS:
         return cleaned
-    return config.ACTIVITY_TO_SECTOR.get(searchable(cleaned), config.SECTOR_UNKNOWN)
+    key = searchable(cleaned)
+    return config.ACTIVITY_TO_SECTOR.get(
+        key,
+        _STRUCTURED_SOURCE_SECTOR_ALIASES.get(key, config.SECTOR_UNKNOWN),
+    )
 
 
 def _watchlist_sector(organisation: str) -> str:

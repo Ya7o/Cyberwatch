@@ -134,6 +134,12 @@ jobs:
           print(f"- Secteur inconnu : {sum(i.Secteur == config.SECTOR_UNKNOWN for i in incidents)}")
           print(f"- Localisation inconnue : {sum(i.Localisation == config.LOC_INCONNU for i in incidents)}")
           PY
+          python scripts/audit_sector_coverage.py
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "### Couverture Sector détaillée" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          python scripts/audit_sector_coverage.py --output "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Contrôles et répétabilité
         if: steps.kind.outputs.writes == 'true'
@@ -145,6 +151,9 @@ jobs:
             --source-facts data/source_facts.csv \
             --check \
             --check-regression
+          python scripts/evaluate_golden.py \
+            --details /tmp/golden-qualification.csv \
+            --json /tmp/golden-qualification.json
           python scripts/export_dedup_audit.py \
             --items data/items.csv \
             --org-cache data/org_enrichment_cache.csv \
