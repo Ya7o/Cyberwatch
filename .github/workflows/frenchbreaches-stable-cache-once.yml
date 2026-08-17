@@ -34,7 +34,7 @@ jobs:
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '100'
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: '0.10'
         run: PYTHONPATH="$PWD" python .github/scripts/run_frenchbreaches_stable_first_pass.py
-      - name: Second pass require zero cache misses
+      - name: Second pass validate historical cache reuse
         env:
           SOURCE_FACTS_AI_ENABLED: '0'
         run: PYTHONPATH="$PWD" python .github/scripts/run_enrichment_cache_second_pass.py
