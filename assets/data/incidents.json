@@ -5,19 +5,22 @@
   "facts": [
    {
     "affected_count": 50000,
-    "affected_count_raw": "50 000 personnes",
+    "affected_count_raw": "50 000 victimes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à une partie du système d'information",
+      "evidence": "Achat-Or-Et-Argent.fr informe ses clients d’un accès non autorisé à certaines données"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
      "mots de passe",
      "données bancaires"
     ],
     "item_id": "ITM-1727d5995cd0b94f",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Accès non autorisé à une partie du système d'information."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -30,6 +33,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à une partie du système d'information.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/achat-or-et-argent-mqguqijb2kwf64ad0w7"
@@ -141,7 +145,6 @@
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
-     "adresses postales",
      "noms et prénoms",
      "identifiants"
     ],
@@ -254,7 +257,7 @@
    },
    {
     "affected_count": 13870,
-    "affected_count_raw": "13 870 personnes",
+    "affected_count_raw": "13 870 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -299,20 +302,23 @@
    },
    {
     "affected_count": 512,
-    "affected_count_raw": "512 personnes",
+    "affected_count_raw": "512 victimes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Publication sur forum cybercriminel revendiquant la fuite et diffusion d’une base France Casse.",
+      "evidence": "« Une nouvelle publication apparue sur un forum cybercriminel revendique la diffusion d’une base de données provenant de France Casse »"
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
      "identifiants",
      "mots de passe",
      "cartes de paiement"
     ],
     "item_id": "ITM-2ccefab3d66d64ac",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Publication sur forum cybercriminel revendiquant la fuite et diffusion d’une base France Casse.."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -326,6 +332,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Publication sur forum cybercriminel revendiquant la fuite et diffusion d’une base France Casse..",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/france-casse-msv87fj5v652mg9x2mn",
@@ -338,7 +345,7 @@
   "facts": [
    {
     "affected_count": 435903,
-    "affected_count_raw": "435 903 personnes",
+    "affected_count_raw": "435 903 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -374,14 +381,13 @@
   "facts": [
    {
     "affected_count": 472760,
-    "affected_count_raw": "472 760 personnes",
+    "affected_count_raw": "472 760 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms"
+     "adresses postales"
     ],
     "item_id": "ITM-c183629523269186",
     "source": "FRENCHBREACHES"
@@ -504,15 +510,12 @@
   "facts": [
    {
     "affected_count": 20274,
-    "affected_count_raw": "20 274 personnes",
+    "affected_count_raw": "20 274 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
      "noms et prénoms",
-     "dates de naissance",
      "données personnelles"
     ],
     "data_volume": "2,4 Mo",
@@ -541,7 +544,7 @@
   "facts": [
    {
     "affected_count": 2783436,
-    "affected_count_raw": "2 783 436 personnes",
+    "affected_count_raw": "2 783 436 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -592,17 +595,10 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "attack_flow": [
-     {
-      "action": "Diffusion des données attribuées à Le Bon Matériel sur un forum cybercriminel",
-      "evidence": "Présentée par son auteur comme « BlgCloud Leak #7 », cette publication s’inscrit dans une série de fuites revend..."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
-     "adresses postales",
      "noms et prénoms",
      "identifiants"
     ],
@@ -610,7 +606,6 @@
     "file_count": 48290,
     "item_id": "ITM-5384bb2edc1e590e",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Diffusion des données attribuées à Le Bon Matériel sur un forum cybercriminel.",
     "threat_actor": "BlgCloud"
    }
   ],
@@ -625,7 +620,6 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Diffusion des données attribuées à Le Bon Matériel sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-bon-mat-riel-blgcloud-mstkb430kht3b29drb",
@@ -646,12 +640,12 @@
    },
    {
     "affected_count": 2041778,
-    "affected_count_raw": "2 041 778 personnes",
+    "affected_count_raw": "2 041 778 victimes",
     "affected_unit": "people",
     "attack_flow": [
      {
-      "action": "Exfiltration partielle revendiquée de données cadastrales (252 149 lignes) via le SPDC",
-      "evidence": "Le pirate revendique une extraction partielle de 252 149 lignes"
+      "action": "extraction partielle de données cadastrales (252 149 lignes)",
+      "evidence": "« extraction partielle de 252 149 lignes , représentant selon lui 2 041 778 personnes »"
      }
     ],
     "claim_status": "claimed",
@@ -662,7 +656,7 @@
     "impact": "Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir lui-même cessé l'extraction.",
     "item_id": "ITM-1405c2be130d1ecd",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Exfiltration partielle revendiquée de données cadastrales (252 149 lignes) via le SPDC. Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le…"
+    "summary": "Déroulé documenté : extraction partielle de données cadastrales (252 149 lignes). Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir…"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -676,7 +670,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Exfiltration partielle revendiquée de données cadastrales (252 149 lignes) via le SPDC. Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le…",
+  "summary": "Déroulé documenté : extraction partielle de données cadastrales (252 149 lignes). Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir…",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-spdc-mssm0kklrsqu9rd3vd",
@@ -818,10 +812,8 @@
      "noms et prénoms",
      "données personnelles"
     ],
-    "impact": "Exposition de données personnelles des usagers",
     "item_id": "ITM-f4d3e4a1b9bf10c0",
-    "source": "FRENCHBREACHES",
-    "summary": "Impact documenté : Exposition de données personnelles des usagers."
+    "source": "FRENCHBREACHES"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -836,7 +828,6 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Impact documenté : Exposition de données personnelles des usagers.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/france-vae.png",
@@ -904,14 +895,8 @@
    },
    {
     "affected_count": 90000,
-    "affected_count_raw": "90 000 personnes",
+    "affected_count_raw": "90 000 victimes",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "Exploitation de la vulnérabilité CVE-2026-72898 dans Metabase",
-      "evidence": "L’incident est lié à l’exploitation d’une vulnérabilité critique dans Metabase, référencée CVE-2026-72898 et évaluée avec un score CVSS de 10/10."
-     }
-    ],
     "claim_status": "confirmed",
     "cvss": "CVSS de 10/10",
     "data_types": [
@@ -924,7 +909,7 @@
     "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-b8f59e73458e855a",
     "source": "FRENCHBREACHES",
-    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation de la vulnérabilité CVE-2026-72898 dans Metabase. Impact documenté : 10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;.",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Impact documenté : 10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;.",
     "vulnerabilities": [
      "CVE-2026-72898"
     ]
@@ -941,7 +926,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation de la vulnérabilité CVE-2026-72898 dans Metabase. Impact documenté : 10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;.",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Impact documenté : 10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf",
@@ -960,7 +945,6 @@
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
-     "noms et prénoms",
      "identifiants"
     ],
     "impact": "⚠️ La récupération de 678 438 lignes avant interruption de l’accès.",
@@ -1007,7 +991,6 @@
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
-     "adresses postales",
      "identifiants"
     ],
     "item_id": "ITM-89230a8f51b8c522",
@@ -1147,9 +1130,6 @@
     "affected_unit": "accounts",
     "claim_status": "claimed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses IP",
      "noms et prénoms",
      "identifiants",
      "mots de passe"
@@ -1232,8 +1212,14 @@
    },
    {
     "affected_count": 30594,
-    "affected_count_raw": "30 594 personnes",
+    "affected_count_raw": "30 594 victimes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à l’intranet collaboratif Orion",
+      "evidence": "accès non autorisé à son Intranet collaboratif Orion"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1242,7 +1228,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-d08086f886b642e8",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Accès non autorisé à l’intranet collaboratif Orion."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1256,6 +1243,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à l’intranet collaboratif Orion.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/agence-pour-l-enseignement-fran-ais-l-tranger-aefe-msp6elbt3d5a63mumeq",
@@ -1334,20 +1322,17 @@
    },
    {
     "affected_count": 80000,
-    "affected_count_raw": "80 000 personnes",
+    "affected_count_raw": "80 000 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
      "adresses postales",
-     "noms et prénoms",
      "données personnelles"
     ],
-    "impact": "Exposition de données de contact d’environ 80 000 personnes (adresses mail, postales et numéros de téléphone); aucune donnée de santé affectée.",
     "item_id": "ITM-64485c5121289c6d",
-    "source": "FRENCHBREACHES",
-    "summary": "Impact documenté : Exposition de données de contact d’environ 80 000 personnes (adresses mail, postales et numéros de téléphone); aucune donnée de santé affectée."
+    "source": "FRENCHBREACHES"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1361,7 +1346,6 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Impact documenté : Exposition de données de contact d’environ 80 000 personnes (adresses mail, postales et numéros de téléphone); aucune donnée de santé affectée.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sant-publique-france-msoz0zsj3vgi774sa0i",
@@ -1420,14 +1404,13 @@
    },
    {
     "affected_count": 1367197,
-    "affected_count_raw": "1 367 197 personnes",
+    "affected_count_raw": "1 367 197 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
      "noms et prénoms",
      "dates de naissance",
-     "passeports",
      "données personnelles"
     ],
     "file_count": 311000,
@@ -1597,20 +1580,19 @@
     "affected_unit": "accounts",
     "attack_flow": [
      {
-      "action": "Compromission du site actes.sixt-sur-aff.fr et récupération de sa base WordPress",
-      "evidence": "L'attaquant affirme avoir compromis le site actes.sixt-sur-aff.fr, récupéré sa base de données WordPress et obtenu un accès administrateur."
+      "action": "Defacement du site revendiqué",
+      "evidence": "L'attaquant revendique explicitement un defacement sous la signature : « X-VDP-X »"
      }
     ],
     "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
-     "identifiants",
      "mots de passe",
      "données personnelles"
     ],
     "item_id": "ITM-c4b4c011082dd04b",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Compromission du site actes.sixt-sur-aff.fr et récupération de sa base WordPress.",
+    "summary": "Déroulé documenté : Defacement du site revendiqué.",
     "threat_actor": "diable'fire / X-VDP-X"
    }
   ],
@@ -1624,7 +1606,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Compromission du site actes.sixt-sur-aff.fr et récupération de sa base WordPress.",
+  "summary": "Déroulé documenté : Defacement du site revendiqué.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mairie-de-sixt-sur-aff-msmii0ydaxb7f5pq82k"
@@ -1718,20 +1700,22 @@
     "affected_count": 42000,
     "affected_count_raw": "plus de 42 000 comptes",
     "affected_unit": "accounts",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à des données personnelles traitées par les services municipaux",
+      "evidence": "des personnes non autorisées ont pu accéder à certaines données personnelles traitées par les services de la Ville"
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
-     "dates de naissance",
      "IBAN / RIB",
      "données de santé",
      "passeports",
      "données personnelles"
     ],
     "item_id": "ITM-38c266a12eff1272",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Accès non autorisé à des données personnelles traitées par les services municipaux."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1745,7 +1729,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : accès non autorisé à des données personnelles.",
+  "summary": "Déroulé documenté : Accès non autorisé à des données personnelles traitées par les services municipaux.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ville-de-gagny-msmim65d87im5z51ho4",
@@ -1773,15 +1757,12 @@
    },
    {
     "affected_count": 55949,
-    "affected_count_raw": "55 949 personnes",
+    "affected_count_raw": "55 949 victimes",
     "affected_unit": "people",
     "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
-     "numéros de téléphone",
      "adresses postales",
-     "noms et prénoms",
-     "identifiants",
      "données bancaires",
      "IBAN / RIB"
     ],
@@ -1831,7 +1812,6 @@
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
-     "adresses postales",
      "noms et prénoms",
      "identifiants"
     ],
@@ -1936,8 +1916,7 @@
      "adresses e-mail",
      "numéros de téléphone",
      "noms et prénoms",
-     "identifiants",
-     "IBAN / RIB"
+     "identifiants"
     ],
     "data_volume": "9,33 Go",
     "file_count": 45684,
@@ -1981,11 +1960,10 @@
    },
    {
     "affected_count": 80031,
-    "affected_count_raw": "80 031 personnes",
+    "affected_count_raw": "80 031 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
      "numéros de téléphone",
      "noms et prénoms"
     ],
@@ -2076,17 +2054,11 @@
    },
    {
     "affected_count": 198127,
-    "affected_count_raw": "198 127 personnes",
+    "affected_count_raw": "198 127 victimes",
     "affected_unit": "people",
     "claim_status": "claimed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
-     "dates de naissance",
-     "données bancaires",
-     "IBAN / RIB"
+     "données bancaires"
     ],
     "item_id": "ITM-f4aabe53126031a6",
     "source": "FRENCHBREACHES"
@@ -2268,7 +2240,7 @@
    },
    {
     "affected_count": 101,
-    "affected_count_raw": "101 personnes",
+    "affected_count_raw": "101 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -2366,7 +2338,7 @@
   "facts": [
    {
     "affected_count": 9834,
-    "affected_count_raw": "9 834 personnes",
+    "affected_count_raw": "9 834 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -2632,7 +2604,7 @@
   "facts": [
    {
     "affected_count": 200,
-    "affected_count_raw": "200 personnes",
+    "affected_count_raw": "200 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -2728,14 +2700,8 @@
    },
    {
     "affected_count": 3000000,
-    "affected_count_raw": "3 000 000 personnes",
+    "affected_count_raw": "3 000 000 victimes",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "Accès non autorisé via usurpation d’un compte professionnel pour accéder et télécharger des fichiers contenant des numéros de téléphone.",
-      "evidence": "Un compte professionnel a été usurpé afin d’accéder et de télécharger des fichiers contenant des numéros de téléphone."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "numéros de téléphone",
@@ -2744,7 +2710,7 @@
     "impact": "La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
     "item_id": "ITM-f690c99943f1ca81",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Accès non autorisé via usurpation d’un compte professionnel pour accéder et télécharger des fichiers contenant des numéros de téléphone.. Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée."
+    "summary": "Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -2759,7 +2725,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Accès non autorisé via usurpation d’un compte professionnel pour accéder et télécharger des fichiers contenant des numéros de téléphone.. Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
+  "summary": "Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/bloctel.png",
@@ -2812,17 +2778,21 @@
   "facts": [
    {
     "affected_count": 245812,
-    "affected_count_raw": "245 812 personnes",
+    "affected_count_raw": "245 812 victimes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "publication revendiquée par un cybercriminel sur un forum",
+      "evidence": "« Une publication diffusée sur un forum cybercriminel revendique le piratage d'une base de données associée au domaine certdc.inserm.fr. »"
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms",
-     "dates de naissance"
+     "numéros de téléphone"
     ],
     "item_id": "ITM-6e76853753006061",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : publication revendiquée par un cybercriminel sur un forum."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -2835,6 +2805,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : publication revendiquée par un cybercriminel sur un forum.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde"
@@ -2861,13 +2832,11 @@
    },
    {
     "affected_count": 2000,
-    "affected_count_raw": "2 000 personnes",
+    "affected_count_raw": "2 000 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales"
+     "adresses e-mail"
     ],
     "item_id": "ITM-96728e715b7df298",
     "source": "FRENCHBREACHES"
@@ -2941,7 +2910,7 @@
     "initial_access": "remote_access",
     "item_id": "ITM-783dfbd911a6ea5d",
     "source": "FRENCHBREACHES",
-    "summary": "Un cybercriminel affirme sur un forum la vente d’une base de données contenant 1 393 807 enregistrements d’Intermarché Drive, provenant d’un serveur RDP compromis dans le réseau d’Intermarché."
+    "summary": "Vecteur d’entrée documenté : un accès distant compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -2954,7 +2923,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Un cybercriminel affirme sur un forum la vente d’une base de données contenant 1 393 807 enregistrements d’Intermarché Drive, provenant d’un serveur RDP compromis dans le réseau d’Intermarché.",
+  "summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msf7vvhryw7nui45uho"
@@ -3033,7 +3002,7 @@
    },
    {
     "affected_count": 14511,
-    "affected_count_raw": "14 511 personnes",
+    "affected_count_raw": "14 511 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -3078,13 +3047,11 @@
    },
    {
     "affected_count": 189997,
-    "affected_count_raw": "189 997 personnes",
+    "affected_count_raw": "189 997 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
      "numéros de téléphone",
-     "noms et prénoms",
      "identifiants"
     ],
     "item_id": "ITM-6f803c07a32519a9",
@@ -3114,7 +3081,7 @@
   "facts": [
    {
     "affected_count": 287605,
-    "affected_count_raw": "287 605 personnes",
+    "affected_count_raw": "287 605 victimes",
     "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
@@ -3342,9 +3309,7 @@
     "affected_unit": "accounts",
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms"
+     "adresses e-mail"
     ],
     "impact": "Les mesures prises par TERVEO À la suite de la découverte de l'intrusion, l'entreprise indique avoir : mis le site hors ligne ;",
     "item_id": "ITM-386bf2c572aa1262",

@@ -23,6 +23,28 @@ _FEED_LINK_RE = re.compile(
     flags=re.IGNORECASE,
 )
 _HREF_RE = re.compile(r"""href=["']([^"']+)["']""", flags=re.IGNORECASE)
+_DYNAMIC_BLOCK_RE = re.compile(
+    r"<(?:script|style|noscript)\b[^>]*>.*?</(?:script|style|noscript)>",
+    flags=re.IGNORECASE | re.DOTALL,
+)
+_FRENCHBREACHES_SUFFIX_MARKERS = (
+    "Alertes liées",
+    "Si cet article vous a plu",
+    "← Retour aux alertes",
+)
+
+
+def stable_frenchbreaches_detail_text(html_text: str) -> str:
+    """Texte éditorial stable d'une fiche, sans blocs dynamiques hors article."""
+    cleaned_html = _DYNAMIC_BLOCK_RE.sub(" ", html_text or "")
+    text = " ".join(strip_html(cleaned_html).split())
+    cut = len(text)
+    for marker_text in _FRENCHBREACHES_SUFFIX_MARKERS:
+        pos = text.find(marker_text)
+        if pos > 0:
+            cut = min(cut, pos)
+    return text[:cut].strip()
+
 
 
 def discover_feeds(client, page_url: str, source_budget=None) -> list[str]:
@@ -84,7 +106,7 @@ def _hydrate_frenchbreaches_details(client, entries: list[RawEntry], budget) -> 
         response = client.fetch(entry.url, budget)
         if not response.ok:
             continue
-        text = " ".join(strip_html(response.text).split())
+        text = stable_frenchbreaches_detail_text(response.text)
         if not text:
             continue
         entry.content = text[:40000]
