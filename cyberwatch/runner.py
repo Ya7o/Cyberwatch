@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, enrichment, identity, sector as sector_policy, source_facts, sources, status, store, watchlists
+from . import ai, config, enrichment, identity, org_enrichment, sector as sector_policy, source_facts, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -348,6 +348,48 @@ def entry_to_item(
     )
 
 
+
+def _verify_native_ransomware_sector(
+    item: Item,
+    entry: RawEntry,
+    spec: SourceSpec,
+    ai_state: ai.AiRunState,
+) -> None:
+    """Corrige un secteur ransomware.live uniquement avec une preuve plus forte.
+
+    Le secteur structuré de ransomware.live reste le fallback de couverture.
+    En revanche, s'il contredit un registre exact validé ou une preuve de site
+    officiel déjà acceptée, la preuve organisationnelle gagne. Une absence de
+    match, une ambiguïté ou un NAF non mappable ne dégrade jamais le secteur
+    source en ``Inconnu``.
+    """
+    if spec.source_id != "RANSOMWARE_LIVE":
+        return
+    if not entry.sector or item.Sector == config.SECTOR_UNKNOWN:
+        return
+    if not ai_state.org_enrichment.enabled:
+        return
+
+    native_sector = sector_policy.classify_source_sector(entry.sector)
+    if native_sector == config.SECTOR_UNKNOWN or item.Sector != native_sector:
+        return
+
+    record = org_enrichment.resolve(
+        item.Organisation_Key,
+        item.Organisation_Raw,
+        item.Collected_As_Of,
+        ai_state.org_enrichment,
+    )
+    if record is None or record.Match_Status != org_enrichment.MATCHED:
+        return
+
+    candidate = record.Validated_Sector
+    if not candidate and record.Activity_Label:
+        candidate = org_enrichment.sector_for_activity_label(record.Activity_Label)
+    if candidate and candidate != config.SECTOR_UNKNOWN and candidate != item.Sector:
+        item.Sector = candidate
+
+
 def _resolve_history_status(result: CollectResult, source_status: str, window: Window) -> tuple[str, str]:
     """Couverture historique réelle (§stabilisation pré-release), orthogonale
     à `Status`/`Coverage` : générique, ne dépend d'aucun `source_id` — ne
@@ -426,6 +468,7 @@ def run_source(
         if item is not None:
             items.append(item)
             if ai_state is not None:
+                _verify_native_ransomware_sector(item, entry, spec, ai_state)
                 ai.qualify_item(item, entry, spec, ai_state)
             # Stabilisation Location v0.7.32 : hors pipeline IA, le défaut de
             # source reste le dernier recours après l'enrichissement potentiel.

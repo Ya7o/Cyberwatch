@@ -40,18 +40,11 @@ def classify_source_sector(given: str = "") -> str:
 
 
 def _watchlist_sector(organisation: str) -> str:
-    """Secteur d'une entité de veille exactement reconnue, aliases inclus.
-
-    La watchlist est un référentiel versionné et explicite : l'utiliser ici ne
-    réintroduit aucune heuristique sur les mots du nom. Une organisation hors
-    référentiel reste inconnue.
-    """
+    """Secteur d'une entité de veille exactement reconnue, aliases inclus."""
     key = organisation_key(organisation)
     if not key:
         return config.SECTOR_UNKNOWN
 
-    # Import local pour éviter de coupler l'initialisation du module de
-    # politique Sector à celle des listes de veille.
     from . import watchlists
 
     for entity in watchlists.ALL_ENTITIES:
@@ -62,12 +55,74 @@ def _watchlist_sector(organisation: str) -> str:
     return config.SECTOR_UNKNOWN
 
 
+# Vocabulaire sportif suffisamment discriminant pour qu'une « Fédération
+# française » ne soit plus automatiquement classée Sport. La fédération
+# maçonnique observée dans la DB est le cas de régression qui motive ce garde.
+_SPORT_NAME_TERMS = (
+    "football", "rugby", "handball", "basket", "basketball", "volley",
+    "tennis", "golf", "karate", "judo", "aikido", "motocyclisme",
+    "cyclisme", "danse", "voile", "escrime", "randonnee", "natation",
+    "athletisme", "gymnastique", "badminton", "hockey", "chasse",
+    "sport", "sports",
+)
+
+
+def _safe_institutional_name_sector(organisation: str) -> str:
+    blob = searchable(organisation)
+    if not blob:
+        return config.SECTOR_UNKNOWN
+
+    # Identités institutionnelles quasi auto-descriptives. Les variantes avec
+    # apostrophe deviennent « d » après normalisation (Mairie d'Eyguières,
+    # Université d'Avignon).
+    admin_prefixes = (
+        "mairie ", "ville de ", "commune de ", "the commune of ",
+        "ministere de ", "ministere des ", "ministry of ",
+        "prefecture de ", "metropole de ",
+    )
+    if blob.startswith(admin_prefixes):
+        return config.SECTOR_ADMIN
+
+    education_prefixes = (
+        "universite ", "university of ", "ecole nationale ",
+        "ecole superieure ", "academie de ", "rectorat de ",
+    )
+    if blob.startswith(education_prefixes):
+        return config.SECTOR_EDUCATION
+
+    if blob.startswith("mutuelle "):
+        return config.SECTOR_FINANCE
+
+    if "stade francais" in blob:
+        return config.SECTOR_SPORT
+    if blob.startswith("federation sportive "):
+        return config.SECTOR_SPORT
+    if blob.startswith(("federation francaise ", "federation nationale ")):
+        if any(_contains(blob, term) for term in _SPORT_NAME_TERMS):
+            return config.SECTOR_SPORT
+
+    return config.SECTOR_UNKNOWN
+
+
 def classify_sector_name(organisation: str) -> str:
     """Classe un nom uniquement avec des preuves nominatives sûres."""
     sector = _watchlist_sector(organisation)
     if sector != config.SECTOR_UNKNOWN:
         return sector
-    return _from_rules(organisation, config.SECTOR_NAME_RULES)
+
+    sector = _safe_institutional_name_sector(organisation)
+    if sector != config.SECTOR_UNKNOWN:
+        return sector
+
+    # On conserve les règles historiques sûres mais jamais la règle Sport
+    # générique « fédération française de » : le Sport est traité ci-dessus
+    # avec un vocabulaire sportif explicite.
+    safe_rules = [
+        (sector_name, patterns)
+        for sector_name, patterns in config.SECTOR_NAME_RULES
+        if sector_name != config.SECTOR_SPORT
+    ]
+    return _from_rules(organisation, safe_rules)
 
 
 def classify_sector_activity(activity_description: str) -> str:
