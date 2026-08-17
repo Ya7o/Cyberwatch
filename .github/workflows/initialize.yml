@@ -45,6 +45,8 @@ jobs:
           echo "LAYERS=${{ inputs.layers }}" >> "$GITHUB_ENV"
       - name: Tests unitaires
         run: python -m pytest tests/ -q
+      - name: Réinitialiser l'identité incidents du CREATE
+        run: rm -f data/incident_id_registry.csv
       - name: CREATE contrôlé
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
@@ -52,6 +54,9 @@ jobs:
           AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+          # Les recherches de sites officiels restent dans le worker Sector
+          # profond dédié ; le CREATE utilise le registre et le cache existant.
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         run: |
           ARGS=(--as-of "$AS_OF" --layers "$LAYERS")
           if [ -n "$TARGET_START" ]; then ARGS+=(--start "$TARGET_START"); fi
