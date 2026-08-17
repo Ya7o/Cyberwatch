@@ -3,7 +3,6 @@ name: Collecte
 # Les heures cron sont en UTC. La Réunion est à UTC+4.
 # Le full scan hebdomadaire sera réintroduit lorsque les couches Watch seront
 # réactivées. Avec les cinq sources V0, une collecte quotidienne suffit.
-
 on:
   schedule:
     - cron: "0 4 * * *"    # 08 h à La Réunion — sources directes
@@ -146,6 +145,10 @@ jobs:
             --source-facts data/source_facts.csv \
             --check \
             --check-regression
+          python scripts/export_dedup_audit.py \
+            --items data/items.csv \
+            --org-cache data/org_enrichment_cache.csv \
+            --output data/dedup_audit_candidates.csv
           python -m cyberwatch build-site
 
       - name: Publier les données
