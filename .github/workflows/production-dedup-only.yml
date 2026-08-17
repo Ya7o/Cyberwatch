@@ -95,7 +95,9 @@ jobs:
         run: |
           echo "===== CHANGED FILES ====="
           git status --short
-          bad="$(git status --porcelain | sed -E 's/^.. //' | grep -Ev '^(data/(incidents\.csv|snapshot\.json)|assets/data/.*|\.github/workflows/production-dedup-only\.yml)$' || true)"
+          # data/items.csv est autorisé uniquement comme revert vers origin/main;
+          # l'étape précédente impose déjà git diff --exit-code origin/main sur ce fichier.
+          bad="$(git status --porcelain | sed -E 's/^.. //' | grep -Ev '^(data/(items\.csv|incidents\.csv|snapshot\.json)|assets/data/.*|\.github/workflows/production-dedup-only\.yml)$' || true)"
           if [ -n "$bad" ]; then
             echo "Fichiers hors périmètre détectés:"
             echo "$bad"
