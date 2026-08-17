@@ -1,0 +1,41 @@
+name: Verify fast rebuild
+
+on:
+  push:
+    branches: [agent/verify-fast-rebuild-20260817]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: CREATE instrumented
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          AI_MAX_CALLS_PER_RUN: "3000"
+          AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
+          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+        run: python -m cyberwatch create --as-of "2026-08-17T22:13:00+04:00" --start "2026-01-01" --layers all
+      - name: Report
+        if: always()
+        run: |
+          python scripts/report_source_performance.py || true
+          cat data/source_facts_ai_usage.json 2>/dev/null || true
+          tail -n 1 data/ai_usage.csv 2>/dev/null || true
+          tail -n 1 data/run_log.csv 2>/dev/null || true
+      - name: Checks
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
