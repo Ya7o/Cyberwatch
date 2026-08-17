@@ -37,7 +37,7 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Raccorder provenance, persistence et rebuild
+      - name: Raccorder provenance et persistence
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -49,7 +49,6 @@ jobs:
                   raise SystemExit(f"marqueur absent: {path}: {old[:80]!r}")
               target.write_text(text.replace(old, new, 1), encoding="utf-8")
 
-          # Store : fichier auxiliaire de provenance, hors hashes canoniques.
           replace_once(
               "cyberwatch/store.py",
               "    Item,\n)\n\n# Racine du dépôt",
@@ -76,7 +75,6 @@ jobs:
               "def load_snapshot",
           )
 
-          # Runner : provenance produite par qualify(), écrite avec CREATE/MAJ.
           replace_once(
               "cyberwatch/runner.py",
               "    source_facts: list[dict] = field(default_factory=list)\n",
@@ -97,7 +95,6 @@ jobs:
               "        save_snapshot_provenance(",
           )
 
-          # Backfill manuel : persiste la même provenance.
           replace_once(
               "cyberwatch/cli.py",
               "    store.save_items(items)\n    store.save_incidents(incidents)\n"
@@ -107,13 +104,11 @@ jobs:
               "    save_snapshot_provenance(\n        store.load_items(), store.load_incidents(), operation=\"BACKFILL_UNKNOWNS\",",
           )
 
-          # Isolation tests : aucun CSV auxiliaire ne fuit vers data/ réel.
-          for path in ("tests/test_runner.py",):
-              replace_once(
-                  path,
-                  '"SOURCE_FACTS_CSV"):',
-                  '"SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV"):',
-              )
+          replace_once(
+              "tests/test_runner.py",
+              '"SOURCE_FACTS_CSV"):',
+              '"SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV"):',
+          )
           replace_once(
               "tests/test_runner.py",
               '"SOURCE_FACTS_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",',
@@ -124,19 +119,6 @@ jobs:
               '"SOURCE_FACTS_CSV": tmp_path / "source_facts.csv",',
               '"SOURCE_FACTS_CSV": tmp_path / "source_facts.csv",\n'
               '        "QUALIFICATION_PROVENANCE_CSV": tmp_path / "qualification_provenance.csv",',
-          )
-
-          # Rebuild : purge explicitement le nouveau jeu auxiliaire.
-          replace_once(
-              ".github/workflows/rebuild-baseline-once.yml",
-              "            data/source_facts.csv \\\n            data/run_log.csv \\",
-              "            data/source_facts.csv \\\n            data/qualification_provenance.csv \\\n            data/run_log.csv \\",
-          )
-          replace_once(
-              ".github/workflows/rebuild-baseline-once.yml",
-              "            data/incidents.csv\n            data/source_facts.csv\n          include-hidden-files:",
-              "            data/incidents.csv\n            data/source_facts.csv\n"
-              "            data/qualification_provenance.csv\n          include-hidden-files:",
           )
 
           methodology = Path("METHODOLOGY.md")
@@ -155,12 +137,9 @@ jobs:
               )
               methodology.write_text(text, encoding="utf-8")
 
-          # Déclenche uniquement le rebuild existant ; aucun benchmark Golden.
           Path(".github/rebuild-request").write_text(
               "v0.7.37 hybrid qualification rebuild\n", encoding="utf-8"
           )
-          # Le workflow one-shot disparaît du commit fonctionnel.
-          Path(".github/workflows/implement-hybrid-qualification-once.yml").unlink()
           PY
 
       - name: Validation complète avant push
@@ -178,7 +157,7 @@ jobs:
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add cyberwatch/store.py cyberwatch/runner.py cyberwatch/cli.py tests/test_runner.py tests/test_ai_qualification.py METHODOLOGY.md .github/rebuild-request
           git commit -m "feat: persist hybrid qualification provenance"
 
       - name: Rebase et revalidation
