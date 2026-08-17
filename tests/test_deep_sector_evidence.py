@@ -4,9 +4,12 @@ from cyberwatch import company_evidence, config
 from sources.veillellm.deep_enrich_unknown_sectors import (
     apply_evidence,
     candidate_official_urls,
+    clear_sector_evidence,
     incident_urls,
     is_target_row,
     research_official_evidence,
+    strict_activity_evidence,
+    strict_existing_evidence,
     target_unknown_urls,
     validate_official_candidate,
 )
@@ -47,14 +50,18 @@ def test_target_unknown_urls_only_selects_unknown_sector_for_source(tmp_path):
     }
 
 
-def test_target_row_matches_incident_url_without_using_sector_evidence_url():
-    row = {
-        "sources": ["https://www.cyberattaque.org/target/"],
+def test_target_row_matches_incident_url_and_reaudits_existing_evidence():
+    plain = {"sources": ["https://www.cyberattaque.org/target/"]}
+    existing = {
+        "sources": ["https://www.cyberattaque.org/already-known/"],
         "sector_evidence_url": "https://example.com/about",
+        "sector_evidence_text": "éditeur de logiciels",
     }
-    assert incident_urls(row) == ("https://www.cyberattaque.org/target/",)
-    assert is_target_row(row, {"https://www.cyberattaque.org/target/"})
-    assert not is_target_row(row, {"https://example.com/about"})
+
+    assert incident_urls(plain) == ("https://www.cyberattaque.org/target/",)
+    assert is_target_row(plain, {"https://www.cyberattaque.org/target/"})
+    assert not is_target_row(plain, {"https://example.com/about"})
+    assert is_target_row(existing, set())
 
 
 def test_apply_evidence_keeps_incident_sources_separate():
@@ -69,7 +76,7 @@ def test_apply_evidence_keeps_incident_sources_separate():
         evidence_url="https://www.exemple.fr/a-propos",
         evidence_text="éditeur de logiciels et services informatiques",
         evidence_source="exemple.fr",
-        evidence_type="official_site",
+        evidence_type="official_explicit_activity",
     )
 
     before, after = apply_evidence(row, evidence)
@@ -80,8 +87,83 @@ def test_apply_evidence_keeps_incident_sources_separate():
     assert row["sector_evidence_url"] == "https://www.exemple.fr/a-propos"
     assert row["sector_evidence_text"] == "éditeur de logiciels et services informatiques"
     assert row["sector_evidence_source"] == "exemple.fr"
-    assert row["sector_evidence_type"] == "official_site"
+    assert row["sector_evidence_type"] == "official_explicit_activity"
     assert row["evolution"] == "enrichi"
+
+
+def test_clear_sector_evidence_neutralises_old_candidate():
+    row = {
+        "secteur": config.SECTOR_FINANCE,
+        "sector_evidence_url": "https://lions-france.org/",
+        "sector_evidence_text": "capital de 15 000 euros et banque d'images",
+        "sector_evidence_source": "lions-france.org",
+        "sector_evidence_type": "official_site",
+    }
+
+    clear_sector_evidence(row)
+
+    assert row["secteur"] == config.SECTOR_UNKNOWN
+    assert not any(key.startswith("sector_evidence_") for key in row)
+
+
+def test_strict_activity_rejects_page_status_construction_false_positive():
+    raw = company_evidence.CompanyEvidence(
+        sector=config.SECTOR_CONSTRUCTION,
+        evidence_url="https://actionpopulaire.org/en-construction/",
+        evidence_text=(
+            "En construction - Action Zéro Pauvreté. Cette page est en construction."
+        ),
+        evidence_source="actionpopulaire.org",
+    )
+    assert strict_activity_evidence(raw) is None
+
+
+def test_strict_activity_rejects_legal_finance_false_positive():
+    raw = company_evidence.CompanyEvidence(
+        sector=config.SECTOR_FINANCE,
+        evidence_url="https://lions-france.org/mentions-legales",
+        evidence_text="Capital de 15 000 euros. Crédits photos et banque d'images.",
+        evidence_source="lions-france.org",
+    )
+    assert strict_activity_evidence(raw) is None
+
+
+def test_strict_activity_accepts_and_reclassifies_explicit_business_phrase():
+    raw = company_evidence.CompanyEvidence(
+        sector=config.SECTOR_SERVICES,
+        evidence_url="https://www.engie-green.fr/",
+        evidence_text="ENGIE Green est fournisseur de services d'énergie renouvelable.",
+        evidence_source="engie-green.fr",
+    )
+
+    strict = strict_activity_evidence(raw)
+
+    assert strict is not None
+    assert strict.sector == config.SECTOR_ENERGY
+    assert "fournisseur de" in strict.evidence_text.lower()
+
+
+def test_existing_v3_evidence_is_reaudited_offline():
+    valid = {
+        "secteur": config.SECTOR_TECH,
+        "sector_evidence_url": "https://adobe.com/about",
+        "sector_evidence_text": "éditeur de logiciels de création numérique",
+        "sector_evidence_source": "adobe.com",
+        "sector_evidence_type": "official_site",
+    }
+    invalid = {
+        "secteur": config.SECTOR_FINANCE,
+        "sector_evidence_url": "https://clcv.org/",
+        "sector_evidence_text": "Crédit immobilier et assurance : vos droits.",
+        "sector_evidence_source": "clcv.org",
+        "sector_evidence_type": "official_site",
+    }
+
+    kept = strict_existing_evidence(valid)
+
+    assert kept is not None
+    assert kept.sector == config.SECTOR_TECH
+    assert strict_existing_evidence(invalid) is None
 
 
 def test_candidate_urls_extract_explicit_domain_and_guess_common_domains():
@@ -110,12 +192,12 @@ def test_validate_candidate_rejects_domain_unrelated_to_organisation(monkeypatch
     assert validate_official_candidate("Adobe", "https://unrelated-example.com") is None
 
 
-def test_validate_candidate_requires_identity_and_activity(monkeypatch):
+def test_validate_candidate_requires_identity_and_explicit_activity(monkeypatch):
     monkeypatch.setattr(
         company_evidence,
         "_page",
         lambda url: (
-            "Adobe — logiciels de création",
+            "Adobe — création numérique",
             "Adobe est un éditeur de logiciels et fournit des services cloud.",
             [],
             "https://www.adobe.com/fr/",
@@ -127,6 +209,27 @@ def test_validate_candidate_requires_identity_and_activity(monkeypatch):
     assert evidence is not None
     assert evidence.sector == config.SECTOR_TECH
     assert evidence.evidence_source == "adobe.com"
+    assert "éditeur de" in evidence.evidence_text.lower()
+
+
+def test_validate_candidate_rejects_generic_keyword_on_official_page(monkeypatch):
+    monkeypatch.setattr(
+        company_evidence,
+        "_page",
+        lambda url: (
+            "Action Populaire",
+            "Cette page est en construction. Merci de revenir prochainement.",
+            [],
+            "https://actionpopulaire.org/en-construction/",
+        ),
+    )
+
+    assert (
+        validate_official_candidate(
+            "Action Populaire", "https://actionpopulaire.org/en-construction/"
+        )
+        is None
+    )
 
 
 def test_research_stops_on_first_validated_candidate(monkeypatch):
@@ -142,8 +245,9 @@ def test_research_stops_on_first_validated_candidate(monkeypatch):
             return company_evidence.CompanyEvidence(
                 sector=config.SECTOR_SERVICES,
                 evidence_url=url,
-                evidence_text="cabinet de conseil",
+                evidence_text="spécialisé dans le conseil aux entreprises",
                 evidence_source="exemple.fr",
+                evidence_type="official_explicit_activity",
             )
         return None
 
