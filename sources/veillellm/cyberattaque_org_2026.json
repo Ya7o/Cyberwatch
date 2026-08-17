@@ -67,14 +67,10 @@
       "evidence_policy": "no forced taxonomy mapping; SIREN/APE validated against French public registry; official/secondary evidence URL retained"
     },
     "company_research_v5": {
-      "before_sector_unknown": 47,
-      "resolved": 13,
-      "remaining_sector_unknown": 34,
-      "resolved_by": {
-        "manual_official": 2,
-        "source_explicit_activity": 3,
-        "fuzzy_registry_with_evidence": 8
-      },
+      "before_sector_unknown": 13,
+      "resolved": 0,
+      "remaining_sector_unknown": 13,
+      "resolved_by": {},
       "method": "manual official evidence for known misses + explicit victim activity in incident source + conservative fuzzy French public-registry match requiring source/legal-name evidence or near-exact unique match",
       "evidence_policy": "no forced mapping; unresolved taxonomy gaps remain Inconnu"
     },
