@@ -85,6 +85,21 @@ def test_apply_audit_removes_duplicate_without_mutating_canonical_target():
     assert rows[0]["Golden_Version"] == "1"
 
 
+def test_apply_audit_excludes_unresolved_review_from_benchmark_view():
+    unresolved = _golden("GOLD-0001")
+    stable = _golden("GOLD-0002", Reference_Date="2026-07-01", Incident_ID_Snapshot="INC-2")
+    review = _audit(
+        Decision="REVIEW",
+        Field="Incident",
+        Old_Value="",
+        Proposed_Value="",
+        Confidence="MEDIUM",
+        Evidence_Text="",
+    )
+    rows = apply_audit([unresolved, stable], [review])
+    assert [row["Golden_ID"] for row in rows] == ["GOLD-0002"]
+
+
 def test_quality_report_flags_high_without_url_and_close_duplicate():
     left = _golden(Source_URLs="")
     right = _golden("GOLD-0002", Reference_Date="2026-06-03", Incident_ID_Snapshot="INC-2")
