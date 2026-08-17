@@ -1,0 +1,112 @@
+name: Production Dedup Only
+
+on:
+  push:
+    branches:
+      - "agent/production-replay-dedup"
+    paths:
+      - ".github/workflows/production-dedup-only.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  dedup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Repartir des ITEMS de main
+        run: |
+          git fetch origin main
+          git checkout origin/main -- data/items.csv data/incidents.csv data/snapshot.json assets/data
+          git diff --exit-code origin/main -- data/items.csv
+
+      - name: Reconstruire uniquement la déduplication
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          from cyberwatch import site, store
+          from cyberwatch.dedup import build_incidents
+          from cyberwatch.runner import save_snapshot_provenance
+
+          items = store.load_items()
+          before = store.load_incidents()
+          incidents = build_incidents(items)
+          print(f"DEDUP_ONLY items={len(items)} incidents_before={len(before)} incidents_after={len(incidents)}")
+          if len(items) != 1003 or len(before) != 847 or len(incidents) != 841:
+              raise SystemExit(
+                  f"Résultat inattendu: items={len(items)} before={len(before)} after={len(incidents)}"
+              )
+          store.save_incidents(incidents)
+          now = dt.datetime.now(dt.timezone(dt.timedelta(hours=4))).isoformat()
+          save_snapshot_provenance(
+              items,
+              incidents,
+              operation="DEDUP_REPLAY",
+              mode="REPLAY",
+              as_of=now,
+              target_start="2026-01-01",
+              target_end=now[:10],
+          )
+          site.build()
+          PY
+
+      - name: Vérifier absence de requalification
+        run: |
+          git diff --exit-code origin/main -- data/items.csv
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          from cyberwatch import store
+
+          incidents = store.load_incidents()
+          if len(incidents) != 841:
+              raise SystemExit(f"Incidents inattendus: {len(incidents)}")
+          with Path('data/incidents.csv').open(encoding='utf-8', newline='') as handle:
+              rows = list(csv.DictReader(handle))
+          expected = {
+              'Région Occitanie': 'INC-C00BD2CCD24C',
+              "Département de l’Ardèche": 'INC-0C88A26F5130',
+          }
+          for organisation, incident_id in expected.items():
+              matches = [r for r in rows if r.get('Organisation') == organisation]
+              if len(matches) != 1 or matches[0].get('Incident_ID') != incident_id:
+                  raise SystemExit(f"Incident_ID singleton modifié pour {organisation}: {matches}")
+          print('DEDUP_ONLY_VALIDATION=PASS')
+          PY
+
+      - name: Contrôles
+        run: |
+          python -m cyberwatch test-repeat
+          python -m cyberwatch check
+
+      - name: Vérifier le périmètre du diff
+        run: |
+          echo "===== CHANGED FILES ====="
+          git status --short
+          bad="$(git status --porcelain | sed -E 's/^.. //' | grep -Ev '^(data/(incidents\.csv|snapshot\.json)|assets/data/.*|\.github/workflows/production-dedup-only\.yml)$' || true)"
+          if [ -n "$bad" ]; then
+            echo "Fichiers hors périmètre détectés:"
+            echo "$bad"
+            exit 1
+          fi
+
+      - name: Remplacer le commit de replay par un commit dedup-only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/production-dedup-only.yml
+          git add -A
+          git commit -m "Publish deduplicated incidents only"
+          git push origin HEAD:agent/production-replay-dedup
