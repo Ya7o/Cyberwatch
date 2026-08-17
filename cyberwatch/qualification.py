@@ -32,6 +32,14 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_THIRD_PARTY,
 })
 
+# Audit 2 / politique v7 : les preuves Sector challengers restent calculées et
+# journalisées mais ne sont plus autorisées à modifier la vérité canonique.
+# Même après plusieurs gardes (identité, site officiel, activité principale),
+# une page de victime peut attribuer une activité à un fournisseur/partenaire.
+# Sans résolution du sujet grammatical de la preuve, la précision >=95 % n'est
+# pas démontrée ; ``Inconnu`` est donc préférable à une qualification forcée.
+_SECTOR_FALLBACK_AUTO_APPLY = False
+
 
 @dataclass(frozen=True)
 class QualificationReport:
@@ -78,18 +86,72 @@ def stabilize_threats(items: list[Item]) -> int:
     return changed
 
 
+def neutralize_sector_fallback(
+    items: list[Item],
+    changes: dict[str, int],
+    provenance: list[dict[str, str]],
+) -> int:
+    """Convertit toute application Sector challenger en décision diagnostique.
+
+    ``source_llm_fallback`` continue d'exécuter ses gardes afin de mesurer les
+    candidats qui auraient été admissibles et de conserver leurs preuves dans
+    la provenance. La phase canonique annule ensuite uniquement les lignes
+    Sector réellement ``APPLIED`` : la valeur précédente est restaurée et la
+    décision devient ``REJECTED_POLICY_DISABLED``.
+
+    La fonction est déterministe et ne touche ni Location ni Threat.
+    """
+    if _SECTOR_FALLBACK_AUTO_APPLY:
+        return 0
+
+    by_id = {item.Item_ID: item for item in items if item.Item_ID}
+    neutralized = 0
+    for row in provenance:
+        if row.get("Field") != "Sector" or row.get("Decision") != "APPLIED":
+            continue
+        item = by_id.get(row.get("Item_ID", ""))
+        if item is None:
+            continue
+
+        previous = row.get("Previous_Value", config.SECTOR_UNKNOWN)
+        applied = row.get("Final_Value", "")
+        # Ne neutralise que la mutation dont la provenance décrit exactement
+        # l'état courant ; une modification extérieure inattendue est protégée.
+        if not applied or item.Sector != applied:
+            continue
+
+        item.Sector = previous or config.SECTOR_UNKNOWN
+        row["Final_Value"] = item.Sector
+        row["Confidence"] = ""
+        row["Decision"] = "REJECTED_POLICY_DISABLED"
+        neutralized += 1
+
+    if neutralized:
+        changes["llm_sector_fallback"] = max(
+            0, changes.get("llm_sector_fallback", 0) - neutralized
+        )
+        changes["llm_sector_rejected"] = (
+            changes.get("llm_sector_rejected", 0) + neutralized
+        )
+    changes["llm_sector_policy_rejected"] = neutralized
+    provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]))
+    return neutralized
+
+
 def qualify(items: list[Item]) -> QualificationReport:
-    """Applique la qualification canonique puis les fallbacks source gardés.
+    """Applique la qualification canonique puis les challengers source gardés.
 
     Les secteurs historiquement injectés par l'ancien fallback sont d'abord
     restaurés à ``Inconnu`` à partir de leur provenance, mais uniquement si la
-    valeur courante est encore exactement celle qui avait été injectée. Ils
-    repassent ensuite dans les enrichissements canoniques et le garde Sector
-    courant. Une correction ultérieure différente reste donc protégée.
+    valeur courante est encore exactement celle qui avait été injectée. Une
+    correction ultérieure différente reste donc protégée.
+
+    Localisation conserve son fallback mesuré comme fiable. Threat reste
+    strictement protégé. Sector est désormais diagnostique uniquement : les
+    gardes et preuves sont calculés, mais toute mutation ``APPLIED`` est annulée
+    avant construction des incidents et hachage du snapshot.
 
     Le pipeline canonique ne contient aucune correction manuelle par ``Item_ID``.
-    La couche challenger peut uniquement compléter des valeurs encore ``Inconnu``
-    et les exports LLM ne peuvent jamais modifier ``Threat``.
     """
     ordered = identity.sort_items(items)
 
@@ -106,6 +168,7 @@ def qualify(items: list[Item]) -> QualificationReport:
 
     llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered)
     changes.update(llm_changes)
+    neutralize_sector_fallback(ordered, changes, provenance)
 
     incidents, incident_id_registry = build_incidents_with_registry(
         ordered, store.load_incident_id_registry()
