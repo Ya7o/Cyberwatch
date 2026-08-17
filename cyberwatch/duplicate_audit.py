@@ -295,6 +295,10 @@ def find_audit_candidates(
 
             if decision.action != MERGE:
                 continue
+            # Même source + même URL identifie déjà le même item éditorial :
+            # ce n'est pas un merge faible utile à challenger dans auditdedup.
+            if left.Source_ID == right.Source_ID and left.URL and left.URL == right.URL:
+                continue
             if decision.reason_code == "INCIDENT_MERGE_CANONICAL_NAME":
                 reason_code = MERGE_REVIEW_WEAK_CANONICAL_NAME
             elif decision.reason_code == "INCIDENT_MERGE_ALIAS":
