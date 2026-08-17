@@ -41,7 +41,7 @@ def _extend_taxonomy() -> None:
         config.SECTORS.insert(index, value)
 
     # Catégories explicitement structurées par les sources. Les libellés trop
-    # larges ("services", "autres", etc.) restent volontairement Inconnu.
+    # larges ("services", "hospitality", "non profit", etc.) restent Inconnu.
     config.ACTIVITY_TO_SECTOR.update({
         "commerce": config.SECTOR_RETAIL,
         "commerce distribution": config.SECTOR_RETAIL,
@@ -52,7 +52,6 @@ def _extend_taxonomy() -> None:
         "hotellerie": SECTOR_HOSPITALITY,
         "restauration": SECTOR_HOSPITALITY,
         "tourisme": SECTOR_HOSPITALITY,
-        "travel hospitality": SECTOR_HOSPITALITY,
         "culture": SECTOR_CULTURE,
         "culture medias loisirs": SECTOR_CULTURE,
         "media": SECTOR_CULTURE,
@@ -64,8 +63,6 @@ def _extend_taxonomy() -> None:
         "ong": SECTOR_ASSOCIATIONS,
         "politique": SECTOR_ASSOCIATIONS,
         "political organization": SECTOR_ASSOCIATIONS,
-        "non profit": SECTOR_ASSOCIATIONS,
-        "nonprofit": SECTOR_ASSOCIATIONS,
     })
 
     existing = {sector for sector, _patterns in config.SECTOR_ACTIVITY_RULES}
@@ -100,7 +97,6 @@ def _extend_taxonomy() -> None:
     for rule in extra_rules:
         if rule[0] not in existing:
             config.SECTOR_ACTIVITY_RULES.append(rule)
-
 
 
 def _precise_naf_sector(activity_code: str) -> str:
