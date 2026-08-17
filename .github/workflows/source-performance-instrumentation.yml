@@ -1,0 +1,104 @@
+name: Source performance instrumentation
+
+on:
+  push:
+    branches:
+      - agent/source-performance-instrumentation
+
+permissions:
+  contents: write
+
+jobs:
+  instrument:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/source-performance-instrumentation
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Apply instrumentation
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'pattern not found in {path}: {old[:100]!r}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          # SourceOutcome: performance metrics kept separate from business status.
+          replace('cyberwatch/status.py',
+              '    oldest_available_date: str = ""\n\n    @property\n',
+              '''    oldest_available_date: str = ""\n    collect_duration_seconds: float = 0.0\n    processing_duration_seconds: float = 0.0\n    org_registry_duration_seconds: float = 0.0\n    org_registry_calls: int = 0\n    org_official_site_duration_seconds: float = 0.0\n    org_official_site_calls: int = 0\n    qualification_llm_duration_seconds: float = 0.0\n    qualification_llm_calls: int = 0\n    qualification_llm_cost_usd: float = 0.0\n    source_facts_llm_duration_seconds: float = 0.0\n    source_facts_llm_calls: int = 0\n    source_facts_llm_cost_usd: float = 0.0\n    other_processing_duration_seconds: float = 0.0\n\n    @property\n''')
+
+          # Additive RUN_SOURCES schema: old rows remain readable with blank cells.
+          replace('cyberwatch/model.py',
+              '    "Oldest_Available_Date",\n]\n',
+              '''    "Oldest_Available_Date",\n    # Profil de performance par source. Les temps externes sont inclus dans\n    # Processing_Duration_s mais ventilés ici pour expliquer le coût réel.\n    "Collect_Duration_s",\n    "Processing_Duration_s",\n    "Org_Registry_Duration_s",\n    "Org_Registry_Calls",\n    "Org_Official_Site_Duration_s",\n    "Org_Official_Site_Calls",\n    "Qualification_LLM_Duration_s",\n    "Qualification_LLM_Calls",\n    "Qualification_LLM_Cost_USD",\n    "SourceFacts_LLM_Duration_s",\n    "SourceFacts_LLM_Calls",\n    "SourceFacts_LLM_Cost_USD",\n    "Other_Processing_Duration_s",\n]\n''')
+
+          # Official-site fallback was previously an invisible latency bucket.
+          replace('cyberwatch/org_enrichment.py',
+              '    official_site_matched: int = 0\n',
+              '    official_site_matched: int = 0\n    official_site_duration_seconds: float = 0.0\n')
+          replace('cyberwatch/org_enrichment.py',
+              '''    state.official_site_attempted += 1\n    evidence = company_evidence.resolve_official_site(organisation_raw)\n    if evidence is None:\n        return True, None\n''',
+              '''    state.official_site_attempted += 1\n    started = time.monotonic()\n    try:\n        evidence = company_evidence.resolve_official_site(organisation_raw)\n    finally:\n        state.official_site_duration_seconds += time.monotonic() - started\n    if evidence is None:\n        return True, None\n''')
+
+          # Measure only OpenAI network/retry time for canonical qualification.
+          replace('cyberwatch/ai.py',
+              '    estimated_cost_usd: float = 0.0\n',
+              '    estimated_cost_usd: float = 0.0\n    llm_duration_seconds: float = 0.0\n')
+          p = Path('cyberwatch/ai.py')
+          text = p.read_text(encoding='utf-8')
+          start = text.index('def _post_openai(body: dict, state: AiRunState) -> dict:\n')
+          end = text.index('\ndef _call_openai(', start)
+          old = text[start:end]
+          new = '''def _post_openai(body: dict, state: AiRunState) -> dict:\n    headers = {\n        "Authorization": f"Bearer {state.api_key}",\n        "Content-Type": "application/json",\n    }\n    started = time.monotonic()\n    try:\n        attempt = 0\n        while True:\n            try:\n                response = requests.post(\n                    OPENAI_URL,\n                    json=body,\n                    headers=headers,\n                    timeout=OPENAI_TIMEOUT_SECONDS,\n                )\n            except requests.RequestException as exc:\n                attempt += 1\n                if attempt > OPENAI_MAX_RETRIES:\n                    raise AiCallError(f"réseau: {type(exc).__name__}") from exc\n                time.sleep(2 ** attempt)\n                continue\n            if response.status_code == 200:\n                return response.json()\n            if response.status_code == 429 or 500 <= response.status_code < 600:\n                attempt += 1\n                if attempt > OPENAI_MAX_RETRIES:\n                    raise AiCallError(f"HTTP {response.status_code} après retries")\n                time.sleep(2 ** attempt)\n                continue\n            raise AiCallError(f"HTTP {response.status_code}: {response.text[:200]}")\n    finally:\n        state.llm_duration_seconds += time.monotonic() - started\n\n'''
+          p.write_text(text[:start] + new + text[end:], encoding='utf-8')
+
+          # Runner: snapshot cumulative counters before/after each source.
+          replace('cyberwatch/runner.py',
+              'from . import ai, config, enrichment, identity, incident_identity, org_enrichment, sector as sector_policy, source_facts, sources, status, store, watchlists\n',
+              'from . import ai, config, enrichment, identity, incident_identity, org_enrichment, sector as sector_policy, source_facts, source_facts_ai, sources, status, store, watchlists\n')
+          replace('cyberwatch/runner.py',
+              '''    started = time.monotonic()\n    collector = get_collector(spec.collector)\n\n    try:\n        result = collector.collect(client, spec, context.window)\n    except Exception as exc:\n''',
+              '''    started = time.monotonic()\n    collector = get_collector(spec.collector)\n    collect_started = time.monotonic()\n\n    try:\n        result = collector.collect(client, spec, context.window)\n    except Exception as exc:\n        outcome.collect_duration_seconds = round(time.monotonic() - collect_started, 3)\n''')
+          replace('cyberwatch/runner.py',
+              '''        outcome.duration_seconds = round(time.monotonic() - started, 1)\n        return outcome, [], []\n\n    items: list[Item] = []\n''',
+              '''        outcome.duration_seconds = round(time.monotonic() - started, 1)\n        return outcome, [], []\n\n    outcome.collect_duration_seconds = round(time.monotonic() - collect_started, 3)\n    processing_started = time.monotonic()\n    if ai_state is not None:\n        org_state = ai_state.org_enrichment\n        perf_before = {\n            "org_registry_duration": org_state.duration_seconds,\n            "org_registry_calls": org_state.calls_attempted,\n            "official_duration": org_state.official_site_duration_seconds,\n            "official_calls": org_state.official_site_attempted,\n            "qual_llm_duration": ai_state.llm_duration_seconds,\n            "qual_llm_calls": ai_state.calls_attempted,\n            "qual_llm_cost": ai_state.estimated_cost_usd,\n        }\n    else:\n        perf_before = {\n            "org_registry_duration": 0.0, "org_registry_calls": 0,\n            "official_duration": 0.0, "official_calls": 0,\n            "qual_llm_duration": 0.0, "qual_llm_calls": 0, "qual_llm_cost": 0.0,\n        }\n    source_facts_before = source_facts_ai.runtime_stats()\n\n    items: list[Item] = []\n''')
+          replace('cyberwatch/runner.py',
+              '''    source_status, coverage = result.resolve()\n''',
+              '''    outcome.processing_duration_seconds = round(time.monotonic() - processing_started, 3)\n    if ai_state is not None:\n        org_state = ai_state.org_enrichment\n        outcome.org_registry_duration_seconds = round(\n            max(0.0, org_state.duration_seconds - perf_before["org_registry_duration"]), 3\n        )\n        outcome.org_registry_calls = max(0, org_state.calls_attempted - perf_before["org_registry_calls"])\n        outcome.org_official_site_duration_seconds = round(\n            max(0.0, org_state.official_site_duration_seconds - perf_before["official_duration"]), 3\n        )\n        outcome.org_official_site_calls = max(0, org_state.official_site_attempted - perf_before["official_calls"])\n        outcome.qualification_llm_duration_seconds = round(\n            max(0.0, ai_state.llm_duration_seconds - perf_before["qual_llm_duration"]), 3\n        )\n        outcome.qualification_llm_calls = max(0, ai_state.calls_attempted - perf_before["qual_llm_calls"])\n        outcome.qualification_llm_cost_usd = round(\n            max(0.0, ai_state.estimated_cost_usd - perf_before["qual_llm_cost"]), 6\n        )\n    source_facts_after = source_facts_ai.runtime_stats()\n    outcome.source_facts_llm_duration_seconds = round(max(\n        0.0,\n        float(source_facts_after.get("total_duration_seconds", 0.0))\n        - float(source_facts_before.get("total_duration_seconds", 0.0)),\n    ), 3)\n    outcome.source_facts_llm_calls = max(\n        0,\n        int(source_facts_after.get("calls_attempted", 0))\n        - int(source_facts_before.get("calls_attempted", 0)),\n    )\n    outcome.source_facts_llm_cost_usd = round(max(\n        0.0,\n        float(source_facts_after.get("estimated_cost_usd", 0.0))\n        - float(source_facts_before.get("estimated_cost_usd", 0.0)),\n    ), 6)\n    measured_external = (\n        outcome.org_registry_duration_seconds\n        + outcome.org_official_site_duration_seconds\n        + outcome.qualification_llm_duration_seconds\n        + outcome.source_facts_llm_duration_seconds\n    )\n    outcome.other_processing_duration_seconds = round(\n        max(0.0, outcome.processing_duration_seconds - measured_external), 3\n    )\n\n    source_status, coverage = result.resolve()\n''')
+          replace('cyberwatch/runner.py',
+              '''            print(\n                f"  {outcome.source_id:28} {outcome.status:8} "\n                f"{outcome.coverage:3}%  items={outcome.items_collected:4} "\n                f"calls={outcome.calls:4}  {outcome.reason_code}"\n            )\n''',
+              '''            print(\n                f"  {outcome.source_id:28} {outcome.status:8} "\n                f"{outcome.coverage:3}%  items={outcome.items_collected:4} "\n                f"calls={outcome.calls:4}  {outcome.reason_code}"\n            )\n            print(\n                "    perf "\n                f"collect={outcome.collect_duration_seconds:.1f}s "\n                f"process={outcome.processing_duration_seconds:.1f}s "\n                f"registry={outcome.org_registry_duration_seconds:.1f}s/{outcome.org_registry_calls} "\n                f"official={outcome.org_official_site_duration_seconds:.1f}s/{outcome.org_official_site_calls} "\n                f"q-llm={outcome.qualification_llm_duration_seconds:.1f}s/{outcome.qualification_llm_calls} "\n                f"sf-llm={outcome.source_facts_llm_duration_seconds:.1f}s/{outcome.source_facts_llm_calls} "\n                f"other={outcome.other_processing_duration_seconds:.1f}s"\n            )\n''')
+          replace('cyberwatch/runner.py',
+              '''                "Oldest_Available_Date": o.oldest_available_date,\n''',
+              '''                "Oldest_Available_Date": o.oldest_available_date,\n                "Collect_Duration_s": o.collect_duration_seconds,\n                "Processing_Duration_s": o.processing_duration_seconds,\n                "Org_Registry_Duration_s": o.org_registry_duration_seconds,\n                "Org_Registry_Calls": o.org_registry_calls,\n                "Org_Official_Site_Duration_s": o.org_official_site_duration_seconds,\n                "Org_Official_Site_Calls": o.org_official_site_calls,\n                "Qualification_LLM_Duration_s": o.qualification_llm_duration_seconds,\n                "Qualification_LLM_Calls": o.qualification_llm_calls,\n                "Qualification_LLM_Cost_USD": o.qualification_llm_cost_usd,\n                "SourceFacts_LLM_Duration_s": o.source_facts_llm_duration_seconds,\n                "SourceFacts_LLM_Calls": o.source_facts_llm_calls,\n                "SourceFacts_LLM_Cost_USD": o.source_facts_llm_cost_usd,\n                "Other_Processing_Duration_s": o.other_processing_duration_seconds,\n''')
+
+          Path('scripts/report_source_performance.py').write_text('''#!/usr/bin/env python3\n"""Affiche la ventilation de performance du dernier run instrumenté."""\nfrom __future__ import annotations\n\nfrom cyberwatch import store\n\nFIELDS = (\n    "Collect_Duration_s", "Processing_Duration_s",\n    "Org_Registry_Duration_s", "Org_Official_Site_Duration_s",\n    "Qualification_LLM_Duration_s", "SourceFacts_LLM_Duration_s",\n    "Other_Processing_Duration_s",\n)\n\ndef _num(row: dict, key: str) -> float:\n    try:\n        return float(row.get(key) or 0)\n    except (TypeError, ValueError):\n        return 0.0\n\ndef main() -> int:\n    rows = store.load_run_sources()\n    if not rows:\n        print("SOURCE_PERF no_runs=1")\n        return 0\n    run_id = next((row.get("Run_ID", "") for row in reversed(rows) if row.get("Run_ID")), "")\n    selected = [row for row in rows if row.get("Run_ID") == run_id]\n    if not any(any(row.get(field) for field in FIELDS) for row in selected):\n        print(f"SOURCE_PERF run={run_id} instrumented=0")\n        return 0\n    print(f"SOURCE_PERF run={run_id} sources={len(selected)}")\n    for row in selected:\n        q_cost = _num(row, "Qualification_LLM_Cost_USD")\n        sf_cost = _num(row, "SourceFacts_LLM_Cost_USD")\n        print(\n            f"{row.get('Source_ID','')}: total={_num(row,'Duration_s'):.1f}s "\n            f"collect={_num(row,'Collect_Duration_s'):.1f}s "\n            f"process={_num(row,'Processing_Duration_s'):.1f}s "\n            f"registry={_num(row,'Org_Registry_Duration_s'):.1f}s/{row.get('Org_Registry_Calls') or 0} "\n            f"official={_num(row,'Org_Official_Site_Duration_s'):.1f}s/{row.get('Org_Official_Site_Calls') or 0} "\n            f"q_llm={_num(row,'Qualification_LLM_Duration_s'):.1f}s/{row.get('Qualification_LLM_Calls') or 0} "\n            f"sf_llm={_num(row,'SourceFacts_LLM_Duration_s'):.1f}s/{row.get('SourceFacts_LLM_Calls') or 0} "\n            f"other={_num(row,'Other_Processing_Duration_s'):.1f}s "\n            f"llm_cost=${q_cost + sf_cost:.6f}"\n        )\n    return 0\n\nif __name__ == "__main__":\n    raise SystemExit(main())\n''', encoding='utf-8')
+
+          Path('tests/test_source_performance_instrumentation.py').write_text('''from cyberwatch import ai, company_evidence, model, org_enrichment, status\n\n\ndef test_run_source_columns_include_performance_breakdown():\n    expected = {\n        "Collect_Duration_s", "Processing_Duration_s",\n        "Org_Registry_Duration_s", "Org_Official_Site_Duration_s",\n        "Qualification_LLM_Duration_s", "SourceFacts_LLM_Duration_s",\n        "Other_Processing_Duration_s",\n    }\n    assert expected <= set(model.RUN_SOURCE_COLUMNS)\n    outcome = status.SourceOutcome("X", "CORE_DIRECT")\n    assert outcome.collect_duration_seconds == 0.0\n    assert outcome.qualification_llm_calls == 0\n\n\ndef test_official_site_fallback_is_timed(monkeypatch):\n    ticks = iter([10.0, 12.5])\n    monkeypatch.setattr(org_enrichment.time, "monotonic", lambda: next(ticks))\n    monkeypatch.setattr(company_evidence, "resolve_official_site", lambda _name: None)\n    state = org_enrichment.OrgEnrichmentState(enabled=True)\n    attempted, record = org_enrichment._official_site_fallback("x", "Example", "now", state)\n    assert attempted is True\n    assert record is None\n    assert state.official_site_attempted == 1\n    assert state.official_site_duration_seconds == 2.5\n\n\ndef test_qualification_openai_network_time_is_timed(monkeypatch):\n    class Response:\n        status_code = 200\n        text = ""\n        def json(self):\n            return {"ok": True}\n\n    ticks = iter([5.0, 7.0])\n    monkeypatch.setattr(ai.time, "monotonic", lambda: next(ticks))\n    monkeypatch.setattr(ai.requests, "post", lambda *args, **kwargs: Response())\n    state = ai.AiRunState(enabled=True, api_key="test")\n    assert ai._post_openai({}, state) == {"ok": True}\n    assert state.llm_duration_seconds == 2.0\n''', encoding='utf-8')
+          PY
+      - name: Unit tests
+        run: python -m pytest tests/ -q
+      - name: Repeatability
+        run: python -m cyberwatch test-repeat
+      - name: Structural checks
+        run: python -m cyberwatch check
+      - name: Commit instrumentation
+        shell: bash
+        run: |
+          rm .github/workflows/source-performance-instrumentation.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cyberwatch/status.py cyberwatch/model.py cyberwatch/org_enrichment.py cyberwatch/ai.py cyberwatch/runner.py scripts/report_source_performance.py tests/test_source_performance_instrumentation.py .github/workflows/source-performance-instrumentation.yml
+          git commit -m "Instrument source performance breakdown"
+          git push origin HEAD:agent/source-performance-instrumentation
