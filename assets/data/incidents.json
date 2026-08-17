@@ -130,7 +130,8 @@
     "data_volume": "3,7 Go",
     "file_count": 49168,
     "item_id": "ITM-3e008fa243b802c2",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Publication de données après compromission BlgCloud (Motoculture Cravero)."
    },
    {
     "affected_count": 45684,
@@ -161,6 +162,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Publication de données après compromission BlgCloud (Motoculture Cravero).",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cravero-motoculture-blgcloud-msv33dq9e4pzz9hsrts",
@@ -338,12 +340,6 @@
     "affected_count": 435903,
     "affected_count_raw": "435 903 personnes",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "fuite de données exposant les enregistrements de membres/adhérents",
-      "evidence": "FrenchBreaches a identifié une base contenant 435 903 enregistrements associés à des membres ou adhérents de la fédération."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -596,6 +592,12 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
+    "attack_flow": [
+     {
+      "action": "Diffusion des données attribuées à Le Bon Matériel sur un forum cybercriminel",
+      "evidence": "Présentée par son auteur comme « BlgCloud Leak #7 », cette publication s’inscrit dans une série de fuites revend..."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -607,7 +609,9 @@
     "data_volume": "13,8 Go",
     "file_count": 48290,
     "item_id": "ITM-5384bb2edc1e590e",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Diffusion des données attribuées à Le Bon Matériel sur un forum cybercriminel.",
+    "threat_actor": "BlgCloud"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -621,6 +625,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Diffusion des données attribuées à Le Bon Matériel sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-bon-mat-riel-blgcloud-mstkb430kht3b29drb",
@@ -645,8 +650,8 @@
     "affected_unit": "people",
     "attack_flow": [
      {
-      "action": "Extraction partielle de 252 149 lignes de données cadastrales via le Serveur Professionnel de Données Cadastrales (SPDC) accessible via apexappliext.dgfip.finances.gouv.fr.",
-      "evidence": "\"Le pirate revendique une extraction partielle de 252 149 lignes\""
+      "action": "Exfiltration partielle revendiquée de données cadastrales (252 149 lignes) via le SPDC",
+      "evidence": "Le pirate revendique une extraction partielle de 252 149 lignes"
      }
     ],
     "claim_status": "claimed",
@@ -656,7 +661,8 @@
     ],
     "impact": "Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir lui-même cessé l'extraction.",
     "item_id": "ITM-1405c2be130d1ecd",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Exfiltration partielle revendiquée de données cadastrales (252 149 lignes) via le SPDC. Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le…"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -670,6 +676,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Exfiltration partielle revendiquée de données cadastrales (252 149 lignes) via le SPDC. Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le…",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-spdc-mssm0kklrsqu9rd3vd",
@@ -811,8 +818,10 @@
      "noms et prénoms",
      "données personnelles"
     ],
+    "impact": "Exposition de données personnelles des usagers",
     "item_id": "ITM-f4d3e4a1b9bf10c0",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Impact documenté : Exposition de données personnelles des usagers."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -827,6 +836,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : Exposition de données personnelles des usagers.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/france-vae.png",
@@ -883,9 +893,11 @@
      "mots de passe",
      "données bancaires"
     ],
-    "impact": "Scalingo a détecté le problème le 10 août, mis son service Metabase hors ligne et lancé une analyse forensic.",
+    "impact": "Le vecteur d’attaque est désormais considéré comme contenu , mais le service Metabase interne reste hors ligne par précaution.",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-ce51e4cd76737af7",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Impact documenté : Le vecteur d’attaque est désormais considéré comme contenu , mais le service Metabase interne reste hors ligne par précaution.",
     "vulnerabilities": [
      "CVE-2026-72898"
     ]
@@ -894,6 +906,12 @@
     "affected_count": 90000,
     "affected_count_raw": "90 000 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Exploitation de la vulnérabilité CVE-2026-72898 dans Metabase",
+      "evidence": "L’incident est lié à l’exploitation d’une vulnérabilité critique dans Metabase, référencée CVE-2026-72898 et évaluée avec un score CVSS de 10/10."
+     }
+    ],
     "claim_status": "confirmed",
     "cvss": "CVSS de 10/10",
     "data_types": [
@@ -902,9 +920,11 @@
      "mots de passe",
      "données bancaires"
     ],
-    "impact": "Scalingo a informé la CNIL Scalingo indique avoir mis son instance Metabase interne hors ligne , appliqué le correctif de sécurité et commencé la rotation des identifiants techniques potentiellement exposés.",
+    "impact": "10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-b8f59e73458e855a",
     "source": "FRENCHBREACHES",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation de la vulnérabilité CVE-2026-72898 dans Metabase. Impact documenté : 10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;.",
     "vulnerabilities": [
      "CVE-2026-72898"
     ]
@@ -921,6 +941,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation de la vulnérabilité CVE-2026-72898 dans Metabase. Impact documenté : 10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf",
@@ -935,12 +956,6 @@
     "affected_count": 678000,
     "affected_count_raw": "plus de 678 000 personnes",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "Intrusion et extraction de données via usurpation d’identité ayant conduit à l’accès au système et à l’extraction de données.",
-      "evidence": "L’accès, intervenu fin juin 2026 après une usurpation d’identité, a permis la consultation et l’extraction de données de particuliers et de professionnels."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -948,9 +963,10 @@
      "noms et prénoms",
      "identifiants"
     ],
-    "impact": "Selon lui, cette interruption expliquerait pourquoi la base récupérée ne contiendrait que 678 438 lignes , alors que le système accessible aurait potentiellement permis de consulter beaucoup plus de contribuables.",
+    "impact": "⚠️ La récupération de 678 438 lignes avant interruption de l’accès.",
     "item_id": "ITM-bfc6a693480fb347",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Impact documenté : ⚠️ La récupération de 678 438 lignes avant interruption de l’accès."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -963,6 +979,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : ⚠️ La récupération de 678 438 lignes avant interruption de l’accès.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-dgfip-msq5rgy4cql9o0l7cus"
@@ -1137,7 +1154,6 @@
      "identifiants",
      "mots de passe"
     ],
-    "impact": "Selon l’algorithme utilisé, la robustesse du mot de passe initial et la manière dont celui-ci a été stocké, certains hashes peuvent potentiellement faire l’objet de tentatives de cassage hors ligne.",
     "item_id": "ITM-b83d200b5df2be76",
     "source": "FRENCHBREACHES",
     "threat_actor": "l’auteur"
@@ -1218,12 +1234,6 @@
     "affected_count": 30594,
     "affected_count_raw": "30 594 personnes",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "accès non autorisé à l’Intranet Orion",
-      "evidence": "ayant permis un accès non autorisé à son Intranet collaboratif Orion"
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1231,7 +1241,6 @@
      "mots de passe",
      "données personnelles"
     ],
-    "impact": "exposition de données personnelles d’agents (noms, prénoms, fonctions, e-mails professionnels, localisation, établissement de rattachement et photographie)",
     "item_id": "ITM-d08086f886b642e8",
     "source": "FRENCHBREACHES"
    }
@@ -1271,7 +1280,8 @@
     ],
     "impact": "Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles.",
     "item_id": "ITM-8734fecfbe81d332",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Publication revendiquée de la base de données clients et du code source. Impact documenté : Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles."
    },
    {
     "affected_count": 42000,
@@ -1297,6 +1307,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Publication revendiquée de la base de données clients et du code source. Impact documenté : Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/heypulse-msogur4agznhs274b3r",
@@ -1333,8 +1344,10 @@
      "noms et prénoms",
      "données personnelles"
     ],
+    "impact": "Exposition de données de contact d’environ 80 000 personnes (adresses mail, postales et numéros de téléphone); aucune donnée de santé affectée.",
     "item_id": "ITM-64485c5121289c6d",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Impact documenté : Exposition de données de contact d’environ 80 000 personnes (adresses mail, postales et numéros de téléphone); aucune donnée de santé affectée."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1348,6 +1361,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : Exposition de données de contact d’environ 80 000 personnes (adresses mail, postales et numéros de téléphone); aucune donnée de santé affectée.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sant-publique-france-msoz0zsj3vgi774sa0i",
@@ -1360,8 +1374,10 @@
   "facts": [
    {
     "claim_status": "confirmed",
+    "initial_access": "phishing",
     "item_id": "ITM-fcb0961d57bae830",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un hameçonnage."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1374,6 +1390,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/sun-form-des-pirates-accedent-au-logiciel-de-gestion-et-reclament-de-largent-aux-adherents/"
@@ -1387,12 +1404,6 @@
     "affected_count": 1367197,
     "affected_count_raw": "1 367 197 enregistrements",
     "affected_unit": "records",
-    "attack_flow": [
-     {
-      "action": "Accès initial à un outil interne via des identifiants compromis",
-      "evidence": "Selon ZeroBytes, l’accès initial aurait été obtenu à partir d’ identifiants déjà compromis."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -1402,8 +1413,10 @@
      "passeports"
     ],
     "file_count": 311000,
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-bef54a4a3bb5c9a9",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    },
    {
     "affected_count": 1367197,
@@ -1418,8 +1431,10 @@
      "données personnelles"
     ],
     "file_count": 311000,
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-a41c3c69231506b9",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1433,6 +1448,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-handball-msn9vcfexvsnlnk1ha",
@@ -1496,12 +1512,6 @@
   "date": "2026-08-10",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "vulnérabilité informatique susceptible d’avoir permis l’interrogation automatisée de certains enregistrements de la base",
-      "evidence": "Une vulnérabilité informatique susceptible d’avoir permis l’interrogation automatisée de certains enregistrements de la base."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -1513,18 +1523,14 @@
     "affected_count": 42000,
     "affected_count_raw": "plus de 42 000 comptes",
     "affected_unit": "accounts",
-    "attack_flow": [
-     {
-      "action": "Interrogation automatisée de certains enregistrements présents dans sa base de données",
-      "evidence": "Selon l’organisme, une vulnérabilité aurait pu permettre l’interrogation automatisée de certains enregistrements présents dans sa base de données."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-174aa1135065caa2",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1538,6 +1544,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/i-cad-msn3ybtatwxhj8nio8n",
@@ -1588,6 +1595,12 @@
     "affected_count": 42000,
     "affected_count_raw": "plus de 42 000 comptes",
     "affected_unit": "accounts",
+    "attack_flow": [
+     {
+      "action": "Compromission du site actes.sixt-sur-aff.fr et récupération de sa base WordPress",
+      "evidence": "L'attaquant affirme avoir compromis le site actes.sixt-sur-aff.fr, récupéré sa base de données WordPress et obtenu un accès administrateur."
+     }
+    ],
     "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
@@ -1596,7 +1609,9 @@
      "données personnelles"
     ],
     "item_id": "ITM-c4b4c011082dd04b",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Compromission du site actes.sixt-sur-aff.fr et récupération de sa base WordPress.",
+    "threat_actor": "diable'fire / X-VDP-X"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1609,6 +1624,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Compromission du site actes.sixt-sur-aff.fr et récupération de sa base WordPress.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mairie-de-sixt-sur-aff-msmii0ydaxb7f5pq82k"
@@ -1634,17 +1650,10 @@
     "source": "BONJOURLAFUITE"
    },
    {
-    "attack_flow": [
-     {
-      "action": "Fournir des informations client à CEVA Logistics pour les livraisons et expédition des commandes Steam",
-      "evidence": "\"CEVA Logistics assure notamment l’expédition du matériel Steam vers la clientèle européenne. Pour réaliser les livraisons, Valve lui transmet certaines informations relatives aux acheteurs et à leurs commandes.\""
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "mots de passe"
     ],
-    "impact": "Après l’incident, les systèmes concernés ont été isolés et mis hors ligne pendant les investigations.",
     "item_id": "ITM-f6f916078e291e8d",
     "source": "CYBERATTAQUE_ORG"
    },
@@ -1661,7 +1670,8 @@
     ],
     "impact": "mis hors ligne les systèmes affectés ;",
     "item_id": "ITM-a935e2896bf42300",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Impact documenté : mis hors ligne les systèmes affectés ;."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1676,6 +1686,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : mis hors ligne les systèmes affectés ;.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/steam.png",
@@ -1700,7 +1711,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-e2e418cf3d473677",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé à des données personnelles."
    },
    {
     "affected_count": 42000,
@@ -1733,6 +1745,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : accès non autorisé à des données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ville-de-gagny-msmim65d87im5z51ho4",
@@ -1755,7 +1768,8 @@
     ],
     "impact": "55 949 enregistrements récupérés avant l’interruption",
     "item_id": "ITM-33a67e9f40f8745d",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : 55 949 enregistrements récupérés avant l’interruption."
    },
    {
     "affected_count": 55949,
@@ -1772,7 +1786,8 @@
      "IBAN / RIB"
     ],
     "item_id": "ITM-9021b9aa28ea4a6a",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "threat_actor": "ZeroBytes"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -1786,6 +1801,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : 55 949 enregistrements récupérés avant l’interruption.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/bureau-vall-e-msm7y0p26cnf5r2ewtu",
@@ -1899,10 +1915,6 @@
      {
       "action": "Exploitation d’une requête spécifique permettant de créer un compte extranet restreint",
       "evidence": "Selon BlgCloud, l’attaque reposait sur l’exploitation d’une requête spécifique permettant de créer un compte extranet restreint."
-     },
-     {
-      "action": "Mauvaise configuration des droits attribués à ce compte extranet",
-      "evidence": "Une mauvaise configuration des droits attribués à ce compte aurait ensuite permis l’accès et l’exfiltration de certaines données."
      }
     ],
     "claim_status": "confirmed",
@@ -1912,7 +1924,8 @@
      "mots de passe"
     ],
     "item_id": "ITM-c2ee72fcb6ba89cb",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Exploitation d’une requête spécifique permettant de créer un compte extranet restreint."
    },
    {
     "affected_count": 45684,
@@ -1943,6 +1956,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Exploitation d’une requête spécifique permettant de créer un compte extranet restreint.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/blgcloud-mskjo8rlb7gngvnvb4k",
@@ -2057,7 +2071,8 @@
     ],
     "impact": "Fondée en 1986 , la Mutuelle Générale de Prévoyance est spécialisée dans la prévoyance , c’est-à-dire la protection financière des personnes notamment en cas d’arrêt de travail, d’invalidité ou de décès.",
     "item_id": "ITM-f796c1c162ca1ac0",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : publication de données et vente associées à deux tables (adhérents et coordonnées bancaires) par un acteur utilisant le pseudonyme yiranet. Impact documenté : Fondée en 1986 , la Mutuelle Générale de Prévoyance est spécialisée dans la prévoyance , c’est-à-dire la protection financière des…"
    },
    {
     "affected_count": 198127,
@@ -2088,6 +2103,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : publication de données et vente associées à deux tables (adhérents et coordonnées bancaires) par un acteur utilisant le pseudonyme yiranet. Impact documenté : Fondée en 1986 , la Mutuelle Générale de Prévoyance est spécialisée dans la prévoyance , c’est-à-dire la protection financière des…",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mutuelle-g-n-rale-de-pr-voyance-msjkkufska3mdj2z8xb",
@@ -2245,8 +2261,10 @@
      "données bancaires",
      "pièces d'identité"
     ],
+    "initial_access": "phishing",
     "item_id": "ITM-f10fab241bce001a",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un hameçonnage."
    },
    {
     "affected_count": 101,
@@ -2275,6 +2293,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/afpa-msj805wnmw8zz6kstul",
@@ -2461,6 +2480,7 @@
     "data_volume": "23 Go",
     "item_id": "ITM-d0c4e4e46300d8ab",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Publication publique de contenu attribué à Reflet 2000 suite à une attaque par ransomware..",
     "threat_actor": "KRYBit"
    },
    {
@@ -2485,6 +2505,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
+  "summary": "Déroulé documenté : Publication publique de contenu attribué à Reflet 2000 suite à une attaque par ransomware..",
   "threat": "Ransomware",
   "urls": [
    "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a016f41ca1953ff139063dbb3c3871fbf732c574f69562ccc6db847eb3f24e2/",
@@ -2567,7 +2588,8 @@
     ],
     "claim_status": "confirmed",
     "item_id": "ITM-04a856475a59deb2",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Extraction d’informations relatives à des commandes passées sur le site depuis 2025."
    },
    {
     "affected_count": 42000,
@@ -2597,6 +2619,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Extraction d’informations relatives à des commandes passées sur le site depuis 2025.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/armurerie-lavaux-mseypxv2fdmjdlqaj78",
@@ -2641,15 +2664,16 @@
   "facts": [
    {
     "claim_status": "confirmed",
+    "initial_access": "remote_access",
     "item_id": "ITM-e5d73bca2b1212d3",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un accès distant compromis."
    },
    {
     "affected_count": 42000,
     "affected_count_raw": "plus de 42 000 comptes",
     "affected_unit": "accounts",
     "claim_status": "confirmed",
-    "impact": "données professionnelles potentiellement compromises",
     "item_id": "ITM-38f7e4f5a09b85e4",
     "source": "FRENCHBREACHES"
    }
@@ -2665,6 +2689,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/biosynex-msi1a59xyyo8dd0uay9",
@@ -2705,6 +2730,12 @@
     "affected_count": 3000000,
     "affected_count_raw": "3 000 000 personnes",
     "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé via usurpation d’un compte professionnel pour accéder et télécharger des fichiers contenant des numéros de téléphone.",
+      "evidence": "Un compte professionnel a été usurpé afin d’accéder et de télécharger des fichiers contenant des numéros de téléphone."
+     }
+    ],
     "claim_status": "confirmed",
     "data_types": [
      "numéros de téléphone",
@@ -2712,7 +2743,8 @@
     ],
     "impact": "La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
     "item_id": "ITM-f690c99943f1ca81",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Accès non autorisé via usurpation d’un compte professionnel pour accéder et télécharger des fichiers contenant des numéros de téléphone.. Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -2727,6 +2759,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé via usurpation d’un compte professionnel pour accéder et télécharger des fichiers contenant des numéros de téléphone.. Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/bloctel.png",
@@ -2821,8 +2854,10 @@
      "passeports",
      "numéros de sécurité sociale"
     ],
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-bb13d17602511733",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    },
    {
     "affected_count": 2000,
@@ -2849,6 +2884,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mvision-msgwx7wpe04lm2vdg5t",
@@ -2902,8 +2938,10 @@
      "noms et prénoms",
      "dates de naissance"
     ],
+    "initial_access": "remote_access",
     "item_id": "ITM-783dfbd911a6ea5d",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Un cybercriminel affirme sur un forum la vente d’une base de données contenant 1 393 807 enregistrements d’Intermarché Drive, provenant d’un serveur RDP compromis dans le réseau d’Intermarché."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -2916,6 +2954,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Un cybercriminel affirme sur un forum la vente d’une base de données contenant 1 393 807 enregistrements d’Intermarché Drive, provenant d’un serveur RDP compromis dans le réseau d’Intermarché.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msf7vvhryw7nui45uho"
@@ -2996,12 +3035,6 @@
     "affected_count": 14511,
     "affected_count_raw": "14 511 personnes",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "Piratage de Chat Coco : messages privés, e-mails et...",
-      "evidence": "« Piratage de Chat Coco : messages privés, e-mails et... »"
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -3010,7 +3043,6 @@
      "mots de passe"
     ],
     "data_volume": "440 Mo",
-    "impact": "Fuite massive de données et dégradation de la page d'accueil",
     "item_id": "ITM-84758253203f8d43",
     "source": "FRENCHBREACHES"
    }
@@ -3194,6 +3226,7 @@
     "impact": "conditionner l'arrêt de ses actions au soutien apporté par la France et ses alliés aux « ennemis de l'Iran ».",
     "item_id": "ITM-8cf6a69132cf2117",
     "source": "FRENCHBREACHES",
+    "summary": "Impact documenté : conditionner l'arrêt de ses actions au soutien apporté par la France et ses alliés aux « ennemis de l'Iran ».",
     "threat_actor": "Phantom"
    }
   ],
@@ -3207,6 +3240,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : conditionner l'arrêt de ses actions au soutien apporté par la France et ses alliés aux « ennemis de l'Iran ».",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ent-seine-et-marne-msbmzcv3k4jirk0p3"
@@ -3297,8 +3331,10 @@
    {
     "claim_status": "confirmed",
     "impact": "Après la découverte de l’intrusion, Terveo a mis son site hors ligne puis l’a entièrement reconstruit sur un serveur neuf .",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-4168c464e94c7b7e",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis. Impact documenté : Après la découverte de l’intrusion, Terveo a mis son site hors ligne puis l’a entièrement reconstruit sur un serveur neuf."
    },
    {
     "affected_count": 42000,
@@ -3312,7 +3348,8 @@
     ],
     "impact": "Les mesures prises par TERVEO À la suite de la découverte de l'intrusion, l'entreprise indique avoir : mis le site hors ligne ;",
     "item_id": "ITM-386bf2c572aa1262",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Impact documenté : Les mesures prises par TERVEO À la suite de la découverte de l'intrusion, l'entreprise indique avoir : mis le site hors ligne ;."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -3326,6 +3363,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Impact documenté : Les mesures prises par TERVEO À la suite de la découverte de l'intrusion, l'entreprise indique avoir : mis le site hors ligne ;.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/terveo-msb0jbxnwduz5ngrumi",
@@ -3340,8 +3378,10 @@
     "claim_status": "confirmed",
     "data_volume": "160 Go",
     "impact": "La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre.",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-314468b5e3fd3824",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis. Impact documenté : La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre."
    },
    {
     "discovered_date": "2026-08-02",
@@ -3365,6 +3405,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis. Impact documenté : La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre.",
   "threat": "Ransomware",
   "urls": [
    "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a32127c5ba7d063fd8b100d461d7dcbadda8e7f2f6511bcb2522552d419d6e2/",
@@ -3437,8 +3478,10 @@
     ],
     "data_volume": "26 Go",
     "file_count": 82000,
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-589ef74c132ae0a2",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    },
    {
     "claim_status": "claimed",
@@ -3458,6 +3501,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-t2mc-msatleltiim1uf4u47g",
@@ -3484,7 +3528,8 @@
      "cartes de paiement"
     ],
     "item_id": "ITM-40b394bef3a1fe44",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Fuite/diffusion d’une base de données contenant des enregistrements d’adhérents et salariés.."
    },
    {
     "claim_status": "claimed",
@@ -3503,6 +3548,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Fuite/diffusion d’une base de données contenant des enregistrements d’adhérents et salariés..",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/xplor-resamania-ms9zix0ogp9u7xkgvu5",
@@ -3564,12 +3610,8 @@
     ],
     "claim_status": "confirmed",
     "item_id": "ITM-4acbbed09e3890af",
-    "source": "CYBERATTAQUE_ORG"
-   },
-   {
-    "impact": "Données de candidats et d'entreprises potentiellement consultées.",
-    "item_id": "ITM-20afe79fae511313",
-    "source": "FRENCHBREACHES"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Utilisation d’un compte disposant de droits administrateur pour effectuer plusieurs exports à partir de la plateforme eDRH.."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -3584,6 +3626,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Utilisation d’un compte disposant de droits administrateur pour effectuer plusieurs exports à partir de la plateforme eDRH..",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://bonjourlafuite.eu.org/img/cci-nice.png",
@@ -3614,12 +3657,6 @@
     "affected_count": 243000,
     "affected_count_raw": "environ  243 000 agents",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "Compte professionnel compromis utilisé par l’attaquant pour accéder à l’application",
-      "evidence": "L’intrusion aurait débuté après la compromission d’un compte professionnel. L’attaquant aurait ensuite utilisé cet accès légitime pour pénétrer dans l’application"
-     }
-    ],
     "claim_status": "confirmed",
     "item_id": "ITM-1ee6f6cbcdcfbbb3",
     "source": "CYBERATTAQUE_ORG"
@@ -3664,9 +3701,10 @@
      "données bancaires",
      "cartes de paiement"
     ],
-    "impact": "La durée de l’indisponibilité laisse penser que les équipes doivent vérifier les fichiers, supprimer les éventuelles portes dérobées et restaurer le site depuis un environnement considéré comme sain avant sa réouverture.",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-0dd0ead1cf4f8083",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    },
    {
     "claim_status": "confirmed",
@@ -3692,6 +3730,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/5doigts2pieds-ms7nsxtv858u04k6jvq",
@@ -3763,8 +3802,10 @@
     "affected_count_raw": "621 019 clients",
     "affected_unit": "clients",
     "claim_status": "unconfirmed",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-fe38fbba13f1277e",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
     "victim_website": "https://engie-green.fr"
    },
    {
@@ -3784,6 +3825,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Ransomware",
   "urls": [
    "https://frenchbreaches.com/alertes/engie-green-ms793t79jtz46e143go",
@@ -3847,7 +3889,8 @@
      "cartes de paiement"
     ],
     "item_id": "ITM-afc773a158f765dd",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Diffusion de cinq fichiers présentés comme issus du site marchand de l’entreprise par le hacker 0xSec.."
    },
    {
     "claim_status": "claimed",
@@ -3866,6 +3909,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Diffusion de cinq fichiers présentés comme issus du site marchand de l’entreprise par le hacker 0xSec..",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/lire-demain-ms5pejs6d6m5q6vnf18",
@@ -3884,8 +3928,10 @@
     "data_types": [
      "données personnelles"
     ],
+    "initial_access": "remote_access",
     "item_id": "ITM-fcbb2a30976447da",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un accès distant compromis."
    },
    {
     "claim_status": "confirmed",
@@ -3904,6 +3950,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/orisha-insurance-cim-ms5ra3ys2j9emgrkcgc",
@@ -4057,8 +4104,10 @@
      "numéros de téléphone"
     ],
     "data_volume": "261,4 Mo",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-2fbe95fa2462d0d5",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    },
    {
     "affected_count": 465828,
@@ -4080,6 +4129,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/planity-ms4gnp7s4p4ptre2tub",
@@ -4512,7 +4562,8 @@
      "noms et prénoms"
     ],
     "item_id": "ITM-12efd3c9f0ff5b86",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : diffusion d’un fichier présenté comme l’annuaire de contacts de cartogip.fr par le hacker ChimeraZ."
    },
    {
     "claim_status": "claimed",
@@ -4531,6 +4582,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : diffusion d’un fichier présenté comme l’annuaire de contacts de cartogip.fr par le hacker ChimeraZ.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/cartogip-gip-atgeri-ms25bj1kfym1fayo10t",
@@ -4905,7 +4957,8 @@
      "pièces d'identité"
     ],
     "item_id": "ITM-3e747f2bbf3f1804",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à l’un de ses environnements informatiques (détection le 8 juillet 2026)."
    },
    {
     "claim_status": "confirmed",
@@ -4924,6 +4977,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à l’un de ses environnements informatiques (détection le 8 juillet 2026).",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/skolae-mrzem313qv3bs8qdks8",
@@ -5013,7 +5067,8 @@
     ],
     "claim_status": "claimed",
     "item_id": "ITM-2f2c49279b8081ec",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Déroulé documenté : Défiguration (defacement) du site et publication d'un message revendiquant la compromission."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -5026,6 +5081,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Déroulé documenté : Défiguration (defacement) du site et publication d'un message revendiquant la compromission.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/france-cyber-d-fense-mrxd8ygo8ndtxqd9jt3"
@@ -5046,8 +5102,10 @@
      }
     ],
     "claim_status": "confirmed",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-0ad52a5ff95b695d",
-    "source": "FRENCHBREACHES"
+    "source": "FRENCHBREACHES",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis. Déroulé documenté : Intrusion sur l'intranet via le compte compromis d’un membre."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -5060,6 +5118,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis. Déroulé documenté : Intrusion sur l'intranet via le compte compromis d’un membre.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-l-ordre-ma-onnique-mixte-international-le-droit-humain-mrxxf9a9acbpfpsa7ta"
@@ -5125,16 +5184,6 @@
   "date": "2026-07-23",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Les cybercriminels bloquent une partie du système informatique et réclament une rançon.",
-      "evidence": "Les cybercriminels ont bloqué une partie de son système informatique avant de réclamer une rançon."
-     },
-     {
-      "action": "La mairie déconnecte l’ensemble des serveurs municipaux pour empêcher la propagation.",
-      "evidence": "Pour empêcher la propagation du logiciel malveillant, les équipes techniques ont dû déconnecter l’ensemble des serveurs municipaux ."
-     }
-    ],
     "data_types": [
      "mots de passe",
      "données personnelles"
@@ -5451,7 +5500,8 @@
     ],
     "impact": "exposition des noms, prénoms et adresses électroniques de certains clients",
     "item_id": "ITM-71e8bf8985fa65c1",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé au système d’information. Impact documenté : exposition des noms, prénoms et adresses électroniques de certains clients."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -5464,6 +5514,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : accès non autorisé au système d’information. Impact documenté : exposition des noms, prénoms et adresses électroniques de certains clients.",
   "threat": "Malware",
   "urls": [
    "https://www.cyberattaque.org/europ-camera-informe-ses-clients-dune-fuite-de-donnees-apres-une-cyberattaque/"
@@ -5579,10 +5630,6 @@
     "affected_unit": "records",
     "attack_flow": [
      {
-      "action": "Accès via un webshell revendiqué",
-      "evidence": "Les auteurs affirment avoir obtenu un accès via un webshell."
-     },
-     {
       "action": "Exfiltration de données: export de 29 tables de la base principale et récupération de données d’utilisateurs, de contacts et de cotisations",
       "evidence": "exporté 29 tables de la base principale et récupéré des données d’utilisateurs, de contacts et de cotisations."
      }
@@ -5592,8 +5639,10 @@
      "identifiants",
      "mots de passe"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-295bfefc6fc53d5e",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exfiltration de données: export de 29 tables de la base principale et récupération de données d’utilisateurs, de contacts et de cotisations."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -5606,6 +5655,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exfiltration de données: export de 29 tables de la base principale et récupération de données d’utilisateurs, de contacts et de cotisations.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/centres-sociaux-de-france-les-donnees-revendiques-apres-une-compromission-de-rezofed/"
@@ -5635,7 +5685,8 @@
     "file_count": 17356,
     "impact": "Les mots de passe faibles ou réutilisés peuvent être ciblés par des attaques hors ligne, surtout si les attaquants disposent de temps et de ressources.",
     "item_id": "ITM-803dbab7e2fdcb4d",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Les mots de passe faibles ou réutilisés peuvent être ciblés par des attaques hors ligne, surtout si les attaquants disposent de temps et de ressources."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -5649,6 +5700,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Les mots de passe faibles ou réutilisés peuvent être ciblés par des attaques hors ligne, surtout si les attaquants disposent de temps et de ressources.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/croq-vacances.png",
@@ -5787,8 +5839,10 @@
     "data_types": [
      "données personnelles"
     ],
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-66bf0cf28479575f",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -5801,6 +5855,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://www.cyberattaque.org/doinsport-les-donnees-personnelles-adresses-et-profils-de-mineurs-en-fuite-apres-une-cyberattaque/"
@@ -5987,7 +6042,8 @@
      "noms et prénoms"
     ],
     "item_id": "ITM-7f532dfa32a07e54",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé à l’un des environnements informatiques du Groupe GES (date de détection: 8 juillet 2026)."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6000,6 +6056,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : accès non autorisé à l’un des environnements informatiques du Groupe GES (date de détection: 8 juillet 2026).",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/eiml-cyberattaque/"
@@ -6013,19 +6070,15 @@
     "affected_count": 100000,
     "affected_count_raw": "100 000 dossiers",
     "affected_unit": "files",
-    "attack_flow": [
-     {
-      "action": "Accès non autorisé à des documents PDF via une faille IDOR pour parcourir et récupérer des dossiers clients.",
-      "evidence": "L’auteur affirme avoir pu accéder à des centaines de milliers de documents PDF présentés comme des factures certifiées et des dossiers clients; une faille IDOR aurait permis de parcourir les documents."
-     }
-    ],
     "claim_status": "claimed",
     "data_types": [
      "noms et prénoms",
      "IBAN / RIB"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-435a61c36aff8c50",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6038,6 +6091,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/france-pare-brise-100-000-dossiers-avec-permis-cartes-grises-et-iban-revendiques/"
@@ -6058,8 +6112,10 @@
      "noms et prénoms",
      "dates de naissance"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-ffa91ff73839712b",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6072,6 +6128,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/keepcool-287-842-fiches-dadherents-en-fuite-apres-une-faille/"
@@ -6192,7 +6249,8 @@
     ],
     "claim_status": "confirmed",
     "item_id": "ITM-97c25ac2b10664ff",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé détecté dans l’environnement informatique du Groupe GES le 8 juillet 2026."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6205,6 +6263,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : accès non autorisé détecté dans l’environnement informatique du Groupe GES le 8 juillet 2026.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/efab-cyberattaque/"
@@ -6311,8 +6370,10 @@
     "affected_count_raw": "plus de 2 millions d’utilisateurs",
     "affected_unit": "users",
     "claim_status": "confirmed",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-928432a62e0635b8",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6325,6 +6386,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/litige-fr-plus-de-2-millions-dutilisateurs-revendiques-apres-une-faille-idor/"
@@ -6462,8 +6524,10 @@
      "mots de passe",
      "données bancaires"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-d707eb7f81a94033",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
     "victim_website": "https://atout-france.fr"
    }
   ],
@@ -6478,6 +6542,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/atout-france.png",
@@ -6505,7 +6570,8 @@
      "données bancaires"
     ],
     "item_id": "ITM-7f146f99ee4e4fa1",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Fuite de données revendiquée sur un forum cybercriminel avec diffusion d’une base contenant 59 932 enregistrements.."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6518,6 +6584,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Fuite de données revendiquée sur un forum cybercriminel avec diffusion d’une base contenant 59 932 enregistrements..",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/federation-francaise-handisport-pres-de-60-000-licencies-exposes-apres-une-cyberattaque/"
@@ -6586,9 +6653,10 @@
   "facts": [
    {
     "claim_status": "confirmed",
-    "impact": "Contrairement à ce que pourrait laisser penser l’ampleur des perturbations, la Communauté de Communes Pays du Mont-Blanc n’indique pas avoir été directement piratée.",
+    "impact": "Cette dépendance rend indispensables les solutions de secours : connexions alternatives, messagerie de continuité, canaux de communication externes et procédures permettant de maintenir les services essentiels en cas d’indisponibilité prolongée.",
     "item_id": "ITM-32bbbfeebe25b49b",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Cette dépendance rend indispensables les solutions de secours : connexions alternatives, messagerie de continuité, canaux de communication externes et procédures permettant de maintenir les services essentiels en cas d’indisponibilité prolongée."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6601,6 +6669,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Cette dépendance rend indispensables les solutions de secours : connexions alternatives, messagerie de continuité, canaux de communication externes et procédures permettant de maintenir les services essentiels en cas d’indisponibilité prolongée.",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/pays-du-mont-blanc-une-cyberattaque-chez-son-operateur-paralyse-les-services/"
@@ -6691,7 +6760,8 @@
      "pièces d'identité"
     ],
     "item_id": "ITM-d9c8dfb18c969bad",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé au compte Onfido de Spiko par un tiers via des identifiants de connexion."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6704,6 +6774,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé au compte Onfido de Spiko par un tiers via des identifiants de connexion.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/spiko-pieces-didentite-et-selfies-de-clients-exposes-apres-une-cyberattaque-chez-onfido/"
@@ -6818,8 +6889,10 @@
      "dates de naissance",
      "identifiants"
     ],
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-31165a2028701f4a",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -6832,6 +6905,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://www.cyberattaque.org/follow-health-plus-de-2-millions-de-dossiers-patients-revendiques-apres-une-cyberattaque/"
@@ -6998,8 +7072,10 @@
      "numéros de téléphone",
      "noms et prénoms"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-8418237b10f98a73",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
     "victim_website": "https://culture.gouv"
    }
   ],
@@ -7013,6 +7089,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/ministere-de-la-culture-45-362-contacts-professionnels-revendiques-apres-une-faille-idor/"
@@ -7320,8 +7397,10 @@
      "identifiants",
      "mots de passe"
     ],
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-10963ce40ab3c845",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
     "victim_website": "https://lions-france.org"
    }
   ],
@@ -7335,6 +7414,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://www.cyberattaque.org/lions-clubs-france-23-898-fiches-de-membres-exposees-apres-une-cyberattaque/"
@@ -7631,8 +7711,10 @@
      "identifiants",
      "données personnelles"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-fc1064e0de6ca190",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -7645,6 +7727,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/284-461-membres-de-la-federation-francaise-de-bridge-diffuses-apres-une-faille-de-securite/"
@@ -7764,8 +7847,10 @@
      "données personnelles"
     ],
     "data_volume": "2 Go",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-16baa08a1203a688",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Injection SQL aveugle sur le paramètre codeproduit de print-programme.php sans authentification préalable."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -7778,6 +7863,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Injection SQL aveugle sur le paramètre codeproduit de print-programme.php sans authentification préalable.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/pacha-tours-31-087-personnes-passeports-pnr-et-mots-de-passe-en-clair-publies-apres-une-cyberattaque/"
@@ -8058,8 +8144,10 @@
     "affected_unit": "files",
     "claim_status": "unconfirmed",
     "file_count": 59,
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-04e0d362bcf71382",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -8072,6 +8160,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/axonaut-8-bases-clients-revendiquees-plusieurs-milliers-de-factures-exposees/"
@@ -8116,12 +8205,6 @@
   "date": "2026-06-29",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Listing de répertoires Apache laissé accessible publiquement",
-      "evidence": "listing de répertoires Apache laissé accessible publiquement"
-     }
-    ],
     "claim_status": "unconfirmed",
     "data_types": [
      "mots de passe"
@@ -8282,6 +8365,7 @@
     ],
     "item_id": "ITM-ef1e2e44e8c4d290",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Publication/vente sur forum cybercriminel d’une base de données prétendument issue d’un annuaire professionnel..",
     "victim_website": "https://onpp.fr"
    }
   ],
@@ -8295,6 +8379,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Publication/vente sur forum cybercriminel d’une base de données prétendument issue d’un annuaire professionnel..",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/onpp-8-048-fiches-de-pedicures-podologues-revendiquees-dans-une-fuite-de-donnees/"
@@ -8451,7 +8536,8 @@
      }
     ],
     "item_id": "ITM-c832da4cf95fd1f6",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Extraction structurée de données métier depuis le CRM Apimo (Homeloop et MD-immobilier)."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -8464,6 +8550,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Extraction structurée de données métier depuis le CRM Apimo (Homeloop et MD-immobilier).",
   "threat": "Intrusion",
   "urls": [
    "https://www.cyberattaque.org/apimo-homeloop-md-immobilier-cyberattaque-fuite/"
@@ -8804,8 +8891,10 @@
     "data_types": [
      "identifiants"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-12a4ed2f1cf8e7e8",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -8819,6 +8908,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/federation-sportive-de-la-police-nationale-les-donnees-de-plus-de-70-000-policiers-en-fuite/",
@@ -9365,12 +9455,6 @@
   "date": "2026-06-18",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Publication présumée d’une base de données attribuée à MaGestionLocative.fr par le hacker ChimeraZ sur un forum cybercriminel.",
-      "evidence": "Le hacker ChimeraZ revendique la publication d’une base de données attribuée à MaGestionLocative.fr."
-     }
-    ],
     "claim_status": "claimed",
     "data_volume": "114 Mo",
     "file_count": 79000,
@@ -9768,6 +9852,7 @@
     "data_volume": "27 Mo",
     "item_id": "ITM-67c04c6b5d60a618",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : publication revendiquée d’une base de données par un acteur externe.",
     "threat_actor": "ChimeraZ"
    }
   ],
@@ -9781,6 +9866,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : publication revendiquée d’une base de données par un acteur externe.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/superimmo-plus-de-52-000-professionnels-revendiques-dans-une-fuite-de-donnees/"
@@ -9893,7 +9979,8 @@
      "dates de naissance"
     ],
     "item_id": "ITM-5ef1e91900f382aa",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : base de données publiée sur un forum cybercriminel."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -9906,6 +9993,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : base de données publiée sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/junior-association-plus-de-63-000-jeunes-et-responsables-associatifs-concernes-par-une-fuite-de-donnees/"
@@ -9970,8 +10058,10 @@
      "numéros de téléphone"
     ],
     "impact": "Les rendez-vous mentionnés concernent notamment les visites d’information et de prévention, les visites périodiques, les examens de reprise après arrêt de travail, les visites de pré-embauche ou encore les consultations demandées par l’employeur ou le médecin du travail.",
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-255f58fa365fcd72",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Impact documenté : Les rendez-vous mentionnés concernent notamment les visites d’information et de prévention, les visites périodiques, les examens de reprise après arrêt de travail, les visites de pré-embauche ou encore les consultations demandées par…"
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -9985,6 +10075,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Impact documenté : Les rendez-vous mentionnés concernent notamment les visites d’information et de prévention, les visites périodiques, les examens de reprise après arrêt de travail, les visites de pré-embauche ou encore les consultations demandées par…",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/sstrn-plus-de-355-000-salaries-voient-leur-historique-de-medecine-du-travail-expose/",
@@ -10012,7 +10103,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-163615d7c9f7aa59",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à une solution de gestion de la relation client utilisée par un prestataire → Extraction d’un fichier contenant des données personnelles de clients."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -10025,6 +10117,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à une solution de gestion de la relation client utilisée par un prestataire → Extraction d’un fichier contenant des données personnelles de clients.",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/bymycar-un-prestataire-victime-dune-cyberattaque-les-donnees-de-clients-exposees/"
@@ -10460,12 +10553,6 @@
   "date": "2026-06-10",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Incident détecté chez le prestataire chargé des sauvegardes",
-      "evidence": "« incident de sécurité affectant une infrastructure de sauvegarde de données »"
-     }
-    ],
     "claim_status": "claimed",
     "item_id": "ITM-b254b646ab9aef23",
     "source": "CYBERATTAQUE_ORG"
@@ -10993,7 +11080,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-ca067630b425e2dc",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à une plateforme contenant des informations clients."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -11007,6 +11095,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à une plateforme contenant des informations clients.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/goodvest.png",
@@ -11397,12 +11486,6 @@
     "affected_count": 31500,
     "affected_count_raw": "plus de  31 500 enregistrements",
     "affected_unit": "records",
-    "attack_flow": [
-     {
-      "action": "Exposition de données par forum cybercriminel",
-      "evidence": "Des données attribuées à l’École élémentaire Montaigne de Roubaix circulent actuellement sur un forum cybercriminel."
-     }
-    ],
     "item_id": "ITM-4c1aec321d7cd504",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -11504,7 +11587,6 @@
      "identifiants",
      "mots de passe"
     ],
-    "impact": "Toutefois, selon leur ancienneté et l’algorithme utilisé, certains pourraient potentiellement faire l’objet de tentatives de cassage hors ligne.",
     "item_id": "ITM-cd8749b027c1c9f4",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -11737,7 +11819,8 @@
     "data_volume": "100 Go",
     "impact": "Cette stratégie augmente considérablement les risques pour les entreprises concernées, qui doivent désormais gérer simultanément une interruption potentielle de leurs activités, des obligations réglementaires et la menace d’une divulgation publique de leurs données internes.",
     "item_id": "ITM-3688aa52266b886f",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Cette stratégie augmente considérablement les risques pour les entreprises concernées, qui doivent désormais gérer simultanément une interruption potentielle de leurs activités, des obligations réglementaires et la menace d’une divulgation publique de leurs données internes."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -11750,6 +11833,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Cette stratégie augmente considérablement les risques pour les entreprises concernées, qui doivent désormais gérer simultanément une interruption potentielle de leurs activités, des obligations réglementaires et la menace d’une divulgation publique de leurs données internes.",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/cablematic-touche-par-un-ransomware-100-go-de-donnees-menaces-de-publication/"
@@ -12599,7 +12683,6 @@
   "facts": [
    {
     "claim_status": "claimed",
-    "impact": "L’attaque aurait entraîné l’indisponibilité des systèmes électroniques de la mairie, compliquant fortement le fonctionnement des services administratifs.",
     "item_id": "ITM-3a3a1e654fe82a2b",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -12669,7 +12752,8 @@
     "file_count": 7898,
     "impact": "7 898 fichiers PDF de factures et un fichier data.json contenant 7 898 lignes, ainsi que des informations sur des magasins franchisés et des coordonnées de responsables et gérants exposés.",
     "item_id": "ITM-eed0916e868e838d",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : 7 898 fichiers PDF de factures et un fichier data.json contenant 7 898 lignes, ainsi que des informations sur des magasins franchisés et des coordonnées de responsables et gérants exposés."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -12682,6 +12766,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : 7 898 fichiers PDF de factures et un fichier data.json contenant 7 898 lignes, ainsi que des informations sur des magasins franchisés et des coordonnées de responsables et gérants exposés.",
   "threat": "Malware",
   "urls": [
    "https://www.cyberattaque.org/optic-2000-pres-de-8-000-factures-pdf-et-donnees-de-franchises-en-fuite/"
@@ -12887,7 +12972,8 @@
     "data_volume": "128 Mo",
     "file_count": 46000,
     "item_id": "ITM-1eb6515e2ca46a8b",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Fuite de données publiée sur un forum cybercriminel contenant bases de données et documents internes.."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -12900,6 +12986,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Fuite de données publiée sur un forum cybercriminel contenant bases de données et documents internes..",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/avea-vacances-victime-dune-cyberattaque-46-000-dossiers-de-sejours-exposes/"
@@ -13042,6 +13129,7 @@
     ],
     "item_id": "ITM-ea63cfe55e4dc145",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Vente/partage de base de données volée sur un forum cybercriminel.",
     "threat_actor": "Angel_Batista"
    }
   ],
@@ -13056,6 +13144,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Vente/partage de base de données volée sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/atol.png",
@@ -13723,10 +13812,6 @@
     "affected_unit": "clients",
     "attack_flow": [
      {
-      "action": "Accès frauduleux à la plateforme de réservation par exploitation d’une vulnérabilité IDOR",
-      "evidence": "« L’attaque aurait reposé sur une vulnérabilité de type IDOR (Insecure Direct Object Reference). »"
-     },
-     {
       "action": "Extraction automatisée des données via des techniques de scraping massif",
       "evidence": "« d’automatiser l’extraction des données via des techniques de scraping massif. »"
      }
@@ -13737,7 +13822,8 @@
     ],
     "data_volume": "900 Mo",
     "item_id": "ITM-ab75fc41eb5d5909",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Extraction automatisée des données via des techniques de scraping massif."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -13750,6 +13836,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Extraction automatisée des données via des techniques de scraping massif.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/maeva-pierre-vacances-center-parcs-cyberattque-fuite-donnees/"
@@ -13921,12 +14008,6 @@
   "date": "2026-05-13",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Compromission présumée des systèmes de A.R.Ge.Co par le groupe Anubis",
-      "evidence": "Le groupe de ransomware Anubis affirme avoir compromis les systèmes de A.R.Ge.Co"
-     }
-    ],
     "data_types": [
      "données bancaires"
     ],
@@ -14094,8 +14175,10 @@
    {
     "claim_status": "confirmed",
     "data_volume": "5 Go",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-e0998f44feba7125",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -14108,6 +14191,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Malware",
   "urls": [
    "https://www.cyberattaque.org/mistral-ai-450-depots-prives-et-5-go-de-code-interne-menaces-de-diffusion-apres-une-cyberattaque/"
@@ -14145,12 +14229,6 @@
   "date": "2026-05-13",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Intrusion via une faille de sécurité dans le logiciel utilisé pour gérer la plateforme e-commerce",
-      "evidence": "selon l’entreprise, des attaquants ont exploité une faille de sécurité dans le logiciel utilisé pour gérer la plateforme e-commerce, leur permettant d’accéder potentiellement aux données de clients."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -14194,7 +14272,6 @@
      "données bancaires",
      "données personnelles"
     ],
-    "impact": "Données personnelles et réservations potentiellement exposées (nom, prénom, email, téléphone, adresse, numéros de réservation, dates de séjour, demandes liées aux réservations).",
     "item_id": "ITM-f02e328d67075759",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -14473,7 +14550,8 @@
     ],
     "impact": "Le Kiosque famille mis hors ligne",
     "item_id": "ITM-5195e435f4b81c8c",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Compromission de deux comptes utilisateurs exploités par des tiers. Impact documenté : Le Kiosque famille mis hors ligne."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -14487,6 +14565,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Compromission de deux comptes utilisateurs exploités par des tiers. Impact documenté : Le Kiosque famille mis hors ligne.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/roubaix-le-kiosque-famille-suspendu-apres-une-fuite-de-donnees-concernant-des-enfants-scolarises/",
@@ -14647,7 +14726,8 @@
     "claim_status": "confirmed",
     "impact": "Les groupes cybercriminels ciblent régulièrement les entreprises industrielles et pharmaceutiques en raison de leur dépendance aux systèmes informatiques et de la pression économique générée par un arrêt de production.",
     "item_id": "ITM-5f5d736c0ab6bd08",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Les groupes cybercriminels ciblent régulièrement les entreprises industrielles et pharmaceutiques en raison de leur dépendance aux systèmes informatiques et de la pression économique générée par un arrêt de production."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -14660,6 +14740,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Les groupes cybercriminels ciblent régulièrement les entreprises industrielles et pharmaceutiques en raison de leur dépendance aux systèmes informatiques et de la pression économique générée par un arrêt de production.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/west-pharmaceutical-lusine-de-nouvion-en-thierache-paralysee-par-une-cyberattaque/"
@@ -14673,7 +14754,8 @@
     "claim_status": "confirmed",
     "impact": "Perturbations des services informatiques",
     "item_id": "ITM-1fdcf3bb7afcc977",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Perturbations des services informatiques."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -14686,6 +14768,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Perturbations des services informatiques.",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/academie-de-montpellier-fuite-de-documents-sensibles-apres-une-cyberattaque/"
@@ -14700,8 +14783,10 @@
      "adresses e-mail",
      "numéros de téléphone"
     ],
+    "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-07b9952774dc9686",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -14714,6 +14799,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/action-populaire-les-donnees-liees-aux-militants-de-la-france-insoumise-dans-une-fuite/"
@@ -14883,6 +14969,14 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-05-06",
+  "facts": [
+   {
+    "initial_access": "phishing",
+    "item_id": "ITM-e24e376a2c968bf9",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un hameçonnage."
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-F434C08610EF",
   "items": 1,
@@ -14893,6 +14987,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/bookmyname-une-cyberattaque-a-compromis-des-donnees-liees-a-des-noms-de-domaine/"
@@ -14932,7 +15027,8 @@
     ],
     "data_volume": "80,9 Go",
     "item_id": "ITM-b399093caeec76f7",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Intrusion dans le système de gestion."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -14946,6 +15042,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Intrusion dans le système de gestion.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/bouygues-2.png",
@@ -14957,12 +15054,6 @@
   "date": "2026-05-06",
   "facts": [
    {
-    "attack_flow": [
-     {
-      "action": "Exposition d’adresses email des clients suite à une cyberattaque",
-      "evidence": "Cetelem a confirmé avoir été victime d’une cyberattaque survenue le 20 avril 2026, ayant entraîné l’exposition d’adresses email appartenant à une partie de ses clients."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -15103,8 +15194,10 @@
      "mots de passe"
     ],
     "data_volume": "34 Mo",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-28e9957400947090",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
     "threat_actor": "ChimeraZ"
    }
   ],
@@ -15118,6 +15211,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://www.cyberattaque.org/newdeal-institut-une-base-exposee-avec-mots-de-passe-et-documents-sensibles/"
@@ -15460,6 +15554,7 @@
     ],
     "item_id": "ITM-f866f562c24dd0d0",
     "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Publication d'une base de données attribuée au site ObjetRama.fr par le hacker ChimeraZ.",
     "threat_actor": "ChimeraZ",
     "victim_website": "https://ObjetRama.fr"
    }
@@ -15474,6 +15569,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Publication d'une base de données attribuée au site ObjetRama.fr par le hacker ChimeraZ.",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/objetrama-plus-de-80-000-clients-exposes-dans-une-fuite-de-209-000-lignes/"
@@ -15498,7 +15594,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-22320d2daa338297",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à des données personnelles via la plateforme de formation destinée aux organismes d’accueil de volontaires et de jeunes en mobilité.."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -15511,6 +15608,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à des données personnelles via la plateforme de formation destinée aux organismes d’accueil de volontaires et de jeunes en mobilité..",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/service-civique-des-contacts-dorganismes-publics-et-associatifs-publies-apres-une-cyberattaque/"
@@ -15881,7 +15979,6 @@
   "facts": [
    {
     "data_volume": "430 MB",
-    "impact": "Exposition potentielle de données personnelles et académiques de candidats internationaux (nom, email, pays, numéro de dossier, formations demandées, etc.).",
     "item_id": "ITM-091fc8637ce58920",
     "source": "CYBERATTAQUE_ORG"
    }
@@ -15981,7 +16078,8 @@
     ],
     "impact": "L’organisation indique avoir temporairement mis la boutique hors ligne afin d’analyser l’incident et renforcer la sécurité de ses systèmes.",
     "item_id": "ITM-f5edd42642e73433",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : L’organisation indique avoir temporairement mis la boutique hors ligne afin d’analyser l’incident et renforcer la sécurité de ses systèmes."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -15995,6 +16093,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : L’organisation indique avoir temporairement mis la boutique hors ligne afin d’analyser l’incident et renforcer la sécurité de ses systèmes.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/acrimed.png",
@@ -16052,7 +16151,8 @@
      "cartes de paiement"
     ],
     "item_id": "ITM-145ff5995c92a02d",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à certaines données personnelles liées aux comptes clients."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -16065,6 +16165,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à certaines données personnelles liées aux comptes clients.",
   "threat": "Intrusion",
   "urls": [
    "https://www.cyberattaque.org/mypiscine-commandes-et-comptes-clients-exposes-apres-une-cyberattaque/"
@@ -16349,7 +16450,8 @@
     "affected_unit": "people",
     "impact": "Exposition de profils et données personnelles sensibles des gendarmes, risques de phishing ciblé et d’usurpation d’identité",
     "item_id": "ITM-862244b6b8a1e9c0",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Exposition de profils et données personnelles sensibles des gendarmes, risques de phishing ciblé et d’usurpation d’identité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -16362,6 +16464,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Exposition de profils et données personnelles sensibles des gendarmes, risques de phishing ciblé et d’usurpation d’identité.",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/resana-cyberattaque-gendarmerie-nationale-60k-gendarmes-exposes-fuite-de-donnees/"
@@ -16635,12 +16738,6 @@
     "source": "BONJOURLAFUITE"
    },
    {
-    "attack_flow": [
-     {
-      "action": "Accès non autorisés aux données de l’ensemble des comptes utilisateurs du service Radiomaritime",
-      "evidence": "« accès non autorisés aux données de l’ensemble des comptes utilisateurs »"
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "noms et prénoms",
@@ -16965,8 +17062,10 @@
     "affected_unit": "files",
     "data_volume": "6 Go",
     "file_count": 2491,
+    "initial_access": "third_party",
     "item_id": "ITM-b44ea012e26fdae2",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : la compromission d’un tiers."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -16979,6 +17078,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : la compromission d’un tiers.",
   "threat": "Incident tiers",
   "urls": [
    "https://www.cyberattaque.org/edf-fuite-inquietante-dimages-de-centrales-nucleaires-francaises/"
@@ -16997,12 +17097,6 @@
     "source": "BONJOURLAFUITE"
    },
    {
-    "attack_flow": [
-     {
-      "action": "téléchargement non autorisé de données",
-      "evidence": "Un téléchargement non autorisé de données aurait touché certains membres de son programme client."
-     }
-    ],
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -17092,7 +17186,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-6cd906cccf4e1d39",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à un outil de gestion et de stockage documentaire utilisé par Wazari."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -17106,6 +17201,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à un outil de gestion et de stockage documentaire utilisé par Wazari.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/wazari.png",
@@ -17180,7 +17276,8 @@
     "claim_status": "claimed",
     "impact": "Perturbation de la chaîne opérationnelle",
     "item_id": "ITM-b0891a9a217dbaa8",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Perturbation de la chaîne opérationnelle."
    },
    {
     "discovered_date": "2026-04-21",
@@ -17204,6 +17301,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
+  "summary": "Impact documenté : Perturbation de la chaîne opérationnelle.",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=afa2db4c-b35b-40aa-9812-82a35ab9c6bf",
@@ -17226,7 +17324,8 @@
      "mots de passe"
     ],
     "item_id": "ITM-5ed30ac0b6b94ced",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à plusieurs comptes de l’espace client magasins-u.com."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -17239,6 +17338,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à plusieurs comptes de l’espace client magasins-u.com.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/super-u-les-donnees-clients-accessibles-apres-une-cyberattaque/"
@@ -17285,7 +17385,8 @@
     ],
     "impact": "Perturbation opérationnelle de l’activité",
     "item_id": "ITM-157ec8180d223fb4",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Perturbation opérationnelle de l’activité."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -17298,6 +17399,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Perturbation opérationnelle de l’activité.",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/citypro-marionneau-fuite-de-donnees-apres-une-cyberattaque-revendiquee/"
@@ -17547,15 +17649,12 @@
      {
       "action": "Extraction non autorisée de coordonnées issues de la base de données clientes",
       "evidence": "extraction non autorisée de coordonnées issues de sa base."
-     },
-     {
-      "action": "Démarchage via une société tierce Panda Manga à destination des clients",
-      "evidence": "emails et sollicitations sur les réseaux sociaux provenant d’une société tierce nommée Panda Manga."
      }
     ],
     "claim_status": "confirmed",
     "item_id": "ITM-10bc2de399feb216",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Extraction non autorisée de coordonnées issues de la base de données clientes."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -17569,6 +17668,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Extraction non autorisée de coordonnées issues de la base de données clientes.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/bazar-manga.png",
@@ -17906,6 +18006,52 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-04-15",
+  "facts": [
+   {
+    "claim_status": "confirmed",
+    "data_types": [
+     "Nom, prénom",
+     "Identifiant de compte",
+     "Adresse email",
+     "Raison sociale",
+     "SIREN",
+     "ID portail",
+     "Numéro d’habilitation et d’aggrément",
+     "Adresse postale",
+     "Numéro de téléphone"
+    ],
+    "evidence_urls": [
+     "https://bonjourlafuite.eu.org/img/france-titre.png"
+    ],
+    "item_id": "ITM-b96135c6ec8d1130",
+    "source": "BONJOURLAFUITE"
+   },
+   {
+    "affected_count": 19000000,
+    "affected_count_raw": "19 millions d’enregistrements",
+    "affected_unit": "records",
+    "attack_flow": [
+     {
+      "action": "Accès non autorisé à certaines données personnelles liées à des comptes usagers professionnels",
+      "evidence": "\"accès non autorisé à certaines données personnelles liées à des comptes usagers professionnels\""
+     }
+    ],
+    "claim_status": "denied",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone",
+     "adresses postales",
+     "noms et prénoms",
+     "dates de naissance",
+     "pièces d'identité",
+     "passeports",
+     "données personnelles"
+    ],
+    "item_id": "ITM-b5fdd2d18d6b6f52",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à certaines données personnelles liées à des comptes usagers professionnels."
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-4DE5AB7C70B2",
   "items": 2,
@@ -17917,6 +18063,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à certaines données personnelles liées à des comptes usagers professionnels.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/france-titre.png",
@@ -17980,12 +18127,6 @@
     "source": "BONJOURLAFUITE"
    },
    {
-    "attack_flow": [
-     {
-      "action": "Piratage informatique ciblé de la plateforme de formation en ligne e-campus",
-      "evidence": "« piratage informatique a visé la plateforme de formation en ligne e-campus »"
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -18238,7 +18379,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-4879fc78a32b9a32",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé à un système interne utilisé pour enregistrer les passages des membres dans les clubs."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -18252,6 +18394,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : accès non autorisé à un système interne utilisé pour enregistrer les passages des membres dans les clubs.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/basic-fit.png",
@@ -19573,8 +19716,10 @@
     "claim_status": "confirmed",
     "data_volume": "132 Go",
     "file_count": 431000,
+    "initial_access": "phishing",
     "item_id": "ITM-cfef6105a170d038",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un hameçonnage. Déroulé documenté : attaque par ransomware ayant ciblé le logiciel SOONCARE®."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -19588,6 +19733,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : un hameçonnage. Déroulé documenté : attaque par ransomware ayant ciblé le logiciel SOONCARE®.",
   "threat": "Ransomware",
   "urls": [
    "https://bonjourlafuite.eu.org/img/ymed.png",
@@ -19613,7 +19759,8 @@
      "noms et prénoms"
     ],
     "item_id": "ITM-80fc55c362cadec5",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé à une partie des données."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -19626,6 +19773,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : accès non autorisé à une partie des données.",
   "threat": "Intrusion",
   "urls": [
    "https://www.cyberattaque.org/nosho-133-000-utilisateurs-compromis-une-nouvelle-fuite-qui-fragilise-le-secteur-medical/"
@@ -19745,12 +19893,6 @@
     "source": "BONJOURLAFUITE"
    },
    {
-    "attack_flow": [
-     {
-      "action": "Phishing permettant l’accès à certains comptes",
-      "evidence": "« il s’agirait d’une campagne de phishing ayant permis l’accès à certains comptes »"
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail"
@@ -19917,7 +20059,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-5087f77865a98d13",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : attaque par ransomware visant le système de réservation via un prestataire externe."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -19930,6 +20073,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : attaque par ransomware visant le système de réservation via un prestataire externe.",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/veuve-clicquot-les-donnees-de-visiteurs-compromises-apres-une-cyberattaque-sur-la-billetterie/"
@@ -20001,20 +20145,16 @@
     "affected_count": 71,
     "affected_count_raw": "71 clients",
     "affected_unit": "clients",
-    "attack_flow": [
-     {
-      "action": "Reconnaissance et vérification de secrets, puis tentative d’étendre l’accès après récupération d’un identifiant cloud sensible",
-      "evidence": "Une fois un identifiant cloud sensible récupéré, il a pu mener de la reconnaissance, vérifier d’autres secrets et tenter d’étendre son accès."
-     }
-    ],
     "claim_status": "confirmed",
     "data_types": [
      "identifiants",
      "données personnelles"
     ],
     "data_volume": "91,7 Go",
+    "initial_access": "compromised_credentials",
     "item_id": "ITM-ca8b03dfc8c45eeb",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -20027,6 +20167,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://www.cyberattaque.org/commission-europeenne-917-go-de-donnees-voles-apres-une-cyberattaque-sur-aws/"
@@ -20050,7 +20191,8 @@
     "claim_status": "confirmed",
     "impact": "L’entreprise indique que l’attaque n’a pas provoqué de perturbation majeure de ses activités, ni d’impact significatif anticipé sur ses résultats financiers.",
     "item_id": "ITM-a5c26ee9d8b76175",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : accès non autorisé à une partie du système informatique → extraction de données confirmée. Impact documenté : L’entreprise indique que l’attaque n’a pas provoqué de perturbation majeure de ses activités, ni d’impact significatif anticipé sur ses résultats financiers."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -20063,6 +20205,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : accès non autorisé à une partie du système informatique → extraction de données confirmée. Impact documenté : L’entreprise indique que l’attaque n’a pas provoqué de perturbation majeure de ses activités, ni d’impact significatif anticipé sur ses résultats financiers.",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/fountain-intrusion-et-vol-de-donnees-lors-dune-cyberattaque-ransomware/"
@@ -20466,7 +20609,8 @@
     "claim_status": "confirmed",
     "impact": "Données clients exposées (nom, prénom, email, téléphone, dates de séjour, numéro de dossier, montant)",
     "item_id": "ITM-fd38480114ffc165",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Données clients exposées (nom, prénom, email, téléphone, dates de séjour, numéro de dossier, montant)."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -20479,6 +20623,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Données clients exposées (nom, prénom, email, téléphone, dates de séjour, numéro de dossier, montant).",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/vacanceole-nouvelle-fuite-de-clients-dans-le-secteur-du-tourisme/"
@@ -21136,6 +21281,14 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-03-27",
+  "facts": [
+   {
+    "initial_access": "vulnerability_exploitation",
+    "item_id": "ITM-58547cd515824b45",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité."
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-15F7E5D83DD8",
   "items": 1,
@@ -21146,6 +21299,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Intrusion",
   "urls": [
    "https://www.cyberattaque.org/union-europeenne-cyberattaque-sur-la-plateforme-europa/"
@@ -21259,7 +21413,8 @@
      "données personnelles"
     ],
     "item_id": "ITM-2b8c9b61526969e0",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Accès non autorisé à des données personnelles hébergées chez un prestataire informatique."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -21273,6 +21428,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Déroulé documenté : Accès non autorisé à des données personnelles hébergées chez un prestataire informatique.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/cerballiance-2.png",
@@ -21558,7 +21714,8 @@
     "claim_status": "claimed",
     "impact": "Une simple indisponibilité suffit à immobiliser les véhicules, sans qu’aucune panne mécanique ne soit en cause.",
     "item_id": "ITM-852f65c340aa5d3e",
-    "source": "CYBERATTAQUE_ORG"
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Impact documenté : Une simple indisponibilité suffit à immobiliser les véhicules, sans qu’aucune panne mécanique ne soit en cause."
    }
   ],
   "first_seen": "2026-08-17T12:34:51+04:00",
@@ -21571,6 +21728,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
+  "summary": "Impact documenté : Une simple indisponibilité suffit à immobiliser les véhicules, sans qu’aucune panne mécanique ne soit en cause.",
   "threat": "Intrusion",
   "urls": [
    "https://www.cyberattaque.org/intoxalock-une-cyberattaque-bloque-des-voitures-aux-etats-unis/"
@@ -21603,16 +21761,6 @@
     "affected_count": 243000,
     "affected_count_raw": "243 000 agents",
     "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "L’attaque vise la base “Compas”, un outil interne de gestion des ressources humaines dédié aux stagiaires.",
-      "evidence": "L’attaque vise la base “Compas”, un outil interne de gestion des ressources humaines dédié aux stagiaires."
-     },
-     {
-      "action": "Un échantillon des données a déjà été publié sur des plateformes de revente par un acteur se présentant sous le nom “Hexdex”.",
-      "evidence": "Un échantillon des données a déjà été publié sur des plateformes de revente par un acteur se présentant sous le nom “Hexdex”."
-     }
-    ],
     "data_types": [
      "numéros de téléphone",
      "adresses postales",
@@ -22143,6 +22291,26 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-03-16",
+  "facts": [
+   {
+    "claim_status": "confirmed",
+    "data_types": [
+     "Ransomware"
+    ],
+    "evidence_urls": [
+     "https://bonjourlafuite.eu.org/img/mingat.png"
+    ],
+    "item_id": "ITM-9027fb4ba11d8511",
+    "source": "BONJOURLAFUITE"
+   },
+   {
+    "discovered_date": "2026-03-16",
+    "item_id": "ITM-b7099e3a9061d109",
+    "source": "RANSOMWARE_LIVE",
+    "threat_actor": "akira",
+    "victim_website": "https://mingat.com"
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-06FD471BEFE3",
   "items": 2,
