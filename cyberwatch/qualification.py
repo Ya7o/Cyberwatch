@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from . import config, enrichment, identity, source_llm_fallback, store
-from .dedup import build_incidents
+from .dedup import build_incidents_with_registry
 from .model import Incident, Item
 from .sector_fallback_migration import restore_legacy_sector_fallbacks
 
@@ -47,6 +47,7 @@ class QualificationReport:
     incidents: list[Incident]
     changes: dict[str, int]
     provenance: list[dict[str, str]]
+    incident_id_registry: list[dict[str, str]]
     items_hash: str
     incidents_hash: str
 
@@ -169,12 +170,15 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes.update(llm_changes)
     neutralize_sector_fallback(ordered, changes, provenance)
 
-    incidents = build_incidents(ordered)
+    incidents, incident_id_registry = build_incidents_with_registry(
+        ordered, store.load_incident_id_registry()
+    )
     return QualificationReport(
         items=ordered,
         incidents=incidents,
         changes=changes,
         provenance=provenance,
+        incident_id_registry=incident_id_registry,
         items_hash=identity.items_hash(ordered),
         incidents_hash=identity.incidents_hash(incidents),
     )

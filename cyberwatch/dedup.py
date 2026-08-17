@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 from . import config
 from .identity import incident_id, sort_incidents, sort_items
+from .incident_identity import assign_incident_ids, component_identity_key
 from .model import Incident, Item
 from .normalize import _base_organisation_key, date_or_empty, searchable
 from .org_identity import effective_organisation_key
@@ -275,45 +276,55 @@ def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
     return evidence or ordered
 
 
+def _incident_from_component(component: list[Item], stable_id: str = "") -> Incident:
+    ordered = sort_items(component)
+    evidence = _incident_evidence_items(ordered)
+    date, basis = _component_dates(ordered)
+    incident_key = component_identity_key(ordered)
+    return Incident(
+        Incident_ID=stable_id or incident_id(incident_key, ordered[0].Item_ID),
+        Date=date,
+        Date_Basis=basis,
+        Organisation=_majority(
+            [item.Organisation_Raw for item in ordered],
+            ordered[0].Organisation_Raw or "",
+        ),
+        Secteur=_preferred_qualification(ordered, "Sector", config.SECTOR_UNKNOWN),
+        Menace=_priority_threat([item.Threat for item in ordered]),
+        Localisation=_preferred_qualification(ordered, "Location", config.LOC_INCONNU),
+        Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),
+        Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),
+        Items_Count=len(ordered),
+        First_seen=min(
+            (item.Collected_As_Of for item in ordered if item.Collected_As_Of),
+            default="",
+        ),
+        Last_seen=max(
+            (item.Collected_As_Of for item in ordered if item.Collected_As_Of),
+            default="",
+        ),
+    )
+
+
+def build_incidents_with_registry(
+    items: list[Item], registry_rows: list[dict] | None = None,
+) -> tuple[list[Incident], list[dict[str, str]]]:
+    """Construit INCIDENTS en conservant les ancres historiques persistées."""
+    components = group_components(items)
+    assigned, updated_registry = assign_incident_ids(components, registry_rows)
+    incidents = [
+        _incident_from_component(component, stable_id)
+        for component, stable_id in zip(components, assigned)
+    ]
+    return sort_incidents(incidents), updated_registry
+
+
 def build_incidents(items: list[Item]) -> list[Incident]:
-    incidents: list[Incident] = []
-    for component in group_components(items):
-        ordered = sort_items(component)
-        evidence = _incident_evidence_items(ordered)
-        date, basis = _component_dates(ordered)
-        component_key = _effective_key(ordered[0])
-        # Une résolution d'identité ne doit pas renommer un incident qui ne
-        # fusionne avec rien. Pour une vraie composante multi-items, la clé
-        # résolue devient en revanche l'identité stable de la fusion.
-        incident_key = (
-            ordered[0].Organisation_Key or component_key
-            if len(ordered) == 1
-            else component_key
-        )
-        incidents.append(Incident(
-            Incident_ID=incident_id(incident_key, ordered[0].Item_ID),
-            Date=date,
-            Date_Basis=basis,
-            Organisation=_majority(
-                [item.Organisation_Raw for item in ordered],
-                ordered[0].Organisation_Raw or "",
-            ),
-            Secteur=_preferred_qualification(ordered, "Sector", config.SECTOR_UNKNOWN),
-            Menace=_priority_threat([item.Threat for item in ordered]),
-            Localisation=_preferred_qualification(ordered, "Location", config.LOC_INCONNU),
-            Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),
-            Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),
-            Items_Count=len(ordered),
-            First_seen=min(
-                (item.Collected_As_Of for item in ordered if item.Collected_As_Of),
-                default="",
-            ),
-            Last_seen=max(
-                (item.Collected_As_Of for item in ordered if item.Collected_As_Of),
-                default="",
-            ),
-        ))
-    return sort_incidents(incidents)
+    """Construction pure sans état, utilisée par les tests de règles de dédup."""
+    return sort_incidents([
+        _incident_from_component(component)
+        for component in group_components(items)
+    ])
 
 
 def merge_items(existing: list[Item], incoming: list[Item]) -> tuple[list[Item], int]:

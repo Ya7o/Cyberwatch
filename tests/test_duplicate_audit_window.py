@@ -8,8 +8,8 @@ from cyberwatch.duplicate_audit import (
 
 def test_default_audit_window_surfaces_j4_candidate(make_item):
     items = [
-        make_item(source="A", org="My Piscine", published="2026-04-23", url="https://a"),
-        make_item(source="B", org="My Piscine France", published="2026-04-27", url="https://b"),
+        make_item(source="A", org="Globex", published="2026-04-23", url="https://a"),
+        make_item(source="B", org="Globex France", published="2026-04-27", url="https://b"),
     ]
 
     candidates = find_duplicate_candidates(items)

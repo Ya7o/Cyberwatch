@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Évalue la résolution d'identité et la déduplication contre un golden pairwise."""
+"""Évalue et certifie la déduplication contre un golden pairwise revu.
+
+Le benchmark privilégie explicitement la précision : une fausse fusion détruit
+l'identité de deux événements et doit donc bloquer la CI. Le rappel reste
+conservateur ; les cas ambigus hors fenêtre de fusion automatique peuvent rester
+séparés tant que le plancher certifié n'est pas dégradé.
+"""
 
 from __future__ import annotations
 
@@ -18,6 +24,7 @@ from cyberwatch.dedup import group_components
 from cyberwatch.org_identity import effective_organisation_key
 
 VALID = {"SAME", "DIFFERENT"}
+CERTIFIED_GOLDEN_VERSION = "DEDUP-GOLDEN-1"
 
 
 def _load_rows(path: Path) -> list[dict[str, str]]:
@@ -42,20 +49,36 @@ def evaluate(golden_path: Path) -> dict:
     entity_correct = 0
     incident_correct = 0
     evaluated = 0
-    missing = []
-    invalid = []
+    missing: list[str] = []
+    invalid: list[str] = []
+    incomplete_evidence: list[str] = []
+    wrong_version: list[str] = []
+    duplicate_pairs: list[str] = []
+    seen_pairs: set[tuple[str, str]] = set()
     tp = fp = fn = tn = 0
 
     for row in rows:
         case_id = row.get("Case_ID", "")
+        left_id = row.get("Left_Item_ID", "")
+        right_id = row.get("Right_Item_ID", "")
         entity_ref = row.get("Same_Organisation_REF", "").upper()
         incident_ref = row.get("Same_Incident_REF", "").upper()
-        if entity_ref not in VALID or incident_ref not in VALID:
-            invalid.append(case_id)
-            continue
 
-        left = by_id.get(row.get("Left_Item_ID", ""))
-        right = by_id.get(row.get("Right_Item_ID", ""))
+        pair = tuple(sorted((left_id, right_id)))
+        if pair in seen_pairs:
+            duplicate_pairs.append(case_id)
+        seen_pairs.add(pair)
+
+        if entity_ref not in VALID or incident_ref not in VALID or not case_id:
+            invalid.append(case_id or "<sans Case_ID>")
+            continue
+        if not row.get("Evidence", "").strip() or not row.get("Reviewed_At", "").strip():
+            incomplete_evidence.append(case_id)
+        if row.get("Golden_Version", "") != CERTIFIED_GOLDEN_VERSION:
+            wrong_version.append(case_id)
+
+        left = by_id.get(left_id)
+        right = by_id.get(right_id)
         if not left or not right:
             missing.append(case_id)
             continue
@@ -80,10 +103,16 @@ def evaluate(golden_path: Path) -> dict:
             tn += 1
 
     return {
+        "golden_version": CERTIFIED_GOLDEN_VERSION,
         "golden_cases": len(rows),
         "evaluated_cases": evaluated,
+        "positive_reference_cases": tp + fn,
+        "negative_reference_cases": tn + fp,
         "missing_cases": missing,
         "invalid_cases": invalid,
+        "incomplete_evidence_cases": incomplete_evidence,
+        "wrong_version_cases": wrong_version,
+        "duplicate_pair_cases": duplicate_pairs,
         "entity_accuracy_pct": _ratio(entity_correct, evaluated),
         "incident_accuracy_pct": _ratio(incident_correct, evaluated),
         "incident_precision_pct": _ratio(tp, tp + fp),
@@ -95,31 +124,64 @@ def evaluate(golden_path: Path) -> dict:
     }
 
 
+def _failure_messages(result: dict, args: argparse.Namespace) -> list[str]:
+    failures: list[str] = []
+    structural_fields = (
+        "invalid_cases",
+        "missing_cases",
+        "incomplete_evidence_cases",
+        "wrong_version_cases",
+        "duplicate_pair_cases",
+    )
+    for field in structural_fields:
+        if result[field]:
+            failures.append(f"{field}={result[field]}")
+
+    checks = [
+        ("evaluated_cases", result["evaluated_cases"], args.min_cases),
+        ("positive_reference_cases", result["positive_reference_cases"], args.min_positive_cases),
+        ("negative_reference_cases", result["negative_reference_cases"], args.min_negative_cases),
+        ("entity_accuracy_pct", result["entity_accuracy_pct"], args.min_entity_accuracy),
+        ("incident_accuracy_pct", result["incident_accuracy_pct"], args.min_incident_accuracy),
+        ("incident_precision_pct", result["incident_precision_pct"], args.min_incident_precision),
+        ("incident_recall_pct", result["incident_recall_pct"], args.min_incident_recall),
+    ]
+    for name, actual, minimum in checks:
+        if actual < minimum:
+            failures.append(f"{name}={actual} < {minimum}")
+    if result["incident_false_positive"] > args.max_false_positive:
+        failures.append(
+            f"incident_false_positive={result['incident_false_positive']} > {args.max_false_positive}"
+        )
+    return failures
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--golden",
         default=str(ROOT / "data" / "golden" / "dedup_golden.csv"),
     )
-    parser.add_argument(
-        "--min-cases",
-        type=int,
-        default=0,
-        help="Nombre minimum de cas revus requis pour considérer le benchmark actif.",
-    )
+    # Plancher de certification DEDUP-GOLDEN-1. Toute évolution du golden ou de
+    # la méthode qui passe sous ces valeurs doit être revue explicitement.
+    parser.add_argument("--min-cases", type=int, default=70)
+    parser.add_argument("--min-positive-cases", type=int, default=50)
+    parser.add_argument("--min-negative-cases", type=int, default=20)
+    parser.add_argument("--min-entity-accuracy", type=float, default=100.0)
+    parser.add_argument("--min-incident-accuracy", type=float, default=94.0)
+    parser.add_argument("--min-incident-precision", type=float, default=100.0)
+    parser.add_argument("--min-incident-recall", type=float, default=92.0)
+    parser.add_argument("--max-false-positive", type=int, default=0)
     args = parser.parse_args()
 
     result = evaluate(Path(args.golden))
     print("DEDUP_GOLDEN=" + json.dumps(result, ensure_ascii=False, sort_keys=True))
 
-    if result["invalid_cases"] or result["missing_cases"]:
+    failures = _failure_messages(result, args)
+    if failures:
+        print("DEDUP_GOLDEN_FAIL=" + json.dumps(failures, ensure_ascii=False))
         return 1
-    if result["evaluated_cases"] < args.min_cases:
-        print(
-            f"DEDUP_GOLDEN_INSUFFICIENT evaluated={result['evaluated_cases']} "
-            f"required={args.min_cases}"
-        )
-        return 2
+    print("DEDUP_GOLDEN_CERTIFIED=PASS")
     return 0
 
 

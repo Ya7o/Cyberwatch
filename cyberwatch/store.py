@@ -27,6 +27,7 @@ from .model import (
     Item,
 )
 from .source_llm_fallback import QUALIFICATION_PROVENANCE_COLUMNS
+from .incident_identity import REGISTRY_COLUMNS
 
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent
@@ -45,6 +46,7 @@ ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
 AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
 ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
+INCIDENT_ID_REGISTRY_CSV = DATA_DIR / "incident_id_registry.csv"
 #: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
 #: inclus dans Items_Hash/Incidents_Hash.
 SOURCE_FACTS_CSV = DATA_DIR / "source_facts.csv"
@@ -137,6 +139,25 @@ def save_incidents(incidents: list[Incident], path: Path | None = None) -> None:
         INCIDENT_COLUMNS,
         [incident.to_row() for incident in incidents],
     )
+
+
+def _incident_registry_path(path: Path | None = None) -> Path:
+    if path is not None:
+        return path
+    # Suivre le répertoire du snapshot courant. Les tests et outils qui
+    # isolent ITEMS_CSV obtiennent ainsi automatiquement un registre isolé,
+    # sans risque d'écrire dans data/ réel. En production, ce chemin reste
+    # exactement data/incident_id_registry.csv.
+    return ITEMS_CSV.parent / INCIDENT_ID_REGISTRY_CSV.name
+
+
+def load_incident_id_registry(path: Path | None = None) -> list[dict]:
+    return read_csv(_incident_registry_path(path))
+
+
+def save_incident_id_registry(rows: list[dict], path: Path | None = None) -> None:
+    ordered = sorted(rows, key=lambda row: (row.get('Incident_ID', ''), row.get('Anchor_Item_ID', '')))
+    write_csv(_incident_registry_path(path), REGISTRY_COLUMNS, ordered)
 
 
 def save_sources(rows: list[dict], path: Path | None = None) -> None:

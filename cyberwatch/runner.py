@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, enrichment, identity, org_enrichment, sector as sector_policy, source_facts, sources, status, store, watchlists
+from . import ai, config, enrichment, identity, incident_identity, org_enrichment, sector as sector_policy, source_facts, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -663,6 +663,7 @@ class RunReport:
     ai_usage: dict = field(default_factory=dict)
     source_facts: list[dict] = field(default_factory=list)
     qualification_provenance: list[dict] = field(default_factory=list)
+    incident_id_registry: list[dict] = field(default_factory=list)
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -744,6 +745,7 @@ def execute(
     report.items = qualified.items
     report.incidents = qualified.incidents
     report.qualification_provenance = qualified.provenance
+    report.incident_id_registry = qualified.incident_id_registry
     report.new_incidents = len([i for i in report.incidents if i.Incident_ID not in previous_ids])
     report.items_hash = qualified.items_hash
     report.incidents_hash = qualified.incidents_hash
@@ -755,6 +757,9 @@ def execute(
     )
     selected_source_ids = {spec.source_id for spec in sources.active_sources(context.layers)}
     report.problems = pre_export_checks(report.items, report.incidents, report.outcomes, selected_source_ids)
+    report.problems.extend(incident_identity.validate_registry(
+        report.incident_id_registry, report.items, report.incidents
+    ))
     if offline:
         report.problems = [p for p in report.problems if "RUN_SOURCES" not in p]
     if report.problems:
@@ -818,6 +823,7 @@ def _persist(
         if persist_snapshot:
             store.save_items(report.items)
             store.save_incidents(report.incidents)
+            store.save_incident_id_registry(report.incident_id_registry)
             save_snapshot_provenance(
                 store.load_items(), store.load_incidents(), operation="REPLAY",
                 run_id=context.run_id, mode=context.mode, as_of=context.as_of,
@@ -857,6 +863,7 @@ def _persist(
     if persist_snapshot:
         store.save_items(report.items)
         store.save_incidents(report.incidents)
+        store.save_incident_id_registry(report.incident_id_registry)
         store.save_source_facts(report.source_facts)
         store.save_qualification_provenance(report.qualification_provenance)
         save_snapshot_provenance(
