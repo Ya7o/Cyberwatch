@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "minimum_precision_pct": 95.0,
+  "minimum_cases": 10,
+  "channels": {
+    "manual_reference": {
+      "enabled": true,
+      "requires_golden": false
+    },
+    "structured_source": {
+      "enabled": true,
+      "requires_golden": false
+    },
+    "consensus_multi_source": {
+      "enabled": false,
+      "requires_golden": true
+    },
+    "official_subject_activity": {
+      "enabled": false,
+      "requires_golden": true
+    },
+    "registry_exact_naf": {
+      "enabled": false,
+      "requires_golden": true
+    },
+    "registry_llm": {
+      "enabled": false,
+      "requires_golden": true
+    },
+    "legacy_official_site": {
+      "enabled": false,
+      "requires_golden": true
+    },
+    "known_item_single": {
+      "enabled": false,
+      "requires_golden": true
+    }
+  }
+}
