@@ -2,13 +2,13 @@
 
 Ordre de preuve :
 1. registre public français avec identité exacte et SIREN unique ;
-2. si le registre ne résout pas l'organisation, site officiel découvert de
+2. pour les identités non résolues ou trop risquées, site officiel découvert de
    manière ciblée par :mod:`cyberwatch.company_evidence`.
 
 Les moteurs de recherche ne sont jamais des preuves : ils servent uniquement à
-trouver une page officielle. Un secteur issu du site officiel est mis en cache
-par ``Organisation_Key`` et peut donc être réutilisé par les autres incidents
-de la même organisation. Aucun fuzzy matching n'est utilisé.
+trouver une page officielle. Aucun fuzzy matching n'est utilisé. Les identités
+courtes de type acronyme ne sont jamais validées par le seul fait qu'une société
+homonyme existe au registre.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from dataclasses import asdict, dataclass, field, fields
 import requests
 
 from . import company_evidence, config, store
-from .normalize import organisation_key
+from .normalize import organisation_key, searchable
 
 ORG_ENRICHMENT_URL = "https://recherche-entreprises.api.gouv.fr/search"
 ORG_ENRICHMENT_RESULTS_PER_QUERY = 5
@@ -43,6 +43,9 @@ NAF_SECTIONS: dict[str, tuple[str, str]] = {
     "I": ("Hébergement et restauration", config.SECTOR_UNKNOWN),
     "J": ("Information et communication", config.SECTOR_TECH),
     "K": ("Activités financières et d'assurance", config.SECTOR_FINANCE),
+    # Mapping conservé pour compatibilité des consommateurs historiques du
+    # libellé seul. Les records issus du registre ne transmettent plus cette
+    # section au pipeline Sector (voir AMBIGUOUS_NAF_SECTIONS ci-dessous).
     "L": ("Activités immobilières", config.SECTOR_CONSTRUCTION),
     "M": ("Activités spécialisées, scientifiques et techniques", config.SECTOR_SERVICES),
     "N": ("Activités de services administratifs et de soutien", config.SECTOR_SERVICES),
@@ -55,6 +58,12 @@ NAF_SECTIONS: dict[str, tuple[str, str]] = {
     "U": ("Activités extra-territoriales", config.SECTOR_UNKNOWN),
 }
 
+# Une section NAF peut décrire la société juridique trouvée sans décrire le
+# métier de la marque victime. Le cas McDonald's France (section L) a produit un
+# faux BTP réel. Ces sections restent utilisables comme métadonnées mais ne sont
+# plus exposées comme preuve d'activité au pipeline Sector.
+AMBIGUOUS_NAF_SECTIONS = frozenset({"L"})
+
 NAF_SECTION_LABELS: dict[str, str] = {
     letter: label for letter, (label, _sector) in NAF_SECTIONS.items()
 }
@@ -64,7 +73,11 @@ _LABEL_TO_SECTOR: dict[str, str] = {
 
 
 def sector_for_activity_label(activity_label: str) -> str:
-    """Retourne uniquement un mapping NAF explicitement défendable."""
+    """Retourne le mapping historique d'un libellé NAF déjà validé.
+
+    Les sections trop larges issues directement du registre sont filtrées avant
+    cet appel dans ``_record_from_candidate``.
+    """
     return _LABEL_TO_SECTOR.get(activity_label, config.SECTOR_UNKNOWN)
 
 
@@ -102,10 +115,9 @@ def _env_bool(name: str, default: bool) -> bool:
 ORG_ENRICHMENT_TIMEOUT_SECONDS = _env_int("ORG_ENRICHMENT_TIMEOUT_SECONDS", 10)
 ORG_ENRICHMENT_MAX_RETRIES = _env_int("ORG_ENRICHMENT_MAX_RETRIES", 1)
 
-# Version 3 : après le registre exact, une preuve provenant du site officiel
-# peut résoudre le secteur. Les anciens NOT_FOUND/AMBIGUOUS doivent être
-# retentés afin de bénéficier de ce nouveau chemin.
-ORG_ENRICHMENT_CACHE_VERSION = "3"
+# Version 4 : invalidation ciblée des anciens matches d'acronymes et remise à
+# zéro des validations calculées avec les anciens mappings NAF.
+ORG_ENRICHMENT_CACHE_VERSION = "4"
 
 MATCHED = "MATCHED"
 AMBIGUOUS = "AMBIGUOUS"
@@ -155,6 +167,40 @@ class OrgEnrichmentState:
     official_site_matched: int = 0
 
 
+def _identity_requires_confirmation(query_name: str) -> bool:
+    """Détecte les identités trop faibles pour qu'une homonymie registre suffise.
+
+    Le test porte sur le libellé brut, avant ``organisation_key`` : un alias
+    versionné peut développer ENSAM en « École nationale... », mais cela ne doit
+    pas masquer le fait que la requête envoyée au registre était un acronyme.
+    """
+    raw = str(query_name or "").strip()
+    raw_normalized = searchable(raw)
+    raw_tokens = raw_normalized.split()
+    if not raw_tokens:
+        return False
+
+    compact = "".join(ch for ch in raw if ch.isalnum())
+    letters = "".join(ch for ch in compact if ch.isalpha())
+    is_single_token = len(raw_tokens) == 1
+    is_upper_acronym = (
+        is_single_token
+        and bool(letters)
+        and letters.upper() == letters
+        and 2 <= len(letters) <= 12
+    )
+    is_very_short = is_single_token and len(raw_normalized) <= 4
+    return is_upper_acronym or is_very_short
+
+
+def _ambiguous_activity_label(activity_label: str) -> bool:
+    return activity_label in {
+        NAF_SECTION_LABELS[section]
+        for section in AMBIGUOUS_NAF_SECTIONS
+        if section in NAF_SECTION_LABELS
+    }
+
+
 def start_state() -> OrgEnrichmentState:
     state = OrgEnrichmentState(
         enabled=_env_bool("ORG_ENRICHMENT_ENABLED", True),
@@ -169,11 +215,20 @@ def start_state() -> OrgEnrichmentState:
         if not key:
             continue
         if row.get("Cache_Version") != ORG_ENRICHMENT_CACHE_VERSION:
+            # Les négatifs sont retentés à chaque changement de politique. Les
+            # anciens matches d'acronymes sont eux aussi invalidés : ils ont été
+            # obtenus avec une politique d'identité désormais jugée insuffisante.
             if row.get("Match_Status") in (NOT_FOUND, AMBIGUOUS):
+                continue
+            if _identity_requires_confirmation(row.get("Query_Name", "")):
                 continue
             row = dict(row)
             row["Validated_Sector"] = ""
             row["Validated_Via"] = ""
+            # Un ancien cache peut contenir la section L comme preuve Sector ;
+            # elle doit être neutralisée lors de la migration v4.
+            if _ambiguous_activity_label(row.get("Activity_Label", "")):
+                row["Activity_Label"] = ""
             row["Cache_Version"] = ORG_ENRICHMENT_CACHE_VERSION
         state.cache[key] = row
     return state
@@ -224,13 +279,11 @@ def _candidate_names(candidate: dict) -> list[str]:
 
     add(candidate.get("nom_raison_sociale"))
     add(candidate.get("nom_commercial"))
-
     for field_name in ("noms_commerciaux", "noms_enseignes"):
         values = candidate.get(field_name) or []
         if isinstance(values, list):
             for value in values:
                 add(value)
-
     complete = str(candidate.get("nom_complet") or "").strip()
     add(complete)
     if complete.endswith(")") and "(" in complete:
@@ -261,7 +314,6 @@ def _match(query_name: str, payload: dict) -> tuple[str, dict]:
     distinct_sirens = {str(candidate.get("siren") or "").strip() for candidate in exact}
     if "" in distinct_sirens or len(distinct_sirens) > 1:
         return AMBIGUOUS, {}
-
     return MATCHED, exact[0]
 
 
@@ -273,7 +325,10 @@ def _record_from_candidate(
 ) -> OrgEnrichmentRecord:
     activity_code = str(candidate.get("activite_principale") or "")
     section = str(candidate.get("section_activite_principale") or "")
-    activity_label = NAF_SECTION_LABELS.get(section, "")
+    activity_label = (
+        "" if section in AMBIGUOUS_NAF_SECTIONS
+        else NAF_SECTION_LABELS.get(section, "")
+    )
     headquarters = candidate.get("siege")
     headquarters_department = (
         str(headquarters.get("departement") or "")
@@ -353,9 +408,8 @@ def resolve(
 ) -> OrgEnrichmentRecord | None:
     """Résout l'organisation sans jamais lever d'exception.
 
-    La preuve officielle n'est tentée qu'après NOT_FOUND/AMBIGUOUS du registre
-    exact. Une panne du registre reste une ERROR non cachée : elle ne déclenche
-    pas une seconde famille d'appels réseau dans le même passage.
+    Une panne registre reste une ERROR non cachée. Les NOT_FOUND/AMBIGUOUS et
+    les matches exacts d'identités à risque peuvent tenter le site officiel.
     """
     if not state.enabled or not org_key or not organisation_raw:
         return None
@@ -381,14 +435,16 @@ def resolve(
     state.duration_seconds += time.monotonic() - started
 
     status, candidate = _match(organisation_raw, payload)
-    if status == MATCHED:
+    risky_match = status == MATCHED and _identity_requires_confirmation(organisation_raw)
+    if status == MATCHED and not risky_match:
         state.calls_matched += 1
-        record = _record_from_candidate(
-            org_key, organisation_raw, candidate, fetched_at
-        )
+        record = _record_from_candidate(org_key, organisation_raw, candidate, fetched_at)
         state.cache[org_key] = asdict(record)
         return record
 
+    # Un acronyme homonyme est traité comme ambigu tant qu'une preuve officielle
+    # ne confirme pas l'identité métier de l'organisation visée.
+    fallback_status = AMBIGUOUS if risky_match else status
     attempted, official_record = _official_site_fallback(
         org_key, organisation_raw, fetched_at, state
     )
@@ -396,12 +452,10 @@ def resolve(
         state.cache[org_key] = asdict(official_record)
         return official_record
 
-    # Si le budget de découverte officielle est épuisé, ne pas figer un
-    # NOT_FOUND/AMBIGUOUS : le prochain run doit pouvoir essayer ce chemin.
     if not attempted:
         return None
 
-    if status == AMBIGUOUS:
+    if fallback_status == AMBIGUOUS:
         state.calls_ambiguous += 1
     else:
         state.calls_not_found += 1
@@ -409,7 +463,7 @@ def resolve(
     record = OrgEnrichmentRecord(
         Organisation_Key=org_key,
         Query_Name=organisation_raw,
-        Match_Status=status,
+        Match_Status=fallback_status,
         Fetched_At=fetched_at,
         Cache_Version=ORG_ENRICHMENT_CACHE_VERSION,
     )
