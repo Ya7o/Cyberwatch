@@ -734,7 +734,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "EVA.gg",
-  "sector": "Sport",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -1255,7 +1255,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "HeyPulse",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2627,7 +2627,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Bloctel",
-  "sector": "Administration / Collectivité",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
@@ -2900,6 +2900,44 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
+  "facts": [
+   {
+    "affected_count": 189997,
+    "affected_count_raw": "189 997 enregistrements",
+    "affected_unit": "records",
+    "claim_status": "unconfirmed",
+    "item_id": "ITM-d48c60eacc212e96",
+    "source": "CYBERATTAQUE_ORG"
+   },
+   {
+    "affected_count": 245812,
+    "affected_count_raw": "245 812 personnes",
+    "affected_unit": "people",
+    "claim_status": "claimed",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone",
+     "noms et prénoms",
+     "dates de naissance"
+    ],
+    "item_id": "ITM-6e76853753006061",
+    "source": "FRENCHBREACHES"
+   },
+   {
+    "affected_count": 189997,
+    "affected_count_raw": "189 997 personnes",
+    "affected_unit": "people",
+    "claim_status": "confirmed",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone",
+     "noms et prénoms",
+     "identifiants"
+    ],
+    "item_id": "ITM-6f803c07a32519a9",
+    "source": "FRENCHBREACHES"
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-B5B0BB894D79",
   "items": 3,
@@ -3015,7 +3053,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Voxaly",
-  "sector": "Services aux entreprises",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -3163,7 +3201,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "TERVEO",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -3177,6 +3215,25 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
+  "facts": [
+   {
+    "claim_status": "confirmed",
+    "data_volume": "160 Go",
+    "impact": "La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre.",
+    "item_id": "ITM-314468b5e3fd3824",
+    "source": "CYBERATTAQUE_ORG"
+   },
+   {
+    "discovered_date": "2026-08-02",
+    "evidence_urls": [
+     "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a32127c5ba7d063fd8b100d461d7dcbadda8e7f2f6511bcb2522552d419d6e2/"
+    ],
+    "item_id": "ITM-da4f8844cd83aa88",
+    "source": "RANSOMWARE_LIVE",
+    "threat_actor": "krybit",
+    "victim_website": "https://www.ville-rinxent.fr"
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-49E922069E33",
   "items": 2,
@@ -3276,7 +3333,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Groupe T2MC",
-  "sector": "Services aux entreprises",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -3315,7 +3372,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Xplor Resamania",
-  "sector": "Inconnu",
+  "sector": "Sport",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -3735,7 +3792,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Erdil",
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -4138,7 +4195,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Resaclick",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -4384,7 +4441,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Driveco",
-  "sector": "Services aux entreprises",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -4425,7 +4482,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Productly",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -4520,7 +4577,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Ingénierie Système Inter-Instituts",
-  "sector": "Administration / Collectivité",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -5313,7 +5370,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Actiale",
-  "sector": "Finance / Assurance",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -5423,7 +5480,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "EVA.gg",
-  "sector": "Sport",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -5961,7 +6018,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "Inconnu",
   "org": "Bebeboutik",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -6198,7 +6255,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Atout France",
-  "sector": "Finance / Assurance",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -6653,7 +6710,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Mifarma",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -6688,7 +6745,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Mille et Une Listes",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -7839,7 +7896,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Classic Days",
-  "sector": "Services aux entreprises",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -7986,7 +8043,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ONPP",
-  "sector": "Finance / Assurance",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -8430,7 +8487,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Apps.education.fr",
-  "sector": "Éducation / Formation",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -8461,7 +8518,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "France-Terrain.com",
-  "sector": "Administration / Collectivité",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -8977,7 +9034,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Bien’ici",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -9161,7 +9218,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "TakTikimmo",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -9229,7 +9286,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Autosur",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -9356,7 +9413,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "JeVeuxAider.gouv.fr",
-  "sector": "Administration / Collectivité",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -9984,7 +10041,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Jestimo",
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -10052,7 +10109,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Smartbox",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -11262,7 +11319,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "SeLoger",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -11874,7 +11931,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "HPA Guide",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -12022,7 +12079,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Nature & Cie",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -12954,7 +13011,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "Inconnu",
   "org": "GitHub",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -13176,7 +13233,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "MediaVacances",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -13236,7 +13293,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Gîtes de France",
-  "sector": "Transport / Logistique",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -13270,7 +13327,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Djaboo",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -13307,7 +13364,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Transitions Pro Centre Val de Loire",
-  "sector": "Éducation / Formation",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
@@ -13840,7 +13897,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "CalendrIDEL",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -14155,7 +14212,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Monservicederemplacement.fr",
-  "sector": "Services aux entreprises",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -14733,7 +14790,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Groupe CGA",
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -15084,7 +15141,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Service Civique",
-  "sector": "Administration / Collectivité",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -15215,7 +15272,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ADEMI",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -15252,7 +15309,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Ankama",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -15643,6 +15700,34 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-04-27",
+  "facts": [
+   {
+    "claim_status": "confirmed",
+    "data_types": [
+     "Nom, prénom",
+     "Adresse email",
+     "Adresse postale",
+     "Numéro de téléphone",
+     "Numéro d’enregistrement",
+     "Date de déclaration",
+     "Nature, type et capacité du bien"
+    ],
+    "evidence_urls": [
+     "https://bonjourlafuite.eu.org/img/metropole-bordeaux.jpeg"
+    ],
+    "item_id": "ITM-6d5001bc893b17d9",
+    "source": "BONJOURLAFUITE"
+   },
+   {
+    "claim_status": "claimed",
+    "data_types": [
+     "adresses e-mail"
+    ],
+    "data_volume": "3,1 Mo",
+    "item_id": "ITM-1e2583638be83a87",
+    "source": "CYBERATTAQUE_ORG"
+   }
+  ],
   "first_seen": "2026-08-17T12:34:51+04:00",
   "id": "INC-A0D8BA38C174",
   "items": 2,
@@ -15750,7 +15835,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Exclusive Networks",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
@@ -16360,7 +16445,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "La Mie Câline Biscarrosse",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -16549,7 +16634,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Rituals",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -17316,7 +17401,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ETAI",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -18042,7 +18127,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "ImmoJeune",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -18634,7 +18719,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Vranken-Pommery",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -19144,7 +19229,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Nosho",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -19346,7 +19431,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Ledger",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -19405,7 +19490,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Or en Cash",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -19436,7 +19521,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "Inconnu",
   "org": "Veuve Clicquot",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -19467,7 +19552,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "Inconnu",
   "org": "Adobe",
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -20080,7 +20165,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Vaucluse Provence Attractivité",
-  "sector": "Services aux entreprises",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -20282,7 +20367,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "La Centrale de Financement",
-  "sector": "Finance / Assurance",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -20486,7 +20571,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "France métropolitaine",
   "org": "Allopneus",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -21046,7 +21131,7 @@
   "last_seen": "2026-08-17T12:34:51+04:00",
   "location": "Inconnu",
   "org": "Intoxalock",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
