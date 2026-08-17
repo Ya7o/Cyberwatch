@@ -41,25 +41,27 @@
   "organisation_registry": {
     "applications": 0,
     "auto_rows": 170,
-    "conflict_rows": 20,
+    "conflict_rows": 24,
     "queue_categories": {
       "CONSENSUS_REVIEW": 1,
       "JSON_CHALLENGER": 138,
-      "KNOWN_ITEM_REVIEW": 54,
+      "KNOWN_ITEM_REVIEW": 44,
       "NO_EVIDENCE": 258,
-      "RAW_SECTOR_UNMAPPED": 47,
-      "REGISTRY_CONFLICT": 6
+      "OFFICIAL_EVIDENCE_REVIEW": 8,
+      "RAW_SECTOR_UNMAPPED": 46,
+      "REGISTRY_CONFLICT": 9
     },
     "queue_organisations": 504,
     "registry_channels": {
       "consensus_multi_source": 44,
-      "known_item_single": 94,
+      "known_item_single": 91,
       "manual_reference": 170,
-      "registry_exact_naf": 81,
+      "official_subject_activity": 12,
+      "registry_exact_naf": 73,
       "structured_source": 119
     },
-    "registry_rows": 508,
-    "review_rows": 318
+    "registry_rows": 509,
+    "review_rows": 315
   },
   "ransomware_live": {
     "current_known": 133,
@@ -244,7 +246,7 @@
     }
   },
   "snapshot": {
-    "code_commit": "94ed1180b11d6c394e5148c1d8dc564afbb3ec7a",
+    "code_commit": "7cf6900d1a45825da1d6f64905c0c0482941c152",
     "incidents_hash": "bb455df59a239917207de23230121593b20bf80efc595e5285241b7ab833dfae",
     "items_hash": "5b20e3c0d2fd8314565ebda0cfba0b628646acaa96330be061259eed7355aa49"
   },
