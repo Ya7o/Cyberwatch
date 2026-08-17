@@ -65,6 +65,7 @@ jobs:
             data/incidents.csv \
             data/source_facts.csv \
             data/qualification_provenance.csv \
+            data/dedup_audit_candidates.csv \
             data/run_log.csv \
             data/run_sources.csv \
             data/ai_usage.csv \
@@ -130,6 +131,13 @@ jobs:
             --source-facts data/source_facts.csv \
             --check \
             --check-regression
+
+      - name: Régénérer l'audit dedup du rebuild
+        run: |
+          python scripts/export_dedup_audit.py \
+            --items data/items.csv \
+            --org-cache data/org_enrichment_cache.csv \
+            --output data/dedup_audit_candidates.csv
 
       - name: Créer la baseline
         run: python -m cyberwatch baseline --as-of "$AS_OF"
@@ -202,6 +210,7 @@ jobs:
             data/incidents.csv
             data/source_facts.csv
             data/qualification_provenance.csv
+            data/dedup_audit_candidates.csv
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 2
