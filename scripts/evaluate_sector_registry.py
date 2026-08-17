@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import enrichment, sector_registry, store
+from cyberwatch import enrichment, sector_registry, sector_registry_safety, store
 from cyberwatch.golden import read_csv
 from cyberwatch.golden_review import apply_audit, validate_audit
 
@@ -40,6 +40,7 @@ def evaluate() -> dict:
         org_cache_rows=store.load_org_enrichment_cache(),
         previous_provenance=provenance,
     )
+    sector_registry_safety.enforce_candidate_conflicts(registry)
     golden = {
         row.get("Organisation_Key", ""): row
         for row in effective_golden()
