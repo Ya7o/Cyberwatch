@@ -151,7 +151,12 @@ def validate_audit(
 def apply_audit(
     golden_rows: list[dict[str, str]], audit_rows: list[dict[str, str]], *, target_version: int = 2
 ) -> list[dict[str, str]]:
-    """Matérialise la vue revue sans modifier la référence source en mémoire."""
+    """Matérialise la vue revue sans modifier la référence source en mémoire.
+
+    Un cas ``DUPLICATE`` est retiré définitivement de la vue effective. Un cas
+    ``REVIEW`` est lui aussi exclu tant que son arbitrage n'est pas clos : un juge
+    explicitement litigieux ne doit pas participer au calcul d'accuracy.
+    """
     problems = validate_audit(audit_rows, golden_rows)
     if problems:
         raise ValueError("audit golden invalide: " + "; ".join(problems))
@@ -163,7 +168,7 @@ def apply_audit(
         golden_id = audit["Golden_ID"].strip()
         decision = audit["Decision"].strip()
         field = audit["Field"].strip()
-        if decision == "DUPLICATE":
+        if decision in {"DUPLICATE", "REVIEW"}:
             drop_ids.add(golden_id)
             continue
         if decision != "CORRECTED":
@@ -327,10 +332,11 @@ def quality_report(
                     )
                 )
 
+    base_by_id = {row.get("Golden_ID", ""): row for row in golden_rows}
     for golden_id in sorted(unresolved_review):
-        row = next((item for item in effective_rows if item.get("Golden_ID") == golden_id), {"Golden_ID": golden_id})
+        row = base_by_id.get(golden_id, {"Golden_ID": golden_id})
         findings.append(
-            _finding("WARN", "UNRESOLVED_REVIEW", row, message="décision laissée explicitement en REVIEW")
+            _finding("WARN", "UNRESOLVED_REVIEW", row, message="cas exclu du benchmark tant que la revue n'est pas tranchée")
         )
 
     return {
