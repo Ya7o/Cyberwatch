@@ -1,0 +1,161 @@
+name: Dedup Global Audit Post36
+
+on:
+  push:
+    branches:
+      - agent/dedup-global-audit-post36
+    paths:
+      - .github/workflows/dedup-global-audit-post36.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Audit global dedup
+        run: |
+          python - <<'PY'
+          import csv, json, random
+          from collections import Counter, defaultdict
+          from dataclasses import replace
+          from pathlib import Path
+          from cyberwatch import identity, sources, store
+          from cyberwatch.dedup import build_incidents, group_components, decide_merge, KEEP_SEPARATE
+          from cyberwatch.duplicate_audit import find_audit_candidates, RISK_FALSE_MERGE, RISK_MISSED_DUPLICATE
+          from cyberwatch.normalize import date_or_empty
+          from cyberwatch.org_identity import effective_organisation_key
+
+          items = store.load_items()
+          stored = store.load_incidents()
+          rebuilt = build_incidents(items)
+          components = group_components(items)
+
+          def eff(i):
+              return effective_organisation_key(i.Organisation_Raw, i.Organisation_Key)
+
+          comp_of = {i.Item_ID: idx for idx,c in enumerate(components) for i in c}
+
+          # Native-ID conflicts remaining inside rebuilt components.
+          native_conflicts=[]
+          for idx,c in enumerate(components):
+              by_source=defaultdict(set)
+              for i in c:
+                  if i.Source_Item_ID:
+                      by_source[i.Source_ID].add(i.Source_Item_ID)
+              bad={s:sorted(v) for s,v in by_source.items() if len(v)>1}
+              if bad:
+                  native_conflicts.append((idx,c,bad))
+
+          # Strong pairwise vetoes remaining inside any component.
+          strong_veto_pairs=[]
+          for idx,c in enumerate(components):
+              for a_pos,a in enumerate(c):
+                  for b in c[a_pos+1:]:
+                      d=decide_merge(a,b)
+                      if d.action == KEEP_SEPARATE and d.reason_code in {
+                          'INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID',
+                          'INCIDENT_KEEP_RECURRENCE_MARKER',
+                      }:
+                          strong_veto_pairs.append((idx,a,b,d.reason_code))
+
+          # Company IDs already validated.
+          company_ids={}
+          p=Path('data/org_enrichment_cache.csv')
+          if p.exists():
+              for r in csv.DictReader(p.open(encoding='utf-8',newline='')):
+                  if r.get('Match_Status')=='MATCHED' and r.get('Company_ID') and r.get('Organisation_Key'):
+                      company_ids[r['Organisation_Key']]=r['Company_ID']
+
+          audits=find_audit_candidates(items, company_ids=company_ids)
+          risks=Counter(a.risk_type for a in audits)
+          reasons=Counter(a.reason_code for a in audits)
+
+          # Exact same effective identity separated between J+4 and J+14.
+          by_eff=defaultdict(list)
+          for i in items:
+              if eff(i): by_eff[eff(i)].append(i)
+          exact_window={}
+          for key,group in by_eff.items():
+              for x in range(len(group)):
+                  for y in range(x+1,len(group)):
+                      a,b=group[x],group[y]
+                      if comp_of[a.Item_ID]==comp_of[b.Item_ID] or a.Source_ID==b.Source_ID: continue
+                      da,db=date_or_empty(a.best_date),date_or_empty(b.best_date)
+                      if not da or not db: continue
+                      days=abs((da-db).days)
+                      if 4<=days<=14:
+                          pair=tuple(sorted((comp_of[a.Item_ID],comp_of[b.Item_ID])))
+                          row=(days,key,a,b)
+                          if pair not in exact_window or days<exact_window[pair][0]: exact_window[pair]=row
+
+          # ID stability when a plausible new corroborating source arrives and sorts earlier.
+          active=sorted(s.source_id for s in sources.ALL_SOURCES if s.active)
+          unstable=[]
+          for c in components:
+              if not c: continue
+              before=build_incidents(c)[0]
+              current_sources={i.Source_ID for i in c}
+              anchor=identity.sort_items(c)[0]
+              candidates=[s for s in active if s not in current_sources and s < anchor.Source_ID]
+              if not candidates: continue
+              clone=replace(c[0], Item_ID='', Source_ID=candidates[0], Source_Item_ID='', URL='https://audit.invalid/corroboration')
+              clone.Item_ID=identity.item_id(clone.Source_ID, clone.Published_Date, clone.Organisation_Key, clone.URL, clone.Source_Item_ID)
+              after=build_incidents(c+[clone])
+              if len(after)==1 and after[0].Incident_ID != before.Incident_ID:
+                  unstable.append((before,after[0],candidates[0]))
+
+          # Repeatability under shuffled input, several permutations.
+          baseline_hash=identity.incidents_hash(rebuilt)
+          repeat_ok=True
+          for seed in range(10):
+              shuffled=list(items); random.Random(seed).shuffle(shuffled)
+              if identity.incidents_hash(build_incidents(shuffled)) != baseline_hash:
+                  repeat_ok=False; break
+
+          golden_rows=[]
+          gp=Path('data/golden/dedup_golden.csv')
+          if gp.exists(): golden_rows=list(csv.DictReader(gp.open(encoding='utf-8',newline='')))
+
+          summary={
+              'items':len(items),
+              'stored_incidents':len(stored),
+              'rebuilt_incidents':len(rebuilt),
+              'stored_hash':identity.incidents_hash(stored),
+              'rebuilt_hash':baseline_hash,
+              'stored_equals_rebuilt':identity.incidents_hash(stored)==baseline_hash,
+              'collapsed_items_rebuilt':len(items)-len(rebuilt),
+              'multi_item_components':sum(len(c)>1 for c in components),
+              'cross_source_multi_components':sum(len(c)>1 and len({i.Source_ID for i in c})>1 for c in components),
+              'event_date_items':sum(bool(i.Event_Date) for i in items),
+              'event_date_pct':round(100*sum(bool(i.Event_Date) for i in items)/len(items),2),
+              'source_item_id_items':sum(bool(i.Source_Item_ID) for i in items),
+              'source_item_id_pct':round(100*sum(bool(i.Source_Item_ID) for i in items)/len(items),2),
+              'native_conflict_components':len(native_conflicts),
+              'strong_veto_pairs_inside_components':len(strong_veto_pairs),
+              'audit_total':len(audits),
+              'audit_risks':dict(risks),
+              'audit_reasons':dict(reasons),
+              'exact_identity_separate_4_14_component_pairs':len(exact_window),
+              'incident_id_future_instability_cases':len(unstable),
+              'golden_rows':len(golden_rows),
+              'repeatability_10_shuffles':repeat_ok,
+          }
+          print('SUMMARY='+json.dumps(summary,ensure_ascii=False,sort_keys=True))
+
+          for days,key,a,b in sorted(exact_window.values(), key=lambda r:(r[0],r[1]))[:30]:
+              print('WINDOW '+json.dumps({'days':days,'key':key,'left':[a.Source_ID,a.best_date,a.Organisation_Raw,a.Threat,a.Title,a.Item_ID],'right':[b.Source_ID,b.best_date,b.Organisation_Raw,b.Threat,b.Title,b.Item_ID]},ensure_ascii=False))
+          for a in [x for x in audits if x.risk_type==RISK_MISSED_DUPLICATE][:30]:
+              print('MISSED '+json.dumps({'days':a.days_apart,'reason':a.reason_code,'company_id':a.company_id,'left':[a.left.Source_ID,a.left.best_date,a.left.Organisation_Raw,a.left.Threat,a.left.Title,a.left.Item_ID],'right':[a.right.Source_ID,a.right.best_date,a.right.Organisation_Raw,a.right.Threat,a.right.Title,a.right.Item_ID]},ensure_ascii=False))
+          for idx,c,bad in native_conflicts[:20]:
+              print('NATIVE_CONFLICT '+json.dumps({'component':idx,'org':c[0].Organisation_Raw,'conflicts':bad,'items':[[i.Source_ID,i.Source_Item_ID,i.best_date,i.Title,i.Item_ID] for i in c]},ensure_ascii=False))
+          for before,after,src in unstable[:10]:
+              print('ID_UNSTABLE '+json.dumps({'org':before.Organisation,'before':before.Incident_ID,'after':after.Incident_ID,'added_source':src},ensure_ascii=False))
+          PY
