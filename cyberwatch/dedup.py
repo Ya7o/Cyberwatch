@@ -9,6 +9,7 @@ from . import config
 from .identity import incident_id, sort_incidents, sort_items
 from .model import Incident, Item
 from .normalize import _base_organisation_key, date_or_empty, searchable
+from .org_identity import effective_organisation_key
 
 
 MERGE = "MERGE"
@@ -40,6 +41,11 @@ class DedupDecision:
     action: str
     reason_code: str
     signals: tuple[str, ...] = ()
+
+
+def _effective_key(item: Item) -> str:
+    """Identité de dédup sans réécrire la clé/Item_ID historique de l'item."""
+    return effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
 
 
 def _recurrence(item: Item) -> bool:
@@ -86,7 +92,8 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
     if _recurrence_boundary(left, right):
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_RECURRENCE_MARKER")
 
-    if left.Organisation_Key != right.Organisation_Key:
+    left_key, right_key = _effective_key(left), _effective_key(right)
+    if not left_key or left_key != right_key:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
 
     left_date, right_date = date_or_empty(left.best_date), date_or_empty(right.best_date)
@@ -99,8 +106,10 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
 
     if days <= 3:
         alias_used = (
-            _base_organisation_key(left.Organisation_Raw) != left.Organisation_Key
-            or _base_organisation_key(right.Organisation_Raw) != right.Organisation_Key
+            _base_organisation_key(left.Organisation_Raw) != left_key
+            or _base_organisation_key(right.Organisation_Raw) != right_key
+            or left.Organisation_Key != left_key
+            or right.Organisation_Key != right_key
         )
         return DedupDecision(
             MERGE,
@@ -118,8 +127,9 @@ def group_components(items: list[Item]) -> list[list[Item]]:
     """Construit des composantes ancrées ; aucune ne chaîne au-delà de 14 jours."""
     by_org: dict[str, list[Item]] = defaultdict(list)
     for item in items:
-        if item.Organisation_Key:
-            by_org[item.Organisation_Key].append(item)
+        key = _effective_key(item)
+        if key:
+            by_org[key].append(item)
 
     components: list[list[Item]] = []
     for org_key in sorted(by_org):
@@ -245,8 +255,9 @@ def build_incidents(items: list[Item]) -> list[Incident]:
         ordered = sort_items(component)
         evidence = _incident_evidence_items(ordered)
         date, basis = _component_dates(ordered)
+        component_key = _effective_key(ordered[0])
         incidents.append(Incident(
-            Incident_ID=incident_id(ordered[0].Organisation_Key, ordered[0].Item_ID),
+            Incident_ID=incident_id(component_key, ordered[0].Item_ID),
             Date=date,
             Date_Basis=basis,
             Organisation=_majority(
