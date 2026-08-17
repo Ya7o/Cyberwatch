@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, enrichment, identity, incident_identity, org_enrichment, sector as sector_policy, source_facts, sources, status, store, watchlists
+from . import ai, config, enrichment, identity, incident_identity, org_enrichment, sector as sector_policy, source_facts, source_facts_ai, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -434,16 +434,39 @@ def run_source(
 
     started = time.monotonic()
     collector = get_collector(spec.collector)
+    collect_started = time.monotonic()
 
     try:
         result = collector.collect(client, spec, context.window)
     except Exception as exc:
+        outcome.collect_duration_seconds = round(time.monotonic() - collect_started, 3)
         outcome.status = status.FAIL
         outcome.coverage = 0
         outcome.reason_code = status.REASON_PARSE_ERROR
         outcome.comment = f"{type(exc).__name__}: {exc}"[:300]
         outcome.duration_seconds = round(time.monotonic() - started, 1)
         return outcome, [], []
+
+    outcome.collect_duration_seconds = round(time.monotonic() - collect_started, 3)
+    processing_started = time.monotonic()
+    if ai_state is not None:
+        org_state = ai_state.org_enrichment
+        perf_before = {
+            "org_registry_duration": org_state.duration_seconds,
+            "org_registry_calls": org_state.calls_attempted,
+            "official_duration": org_state.official_site_duration_seconds,
+            "official_calls": org_state.official_site_attempted,
+            "qual_llm_duration": ai_state.llm_duration_seconds,
+            "qual_llm_calls": ai_state.calls_attempted,
+            "qual_llm_cost": ai_state.estimated_cost_usd,
+        }
+    else:
+        perf_before = {
+            "org_registry_duration": 0.0, "org_registry_calls": 0,
+            "official_duration": 0.0, "official_calls": 0,
+            "qual_llm_duration": 0.0, "qual_llm_calls": 0, "qual_llm_cost": 0.0,
+        }
+    source_facts_before = source_facts_ai.runtime_stats()
 
     items: list[Item] = []
     requires_victim = bool(spec.params.get("require_victim"))
@@ -486,6 +509,50 @@ def run_source(
             articles_rejected_no_victim += 1
         elif spec.source_id == "CYBERATTAQUE_ORG":
             cyberattaque_rejected_no_victim += 1
+
+    outcome.processing_duration_seconds = round(time.monotonic() - processing_started, 3)
+    if ai_state is not None:
+        org_state = ai_state.org_enrichment
+        outcome.org_registry_duration_seconds = round(
+            max(0.0, org_state.duration_seconds - perf_before["org_registry_duration"]), 3
+        )
+        outcome.org_registry_calls = max(0, org_state.calls_attempted - perf_before["org_registry_calls"])
+        outcome.org_official_site_duration_seconds = round(
+            max(0.0, org_state.official_site_duration_seconds - perf_before["official_duration"]), 3
+        )
+        outcome.org_official_site_calls = max(0, org_state.official_site_attempted - perf_before["official_calls"])
+        outcome.qualification_llm_duration_seconds = round(
+            max(0.0, ai_state.llm_duration_seconds - perf_before["qual_llm_duration"]), 3
+        )
+        outcome.qualification_llm_calls = max(0, ai_state.calls_attempted - perf_before["qual_llm_calls"])
+        outcome.qualification_llm_cost_usd = round(
+            max(0.0, ai_state.estimated_cost_usd - perf_before["qual_llm_cost"]), 6
+        )
+    source_facts_after = source_facts_ai.runtime_stats()
+    outcome.source_facts_llm_duration_seconds = round(max(
+        0.0,
+        float(source_facts_after.get("total_duration_seconds", 0.0))
+        - float(source_facts_before.get("total_duration_seconds", 0.0)),
+    ), 3)
+    outcome.source_facts_llm_calls = max(
+        0,
+        int(source_facts_after.get("calls_attempted", 0))
+        - int(source_facts_before.get("calls_attempted", 0)),
+    )
+    outcome.source_facts_llm_cost_usd = round(max(
+        0.0,
+        float(source_facts_after.get("estimated_cost_usd", 0.0))
+        - float(source_facts_before.get("estimated_cost_usd", 0.0)),
+    ), 6)
+    measured_external = (
+        outcome.org_registry_duration_seconds
+        + outcome.org_official_site_duration_seconds
+        + outcome.qualification_llm_duration_seconds
+        + outcome.source_facts_llm_duration_seconds
+    )
+    outcome.other_processing_duration_seconds = round(
+        max(0.0, outcome.processing_duration_seconds - measured_external), 3
+    )
 
     source_status, coverage = result.resolve()
     outcome.status = source_status
@@ -719,6 +786,16 @@ def execute(
                 f"{outcome.coverage:3}%  items={outcome.items_collected:4} "
                 f"calls={outcome.calls:4}  {outcome.reason_code}"
             )
+            print(
+                "    perf "
+                f"collect={outcome.collect_duration_seconds:.1f}s "
+                f"process={outcome.processing_duration_seconds:.1f}s "
+                f"registry={outcome.org_registry_duration_seconds:.1f}s/{outcome.org_registry_calls} "
+                f"official={outcome.org_official_site_duration_seconds:.1f}s/{outcome.org_official_site_calls} "
+                f"q-llm={outcome.qualification_llm_duration_seconds:.1f}s/{outcome.qualification_llm_calls} "
+                f"sf-llm={outcome.source_facts_llm_duration_seconds:.1f}s/{outcome.source_facts_llm_calls} "
+                f"other={outcome.other_processing_duration_seconds:.1f}s"
+            )
 
         replacement_source_ids = {
             spec.source_id for spec in sources.active_sources(context.layers)
@@ -810,6 +887,19 @@ def _persist(
                 "Comment": o.comment,
                 "History_Status": o.history_status,
                 "Oldest_Available_Date": o.oldest_available_date,
+                "Collect_Duration_s": o.collect_duration_seconds,
+                "Processing_Duration_s": o.processing_duration_seconds,
+                "Org_Registry_Duration_s": o.org_registry_duration_seconds,
+                "Org_Registry_Calls": o.org_registry_calls,
+                "Org_Official_Site_Duration_s": o.org_official_site_duration_seconds,
+                "Org_Official_Site_Calls": o.org_official_site_calls,
+                "Qualification_LLM_Duration_s": o.qualification_llm_duration_seconds,
+                "Qualification_LLM_Calls": o.qualification_llm_calls,
+                "Qualification_LLM_Cost_USD": o.qualification_llm_cost_usd,
+                "SourceFacts_LLM_Duration_s": o.source_facts_llm_duration_seconds,
+                "SourceFacts_LLM_Calls": o.source_facts_llm_calls,
+                "SourceFacts_LLM_Cost_USD": o.source_facts_llm_cost_usd,
+                "Other_Processing_Duration_s": o.other_processing_duration_seconds,
             }
             for o in report.outcomes
         ])

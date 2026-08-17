@@ -165,6 +165,21 @@ RUN_SOURCE_COLUMNS = [
     # anciennes lignes sans ces colonnes via row.get(col, "")).
     "History_Status",
     "Oldest_Available_Date",
+    # Profil de performance par source. Les temps externes sont inclus dans
+    # Processing_Duration_s mais ventilés ici pour expliquer le coût réel.
+    "Collect_Duration_s",
+    "Processing_Duration_s",
+    "Org_Registry_Duration_s",
+    "Org_Registry_Calls",
+    "Org_Official_Site_Duration_s",
+    "Org_Official_Site_Calls",
+    "Qualification_LLM_Duration_s",
+    "Qualification_LLM_Calls",
+    "Qualification_LLM_Cost_USD",
+    "SourceFacts_LLM_Duration_s",
+    "SourceFacts_LLM_Calls",
+    "SourceFacts_LLM_Cost_USD",
+    "Other_Processing_Duration_s",
 ]
 
 # --------------------------------------------------------------------------
