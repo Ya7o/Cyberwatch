@@ -7,6 +7,8 @@ on:
       - 'cyberwatch/source_llm_fallback.py'
       - 'cyberwatch/sector_fallback_migration.py'
       - 'cyberwatch/qualification.py'
+      - 'sources/veillellm/cyberattaque_org_2026.json'
+      - 'sources/veillellm/frenchbreaches_2026.json'
       - '.github/workflows/revalidate-sector-fallback.yml'
 
 permissions:

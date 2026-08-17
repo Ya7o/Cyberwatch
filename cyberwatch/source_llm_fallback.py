@@ -7,6 +7,10 @@ Ces exports sont des challengers analytiques, pas une nouvelle vérité globale 
   identité officielle cohérente et activité explicite reclassée localement ;
 - Menace n'est jamais modifiée par cette couche.
 
+Les URLs d'incident et les preuves Sector sont volontairement séparées. Une URL
+ajoutée dans ``sources`` ne peut donc plus, à elle seule, devenir une preuve de
+secteur. Seuls les champs structurés ``sector_evidence_*`` alimentent le garde.
+
 Toute décision appliquée ou explicitement refusée est rendue sous forme de
 provenance afin de rester auditée sans modifier l'identité canonique des items.
 """
@@ -22,12 +26,7 @@ from urllib.parse import urlparse
 
 from . import company_evidence, config
 from .model import Item
-from .normalize import (
-    classify_sector,
-    extract_activity_description,
-    organisation_key,
-    searchable,
-)
+from .normalize import classify_sector, organisation_key, searchable
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -63,11 +62,12 @@ QUALIFICATION_PROVENANCE_COLUMNS = [
 
 _ACTIVITY_FIELDS = (
     "sector_evidence_text",
-    "activity_evidence",
-    "activity_description",
-    "evidence_text",
+    "sector_evidence_texts",
 )
-_ACTIVITY_CONTEXT_FIELDS = ("impact_connu", "synthese")
+_SECTOR_EVIDENCE_URL_FIELDS = (
+    "sector_evidence_url",
+    "sector_evidence_urls",
+)
 
 
 @dataclass(frozen=True)
@@ -89,13 +89,26 @@ def _clean_url(value: object) -> str:
     return str(value or "").strip()
 
 
+def _url_values(value: object) -> list[str]:
+    if isinstance(value, str):
+        return [part.strip() for part in value.split("|") if part.strip()]
+    if isinstance(value, list):
+        return [str(part).strip() for part in value if str(part).strip()]
+    return []
+
+
 def _record_urls(raw: dict) -> tuple[str, ...]:
+    """URLs de l'incident, utilisées uniquement pour le raccord au snapshot."""
     values = raw.get("sources") or raw.get("source_urls") or raw.get("Source_URLs") or []
-    if isinstance(values, str):
-        values = [part.strip() for part in values.split("|")]
-    if not isinstance(values, list):
-        return ()
-    return tuple(dict.fromkeys(_clean_url(value) for value in values if _clean_url(value)))
+    return tuple(dict.fromkeys(_url_values(values)))
+
+
+def _sector_evidence_urls(raw: dict) -> tuple[str, ...]:
+    """URLs de preuve Sector dédiées ; jamais les URLs génériques ``sources``."""
+    values: list[str] = []
+    for field in _SECTOR_EVIDENCE_URL_FIELDS:
+        values.extend(_url_values(raw.get(field)))
+    return tuple(dict.fromkeys(value for value in values if value))
 
 
 def _text_values(value: object) -> list[str]:
@@ -108,20 +121,15 @@ def _text_values(value: object) -> list[str]:
 
 
 def _activity_evidence(raw: dict) -> tuple[str, ...]:
-    """Extrait uniquement des formulations d'activité explicites.
+    """Lit uniquement les preuves d'activité explicitement structurées.
 
-    Les champs structurés de preuve sont prioritaires. Les textes d'incident ne
-    sont utilisables que si ``extract_activity_description`` reconnaît une
-    formulation métier fermée (``spécialisée dans``, ``éditeur de``...). Un
-    récit d'attaque générique ne peut donc jamais devenir une preuve Sector.
+    Le récit de l'incident, le titre et les snippets de moteur de recherche ne
+    sont jamais des preuves Sector. L'enrichisseur amont doit avoir identifié
+    un site officiel et persisté l'extrait métier dans ``sector_evidence_text``.
     """
     values: list[str] = []
     for field in _ACTIVITY_FIELDS:
         values.extend(_text_values(raw.get(field)))
-    for field in _ACTIVITY_CONTEXT_FIELDS:
-        description = extract_activity_description(str(raw.get(field) or ""))
-        if description:
-            values.append(description)
     return tuple(dict.fromkeys(value for value in values if value))
 
 
@@ -200,7 +208,7 @@ def _organisation_tokens(value: str) -> tuple[str, ...]:
 
 
 def _official_identity_evidence(record: ChallengerRecord) -> tuple[str, ...]:
-    """Conserve uniquement une preuve dont le domaine ressemble à l'entité.
+    """Conserve uniquement une preuve officielle cohérente avec l'entité.
 
     Les registres/annuaires et réseaux sociaux sont explicitement exclus : ils
     peuvent décrire une société homonyme ou une holding juridiquement exacte
@@ -292,6 +300,7 @@ def load_records(path: Path, source_id: str) -> list[ChallengerRecord]:
             or ""
         ).strip()
         urls = _record_urls(raw)
+        evidence_urls = _sector_evidence_urls(raw)
         records.append(
             ChallengerRecord(
                 source_id=source_id,
@@ -303,7 +312,7 @@ def load_records(path: Path, source_id: str) -> list[ChallengerRecord]:
                 location=canonical_location(raw_location),
                 threat=canonical_threat(raw.get("type_menace") or raw.get("Menace")),
                 raw_location=raw_location,
-                evidence_urls=_external_evidence(source_id, urls),
+                evidence_urls=_external_evidence(source_id, evidence_urls),
                 activity_evidence=_activity_evidence(raw),
             )
         )

@@ -1,9 +1,12 @@
+import json
+
 from cyberwatch import config
 from cyberwatch.model import Item
 from cyberwatch.source_llm_fallback import (
     ChallengerRecord,
     apply_source_llm_fallback,
     canonical_location,
+    load_records,
 )
 
 
@@ -72,12 +75,8 @@ def test_known_location_is_never_overwritten():
 def test_sector_requires_exact_url_official_identity_and_activity_evidence():
     item = _item()
     record = _record(
-        urls=(
-            "https://frenchbreaches.com/alertes/exemple",
-            "https://www.exemple.fr/activite",
-        ),
         evidence_urls=("https://www.exemple.fr/activite",),
-        activity_evidence=("établissement de santé",),
+        activity_evidence=("hôpital et services de santé",),
     )
     stats, provenance = apply_source_llm_fallback(
         [item], {"FRENCHBREACHES": [record]}
@@ -183,7 +182,7 @@ def test_known_sector_is_never_overwritten():
     item = _item(Sector=config.SECTOR_FINANCE)
     record = _record(
         evidence_urls=("https://www.exemple.fr/activite",),
-        activity_evidence=("établissement de santé",),
+        activity_evidence=("hôpital et services de santé",),
     )
     apply_source_llm_fallback([item], {"FRENCHBREACHES": [record]})
     assert item.Sector == config.SECTOR_FINANCE
@@ -206,7 +205,7 @@ def test_unique_org_date_can_fill_location_but_not_sector():
     record = _record(
         urls=("https://frenchbreaches.com/alertes/sans-recouvrement",),
         evidence_urls=("https://www.exemple.fr/activite",),
-        activity_evidence=("établissement de santé",),
+        activity_evidence=("hôpital et services de santé",),
     )
     stats, _ = apply_source_llm_fallback(
         [item], {"FRENCHBREACHES": [record]}
@@ -232,3 +231,68 @@ def test_ambiguous_org_date_is_refused():
     assert item.Location == config.LOC_INCONNU
     assert item.Sector == config.SECTOR_UNKNOWN
     assert stats["llm_match_ambiguous"] == 1
+
+
+def test_load_records_does_not_treat_generic_sources_as_sector_evidence(tmp_path):
+    path = tmp_path / "challenger.json"
+    path.write_text(
+        json.dumps(
+            {
+                "incidents": [
+                    {
+                        "date": "2026-06-01",
+                        "organisation": "Exemple SA",
+                        "secteur": config.SECTOR_HEALTH,
+                        "territoire": "France",
+                        "type_menace": config.THREAT_LEAK,
+                        "sources": [
+                            "https://frenchbreaches.com/alertes/exemple",
+                            "https://www.exemple.fr/a-propos",
+                        ],
+                        "sector_evidence_text": "hôpital et services de santé",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    record = load_records(path, "FRENCHBREACHES")[0]
+    assert record.urls == (
+        "https://frenchbreaches.com/alertes/exemple",
+        "https://www.exemple.fr/a-propos",
+    )
+    assert record.evidence_urls == ()
+    assert record.activity_evidence == ("hôpital et services de santé",)
+
+
+def test_load_records_reads_only_structured_sector_evidence_url(tmp_path):
+    path = tmp_path / "challenger.json"
+    path.write_text(
+        json.dumps(
+            {
+                "incidents": [
+                    {
+                        "date": "2026-06-01",
+                        "organisation": "Exemple SA",
+                        "secteur": config.SECTOR_HEALTH,
+                        "territoire": "France",
+                        "type_menace": config.THREAT_LEAK,
+                        "sources": ["https://frenchbreaches.com/alertes/exemple"],
+                        "sector_evidence_url": "https://www.exemple.fr/a-propos",
+                        "sector_evidence_text": "hôpital et services de santé",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    record = load_records(path, "FRENCHBREACHES")[0]
+    assert record.evidence_urls == ("https://www.exemple.fr/a-propos",)
+    assert record.activity_evidence == ("hôpital et services de santé",)
+
+    item = _item(Organisation_Key=record.organisation_key)
+    stats, _ = apply_source_llm_fallback(
+        [item], {"FRENCHBREACHES": [record]}
+    )
+    assert stats["llm_sector_fallback"] == 1
+    assert item.Sector == config.SECTOR_HEALTH
