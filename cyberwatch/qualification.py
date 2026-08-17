@@ -11,6 +11,7 @@ from . import (
     identity,
     sector as sector_policy,
     sector_registry,
+    sector_registry_safety,
     source_llm_fallback,
     store,
 )
@@ -35,8 +36,6 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_THIRD_PARTY,
 })
 
-# Les challengers JSON Sector restent strictement diagnostiques. Le nouveau
-# registre organisationnel est indépendant et possède sa propre politique AUTO.
 _SECTOR_FALLBACK_AUTO_APPLY = False
 
 
@@ -107,7 +106,6 @@ def neutralize_sector_fallback(
     """Neutralise uniquement les mutations Sector du challenger JSON."""
     if _SECTOR_FALLBACK_AUTO_APPLY:
         return 0
-
     by_id = {item.Item_ID: item for item in items if item.Item_ID}
     neutralized = 0
     for row in provenance:
@@ -129,7 +127,6 @@ def neutralize_sector_fallback(
         row["Confidence"] = ""
         row["Decision"] = "REJECTED_POLICY_DISABLED"
         neutralized += 1
-
     if neutralized:
         changes["llm_sector_fallback"] = max(0, changes.get("llm_sector_fallback", 0) - neutralized)
         changes["llm_sector_rejected"] = changes.get("llm_sector_rejected", 0) + neutralized
@@ -139,20 +136,12 @@ def neutralize_sector_fallback(
 
 
 def qualify(items: list[Item]) -> QualificationReport:
-    """Applique les couches canoniques avec propagation Sector réversible.
-
-    Ordre Sector : restauration des anciennes mutations -> référence manuelle ->
-    source structurée -> registre organisationnel AUTO -> challenger JSON
-    diagnostique. Le registre est reconstruit depuis des preuves indépendantes ;
-    ses anciennes applications sont exclues des preuves avant propagation.
-    """
+    """Applique les couches canoniques avec propagation Sector réversible."""
     ordered = identity.sort_items(items)
     previous_provenance = store.load_qualification_provenance()
 
     restored = restore_legacy_sector_fallbacks(ordered, previous_provenance)
-    registry_restored = sector_registry.restore_registry_applications(
-        ordered, previous_provenance
-    )
+    registry_restored = sector_registry.restore_registry_applications(ordered, previous_provenance)
 
     reference = enrichment.load_reference()
     changes = enrichment.enrich_items(ordered, reference)
@@ -161,9 +150,7 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes.update(enrichment.backfill_unknowns(ordered, reference))
 
     source_facts = store.read_csv(store.SOURCE_FACTS_CSV)
-    changes["sector_structured_source_backfill"] = backfill_structured_source_sectors(
-        ordered, source_facts
-    )
+    changes["sector_structured_source_backfill"] = backfill_structured_source_sectors(ordered, source_facts)
     changes["threat_stabilized"] = stabilize_threats(ordered)
 
     registry_rows = sector_registry.build_registry(
@@ -173,30 +160,26 @@ def qualify(items: list[Item]) -> QualificationReport:
         org_cache_rows=store.load_org_enrichment_cache(),
         previous_provenance=previous_provenance,
     )
-    registry_applied, registry_provenance, registry_known_conflicts = (
-        sector_registry.apply_registry(ordered, registry_rows)
+    sector_registry_safety.enforce_candidate_conflicts(registry_rows)
+    registry_applied, registry_provenance, registry_known_conflicts = sector_registry.apply_registry(
+        ordered, registry_rows
     )
     changes["sector_registry_applied"] = registry_applied
     changes["sector_registry_known_conflicts"] = registry_known_conflicts
-    changes["sector_registry_auto_orgs"] = sum(
-        row.get("Decision") == sector_registry.DECISION_AUTO for row in registry_rows
-    )
-    changes["sector_registry_review_orgs"] = sum(
-        row.get("Decision") == sector_registry.DECISION_REVIEW for row in registry_rows
-    )
-    changes["sector_registry_conflict_orgs"] = sum(
-        row.get("Decision") == sector_registry.DECISION_CONFLICT for row in registry_rows
-    )
+    changes["sector_registry_auto_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_AUTO for row in registry_rows)
+    changes["sector_registry_review_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_REVIEW for row in registry_rows)
+    changes["sector_registry_conflict_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_CONFLICT for row in registry_rows)
 
     llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered)
     changes.update(llm_changes)
     neutralize_sector_fallback(ordered, changes, provenance)
 
-    # Ajouter après neutralisation : les applications du registre sont une
-    # couche canonique distincte et ne doivent jamais être confondues avec le
-    # challenger JSON historique.
     provenance.extend(registry_provenance)
-    provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"], row.get("Origin", "")))
+    provenance.sort(
+        key=lambda row: (
+            row["Item_ID"], row["Field"], row["Decision"], row.get("Origin", "")
+        )
+    )
 
     incidents, incident_id_registry = build_incidents_with_registry(
         ordered, store.load_incident_id_registry()
