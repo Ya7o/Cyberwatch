@@ -1,0 +1,61 @@
+name: Revalidate sector fallback
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cyberwatch/source_llm_fallback.py'
+      - 'cyberwatch/sector_fallback_migration.py'
+      - 'cyberwatch/qualification.py'
+      - '.github/workflows/revalidate-sector-fallback.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sector-fallback-revalidation
+  cancel-in-progress: false
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Revalider les qualifications fallback
+        run: python -m cyberwatch backfill-unknowns
+
+      - name: Vérifier le snapshot
+        run: |
+          python -m cyberwatch check --allow-uninitialized
+          python -m cyberwatch test-repeat
+
+      - name: Publier le snapshot revalidé
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "cyberwatch-bot@users.noreply.github.com"
+          git add \
+            data/items.csv \
+            data/incidents.csv \
+            data/qualification_provenance.csv \
+            data/snapshot.json \
+            assets/data
+          if git diff --cached --quiet; then
+            echo "Aucune qualification à republier."
+            exit 0
+          fi
+          git commit -m "Revalidate sector fallback qualifications"
+          git pull --rebase origin main
+          git push origin HEAD:main

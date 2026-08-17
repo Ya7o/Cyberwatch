@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, enrichment, identity, source_llm_fallback
+from . import config, enrichment, identity, source_llm_fallback, store
 from .dedup import build_incidents
 from .model import Incident, Item
+from .sector_fallback_migration import restore_legacy_sector_fallbacks
 
 
 # Politique Threat minimale de stabilisation. Elle reste ici, au point de
@@ -79,13 +80,26 @@ def stabilize_threats(items: list[Item]) -> int:
 def qualify(items: list[Item]) -> QualificationReport:
     """Applique la qualification canonique puis les fallbacks source gardés.
 
+    Les secteurs historiquement injectés par l'ancien fallback sont d'abord
+    restaurés à ``Inconnu`` à partir de leur provenance, mais uniquement si la
+    valeur courante est encore exactement celle qui avait été injectée. Ils
+    repassent ensuite dans les enrichissements canoniques et le garde Sector
+    courant. Une correction ultérieure différente reste donc protégée.
+
     Le pipeline canonique ne contient aucune correction manuelle par ``Item_ID``.
     La couche challenger peut uniquement compléter des valeurs encore ``Inconnu``
     et les exports LLM ne peuvent jamais modifier ``Threat``.
     """
     ordered = identity.sort_items(items)
+
+    restored = restore_legacy_sector_fallbacks(
+        ordered,
+        store.load_qualification_provenance(),
+    )
+
     reference = enrichment.load_reference()
     changes = enrichment.enrich_items(ordered, reference)
+    changes["llm_sector_restored"] = restored
     changes.update(enrichment.backfill_unknowns(ordered, reference))
     changes["threat_stabilized"] = stabilize_threats(ordered)
 
