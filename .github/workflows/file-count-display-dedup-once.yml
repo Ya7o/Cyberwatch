@@ -24,7 +24,7 @@ jobs:
       - name: Apply minimal UI fix
         run: |
           python .github/scripts/patch_file_count_display_dedup.py
-          pytest -q tests/test_site_source_facts.py
+          PYTHONPATH="$PWD" pytest -q tests/test_site_source_facts.py
           node --check assets/dashboard-audit.js
       - name: Commit clean implementation
         run: |
