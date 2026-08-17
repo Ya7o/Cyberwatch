@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 
-from . import company_evidence, config
+from . import company_evidence, config, official_site_discovery
 from .normalize import searchable
 
 _SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?;])\s+|[\r\n]+")
@@ -106,18 +106,36 @@ def classify_subject_attributed_activity(
 
 def resolve_official_site_subject_attributed(
     organisation: str,
+    candidate_urls: tuple[str, ...] | list[str] | None = None,
 ) -> company_evidence.CompanyEvidence | None:
-    """Résout le site officiel puis exige une activité attribuée à la victime."""
+    """Résout un site officiel puis exige une activité attribuée à la victime.
+
+    ``candidate_urls`` permet au worker de calculer la découverte une seule fois
+    et de l'instrumenter. Même un candidat explicitement fourni doit passer le
+    garde de propriété du domaine avant lecture de la page.
+    """
     try:
-        candidates = company_evidence._discover_official_sites(organisation)
+        candidates = (
+            list(candidate_urls)
+            if candidate_urls is not None
+            else official_site_discovery.discover_official_sites(organisation)
+        )
     except Exception:
         return None
 
     for candidate in candidates:
+        if not official_site_discovery.domain_matches_organisation(
+            organisation, candidate
+        ):
+            continue
         priority, body, about_links, final_url = company_evidence._page(candidate)
         if not priority and not body:
             continue
         evidence_url = final_url or candidate
+        if not official_site_discovery.domain_matches_organisation(
+            organisation, evidence_url
+        ):
+            continue
         if not company_evidence._identity_matches(
             organisation, evidence_url, priority, body
         ):
@@ -136,10 +154,18 @@ def resolve_official_site_subject_attributed(
                 )
 
         for link in about_links:
+            if not official_site_discovery.domain_matches_organisation(
+                organisation, link
+            ):
+                continue
             p_priority, p_body, _links, p_final = company_evidence._page(link)
             if not p_priority and not p_body:
                 continue
             page_url = p_final or link
+            if not official_site_discovery.domain_matches_organisation(
+                organisation, page_url
+            ):
+                continue
             if not company_evidence._identity_matches(
                 organisation, page_url, p_priority, p_body
             ):
