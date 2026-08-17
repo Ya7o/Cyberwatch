@@ -32,7 +32,30 @@ for source_id in TARGET_SOURCES:
     print(f"{source_id}: {outcome.status} coverage={outcome.coverage}% items={len(collected_items)} facts={len(rows)}")
     if outcome.status != status.OK or outcome.coverage < 100:
         raise SystemExit(f"source incomplete: {source_id} {outcome.status} {outcome.coverage}")
-    incoming.extend(row for row in rows if row.get("Item_ID") in existing_ids)
+
+    filtered_rows = [row for row in rows if row.get("Item_ID") in existing_ids]
+    incoming.extend(filtered_rows)
+    produced_ids = {row.get("Item_ID") for row in filtered_rows if row.get("Item_ID")}
+    reviewed = [item for item in collected_items if item.Item_ID in existing_ids]
+    cleared = []
+    for item in reviewed:
+        if item.Item_ID in produced_ids:
+            continue
+        # The source item was successfully reviewed but no longer produces a
+        # SourceFact. Send a minimal authoritative row so refreshable semantic
+        # fields are cleared while merge_source_facts preserves legacy facts.
+        incoming.append({
+            "Item_ID": item.Item_ID,
+            "Source_ID": item.Source_ID,
+            "Summary": "",
+            "Initial_Access": "",
+            "Attack_Flow_JSON": "",
+            "Impact": "",
+            "Evidence_JSON": "",
+        })
+        cleared.append(item.Item_ID)
+    if cleared:
+        print(f"{source_id}: stale semantic enrichments cleared for {cleared}")
 
 merged = source_facts.merge_source_facts(store.load_source_facts(), incoming)
 
