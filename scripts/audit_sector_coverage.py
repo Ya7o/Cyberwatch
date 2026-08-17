@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import enrichment, quality, sector_registry, store
+from cyberwatch import enrichment, quality, sector_registry, sector_registry_safety, store
 from cyberwatch.qualification import backfill_structured_source_sectors
 
 
@@ -29,14 +29,14 @@ def build_report() -> tuple[dict, list[dict], list[dict]]:
     current_global = current["global"]
     projected_global = projected["global"]
 
-    reference = enrichment.load_reference()
     registry = sector_registry.build_registry(
         items,
-        reference,
+        enrichment.load_reference(),
         source_fact_rows=facts,
         org_cache_rows=store.load_org_enrichment_cache(),
         previous_provenance=provenance,
     )
+    sector_registry_safety.enforce_candidate_conflicts(registry)
     queue = sector_registry.build_enrichment_queue(
         items,
         registry,
@@ -131,7 +131,6 @@ def main() -> int:
         help="Rapport JSON à écrire. Chaîne vide = lecture seule.",
     )
     args = parser.parse_args()
-
     report, registry, queue = build_report()
     print_report(report)
     if args.output:
