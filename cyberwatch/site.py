@@ -34,6 +34,7 @@ _FACT_TEXT_FIELDS = {
     "Attack_Date": "attack_date",
     "Discovered_Date": "discovered_date",
     "Victim_Website": "victim_website",
+    "Initial_Access": "initial_access",
     "Impact": "impact",
     "Summary": "summary",
     "Evolution": "evolution",
@@ -48,6 +49,10 @@ _FACT_LIST_FIELDS = {
     "Vulnerabilities_JSON": "vulnerabilities",
     "Evidence_URLs_JSON": "evidence_urls",
 }
+_SUMMARY_RICHNESS_KEYS = (
+    "initial_access", "attack_flow", "impact", "threat_actor",
+    "data_types", "vulnerabilities", "affected_count",
+)
 
 
 def _source_fact_payload(row: dict) -> dict | None:
@@ -96,6 +101,24 @@ def _source_fact_payload(row: dict) -> dict | None:
         if cleaned:
             payload[key] = cleaned
 
+    raw_flow = str(row.get("Attack_Flow_JSON") or "").strip()
+    if raw_flow:
+        try:
+            flow = json.loads(raw_flow)
+        except (TypeError, ValueError):
+            flow = []
+        if isinstance(flow, list):
+            cleaned_flow = []
+            for step in flow[:4]:
+                if not isinstance(step, dict):
+                    continue
+                action = str(step.get("action") or "").strip()
+                evidence = str(step.get("evidence") or "").strip()
+                if action and evidence:
+                    cleaned_flow.append({"action": action, "evidence": evidence})
+            if cleaned_flow:
+                payload["attack_flow"] = cleaned_flow
+
     return payload if len(payload) > 2 else None
 
 
@@ -129,6 +152,26 @@ def _source_facts_by_incident(items: list[Item], fact_rows: list[dict]) -> dict[
     return payload
 
 
+def _best_source_summary(facts: list[dict]) -> str:
+    """Choisit sans LLM la synthèse de la source la mieux documentée.
+
+    La richesse ne sert qu'à départager des synthèses déjà présentes ; aucune
+    fusion ni réécriture n'est faite ici. Les critères de départage sont stables
+    afin qu'un rebuild identique publie exactement la même synthèse.
+    """
+    candidates = [fact for fact in facts if str(fact.get("summary") or "").strip()]
+    if not candidates:
+        return ""
+
+    def rank(fact: dict) -> tuple[int, str, str]:
+        richness = sum(bool(fact.get(key)) for key in _SUMMARY_RICHNESS_KEYS)
+        # `max` + ordre lexical rend l'égalité entièrement déterministe.
+        return richness, str(fact.get("source", "")), str(fact.get("item_id", ""))
+
+    selected = max(candidates, key=rank)
+    return str(selected.get("summary") or "").strip()
+
+
 def incidents_payload(
     incidents: list[Incident],
     local_analysis: dict[str, dict] | None = None,
@@ -159,6 +202,9 @@ def incidents_payload(
         facts = source_facts.get(incident.Incident_ID)
         if facts:
             row["facts"] = facts
+            summary = _best_source_summary(facts)
+            if summary:
+                row["summary"] = summary
         payload.append(row)
     return payload
 
