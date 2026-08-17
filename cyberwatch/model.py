@@ -363,6 +363,8 @@ SOURCE_FACT_COLUMNS = [
     "Discovered_Date",
     "Victim_Website",
     "Cyberattack_Score",
+    "Initial_Access",
+    "Attack_Flow_JSON",
     "Impact",
     "Summary",
     "Evolution",

@@ -1,4 +1,4 @@
-"""Faits source : extracteurs V3, validation et non-régression."""
+"""Faits source : extracteurs V4, validation et non-régression."""
 from __future__ import annotations
 
 import json
@@ -37,14 +37,16 @@ def test_merge_source_facts_idempotent_et_trie():
     assert once[1]["Threat_Actor"] == "nouveau"
 
 
-def test_dispatch_et_schema_et_version_v3():
+def test_dispatch_et_schema_et_version_v4():
     unknown = spec("AUTRE_SOURCE")
     assert sf.extract_source_fact(make_item("AUTRE_SOURCE"), RawEntry(title="X"), unknown) is None
     entry = RawEntry(title="Exemple", summary="Revendiquée par le groupe X, CVE-2026-11111 exploitée.")
     fact = sf.extract_source_fact(make_item(), entry, spec("FRENCHBREACHES"))
     assert set(fact) == set(SOURCE_FACT_COLUMNS)
-    assert fact["Extraction_Version"] == "3"
-    assert sf.SOURCE_FACTS_VERSION == "3"
+    assert fact["Extraction_Version"] == "4"
+    assert sf.SOURCE_FACTS_VERSION == "4"
+    assert "Initial_Access" in SOURCE_FACT_COLUMNS
+    assert "Attack_Flow_JSON" in SOURCE_FACT_COLUMNS
 
 
 def test_erreur_extracteur_ne_bloque_jamais():
@@ -181,6 +183,56 @@ def test_cyberattaque_fallback_deterministe_reste_disponible_sans_llm():
     assert fact["Threat_Actor"] == "LockBit"
     assert fact["Affected_Count"] == "138000"
     assert json.loads(fact["Vulnerabilities_JSON"]) == ["CVE-2026-72898"]
+
+
+def test_enrichissement_semantique_est_materialise(monkeypatch):
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "summary": {
+            "value": "Intrusion via une vulnérabilité, suivie d'une exfiltration.",
+            "confidence": .95,
+            "evidence": "L'attaquant a exploité la vulnérabilité puis exfiltré les données.",
+        },
+        "initial_access": {
+            "value": "vulnerability_exploitation",
+            "confidence": .99,
+            "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI.",
+        },
+        "attack_flow": [
+            {
+                "action": "Exploitation de la vulnérabilité",
+                "confidence": .99,
+                "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI.",
+            },
+            {
+                "action": "Exfiltration des données",
+                "confidence": .95,
+                "evidence": "L'attaquant a ensuite exfiltré les données clients.",
+            },
+        ],
+        "impact": {
+            "value": "Des données clients ont été exfiltrées.",
+            "confidence": .95,
+            "evidence": "L'attaquant a ensuite exfiltré les données clients.",
+        },
+    })
+    entry = RawEntry(
+        title="Société Exemple", organisation="Société Exemple",
+        content=(
+            "L'attaquant a exploité la vulnérabilité pour entrer dans le SI. "
+            "L'attaquant a ensuite exfiltré les données clients."
+        ),
+    )
+    fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG", organisation="Société Exemple"), entry, CO)
+    assert fact["Initial_Access"] == "vulnerability_exploitation"
+    assert json.loads(fact["Attack_Flow_JSON"]) == [
+        {"action": "Exploitation de la vulnérabilité", "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI."},
+        {"action": "Exfiltration des données", "evidence": "L'attaquant a ensuite exfiltré les données clients."},
+    ]
+    assert fact["Summary"].startswith("Intrusion via")
+    assert fact["Impact"] == "Des données clients ont été exfiltrées."
+    evidence = json.loads(fact["Evidence_JSON"])
+    assert evidence["Initial_Access"]
+    assert len(evidence["Attack_Flow_JSON"]) == 2
 
 
 def test_ai_count_est_valide_mecaniquement(monkeypatch):

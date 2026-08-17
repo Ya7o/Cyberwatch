@@ -2,12 +2,7 @@
 (() => {
   "use strict";
 
-  const state = {
-    incidents: [],
-    status: null,
-    page: 1,
-    pageSize: 50,
-  };
+  const state = { incidents: [], status: null, page: 1, pageSize: 50 };
   let tableObserver = null;
   let timer = null;
 
@@ -19,12 +14,8 @@
     "système u", "super u",
   ]);
   const DATA_TYPE_GROUP_ORDER = [
-    "Identité & coordonnées",
-    "Profession / formation",
-    "Finance & transactions",
-    "Santé",
-    "Accès & authentification",
-    "Autres",
+    "Identité & coordonnées", "Profession / formation", "Finance & transactions",
+    "Santé", "Accès & authentification", "Autres",
   ];
   const DATA_TYPE_GROUP_RULES = [
     ["Santé", ["sante", "medical", "medic", "patient", "diagnostic", "patholog", "ordonnance", "traitement", "vaccin"]],
@@ -33,6 +24,7 @@
     ["Profession / formation", ["certification", "qualification", "experience", "evaluation", "formation", "parcours professionnel", "emploi", "poste", "metier", "profession"]],
     ["Identité & coordonnées", ["nom", "prenom", "genre", "email", "e-mail", "adresse", "telephone", "mobile", "naissance", "nationalite", "departement", "pays", "ville", "identite", "numero client"]],
   ];
+
   const orgKey = (value) => String(value || "").trim().toLocaleLowerCase("fr-FR");
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -100,14 +92,16 @@
     style.id = "dashboard-audit-css";
     style.textContent = `
       .incidents-card .table-scroll{max-height:none}
-      .audit-pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary)}
+      .audit-pager{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary);justify-content:space-between;margin-top:12px}
       .audit-pager button,.audit-pager select{font:inherit;font-size:13px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-primary)}
-      .audit-pager{justify-content:space-between;margin-top:12px}.audit-pager-actions{display:flex;gap:8px;align-items:center}.audit-pager button:disabled{opacity:.45}
+      .audit-pager-actions{display:flex;gap:8px;align-items:center}.audit-pager button:disabled{opacity:.45}
       .source-name{font-weight:650}.source-meta,.source-control{font-size:11.5px;color:var(--text-secondary)}
       .sources-list{display:flex;gap:9px 18px;flex-wrap:wrap;margin-top:12px}.source-state{display:inline-flex;align-items:center;gap:7px;font-size:14px}.source-led{width:9px;height:9px;border-radius:50%;background:var(--text-muted);box-shadow:0 0 0 2px var(--surface)}.source-led--ok{background:var(--ok,#2f9e44)}.source-led--attention{background:var(--warn,#d99a00)}.source-led--fail{background:var(--danger,#d64545)}
       .sources-detail{margin-top:14px}.sources-detail>summary{cursor:pointer;font-size:13px;color:var(--text-secondary);list-style:none}.sources-detail>summary::-webkit-details-marker{display:none}.sources-detail>summary::before{content:"▸";color:var(--text-muted);font-size:12px;margin-right:6px}.sources-detail[open]>summary::before{content:"▾"}.sources-detail .table-scroll{margin-top:10px}
-      .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}
-      .source-badge:hover{color:var(--text-primary)}.evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
+      .source-badges{display:flex;gap:5px;flex-wrap:wrap}.source-badge{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--plane);font-size:11.5px;text-decoration:none;color:var(--text-secondary)}.source-badge:hover{color:var(--text-primary)}
+      .evidence-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:11.5px;color:var(--text-secondary)}
+      .incident-summary{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}
+      .incident-summary strong{font-weight:650}
       .incident-facts{margin-top:8px;font-size:12px;font-weight:400;line-height:1.4}.incident-facts>summary{cursor:pointer;color:var(--text-secondary);list-style:none;width:max-content;max-width:100%}.incident-facts>summary::-webkit-details-marker{display:none}.incident-facts>summary::before{content:"▸";color:var(--text-muted);margin-right:5px}.incident-facts[open]>summary::before{content:"▾"}.incident-facts-list{display:grid;gap:7px;margin-top:7px}.incident-fact{padding:8px 9px;border:1px solid var(--border);border-radius:8px;background:var(--plane)}.incident-fact-source{font-weight:650;margin-bottom:4px}.incident-fact-row{display:flex;gap:6px;align-items:flex-start;margin-top:2px}.incident-fact-label{color:var(--text-muted);flex:0 0 auto}.incident-fact-value{min-width:0;overflow-wrap:anywhere}.incident-fact-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.incident-fact-links a{font-size:11.5px}
       .incident-data-types{margin-top:7px}.incident-data-types-title{color:var(--text-muted);margin-bottom:3px}.incident-data-group{margin-top:4px}.incident-data-group>summary{cursor:pointer;list-style:none;font-weight:600}.incident-data-group>summary::-webkit-details-marker{display:none}.incident-data-group>summary::before{content:"▸";color:var(--text-muted);margin-right:5px}.incident-data-group[open]>summary::before{content:"▾"}.incident-data-values{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.incident-data-value{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;background:var(--surface);overflow-wrap:anywhere}
       .local-analysis{margin-top:9px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--plane);font-size:12.5px;font-weight:400;line-height:1.45}.local-analysis p{margin:6px 0 0}.local-score{display:inline-flex;align-items:center;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis .evidence-links{margin-top:7px}
@@ -122,7 +116,7 @@
         #incidents-table td[data-label]::before,#sources-detail-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;vertical-align:top}
         #incidents-table .org-cell{font-size:16px;font-weight:650;padding-bottom:7px!important}#incidents-table .org-cell::before{display:none}
         #incidents-table .sources-cell::before{display:block;margin-bottom:4px}
-        .incident-facts,.incident-fact{font-size:12.5px}.incident-fact-row{display:block}.incident-fact-label{display:block}
+        .incident-summary,.incident-facts,.incident-fact{font-size:12.5px}.incident-fact-row{display:block}.incident-fact-label{display:block}
         .incident-data-group>summary{padding:2px 0}
         .audit-pager{align-items:flex-start}.audit-pager-actions{width:100%;justify-content:space-between}
       }
@@ -135,29 +129,28 @@
     if ($(".reliability-title")) $(".reliability-title").textContent = "État des sources";
     const incidentCard = $("#incidents-table")?.closest("section.card");
     if (incidentCard) incidentCard.classList.add("incidents-card");
-
   }
 
-function filteredIncidents() {
-  const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
-  const selectedSource = $("#f-source")?.value || "";
-  return state.incidents.filter((incident) => {
-    const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
-    const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
-    const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
-    const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
-    if (selectedSource && !(incident.sources || []).includes(selectedSource)) return false;
-    if (ocean && !oceanLocations.has(incident.location)) return false;
-    if (localOnly && !incident.local) return false;
-    if ((automotive || largeRetail) && !(
-      (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
-      || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
-    )) return false;
-    return true;
-  });
-}
+  function filteredIncidents() {
+    const localOnly = $("#f-local")?.getAttribute("aria-pressed") === "true";
+    const selectedSource = $("#f-source")?.value || "";
+    return state.incidents.filter((incident) => {
+      const ocean = $("#f-ocean-indien")?.getAttribute("aria-pressed") === "true";
+      const automotive = $("#f-auto")?.getAttribute("aria-pressed") === "true";
+      const largeRetail = $("#f-grande-distrib")?.getAttribute("aria-pressed") === "true";
+      const oceanLocations = new Set(["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"]);
+      if (selectedSource && !(incident.sources || []).includes(selectedSource)) return false;
+      if (ocean && !oceanLocations.has(incident.location)) return false;
+      if (localOnly && !incident.local) return false;
+      if ((automotive || largeRetail) && !(
+        (automotive && AUTOMOTIVE_ORGS.has(orgKey(incident.org)))
+        || (largeRetail && LARGE_RETAIL_ORGS.has(orgKey(incident.org)))
+      )) return false;
+      return true;
+    });
+  }
 
-function currentSort() {
+  function currentSort() {
     const active = $$("#incidents-table th[data-sort]").find((th) => ["ascending", "descending"].includes(th.getAttribute("aria-sort")));
     if (!active) return { key: "date", dir: -1 };
     return { key: active.dataset.sort, dir: active.getAttribute("aria-sort") === "ascending" ? 1 : -1 };
@@ -212,12 +205,24 @@ function currentSort() {
   }
 
   function claimStatusLabel(value) {
+    return ({ claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti" })[value] || value;
+  }
+
+  function initialAccessLabel(value) {
     return ({
-      claimed: "Revendiqué",
-      confirmed: "Confirmé",
-      unconfirmed: "Non confirmé",
-      denied: "Démenti",
-    })[value] || value;
+      phishing: "Phishing",
+      compromised_credentials: "Identifiants compromis",
+      vulnerability_exploitation: "Exploitation d’une vulnérabilité",
+      remote_access: "Accès distant",
+      third_party: "Tiers compromis",
+      malware: "Malware",
+      other: "Autre",
+    })[value] || value || "";
+  }
+
+  function attackFlowLabel(values) {
+    if (!Array.isArray(values) || !values.length) return "";
+    return values.map((step) => String((step && step.action) || "").trim()).filter(Boolean).slice(0, 4).join(" → ");
   }
 
   function affectedLabel(fact) {
@@ -248,6 +253,8 @@ function currentSort() {
       factRow("Statut", fact.claim_status ? claimStatusLabel(fact.claim_status) : ""),
       factRow("Acteur", fact.threat_actor),
       factRow("Tiers impliqué", fact.third_party),
+      factRow("Vecteur d'entrée", initialAccessLabel(fact.initial_access)),
+      factRow("Déroulé", attackFlowLabel(fact.attack_flow)),
       factRow("Localisation précise", fact.fine_location),
       factRow("Données touchées", affectedLabel(fact)),
       factRow("Volume", fact.data_volume),
@@ -274,6 +281,12 @@ function currentSort() {
     return `<details class="incident-facts"><summary>Détails disponibles</summary><div class="incident-facts-list">${rendered.join("")}</div></details>`;
   }
 
+  function renderIncidentSummary(incident) {
+    const summary = String((incident && incident.summary) || "").trim();
+    if (!summary) return "";
+    return `<div class="incident-summary"><strong>Synthèse :</strong> ${esc(summary)}</div>`;
+  }
+
   function observeTable() {
     const tbody = $("#incidents-table tbody");
     if (!tbody) return;
@@ -285,15 +298,15 @@ function currentSort() {
     tableObserver.observe(tbody, { childList: true, subtree: false });
   }
 
-function renderLocalAnalysis(incident, enabled) {
-  const local = incident.local;
-  if (!enabled || !local) return "";
-  const references = [...new Set((local.references || []).map(safeUrl).filter(Boolean))];
-  const links = references.length
-    ? `<div class="evidence-links"><span>Références :</span>${references.slice(0, 4).map((url, i) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(url)}">${esc(host(url))}${references.length > 1 ? ` ${i + 1}` : ""}</a>`).join("")}${references.length > 4 ? `<span>+${references.length - 4}</span>` : ""}</div>`
-    : "";
-  return `<div class="local-analysis"><span class="local-score">Score cyberattaque : ${esc(local.score)}/100</span><p><strong>Synthèse :</strong> ${esc(local.summary || "—")}</p>${links}</div>`;
-}
+  function renderLocalAnalysis(incident, enabled) {
+    const local = incident.local;
+    if (!enabled || !local) return "";
+    const references = [...new Set((local.references || []).map(safeUrl).filter(Boolean))];
+    const links = references.length
+      ? `<div class="evidence-links"><span>Références :</span>${references.slice(0, 4).map((url, i) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(url)}">${esc(host(url))}${references.length > 1 ? ` ${i + 1}` : ""}</a>`).join("")}${references.length > 4 ? `<span>+${references.length - 4}</span>` : ""}</div>`
+      : "";
+    return `<div class="local-analysis"><span class="local-score">Score cyberattaque : ${esc(local.score)}/100</span><p><strong>Synthèse :</strong> ${esc(local.summary || "—")}</p>${links}</div>`;
+  }
 
   function renderIncidentTable() {
     const tbody = $("#incidents-table tbody");
@@ -313,7 +326,7 @@ function renderLocalAnalysis(incident, enabled) {
     tableObserver?.disconnect();
     tbody.innerHTML = shown.map((incident) => `<tr>
       <td data-label="Date" class="num">${esc(incident.date || "—")}</td>
-      <td data-label="Organisation" class="wrap-cell org-cell">${esc(incident.org || "Organisation inconnue")}${renderSourceFacts(incident)}${renderLocalAnalysis(incident, localOnly)}</td>
+      <td data-label="Organisation" class="wrap-cell org-cell">${esc(incident.org || "Organisation inconnue")}${renderIncidentSummary(incident)}${renderSourceFacts(incident)}${renderLocalAnalysis(incident, localOnly)}</td>
       <td data-label="Territoire">${esc(incident.location || "—")}</td>
       <td data-label="Secteur">${esc(incident.sector || "—")}</td>
       <td data-label="Menace">${esc(incident.threat || "—")}</td>
@@ -339,8 +352,8 @@ function renderLocalAnalysis(incident, enabled) {
     $("#audit-page-size")?.addEventListener("change", (event) => { state.pageSize = Number(event.target.value) || 50; state.page = 1; renderIncidentTable(); });
   }
 
-  function statusLevel(status) {
-    const upper = String(status || "SKIPPED").toUpperCase();
+  function statusLevel(value) {
+    const upper = String(value || "SKIPPED").toUpperCase();
     return upper === "OK" ? "ok" : (upper === "FAIL" ? "fail" : "attention");
   }
 
@@ -357,20 +370,13 @@ function renderLocalAnalysis(incident, enabled) {
     renderSourceDetail(rows);
   }
 
-  /** Détail homogène : mêmes six champs pour chaque source, sans cas
-   * particulier — accessible sous la vue globale compacte via <details>. */
   function renderSourceDetail(rows) {
     const tbody = $("#sources-detail-table tbody");
     if (!tbody) return;
     tbody.innerHTML = rows.map((source) => {
       const label = String(source.status || "SKIPPED").toUpperCase();
-      // Signal discret (§stabilisation pré-release) : un protocole peut
-      // aboutir (OK) avec un historique réel plus court que la fenêtre
-      // demandée — jamais un angle mort technique, juste une profondeur
-      // connue à afficher. Générique pour toute source, vide sinon.
       const historyTitle = source.history_status === "TRUNCATED" && source.oldest_available_date
-        ? `Historique disponible depuis le ${formatDate(source.oldest_available_date)}`
-        : "";
+        ? `Historique disponible depuis le ${formatDate(source.oldest_available_date)}` : "";
       return `<tr>
         <td data-label="Source">${esc(sourceLabel(source.id))}</td>
         <td data-label="Statut"><span class="chip" data-status="${esc(label)}" title="${esc(historyTitle)}">${esc(label)}</span></td>

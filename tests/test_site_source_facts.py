@@ -51,6 +51,8 @@ def test_source_fact_payload_omet_les_champs_vides_et_parse_les_listes():
         "Affected_Count_Raw": "2,8 millions d'enregistrements",
         "Data_Types_JSON": '["emails","noms"]',
         "Vulnerabilities_JSON": '["CVE-2026-12345"]',
+        "Initial_Access": "vulnerability_exploitation",
+        "Attack_Flow_JSON": '[{"action":"Exploitation CVE","evidence":"CVE exploitée"},{"action":"Exfiltration","evidence":"données exfiltrées"}]',
         "Evidence_URLs_JSON": '["https://example.test/preuve"]',
         "Extraction_Method": "FRENCHBREACHES",
         "Evidence_JSON": '{"debug":true}',
@@ -63,13 +65,29 @@ def test_source_fact_payload_omet_les_champs_vides_et_parse_les_listes():
         "affected_count": 2800000,
         "affected_unit": "records",
         "affected_count_raw": "2,8 millions d'enregistrements",
+        "initial_access": "vulnerability_exploitation",
         "data_types": ["emails", "noms"],
         "vulnerabilities": ["CVE-2026-12345"],
         "evidence_urls": ["https://example.test/preuve"],
+        "attack_flow": [
+            {"action": "Exploitation CVE", "evidence": "CVE exploitée"},
+            {"action": "Exfiltration", "evidence": "données exfiltrées"},
+        ],
     }
     assert "third_party" not in payload
     assert "Evidence_JSON" not in payload
     assert "Extraction_Method" not in payload
+
+
+def test_attack_flow_invalide_est_ignore_sans_casser_le_payload():
+    payload = site._source_fact_payload({
+        "Item_ID": "ITM-a",
+        "Source_ID": "FRENCHBREACHES",
+        "Summary": "Synthèse utile",
+        "Attack_Flow_JSON": '[{"action":"Sans preuve"},{"evidence":"sans action"},"invalide"]',
+    })
+    assert payload["summary"] == "Synthèse utile"
+    assert "attack_flow" not in payload
 
 
 def test_veille_llm_reste_sur_son_renderer_historique():
@@ -112,14 +130,42 @@ def test_jointure_par_item_id_conserve_les_sources_separees():
     assert all(fact["threat_actor"] != "Orphelin" for fact in incident_facts)
 
 
+def test_best_summary_prend_la_source_la_plus_riche_sans_fusion_llm():
+    facts = [
+        {
+            "source": "CYBERATTAQUE_ORG", "item_id": "ITM-a",
+            "summary": "Synthèse pauvre.", "impact": "Impact",
+        },
+        {
+            "source": "FRENCHBREACHES", "item_id": "ITM-b",
+            "summary": "Synthèse documentée.",
+            "initial_access": "compromised_credentials",
+            "attack_flow": [{"action": "Intrusion", "evidence": "preuve"}],
+            "impact": "Impact", "threat_actor": "Groupe X",
+        },
+    ]
+    assert site._best_source_summary(facts) == "Synthèse documentée."
+
+
+def test_best_summary_est_stable_en_cas_degalite():
+    facts = [
+        {"source": "CYBERATTAQUE_ORG", "item_id": "ITM-a", "summary": "A", "impact": "x"},
+        {"source": "FRENCHBREACHES", "item_id": "ITM-b", "summary": "B", "impact": "x"},
+    ]
+    first = site._best_source_summary(facts)
+    second = site._best_source_summary(list(reversed(facts)))
+    assert first == second
+
+
 def test_incident_sans_faits_garde_exactement_le_payload_compact():
     item = _item("ITM-a", "FRENCHBREACHES")
     incident_id = identity.incident_id(item.Organisation_Key, item.Item_ID)
     row = site.incidents_payload([_incident(incident_id)])[0]
     assert "facts" not in row
+    assert "summary" not in row
 
 
-def test_incident_avec_faits_ne_modifie_aucun_champ_canonique():
+def test_incident_avec_faits_ne_modifie_aucun_champ_canonique_et_expose_summary():
     item = _item("ITM-a", "FRENCHBREACHES")
     incident_id = identity.incident_id(item.Organisation_Key, item.Item_ID)
     incident = _incident(incident_id)
@@ -128,6 +174,7 @@ def test_incident_avec_faits_ne_modifie_aucun_champ_canonique():
             "source": "FRENCHBREACHES",
             "item_id": "ITM-a",
             "threat_actor": "ShinyHunters",
+            "summary": "Intrusion documentée ayant exposé des données clients.",
         }]
     }
 
@@ -138,6 +185,7 @@ def test_incident_avec_faits_ne_modifie_aucun_champ_canonique():
     assert row["location"] == "France métropolitaine"
     assert row["date"] == "2026-08-10"
     assert row["facts"] == source_facts[incident_id]
+    assert row["summary"] == "Intrusion documentée ayant exposé des données clients."
 
 
 def test_build_charge_explicitement_source_facts():
@@ -154,10 +202,13 @@ def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
     assert 'if (!rendered.length) return ""' in js
     assert 'class="incident-facts"' in js
     assert "renderSourceFacts(incident)" in js
+    assert "renderIncidentSummary(incident)" in js
+    assert "initialAccessLabel" in js
+    assert "attackFlowLabel" in js
 
     # Le tableau principal reste volontairement compact.
     header = html.split('<table class="data-table" id="incidents-table">', 1)[1].split("</thead>", 1)[0]
     for title in ("Date", "Organisation", "Territoire", "Secteur", "Menace", "Sources"):
         assert f">{title}<" in header
-    for forbidden in ("Acteur", "Volume", "CVSS", "Vulnérabilités"):
+    for forbidden in ("Acteur", "Volume", "CVSS", "Vulnérabilités", "Vecteur", "Déroulé"):
         assert f">{forbidden}<" not in header

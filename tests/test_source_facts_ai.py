@@ -1,4 +1,4 @@
-"""Source facts LLM : préflight, grounding, cache, budget et télémétrie."""
+"""Source facts LLM : préflight, grounding, cache par champ et garde-fous."""
 from __future__ import annotations
 
 import json
@@ -26,7 +26,7 @@ def _output_for(body: dict, **values):
     result = {}
     properties = body["text"]["format"]["schema"]["properties"]
     for field in properties:
-        if field in {"data_types", "affected_counts", "data_volumes", "file_counts"}:
+        if field in {"data_types", "affected_counts", "data_volumes", "file_counts", "attack_flow"}:
             result[field] = values.get(field, [])
         else:
             result[field] = values.get(
@@ -67,7 +67,7 @@ def test_types_de_donnees_deterministes_sans_api(monkeypatch, tmp_path):
     assert sfa.runtime_stats()["calls_attempted"] == 0
 
 
-def test_preflight_deterministe_evite_appel(monkeypatch, tmp_path):
+def test_preflight_deterministe_evite_appel_sur_contenu_pauvre(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     called = []
     monkeypatch.setattr(sfa, "_post_openai", lambda *_: called.append(True))
@@ -109,6 +109,122 @@ def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
     props = set(bodies[0]["text"]["format"]["schema"]["properties"])
     assert props == {"summary", "threat_actor"}
     assert result["threat_actor"]["value"] == "LockBit"
+
+
+def test_enrichissement_80_20_extrait_vecteur_flow_resume_impact(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    bodies = []
+    entry = RawEntry(
+        title="Exemple SA",
+        content=(
+            "L'attaquant a exploité une vulnérabilité du portail VPN pour obtenir un accès initial. "
+            "Il a ensuite accédé au serveur de fichiers puis exfiltré des données clients. "
+            "La fuite concerne des informations personnelles de clients de l'entreprise."
+        ),
+    )
+
+    def fake_post(body, _runtime):
+        bodies.append(body)
+        return _payload(_output_for(
+            body,
+            summary={
+                "value": "Intrusion via une vulnérabilité VPN suivie d'une exfiltration de données clients.",
+                "confidence": .96,
+                "evidence": "L'attaquant a exploité une vulnérabilité du portail VPN pour obtenir un accès initial.",
+            },
+            initial_access={
+                "value": "vulnerability_exploitation",
+                "confidence": .99,
+                "evidence": "L'attaquant a exploité une vulnérabilité du portail VPN pour obtenir un accès initial.",
+            },
+            attack_flow=[
+                {
+                    "action": "Exploitation d'une vulnérabilité VPN",
+                    "confidence": .99,
+                    "evidence": "L'attaquant a exploité une vulnérabilité du portail VPN pour obtenir un accès initial.",
+                },
+                {
+                    "action": "Exfiltration de données clients",
+                    "confidence": .97,
+                    "evidence": "Il a ensuite accédé au serveur de fichiers puis exfiltré des données clients.",
+                },
+            ],
+            impact={
+                "value": "Des données clients ont été exfiltrées.",
+                "confidence": .95,
+                "evidence": "Il a ensuite accédé au serveur de fichiers puis exfiltré des données clients.",
+            },
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    result = sfa.enrich(_item(), entry)
+    props = set(bodies[0]["text"]["format"]["schema"]["properties"])
+    assert {"summary", "initial_access", "attack_flow", "impact"} <= props
+    assert result["initial_access"]["value"] == "vulnerability_exploitation"
+    assert len(result["attack_flow"]) == 2
+    assert result["summary"]["value"].startswith("Intrusion via")
+    assert result["impact"]["value"]
+
+
+def test_vecteur_inconnu_ne_devient_jamais_une_hypothese(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    entry = RawEntry(
+        title="Exemple SA",
+        content=(
+            "Le vecteur initial reste inconnu et n'a pas été communiqué. "
+            "Il pourrait s'agir d'un phishing, d'identifiants compromis ou d'une vulnérabilité. "
+            "L'organisation poursuit ses investigations sur l'incident."
+        ),
+    )
+
+    def fake_post(body, _runtime):
+        return _payload(_output_for(
+            body,
+            initial_access={
+                "value": "phishing",
+                "confidence": .95,
+                "evidence": "Il pourrait s'agir d'un phishing",
+            },
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    result = sfa.enrich(_item(), entry) or {}
+    assert "initial_access" not in result
+
+
+def test_attack_flow_exclut_remediation_et_hypotheses(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    entry = RawEntry(
+        title="Exemple",
+        content=(
+            "L'attaquant a exfiltré des données clients après son intrusion. "
+            "L'entreprise a isolé les serveurs et lancé une investigation forensic. "
+            "Un mouvement latéral pourrait avoir eu lieu mais cela n'est pas confirmé."
+        ),
+    )
+
+    def fake_post(body, _runtime):
+        return _payload(_output_for(
+            body,
+            attack_flow=[
+                {
+                    "action": "Exfiltration de données clients", "confidence": .95,
+                    "evidence": "L'attaquant a exfiltré des données clients après son intrusion.",
+                },
+                {
+                    "action": "Isolation des serveurs", "confidence": .99,
+                    "evidence": "L'entreprise a isolé les serveurs et lancé une investigation forensic.",
+                },
+                {
+                    "action": "Mouvement latéral", "confidence": .9,
+                    "evidence": "Un mouvement latéral pourrait avoir eu lieu mais cela n'est pas confirmé.",
+                },
+            ],
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    result = sfa.enrich(_item(), entry) or {}
+    assert [step["action"] for step in result["attack_flow"]] == ["Exfiltration de données clients"]
 
 
 def test_evidence_non_presente_est_rejetee(monkeypatch, tmp_path):
@@ -154,7 +270,7 @@ def test_acteur_et_tiers_doivent_etre_nommes_dans_evidence(monkeypatch, tmp_path
     assert "third_party" not in result
 
 
-def test_cache_et_changement_contenu(monkeypatch, tmp_path):
+def test_cache_par_champ_et_changement_contenu(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     calls = []
 
@@ -175,10 +291,71 @@ def test_cache_et_changement_contenu(monkeypatch, tmp_path):
     sfa.enrich(_item(), first)
     sfa.enrich(_item(), second)
     assert len(calls) == 2
-    assert sfa.runtime_stats()["cache_hits"] == 1
+    stats = sfa.runtime_stats()
+    assert stats["cache_hits"] == 1
+    assert stats["field_cache_hits"] >= 2
     sfa._flush_runtime()
-    assert (tmp_path / "cache.json").exists()
+    payload = json.loads((tmp_path / "cache.json").read_text(encoding="utf-8"))
+    assert payload["_format"] == sfa.CACHE_FORMAT
+    assert payload["entries"]
     assert (tmp_path / "stats.json").exists()
+
+
+def test_invalidation_dun_champ_ne_recalcule_pas_les_autres(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    calls = []
+    entry = RawEntry(
+        title="Exemple",
+        content=(
+            "L'attaquant a exploité une vulnérabilité pour obtenir un accès initial. "
+            "Il a ensuite exfiltré des données de l'entreprise après l'intrusion."
+        ),
+    )
+
+    def fake_post(body, _runtime):
+        calls.append(set(body["text"]["format"]["schema"]["properties"]))
+        return _payload(_output_for(
+            body,
+            summary={"value": "Intrusion puis exfiltration.", "confidence": .9, "evidence": "Il a ensuite exfiltré des données de l'entreprise après l'intrusion."},
+            initial_access={"value": "vulnerability_exploitation", "confidence": .95, "evidence": "L'attaquant a exploité une vulnérabilité pour obtenir un accès initial."},
+            attack_flow=[{"action": "Exfiltration", "confidence": .95, "evidence": "Il a ensuite exfiltré des données de l'entreprise après l'intrusion."}],
+            impact={"value": "Données exfiltrées", "confidence": .9, "evidence": "Il a ensuite exfiltré des données de l'entreprise après l'intrusion."},
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    sfa.enrich(_item(), entry)
+    monkeypatch.setitem(sfa.FIELD_VERSIONS, "initial_access", "initial-access-v2-test")
+    sfa.enrich(_item(), entry)
+    assert len(calls) == 2
+    assert calls[1] == {"initial_access"}
+    assert sfa.runtime_stats()["fields_invalidated"] >= 1
+
+
+def test_ancien_cache_reutilise_les_champs_compatibles(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    item = _item()
+    entry = RawEntry(title="Exemple", content="L'attaque a été attribuée à LockBit.")
+    runtime = sfa._runtime()
+    legacy_fields = {"summary", "threat_actor"}
+    key = sfa._legacy_input_hash(item, entry, runtime, legacy_fields)
+    runtime.legacy_cache[key] = {
+        "summary": {"value": "Ancien résumé", "confidence": .9, "evidence": "attaque a été attribuée à LockBit"},
+        "threat_actor": {"value": "LockBit", "confidence": .95, "evidence": "attaque a été attribuée à LockBit"},
+    }
+    bodies = []
+
+    def fake_post(body, _runtime):
+        bodies.append(body)
+        return _payload(_output_for(
+            body,
+            summary={"value": "L'attaque est attribuée à LockBit.", "confidence": .9, "evidence": "attaque a été attribuée à LockBit"},
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    result = sfa.enrich(item, entry)
+    assert result["threat_actor"]["value"] == "LockBit"
+    assert set(bodies[0]["text"]["format"]["schema"]["properties"]) == {"summary"}
+    assert sfa.runtime_stats()["legacy_field_cache_hits"] == 1
 
 
 def test_budget_appels_est_respecte(monkeypatch, tmp_path):
