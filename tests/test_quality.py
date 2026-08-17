@@ -98,3 +98,37 @@ def test_ransomware_source_sector_audit_separates_raw_mapping_states(make_item):
     assert audit["unknown_raw_unmapped"] == 1
     assert audit["raw_values"]["Manufacturing"]["mapped_sector"] == config.SECTOR_INDUSTRY
     assert audit["raw_values"]["Hospitality"]["mapped_sector"] == config.SECTOR_UNKNOWN
+
+
+def test_measured_ransomware_aliases_are_mappable_but_broad_categories_stay_unknown(make_item):
+    raws = [
+        ("Professional Services", config.SECTOR_SERVICES),
+        ("Technology", config.SECTOR_TECH),
+        ("Retail & E-Commerce", config.SECTOR_RETAIL),
+        ("Hospitality", config.SECTOR_UNKNOWN),
+        ("Agriculture and Food Production", config.SECTOR_UNKNOWN),
+        ("Government & Defense", config.SECTOR_UNKNOWN),
+        ("Other", config.SECTOR_UNKNOWN),
+        ("Not Found", config.SECTOR_UNKNOWN),
+    ]
+    items = []
+    facts = []
+    for index, (raw, _expected) in enumerate(raws):
+        item = make_item(
+            source="RANSOMWARE_LIVE",
+            org=f"Org {index}",
+            url=f"https://example.org/{index}",
+            sector=config.SECTOR_UNKNOWN,
+        )
+        items.append(item)
+        facts.append(
+            {
+                "Item_ID": item.Item_ID,
+                "Source_ID": "RANSOMWARE_LIVE",
+                "Source_Sector_Raw": raw,
+            }
+        )
+
+    audit = quality.ransomware_source_sector_audit(items, facts)
+    for raw, expected in raws:
+        assert audit["raw_values"][raw]["mapped_sector"] == expected
