@@ -1,0 +1,276 @@
+name: Dedup Global Audit
+
+on:
+  push:
+    branches:
+      - "agent/dedup-global-audit-20260817"
+    paths:
+      - ".github/workflows/dedup-global-audit.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Audit global de déduplication
+        run: |
+          python - <<'PY'
+          import csv
+          import json
+          from collections import Counter, defaultdict
+          from dataclasses import replace
+          from itertools import combinations
+          from pathlib import Path
+
+          from cyberwatch import identity, sources, store
+          from cyberwatch.dedup import build_incidents, decide_merge, group_components, MERGE
+          from cyberwatch.duplicate_audit import find_audit_candidates
+          from cyberwatch.model import Item
+          from cyberwatch.normalize import _base_organisation_key, date_or_empty, organisation_key
+          from cyberwatch.org_identity import effective_organisation_key
+
+          items = store.load_items()
+          incidents = store.load_incidents()
+          rebuilt = build_incidents(items)
+          components = group_components(items)
+          assert identity.incidents_hash(rebuilt) == identity.incidents_hash(incidents)
+          assert len(components) == len(incidents)
+
+          def eff(item):
+              return effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
+
+          comp_of = {}
+          for idx, component in enumerate(components):
+              for item in component:
+                  comp_of[item.Item_ID] = idx
+
+          # Company_ID exact déjà validé, utilisé uniquement comme signal d'audit.
+          company_ids = {}
+          cache = Path('data/org_enrichment_cache.csv')
+          if cache.exists():
+              with cache.open(encoding='utf-8', newline='') as handle:
+                  for row in csv.DictReader(handle):
+                      if row.get('Match_Status') == 'MATCHED' and row.get('Company_ID') and row.get('Organisation_Key'):
+                          company_ids[row['Organisation_Key']] = row['Company_ID']
+
+          # Audit existant, rejoué sur le snapshot courant.
+          audit3 = find_audit_candidates(items, company_ids=company_ids, max_days=3)
+          audit14 = find_audit_candidates(items, company_ids=company_ids, max_days=14)
+          risk3 = Counter(c.risk_type for c in audit3)
+          reason3 = Counter(c.reason_code for c in audit3)
+          risk14 = Counter(c.risk_type for c in audit14)
+          reason14 = Counter(c.reason_code for c in audit14)
+
+          # Cas same-identity séparés entre J+4 et J+14 : zone aveugle du moteur actuel.
+          by_eff = defaultdict(list)
+          for item in items:
+              key = eff(item)
+              if key:
+                  by_eff[key].append(item)
+          window_candidates = {}
+          for key, group in by_eff.items():
+              for left, right in combinations(group, 2):
+                  if comp_of[left.Item_ID] == comp_of[right.Item_ID]:
+                      continue
+                  if left.Source_ID == right.Source_ID:
+                      continue
+                  ld, rd = date_or_empty(left.best_date), date_or_empty(right.best_date)
+                  if not ld or not rd:
+                      continue
+                  days = abs((ld-rd).days)
+                  if 4 <= days <= 14:
+                      pair = tuple(sorted((comp_of[left.Item_ID], comp_of[right.Item_ID])))
+                      current = window_candidates.get(pair)
+                      row = (days, key, left, right)
+                      if current is None or days < current[0]:
+                          window_candidates[pair] = row
+
+          # Conflits internes qu'un test ancre->item peut manquer.
+          native_conflicts = []
+          event_conflicts = []
+          mixed_date_basis = []
+          weak_threat_conflicts = []
+          for idx, component in enumerate(components):
+              if len(component) < 2:
+                  continue
+              by_source = defaultdict(set)
+              for item in component:
+                  if item.Source_Item_ID:
+                      by_source[item.Source_ID].add(item.Source_Item_ID)
+              conflicts = {src: sorted(ids) for src, ids in by_source.items() if len(ids) > 1}
+              if conflicts:
+                  native_conflicts.append((idx, component, conflicts))
+
+              events = sorted({i.Event_Date for i in component if i.Event_Date})
+              if len(events) > 1:
+                  event_conflicts.append((idx, component, events))
+              if any(i.Event_Date for i in component) and any(not i.Event_Date for i in component):
+                  mixed_date_basis.append((idx, component))
+
+              threats = sorted({i.Threat for i in component if i.Threat and i.Threat != 'Inconnu'})
+              if len(threats) > 1:
+                  weak_threat_conflicts.append((idx, component, threats))
+
+          # Couverture Event_Date et Source_Item_ID.
+          by_source_metrics = {}
+          for source_id in sorted({i.Source_ID for i in items}):
+              rows = [i for i in items if i.Source_ID == source_id]
+              by_source_metrics[source_id] = {
+                  'items': len(rows),
+                  'event_date': sum(bool(i.Event_Date) for i in rows),
+                  'source_item_id': sum(bool(i.Source_Item_ID) for i in rows),
+              }
+
+          # Résolution d'identité réellement utilisée.
+          identity_changed = [i for i in items if eff(i) and eff(i) != i.Organisation_Key]
+          effective_groups = defaultdict(set)
+          for i in items:
+              effective_groups[eff(i)].add(i.Organisation_Key)
+          converged_groups = {k: v for k,v in effective_groups.items() if k and len(v) > 1}
+
+          # Aliases à risque sémantique : une forme très générique/bare place peut être exacte,
+          # mais mérite une validation car elle déclenche des merges automatiques.
+          alias_risks = []
+          with Path('data/organisation_aliases.csv').open(encoding='utf-8', newline='') as handle:
+              for row in csv.DictReader(handle):
+                  alias = _base_organisation_key(row.get('alias',''))
+                  canonical = _base_organisation_key(row.get('canonical',''))
+                  if len(alias.split()) == 1 and (
+                      canonical.startswith('ville de ') or len(alias) <= 8
+                  ):
+                      alias_risks.append((alias, canonical, row.get('reason','')))
+
+          # Stabilité des Incident_ID à l'arrivée future d'une corroboration provenant
+          # d'une source active qui trie avant l'ancre actuelle.
+          active_sources = sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active)
+          id_anchor_risk_multi = []
+          id_anchor_risk_single = []
+          latent_effective_singletons = []
+          for idx, component in enumerate(components):
+              ordered = identity.sort_items(component)
+              current_anchor = ordered[0]
+              current_sources = {i.Source_ID for i in component}
+              earlier = [s for s in active_sources if s not in current_sources and s < current_anchor.Source_ID]
+              if earlier:
+                  target = id_anchor_risk_single if len(component) == 1 else id_anchor_risk_multi
+                  target.append((idx, component, current_anchor.Source_ID, earlier[0]))
+              if len(component) == 1:
+                  item = component[0]
+                  if eff(item) != item.Organisation_Key:
+                      latent_effective_singletons.append(item)
+
+          # Démonstration synthétique de l'instabilité d'ancre sur un incident multi-item.
+          anchor_demo = None
+          for component in components:
+              if len(component) < 2:
+                  continue
+              ordered = identity.sort_items(component)
+              existing = build_incidents(component)[0]
+              earlier = [s for s in active_sources if s not in {i.Source_ID for i in component} and s < ordered[0].Source_ID]
+              if not earlier:
+                  continue
+              base = component[0]
+              new_source = earlier[0]
+              clone = replace(
+                  base,
+                  Item_ID='',
+                  Source_ID=new_source,
+                  Source_Item_ID='',
+                  URL='https://audit.invalid/corroboration',
+              )
+              clone.Item_ID = identity.item_id(clone.Source_ID, clone.Published_Date, clone.Organisation_Key, clone.URL, clone.Source_Item_ID)
+              updated = build_incidents(component + [clone])
+              if len(updated) == 1 and updated[0].Incident_ID != existing.Incident_ID:
+                  anchor_demo = {
+                      'organisation': existing.Organisation,
+                      'before': existing.Incident_ID,
+                      'after': updated[0].Incident_ID,
+                      'added_source': new_source,
+                  }
+                  break
+
+          item_counts = Counter(len(c) for c in components)
+          multi = [c for c in components if len(c) > 1]
+          cross_source_multi = [c for c in multi if len({i.Source_ID for i in c}) > 1]
+          summary = {
+              'items': len(items),
+              'incidents': len(incidents),
+              'collapsed_items': len(items)-len(incidents),
+              'singleton_incidents': item_counts[1],
+              'multi_item_incidents': len(multi),
+              'cross_source_multi_incidents': len(cross_source_multi),
+              'event_date_items': sum(bool(i.Event_Date) for i in items),
+              'event_date_pct': round(100*sum(bool(i.Event_Date) for i in items)/len(items),2),
+              'source_item_id_items': sum(bool(i.Source_Item_ID) for i in items),
+              'source_item_id_pct': round(100*sum(bool(i.Source_Item_ID) for i in items)/len(items),2),
+              'identity_changed_items': len(identity_changed),
+              'identity_converged_groups': len(converged_groups),
+              'audit3_total': len(audit3),
+              'audit3_risks': dict(risk3),
+              'audit3_reasons': dict(reason3),
+              'audit14_total': len(audit14),
+              'audit14_risks': dict(risk14),
+              'audit14_reasons': dict(reason14),
+              'same_identity_separate_4_14_component_pairs': len(window_candidates),
+              'components_conflicting_native_ids': len(native_conflicts),
+              'components_multiple_event_dates': len(event_conflicts),
+              'components_mixed_event_publication_basis': len(mixed_date_basis),
+              'components_multiple_known_threats': len(weak_threat_conflicts),
+              'alias_semantic_risks': len(alias_risks),
+              'multi_incidents_anchor_id_risk': len(id_anchor_risk_multi),
+              'singleton_incidents_anchor_id_risk': len(id_anchor_risk_single),
+              'singleton_effective_key_latent_id_risk': len(latent_effective_singletons),
+              'active_sources': active_sources,
+              'by_source': by_source_metrics,
+              'anchor_instability_demo': anchor_demo,
+          }
+          print('AUDIT_SUMMARY_JSON=' + json.dumps(summary, ensure_ascii=False, sort_keys=True))
+
+          for days,key,left,right in sorted(window_candidates.values(), key=lambda x:(x[0],x[1]))[:40]:
+              print('WINDOW_4_14 ' + json.dumps({
+                  'days': days, 'key': key,
+                  'left': [left.Source_ID,left.best_date,left.Organisation_Raw,left.Threat,left.Title,left.Item_ID],
+                  'right': [right.Source_ID,right.best_date,right.Organisation_Raw,right.Threat,right.Title,right.Item_ID],
+              }, ensure_ascii=False))
+
+          for candidate in audit3[:50]:
+              print('AUDIT3_CANDIDATE ' + json.dumps({
+                  'risk': candidate.risk_type, 'reason': candidate.reason_code, 'days': candidate.days_apart,
+                  'company_id': candidate.company_id,
+                  'left': [candidate.left.Source_ID,candidate.left.best_date,candidate.left.Organisation_Raw,candidate.left.Threat,candidate.left.Title,candidate.left.Item_ID],
+                  'right': [candidate.right.Source_ID,candidate.right.best_date,candidate.right.Organisation_Raw,candidate.right.Threat,candidate.right.Title,candidate.right.Item_ID],
+              }, ensure_ascii=False))
+
+          for idx,component,conflicts in native_conflicts[:20]:
+              print('NATIVE_ID_CONFLICT ' + json.dumps({
+                  'component': idx, 'org': component[0].Organisation_Raw,
+                  'conflicts': conflicts,
+                  'items': [[i.Source_ID,i.Source_Item_ID,i.best_date,i.Title,i.Item_ID] for i in component],
+              }, ensure_ascii=False))
+
+          for idx,component,events in event_conflicts[:20]:
+              print('EVENT_DATE_CONFLICT ' + json.dumps({
+                  'component': idx, 'org': component[0].Organisation_Raw, 'events': events,
+                  'items': [[i.Source_ID,i.Event_Date,i.Published_Date,i.Threat,i.Title,i.Item_ID] for i in component],
+              }, ensure_ascii=False))
+
+          for alias,canonical,reason in alias_risks[:30]:
+              print('ALIAS_RISK ' + json.dumps({'alias':alias,'canonical':canonical,'reason':reason}, ensure_ascii=False))
+
+          for item in latent_effective_singletons[:30]:
+              print('LATENT_SINGLETON_ID_RISK ' + json.dumps({
+                  'item': item.Item_ID, 'org': item.Organisation_Raw,
+                  'stored_key': item.Organisation_Key, 'effective_key': eff(item),
+                  'source': item.Source_ID, 'date': item.best_date,
+              }, ensure_ascii=False))
+          PY
