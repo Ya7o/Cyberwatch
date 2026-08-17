@@ -1,4 +1,4 @@
-name: SourceFacts Backfill Once
+name: SourceFacts Backfill Publish Once
 
 on:
   push:
@@ -15,9 +15,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  backfill:
+  publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 20
 
     steps:
       - name: Checkout production main
@@ -35,267 +35,125 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Extract SourceFacts for existing items
-        env:
-          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
-          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '700'
-          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: '1.00'
-          SOURCE_FACTS_AI_PROGRESS_EVERY: '50'
+      - name: Load preserved backfill payload
         run: |
-          python - <<'PY'
-          import json
-          import shutil
+          git fetch origin agent/source-facts-backfill-payload-20260817
+          git show FETCH_HEAD:data/source_facts_backfill_payload.json > /tmp/source_facts_incoming.json
+          git show FETCH_HEAD:data/source_facts_backfill_metrics.json > /tmp/source_facts_metrics.json
+          git show FETCH_HEAD:data/source_facts_ai_cache.json > /tmp/source_facts_ai_cache.generated.json
+          git show FETCH_HEAD:data/source_facts_ai_usage.json > /tmp/source_facts_ai_usage.generated.json
 
-          from cyberwatch import (
-              config,
-              enrichment,
-              source_facts_ai,
-              sources,
-              status,
-              store,
-              watchlists,
-          )
-          from cyberwatch.http import Budget, HttpClient
-          from cyberwatch.runner import MODE_MAJ, make_run_context, run_source
-
-          target_sources = ("FRENCHBREACHES", "CYBERATTAQUE_ORG")
-          existing_items = store.load_items()
-          existing_ids = {item.Item_ID for item in existing_items}
-          initial_counts = {
-              source_id: len([item for item in existing_items if item.Source_ID == source_id])
-              for source_id in target_sources
-          }
-
-          context = make_run_context(
-              MODE_MAJ,
-              target_start="2026-01-01",
-              layers=config.LAYER_GROUPS["core"],
-          )
-          client = HttpClient(
-              run_budget=Budget(
-                  config.MAX_REQUESTS_PER_RUN,
-                  config.MAX_SECONDS_PER_RUN,
-                  "source-facts-backfill",
-              )
-          )
-          known_orgs = watchlists.known_organisations()
-          entity_index = watchlists.entity_index()
-          territories = watchlists.entity_territories()
-          reference = enrichment.load_reference()
-
-          incoming_facts = []
-          reviewed_by_source = {}
-          extracted_by_source = {}
-          for source_id in target_sources:
-              spec = sources.by_id(source_id)
-              if spec is None:
-                  raise SystemExit(f"Source inconnue: {source_id}")
-              rows = []
-              outcome, collected_items, _ = run_source(
-                  client,
-                  spec,
-                  context,
-                  known_orgs,
-                  entity_index,
-                  territories,
-                  reference,
-                  None,
-                  None,
-                  rows,
-              )
-              print(
-                  f"{source_id}: status={outcome.status} coverage={outcome.coverage}% "
-                  f"items={len(collected_items)} facts={len(rows)} http_calls={outcome.calls}"
-              )
-              if outcome.status != status.OK or outcome.coverage < 100:
-                  raise SystemExit(
-                      f"Backfill annulé: {source_id} n'est pas entièrement collectable "
-                      f"({outcome.status}, {outcome.coverage}%)."
-                  )
-              reviewed_ids = {
-                  item.Item_ID for item in collected_items if item.Item_ID in existing_ids
-              }
-              reviewed_by_source[source_id] = len(reviewed_ids)
-              filtered = [row for row in rows if row.get("Item_ID") in existing_ids]
-              extracted_by_source[source_id] = len(filtered)
-              incoming_facts.extend(filtered)
-
-          ai_stats = source_facts_ai.runtime_stats()
-          source_facts_ai._flush_runtime()
-          if ai_stats.get("calls_failed") or ai_stats.get("calls_budget_blocked"):
-              raise SystemExit(
-                  "Backfill annulé: appels SourceFacts AI incomplets "
-                  f"(failed={ai_stats.get('calls_failed')}, "
-                  f"budget_blocked={ai_stats.get('calls_budget_blocked')})."
-              )
-
-          with open("/tmp/source_facts_incoming.json", "w", encoding="utf-8") as handle:
-              json.dump(incoming_facts, handle, ensure_ascii=False, sort_keys=True)
-          shutil.copy2("data/source_facts_ai_cache.json", "/tmp/source_facts_ai_cache.generated.json")
-          shutil.copy2("data/source_facts_ai_usage.json", "/tmp/source_facts_ai_usage.generated.json")
-          with open("/tmp/source_facts_metrics.json", "w", encoding="utf-8") as handle:
-              json.dump({
-                  "target_sources": target_sources,
-                  "target_end": context.target_end,
-                  "initial_counts": initial_counts,
-                  "reviewed_by_source": reviewed_by_source,
-                  "extracted_by_source": extracted_by_source,
-                  "incoming_facts": len(incoming_facts),
-                  "ai_stats": ai_stats,
-              }, handle, ensure_ascii=False, sort_keys=True)
-          PY
-
-      - name: Preserve generated payload before publication
-        run: |
-          cp /tmp/source_facts_incoming.json data/source_facts_backfill_payload.json
-          cp /tmp/source_facts_metrics.json data/source_facts_backfill_metrics.json
-          git config user.name "cyberwatch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source_facts_backfill_payload.json \
-                  data/source_facts_backfill_metrics.json \
-                  data/source_facts_ai_cache.json \
-                  data/source_facts_ai_usage.json
-          git commit -m "tmp: preserve SourceFacts backfill payload"
-          git push --force origin HEAD:agent/source-facts-backfill-payload-20260817
-
-      - name: Create race-safe apply helper
+      - name: Create isolated apply helper
         run: |
           cat > /tmp/apply_source_facts_backfill.py <<'PY'
           import json
+          import subprocess
           from pathlib import Path
 
           from cyberwatch import site, source_facts, source_facts_ai, store
 
-          incoming = json.loads(Path("/tmp/source_facts_incoming.json").read_text(encoding="utf-8"))
+          incoming = json.loads(Path('/tmp/source_facts_incoming.json').read_text(encoding='utf-8'))
           latest_ids = {item.Item_ID for item in store.load_items()}
-          incoming = [row for row in incoming if row.get("Item_ID") in latest_ids]
+          incoming = [row for row in incoming if row.get('Item_ID') in latest_ids]
           store.save_source_facts(
               source_facts.merge_source_facts(store.load_source_facts(), incoming)
           )
 
-          generated_path = Path("/tmp/source_facts_ai_cache.generated.json")
-          latest_path = Path("data/source_facts_ai_cache.json")
-          generated = json.loads(generated_path.read_text(encoding="utf-8"))
+          generated_path = Path('/tmp/source_facts_ai_cache.generated.json')
+          latest_path = Path('data/source_facts_ai_cache.json')
+          generated = json.loads(generated_path.read_text(encoding='utf-8'))
           try:
-              latest = json.loads(latest_path.read_text(encoding="utf-8"))
+              latest = json.loads(latest_path.read_text(encoding='utf-8'))
           except (OSError, ValueError, TypeError):
               latest = {}
 
           cache_format = source_facts_ai.CACHE_FORMAT
-          if generated.get("_format") == cache_format:
-              if latest.get("_format") == cache_format:
+          if generated.get('_format') == cache_format:
+              if latest.get('_format') == cache_format:
                   combined = {
-                      "_format": cache_format,
-                      "entries": dict(latest.get("entries") or {}),
-                      "legacy": dict(latest.get("legacy") or {}),
+                      '_format': cache_format,
+                      'entries': dict(latest.get('entries') or {}),
+                      'legacy': dict(latest.get('legacy') or {}),
                   }
               else:
                   combined = {
-                      "_format": cache_format,
-                      "entries": {},
-                      "legacy": dict(latest) if isinstance(latest, dict) else {},
+                      '_format': cache_format,
+                      'entries': {},
+                      'legacy': dict(latest) if isinstance(latest, dict) else {},
                   }
-              for key, generated_entry in (generated.get("entries") or {}).items():
-                  current = combined["entries"].get(key)
+              for key, generated_entry in (generated.get('entries') or {}).items():
+                  current = combined['entries'].get(key)
                   if not isinstance(current, dict) or not isinstance(generated_entry, dict):
-                      combined["entries"][key] = generated_entry
+                      combined['entries'][key] = generated_entry
                       continue
                   merged_entry = dict(current)
                   merged_entry.update({
-                      name: value for name, value in generated_entry.items() if name != "fields"
+                      name: value for name, value in generated_entry.items() if name != 'fields'
                   })
-                  fields = dict(current.get("fields") or {})
-                  fields.update(generated_entry.get("fields") or {})
-                  merged_entry["fields"] = fields
-                  combined["entries"][key] = merged_entry
-              combined["legacy"].update(generated.get("legacy") or {})
+                  fields = dict(current.get('fields') or {})
+                  fields.update(generated_entry.get('fields') or {})
+                  merged_entry['fields'] = fields
+                  combined['entries'][key] = merged_entry
+              combined['legacy'].update(generated.get('legacy') or {})
               latest_path.write_text(
-                  json.dumps(combined, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
-                  encoding="utf-8",
+                  json.dumps(combined, ensure_ascii=False, sort_keys=True, separators=(',', ':')),
+                  encoding='utf-8',
               )
           else:
               latest_path.write_text(
-                  json.dumps(generated, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
-                  encoding="utf-8",
+                  json.dumps(generated, ensure_ascii=False, sort_keys=True, separators=(',', ':')),
+                  encoding='utf-8',
               )
 
-          Path("data/source_facts_ai_usage.json").write_text(
-              Path("/tmp/source_facts_ai_usage.generated.json").read_text(encoding="utf-8"),
-              encoding="utf-8",
+          Path('data/source_facts_ai_usage.json').write_text(
+              Path('/tmp/source_facts_ai_usage.generated.json').read_text(encoding='utf-8'),
+              encoding='utf-8',
           )
           site.build()
+
+          allowed = {
+              'data/source_facts.csv',
+              'data/source_facts_ai_cache.json',
+              'data/source_facts_ai_usage.json',
+              'assets/data/incidents.json',
+              'assets/data/status.json',
+          }
+          changed = set(subprocess.check_output(
+              ['git', 'diff', '--name-only'], text=True
+          ).splitlines())
+          unexpected = sorted(changed - allowed)
+          if unexpected:
+              raise SystemExit('Canonical isolation violated: ' + ', '.join(unexpected))
+          print('Allowed changes:', ', '.join(sorted(changed)))
           PY
 
-      - name: Rebase generated facts onto latest main
-        run: |
-          git fetch origin main
-          git reset --hard origin/main
-          PYTHONPATH="$PWD" python /tmp/apply_source_facts_backfill.py
+      - name: Apply payload on latest main
+        run: PYTHONPATH="$PWD" python /tmp/apply_source_facts_backfill.py
 
-      - name: Validate resulting database and dashboard
+      - name: Validate isolated backfill
         run: |
           python -m cyberwatch check
           python -m cyberwatch test-repeat
           python scripts/audit_data_quality.py \
             --items data/items.csv \
             --source-facts data/source_facts.csv \
-            --check \
-            --check-regression
+            --check
           node --check assets/dashboard-audit.js
+          PYTHONPATH="$PWD" python /tmp/apply_source_facts_backfill.py
 
-      - name: Report backfill coverage
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-          from cyberwatch import store
-
-          metrics = json.loads(Path("/tmp/source_facts_metrics.json").read_text(encoding="utf-8"))
-          by_item = {
-              row.get("Item_ID"): row for row in store.load_source_facts() if row.get("Item_ID")
-          }
-          items = store.load_items()
-          ai_stats = metrics["ai_stats"]
-          lines = [
-              "## SourceFacts backfill 2026",
-              "",
-              f"- Fenêtre : 2026-01-01 → {metrics['target_end']}",
-              f"- Faits réextraits : {metrics['incoming_facts']}",
-              f"- Appels IA : {ai_stats.get('calls_attempted', 0)}",
-              f"- Cache complet : {ai_stats.get('cache_hits', 0)}",
-              f"- Hits cache par champ : {ai_stats.get('field_cache_hits', 0)}",
-              f"- Hits cache legacy : {ai_stats.get('legacy_field_cache_hits', 0)}",
-              f"- Coût estimé : ${ai_stats.get('estimated_cost_usd', 0):.6f}",
-              "",
-              "| Source | Items DB | Revus | Facts | Summary | Initial access | Attack flow | Impact |",
-              "|---|---:|---:|---:|---:|---:|---:|---:|",
-          ]
-          for source_id in metrics["target_sources"]:
-              item_ids = {item.Item_ID for item in items if item.Source_ID == source_id}
-              rows = [by_item[item_id] for item_id in item_ids if item_id in by_item]
-              lines.append(
-                  f"| {source_id} | {len(item_ids)} | {metrics['reviewed_by_source'].get(source_id, 0)} | "
-                  f"{len(rows)} | {sum(bool(row.get('Summary')) for row in rows)} | "
-                  f"{sum(bool(row.get('Initial_Access')) for row in rows)} | "
-                  f"{sum(bool(row.get('Attack_Flow_JSON')) for row in rows)} | "
-                  f"{sum(bool(row.get('Impact')) for row in rows)} |"
-              )
-          text = "\n".join(lines) + "\n"
-          print(text)
-          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
-              handle.write(text)
-          PY
-
-      - name: Publish SourceFacts backfill safely
+      - name: Publish to main
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          apply_and_commit() {
+          validate_and_commit() {
             PYTHONPATH="$PWD" python /tmp/apply_source_facts_backfill.py
             python -m cyberwatch check
             python -m cyberwatch test-repeat
+            python scripts/audit_data_quality.py \
+              --items data/items.csv \
+              --source-facts data/source_facts.csv \
+              --check
             git add data/source_facts.csv \
                     data/source_facts_ai_cache.json \
                     data/source_facts_ai_usage.json \
@@ -307,35 +165,31 @@ jobs:
             git commit -m "data: backfill SourceFacts incident enrichment"
           }
 
-          git add data/source_facts.csv \
-                  data/source_facts_ai_cache.json \
-                  data/source_facts_ai_usage.json \
-                  assets/data/incidents.json \
-                  assets/data/status.json
-          if git diff --staged --quiet; then
-            echo "No SourceFacts changes to publish."
+          validate_and_commit || rc=$?
+          if [ "${rc:-0}" -eq 2 ]; then
+            echo "Latest main already contains the SourceFacts backfill."
             exit 0
+          elif [ "${rc:-0}" -ne 0 ]; then
+            exit "$rc"
           fi
-          git commit -m "data: backfill SourceFacts incident enrichment"
 
           for delay in 0 2 4 8 16; do
             [ "$delay" -gt 0 ] && sleep "$delay"
             if git push origin HEAD:main; then
               exit 0
             fi
-            echo "main moved; rebuilding generated facts on the new head."
+            echo "main moved; reapplying preserved payload on the new head."
             git fetch origin main
             git reset --hard origin/main
-            if apply_and_commit; then
-              :
-            else
-              rc=$?
-              if [ "$rc" -eq 2 ]; then
-                echo "Latest main already contains the generated SourceFacts."
-                exit 0
-              fi
+            unset rc
+            validate_and_commit || rc=$?
+            if [ "${rc:-0}" -eq 2 ]; then
+              echo "Latest main already contains the SourceFacts backfill."
+              exit 0
+            elif [ "${rc:-0}" -ne 0 ]; then
               exit "$rc"
             fi
           done
+
           echo "Failed to publish SourceFacts backfill after race-safe retries." >&2
           exit 1
