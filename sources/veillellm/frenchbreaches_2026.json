@@ -73,6 +73,20 @@
       "no_official_evidence": 51,
       "method": "deterministic official domain + identity + explicit activity phrase",
       "evidence_policy": "a sector keyword alone is insufficient; stored evidence must contain an explicit activity formulation recognized by Cyberwatch, then be reclassified locally"
+    },
+    "sector_evidence_v5": {
+      "target_items": 52,
+      "target_records": 53,
+      "candidate_urls_tested": 238,
+      "existing_evidence_kept": 2,
+      "existing_evidence_rejected": 0,
+      "evidence_found": 1,
+      "resolved_unknown": 1,
+      "corrected_known": 0,
+      "verified_same": 0,
+      "no_official_evidence": 50,
+      "method": "official domain + identity + primary activity formulation",
+      "evidence_policy": "secondary functions and website/legal boilerplate are inadmissible; uncertain activity remains Inconnu"
     }
   },
   "incidents": [
@@ -1203,7 +1217,7 @@
       "organisation": "ENGIE Green",
       "territoire": "France",
       "localisation": "France",
-      "secteur": "Inconnu",
+      "secteur": "Énergie / Utilities",
       "type_menace": "Fuite de données",
       "acteur": "Inconnu",
       "statut": "Référencé par FrenchBreaches ; corroboration variable",
@@ -1213,7 +1227,11 @@
         "https://frenchbreaches.com/alertes/engie-green-ms793t79jtz46e143go"
       ],
       "synthese": "Rattrapage 2026 depuis l’archive FrenchBreaches — ENGIE Green.",
-      "evolution": "nouveau"
+      "evolution": "nouveau",
+      "sector_evidence_url": "https://www.engie-green.fr/",
+      "sector_evidence_text": "acteur de la transition énergétique tout en optimisant l’exploitation de votre foncier",
+      "sector_evidence_source": "engie-green.fr",
+      "sector_evidence_type": "official_primary_activity"
     },
     {
       "date": "2026-07-30",
@@ -1251,7 +1269,7 @@
       "sector_evidence_url": "https://www.5doigts2pieds.fr/fivefingers-activites-de-plein-air-homme/",
       "sector_evidence_text": "fabricant de semelles depuis un peu moins d’un siècle",
       "sector_evidence_source": "5doigts2pieds.fr",
-      "sector_evidence_type": "official_explicit_activity"
+      "sector_evidence_type": "official_primary_activity"
     },
     {
       "date": "2026-07-29",
@@ -1527,7 +1545,7 @@
       "sector_evidence_url": "https://batipro33.fr/mentions-legales/",
       "sector_evidence_text": "spécialisé dans l’ensemble des métiers du Bâtiment",
       "sector_evidence_source": "batipro33.fr",
-      "sector_evidence_type": "official_explicit_activity"
+      "sector_evidence_type": "official_primary_activity"
     },
     {
       "date": "2026-07-25",
