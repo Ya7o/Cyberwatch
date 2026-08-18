@@ -51,7 +51,8 @@ def _seed_abstained_summary(item: Item, entry: RawEntry) -> tuple[object, dict]:
             },
         },
     }
-    runtime.cache["historical"] = cache_entry
+    key = sfa._cache_item_key(item, entry, runtime)
+    runtime.cache[key] = cache_entry
     return runtime, cache_entry
 
 
