@@ -32,27 +32,33 @@
 </header>
 
 <main class="wrap">
-  <section class="kpis" aria-label="Indicateurs clés">
+  <section class="kpis kpis-overview" aria-label="Indicateurs clés">
     <article class="kpi">
       <h2>Incidents recensés</h2>
       <p class="kpi-value" id="kpi-incidents">—</p>
       <p class="kpi-note" id="kpi-incidents-note">événements uniques dans la base</p>
     </article>
-    <article class="kpi">
-      <h2>30 derniers jours</h2>
-      <p class="kpi-value" id="kpi-30d">—</p>
-      <p class="kpi-note">selon la date documentée</p>
+    <article class="kpi kpi-activity">
+      <h2>Activité des incidents</h2>
+      <div class="activity-grid">
+        <div class="activity-primary">
+          <p class="kpi-value" id="kpi-30d">—</p>
+          <p class="kpi-note">30 derniers jours</p>
+          <p class="activity-trend" id="kpi-30d-trend">—</p>
+        </div>
+        <div class="activity-secondary">
+          <p class="activity-value" id="kpi-12m">—</p>
+          <p class="kpi-note">12 derniers mois</p>
+        </div>
+      </div>
     </article>
-    <article class="kpi">
-      <h2>Océan Indien</h2>
-      <p class="kpi-value" id="kpi-ocean">—</p>
-      <p class="kpi-note">Réunion, Mayotte et zone régionale</p>
+    <article class="kpi ocean-alert" id="ocean-alert" hidden aria-live="polite">
+      <h2>Alerte — Océan Indien</h2>
+      <p class="kpi-value" id="ocean-alert-count">—</p>
+      <p class="kpi-note" id="ocean-alert-note"></p>
     </article>
-    <article class="kpi">
-      <h2>Ransomware</h2>
-      <p class="kpi-value" id="kpi-ransomware">—</p>
-      <p class="kpi-note">incidents classés ransomware</p>
-    </article>
+    <span id="kpi-ocean" hidden aria-hidden="true"></span>
+    <span id="kpi-ransomware" hidden aria-hidden="true"></span>
   </section>
 
   <section class="filters-toolbar" aria-label="Filtres des incidents">
@@ -65,13 +71,13 @@
       <option value="FRENCHBREACHES">FrenchBreaches</option>
       <option value="CYBERATTAQUE_ORG">Cyberattaque.org</option>
       <option value="RANSOMWARE_LIVE">Ransomware.live</option>
-      <option value="VEILLE_LLM">veillellmReYt</option>
+      <option value="VEILLE_LLM">Veille IA</option>
     </select>
     <button id="f-reset" class="btn-reset" type="button">Réinitialiser</button>
   </section>
 
   <section class="grid-2 dashboard-charts" aria-label="Vue d’ensemble">
-    <figure class="card">
+    <figure class="card chart-month-card">
       <figcaption>
         <h2>Incidents par mois</h2>
         <p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p>
@@ -80,25 +86,27 @@
     </figure>
     <figure class="card">
       <figcaption>
-        <h2>Incidents par territoire</h2>
-        <p>Territoire associé à l’incident.</p>
-      </figcaption>
-      <div class="chart" id="chart-location"></div>
-    </figure>
-    <figure class="card">
-      <figcaption>
         <h2>Incidents par secteur</h2>
-        <p>Secteur attribué lorsqu’il est connu.</p>
+        <p>Répartition lorsque le secteur est connu.</p>
         <p id="sector-note" class="chart-note"></p>
       </figcaption>
       <div class="chart" id="chart-sector"></div>
     </figure>
     <figure class="card">
       <figcaption>
-        <h2>Incidents par type de menace</h2>
-        <p>Taxonomie à priorité fixe : un ransomware qui exfiltre reste un ransomware.</p>
+        <h2>Incidents par menace</h2>
+        <p>Répartition lorsque la menace est connue.</p>
+        <p id="threat-note" class="chart-note"></p>
       </figcaption>
       <div class="chart" id="chart-threat"></div>
+    </figure>
+    <figure class="card">
+      <figcaption>
+        <h2>Incidents par territoire</h2>
+        <p>Répartition lorsque le territoire est connu.</p>
+        <p id="location-note" class="chart-note"></p>
+      </figcaption>
+      <div class="chart" id="chart-location"></div>
     </figure>
   </section>
 
@@ -113,9 +121,9 @@
           <tr>
             <th data-sort="date" aria-sort="descending"><button type="button" class="sort-button">Date</button></th>
             <th data-sort="org" aria-sort="none"><button type="button" class="sort-button">Organisation</button></th>
-            <th data-sort="location" aria-sort="none"><button type="button" class="sort-button">Territoire</button></th>
             <th data-sort="sector" aria-sort="none"><button type="button" class="sort-button">Secteur</button></th>
             <th data-sort="threat" aria-sort="none"><button type="button" class="sort-button">Menace</button></th>
+            <th data-sort="location" aria-sort="none"><button type="button" class="sort-button">Territoire</button></th>
             <th data-sort="items" aria-sort="none"><button type="button" class="sort-button">Sources</button></th>
           </tr>
         </thead>
@@ -155,5 +163,6 @@
 
 <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
 <script src="assets/app.js"></script>
+<script src="assets/dashboard-v2.js"></script>
 </body>
 </html>
