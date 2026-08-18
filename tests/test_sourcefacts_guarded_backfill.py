@@ -116,3 +116,31 @@ def test_time_budget_stops_between_items(monkeypatch, tmp_path):
     assert result["processed"] == 1
     assert result["stopped_by_time_budget"] is True
     assert result["remaining_selected"] == 1
+
+
+def test_guarded_backfill_explicitly_enables_legacy_null_retry(monkeypatch, tmp_path):
+    item = _item("ITM-legacy-null")
+    monkeypatch.setattr(
+        guarded,
+        "candidate_pool",
+        lambda **_kwargs: ([item], {"candidates_total": 1}),
+    )
+    captured = {}
+
+    def fake_run_backfill(**kwargs):
+        captured.update(kwargs)
+        return {
+            "summary_recovered": 0,
+            "abstained_retry_item_ids": [],
+            "abstained_retry_restored": 0,
+        }
+
+    monkeypatch.setattr(guarded.backfill, "run_backfill", fake_run_backfill)
+    guarded.run_guarded(
+        max_items=1,
+        max_seconds=60,
+        ledger_path=tmp_path / "ledger.json",
+    )
+
+    assert captured["retry_abstained"] is True
+    assert captured["retry_legacy_nulls"] is True

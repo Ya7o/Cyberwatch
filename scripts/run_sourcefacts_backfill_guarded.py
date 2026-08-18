@@ -108,6 +108,7 @@ def run_guarded(
             item_ids={item.Item_ID},
             dry_run=False,
             retry_abstained=True,
+            retry_legacy_nulls=True,
         )
         result["processed"] += 1
         result["summary_recovered"] += int(metrics.get("summary_recovered") or 0)
