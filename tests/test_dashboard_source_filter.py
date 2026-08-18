@@ -52,3 +52,20 @@ def test_historique_tronque_est_rendu_sans_degrader_le_statut_source():
     assert 'historyStatus === "TRUNCATED"' in body
     assert "Historique borné" in body
     assert 'data-status="${esc(status)}"' in body
+
+
+def test_synthese_source_identique_a_la_synthese_incident_n_est_pas_repetee():
+    app = open("assets/app.js", encoding="utf-8").read()
+
+    assert "function sameSummary(left, right)" in app
+    assert 'normalize(value).replace(/\\s+/g, " ")' in app
+    assert 'const sourceSummary = sameSummary(fact.summary, incidentSummary) ? "" : fact.summary;' in app
+    assert 'factRow("Synthèse", sourceSummary)' in app
+    assert 'map((fact) => factHtml(fact, incident.summary))' in app
+
+
+def test_synthese_source_distincte_reste_affichable():
+    app = open("assets/app.js", encoding="utf-8").read()
+
+    assert 'sameSummary(fact.summary, incidentSummary) ? "" : fact.summary' in app
+    assert 'factHtml(fact, incident.summary)' in app
