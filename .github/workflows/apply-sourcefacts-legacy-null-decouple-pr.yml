@@ -44,13 +44,11 @@ jobs:
         run: |
           python -m cyberwatch test-repeat
           python -m cyberwatch check
-      - name: Commit validated patch and remove staging workflows
+      - name: Commit validated code patch
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm \
-            .github/workflows/apply-sourcefacts-legacy-null-decouple.yml \
-            .github/workflows/apply-sourcefacts-legacy-null-decouple-pr.yml
+          git restore .github/workflows/source-facts-summary-backfill.yml
           git add \
             cyberwatch/source_facts_ai.py \
             cyberwatch/model.py \
@@ -58,7 +56,6 @@ jobs:
             cyberwatch/runner.py \
             scripts/backfill_source_fact_summaries.py \
             scripts/report_source_performance.py \
-            tests/test_source_facts_summary_reliability.py \
-            .github/workflows/source-facts-summary-backfill.yml
+            tests/test_source_facts_summary_reliability.py
           git commit -m "Decouple historical SourceFacts null retries from CREATE"
           git push origin HEAD:agent/sourcefacts-legacy-null-decouple-20260818
