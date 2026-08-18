@@ -75,6 +75,31 @@ def test_activity_rules_cover_only_explicit_business_descriptions():
     assert sector.classify_sector_name("Tourisme Conseil") == config.SECTOR_UNKNOWN
 
 
+def test_public_health_institution_name_is_not_left_unknown():
+    assert sector.classify_sector_name("Santé publique France") == config.SECTOR_HEALTH
+
+
+def test_public_health_mission_beats_generic_administration_marker():
+    assert (
+        sector.classify_sector_activity("agence nationale de santé publique")
+        == config.SECTOR_HEALTH
+    )
+    assert (
+        sector.classify_sector_activity(
+            "établissement public chargé de la prévention sanitaire"
+        )
+        == config.SECTOR_HEALTH
+    )
+
+
+def test_generic_public_agency_without_health_mission_is_not_forced_to_health():
+    assert (
+        sector.classify_sector_activity("agence nationale de la cohésion des territoires")
+        == config.SECTOR_ADMIN
+    )
+    assert sector.classify_sector_name("Santé Conseil") == config.SECTOR_UNKNOWN
+
+
 def test_cached_naf_records_are_requalified_without_http(monkeypatch):
     rows = [
         {
