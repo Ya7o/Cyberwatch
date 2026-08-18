@@ -8,6 +8,7 @@ strictement déterministes/structurées.
 from __future__ import annotations
 
 import json
+import logging
 import re
 
 from . import source_facts_ai
@@ -21,6 +22,8 @@ from .normalize import (
     searchable,
     strip_accents,
 )
+
+logger = logging.getLogger(__name__)
 
 SOURCE_FACTS_VERSION = "4"
 
@@ -389,6 +392,8 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
         fact["Affected_Unit"] = unit
         fact["Affected_Count_Raw"] = raw_count
         evidence["Affected_Count_Raw"] = raw_count
+
+    _derive_summary(fact, evidence)
 
     source_urls = meta.get("source_urls") or []
     if source_urls:
@@ -872,7 +877,13 @@ def extract_source_fact(item: Item, entry: RawEntry, spec: SourceSpec) -> dict |
         return None
     try:
         return extractor(item, entry, spec)
-    except Exception:
+    except Exception as exc:
+        logger.warning(
+            "source_fact_extraction_failed source=%s item=%s error=%s",
+            spec.source_id,
+            item.Item_ID,
+            exc,
+        )
         return None
 
 
@@ -885,16 +896,20 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
         old_evidence = _loads_json(str(old.get("Evidence_JSON") or ""))
         new_evidence = _loads_json(str(new.get("Evidence_JSON") or ""))
         evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
-        for field in refreshable:
-            evidence.pop(field, None)
         if isinstance(new_evidence, dict):
-            evidence.update(new_evidence)
+            for field, proof in new_evidence.items():
+                if field in refreshable and new.get(field, "") in (None, ""):
+                    continue
+                if field in refreshable:
+                    evidence.pop(field, None)
+                evidence[field] = proof
         for column in SOURCE_FACT_COLUMNS:
             if column == "Evidence_JSON":
                 continue
             value = new.get(column, "")
             if column in refreshable:
-                merged[column] = value or ""
+                if value not in (None, ""):
+                    merged[column] = value
             elif column in base:
                 if value not in (None, ""):
                     merged[column] = value

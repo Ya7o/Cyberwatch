@@ -35,6 +35,7 @@ CONFIDENCE_THRESHOLD = 0.70
 MAX_EVIDENCE_CHARS = 300
 MAX_SUMMARY_CHARS = 320
 MAX_ATTACK_FLOW_STEPS = 4
+MAX_FIELD_MISSES = 2
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
 
 INITIAL_ACCESS_VALUES = {
@@ -592,6 +593,7 @@ def _normalize_attack_flow(raw, context: str) -> list[dict]:
         result.append({"action": action, "confidence": confidence, "evidence": evidence})
     return result
 
+
 def _normalize_impact(raw, context: str) -> dict | None:
     fact = _normalize_fact(raw, context)
     if not fact:
@@ -704,6 +706,7 @@ def _deterministic_impact(context: str) -> dict | None:
         return {"value": evidence, "confidence": 1.0, "evidence": evidence}
     return None
 
+
 def _deterministic_seed(entry: RawEntry) -> dict:
     context = _full_context(entry)
     seed: dict = {}
@@ -717,6 +720,7 @@ def _deterministic_seed(entry: RawEntry) -> dict:
     if impact:
         seed["impact"] = impact
     return seed
+
 
 def _legacy_fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set[str]:
     from . import source_facts as sf
@@ -754,6 +758,7 @@ def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set
         requested.add("impact")
     return requested
 
+
 def fields_needed_for_ai(item: Item, entry: RawEntry) -> set[str]:
     if item.Source_ID not in TARGET_SOURCES:
         return set()
@@ -787,6 +792,17 @@ def _revalidate_previous_cached_value(field: str, value, context: str):
     return value
 
 
+def _cache_value_present(value) -> bool:
+    return value not in (None, "", [], {})
+
+
+def _cache_miss_count(cached: dict) -> int:
+    try:
+        return max(0, int(cached.get("misses") or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
 def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: str = "") -> tuple[dict, set[str]]:
     entry = runtime.cache.get(key)
     if not isinstance(entry, dict) or not isinstance(entry.get("fields"), dict):
@@ -806,16 +822,62 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
             else:
                 runtime.fields_invalidated += 1
                 continue
+
+        value = cached.get("value")
+        status = str(cached.get("status") or "").strip().lower()
+        if not status:
+            if _cache_value_present(value):
+                status = "accepted"
+                cached["status"] = status
+                cached["misses"] = 0
+            else:
+                status = "miss"
+                cached["status"] = status
+                cached["misses"] = max(1, _cache_miss_count(cached))
+
+        if status == "miss":
+            misses = max(1, _cache_miss_count(cached))
+            cached["misses"] = misses
+            if misses < MAX_FIELD_MISSES:
+                continue
+            cached["status"] = "abstained"
+            status = "abstained"
+
+        if status == "abstained":
+            satisfied.add(field)
+            runtime.field_cache_hits += 1
+            continue
+
+        if status != "accepted" or not _cache_value_present(value):
+            cached["status"] = "miss"
+            cached["misses"] = max(1, _cache_miss_count(cached))
+            continue
+
         satisfied.add(field)
         runtime.field_cache_hits += 1
-        if cached.get("value") is not None:
-            result[field] = cached["value"]
+        result[field] = value
     return result, satisfied
+
 
 def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry, fields: set[str], normalized: dict) -> None:
     target = _cache_entry(runtime, key, item, entry)["fields"]
     for field in fields:
-        target[field] = {"version": FIELD_VERSIONS[field], "value": normalized.get(field)}
+        if field in normalized and _cache_value_present(normalized[field]):
+            target[field] = {
+                "version": FIELD_VERSIONS[field],
+                "status": "accepted",
+                "misses": 0,
+                "value": normalized[field],
+            }
+            continue
+        previous = target.get(field)
+        misses = _cache_miss_count(previous) + 1 if isinstance(previous, dict) else 1
+        target[field] = {
+            "version": FIELD_VERSIONS[field],
+            "status": "abstained" if misses >= MAX_FIELD_MISSES else "miss",
+            "misses": misses,
+            "value": None,
+        }
 
 
 def _migrate_legacy_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry, seed: dict, fields: set[str]) -> set[str]:
@@ -831,7 +893,14 @@ def _migrate_legacy_cache(runtime: _Runtime, key: str, item: Item, entry: RawEnt
         return set()
     target = _cache_entry(runtime, key, item, entry)["fields"]
     for field in reusable:
-        target[field] = {"version": FIELD_VERSIONS[field], "value": legacy.get(field)}
+        value = legacy.get(field)
+        accepted = _cache_value_present(value)
+        target[field] = {
+            "version": FIELD_VERSIONS[field],
+            "status": "accepted" if accepted else "miss",
+            "misses": 0 if accepted else 1,
+            "value": value if accepted else None,
+        }
         runtime.legacy_field_cache_hits += 1
     return reusable
 
