@@ -1,0 +1,161 @@
+name: Apply SourceFacts closeout patch
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/sourcefacts-closeout-20260818
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Apply targeted patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'pattern not found in {path}: {old[:160]!r}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace(
+              'cyberwatch/source_facts_ai.py',
+              '''        self.enabled = bool(self.api_key) and flag not in {"0", "false", "no", "off"}\n        self.model = os.getenv("SOURCE_FACTS_AI_MODEL", os.getenv("OPENAI_MODEL", DEFAULT_MODEL)).strip() or DEFAULT_MODEL\n''',
+              '''        self.enabled = bool(self.api_key) and flag not in {"0", "false", "no", "off"}\n        retry_legacy = os.getenv("SOURCE_FACTS_AI_RETRY_LEGACY_NULLS", "0").strip().lower()\n        self.retry_legacy_nulls = retry_legacy not in {"0", "false", "no", "off"}\n        self.model = os.getenv("SOURCE_FACTS_AI_MODEL", os.getenv("OPENAI_MODEL", DEFAULT_MODEL)).strip() or DEFAULT_MODEL\n''',
+          )
+          replace(
+              'cyberwatch/source_facts_ai.py',
+              '''        self.legacy_null_migrations = 0\n        self.semantic_first_misses = 0\n''',
+              '''        self.legacy_null_migrations = 0\n        self.legacy_null_skips = 0\n        self.semantic_first_misses = 0\n''',
+          )
+          replace(
+              'cyberwatch/source_facts_ai.py',
+              '''            "legacy_null_migrations": self.legacy_null_migrations,\n            "semantic_first_misses": self.semantic_first_misses,\n''',
+              '''            "legacy_null_migrations": self.legacy_null_migrations,\n            "legacy_null_skips": self.legacy_null_skips,\n            "semantic_first_misses": self.semantic_first_misses,\n''',
+          )
+          replace(
+              'cyberwatch/source_facts_ai.py',
+              '''            else:\n                status = "miss"\n                cached["status"] = status\n                cached["misses"] = max(1, _cache_miss_count(cached))\n                runtime.legacy_null_migrations += 1\n\n        if status == "miss":\n''',
+              '''            else:\n                if not runtime.retry_legacy_nulls:\n                    # Les caches historiques sans statut utilisaient value:null\n                    # pour signifier qu'aucun fait n'avait été extrait. Un CREATE\n                    # normal respecte cet état sans repayer un LLM. Le backfill\n                    # historique peut explicitement demander sa migration.\n                    satisfied.add(field)\n                    runtime.field_cache_hits += 1\n                    runtime.legacy_null_skips += 1\n                    continue\n                status = "miss"\n                cached["status"] = status\n                cached["misses"] = max(1, _cache_miss_count(cached))\n                runtime.legacy_null_migrations += 1\n\n        if status == "miss":\n''',
+          )
+
+          replace(
+              'scripts/backfill_source_fact_summaries.py',
+              '''    retry_abstained: bool = False,\n    client: HttpClient | None = None,\n''',
+              '''    retry_abstained: bool = False,\n    retry_legacy_nulls: bool = False,\n    client: HttpClient | None = None,\n''',
+          )
+          replace(
+              'scripts/backfill_source_fact_summaries.py',
+              '''        "retry_abstained": retry_abstained,\n        "hydrated": 0,\n''',
+              '''        "retry_abstained": retry_abstained,\n        "retry_legacy_nulls": retry_legacy_nulls,\n        "hydrated": 0,\n''',
+          )
+          replace(
+              'scripts/backfill_source_fact_summaries.py',
+              '''        fact = source_facts.extract_source_fact(item, entry, spec)\n\n        # Une panne technique ou un budget bloqué ne doit pas dégrader une\n''',
+              '''        previous_retry_legacy_nulls = runtime.retry_legacy_nulls\n        runtime.retry_legacy_nulls = bool(retry_legacy_nulls)\n        try:\n            fact = source_facts.extract_source_fact(item, entry, spec)\n        finally:\n            runtime.retry_legacy_nulls = previous_retry_legacy_nulls\n\n        # Une panne technique ou un budget bloqué ne doit pas dégrader une\n''',
+          )
+          replace(
+              'scripts/backfill_source_fact_summaries.py',
+              '''    parser.add_argument(\n        "--dry-run", action="store_true",\n''',
+              '''    parser.add_argument(\n        "--retry-legacy-nulls", action="store_true",\n        help=(\n            "Autorise ce backfill à convertir les anciens value:null sans statut "\n            "en miss retentable. CREATE les considère sinon déjà traités."\n        ),\n    )\n    parser.add_argument(\n        "--dry-run", action="store_true",\n''',
+          )
+          replace(
+              'scripts/backfill_source_fact_summaries.py',
+              '''        retry_abstained=args.retry_abstained,\n    )\n''',
+              '''        retry_abstained=args.retry_abstained,\n        retry_legacy_nulls=args.retry_legacy_nulls,\n    )\n''',
+          )
+          replace(
+              'scripts/run_sourcefacts_backfill_guarded.py',
+              '''            dry_run=False,\n            retry_abstained=True,\n        )\n''',
+              '''            dry_run=False,\n            retry_abstained=True,\n            retry_legacy_nulls=True,\n        )\n''',
+          )
+
+          replace(
+              'cyberwatch/model.py',
+              '''    "SourceFacts_Legacy_Null_Migrations",\n    "SourceFacts_Semantic_First_Misses",\n''',
+              '''    "SourceFacts_Legacy_Null_Migrations",\n    "SourceFacts_Legacy_Null_Skips",\n    "SourceFacts_Semantic_First_Misses",\n''',
+          )
+          replace(
+              'cyberwatch/status.py',
+              '''    source_facts_legacy_null_migrations: int = 0\n    source_facts_semantic_first_misses: int = 0\n''',
+              '''    source_facts_legacy_null_migrations: int = 0\n    source_facts_legacy_null_skips: int = 0\n    source_facts_semantic_first_misses: int = 0\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''    outcome.source_facts_legacy_null_migrations = sf_delta("legacy_null_migrations")\n    outcome.source_facts_semantic_first_misses = sf_delta("semantic_first_misses")\n''',
+              '''    outcome.source_facts_legacy_null_migrations = sf_delta("legacy_null_migrations")\n    outcome.source_facts_legacy_null_skips = sf_delta("legacy_null_skips")\n    outcome.source_facts_semantic_first_misses = sf_delta("semantic_first_misses")\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''                f"sf-cache=accepted:{outcome.source_facts_accepted_cache_hits}/"\n                f"abstained:{outcome.source_facts_abstained_cache_hits} "\n                f"sf-retry={outcome.source_facts_semantic_retries}/"\n''',
+              '''                f"sf-cache=accepted:{outcome.source_facts_accepted_cache_hits}/"\n                f"abstained:{outcome.source_facts_abstained_cache_hits}/"\n                f"legacy-null-skip:{outcome.source_facts_legacy_null_skips} "\n                f"sf-retry={outcome.source_facts_semantic_retries}/"\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''                "SourceFacts_Legacy_Null_Migrations": o.source_facts_legacy_null_migrations,\n                "SourceFacts_Semantic_First_Misses": o.source_facts_semantic_first_misses,\n''',
+              '''                "SourceFacts_Legacy_Null_Migrations": o.source_facts_legacy_null_migrations,\n                "SourceFacts_Legacy_Null_Skips": o.source_facts_legacy_null_skips,\n                "SourceFacts_Semantic_First_Misses": o.source_facts_semantic_first_misses,\n''',
+          )
+          replace(
+              'scripts/report_source_performance.py',
+              '''            f"sf_migrate_null={row.get('SourceFacts_Legacy_Null_Migrations') or 0} "\n            f"sf_miss={row.get('SourceFacts_Semantic_First_Misses') or 0} "\n''',
+              '''            f"sf_migrate_null={row.get('SourceFacts_Legacy_Null_Migrations') or 0} "\n            f"sf_skip_legacy_null={row.get('SourceFacts_Legacy_Null_Skips') or 0} "\n            f"sf_miss={row.get('SourceFacts_Semantic_First_Misses') or 0} "\n''',
+          )
+
+          replace(
+              'tests/test_source_facts_summary_reliability.py',
+              '''def test_legacy_null_field_cache_becomes_retryable_miss(monkeypatch, tmp_path):\n    _configure_ai(monkeypatch, tmp_path)\n    item = _item()\n    entry = RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")\n    runtime = sfa._runtime()\n    key = sfa._cache_item_key(item, entry, runtime)\n    runtime.cache[key] = {\n        "item_id": item.Item_ID,\n        "source_id": item.Source_ID,\n        "content_hash": sfa._content_hash(entry),\n        "model": runtime.model,\n        "fields": {\n            "summary": {"version": sfa.FIELD_VERSIONS["summary"], "value": None},\n        },\n    }\n\n    values, satisfied = sfa._read_field_cache(\n        runtime, key, {"summary"}, sfa._full_context(entry)\n    )\n    assert values == {}\n    assert satisfied == set()\n    cached = runtime.cache[key]["fields"]["summary"]\n    assert cached["status"] == "miss"\n    assert cached["misses"] == 1\n\n\n''',
+              '''def _seed_legacy_null(runtime, item, entry):\n    key = sfa._cache_item_key(item, entry, runtime)\n    runtime.cache[key] = {\n        "item_id": item.Item_ID,\n        "source_id": item.Source_ID,\n        "content_hash": sfa._content_hash(entry),\n        "model": runtime.model,\n        "fields": {\n            "summary": {"version": sfa.FIELD_VERSIONS["summary"], "value": None},\n        },\n    }\n    return key\n\n\ndef test_legacy_null_is_skipped_in_normal_rebuild(monkeypatch, tmp_path):\n    _configure_ai(monkeypatch, tmp_path)\n    item = _item()\n    entry = RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")\n    runtime = sfa._runtime()\n    key = _seed_legacy_null(runtime, item, entry)\n\n    values, satisfied = sfa._read_field_cache(\n        runtime, key, {"summary"}, sfa._full_context(entry)\n    )\n    assert values == {}\n    assert satisfied == {"summary"}\n    assert runtime.legacy_null_skips == 1\n    assert runtime.legacy_null_migrations == 0\n    assert "status" not in runtime.cache[key]["fields"]["summary"]\n\n\ndef test_explicit_backfill_can_migrate_legacy_null(monkeypatch, tmp_path):\n    _configure_ai(monkeypatch, tmp_path)\n    item = _item()\n    entry = RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")\n    runtime = sfa._runtime()\n    runtime.retry_legacy_nulls = True\n    key = _seed_legacy_null(runtime, item, entry)\n\n    values, satisfied = sfa._read_field_cache(\n        runtime, key, {"summary"}, sfa._full_context(entry)\n    )\n    assert values == {}\n    assert satisfied == set()\n    cached = runtime.cache[key]["fields"]["summary"]\n    assert cached["status"] == "miss"\n    assert cached["misses"] == 1\n    assert runtime.legacy_null_migrations == 1\n    assert runtime.legacy_null_skips == 0\n\n\n''',
+          )
+
+          p = Path('tests/test_sourcefacts_guarded_backfill.py')
+          text = p.read_text(encoding='utf-8')
+          text += '''\n\ndef test_guarded_backfill_explicitly_enables_legacy_null_retry(monkeypatch, tmp_path):\n    item = _item("ITM-legacy-null")\n    monkeypatch.setattr(\n        guarded,\n        "candidate_pool",\n        lambda **_kwargs: ([item], {"candidates_total": 1}),\n    )\n    captured = {}\n\n    def fake_run_backfill(**kwargs):\n        captured.update(kwargs)\n        return {\n            "summary_recovered": 0,\n            "abstained_retry_item_ids": [],\n            "abstained_retry_restored": 0,\n        }\n\n    monkeypatch.setattr(guarded.backfill, "run_backfill", fake_run_backfill)\n    guarded.run_guarded(\n        max_items=1,\n        max_seconds=60,\n        ledger_path=tmp_path / "ledger.json",\n    )\n\n    assert captured["retry_abstained"] is True\n    assert captured["retry_legacy_nulls"] is True\n'''
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Targeted regressions
+        run: |
+          python -m pytest -q \
+            tests/test_source_facts_summary_reliability.py \
+            tests/test_source_facts_quality_telemetry.py \
+            tests/test_sourcefacts_guarded_backfill.py
+      - name: Full unit suite
+        run: python -m pytest -q
+      - name: Quality gates
+        run: |
+          python -m cyberwatch test-repeat
+          python -m cyberwatch check
+          python scripts/test_dedup_golden.py
+          python scripts/test_qualification_golden.py
+      - name: Commit validated code patch
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            cyberwatch/source_facts_ai.py \
+            cyberwatch/model.py \
+            cyberwatch/status.py \
+            cyberwatch/runner.py \
+            scripts/backfill_source_fact_summaries.py \
+            scripts/run_sourcefacts_backfill_guarded.py \
+            scripts/report_source_performance.py \
+            tests/test_source_facts_summary_reliability.py \
+            tests/test_sourcefacts_guarded_backfill.py
+          git commit -m "Decouple historical SourceFacts null retries from CREATE"
+          git push origin HEAD:agent/sourcefacts-closeout-20260818
