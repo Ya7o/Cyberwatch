@@ -47,8 +47,6 @@ def test_veille_llm_imports_full_snapshot_regardless_of_score():
     assert result.items_seen == raw["metadata"]["record_count"] == len(raw["incidents"])
     expected = [row for row in raw["incidents"] if row["date"] <= "2026-08-15"]
     assert len(result.entries) == len(expected)
-    # Le corpus de test contient des scores <50 : ils doivent bien être
-    # retenus (aucun `weak`/`min_score` ne les élimine plus).
     assert any(int(row["score_cyberattaque"]) < 50 for row in expected)
     assert all(entry.location in {config.LOC_REUNION, config.LOC_MAYOTTE} for entry in result.entries)
 
@@ -100,15 +98,14 @@ def test_dashboard_payload_exposes_local_summary_score_and_references():
     assert all(row["local"]["references"] for row in local_rows)
 
 
-def test_dashboard_has_only_local_filter_for_local_watch():
+def test_dashboard_has_single_reunion_mayotte_filter_for_local_watch():
     html = open("index.html", encoding="utf-8").read()
-    legacy = open("assets/app-legacy.js", encoding="utf-8").read()
-    audit = open("assets/dashboard-audit.js", encoding="utf-8").read()
+    app = open("assets/app.js", encoding="utf-8").read()
+
     assert 'id="f-local"' in html
-    assert '>Local</button>' in html
-    assert 'f-veille-llm' not in html + legacy + audit
-    assert 'f-presse-mahoraise' not in html + legacy + audit
-    assert "incident.local" in legacy
-    assert "incident.local" in audit
-    assert "Score cyberattaque" in audit
-    assert "Synthèse" in audit
+    assert '>Réunion / Mayotte</button>' in html
+    assert 'f-veille-llm' not in html + app
+    assert 'f-presse-mahoraise' not in html + app
+    assert "!i.local" in app
+    assert "Score cyberattaque" in app
+    assert "Analyse locale" in app
