@@ -89,6 +89,31 @@ def test_same_content_or_first_miss_never_erases_valid_fact():
     assert sf.merge_source_facts([old], [changed_first_miss])[0]["Summary"] == "Synthèse valide."
 
 
+def test_changed_content_without_semantic_status_preserves_valid_fact():
+    old = _row("old", summary="Synthèse valide.")
+    # Un nouveau hash sans statut sémantique représente notamment un appel IA
+    # ayant échoué avant toute mise à jour du cache : aucune donnée valide ne
+    # doit être supprimée dans ce cas.
+    technical_failure = _row("new")
+    merged = sf.merge_source_facts([old], [technical_failure])[0]
+    assert merged["Summary"] == "Synthèse valide."
+    assert json.loads(merged["Evidence_JSON"])["Summary"] == "preuve synthèse"
+
+
+def test_legacy_row_without_content_hash_is_never_destructively_migrated():
+    old = {
+        "Item_ID": "ITM-merge-quality",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Summary": "Synthèse historique valide.",
+        "Source_Metadata_JSON": "",
+        "Evidence_JSON": json.dumps({"Summary": "preuve historique"}),
+    }
+    new = _row("new", statuses={"summary": "abstained"})
+    merged = sf.merge_source_facts([old], [new])[0]
+    assert merged["Summary"] == "Synthèse historique valide."
+    assert json.loads(merged["Evidence_JSON"])["Summary"] == "preuve historique"
+
+
 def _configure_runtime(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
     monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
