@@ -28,6 +28,18 @@ jobs:
         run: pip install -r requirements.txt
       - name: Apply patch
         run: python scripts/apply_sourcefacts_quality_patch.py
+      - name: Update intentional BLF certainty contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tests/test_source_facts_summary_reliability.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'assert fact["Summary"].startswith("Données concernées :")'
+          new = 'assert fact["Summary"].startswith("Données revendiquées selon BonjourLaFuite :")'
+          if text.count(old) != 1:
+              raise SystemExit(f'expected one old BLF assertion, got {text.count(old)}')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
       - name: Targeted tests
         run: |
           python -m pytest tests/test_source_facts_summary_reliability.py tests/test_source_facts_quality_telemetry.py tests/test_source_performance_instrumentation.py -q
@@ -45,6 +57,6 @@ jobs:
           rm .github/workflows/apply-sourcefacts-quality-patch.yml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add cyberwatch/source_facts.py cyberwatch/source_facts_ai.py cyberwatch/status.py cyberwatch/model.py cyberwatch/runner.py scripts/report_source_performance.py tests/test_source_facts_quality_telemetry.py scripts/apply_sourcefacts_quality_patch.py .github/workflows/apply-sourcefacts-quality-patch.yml
+          git add cyberwatch/source_facts.py cyberwatch/source_facts_ai.py cyberwatch/status.py cyberwatch/model.py cyberwatch/runner.py scripts/report_source_performance.py tests/test_source_facts_quality_telemetry.py tests/test_source_facts_summary_reliability.py scripts/apply_sourcefacts_quality_patch.py .github/workflows/apply-sourcefacts-quality-patch.yml
           git commit -m 'Harden SourceFacts refresh semantics and telemetry'
           git push origin HEAD:agent/sourcefacts-quality-telemetry-20260818
