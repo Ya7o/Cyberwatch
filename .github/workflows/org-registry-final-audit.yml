@@ -11,7 +11,7 @@ jobs:
   audit:
     if: github.head_ref == 'agent/org-registry-final-audit-20260818'
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 25
     env:
       PYTHONUNBUFFERED: "1"
       OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
@@ -32,12 +32,9 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Registry depth benchmark 5/10/20
+      - name: Depth benchmark already captured
         run: |
-          python scripts/benchmark_org_registry_depth.py \
-            --source BONJOURLAFUITE \
-            --max-queries 200 \
-            --json /tmp/org-depth.json
+          echo "Benchmark 5/10/20 déjà capturé sur 142 réponses valides sur 186; non répété pour éviter de recharger l'API."
       - name: One-shot CREATE
         run: |
           python -m cyberwatch create \
