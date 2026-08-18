@@ -1,0 +1,373 @@
+name: Apply org registry intra-run optimization
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.head_ref == 'agent/org-registry-intrarun-audit-20260818' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/org-registry-intrarun-audit-20260818
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Apply targeted patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'pattern not found in {path}: {old[:180]!r}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace(
+              'cyberwatch/org_enrichment.py',
+              '''    cache: dict[str, dict] = field(default_factory=dict)\n\n    calls_attempted: int = 0\n''',
+              '''    cache: dict[str, dict] = field(default_factory=dict)\n    # Cache strictement éphémère : évite de repayer le registre pour le même\n    # Organisation_Key pendant un run lorsque le site officiel est hors chemin\n    # critique. Il n'est jamais écrit dans org_enrichment_cache.csv.\n    run_cache: dict[str, dict] = field(default_factory=dict)\n    query_counts: dict[str, int] = field(default_factory=dict)\n\n    calls_attempted: int = 0\n''',
+          )
+          replace(
+              'cyberwatch/org_enrichment.py',
+              '''    calls_error: int = 0\n    cache_hits: int = 0\n    duration_seconds: float = 0.0\n''',
+              '''    calls_error: int = 0\n    cache_hits: int = 0\n    run_cache_hits: int = 0\n    duration_seconds: float = 0.0\n''',
+          )
+          replace(
+              'cyberwatch/org_enrichment.py',
+              '''    cached = state.cache.get(org_key)\n    if cached is not None:\n        state.cache_hits += 1\n        return OrgEnrichmentRecord(\n            **{field_.name: cached.get(field_.name, "") for field_ in fields(OrgEnrichmentRecord)}\n        )\n\n    if state.calls_attempted >= state.max_calls:\n''',
+              '''    cached = state.cache.get(org_key)\n    if cached is not None:\n        state.cache_hits += 1\n        return OrgEnrichmentRecord(\n            **{field_.name: cached.get(field_.name, "") for field_ in fields(OrgEnrichmentRecord)}\n        )\n\n    run_cached = state.run_cache.get(org_key)\n    if run_cached is not None:\n        state.run_cache_hits += 1\n        return OrgEnrichmentRecord(\n            **{field_.name: run_cached.get(field_.name, "") for field_ in fields(OrgEnrichmentRecord)}\n        )\n\n    if state.calls_attempted >= state.max_calls:\n''',
+          )
+          replace(
+              'cyberwatch/org_enrichment.py',
+              '''    state.calls_attempted += 1\n    started = time.monotonic()\n''',
+              '''    state.calls_attempted += 1\n    state.query_counts[org_key] = state.query_counts.get(org_key, 0) + 1\n    started = time.monotonic()\n''',
+          )
+          replace(
+              'cyberwatch/org_enrichment.py',
+              '''    if official_record is not None:\n        state.cache[org_key] = asdict(official_record)\n        return official_record\n\n    if not attempted:\n        return None\n\n    if fallback_status == AMBIGUOUS:\n        state.calls_ambiguous += 1\n    else:\n        state.calls_not_found += 1\n\n    record = OrgEnrichmentRecord(\n        Organisation_Key=org_key,\n        Query_Name=organisation_raw,\n        Match_Status=fallback_status,\n        Fetched_At=fetched_at,\n        Cache_Version=ORG_ENRICHMENT_CACHE_VERSION,\n    )\n    state.cache[org_key] = asdict(record)\n    return record\n''',
+              '''    if official_record is not None:\n        state.cache[org_key] = asdict(official_record)\n        return official_record\n\n    record = OrgEnrichmentRecord(\n        Organisation_Key=org_key,\n        Query_Name=organisation_raw,\n        Match_Status=fallback_status,\n        Fetched_At=fetched_at,\n        Cache_Version=ORG_ENRICHMENT_CACHE_VERSION,\n    )\n\n    if not attempted:\n        # CREATE/rebuild peut désactiver le fallback site officiel. Le résultat\n        # registre négatif reste alors valable uniquement pour CE run : on évite\n        # les doublons HTTP sans transformer l'absence du jour en vérité durable.\n        state.run_cache[org_key] = asdict(record)\n        return record\n\n    if fallback_status == AMBIGUOUS:\n        state.calls_ambiguous += 1\n    else:\n        state.calls_not_found += 1\n\n    state.cache[org_key] = asdict(record)\n    return record\n''',
+          )
+
+          replace(
+              'cyberwatch/status.py',
+              '''    org_registry_duration_seconds: float = 0.0\n    org_registry_calls: int = 0\n    org_official_site_duration_seconds: float = 0.0\n''',
+              '''    org_registry_duration_seconds: float = 0.0\n    org_registry_calls: int = 0\n    org_registry_run_cache_hits: int = 0\n    org_official_site_duration_seconds: float = 0.0\n''',
+          )
+          replace(
+              'cyberwatch/model.py',
+              '''    "Org_Registry_Duration_s",\n    "Org_Registry_Calls",\n    "Org_Official_Site_Duration_s",\n''',
+              '''    "Org_Registry_Duration_s",\n    "Org_Registry_Calls",\n    "Org_Registry_Run_Cache_Hits",\n    "Org_Official_Site_Duration_s",\n''',
+          )
+          replace(
+              'cyberwatch/model.py',
+              '''    "Org_Enrichment_Calls",\n    "Org_Enrichment_Duration_s",\n    "Org_Enrichment_Cache_Hit_Rate",\n''',
+              '''    "Org_Enrichment_Calls",\n    "Org_Enrichment_Duration_s",\n    "Org_Enrichment_Cache_Hit_Rate",\n    "Org_Enrichment_Persistent_Cache_Hits",\n    "Org_Enrichment_Run_Cache_Hits",\n    "Org_Enrichment_Unique_Queries",\n''',
+          )
+
+          replace(
+              'cyberwatch/runner.py',
+              '''            "org_registry_calls": org_state.calls_attempted,\n            "official_duration": org_state.official_site_duration_seconds,\n''',
+              '''            "org_registry_calls": org_state.calls_attempted,\n            "org_registry_run_cache_hits": org_state.run_cache_hits,\n            "official_duration": org_state.official_site_duration_seconds,\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''            "org_registry_duration": 0.0, "org_registry_calls": 0,\n            "official_duration": 0.0, "official_calls": 0,\n''',
+              '''            "org_registry_duration": 0.0, "org_registry_calls": 0,\n            "org_registry_run_cache_hits": 0,\n            "official_duration": 0.0, "official_calls": 0,\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''        outcome.org_registry_calls = max(0, org_state.calls_attempted - perf_before["org_registry_calls"])\n        outcome.org_official_site_duration_seconds = round(\n''',
+              '''        outcome.org_registry_calls = max(0, org_state.calls_attempted - perf_before["org_registry_calls"])\n        outcome.org_registry_run_cache_hits = max(\n            0, org_state.run_cache_hits - perf_before["org_registry_run_cache_hits"]\n        )\n        outcome.org_official_site_duration_seconds = round(\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''                f"registry={outcome.org_registry_duration_seconds:.1f}s/{outcome.org_registry_calls} "\n                f"official={outcome.org_official_site_duration_seconds:.1f}s/{outcome.org_official_site_calls} "\n''',
+              '''                f"registry={outcome.org_registry_duration_seconds:.1f}s/{outcome.org_registry_calls} "\n                f"registry-run-cache={outcome.org_registry_run_cache_hits} "\n                f"official={outcome.org_official_site_duration_seconds:.1f}s/{outcome.org_official_site_calls} "\n''',
+          )
+          replace(
+              'cyberwatch/runner.py',
+              '''                "Org_Registry_Duration_s": o.org_registry_duration_seconds,\n                "Org_Registry_Calls": o.org_registry_calls,\n                "Org_Official_Site_Duration_s": o.org_official_site_duration_seconds,\n''',
+              '''                "Org_Registry_Duration_s": o.org_registry_duration_seconds,\n                "Org_Registry_Calls": o.org_registry_calls,\n                "Org_Registry_Run_Cache_Hits": o.org_registry_run_cache_hits,\n                "Org_Official_Site_Duration_s": o.org_official_site_duration_seconds,\n''',
+          )
+
+          replace(
+              'cyberwatch/ai.py',
+              '''    org_calls_total = (\n        org_state.calls_matched\n        + org_state.calls_ambiguous\n        + org_state.calls_not_found\n        + org_state.calls_error\n    )\n    org_lookups = org_calls_total + org_state.cache_hits\n    org_cache_hit_rate = round(org_state.cache_hits / org_lookups, 4) if org_lookups else 0.0\n''',
+              '''    # Le dénominateur repose sur les vrais lookups observés, pas sur les\n    # statuts finaux : avec le fallback officiel désactivé, un NOT_FOUND reste\n    # volontairement éphémère mais constitue bien un appel registre.\n    org_lookups = org_state.calls_attempted + org_state.cache_hits + org_state.run_cache_hits\n    org_cache_hits_total = org_state.cache_hits + org_state.run_cache_hits\n    org_cache_hit_rate = round(org_cache_hits_total / org_lookups, 4) if org_lookups else 0.0\n''',
+          )
+          replace(
+              'cyberwatch/ai.py',
+              '''        "Org_Enrichment_Calls": org_state.calls_attempted,\n        "Org_Enrichment_Duration_s": round(org_state.duration_seconds, 3),\n        "Org_Enrichment_Cache_Hit_Rate": org_cache_hit_rate,\n''',
+              '''        "Org_Enrichment_Calls": org_state.calls_attempted,\n        "Org_Enrichment_Duration_s": round(org_state.duration_seconds, 3),\n        "Org_Enrichment_Cache_Hit_Rate": org_cache_hit_rate,\n        "Org_Enrichment_Persistent_Cache_Hits": org_state.cache_hits,\n        "Org_Enrichment_Run_Cache_Hits": org_state.run_cache_hits,\n        "Org_Enrichment_Unique_Queries": len(org_state.query_counts),\n''',
+          )
+
+          replace(
+              'scripts/report_source_performance.py',
+              '''            f"registry={_num(row,'Org_Registry_Duration_s'):.1f}s/{row.get('Org_Registry_Calls') or 0} "\n            f"official={_num(row,'Org_Official_Site_Duration_s'):.1f}s/{row.get('Org_Official_Site_Calls') or 0} "\n''',
+              '''            f"registry={_num(row,'Org_Registry_Duration_s'):.1f}s/{row.get('Org_Registry_Calls') or 0} "\n            f"registry_run_cache={row.get('Org_Registry_Run_Cache_Hits') or 0} "\n            f"official={_num(row,'Org_Official_Site_Duration_s'):.1f}s/{row.get('Org_Official_Site_Calls') or 0} "\n''',
+          )
+
+          Path('scripts/benchmark_org_registry_depth.py').write_text(r'''#!/usr/bin/env python3
+"""Benchmark read-only de profondeur du registre entreprise (5/10/20).
+
+Une seule requête réseau est faite par organisation avec la profondeur maximale.
+Les profondeurs inférieures sont simulées en tronquant la même liste ordonnée,
+ce qui évite de tripler la charge sur l'API. Le matching utilisé est exactement
+celui de production : égalité de nom normalisé et SIREN unique, aucun fuzzy.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import time
+from collections import Counter
+from pathlib import Path
+
+import requests
+
+from cyberwatch import config, org_enrichment, store
+
+DEFAULT_DEPTHS = (5, 10, 20)
+
+
+def evaluate_payload(query_name: str, payload: dict, depths=DEFAULT_DEPTHS) -> dict[int, dict]:
+    results = payload.get("results") if isinstance(payload, dict) else []
+    results = results if isinstance(results, list) else []
+    out: dict[int, dict] = {}
+    for depth in depths:
+        sliced = dict(payload) if isinstance(payload, dict) else {}
+        sliced["results"] = results[:depth]
+        status, candidate = org_enrichment._match(query_name, sliced)
+        out[int(depth)] = {
+            "status": status,
+            "siren": str(candidate.get("siren") or "") if candidate else "",
+        }
+    return out
+
+
+def query_names(source_id: str, max_queries: int) -> list[str]:
+    matched_cache = {
+        row.get("Organisation_Key", "")
+        for row in store.load_org_enrichment_cache()
+        if row.get("Match_Status") == org_enrichment.MATCHED
+    }
+    by_key: dict[str, str] = {}
+    for item in store.load_items():
+        if source_id and item.Source_ID != source_id:
+            continue
+        if not item.Organisation_Key or item.Organisation_Key in matched_cache:
+            continue
+        if item.Sector != config.SECTOR_UNKNOWN and item.Location != config.LOC_INCONNU:
+            continue
+        by_key.setdefault(item.Organisation_Key, item.Organisation_Raw)
+    return [by_key[key] for key in sorted(by_key)][:max_queries]
+
+
+def benchmark(names: list[str], timeout: float = 10.0, depths=DEFAULT_DEPTHS) -> dict:
+    max_depth = max(depths)
+    rows = []
+    errors = []
+    started = time.monotonic()
+    for index, name in enumerate(names, start=1):
+        call_started = time.monotonic()
+        try:
+            response = requests.get(
+                org_enrichment.ORG_ENRICHMENT_URL,
+                params={"q": name, "per_page": max_depth},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload, dict):
+                raise ValueError("JSON non objet")
+            depth_results = evaluate_payload(name, payload, depths)
+            rows.append({
+                "query": name,
+                "duration_s": round(time.monotonic() - call_started, 3),
+                "depths": depth_results,
+            })
+        except (requests.RequestException, ValueError) as exc:
+            errors.append({"query": name, "error": f"{type(exc).__name__}: {exc}"})
+        print(f"ORG_DEPTH {index}/{len(names)} {name}", flush=True)
+
+    counts = {}
+    for depth in depths:
+        counts[str(depth)] = dict(Counter(row["depths"][int(depth)]["status"] for row in rows))
+
+    def transitions(target_depth: int) -> dict:
+        c = Counter()
+        for row in rows:
+            base = row["depths"][5]
+            target = row["depths"][target_depth]
+            if base == target:
+                continue
+            c[f"{base['status']}->{target['status']}"] += 1
+            if (
+                base["status"] == target["status"] == org_enrichment.MATCHED
+                and base["siren"] != target["siren"]
+            ):
+                c["MATCHED_SIREN_CHANGED"] += 1
+        return dict(c)
+
+    return {
+        "queries_selected": len(names),
+        "queries_completed": len(rows),
+        "errors": errors,
+        "depth_counts": counts,
+        "transitions_vs_5": {str(depth): transitions(depth) for depth in depths if depth != 5},
+        "duration_s": round(time.monotonic() - started, 3),
+        "matching_policy": "exact_name_unique_siren_no_fuzzy",
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", default="BONJOURLAFUITE")
+    parser.add_argument("--max-queries", type=int, default=200)
+    parser.add_argument("--timeout", type=float, default=10.0)
+    parser.add_argument("--json", default="")
+    args = parser.parse_args()
+    names = query_names(args.source, max(0, args.max_queries))
+    result = benchmark(names, timeout=args.timeout)
+    text = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2)
+    print(text)
+    if args.json:
+        Path(args.json).write_text(text + "\n", encoding="utf-8")
+    return 0 if not result["errors"] else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+''', encoding='utf-8')
+
+          Path('tests/test_org_registry_intrarun.py').write_text(r'''from __future__ import annotations
+
+import pytest
+
+from cyberwatch import ai, org_enrichment, store
+from scripts import benchmark_org_registry_depth as bench
+
+
+class _Response:
+    status_code = 200
+    text = ""
+    def __init__(self, payload): self.payload = payload
+    def json(self): return self.payload
+
+
+def _state(**kwargs):
+    values = dict(enabled=True, max_calls=20, official_site_max_calls=0)
+    values.update(kwargs)
+    return org_enrichment.OrgEnrichmentState(**values)
+
+
+def test_negative_registry_result_is_reused_only_within_run(monkeypatch):
+    calls = {"n": 0}
+    def fake_get(*_a, **_k):
+        calls["n"] += 1
+        return _Response({"results": []})
+    monkeypatch.setattr(org_enrichment.requests, "get", fake_get)
+    state = _state()
+
+    first = org_enrichment.resolve("org x", "Org X", "2026-08-18", state)
+    second = org_enrichment.resolve("org x", "Org X", "2026-08-18", state)
+
+    assert first.Match_Status == org_enrichment.NOT_FOUND
+    assert second.Match_Status == org_enrichment.NOT_FOUND
+    assert calls["n"] == 1
+    assert state.calls_attempted == 1
+    assert state.run_cache_hits == 1
+    assert state.query_counts == {"org x": 1}
+    assert "org x" in state.run_cache
+    assert "org x" not in state.cache
+
+
+def test_network_error_is_never_run_cached(monkeypatch):
+    calls = {"n": 0}
+    def timeout(*_a, **_k):
+        calls["n"] += 1
+        raise org_enrichment.requests.Timeout("boom")
+    monkeypatch.setattr(org_enrichment.requests, "get", timeout)
+    monkeypatch.setattr(org_enrichment.time, "sleep", lambda *_: None)
+    state = _state()
+
+    assert org_enrichment.resolve("org x", "Org X", "2026-08-18", state) is None
+    assert org_enrichment.resolve("org x", "Org X", "2026-08-18", state) is None
+    assert state.calls_attempted == 2
+    assert state.run_cache == {}
+    assert calls["n"] == (org_enrichment.ORG_ENRICHMENT_MAX_RETRIES + 1) * 2
+
+
+def test_run_cache_is_not_persisted_by_finish_run(tmp_path, monkeypatch):
+    monkeypatch.setattr(store, "ORG_ENRICHMENT_CACHE_CSV", tmp_path / "org.csv")
+    state = _state()
+    state.run_cache["org x"] = {
+        "Organisation_Key": "org x", "Query_Name": "Org X",
+        "Match_Status": org_enrichment.NOT_FOUND,
+        "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
+    }
+    ai_state = ai.AiRunState(enabled=False, org_enrichment=state)
+    ai.finish_run(ai_state, "RUN-X", "2026-08-18", "CREATE")
+    assert store.load_org_enrichment_cache() == []
+
+
+def test_depth_benchmark_detects_late_match_then_ambiguity():
+    def result(name, siren):
+        return {"nom_raison_sociale": name, "siren": siren}
+    payload = {"results": [
+        *[result(f"Other {i}", str(i)) for i in range(6)],
+        result("Target", "111111111"),
+        *[result(f"Other B{i}", f"B{i}") for i in range(7)],
+        result("Target", "222222222"),
+    ]}
+    evaluated = bench.evaluate_payload("Target", payload)
+    assert evaluated[5]["status"] == org_enrichment.NOT_FOUND
+    assert evaluated[10] == {"status": org_enrichment.MATCHED, "siren": "111111111"}
+    assert evaluated[20]["status"] == org_enrichment.AMBIGUOUS
+''', encoding='utf-8')
+          PY
+      - name: Targeted tests
+        run: |
+          python -m pytest -q \
+            tests/test_org_enrichment.py \
+            tests/test_org_registry_intrarun.py \
+            tests/test_source_performance_instrumentation.py
+      - name: Full unit suite
+        run: python -m pytest tests/ -q
+      - name: Quality gates
+        run: |
+          python scripts/evaluate_dedup_golden.py
+          python scripts/evaluate_golden.py --details /tmp/golden.csv --json /tmp/golden.json
+          python -m cyberwatch test-repeat
+          python -m cyberwatch check --allow-uninitialized
+      - name: Live depth benchmark 5/10/20
+        continue-on-error: true
+        run: python scripts/benchmark_org_registry_depth.py --source BONJOURLAFUITE --max-queries 200 --json /tmp/org-depth.json
+      - name: Commit validated code
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            cyberwatch/org_enrichment.py \
+            cyberwatch/status.py \
+            cyberwatch/model.py \
+            cyberwatch/runner.py \
+            cyberwatch/ai.py \
+            scripts/report_source_performance.py \
+            scripts/benchmark_org_registry_depth.py \
+            tests/test_org_registry_intrarun.py
+          git commit -m "Reuse deterministic registry negatives within a run"
+          git push origin HEAD:agent/org-registry-intrarun-audit-20260818
