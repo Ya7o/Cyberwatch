@@ -66,6 +66,13 @@
       .trim();
   }
 
+  function sameSummary(left, right) {
+    const normalizeSummary = (value) => normalize(value).replace(/\s+/g, " ");
+    const a = normalizeSummary(left);
+    const b = normalizeSummary(right);
+    return Boolean(a && b && a === b);
+  }
+
   function sourceLabel(id) {
     return ({
       BONJOURLAFUITE: "BonjourLaFuite",
@@ -352,7 +359,7 @@
     return Number.isFinite(affected) && Number.isFinite(files) && affected === files;
   }
 
-  function factHtml(fact) {
+  function factHtml(fact, incidentSummary = "") {
     const access = ({
       phishing: "Phishing",
       compromised_credentials: "Identifiants compromis",
@@ -365,6 +372,7 @@
     const claimStatus = ({
       claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti",
     })[fact.claim_status] || fact.claim_status || "";
+    const sourceSummary = sameSummary(fact.summary, incidentSummary) ? "" : fact.summary;
     const rows = [
       factRow("Statut", claimStatus),
       factRow("Acteur", fact.threat_actor),
@@ -382,7 +390,7 @@
       factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""),
       factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""),
       factRow("Impact", fact.impact),
-      factRow("Synthèse", fact.summary),
+      factRow("Synthèse", sourceSummary),
       factRow("Évolution", fact.evolution),
     ].filter(Boolean);
     const links = [safeUrl(fact.victim_website), ...(fact.evidence_urls || []).map(safeUrl)]
@@ -400,7 +408,7 @@
     if (incident.summary) {
       parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
     }
-    const facts = (incident.facts || []).map(factHtml).filter(Boolean);
+    const facts = (incident.facts || []).map((fact) => factHtml(fact, incident.summary)).filter(Boolean);
     if (facts.length) parts.push(`<div class="incident-facts-list">${facts.join("")}</div>`);
     if (incident.local) {
       const references = (incident.local.references || []).map(safeUrl).filter(Boolean).slice(0, 4);
