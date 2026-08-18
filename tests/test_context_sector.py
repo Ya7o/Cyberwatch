@@ -36,6 +36,9 @@ def test_context_activity_examples_from_observed_long_tail():
     assert context_sector.classify_context_activity(
         "Spécialiste de la manutention industrie et équipements industriels"
     ) == config.SECTOR_INDUSTRY
+    assert context_sector.classify_context_activity(
+        "Spécialisé dans la vente d'accessoires et d'équipements pour camping-cars"
+    ) == config.SECTOR_RETAIL
 
 
 def test_context_resolver_propagates_activity_by_exact_org_key():
@@ -75,6 +78,40 @@ def test_context_resolver_uses_existing_official_cache_without_network():
     assert conflicts == 0
     assert item.Sector == hospitality
     assert "official_subject_activity" in provenance[0]["Evidence"]
+
+
+def test_context_resolver_rejects_cached_sector_if_activity_does_not_reproduce_it():
+    item = _item("I1", "Example")
+    cache = [{
+        "Organisation_Key": organisation_key("Example"),
+        "Match_Status": "MATCHED",
+        "Validated_Sector": config.SECTOR_ENERGY,
+        "Validated_Via": "official_subject_activity",
+        "Activity_Label": "fournisseur de matériel agricole",
+    }]
+
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], [], cache)
+
+    assert applied == 0
+    assert conflicts == 0
+    assert provenance == []
+    assert item.Sector == config.SECTOR_UNKNOWN
+
+
+def test_context_resolver_does_not_promote_raw_source_sector():
+    item = _item("I1", "CNAOC")
+    facts = [{
+        "Item_ID": "I1",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Source_Sector_Raw": "Energy & Utilities",
+    }]
+
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], facts, [])
+
+    assert applied == 0
+    assert conflicts == 0
+    assert provenance == []
+    assert item.Sector == config.SECTOR_UNKNOWN
 
 
 def test_context_resolver_abstains_on_conflicting_strong_evidence():
