@@ -155,9 +155,9 @@ class OrgEnrichmentState:
     max_calls: int = 200
     official_site_max_calls: int = 60
     cache: dict[str, dict] = field(default_factory=dict)
-    # Cache strictement éphémère au run. Il évite de repayer le registre pour
-    # un Organisation_Key déjà résolu négativement quand le fallback officiel
-    # est désactivé, mais n'est jamais écrit dans org_enrichment_cache.csv.
+    # Cache strictement éphémère au run. Il mémorise seulement qu'un négatif
+    # registre a déjà été vu lorsque le fallback officiel n'a pas pu être tenté.
+    # Il ne modifie pas le contrat de resolve() et n'est jamais persisté.
     run_cache: dict[str, dict] = field(default_factory=dict)
 
     calls_attempted: int = 0
@@ -431,12 +431,12 @@ def resolve(
             **{field_.name: cached.get(field_.name, "") for field_ in fields(OrgEnrichmentRecord)}
         )
 
-    run_cached = state.run_cache.get(org_key)
-    if run_cached is not None:
+    # Les seules entrées de run_cache sont des négatifs pour lesquels le
+    # fallback officiel n'a pas été tenté. Le contrat historique reste donc
+    # strictement le même : None, mais sans deuxième appel HTTP au registre.
+    if org_key in state.run_cache:
         state.run_cache_hits += 1
-        return OrgEnrichmentRecord(
-            **{field_.name: run_cached.get(field_.name, "") for field_ in fields(OrgEnrichmentRecord)}
-        )
+        return None
 
     if state.calls_attempted >= state.max_calls:
         return None
@@ -479,10 +479,10 @@ def resolve(
 
     if not attempted:
         # Le fallback officiel peut être volontairement hors chemin critique.
-        # Le résultat registre négatif est alors réutilisable dans CE run mais
-        # reste absent du cache persistant afin d'être réévalué au run suivant.
+        # On mémorise le négatif uniquement pour éviter un doublon HTTP pendant
+        # ce run. Il reste absent du cache persistant et resolve() renvoie None.
         state.run_cache[org_key] = asdict(record)
-        return record
+        return None
 
     if fallback_status == AMBIGUOUS:
         state.calls_ambiguous += 1
