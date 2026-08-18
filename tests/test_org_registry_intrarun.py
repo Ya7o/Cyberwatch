@@ -1,7 +1,15 @@
 from __future__ import annotations
 
+import json
+import subprocess
+import sys
+from pathlib import Path
+
 from cyberwatch import ai, org_enrichment, store
 from scripts import benchmark_org_registry_depth as bench
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class _Response:
@@ -156,3 +164,27 @@ def test_depth_benchmark_detects_late_match_then_ambiguity():
         "siren": "111111111",
     }
     assert evaluated[20]["status"] == org_enrichment.AMBIGUOUS
+
+
+def test_depth_benchmark_runs_as_standalone_cli(tmp_path):
+    output = tmp_path / "depth.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "benchmark_org_registry_depth.py"),
+            "--max-queries",
+            "0",
+            "--json",
+            str(output),
+        ],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert payload["queries_selected"] == 0
+    assert payload["queries_completed"] == 0
+    assert payload["errors"] == []
