@@ -124,6 +124,9 @@ def _safe_institutional_name_sector(organisation: str) -> str:
     )):
         return config.SECTOR_HEALTH
 
+    if blob == "service public":
+        return config.SECTOR_ADMIN
+
     admin_prefixes = (
         "mairie ", "ville de ", "ville d ", "commune de ", "commune d ",
         "the commune of ", "ministere de ", "ministere des ", "ministry of ",
