@@ -84,6 +84,41 @@ def test_unrelated_title_activity_is_not_attributed_to_victim():
     assert provenance == []
 
 
+def test_incident_vocabulary_does_not_become_primary_activity():
+    cases = [
+        _item(
+            "I1", "OpenAI",
+            title="OpenAI : des données internes compromises après l’installation de la bibliothèque piégée TanStack",
+            url="https://www.cyberattaque.org/openai-des-donnees-internes-compromises-apres-linstallation-de-la-bibliotheque-piegee-tanstack/",
+        ),
+        _item(
+            "I2", "La Redoute",
+            title="La Redoute : une base logistique de 96 000 clients liées aux livraisons en fuite",
+            url="https://www.cyberattaque.org/la-redoute-une-base-logistique-de-96-000-clients-liees-aux-livraisons-en-fuite/",
+        ),
+        _item(
+            "I3", "MesVaccins",
+            title="MesVaccins : des données de santé et numéros de sécurité sociale exposés après une cyberattaque",
+            url="https://www.cyberattaque.org/mesvaccins-des-donnees-de-sante-et-numeros-de-securite-sociale-exposes-apres-une-cyberattaque/",
+        ),
+        _item(
+            "I4", "CFDT",
+            title="CFDT : victime d'une cyberattaque",
+            url="https://www.cfdt.fr/sinformer/communiques-de-presse/securite-informatique-la-cfdt-victime-d-une-cyberattaque",
+        ),
+        _item(
+            "I5", "McDonald's France",
+            title="McDonald's France victime d'une fuite de données",
+            url="https://example.test/secteur/high-tech/mcdonald-s-france-victime-d-une-fuite-de-donnees",
+        ),
+    ]
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors(cases, [], [])
+    assert applied == 0
+    assert conflicts == 0
+    assert provenance == []
+    assert all(item.Sector == config.SECTOR_UNKNOWN for item in cases)
+
+
 def test_context_resolver_propagates_activity_by_exact_org_key():
     items = [_item("I1", "Bija Industrie"), _item("I2", "Bija Industrie")]
     facts = [{
