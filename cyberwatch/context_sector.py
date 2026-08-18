@@ -1,9 +1,9 @@
 """Résolution prudente de Sector à partir des preuves déjà collectées.
 
 Le resolver n'effectue aucun appel réseau. Il agrège uniquement des descriptions
-d'activité explicites déjà collectées, le contexte éditorial strict du sujet et
-des preuves d'activité officielle déjà validées. Une valeur n'est appliquée que
-lorsque toutes les preuves fortes disponibles pour une organisation convergent.
+d'activité explicites déjà collectées, un contexte éditorial strictement borné
+et des preuves d'activité officielle déjà validées. Une valeur n'est appliquée
+que lorsque toutes les preuves fortes disponibles pour une organisation convergent.
 """
 from __future__ import annotations
 
@@ -33,20 +33,35 @@ class Evidence:
     source_id: str = ""
 
 
-def classify_context_activity(activity: str) -> str:
-    """Classe uniquement une description métier explicite."""
+def classify_explicit_activity(activity: str) -> str:
+    """Classe un texte non structuré seulement sur des formulations métier fortes.
+
+    Cette fonction est volontairement beaucoup plus stricte que le classifieur
+    d'activité général. Elle sert aux titres/slugs d'articles où des mots comme
+    ``logiciel``, ``santé`` ou ``logistique`` peuvent décrire l'incident plutôt
+    que l'activité principale de la victime.
+    """
     text = searchable(activity)
     if not text:
         return config.SECTOR_UNKNOWN
 
-    if (
-        "distribution publique d electricite" in text
-        or "distribution d electricite" in text
-        or "distribution de gaz" in text
-        or "syndicat departemental d energie" in text
-        or "syndicat departemental energie" in text
-    ):
+    if any(marker in text for marker in (
+        "syndicat departemental d energie",
+        "syndicat departemental energie",
+        "distribution publique d electricite",
+    )):
         return config.SECTOR_ENERGY
+
+    hospitality = getattr(config, "SECTOR_HOSPITALITY", config.SECTOR_UNKNOWN)
+    if hospitality != config.SECTOR_UNKNOWN and any(marker in text for marker in (
+        "plateforme de location de bateaux",
+        "site de location de bateaux",
+        "location de bateaux",
+        "location de bateau",
+        "location de voiliers",
+        "location de catamarans",
+    )):
+        return hospitality
 
     if any(marker in text for marker in (
         "fournisseur de materiel",
@@ -58,19 +73,6 @@ def classify_context_activity(activity: str) -> str:
         "vente de pieces",
     )):
         return config.SECTOR_RETAIL
-
-    hospitality = getattr(config, "SECTOR_HOSPITALITY", config.SECTOR_UNKNOWN)
-    if hospitality != config.SECTOR_UNKNOWN and any(marker in text for marker in (
-        "location de bateaux",
-        "location de bateau",
-        "location nautique",
-        "location de voiliers",
-        "location de catamarans",
-    )):
-        return hospitality
-
-    if any(marker in text for marker in ("esport", "e sport", "esports")):
-        return config.SECTOR_SPORT
 
     if any(marker in text for marker in (
         "renovation de l habitat",
@@ -89,6 +91,23 @@ def classify_context_activity(activity: str) -> str:
     )):
         return config.SECTOR_INDUSTRY
 
+    if any(marker in text for marker in (
+        "salle de realite virtuelle",
+        "club de football professionnel",
+        "club de football",
+    )) and any(marker in text for marker in (
+        "esport", "e sport", "football", "competition",
+    )):
+        return config.SECTOR_SPORT
+
+    return config.SECTOR_UNKNOWN
+
+
+def classify_context_activity(activity: str) -> str:
+    """Classe une description explicitement identifiée comme activité principale."""
+    explicit = classify_explicit_activity(activity)
+    if explicit != config.SECTOR_UNKNOWN:
+        return explicit
     return sector.classify_sector_activity(activity)
 
 
@@ -110,19 +129,18 @@ def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
 
 
 def _item_evidence(item: Item) -> list[Evidence]:
-    """Exploite seulement le contexte éditorial explicitement lié au sujet.
+    """Exploite seulement un libellé métier explicite du titre ou du slug.
 
-    Le titre doit commencer par le nom de la victime ; le slug de l'URL n'est
-    utilisable que si le vocabulaire métier fermé de ``classify_context_activity``
-    y apparaît. Le corps de fuite, les types de données et des mots génériques
-    ne sont jamais utilisés ici.
+    Le titre doit commencer par le nom de la victime. Pour une URL, seule une
+    expansion institutionnelle particulièrement forte est admise : les slugs
+    rédactionnels contiennent trop souvent le vocabulaire de l'incident.
     """
     proofs: list[Evidence] = []
     org = searchable(item.Organisation_Raw)
     title = searchable(item.Title)
     if org and title.startswith(org):
         tail = title[len(org):].strip()
-        candidate = classify_context_activity(tail)
+        candidate = classify_explicit_activity(tail)
         if candidate != config.SECTOR_UNKNOWN:
             proofs.append(Evidence(
                 candidate,
@@ -134,20 +152,21 @@ def _item_evidence(item: Item) -> list[Evidence]:
             ))
 
     try:
-        path = urlparse(item.URL).path
+        path = searchable(urlparse(item.URL).path.replace("-", " ").replace("_", " "))
     except ValueError:
         path = ""
-    if path:
-        candidate = classify_context_activity(path.replace("-", " ").replace("_", " "))
-        if candidate != config.SECTOR_UNKNOWN:
-            proofs.append(Evidence(
-                candidate,
-                "source_url_context",
-                path,
-                url=item.URL,
-                item_id=item.Item_ID,
-                source_id=item.Source_ID,
-            ))
+    if path and (
+        "syndicat departemental d energie" in path
+        or "syndicat departemental energie" in path
+    ):
+        proofs.append(Evidence(
+            config.SECTOR_ENERGY,
+            "source_url_context",
+            urlparse(item.URL).path,
+            url=item.URL,
+            item_id=item.Item_ID,
+            source_id=item.Source_ID,
+        ))
     return proofs
 
 
