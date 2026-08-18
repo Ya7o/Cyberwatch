@@ -1,9 +1,10 @@
-name: Rebuild Baseline (one-shot)
+name: Rebuild Baseline (full clean)
 
-# Le workflow est versionné sur main mais ne se déclenche que lorsqu'un commit
-# explicite touche le marqueur .github/rebuild-request. Ainsi un merge de code
-# ne peut jamais lancer par accident un CREATE réseau long/coûteux.
+# Rebuild total : repart des sources, sans réutiliser les caches de qualification
+# ou d'enrichissement. Le push sur le marqueur reste déclaré pour compatibilité,
+# mais seul workflow_dispatch exécute le job ; le dispatcher ops utilise ce mode.
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -13,12 +14,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: rebuild-baseline-one-shot
+  group: rebuild-baseline-full-clean
   cancel-in-progress: false
 
 jobs:
   rebuild:
-    if: github.repository == 'Ya7o/Cyberwatch'
+    if: github.repository == 'Ya7o/Cyberwatch' && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
@@ -30,22 +31,6 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Restaurer le cache Source Facts IA
-        uses: actions/cache/restore@v4
-        with:
-          path: data/source_facts_ai_cache.json
-          key: source-facts-ai-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: |
-            source-facts-ai-${{ runner.os }}-
-
-      - name: Restaurer le cache de qualification IA canonique
-        uses: actions/cache/restore@v4
-        with:
-          path: data/ai_qualifications.csv
-          key: canonical-ai-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: |
-            canonical-ai-${{ runner.os }}-
-
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
@@ -53,7 +38,7 @@ jobs:
         run: |
           AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"
           echo "AS_OF=$AS_OF" >> "$GITHUB_ENV"
-          echo "Rebuild AS_OF=$AS_OF ; START=2026-01-01 ; LAYERS=all"
+          echo "Rebuild FULL CLEAN AS_OF=$AS_OF ; START=2026-01-01 ; LAYERS=all"
 
       - name: Tests unitaires
         run: python -m pytest tests/ -q
@@ -65,6 +50,9 @@ jobs:
             data/incidents.csv \
             data/incident_id_registry.csv \
             data/source_facts.csv \
+            data/source_facts_ai_cache.json \
+            data/ai_qualifications.csv \
+            data/org_enrichment_cache.csv \
             data/qualification_provenance.csv \
             data/dedup_audit_candidates.csv \
             data/run_log.csv \
@@ -76,7 +64,7 @@ jobs:
             data/entity_watch.csv
           rm -rf assets/data
           mkdir -p assets/data
-          echo "Référentiels et caches versionnés conservés ; aucun fichier publié n'est encore modifié."
+          echo "Sorties et caches de qualification/enrichissement supprimés ; rebuild réellement sans cache."
 
       - name: Vérifier l'état UNINITIALIZED après purge
         run: python -m cyberwatch check --allow-uninitialized
@@ -90,8 +78,6 @@ jobs:
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
           SOURCE_FACTS_AI_PROGRESS_EVERY: "25"
           SOURCE_FACTS_AI_CHECKPOINT_EVERY: "25"
-          # La découverte de sites officiels est un enrichissement secondaire
-          # ciblé (deep-sector), pas une dépendance bloquante du rebuild.
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         run: |
           python -m cyberwatch create \
@@ -183,20 +169,6 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 1
-
-      - name: Sauver le cache Source Facts IA
-        if: always() && hashFiles('data/source_facts_ai_cache.json') != ''
-        uses: actions/cache/save@v4
-        with:
-          path: data/source_facts_ai_cache.json
-          key: source-facts-ai-${{ runner.os }}-${{ github.run_id }}
-
-      - name: Sauver le cache de qualification IA canonique
-        if: always() && hashFiles('data/ai_qualifications.csv') != ''
-        uses: actions/cache/save@v4
-        with:
-          path: data/ai_qualifications.csv
-          key: canonical-ai-${{ runner.os }}-${{ github.run_id }}
 
       - name: Exporter les diagnostics même en échec
         if: always()
