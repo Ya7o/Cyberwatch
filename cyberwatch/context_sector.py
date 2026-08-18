@@ -1,14 +1,15 @@
 """Résolution prudente de Sector à partir des preuves déjà collectées.
 
 Le resolver n'effectue aucun appel réseau. Il agrège uniquement des descriptions
-d'activité explicites déjà collectées et des preuves d'activité officielle déjà
-validées. Une valeur n'est appliquée que lorsque toutes les preuves fortes
-disponibles pour une organisation convergent vers le même secteur.
+d'activité explicites déjà collectées, le contexte éditorial strict du sujet et
+des preuves d'activité officielle déjà validées. Une valeur n'est appliquée que
+lorsque toutes les preuves fortes disponibles pour une organisation convergent.
 """
 from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+from urllib.parse import urlparse
 
 from . import config, org_enrichment, sector
 from .model import Item
@@ -43,6 +44,7 @@ def classify_context_activity(activity: str) -> str:
         or "distribution d electricite" in text
         or "distribution de gaz" in text
         or "syndicat departemental d energie" in text
+        or "syndicat departemental energie" in text
     ):
         return config.SECTOR_ENERGY
 
@@ -91,11 +93,7 @@ def classify_context_activity(activity: str) -> str:
 
 
 def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
-    """Ne transforme jamais Source_Sector_Raw en preuve contextuelle forte.
-
-    Certains fournisseurs donnent des catégories grossières ou erronées. Leur
-    mapping reste traité par la politique structurée existante, source par source.
-    """
+    """Ne transforme jamais Source_Sector_Raw en preuve contextuelle forte."""
     activity = (row.get("Activity_Description") or "").strip()
     if not activity:
         return []
@@ -109,6 +107,48 @@ def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
         item_id=(row.get("Item_ID") or "").strip(),
         source_id=(row.get("Source_ID") or "").strip(),
     )]
+
+
+def _item_evidence(item: Item) -> list[Evidence]:
+    """Exploite seulement le contexte éditorial explicitement lié au sujet.
+
+    Le titre doit commencer par le nom de la victime ; le slug de l'URL n'est
+    utilisable que si le vocabulaire métier fermé de ``classify_context_activity``
+    y apparaît. Le corps de fuite, les types de données et des mots génériques
+    ne sont jamais utilisés ici.
+    """
+    proofs: list[Evidence] = []
+    org = searchable(item.Organisation_Raw)
+    title = searchable(item.Title)
+    if org and title.startswith(org):
+        tail = title[len(org):].strip()
+        candidate = classify_context_activity(tail)
+        if candidate != config.SECTOR_UNKNOWN:
+            proofs.append(Evidence(
+                candidate,
+                "source_title_context",
+                item.Title,
+                url=item.URL,
+                item_id=item.Item_ID,
+                source_id=item.Source_ID,
+            ))
+
+    try:
+        path = urlparse(item.URL).path
+    except ValueError:
+        path = ""
+    if path:
+        candidate = classify_context_activity(path.replace("-", " ").replace("_", " "))
+        if candidate != config.SECTOR_UNKNOWN:
+            proofs.append(Evidence(
+                candidate,
+                "source_url_context",
+                path,
+                url=item.URL,
+                item_id=item.Item_ID,
+                source_id=item.Source_ID,
+            ))
+    return proofs
 
 
 def _cache_evidence(row: dict[str, str]) -> Evidence | None:
@@ -153,6 +193,10 @@ def resolve_contextual_sectors(
     """
     by_item = {item.Item_ID: item for item in items if item.Item_ID}
     evidence_by_org: dict[str, list[Evidence]] = defaultdict(list)
+
+    for item in items:
+        if item.Organisation_Key:
+            evidence_by_org[item.Organisation_Key].extend(_item_evidence(item))
 
     for row in source_fact_rows:
         item = by_item.get((row.get("Item_ID") or "").strip())
