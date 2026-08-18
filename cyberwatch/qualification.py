@@ -69,6 +69,20 @@ def stabilize_threats(items: list[Item]) -> int:
     return changed
 
 
+def backfill_safe_name_sectors(items: list[Item]) -> int:
+    """Applique uniquement les règles nominatives explicitement jugées sûres."""
+    changed = 0
+    for item in items:
+        if item.Sector != config.SECTOR_UNKNOWN:
+            continue
+        candidate = sector_policy.classify_sector_name(item.Organisation_Raw)
+        if candidate == config.SECTOR_UNKNOWN:
+            continue
+        item.Sector = candidate
+        changed += 1
+    return changed
+
+
 def backfill_structured_source_sectors(
     items: list[Item], source_fact_rows: list[dict[str, str]] | None = None
 ) -> int:
@@ -148,6 +162,7 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes["llm_sector_restored"] = restored
     changes["sector_registry_restored"] = registry_restored
     changes.update(enrichment.backfill_unknowns(ordered, reference))
+    changes["sector_safe_name_backfill"] = backfill_safe_name_sectors(ordered)
 
     source_facts = store.read_csv(store.SOURCE_FACTS_CSV)
     changes["sector_structured_source_backfill"] = backfill_structured_source_sectors(ordered, source_facts)
