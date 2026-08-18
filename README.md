@@ -29,6 +29,45 @@ Mayotte FM) ont été retirés : l'extraction automatique de victime dans la pre
 généraliste produisait des faux positifs. Leur corpus n'est plus conservé dans
 `ITEMS`.
 
+## Qualification du secteur
+
+La qualification Sector est volontairement conservatrice. `Inconnu` signifie
+**preuve insuffisante selon la politique courante**, pas nécessairement
+"secteur impossible à identifier".
+
+Ordre utile des preuves :
+
+1. secteur structuré fourni par la source et explicitement mappé ;
+2. référentiel manuel `data/enrichment_reference.csv` ;
+3. règles nominatives sûres (`cyberwatch/sector.py`) ;
+4. description d'activité explicitement extraite ;
+5. registre organisation → secteur (`cyberwatch/sector_registry.py`).
+
+Le registre distingue les candidats `AUTO`, `REVIEW` et `CONFLICT`. Un candidat
+peut donc être correctement identifié sans être appliqué au snapshot si son
+canal n'est pas activé dans `data/sector_auto_policy.json`.
+
+Cette distinction est importante pour comprendre les secteurs restant
+`Inconnu` : des indices comme un site officiel, un code NAF, un consensus entre
+plusieurs items ou une qualification LLM peuvent être présents mais rester en
+revue tant que leur canal n'a pas atteint le niveau de précision requis.
+
+Audit offline :
+
+```bash
+python scripts/audit_sector_coverage.py --output ""
+```
+
+Les sorties persistées de cet audit sont :
+
+- `data/sector_quality.json` : métriques de couverture ;
+- `data/organisation_sector_registry.csv` : preuves et décision par organisation ;
+- `data/sector_enrichment_queue.csv` : organisations encore à traiter.
+
+Pour améliorer la couverture, privilégier l'activation mesurée d'un canal déjà
+existant et évalué plutôt que l'ajout de nouvelles heuristiques générales sur les
+noms d'organisations.
+
 ## Dashboard
 
 Les actions rapides comprennent notamment **Local**. Lorsque ce filtre est actif,
