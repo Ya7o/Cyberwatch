@@ -1,9 +1,9 @@
 """Résolution prudente de Sector à partir des preuves déjà collectées.
 
-Le resolver n'effectue aucun appel réseau. Il agrège les descriptions d'activité
-SourceFacts et les preuves officielles déjà présentes dans le cache entreprise.
-Une valeur n'est appliquée que lorsque toutes les preuves fortes disponibles
-pour une organisation convergent vers le même secteur.
+Le resolver n'effectue aucun appel réseau. Il agrège uniquement des descriptions
+d'activité explicites déjà collectées et des preuves d'activité officielle déjà
+validées. Une valeur n'est appliquée que lorsque toutes les preuves fortes
+disponibles pour une organisation convergent vers le même secteur.
 """
 from __future__ import annotations
 
@@ -16,11 +16,10 @@ from .normalize import organisation_key, searchable
 
 ORIGIN = "ORG_CONTEXT_SECTOR"
 
-_OFFICIAL_CACHE_VIA = frozenset({
-    "official_subject_activity",
-    "official_site",
-    "naf_precise",
-})
+# Seul le canal décrivant explicitement l'activité principale officielle est
+# assez fort ici. Les NAF et secteurs bruts restent soumis à leur politique
+# dédiée dans sector_registry / structured_source_backfill.
+_OFFICIAL_CACHE_VIA = frozenset({"official_subject_activity"})
 
 
 @dataclass(frozen=True)
@@ -34,12 +33,7 @@ class Evidence:
 
 
 def classify_context_activity(activity: str) -> str:
-    """Classe uniquement une description métier explicite.
-
-    Les compléments sont évalués avant la table générique quand une formulation
-    métier très explicite évite un faux positif de priorité (par exemple
-    ``distribution publique d'électricité`` ne doit pas devenir Commerce).
-    """
+    """Classe uniquement une description métier explicite."""
     text = searchable(activity)
     if not text:
         return config.SECTOR_UNKNOWN
@@ -57,6 +51,9 @@ def classify_context_activity(activity: str) -> str:
         "vente de materiel",
         "distributeur de materiel",
         "distribution de materiel",
+        "vente d accessoires",
+        "vente d equipements",
+        "vente de pieces",
     )):
         return config.SECTOR_RETAIL
 
@@ -94,31 +91,24 @@ def classify_context_activity(activity: str) -> str:
 
 
 def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
-    result: list[Evidence] = []
-    raw_sector = (row.get("Source_Sector_Raw") or "").strip()
-    if raw_sector:
-        candidate = sector.classify_source_sector(raw_sector)
-        if candidate != config.SECTOR_UNKNOWN:
-            result.append(Evidence(
-                candidate,
-                "structured_source",
-                raw_sector,
-                item_id=(row.get("Item_ID") or "").strip(),
-                source_id=(row.get("Source_ID") or "").strip(),
-            ))
+    """Ne transforme jamais Source_Sector_Raw en preuve contextuelle forte.
 
+    Certains fournisseurs donnent des catégories grossières ou erronées. Leur
+    mapping reste traité par la politique structurée existante, source par source.
+    """
     activity = (row.get("Activity_Description") or "").strip()
-    if activity:
-        candidate = classify_context_activity(activity)
-        if candidate != config.SECTOR_UNKNOWN:
-            result.append(Evidence(
-                candidate,
-                "source_activity",
-                activity,
-                item_id=(row.get("Item_ID") or "").strip(),
-                source_id=(row.get("Source_ID") or "").strip(),
-            ))
-    return result
+    if not activity:
+        return []
+    candidate = classify_context_activity(activity)
+    if candidate == config.SECTOR_UNKNOWN:
+        return []
+    return [Evidence(
+        candidate,
+        "source_activity",
+        activity,
+        item_id=(row.get("Item_ID") or "").strip(),
+        source_id=(row.get("Source_ID") or "").strip(),
+    )]
 
 
 def _cache_evidence(row: dict[str, str]) -> Evidence | None:
@@ -127,10 +117,20 @@ def _cache_evidence(row: dict[str, str]) -> Evidence | None:
     via = (row.get("Validated_Via") or "").strip()
     if via not in _OFFICIAL_CACHE_VIA:
         return None
-    candidate = (row.get("Validated_Sector") or "").strip()
-    if candidate not in config.SECTORS or candidate == config.SECTOR_UNKNOWN:
-        return None
+
     text = (row.get("Activity_Label") or "").strip()
+    if not text:
+        return None
+    candidate = (row.get("Validated_Sector") or "").strip()
+    classified = classify_context_activity(text)
+    # Une preuve officielle mise en cache n'est réutilisée que si son libellé
+    # d'activité permet aujourd'hui de retrouver exactement le secteur stocké.
+    if (
+        candidate not in config.SECTORS
+        or candidate == config.SECTOR_UNKNOWN
+        or classified != candidate
+    ):
+        return None
     return Evidence(
         candidate,
         via,
@@ -147,9 +147,9 @@ def resolve_contextual_sectors(
 ) -> tuple[int, list[dict[str, str]], int]:
     """Applique les preuves contextuelles convergentes aux items inconnus.
 
-    Retourne ``(applied, provenance, conflicts)``. Les données de fuite et le
-    résumé cyber ne sont volontairement pas des preuves de secteur : ils peuvent
-    aider une future recherche, mais ne suffisent jamais à classer l'activité.
+    Les données de fuite et le résumé cyber ne sont volontairement pas des
+    preuves de secteur : ils peuvent aider une recherche, mais ne suffisent
+    jamais à classer l'activité.
     """
     by_item = {item.Item_ID: item for item in items if item.Item_ID}
     evidence_by_org: dict[str, list[Evidence]] = defaultdict(list)
