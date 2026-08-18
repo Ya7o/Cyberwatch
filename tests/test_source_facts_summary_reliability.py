@@ -196,7 +196,7 @@ def test_bonjourlafuite_derives_summary_from_rich_structured_data():
 
     fact = sf.extract_source_fact(item, entry, spec)
     assert fact is not None
-    assert fact["Summary"].startswith("Données concernées :")
+    assert fact["Summary"].startswith("Données revendiquées selon BonjourLaFuite :")
     assert "Adresse e-mail" in fact["Summary"]
 
 

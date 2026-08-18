@@ -221,7 +221,18 @@ class _Runtime:
         self.calls_failed = 0
         self.calls_budget_blocked = 0
         self.cache_hits = 0
+        # field_cache_hits reste le compteur agrégé historique. Les compteurs
+        # suivants distinguent désormais une valeur réellement réutilisée
+        # d'une abstention mémorisée, afin de ne plus présenter les deux comme
+        # un même "cache hit" dans les audits de rebuild.
         self.field_cache_hits = 0
+        self.accepted_field_cache_hits = 0
+        self.abstained_field_cache_hits = 0
+        self.legacy_null_migrations = 0
+        self.semantic_first_misses = 0
+        self.semantic_retries = 0
+        self.semantic_recovered_on_retry = 0
+        self.semantic_new_abstentions = 0
         self.legacy_field_cache_hits = 0
         self.fields_invalidated = 0
         self.items_fully_cached = 0
@@ -284,6 +295,13 @@ class _Runtime:
             "items_partially_cached": self.items_partially_cached,
             "cache_hits": self.cache_hits,
             "field_cache_hits": self.field_cache_hits,
+            "accepted_field_cache_hits": self.accepted_field_cache_hits,
+            "abstained_field_cache_hits": self.abstained_field_cache_hits,
+            "legacy_null_migrations": self.legacy_null_migrations,
+            "semantic_first_misses": self.semantic_first_misses,
+            "semantic_retries": self.semantic_retries,
+            "semantic_recovered_on_retry": self.semantic_recovered_on_retry,
+            "semantic_new_abstentions": self.semantic_new_abstentions,
             "legacy_field_cache_hits": self.legacy_field_cache_hits,
             "fields_invalidated": self.fields_invalidated,
             "calls_attempted": self.calls,
@@ -368,6 +386,35 @@ def _full_context(entry: RawEntry) -> str:
 
 def _content_hash(entry: RawEntry) -> str:
     return hashlib.sha256(_full_context(entry).encode("utf-8")).hexdigest()
+
+
+def content_hash(entry: RawEntry) -> str:
+    """Empreinte publique de l'entrée utilisée pour la cohérence SourceFacts."""
+    return _content_hash(entry)
+
+
+def field_statuses(item: Item, entry: RawEntry) -> dict[str, str]:
+    """État courant des champs du cache pour cette version exacte du contenu.
+
+    Une panne technique n'invente aucun état : si un premier miss existait, il
+    reste ``miss``. Seules deux réponses sémantiques vides peuvent donc faire
+    apparaître ``abstained`` et autoriser le nettoyage d'un fait devenu obsolète.
+    """
+    if item.Source_ID not in TARGET_SOURCES:
+        return {}
+    runtime = _runtime()
+    key = _cache_item_key(item, entry, runtime)
+    cache_entry = runtime.cache.get(key)
+    if not isinstance(cache_entry, dict) or not isinstance(cache_entry.get("fields"), dict):
+        return {}
+    result: dict[str, str] = {}
+    for field, cached in cache_entry["fields"].items():
+        if field not in FIELD_VERSIONS or not isinstance(cached, dict):
+            continue
+        status = str(cached.get("status") or "").strip().lower()
+        if status in {"accepted", "miss", "abstained"}:
+            result[field] = status
+    return result
 
 
 def _truncate_context(context: str, max_chars: int) -> str:
@@ -834,6 +881,7 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
                 status = "miss"
                 cached["status"] = status
                 cached["misses"] = max(1, _cache_miss_count(cached))
+                runtime.legacy_null_migrations += 1
 
         if status == "miss":
             misses = max(1, _cache_miss_count(cached))
@@ -846,6 +894,7 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
         if status == "abstained":
             satisfied.add(field)
             runtime.field_cache_hits += 1
+            runtime.abstained_field_cache_hits += 1
             continue
 
         if status != "accepted" or not _cache_value_present(value):
@@ -855,6 +904,7 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
 
         satisfied.add(field)
         runtime.field_cache_hits += 1
+        runtime.accepted_field_cache_hits += 1
         result[field] = value
     return result, satisfied
 
@@ -862,7 +912,19 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
 def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry, fields: set[str], normalized: dict) -> None:
     target = _cache_entry(runtime, key, item, entry)["fields"]
     for field in fields:
+        previous = target.get(field)
+        previous_status = (
+            str(previous.get("status") or "").strip().lower()
+            if isinstance(previous, dict) else ""
+        )
+        previous_misses = _cache_miss_count(previous) if isinstance(previous, dict) else 0
+        is_retry = previous_status == "miss" and previous_misses > 0
+        if is_retry:
+            runtime.semantic_retries += 1
+
         if field in normalized and _cache_value_present(normalized[field]):
+            if is_retry:
+                runtime.semantic_recovered_on_retry += 1
             target[field] = {
                 "version": FIELD_VERSIONS[field],
                 "status": "accepted",
@@ -870,11 +932,16 @@ def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry,
                 "value": normalized[field],
             }
             continue
-        previous = target.get(field)
-        misses = _cache_miss_count(previous) + 1 if isinstance(previous, dict) else 1
+
+        misses = previous_misses + 1 if isinstance(previous, dict) else 1
+        next_status = "abstained" if misses >= MAX_FIELD_MISSES else "miss"
+        if misses == 1:
+            runtime.semantic_first_misses += 1
+        if next_status == "abstained" and previous_status != "abstained":
+            runtime.semantic_new_abstentions += 1
         target[field] = {
             "version": FIELD_VERSIONS[field],
-            "status": "abstained" if misses >= MAX_FIELD_MISSES else "miss",
+            "status": next_status,
             "misses": misses,
             "value": None,
         }

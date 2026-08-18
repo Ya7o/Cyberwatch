@@ -351,9 +351,39 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
     if not _has_content(fact):
         return None
     fact["Evidence_JSON"] = _dumps_json(evidence)
-    if entry.source_metadata:
-        fact["Source_Metadata_JSON"] = _dumps_json(entry.source_metadata)
+    semantic_status = fact.pop("_Semantic_Refresh_Status", None)
+    metadata = dict(entry.source_metadata or {})
+    if fact.get("Source_ID") in source_facts_ai.TARGET_SOURCES:
+        # Ces marqueurs restent dans le metadata auxiliaire, jamais dans le
+        # schéma public SOURCE_FACT_COLUMNS.
+        metadata["_source_facts_content_hash"] = source_facts_ai.content_hash(entry)
+        if isinstance(semantic_status, dict) and semantic_status:
+            metadata["_source_facts_semantic_status"] = semantic_status
+    if metadata:
+        fact["Source_Metadata_JSON"] = _dumps_json(metadata)
     return fact
+
+
+def _apply_blf_summary_certainty(fact: dict) -> None:
+    """Évite de présenter une revendication BLF comme un fait confirmé."""
+    summary = str(fact.get("Summary") or "").strip()
+    status = str(fact.get("Claim_Status") or "").strip()
+    if not summary or status == "confirmed":
+        return
+    replacements = {
+        "claimed": (
+            ("Données concernées :", "Données revendiquées selon BonjourLaFuite :"),
+            ("Éléments documentés :", "Éléments revendiqués selon BonjourLaFuite :"),
+        ),
+        "unconfirmed": (
+            ("Données concernées :", "Données signalées mais non confirmées :"),
+            ("Éléments documentés :", "Éléments signalés mais non confirmés :"),
+        ),
+    }
+    for prefix, replacement in replacements.get(status, ()):
+        if summary.startswith(prefix):
+            fact["Summary"] = replacement + summary[len(prefix):]
+            return
 
 
 _BLF_STATUS = {"🟢": "confirmed", "🟠": "claimed", "🔴": "unconfirmed"}
@@ -394,6 +424,7 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
         evidence["Affected_Count_Raw"] = raw_count
 
     _derive_summary(fact, evidence)
+    _apply_blf_summary_certainty(fact)
 
     source_urls = meta.get("source_urls") or []
     if source_urls:
@@ -600,6 +631,7 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
     organisation = entry.organisation or item.Organisation_Raw
     ai_result = source_facts_ai.enrich(item, entry) or {}
+    fact["_Semantic_Refresh_Status"] = source_facts_ai.field_statuses(item, entry)
 
     canonical, raw = _claim_status(text)
     if raw:
@@ -717,6 +749,7 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
     text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
     organisation = entry.organisation or item.Organisation_Raw
     ai_result = source_facts_ai.enrich(item, entry) or {}
+    fact["_Semantic_Refresh_Status"] = source_facts_ai.field_statuses(item, entry)
 
     actor, actor_evidence = _ai_text(ai_result, "threat_actor")
     actor = _valid_actor(actor, organisation)
@@ -891,14 +924,47 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
     refreshable = {"Summary", "Initial_Access", "Attack_Flow_JSON", "Impact"}
     base = {"Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version", "Source_Metadata_JSON"}
 
+    ai_field_for_column = {
+        "Summary": "summary",
+        "Initial_Access": "initial_access",
+        "Attack_Flow_JSON": "attack_flow",
+        "Impact": "impact",
+    }
+
     def merge_row(old: dict, new: dict) -> dict:
         merged = dict(old)
         old_evidence = _loads_json(str(old.get("Evidence_JSON") or ""))
         new_evidence = _loads_json(str(new.get("Evidence_JSON") or ""))
         evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
+        old_meta = _loads_json(str(old.get("Source_Metadata_JSON") or ""))
+        new_meta = _loads_json(str(new.get("Source_Metadata_JSON") or ""))
+        old_hash = str(old_meta.get("_source_facts_content_hash") or "") if isinstance(old_meta, dict) else ""
+        new_hash = str(new_meta.get("_source_facts_content_hash") or "") if isinstance(new_meta, dict) else ""
+        content_changed = bool(old_hash and new_hash and old_hash != new_hash)
+        refresh_status = (
+            new_meta.get("_source_facts_semantic_status")
+            if isinstance(new_meta, dict) else {}
+        )
+        refresh_status = refresh_status if isinstance(refresh_status, dict) else {}
+
+        def should_clear(column: str) -> bool:
+            # Un premier miss peut être une abstention sémantique transitoire ;
+            # une panne technique ne modifie pas le cache. On ne retire donc un
+            # ancien fait qu'après deux abstentions sémantiques sur un contenu
+            # effectivement différent.
+            field = ai_field_for_column.get(column, "")
+            return (
+                content_changed
+                and field
+                and refresh_status.get(field) == "abstained"
+                and new.get(column, "") in (None, "")
+            )
+
         if isinstance(new_evidence, dict):
             for field, proof in new_evidence.items():
                 if field in refreshable and new.get(field, "") in (None, ""):
+                    if should_clear(field):
+                        evidence.pop(field, None)
                     continue
                 if field in refreshable:
                     evidence.pop(field, None)
@@ -910,6 +976,9 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
             if column in refreshable:
                 if value not in (None, ""):
                     merged[column] = value
+                elif should_clear(column):
+                    merged[column] = ""
+                    evidence.pop(column, None)
             elif column in base:
                 if value not in (None, ""):
                     merged[column] = value
