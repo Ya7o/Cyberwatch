@@ -106,6 +106,6 @@ def test_dashboard_has_single_reunion_mayotte_filter_for_local_watch():
     assert '>Réunion / Mayotte</button>' in html
     assert 'f-veille-llm' not in html + app
     assert 'f-presse-mahoraise' not in html + app
-    assert "!i.local" in app
+    assert "!incident.local" in app
     assert "Score cyberattaque" in app
     assert "Analyse locale" in app
