@@ -1,4 +1,6 @@
-"""Contrat des filtres du dashboard unifié."""
+"""Contrat des filtres et garde-fous du dashboard unifié."""
+
+import re
 
 
 def test_filtre_source_et_recherche_organisation_sont_appliques_par_le_runtime_unique():
@@ -21,3 +23,32 @@ def test_filtre_source_et_recherche_organisation_sont_appliques_par_le_runtime_u
     assert 'state.filters = { ocean: false, local: false, source: "", org: "" }' in app
     assert "assets/app-legacy.js" not in app
     assert "assets/dashboard-audit.js" not in app
+
+
+def test_reset_annule_le_debounce_de_recherche_avant_de_vider_les_filtres():
+    app = open("assets/app.js", encoding="utf-8").read()
+    match = re.search(
+        r'\$\("#f-reset"\)\.addEventListener\("click", \(\) => \{(.*?)\n    \}\);',
+        app,
+        re.DOTALL,
+    )
+    assert match, "handler #f-reset introuvable"
+    body = match.group(1)
+    assert "clearTimeout(searchTimer);" in body
+    assert body.index("clearTimeout(searchTimer);") < body.index("state.filters =")
+
+
+def test_historique_tronque_est_rendu_sans_degrader_le_statut_source():
+    app = open("assets/app.js", encoding="utf-8").read()
+    match = re.search(
+        r"function renderSourceDetail\(rows\)\s*\{(.*?)\n  \}",
+        app,
+        re.DOTALL,
+    )
+    assert match, "renderSourceDetail() introuvable"
+    body = match.group(1)
+    assert "source.history_status" in body
+    assert "source.oldest_available_date" in body
+    assert 'historyStatus === "TRUNCATED"' in body
+    assert "Historique borné" in body
+    assert 'data-status="${esc(status)}"' in body
