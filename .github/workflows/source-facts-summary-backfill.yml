@@ -28,7 +28,7 @@ concurrency:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
       ITEM_IDS: ${{ github.event.inputs.item_ids || '' }}
