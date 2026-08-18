@@ -75,7 +75,7 @@ def backfill_safe_name_sectors(items: list[Item]) -> int:
     for item in items:
         if item.Sector != config.SECTOR_UNKNOWN:
             continue
-        candidate = sector_policy.classify_sector_name(item.Organisation)
+        candidate = sector_policy.classify_sector_name(item.Organisation_Raw)
         if candidate == config.SECTOR_UNKNOWN:
             continue
         item.Sector = candidate
