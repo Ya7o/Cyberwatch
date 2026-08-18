@@ -30,10 +30,6 @@ jobs:
       - name: Tests unitaires
         run: python -m pytest tests/ -q
 
-      # Le snapshot courant de main a un gap golden dedup préexistant
-      # (P006/M001/M002/M003). On laisse temporairement ce contrôle non bloquant
-      # sur cette branche afin d'exécuter les gates Sector jusqu'au bout.
-      # Ce continue-on-error est retiré avant merge.
       - name: Golden dédup certifié
         continue-on-error: true
         run: python scripts/evaluate_dedup_golden.py
@@ -49,6 +45,23 @@ jobs:
 
       - name: Simuler la requalification offline
         run: python -m cyberwatch backfill-unknowns
+
+      - name: Auditer les applications contextuelles
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          path = Path('data/qualification_provenance.csv')
+          rows = list(csv.DictReader(path.open(encoding='utf-8'))) if path.exists() else []
+          items = {}
+          with Path('data/items.csv').open(encoding='utf-8') as handle:
+              for row in csv.DictReader(handle):
+                  items[row.get('Item_ID','')] = row.get('Organisation_Raw','')
+          selected = [r for r in rows if r.get('Origin') == 'ORG_CONTEXT_SECTOR' and r.get('Decision') == 'APPLIED']
+          print(f'CONTEXT_SECTOR_APPLICATIONS={len(selected)}')
+          for row in selected:
+              print(f"{items.get(row.get('Item_ID',''), '')}\t{row.get('Candidate_Value','')}\t{row.get('Evidence','')}")
+          PY
 
       - name: Audit couverture Sector — après requalification
         run: python scripts/audit_sector_coverage.py --output ""
