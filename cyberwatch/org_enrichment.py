@@ -155,6 +155,10 @@ class OrgEnrichmentState:
     max_calls: int = 200
     official_site_max_calls: int = 60
     cache: dict[str, dict] = field(default_factory=dict)
+    # Cache strictement éphémère au run. Il mémorise seulement qu'un négatif
+    # registre a déjà été vu lorsque le fallback officiel n'a pas pu être tenté.
+    # Il ne modifie pas le contrat de resolve() et n'est jamais persisté.
+    run_cache: dict[str, dict] = field(default_factory=dict)
 
     calls_attempted: int = 0
     calls_matched: int = 0
@@ -162,6 +166,7 @@ class OrgEnrichmentState:
     calls_not_found: int = 0
     calls_error: int = 0
     cache_hits: int = 0
+    run_cache_hits: int = 0
     duration_seconds: float = 0.0
     official_site_attempted: int = 0
     official_site_matched: int = 0
@@ -426,6 +431,13 @@ def resolve(
             **{field_.name: cached.get(field_.name, "") for field_ in fields(OrgEnrichmentRecord)}
         )
 
+    # Les seules entrées de run_cache sont des négatifs pour lesquels le
+    # fallback officiel n'a pas été tenté. Le contrat historique reste donc
+    # strictement le même : None, mais sans deuxième appel HTTP au registre.
+    if org_key in state.run_cache:
+        state.run_cache_hits += 1
+        return None
+
     if state.calls_attempted >= state.max_calls:
         return None
 
@@ -457,14 +469,6 @@ def resolve(
         state.cache[org_key] = asdict(official_record)
         return official_record
 
-    if not attempted:
-        return None
-
-    if fallback_status == AMBIGUOUS:
-        state.calls_ambiguous += 1
-    else:
-        state.calls_not_found += 1
-
     record = OrgEnrichmentRecord(
         Organisation_Key=org_key,
         Query_Name=organisation_raw,
@@ -472,5 +476,18 @@ def resolve(
         Fetched_At=fetched_at,
         Cache_Version=ORG_ENRICHMENT_CACHE_VERSION,
     )
+
+    if not attempted:
+        # Le fallback officiel peut être volontairement hors chemin critique.
+        # On mémorise le négatif uniquement pour éviter un doublon HTTP pendant
+        # ce run. Il reste absent du cache persistant et resolve() renvoie None.
+        state.run_cache[org_key] = asdict(record)
+        return None
+
+    if fallback_status == AMBIGUOUS:
+        state.calls_ambiguous += 1
+    else:
+        state.calls_not_found += 1
+
     state.cache[org_key] = asdict(record)
     return record
