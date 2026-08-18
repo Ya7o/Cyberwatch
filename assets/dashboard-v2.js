@@ -152,6 +152,35 @@
     return node;
   }
 
+  function wrapChartLabel(value, maxChars, maxLines) {
+    const words = String(value || "").trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return [""];
+
+    const lines = [];
+    let current = "";
+    let index = 0;
+    while (index < words.length && lines.length < maxLines) {
+      const word = words[index];
+      const candidate = current ? `${current} ${word}` : word;
+      if (candidate.length <= maxChars || !current) {
+        current = candidate;
+        index += 1;
+        continue;
+      }
+      lines.push(current);
+      current = "";
+    }
+    if (current && lines.length < maxLines) lines.push(current);
+
+    if (index < words.length && lines.length) {
+      let last = lines[lines.length - 1];
+      const ellipsis = "…";
+      if (last.length >= maxChars) last = last.slice(0, Math.max(1, maxChars - 1)).trimEnd();
+      lines[lines.length - 1] = `${last}${ellipsis}`;
+    }
+    return lines;
+  }
+
   function renderHorizontalChart(container, data) {
     if (!container) return;
     container.innerHTML = "";
@@ -166,23 +195,61 @@
       rows = data.slice(0, 8).concat([{ label: "Autres", value: others }]);
     }
 
-    const width = Math.max(container.clientWidth || 520, 320);
-    const rowHeight = 32;
-    const labelWidth = Math.min(190, Math.max(105, width * 0.34));
-    const right = 42;
+    const width = Math.max(container.clientWidth || 520, 280);
+    const isMobile = width <= 700;
+    const rowHeight = isMobile ? 44 : 32;
+    const labelWidth = isMobile
+      ? Math.min(180, Math.max(140, width * 0.48))
+      : Math.min(190, Math.max(105, width * 0.34));
+    const right = isMobile ? 36 : 42;
+    const labelGap = 10;
     const height = rows.length * rowHeight + 12;
     const max = Math.max(...rows.map((row) => row.value), 1);
-    const plotWidth = Math.max(80, width - labelWidth - right - 14);
-    const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img" });
+    const plotWidth = Math.max(72, width - labelWidth - right - 14);
+    const svg = svgEl("svg", {
+      viewBox: `0 0 ${width} ${height}`,
+      width,
+      height,
+      role: "img",
+      "aria-label": "Répartition des incidents",
+    });
+
+    const clipId = `chart-label-clip-${container.id || "dimension"}-${Math.random().toString(36).slice(2, 8)}`;
+    const defs = svgEl("defs");
+    const clipPath = svgEl("clipPath", { id: clipId });
+    clipPath.appendChild(svgEl("rect", { x: 0, y: 0, width: Math.max(0, labelWidth - labelGap), height }));
+    defs.appendChild(clipPath);
+    svg.appendChild(defs);
 
     rows.forEach((row, index) => {
       const y = index * rowHeight + 6;
       const barWidth = Math.max(2, (row.value / max) * plotWidth);
-      svg.appendChild(svgEl("text", { class: "category-label", x: 0, y: y + 16 }, row.label));
-      const bar = svgEl("rect", { class: "bar", x: labelWidth, y: y + 3, width: barWidth, height: 18, rx: 4 });
+      const maxChars = Math.max(10, Math.floor((labelWidth - labelGap) / (isMobile ? 6.7 : 7.1)));
+      const labelLines = wrapChartLabel(row.label, maxChars, isMobile ? 2 : 1);
+      const label = svgEl("text", {
+        class: "category-label",
+        x: 0,
+        y: isMobile ? y + 13 : y + 16,
+        "clip-path": `url(#${clipId})`,
+      });
+      labelLines.forEach((line, lineIndex) => {
+        label.appendChild(svgEl("tspan", {
+          x: 0,
+          dy: lineIndex === 0 ? 0 : 14,
+        }, line));
+      });
+      label.appendChild(svgEl("title", {}, row.label));
+      svg.appendChild(label);
+
+      const barY = isMobile ? y + 10 : y + 3;
+      const bar = svgEl("rect", { class: "bar", x: labelWidth, y: barY, width: barWidth, height: 18, rx: 4 });
       bar.appendChild(svgEl("title", {}, `${row.label} : ${row.value} incident${row.value > 1 ? "s" : ""}`));
       svg.appendChild(bar);
-      svg.appendChild(svgEl("text", { class: "value-label", x: Math.min(width - 4, labelWidth + barWidth + 7), y: y + 16 }, String(row.value)));
+      svg.appendChild(svgEl("text", {
+        class: "value-label",
+        x: Math.min(width - 4, labelWidth + barWidth + 7),
+        y: barY + 13,
+      }, String(row.value)));
     });
     container.appendChild(svg);
   }
