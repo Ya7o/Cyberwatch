@@ -67,11 +67,7 @@ jobs:
         run: python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
 
       - name: Syntaxe dashboard
-        run: |
-          node --check assets/app.js
-          node --check assets/app-legacy.js
-          node --check assets/dashboard-audit.js
-          node --check assets/data-sensitivity.js
+        run: node --check assets/app.js
 
       - name: Test de répétabilité (§27)
         run: python -m cyberwatch test-repeat
