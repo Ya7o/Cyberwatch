@@ -1,0 +1,36 @@
+/* Mobile dashboard fixes: prevent text clipping and viewport-scroll rerenders. */
+
+.chart svg { max-width: none; }
+#chart-sector,
+#chart-threat,
+#chart-location { overflow-x: hidden; }
+#chart-sector svg,
+#chart-threat svg,
+#chart-location svg { width: 100%; max-width: 100%; }
+
+@media (max-width: 700px) {
+  .topbar { position: static; }
+  .topbar-inner { align-items: flex-start; }
+  .brand { min-width: 0; flex: 1 1 auto; }
+  .brand > div { min-width: 0; }
+  .brand-sub { max-width: none; overflow-wrap: anywhere; }
+  .topbar-right { flex: 0 1 48%; min-width: 0; align-items: flex-start; }
+  .run-pill { min-width: 0; white-space: normal; overflow-wrap: anywhere; line-height: 1.35; }
+
+  .card { padding-inline: 14px; }
+  .card figcaption,
+  .card-head { min-width: 0; }
+  .card figcaption p,
+  .card-head p,
+  .chart-note { overflow-wrap: anywhere; }
+
+  #chart-sector,
+  #chart-threat,
+  #chart-location { overflow: visible; }
+  #chart-sector svg,
+  #chart-threat svg,
+  #chart-location svg { overflow: visible; }
+
+  .category-label { font-size: 11px; fill: var(--text-primary); }
+  .value-label { font-size: 11px; }
+}
