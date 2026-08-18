@@ -80,8 +80,8 @@ def test_context_resolver_uses_existing_official_cache_without_network():
 def test_context_resolver_abstains_on_conflicting_strong_evidence():
     item = _item("I1", "Example")
     facts = [
-        {"Item_ID": "I1", "Source_ID": "SRC1", "Activity_Description": "fabrication industrielle"},
-        {"Item_ID": "I1", "Source_ID": "SRC2", "Activity_Description": "services informatiques et logiciels"},
+        {"Item_ID": "I1", "Source_ID": "SRC1", "Activity_Description": "industrie manufacturière"},
+        {"Item_ID": "I1", "Source_ID": "SRC2", "Activity_Description": "services informatiques et logiciel"},
     ]
 
     applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], facts, [])
