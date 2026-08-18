@@ -3,13 +3,15 @@ from cyberwatch.model import Item
 from cyberwatch.normalize import organisation_key
 
 
-def _item(item_id: str, organisation: str) -> Item:
+def _item(item_id: str, organisation: str, *, title: str = "", url: str = "") -> Item:
     return Item(
         Item_ID=item_id,
         Source_ID="CYBERATTAQUE_ORG",
         Organisation_Raw=organisation,
         Organisation_Key=organisation_key(organisation),
         Sector=config.SECTOR_UNKNOWN,
+        Title=title,
+        URL=url,
     )
 
 
@@ -39,6 +41,47 @@ def test_context_activity_examples_from_observed_long_tail():
     assert context_sector.classify_context_activity(
         "Spécialisé dans la vente d'accessoires et d'équipements pour camping-cars"
     ) == config.SECTOR_RETAIL
+
+
+def test_source_title_context_resolves_samboat_without_external_search():
+    item = _item(
+        "I1",
+        "SamBoat",
+        title="SamBoat : la plateforme de location de bateaux frappée par une cyberattaque majeure",
+        url="https://www.cyberattaque.org/samboat-la-plateforme-de-location-de-bateaux-frappee/",
+    )
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], [], [])
+    assert applied == 1
+    assert conflicts == 0
+    assert item.Sector == getattr(config, "SECTOR_HOSPITALITY")
+    assert "source_title_context" in provenance[0]["Evidence"]
+
+
+def test_source_url_context_resolves_sde03_from_explicit_article_slug():
+    item = _item(
+        "I1",
+        "SDE 03",
+        title="SDE 03 piraté : 4 122 personnes en fuite",
+        url="https://www.cyberattaque.org/syndicat-departemental-energie-de-lallier-cyberattaque/",
+    )
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], [], [])
+    assert applied == 1
+    assert conflicts == 0
+    assert item.Sector == config.SECTOR_ENERGY
+    assert "source_url_context" in provenance[0]["Evidence"]
+
+
+def test_unrelated_title_activity_is_not_attributed_to_victim():
+    item = _item(
+        "I1",
+        "Opaque Corp",
+        title="Cyberattaque : une plateforme de location de bateaux mentionne Opaque Corp",
+        url="https://www.cyberattaque.org/opaque-corp-cyberattaque/",
+    )
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], [], [])
+    assert applied == 0
+    assert conflicts == 0
+    assert provenance == []
 
 
 def test_context_resolver_propagates_activity_by_exact_org_key():
