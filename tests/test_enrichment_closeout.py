@@ -49,7 +49,7 @@ def test_summary_derivee_depuis_faits_valides():
     assert evidence["Summary"]
 
 
-def test_merge_source_facts_preserve_legacy_but_clear_refreshable():
+def test_merge_source_facts_preserve_legacy_and_refreshable_on_empty_refresh():
     existing = [{
         "Item_ID": "ITM-1", "Source_ID": "FRENCHBREACHES", "Threat_Actor": "ZeroBytes",
         "Attack_Flow_JSON": "old-flow", "Impact": "old-impact",
@@ -61,12 +61,12 @@ def test_merge_source_facts_preserve_legacy_but_clear_refreshable():
     }]
     merged = source_facts.merge_source_facts(existing, incoming)[0]
     assert merged["Threat_Actor"] == "ZeroBytes"
-    assert merged["Attack_Flow_JSON"] == ""
-    assert merged["Impact"] == ""
+    assert merged["Attack_Flow_JSON"] == "old-flow"
+    assert merged["Impact"] == "old-impact"
     evidence = json.loads(merged["Evidence_JSON"])
     assert evidence["Threat_Actor"] == "proof actor"
-    assert "Attack_Flow_JSON" not in evidence
-    assert "Impact" not in evidence
+    assert evidence["Attack_Flow_JSON"] == ["old"]
+    assert evidence["Impact"] == "old impact"
 
 
 
