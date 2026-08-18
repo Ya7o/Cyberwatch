@@ -4,8 +4,9 @@ def test_criticite_est_calculee_dans_le_runtime_unique_sans_observer_dom():
     assert "Données sensibles" in app
     assert "Données personnelles" in app
     assert "Données non qualifiées" in app
-    assert "SENSITIVE" in app
-    assert "PERSONAL" in app
+    assert "SENSITIVE_MARKERS" in app
+    assert "PERSONAL_EXACT" in app
+    assert "PERSONAL_MARKERS" in app
     assert "function sensitivity(" in app
     assert "MutationObserver" not in app
     assert "assets/data-sensitivity.js" not in app
