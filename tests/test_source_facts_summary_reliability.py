@@ -128,11 +128,7 @@ def test_api_error_does_not_consume_semantic_retry(monkeypatch, tmp_path):
     assert key not in runtime.cache or "summary" not in runtime.cache[key].get("fields", {})
 
 
-def test_legacy_null_field_cache_becomes_retryable_miss(monkeypatch, tmp_path):
-    _configure_ai(monkeypatch, tmp_path)
-    item = _item()
-    entry = RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")
-    runtime = sfa._runtime()
+def _seed_legacy_null(runtime, item, entry):
     key = sfa._cache_item_key(item, entry, runtime)
     runtime.cache[key] = {
         "item_id": item.Item_ID,
@@ -143,6 +139,33 @@ def test_legacy_null_field_cache_becomes_retryable_miss(monkeypatch, tmp_path):
             "summary": {"version": sfa.FIELD_VERSIONS["summary"], "value": None},
         },
     }
+    return key
+
+
+def test_legacy_null_field_cache_is_skipped_in_normal_rebuild(monkeypatch, tmp_path):
+    _configure_ai(monkeypatch, tmp_path)
+    item = _item()
+    entry = RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")
+    runtime = sfa._runtime()
+    key = _seed_legacy_null(runtime, item, entry)
+
+    values, satisfied = sfa._read_field_cache(
+        runtime, key, {"summary"}, sfa._full_context(entry)
+    )
+    assert values == {}
+    assert satisfied == {"summary"}
+    assert runtime.legacy_null_skips == 1
+    assert runtime.legacy_null_migrations == 0
+    assert "status" not in runtime.cache[key]["fields"]["summary"]
+
+
+def test_explicit_backfill_mode_can_migrate_legacy_null_to_retryable_miss(monkeypatch, tmp_path):
+    _configure_ai(monkeypatch, tmp_path)
+    item = _item()
+    entry = RawEntry(title="Exemple", content="L'attaque est attribuée à LockBit.")
+    runtime = sfa._runtime()
+    runtime.retry_legacy_nulls = True
+    key = _seed_legacy_null(runtime, item, entry)
 
     values, satisfied = sfa._read_field_cache(
         runtime, key, {"summary"}, sfa._full_context(entry)
@@ -152,6 +175,8 @@ def test_legacy_null_field_cache_becomes_retryable_miss(monkeypatch, tmp_path):
     cached = runtime.cache[key]["fields"]["summary"]
     assert cached["status"] == "miss"
     assert cached["misses"] == 1
+    assert runtime.legacy_null_migrations == 1
+    assert runtime.legacy_null_skips == 0
 
 
 def test_merge_does_not_erase_valid_semantic_fields_or_evidence():

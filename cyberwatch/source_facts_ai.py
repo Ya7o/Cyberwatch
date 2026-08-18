@@ -209,6 +209,8 @@ class _Runtime:
         self.api_key = os.getenv("OPENAI_API_KEY", "").strip()
         flag = os.getenv("SOURCE_FACTS_AI_ENABLED", "1").strip().lower()
         self.enabled = bool(self.api_key) and flag not in {"0", "false", "no", "off"}
+        retry_legacy = os.getenv("SOURCE_FACTS_AI_RETRY_LEGACY_NULLS", "0").strip().lower()
+        self.retry_legacy_nulls = retry_legacy not in {"0", "false", "no", "off"}
         self.model = os.getenv("SOURCE_FACTS_AI_MODEL", os.getenv("OPENAI_MODEL", DEFAULT_MODEL)).strip() or DEFAULT_MODEL
         self.max_calls = _env_int("SOURCE_FACTS_AI_MAX_CALLS_PER_RUN", 250)
         self.max_cost = _env_float("SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN", 0.50)
@@ -229,6 +231,7 @@ class _Runtime:
         self.accepted_field_cache_hits = 0
         self.abstained_field_cache_hits = 0
         self.legacy_null_migrations = 0
+        self.legacy_null_skips = 0
         self.semantic_first_misses = 0
         self.semantic_retries = 0
         self.semantic_recovered_on_retry = 0
@@ -298,6 +301,7 @@ class _Runtime:
             "accepted_field_cache_hits": self.accepted_field_cache_hits,
             "abstained_field_cache_hits": self.abstained_field_cache_hits,
             "legacy_null_migrations": self.legacy_null_migrations,
+            "legacy_null_skips": self.legacy_null_skips,
             "semantic_first_misses": self.semantic_first_misses,
             "semantic_retries": self.semantic_retries,
             "semantic_recovered_on_retry": self.semantic_recovered_on_retry,
@@ -878,6 +882,14 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
                 cached["status"] = status
                 cached["misses"] = 0
             else:
+                if not runtime.retry_legacy_nulls:
+                    # Ancien cache sans statut : le null signifiait historiquement
+                    # « rien d'extrait ». CREATE le respecte sans repayer un LLM.
+                    # Le backfill ciblé peut explicitement autoriser sa migration.
+                    satisfied.add(field)
+                    runtime.field_cache_hits += 1
+                    runtime.legacy_null_skips += 1
+                    continue
                 status = "miss"
                 cached["status"] = status
                 cached["misses"] = max(1, _cache_miss_count(cached))

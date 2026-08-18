@@ -182,6 +182,7 @@ RUN_SOURCE_COLUMNS = [
     "SourceFacts_Accepted_Cache_Hits",
     "SourceFacts_Abstained_Cache_Hits",
     "SourceFacts_Legacy_Null_Migrations",
+    "SourceFacts_Legacy_Null_Skips",
     "SourceFacts_Semantic_First_Misses",
     "SourceFacts_Semantic_Retries",
     "SourceFacts_Recovered_On_Retry",

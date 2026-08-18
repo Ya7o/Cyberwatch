@@ -185,6 +185,7 @@ class SourceOutcome:
     source_facts_accepted_cache_hits: int = 0
     source_facts_abstained_cache_hits: int = 0
     source_facts_legacy_null_migrations: int = 0
+    source_facts_legacy_null_skips: int = 0
     source_facts_semantic_first_misses: int = 0
     source_facts_semantic_retries: int = 0
     source_facts_recovered_on_retry: int = 0
