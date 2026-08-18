@@ -1,4 +1,4 @@
-# trigger: cache-first-post-dev-rebuild-fix-import-2026-08-18
+# trigger: cache-first-post-dev-rebuild-fix-pytest-path-2026-08-18
 name: Rebuild post-development
 
 on:
@@ -255,7 +255,7 @@ jobs:
       - name: Contrôles qualité
         run: |
           set -euo pipefail
-          pytest -q tests/test_rebuild_cache.py
+          python -m pytest -q tests/test_rebuild_cache.py
           python -m cyberwatch check
           python -m cyberwatch test-repeat
           python scripts/audit_data_quality.py --items data/items.csv --source-facts data/source_facts.csv --check --check-regression
