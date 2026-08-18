@@ -515,9 +515,13 @@
   function renderSourceDetail(rows) {
     $("#sources-detail-table tbody").innerHTML = rows.map((source) => {
       const status = String(source.status || "SKIPPED").toUpperCase();
+      const historyStatus = String(source.history_status || "UNKNOWN").toUpperCase();
+      const historyNote = historyStatus === "TRUNCATED"
+        ? `<div class="muted">Historique borné${source.oldest_available_date ? ` depuis ${esc(formatDate(source.oldest_available_date))}` : ""}</div>`
+        : "";
       return `<tr>
         <td data-label="Source">${esc(sourceLabel(source.id))}</td>
-        <td data-label="Statut"><span class="chip" data-status="${esc(status)}">${esc(status)}</span></td>
+        <td data-label="Statut"><span class="chip" data-status="${esc(status)}">${esc(status)}</span>${historyNote}</td>
         <td data-label="Dernier item">${esc(formatDate(source.latest_item))}</td>
         <td data-label="Organisation">${esc(source.latest_item_org || "—")}</td>
         <td data-label="Items vus" class="num">${esc(source.items_seen ?? "—")}</td>
@@ -609,6 +613,7 @@
       }, 180);
     });
     $("#f-reset").addEventListener("click", () => {
+      clearTimeout(searchTimer);
       state.filters = { ocean: false, local: false, source: "", org: "" };
       $("#f-ocean-indien").setAttribute("aria-pressed", "false");
       $("#f-local").setAttribute("aria-pressed", "false");
