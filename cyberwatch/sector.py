@@ -82,11 +82,48 @@ _SPORT_NAME_TERMS = (
     "sport", "sports",
 )
 
+# Les institutions de santé utilisent fréquemment un vocabulaire institutionnel
+# générique ("agence nationale", "établissement public"), qui ne doit pas les
+# faire basculer en Administration lorsque leur mission sanitaire est explicite.
+_HEALTH_INSTITUTION_TERMS = (
+    "agence nationale", "agence regionale", "etablissement public",
+    "autorite", "office national", "institut national",
+)
+_HEALTH_MISSION_TERMS = (
+    "sante", "sanitaire", "medical", "medicament", "pharmacie",
+    "hospitalier", "prevention",
+)
+
+
+def _health_institution_sector(text: str) -> str:
+    """Reconnaît un organisme de santé lorsque mission et statut convergent."""
+    blob = searchable(text)
+    if not blob:
+        return config.SECTOR_UNKNOWN
+
+    # Formulation nominative quasi auto-descriptive, sans dépendre d'une entité
+    # particulière : « Santé publique France », « Santé publique X », etc.
+    if blob.startswith("sante publique "):
+        return config.SECTOR_HEALTH
+
+    institutional = any(_contains(blob, term) for term in _HEALTH_INSTITUTION_TERMS)
+    health = any(_contains(blob, term) for term in _HEALTH_MISSION_TERMS)
+    if institutional and health:
+        return config.SECTOR_HEALTH
+    return config.SECTOR_UNKNOWN
+
 
 def _safe_institutional_name_sector(organisation: str) -> str:
     blob = searchable(organisation)
     if not blob:
         return config.SECTOR_UNKNOWN
+
+    # La mission sanitaire explicite prime sur la nature administrative de
+    # l'entité. Cela évite par exemple de classer une agence publique de santé
+    # comme simple Administration / Collectivité.
+    health_sector = _health_institution_sector(organisation)
+    if health_sector != config.SECTOR_UNKNOWN:
+        return health_sector
 
     # Identités institutionnelles quasi auto-descriptives. Les variantes avec
     # apostrophe deviennent « d » après normalisation (Mairie d'Eyguières,
@@ -143,4 +180,10 @@ def classify_sector_name(organisation: str) -> str:
 
 def classify_sector_activity(activity_description: str) -> str:
     """Classe une description d'activité explicitement extraite de la source."""
+    # Priorité contextuelle : « agence nationale de santé publique » contient
+    # aussi « agence nationale », présent dans les règles Administration. Le
+    # couple statut institutionnel + mission sanitaire est plus spécifique.
+    health_sector = _health_institution_sector(activity_description)
+    if health_sector != config.SECTOR_UNKNOWN:
+        return health_sector
     return _from_rules(activity_description, config.SECTOR_ACTIVITY_RULES)
