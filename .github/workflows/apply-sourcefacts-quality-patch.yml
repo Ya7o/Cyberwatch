@@ -1,0 +1,47 @@
+name: Apply SourceFacts quality patch
+
+on:
+  push:
+    branches:
+      - agent/sourcefacts-quality-telemetry-20260818
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/sourcefacts-quality-telemetry-20260818
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Apply patch
+        run: python scripts/apply_sourcefacts_quality_patch.py
+      - name: Targeted tests
+        run: |
+          python -m pytest tests/test_source_facts_summary_reliability.py tests/test_source_facts_quality_telemetry.py tests/test_source_performance_instrumentation.py -q
+      - name: Full tests
+        run: python -m pytest tests/ -q
+      - name: Golden and structural checks
+        run: |
+          python scripts/evaluate_dedup_golden.py
+          python scripts/evaluate_golden.py --json /tmp/golden.json
+          python -m cyberwatch test-repeat
+          python -m cyberwatch check --allow-uninitialized
+      - name: Commit patch
+        run: |
+          rm scripts/apply_sourcefacts_quality_patch.py
+          rm .github/workflows/apply-sourcefacts-quality-patch.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cyberwatch/source_facts.py cyberwatch/source_facts_ai.py cyberwatch/status.py cyberwatch/model.py cyberwatch/runner.py scripts/report_source_performance.py tests/test_source_facts_quality_telemetry.py scripts/apply_sourcefacts_quality_patch.py .github/workflows/apply-sourcefacts-quality-patch.yml
+          git commit -m 'Harden SourceFacts refresh semantics and telemetry'
+          git push origin HEAD:agent/sourcefacts-quality-telemetry-20260818
