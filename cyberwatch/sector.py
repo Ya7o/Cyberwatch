@@ -133,6 +133,10 @@ def _safe_institutional_name_sector(organisation: str) -> str:
     )
     if blob.startswith(admin_prefixes):
         return config.SECTOR_ADMIN
+    # Les métropoles françaises sont fréquemment nommées « X Métropole »
+    # (Nantes Métropole, Rennes Métropole), et non « Métropole de X ».
+    if blob.endswith(" metropole"):
+        return config.SECTOR_ADMIN
 
     education_prefixes = (
         "universite ", "university of ", "ecole nationale ", "ecole superieure ",
@@ -141,6 +145,11 @@ def _safe_institutional_name_sector(organisation: str) -> str:
         "ppa business school", "enseignement catholique", "sciences po",
     )
     if blob.startswith(education_prefixes):
+        return config.SECTOR_EDUCATION
+    # Une dénomination terminant explicitement par « School of Business » ou
+    # « Business School » décrit l'établissement, sans généraliser le mot
+    # « business » à lui seul.
+    if blob.endswith((" school of business", " business school")):
         return config.SECTOR_EDUCATION
 
     if blob.startswith("mutuelle "):
