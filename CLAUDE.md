@@ -195,7 +195,7 @@ s'exécute — ce qui n'arrive pas si la commande a retourné 1.
 ```bash
 pip install -r requirements.txt
 python -m pytest tests/ -q          # offline, mocké, ~430 tests
-node --check assets/*.js            # les 3 JS du dashboard
+node --check assets/app.js          # runtime JS unique du dashboard
 python -m cyberwatch check --allow-uninitialized
 python -m cyberwatch test-repeat    # déterminisme, ordre A vs ordre aléatoire
 ```
@@ -214,19 +214,24 @@ pour revenir à l'état publié, jamais un commit par-dessus.
 
 ## Dashboard (`index.html`, `assets/`)
 
-- `assets/app.js` charge dans l'ordre `app-legacy.js` (rendu historique)
-  puis `dashboard-audit.js` (correctifs UI appliqués par-dessus — c'est la
-  couche qui gagne visuellement, `app-legacy.js` initialise le DOM que
-  `dashboard-audit.js` re-rend ensuite).
+- `assets/app.js` est le **seul runtime** du dashboard : un chargement de
+  `incidents.json`/`status.json`, un état, un pipeline filtre → rendu. Il n'y
+  a plus de couche legacy, de `document.write` ni de `MutationObserver` pour
+  compléter les lignes après rendu.
+- Filtres : recherche organisation accent/casse insensitive, Océan Indien,
+  Réunion / Mayotte, source et réinitialisation. Aucun filtre métier ne
+  repose sur une whitelist d'organisations codée en dur.
+- Les lignes d'incident restent compactes. Le bouton **Détails** ouvre une
+  seconde ligne pleine largeur avec synthèse, faits par source, vecteur,
+  déroulé, volumes, vulnérabilités, données exposées groupées, impact,
+  évolution et références disponibles. La criticité des données est calculée
+  déterministement pendant ce rendu.
 - Section **État des sources** (`#fiabilite`) : vue globale compacte
   (`#sources-list`, nom + LED de statut seulement, aucune métrique) +
   détail accessible dessous (`<details class="sources-detail">`,
   `#sources-detail-table`), mêmes 6 champs pour toute source sans
   traitement spécial (Source, Statut, Dernier item, Organisation, Items
-  vus, Items dans la fenêtre). `#sources-table`/`#blindspots`/
-  `#reliability-summary` sont des conteneurs de compatibilité historique,
-  volontairement `hidden`, laissés en place car `app-legacy.js` y écrit
-  encore (les toucher sans adapter `app-legacy.js` casse son rendu).
+  vus, Items dans la fenêtre).
 - `latest_item_org`/`latest_item` (dans `status.json`, calculés par
   `runner.py::run_source`) : dérivés des items réellement collectés, tri
   déterministe `(Published_Date, Item_ID)` en cas d'égalité — jamais un
