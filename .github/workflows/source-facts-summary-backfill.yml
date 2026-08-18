@@ -65,7 +65,7 @@ jobs:
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.25"
           SOURCE_FACTS_AI_CHECKPOINT_EVERY: "10"
         run: |
-          ARGS=(--max-items "$MAX_ITEMS" --retry-abstained)
+          ARGS=(--max-items "$MAX_ITEMS" --retry-abstained --retry-legacy-nulls)
           if [ -n "$ITEM_IDS" ]; then ARGS+=(--item-ids "$ITEM_IDS"); fi
           python scripts/backfill_source_fact_summaries.py "${ARGS[@]}" | tee /tmp/sourcefacts-after.txt
           echo '### SourceFacts — résultat du backfill' >> "$GITHUB_STEP_SUMMARY"
