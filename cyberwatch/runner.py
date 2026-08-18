@@ -554,6 +554,7 @@ def run_source(
     outcome.source_facts_accepted_cache_hits = sf_delta("accepted_field_cache_hits")
     outcome.source_facts_abstained_cache_hits = sf_delta("abstained_field_cache_hits")
     outcome.source_facts_legacy_null_migrations = sf_delta("legacy_null_migrations")
+    outcome.source_facts_legacy_null_skips = sf_delta("legacy_null_skips")
     outcome.source_facts_semantic_first_misses = sf_delta("semantic_first_misses")
     outcome.source_facts_semantic_retries = sf_delta("semantic_retries")
     outcome.source_facts_recovered_on_retry = sf_delta("semantic_recovered_on_retry")
@@ -809,7 +810,8 @@ def execute(
                 f"q-llm={outcome.qualification_llm_duration_seconds:.1f}s/{outcome.qualification_llm_calls} "
                 f"sf-llm={outcome.source_facts_llm_duration_seconds:.1f}s/{outcome.source_facts_llm_calls} "
                 f"sf-cache=accepted:{outcome.source_facts_accepted_cache_hits}/"
-                f"abstained:{outcome.source_facts_abstained_cache_hits} "
+                f"abstained:{outcome.source_facts_abstained_cache_hits}/"
+                f"legacy-null-skip:{outcome.source_facts_legacy_null_skips} "
                 f"sf-retry={outcome.source_facts_semantic_retries}/"
                 f"recovered:{outcome.source_facts_recovered_on_retry}/"
                 f"new-abstain:{outcome.source_facts_new_abstentions} "
@@ -921,6 +923,7 @@ def _persist(
                 "SourceFacts_Accepted_Cache_Hits": o.source_facts_accepted_cache_hits,
                 "SourceFacts_Abstained_Cache_Hits": o.source_facts_abstained_cache_hits,
                 "SourceFacts_Legacy_Null_Migrations": o.source_facts_legacy_null_migrations,
+                "SourceFacts_Legacy_Null_Skips": o.source_facts_legacy_null_skips,
                 "SourceFacts_Semantic_First_Misses": o.source_facts_semantic_first_misses,
                 "SourceFacts_Semantic_Retries": o.source_facts_semantic_retries,
                 "SourceFacts_Recovered_On_Retry": o.source_facts_recovered_on_retry,

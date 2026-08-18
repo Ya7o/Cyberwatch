@@ -251,6 +251,7 @@ def run_backfill(
     item_ids: set[str] | None = None,
     dry_run: bool = False,
     retry_abstained: bool = False,
+    retry_legacy_nulls: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
@@ -261,6 +262,7 @@ def run_backfill(
     metrics.update({
         "dry_run": dry_run,
         "retry_abstained": retry_abstained,
+        "retry_legacy_nulls": retry_legacy_nulls,
         "hydrated": 0,
         "hydration_failed": 0,
         "source_facts_extracted": 0,
@@ -308,7 +310,12 @@ def run_backfill(
             metrics["abstained_retry_fields"] += len(reopened)
             retried_item_ids.append(item.Item_ID)
 
-        fact = source_facts.extract_source_fact(item, entry, spec)
+        previous_retry_legacy_nulls = runtime.retry_legacy_nulls
+        runtime.retry_legacy_nulls = bool(retry_legacy_nulls)
+        try:
+            fact = source_facts.extract_source_fact(item, entry, spec)
+        finally:
+            runtime.retry_legacy_nulls = previous_retry_legacy_nulls
 
         # Une panne technique ou un budget bloqué ne doit pas dégrader une
         # abstention déjà confirmée. Seule une vraie réponse sémantique peut
@@ -370,6 +377,13 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--retry-legacy-nulls", action="store_true",
+        help=(
+            "Autorise ce backfill à convertir les anciens value:null sans statut "
+            "en miss retentable. CREATE les considère sinon déjà traités."
+        ),
+    )
+    parser.add_argument(
         "--dry-run", action="store_true",
         help="Compte les candidats sans réseau ni écriture.",
     )
@@ -382,6 +396,7 @@ def main() -> int:
         item_ids=_parse_item_ids(args.item_ids),
         dry_run=args.dry_run,
         retry_abstained=args.retry_abstained,
+        retry_legacy_nulls=args.retry_legacy_nulls,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0

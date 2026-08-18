@@ -51,6 +51,7 @@ def main() -> int:
             f"sf_cache=accepted:{row.get('SourceFacts_Accepted_Cache_Hits') or 0}/"
             f"abstained:{row.get('SourceFacts_Abstained_Cache_Hits') or 0} "
             f"sf_migrate_null={row.get('SourceFacts_Legacy_Null_Migrations') or 0} "
+            f"sf_skip_legacy_null={row.get('SourceFacts_Legacy_Null_Skips') or 0} "
             f"sf_miss={row.get('SourceFacts_Semantic_First_Misses') or 0} "
             f"sf_retry={row.get('SourceFacts_Semantic_Retries') or 0}/"
             f"recovered:{row.get('SourceFacts_Recovered_On_Retry') or 0}/"
