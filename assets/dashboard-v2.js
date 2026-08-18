@@ -83,9 +83,11 @@
     const current = countBetween(rows, currentStart, end);
     const previous = countBetween(rows, previousStart, currentStart);
     const year = countBetween(rows, yearStart, end);
+    const currentNode = $("#kpi-30d");
     const trendNode = $("#kpi-30d-trend");
     const yearNode = $("#kpi-12m");
 
+    if (currentNode) currentNode.textContent = formatNumber(current);
     if (yearNode) yearNode.textContent = formatNumber(year);
     if (!trendNode) return;
 
@@ -177,10 +179,10 @@
       const y = index * rowHeight + 6;
       const barWidth = Math.max(2, (row.value / max) * plotWidth);
       svg.appendChild(svgEl("text", { class: "category-label", x: 0, y: y + 16 }, row.label));
-      svg.appendChild(svgEl("rect", { class: "bar", x: labelWidth, y: y + 3, width: barWidth, height: 18, rx: 4 }));
+      const bar = svgEl("rect", { class: "bar", x: labelWidth, y: y + 3, width: barWidth, height: 18, rx: 4 });
+      bar.appendChild(svgEl("title", {}, `${row.label} : ${row.value} incident${row.value > 1 ? "s" : ""}`));
+      svg.appendChild(bar);
       svg.appendChild(svgEl("text", { class: "value-label", x: Math.min(width - 4, labelWidth + barWidth + 7), y: y + 16 }, String(row.value)));
-      const title = svgEl("title", {}, `${row.label} : ${row.value} incident${row.value > 1 ? "s" : ""}`);
-      svg.lastChild.appendChild(title);
     });
     container.appendChild(svg);
   }
@@ -257,11 +259,14 @@
   function reorderIncidentRows() {
     const tbody = $("#incidents-table tbody");
     if (!tbody) return;
+    const desired = ["Date", "Organisation", "Secteur", "Menace", "Territoire", "Sources"];
     tbody.querySelectorAll("tr.incident-row").forEach((row) => {
       const cells = Array.from(row.children);
       if (cells.length !== 6) return;
+      const current = cells.map((cell) => cell.dataset.label);
+      if (desired.every((label, index) => current[index] === label)) return;
       const byLabel = new Map(cells.map((cell) => [cell.dataset.label, cell]));
-      ["Date", "Organisation", "Secteur", "Menace", "Territoire", "Sources"].forEach((label) => {
+      desired.forEach((label) => {
         const cell = byLabel.get(label);
         if (cell) row.appendChild(cell);
       });
@@ -342,8 +347,9 @@
       incidents = [];
     }
 
-    const controls = ["#f-ocean-indien", "#f-local", "#f-source", "#f-reset"];
-    controls.forEach((selector) => $(selector)?.addEventListener("click", () => scheduleRender(0)));
+    ["#f-ocean-indien", "#f-local", "#f-reset", "#theme-toggle"].forEach((selector) => {
+      $(selector)?.addEventListener("click", () => scheduleRender(0));
+    });
     $("#f-source")?.addEventListener("change", () => scheduleRender(0));
     $("#f-org")?.addEventListener("input", () => scheduleRender(230));
 
@@ -352,6 +358,7 @@
       new MutationObserver(() => {
         reorderIncidentRows();
         renameVeilleLabels(tbody);
+        scheduleRender(20);
       }).observe(tbody, { childList: true, subtree: true });
     }
     const sources = $("#sources-list")?.parentElement;
@@ -366,5 +373,6 @@
     });
 
     scheduleRender(0);
+    setTimeout(renderEnhancements, 600);
   });
 })();
