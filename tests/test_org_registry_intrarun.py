@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import pytest
-
 from cyberwatch import ai, org_enrichment, store
 from scripts import benchmark_org_registry_depth as bench
 
@@ -36,10 +34,10 @@ def test_negative_registry_result_is_reused_only_within_run(monkeypatch):
     first = org_enrichment.resolve("org x", "Org X", "2026-08-18", state)
     second = org_enrichment.resolve("org x", "Org X", "2026-08-18", state)
 
-    assert first is not None
-    assert first.Match_Status == org_enrichment.NOT_FOUND
-    assert second is not None
-    assert second.Match_Status == org_enrichment.NOT_FOUND
+    # Contrat historique inchangé : sans fallback officiel, un négatif registre
+    # reste None. Seule la répétition HTTP disparaît.
+    assert first is None
+    assert second is None
     assert calls["n"] == 1
     assert state.calls_attempted == 1
     assert state.run_cache_hits == 1
@@ -66,10 +64,11 @@ def test_ambiguous_registry_result_is_reused_only_within_run(monkeypatch):
     first = org_enrichment.resolve("org x", "Org X", "2026-08-18", state)
     second = org_enrichment.resolve("org x", "Org X", "2026-08-18", state)
 
-    assert first is not None and first.Match_Status == org_enrichment.AMBIGUOUS
-    assert second is not None and second.Match_Status == org_enrichment.AMBIGUOUS
+    assert first is None
+    assert second is None
     assert calls["n"] == 1
     assert state.run_cache_hits == 1
+    assert "org x" in state.run_cache
     assert "org x" not in state.cache
 
 
