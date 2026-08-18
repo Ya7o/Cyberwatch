@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 from . import config, org_enrichment, sector
 from .model import Item
-from .normalize import organisation_key
+from .normalize import organisation_key, searchable
 
 ORIGIN = "ORG_CONTEXT_SECTOR"
 
@@ -33,6 +33,57 @@ class Evidence:
     source_id: str = ""
 
 
+def classify_context_activity(activity: str) -> str:
+    """Classe uniquement une description métier explicite.
+
+    Les quelques compléments couvrent des formulations observées dans le long
+    tail et restent volontairement réservés au texte d'activité, jamais au nom.
+    """
+    candidate = sector.classify_sector_activity(activity)
+    if candidate != config.SECTOR_UNKNOWN:
+        return candidate
+
+    text = searchable(activity)
+    if not text:
+        return config.SECTOR_UNKNOWN
+
+    if any(marker in text for marker in (
+        "fournisseur de materiel",
+        "vente de materiel",
+        "distributeur de materiel",
+        "distribution de materiel",
+    )):
+        return config.SECTOR_RETAIL
+
+    hospitality = getattr(config, "SECTOR_HOSPITALITY", config.SECTOR_UNKNOWN)
+    if hospitality != config.SECTOR_UNKNOWN and any(marker in text for marker in (
+        "location de bateaux",
+        "location de bateau",
+        "location nautique",
+        "location de voiliers",
+        "location de catamarans",
+    )):
+        return hospitality
+
+    if any(marker in text for marker in (
+        "esport",
+        "e sport",
+        "esports",
+    )):
+        return config.SECTOR_SPORT
+
+    if any(marker in text for marker in (
+        "renovation de l habitat",
+        "renovation habitat",
+        "pose de fenetres",
+        "pose de volets",
+        "pose de portes",
+    )):
+        return config.SECTOR_CONSTRUCTION
+
+    return config.SECTOR_UNKNOWN
+
+
 def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
     result: list[Evidence] = []
     raw_sector = (row.get("Source_Sector_Raw") or "").strip()
@@ -49,7 +100,7 @@ def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
 
     activity = (row.get("Activity_Description") or "").strip()
     if activity:
-        candidate = sector.classify_sector_activity(activity)
+        candidate = classify_context_activity(activity)
         if candidate != config.SECTOR_UNKNOWN:
             result.append(Evidence(
                 candidate,
