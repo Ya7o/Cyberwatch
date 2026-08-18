@@ -526,6 +526,22 @@
     }).join("");
   }
 
+  function renderBlindSpots() {
+    const box = $("#blindspots");
+    const list = $("#blindspots-list");
+    if (!box || !list) return;
+    const spots = state.status?.blind_spots || [];
+    if (!spots.length) {
+      box.hidden = true;
+      list.innerHTML = "";
+      return;
+    }
+    box.hidden = false;
+    list.innerHTML = spots.map((spot) => `
+      <li><strong>${esc(spot.id)}</strong> — ${esc(spot.status || "À vérifier")}${spot.coverage != null ? ` ${esc(spot.coverage)}%` : ""}${spot.detail ? ` (${esc(spot.detail)})` : ""}${spot.reason ? ` : ${esc(spot.reason)}` : ""}</li>
+    `).join("");
+  }
+
   function renderRun() {
     const data = state.status;
     const pill = $("#run-pill");
@@ -551,6 +567,7 @@
 
   function render() {
     renderRun();
+    renderBlindSpots();
     renderSources();
     if (state.status?.initialized === false) {
       $("#table-count").textContent = "Base non initialisée";
