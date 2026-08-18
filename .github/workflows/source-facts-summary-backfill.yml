@@ -1,0 +1,134 @@
+name: SourceFacts Summary Backfill
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/backfill_source_fact_summaries.py"
+      - ".github/workflows/source-facts-summary-backfill.yml"
+  workflow_dispatch:
+    inputs:
+      max_items:
+        description: "Nombre maximal d'items sans synthèse à retraiter"
+        type: number
+        default: 100
+      item_ids:
+        description: "Item_ID ciblés, séparés par des virgules (optionnel)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collecte
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MAX_ITEMS: ${{ github.event.inputs.max_items || '100' }}
+      ITEM_IDS: ${{ github.event.inputs.item_ids || '' }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Auditer le périmètre ciblé
+        run: |
+          ARGS=(--dry-run --max-items "$MAX_ITEMS")
+          if [ -n "$ITEM_IDS" ]; then ARGS+=(--item-ids "$ITEM_IDS"); fi
+          echo '### SourceFacts — candidats avant backfill' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          python scripts/backfill_source_fact_summaries.py "${ARGS[@]}" | tee /tmp/sourcefacts-before.txt
+          cat /tmp/sourcefacts-before.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Backfill ciblé des synthèses
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          SOURCE_FACTS_AI_ENABLED: "1"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "100"
+          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.25"
+          SOURCE_FACTS_AI_CHECKPOINT_EVERY: "10"
+        run: |
+          ARGS=(--max-items "$MAX_ITEMS")
+          if [ -n "$ITEM_IDS" ]; then ARGS+=(--item-ids "$ITEM_IDS"); fi
+          python scripts/backfill_source_fact_summaries.py "${ARGS[@]}" | tee /tmp/sourcefacts-after.txt
+          echo '### SourceFacts — résultat du backfill' >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/sourcefacts-after.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Vérifier l'isolation canonique
+        run: |
+          python - <<'PY'
+          import subprocess
+
+          allowed = {
+              "data/source_facts.csv",
+              "data/source_facts_ai_cache.json",
+              "data/source_facts_ai_usage.json",
+              "assets/data/incidents.json",
+              "assets/data/status.json",
+          }
+          changed = set(subprocess.check_output(
+              ["git", "diff", "--name-only"], text=True
+          ).splitlines())
+          unexpected = sorted(changed - allowed)
+          if unexpected:
+              raise SystemExit(
+                  "Backfill SourceFacts non isolé : " + ", ".join(unexpected)
+              )
+          print("Fichiers autorisés modifiés :", ", ".join(sorted(changed)) or "aucun")
+          PY
+
+      - name: Valider le snapshot
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python scripts/audit_data_quality.py \
+            --items data/items.csv \
+            --source-facts data/source_facts.csv \
+            --check
+          node --check assets/dashboard-audit.js
+
+      - name: Publier le backfill
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            data/source_facts.csv \
+            data/source_facts_ai_cache.json \
+            data/source_facts_ai_usage.json \
+            assets/data/incidents.json \
+            assets/data/status.json
+
+          if git diff --staged --quiet; then
+            echo "Aucune donnée SourceFacts à publier."
+            exit 0
+          fi
+
+          git commit -m "data: backfill missing SourceFacts summaries"
+          for delay in 0 2 4 8 16; do
+            [ "$delay" -gt 0 ] && sleep "$delay"
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+          done
+
+          echo "Échec de publication du backfill SourceFacts." >&2
+          exit 1
