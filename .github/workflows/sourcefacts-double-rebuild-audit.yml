@@ -1,15 +1,16 @@
 name: SourceFacts double rebuild audit
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/sourcefacts-double-rebuild-audit-20260818
+      - main
 
 permissions:
   contents: read
 
 jobs:
   audit:
+    if: github.head_ref == 'agent/sourcefacts-double-rebuild-audit-20260818'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -42,8 +43,11 @@ jobs:
         id: run1
         continue-on-error: true
         run: |
+          set +e
           python -m cyberwatch create --as-of "$AS_OF" --layers all
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
       - name: Capture run 1
         if: always()
         run: |
@@ -58,8 +62,11 @@ jobs:
         id: run2
         continue-on-error: true
         run: |
+          set +e
           python -m cyberwatch create --as-of "$AS_OF" --layers all
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
       - name: Capture run 2 and comparison
         if: always()
         run: |
@@ -69,15 +76,15 @@ jobs:
           cat data/source_facts_ai_usage.json
           echo '===== COMPARISON ====='
           python - <<'PY'
-          import csv, json
-          from pathlib import Path
+          import csv, json, os
 
           def rows(path):
               with open(path, encoding='utf-8', newline='') as fh:
                   return list(csv.DictReader(fh))
 
           runlog = rows('data/run_log.csv')
-          candidates = [r for r in runlog if r.get('Mode') == 'CREATE' and r.get('As_Of') == '${{ env.AS_OF }}']
+          as_of = os.environ['AS_OF']
+          candidates = [r for r in runlog if r.get('Mode') == 'CREATE' and r.get('As_Of') == as_of]
           if len(candidates) < 2:
               candidates = [r for r in runlog if r.get('Mode') == 'CREATE'][-2:]
           ids = [r.get('Run_ID') for r in candidates[-2:]]
