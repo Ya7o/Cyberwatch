@@ -251,7 +251,7 @@ La CI n'utilise pas le secret OpenAI de collecte.
 
 Pour les modes qui écrivent : collecte → rapport → audits qualité → contrôles → génération du dashboard → commit des changements `data/` et `assets/data/`.
 
-Les nombreux workflows d'enrichissement/audit spécialisés présents dans `.github/workflows/` sont des outils ciblés ; ils ne remplacent pas la chaîne canonique de `collect.yml` et `ci.yml`.
+Les workflows d'enrichissement et d'audit spécialisés présents dans `.github/workflows/` sont des outils ciblés ; ils ne remplacent pas la chaîne canonique de `collect.yml` et `ci.yml`.
 
 ## 11. Validation locale
 
