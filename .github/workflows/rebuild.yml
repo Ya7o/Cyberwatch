@@ -1,4 +1,4 @@
-# trigger: 2026-08-18T21:22+04:00
+# trigger: diagnose-sector-regression-2026-08-18
 name: Rebuild post-development
 
 on:
@@ -45,11 +45,12 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Inventorier les caches conservés
+      - name: Inventorier les caches et snapshot avant rebuild
         id: caches_before
         shell: bash
         run: |
           set -euo pipefail
+          cp data/items.csv /tmp/items-before-rebuild.csv
           echo "### Caches conservés avant rebuild" >> "$GITHUB_STEP_SUMMARY"
           for f in \
             data/ai_qualifications.csv \
@@ -111,6 +112,67 @@ jobs:
           tail -n 120 /tmp/rebuild.log >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           echo "</details>" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Diagnostiquer les qualifications perdues
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import csv
+          from collections import defaultdict
+          from pathlib import Path
+
+          UNKNOWN = "Inconnu"
+
+          def read(path):
+              with Path(path).open(encoding="utf-8", newline="") as f:
+                  return list(csv.DictReader(f))
+
+          before = read("/tmp/items-before-rebuild.csv")
+          after = read("data/items.csv")
+
+          def keys(row):
+              # Prefer source-native identity, then URL, then stable org/date fallback.
+              out = []
+              sid = row.get("Source_ID", "")
+              native = row.get("Source_Item_ID", "")
+              url = row.get("URL", "")
+              if sid and native:
+                  out.append(("native", sid, native))
+              if sid and url:
+                  out.append(("url", sid, url))
+              out.append(("org-date", sid, row.get("Organisation_Key", ""), row.get("Published_Date", "")))
+              return out
+
+          after_index = {}
+          for row in after:
+              for key in keys(row):
+                  after_index.setdefault(key, row)
+
+          regressions = []
+          for old in before:
+              if old.get("Sector") in ("", UNKNOWN):
+                  continue
+              new = next((after_index.get(k) for k in keys(old) if after_index.get(k)), None)
+              if new and new.get("Sector") == UNKNOWN:
+                  regressions.append((old, new))
+
+          by_source = defaultdict(list)
+          for pair in regressions:
+              by_source[pair[0].get("Source_ID", "")].append(pair)
+
+          print("\n### Régressions Sector connues → Inconnu")
+          print(f"- Total : {len(regressions)}")
+          for source in sorted(by_source):
+              print(f"\n#### {source} — {len(by_source[source])}")
+              for old, new in by_source[source]:
+                  print(
+                      f"- **{old.get('Organisation_Raw','')}** : "
+                      f"`{old.get('Sector','')}` → `Inconnu` · "
+                      f"old_id=`{old.get('Item_ID','')}` · new_id=`{new.get('Item_ID','')}` · "
+                      f"source_item_id=`{new.get('Source_Item_ID','')}` · {new.get('URL','')}"
+                  )
+          PY
 
       - name: Mesurer réutilisation LLM et état reconstruit
         shell: bash
