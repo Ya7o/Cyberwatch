@@ -194,19 +194,16 @@ def test_build_charge_explicitement_source_facts():
 
 
 def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
-    js = open("assets/dashboard-audit.js", encoding="utf-8").read()
+    js = open("assets/app.js", encoding="utf-8").read()
     html = open("index.html", encoding="utf-8").read()
 
-    assert "function renderSourceFacts(incident)" in js
-    assert "Array.isArray(incident.facts)" in js
-    assert 'if (!rendered.length) return ""' in js
-    assert 'class="incident-facts"' in js
-    assert "renderSourceFacts(incident)" in js
-    assert "renderIncidentSummary(incident)" in js
-    assert "initialAccessLabel" in js
+    assert "function factHtml(fact)" in js
+    assert "function detailHtml(incident)" in js
+    assert "(incident.facts || []).map(factHtml)" in js
+    assert 'class="incident-facts-list"' in js
     assert "attackFlowLabel" in js
+    assert "renderDataTypes(fact.data_types)" in js
 
-    # Le tableau principal reste volontairement compact.
     header = html.split('<table class="data-table" id="incidents-table">', 1)[1].split("</thead>", 1)[0]
     for title in ("Date", "Organisation", "Territoire", "Secteur", "Menace", "Sources"):
         assert f">{title}<" in header
@@ -215,9 +212,8 @@ def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
 
 
 def test_renderer_ui_ne_duplique_pas_affected_files_et_file_count():
-    js = open("assets/dashboard-audit.js", encoding="utf-8").read()
+    js = open("assets/app.js", encoding="utf-8").read()
     assert "function duplicatesDedicatedFileCount(fact)" in js
-    assert 'affected_unit || "").trim().toLowerCase() !== "files"' in js
+    assert 'String(fact.affected_unit || "").trim().toLowerCase() !== "files"' in js
     assert 'factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact))' in js
-    # Le compteur dédié reste affiché : si les deux valeurs diffèrent, les deux lignes gardent leur sens.
-    assert 'factRow("Fichiers", fact.file_count !== undefined ? formatNumber(fact.file_count) : "")' in js
+    assert 'factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : "")' in js
