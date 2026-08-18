@@ -4,6 +4,13 @@
 from __future__ import annotations
 
 import json
+import sys
+from pathlib import Path
+
+# Permet l'exécution directe depuis scripts/ dans GitHub Actions.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from cyberwatch import store
 from cyberwatch.rebuild_cache import reapply_cached_qualifications
