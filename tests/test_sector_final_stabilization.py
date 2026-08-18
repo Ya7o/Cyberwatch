@@ -46,12 +46,68 @@ def test_federations_sportives_reconnues_restent_sport():
     assert sector.classify_sector_name("Fédération Française de Danse") == config.SECTOR_SPORT
 
 
+def test_federations_sportives_auditees_sont_couvertes():
+    cases = (
+        "Fédération Française d’Équitation",
+        "Fédération Française de Bridge",
+        "Fédération Française de Ski",
+        "Fédération française de Savate",
+        "Fédération Française de Vol Libre",
+        "Fédération Française d'Aéronautique",
+        "Fédération Française de Montagne Escalade",
+        "Fédération Française de squash",
+        "Fédération Française d’ULM",
+        "Fédération Française Handisport",
+    )
+    for name in cases:
+        assert sector.classify_sector_name(name) == config.SECTOR_SPORT, name
+
+
 def test_variantes_institutionnelles_sures_sont_classees():
     assert sector.classify_sector_name("Mairie d’Eyguières") == config.SECTOR_ADMIN
     assert sector.classify_sector_name("The commune of Castries") == config.SECTOR_ADMIN
     assert sector.classify_sector_name("Université d’Avignon") == config.SECTOR_EDUCATION
     assert sector.classify_sector_name("Université Bourgogne Europe") == config.SECTOR_EDUCATION
     assert sector.classify_sector_name("Mutuelle Générale de Prévoyance") == config.SECTOR_FINANCE
+
+
+def test_variantes_administration_auditees_sont_couvertes():
+    cases = (
+        "Ville d’Orléans",
+        "Nantes Métropole",
+        "Rennes Métropole",
+        "La Région Occitanie",
+        "FR Ministry of Agriculture",
+        "Service Public",
+        "France Services",
+        "Centre Communal d’Action Sociale de Dunkerque",
+    )
+    for name in cases:
+        assert sector.classify_sector_name(name) == config.SECTOR_ADMIN, name
+
+
+def test_variantes_sante_auditees_sont_couvertes():
+    cases = (
+        "Santé publique France",
+        "Agence Régionale de Santé",
+        "Clinique Ambroise Paré Beuvry",
+        "Centre d’imagerie médicale de Puteaux",
+        "Fédération Hospitalière de France",
+    )
+    for name in cases:
+        assert sector.classify_sector_name(name) == config.SECTOR_HEALTH, name
+
+
+def test_variantes_education_auditees_sont_couvertes():
+    cases = (
+        "École élémentaire Montaigne de Roubaix",
+        "PSB Paris School of Business",
+        "PPA Business School",
+        "Sciences Po",
+        "Enseignement catholique",
+    )
+    for name in cases:
+        assert sector.classify_sector_name(name) == config.SECTOR_EDUCATION, name
 
 
 def test_naf_immobilier_registre_ne_devient_plus_preuve_btp():
@@ -192,4 +248,3 @@ def test_ransomware_native_sector_reste_fallback_sans_preuve_plus_forte(make_ite
     runner._verify_native_ransomware_sector(item, entry, spec, state)
 
     assert item.Sector == config.SECTOR_TRANSPORT
-

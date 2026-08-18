@@ -13,11 +13,6 @@ from . import config
 from .normalize import organisation_key, searchable
 
 
-# Catégories réellement observées dans le champ structuré ``sector`` de
-# ransomware.live lors de l'audit Sprint Sector A. Elles sont séparées de la
-# table générique ACTIVITY_TO_SECTOR pour rendre explicite qu'il s'agit de
-# libellés de taxonomie source, et non de mots-clés acceptables dans du texte
-# libre. Seules les correspondances sémantiquement univoques sont admises.
 _STRUCTURED_SOURCE_SECTOR_ALIASES = {
     "professional services": config.SECTOR_SERVICES,
     "technology": config.SECTOR_TECH,
@@ -72,19 +67,20 @@ def _watchlist_sector(organisation: str) -> str:
 
 
 # Vocabulaire sportif suffisamment discriminant pour qu'une « Fédération
-# française » ne soit plus automatiquement classée Sport. La fédération
-# maçonnique observée dans la DB est le cas de régression qui motive ce garde.
+# française » ne soit plus automatiquement classée Sport. Cette liste couvre
+# les disciplines réellement observées dans la base tout en conservant le garde
+# contre les fédérations non sportives.
 _SPORT_NAME_TERMS = (
     "football", "rugby", "handball", "basket", "basketball", "volley",
     "tennis", "golf", "karate", "judo", "aikido", "motocyclisme",
     "cyclisme", "danse", "voile", "escrime", "randonnee", "natation",
-    "athletisme", "gymnastique", "badminton", "hockey", "chasse",
-    "sport", "sports",
+    "athletisme", "gymnastique", "gym", "badminton", "hockey", "chasse",
+    "equitation", "bridge", "savate", "ski", "vol libre", "aeronautique",
+    "escalade", "twirling", "squash", "ulm", "pagaie", "handisport",
+    "tennis de table", "sport automobile", "sport universitaire",
+    "sport scolaire", "sport", "sports",
 )
 
-# Les institutions de santé utilisent fréquemment un vocabulaire institutionnel
-# générique ("agence nationale", "établissement public"), qui ne doit pas les
-# faire basculer en Administration lorsque leur mission sanitaire est explicite.
 _HEALTH_INSTITUTION_TERMS = (
     "agence nationale", "agence regionale", "etablissement public",
     "autorite", "office national", "institut national",
@@ -101,8 +97,6 @@ def _health_institution_sector(text: str) -> str:
     if not blob:
         return config.SECTOR_UNKNOWN
 
-    # Formulation nominative quasi auto-descriptive, sans dépendre d'une entité
-    # particulière : « Santé publique France », « Santé publique X », etc.
     if blob.startswith("sante publique "):
         return config.SECTOR_HEALTH
 
@@ -118,29 +112,47 @@ def _safe_institutional_name_sector(organisation: str) -> str:
     if not blob:
         return config.SECTOR_UNKNOWN
 
-    # La mission sanitaire explicite prime sur la nature administrative de
-    # l'entité. Cela évite par exemple de classer une agence publique de santé
-    # comme simple Administration / Collectivité.
     health_sector = _health_institution_sector(organisation)
     if health_sector != config.SECTOR_UNKNOWN:
         return health_sector
 
-    # Identités institutionnelles quasi auto-descriptives. Les variantes avec
-    # apostrophe deviennent « d » après normalisation (Mairie d'Eyguières,
-    # Université d'Avignon).
+    # Formulations sanitaires auto-descriptives observées en base.
+    if blob.startswith((
+        "agence regionale de sante", "centre hospitalier ", "centre d imagerie medicale ",
+        "centre imagerie medicale ", "clinique ", "hopital ", "hospices civils ",
+        "federation hospitaliere ",
+    )):
+        return config.SECTOR_HEALTH
+
+    if blob == "service public":
+        return config.SECTOR_ADMIN
+
     admin_prefixes = (
-        "mairie ", "ville de ", "commune de ", "the commune of ",
-        "ministere de ", "ministere des ", "ministry of ",
-        "prefecture de ", "metropole de ",
+        "mairie ", "ville de ", "ville d ", "commune de ", "commune d ",
+        "the commune of ", "ministere de ", "ministere des ", "ministry of ",
+        "fr ministry of ", "prefecture de ", "metropole de ", "metropole ",
+        "region ", "la region ", "departement de ", "conseil departemental ",
+        "centre communal d action sociale ", "service public ", "france services",
     )
     if blob.startswith(admin_prefixes):
         return config.SECTOR_ADMIN
+    # Les métropoles françaises sont fréquemment nommées « X Métropole »
+    # (Nantes Métropole, Rennes Métropole), et non « Métropole de X ».
+    if blob.endswith(" metropole"):
+        return config.SECTOR_ADMIN
 
     education_prefixes = (
-        "universite ", "university of ", "ecole nationale ",
-        "ecole superieure ", "academie de ", "rectorat de ",
+        "universite ", "university of ", "ecole nationale ", "ecole superieure ",
+        "ecole elementaire ", "ecole ", "academie de ", "rectorat de ",
+        "lycee ", "college ", "campus france", "paris school of business",
+        "ppa business school", "enseignement catholique", "sciences po",
     )
     if blob.startswith(education_prefixes):
+        return config.SECTOR_EDUCATION
+    # Une dénomination terminant explicitement par « School of Business » ou
+    # « Business School » décrit l'établissement, sans généraliser le mot
+    # « business » à lui seul.
+    if blob.endswith((" school of business", " business school")):
         return config.SECTOR_EDUCATION
 
     if blob.startswith("mutuelle "):
@@ -167,9 +179,6 @@ def classify_sector_name(organisation: str) -> str:
     if sector != config.SECTOR_UNKNOWN:
         return sector
 
-    # On conserve les règles historiques sûres mais jamais la règle Sport
-    # générique « fédération française de » : le Sport est traité ci-dessus
-    # avec un vocabulaire sportif explicite.
     safe_rules = [
         (sector_name, patterns)
         for sector_name, patterns in config.SECTOR_NAME_RULES
@@ -180,9 +189,6 @@ def classify_sector_name(organisation: str) -> str:
 
 def classify_sector_activity(activity_description: str) -> str:
     """Classe une description d'activité explicitement extraite de la source."""
-    # Priorité contextuelle : « agence nationale de santé publique » contient
-    # aussi « agence nationale », présent dans les règles Administration. Le
-    # couple statut institutionnel + mission sanitaire est plus spécifique.
     health_sector = _health_institution_sector(activity_description)
     if health_sector != config.SECTOR_UNKNOWN:
         return health_sector
