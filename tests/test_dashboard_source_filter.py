@@ -15,8 +15,9 @@ def test_filtre_source_et_recherche_organisation_sont_appliques_par_le_runtime_u
     ):
         assert f'value="{source_id}"' in html
 
-    assert 'state.filters.source && !(i.sources || []).includes(state.filters.source)' in app
-    assert 'norm(i.org).includes(q)' in app
-    assert 'state.filters={ocean:false,local:false,source:"",org:""}' in app
+    assert "state.filters.source" in app
+    assert "(incident.sources || []).includes(state.filters.source)" in app
+    assert "normalize(incident.org).includes(query)" in app
+    assert 'state.filters = { ocean: false, local: false, source: "", org: "" }' in app
     assert "assets/app-legacy.js" not in app
     assert "assets/dashboard-audit.js" not in app
