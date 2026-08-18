@@ -103,7 +103,7 @@ jobs:
             --items data/items.csv \
             --source-facts data/source_facts.csv \
             --check
-          node --check assets/dashboard-audit.js
+          node --check assets/app.js
 
       - name: Publier le backfill
         run: |
