@@ -22,6 +22,7 @@ from cyberwatch.model import Item
 
 TARGET_SOURCES = {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}
 DEFAULT_MAX_ITEMS = 100
+RETRYABLE_SEMANTIC_FIELDS = {"summary", "initial_access", "attack_flow", "impact"}
 _WP_FIELDS = "id,date,link,title,excerpt,content,categories"
 
 
@@ -157,11 +158,99 @@ def hydrate_entry(
     return None
 
 
+def reopen_abstained_semantic_fields(item: Item, entry: RawEntry) -> dict[str, dict]:
+    """Rouvre une seule fois les abstentions sémantiques du backfill historique.
+
+    Le comportement normal de ``source_facts_ai.enrich`` reste inchangé. On ne
+    touche qu'à l'entrée de cache correspondant exactement à l'Item_ID, au hash
+    du contenu hydraté et au modèle courant. Le champ est repositionné comme un
+    premier miss : une réponse vide le remet immédiatement en ``abstained`` ;
+    une réponse valide le fait passer en ``accepted``.
+    """
+    if item.Source_ID not in TARGET_SOURCES:
+        return {}
+
+    wanted = source_facts_ai.fields_needed_for_ai(item, entry) & RETRYABLE_SEMANTIC_FIELDS
+    if not wanted:
+        return {}
+
+    runtime = source_facts_ai._runtime()
+    expected_hash = source_facts_ai.content_hash(entry)
+    reopened: dict[str, dict] = {}
+    for cache_entry in runtime.cache.values():
+        if not isinstance(cache_entry, dict):
+            continue
+        if str(cache_entry.get("item_id") or "") != item.Item_ID:
+            continue
+        if str(cache_entry.get("source_id") or "") != item.Source_ID:
+            continue
+        if str(cache_entry.get("content_hash") or "") != expected_hash:
+            continue
+        if str(cache_entry.get("model") or "") != runtime.model:
+            continue
+        fields = cache_entry.get("fields")
+        if not isinstance(fields, dict):
+            continue
+
+        for field in wanted:
+            cached = fields.get(field)
+            if not isinstance(cached, dict):
+                continue
+            if cached.get("version") != source_facts_ai.FIELD_VERSIONS[field]:
+                continue
+            status = str(cached.get("status") or "").strip().lower()
+            try:
+                misses = max(0, int(cached.get("misses") or 0))
+            except (TypeError, ValueError):
+                misses = 0
+            terminal = status == "abstained" or (
+                status == "miss" and misses >= source_facts_ai.MAX_FIELD_MISSES
+            )
+            if not terminal:
+                continue
+            reopened[field] = dict(cached)
+            fields[field] = {
+                "version": source_facts_ai.FIELD_VERSIONS[field],
+                "status": "miss",
+                "misses": max(1, source_facts_ai.MAX_FIELD_MISSES - 1),
+                "value": None,
+            }
+        break
+    return reopened
+
+
+def restore_reopened_semantic_fields(
+    item: Item, entry: RawEntry, previous: dict[str, dict]
+) -> None:
+    """Restaure l'abstention si la tentative forcée n'a pas réellement abouti."""
+    if not previous:
+        return
+    runtime = source_facts_ai._runtime()
+    expected_hash = source_facts_ai.content_hash(entry)
+    for cache_entry in runtime.cache.values():
+        if not isinstance(cache_entry, dict):
+            continue
+        if str(cache_entry.get("item_id") or "") != item.Item_ID:
+            continue
+        if str(cache_entry.get("source_id") or "") != item.Source_ID:
+            continue
+        if str(cache_entry.get("content_hash") or "") != expected_hash:
+            continue
+        if str(cache_entry.get("model") or "") != runtime.model:
+            continue
+        fields = cache_entry.get("fields")
+        if isinstance(fields, dict):
+            for field, cached in previous.items():
+                fields[field] = dict(cached)
+        return
+
+
 def run_backfill(
     *,
     max_items: int = DEFAULT_MAX_ITEMS,
     item_ids: set[str] | None = None,
     dry_run: bool = False,
+    retry_abstained: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
@@ -171,12 +260,16 @@ def run_backfill(
     )
     metrics.update({
         "dry_run": dry_run,
+        "retry_abstained": retry_abstained,
         "hydrated": 0,
         "hydration_failed": 0,
         "source_facts_extracted": 0,
         "source_facts_recovered": 0,
         "summary_recovered": 0,
         "still_without_summary": len(selected),
+        "abstained_retry_items": 0,
+        "abstained_retry_fields": 0,
+        "abstained_retry_restored": 0,
     })
     if dry_run or not selected:
         return metrics
@@ -190,6 +283,7 @@ def run_backfill(
     }
     incoming: list[dict] = []
     recovered_summary_ids: list[str] = []
+    retried_item_ids: list[str] = []
 
     for item in selected:
         spec = specs.get(item.Source_ID)
@@ -202,7 +296,29 @@ def run_backfill(
             continue
         metrics["hydrated"] += 1
 
+        runtime = source_facts_ai._runtime()
+        calls_before = runtime.calls
+        failures_before = runtime.calls_failed
+        reopened = (
+            reopen_abstained_semantic_fields(item, entry)
+            if retry_abstained else {}
+        )
+        if reopened:
+            metrics["abstained_retry_items"] += 1
+            metrics["abstained_retry_fields"] += len(reopened)
+            retried_item_ids.append(item.Item_ID)
+
         fact = source_facts.extract_source_fact(item, entry, spec)
+
+        # Une panne technique ou un budget bloqué ne doit pas dégrader une
+        # abstention déjà confirmée. Seule une vraie réponse sémantique peut
+        # remplacer cet état historique.
+        if reopened and (
+            runtime.calls == calls_before or runtime.calls_failed > failures_before
+        ):
+            restore_reopened_semantic_fields(item, entry, reopened)
+            metrics["abstained_retry_restored"] += len(reopened)
+
         if fact is None:
             continue
         incoming.append(fact)
@@ -224,6 +340,7 @@ def run_backfill(
 
     metrics["still_without_summary"] = len(selected) - metrics["summary_recovered"]
     metrics["recovered_summary_item_ids"] = recovered_summary_ids
+    metrics["abstained_retry_item_ids"] = retried_item_ids
     metrics["http_requests"] = http.run_budget.requests_made
     metrics["ai_stats"] = ai_stats
     return metrics
@@ -246,6 +363,13 @@ def main() -> int:
         help="Liste optionnelle d'Item_ID séparés par des virgules.",
     )
     parser.add_argument(
+        "--retry-abstained", action="store_true",
+        help=(
+            "Rouvre une seule fois les abstentions sémantiques terminales des "
+            "candidats historiques sélectionnés."
+        ),
+    )
+    parser.add_argument(
         "--dry-run", action="store_true",
         help="Compte les candidats sans réseau ni écriture.",
     )
@@ -257,6 +381,7 @@ def main() -> int:
         max_items=args.max_items,
         item_ids=_parse_item_ids(args.item_ids),
         dry_run=args.dry_run,
+        retry_abstained=args.retry_abstained,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0
