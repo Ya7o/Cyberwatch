@@ -43,6 +43,34 @@ jobs:
             --details /tmp/golden-before.csv \
             --json /tmp/golden-before.json
 
+      - name: Inspecter les cas terrain
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          targets = ('sde 03','bija industrie','samboat','eva','kpark','k par k','chupin','clenet')
+          items = list(csv.DictReader(Path('data/items.csv').open(encoding='utf-8')))
+          facts = list(csv.DictReader(Path('data/source_facts.csv').open(encoding='utf-8')))
+          facts_by = {}
+          for row in facts:
+              facts_by.setdefault(row.get('Item_ID',''), []).append(row)
+          cache_path = Path('data/org_enrichment_cache.csv')
+          cache = list(csv.DictReader(cache_path.open(encoding='utf-8'))) if cache_path.exists() else []
+          print('TARGET_EVIDENCE_START')
+          for item in items:
+              name = (item.get('Organisation_Raw') or '').lower().replace('–','-')
+              if not any(t in name for t in targets):
+                  continue
+              print('ITEM', {k:item.get(k,'') for k in ('Item_ID','Source_ID','Organisation_Raw','Organisation_Key','Sector','Title','URL')})
+              for fact in facts_by.get(item.get('Item_ID',''), []):
+                  print('FACT', {k:fact.get(k,'') for k in ('Source_Sector_Raw','Activity_Description','Victim_Website','Summary','Evidence_JSON','Source_Metadata_JSON')})
+              key = item.get('Organisation_Key','')
+              for row in cache:
+                  if (row.get('Organisation_Key') or '') == key:
+                      print('CACHE', {k:row.get(k,'') for k in ('Match_Status','Validated_Sector','Validated_Via','Activity_Label','Evidence_URL','Evidence_Source')})
+          print('TARGET_EVIDENCE_END')
+          PY
+
       - name: Simuler la requalification offline
         run: python -m cyberwatch backfill-unknowns
 
