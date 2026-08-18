@@ -1,0 +1,54 @@
+name: Org registry final audit
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    if: github.head_ref == 'agent/org-registry-final-audit-20260818'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONUNBUFFERED: "1"
+      OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+      AI_MAX_CALLS_PER_RUN: "3000"
+      AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
+      SOURCE_FACTS_AI_ENABLED: "1"
+      SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
+      SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+      ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/org-registry-final-audit-20260818
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Registry depth benchmark 5/10/20
+        run: |
+          python scripts/benchmark_org_registry_depth.py \
+            --source BONJOURLAFUITE \
+            --max-queries 200 \
+            --json /tmp/org-depth.json
+      - name: One-shot CREATE
+        run: |
+          python -m cyberwatch create \
+            --as-of "2026-08-18T19:05:00+04:00" \
+            --layers all
+      - name: Performance report
+        run: |
+          python scripts/report_source_performance.py
+          echo '===== AI USAGE ====='
+          tail -n 3 data/ai_usage.csv || true
+      - name: Final quality validation
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
