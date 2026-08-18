@@ -31,54 +31,46 @@
   </div>
 </header>
 
-<div class="wrap">
-
-  <section class="kpis kpis-summary" aria-label="Indicateurs clés">
+<main class="wrap">
+  <section class="kpis" aria-label="Indicateurs clés">
     <article class="kpi">
       <h2>Incidents recensés</h2>
       <p class="kpi-value" id="kpi-incidents">—</p>
       <p class="kpi-note" id="kpi-incidents-note">événements uniques dans la base</p>
     </article>
+    <article class="kpi">
+      <h2>30 derniers jours</h2>
+      <p class="kpi-value" id="kpi-30d">—</p>
+      <p class="kpi-note">selon la date documentée</p>
+    </article>
+    <article class="kpi">
+      <h2>Océan Indien</h2>
+      <p class="kpi-value" id="kpi-ocean">—</p>
+      <p class="kpi-note">Réunion, Mayotte et zone régionale</p>
+    </article>
+    <article class="kpi">
+      <h2>Ransomware</h2>
+      <p class="kpi-value" id="kpi-ransomware">—</p>
+      <p class="kpi-note">incidents classés ransomware</p>
+    </article>
   </section>
 
-<section class="quick-actions" aria-label="Actions rapides">
-  <button id="f-ocean-indien" class="btn-quick" type="button" aria-pressed="false">Voir l’Océan Indien</button>
-  <button id="f-auto" class="btn-quick" type="button" aria-pressed="false">Concessions automobiles</button>
-  <button id="f-grande-distrib" class="btn-quick" type="button" aria-pressed="false">Grande distribution</button>
-  <button id="f-local" class="btn-quick" type="button" aria-pressed="false">Local</button>
-  <select id="f-source" class="btn-quick" aria-label="Filtrer les incidents par source">
-    <option value="">Toutes les sources</option>
-    <option value="BONJOURLAFUITE">BonjourLaFuite</option>
-    <option value="FRENCHBREACHES">FrenchBreaches</option>
-    <option value="CYBERATTAQUE_ORG">Cyberattaque.org</option>
-    <option value="RANSOMWARE_LIVE">Ransomware.live</option>
-    <option value="VEILLE_LLM">veillellmReYt</option>
-  </select>
-</section>
-
-  <section class="card">
-    <div class="card-head">
-      <h2>Incidents</h2>
-      <p id="table-count" class="muted"></p>
-    </div>
-    <div class="table-scroll">
-      <table class="data-table" id="incidents-table">
-        <thead>
-          <tr>
-            <th data-sort="date" aria-sort="descending">Date</th>
-            <th data-sort="org">Organisation</th>
-            <th data-sort="location">Territoire</th>
-            <th data-sort="sector">Secteur</th>
-            <th data-sort="threat">Menace</th>
-            <th data-sort="items">Sources</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+  <section class="filters-toolbar" aria-label="Filtres des incidents">
+    <input id="f-org" class="org-search" type="search" autocomplete="off" placeholder="Rechercher une organisation…" aria-label="Rechercher une organisation">
+    <button id="f-ocean-indien" class="btn-quick" type="button" aria-pressed="false">Océan Indien</button>
+    <button id="f-local" class="btn-quick" type="button" aria-pressed="false">Réunion / Mayotte</button>
+    <select id="f-source" class="btn-quick" aria-label="Filtrer les incidents par source">
+      <option value="">Toutes les sources</option>
+      <option value="BONJOURLAFUITE">BonjourLaFuite</option>
+      <option value="FRENCHBREACHES">FrenchBreaches</option>
+      <option value="CYBERATTAQUE_ORG">Cyberattaque.org</option>
+      <option value="RANSOMWARE_LIVE">Ransomware.live</option>
+      <option value="VEILLE_LLM">veillellmReYt</option>
+    </select>
+    <button id="f-reset" class="btn-reset" type="button">Réinitialiser</button>
   </section>
 
-  <section class="grid-2">
+  <section class="grid-2 dashboard-charts" aria-label="Vue d’ensemble">
     <figure class="card">
       <figcaption>
         <h2>Incidents par mois</h2>
@@ -110,6 +102,29 @@
     </figure>
   </section>
 
+  <section class="card incidents-card" aria-labelledby="incidents-title">
+    <div class="card-head">
+      <h2 id="incidents-title">Explorer les incidents</h2>
+      <p id="table-count" class="muted"></p>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table" id="incidents-table">
+        <thead>
+          <tr>
+            <th data-sort="date" aria-sort="descending"><button type="button" class="sort-button">Date</button></th>
+            <th data-sort="org" aria-sort="none"><button type="button" class="sort-button">Organisation</button></th>
+            <th data-sort="location" aria-sort="none"><button type="button" class="sort-button">Territoire</button></th>
+            <th data-sort="sector" aria-sort="none"><button type="button" class="sort-button">Secteur</button></th>
+            <th data-sort="threat" aria-sort="none"><button type="button" class="sort-button">Menace</button></th>
+            <th data-sort="items" aria-sort="none"><button type="button" class="sort-button">Sources</button></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="audit-pager" class="audit-pager" aria-live="polite"></div>
+  </section>
+
   <section class="card reliability" id="fiabilite" aria-labelledby="sources-title">
     <h2 id="sources-title">État des sources</h2>
     <div id="sources-list" class="sources-list" aria-live="polite"></div>
@@ -133,15 +148,12 @@
       </div>
     </details>
 
-    <!-- Compatibilité avec le rendu historique : ces conteneurs restent invisibles. -->
     <span id="reliability-summary" hidden></span>
     <div id="blindspots" hidden><ul id="blindspots-list"></ul></div>
   </section>
-
-</div>
+</main>
 
 <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
-
 <script src="assets/app.js"></script>
 </body>
 </html>
