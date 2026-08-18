@@ -1,0 +1,114 @@
+name: SourceFacts double rebuild audit
+
+on:
+  push:
+    branches:
+      - agent/sourcefacts-double-rebuild-audit-20260818
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+      AI_MAX_CALLS_PER_RUN: "3000"
+      AI_MAX_ESTIMATED_COST_USD_PER_RUN: "2.00"
+      SOURCE_FACTS_AI_ENABLED: "1"
+      SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "1000"
+      SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
+      ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: agent/sourcefacts-double-rebuild-audit-20260818
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Freeze audit timestamp
+        run: |
+          python - <<'PY' >> "$GITHUB_ENV"
+          import datetime as dt
+          tz = dt.timezone(dt.timedelta(hours=4))
+          print('AS_OF=' + dt.datetime.now(tz).replace(microsecond=0).isoformat())
+          PY
+      - name: Rebuild 1 — migration pass
+        id: run1
+        continue-on-error: true
+        run: |
+          python -m cyberwatch create --as-of "$AS_OF" --layers all
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+      - name: Capture run 1
+        if: always()
+        run: |
+          echo '===== RUN 1 PERFORMANCE ====='
+          python scripts/report_source_performance.py | tee /tmp/run1-performance.txt
+          cp data/source_facts_ai_usage.json /tmp/run1-sourcefacts-usage.json
+          cp data/run_sources.csv /tmp/run1-run-sources.csv
+          cp data/run_log.csv /tmp/run1-run-log.csv
+          echo '===== RUN 1 SOURCEFACTS USAGE ====='
+          cat /tmp/run1-sourcefacts-usage.json
+      - name: Rebuild 2 — warm cache
+        id: run2
+        continue-on-error: true
+        run: |
+          python -m cyberwatch create --as-of "$AS_OF" --layers all
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+      - name: Capture run 2 and comparison
+        if: always()
+        run: |
+          echo '===== RUN 2 PERFORMANCE ====='
+          python scripts/report_source_performance.py | tee /tmp/run2-performance.txt
+          echo '===== RUN 2 SOURCEFACTS USAGE ====='
+          cat data/source_facts_ai_usage.json
+          echo '===== COMPARISON ====='
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+
+          def rows(path):
+              with open(path, encoding='utf-8', newline='') as fh:
+                  return list(csv.DictReader(fh))
+
+          runlog = rows('data/run_log.csv')
+          candidates = [r for r in runlog if r.get('Mode') == 'CREATE' and r.get('As_Of') == '${{ env.AS_OF }}']
+          if len(candidates) < 2:
+              candidates = [r for r in runlog if r.get('Mode') == 'CREATE'][-2:]
+          ids = [r.get('Run_ID') for r in candidates[-2:]]
+          source_rows = rows('data/run_sources.csv')
+          by_run = {rid: [r for r in source_rows if r.get('Run_ID') == rid] for rid in ids}
+
+          wanted = [
+              'Duration_s','Collect_Duration_s','Processing_Duration_s',
+              'Org_Registry_Duration_s','Org_Registry_Calls',
+              'Org_Official_Site_Duration_s','Org_Official_Site_Calls',
+              'Qualification_LLM_Duration_s','Qualification_LLM_Calls','Qualification_LLM_Cost_USD',
+              'SourceFacts_LLM_Duration_s','SourceFacts_LLM_Calls','SourceFacts_LLM_Cost_USD',
+              'SourceFacts_Accepted_Cache_Hits','SourceFacts_Abstained_Cache_Hits',
+              'SourceFacts_Legacy_Null_Migrations','SourceFacts_Semantic_First_Misses',
+              'SourceFacts_Semantic_Retries','SourceFacts_Recovered_On_Retry','SourceFacts_New_Abstentions',
+              'Other_Processing_Duration_s','Items_collected','Calls','Status'
+          ]
+          out = {'run_ids': ids, 'runs': {}}
+          for rid in ids:
+              log = next((r for r in runlog if r.get('Run_ID') == rid), {})
+              out['runs'][rid] = {
+                  'overall': {k: log.get(k, '') for k in ['Duration_s','Items_Count','Incidents_Count','Overall_Status','Requests','Items_Hash','Incidents_Hash']},
+                  'sources': {
+                      r.get('Source_ID'): {k: r.get(k, '') for k in wanted}
+                      for r in by_run.get(rid, [])
+                  },
+              }
+          print(json.dumps(out, ensure_ascii=False, indent=2, sort_keys=True))
+          PY
+      - name: Final structural validation
+        if: always()
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
