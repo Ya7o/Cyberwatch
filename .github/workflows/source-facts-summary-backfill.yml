@@ -1,6 +1,7 @@
 name: SourceFacts Summary Backfill
 
 on:
+  # Les changements de ce workflow peuvent servir de bootstrap idempotent du backfill.
   push:
     branches: [main]
     paths:
