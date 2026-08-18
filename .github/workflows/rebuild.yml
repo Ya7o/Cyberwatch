@@ -1,4 +1,4 @@
-# trigger: cache-first-post-dev-rebuild-2026-08-18
+# trigger: cache-first-post-dev-rebuild-fix-import-2026-08-18
 name: Rebuild post-development
 
 on:
@@ -88,8 +88,6 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
-          # Rebuild post-dev = cache-first. Les hits exacts restent utilisables,
-          # mais aucun nouveau coût LLM n'est autorisé pendant CREATE.
           AI_MAX_CALLS_PER_RUN: "0"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
           SOURCE_FACTS_AI_RETRY_LEGACY_NULLS: "0"
@@ -132,8 +130,6 @@ jobs:
           echo '```json' >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/reapply-cache.json >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          # CREATE a déjà construit INCIDENTS avant le fallback stable ; REPLAY
-          # propage les qualifications restaurées sans collecte ni appel LLM.
           python -m cyberwatch replay
 
       - name: Diagnostiquer les qualifications perdues
