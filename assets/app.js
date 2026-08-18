@@ -66,11 +66,20 @@
       .trim();
   }
 
+  function normalizeNarrative(value) {
+    return normalize(value).replace(/\s+/g, " ");
+  }
+
   function sameSummary(left, right) {
-    const normalizeSummary = (value) => normalize(value).replace(/\s+/g, " ");
-    const a = normalizeSummary(left);
-    const b = normalizeSummary(right);
+    const a = normalizeNarrative(left);
+    const b = normalizeNarrative(right);
     return Boolean(a && b && a === b);
+  }
+
+  function narrativeContains(container, detail) {
+    const haystack = normalizeNarrative(container);
+    const needle = normalizeNarrative(detail);
+    return Boolean(haystack && needle && haystack.includes(needle));
   }
 
   function sourceLabel(id) {
@@ -373,6 +382,8 @@
       claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti",
     })[fact.claim_status] || fact.claim_status || "";
     const sourceSummary = sameSummary(fact.summary, incidentSummary) ? "" : fact.summary;
+    const impactCovered = narrativeContains(fact.summary, fact.impact) || narrativeContains(incidentSummary, fact.impact);
+    const sourceImpact = impactCovered ? "" : fact.impact;
     const rows = [
       factRow("Statut", claimStatus),
       factRow("Acteur", fact.threat_actor),
@@ -389,7 +400,7 @@
       factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""),
       factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""),
       factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""),
-      factRow("Impact", fact.impact),
+      factRow("Impact", sourceImpact),
       factRow("Synthèse", sourceSummary),
       factRow("Évolution", fact.evolution),
     ].filter(Boolean);
