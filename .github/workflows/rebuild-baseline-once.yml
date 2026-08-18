@@ -1,9 +1,14 @@
 name: Rebuild Baseline (full clean)
 
 # Rebuild total : repart des sources, sans réutiliser les caches de qualification
-# ou d'enrichissement. Déclenchement manuel uniquement.
+# ou d'enrichissement. Le push sur le marqueur reste déclaré pour compatibilité,
+# mais seul workflow_dispatch exécute le job ; le dispatcher ops utilise ce mode.
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/rebuild-request"
 
 permissions:
   contents: read
@@ -14,7 +19,7 @@ concurrency:
 
 jobs:
   rebuild:
-    if: github.repository == 'Ya7o/Cyberwatch'
+    if: github.repository == 'Ya7o/Cyberwatch' && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
@@ -38,7 +43,7 @@ jobs:
       - name: Tests unitaires
         run: python -m pytest tests/ -q
 
-      - name: Purge locale complète des sorties et caches
+      - name: Purge locale des artefacts reconstructibles
         run: |
           rm -f \
             data/items.csv \
@@ -73,7 +78,6 @@ jobs:
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "1.00"
           SOURCE_FACTS_AI_PROGRESS_EVERY: "25"
           SOURCE_FACTS_AI_CHECKPOINT_EVERY: "25"
-          # La découverte de sites officiels reste un enrichissement secondaire.
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         run: |
           python -m cyberwatch create \
