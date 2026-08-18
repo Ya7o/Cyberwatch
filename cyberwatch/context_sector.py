@@ -36,16 +36,21 @@ class Evidence:
 def classify_context_activity(activity: str) -> str:
     """Classe uniquement une description métier explicite.
 
-    Les quelques compléments couvrent des formulations observées dans le long
-    tail et restent volontairement réservés au texte d'activité, jamais au nom.
+    Les compléments sont évalués avant la table générique quand une formulation
+    métier très explicite évite un faux positif de priorité (par exemple
+    ``distribution publique d'électricité`` ne doit pas devenir Commerce).
     """
-    candidate = sector.classify_sector_activity(activity)
-    if candidate != config.SECTOR_UNKNOWN:
-        return candidate
-
     text = searchable(activity)
     if not text:
         return config.SECTOR_UNKNOWN
+
+    if (
+        "distribution publique d electricite" in text
+        or "distribution d electricite" in text
+        or "distribution de gaz" in text
+        or "syndicat departemental d energie" in text
+    ):
+        return config.SECTOR_ENERGY
 
     if any(marker in text for marker in (
         "fournisseur de materiel",
@@ -65,11 +70,7 @@ def classify_context_activity(activity: str) -> str:
     )):
         return hospitality
 
-    if any(marker in text for marker in (
-        "esport",
-        "e sport",
-        "esports",
-    )):
+    if any(marker in text for marker in ("esport", "e sport", "esports")):
         return config.SECTOR_SPORT
 
     if any(marker in text for marker in (
@@ -81,7 +82,15 @@ def classify_context_activity(activity: str) -> str:
     )):
         return config.SECTOR_CONSTRUCTION
 
-    return config.SECTOR_UNKNOWN
+    if any(marker in text for marker in (
+        "fabrication industrielle",
+        "industrie manufacturiere",
+        "manutention industrie",
+        "outillage aeronautique",
+    )):
+        return config.SECTOR_INDUSTRY
+
+    return sector.classify_sector_activity(activity)
 
 
 def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
