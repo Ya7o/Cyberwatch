@@ -1,0 +1,40 @@
+/* Keep the activity summary as one compact two-column card, including on mobile. */
+.kpi-activity .activity-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+
+.kpi-activity .activity-primary,
+.kpi-activity .activity-secondary {
+  min-width: 0;
+}
+
+.kpi-activity .activity-secondary {
+  padding-left: 16px !important;
+  padding-top: 0 !important;
+  border-left: 1px solid var(--border) !important;
+  border-top: 0 !important;
+}
+
+@media (max-width: 700px) {
+  .kpi-activity .activity-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .kpi-activity .activity-secondary {
+    padding-left: 12px !important;
+  }
+
+  .kpi-activity .kpi-value,
+  .kpi-activity .activity-value {
+    font-size: clamp(2rem, 11vw, 2.7rem) !important;
+  }
+
+  .kpi-activity .kpi-note,
+  .kpi-activity .activity-trend {
+    font-size: 12px !important;
+    line-height: 1.35;
+  }
+}
