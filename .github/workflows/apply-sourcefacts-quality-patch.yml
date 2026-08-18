@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/sourcefacts-quality-telemetry-20260818
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
