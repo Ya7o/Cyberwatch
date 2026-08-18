@@ -48,6 +48,13 @@ def main() -> int:
             f"official={_num(row,'Org_Official_Site_Duration_s'):.1f}s/{row.get('Org_Official_Site_Calls') or 0} "
             f"q_llm={_num(row,'Qualification_LLM_Duration_s'):.1f}s/{row.get('Qualification_LLM_Calls') or 0} "
             f"sf_llm={_num(row,'SourceFacts_LLM_Duration_s'):.1f}s/{row.get('SourceFacts_LLM_Calls') or 0} "
+            f"sf_cache=accepted:{row.get('SourceFacts_Accepted_Cache_Hits') or 0}/"
+            f"abstained:{row.get('SourceFacts_Abstained_Cache_Hits') or 0} "
+            f"sf_migrate_null={row.get('SourceFacts_Legacy_Null_Migrations') or 0} "
+            f"sf_miss={row.get('SourceFacts_Semantic_First_Misses') or 0} "
+            f"sf_retry={row.get('SourceFacts_Semantic_Retries') or 0}/"
+            f"recovered:{row.get('SourceFacts_Recovered_On_Retry') or 0}/"
+            f"new_abstain:{row.get('SourceFacts_New_Abstentions') or 0} "
             f"other={_num(row,'Other_Processing_Duration_s'):.1f}s "
             f"llm_cost=${q_cost + sf_cost:.6f}"
         )

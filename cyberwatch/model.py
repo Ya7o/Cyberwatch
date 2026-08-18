@@ -179,6 +179,13 @@ RUN_SOURCE_COLUMNS = [
     "SourceFacts_LLM_Duration_s",
     "SourceFacts_LLM_Calls",
     "SourceFacts_LLM_Cost_USD",
+    "SourceFacts_Accepted_Cache_Hits",
+    "SourceFacts_Abstained_Cache_Hits",
+    "SourceFacts_Legacy_Null_Migrations",
+    "SourceFacts_Semantic_First_Misses",
+    "SourceFacts_Semantic_Retries",
+    "SourceFacts_Recovered_On_Retry",
+    "SourceFacts_New_Abstentions",
     "Other_Processing_Duration_s",
 ]
 

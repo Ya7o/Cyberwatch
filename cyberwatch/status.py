@@ -182,6 +182,13 @@ class SourceOutcome:
     source_facts_llm_duration_seconds: float = 0.0
     source_facts_llm_calls: int = 0
     source_facts_llm_cost_usd: float = 0.0
+    source_facts_accepted_cache_hits: int = 0
+    source_facts_abstained_cache_hits: int = 0
+    source_facts_legacy_null_migrations: int = 0
+    source_facts_semantic_first_misses: int = 0
+    source_facts_semantic_retries: int = 0
+    source_facts_recovered_on_retry: int = 0
+    source_facts_new_abstentions: int = 0
     other_processing_duration_seconds: float = 0.0
 
     @property
