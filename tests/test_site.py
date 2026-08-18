@@ -140,15 +140,12 @@ class TestDashboardSourcesSection:
         return open(path, encoding="utf-8").read()
 
     def test_vue_globale_reste_compacte_sans_metriques(self):
-        js = self._read("assets/dashboard-audit.js")
+        js = self._read("assets/app.js")
         match = re.search(
             r"function renderSources\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
         )
         assert match, "renderSources() introuvable"
         body = match.group(1)
-        # La vue globale ne construit que nom + LED de statut : aucune
-        # métrique (items_seen, items_in_window, latest_item...) ne doit
-        # apparaître avant l'appel au rendu du détail.
         compact_part = body.split("renderSourceDetail(rows)")[0]
         for forbidden in ("items_seen", "items_in_window", "latest_item"):
             assert forbidden not in compact_part
@@ -161,7 +158,7 @@ class TestDashboardSourcesSection:
         assert detail_pos > list_pos, "le détail doit suivre la vue globale"
         assert "<summary>" in html
 
-        js = self._read("assets/dashboard-audit.js")
+        js = self._read("assets/app.js")
         match = re.search(
             r"function renderSourceDetail\(rows\)\s*\{(.*?)\n  \}", js, re.DOTALL
         )
@@ -174,9 +171,6 @@ class TestDashboardSourcesSection:
             assert expected in body
 
     def test_veille_llm_affiche_veillellmreyt_dans_le_dashboard(self):
-        # app-legacy.js ne rend plus les incidents/sources (rendu unique par
-        # dashboard-audit.js, cf. suppression du double rendu) : n'a donc
-        # plus besoin de sa propre correspondance de libellés de source.
-        js = self._read("assets/dashboard-audit.js")
+        js = self._read("assets/app.js")
         assert 'VEILLE_LLM: "veillellmReYt"' in js
         assert 'VEILLE_LLM: "Veille LLM"' not in js
