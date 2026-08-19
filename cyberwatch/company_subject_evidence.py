@@ -30,23 +30,19 @@ _THIRD_PARTY_RE = re.compile(
     r"provider|partner|supplier|vendor|contractor)\b|\bavec\s+[A-ZÀ-Ý0-9]",
     re.I,
 )
-# Compléments mesurés pour des formulations métier observées sur les sites
-# officiels. Ils restent soumis exactement aux mêmes gardes d'identité et de
-# sujet que les règles historiques : un mot-clé seul ne suffit jamais.
 _EXTRA_PATTERNS = {
     config.SECTOR_RETAIL: (
         9,
         r"\b(supermarch[ée]s|fournisseur de mat[ée]riel agricole|"
-        r"vente de mat[ée]riel agricole|distribution de mat[ée]riel agricole)\b",
+        r"vente(?: et r[ée]paration)? de mat[ée]riel agricole|"
+        r"distribution de mat[ée]riel agricole|"
+        r"large gamme de mat[ée]riel agricole|"
+        r"vente et location de (?:solutions|mat[ée]riel) de manutention)\b",
     ),
     config.SECTOR_CONSTRUCTION: (
         9,
         r"\b(r[ée]novation (?:sur[- ]mesure )?de l['’]habitat|"
         r"r[ée]novation de l['’]habitat|pose de fen[êe]tres|pose de volets|pose de portes)\b",
-    ),
-    config.SECTOR_INDUSTRY: (
-        9,
-        r"\b(manutention industr(?:ie|ielle)|[ée]quipements? de manutention industrielle)\b",
     ),
     config.SECTOR_SPORT: (
         9,
@@ -79,8 +75,19 @@ def _org_is_subject(organisation: str, sentence: str, match_start: int) -> bool:
         return False
     normalized = searchable(prefix)
     required = min(2, len(tokens))
-    if sum(token in normalized for token in tokens) < required:
+    matched_tokens = sum(token in normalized for token in tokens)
+    if matched_tokens < required:
         return False
+
+    near = prefix[-100:]
+    if match_start <= 140:
+        org_norm = searchable(organisation)
+        sentence_start = searchable(sentence[: min(match_start, 120)])
+        if org_norm and sentence_start.startswith(org_norm):
+            return True
+        if matched_tokens >= required and re.search(r"[|:\-–]\s*[^|:\-–]{0,70}$", near):
+            return True
+
     return bool(_COPULA_RE.search(prefix[-140:]))
 
 
@@ -103,7 +110,6 @@ def classify_subject_attributed_activity(
     organisation: str,
     text: str,
 ) -> tuple[str, str] | None:
-    """Retourne un secteur seulement si l'activité a pour sujet la victime."""
     for sentence in _sentences(text):
         matches = _activity_matches(sentence)
         if not matches:
@@ -112,8 +118,6 @@ def classify_subject_attributed_activity(
         top = matches[0]
         if top[0] < 8:
             continue
-        # Deux motifs du même secteur ne créent pas d'ambiguïté. Deux secteurs
-        # proches, eux, rendent la preuve non automatique.
         competing = [row for row in matches[1:] if row[1] != top[1]]
         if competing and top[0] < competing[0][0] + 2:
             continue
@@ -127,12 +131,6 @@ def resolve_official_site_subject_attributed(
     organisation: str,
     candidate_urls: tuple[str, ...] | list[str] | None = None,
 ) -> company_evidence.CompanyEvidence | None:
-    """Résout un site officiel puis exige une activité attribuée à la victime.
-
-    ``candidate_urls`` permet au worker de calculer la découverte une seule fois
-    et de l'instrumenter. Même un candidat explicitement fourni doit passer le
-    garde de propriété du domaine avant lecture de la page.
-    """
     try:
         candidates = (
             list(candidate_urls)
@@ -143,21 +141,15 @@ def resolve_official_site_subject_attributed(
         return None
 
     for candidate in candidates:
-        if not official_site_discovery.domain_matches_organisation(
-            organisation, candidate
-        ):
+        if not official_site_discovery.domain_matches_organisation(organisation, candidate):
             continue
         priority, body, about_links, final_url = company_evidence._page(candidate)
         if not priority and not body:
             continue
         evidence_url = final_url or candidate
-        if not official_site_discovery.domain_matches_organisation(
-            organisation, evidence_url
-        ):
+        if not official_site_discovery.domain_matches_organisation(organisation, evidence_url):
             continue
-        if not company_evidence._identity_matches(
-            organisation, evidence_url, priority, body
-        ):
+        if not company_evidence._identity_matches(organisation, evidence_url, priority, body):
             continue
 
         for text, url in ((priority, evidence_url), (body[:16000], evidence_url)):
@@ -173,21 +165,15 @@ def resolve_official_site_subject_attributed(
                 )
 
         for link in about_links:
-            if not official_site_discovery.domain_matches_organisation(
-                organisation, link
-            ):
+            if not official_site_discovery.domain_matches_organisation(organisation, link):
                 continue
             p_priority, p_body, _links, p_final = company_evidence._page(link)
             if not p_priority and not p_body:
                 continue
             page_url = p_final or link
-            if not official_site_discovery.domain_matches_organisation(
-                organisation, page_url
-            ):
+            if not official_site_discovery.domain_matches_organisation(organisation, page_url):
                 continue
-            if not company_evidence._identity_matches(
-                organisation, page_url, p_priority, p_body
-            ):
+            if not company_evidence._identity_matches(organisation, page_url, p_priority, p_body):
                 continue
             classified = classify_subject_attributed_activity(
                 organisation,

@@ -28,22 +28,22 @@ def test_subject_attribution_accepts_observed_long_tail_official_phrasing():
     cases = [
         (
             "KparK",
-            "KparK est le spécialiste de la rénovation sur-mesure de l'habitat, fenêtres, volets et portes.",
+            "KparK - N°1 de la rénovation de l'habitat, fenêtres, volets et portes sur-mesure.",
             config.SECTOR_CONSTRUCTION,
         ),
         (
             "Chupin",
-            "Chupin est un fournisseur de matériel agricole et propose des pièces et équipements aux professionnels.",
+            "La SARL CHUPIN vous propose une large gamme de matériel agricole de qualité.",
             config.SECTOR_RETAIL,
         ),
         (
             "Clenet",
-            "Clenet est spécialisé dans la manutention industrielle et les équipements destinés aux sites de production.",
-            config.SECTOR_INDUSTRY,
+            "CLENET - Vente et Location de solutions de manutention.",
+            config.SECTOR_RETAIL,
         ),
         (
             "EVA Nantes Sud",
-            "EVA Nantes Sud est une salle de réalité virtuelle dédiée au free roaming et à l'esport.",
+            "Salles VR à Nantes | EVA Nantes Sud - Free roaming & esport en réalité virtuelle.",
             config.SECTOR_SPORT,
         ),
     ]
@@ -81,7 +81,7 @@ def test_long_tail_patterns_are_not_attributed_to_third_parties():
         ),
         (
             "Acme",
-            "Acme s'appuie sur Clenet, partenaire spécialisé dans la manutention industrielle.",
+            "Acme s'appuie sur Clenet, partenaire qui assure la vente et location de solutions de manutention.",
         ),
         (
             "Acme",
@@ -99,6 +99,15 @@ def test_virtual_reality_without_esport_is_not_enough_for_sport():
         "Acme VR",
         "Acme VR est une salle de réalité virtuelle proposant des expériences immersives.",
     ) is None
+
+
+def test_industry_customer_pages_do_not_make_clenet_industry():
+    result = company_subject_evidence.classify_subject_attributed_activity(
+        "Clenet",
+        "CLENET - Vente et Location de solutions de manutention pour vos besoins en industrie, bâtiment et agriculture.",
+    )
+    assert result is not None
+    assert result[0] == config.SECTOR_RETAIL
 
 
 def test_agricultural_customer_context_is_not_enough_for_retail():
@@ -164,8 +173,6 @@ def test_strict_resolver_accepts_acronym_domain(monkeypatch):
             "https://www.bnf.fr/",
         ),
     )
-    # Le secteur Culture n'est pas dans les motifs stricts actuels ; le test
-    # vérifie donc uniquement que le garde de domaine ne rejette pas l'acronyme.
     assert company_subject_evidence.resolve_official_site_subject_attributed(
         "Bibliothèque Nationale de France", ["https://www.bnf.fr/"]
     ) is None
