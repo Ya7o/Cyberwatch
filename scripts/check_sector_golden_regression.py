@@ -8,6 +8,7 @@ la précision sur les valeurs qualifiées ne baisse pas.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from pathlib import Path
 
@@ -20,10 +21,51 @@ def _sector(path: str) -> dict:
         raise SystemExit(f"rapport Golden sans métriques Secteur: {path}") from exc
 
 
+def _details(path: str) -> dict[str, dict[str, str]]:
+    if not path:
+        return {}
+    target = Path(path)
+    if not target.exists():
+        return {}
+    with target.open(encoding="utf-8", newline="") as handle:
+        return {
+            row.get("Golden_ID", ""): row
+            for row in csv.DictReader(handle)
+            if row.get("Golden_ID", "")
+        }
+
+
+def _print_newly_wrong(before_path: str, after_path: str) -> None:
+    before = _details(before_path)
+    after = _details(after_path)
+    if not before or not after:
+        return
+    emitted = False
+    for golden_id in sorted(after):
+        new = after[golden_id]
+        old = before.get(golden_id, {})
+        if new.get("Secteur_Match") != "0":
+            continue
+        if not new.get("Secteur_CW") or new.get("Secteur_CW") == "Inconnu":
+            continue
+        if old.get("Secteur_Match") == "0" and old.get("Secteur_CW") not in ("", "Inconnu"):
+            continue
+        if not emitted:
+            print("NEWLY_WRONG_SECTOR_CASES")
+            emitted = True
+        print(
+            f"- {golden_id} organisation={new.get('Organisation','')} "
+            f"expected={new.get('Secteur_REF','')} got={new.get('Secteur_CW','')} "
+            f"before={old.get('Secteur_CW','')}"
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("before")
     parser.add_argument("after")
+    parser.add_argument("--before-details", default="")
+    parser.add_argument("--after-details", default="")
     args = parser.parse_args()
 
     before = _sector(args.before)
@@ -56,6 +98,7 @@ def main() -> int:
         print("SECTOR_GOLDEN_REGRESSION=FAIL")
         for problem in problems:
             print(f"- {problem}")
+        _print_newly_wrong(args.before_details, args.after_details)
         return 1
 
     print(
