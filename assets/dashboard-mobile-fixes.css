@@ -1,5 +1,24 @@
 /* Mobile dashboard fixes: prevent text clipping and viewport-scroll rerenders. */
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.wrap,
+main,
+.grid-2,
+.dashboard-charts,
+.dashboard-charts > *,
+.card,
+.incidents-card,
+.table-scroll,
+.chart {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .chart svg { max-width: none; }
 #chart-sector,
 #chart-threat,
@@ -38,12 +57,30 @@
   .card-head p,
   .chart-note { overflow-wrap: anywhere; }
 
+  /* These charts must never enlarge the document width. Their previous
+     overflow:visible rule allowed SVG/text to create a horizontally scrollable
+     page and visually shift every following card. */
   #chart-sector,
   #chart-threat,
-  #chart-location { overflow: visible; }
+  #chart-location {
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
   #chart-sector svg,
   #chart-threat svg,
-  #chart-location svg { overflow: visible; }
+  #chart-location svg {
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Keep horizontal scrolling local to the monthly timeline only. */
+  #chart-month {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+  }
 
   .category-label { font-size: 11px; fill: var(--text-primary); }
   .value-label { font-size: 11px; }
