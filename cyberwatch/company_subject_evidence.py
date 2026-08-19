@@ -30,10 +30,30 @@ _THIRD_PARTY_RE = re.compile(
     r"provider|partner|supplier|vendor|contractor)\b|\bavec\s+[A-ZÀ-Ý0-9]",
     re.I,
 )
-# Compléments mesurés qui corrigent uniquement des variantes morphologiques
-# absentes des regex historiques. Ils restent soumis au même garde de sujet.
+# Compléments mesurés pour des formulations métier observées sur les sites
+# officiels. Ils restent soumis exactement aux mêmes gardes d'identité et de
+# sujet que les règles historiques : un mot-clé seul ne suffit jamais.
 _EXTRA_PATTERNS = {
-    config.SECTOR_RETAIL: (8, r"\bsupermarch[ée]s\b"),
+    config.SECTOR_RETAIL: (
+        9,
+        r"\b(supermarch[ée]s|fournisseur de mat[ée]riel agricole|"
+        r"vente de mat[ée]riel agricole|distribution de mat[ée]riel agricole)\b",
+    ),
+    config.SECTOR_CONSTRUCTION: (
+        9,
+        r"\b(r[ée]novation (?:sur[- ]mesure )?de l['’]habitat|"
+        r"r[ée]novation de l['’]habitat|pose de fen[êe]tres|pose de volets|pose de portes)\b",
+    ),
+    config.SECTOR_INDUSTRY: (
+        9,
+        r"\b(manutention industr(?:ie|ielle)|[ée]quipements? de manutention industrielle)\b",
+    ),
+    config.SECTOR_SPORT: (
+        9,
+        r"\b(salle de r[ée]alit[ée] virtuelle[^.;]{0,80}\besport\b|"
+        r"esport[^.;]{0,80}\bsalle de r[ée]alit[ée] virtuelle\b|"
+        r"free roaming[^.;]{0,80}\besport\b)\b",
+    ),
 }
 
 
@@ -68,7 +88,6 @@ def _activity_matches(sentence: str) -> list[tuple[int, str, re.Match[str]]]:
     matches: list[tuple[int, str, re.Match[str]]] = []
     rules = dict(company_evidence._ACTIVITY_PATTERNS)
     for sector, value in _EXTRA_PATTERNS.items():
-        # Le complément ne remplace pas la règle principale : il l'étend.
         weight, pattern = value
         match = re.search(pattern, sentence, re.I)
         if match:

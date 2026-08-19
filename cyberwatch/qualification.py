@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 from . import (
     config,
+    context_sector,
     enrichment,
     identity,
     sector as sector_policy,
@@ -165,14 +166,23 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes["sector_safe_name_backfill"] = backfill_safe_name_sectors(ordered)
 
     source_facts = store.read_csv(store.SOURCE_FACTS_CSV)
+    org_cache = store.load_org_enrichment_cache()
     changes["sector_structured_source_backfill"] = backfill_structured_source_sectors(ordered, source_facts)
+
+    context_applied, context_provenance, context_conflicts = context_sector.resolve_contextual_sectors(
+        ordered,
+        source_facts,
+        org_cache,
+    )
+    changes["sector_context_applied"] = context_applied
+    changes["sector_context_conflicts"] = context_conflicts
     changes["threat_stabilized"] = stabilize_threats(ordered)
 
     registry_rows = sector_registry.build_registry(
         ordered,
         reference,
         source_fact_rows=source_facts,
-        org_cache_rows=store.load_org_enrichment_cache(),
+        org_cache_rows=org_cache,
         previous_provenance=previous_provenance,
     )
     sector_registry_safety.enforce_candidate_conflicts(registry_rows)
@@ -189,6 +199,7 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes.update(llm_changes)
     neutralize_sector_fallback(ordered, changes, provenance)
 
+    provenance.extend(context_provenance)
     provenance.extend(registry_provenance)
     provenance.sort(
         key=lambda row: (
