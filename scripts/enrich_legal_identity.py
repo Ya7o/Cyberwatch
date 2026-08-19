@@ -12,8 +12,18 @@ Convention d'exploitation : LEGAL_IDENTITY_MAX_ORGS=0 signifie « toute la file 
 from __future__ import annotations
 
 import os
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from pathlib import Path
+
+# Quand ce fichier est exécuté directement (`python scripts/...`), Python place
+# `scripts/` et non la racine du dépôt en tête de sys.path. Le package local
+# `cyberwatch` doit donc être rendu explicitement importable, comme pour les
+# autres workers exécutés directement par GitHub Actions.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from cyberwatch import config, legal_identity, org_enrichment, store
 

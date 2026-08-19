@@ -1,3 +1,8 @@
+import runpy
+import subprocess
+import sys
+from pathlib import Path
+
 from scripts import enrich_legal_identity as worker
 
 
@@ -16,3 +21,23 @@ def test_worker_count_is_bounded(monkeypatch):
     assert worker._workers() == 8
     monkeypatch.setenv("LEGAL_IDENTITY_WORKERS", "0")
     assert worker._workers() == 1
+
+
+def test_direct_script_bootstraps_repository_import_path(tmp_path):
+    script = Path(worker.__file__).resolve()
+    command = [
+        sys.executable,
+        "-c",
+        (
+            "import runpy; "
+            f"runpy.run_path({str(script)!r}, run_name='cyberwatch_worker_smoke')"
+        ),
+    ]
+    completed = subprocess.run(
+        command,
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
