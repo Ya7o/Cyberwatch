@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'scripts/enrich_sector_queue.py'
+      - 'scripts/enrich_legal_identity.py'
       - 'cyberwatch/company_subject_evidence.py'
+      - 'cyberwatch/legal_identity.py'
       - 'cyberwatch/sector_registry.py'
       - 'cyberwatch/sector_registry_safety.py'
       - 'data/sector_auto_policy.json'
@@ -44,6 +46,11 @@ jobs:
           python scripts/evaluate_golden.py \
             --details /tmp/golden-before.csv \
             --json /tmp/golden-before.json
+
+      - name: Résoudre les identités légales ambiguës
+        env:
+          LEGAL_IDENTITY_MAX_ORGS: "40"
+        run: python scripts/enrich_legal_identity.py
 
       - name: Rechercher les preuves organisationnelles
         env:
