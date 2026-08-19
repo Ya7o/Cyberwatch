@@ -170,7 +170,7 @@ class TestDashboardSourcesSection:
         ):
             assert expected in body
 
-    def test_veille_llm_affiche_veillellmreyt_dans_le_dashboard(self):
+    def test_veille_llm_affiche_veille_ia_dans_le_dashboard(self):
         js = self._read("assets/app.js")
-        assert 'VEILLE_LLM: "veillellmReYt"' in js
-        assert 'VEILLE_LLM: "Veille LLM"' not in js
+        assert 'VEILLE_LLM: "Veille IA"' in js
+        assert 'VEILLE_LLM: "veillellmReYt"' not in js

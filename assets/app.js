@@ -4,6 +4,7 @@
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+  const DAY = 864e5;
 
   const OCEAN_LOCATIONS = new Set([
     "La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores",
@@ -88,7 +89,7 @@
       FRENCHBREACHES: "FrenchBreaches",
       CYBERATTAQUE_ORG: "Cyberattaque.org",
       RANSOMWARE_LIVE: "Ransomware.live",
-      VEILLE_LLM: "veillellmReYt",
+      VEILLE_LLM: "Veille IA",
       CERT_MU_ALERTS: "CERT-MU",
     })[id] || String(id || "Source");
   }
@@ -150,6 +151,11 @@
       .incident-fact-row{display:flex;gap:6px;margin-top:2px}.incident-fact-label{color:var(--text-muted);flex:none}.incident-fact-value{overflow-wrap:anywhere}
       .incident-data-types{margin-top:7px}.incident-data-types-title{color:var(--text-muted);margin-bottom:3px}.incident-data-group{margin-top:4px}.incident-data-group>summary{cursor:pointer;font-weight:600}.incident-data-values{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.incident-data-value{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px}
       .local-score{display:inline-flex;padding:2px 7px;border:1px solid var(--border);border-radius:999px;font-weight:650}.local-analysis p{margin:6px 0 0}.bar-hit:focus{outline:none;stroke:var(--series-1);stroke-width:2}
+      .kpi-activity{grid-column:span 2}.activity-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch}.activity-primary,.activity-secondary{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding-inline:16px}.activity-secondary{padding-left:16px;border-left:1px solid var(--border)}
+      .activity-value{font-size:clamp(2rem,5vw,3.2rem);font-weight:750;line-height:1;margin:0 0 10px;color:var(--text-primary)}.kpi-activity .activity-primary .kpi-value{margin:0 0 10px;line-height:1;font-size:clamp(2rem,5vw,3.2rem)}
+      .activity-trend{margin:9px 0 0;font-size:13px;font-weight:650;color:var(--text-secondary)}.activity-trend[data-direction="up"]{color:var(--status-partial)}.activity-trend[data-direction="down"]{color:var(--status-ok)}
+      .ocean-alert{border-width:2px}.ocean-alert h2{display:flex;align-items:center;gap:8px}.ocean-alert h2::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--status-partial);flex:none}
+      .chart-month-card{grid-column:1/-1}.month-value-label{font-size:11px;font-weight:700;fill:var(--text-primary)}.category-label{fill:var(--text-primary);font-size:11px}.chart-note{min-height:1.2em}
       @media(max-width:700px){
         .topbar-inner{align-items:flex-start}.brand-sub{max-width:190px}.run-pill{white-space:normal;text-align:left}
         .incidents-card .table-scroll,.reliability .table-scroll{overflow:visible;max-height:none}
@@ -159,6 +165,7 @@
         #incidents-table td:not(.incident-details-cell),#sources-detail-table td{border:0!important;padding:3px 0!important;white-space:normal!important;max-width:none!important}
         #incidents-table td[data-label]::before,#sources-detail-table td[data-label]::before{content:attr(data-label);display:inline-block;min-width:88px;margin-right:8px;color:var(--text-muted);font-size:10.5px;text-transform:uppercase}
         .org-cell{font-size:16px!important}.org-cell::before{display:none!important}.incident-details-row[hidden]{display:none!important}.incident-fact-row{display:block}.incident-fact-label{display:block}.audit-pager-actions{width:100%;justify-content:space-between}
+        .kpi-activity{grid-column:auto}.activity-primary,.activity-secondary{padding-inline:10px}.kpi-activity .kpi-value,.kpi-activity .activity-value{font-size:clamp(2rem,11vw,2.7rem)!important}.kpi-activity .kpi-note,.kpi-activity .activity-trend{font-size:12px!important;line-height:1.35}
       }
     `;
     document.head.appendChild(style);
@@ -179,7 +186,7 @@
     const counts = new Map();
     rows.forEach((row) => {
       const value = row[key] || "Inconnu";
-      if (dropUnknown && value === "Inconnu") return;
+      if (dropUnknown && normalize(value) === "inconnu") return;
       counts.set(value, (counts.get(value) || 0) + 1);
     });
     return Array.from(counts, ([label, value]) => ({ label, value }))
@@ -187,7 +194,7 @@
   }
 
   function monthRange(rows) {
-    const keys = rows.map((row) => String(row.date || "").slice(0, 7)).filter(Boolean).sort();
+    const keys = rows.map((row) => String(row.date || "").slice(0, 7)).filter((key) => /^\d{4}-\d{2}$/.test(key)).sort();
     if (!keys.length) return [];
     let [year, month] = keys[0].split("-").map(Number);
     const [endYear, endMonth] = keys[keys.length - 1].split("-").map(Number);
@@ -228,13 +235,35 @@
     node.addEventListener("mouseenter", show);
     node.addEventListener("mousemove", show);
     node.addEventListener("focus", show);
-    ["mouseleave", "blur"].forEach((eventName) => {
-      node.addEventListener(eventName, () => { if (tip) tip.hidden = true; });
-    });
+    ["mouseleave", "blur"].forEach((eventName) => node.addEventListener(eventName, () => { if (tip) tip.hidden = true; }));
   }
 
   function emptyChart(container) {
     if (container) container.innerHTML = '<p class="empty-chart">Aucun incident sur la sélection.</p>';
+  }
+
+  function wrapChartLabel(value, maxChars, maxLines) {
+    const words = String(value || "").trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return [""];
+    const lines = [];
+    let current = "";
+    let index = 0;
+    while (index < words.length && lines.length < maxLines) {
+      const candidate = current ? `${current} ${words[index]}` : words[index];
+      if (candidate.length <= maxChars || !current) {
+        current = candidate;
+        index += 1;
+      } else {
+        lines.push(current);
+        current = "";
+      }
+    }
+    if (current && lines.length < maxLines) lines.push(current);
+    if (index < words.length && lines.length) {
+      const last = lines.length - 1;
+      lines[last] = `${lines[last].slice(0, Math.max(1, maxChars - 1)).trimEnd()}…`;
+    }
+    return lines;
   }
 
   function barChartHorizontal(container, data) {
@@ -245,19 +274,28 @@
     if (data.length > 9) {
       rows = data.slice(0, 8).concat([{ label: "Autres", value: data.slice(8).reduce((sum, row) => sum + row.value, 0) }]);
     }
-    const width = Math.max(container.clientWidth || 520, 320);
-    const rowHeight = 26;
-    const height = rows.length * rowHeight + 16;
-    const labelWidth = Math.min(190, Math.max(110, width * 0.36));
-    const plotWidth = width - labelWidth - 44;
+    const width = Math.max(container.clientWidth || 520, 280);
+    const isMobile = width <= 700;
+    const rowHeight = isMobile ? 44 : 32;
+    const height = rows.length * rowHeight + 12;
+    const labelWidth = isMobile ? Math.min(180, Math.max(140, width * 0.48)) : Math.min(190, Math.max(110, width * 0.36));
+    const right = isMobile ? 36 : 44;
+    const plotWidth = Math.max(64, width - labelWidth - right);
     const max = Math.max(...rows.map((row) => row.value), 1);
     const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": "Répartition par catégorie" });
     rows.forEach((row, index) => {
-      const y = index * rowHeight + 8;
+      const y = index * rowHeight + 6;
       const barWidth = Math.max(3, (row.value / max) * plotWidth);
-      svg.appendChild(svgEl("text", { class: "tick-label", x: labelWidth - 10, y: y + rowHeight / 2, "text-anchor": "end", "dominant-baseline": "middle" }, row.label.length > 26 ? `${row.label.slice(0, 25)}…` : row.label));
-      svg.appendChild(svgEl("rect", { class: "bar", x: labelWidth, y: y + 5, width: barWidth, height: rowHeight - 12, rx: 4 }));
-      svg.appendChild(svgEl("text", { class: "value-label", x: labelWidth + barWidth + 8, y: y + rowHeight / 2, "dominant-baseline": "middle" }, String(row.value)));
+      const maxChars = Math.max(10, Math.floor((labelWidth - 10) / (isMobile ? 6.7 : 7.1)));
+      const label = svgEl("text", { class: "category-label", x: 0, y: isMobile ? y + 13 : y + 16 });
+      wrapChartLabel(row.label, maxChars, isMobile ? 2 : 1).forEach((line, lineIndex) => {
+        label.appendChild(svgEl("tspan", { x: 0, dy: lineIndex === 0 ? 0 : 14 }, line));
+      });
+      label.appendChild(svgEl("title", {}, row.label));
+      svg.appendChild(label);
+      const barY = isMobile ? y + 10 : y + 5;
+      svg.appendChild(svgEl("rect", { class: "bar", x: labelWidth, y: barY, width: barWidth, height: 18, rx: 4 }));
+      svg.appendChild(svgEl("text", { class: "value-label", x: Math.min(width - 4, labelWidth + barWidth + 8), y: barY + 13 }, String(row.value)));
       const hit = svgEl("rect", { class: "bar-hit", x: 0, y, width, height: rowHeight });
       bindTooltip(hit, `<strong>${esc(row.label)}</strong> ${row.value} incident${row.value > 1 ? "s" : ""}`, `${row.label} : ${row.value} incidents`);
       svg.appendChild(hit);
@@ -269,26 +307,28 @@
     if (!container) return;
     container.innerHTML = "";
     if (!data.length) return emptyChart(container);
-    const width = Math.max(container.clientWidth || 520, 320);
-    const height = 240;
-    const margin = { top: 14, right: 8, bottom: 34, left: 34 };
+    const visibleWidth = Math.max(container.clientWidth || 520, 320);
+    const width = Math.max(visibleWidth, data.length * 50 + 52);
+    const height = 260;
+    const margin = { top: 28, right: 8, bottom: 38, left: 34 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const max = Math.max(...data.map((row) => row.value), 1);
     const step = plotWidth / data.length;
-    const barWidth = Math.max(3, Math.min(38, step - 6));
+    const barWidth = Math.max(5, Math.min(36, step - 8));
     const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": "Incidents par mois" });
     data.forEach((point, index) => {
       const barHeight = (point.value / max) * plotHeight;
       const x = margin.left + index * step + (step - barWidth) / 2;
       const y = margin.top + plotHeight - barHeight;
       if (point.value) svg.appendChild(svgEl("rect", { class: "bar", x, y, width: barWidth, height: barHeight, rx: 4 }));
+      svg.appendChild(svgEl("text", { class: "month-value-label", x: margin.left + index * step + step / 2, y: Math.max(14, y - 7), "text-anchor": "middle" }, String(point.value)));
       const [year, month] = point.label.split("-");
       const label = `${MONTHS[Number(month) - 1]} ${year.slice(2)}`;
       const hit = svgEl("rect", { class: "bar-hit", x: margin.left + index * step, y: margin.top, width: step, height: plotHeight });
       bindTooltip(hit, `<strong>${esc(label)}</strong> ${point.value} incident${point.value > 1 ? "s" : ""}`, `${label} : ${point.value} incidents`);
       svg.appendChild(hit);
-      const every = Math.ceil(data.length / 8);
+      const every = Math.ceil(data.length / 10);
       if (index % every === 0 || index === data.length - 1) {
         svg.appendChild(svgEl("text", { class: "tick-label", x: margin.left + index * step + step / 2, y: height - 12, "text-anchor": "middle" }, label));
       }
@@ -299,15 +339,9 @@
   function sensitivity(incident) {
     const facts = Array.isArray(incident.facts) ? incident.facts : [];
     const values = facts.flatMap((fact) => Array.isArray(fact.data_types) ? fact.data_types : []).map(normalize);
-    if (values.some((value) => SENSITIVE_MARKERS.some((marker) => value.includes(marker)))) {
-      return ["sensitive", "Données sensibles"];
-    }
-    if (values.some((value) => PERSONAL_EXACT.has(value) || PERSONAL_MARKERS.some((marker) => value.includes(marker)))) {
-      return ["personal", "Données personnelles"];
-    }
-    if (values.length || facts.some((fact) => fact.affected_count != null || fact.data_volume || fact.file_count != null)) {
-      return ["unknown", "Données non qualifiées"];
-    }
+    if (values.some((value) => SENSITIVE_MARKERS.some((marker) => value.includes(marker)))) return ["sensitive", "Données sensibles"];
+    if (values.some((value) => PERSONAL_EXACT.has(value) || PERSONAL_MARKERS.some((marker) => value.includes(marker)))) return ["personal", "Données personnelles"];
+    if (values.length || facts.some((fact) => fact.affected_count != null || fact.data_volume || fact.file_count != null)) return ["unknown", "Données non qualifiées"];
     return null;
   }
 
@@ -369,65 +403,27 @@
   }
 
   function factHtml(fact, incidentSummary = "") {
-    const access = ({
-      phishing: "Phishing",
-      compromised_credentials: "Identifiants compromis",
-      vulnerability_exploitation: "Exploitation d’une vulnérabilité",
-      remote_access: "Accès distant",
-      third_party: "Tiers compromis",
-      malware: "Malware",
-      other: "Autre",
-    })[fact.initial_access] || fact.initial_access || "";
-    const claimStatus = ({
-      claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti",
-    })[fact.claim_status] || fact.claim_status || "";
+    const access = ({ phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" })[fact.initial_access] || fact.initial_access || "";
+    const claimStatus = ({ claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti" })[fact.claim_status] || fact.claim_status || "";
     const sourceSummary = sameSummary(fact.summary, incidentSummary) ? "" : fact.summary;
     const impactCovered = narrativeContains(fact.summary, fact.impact) || narrativeContains(incidentSummary, fact.impact);
     const sourceImpact = impactCovered ? "" : fact.impact;
-    const rows = [
-      factRow("Statut", claimStatus),
-      factRow("Acteur", fact.threat_actor),
-      factRow("Tiers impliqué", fact.third_party),
-      factRow("Vecteur d'entrée", access),
-      factRow("Déroulé", attackFlowLabel(fact.attack_flow)),
-      factRow("Localisation précise", fact.fine_location),
-      factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)),
-      factRow("Volume", fact.data_volume),
-      factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : ""),
-      renderDataTypes(fact.data_types),
-      factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""),
-      factRow("CVSS", fact.cvss),
-      factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""),
-      factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""),
-      factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""),
-      factRow("Impact", sourceImpact),
-      factRow("Synthèse", sourceSummary),
-      factRow("Évolution", fact.evolution),
-    ].filter(Boolean);
-    const links = [safeUrl(fact.victim_website), ...(fact.evidence_urls || []).map(safeUrl)]
-      .filter(Boolean).slice(0, 4);
-    if (links.length) {
-      rows.push(`<div class="evidence-links">${links.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>`);
-    }
-    return rows.length
-      ? `<div class="incident-fact"><div class="incident-fact-source">${esc(sourceLabel(fact.source))}</div>${rows.join("")}</div>`
-      : "";
+    const rows = [factRow("Statut", claimStatus), factRow("Acteur", fact.threat_actor), factRow("Tiers impliqué", fact.third_party), factRow("Vecteur d'entrée", access), factRow("Déroulé", attackFlowLabel(fact.attack_flow)), factRow("Localisation précise", fact.fine_location), factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)), factRow("Volume", fact.data_volume), factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : ""), renderDataTypes(fact.data_types), factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""), factRow("CVSS", fact.cvss), factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""), factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""), factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""), factRow("Impact", sourceImpact), factRow("Synthèse", sourceSummary), factRow("Évolution", fact.evolution)].filter(Boolean);
+    const links = [safeUrl(fact.victim_website), ...(fact.evidence_urls || []).map(safeUrl)].filter(Boolean).slice(0, 4);
+    if (links.length) rows.push(`<div class="evidence-links">${links.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>`);
+    return rows.length ? `<div class="incident-fact"><div class="incident-fact-source">${esc(sourceLabel(fact.source))}</div>${rows.join("")}</div>` : "";
   }
 
   function detailHtml(incident) {
     const parts = [];
-    if (incident.summary) {
-      parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
-    }
+    if (incident.summary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
     const facts = (incident.facts || []).map((fact) => factHtml(fact, incident.summary)).filter(Boolean);
     if (facts.length) parts.push(`<div class="incident-facts-list">${facts.join("")}</div>`);
     if (incident.local) {
       const references = (incident.local.references || []).map(safeUrl).filter(Boolean).slice(0, 4);
       parts.push(`<div class="local-analysis"><span class="local-score">Score cyberattaque : ${esc(incident.local.score)}/100</span><p><strong>Analyse locale :</strong> ${esc(incident.local.summary || "—")}</p>${references.length ? `<div class="evidence-links">${references.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : ""}</div>`);
     }
-    return parts.length
-      ? `<div class="incident-details-grid">${parts.join("")}</div>`
-      : '<span class="muted">Aucun enrichissement supplémentaire disponible.</span>';
+    return parts.length ? `<div class="incident-details-grid">${parts.join("")}</div>` : '<span class="muted">Aucun enrichissement supplémentaire disponible.</span>';
   }
 
   function sourceHomes() {
@@ -444,9 +440,7 @@
     const badges = (incident.sources || []).map((id) => {
       const label = sourceLabel(id);
       const url = homes.get(id);
-      return url
-        ? `<a class="source-badge" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`
-        : `<span class="source-badge">${esc(label)}</span>`;
+      return url ? `<a class="source-badge" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : `<span class="source-badge">${esc(label)}</span>`;
     }).join("");
     const urls = Array.from(new Set((incident.urls || []).map(safeUrl).filter(Boolean))).slice(0, 3);
     return `<div class="source-badges">${badges}</div>${urls.length ? `<div class="evidence-links">${urls.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : ""}`;
@@ -469,38 +463,84 @@
       return `<tr class="incident-row">
         <td data-label="Date" class="num">${esc(incident.date || "—")}</td>
         <td data-label="Organisation" class="wrap-cell org-cell"><strong>${esc(incident.org || "Organisation inconnue")}</strong>${sensitivityHtml(incident)}<button class="incident-details-toggle" type="button" aria-expanded="false" aria-controls="${id}">Détails</button></td>
-        <td data-label="Territoire">${esc(incident.location || "—")}</td>
         <td data-label="Secteur">${esc(incident.sector || "—")}</td>
         <td data-label="Menace">${esc(incident.threat || "—")}</td>
+        <td data-label="Territoire">${esc(incident.location || "—")}</td>
         <td data-label="Sources">${sourceLinks(incident)}</td>
       </tr>
       <tr class="incident-details-row" id="${id}" hidden><td class="incident-details-cell" colspan="6">${detailHtml(incident)}</td></tr>`;
     }).join("") : '<tr><td colspan="6" class="muted">Aucun incident ne correspond aux filtres.</td></tr>';
-
-    $("#table-count").textContent = sorted.length
-      ? `${start + 1}–${Math.min(start + shown.length, sorted.length)} sur ${sorted.length} incidents`
-      : "0 incident";
-    $("#audit-pager").innerHTML = `<span>Page ${state.page} / ${pages}</span><div class="audit-pager-actions">
-      <label>Lignes <select id="audit-page-size"><option>25</option><option>50</option><option>100</option></select></label>
-      <button id="audit-prev" type="button" ${state.page <= 1 ? "disabled" : ""}>Précédent</button>
-      <button id="audit-next" type="button" ${state.page >= pages ? "disabled" : ""}>Suivant</button>
-    </div>`;
+    $("#table-count").textContent = sorted.length ? `${start + 1}–${Math.min(start + shown.length, sorted.length)} sur ${sorted.length} incidents` : "0 incident";
+    $("#audit-pager").innerHTML = `<span>Page ${state.page} / ${pages}</span><div class="audit-pager-actions"><label>Lignes <select id="audit-page-size"><option>25</option><option>50</option><option>100</option></select></label><button id="audit-prev" type="button" ${state.page <= 1 ? "disabled" : ""}>Précédent</button><button id="audit-next" type="button" ${state.page >= pages ? "disabled" : ""}>Suivant</button></div>`;
     $("#audit-page-size").value = String(state.pageSize);
+  }
+
+  function incidentDate(incident) {
+    const date = new Date(incident?.date);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function countBetween(rows, start, end) {
+    return rows.reduce((count, incident) => {
+      const date = incidentDate(incident);
+      return date && date >= start && date < end ? count + 1 : count;
+    }, 0);
+  }
+
+  function setTrend(node, current, previous, period) {
+    if (!node) return;
+    if (previous === 0) {
+      node.textContent = current === 0 ? `Stable vs ${period} précédents` : `Nouvelle activité vs ${period} précédents`;
+      node.dataset.direction = current === 0 ? "flat" : "up";
+      return;
+    }
+    const percent = Math.round(((current - previous) / previous) * 100);
+    node.textContent = `${percent > 0 ? "+" : ""}${percent} % vs ${period} précédents`;
+    node.dataset.direction = percent > 0 ? "up" : percent < 0 ? "down" : "flat";
+  }
+
+  function renderOceanAlert(rows) {
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - 30 * DAY);
+    const recent = rows.map((incident) => ({ incident, date: incidentDate(incident) }))
+      .filter(({ incident, date }) => date && date >= cutoff && date <= now && OCEAN_LOCATIONS.has(incident.location))
+      .sort((a, b) => b.date - a.date);
+    const card = $("#ocean-alert");
+    if (!card) return;
+    card.hidden = recent.length === 0;
+    if (!recent.length) return;
+    $("#ocean-alert-count").textContent = formatNumber(recent.length);
+    const latest = recent[0];
+    $("#ocean-alert-note").textContent = `${recent.length > 1 ? "incidents" : "incident"} dans les 30 derniers jours · Dernier : ${latest.incident.location || "zone Océan Indien"}, ${formatDate(latest.date)}`;
   }
 
   function renderKpis(rows) {
     const now = new Date();
-    const cutoff = new Date(now.getTime() - 30 * 864e5);
-    $("#kpi-incidents").textContent = rows.length;
-    $("#kpi-30d").textContent = rows.filter((incident) => {
-      const date = new Date(incident.date);
-      return !Number.isNaN(date.getTime()) && date >= cutoff && date <= now;
-    }).length;
+    const end = new Date(now.getTime() + 1);
+    const d30 = new Date(now.getTime() - 30 * DAY);
+    const d60 = new Date(now.getTime() - 60 * DAY);
+    const d365 = new Date(now.getTime() - 365 * DAY);
+    const d730 = new Date(now.getTime() - 730 * DAY);
+    const current30 = countBetween(rows, d30, end);
+    const previous30 = countBetween(rows, d60, d30);
+    const current12m = countBetween(rows, d365, end);
+    const previous12m = countBetween(rows, d730, d365);
+    $("#kpi-incidents").textContent = formatNumber(rows.length);
+    $("#kpi-30d").textContent = formatNumber(current30);
+    $("#kpi-12m").textContent = formatNumber(current12m);
     $("#kpi-ocean").textContent = rows.filter((incident) => OCEAN_LOCATIONS.has(incident.location)).length;
     $("#kpi-ransomware").textContent = rows.filter((incident) => normalize(incident.threat).includes("ransomware")).length;
-    $("#kpi-incidents-note").textContent = rows.length === state.incidents.length
-      ? "événements uniques dans la base"
-      : "événements correspondant aux filtres actifs";
+    $("#kpi-incidents-note").textContent = rows.length === state.incidents.length ? "événements uniques dans la base" : "événements correspondant aux filtres actifs";
+    setTrend($("#kpi-30d-trend"), current30, previous30, "30 jours");
+    setTrend($("#kpi-12m-trend"), current12m, previous12m, "12 mois");
+    renderOceanAlert(rows);
+  }
+
+  function setCoverageNote(rows, key, selector) {
+    const node = $(selector);
+    if (!node) return;
+    const known = rows.filter((row) => row[key] && normalize(row[key]) !== "inconnu").length;
+    node.textContent = rows.length ? `${formatNumber(known)} incidents sur ${formatNumber(rows.length)} documentés (${Math.round(100 * known / rows.length)} %).` : "";
   }
 
   function renderCharts(rows) {
@@ -514,10 +554,9 @@
     barChartHorizontal($("#chart-location"), countBy(rows, "location"));
     barChartHorizontal($("#chart-sector"), countBy(rows, "sector", { dropUnknown: true }));
     barChartHorizontal($("#chart-threat"), countBy(rows, "threat"));
-    const known = rows.filter((incident) => (incident.sector || "Inconnu") !== "Inconnu").length;
-    $("#sector-note").textContent = rows.length
-      ? `${known} incidents sur ${rows.length} ont un secteur documenté (${Math.round(100 * known / rows.length)} %).`
-      : "";
+    setCoverageNote(rows, "sector", "#sector-note");
+    setCoverageNote(rows, "threat", "#threat-note");
+    setCoverageNote(rows, "location", "#location-note");
   }
 
   function renderSources() {
@@ -535,17 +574,8 @@
     $("#sources-detail-table tbody").innerHTML = rows.map((source) => {
       const status = String(source.status || "SKIPPED").toUpperCase();
       const historyStatus = String(source.history_status || "UNKNOWN").toUpperCase();
-      const historyNote = historyStatus === "TRUNCATED"
-        ? `<div class="muted">Historique borné${source.oldest_available_date ? ` depuis ${esc(formatDate(source.oldest_available_date))}` : ""}</div>`
-        : "";
-      return `<tr>
-        <td data-label="Source">${esc(sourceLabel(source.id))}</td>
-        <td data-label="Statut"><span class="chip" data-status="${esc(status)}">${esc(status)}</span>${historyNote}</td>
-        <td data-label="Dernier item">${esc(formatDate(source.latest_item))}</td>
-        <td data-label="Organisation">${esc(source.latest_item_org || "—")}</td>
-        <td data-label="Items vus" class="num">${esc(source.items_seen ?? "—")}</td>
-        <td data-label="Items dans la fenêtre" class="num">${esc(source.items_in_window ?? "—")}</td>
-      </tr>`;
+      const historyNote = historyStatus === "TRUNCATED" ? `<div class="muted">Historique borné${source.oldest_available_date ? ` depuis ${esc(formatDate(source.oldest_available_date))}` : ""}</div>` : "";
+      return `<tr><td data-label="Source">${esc(sourceLabel(source.id))}</td><td data-label="Statut"><span class="chip" data-status="${esc(status)}">${esc(status)}</span>${historyNote}</td><td data-label="Dernier item">${esc(formatDate(source.latest_item))}</td><td data-label="Organisation">${esc(source.latest_item_org || "—")}</td><td data-label="Items vus" class="num">${esc(source.items_seen ?? "—")}</td><td data-label="Items dans la fenêtre" class="num">${esc(source.items_in_window ?? "—")}</td></tr>`;
     }).join("");
   }
 
@@ -560,9 +590,7 @@
       return;
     }
     box.hidden = false;
-    list.innerHTML = spots.map((spot) => `
-      <li><strong>${esc(spot.id)}</strong> — ${esc(spot.status || "À vérifier")}${spot.coverage != null ? ` ${esc(spot.coverage)}%` : ""}${spot.detail ? ` (${esc(spot.detail)})` : ""}${spot.reason ? ` : ${esc(spot.reason)}` : ""}</li>
-    `).join("");
+    list.innerHTML = spots.map((spot) => `<li><strong>${esc(spot.id)}</strong> — ${esc(spot.status || "À vérifier")}${spot.coverage != null ? ` ${esc(spot.coverage)}%` : ""}${spot.detail ? ` (${esc(spot.detail)})` : ""}${spot.reason ? ` : ${esc(spot.reason)}` : ""}</li>`).join("");
   }
 
   function renderRun() {
@@ -583,15 +611,16 @@
     const total = (data.sources || []).length || counts.ok + counts.partial + counts.fail + counts.skipped;
     const needsAttention = (data.blind_spots || []).length;
     pill.dataset.status = data.run.overall;
-    text.textContent = needsAttention
-      ? `Sources : ${counts.ok}/${total} opérationnelles · ${needsAttention} à vérifier`
-      : `Sources : ${counts.ok}/${total} opérationnelles`;
+    text.textContent = needsAttention ? `Sources : ${counts.ok}/${total} opérationnelles · ${needsAttention} à vérifier` : `Sources : ${counts.ok}/${total} opérationnelles`;
   }
 
-  function render() {
+  function renderStaticStatus() {
     renderRun();
     renderBlindSpots();
     renderSources();
+  }
+
+  function renderDataView() {
     if (state.status?.initialized === false) {
       $("#table-count").textContent = "Base non initialisée";
       $("#incidents-table tbody").innerHTML = '<tr><td colspan="6">Aucune collecte validée disponible.</td></tr>';
@@ -603,23 +632,28 @@
     renderTable(rows);
   }
 
+  function render() {
+    renderStaticStatus();
+    renderDataView();
+  }
+
   function setupControls() {
     $("#f-ocean-indien").addEventListener("click", () => {
       state.filters.ocean = !state.filters.ocean;
       $("#f-ocean-indien").setAttribute("aria-pressed", String(state.filters.ocean));
       state.page = 1;
-      render();
+      renderDataView();
     });
     $("#f-local").addEventListener("click", () => {
       state.filters.local = !state.filters.local;
       $("#f-local").setAttribute("aria-pressed", String(state.filters.local));
       state.page = 1;
-      render();
+      renderDataView();
     });
     $("#f-source").addEventListener("change", (event) => {
       state.filters.source = event.target.value || "";
       state.page = 1;
-      render();
+      renderDataView();
     });
     let searchTimer;
     $("#f-org").addEventListener("input", (event) => {
@@ -628,8 +662,8 @@
       searchTimer = setTimeout(() => {
         state.filters.org = value;
         state.page = 1;
-        render();
-      }, 180);
+        renderDataView();
+      }, 220);
     });
     $("#f-reset").addEventListener("click", () => {
       clearTimeout(searchTimer);
@@ -639,27 +673,18 @@
       $("#f-source").value = "";
       $("#f-org").value = "";
       state.page = 1;
-      render();
+      renderDataView();
     });
-
     $$("#incidents-table th[data-sort] .sort-button").forEach((button) => {
       button.addEventListener("click", () => {
         const th = button.closest("th");
         const key = th.dataset.sort;
-        state.sort = {
-          key,
-          dir: state.sort.key === key ? -state.sort.dir : (key === "date" ? -1 : 1),
-        };
-        $$("#incidents-table th[data-sort]").forEach((other) => {
-          other.setAttribute("aria-sort", other === th
-            ? (state.sort.dir === 1 ? "ascending" : "descending")
-            : "none");
-        });
+        state.sort = { key, dir: state.sort.key === key ? -state.sort.dir : (key === "date" ? -1 : 1) };
+        $$("#incidents-table th[data-sort]").forEach((other) => other.setAttribute("aria-sort", other === th ? (state.sort.dir === 1 ? "ascending" : "descending") : "none"));
         state.page = 1;
-        render();
+        renderTable(filteredIncidents());
       });
     });
-
     $("#incidents-table tbody").addEventListener("click", (event) => {
       const button = event.target.closest(".incident-details-toggle");
       if (!button) return;
@@ -669,21 +694,17 @@
       button.textContent = open ? "Détails" : "Masquer";
       row.hidden = open;
     });
-
     $("#audit-pager").addEventListener("click", (event) => {
-      if (event.target.id === "audit-prev" && state.page > 1) {
-        state.page -= 1;
-        render();
-      } else if (event.target.id === "audit-next") {
-        state.page += 1;
-        render();
-      }
+      if (event.target.id === "audit-prev" && state.page > 1) state.page -= 1;
+      else if (event.target.id === "audit-next") state.page += 1;
+      else return;
+      renderTable(filteredIncidents());
     });
     $("#audit-pager").addEventListener("change", (event) => {
       if (event.target.id !== "audit-page-size") return;
       state.pageSize = Number(event.target.value) || 50;
       state.page = 1;
-      render();
+      renderTable(filteredIncidents());
     });
   }
 
@@ -691,8 +712,7 @@
     const stored = localStorage.getItem("cyberwatch-theme");
     if (stored) document.documentElement.dataset.theme = stored;
     $("#theme-toggle").addEventListener("click", () => {
-      const dark = document.documentElement.dataset.theme === "dark"
-        || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+      const dark = document.documentElement.dataset.theme === "dark" || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
       const next = dark ? "light" : "dark";
       document.documentElement.dataset.theme = next;
       localStorage.setItem("cyberwatch-theme", next);
@@ -702,9 +722,15 @@
 
   function setupResize() {
     let timer;
+    let lastWidth = document.documentElement.clientWidth;
     addEventListener("resize", () => {
       clearTimeout(timer);
-      timer = setTimeout(() => renderCharts(filteredIncidents()), 200);
+      timer = setTimeout(() => {
+        const width = document.documentElement.clientWidth;
+        if (Math.abs(width - lastWidth) <= 20) return;
+        lastWidth = width;
+        renderCharts(filteredIncidents());
+      }, 220);
     });
   }
 

@@ -1,4 +1,4 @@
-/* Mobile dashboard fixes: prevent text clipping and viewport-scroll rerenders. */
+/* Cyberwatch — garde-fous responsive et stabilité du viewport mobile. */
 
 html,
 body {
@@ -27,22 +27,7 @@ main,
 #chart-threat svg,
 #chart-location svg { width: 100%; max-width: 100%; }
 
-/* Keep the two activity columns aligned from the top. The runtime v2 style
-   uses align-items:end, which creates a staircase when trend text wraps. */
-.kpi-activity .activity-grid { align-items: stretch; }
-
-/* The two values used different margin/line-height rules (.kpi-value vs
-   .activity-value), so their glyphs still started at different vertical
-   positions even when the columns themselves were aligned. */
-.kpi-activity .activity-primary .kpi-value,
-.kpi-activity .activity-secondary .activity-value {
-  margin: 0 0 10px;
-  line-height: 1;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-}
-
-/* Match incident disclosure controls to the native source-detail affordance:
-   plain text with a leading disclosure triangle, never a pill/button bubble. */
+/* Match incident disclosure controls to the native source-detail affordance. */
 .incidents-card .incident-details-toggle {
   all: unset !important;
   display: inline-flex !important;
@@ -51,7 +36,7 @@ main,
   margin-left: 8px !important;
   color: var(--text-secondary) !important;
   font: inherit !important;
-  font-size: 13px !important;
+  font-size: 0 !important;
   font-weight: 400 !important;
   line-height: 1.4;
   cursor: pointer !important;
@@ -64,31 +49,18 @@ main,
   flex: none;
 }
 
-.incidents-card .incident-details-toggle::after {
-  content: "Détail";
-}
-
-.incidents-card .incident-details-toggle[aria-expanded="true"]::before {
-  content: "▾";
-}
-
-/* Hide the runtime label ("Détails" / "Masquer") while preserving it in the
-   accessible button text and expose the stable visual label via ::after. */
-.incidents-card .incident-details-toggle {
-  font-size: 0 !important;
-}
-
+.incidents-card .incident-details-toggle::after { content: "Détail"; }
+.incidents-card .incident-details-toggle[aria-expanded="true"]::before { content: "▾"; }
 .incidents-card .incident-details-toggle::before,
-.incidents-card .incident-details-toggle::after {
-  font-size: 13px;
-}
-
+.incidents-card .incident-details-toggle::after { font-size: 13px; }
 .incidents-card .incident-details-toggle:focus-visible {
   outline: 2px solid var(--series-1) !important;
   outline-offset: 2px;
 }
 
 @media (max-width: 700px) {
+  /* Mobile browser chrome can resize the visual viewport while scrolling.
+     Keeping the header in document flow prevents perceived vertical jumps. */
   .topbar { position: static; }
   .topbar-inner { align-items: flex-start; }
   .brand { min-width: 0; flex: 1 1 auto; }
@@ -104,9 +76,8 @@ main,
   .card-head p,
   .chart-note { overflow-wrap: anywhere; }
 
-  /* These charts must never enlarge the document width. Their previous
-     overflow:visible rule allowed SVG/text to create a horizontally scrollable
-     page and visually shift every following card. */
+  /* Dimension charts are always contained by their card; they must never
+     create a document-level horizontal scroll. */
   #chart-sector,
   #chart-threat,
   #chart-location {
@@ -121,12 +92,14 @@ main,
     max-width: 100%;
   }
 
-  /* Keep horizontal scrolling local to the monthly timeline only. */
+  /* The monthly timeline is the only intentionally horizontally scrollable
+     component, and its overscroll stays local to the chart. */
   #chart-month {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .category-label { font-size: 11px; fill: var(--text-primary); }
