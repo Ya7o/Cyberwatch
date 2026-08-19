@@ -19,13 +19,19 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "full = identité + Sector ; sector-only = réutilise le checkpoint identité"
+        description: "golden-only = ciblé ; sector-only = cache incrémental ; full = tout rescanner"
         required: false
         default: "sector-only"
         type: choice
         options:
+          - golden-only
           - sector-only
           - full
+      targets:
+        description: "Organisation_Key séparées par virgules (optionnel, prioritaire sur le scope du mode)"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -129,12 +135,14 @@ jobs:
             --details /tmp/golden-before.csv \
             --json /tmp/golden-before.json
 
-      - name: Rechercher les preuves organisationnelles sur toute la file
+      - name: Rechercher les preuves organisationnelles sur le scope utile
         env:
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS: "1000"
           SECTOR_ENRICHMENT_MAX_ORGS: "1000"
           SECTOR_ENRICHMENT_WORKERS: "6"
+          SECTOR_ENRICHMENT_MODE: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'sector-only') }}
+          SECTOR_ENRICHMENT_TARGET_KEYS: ${{ inputs.targets || '' }}
         run: python -m scripts.enrich_sector_queue
 
       - name: Requalifier via le registre et sa politique
@@ -168,7 +176,8 @@ jobs:
         if: always()
         run: |
           echo "## Diagnostic Sector — run ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Mode: ${{ inputs.mode || 'push/schedule' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Mode: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'sector-only') }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Cibles explicites: ${{ inputs.targets || 'aucune' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Identité légale recalculée: ${{ needs.legal-identity.outputs.ran }}" >> "$GITHUB_STEP_SUMMARY"
           if [ -f /tmp/sector-golden-mismatches.csv ]; then
             echo '```csv' >> "$GITHUB_STEP_SUMMARY"
