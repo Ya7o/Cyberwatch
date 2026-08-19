@@ -91,15 +91,41 @@ def test_kpi_activite_partagent_les_memes_regles_verticales():
     assert css.count("margin: 0 0 10px;") >= 2
 
 
-def test_touch_targets_mobiles_ont_une_zone_de_44px():
-    css = _read("assets/dashboard-runtime.css")
-    assert "min-height: 44px" in css
-    assert ".theme-toggle" in css
-    assert ".btn-quick" in css
-    assert ".btn-reset" in css
-    assert ".audit-pager button" in css
-    assert ".incidents-card .incident-details-toggle" in css
-    assert "min-width: 44px" in css
+def test_touch_targets_mobiles_ont_une_zone_de_44px_effective():
+    runtime_css = _read("assets/dashboard-runtime.css")
+    mobile_css = _read("assets/dashboard-mobile-fixes.css")
+    html = _read("index.html")
+
+    # La feuille mobile est chargée après le runtime : elle ne doit donc jamais
+    # annuler les dimensions tactiles avec un reset global prioritaire.
+    assert html.index("assets/dashboard-runtime.css") < html.index("assets/dashboard-mobile-fixes.css")
+    assert "all: unset !important" not in mobile_css
+
+    # Contrôles génériques garantis par le runtime.
+    assert "min-height: 44px" in runtime_css
+    for selector in (".btn-quick", ".btn-reset", ".audit-pager button", ".org-search"):
+        assert selector in runtime_css
+
+    # Contrôles qui avaient encore une faiblesse de cascade ou de largeur.
+    theme = re.search(r"\.theme-toggle\s*\{(.*?)\}", mobile_css, re.DOTALL)
+    assert theme and "min-width: 44px" in theme.group(1) and "min-height: 44px" in theme.group(1)
+
+    detail = re.search(r"\.incidents-card \.incident-details-toggle\s*\{(.*?)\}", mobile_css, re.DOTALL)
+    assert detail and "min-width: 44px" in detail.group(1) and "min-height: 44px" in detail.group(1)
+
+    summary = re.search(r"\.sources-detail > summary\s*\{(.*?)\}", mobile_css, re.DOTALL)
+    assert summary and "min-height: 44px" in summary.group(1)
+
+
+def test_detail_mobile_utilise_un_reset_cible_et_preserve_la_cascade():
+    css = _read("assets/dashboard-mobile-fixes.css")
+    block = re.search(r"\.incidents-card \.incident-details-toggle\s*\{(.*?)\}", css, re.DOTALL)
+    assert block
+    body = block.group(1)
+    assert "appearance: none" in body
+    assert "background: transparent !important" in body
+    assert "border: 0 !important" in body
+    assert "all:" not in body
 
 
 def test_libelle_veille_llm_reste_stable():
