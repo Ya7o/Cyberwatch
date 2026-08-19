@@ -8,6 +8,10 @@
 #chart-threat svg,
 #chart-location svg { width: 100%; max-width: 100%; }
 
+/* Keep the two activity columns aligned from the top. The runtime v2 style
+   uses align-items:end, which creates a staircase when trend text wraps. */
+.kpi-activity .activity-grid { align-items: stretch; }
+
 @media (max-width: 700px) {
   .topbar { position: static; }
   .topbar-inner { align-items: flex-start; }
