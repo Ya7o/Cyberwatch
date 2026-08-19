@@ -29,11 +29,11 @@ def _structured_fixture(make_item):
     return source, target, facts
 
 
-def test_structured_sector_propagation_is_review_by_default(make_item):
+def test_structured_sector_propagation_is_review_when_channel_disabled(make_item):
     source, target, facts = _structured_fixture(make_item)
     registry = _safe(sector_registry.build_registry(
         [source, target], {}, source_fact_rows=facts, org_cache_rows=[],
-        previous_provenance=[],
+        previous_provenance=[], policy=_policy(structured_source=False),
     ))
     row = next(row for row in registry if row["Organisation_Key"] == source.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_REVIEW
@@ -92,7 +92,8 @@ def test_disabled_consensus_is_review_then_can_be_enabled(make_item):
     )
     items = [first, second, target]
     registry = _safe(sector_registry.build_registry(
-        items, {}, source_fact_rows=[], org_cache_rows=[], previous_provenance=[]
+        items, {}, source_fact_rows=[], org_cache_rows=[], previous_provenance=[],
+        policy=_policy(consensus_multi_source=False),
     ))
     row = next(row for row in registry if row["Organisation_Key"] == first.Organisation_Key)
     assert row["Decision"] == sector_registry.DECISION_REVIEW
