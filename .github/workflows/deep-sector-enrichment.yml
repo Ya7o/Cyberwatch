@@ -6,7 +6,9 @@ on:
     paths:
       - 'scripts/enrich_sector_queue.py'
       - 'scripts/enrich_legal_identity.py'
+      - 'scripts/check_sector_golden_regression.py'
       - 'cyberwatch/company_subject_evidence.py'
+      - 'cyberwatch/context_sector.py'
       - 'cyberwatch/legal_identity.py'
       - 'cyberwatch/sector_registry.py'
       - 'cyberwatch/sector_registry_safety.py'
@@ -105,7 +107,9 @@ jobs:
             --details /tmp/golden-after.csv \
             --json /tmp/golden-after.json
           python scripts/check_sector_golden_regression.py \
-            /tmp/golden-before.json /tmp/golden-after.json
+            /tmp/golden-before.json /tmp/golden-after.json \
+            --before-details /tmp/golden-before.csv \
+            --after-details /tmp/golden-after.csv
           python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
           python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
           python -m cyberwatch check --allow-uninitialized

@@ -136,6 +136,22 @@ def test_context_resolver_propagates_activity_by_exact_org_key():
     assert all(row["Origin"] == context_sector.ORIGIN for row in provenance)
 
 
+def test_generic_editorial_activity_is_only_a_hint_not_auto_sector():
+    item = _item("I1", "Opaque Corp")
+    facts = [{
+        "Item_ID": "I1",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Activity_Description": "services informatiques et développement de logiciels",
+    }]
+
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], facts, [])
+
+    assert applied == 0
+    assert conflicts == 0
+    assert provenance == []
+    assert item.Sector == config.SECTOR_UNKNOWN
+
+
 def test_context_resolver_uses_existing_official_cache_without_network():
     item = _item("I1", "SamBoat")
     hospitality = getattr(config, "SECTOR_HOSPITALITY")
@@ -201,10 +217,10 @@ def test_context_resolver_abstains_on_conflicting_strong_evidence():
 
     applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], facts, [])
 
-    assert applied == 0
-    assert conflicts == 1
-    assert provenance == []
-    assert item.Sector == config.SECTOR_UNKNOWN
+    assert applied == 1
+    assert conflicts == 0
+    assert item.Sector == config.SECTOR_INDUSTRY
+    assert len(provenance) == 1
 
 
 def test_leak_data_alone_never_classifies_sector():

@@ -112,11 +112,17 @@ def classify_context_activity(activity: str) -> str:
 
 
 def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
-    """Ne transforme jamais Source_Sector_Raw en preuve contextuelle forte."""
+    """N'auto-classe un fait éditorial que sur une formulation métier forte.
+
+    Activity_Description est utile comme faisceau de recherche, mais sa provenance
+    éditoriale ne garantit pas qu'une formulation générique décrive bien l'activité
+    principale de la victime. Le classifieur général reste réservé aux preuves
+    officielles déjà validées.
+    """
     activity = (row.get("Activity_Description") or "").strip()
     if not activity:
         return []
-    candidate = classify_context_activity(activity)
+    candidate = classify_explicit_activity(activity)
     if candidate == config.SECTOR_UNKNOWN:
         return []
     return [Evidence(
