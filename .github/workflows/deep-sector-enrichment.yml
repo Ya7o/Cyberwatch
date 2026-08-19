@@ -27,6 +27,8 @@ jobs:
   enrich:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -51,7 +53,7 @@ jobs:
         env:
           LEGAL_IDENTITY_MAX_ORGS: "0"
           LEGAL_IDENTITY_WORKERS: "6"
-        run: python scripts/enrich_legal_identity.py
+        run: python -m scripts.enrich_legal_identity
 
       - name: Rechercher les preuves organisationnelles sur toute la file
         env:
@@ -59,7 +61,7 @@ jobs:
           ORG_ENRICHMENT_MAX_CALLS: "1000"
           SECTOR_ENRICHMENT_MAX_ORGS: "1000"
           SECTOR_ENRICHMENT_WORKERS: "6"
-        run: python scripts/enrich_sector_queue.py
+        run: python -m scripts.enrich_sector_queue
 
       - name: Requalifier via le registre et sa politique
         run: |
@@ -101,5 +103,3 @@ jobs:
           git commit -m "Enrich and revalidate organisation Sector evidence"
           git pull --rebase origin main
           git push origin HEAD:main
-
-# Operational trigger: full Sector refresh requested 2026-08-19.
