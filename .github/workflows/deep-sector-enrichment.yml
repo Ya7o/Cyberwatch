@@ -23,15 +23,52 @@ concurrency:
   group: sector-canonical-pipeline
   cancel-in-progress: false
 
+env:
+  PYTHONPATH: ${{ github.workspace }}
+
 jobs:
-  enrich:
+  legal-identity:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      PYTHONPATH: ${{ github.workspace }}
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Résoudre les identités légales encore inconnues
+        env:
+          LEGAL_IDENTITY_MAX_ORGS: "0"
+          LEGAL_IDENTITY_WORKERS: "6"
+        run: python -m scripts.enrich_legal_identity
+
+      - name: Checkpoint du cache d'identité légale
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "cyberwatch-bot@users.noreply.github.com"
+          git add data/org_enrichment_cache.csv
+          if git diff --cached --quiet; then
+            echo "Aucune nouvelle identité légale à checkpoint."
+            exit 0
+          fi
+          git commit -m "Checkpoint legal identity enrichment"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+  enrich:
+    needs: legal-identity
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
           fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
@@ -48,12 +85,6 @@ jobs:
           python scripts/evaluate_golden.py \
             --details /tmp/golden-before.csv \
             --json /tmp/golden-before.json
-
-      - name: Résoudre toutes les identités légales encore inconnues
-        env:
-          LEGAL_IDENTITY_MAX_ORGS: "0"
-          LEGAL_IDENTITY_WORKERS: "6"
-        run: python -m scripts.enrich_legal_identity
 
       - name: Rechercher les preuves organisationnelles sur toute la file
         env:
