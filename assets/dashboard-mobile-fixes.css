@@ -41,6 +41,53 @@ main,
   font-size: clamp(2rem, 5vw, 3.2rem);
 }
 
+/* Match incident disclosure controls to the native source-detail affordance:
+   plain text with a leading disclosure triangle, never a pill/button bubble. */
+.incidents-card .incident-details-toggle {
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px !important;
+  color: var(--text-secondary) !important;
+  font: inherit !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.4;
+  cursor: pointer !important;
+}
+
+.incidents-card .incident-details-toggle::before {
+  content: "▸";
+  display: inline-block;
+  width: 0.8em;
+  flex: none;
+}
+
+.incidents-card .incident-details-toggle::after {
+  content: "Détail";
+}
+
+.incidents-card .incident-details-toggle[aria-expanded="true"]::before {
+  content: "▾";
+}
+
+/* Hide the runtime label ("Détails" / "Masquer") while preserving it in the
+   accessible button text and expose the stable visual label via ::after. */
+.incidents-card .incident-details-toggle {
+  font-size: 0 !important;
+}
+
+.incidents-card .incident-details-toggle::before,
+.incidents-card .incident-details-toggle::after {
+  font-size: 13px;
+}
+
+.incidents-card .incident-details-toggle:focus-visible {
+  outline: 2px solid var(--series-1) !important;
+  outline-offset: 2px;
+}
+
 @media (max-width: 700px) {
   .topbar { position: static; }
   .topbar-inner { align-items: flex-start; }
