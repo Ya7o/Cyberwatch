@@ -35,6 +35,10 @@ def _details(path: str) -> dict[str, dict[str, str]]:
         }
 
 
+def _is_false(value: str) -> bool:
+    return str(value or "").strip().lower() in {"0", "false", "no", "non"}
+
+
 def _print_newly_wrong(before_path: str, after_path: str) -> None:
     before = _details(before_path)
     after = _details(after_path)
@@ -44,11 +48,11 @@ def _print_newly_wrong(before_path: str, after_path: str) -> None:
     for golden_id in sorted(after):
         new = after[golden_id]
         old = before.get(golden_id, {})
-        if new.get("Secteur_Match") != "0":
+        if not _is_false(new.get("Secteur_Match", "")):
             continue
         if not new.get("Secteur_CW") or new.get("Secteur_CW") == "Inconnu":
             continue
-        if old.get("Secteur_Match") == "0" and old.get("Secteur_CW") not in ("", "Inconnu"):
+        if _is_false(old.get("Secteur_Match", "")) and old.get("Secteur_CW") not in ("", "Inconnu"):
             continue
         if not emitted:
             print("NEWLY_WRONG_SECTOR_CASES")
