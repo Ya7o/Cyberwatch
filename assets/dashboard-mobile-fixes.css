@@ -12,6 +12,16 @@
    uses align-items:end, which creates a staircase when trend text wraps. */
 .kpi-activity .activity-grid { align-items: stretch; }
 
+/* The two values used different margin/line-height rules (.kpi-value vs
+   .activity-value), so their glyphs still started at different vertical
+   positions even when the columns themselves were aligned. */
+.kpi-activity .activity-primary .kpi-value,
+.kpi-activity .activity-secondary .activity-value {
+  margin: 0 0 10px;
+  line-height: 1;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
 @media (max-width: 700px) {
   .topbar { position: static; }
   .topbar-inner { align-items: flex-start; }
