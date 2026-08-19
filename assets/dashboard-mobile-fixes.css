@@ -63,16 +63,69 @@ main,
   outline-offset: 2px;
 }
 
+/* Une fois déplacé dans la cellule Sources, le contrôle se place sous les liens. */
+.incidents-card td[data-label="Sources"] .incident-details-toggle {
+  margin-left: 0 !important;
+  margin-top: 6px !important;
+  padding-left: 0;
+}
+
+/* Le détail des sources reprend exactement le même langage visuel. */
+.sources-detail > summary {
+  appearance: none;
+  -webkit-appearance: none;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.sources-detail > summary::-webkit-details-marker { display: none; }
+.sources-detail > summary::marker { content: ""; }
+.sources-detail > summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 0.8em;
+  flex: none;
+  font-size: 13px;
+}
+.sources-detail[open] > summary::before { content: "▾"; }
+
 @media (max-width: 700px) {
   /* Mobile browser chrome can resize the visual viewport while scrolling.
      Keeping the header in document flow prevents perceived vertical jumps. */
   .topbar { position: static; }
-  .topbar-inner { align-items: flex-start; }
-  .brand { min-width: 0; flex: 1 1 auto; }
+  .topbar-inner {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .brand {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
   .brand > div { min-width: 0; }
   .brand-sub { max-width: none; overflow-wrap: anywhere; }
-  .topbar-right { flex: 0 1 48%; min-width: 0; align-items: flex-start; }
-  .run-pill { min-width: 0; white-space: normal; overflow-wrap: anywhere; line-height: 1.35; }
+
+  /* Le statut des sources prend sa propre ligne : aucun mot ne peut être
+     compressé verticalement à droite du titre. */
+  .topbar-right {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .run-pill {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 56px);
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    line-height: 1.35;
+  }
 
   .card { padding-inline: 14px; }
   .card figcaption,
@@ -116,12 +169,11 @@ main,
   .incidents-card .incident-details-toggle {
     min-width: 44px;
     min-height: 44px;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .sources-detail > summary {
     min-height: 44px;
-    display: flex;
-    align-items: center;
+    font-size: 13px;
   }
 }
