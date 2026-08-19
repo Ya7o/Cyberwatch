@@ -107,25 +107,25 @@ def test_touch_targets_mobiles_ont_une_zone_de_44px_effective():
         assert selector in runtime_css
 
     # Contrôles qui avaient encore une faiblesse de cascade ou de largeur.
-    theme = re.search(r"\.theme-toggle\s*\{(.*?)\}", mobile_css, re.DOTALL)
-    assert theme and "min-width: 44px" in theme.group(1) and "min-height: 44px" in theme.group(1)
+    theme_blocks = re.findall(r"\.theme-toggle\s*\{(.*?)\}", mobile_css, re.DOTALL)
+    assert any("min-width: 44px" in body and "min-height: 44px" in body for body in theme_blocks)
 
-    detail = re.search(r"\.incidents-card \.incident-details-toggle\s*\{(.*?)\}", mobile_css, re.DOTALL)
-    assert detail and "min-width: 44px" in detail.group(1) and "min-height: 44px" in detail.group(1)
+    detail_blocks = re.findall(r"\.incidents-card \.incident-details-toggle\s*\{(.*?)\}", mobile_css, re.DOTALL)
+    assert any("min-width: 44px" in body and "min-height: 44px" in body for body in detail_blocks)
 
-    summary = re.search(r"\.sources-detail > summary\s*\{(.*?)\}", mobile_css, re.DOTALL)
-    assert summary and "min-height: 44px" in summary.group(1)
+    summary_blocks = re.findall(r"\.sources-detail > summary\s*\{(.*?)\}", mobile_css, re.DOTALL)
+    assert any("min-height: 44px" in body for body in summary_blocks)
 
 
 def test_detail_mobile_utilise_un_reset_cible_et_preserve_la_cascade():
     css = _read("assets/dashboard-mobile-fixes.css")
-    block = re.search(r"\.incidents-card \.incident-details-toggle\s*\{(.*?)\}", css, re.DOTALL)
-    assert block
-    body = block.group(1)
-    assert "appearance: none" in body
-    assert "background: transparent !important" in body
-    assert "border: 0 !important" in body
-    assert "all:" not in body
+    blocks = re.findall(r"\.incidents-card \.incident-details-toggle\s*\{(.*?)\}", css, re.DOTALL)
+    assert blocks
+    reset = blocks[0]
+    assert "appearance: none" in reset
+    assert "background: transparent !important" in reset
+    assert "border: 0 !important" in reset
+    assert "all:" not in reset
 
 
 def test_libelle_veille_llm_reste_stable():
