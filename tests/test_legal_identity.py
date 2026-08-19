@@ -2,9 +2,10 @@ from cyberwatch import legal_identity, org_enrichment
 
 
 class _Response:
-    def __init__(self, payload, status_code=200):
+    def __init__(self, payload, status_code=200, text=""):
         self._payload = payload
         self.status_code = status_code
+        self.text = text
 
     def json(self):
         return self._payload
@@ -32,6 +33,29 @@ def test_unlabelled_number_is_never_a_legal_identity():
     ) == ("", "")
 
 
+def test_extract_jsonld_organization_identity():
+    structured = legal_identity.extract_structured_identity(
+        '''<html><script type="application/ld+json">{
+        "@context":"https://schema.org","@type":"Organization",
+        "name":"EVA Nantes Sud","legalName":"EVA FRANCE SAS",
+        "telephone":"02 00 00 00 00","description":"Salle de réalité virtuelle",
+        "address":{"@type":"PostalAddress","streetAddress":"10 rue du Jeu",
+        "postalCode":"44400","addressLocality":"Rezé"}}
+        </script></html>'''
+    )
+    assert structured.name == "EVA Nantes Sud"
+    assert structured.legal_name == "EVA FRANCE SAS"
+    assert structured.postal_code == "44400"
+    assert structured.city == "Rezé"
+
+
+def test_jsonld_non_organization_is_ignored():
+    structured = legal_identity.extract_structured_identity(
+        '<script type="application/ld+json">{"@type":"Article","name":"Clenet"}</script>'
+    )
+    assert structured == legal_identity.StructuredIdentity()
+
+
 def test_discover_legal_identity_reads_legal_notice_on_validated_domain(monkeypatch):
     monkeypatch.setattr(
         legal_identity.official_site_discovery,
@@ -47,6 +71,13 @@ def test_discover_legal_identity_reads_legal_notice_on_validated_domain(monkeypa
         legal_identity.company_evidence,
         "_identity_matches",
         lambda *args: True,
+    )
+    monkeypatch.setattr(
+        legal_identity,
+        "_fetch_structured_identity",
+        lambda url: legal_identity.StructuredIdentity(
+            legal_name="CLENET SARL", postal_code="49124", city="Saint-Barthélemy-d'Anjou"
+        ),
     )
 
     def page(url):
@@ -71,6 +102,7 @@ def test_discover_legal_identity_reads_legal_notice_on_validated_domain(monkeypa
     assert evidence is not None
     assert evidence.siren == "325707537"
     assert evidence.evidence_url.endswith("mentions-legales")
+    assert evidence.structured.postal_code == "49124"
 
 
 def test_registry_candidate_requires_exact_siren(monkeypatch):
@@ -92,7 +124,57 @@ def test_registry_candidate_requires_exact_siren(monkeypatch):
     assert candidate["nom_raison_sociale"] == "CLENET"
 
 
-def test_cache_row_keeps_legal_identity_and_naf_as_evidence():
+def test_best_establishment_prefers_exact_siret_over_headquarters():
+    evidence = legal_identity.LegalIdentityEvidence(
+        siren="123456789",
+        siret="12345678900042",
+        evidence_url="https://eva.gg/mentions-legales",
+        evidence_text="SIRET 12345678900042",
+        structured=legal_identity.StructuredIdentity(postal_code="44400", city="Rezé"),
+    )
+    candidate = {
+        "siege": {"siret": "12345678900018", "departement": "75", "code_postal": "75001", "libelle_commune": "Paris"},
+        "matching_etablissements": [
+            {"siret": "12345678900042", "departement": "44", "code_postal": "44400", "libelle_commune": "Rezé", "activite_principale": "93.29Z", "section_activite_principale": "R"}
+        ],
+    }
+    row, score = legal_identity.best_establishment(candidate, evidence)
+    assert row["siret"] == "12345678900042"
+    assert score >= 10
+
+
+def test_address_can_select_local_establishment_without_siret():
+    evidence = legal_identity.LegalIdentityEvidence(
+        siren="123456789",
+        siret="",
+        evidence_url="https://eva.gg/",
+        evidence_text="SIREN 123456789",
+        structured=legal_identity.StructuredIdentity(
+            street="10 rue du Jeu", postal_code="44400", city="Rezé"
+        ),
+    )
+    candidate = {
+        "siege": {"departement": "75", "code_postal": "75001", "libelle_commune": "Paris"},
+        "matching_etablissements": [
+            {"departement": "44", "code_postal": "44400", "libelle_commune": "Rezé", "adresse": "10 rue du Jeu"}
+        ],
+    }
+    row, score = legal_identity.best_establishment(candidate, evidence)
+    assert row["departement"] == "44"
+    assert score >= 6
+
+
+def test_name_or_city_alone_does_not_select_legal_company():
+    evidence = legal_identity.LegalIdentityEvidence(
+        siren="123456789", siret="", evidence_url="https://example.com", evidence_text="SIREN 123456789",
+        structured=legal_identity.StructuredIdentity(city="Paris"),
+    )
+    candidate = {"siege": {"departement": "75", "libelle_commune": "Paris"}}
+    _row, score = legal_identity.best_establishment(candidate, evidence)
+    assert score < 6
+
+
+def test_cache_row_keeps_brand_legal_name_and_naf_as_evidence():
     evidence = legal_identity.LegalIdentityEvidence(
         siren="325707537",
         siret="32570753700042",
@@ -101,20 +183,22 @@ def test_cache_row_keeps_legal_identity_and_naf_as_evidence():
     )
     candidate = {
         "siren": "325707537",
-        "nom_raison_sociale": "CLENET",
+        "nom_raison_sociale": "CLENET MANUTENTION",
         "activite_principale": "45.11Z",
         "section_activite_principale": "G",
-        "siege": {"departement": "49"},
+        "siege": {"siret": "32570753700042", "departement": "49"},
     }
 
     row = legal_identity.cache_row(
         "clenet", "Clenet", "2026-08-19T00:00:00+00:00", evidence, candidate
     )
 
+    assert row["Query_Name"] == "Clenet"
+    assert row["Matched_Name"] == "CLENET MANUTENTION"
     assert row["Company_ID"] == "325707537"
     assert row["Activity_Code"] == "45.11Z"
     assert row["Activity_Label"] == org_enrichment.NAF_SECTION_LABELS["G"]
     assert row["Headquarters_Department"] == "49"
     assert row["Match_Status"] == org_enrichment.MATCHED
     assert row["Validated_Sector"] == ""
-    assert row["Validated_Via"] == "legal_identity"
+    assert row["Validated_Via"] == "legal_identity_siret"
