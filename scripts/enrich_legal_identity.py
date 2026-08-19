@@ -1,24 +1,49 @@
 #!/usr/bin/env python3
 """Résout les homonymes d'organisations via domaine officiel -> SIREN -> registre.
 
-Le worker est volontairement ciblé : uniquement les organisations encore en
-Secteur Inconnu et uniquement lorsque le cache organisation n'a pas déjà un
-match exploitable. Il ne publie aucun secteur directement ; il enrichit le cache
-canonique, puis `backfill-unknowns` applique la politique Sector habituelle.
+Le worker cible uniquement les organisations encore en Secteur Inconnu et dont
+le cache organisation n'a pas déjà un match exploitable. Les résolutions sont
+indépendantes et peuvent donc être parallélisées avec un pool borné. Le worker
+ne publie aucun secteur directement ; il enrichit le cache canonique, puis
+`backfill-unknowns` applique la politique Sector habituelle.
+
+Convention d'exploitation : LEGAL_IDENTITY_MAX_ORGS=0 signifie « toute la file ».
 """
 from __future__ import annotations
 
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
 from cyberwatch import config, legal_identity, org_enrichment, store
 
 
-def _max_orgs() -> int:
+def _env_int(name: str, default: int) -> int:
     try:
-        return max(0, int(os.getenv("LEGAL_IDENTITY_MAX_ORGS", "40")))
+        return int(os.getenv(name, str(default)))
     except ValueError:
-        return 40
+        return default
+
+
+def _max_orgs() -> int:
+    return max(0, _env_int("LEGAL_IDENTITY_MAX_ORGS", 40))
+
+
+def _workers() -> int:
+    return max(1, min(8, _env_int("LEGAL_IDENTITY_WORKERS", 6)))
+
+
+def _select_candidates(candidates: list[tuple[str, str]], limit: int) -> list[tuple[str, str]]:
+    """0 = toute la file ; une valeur positive borne le lot."""
+    return candidates if limit == 0 else candidates[:limit]
+
+
+def _resolve_one(key: str, name: str, fetched_at: str):
+    try:
+        return legal_identity.resolve(key, name, fetched_at)
+    except Exception:
+        # Un site indisponible ou une erreur réseau ne doit jamais bloquer le lot.
+        return None
 
 
 def main() -> int:
@@ -47,26 +72,37 @@ def main() -> int:
         candidates.append((key, name))
 
     limit = _max_orgs()
-    attempted = matched = 0
+    workers = _workers()
+    selected = _select_candidates(candidates, limit)
+    matched = 0
     fetched_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-    for key, name in candidates[:limit]:
-        attempted += 1
-        row = legal_identity.resolve(key, name, fetched_at)
-        if row is None:
-            continue
-        cache[key] = row
-        matched += 1
-        print(
-            f"LEGAL_IDENTITY MATCH {name} -> SIREN={row['Company_ID']} "
-            f"NAF={row['Activity_Code']} activity={row['Activity_Label']}"
-        )
 
+    results: dict[str, dict] = {}
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {
+            pool.submit(_resolve_one, key, name, fetched_at): (key, name)
+            for key, name in selected
+        }
+        for future in as_completed(futures):
+            key, name = futures[future]
+            row = future.result()
+            if row is None:
+                continue
+            results[key] = row
+            matched += 1
+            print(
+                f"LEGAL_IDENTITY MATCH {name} -> SIREN={row['Company_ID']} "
+                f"NAF={row['Activity_Code']} activity={row['Activity_Label']}"
+            )
+
+    # Une seule écriture déterministe du cache après toutes les lectures réseau.
+    cache.update(results)
     store.save_org_enrichment_cache(
         sorted(cache.values(), key=lambda row: row.get("Organisation_Key", ""))
     )
     print(
-        f"LEGAL_IDENTITY candidates={len(candidates)} attempted={attempted} "
-        f"matched={matched} limit={limit}"
+        f"LEGAL_IDENTITY candidates={len(candidates)} attempted={len(selected)} "
+        f"matched={matched} limit={limit} workers={workers}"
     )
     return 0
 
