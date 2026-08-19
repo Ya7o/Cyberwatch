@@ -30,23 +30,21 @@ _THIRD_PARTY_RE = re.compile(
     r"provider|partner|supplier|vendor|contractor)\b|\bavec\s+[A-ZÀ-Ý0-9]",
     re.I,
 )
-# Compléments mesurés pour des formulations métier observées sur les sites
-# officiels. Ils restent soumis exactement aux mêmes gardes d'identité et de
-# sujet que les règles historiques : un mot-clé seul ne suffit jamais.
+# Compléments mesurés sur des formulations métier observées sur les sites
+# officiels. Ils restent soumis aux gardes d'identité et d'attribution du sujet.
 _EXTRA_PATTERNS = {
     config.SECTOR_RETAIL: (
         9,
         r"\b(supermarch[ée]s|fournisseur de mat[ée]riel agricole|"
-        r"vente de mat[ée]riel agricole|distribution de mat[ée]riel agricole)\b",
+        r"vente(?: et r[ée]paration)? de mat[ée]riel agricole|"
+        r"distribution de mat[ée]riel agricole|"
+        r"propose une large gamme de mat[ée]riel agricole|"
+        r"vente et location de (?:solutions|mat[ée]riel) de manutention)\b",
     ),
     config.SECTOR_CONSTRUCTION: (
         9,
         r"\b(r[ée]novation (?:sur[- ]mesure )?de l['’]habitat|"
         r"r[ée]novation de l['’]habitat|pose de fen[êe]tres|pose de volets|pose de portes)\b",
-    ),
-    config.SECTOR_INDUSTRY: (
-        9,
-        r"\b(manutention industr(?:ie|ielle)|[ée]quipements? de manutention industrielle)\b",
     ),
     config.SECTOR_SPORT: (
         9,
@@ -79,8 +77,23 @@ def _org_is_subject(organisation: str, sentence: str, match_start: int) -> bool:
         return False
     normalized = searchable(prefix)
     required = min(2, len(tokens))
-    if sum(token in normalized for token in tokens) < required:
+    matched_tokens = sum(token in normalized for token in tokens)
+    if matched_tokens < required:
         return False
+
+    # Les sites officiels utilisent souvent des titres sans verbe :
+    # « CLENET Vente et Location... » ou « EVA - Free roaming & esport ».
+    # L'identité du domaine est vérifiée en amont ; ici on accepte uniquement
+    # un branding très proche du motif métier, jamais une mention distante.
+    near = prefix[-100:]
+    if match_start <= 140:
+        org_norm = searchable(organisation)
+        sentence_start = searchable(sentence[: min(match_start, 120)])
+        if org_norm and sentence_start.startswith(org_norm):
+            return True
+        if matched_tokens >= required and re.search(r"[|:\-–]\s*[^|:\-–]{0,70}$", near):
+            return True
+
     return bool(_COPULA_RE.search(prefix[-140:]))
 
 
@@ -112,8 +125,6 @@ def classify_subject_attributed_activity(
         top = matches[0]
         if top[0] < 8:
             continue
-        # Deux motifs du même secteur ne créent pas d'ambiguïté. Deux secteurs
-        # proches, eux, rendent la preuve non automatique.
         competing = [row for row in matches[1:] if row[1] != top[1]]
         if competing and top[0] < competing[0][0] + 2:
             continue
@@ -127,12 +138,7 @@ def resolve_official_site_subject_attributed(
     organisation: str,
     candidate_urls: tuple[str, ...] | list[str] | None = None,
 ) -> company_evidence.CompanyEvidence | None:
-    """Résout un site officiel puis exige une activité attribuée à la victime.
-
-    ``candidate_urls`` permet au worker de calculer la découverte une seule fois
-    et de l'instrumenter. Même un candidat explicitement fourni doit passer le
-    garde de propriété du domaine avant lecture de la page.
-    """
+    """Résout un site officiel puis exige une activité attribuée à la victime."""
     try:
         candidates = (
             list(candidate_urls)
