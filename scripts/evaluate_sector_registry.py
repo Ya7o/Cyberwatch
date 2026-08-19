@@ -108,6 +108,14 @@ def main() -> int:
             f"correct={metrics['correct']} wrong={metrics['wrong']} "
             f"precision={metrics['precision_pct']:.2f}%"
         )
+    wrong = [row for row in result["details"] if not row["Correct"]]
+    if wrong:
+        print("SECTOR REGISTRY WRONG CASES")
+        for row in wrong:
+            print(
+                f"{row['Channel']}\t{row['Organisation_Key']}\t"
+                f"candidate={row['Candidate']}\texpected={row['Expected']}"
+            )
     if args.json:
         target = Path(args.json)
         target.parent.mkdir(parents=True, exist_ok=True)
