@@ -30,15 +30,13 @@ _THIRD_PARTY_RE = re.compile(
     r"provider|partner|supplier|vendor|contractor)\b|\bavec\s+[A-ZÀ-Ý0-9]",
     re.I,
 )
-# Compléments mesurés sur des formulations métier observées sur les sites
-# officiels. Ils restent soumis aux gardes d'identité et d'attribution du sujet.
 _EXTRA_PATTERNS = {
     config.SECTOR_RETAIL: (
         9,
         r"\b(supermarch[ée]s|fournisseur de mat[ée]riel agricole|"
         r"vente(?: et r[ée]paration)? de mat[ée]riel agricole|"
         r"distribution de mat[ée]riel agricole|"
-        r"propose une large gamme de mat[ée]riel agricole|"
+        r"large gamme de mat[ée]riel agricole|"
         r"vente et location de (?:solutions|mat[ée]riel) de manutention)\b",
     ),
     config.SECTOR_CONSTRUCTION: (
@@ -81,10 +79,6 @@ def _org_is_subject(organisation: str, sentence: str, match_start: int) -> bool:
     if matched_tokens < required:
         return False
 
-    # Les sites officiels utilisent souvent des titres sans verbe :
-    # « CLENET Vente et Location... » ou « EVA - Free roaming & esport ».
-    # L'identité du domaine est vérifiée en amont ; ici on accepte uniquement
-    # un branding très proche du motif métier, jamais une mention distante.
     near = prefix[-100:]
     if match_start <= 140:
         org_norm = searchable(organisation)
@@ -116,7 +110,6 @@ def classify_subject_attributed_activity(
     organisation: str,
     text: str,
 ) -> tuple[str, str] | None:
-    """Retourne un secteur seulement si l'activité a pour sujet la victime."""
     for sentence in _sentences(text):
         matches = _activity_matches(sentence)
         if not matches:
@@ -138,7 +131,6 @@ def resolve_official_site_subject_attributed(
     organisation: str,
     candidate_urls: tuple[str, ...] | list[str] | None = None,
 ) -> company_evidence.CompanyEvidence | None:
-    """Résout un site officiel puis exige une activité attribuée à la victime."""
     try:
         candidates = (
             list(candidate_urls)
@@ -149,21 +141,15 @@ def resolve_official_site_subject_attributed(
         return None
 
     for candidate in candidates:
-        if not official_site_discovery.domain_matches_organisation(
-            organisation, candidate
-        ):
+        if not official_site_discovery.domain_matches_organisation(organisation, candidate):
             continue
         priority, body, about_links, final_url = company_evidence._page(candidate)
         if not priority and not body:
             continue
         evidence_url = final_url or candidate
-        if not official_site_discovery.domain_matches_organisation(
-            organisation, evidence_url
-        ):
+        if not official_site_discovery.domain_matches_organisation(organisation, evidence_url):
             continue
-        if not company_evidence._identity_matches(
-            organisation, evidence_url, priority, body
-        ):
+        if not company_evidence._identity_matches(organisation, evidence_url, priority, body):
             continue
 
         for text, url in ((priority, evidence_url), (body[:16000], evidence_url)):
@@ -179,21 +165,15 @@ def resolve_official_site_subject_attributed(
                 )
 
         for link in about_links:
-            if not official_site_discovery.domain_matches_organisation(
-                organisation, link
-            ):
+            if not official_site_discovery.domain_matches_organisation(organisation, link):
                 continue
             p_priority, p_body, _links, p_final = company_evidence._page(link)
             if not p_priority and not p_body:
                 continue
             page_url = p_final or link
-            if not official_site_discovery.domain_matches_organisation(
-                organisation, page_url
-            ):
+            if not official_site_discovery.domain_matches_organisation(organisation, page_url):
                 continue
-            if not company_evidence._identity_matches(
-                organisation, page_url, p_priority, p_body
-            ):
+            if not company_evidence._identity_matches(organisation, page_url, p_priority, p_body):
                 continue
             classified = classify_subject_attributed_activity(
                 organisation,
