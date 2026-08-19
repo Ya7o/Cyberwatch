@@ -46,25 +46,24 @@
       "CONSENSUS_REVIEW": 1,
       "JSON_CHALLENGER": 117,
       "KNOWN_ITEM_REVIEW": 23,
-      "NO_EVIDENCE": 239,
-      "OFFICIAL_EVIDENCE_REVIEW": 3,
-      "RAW_SECTOR_UNMAPPED": 35
+      "NO_EVIDENCE": 237,
+      "RAW_SECTOR_UNMAPPED": 36
     },
-    "queue_organisations": 418,
+    "queue_organisations": 414,
     "registry_channels": {
-      "consensus_multi_source": 59,
-      "known_item_single": 122,
+      "consensus_multi_source": 62,
+      "known_item_single": 123,
       "manual_reference": 170,
-      "official_subject_activity": 17,
+      "official_subject_activity": 15,
       "registry_exact_naf": 71,
       "structured_source": 120
     },
-    "registry_rows": 559,
-    "review_rows": 369
+    "registry_rows": 561,
+    "review_rows": 371
   },
   "ransomware_live": {
-    "current_known": 147,
-    "current_unknown": 33,
+    "current_known": 149,
+    "current_unknown": 31,
     "items": 180,
     "raw_values": {
       "Agriculture and Food Production": {
@@ -98,7 +97,7 @@
         "mapped_sector": "Santé"
       },
       "Hospitality": {
-        "current_unknown": 11,
+        "current_unknown": 10,
         "items": 15,
         "mapped_sector": "Inconnu"
       },
@@ -113,7 +112,7 @@
         "mapped_sector": "Inconnu"
       },
       "Other": {
-        "current_unknown": 4,
+        "current_unknown": 3,
         "items": 6,
         "mapped_sector": "Inconnu"
       },
@@ -139,27 +138,27 @@
       }
     },
     "unknown_raw_mappable": 0,
-    "unknown_raw_unmapped": 32,
-    "unknown_with_raw": 32,
+    "unknown_raw_unmapped": 30,
+    "unknown_with_raw": 30,
     "unknown_without_raw": 1
   },
   "schema_version": 2,
   "sector": {
     "global": {
-      "items": 1021,
-      "location_unknown": 41,
-      "location_unknown_ratio": 0.040156709108716944,
+      "items": 1026,
+      "location_unknown": 46,
+      "location_unknown_ratio": 0.04483430799220273,
       "organisations": 783,
-      "sector_coverage_ratio": 0.49853085210577863,
-      "sector_known": 509,
-      "sector_unknown": 512,
-      "sector_unknown_items_from_repeated_organisations": 180,
-      "sector_unknown_organisation_ratio": 0.5338441890166028,
-      "sector_unknown_organisations": 418,
-      "sector_unknown_ratio": 0.5014691478942214,
+      "sector_coverage_ratio": 0.5058479532163743,
+      "sector_known": 519,
+      "sector_unknown": 507,
+      "sector_unknown_items_from_repeated_organisations": 179,
+      "sector_unknown_organisation_ratio": 0.5287356321839081,
+      "sector_unknown_organisations": 414,
+      "sector_unknown_ratio": 0.49415204678362573,
       "sector_unknown_repeated_organisations": 86,
       "threat_unknown": 6,
-      "threat_unknown_ratio": 0.005876591576885406
+      "threat_unknown_ratio": 0.005847953216374269
     },
     "sources": {
       "BONJOURLAFUITE": {
@@ -167,29 +166,29 @@
         "location_unknown": 0,
         "location_unknown_ratio": 0.0,
         "organisations": 313,
-        "sector_coverage_ratio": 0.44,
-        "sector_known": 143,
-        "sector_unknown": 182,
+        "sector_coverage_ratio": 0.4492307692307692,
+        "sector_known": 146,
+        "sector_unknown": 179,
         "sector_unknown_items_from_repeated_organisations": 2,
-        "sector_unknown_organisation_ratio": 0.5782747603833865,
-        "sector_unknown_organisations": 181,
-        "sector_unknown_ratio": 0.56,
+        "sector_unknown_organisation_ratio": 0.5686900958466453,
+        "sector_unknown_organisations": 178,
+        "sector_unknown_ratio": 0.5507692307692308,
         "sector_unknown_repeated_organisations": 1,
         "threat_unknown": 0,
         "threat_unknown_ratio": 0.0
       },
       "CYBERATTAQUE_ORG": {
-        "items": 404,
-        "location_unknown": 41,
-        "location_unknown_ratio": 0.10148514851485149,
-        "organisations": 395,
-        "sector_coverage_ratio": 0.3811881188118812,
-        "sector_known": 154,
+        "items": 409,
+        "location_unknown": 46,
+        "location_unknown_ratio": 0.11246943765281174,
+        "organisations": 400,
+        "sector_coverage_ratio": 0.38875305623471884,
+        "sector_known": 159,
         "sector_unknown": 250,
         "sector_unknown_items_from_repeated_organisations": 4,
-        "sector_unknown_organisation_ratio": 0.6278481012658228,
+        "sector_unknown_organisation_ratio": 0.62,
         "sector_unknown_organisations": 248,
-        "sector_unknown_ratio": 0.6188118811881188,
+        "sector_unknown_ratio": 0.6112469437652812,
         "sector_unknown_repeated_organisations": 2,
         "threat_unknown": 0,
         "threat_unknown_ratio": 0.0
@@ -202,11 +201,11 @@
         "sector_coverage_ratio": 0.54,
         "sector_known": 54,
         "sector_unknown": 46,
-        "sector_unknown_items_from_repeated_organisations": 0,
-        "sector_unknown_organisation_ratio": 0.4791666666666667,
-        "sector_unknown_organisations": 46,
+        "sector_unknown_items_from_repeated_organisations": 2,
+        "sector_unknown_organisation_ratio": 0.46875,
+        "sector_unknown_organisations": 45,
         "sector_unknown_ratio": 0.46,
-        "sector_unknown_repeated_organisations": 0,
+        "sector_unknown_repeated_organisations": 1,
         "threat_unknown": 0,
         "threat_unknown_ratio": 0.0
       },
@@ -215,13 +214,13 @@
         "location_unknown": 0,
         "location_unknown_ratio": 0.0,
         "organisations": 174,
-        "sector_coverage_ratio": 0.8166666666666667,
-        "sector_known": 147,
-        "sector_unknown": 33,
+        "sector_coverage_ratio": 0.8277777777777777,
+        "sector_known": 149,
+        "sector_unknown": 31,
         "sector_unknown_items_from_repeated_organisations": 2,
-        "sector_unknown_organisation_ratio": 0.1839080459770115,
-        "sector_unknown_organisations": 32,
-        "sector_unknown_ratio": 0.18333333333333332,
+        "sector_unknown_organisation_ratio": 0.1724137931034483,
+        "sector_unknown_organisations": 30,
+        "sector_unknown_ratio": 0.17222222222222222,
         "sector_unknown_repeated_organisations": 1,
         "threat_unknown": 0,
         "threat_unknown_ratio": 0.0
@@ -245,28 +244,28 @@
     }
   },
   "snapshot": {
-    "code_commit": "8508e40f3bcaa7208f9dcba68692e31dad916e62",
-    "incidents_hash": "b88dc7eae9252fc1da1cddd653a1e220b3a0a70eb56dcc656e2e802ea477b37c",
-    "items_hash": "266c293e9f365740b5fcd4ccedf115e7b0209bb5a9a9e1719b1493719141bb46"
+    "code_commit": "8eb34964efddc7b6dad39b4f02df791afbe8471b",
+    "incidents_hash": "3d79010ccb967d2526d5995f626b8b53090f7010eca1a9ed48e89cb38b03fee7",
+    "items_hash": "09b3302ef27bc6b98469aa61542b9526b12b84361da8cbe4a9ef13bc90c6c06c"
   },
   "structured_backfill_projection": {
     "applied": 0,
     "metrics": {
       "global": {
-        "items": 1021,
-        "location_unknown": 41,
-        "location_unknown_ratio": 0.040156709108716944,
+        "items": 1026,
+        "location_unknown": 46,
+        "location_unknown_ratio": 0.04483430799220273,
         "organisations": 783,
-        "sector_coverage_ratio": 0.49853085210577863,
-        "sector_known": 509,
-        "sector_unknown": 512,
-        "sector_unknown_items_from_repeated_organisations": 180,
-        "sector_unknown_organisation_ratio": 0.5338441890166028,
-        "sector_unknown_organisations": 418,
-        "sector_unknown_ratio": 0.5014691478942214,
+        "sector_coverage_ratio": 0.5058479532163743,
+        "sector_known": 519,
+        "sector_unknown": 507,
+        "sector_unknown_items_from_repeated_organisations": 179,
+        "sector_unknown_organisation_ratio": 0.5287356321839081,
+        "sector_unknown_organisations": 414,
+        "sector_unknown_ratio": 0.49415204678362573,
         "sector_unknown_repeated_organisations": 86,
         "threat_unknown": 6,
-        "threat_unknown_ratio": 0.005876591576885406
+        "threat_unknown_ratio": 0.005847953216374269
       },
       "sources": {
         "BONJOURLAFUITE": {
@@ -274,29 +273,29 @@
           "location_unknown": 0,
           "location_unknown_ratio": 0.0,
           "organisations": 313,
-          "sector_coverage_ratio": 0.44,
-          "sector_known": 143,
-          "sector_unknown": 182,
+          "sector_coverage_ratio": 0.4492307692307692,
+          "sector_known": 146,
+          "sector_unknown": 179,
           "sector_unknown_items_from_repeated_organisations": 2,
-          "sector_unknown_organisation_ratio": 0.5782747603833865,
-          "sector_unknown_organisations": 181,
-          "sector_unknown_ratio": 0.56,
+          "sector_unknown_organisation_ratio": 0.5686900958466453,
+          "sector_unknown_organisations": 178,
+          "sector_unknown_ratio": 0.5507692307692308,
           "sector_unknown_repeated_organisations": 1,
           "threat_unknown": 0,
           "threat_unknown_ratio": 0.0
         },
         "CYBERATTAQUE_ORG": {
-          "items": 404,
-          "location_unknown": 41,
-          "location_unknown_ratio": 0.10148514851485149,
-          "organisations": 395,
-          "sector_coverage_ratio": 0.3811881188118812,
-          "sector_known": 154,
+          "items": 409,
+          "location_unknown": 46,
+          "location_unknown_ratio": 0.11246943765281174,
+          "organisations": 400,
+          "sector_coverage_ratio": 0.38875305623471884,
+          "sector_known": 159,
           "sector_unknown": 250,
           "sector_unknown_items_from_repeated_organisations": 4,
-          "sector_unknown_organisation_ratio": 0.6278481012658228,
+          "sector_unknown_organisation_ratio": 0.62,
           "sector_unknown_organisations": 248,
-          "sector_unknown_ratio": 0.6188118811881188,
+          "sector_unknown_ratio": 0.6112469437652812,
           "sector_unknown_repeated_organisations": 2,
           "threat_unknown": 0,
           "threat_unknown_ratio": 0.0
@@ -309,11 +308,11 @@
           "sector_coverage_ratio": 0.54,
           "sector_known": 54,
           "sector_unknown": 46,
-          "sector_unknown_items_from_repeated_organisations": 0,
-          "sector_unknown_organisation_ratio": 0.4791666666666667,
-          "sector_unknown_organisations": 46,
+          "sector_unknown_items_from_repeated_organisations": 2,
+          "sector_unknown_organisation_ratio": 0.46875,
+          "sector_unknown_organisations": 45,
           "sector_unknown_ratio": 0.46,
-          "sector_unknown_repeated_organisations": 0,
+          "sector_unknown_repeated_organisations": 1,
           "threat_unknown": 0,
           "threat_unknown_ratio": 0.0
         },
@@ -322,13 +321,13 @@
           "location_unknown": 0,
           "location_unknown_ratio": 0.0,
           "organisations": 174,
-          "sector_coverage_ratio": 0.8166666666666667,
-          "sector_known": 147,
-          "sector_unknown": 33,
+          "sector_coverage_ratio": 0.8277777777777777,
+          "sector_known": 149,
+          "sector_unknown": 31,
           "sector_unknown_items_from_repeated_organisations": 2,
-          "sector_unknown_organisation_ratio": 0.1839080459770115,
-          "sector_unknown_organisations": 32,
-          "sector_unknown_ratio": 0.18333333333333332,
+          "sector_unknown_organisation_ratio": 0.1724137931034483,
+          "sector_unknown_organisations": 30,
+          "sector_unknown_ratio": 0.17222222222222222,
           "sector_unknown_repeated_organisations": 1,
           "threat_unknown": 0,
           "threat_unknown_ratio": 0.0
@@ -351,9 +350,9 @@
         }
       }
     },
-    "sector_coverage_after": 0.49853085210577863,
-    "sector_coverage_before": 0.49853085210577863,
-    "sector_unknown_after": 512,
-    "sector_unknown_before": 512
+    "sector_coverage_after": 0.5058479532163743,
+    "sector_coverage_before": 0.5058479532163743,
+    "sector_unknown_after": 507,
+    "sector_unknown_before": 507
   }
 }
