@@ -180,7 +180,7 @@ def test_generic_official_activity_is_retained_as_evidence_but_not_auto_applied(
         "Organisation_Key": organisation_key("Opaque Tech"),
         "Query_Name": "Opaque Tech",
         "Match_Status": "MATCHED",
-        "Validated_Sector": config.SECTOR_DIGITAL,
+        "Validated_Sector": config.SECTOR_TECH,
         "Validated_Via": "official_subject_activity",
         "Activity_Label": "services informatiques et développement de logiciels",
         "Evidence_URL": "https://opaque.example/",
