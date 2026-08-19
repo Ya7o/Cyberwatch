@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """Enrichit la file Sector sans modifier directement la vérité canonique.
 
-La résolution du registre public reste séquentielle car elle partage un état de
-budget/cache. Les lectures de sites officiels, indépendantes et read-only, sont
-parallélisées avec un petit pool borné. Les Victim_Website déjà extraits dans
-SourceFacts sont réutilisés comme hints de découverte : ils accélèrent la
-résolution sans devenir eux-mêmes une preuve. La politique du registre reste la
-seule couche autorisée à écrire ensuite un Sector canonique.
+Trois modes bornent désormais le coût réseau :
+- ``golden-only`` cible uniquement les organisations Golden (ou une liste explicite),
+- ``sector-only`` ne retente que les organisations absentes du cache ou expirées,
+- ``full`` rescane toute la file et reste réservé à la maintenance.
+
+Le cache existant sert aussi de cache négatif persistant via ``Fetched_At`` et
+``Match_Status``. Aucun schéma supplémentaire n'est nécessaire : les négatifs
+récents ne sont plus rejoués en boucle, tandis que les erreurs réseau expirent
+rapidement. Les lectures de sites officiels restent parallélisées avec un pool
+borné et s'arrêtent pour une organisation dès qu'une preuve officielle validée
+est déjà en cache.
 """
 from __future__ import annotations
 
@@ -14,6 +19,7 @@ import datetime as dt
 import os
 import re
 import sys
+import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -32,6 +38,7 @@ from cyberwatch import (
 from cyberwatch.model import ORG_ENRICHMENT_CACHE_COLUMNS
 
 _URL_RE = re.compile(r"https?://[^\s|,;]+", re.I)
+_VALID_MODES = {"golden-only", "sector-only", "full"}
 
 
 def _env_int(name: str, default: int) -> int:
@@ -45,12 +52,94 @@ def _empty_cache_row() -> dict[str, str]:
     return {column: "" for column in ORG_ENRICHMENT_CACHE_COLUMNS}
 
 
-def _source_fact_website_hints() -> dict[str, tuple[str, ...]]:
-    """Indexe les sites victimes déjà collectés par Organisation_Key.
+def _parse_iso(value: str) -> dt.datetime | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    try:
+        parsed = dt.datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=dt.timezone.utc)
+    return parsed.astimezone(dt.timezone.utc)
 
-    Ces URL restent des hints : le résolveur officiel doit encore confirmer le
-    domaine et attribuer explicitement l'activité à l'organisation.
-    """
+
+def _retry_delay(row: dict | None) -> dt.timedelta:
+    status = str((row or {}).get("Match_Status") or "").strip()
+    if status == org_enrichment.ERROR:
+        return dt.timedelta(hours=max(1, _env_int("SECTOR_RETRY_ERROR_HOURS", 6)))
+    if status == org_enrichment.NOT_FOUND:
+        return dt.timedelta(days=max(1, _env_int("SECTOR_RETRY_NOT_FOUND_DAYS", 7)))
+    if status == org_enrichment.AMBIGUOUS:
+        return dt.timedelta(days=max(1, _env_int("SECTOR_RETRY_AMBIGUOUS_DAYS", 30)))
+    if status == org_enrichment.MATCHED:
+        return dt.timedelta(days=max(1, _env_int("SECTOR_RETRY_MATCHED_DAYS", 30)))
+    return dt.timedelta(0)
+
+
+def _cache_fresh(row: dict | None, now_utc: dt.datetime) -> bool:
+    if not row:
+        return False
+    fetched_at = _parse_iso(row.get("Fetched_At", ""))
+    if fetched_at is None:
+        return False
+    return now_utc - fetched_at < _retry_delay(row)
+
+
+def _target_keys_from_env() -> set[str]:
+    raw = os.getenv("SECTOR_ENRICHMENT_TARGET_KEYS", "")
+    return {part.strip() for part in re.split(r"[,|\n]", raw) if part.strip()}
+
+
+def _golden_keys() -> set[str]:
+    path = ROOT / "data" / "golden" / "qualification_golden.csv"
+    return {
+        (row.get("Organisation_Key") or "").strip()
+        for row in store.read_csv(path)
+        if (row.get("Organisation_Key") or "").strip()
+    }
+
+
+def _select_queue_rows(
+    queue: list[dict],
+    cache: dict[str, dict],
+    mode: str,
+    now_utc: dt.datetime,
+) -> tuple[list[dict], dict[str, int]]:
+    explicit = _target_keys_from_env()
+    golden = _golden_keys() if mode == "golden-only" and not explicit else set()
+    selected: list[dict] = []
+    skipped_fresh = 0
+    skipped_scope = 0
+
+    for row in queue:
+        key = (row.get("Organisation_Key") or "").strip()
+        if not key:
+            continue
+        if explicit and key not in explicit:
+            skipped_scope += 1
+            continue
+        if mode == "golden-only" and not explicit and key not in golden:
+            skipped_scope += 1
+            continue
+        if mode != "full" and _cache_fresh(cache.get(key), now_utc):
+            skipped_fresh += 1
+            continue
+        selected.append(row)
+
+    limit = max(0, _env_int("SECTOR_ENRICHMENT_MAX_ORGS", 60))
+    if limit:
+        selected = selected[:limit]
+    return selected, {
+        "queue_total": len(queue),
+        "skipped_fresh_cache": skipped_fresh,
+        "skipped_scope": skipped_scope,
+    }
+
+
+def _source_fact_website_hints() -> dict[str, tuple[str, ...]]:
+    """Indexe les sites victimes déjà collectés par Organisation_Key."""
     item_to_key = {
         item.Item_ID: item.Organisation_Key
         for item in store.load_items()
@@ -74,7 +163,6 @@ def _hint_urls(
     cache_row: dict | None = None,
     source_fact_hints: tuple[str, ...] = (),
 ) -> tuple[str, ...]:
-    """Collecte uniquement des URL comme hints de découverte, jamais comme preuve."""
     values: list[str] = []
     for hint in source_fact_hints:
         hint = str(hint or "").strip()
@@ -92,6 +180,7 @@ def _hint_urls(
 
 
 def _strict_official(organisation: str, hint_urls: tuple[str, ...]):
+    started = time.monotonic()
     try:
         candidates = official_site_discovery.discover_official_sites(
             organisation, hint_urls
@@ -99,32 +188,39 @@ def _strict_official(organisation: str, hint_urls: tuple[str, ...]):
         evidence = company_subject_evidence.resolve_official_site_subject_attributed(
             organisation, candidates
         )
-        return evidence, len(candidates)
+        return evidence, len(candidates), time.monotonic() - started
     except Exception:
-        return None, 0
+        return None, 0, time.monotonic() - started
 
 
 def main() -> int:
+    started_total = time.monotonic()
+    mode = os.getenv("SECTOR_ENRICHMENT_MODE", "sector-only").strip() or "sector-only"
+    if mode not in _VALID_MODES:
+        print(f"SECTOR ENRICHMENT: mode invalide {mode!r}", file=sys.stderr)
+        return 2
+
     queue_path = store.ITEMS_CSV.parent / sector_registry.QUEUE_CSV.name
     queue = store.read_csv(queue_path)
     if not queue:
         print("SECTOR ENRICHMENT: queue vide")
         return 0
 
-    limit = max(0, _env_int("SECTOR_ENRICHMENT_MAX_ORGS", 60))
     workers = max(1, min(8, _env_int("SECTOR_ENRICHMENT_WORKERS", 6)))
-    selected = queue[:limit] if limit else []
     source_fact_hints = _source_fact_website_hints()
     state = org_enrichment.start_state()
     if not state.enabled:
         state.enabled = True
-    state.max_calls = max(state.max_calls, len(selected))
-    # Le fallback officiel historique de org_enrichment reste coupé : seul le
-    # résolveur subject-attributed peut produire une preuve officielle Sector.
     state.official_site_max_calls = 0
 
-    now = dt.datetime.now(dt.timezone(dt.timedelta(hours=4))).isoformat()
-    stats = {
+    now_dt = dt.datetime.now(dt.timezone.utc)
+    now = now_dt.astimezone(dt.timezone(dt.timedelta(hours=4))).isoformat()
+    selected, selection_stats = _select_queue_rows(queue, state.cache, mode, now_dt)
+    state.max_calls = max(state.max_calls, len(selected))
+
+    stats: dict[str, int | float | str] = {
+        "mode": mode,
+        **selection_stats,
         "selected": len(selected),
         "registry_attempted": 0,
         "registry_matched": 0,
@@ -132,14 +228,19 @@ def main() -> int:
         "strict_official_targets_with_candidates": 0,
         "strict_official_candidate_urls": 0,
         "strict_official_matched": 0,
+        "strict_official_skipped_validated_cache": 0,
         "hinted_targets": 0,
         "source_fact_hinted_targets": 0,
         "cache_existing": 0,
         "official_workers": workers,
+        "registry_duration_s": 0.0,
+        "official_duration_s": 0.0,
+        "official_task_p95_s": 0.0,
+        "total_duration_s": 0.0,
     }
     targets: list[tuple[str, str, tuple[str, ...]]] = []
 
-    # Phase 1 : état partagé, donc volontairement séquentielle.
+    registry_started = time.monotonic()
     for queue_row in selected:
         key = (queue_row.get("Organisation_Key") or "").strip()
         organisation = (queue_row.get("Organisation") or "").strip()
@@ -148,30 +249,39 @@ def main() -> int:
 
         existing = state.cache.get(key)
         if existing:
-            stats["cache_existing"] += 1
+            stats["cache_existing"] = int(stats["cache_existing"]) + 1
         sf_hints = source_fact_hints.get(key, ())
         if sf_hints:
-            stats["source_fact_hinted_targets"] += 1
+            stats["source_fact_hinted_targets"] = int(stats["source_fact_hinted_targets"]) + 1
         hints = _hint_urls(queue_row, existing, sf_hints)
         if hints:
-            stats["hinted_targets"] += 1
-        targets.append((key, organisation, hints))
+            stats["hinted_targets"] = int(stats["hinted_targets"]) + 1
 
         record = None
         if not existing or existing.get("Match_Status") not in {
             org_enrichment.MATCHED, org_enrichment.AMBIGUOUS
         }:
-            stats["registry_attempted"] += 1
+            stats["registry_attempted"] = int(stats["registry_attempted"]) + 1
             record = org_enrichment.resolve(key, organisation, now, state)
         elif existing.get("Match_Status") == org_enrichment.MATCHED:
-            stats["registry_matched"] += 1
+            stats["registry_matched"] = int(stats["registry_matched"]) + 1
         if record is not None and record.Match_Status == org_enrichment.MATCHED:
-            stats["registry_matched"] += 1
+            stats["registry_matched"] = int(stats["registry_matched"]) + 1
 
-    # Phase 2 : chaque appel est une lecture HTTP indépendante. Aucun thread ne
-    # touche state.cache ; les résultats sont fusionnés séquentiellement après.
+        current = state.cache.get(key) or existing or {}
+        if current.get("Validated_Sector") and current.get("Validated_Via"):
+            stats["strict_official_skipped_validated_cache"] = int(
+                stats["strict_official_skipped_validated_cache"]
+            ) + 1
+            continue
+        targets.append((key, organisation, hints))
+
+    stats["registry_duration_s"] = round(time.monotonic() - registry_started, 3)
+
     evidence_by_key = {}
+    task_durations: list[float] = []
     stats["strict_official_attempted"] = len(targets)
+    official_started = time.monotonic()
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {
             pool.submit(_strict_official, organisation, hints): (key, organisation)
@@ -179,15 +289,23 @@ def main() -> int:
         }
         for future in as_completed(futures):
             key, organisation = futures[future]
-            evidence, candidate_count = future.result()
-            stats["strict_official_candidate_urls"] += candidate_count
+            evidence, candidate_count, duration = future.result()
+            task_durations.append(duration)
+            stats["strict_official_candidate_urls"] = int(stats["strict_official_candidate_urls"]) + candidate_count
             if candidate_count:
-                stats["strict_official_targets_with_candidates"] += 1
+                stats["strict_official_targets_with_candidates"] = int(
+                    stats["strict_official_targets_with_candidates"]
+                ) + 1
             if evidence is not None:
                 evidence_by_key[key] = (organisation, evidence)
+    stats["official_duration_s"] = round(time.monotonic() - official_started, 3)
+    if task_durations:
+        ordered = sorted(task_durations)
+        idx = min(len(ordered) - 1, max(0, int(round(0.95 * len(ordered) + 0.499999)) - 1))
+        stats["official_task_p95_s"] = round(ordered[idx], 3)
 
     for key, (organisation, evidence) in sorted(evidence_by_key.items()):
-        stats["strict_official_matched"] += 1
+        stats["strict_official_matched"] = int(stats["strict_official_matched"]) + 1
         current = dict(state.cache.get(key) or _empty_cache_row())
         current.update({
             "Organisation_Key": key,
@@ -210,6 +328,7 @@ def main() -> int:
     ]
     store.save_org_enrichment_cache(rows)
 
+    stats["total_duration_s"] = round(time.monotonic() - started_total, 3)
     print("SECTOR ENRICHMENT")
     for key, value in stats.items():
         print(f"{key}={value}")
