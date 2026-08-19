@@ -27,13 +27,18 @@ main,
 #chart-threat svg,
 #chart-location svg { width: 100%; max-width: 100%; }
 
-/* Match incident disclosure controls to the native source-detail affordance. */
+/* Le contrôle Détail garde le rendu discret du résumé natif sans reset global :
+   les dimensions tactiles définies par le runtime restent donc effectives. */
 .incidents-card .incident-details-toggle {
-  all: unset !important;
+  appearance: none;
+  -webkit-appearance: none;
   display: inline-flex !important;
   align-items: center;
   gap: 4px;
   margin-left: 8px !important;
+  padding: 0 8px;
+  border: 0 !important;
+  background: transparent !important;
   color: var(--text-secondary) !important;
   font: inherit !important;
   font-size: 0 !important;
@@ -102,6 +107,21 @@ main,
     -webkit-overflow-scrolling: touch;
   }
 
-  .category-label { font-size: 11px; fill: var(--text-primary); }
-  .value-label { font-size: 11px; }
+  /* Touch targets: les contrôles visuellement compacts gardent au moins 44px. */
+  .theme-toggle {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .incidents-card .incident-details-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .sources-detail > summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
 }
