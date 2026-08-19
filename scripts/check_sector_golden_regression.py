@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Bloque une régression Sector entre deux rapports Golden JSON.
 
-Ce garde est destiné aux backfills structurés : gagner de la couverture n'est
-acceptable que si le nombre de mauvaises classifications n'augmente pas et si
-la précision sur les valeurs qualifiées ne baisse pas.
+Le garde publie aussi un diagnostic exploitable humainement : toutes les
+classifications Sector erronées après traitement, et celles nouvellement
+introduites par le run. Le rapport CSV peut être conservé comme artefact CI.
 """
 from __future__ import annotations
 
@@ -39,29 +39,66 @@ def _is_false(value: str) -> bool:
     return str(value or "").strip().lower() in {"0", "false", "no", "non"}
 
 
-def _print_newly_wrong(before_path: str, after_path: str) -> None:
+def _wrong_rows(before_path: str, after_path: str) -> list[dict[str, str]]:
     before = _details(before_path)
     after = _details(after_path)
-    if not before or not after:
-        return
-    emitted = False
+    rows: list[dict[str, str]] = []
     for golden_id in sorted(after):
         new = after[golden_id]
         old = before.get(golden_id, {})
-        if not _is_false(new.get("Secteur_Match", "")):
+        current = (new.get("Secteur_CW") or "").strip()
+        if not _is_false(new.get("Secteur_Match", "")) or current in ("", "Inconnu"):
             continue
-        if not new.get("Secteur_CW") or new.get("Secteur_CW") == "Inconnu":
-            continue
-        if _is_false(old.get("Secteur_Match", "")) and old.get("Secteur_CW") not in ("", "Inconnu"):
-            continue
-        if not emitted:
-            print("NEWLY_WRONG_SECTOR_CASES")
-            emitted = True
-        print(
-            f"- {golden_id} organisation={new.get('Organisation','')} "
-            f"expected={new.get('Secteur_REF','')} got={new.get('Secteur_CW','')} "
-            f"before={old.get('Secteur_CW','')}"
+        old_current = (old.get("Secteur_CW") or "").strip()
+        already_wrong = (
+            _is_false(old.get("Secteur_Match", ""))
+            and old_current not in ("", "Inconnu")
         )
+        rows.append({
+            "Golden_ID": golden_id,
+            "Organisation": new.get("Organisation", ""),
+            "Secteur_REF": new.get("Secteur_REF", ""),
+            "Secteur_CW": current,
+            "Secteur_Before": old_current,
+            "Newly_Wrong": "false" if already_wrong else "true",
+            "Incident_ID_Current": new.get("Incident_ID_Current", ""),
+            "Match_Strategy": new.get("Match_Strategy", ""),
+        })
+    return rows
+
+
+def _emit_diagnostics(before_path: str, after_path: str, report_csv: str) -> None:
+    rows = _wrong_rows(before_path, after_path)
+    newly_wrong = [row for row in rows if row["Newly_Wrong"] == "true"]
+
+    print(f"ALL_WRONG_SECTOR_CASES count={len(rows)}")
+    for row in rows:
+        print(
+            f"- {row['Golden_ID']} organisation={row['Organisation']} "
+            f"expected={row['Secteur_REF']} got={row['Secteur_CW']} "
+            f"before={row['Secteur_Before']} newly_wrong={row['Newly_Wrong']}"
+        )
+
+    print(f"NEWLY_WRONG_SECTOR_CASES count={len(newly_wrong)}")
+    for row in newly_wrong:
+        print(
+            f"- {row['Golden_ID']} organisation={row['Organisation']} "
+            f"expected={row['Secteur_REF']} got={row['Secteur_CW']} "
+            f"before={row['Secteur_Before']}"
+        )
+
+    if report_csv:
+        target = Path(report_csv)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        columns = [
+            "Golden_ID", "Organisation", "Secteur_REF", "Secteur_CW",
+            "Secteur_Before", "Newly_Wrong", "Incident_ID_Current", "Match_Strategy",
+        ]
+        with target.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=columns)
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"sector_golden_mismatch_report={target}")
 
 
 def main() -> int:
@@ -70,6 +107,7 @@ def main() -> int:
     parser.add_argument("after")
     parser.add_argument("--before-details", default="")
     parser.add_argument("--after-details", default="")
+    parser.add_argument("--report-csv", default="")
     args = parser.parse_args()
 
     before = _sector(args.before)
@@ -98,11 +136,12 @@ def main() -> int:
     if after_accuracy + 1e-9 < before_accuracy:
         problems.append(f"accuracy_pct {before_accuracy:.3f} -> {after_accuracy:.3f}")
 
+    _emit_diagnostics(args.before_details, args.after_details, args.report_csv)
+
     if problems:
         print("SECTOR_GOLDEN_REGRESSION=FAIL")
         for problem in problems:
             print(f"- {problem}")
-        _print_newly_wrong(args.before_details, args.after_details)
         return 1
 
     print(
