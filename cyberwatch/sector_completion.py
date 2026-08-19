@@ -96,18 +96,11 @@ def _extend_taxonomy() -> None:
 
 
 def _strong_activity_sector(activity: str) -> str:
-    """Classe uniquement une formulation qui décrit explicitement le métier.
-
-    Cette fonction sert au canal éditorial ``Activity_Description``. Elle évite
-    les erreurs où un produit technologique devient une entreprise Tech, où le
-    mot ``Télécom`` d'un nom masque une école, ou encore où une infrastructure
-    de transport transforme un groupe de BTP en transporteur.
-    """
+    """Classe uniquement une formulation qui décrit explicitement le métier."""
     text = searchable(activity)
     if not text:
         return config.SECTOR_UNKNOWN
 
-    # Activité propre d'un éditeur/plateforme logicielle, y compris SaaS vertical.
     if any(marker in text for marker in (
         "editeur de logiciel", "editeur de logiciels", "logiciel saas",
         "solution saas", "plateforme saas", "logiciel de gestion",
@@ -116,7 +109,6 @@ def _strong_activity_sector(activity: str) -> str:
     )):
         return config.SECTOR_TECH
 
-    # Établissements d'enseignement dont le nom commercial peut être trompeur.
     if any(marker in text for marker in (
         "ecole d ingenieurs", "ecole d ingenieur", "grande ecole",
         "etablissement d enseignement superieur", "formation d ingenieurs",
@@ -131,8 +123,6 @@ def _strong_activity_sector(activity: str) -> str:
     )):
         return config.SECTOR_SPORT
 
-    # Commerce de produits : le caractère technologique des produits ne change
-    # pas le métier du vendeur.
     if any(marker in text for marker in (
         "site e commerce", "site de e commerce", "commerce en ligne",
         "boutique en ligne", "vente en ligne",
@@ -190,8 +180,6 @@ def _precise_naf_sector(activity_code: str) -> str:
         return config.SECTOR_SPORT
     if code.startswith("93.2"):
         return SECTOR_CULTURE
-    # 94 = associations/partis, famille non représentée dans la taxonomie
-    # canonique : on s'abstient au lieu d'inventer une valeur publiable.
     if code.startswith("94"):
         return ""
     return ""
@@ -220,7 +208,6 @@ def _patch_org_enrichment() -> None:
     def start_state():
         state = original_start()
         for row in state.cache.values():
-            # Nettoie toute ancienne valeur non canonique avant réutilisation.
             if row.get("Validated_Sector") not in config.SECTORS:
                 row["Validated_Sector"] = ""
                 row["Validated_Via"] = ""
@@ -239,6 +226,30 @@ def _patch_org_enrichment() -> None:
     org_enrichment._sector_completion_installed = True
 
 
+def _patch_enrichment() -> None:
+    """Ramène toute valeur Sector historique hors taxonomie vers Inconnu.
+
+    La correction est générique et précède les backfills habituels : aucune
+    organisation n'est nommée et aucune valeur non canonique ne peut survivre
+    jusqu'au rebuild des incidents et du snapshot.
+    """
+    from . import enrichment
+
+    if getattr(enrichment, "_sector_completion_installed", False):
+        return
+
+    original_backfill = enrichment.backfill_unknowns
+
+    def backfill_unknowns(items, reference):
+        for item in items:
+            if item.Sector not in config.SECTORS:
+                item.Sector = config.SECTOR_UNKNOWN
+        return original_backfill(items, reference)
+
+    enrichment.backfill_unknowns = backfill_unknowns
+    enrichment._sector_completion_installed = True
+
+
 def _patch_source_facts() -> None:
     from . import sector, source_facts
 
@@ -252,8 +263,6 @@ def _patch_source_facts() -> None:
         if fact is None or item.Sector != config.SECTOR_UNKNOWN:
             return fact
 
-        # Un champ sectoriel explicitement structuré par la source reste une
-        # preuve de premier rang, sous réserve de la taxonomie canonique.
         raw_sector = str(fact.get("Source_Sector_Raw") or "").strip()
         if raw_sector:
             candidate = sector.classify_source_sector(raw_sector)
@@ -261,9 +270,6 @@ def _patch_source_facts() -> None:
                 item.Sector = candidate
                 return fact
 
-        # Une description éditoriale est beaucoup plus risquée : elle ne peut
-        # auto-classer que sur un motif métier fort. Sinon on conserve le fait
-        # comme faisceau, sans mutation canonique.
         activity = str(fact.get("Activity_Description") or "").strip()
         candidate = _strong_activity_sector(activity)
         if candidate in config.SECTORS and candidate != config.SECTOR_UNKNOWN:
@@ -281,5 +287,6 @@ def install() -> None:
         return
     _extend_taxonomy()
     _patch_org_enrichment()
+    _patch_enrichment()
     _patch_source_facts()
     _INSTALLED = True
