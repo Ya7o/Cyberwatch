@@ -26,7 +26,7 @@ concurrency:
 jobs:
   enrich:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -47,18 +47,17 @@ jobs:
             --details /tmp/golden-before.csv \
             --json /tmp/golden-before.json
 
-      - name: Résoudre les identités légales ambiguës
+      - name: Résoudre toutes les identités légales encore inconnues
         env:
-          LEGAL_IDENTITY_MAX_ORGS: "40"
+          LEGAL_IDENTITY_MAX_ORGS: "0"
+          LEGAL_IDENTITY_WORKERS: "6"
         run: python scripts/enrich_legal_identity.py
 
-      - name: Rechercher les preuves organisationnelles
+      - name: Rechercher les preuves organisationnelles sur toute la file
         env:
           ORG_ENRICHMENT_ENABLED: "1"
-          ORG_ENRICHMENT_MAX_CALLS: "100"
-          SECTOR_ENRICHMENT_MAX_ORGS: "80"
-          # Seules les lectures HTTP indépendantes sont parallélisées ; la
-          # résolution registre et l'écriture cache restent séquentielles.
+          ORG_ENRICHMENT_MAX_CALLS: "1000"
+          SECTOR_ENRICHMENT_MAX_ORGS: "1000"
           SECTOR_ENRICHMENT_WORKERS: "6"
         run: python scripts/enrich_sector_queue.py
 
