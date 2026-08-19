@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import os
 import sys
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,6 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch import config, legal_identity, org_enrichment, store
+from cyberwatch.normalize import searchable
 
 
 def _env_int(name: str, default: int) -> int:
@@ -53,6 +55,53 @@ def _resolve_one(key: str, name: str, fetched_at: str):
         return legal_identity.resolve(key, name, fetched_at)
     except Exception:
         return None
+
+
+def _name_tokens(value: str) -> set[str]:
+    ignored = {
+        "sa", "sas", "sarl", "eurl", "sasu", "groupe", "group", "france",
+        "societe", "company", "holding", "association", "et", "de", "du", "des",
+        "la", "le", "les",
+    }
+    return {
+        token
+        for token in searchable(value or "").split()
+        if len(token) >= 3 and token not in ignored
+    }
+
+
+def _filter_suspicious_duplicate_sirens(results: dict[str, dict]) -> tuple[dict[str, dict], int]:
+    """Écarte les collisions SIREN faibles entre organisations sans lien nominal.
+
+    Un SIREN peut légitimement porter plusieurs marques. On ne rejette donc jamais
+    une résolution forte fondée sur SIRET/adresse. Pour les résolutions faibles,
+    une collision n'est conservée que si le nom de requête partage au moins un
+    token significatif avec la raison sociale du registre.
+    """
+    by_siren: dict[str, list[tuple[str, dict]]] = defaultdict(list)
+    for key, row in results.items():
+        siren = str(row.get("Company_ID") or "").strip()
+        if siren:
+            by_siren[siren].append((key, row))
+
+    rejected: set[str] = set()
+    for siren, rows in by_siren.items():
+        if len(rows) < 2:
+            continue
+        for key, row in rows:
+            via = str(row.get("Validated_Via") or "")
+            if via in {"legal_identity_siret", "legal_identity_address"}:
+                continue
+            query_tokens = _name_tokens(str(row.get("Query_Name") or ""))
+            matched_tokens = _name_tokens(str(row.get("Matched_Name") or ""))
+            if not query_tokens.intersection(matched_tokens):
+                rejected.add(key)
+                print(
+                    f"LEGAL_IDENTITY REJECT duplicate_siren={siren} "
+                    f"query={row.get('Query_Name', '')} matched={row.get('Matched_Name', '')}"
+                )
+
+    return ({key: row for key, row in results.items() if key not in rejected}, len(rejected))
 
 
 def main() -> int:
@@ -83,7 +132,6 @@ def main() -> int:
     limit = _max_orgs()
     workers = _workers()
     selected = _select_candidates(candidates, limit)
-    matched = 0
     fetched_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
     results: dict[str, dict] = {}
@@ -98,19 +146,20 @@ def main() -> int:
             if row is None:
                 continue
             results[key] = row
-            matched += 1
             print(
                 f"LEGAL_IDENTITY MATCH {name} -> SIREN={row['Company_ID']} "
                 f"NAF={row['Activity_Code']} activity={row['Activity_Label']}"
             )
 
+    results, rejected_duplicates = _filter_suspicious_duplicate_sirens(results)
     cache.update(results)
     store.save_org_enrichment_cache(
         sorted(cache.values(), key=lambda row: row.get("Organisation_Key", ""))
     )
     print(
         f"LEGAL_IDENTITY candidates={len(candidates)} attempted={len(selected)} "
-        f"matched={matched} limit={limit} workers={workers}"
+        f"matched={len(results)} rejected_duplicate_sirens={rejected_duplicates} "
+        f"limit={limit} workers={workers}"
     )
     return 0
 
