@@ -37,9 +37,9 @@ def classify_explicit_activity(activity: str) -> str:
     """Classe un texte non structuré seulement sur des formulations métier fortes.
 
     Cette fonction est volontairement beaucoup plus stricte que le classifieur
-    d'activité général. Elle sert aux titres/slugs d'articles où des mots comme
-    ``logiciel``, ``santé`` ou ``logistique`` peuvent décrire l'incident plutôt
-    que l'activité principale de la victime.
+    d'activité général. Elle sert aux titres/slugs d'articles et aux descriptions
+    officielles mises en cache : un libellé trop générique reste un faisceau de
+    recherche et ne devient pas automatiquement une qualification Sector.
     """
     text = searchable(activity)
     if not text:
@@ -104,7 +104,7 @@ def classify_explicit_activity(activity: str) -> str:
 
 
 def classify_context_activity(activity: str) -> str:
-    """Classe une description explicitement identifiée comme activité principale."""
+    """Classe une description d'activité dans les outils d'analyse hors auto-apply."""
     explicit = classify_explicit_activity(activity)
     if explicit != config.SECTOR_UNKNOWN:
         return explicit
@@ -112,13 +112,7 @@ def classify_context_activity(activity: str) -> str:
 
 
 def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
-    """N'auto-classe un fait éditorial que sur une formulation métier forte.
-
-    Activity_Description est utile comme faisceau de recherche, mais sa provenance
-    éditoriale ne garantit pas qu'une formulation générique décrive bien l'activité
-    principale de la victime. Le classifieur général reste réservé aux preuves
-    officielles déjà validées.
-    """
+    """N'auto-classe un fait éditorial que sur une formulation métier forte."""
     activity = (row.get("Activity_Description") or "").strip()
     if not activity:
         return []
@@ -135,12 +129,7 @@ def _fact_evidence(row: dict[str, str]) -> list[Evidence]:
 
 
 def _item_evidence(item: Item) -> list[Evidence]:
-    """Exploite seulement un libellé métier explicite du titre ou du slug.
-
-    Le titre doit commencer par le nom de la victime. Pour une URL, seule une
-    expansion institutionnelle particulièrement forte est admise : les slugs
-    rédactionnels contiennent trop souvent le vocabulaire de l'incident.
-    """
+    """Exploite seulement un libellé métier explicite du titre ou du slug."""
     proofs: list[Evidence] = []
     org = searchable(item.Organisation_Raw)
     title = searchable(item.Title)
@@ -187,9 +176,11 @@ def _cache_evidence(row: dict[str, str]) -> Evidence | None:
     if not text:
         return None
     candidate = (row.get("Validated_Sector") or "").strip()
-    classified = classify_context_activity(text)
-    # Une preuve officielle mise en cache n'est réutilisée que si son libellé
-    # d'activité permet aujourd'hui de retrouver exactement le secteur stocké.
+    # Le run production a montré que des descriptions officielles génériques
+    # pouvaient être correctement rattachées à une organisation tout en restant
+    # trop ambiguës pour une auto-qualification Sector. On exige donc ici la
+    # même formulation métier forte que pour les autres canaux auto-appliqués.
+    classified = classify_explicit_activity(text)
     if (
         candidate not in config.SECTORS
         or candidate == config.SECTOR_UNKNOWN
@@ -210,12 +201,7 @@ def resolve_contextual_sectors(
     source_fact_rows: list[dict[str, str]],
     org_cache_rows: list[dict[str, str]],
 ) -> tuple[int, list[dict[str, str]], int]:
-    """Applique les preuves contextuelles convergentes aux items inconnus.
-
-    Les données de fuite et le résumé cyber ne sont volontairement pas des
-    preuves de secteur : ils peuvent aider une recherche, mais ne suffisent
-    jamais à classer l'activité.
-    """
+    """Applique les preuves contextuelles convergentes aux items inconnus."""
     by_item = {item.Item_ID: item for item in items if item.Item_ID}
     evidence_by_org: dict[str, list[Evidence]] = defaultdict(list)
 
