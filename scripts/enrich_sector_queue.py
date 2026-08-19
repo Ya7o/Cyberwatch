@@ -3,8 +3,10 @@
 
 La résolution du registre public reste séquentielle car elle partage un état de
 budget/cache. Les lectures de sites officiels, indépendantes et read-only, sont
-parallélisées avec un petit pool borné. La politique du registre reste la seule
-couche autorisée à écrire ensuite un Sector canonique.
+parallélisées avec un petit pool borné. Les Victim_Website déjà extraits dans
+SourceFacts sont réutilisés comme hints de découverte : ils accélèrent la
+résolution sans devenir eux-mêmes une preuve. La politique du registre reste la
+seule couche autorisée à écrire ensuite un Sector canonique.
 """
 from __future__ import annotations
 
@@ -12,6 +14,7 @@ import datetime as dt
 import os
 import re
 import sys
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -42,9 +45,41 @@ def _empty_cache_row() -> dict[str, str]:
     return {column: "" for column in ORG_ENRICHMENT_CACHE_COLUMNS}
 
 
-def _hint_urls(queue_row: dict, cache_row: dict | None = None) -> tuple[str, ...]:
+def _source_fact_website_hints() -> dict[str, tuple[str, ...]]:
+    """Indexe les sites victimes déjà collectés par Organisation_Key.
+
+    Ces URL restent des hints : le résolveur officiel doit encore confirmer le
+    domaine et attribuer explicitement l'activité à l'organisation.
+    """
+    item_to_key = {
+        item.Item_ID: item.Organisation_Key
+        for item in store.load_items()
+        if item.Item_ID and item.Organisation_Key
+    }
+    values: dict[str, list[str]] = defaultdict(list)
+    for row in store.read_csv(store.SOURCE_FACTS_CSV):
+        key = item_to_key.get((row.get("Item_ID") or "").strip(), "")
+        website = str(row.get("Victim_Website") or "").strip()
+        if not key or not website:
+            continue
+        if not website.startswith(("http://", "https://")) and "." in website:
+            website = "https://" + website
+        if website.startswith(("http://", "https://")) and website not in values[key]:
+            values[key].append(website)
+    return {key: tuple(rows) for key, rows in values.items()}
+
+
+def _hint_urls(
+    queue_row: dict,
+    cache_row: dict | None = None,
+    source_fact_hints: tuple[str, ...] = (),
+) -> tuple[str, ...]:
     """Collecte uniquement des URL comme hints de découverte, jamais comme preuve."""
     values: list[str] = []
+    for hint in source_fact_hints:
+        hint = str(hint or "").strip()
+        if hint and hint not in values:
+            values.append(hint)
     for field in ("Evidence_URLs", "Evidence_Text"):
         for match in _URL_RE.findall(str(queue_row.get(field) or "")):
             if match not in values:
@@ -79,6 +114,7 @@ def main() -> int:
     limit = max(0, _env_int("SECTOR_ENRICHMENT_MAX_ORGS", 60))
     workers = max(1, min(8, _env_int("SECTOR_ENRICHMENT_WORKERS", 6)))
     selected = queue[:limit] if limit else []
+    source_fact_hints = _source_fact_website_hints()
     state = org_enrichment.start_state()
     if not state.enabled:
         state.enabled = True
@@ -97,6 +133,7 @@ def main() -> int:
         "strict_official_candidate_urls": 0,
         "strict_official_matched": 0,
         "hinted_targets": 0,
+        "source_fact_hinted_targets": 0,
         "cache_existing": 0,
         "official_workers": workers,
     }
@@ -112,7 +149,10 @@ def main() -> int:
         existing = state.cache.get(key)
         if existing:
             stats["cache_existing"] += 1
-        hints = _hint_urls(queue_row, existing)
+        sf_hints = source_fact_hints.get(key, ())
+        if sf_hints:
+            stats["source_fact_hinted_targets"] += 1
+        hints = _hint_urls(queue_row, existing, sf_hints)
         if hints:
             stats["hinted_targets"] += 1
         targets.append((key, organisation, hints))
