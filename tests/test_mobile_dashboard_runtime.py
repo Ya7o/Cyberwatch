@@ -18,6 +18,19 @@ def test_index_charge_un_seul_runtime_dashboard():
     assert "activity-two-columns.css" not in html
 
 
+def test_styles_structurels_sont_charges_statiquement_avant_le_runtime():
+    html = _read("index.html")
+    js = _read("assets/app.js")
+    runtime_css = _read("assets/dashboard-runtime.css")
+    assert '<link rel="stylesheet" href="assets/dashboard-runtime.css">' in html
+    assert html.index("assets/dashboard-runtime.css") < html.index("assets/app.js")
+    assert "function installCss" not in js
+    assert "dashboard-runtime-css" not in js
+    assert "document.createElement(\"style\")" not in js
+    assert ".activity-grid" in runtime_css
+    assert ".filters-toolbar" in runtime_css
+
+
 def test_incidents_json_n_est_charge_qu_une_fois():
     js = _read("assets/app.js")
     assert js.count('load("assets/data/incidents.json"') == 1
@@ -70,7 +83,26 @@ def test_graphiques_mobiles_wrap_et_scroll_local_uniquement():
 
 
 def test_kpi_activite_partagent_les_memes_regles_verticales():
+    css = _read("assets/dashboard-runtime.css")
+    assert "align-items: stretch" in css
+    assert ".kpi-activity .activity-primary .kpi-value" in css
+    assert ".activity-value" in css
+    assert css.count("line-height: 1;") >= 2
+    assert css.count("margin: 0 0 10px;") >= 2
+
+
+def test_touch_targets_mobiles_ont_une_zone_de_44px():
+    css = _read("assets/dashboard-runtime.css")
+    assert "min-height: 44px" in css
+    assert ".theme-toggle" in css
+    assert ".btn-quick" in css
+    assert ".btn-reset" in css
+    assert ".audit-pager button" in css
+    assert ".incidents-card .incident-details-toggle" in css
+    assert "min-width: 44px" in css
+
+
+def test_libelle_veille_llm_reste_stable():
     js = _read("assets/app.js")
-    assert ".activity-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch}" in js
-    assert ".kpi-activity .activity-primary .kpi-value{margin:0 0 10px;line-height:1" in js
-    assert ".activity-value{font-size:clamp(2rem,5vw,3.2rem);font-weight:750;line-height:1;margin:0 0 10px" in js
+    assert 'VEILLE_LLM: "veillellmReYt"' in js
+    assert 'VEILLE_LLM: "Veille IA"' not in js

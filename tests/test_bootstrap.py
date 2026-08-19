@@ -156,7 +156,7 @@ def test_maj_refuses_snapshot_without_usable_as_of(tmp_path, monkeypatch, make_i
 
 def test_collect_workflow_has_one_daily_cron():
     workflow = (store.ROOT / ".github" / "workflows" / "collect.yml").read_text(encoding="utf-8")
-    assert 'cron: "0 4 * * *"' in workflow
+    assert 'cron: "0 7 * * *"' in workflow
     assert 'cron: "0 3 * * 1"' not in workflow
 
 
