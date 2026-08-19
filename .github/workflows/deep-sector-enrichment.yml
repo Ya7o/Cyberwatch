@@ -17,6 +17,15 @@ on:
   schedule:
     - cron: "30 4 * * 1"  # lundi 08:30 à La Réunion
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "full = identité + Sector ; sector-only = réutilise le checkpoint identité"
+        required: false
+        default: "sector-only"
+        type: choice
+        options:
+          - sector-only
+          - full
 
 permissions:
   contents: write
@@ -32,25 +41,57 @@ jobs:
   legal-identity:
     runs-on: ubuntu-latest
     timeout-minutes: 50
+    outputs:
+      ran: ${{ steps.scope.outputs.run }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+
+      - name: Décider si l'identité légale doit être recalculée
+        id: scope
+        shell: bash
+        run: |
+          RUN=false
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            RUN=true
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            [ "${{ inputs.mode }}" = "full" ] && RUN=true
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            BEFORE="${{ github.event.before }}"
+            if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+              RUN=true
+            else
+              CHANGED="$(git diff --name-only "$BEFORE" "${{ github.sha }}")"
+              echo "Fichiers modifiés:"
+              printf '%s\n' "$CHANGED"
+              if printf '%s\n' "$CHANGED" | grep -Eq '^(scripts/enrich_legal_identity\.py|cyberwatch/legal_identity\.py)$'; then
+                RUN=true
+              fi
+            fi
+          fi
+          echo "run=$RUN" >> "$GITHUB_OUTPUT"
+          echo "LEGAL_IDENTITY_RECALCULATE=$RUN"
+
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        if: steps.scope.outputs.run == 'true'
         with:
           python-version: '3.11'
           cache: pip
 
       - name: Installer les dépendances
+        if: steps.scope.outputs.run == 'true'
         run: pip install -r requirements.txt
 
       - name: Résoudre les identités légales encore inconnues
+        if: steps.scope.outputs.run == 'true'
         env:
           LEGAL_IDENTITY_MAX_ORGS: "0"
           LEGAL_IDENTITY_WORKERS: "6"
         run: python -m scripts.enrich_legal_identity
 
       - name: Checkpoint du cache d'identité légale
+        if: steps.scope.outputs.run == 'true'
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "cyberwatch-bot@users.noreply.github.com"
@@ -101,20 +142,59 @@ jobs:
           python -m cyberwatch backfill-unknowns
           python scripts/audit_sector_coverage.py
 
-      - name: Vérifier la précision avant publication
+      - name: Évaluer le Golden après enrichissement
         run: |
           python scripts/evaluate_golden.py \
             --details /tmp/golden-after.csv \
             --json /tmp/golden-after.json
+
+      - name: Vérifier la précision Sector
+        run: |
           python scripts/check_sector_golden_regression.py \
             /tmp/golden-before.json /tmp/golden-after.json \
             --before-details /tmp/golden-before.csv \
-            --after-details /tmp/golden-after.csv
+            --after-details /tmp/golden-after.csv \
+            --report-csv /tmp/sector-golden-mismatches.csv
+
+      - name: Vérifier les autres gates avant publication
+        run: |
           python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
           python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
           python -m cyberwatch check --allow-uninitialized
           python -m cyberwatch test-repeat
           python -m cyberwatch build-site
+
+      - name: Résumé diagnostic Sector
+        if: always()
+        run: |
+          echo "## Diagnostic Sector — run ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Mode: ${{ inputs.mode || 'push/schedule' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Identité légale recalculée: ${{ needs.legal-identity.outputs.ran }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f /tmp/sector-golden-mismatches.csv ]; then
+            echo '```csv' >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/sector-golden-mismatches.csv >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Conserver toutes les preuves de décision
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sector-decision-${{ github.run_id }}
+          path: |
+            /tmp/golden-before.csv
+            /tmp/golden-before.json
+            /tmp/golden-after.csv
+            /tmp/golden-after.json
+            /tmp/sector-golden-mismatches.csv
+            /tmp/sector-registry.json
+            data/sector_quality.json
+            data/sector_enrichment_queue.csv
+            data/organisation_sector_registry.csv
+            data/org_enrichment_cache.csv
+            data/qualification_provenance.csv
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Publier preuves, registre et snapshot atomiquement
         run: |
