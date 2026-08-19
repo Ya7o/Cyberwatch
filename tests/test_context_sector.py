@@ -174,6 +174,27 @@ def test_context_resolver_uses_existing_official_cache_without_network():
     assert "official_subject_activity" in provenance[0]["Evidence"]
 
 
+def test_generic_official_activity_is_retained_as_evidence_but_not_auto_applied():
+    item = _item("I1", "Opaque Tech")
+    cache = [{
+        "Organisation_Key": organisation_key("Opaque Tech"),
+        "Query_Name": "Opaque Tech",
+        "Match_Status": "MATCHED",
+        "Validated_Sector": config.SECTOR_TECH,
+        "Validated_Via": "official_subject_activity",
+        "Activity_Label": "services informatiques et développement de logiciels",
+        "Evidence_URL": "https://opaque.example/",
+        "Evidence_Source": "official_site",
+    }]
+
+    applied, provenance, conflicts = context_sector.resolve_contextual_sectors([item], [], cache)
+
+    assert applied == 0
+    assert conflicts == 0
+    assert provenance == []
+    assert item.Sector == config.SECTOR_UNKNOWN
+
+
 def test_context_resolver_rejects_cached_sector_if_activity_does_not_reproduce_it():
     item = _item("I1", "Example")
     cache = [{
