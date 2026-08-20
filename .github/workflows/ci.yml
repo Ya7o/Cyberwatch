@@ -45,6 +45,9 @@ jobs:
       - name: Baseline qualification — état publié
         run: python scripts/qualification_quality_report.py --json /tmp/qualification-before.json
 
+      - name: Parité qualification incrémentale — snapshot inchangé
+        run: python scripts/check_incremental_qualification_parity.py
+
       - name: Inspecter les cas terrain
         run: |
           python - <<'PY'
