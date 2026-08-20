@@ -6,6 +6,7 @@ Ce wrapper rend la purge observable et vérifiable avant tout appel réseau :
 - purge uniquement leur conclusion Sector et conserve l'identité légale ;
 - persiste immédiatement l'invalidation du cache Sector ;
 - force le rejeu de ces seules organisations en contournant le TTL ;
+- réapplique avant le Golden une décision AUTO officielle/manuelle du registre ;
 - échoue si des mismatches existent mais qu'aucune purge effective n'a lieu.
 """
 from __future__ import annotations
@@ -18,9 +19,22 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import config, org_enrichment, store
+from cyberwatch import (
+    config,
+    enrichment,
+    org_enrichment,
+    sector_registry,
+    sector_registry_safety,
+    store,
+)
 from cyberwatch.model import ORG_ENRICHMENT_CACHE_COLUMNS
 from scripts import enrich_sector_queue
+
+
+_AUTHORITATIVE_PROPAGATION_CHANNELS = {
+    "manual_reference",
+    "official_subject_activity",
+}
 
 
 def _current_mismatch_keys(items) -> set[str]:
@@ -46,6 +60,76 @@ def _save_cache(cache: dict[str, dict]) -> None:
         for _key, row in sorted(cache.items())
     ]
     store.save_org_enrichment_cache(rows)
+
+
+def _apply_authoritative_registry_rows(items, registry_rows: list[dict], target_keys: set[str]) -> int:
+    """Propage les décisions AUTO fortes vers les items ciblés, même déjà connus.
+
+    ``sector_registry.apply_registry`` reste volontairement conservateur pour le
+    pipeline général et n'écrase pas un secteur déjà connu. Le closeout Golden a
+    toutefois besoin de matérialiser une décision plus forte fraîchement établie
+    après purge. Seules les décisions AUTO issues d'une référence manuelle ou
+    d'une activité officielle explicitement attribuée au sujet peuvent écraser
+    la valeur précédente ; un signal structuré faible ne le peut jamais.
+    """
+    authoritative = {
+        (row.get("Organisation_Key") or "").strip(): row
+        for row in registry_rows
+        if (row.get("Organisation_Key") or "").strip() in target_keys
+        and row.get("Decision") == sector_registry.DECISION_AUTO
+        and row.get("Evidence_Type") in _AUTHORITATIVE_PROPAGATION_CHANNELS
+        and row.get("Sector") in config.SECTORS
+        and row.get("Sector") != config.SECTOR_UNKNOWN
+    }
+    changed = 0
+    for item in items:
+        row = authoritative.get(item.Organisation_Key)
+        if row is None or item.Sector == row["Sector"]:
+            continue
+        item.Sector = row["Sector"]
+        changed += 1
+    return changed
+
+
+def _propagate_authoritative_registry(target_keys: set[str]) -> int:
+    """Reconstruit le registre après enrichissement puis matérialise ses AUTO forts."""
+    if not target_keys:
+        print("REGISTRY_PROPAGATION changed_items=0 authoritative_orgs=0")
+        return 0
+
+    items = store.load_items()
+    reference = enrichment.load_reference()
+    source_facts = store.read_csv(store.SOURCE_FACTS_CSV)
+    cache_rows = store.load_org_enrichment_cache()
+    previous_provenance = store.load_qualification_provenance()
+    registry_rows = sector_registry.build_registry(
+        items,
+        reference,
+        source_fact_rows=source_facts,
+        org_cache_rows=cache_rows,
+        previous_provenance=previous_provenance,
+    )
+    sector_registry_safety.enforce_candidate_conflicts(registry_rows)
+
+    authoritative_orgs = {
+        (row.get("Organisation_Key") or "").strip()
+        for row in registry_rows
+        if (row.get("Organisation_Key") or "").strip() in target_keys
+        and row.get("Decision") == sector_registry.DECISION_AUTO
+        and row.get("Evidence_Type") in _AUTHORITATIVE_PROPAGATION_CHANNELS
+        and row.get("Sector") in config.SECTORS
+        and row.get("Sector") != config.SECTOR_UNKNOWN
+    }
+    changed = _apply_authoritative_registry_rows(items, registry_rows, target_keys)
+    if changed:
+        store.save_items(items)
+
+    print(
+        "REGISTRY_PROPAGATION "
+        f"changed_items={changed} authoritative_orgs={len(authoritative_orgs)} "
+        f"keys={','.join(sorted(authoritative_orgs))}"
+    )
+    return changed
 
 
 def main() -> int:
@@ -112,7 +196,15 @@ def main() -> int:
         f"TARGETED_QUEUE count={len(purge_keys)} keys="
         + ",".join(sorted(purge_keys))
     )
-    return enrich_sector_queue.main()
+    result = enrich_sector_queue.main()
+    if result != 0:
+        return result
+
+    # Le cache et le registre viennent d'être recalculés. Matérialiser maintenant
+    # les décisions AUTO les plus fortes évite que le backfill suivant réinjecte
+    # d'abord une ancienne catégorie structurée faible puis refuse de l'écraser.
+    _propagate_authoritative_registry(purge_keys)
+    return 0
 
 
 if __name__ == "__main__":
