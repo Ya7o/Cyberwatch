@@ -7,13 +7,17 @@ from cyberwatch.incremental import (
     classify_prequalification_items,
     compare_shadow_cache,
     dependency_digest,
+    dirty_set_from_observation,
     fingerprints_from_state,
     metric_row,
     prequalification_fingerprint,
+    prequalification_observation_path,
     prequalification_state_rows,
     qualification_fingerprint,
+    read_prequalification_observation,
     shadow_cache_rows,
     state_rows,
+    write_prequalification_observation,
 )
 from cyberwatch.model import Item
 
@@ -138,6 +142,19 @@ def test_prequalification_classify_and_state_round_trip():
     assert fingerprints_from_state(rows, column="Prequalification_Fingerprint") == result.fingerprints
 
 
+def test_prequalification_observation_round_trip(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("RUNNER_TEMP", str(tmp_path))
+    item = _item()
+    result = classify_prequalification_items([item], {}, policy_version="P1", dependency_digest_value="D1")
+    write_prequalification_observation(result, policy_version="P1", dependency_digest_value="D1")
+    assert prequalification_observation_path().parent == tmp_path
+    payload = read_prequalification_observation()
+    restored = dirty_set_from_observation(payload)
+    assert payload["Policy_Version"] == "P1"
+    assert payload["Dependency_Digest"] == "D1"
+    assert restored == result
+
+
 def test_shadow_cache_accepts_identical_recalculation_and_detects_mismatch():
     item = _item(Sector="Industrie")
     fingerprint = qualification_fingerprint(item, policy_version="P1")
@@ -152,15 +169,20 @@ def test_shadow_cache_accepts_identical_recalculation_and_detects_mismatch():
     assert compare_shadow_cache(previous, changed, ["I-1"]).mismatches == ("I-1",)
 
 
-def test_metric_row_reports_shadow_validation():
+def test_metric_row_reports_shadow_and_prequalification_reuse():
     item = _item()
     previous = {"I-1": qualification_fingerprint(item, policy_version="P1")}
     result = classify_items([item], previous, policy_version="P1")
+    pre_previous = {"I-1": prequalification_fingerprint(item, policy_version="P1")}
+    prequal = classify_prequalification_items([item], pre_previous, policy_version="P1")
     shadow_rows = shadow_cache_rows([item], result.fingerprints, [], run_id="RUN-1", as_of="A1")
     shadow = compare_shadow_cache(shadow_rows, shadow_rows, result.unchanged)
-    row = metric_row(result, run_id="RUN-2", as_of="A2", mode="MAJ", policy_version="P1", dependency_digest_value="D1", shadow=shadow)
+    row = metric_row(result, run_id="RUN-2", as_of="A2", mode="MAJ", policy_version="P1", dependency_digest_value="D1", shadow=shadow, prequal=prequal)
     assert row["Dirty_Items"] == "0"
     assert row["Unchanged_Items"] == "1"
     assert row["Reuse_Rate"] == "1.000000"
     assert row["Shadow_Checked"] == "1"
     assert row["Shadow_Mismatches"] == "0"
+    assert row["Prequal_Dirty_Items"] == "0"
+    assert row["Prequal_Unchanged_Items"] == "1"
+    assert row["Prequal_Reuse_Rate"] == "1.000000"
