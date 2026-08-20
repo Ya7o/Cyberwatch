@@ -22,6 +22,12 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
       - name: Intégrité des références golden
-        run: python -m pytest tests/test_dedup_golden_integrity.py -q
+        run: python -m pytest tests/test_dedup_golden_integrity.py tests/test_dedup_golden_refs.py -q
       - name: Certifier la déduplication
         run: python scripts/evaluate_dedup_golden.py
+      - name: Vérifier la migration vers références stables
+        run: |
+          python scripts/migrate_dedup_golden_refs.py --output /tmp/dedup_golden_stable.csv
+          python scripts/evaluate_dedup_golden.py \
+            --golden /tmp/dedup_golden_stable.csv \
+            --require-stable-refs
