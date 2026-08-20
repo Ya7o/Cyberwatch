@@ -167,12 +167,20 @@ jobs:
             --json /tmp/golden-after.json
 
       - name: Vérifier la précision Sector
+        env:
+          SECTOR_ENRICHMENT_MODE: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'golden-only') }}
+        shell: bash
         run: |
+          EXTRA_ARGS=()
+          if [ "$SECTOR_ENRICHMENT_MODE" = "golden-only" ]; then
+            EXTRA_ARGS+=(--require-zero-wrong)
+          fi
           python scripts/check_sector_golden_regression.py \
             /tmp/golden-before.json /tmp/golden-after.json \
             --before-details /tmp/golden-before.csv \
             --after-details /tmp/golden-after.csv \
-            --report-csv /tmp/sector-golden-mismatches.csv
+            --report-csv /tmp/sector-golden-mismatches.csv \
+            "${EXTRA_ARGS[@]}"
 
       - name: Vérifier les autres gates avant publication
         run: |
