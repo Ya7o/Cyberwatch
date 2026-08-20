@@ -1,0 +1,34 @@
+name: Cyberattaque.org rich facts monitor
+
+on:
+  schedule:
+    - cron: '30 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Mesurer la couverture
+        run: |
+          python scripts/audit_cyberattaque_rich_facts.py | tee /tmp/audit.json
+          cat /tmp/audit.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Garde anti-régression
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/audit.json', encoding='utf-8'))
+          n=d.get('articles',0); c=d.get('coverage',{})
+          rich=c.get('with_rich_facts',0)
+          if n and rich/n < .80: raise SystemExit(f'rich_facts coverage {rich}/{n} < 80%')
+          if d.get('claim_statuses',{}).get('confirmed',0) and d.get('claim_statuses',{}).get('hypothesis',0) < 0:
+              raise SystemExit('invalid status counters')
+          PY
