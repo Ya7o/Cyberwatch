@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Rapport de performance et shadow validation de qualification.
+"""Rapport de performance et validation incrémentale de qualification.
 
-L'observation reste post-qualification : elle ne court-circuite aucune règle
-métier. Elle vérifie qu'un état déclaré stable reproduit exactement la même
-sortie qualifiée et la même provenance d'un run au suivant.
+Le hook pré-qualification capture l'état avant mutation métier. Ce script ne
+promeut cette observation dans ``data/`` qu'après un run réussi. Le shadow
+post-qualification continue de vérifier sortie et provenance.
 """
 from __future__ import annotations
 
@@ -19,23 +19,9 @@ if str(ROOT) not in sys.path:
 from cyberwatch import config, incremental, store
 
 STATE_CSV = store.DATA_DIR / "item_processing_state.csv"
+PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 METRICS_CSV = store.DATA_DIR / "incremental_metrics.csv"
 SHADOW_CSV = store.DATA_DIR / "qualification_shadow_cache.csv"
-
-QUALIFICATION_CODE_PATHS = tuple(
-    ROOT / "cyberwatch" / name
-    for name in (
-        "qualification.py",
-        "qualification_decision.py",
-        "enrichment.py",
-        "sector.py",
-        "context_sector.py",
-        "sector_registry.py",
-        "sector_registry_safety.py",
-        "source_llm_fallback.py",
-        "sector_fallback_migration.py",
-    )
-)
 
 
 def _number(value) -> float:
@@ -58,11 +44,24 @@ def format_duration(value) -> str:
 
 
 def _qualification_dependency_digest() -> str:
-    return incremental.dependency_digest(
+    return incremental.qualification_dependency_digest(
+        ROOT,
         reference_rows=store.read_csv(store.ENRICHMENT_REFERENCE_CSV),
         org_cache_rows=store.load_org_enrichment_cache(),
-        code_paths=QUALIFICATION_CODE_PATHS,
     )
+
+
+def _load_prequalification_observation(last: dict, dependency_digest_value: str):
+    payload = incremental.read_prequalification_observation()
+    dirty_set = incremental.dirty_set_from_observation(payload)
+    if dirty_set is None:
+        return None
+    expected_policy = last.get("Method_ID", "") or config.METHOD_ID
+    if payload.get("Policy_Version") != expected_policy:
+        return None
+    if payload.get("Dependency_Digest") != dependency_digest_value:
+        return None
+    return dirty_set
 
 
 def observe_incremental_state() -> int:
@@ -75,6 +74,7 @@ def observe_incremental_state() -> int:
     run_id = last.get("Run_ID", "")
     policy_version = last.get("Method_ID", "") or config.METHOD_ID
     dependency_digest_value = _qualification_dependency_digest()
+    prequal = _load_prequalification_observation(last, dependency_digest_value)
 
     facts_by_item: dict[str, list[dict]] = defaultdict(list)
     for row in store.load_source_facts():
@@ -117,6 +117,18 @@ def observe_incremental_state() -> int:
         ),
     )
     store.write_csv(SHADOW_CSV, incremental.SHADOW_CACHE_COLUMNS, current_shadow)
+    if prequal is not None:
+        store.write_csv(
+            PREQUAL_STATE_CSV,
+            incremental.PREQUAL_STATE_COLUMNS,
+            incremental.prequalification_state_rows(
+                prequal,
+                policy_version=policy_version,
+                dependency_digest_value=dependency_digest_value,
+                run_id=run_id,
+                as_of=last.get("As_Of", ""),
+            ),
+        )
 
     metrics = [r for r in store.read_csv(METRICS_CSV) if r.get("Run_ID") != run_id]
     metrics.append(
@@ -128,14 +140,20 @@ def observe_incremental_state() -> int:
             policy_version=policy_version,
             dependency_digest_value=dependency_digest_value,
             shadow=shadow,
+            prequal=prequal,
         )
     )
     store.write_csv(METRICS_CSV, incremental.INCREMENTAL_METRIC_COLUMNS, metrics)
 
+    prequal_text = "prequal=unavailable"
+    if prequal is not None:
+        prequal_text = (
+            f"pre_new={len(prequal.new)} pre_dirty={len(prequal.dirty)} "
+            f"pre_unchanged={len(prequal.unchanged)} pre_reuse={prequal.reuse_ratio:.1%}"
+        )
     print(
-        f"INCREMENTAL_OBSERVER run={run_id} stage=post-qualification "
-        f"new={len(dirty_set.new)} dirty={len(dirty_set.dirty)} "
-        f"unchanged={len(dirty_set.unchanged)} stable={dirty_set.reuse_ratio:.1%} "
+        f"INCREMENTAL_OBSERVER run={run_id} {prequal_text} "
+        f"post_stable={dirty_set.reuse_ratio:.1%} "
         f"shadow_checked={shadow.checked} shadow_mismatches={len(shadow.mismatches)}"
     )
     if shadow.mismatches:
@@ -160,10 +178,17 @@ def report(last_count: int) -> int:
         metric = metrics.get(run_id, {})
         observation = ""
         if metric:
+            prequal_reuse = metric.get("Prequal_Reuse_Rate", "")
+            prequal_text = ""
+            if prequal_reuse not in ("", None):
+                prequal_text = (
+                    f" pre_dirty={metric.get('Prequal_Dirty_Items','0')} "
+                    f"pre_reuse={_number(prequal_reuse):.1%}"
+                )
             observation = (
-                f" post_dirty={metric.get('Dirty_Items','0')} "
-                f"post_stable={_number(metric.get('Reuse_Rate')):.1%} "
-                f"shadow={metric.get('Shadow_Mismatches','0')}/{metric.get('Shadow_Checked','0')}"
+                prequal_text
+                + f" post_stable={_number(metric.get('Reuse_Rate')):.1%} "
+                + f"shadow={metric.get('Shadow_Mismatches','0')}/{metric.get('Shadow_Checked','0')}"
             )
         print(
             f"{run_id} mode={run.get('Mode','')} total={format_duration(total)} "
