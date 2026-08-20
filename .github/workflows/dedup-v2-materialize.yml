@@ -1,8 +1,7 @@
 name: Dedup V2 Materialize
 
 on:
-  push:
-    branches: [codex/dedup-final-certification]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -10,44 +9,29 @@ permissions:
 
 jobs:
   materialize:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: codex/dedup-final-certification
+          ref: ${{ github.event.pull_request.head.ref || 'codex/dedup-final-certification' }}
           fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Apply bounded corroboration extension
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('cyberwatch/dedup.py')
-          text = path.read_text()
-          marker = 'def group_components(items: list[Item]) -> list[list[Item]]:\n'
-          if 'def _can_extend_component(' not in text:
-              helper = '''def _can_extend_component(current: list[Item], incoming: Item) -> bool:\n    """Autorise une corroboration cross-source J+1 sans chaînage ouvert.\n\n    L'ancre reste la règle principale. L'extension ne sert que lorsqu'une source\n    différente corrobore à J+1 un membre déjà admis, dans la fenêtre maximale\n    d'incident. Les veto forts restent contrôlés contre toute la composante.\n    """\n    incoming_date = date_or_empty(incoming.best_date)\n    if not incoming_date or not current:\n        return False\n    dated = [member for member in current if date_or_empty(member.best_date)]\n    if not dated:\n        return False\n    earliest = min(date_or_empty(member.best_date) for member in dated)\n    if abs((incoming_date - earliest).days) > config.INCIDENT_GAP_DAYS:\n        return False\n    for member in reversed(dated):\n        member_date = date_or_empty(member.best_date)\n        if member.Source_ID == incoming.Source_ID or abs((incoming_date - member_date).days) > 1:\n            continue\n        if decide_merge(member, incoming).action == MERGE:\n            return True\n    return False\n\n\n'''
-              text = text.replace(marker, helper + marker)
-          old = '''            decision = decide_merge(anchor, item)\n            if decision.action == MERGE and not _has_strong_component_veto(current, item):\n                current.append(item)\n            else:\n'''
-          new = '''            decision = decide_merge(anchor, item)\n            veto = _has_strong_component_veto(current, item)\n            if not veto and (decision.action == MERGE or _can_extend_component(current, item)):\n                current.append(item)\n            else:\n'''
-          if old in text:
-              text = text.replace(old, new)
-          path.write_text(text)
-          PY
       - name: Refresh Golden V2
         run: python scripts/promote_dedup_golden_v2.py --target-cases 150 --refresh
-      - name: Commit generated closeout changes
+      - name: Commit refreshed corpus
         run: |
-          if git diff --quiet -- cyberwatch/dedup.py data/golden/dedup_golden.csv data/golden/dedup_reviewed_v2.csv; then
-            echo "Closeout already materialized"
+          if git diff --quiet -- data/golden/dedup_golden.csv data/golden/dedup_reviewed_v2.csv; then
+            echo "Golden V2 already current"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- cyberwatch/dedup.py data/golden/dedup_golden.csv data/golden/dedup_reviewed_v2.csv
-          git commit -m "Materialize final dedup Golden V2 closeout"
+          git add -- data/golden/dedup_golden.csv data/golden/dedup_reviewed_v2.csv
+          git commit -m "Refresh final dedup Golden V2 corpus"
           git push origin HEAD:codex/dedup-final-certification
