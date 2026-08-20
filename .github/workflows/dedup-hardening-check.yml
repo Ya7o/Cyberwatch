@@ -1,8 +1,7 @@
 name: Dedup hardening check
 
 on:
-  push:
-    branches: [codex/dedup-hardening]
+  pull_request:
 
 permissions:
   contents: read
