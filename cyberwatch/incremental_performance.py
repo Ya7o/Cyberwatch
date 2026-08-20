@@ -273,7 +273,7 @@ def _save_performance_row(row: dict) -> None:
 
 
 def _patch_runner_telemetry() -> None:
-    from . import runner, store
+    from . import incremental_runtime, runner, store
     if getattr(runner, "_incremental_perf_telemetry_installed", False):
         return
     original = runner.execute
@@ -288,12 +288,16 @@ def _patch_runner_telemetry() -> None:
         existing_ids = set(before) & set(current)
         modified = sum(before[item_id] != current[item_id] for item_id in existing_ids)
         unchanged = len(existing_ids) - modified
+        runtime = incremental_runtime.last_stats()
         row = {
             "run_id": context.run_id,
             "as_of": context.as_of,
             "mode": context.mode,
             "duration_s": report.duration,
             "qualify_duration_s": _LAST_QUALIFY_DURATION,
+            "qualification_mode": runtime["qualification_mode"],
+            "qualification_reason": runtime["qualification_reason"],
+            "qualification_runtime_s": runtime["qualification_runtime_s"],
             "items_before": len(before_items),
             "items_after": len(report.items),
             "items_new": report.new_items,
