@@ -22,10 +22,10 @@ def _post(native_id: str, title: str) -> dict:
     }
 
 
-def test_direct_cli_starts_with_repository_on_pythonpath():
+def test_direct_cli_starts_without_pythonpath():
     root = Path(__file__).resolve().parents[1]
     env = os.environ.copy()
-    env["PYTHONPATH"] = str(root)
+    env.pop("PYTHONPATH", None)
     completed = subprocess.run(
         [sys.executable, "scripts/backfill_cyberattaque_semantic.py", "--help"],
         cwd=root,
