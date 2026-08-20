@@ -1,5 +1,5 @@
 from cyberwatch import store
-from cyberwatch.dedup import decide_merge, group_components
+from cyberwatch.dedup import MERGE, build_incidents, decide_merge, group_components
 from cyberwatch.org_identity import effective_organisation_key
 
 PAIRS = {
@@ -20,12 +20,36 @@ def _component_map(items):
     }
 
 
-def test_wizishop_identity_alias_is_explicit():
+def test_wizishop_identity_alias_is_explicit_and_canonical():
     items = _items()
     left, right = (items[item_id] for item_id in PAIRS["wizishop"])
-    assert effective_organisation_key(left.Organisation_Raw, left.Organisation_Key) == effective_organisation_key(
-        right.Organisation_Raw, right.Organisation_Key
-    )
+    left_key = effective_organisation_key(left.Organisation_Raw, left.Organisation_Key)
+    right_key = effective_organisation_key(right.Organisation_Raw, right.Organisation_Key)
+    assert left_key == right_key == "wizishop"
+
+
+def test_wizishop_pair_merges_directly_and_builds_one_incident():
+    items = _items()
+    left, right = (items[item_id] for item_id in PAIRS["wizishop"])
+
+    decision = decide_merge(left, right)
+    assert decision.action == MERGE
+    assert decision.reason_code == "INCIDENT_MERGE_ALIAS"
+
+    components = group_components([left, right])
+    assert len(components) == 1
+    assert {item.Item_ID for item in components[0]} == set(PAIRS["wizishop"])
+
+    incidents = build_incidents([left, right])
+    assert len(incidents) == 1
+    assert incidents[0].Items_Count == 2
+    assert incidents[0].Sources == "CYBERATTAQUE_ORG | FRENCHBREACHES"
+    assert incidents[0].Menace == "Fuite de données"
+
+
+def test_stored_alias_key_is_recanonicalized():
+    assert effective_organisation_key("", "wizishop dropizi et evolup") == "wizishop"
+    assert effective_organisation_key("", "wizishop dropizi et evolup pirates") == "wizishop"
 
 
 def test_citypro_subentity_remains_distinct_without_explicit_legal_identity():
