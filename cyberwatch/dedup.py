@@ -24,6 +24,7 @@ PREFERRED_QUALIFICATION_SOURCE = "VEILLE_LLM"
 # corroborations légitimes déjà établies.
 STRONG_KEEP_REASON_CODES = frozenset({
     "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID",
+    "INCIDENT_KEEP_CONFLICTING_EVENT_DATE",
     "INCIDENT_KEEP_RECURRENCE_MARKER",
 })
 
@@ -106,6 +107,17 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
     if not left_key or left_key != right_key:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
 
+    # Deux dates d'événement explicites et différentes décrivent deux épisodes
+    # distincts. Ce veto est volontairement évalué avant la proximité de date de
+    # publication : une publication rapprochée ne doit jamais effacer une
+    # contradiction événementielle déjà structurée.
+    if left.Event_Date and right.Event_Date and left.Event_Date != right.Event_Date:
+        return DedupDecision(
+            KEEP_SEPARATE,
+            "INCIDENT_KEEP_CONFLICTING_EVENT_DATE",
+            (f"left={left.Event_Date}", f"right={right.Event_Date}"),
+        )
+
     left_date, right_date = date_or_empty(left.best_date), date_or_empty(right.best_date)
     if not left_date or not right_date:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
@@ -138,7 +150,8 @@ def _has_strong_component_veto(current: list[Item], incoming: Item) -> bool:
 
     L'algorithme reste ancré pour la décision positive de fusion, mais un veto
     fort est évalué paire à paire contre tous les membres. Cela empêche qu'un
-    item tiers serve de pont entre deux identifiants natifs incompatibles.
+    item tiers serve de pont entre deux identifiants natifs incompatibles ou
+    entre deux dates d'événement explicitement distinctes.
     """
     for member in current:
         decision = decide_merge(member, incoming)
