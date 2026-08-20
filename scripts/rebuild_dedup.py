@@ -1,32 +1,32 @@
-"""Reconstruction déterministe de la base après évolution des alias.
-
-Cette commande est volontairement locale et sans réseau : elle repart du snapshot
-`data/items.csv`, recalcule les identités d'organisation, reconstruit les
-incidents et régénère uniquement le JSON des incidents du dashboard.
-"""
+"""Reconstruction déterministe de la base après évolution des alias."""
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from collections import defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
+from time import perf_counter
 
-# Permet l'exécution directe `python scripts/rebuild_dedup.py` depuis la racine
-# sans installation du package.
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch import identity, store
 from cyberwatch.dedup import build_incidents
-from cyberwatch.dedup_metrics import summarize_dedup, write_weak_merges_csv
+from cyberwatch.dedup_metrics import (
+    append_run_history,
+    summarize_dedup,
+    write_review_queue_csv,
+    write_weak_merges_csv,
+)
 from cyberwatch.normalize import organisation_key
 from cyberwatch.site import incidents_payload
 
 
 def _canonical_content(item) -> dict[str, str]:
-    """Contenu devant être identique pour consolider deux anciens Item_ID."""
     row = item.to_row()
     row.pop("Item_ID", None)
     row.pop("Collected_As_Of", None)
@@ -34,6 +34,8 @@ def _canonical_content(item) -> dict[str, str]:
 
 
 def main() -> int:
+    started = perf_counter()
+    run_at = datetime.now(timezone.utc).isoformat()
     items = store.load_items()
     before_incidents = store.load_incidents()
     before_hash = identity.incidents_hash(before_incidents)
@@ -80,9 +82,7 @@ def main() -> int:
 
         chosen = members[0][1]
         chosen.Item_ID = new_item_id
-        collected = sorted(
-            item.Collected_As_Of for _, item in members if item.Collected_As_Of
-        )
+        collected = sorted(item.Collected_As_Of for _, item in members if item.Collected_As_Of)
         chosen.Collected_As_Of = collected[0] if collected else ""
         rebuilt_items.append(chosen)
 
@@ -90,12 +90,32 @@ def main() -> int:
     incidents = build_incidents(items)
     after_hash = identity.incidents_hash(incidents)
     dedup_summary = summarize_dedup(items)
-    weak_merge_path = store.DATA_DIR / "dedup_weak_merges.csv"
+
+    audit_dir = store.DATA_DIR / "audit"
+    weak_merge_path = audit_dir / "dedup_weak_merges.csv"
+    review_queue_path = audit_dir / "dedup_review_queue.csv"
+    run_history_path = audit_dir / "dedup_runs.csv"
     weak_merge_count = write_weak_merges_csv(weak_merge_path, items)
+    review_queue_count = write_review_queue_csv(review_queue_path, items)
+    with review_queue_path.open(encoding="utf-8", newline="") as handle:
+        review_rows = list(csv.DictReader(handle))
+    possible_false_merges = sum(row["Risk_Type"] == "POSSIBLE_FALSE_MERGE" for row in review_rows)
+    possible_missed_duplicates = sum(row["Risk_Type"] == "POSSIBLE_MISSED_DUPLICATE" for row in review_rows)
 
     store.save_items(items)
     store.save_incidents(incidents)
     store.write_json(store.SITE_DATA_DIR / "incidents.json", incidents_payload(incidents))
+
+    runtime_seconds = perf_counter() - started
+    append_run_history(
+        run_history_path,
+        run_at=run_at,
+        summary=dedup_summary,
+        runtime_seconds=runtime_seconds,
+        incidents_hash=after_hash,
+        possible_false_merges=possible_false_merges,
+        possible_missed_duplicates=possible_missed_duplicates,
+    )
 
     audit = {
         "items_before": sum(len(rows) for rows in by_new_id.values()),
@@ -108,9 +128,15 @@ def main() -> int:
         "item_ids_changed": changed_item_ids,
         "incidents_hash_before": before_hash,
         "incidents_hash_after": after_hash,
+        "runtime_seconds": round(runtime_seconds, 6),
         "dedup": dedup_summary,
         "weak_merges": weak_merge_count,
+        "possible_false_merges": possible_false_merges,
+        "possible_missed_duplicates": possible_missed_duplicates,
         "weak_merges_output": str(weak_merge_path.relative_to(ROOT)),
+        "review_queue_output": str(review_queue_path.relative_to(ROOT)),
+        "run_history_output": str(run_history_path.relative_to(ROOT)),
+        "review_queue_rows": review_queue_count,
     }
     print("REBUILD_DEDUP_AUDIT " + json.dumps(audit, sort_keys=True, ensure_ascii=False))
     return 0

@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Évalue et certifie la déduplication contre un golden pairwise revu.
-
-Le benchmark privilégie explicitement la précision : une fausse fusion détruit
-l'identité de deux événements et doit donc bloquer la CI. Le rappel reste
-conservateur ; les cas ambigus hors fenêtre de fusion automatique peuvent rester
-séparés tant que le plancher certifié n'est pas dégradé.
-"""
+"""Évalue et certifie la déduplication contre un golden pairwise revu."""
 
 from __future__ import annotations
 
@@ -21,6 +15,13 @@ if str(ROOT) not in sys.path:
 
 from cyberwatch import store
 from cyberwatch.dedup import group_components
+from cyberwatch.dedup_golden_refs import (
+    AMBIGUOUS,
+    LEGACY,
+    MISSING,
+    has_stable_refs,
+    resolve_golden_side,
+)
 from cyberwatch.org_identity import effective_organisation_key
 
 VALID = {"SAME", "DIFFERENT"}
@@ -38,7 +39,6 @@ def _ratio(num: int, den: int) -> float:
 
 def evaluate(golden_path: Path) -> dict:
     items = store.load_items()
-    by_id = {item.Item_ID: item for item in items}
     component_of = {
         item.Item_ID: index
         for index, component in enumerate(group_components(items))
@@ -50,6 +50,9 @@ def evaluate(golden_path: Path) -> dict:
     incident_correct = 0
     evaluated = 0
     missing: list[str] = []
+    ambiguous: list[str] = []
+    legacy: list[str] = []
+    unstable: list[str] = []
     invalid: list[str] = []
     incomplete_evidence: list[str] = []
     wrong_version: list[str] = []
@@ -59,15 +62,8 @@ def evaluate(golden_path: Path) -> dict:
 
     for row in rows:
         case_id = row.get("Case_ID", "")
-        left_id = row.get("Left_Item_ID", "")
-        right_id = row.get("Right_Item_ID", "")
         entity_ref = row.get("Same_Organisation_REF", "").upper()
         incident_ref = row.get("Same_Incident_REF", "").upper()
-
-        pair = tuple(sorted((left_id, right_id)))
-        if pair in seen_pairs:
-            duplicate_pairs.append(case_id)
-        seen_pairs.add(pair)
 
         if entity_ref not in VALID or incident_ref not in VALID or not case_id:
             invalid.append(case_id or "<sans Case_ID>")
@@ -76,12 +72,31 @@ def evaluate(golden_path: Path) -> dict:
             incomplete_evidence.append(case_id)
         if row.get("Golden_Version", "") != CERTIFIED_GOLDEN_VERSION:
             wrong_version.append(case_id)
+        if not has_stable_refs(row):
+            unstable.append(case_id)
 
-        left = by_id.get(left_id)
-        right = by_id.get(right_id)
-        if not left or not right:
+        left_resolution = resolve_golden_side(row, "Left", items)
+        right_resolution = resolve_golden_side(row, "Right", items)
+        resolutions = (left_resolution, right_resolution)
+        if any(res.status == MISSING for res in resolutions):
             missing.append(case_id)
             continue
+        if any(res.status == AMBIGUOUS for res in resolutions):
+            ambiguous.append(case_id)
+            continue
+        if any(res.status == LEGACY for res in resolutions):
+            legacy.append(case_id)
+
+        left = left_resolution.item
+        right = right_resolution.item
+        if left is None or right is None:
+            missing.append(case_id)
+            continue
+
+        pair = tuple(sorted((left.Item_ID, right.Item_ID)))
+        if pair in seen_pairs:
+            duplicate_pairs.append(case_id)
+        seen_pairs.add(pair)
 
         evaluated += 1
         entity_same = (
@@ -109,6 +124,9 @@ def evaluate(golden_path: Path) -> dict:
         "positive_reference_cases": tp + fn,
         "negative_reference_cases": tn + fp,
         "missing_cases": missing,
+        "ambiguous_cases": ambiguous,
+        "legacy_reference_cases": legacy,
+        "unstable_reference_cases": unstable,
         "invalid_cases": invalid,
         "incomplete_evidence_cases": incomplete_evidence,
         "wrong_version_cases": wrong_version,
@@ -129,6 +147,7 @@ def _failure_messages(result: dict, args: argparse.Namespace) -> list[str]:
     structural_fields = (
         "invalid_cases",
         "missing_cases",
+        "ambiguous_cases",
         "incomplete_evidence_cases",
         "wrong_version_cases",
         "duplicate_pair_cases",
@@ -136,6 +155,8 @@ def _failure_messages(result: dict, args: argparse.Namespace) -> list[str]:
     for field in structural_fields:
         if result[field]:
             failures.append(f"{field}={result[field]}")
+    if args.require_stable_refs and result["unstable_reference_cases"]:
+        failures.append(f"unstable_reference_cases={result['unstable_reference_cases']}")
 
     checks = [
         ("evaluated_cases", result["evaluated_cases"], args.min_cases),
@@ -162,16 +183,15 @@ def main() -> int:
         "--golden",
         default=str(ROOT / "data" / "golden" / "dedup_golden.csv"),
     )
-    # Plancher de certification DEDUP-GOLDEN-1. Toute évolution du golden ou de
-    # la méthode qui passe sous ces valeurs doit être revue explicitement.
     parser.add_argument("--min-cases", type=int, default=70)
     parser.add_argument("--min-positive-cases", type=int, default=50)
     parser.add_argument("--min-negative-cases", type=int, default=20)
     parser.add_argument("--min-entity-accuracy", type=float, default=100.0)
-    parser.add_argument("--min-incident-accuracy", type=float, default=94.0)
+    parser.add_argument("--min-incident-accuracy", type=float, default=100.0)
     parser.add_argument("--min-incident-precision", type=float, default=100.0)
-    parser.add_argument("--min-incident-recall", type=float, default=92.0)
+    parser.add_argument("--min-incident-recall", type=float, default=100.0)
     parser.add_argument("--max-false-positive", type=int, default=0)
+    parser.add_argument("--require-stable-refs", action="store_true")
     args = parser.parse_args()
 
     result = evaluate(Path(args.golden))

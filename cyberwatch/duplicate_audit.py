@@ -30,6 +30,7 @@ DUPLICATE_CANDIDATE_SHARED_COMPANY_ID = "DUPLICATE_CANDIDATE_SHARED_COMPANY_ID"
 
 MERGE_REVIEW_WEAK_CANONICAL_NAME = "MERGE_REVIEW_WEAK_CANONICAL_NAME"
 MERGE_REVIEW_WEAK_ALIAS = "MERGE_REVIEW_WEAK_ALIAS"
+MERGE_REVIEW_RANSOMWARE_CORROBORATION = "MERGE_REVIEW_RANSOMWARE_CORROBORATION"
 
 RISK_MISSED_DUPLICATE = "POSSIBLE_MISSED_DUPLICATE"
 RISK_FALSE_MERGE = "POSSIBLE_FALSE_MERGE"
@@ -215,8 +216,8 @@ def find_audit_candidates(
     Deux risques sont exposés sans jamais changer la production :
     - ``POSSIBLE_MISSED_DUPLICATE`` : le moteur reste en ``NO_DECISION`` mais
       un signal de nom ou un Company_ID commun suggère la même victime ;
-    - ``POSSIBLE_FALSE_MERGE`` : le moteur fusionne sur le seul nom/alias et
-      la proximité temporelle, sans identifiant natif ni date d'événement égale.
+    - ``POSSIBLE_FALSE_MERGE`` : le moteur fusionne sur une règle faible sans
+      identifiant natif ni date d'événement égale.
 
     ``Company_ID`` est seulement un signal d'identité d'organisation : il ne
     suffit jamais à affirmer qu'il s'agit du même incident.
@@ -297,6 +298,8 @@ def find_audit_candidates(
                 reason_code = MERGE_REVIEW_WEAK_CANONICAL_NAME
             elif decision.reason_code == "INCIDENT_MERGE_ALIAS":
                 reason_code = MERGE_REVIEW_WEAK_ALIAS
+            elif decision.reason_code == "INCIDENT_MERGE_RANSOMWARE_CORROBORATION":
+                reason_code = MERGE_REVIEW_RANSOMWARE_CORROBORATION
             else:
                 continue
             add(DedupAuditCandidate(
