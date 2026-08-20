@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import csv
 from collections import Counter, defaultdict
 from itertools import combinations
+from pathlib import Path
 
 from .dedup import (
     KEEP_SEPARATE,
     MERGE,
     STRONG_KEEP_REASON_CODES,
+    DedupDecision,
     decide_merge,
     group_components,
 )
@@ -20,15 +23,35 @@ WEAK_MERGE_REASONS = frozenset({
     "INCIDENT_MERGE_ALIAS",
 })
 
+WEAK_MERGE_COLUMNS = [
+    "Left_Item_ID",
+    "Right_Item_ID",
+    "Organisation",
+    "Left_Source",
+    "Right_Source",
+    "Left_Date",
+    "Right_Date",
+    "Days_Apart",
+    "Reason_Code",
+    "Left_Event_Date",
+    "Right_Event_Date",
+    "Left_Threat",
+    "Right_Threat",
+    "Left_Title",
+    "Right_Title",
+    "Left_URL",
+    "Right_URL",
+]
 
-def _days_signal(decision) -> str:
+
+def _days_signal(decision: DedupDecision) -> str:
     for signal in decision.signals:
         if signal.startswith("days="):
             return signal.split("=", 1)[1]
     return ""
 
 
-def _bucket_reason(decision) -> str:
+def _bucket_reason(decision: DedupDecision) -> str:
     if decision.reason_code in WEAK_MERGE_REASONS:
         days = _days_signal(decision)
         if days:
@@ -36,7 +59,7 @@ def _bucket_reason(decision) -> str:
     return decision.reason_code
 
 
-def applied_merge_decisions(items: list[Item]) -> list[tuple[Item, Item, object]]:
+def applied_merge_decisions(items: list[Item]) -> list[tuple[Item, Item, DedupDecision]]:
     """Retourne une décision par item absorbé dans un composant final.
 
     `group_components` est ancré : chaque composant conserve son premier item
@@ -44,7 +67,7 @@ def applied_merge_decisions(items: list[Item]) -> list[tuple[Item, Item, object]
     restitue donc les décisions positives qui ont effectivement produit le
     regroupement, sans compter toutes les comparaisons théoriques possibles.
     """
-    rows: list[tuple[Item, Item, object]] = []
+    rows: list[tuple[Item, Item, DedupDecision]] = []
     for component in group_components(items):
         if len(component) < 2:
             continue
@@ -93,7 +116,7 @@ def summarize_dedup(items: list[Item]) -> dict:
 
 
 def weak_merge_rows(items: list[Item]) -> list[dict[str, str]]:
-    """Exporte uniquement les fusions faibles réellement appliquées."""
+    """Retourne uniquement les fusions faibles réellement appliquées."""
     rows: list[dict[str, str]] = []
     for left, right, decision in applied_merge_decisions(items):
         if decision.reason_code not in WEAK_MERGE_REASONS:
@@ -127,3 +150,13 @@ def weak_merge_rows(items: list[Item]) -> list[dict[str, str]]:
             row["Right_Item_ID"],
         ),
     )
+
+
+def write_weak_merges_csv(path: Path, items: list[Item]) -> int:
+    rows = weak_merge_rows(items)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=WEAK_MERGE_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    return len(rows)
