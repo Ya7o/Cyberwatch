@@ -99,6 +99,12 @@ jobs:
             --details /tmp/golden-after.csv \
             --json /tmp/golden-after.json
 
+      - name: Gate qualité qualification global
+        run: |
+          python scripts/check_qualification_golden_gate.py \
+            /tmp/golden-before.json \
+            /tmp/golden-after.json
+
       - name: Garde de précision Sector globale
         run: |
           python scripts/check_sector_golden_regression.py \
