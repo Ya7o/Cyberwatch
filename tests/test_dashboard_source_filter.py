@@ -54,18 +54,19 @@ def test_historique_tronque_est_rendu_sans_degrader_le_statut_source():
     assert 'data-status="${esc(status)}"' in body
 
 
-def test_synthese_source_identique_a_la_synthese_incident_n_est_pas_repetee():
+def test_synthese_incident_est_unique_et_les_blocs_sources_ne_la_repetent_pas():
     app = open("assets/app.js", encoding="utf-8").read()
 
-    assert "function sameSummary(left, right)" in app
-    assert 'normalize(value).replace(/\\s+/g, " ")' in app
-    assert 'const sourceSummary = sameSummary(fact.summary, incidentSummary) ? "" : fact.summary;' in app
-    assert 'factRow("Synthèse", sourceSummary)' in app
-    assert 'map((fact) => factHtml(fact, incident.summary))' in app
+    assert "function normalizeNarrative(value)" in app
+    assert "function narrativeContains(container, detail)" in app
+    assert 'if (incident.summary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`)' in app
+    assert 'factRow("Synthèse"' not in app
+    assert "sourceSummary" not in app
+    assert "factsInput.map((fact) => factHtml(fact, incident.summary))" in app
 
 
-def test_synthese_source_distincte_reste_affichable():
+def test_impact_source_reste_deduplique_par_rapport_a_la_synthese():
     app = open("assets/app.js", encoding="utf-8").read()
 
-    assert 'sameSummary(fact.summary, incidentSummary) ? "" : fact.summary' in app
-    assert 'factHtml(fact, incident.summary)' in app
+    assert "narrativeContains(fact.summary, fact.impact)" in app
+    assert "factHtml(fact, incident.summary)" in app

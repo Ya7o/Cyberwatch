@@ -23,8 +23,8 @@ def test_detail_incident_est_genere_directement_dans_sources():
     js = _read("assets/app.js")
     body = _function_body(js, "renderTable", "incidentDate")
 
-    org_cell = re.search(r'<td data-label=\\"Organisation\\"[^\n]*', body)
-    source_cell = re.search(r'<td data-label=\\"Sources\\"[^\n]*', body)
+    org_cell = re.search(r'<td data-label="Organisation"[^\n]*', body)
+    source_cell = re.search(r'<td data-label="Sources"[^\n]*', body)
 
     assert org_cell
     assert source_cell
@@ -51,7 +51,6 @@ def test_les_blocs_sources_n_affichent_plus_de_synthese():
 
     assert 'factRow("Synthèse"' not in body
     assert "sourceSummary" not in body
-    # Le résumé source reste exploité pour dédupliquer l'impact, sans être affiché comme synthèse.
     assert "narrativeContains(fact.summary, fact.impact)" in body
 
 
