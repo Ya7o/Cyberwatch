@@ -2,8 +2,7 @@
 """Rapport de performance et validation incrémentale de qualification.
 
 Le hook pré-qualification capture l'état avant mutation métier. Ce script ne
-promeut cette observation dans ``data/`` qu'après un run réussi. Le shadow
-post-qualification continue de vérifier sortie et provenance.
+promeut les états/cache auxiliaires dans ``data/`` qu'après un run réussi.
 """
 from __future__ import annotations
 
@@ -16,12 +15,15 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import config, incremental, store
+from cyberwatch import config, incremental, org_incremental, qualification_cache, store
 
 STATE_CSV = store.DATA_DIR / "item_processing_state.csv"
 PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 METRICS_CSV = store.DATA_DIR / "incremental_metrics.csv"
 SHADOW_CSV = store.DATA_DIR / "qualification_shadow_cache.csv"
+CACHE_METRICS_CSV = store.DATA_DIR / "qualification_cache_metrics.csv"
+ORG_STATE_CSV = store.DATA_DIR / "organisation_processing_state.csv"
+ORG_METRICS_CSV = store.DATA_DIR / "organisation_incremental_metrics.csv"
 
 
 def _number(value) -> float:
@@ -64,6 +66,65 @@ def _load_prequalification_observation(last: dict, dependency_digest_value: str)
     return dirty_set
 
 
+def _promote_cache(last: dict) -> dict:
+    usage = qualification_cache.read_usage_observation()
+    if last.get("Overall_Status") == "OK":
+        pending = qualification_cache.load_pending_cache()
+        if pending:
+            store.write_json(qualification_cache.cache_path(store.DATA_DIR), pending)
+            qualification_cache.clear_pending_cache()
+    if not usage:
+        return {}
+    run_id = last.get("Run_ID", "")
+    rows = [r for r in store.read_csv(CACHE_METRICS_CSV) if r.get("Run_ID") != run_id]
+    rows.append({
+        "Run_ID": run_id,
+        "As_Of": last.get("As_Of", ""),
+        "Mode": last.get("Mode", ""),
+        "Cache_Hit": "1" if usage.get("Cache_Hit") else "0",
+        "Cache_Miss_Reason": usage.get("Cache_Miss_Reason", ""),
+        "Skipped_Items": str(usage.get("Skipped_Items", 0)),
+        "Cache_Version": usage.get("Cache_Version", ""),
+    })
+    store.write_csv(CACHE_METRICS_CSV, qualification_cache.USAGE_METRIC_COLUMNS, rows)
+    return rows[-1]
+
+
+def _observe_organisations(last: dict, items, source_facts) -> dict:
+    policy_version = last.get("Method_ID", "") or config.METHOD_ID
+    code_paths = [ROOT / "cyberwatch" / name for name in incremental.QUALIFICATION_CODE_FILES]
+    current = org_incremental.fingerprints(
+        items,
+        source_facts,
+        store.read_csv(store.ENRICHMENT_REFERENCE_CSV),
+        store.load_org_enrichment_cache(),
+        policy_version=policy_version,
+        code_paths=code_paths,
+    )
+    previous = org_incremental.previous_fingerprints(store.read_csv(ORG_STATE_CSV))
+    metric = org_incremental.metric_row(
+        current,
+        previous,
+        run_id=last.get("Run_ID", ""),
+        as_of=last.get("As_Of", ""),
+        mode=last.get("Mode", ""),
+    )
+    store.write_csv(
+        ORG_STATE_CSV,
+        org_incremental.ORG_STATE_COLUMNS,
+        org_incremental.state_rows(
+            current,
+            policy_version=policy_version,
+            run_id=last.get("Run_ID", ""),
+            as_of=last.get("As_Of", ""),
+        ),
+    )
+    metrics = [r for r in store.read_csv(ORG_METRICS_CSV) if r.get("Run_ID") != last.get("Run_ID", "")]
+    metrics.append(metric)
+    store.write_csv(ORG_METRICS_CSV, org_incremental.ORG_METRIC_COLUMNS, metrics)
+    return metric
+
+
 def observe_incremental_state() -> int:
     run_log = store.load_run_log()
     if not run_log:
@@ -76,8 +137,9 @@ def observe_incremental_state() -> int:
     dependency_digest_value = _qualification_dependency_digest()
     prequal = _load_prequalification_observation(last, dependency_digest_value)
 
+    source_facts = store.load_source_facts()
     facts_by_item: dict[str, list[dict]] = defaultdict(list)
-    for row in store.load_source_facts():
+    for row in source_facts:
         if row.get("Item_ID"):
             facts_by_item[row["Item_ID"]].append(row)
 
@@ -145,14 +207,24 @@ def observe_incremental_state() -> int:
     )
     store.write_csv(METRICS_CSV, incremental.INCREMENTAL_METRIC_COLUMNS, metrics)
 
+    cache_metric = _promote_cache(last)
+    org_metric = _observe_organisations(last, items, source_facts)
+
     prequal_text = "prequal=unavailable"
     if prequal is not None:
         prequal_text = (
             f"pre_new={len(prequal.new)} pre_dirty={len(prequal.dirty)} "
             f"pre_unchanged={len(prequal.unchanged)} pre_reuse={prequal.reuse_ratio:.1%}"
         )
+    cache_text = (
+        f"cache_hit={cache_metric.get('Cache_Hit','0')} "
+        f"cache_skipped={cache_metric.get('Skipped_Items','0')}"
+        if cache_metric else "cache=unavailable"
+    )
     print(
-        f"INCREMENTAL_OBSERVER run={run_id} {prequal_text} "
+        f"INCREMENTAL_OBSERVER run={run_id} {prequal_text} {cache_text} "
+        f"org_dirty={org_metric.get('Dirty_Organisations','0')} "
+        f"org_reuse={_number(org_metric.get('Org_Reuse_Rate')):.1%} "
         f"post_stable={dirty_set.reuse_ratio:.1%} "
         f"shadow_checked={shadow.checked} shadow_mismatches={len(shadow.mismatches)}"
     )
@@ -170,12 +242,16 @@ def report(last_count: int) -> int:
     for row in store.load_run_sources():
         source_rows[row.get("Run_ID", "")].append(row)
     metrics = {r.get("Run_ID", ""): r for r in store.read_csv(METRICS_CSV)}
+    cache_metrics = {r.get("Run_ID", ""): r for r in store.read_csv(CACHE_METRICS_CSV)}
+    org_metrics = {r.get("Run_ID", ""): r for r in store.read_csv(ORG_METRICS_CSV)}
     for run in logs[-max(1, last_count):]:
         run_id = run.get("Run_ID", "")
         total = _number(run.get("Duration_s"))
         sources = source_rows.get(run_id, [])
         source_total = sum(_number(r.get("Duration_s")) for r in sources)
         metric = metrics.get(run_id, {})
+        cache = cache_metrics.get(run_id, {})
+        org = org_metrics.get(run_id, {})
         observation = ""
         if metric:
             prequal_reuse = metric.get("Prequal_Reuse_Rate", "")
@@ -187,6 +263,10 @@ def report(last_count: int) -> int:
                 )
             observation = (
                 prequal_text
+                + f" cache={'hit' if cache.get('Cache_Hit') == '1' else 'miss'}"
+                + f" skipped={cache.get('Skipped_Items','0')}"
+                + f" org_dirty={org.get('Dirty_Organisations','0')}"
+                + f" org_reuse={_number(org.get('Org_Reuse_Rate')):.1%}"
                 + f" post_stable={_number(metric.get('Reuse_Rate')):.1%} "
                 + f"shadow={metric.get('Shadow_Mismatches','0')}/{metric.get('Shadow_Checked','0')}"
             )
