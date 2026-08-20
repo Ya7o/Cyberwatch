@@ -87,7 +87,7 @@ def test_summary_groups_by_origin_and_field():
 
 def test_threat_stabilization_can_be_observed(make_item):
     item = make_item(
-        source_id="RANSOMWARE_LIVE",
+        source="RANSOMWARE_LIVE",
         threat=config.THREAT_UNKNOWN,
     )
     before = snapshot_fields([item])
