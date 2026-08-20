@@ -8,8 +8,13 @@ on:
         type: boolean
         default: true
   push:
+    branches: [main]
     paths:
       - '.github/workflows/cyberattaque-rich-backfill.yml'
+      - 'cyberwatch/collectors/cyberattaque_*.py'
+      - 'scripts/audit_cyberattaque_rich_facts.py'
+      - 'scripts/certify_cyberattaque_rich_facts.py'
+      - 'tests/test_cyberattaque_*.py'
 
 permissions:
   contents: write
@@ -46,33 +51,61 @@ jobs:
           python -m cyberwatch create --layers core --start 2026-01-01
           python -m cyberwatch build-site
 
-      - name: Audit du corpus Cyberattaque.org
+      - name: Audit complet et échantillon de revue
         run: |
-          python scripts/audit_cyberattaque_rich_facts.py | tee /tmp/cyberattaque-rich-audit.json
+          mkdir -p data/quality
+          python scripts/audit_cyberattaque_rich_facts.py \
+            --output data/quality/cyberattaque_rich_audit.json \
+            --review-sample data/quality/cyberattaque_rich_review_sample.csv \
+            --review-limit 100 \
+            | tee /tmp/cyberattaque-rich-audit.json
+          echo '### Audit Cyberattaque.org rich facts' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/cyberattaque-rich-audit.json >> "$GITHUB_STEP_SUMMARY"
-          python - <<'PY'
-          import json
-          data=json.load(open('/tmp/cyberattaque-rich-audit.json', encoding='utf-8'))
-          articles=data.get('articles',0)
-          rich=data.get('coverage',{}).get('with_rich_facts',0)
-          if articles and rich/articles < 0.80:
-              raise SystemExit(f'Couverture rich_facts insuffisante: {rich}/{articles}')
-          PY
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Certification de précision et couverture
+        run: |
+          python scripts/certify_cyberattaque_rich_facts.py \
+            data/quality/cyberattaque_rich_audit.json \
+            --json data/quality/cyberattaque_rich_certification.json \
+            --markdown data/quality/cyberattaque_rich_certification.md \
+            | tee /tmp/cyberattaque-rich-certification.md
+          cat /tmp/cyberattaque-rich-certification.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Contrôles de non-régression
         run: |
-          python -m pytest tests/test_cyberattaque_rich_facts.py tests/test_cyberattaque_corpus_v2.py -q
+          python -m pytest \
+            tests/test_cyberattaque_rich_facts.py \
+            tests/test_cyberattaque_corpus_v2.py \
+            tests/test_cyberattaque_closeout.py -q
           python -m cyberwatch check
+          python -m cyberwatch test-repeat
 
-      - name: Publier le backfill et le cache sémantique
+      - name: Vérifier le rendu publié
+        run: |
+          python -m cyberwatch build-site
+          test -s assets/data/incidents.json
+          test -s assets/data/items.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          incidents = json.loads(Path('assets/data/incidents.json').read_text(encoding='utf-8'))
+          text = json.dumps(incidents, ensure_ascii=False)
+          if 'CYBERATTAQUE_ORG' not in text:
+              raise SystemExit('Cyberattaque.org absent du payload dashboard publié')
+          PY
+
+      - name: Publier le backfill, la certification et le cache sémantique
         run: |
           git config user.name 'cyberwatch-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data assets/data
           if git diff --cached --quiet; then echo 'Aucun changement à publier.'; exit 0; fi
-          git commit -m 'data: backfill rich facts Cyberattaque.org v2'
+          git commit -m 'data: certify rich facts Cyberattaque.org v2'
           for delay in 0 2 4 8 16; do
             [ "$delay" -gt 0 ] && sleep "$delay"
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
           done
+          echo 'Échec de publication du backfill certifié.' >&2
           exit 1
