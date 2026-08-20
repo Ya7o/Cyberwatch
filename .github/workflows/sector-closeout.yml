@@ -22,6 +22,12 @@ on:
     workflows: ['Tests']
     types: [completed]
   workflow_dispatch:
+    inputs:
+      force_closeout:
+        description: "Certifier explicitement l'état courant de main"
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -40,6 +46,7 @@ jobs:
       run: ${{ steps.scope.outputs.run }}
       trigger_sha: ${{ steps.scope.outputs.trigger_sha }}
       changed: ${{ steps.scope.outputs.changed }}
+      reason: ${{ steps.scope.outputs.reason }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -52,9 +59,11 @@ jobs:
           WORKFLOW_RUN_BRANCH: ${{ github.event.workflow_run.head_branch || '' }}
           WORKFLOW_RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion || '' }}
           WORKFLOW_RUN_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+          FORCE_CLOSEOUT: ${{ inputs.force_closeout || 'false' }}
         run: |
           set -euo pipefail
           RUN=false
+          REASON=not-applicable
           TRIGGER_SHA="$(git rev-parse HEAD)"
           CHANGED=""
           sector_paths='^(scripts/enrich_sector_queue\.py|scripts/enrich_sector_golden\.py|scripts/check_sector_golden_regression\.py|scripts/evaluate_sector_registry\.py|scripts/check_sector_registry_policy\.py|cyberwatch/company_subject_evidence\.py|cyberwatch/context_sector\.py|cyberwatch/sector_completion\.py|cyberwatch/sector_registry\.py|cyberwatch/sector_registry_safety\.py|data/sector_auto_policy\.json|\.github/workflows/sector-closeout\.yml|\.github/sector-trigger\.txt)$'
@@ -62,24 +71,33 @@ jobs:
           case "$EVENT_NAME" in
             workflow_dispatch)
               RUN=true
+              REASON=manual-main-closeout
               ;;
             push)
               RUN=true
+              REASON=sector-push-main
               CHANGED="$(git diff --name-only HEAD^1 HEAD || true)"
               ;;
             workflow_run)
-              if [ "$WORKFLOW_RUN_CONCLUSION" = "success" ] && [ "$WORKFLOW_RUN_BRANCH" = "main" ] && [ -n "$WORKFLOW_RUN_SHA" ]; then
-                git fetch --no-tags origin "$WORKFLOW_RUN_SHA" --depth=2 || true
-                TRIGGER_SHA="$WORKFLOW_RUN_SHA"
-                # Merge commits need an explicit first-parent diff; diff-tree without -m can return no paths.
-                if git cat-file -e "$WORKFLOW_RUN_SHA^1" 2>/dev/null; then
-                  CHANGED="$(git diff --name-only "$WORKFLOW_RUN_SHA^1" "$WORKFLOW_RUN_SHA" || true)"
+              # workflow_run is only a fallback. It may originate from a PR/ops branch;
+              # certification always evaluates the current canonical main checkout.
+              if [ "$WORKFLOW_RUN_CONCLUSION" = "success" ]; then
+                if [ "$WORKFLOW_RUN_BRANCH" = "main" ] && [ -n "$WORKFLOW_RUN_SHA" ]; then
+                  git fetch --no-tags origin "$WORKFLOW_RUN_SHA" --depth=2 || true
+                  if git cat-file -e "$WORKFLOW_RUN_SHA^1" 2>/dev/null; then
+                    CHANGED="$(git diff --name-only "$WORKFLOW_RUN_SHA^1" "$WORKFLOW_RUN_SHA" || true)"
+                  else
+                    CHANGED="$(git show --pretty='' --name-only "$WORKFLOW_RUN_SHA" || true)"
+                  fi
+                  if printf '%s\n' "$CHANGED" | grep -Eq "$sector_paths"; then
+                    RUN=true
+                    REASON=tests-main-sector-change
+                  fi
                 else
-                  CHANGED="$(git show --pretty='' --name-only "$WORKFLOW_RUN_SHA" || true)"
+                  REASON=tests-non-main-ignored
                 fi
-                if printf '%s\n' "$CHANGED" | grep -Eq "$sector_paths"; then
-                  RUN=true
-                fi
+              else
+                REASON=tests-not-successful
               fi
               ;;
           esac
@@ -88,7 +106,8 @@ jobs:
           echo "run=$RUN" >> "$GITHUB_OUTPUT"
           echo "trigger_sha=$TRIGGER_SHA" >> "$GITHUB_OUTPUT"
           echo "changed=$changed_flat" >> "$GITHUB_OUTPUT"
-          echo "SECTOR_CLOSEOUT_SCOPE run=$RUN trigger_sha=$TRIGGER_SHA changed=${changed_flat:-none}"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+          echo "SECTOR_CLOSEOUT_SCOPE run=$RUN reason=$REASON canonical_main_sha=$TRIGGER_SHA changed=${changed_flat:-none}"
 
   certify:
     needs: decide
@@ -106,13 +125,20 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-
+      - name: Contrat de certification
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = "main"
+          echo "SECTOR_CERTIFICATION_STATUS=RUNNING"
+          echo "SECTOR_EXECUTION_MODE=golden-only"
+          echo "SECTOR_EXECUTION_MAIN_SHA=$(git rev-parse HEAD)"
+          echo "SECTOR_EXECUTION_REASON=${{ needs.decide.outputs.reason }}"
+          echo "SECTOR_EXECUTION_LEGAL_RECALC=false"
       - name: Golden avant certification
         run: |
           python -m cyberwatch backfill-unknowns
           python scripts/audit_sector_coverage.py
           python scripts/evaluate_golden.py --details /tmp/golden-before.csv --json /tmp/golden-before.json
-
       - name: Purger et réévaluer uniquement les mismatches Golden
         env:
           ORG_ENRICHMENT_ENABLED: "1"
@@ -127,13 +153,11 @@ jobs:
           echo "SECTOR_EXECUTION_CHANGED=${{ needs.decide.outputs.changed || 'none' }}"
           echo "SECTOR_EXECUTION_LEGAL_RECALC=false"
           python -m scripts.enrich_sector_golden
-
       - name: Golden après réévaluation
         run: |
           python -m cyberwatch backfill-unknowns
           python scripts/audit_sector_coverage.py
           python scripts/evaluate_golden.py --details /tmp/golden-after.csv --json /tmp/golden-after.json
-
       - name: Gate zéro erreur Sector
         run: |
           python scripts/check_sector_golden_regression.py \
@@ -142,7 +166,6 @@ jobs:
             --after-details /tmp/golden-after.csv \
             --report-csv /tmp/sector-golden-mismatches.csv \
             --require-zero-wrong
-
       - name: Gates registry, structure et répétabilité
         run: |
           python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
@@ -150,7 +173,6 @@ jobs:
           python -m cyberwatch check --allow-uninitialized
           python -m cyberwatch test-repeat
           python -m cyberwatch build-site
-
       - name: Produire la preuve de clôture
         env:
           TRIGGER_SHA: ${{ needs.decide.outputs.trigger_sha }}
@@ -192,26 +214,22 @@ jobs:
           Path('data/sector_closeout.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
           print(json.dumps(report, ensure_ascii=False, indent=2))
           PY
-
+          echo "SECTOR_CERTIFICATION_STATUS=GO"
       - name: Résumé de clôture
         if: always()
         run: |
           echo "## Sector closeout — run ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Trigger SHA: ${{ needs.decide.outputs.trigger_sha }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Changed: ${{ needs.decide.outputs.changed || 'none' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Decision: ${{ needs.decide.outputs.reason }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Canonical main SHA: ${{ needs.decide.outputs.trigger_sha }}" >> "$GITHUB_STEP_SUMMARY"
           if [ -f /tmp/golden-after.json ]; then
             python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
           d=json.load(open('/tmp/golden-after.json',encoding='utf-8'))['fields']['Secteur']
           print(f"Golden final: wrong={d.get('wrong_classification')} precision={d.get('precision_when_qualified_pct')}% coverage={d.get('coverage_pct')}% accuracy={d.get('accuracy_pct')}%")
           PY
+          else
+            echo "NOT_CERTIFIED: golden-after absent" >> "$GITHUB_STEP_SUMMARY"
           fi
-          if [ -f /tmp/sector-golden-mismatches.csv ]; then
-            echo '```csv' >> "$GITHUB_STEP_SUMMARY"
-            cat /tmp/sector-golden-mismatches.csv >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-          fi
-
       - name: Archiver les preuves
         if: always()
         uses: actions/upload-artifact@v4
@@ -230,23 +248,11 @@ jobs:
             data/organisation_sector_registry.csv
           if-no-files-found: warn
           retention-days: 30
-
       - name: Publier la certification atomiquement
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "cyberwatch-bot@users.noreply.github.com"
-          git add \
-            data/org_enrichment_cache.csv \
-            data/organisation_sector_registry.csv \
-            data/sector_enrichment_queue.csv \
-            data/sector_quality.json \
-            data/items.csv \
-            data/incidents.csv \
-            data/incident_id_registry.csv \
-            data/qualification_provenance.csv \
-            data/snapshot.json \
-            data/sector_closeout.json \
-            assets/data
+          git add data/org_enrichment_cache.csv data/organisation_sector_registry.csv data/sector_enrichment_queue.csv data/sector_quality.json data/items.csv data/incidents.csv data/incident_id_registry.csv data/qualification_provenance.csv data/snapshot.json data/sector_closeout.json assets/data
           if git diff --cached --quiet; then
             echo "Aucune modification de données; la certification reste démontrée par les artefacts du run."
             exit 0
@@ -254,3 +260,20 @@ jobs:
           git commit -m "Certify Sector closeout"
           git pull --rebase origin main
           git push origin HEAD:main
+
+  verdict:
+    needs: [decide, certify]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verdict explicite
+        shell: bash
+        run: |
+          echo "SECTOR_CLOSEOUT_DECISION=${{ needs.decide.outputs.reason }}"
+          echo "SECTOR_CLOSEOUT_CERTIFY_RESULT=${{ needs.certify.result }}"
+          if [ "${{ needs.decide.outputs.run }}" = "true" ]; then
+            test "${{ needs.certify.result }}" = "success" || { echo "NOT_CERTIFIED: certification demandée mais non réussie" >&2; exit 1; }
+            echo "SECTOR_CLOSEOUT_VERDICT=GO"
+          else
+            echo "SECTOR_CLOSEOUT_VERDICT=NOT_APPLICABLE"
+          fi
