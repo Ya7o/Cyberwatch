@@ -128,17 +128,19 @@ def territorial_organisation_key(value: str) -> str:
 
 
 def effective_organisation_key(raw: str, stored_key: str = "") -> str:
-    """Clé d'identité utilisée par la déduplication, sans mutation des items.
+    """Clé d'identité canonique utilisée par la déduplication, sans mutation.
 
-    L'ordre est volontairement conservateur : alias explicites existants,
-    équivalence territoriale structurelle, puis clé stockée. Les organisations
-    nouvelles/inconnues suivent donc exactement le comportement historique.
+    Les deux entrées sont toujours repassées par ``organisation_key``. Cela
+    empêche une clé persistée avant l'ajout d'un alias de contourner le
+    référentiel courant lors d'un rebuild ou d'une mise à jour incrémentale.
+    Les équivalences territoriales fortes restent prioritaires.
     """
-    canonical = organisation_key(raw) if raw else ""
+    canonical_raw = organisation_key(raw) if raw else ""
+    canonical_stored = organisation_key(stored_key) if stored_key else ""
 
-    for candidate in (canonical, raw, stored_key):
+    for candidate in (canonical_raw, raw, canonical_stored, stored_key):
         territorial = territorial_organisation_key(candidate)
         if territorial:
             return territorial
 
-    return canonical or stored_key
+    return canonical_raw or canonical_stored
