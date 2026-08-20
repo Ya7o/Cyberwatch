@@ -45,7 +45,7 @@ def _incident():
     )
 
 
-def _report(item=None, incident=None):
+def _report(item=None, incident=None, *, provenance=None, registry=None):
     from cyberwatch import identity
 
     items = [item or _item()]
@@ -54,10 +54,10 @@ def _report(item=None, incident=None):
         items=items,
         incidents=incidents,
         changes={},
-        provenance=[],
+        provenance=list(provenance or []),
         decisions=[],
         decision_summary=[],
-        incident_id_registry=[],
+        incident_id_registry=list(registry or []),
         items_hash=identity.items_hash(items),
         incidents_hash=identity.incidents_hash(incidents),
     )
@@ -134,3 +134,21 @@ def test_parity_failures_reports_hash_or_count_differences():
     changed = _report(incident=Incident(Incident_ID="INC-2", Organisation="Other"))
     failures = parity_failures(changed, canonical)
     assert any("incidents_hash" in failure for failure in failures)
+
+
+def test_parity_failures_reports_provenance_difference():
+    canonical = _report(
+        provenance=[{"Item_ID": "ITM-1", "Field": "Sector", "Decision": "APPLIED"}]
+    )
+    changed = _report(
+        provenance=[{"Item_ID": "ITM-1", "Field": "Sector", "Decision": "REJECTED"}]
+    )
+    failures = parity_failures(changed, canonical)
+    assert any("provenance_hash" in failure for failure in failures)
+
+
+def test_parity_failures_reports_registry_difference():
+    canonical = _report(registry=[{"Incident_ID": "INC-1", "Anchor_Item_ID": "ITM-1"}])
+    changed = _report(registry=[{"Incident_ID": "INC-1", "Anchor_Item_ID": "ITM-2"}])
+    failures = parity_failures(changed, canonical)
+    assert any("incident_registry_hash" in failure for failure in failures)

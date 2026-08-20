@@ -26,6 +26,7 @@ PREQUAL_OBSERVATION_VERSION = "PREQUAL-OBS-1"
 QUALIFICATION_CODE_FILES = (
     "qualification.py",
     "qualification_decision.py",
+    "qualification_policy.py",
     "enrichment.py",
     "sector.py",
     "context_sector.py",
