@@ -7,22 +7,32 @@ l'organisation ou du corpus.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
 import tempfile
-from typing import Mapping
+from typing import Iterable, Mapping
 
 from .model import Incident, Item
 from .qualification_decision import QualificationDecision, summarize_decisions
 
-CACHE_VERSION = "QUAL-CACHE-1"
+CACHE_VERSION = "QUAL-CACHE-2"
 CACHE_JSON_NAME = "qualification_cache.json"
 USAGE_OBSERVATION_VERSION = "QUAL-CACHE-USAGE-1"
 USAGE_METRIC_COLUMNS = [
     "Run_ID", "As_Of", "Mode", "Cache_Hit", "Cache_Miss_Reason",
     "Skipped_Items", "Cache_Version",
 ]
+_CACHE_ENGINE_FILES = (
+    "qualification.py",
+    "qualification_cache.py",
+    "qualification_decision.py",
+    "dedup.py",
+    "incident_identity.py",
+    "identity.py",
+    "model.py",
+)
 
 
 def cache_path(data_dir: Path) -> Path:
@@ -47,6 +57,32 @@ def _read_json(path: Path) -> dict:
     except (OSError, json.JSONDecodeError):
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _hash_payload(payload: object) -> str:
+    raw = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def rows_digest(rows: Iterable[Mapping[str, object]]) -> str:
+    normalized = [
+        {str(k): str(v or "") for k, v in sorted(row.items())}
+        for row in rows
+    ]
+    normalized.sort(key=lambda row: json.dumps(row, ensure_ascii=False, sort_keys=True))
+    return _hash_payload(normalized)
+
+
+def engine_digest(root: Path) -> str:
+    rows = []
+    for name in _CACHE_ENGINE_FILES:
+        path = Path(root) / "cyberwatch" / name
+        try:
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError:
+            digest = ""
+        rows.append((name, digest))
+    return _hash_payload(rows)
 
 
 def load_cache(data_dir: Path) -> dict:
@@ -79,6 +115,9 @@ def cache_matches(
     *,
     policy_version: str,
     dependency_digest: str,
+    engine_digest_value: str,
+    previous_provenance_digest: str,
+    previous_registry_digest: str,
     prequalification_fingerprints: Mapping[str, str],
 ) -> tuple[bool, str]:
     if not payload:
@@ -89,6 +128,12 @@ def cache_matches(
         return False, "policy_version"
     if payload.get("Dependency_Digest") != dependency_digest:
         return False, "dependency_digest"
+    if payload.get("Engine_Digest") != engine_digest_value:
+        return False, "engine_digest"
+    if payload.get("Next_Provenance_Digest") != previous_provenance_digest:
+        return False, "provenance_changed"
+    if payload.get("Next_Registry_Digest") != previous_registry_digest:
+        return False, "incident_registry_changed"
     cached = payload.get("Prequalification_Fingerprints")
     if not isinstance(cached, dict):
         return False, "fingerprints_missing"
@@ -104,12 +149,16 @@ def report_to_payload(
     *,
     policy_version: str,
     dependency_digest: str,
+    engine_digest_value: str,
     prequalification_fingerprints: Mapping[str, str],
 ) -> dict:
     return {
         "Version": CACHE_VERSION,
         "Policy_Version": policy_version,
         "Dependency_Digest": dependency_digest,
+        "Engine_Digest": engine_digest_value,
+        "Next_Provenance_Digest": rows_digest(report.provenance),
+        "Next_Registry_Digest": rows_digest(report.incident_id_registry),
         "Prequalification_Fingerprints": dict(sorted(prequalification_fingerprints.items())),
         "Items": [item.to_row() for item in report.items],
         "Incidents": [incident.to_row() for incident in report.incidents],
