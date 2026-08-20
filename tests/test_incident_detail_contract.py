@@ -34,15 +34,25 @@ def test_detail_incident_est_genere_directement_dans_sources():
     assert source_cell.group(0).index("sourceLinks(incident)") < source_cell.group(0).index("incident-details-toggle")
 
 
-def test_synthese_globale_est_conditionnee_avant_rendu():
+def test_synthese_incident_est_toujours_avant_les_blocs_sources():
     js = _read("assets/app.js")
     body = _function_body(js, "detailHtml", "sourceHomes")
 
     assert "const factsInput = Array.isArray(incident.facts) ? incident.facts : []" in body
-    assert "const hasSourceSummary = factsInput.some" in body
-    assert "!sameSummary(fact.summary, incident.summary)" in body
-    assert "if (incident.summary && !hasSourceSummary)" in body
+    assert 'if (incident.summary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`)' in body
+    assert "hasSourceSummary" not in body
     assert "factsInput.map((fact) => factHtml(fact, incident.summary))" in body
+    assert body.index("if (incident.summary)") < body.index("factsInput.map")
+
+
+def test_les_blocs_sources_n_affichent_plus_de_synthese():
+    js = _read("assets/app.js")
+    body = _function_body(js, "factHtml", "detailHtml")
+
+    assert 'factRow("Synthèse"' not in body
+    assert "sourceSummary" not in body
+    # Le résumé source reste exploité pour dédupliquer l'impact, sans être affiché comme synthèse.
+    assert "narrativeContains(fact.summary, fact.impact)" in body
 
 
 def test_aucun_script_de_patch_detail_n_est_charge():
