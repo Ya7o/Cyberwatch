@@ -18,8 +18,8 @@
     },
     {
       "id": "negation",
-      "text": "Les systèmes internes n'ont pas été touchés.",
-      "expect": {"status": "negated", "no_confirmed": true}
+      "text": "Aucune adresse e-mail n'a été compromise.",
+      "expect": {"data_type": "adresses e-mail", "status": "negated", "no_confirmed": true}
     },
     {
       "id": "multiple-volumes",
