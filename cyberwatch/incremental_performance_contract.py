@@ -1,8 +1,9 @@
 """Compatibilité des fast-paths Performance avec les contrats historiques.
 
-Le cache FrenchBreaches accélère uniquement les lectures dont la fraîcheur est
-prouvée. En cas d'échec réseau ou de budget épuisé, il ne réinjecte jamais un
-contenu périmé : le comportement historique (content vide) est conservé.
+Le cache persistant FrenchBreaches est volontairement opt-in : sans variable
+d'environnement explicite, le collecteur conserve exactement sa sémantique
+historique. Lorsqu'il est activé, seules les entrées dont la fraîcheur est
+prouvée sont réutilisées ; un échec réseau ne réinjecte jamais du contenu périmé.
 """
 from __future__ import annotations
 
@@ -10,6 +11,11 @@ import datetime as dt
 import os
 
 _INSTALLED = False
+
+
+def _cache_enabled() -> bool:
+    value = os.getenv("CYBERWATCH_FRENCHBREACHES_DETAIL_CACHE", "0").strip().lower()
+    return value in {"1", "true", "yes", "on"}
 
 
 def install() -> None:
@@ -20,7 +26,27 @@ def install() -> None:
     from . import incremental_performance as perf
     from .collectors import feed
 
+    def hydrate_without_cache(client, entries, budget):
+        attempted = 0
+        hydrated = 0
+        for entry in entries:
+            if budget.exhausted or not entry.url:
+                break
+            attempted += 1
+            response = client.fetch(entry.url, budget)
+            if not response.ok:
+                continue
+            text = feed.stable_frenchbreaches_detail_text(response.text)
+            if not text:
+                continue
+            entry.content = text[:40000]
+            hydrated += 1
+        return attempted, hydrated
+
     def hydrate(client, entries, budget):
+        if not _cache_enabled():
+            return hydrate_without_cache(client, entries, budget)
+
         try:
             ttl_days = max(0.0, float(os.getenv("FRENCHBREACHES_DETAIL_CACHE_TTL_DAYS", "7")))
         except ValueError:
