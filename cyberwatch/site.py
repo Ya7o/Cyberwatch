@@ -52,8 +52,10 @@ _FACT_LIST_FIELDS = {
 }
 _SUMMARY_RICHNESS_KEYS = (
     "initial_access", "attack_flow", "impact", "threat_actor",
-    "data_types", "vulnerabilities", "affected_count",
+    "data_types", "vulnerabilities", "affected_count", "rich_facts",
 )
+_RICH_STATUSES = {"confirmed", "reported", "claimed", "unknown"}
+_RICH_UNITS = {"people", "accounts", "users", "clients", "records", "files"}
 
 
 def _component_incident_id(ordered: list[Item]) -> str:
@@ -67,6 +69,71 @@ def _component_incident_id(ordered: list[Item]) -> str:
         else component_key
     )
     return identity.incident_id(incident_key, ordered[0].Item_ID)
+
+
+def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
+    if not isinstance(value, dict):
+        return None
+    result: dict[str, object] = {}
+    status_value = str(value.get("status") or "unknown").strip().lower()
+    result["status"] = status_value if status_value in _RICH_STATUSES else "unknown"
+    for key in ("kind", "scope", "date", "evidence", "raw"):
+        text = str(value.get(key) or "").strip()
+        if text:
+            result[key] = text[:500]
+    if count:
+        try:
+            result["value"] = int(value.get("value"))
+        except (TypeError, ValueError):
+            return None
+        unit = str(value.get("unit") or "").strip().lower()
+        if unit not in _RICH_UNITS:
+            return None
+        result["unit"] = unit
+    else:
+        text_value = str(value.get("value") or "").strip()
+        if text_value:
+            result["value"] = text_value[:160]
+        numeric = value.get("value")
+        if not text_value and isinstance(numeric, (int, float)):
+            result["value"] = int(numeric)
+        unit = str(value.get("unit") or "").strip().lower()
+        if unit in _RICH_UNITS:
+            result["unit"] = unit
+    return result if len(result) > 1 else None
+
+
+def _rich_facts_from_metadata(row: dict) -> dict | None:
+    raw = str(row.get("Source_Metadata_JSON") or "").strip()
+    if not raw:
+        return None
+    try:
+        metadata = json.loads(raw)
+    except (TypeError, ValueError):
+        return None
+    rich = metadata.get("rich_facts") if isinstance(metadata, dict) else None
+    if not isinstance(rich, dict):
+        return None
+
+    payload: dict[str, object] = {"version": str(rich.get("version") or "1")}
+    collections = (
+        ("affected_counts", True),
+        ("claims", False),
+        ("affected_systems", False),
+        ("affected_datasets", False),
+    )
+    for key, is_count in collections:
+        values = rich.get(key)
+        if not isinstance(values, list):
+            continue
+        cleaned = []
+        for value in values[:24]:
+            record = _clean_rich_record(value, count=is_count)
+            if record:
+                cleaned.append(record)
+        if cleaned:
+            payload[key] = cleaned
+    return payload if len(payload) > 1 else None
 
 
 def _source_fact_payload(row: dict) -> dict | None:
@@ -132,6 +199,10 @@ def _source_fact_payload(row: dict) -> dict | None:
                     cleaned_flow.append({"action": action, "evidence": evidence})
             if cleaned_flow:
                 payload["attack_flow"] = cleaned_flow
+
+    rich_facts = _rich_facts_from_metadata(row)
+    if rich_facts:
+        payload["rich_facts"] = rich_facts
 
     return payload if len(payload) > 2 else None
 
