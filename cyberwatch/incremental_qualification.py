@@ -2,7 +2,9 @@
 
 Le fast-path n'est autorisé que lorsque le snapshot canonique entrant est
 strictement identique au snapshot déjà qualifié et qu'aucun item n'est marqué
-NEW/DIRTY. Tout autre cas repasse par ``qualification.qualify``.
+NEW/DIRTY. Dans ce cas, la qualification des items est réutilisée mais les
+incidents sont toujours reconstruits avec la déduplication courante. Tout autre
+cas repasse par ``qualification.qualify``.
 """
 from __future__ import annotations
 
@@ -10,6 +12,7 @@ from dataclasses import dataclass
 from typing import Iterable
 
 from . import identity
+from .dedup import build_incidents_with_registry
 from .model import Incident, Item
 from .qualification import QualificationReport, qualify
 
@@ -46,7 +49,13 @@ def qualify_delta(
     previous_incident_id_registry: list[dict[str, str]],
     work_item_ids: Iterable[str],
 ) -> DeltaQualificationResult:
-    """Exécute le fast-path sûr, sinon délègue au pipeline canonique complet."""
+    """Réutilise les items qualifiés inchangés, sinon exécute le canonique complet.
+
+    ``previous_incidents`` reste dans la signature pour documenter explicitement
+    le snapshot précédent, mais il n'est jamais réutilisé : une évolution de la
+    politique de déduplication doit pouvoir reconstruire les incidents même sans
+    changement des items.
+    """
     reusable, reason = can_reuse_snapshot(
         items,
         previous_items,
@@ -56,15 +65,22 @@ def qualify_delta(
         return DeltaQualificationResult(qualify(items), False, reason)
 
     ordered_items = identity.sort_items(previous_items)
-    ordered_incidents = identity.sort_incidents(previous_incidents)
+    incidents, incident_id_registry = build_incidents_with_registry(
+        ordered_items,
+        previous_incident_id_registry,
+    )
+    ordered_incidents = identity.sort_incidents(incidents)
     report = QualificationReport(
         items=ordered_items,
         incidents=ordered_incidents,
-        changes={"incremental_snapshot_reused": 1},
+        changes={
+            "incremental_snapshot_reused": 1,
+            "incremental_incidents_rebuilt": 1,
+        },
         provenance=list(previous_provenance),
         decisions=[],
         decision_summary=[],
-        incident_id_registry=list(previous_incident_id_registry),
+        incident_id_registry=incident_id_registry,
         items_hash=identity.items_hash(ordered_items),
         incidents_hash=identity.incidents_hash(ordered_incidents),
     )
