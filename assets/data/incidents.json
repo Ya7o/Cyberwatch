@@ -346,24 +346,6 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
-  "id": "INC-001511C336C7",
-  "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
-  "location": "France métropolitaine",
-  "org": "WiziShop",
-  "sector": "Inconnu",
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/wizishop-dropizi-mszyv230fxhdpsb7ppo"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-19",
   "facts": [
    {
     "attack_flow": [
@@ -385,18 +367,20 @@
    }
   ],
   "first_seen": "2026-08-20T11:38:52.928740+04:00",
-  "id": "INC-5DCCE36ED83F",
-  "items": 1,
+  "id": "INC-001511C336C7",
+  "items": 2,
   "last_seen": "2026-08-20T11:38:52.928740+04:00",
-  "location": "Inconnu",
-  "org": "WiziShop, Dropizi et Evolup piratés",
+  "location": "France métropolitaine",
+  "org": "WiziShop",
   "sector": "Inconnu",
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une faille de sécurité pour télécharger des factures.",
-  "threat": "Phishing / fraude",
+  "threat": "Fuite de données",
   "urls": [
+   "https://frenchbreaches.com/alertes/wizishop-dropizi-mszyv230fxhdpsb7ppo",
    "https://www.cyberattaque.org/wizishop-dropizi-et-evolup-pirates-des-factures-clients-depuis-2009-recuperees-par-un-hacker/"
   ]
  },
@@ -1751,54 +1735,6 @@
  },
  {
   "basis": "PUBLICATION",
-  "date": "2026-08-14",
-  "facts": [
-   {
-    "affected_count": 90000,
-    "affected_count_raw": "90 000 personnes",
-    "affected_unit": "people",
-    "attack_flow": [
-     {
-      "action": "Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898)",
-      "evidence": "L’incident est lié à l’exploitation d’une vulnérabilité critique dans Metabase, référencée CVE-2026-72898 et évaluée avec un score CVSS de 10/10."
-     }
-    ],
-    "claim_status": "confirmed",
-    "cvss": "CVSS de 10/10",
-    "data_types": [
-     "adresses e-mail",
-     "identifiants",
-     "mots de passe",
-     "données bancaires"
-    ],
-    "impact": "10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;",
-    "initial_access": "vulnerability_exploitation",
-    "item_id": "ITM-b8f59e73458e855a",
-    "source": "FRENCHBREACHES",
-    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898).",
-    "vulnerabilities": [
-     "CVE-2026-72898"
-    ]
-   }
-  ],
-  "first_seen": "2026-08-19T07:38:42.720613+04:00",
-  "id": "INC-EE8825EB92AC",
-  "items": 1,
-  "last_seen": "2026-08-19T07:38:42.720613+04:00",
-  "location": "France métropolitaine",
-  "org": "Scalingo",
-  "sector": "Inconnu",
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898).",
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf"
-  ]
- },
- {
-  "basis": "PUBLICATION",
   "date": "2026-08-13",
   "facts": [
    {
@@ -2837,23 +2773,52 @@
     "vulnerabilities": [
      "CVE-2026-72898"
     ]
+   },
+   {
+    "affected_count": 90000,
+    "affected_count_raw": "90 000 personnes",
+    "affected_unit": "people",
+    "attack_flow": [
+     {
+      "action": "Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898)",
+      "evidence": "L’incident est lié à l’exploitation d’une vulnérabilité critique dans Metabase, référencée CVE-2026-72898 et évaluée avec un score CVSS de 10/10."
+     }
+    ],
+    "claim_status": "confirmed",
+    "cvss": "CVSS de 10/10",
+    "data_types": [
+     "adresses e-mail",
+     "identifiants",
+     "mots de passe",
+     "données bancaires"
+    ],
+    "impact": "10 août à 10h25 : l’instance Metabase compromise est mise hors ligne ;",
+    "initial_access": "vulnerability_exploitation",
+    "item_id": "ITM-b8f59e73458e855a",
+    "source": "FRENCHBREACHES",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898).",
+    "vulnerabilities": [
+     "CVE-2026-72898"
+    ]
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
   "id": "INC-63CD7177BA9A",
-  "items": 2,
+  "items": 3,
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Scalingo",
   "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Impact documenté : Le vecteur d’attaque est désormais considéré comme contenu , mais le service Metabase interne reste hors ligne par précaution.",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898).",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/scalingo.png",
+   "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf",
    "https://www.cyberattaque.org/scalingo-les-donnees-de-90-000-personnes-volees-via-une-faille-critique-de-metabase/"
   ]
  },
