@@ -57,6 +57,9 @@ def evaluate(golden_path: Path) -> dict:
     incomplete_evidence: list[str] = []
     wrong_version: list[str] = []
     duplicate_pairs: list[str] = []
+    entity_mismatch_cases: list[str] = []
+    incident_false_positive_cases: list[str] = []
+    incident_false_negative_cases: list[str] = []
     seen_pairs: set[tuple[str, str]] = set()
     tp = fp = fn = tn = 0
 
@@ -103,17 +106,23 @@ def evaluate(golden_path: Path) -> dict:
             effective_organisation_key(left.Organisation_Raw, left.Organisation_Key)
             == effective_organisation_key(right.Organisation_Raw, right.Organisation_Key)
         )
+        expected_entity_same = entity_ref == "SAME"
         incident_same = component_of[left.Item_ID] == component_of[right.Item_ID]
+        expected_incident_same = incident_ref == "SAME"
 
-        entity_correct += int(entity_same == (entity_ref == "SAME"))
-        incident_correct += int(incident_same == (incident_ref == "SAME"))
+        entity_correct += int(entity_same == expected_entity_same)
+        incident_correct += int(incident_same == expected_incident_same)
+        if entity_same != expected_entity_same:
+            entity_mismatch_cases.append(case_id)
 
-        if incident_same and incident_ref == "SAME":
+        if incident_same and expected_incident_same:
             tp += 1
-        elif incident_same and incident_ref == "DIFFERENT":
+        elif incident_same and not expected_incident_same:
             fp += 1
-        elif not incident_same and incident_ref == "SAME":
+            incident_false_positive_cases.append(case_id)
+        elif not incident_same and expected_incident_same:
             fn += 1
+            incident_false_negative_cases.append(case_id)
         else:
             tn += 1
 
@@ -131,6 +140,9 @@ def evaluate(golden_path: Path) -> dict:
         "incomplete_evidence_cases": incomplete_evidence,
         "wrong_version_cases": wrong_version,
         "duplicate_pair_cases": duplicate_pairs,
+        "entity_mismatch_cases": entity_mismatch_cases,
+        "incident_false_positive_cases": incident_false_positive_cases,
+        "incident_false_negative_cases": incident_false_negative_cases,
         "entity_accuracy_pct": _ratio(entity_correct, evaluated),
         "incident_accuracy_pct": _ratio(incident_correct, evaluated),
         "incident_precision_pct": _ratio(tp, tp + fp),
