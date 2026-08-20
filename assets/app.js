@@ -290,7 +290,7 @@
     const values = facts.flatMap((fact) => Array.isArray(fact.data_types) ? fact.data_types : []).map(normalize);
     if (values.some((value) => SENSITIVE_MARKERS.some((marker) => value.includes(marker)))) return ["sensitive", "Données sensibles"];
     if (values.some((value) => PERSONAL_EXACT.has(value) || PERSONAL_MARKERS.some((marker) => value.includes(marker)))) return ["personal", "Données personnelles"];
-    if (values.length || facts.some((fact) => fact.affected_count != null || fact.data_volume || fact.file_count != null)) return ["unknown", "Données non qualifiées"];
+    if (values.length || facts.some((fact) => fact.affected_count != null || fact.data_volume || fact.file_count != null || fact.rich_facts)) return ["unknown", "Données non qualifiées"];
     return null;
   }
 
@@ -351,12 +351,58 @@
     return Number.isFinite(affected) && Number.isFinite(files) && affected === files;
   }
 
+  function richStatusLabel(value) {
+    return ({ confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", unknown: "Statut non établi" })[value] || value || "Statut non établi";
+  }
+
+  function richUnitLabel(value) {
+    return ({ people: "personnes", accounts: "comptes", users: "utilisateurs", clients: "clients", records: "enregistrements", files: "fichiers" })[value] || value || "";
+  }
+
+  function richEvidenceLine(record) {
+    const pieces = [];
+    if (record.scope) pieces.push(record.scope);
+    if (record.date) pieces.push(formatDate(record.date));
+    pieces.push(richStatusLabel(record.status));
+    return pieces.filter(Boolean).join(" · ");
+  }
+
+  function renderRichFacts(rich) {
+    if (!rich || typeof rich !== "object") return "";
+    const sections = [];
+    const counts = Array.isArray(rich.affected_counts) ? rich.affected_counts : [];
+    if (counts.length) {
+      const rows = counts.map((record) => {
+        const value = `${formatNumber(record.value)} ${richUnitLabel(record.unit)}`.trim();
+        const meta = richEvidenceLine(record);
+        const evidence = record.evidence ? `<div class="muted">${esc(record.evidence)}</div>` : "";
+        return `<div class="incident-fact-row"><span class="incident-fact-label">${esc(value)}</span><span class="incident-fact-value">${esc(meta)}</span></div>${evidence}`;
+      }).join("");
+      sections.push(`<div class="incident-data-types"><div class="incident-data-types-title">Faits chiffrés documentés :</div>${rows}</div>`);
+    }
+
+    const renderEntities = (label, values) => {
+      if (!Array.isArray(values) || !values.length) return "";
+      return `<div class="incident-data-types"><div class="incident-data-types-title">${esc(label)} :</div>${values.map((record) => `<div class="incident-fact-row"><span class="incident-fact-label">${esc(record.value || "Périmètre")}</span><span class="incident-fact-value">${esc(richEvidenceLine(record))}</span></div>${record.evidence ? `<div class="muted">${esc(record.evidence)}</div>` : ""}`).join("")}</div>`;
+    };
+    const systems = renderEntities("Systèmes concernés", rich.affected_systems);
+    if (systems) sections.push(systems);
+    const datasets = renderEntities("Périmètres de données", rich.affected_datasets);
+    if (datasets) sections.push(datasets);
+
+    const claims = Array.isArray(rich.claims) ? rich.claims.filter((claim) => claim.kind === "statement") : [];
+    if (claims.length) {
+      sections.push(`<details class="incident-data-group"><summary>Chronologie / déclarations · ${claims.length}</summary><div class="incident-data-values">${claims.map((claim) => `<div><strong>${esc(richEvidenceLine(claim))}</strong>${claim.evidence ? `<div class="muted">${esc(claim.evidence)}</div>` : ""}</div>`).join("")}</div></details>`);
+    }
+    return sections.join("");
+  }
+
   function factHtml(fact, incidentSummary = "") {
     const access = ({ phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" })[fact.initial_access] || fact.initial_access || "";
     const claimStatus = ({ claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti" })[fact.claim_status] || fact.claim_status || "";
     const impactCovered = narrativeContains(fact.summary, fact.impact) || narrativeContains(incidentSummary, fact.impact);
     const sourceImpact = impactCovered ? "" : fact.impact;
-    const rows = [factRow("Statut", claimStatus), factRow("Acteur", fact.threat_actor), factRow("Tiers impliqué", fact.third_party), factRow("Vecteur d'entrée", access), factRow("Déroulé", attackFlowLabel(fact.attack_flow)), factRow("Localisation précise", fact.fine_location), factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)), factRow("Volume", fact.data_volume), factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : ""), renderDataTypes(fact.data_types), factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""), factRow("CVSS", fact.cvss), factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""), factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""), factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""), factRow("Impact", sourceImpact), factRow("Évolution", fact.evolution)].filter(Boolean);
+    const rows = [factRow("Statut", claimStatus), factRow("Acteur", fact.threat_actor), factRow("Tiers impliqué", fact.third_party), factRow("Vecteur d'entrée", access), factRow("Déroulé", attackFlowLabel(fact.attack_flow)), factRow("Localisation précise", fact.fine_location), factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)), factRow("Volume", fact.data_volume), factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : ""), renderDataTypes(fact.data_types), renderRichFacts(fact.rich_facts), factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""), factRow("CVSS", fact.cvss), factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""), factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""), factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""), factRow("Impact", sourceImpact), factRow("Évolution", fact.evolution)].filter(Boolean);
     const links = [safeUrl(fact.victim_website), ...(fact.evidence_urls || []).map(safeUrl)].filter(Boolean).slice(0, 4);
     if (links.length) rows.push(`<div class="evidence-links">${links.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>`);
     return rows.length ? `<div class="incident-fact"><div class="incident-fact-source">${esc(sourceLabel(fact.source))}</div>${rows.join("")}</div>` : "";
