@@ -1,4 +1,10 @@
-from cyberwatch.incremental import classify_items, qualification_fingerprint
+from cyberwatch.incremental import (
+    classify_items,
+    fingerprints_from_state,
+    metric_row,
+    qualification_fingerprint,
+    state_rows,
+)
 from cyberwatch.model import Item
 
 
@@ -87,3 +93,42 @@ def test_classify_items_partitions_new_dirty_and_unchanged():
     assert result.unchanged == ("I-1",)
     assert result.work_item_ids == ("I-3", "I-2")
     assert result.reuse_ratio == 1 / 3
+
+
+def test_state_round_trip_preserves_fingerprints():
+    items = [_item(Item_ID="I-2"), _item(Item_ID="I-1")]
+    result = classify_items(items, {}, policy_version="P1")
+    rows = state_rows(
+        result,
+        policy_version="P1",
+        run_id="RUN-1",
+        as_of="2026-08-20T08:00:00+04:00",
+    )
+
+    assert [row["Item_ID"] for row in rows] == ["I-1", "I-2"]
+    assert fingerprints_from_state(rows) == result.fingerprints
+    assert all(row["Policy_Version"] == "P1" for row in rows)
+    assert all(row["Last_Processed_Run_ID"] == "RUN-1" for row in rows)
+
+
+def test_metric_row_reports_observation_without_business_mutation():
+    unchanged = _item(Item_ID="I-1")
+    new = _item(Item_ID="I-2")
+    previous = {
+        "I-1": qualification_fingerprint(unchanged, policy_version="P1"),
+    }
+    result = classify_items([unchanged, new], previous, policy_version="P1")
+
+    row = metric_row(
+        result,
+        run_id="RUN-2",
+        as_of="2026-08-20T09:00:00+04:00",
+        mode="MAJ",
+        policy_version="P1",
+    )
+
+    assert row["Items_Count"] == "2"
+    assert row["New_Items"] == "1"
+    assert row["Dirty_Items"] == "0"
+    assert row["Unchanged_Items"] == "1"
+    assert row["Reuse_Rate"] == "0.500000"
