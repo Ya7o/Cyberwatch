@@ -88,14 +88,17 @@ def qualify(items):
     previous_provenance=store.load_qualification_provenance();decisions=[]
     restored=restore_legacy_sector_fallbacks(ordered,previous_provenance);registry_restored=sector_registry.restore_registry_applications(ordered,previous_provenance);reference=enrichment.load_reference()
     changes=_observe_layer(decisions,ordered,origin="MANUAL_REFERENCE",confidence="HIGH",mutate=lambda:enrichment.enrich_items(ordered,reference));changes["llm_sector_restored"],changes["sector_registry_restored"]=restored,registry_restored
-    changes.update(_observe_layer(decisions,ordered,origin="OFFLINE_BACKFILL",confidence="MEDIUM",mutate=lambda:enrichment.backfill_unknowns(ordered,reference)))
-    changes["sector_safe_name_backfill"]=_observe_layer(decisions,ordered,origin="SAFE_NAME_RULE",confidence="HIGH",mutate=lambda:backfill_safe_name_sectors(ordered))
+
+    # Les producteurs s'exécutent du plus autoritaire au plus faible. Ainsi une
+    # couche de fallback ne peut plus empêcher un candidat plus fiable d'exister.
     changes["sector_structured_source_backfill"]=_observe_layer(decisions,ordered,origin="STRUCTURED_SOURCE",confidence="HIGH",mutate=lambda:backfill_structured_source_sectors(ordered,source_facts))
     context_applied,context_provenance,context_conflicts=context_sector.resolve_contextual_sectors(ordered,source_facts,org_cache);decisions.extend(decisions_from_provenance(context_provenance));changes["sector_context_applied"],changes["sector_context_conflicts"]=context_applied,context_conflicts
-    changes["threat_stabilized"]=_observe_layer(decisions,ordered,origin="THREAT_STABILIZATION",confidence="HIGH",mutate=lambda:stabilize_threats(ordered))
     registry_rows=sector_registry.build_registry(ordered,reference,source_fact_rows=source_facts,org_cache_rows=org_cache,previous_provenance=previous_provenance);sector_registry_safety.enforce_candidate_conflicts(registry_rows)
     registry_applied,registry_provenance,registry_known_conflicts=sector_registry.apply_registry(ordered,registry_rows);decisions.extend(decisions_from_provenance(registry_provenance));changes["sector_registry_applied"],changes["sector_registry_known_conflicts"]=registry_applied,registry_known_conflicts
     changes["sector_registry_auto_orgs"]=sum(row.get("Decision")==sector_registry.DECISION_AUTO for row in registry_rows);changes["sector_registry_review_orgs"]=sum(row.get("Decision")==sector_registry.DECISION_REVIEW for row in registry_rows);changes["sector_registry_conflict_orgs"]=sum(row.get("Decision")==sector_registry.DECISION_CONFLICT for row in registry_rows)
+    changes["sector_safe_name_backfill"]=_observe_layer(decisions,ordered,origin="SAFE_NAME_RULE",confidence="HIGH",mutate=lambda:backfill_safe_name_sectors(ordered))
+    changes.update(_observe_layer(decisions,ordered,origin="OFFLINE_BACKFILL",confidence="MEDIUM",mutate=lambda:enrichment.backfill_unknowns(ordered,reference)))
+    changes["threat_stabilized"]=_observe_layer(decisions,ordered,origin="THREAT_STABILIZATION",confidence="HIGH",mutate=lambda:stabilize_threats(ordered))
     llm_changes,llm_provenance=source_llm_fallback.apply_source_llm_fallback(ordered);changes.update(llm_changes);neutralize_sector_fallback(ordered,changes,llm_provenance);decisions.extend(decisions_from_provenance(llm_provenance))
     decisions=qualification_policy.reconcile(ordered,decisions);provenance=[decision.to_row() for decision in decisions]
     incidents,incident_id_registry=build_incidents_with_registry(ordered,store.load_incident_id_registry())
