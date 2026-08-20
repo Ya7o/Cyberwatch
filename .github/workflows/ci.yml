@@ -42,6 +42,9 @@ jobs:
             --details /tmp/golden-before.csv \
             --json /tmp/golden-before.json
 
+      - name: Baseline qualification — état publié
+        run: python scripts/qualification_quality_report.py --json /tmp/qualification-before.json
+
       - name: Inspecter les cas terrain
         run: |
           python - <<'PY'
@@ -70,8 +73,14 @@ jobs:
           print('TARGET_EVIDENCE_END')
           PY
 
-      - name: Simuler la requalification offline
-        run: python -m cyberwatch backfill-unknowns
+      - name: Simuler la requalification offline et mesurer la qualité
+        run: |
+          python scripts/qualification_quality_report.py \
+            --requalify --persist \
+            --json /tmp/qualification-after.json
+
+      - name: Garde de qualité qualification relative
+        run: python scripts/check_qualification_baseline.py /tmp/qualification-before.json /tmp/qualification-after.json
 
       - name: Auditer les applications contextuelles
         run: |
