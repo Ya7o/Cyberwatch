@@ -192,3 +192,54 @@ def test_strict_resolver_accepts_acronym_domain(monkeypatch):
     assert company_subject_evidence.resolve_official_site_subject_attributed(
         "Bibliothèque Nationale de France", ["https://www.bnf.fr/"]
     ) is None
+
+
+def test_resolver_searches_same_domain_activity_pages_when_homepage_is_generic(monkeypatch):
+    homepage = "https://www.acme.com/"
+    activity_page = "https://www.acme.com/en/group/activities"
+
+    monkeypatch.setattr(
+        official_site_discovery,
+        "discover_official_sites",
+        lambda organisation, hint_urls=(): [homepage],
+    )
+
+    def fake_page(url):
+        if url == homepage:
+            return (
+                "Acme Group",
+                "Acme Group is an international group serving customers worldwide.",
+                [],
+                homepage,
+            )
+        if url == activity_page:
+            return (
+                "Acme Group activities",
+                "Acme Group is a European leader in construction and public works.",
+                [],
+                activity_page,
+            )
+        return "", "", [], url
+
+    monkeypatch.setattr(company_evidence, "_page", fake_page)
+    monkeypatch.setattr(
+        company_evidence,
+        "_search_links",
+        lambda query: [("Acme Group activities", activity_page)],
+    )
+
+    evidence = company_subject_evidence.resolve_official_site_subject_attributed("Acme Group")
+    assert evidence is not None
+    assert evidence.sector == config.SECTOR_CONSTRUCTION
+    assert evidence.evidence_url == activity_page
+
+
+def test_same_domain_activity_search_rejects_external_results(monkeypatch):
+    monkeypatch.setattr(
+        company_evidence,
+        "_search_links",
+        lambda query: [("Acme activities", "https://example.org/acme-activities")],
+    )
+    assert company_subject_evidence._same_domain_activity_pages(
+        "Acme", "https://www.acme.com/"
+    ) == []
