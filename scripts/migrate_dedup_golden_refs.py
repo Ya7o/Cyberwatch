@@ -2,8 +2,8 @@
 """Migre le golden dédup vers des références source stables.
 
 La commande est locale et déterministe. Elle enrichit chaque paire avec les
-Source_ID / Source_Item_ID / URL nécessaires pour retrouver l'item courant même
-si son Item_ID interne est régénéré.
+références nécessaires pour retrouver l'item courant même si son Item_ID
+interne est régénéré.
 """
 
 from __future__ import annotations
@@ -18,14 +18,18 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch import store
-from cyberwatch.dedup_golden_refs import STABLE_REF_COLUMNS, enrich_golden_row
+from cyberwatch.dedup_golden_refs import (
+    LEFT_STABLE_REF_COLUMNS,
+    RIGHT_STABLE_REF_COLUMNS,
+    enrich_golden_row,
+)
 
 BASE_COLUMNS = [
     "Case_ID",
     "Left_Item_ID",
     "Right_Item_ID",
-    *STABLE_REF_COLUMNS[:3],
-    *STABLE_REF_COLUMNS[3:],
+    *LEFT_STABLE_REF_COLUMNS,
+    *RIGHT_STABLE_REF_COLUMNS,
     "Same_Organisation_REF",
     "Same_Incident_REF",
     "Evidence",
