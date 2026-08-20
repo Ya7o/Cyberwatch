@@ -25,7 +25,7 @@ from cyberwatch.dedup_golden_refs import (
 from cyberwatch.org_identity import effective_organisation_key
 
 VALID = {"SAME", "DIFFERENT"}
-CERTIFIED_GOLDEN_VERSION = "DEDUP-GOLDEN-1"
+CERTIFIED_GOLDEN_VERSION = "DEDUP-GOLDEN-2"
 
 
 def _load_rows(path: Path) -> list[dict[str, str]]:
@@ -183,8 +183,8 @@ def main() -> int:
         "--golden",
         default=str(ROOT / "data" / "golden" / "dedup_golden.csv"),
     )
-    parser.add_argument("--min-cases", type=int, default=70)
-    parser.add_argument("--min-positive-cases", type=int, default=50)
+    parser.add_argument("--min-cases", type=int, default=150)
+    parser.add_argument("--min-positive-cases", type=int, default=120)
     parser.add_argument("--min-negative-cases", type=int, default=20)
     parser.add_argument("--min-entity-accuracy", type=float, default=100.0)
     parser.add_argument("--min-incident-accuracy", type=float, default=100.0)
