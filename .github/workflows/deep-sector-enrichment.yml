@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/enrich_sector_queue.py'
+      - 'scripts/enrich_sector_golden.py'
       - 'scripts/enrich_legal_identity.py'
       - 'scripts/check_sector_golden_regression.py'
       - 'cyberwatch/company_subject_evidence.py'
@@ -142,9 +143,17 @@ jobs:
           ORG_ENRICHMENT_MAX_CALLS: "1000"
           SECTOR_ENRICHMENT_MAX_ORGS: "1000"
           SECTOR_ENRICHMENT_WORKERS: "6"
-          SECTOR_ENRICHMENT_MODE: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'sector-only') }}
+          SECTOR_ENRICHMENT_MODE: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'golden-only') }}
           SECTOR_ENRICHMENT_TARGET_KEYS: ${{ inputs.targets || '' }}
-        run: python -m scripts.enrich_sector_queue
+          SECTOR_PURGE_GOLDEN_MISMATCHES: "1"
+        shell: bash
+        run: |
+          echo "SECTOR_EXECUTION_MODE=$SECTOR_ENRICHMENT_MODE"
+          if [ "$SECTOR_ENRICHMENT_MODE" = "golden-only" ]; then
+            python -m scripts.enrich_sector_golden
+          else
+            python -m scripts.enrich_sector_queue
+          fi
 
       - name: Requalifier via le registre et sa politique
         run: |
@@ -177,7 +186,7 @@ jobs:
         if: always()
         run: |
           echo "## Diagnostic Sector — run ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Mode: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'sector-only') }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Mode: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'golden-only') }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Cibles explicites: ${{ inputs.targets || 'aucune' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Identité légale recalculée: ${{ needs.legal-identity.outputs.ran }}" >> "$GITHUB_STEP_SUMMARY"
           if [ -f /tmp/sector-golden-mismatches.csv ]; then
