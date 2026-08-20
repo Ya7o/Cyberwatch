@@ -7,6 +7,8 @@ on:
       - 'cyberwatch/collectors/*rich*.py'
       - 'cyberwatch/collectors/feed.py'
       - 'scripts/audit_rich_facts_platform.py'
+      - 'scripts/evaluate_rich_facts_golden.py'
+      - 'data/golden/rich_facts_golden.json'
       - 'tests/test_rich_facts*.py'
       - 'tests/test_frenchbreaches_rich_facts.py'
   workflow_dispatch:
@@ -30,5 +32,7 @@ jobs:
           tests/test_rich_facts_consolidation.py
           tests/test_frenchbreaches_rich_facts.py
           tests/test_cyberattaque_corpus_v2.py -q
+      - name: Permanent rich-facts golden set
+        run: python scripts/evaluate_rich_facts_golden.py
       - name: Platform audit
         run: python scripts/audit_rich_facts_platform.py
