@@ -7,6 +7,10 @@ from dataclasses import dataclass
 from .model import Item
 
 QUALIFICATION_FIELDS = ("Sector", "Location", "Threat")
+QUALIFICATION_DECISION_COLUMNS = [
+    "Item_ID", "Source_ID", "Field", "Previous_Value", "Candidate_Value",
+    "Final_Value", "Origin", "Confidence", "Evidence", "Match_Strategy", "Decision",
+]
 ORIGIN_PRIORITY = {
     "SOURCE_NATIVE": 0,
     "MANUAL_REFERENCE": 10,
@@ -39,6 +43,10 @@ class QualificationDecision:
                    row.get("Previous_Value", ""), row.get("Candidate_Value", ""), row.get("Final_Value", ""),
                    row.get("Origin", ""), row.get("Confidence", ""), row.get("Evidence", ""),
                    row.get("Match_Strategy", ""), row.get("Decision", ""))
+
+    @classmethod
+    def from_row(cls, row: dict[str, str]) -> "QualificationDecision":
+        return cls.from_provenance(row)
 
     def to_row(self) -> dict[str, str]:
         return {"Item_ID": self.item_id, "Source_ID": self.source_id, "Field": self.field,
