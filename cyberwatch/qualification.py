@@ -6,8 +6,9 @@ from collections import defaultdict
 from dataclasses import dataclass
 
 from . import (
-    config, context_sector, enrichment, identity, sector as sector_policy,
-    sector_registry, sector_registry_safety, source_llm_fallback, store,
+    config, context_sector, enrichment, identity, incremental,
+    sector as sector_policy, sector_registry, sector_registry_safety,
+    source_llm_fallback, store,
 )
 from .dedup import build_incidents_with_registry
 from .model import Incident, Item
@@ -19,6 +20,7 @@ _AUTHORITATIVE_DEFAULT_THREATS = {"RANSOMWARE_LIVE": config.THREAT_RANSOMWARE}
 _SOURCE_SCOPE_THREATS = {"FRENCHBREACHES": config.THREAT_LEAK, "BONJOURLAFUITE": config.THREAT_LEAK}
 _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({config.THREAT_RANSOMWARE, config.THREAT_DDOS, config.THREAT_MALWARE, config.THREAT_ACCOUNT, config.THREAT_LEAK, config.THREAT_PHISHING, config.THREAT_THIRD_PARTY})
 _SECTOR_FALLBACK_AUTO_APPLY = False
+PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 
 @dataclass(frozen=True)
 class QualificationReport:
@@ -92,8 +94,39 @@ def _observe_layer(decisions, ordered, *, origin, confidence, mutate):
     before = snapshot_fields(ordered); result = mutate()
     decisions.extend(record_mutations(before, ordered, origin=origin, confidence=confidence)); return result
 
+def _capture_prequalification_state(ordered: list[Item], source_facts: list[dict], org_cache: list[dict]) -> None:
+    facts_by_item = defaultdict(list)
+    for row in source_facts:
+        item_id = (row.get("Item_ID") or "").strip()
+        if item_id:
+            facts_by_item[item_id].append(row)
+    dependency_digest_value = incremental.qualification_dependency_digest(
+        store.ROOT,
+        reference_rows=store.read_csv(store.ENRICHMENT_REFERENCE_CSV),
+        org_cache_rows=org_cache,
+    )
+    previous = incremental.fingerprints_from_state(
+        store.read_csv(PREQUAL_STATE_CSV),
+        column="Prequalification_Fingerprint",
+    )
+    dirty_set = incremental.classify_prequalification_items(
+        ordered,
+        previous,
+        facts_by_item=facts_by_item,
+        policy_version=config.METHOD_ID,
+        dependency_digest_value=dependency_digest_value,
+    )
+    incremental.write_prequalification_observation(
+        dirty_set,
+        policy_version=config.METHOD_ID,
+        dependency_digest_value=dependency_digest_value,
+    )
+
 def qualify(items: list[Item]) -> QualificationReport:
-    ordered = identity.sort_items(items); previous_provenance = store.load_qualification_provenance(); decisions = []
+    ordered = identity.sort_items(items)
+    source_facts, org_cache = store.read_csv(store.SOURCE_FACTS_CSV), store.load_org_enrichment_cache()
+    _capture_prequalification_state(ordered, source_facts, org_cache)
+    previous_provenance = store.load_qualification_provenance(); decisions = []
     restored = restore_legacy_sector_fallbacks(ordered, previous_provenance)
     registry_restored = sector_registry.restore_registry_applications(ordered, previous_provenance)
     reference = enrichment.load_reference()
@@ -101,7 +134,6 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes["llm_sector_restored"], changes["sector_registry_restored"] = restored, registry_restored
     changes.update(_observe_layer(decisions, ordered, origin="OFFLINE_BACKFILL", confidence="MEDIUM", mutate=lambda: enrichment.backfill_unknowns(ordered, reference)))
     changes["sector_safe_name_backfill"] = _observe_layer(decisions, ordered, origin="SAFE_NAME_RULE", confidence="HIGH", mutate=lambda: backfill_safe_name_sectors(ordered))
-    source_facts, org_cache = store.read_csv(store.SOURCE_FACTS_CSV), store.load_org_enrichment_cache()
     changes["sector_structured_source_backfill"] = _observe_layer(decisions, ordered, origin="STRUCTURED_SOURCE", confidence="HIGH", mutate=lambda: backfill_structured_source_sectors(ordered, source_facts))
     context_applied, context_provenance, context_conflicts = context_sector.resolve_contextual_sectors(ordered, source_facts, org_cache)
     decisions.extend(decisions_from_provenance(context_provenance)); changes["sector_context_applied"], changes["sector_context_conflicts"] = context_applied, context_conflicts
