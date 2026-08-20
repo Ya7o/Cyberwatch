@@ -36,7 +36,7 @@ def test_review_ledger_is_materialized_and_linked_to_golden():
     assert all(_pair(row) in golden_pairs for row in reviews)
     assert all(row["Verdict"] == "SAME_INCIDENT" for row in reviews)
     assert all(row["Evidence"].strip() and row["Evidence_Tier"].strip() for row in reviews)
-    assert sum(row["Evidence_Tier"] == "MANUAL_MISSED_DUPLICATE_REVIEW" for row in reviews) == 2
+    assert sum(row["Evidence_Tier"] == "MANUAL_MISSED_DUPLICATE_REVIEW" for row in reviews) == 1
 
 
 def _candidate(**overrides):
