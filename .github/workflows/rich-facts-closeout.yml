@@ -1,0 +1,164 @@
+name: Rich Facts Closeout
+
+on:
+  pull_request:
+    paths:
+      - 'cyberwatch/rich_facts*.py'
+      - 'cyberwatch/collectors/editorial_semantic.py'
+      - 'cyberwatch/collectors/frenchbreaches_rich.py'
+      - 'cyberwatch/collectors/feed.py'
+      - 'scripts/audit_rich_facts_platform.py'
+      - 'scripts/decide_rich_facts_semantic.py'
+      - 'tests/test_rich_facts_closeout.py'
+      - '.github/workflows/rich-facts-closeout.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'cyberwatch/rich_facts*.py'
+      - 'cyberwatch/collectors/editorial_semantic.py'
+      - 'cyberwatch/collectors/frenchbreaches_rich.py'
+      - 'cyberwatch/collectors/feed.py'
+      - 'scripts/audit_rich_facts_platform.py'
+      - 'scripts/decide_rich_facts_semantic.py'
+      - 'tests/test_rich_facts_closeout.py'
+      - '.github/workflows/rich-facts-closeout.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rich-facts-closeout-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Rich Facts closeout tests
+        run: |
+          python -m pytest \
+            tests/test_rich_facts_platform.py \
+            tests/test_rich_facts_consolidation.py \
+            tests/test_frenchbreaches_rich_facts.py \
+            tests/test_rich_facts_closeout.py -q
+      - name: Permanent golden set
+        run: python scripts/evaluate_rich_facts_golden.py
+      - name: Current platform audit
+        run: python scripts/audit_rich_facts_platform.py
+
+  backfill:
+    if: github.event_name != 'pull_request'
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Deterministic FrenchBreaches backfill
+        env:
+          CYBERATTAQUE_SEMANTIC_ENABLED: '0'
+          RICH_FACTS_SEMANTIC_SOURCES: ''
+          ORG_ENRICHMENT_ENABLED: '0'
+          AI_MAX_CALLS_PER_RUN: '0'
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '0'
+        run: python -m cyberwatch create --layers core --start 2026-01-01
+
+      - name: Audit deterministic coverage
+        run: |
+          mkdir -p data/quality
+          python scripts/audit_rich_facts_platform.py \
+            --output data/quality/rich_facts_platform_deterministic.json
+
+      - name: Decide whether FrenchBreaches needs LLM
+        id: semantic
+        run: |
+          python scripts/decide_rich_facts_semantic.py \
+            data/quality/rich_facts_platform_deterministic.json \
+            --source FRENCHBREACHES \
+            --output data/quality/frenchbreaches_semantic_decision.json \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Semantic fallback for FrenchBreaches when justified
+        if: steps.semantic.outputs.use_llm == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          CYBERATTAQUE_SEMANTIC_ENABLED: '0'
+          RICH_FACTS_SEMANTIC_SOURCES: 'FRENCHBREACHES'
+          RICH_FACTS_SEMANTIC_MODEL: 'gpt-5-nano'
+          RICH_FACTS_SEMANTIC_MAX_CONTEXT_CHARS: '18000'
+          RICH_FACTS_SEMANTIC_MAX_OUTPUT_TOKENS: '1800'
+          RICH_FACTS_SEMANTIC_CACHE_PATH: 'data/rich_facts_semantic_cache.json'
+          ORG_ENRICHMENT_ENABLED: '0'
+          AI_MAX_CALLS_PER_RUN: '0'
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '0'
+        run: python -m cyberwatch create --layers core --start 2026-01-01
+
+      - name: Final Rich Facts audit
+        run: |
+          python scripts/audit_rich_facts_platform.py \
+            --output data/quality/rich_facts_platform_final.json \
+            | tee /tmp/rich-facts-final.json
+          echo '### Rich Facts final audit' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/rich-facts-final.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Quality gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('data/quality/rich_facts_platform_final.json').read_text(encoding='utf-8'))
+          quality = (report.get('source_quality') or {}).get('FRENCHBREACHES') or {}
+          articles = int(quality.get('articles') or 0)
+          rich = int(quality.get('rich_articles') or 0)
+          missing = int(quality.get('claims_without_evidence') or 0)
+          if articles and rich / articles < 0.95:
+              raise SystemExit(f'FrenchBreaches rich-facts coverage insuffisante: {rich}/{articles}')
+          if missing:
+              raise SystemExit(f'{missing} claims FrenchBreaches sans preuve')
+          PY
+          python -m pytest \
+            tests/test_rich_facts_platform.py \
+            tests/test_rich_facts_consolidation.py \
+            tests/test_frenchbreaches_rich_facts.py \
+            tests/test_rich_facts_closeout.py -q
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+
+      - name: Build published dashboard data
+        run: |
+          python -m cyberwatch build-site
+          test -s assets/data/incidents.json
+          test -s assets/data/items.json
+
+      - name: Publish certified backfill
+        run: |
+          git config user.name 'cyberwatch-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data assets/data
+          if git diff --cached --quiet; then echo 'Aucun changement à publier.'; exit 0; fi
+          git commit -m 'data: certify Rich Facts editorial backfill'
+          for delay in 0 2 4 8 16; do
+            [ "$delay" -gt 0 ] && sleep "$delay"
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+          done
+          exit 1
