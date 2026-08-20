@@ -371,8 +371,10 @@
 
   function detailHtml(incident) {
     const parts = [];
-    if (incident.summary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
-    const facts = (incident.facts || []).map((fact) => factHtml(fact, incident.summary)).filter(Boolean);
+    const factsInput = Array.isArray(incident.facts) ? incident.facts : [];
+    const hasSourceSummary = factsInput.some((fact) => fact?.summary && !sameSummary(fact.summary, incident.summary));
+    if (incident.summary && !hasSourceSummary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
+    const facts = factsInput.map((fact) => factHtml(fact, incident.summary)).filter(Boolean);
     if (facts.length) parts.push(`<div class="incident-facts-list">${facts.join("")}</div>`);
     if (incident.local) {
       const references = (incident.local.references || []).map(safeUrl).filter(Boolean).slice(0, 4);
@@ -417,11 +419,11 @@
       const id = `incident-details-${String(incident.id || `${start + index}`).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
       return `<tr class="incident-row">
         <td data-label="Date" class="num">${esc(incident.date || "—")}</td>
-        <td data-label="Organisation" class="wrap-cell org-cell"><strong>${esc(incident.org || "Organisation inconnue")}</strong>${sensitivityHtml(incident)}<button class="incident-details-toggle" type="button" aria-expanded="false" aria-controls="${id}">Détails</button></td>
+        <td data-label="Organisation" class="wrap-cell org-cell"><strong>${esc(incident.org || "Organisation inconnue")}</strong>${sensitivityHtml(incident)}</td>
         <td data-label="Secteur">${esc(incident.sector || "—")}</td>
         <td data-label="Menace">${esc(incident.threat || "—")}</td>
         <td data-label="Territoire">${esc(incident.location || "—")}</td>
-        <td data-label="Sources">${sourceLinks(incident)}</td>
+        <td data-label="Sources">${sourceLinks(incident)}<button class="incident-details-toggle" type="button" aria-expanded="false" aria-controls="${id}">Détails</button></td>
       </tr>
       <tr class="incident-details-row" id="${id}" hidden><td class="incident-details-cell" colspan="6">${detailHtml(incident)}</td></tr>`;
     }).join("") : '<tr><td colspan="6" class="muted">Aucun incident ne correspond aux filtres.</td></tr>';
