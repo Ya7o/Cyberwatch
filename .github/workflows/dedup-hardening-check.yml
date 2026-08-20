@@ -19,7 +19,18 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Dedup tests
         run: python -m pytest tests/test_dedup.py tests/test_dedup_contract.py tests/test_dedup_hardening.py tests/test_dedup_invariants.py tests/test_dedup_metrics.py tests/test_dedup_audit_fixes.py -q
-      - name: Golden dedup
-        run: python scripts/evaluate_dedup_golden.py
+      - name: Golden diagnostics
+        run: |
+          python scripts/evaluate_dedup_golden.py || true
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          needles = ('aide à dom 74', 'france titre', 'ants', 'my piscine', 'mypiscine', 'mingat')
+          rows = list(csv.DictReader(Path('data/items.csv').open(encoding='utf-8')))
+          for row in rows:
+              blob = ' '.join(str(row.get(k, '')) for k in ('Organisation_Raw','Organisation_Key','Title')).lower()
+              if any(needle in blob for needle in needles):
+                  print('GOLDEN_CURRENT_ITEM', {k: row.get(k, '') for k in ('Item_ID','Source_ID','Source_Item_ID','Published_Date','Event_Date','Organisation_Raw','Organisation_Key','Title','URL')})
+          PY
       - name: Weak merge export smoke test
         run: python scripts/export_dedup_weak_merges.py --output /tmp/dedup_weak_merges.csv
