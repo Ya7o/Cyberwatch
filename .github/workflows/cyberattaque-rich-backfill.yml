@@ -10,7 +10,7 @@ on:
       semantic_batches:
         description: "Nombre maximal de lots sémantiques"
         type: number
-        default: 4
+        default: 14
       semantic_calls_per_batch:
         description: "Nouveaux appels LLM maximum par lot"
         type: number
@@ -37,7 +37,7 @@ concurrency:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       PYTHONPATH: .
       OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
@@ -60,7 +60,31 @@ jobs:
       - name: Smoke test CLI du backfill sémantique
         run: env -u PYTHONPATH python scripts/backfill_cyberattaque_semantic.py --help >/dev/null
 
+      - name: Déterminer si le backfill peut reprendre
+        id: resume
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          progress = Path('data/quality/cyberattaque_semantic_progress.json')
+          cache = Path('data/cyberattaque_semantic_cache.json')
+          backlog = Path('data/quality/cyberattaque_semantic_backlog.json')
+          resume = False
+          remaining = 0
+          if progress.exists() and cache.exists() and backlog.exists():
+              try:
+                  payload = json.loads(progress.read_text(encoding='utf-8'))
+                  remaining = int(payload.get('backlog_remaining') or 0)
+                  resume = remaining > 0
+              except (ValueError, TypeError, json.JSONDecodeError):
+                  resume = False
+          print(f"resume={1 if resume else 0}")
+          print(f"backlog={remaining}")
+          PY
+
       - name: Rebuild déterministe du corpus 2026
+        if: ${{ steps.resume.outputs.resume != '1' }}
         env:
           CYBERATTAQUE_SEMANTIC_ENABLED: '0'
         run: |
@@ -70,19 +94,33 @@ jobs:
           END=$(date +%s)
           echo "DETERMINISTIC_SECONDS=$((END-START))" >> "$GITHUB_ENV"
 
+      - name: Reprendre le corpus déjà checkpointé
+        if: ${{ steps.resume.outputs.resume == '1' }}
+        run: |
+          echo "Reprise du backfill existant : ${{ steps.resume.outputs.backlog }} article(s) dans le backlog."
+          echo "DETERMINISTIC_SECONDS=0" >> "$GITHUB_ENV"
+
       - name: Backfill sémantique par lots persistants
         if: ${{ github.event_name == 'push' || inputs.semantic }}
         env:
           CYBERATTAQUE_SEMANTIC_ENABLED: '1'
-          SEMANTIC_BATCHES: ${{ github.event_name == 'push' && '4' || inputs.semantic_batches }}
+          MAX_SEMANTIC_BATCHES: ${{ github.event_name == 'push' && '14' || inputs.semantic_batches }}
           CALLS_PER_BATCH: ${{ github.event_name == 'push' && '25' || inputs.semantic_calls_per_batch }}
         run: |
           set -euo pipefail
           git config user.name 'cyberwatch-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git config rebase.autoStash true
-          BATCHES="${SEMANTIC_BATCHES:-4}"
+          MAX_BATCHES="${MAX_SEMANTIC_BATCHES:-14}"
           CALLS="${CALLS_PER_BATCH:-25}"
+          EXISTING_BACKLOG="${{ steps.resume.outputs.backlog }}"
+          if [ -n "$EXISTING_BACKLOG" ] && [ "$EXISTING_BACKLOG" -gt 0 ]; then
+            NEEDED=$(( (EXISTING_BACKLOG + CALLS - 1) / CALLS + 1 ))
+            if [ "$NEEDED" -lt "$MAX_BATCHES" ]; then BATCHES="$NEEDED"; else BATCHES="$MAX_BATCHES"; fi
+          else
+            BATCHES="$MAX_BATCHES"
+          fi
+          echo "Plan sémantique : ${BATCHES} lot(s) max, ${CALLS} appels max/lot."
           BACKLOG=-1
           for batch in $(seq 1 "$BATCHES"); do
             echo "=== Semantic batch $batch/$BATCHES (max calls=$CALLS) ==="
@@ -126,8 +164,8 @@ jobs:
             fi
           done
           if [ "$BACKLOG" -gt 0 ]; then
-            echo "Backfill sémantique incomplet : ${BACKLOG} article(s) restent en attente après ${BATCHES} lot(s)." >&2
-            exit 2
+            echo "SEMANTIC_COMPLETE=0" >> "$GITHUB_ENV"
+            echo "Backfill encore incomplet après cette tranche : ${BACKLOG} article(s). L'audit et le verdict vont tout de même s'exécuter."
           fi
 
       - name: Rapport de progression
@@ -177,8 +215,8 @@ jobs:
           cat /tmp/cyberattaque-semantic-closeout.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Exiger READY quand le backlog est épuisé
-        if: ${{ env.SEMANTIC_COMPLETE == '1' }}
+      - name: Exiger READY pour la clôture finale
+        if: ${{ github.event_name == 'push' || inputs.semantic }}
         run: |
           python scripts/certify_cyberattaque_semantic_closeout.py \
             --progress data/quality/cyberattaque_semantic_progress.json \
@@ -192,7 +230,8 @@ jobs:
             tests/test_cyberattaque_corpus_v2.py \
             tests/test_cyberattaque_closeout.py \
             tests/test_cyberattaque_semantic_backfill.py \
-            tests/test_cyberattaque_semantic_closeout.py -q
+            tests/test_cyberattaque_semantic_closeout.py \
+            tests/test_cyberattaque_backfill_workflow.py -q
           python -m cyberwatch check
           python -m cyberwatch test-repeat
 
