@@ -82,6 +82,9 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
+          # Un rebuild CREATE/REPLAY reste une référence full. Seul MAJ peut
+          # réutiliser un cache dont tous les invariants sont strictement valides.
+          CYBERWATCH_QUALIFICATION_CACHE: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
         run: |
           ARGS=""
           if [ -n "${{ steps.scope.outputs.start }}" ]; then ARGS="--start ${{ steps.scope.outputs.start }}"; fi
