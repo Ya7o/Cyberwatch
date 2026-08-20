@@ -1,0 +1,256 @@
+name: Sector closeout certification
+run-name: "Sector closeout — ${{ github.event_name }} — ${{ github.ref_name || github.event.workflow_run.head_branch || 'manual' }}"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sector-closeout.yml'
+      - '.github/sector-trigger.txt'
+      - 'scripts/enrich_sector_queue.py'
+      - 'scripts/enrich_sector_golden.py'
+      - 'scripts/check_sector_golden_regression.py'
+      - 'scripts/evaluate_sector_registry.py'
+      - 'scripts/check_sector_registry_policy.py'
+      - 'cyberwatch/company_subject_evidence.py'
+      - 'cyberwatch/context_sector.py'
+      - 'cyberwatch/sector_completion.py'
+      - 'cyberwatch/sector_registry.py'
+      - 'cyberwatch/sector_registry_safety.py'
+      - 'data/sector_auto_policy.json'
+  workflow_run:
+    workflows: ['Tests']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sector-closeout-certification
+  cancel-in-progress: false
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+
+jobs:
+  decide:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.scope.outputs.run }}
+      trigger_sha: ${{ steps.scope.outputs.trigger_sha }}
+      changed: ${{ steps.scope.outputs.changed }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 2
+      - id: scope
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          WORKFLOW_RUN_BRANCH: ${{ github.event.workflow_run.head_branch || '' }}
+          WORKFLOW_RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion || '' }}
+          WORKFLOW_RUN_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+        run: |
+          set -euo pipefail
+          RUN=false
+          TRIGGER_SHA="$(git rev-parse HEAD)"
+          CHANGED=""
+          sector_paths='^(scripts/enrich_sector_queue\.py|scripts/enrich_sector_golden\.py|scripts/check_sector_golden_regression\.py|scripts/evaluate_sector_registry\.py|scripts/check_sector_registry_policy\.py|cyberwatch/company_subject_evidence\.py|cyberwatch/context_sector\.py|cyberwatch/sector_completion\.py|cyberwatch/sector_registry\.py|cyberwatch/sector_registry_safety\.py|data/sector_auto_policy\.json|\.github/workflows/sector-closeout\.yml|\.github/sector-trigger\.txt)$'
+
+          case "$EVENT_NAME" in
+            workflow_dispatch)
+              RUN=true
+              ;;
+            push)
+              RUN=true
+              CHANGED="$(git diff --name-only HEAD^1 HEAD || true)"
+              ;;
+            workflow_run)
+              if [ "$WORKFLOW_RUN_CONCLUSION" = "success" ] && [ "$WORKFLOW_RUN_BRANCH" = "main" ] && [ -n "$WORKFLOW_RUN_SHA" ]; then
+                git fetch --no-tags origin "$WORKFLOW_RUN_SHA" --depth=2 || true
+                TRIGGER_SHA="$WORKFLOW_RUN_SHA"
+                # Merge commits need an explicit first-parent diff; diff-tree without -m can return no paths.
+                if git cat-file -e "$WORKFLOW_RUN_SHA^1" 2>/dev/null; then
+                  CHANGED="$(git diff --name-only "$WORKFLOW_RUN_SHA^1" "$WORKFLOW_RUN_SHA" || true)"
+                else
+                  CHANGED="$(git show --pretty='' --name-only "$WORKFLOW_RUN_SHA" || true)"
+                fi
+                if printf '%s\n' "$CHANGED" | grep -Eq "$sector_paths"; then
+                  RUN=true
+                fi
+              fi
+              ;;
+          esac
+
+          changed_flat="$(printf '%s' "$CHANGED" | tr '\n' ',' | sed 's/,$//')"
+          echo "run=$RUN" >> "$GITHUB_OUTPUT"
+          echo "trigger_sha=$TRIGGER_SHA" >> "$GITHUB_OUTPUT"
+          echo "changed=$changed_flat" >> "$GITHUB_OUTPUT"
+          echo "SECTOR_CLOSEOUT_SCOPE run=$RUN trigger_sha=$TRIGGER_SHA changed=${changed_flat:-none}"
+
+  certify:
+    needs: decide
+    if: needs.decide.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Golden avant certification
+        run: |
+          python -m cyberwatch backfill-unknowns
+          python scripts/audit_sector_coverage.py
+          python scripts/evaluate_golden.py --details /tmp/golden-before.csv --json /tmp/golden-before.json
+
+      - name: Purger et réévaluer uniquement les mismatches Golden
+        env:
+          ORG_ENRICHMENT_ENABLED: "1"
+          ORG_ENRICHMENT_MAX_CALLS: "1000"
+          SECTOR_ENRICHMENT_MAX_ORGS: "1000"
+          SECTOR_ENRICHMENT_WORKERS: "6"
+          SECTOR_ENRICHMENT_MODE: "golden-only"
+          SECTOR_PURGE_GOLDEN_MISMATCHES: "1"
+        run: |
+          echo "SECTOR_EXECUTION_MODE=golden-only"
+          echo "SECTOR_EXECUTION_TRIGGER_SHA=${{ needs.decide.outputs.trigger_sha }}"
+          echo "SECTOR_EXECUTION_CHANGED=${{ needs.decide.outputs.changed || 'none' }}"
+          echo "SECTOR_EXECUTION_LEGAL_RECALC=false"
+          python -m scripts.enrich_sector_golden
+
+      - name: Golden après réévaluation
+        run: |
+          python -m cyberwatch backfill-unknowns
+          python scripts/audit_sector_coverage.py
+          python scripts/evaluate_golden.py --details /tmp/golden-after.csv --json /tmp/golden-after.json
+
+      - name: Gate zéro erreur Sector
+        run: |
+          python scripts/check_sector_golden_regression.py \
+            /tmp/golden-before.json /tmp/golden-after.json \
+            --before-details /tmp/golden-before.csv \
+            --after-details /tmp/golden-after.csv \
+            --report-csv /tmp/sector-golden-mismatches.csv \
+            --require-zero-wrong
+
+      - name: Gates registry, structure et répétabilité
+        run: |
+          python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
+          python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
+          python -m cyberwatch check --allow-uninitialized
+          python -m cyberwatch test-repeat
+          python -m cyberwatch build-site
+
+      - name: Produire la preuve de clôture
+        env:
+          TRIGGER_SHA: ${{ needs.decide.outputs.trigger_sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          after = json.load(open('/tmp/golden-after.json', encoding='utf-8'))['fields']['Secteur']
+          quality = json.load(open('data/sector_quality.json', encoding='utf-8'))
+          global_metrics = quality['sector']['global']
+          report = {
+              'schema_version': 1,
+              'status': 'GO',
+              'criterion': 'zero-wrong-sector-golden',
+              'trigger_sha': os.environ['TRIGGER_SHA'],
+              'workflow_run_id': int(os.environ['RUN_ID']),
+              'golden': {
+                  'wrong_classification': after.get('wrong_classification'),
+                  'precision_when_qualified_pct': after.get('precision_when_qualified_pct'),
+                  'coverage_pct': after.get('coverage_pct'),
+                  'accuracy_pct': after.get('accuracy_pct'),
+              },
+              'production': {
+                  'items': global_metrics.get('items'),
+                  'sector_known': global_metrics.get('sector_known'),
+                  'sector_unknown': global_metrics.get('sector_unknown'),
+                  'sector_unknown_organisations': global_metrics.get('sector_unknown_organisations'),
+                  'sector_coverage_ratio': global_metrics.get('sector_coverage_ratio'),
+              },
+              'gates': {
+                  'golden_zero_wrong': True,
+                  'registry_policy': True,
+                  'structure': True,
+                  'repeatability': True,
+                  'build_site': True,
+              },
+          }
+          Path('data/sector_closeout.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(report, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Résumé de clôture
+        if: always()
+        run: |
+          echo "## Sector closeout — run ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Trigger SHA: ${{ needs.decide.outputs.trigger_sha }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Changed: ${{ needs.decide.outputs.changed || 'none' }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f /tmp/golden-after.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('/tmp/golden-after.json',encoding='utf-8'))['fields']['Secteur']
+          print(f"Golden final: wrong={d.get('wrong_classification')} precision={d.get('precision_when_qualified_pct')}% coverage={d.get('coverage_pct')}% accuracy={d.get('accuracy_pct')}%")
+          PY
+          fi
+          if [ -f /tmp/sector-golden-mismatches.csv ]; then
+            echo '```csv' >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/sector-golden-mismatches.csv >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Archiver les preuves
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sector-closeout-${{ github.run_id }}
+          path: |
+            /tmp/golden-before.csv
+            /tmp/golden-before.json
+            /tmp/golden-after.csv
+            /tmp/golden-after.json
+            /tmp/sector-golden-mismatches.csv
+            /tmp/sector-registry.json
+            data/sector_quality.json
+            data/sector_closeout.json
+            data/org_enrichment_cache.csv
+            data/organisation_sector_registry.csv
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Publier la certification atomiquement
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "cyberwatch-bot@users.noreply.github.com"
+          git add \
+            data/org_enrichment_cache.csv \
+            data/organisation_sector_registry.csv \
+            data/sector_enrichment_queue.csv \
+            data/sector_quality.json \
+            data/items.csv \
+            data/incidents.csv \
+            data/incident_id_registry.csv \
+            data/qualification_provenance.csv \
+            data/snapshot.json \
+            data/sector_closeout.json \
+            assets/data
+          if git diff --cached --quiet; then
+            echo "Aucune modification de données; la certification reste démontrée par les artefacts du run."
+            exit 0
+          fi
+          git commit -m "Certify Sector closeout"
+          git pull --rebase origin main
+          git push origin HEAD:main
