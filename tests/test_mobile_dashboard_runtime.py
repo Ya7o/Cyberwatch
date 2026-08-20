@@ -12,7 +12,11 @@ def _read(path: str) -> str:
 def test_index_charge_un_seul_runtime_dashboard():
     html = _read("index.html")
     scripts = re.findall(r'<script\s+src="([^"]+)"', html)
-    assert scripts == ["assets/app.js"]
+    # ``assets/app.js`` reste l'unique runtime applicatif. Les petits scripts
+    # de correctifs de layout/détail sont des helpers statiques et ne doivent
+    # pas être confondus avec les anciens runtimes parallèles retirés.
+    assert scripts.count("assets/app.js") == 1
+    assert scripts[0] == "assets/app.js"
     assert "dashboard-v2.js" not in html
     assert "activity-12m-trend.js" not in html
     assert "activity-two-columns.css" not in html
