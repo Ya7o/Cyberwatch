@@ -5,12 +5,9 @@ from .qualification_decision import QualificationDecision
 
 FIELD_TO_REF = {"Sector": "Secteur_REF", "Threat": "Menace_REF", "Location": "Localisation_REF"}
 
-def evaluate_decisions_by_origin(decisions: list[QualificationDecision], reference_by_item: dict[str, dict[str, str]]) -> list[dict[str, object]]:
-    """Mesure précision/gains/régressions par Origin x Field.
 
-    `reference_by_item` est volontairement générique : le golden peut raccorder ses
-    cas aux Item_ID puis réutiliser cette fonction sans coupler le moteur au format CSV.
-    """
+def evaluate_decisions_by_origin(decisions: list[QualificationDecision], reference_by_item: dict[str, dict[str, str]]) -> list[dict[str, object]]:
+    """Mesure précision/gains/régressions par Origin x Field."""
     grouped = defaultdict(list)
     for decision in decisions:
         ref_row = reference_by_item.get(decision.item_id)
@@ -33,3 +30,34 @@ def evaluate_decisions_by_origin(decisions: list[QualificationDecision], referen
             "Abstentions": len(rows) - len(applied),
         })
     return output
+
+
+def quality_gate_failures(
+    rows: list[dict[str, object]],
+    *,
+    minimum_cases: int = 10,
+    minimum_precision_pct: float = 95.0,
+    maximum_regressions: int = 0,
+) -> list[str]:
+    """Retourne les violations de qualité pour les canaux suffisamment évalués.
+
+    Le gate reste volontairement générique : les seuils peuvent être durcis après
+    établissement d'une baseline réelle, sans coupler cette fonction au golden.
+    """
+    failures: list[str] = []
+    for row in rows:
+        applied = int(row.get("Applied", 0) or 0)
+        if applied < minimum_cases:
+            continue
+        precision = float(row.get("Precision_pct", 0.0) or 0.0)
+        regressions = int(row.get("Regressions", 0) or 0)
+        label = f"{row.get('Origin', '')}/{row.get('Field', '')}"
+        if precision < minimum_precision_pct:
+            failures.append(
+                f"{label}: precision {precision:.1f}% < {minimum_precision_pct:.1f}% ({applied} cas)"
+            )
+        if regressions > maximum_regressions:
+            failures.append(
+                f"{label}: {regressions} regression(s) > {maximum_regressions}"
+            )
+    return failures
