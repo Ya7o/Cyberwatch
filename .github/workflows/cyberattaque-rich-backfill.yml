@@ -107,13 +107,6 @@ jobs:
             fi
             echo "batch=$batch rc=$RC seconds=$((END-START)) cache_entries=$CACHE_ENTRIES" | tee -a /tmp/cyberattaque-semantic-progress.txt
 
-            # Une passe interrompue ne doit jamais laisser de snapshot canonique partiel.
-            git reset --hard "$DETERMINISTIC_COMMIT"
-            if [ -f "/tmp/cyberattaque-checkpoints/cache-${batch}.json" ]; then
-              cp "/tmp/cyberattaque-checkpoints/cache-${batch}.json" "$CACHE"
-            fi
-
-            # RC=0 signifie que le corpus complet a été enrichi avec le cache courant.
             if [ "$RC" -eq 0 ]; then
               echo "SEMANTIC_COMPLETE=1" >> "$GITHUB_ENV"
               break
@@ -121,6 +114,12 @@ jobs:
             if [ "$RC" -ne 124 ] && [ "$RC" -ne 137 ]; then
               echo "Passe sémantique interrompue avec rc=$RC" >&2
               exit "$RC"
+            fi
+
+            # Une passe interrompue ne doit jamais laisser de snapshot canonique partiel.
+            git reset --hard "$DETERMINISTIC_COMMIT"
+            if [ -f "/tmp/cyberattaque-checkpoints/cache-${batch}.json" ]; then
+              cp "/tmp/cyberattaque-checkpoints/cache-${batch}.json" "$CACHE"
             fi
           done
           echo '### Progression sémantique Cyberattaque.org' >> "$GITHUB_STEP_SUMMARY"
@@ -133,7 +132,7 @@ jobs:
         env:
           CYBERATTAQUE_SEMANTIC_ENABLED: '1'
         run: |
-          # Dernière passe bornée : si le backlog est encore trop grand, le cache est quand même publiable.
+          CACHE=data/cyberattaque_semantic_cache.json
           set +e
           timeout --signal=TERM --kill-after=20s 15m python -m cyberwatch create --layers core --start 2026-01-01
           RC=$?
@@ -141,8 +140,10 @@ jobs:
           if [ "$RC" -eq 0 ]; then
             echo "SEMANTIC_COMPLETE=1" >> "$GITHUB_ENV"
           elif [ "$RC" -eq 124 ] || [ "$RC" -eq 137 ]; then
+            if [ -f "$CACHE" ]; then cp "$CACHE" /tmp/cyberattaque-final-cache.json; fi
             echo "Backlog sémantique encore présent après la passe finale; cache checkpoint conservé." | tee -a /tmp/cyberattaque-semantic-progress.txt
             git reset --hard "$DETERMINISTIC_COMMIT"
+            if [ -f /tmp/cyberattaque-final-cache.json ]; then cp /tmp/cyberattaque-final-cache.json "$CACHE"; fi
           else
             exit "$RC"
           fi
