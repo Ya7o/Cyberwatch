@@ -37,6 +37,16 @@ UNIQUE_ITEM_URL_SOURCES = frozenset({
     "FRENCHBREACHES",
 })
 
+# RANSOMWARE_LIVE publie souvent la revendication initiale avant qu'un article
+# Cyberattaque.org documente le même épisode. Le cas autorisé reste volontairement
+# étroit : même victime canonique, ransomware des deux côtés, revendication puis
+# corroboration exactement quatre jours plus tard. Au-delà, on reste séparé.
+RANSOMWARE_CORROBORATION_SOURCES = frozenset({
+    "RANSOMWARE_LIVE",
+    "CYBERATTAQUE_ORG",
+})
+RANSOMWARE_CORROBORATION_DAYS = 4
+
 RECURRENCE_MARKERS = (
     "nouvelle cyberattaque", "nouvelle attaque", "nouvelle fuite", "a nouveau",
     "de nouveau", "une nouvelle fois", "frappe une nouvelle fois",
@@ -91,6 +101,32 @@ def _same_unique_url(left: Item, right: Item) -> bool:
     )
 
 
+def _ransomware_corroboration(left: Item, right: Item, days: int) -> bool:
+    """Autorise uniquement une revendication Ransomware.live suivie à J+4.
+
+    La règle n'élargit pas la fenêtre générale : elle encode un contrat de
+    corroboration entre deux sources précises et conserve les vetos de récidive,
+    d'ID natif et d'Event_Date évalués plus tôt dans `decide_merge`.
+    """
+    if days != RANSOMWARE_CORROBORATION_DAYS:
+        return False
+    if {left.Source_ID, right.Source_ID} != RANSOMWARE_CORROBORATION_SOURCES:
+        return False
+    if left.Threat != config.THREAT_RANSOMWARE or right.Threat != config.THREAT_RANSOMWARE:
+        return False
+
+    claim = left if left.Source_ID == "RANSOMWARE_LIVE" else right
+    report = right if claim is left else left
+    claim_date = date_or_empty(claim.best_date)
+    report_date = date_or_empty(report.best_date)
+    return bool(
+        claim_date
+        and report_date
+        and report_date > claim_date
+        and (report_date - claim_date).days == RANSOMWARE_CORROBORATION_DAYS
+    )
+
+
 def decide_merge(left: Item, right: Item) -> DedupDecision:
     """Décide une fusion paire à paire, sans similarité probabiliste."""
     if left.Source_ID == right.Source_ID and left.Source_Item_ID and right.Source_Item_ID:
@@ -137,6 +173,13 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
             MERGE,
             "INCIDENT_MERGE_ALIAS" if alias_used else "INCIDENT_MERGE_CANONICAL_NAME",
             (f"days={days}",),
+        )
+
+    if _ransomware_corroboration(left, right, days):
+        return DedupDecision(
+            MERGE,
+            "INCIDENT_MERGE_RANSOMWARE_CORROBORATION",
+            (f"days={days}", "claim=RANSOMWARE_LIVE", "report=CYBERATTAQUE_ORG"),
         )
 
     if days <= config.INCIDENT_GAP_DAYS and _same_unique_url(left, right):
