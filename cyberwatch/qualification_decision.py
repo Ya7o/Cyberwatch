@@ -10,6 +10,7 @@ QUALIFICATION_FIELDS = ("Sector", "Location", "Threat")
 QUALIFICATION_DECISION_COLUMNS = [
     "Item_ID", "Source_ID", "Field", "Previous_Value", "Candidate_Value",
     "Final_Value", "Origin", "Confidence", "Evidence", "Match_Strategy", "Decision",
+    "Rejected_Reason", "Winning_Origin", "Winning_Value",
 ]
 ORIGIN_PRIORITY = {
     "SOURCE_NATIVE": 0,
@@ -36,13 +37,17 @@ class QualificationDecision:
     evidence: str = ""
     match_strategy: str = ""
     decision: str = "APPLIED"
+    rejected_reason: str = ""
+    winning_origin: str = ""
+    winning_value: str = ""
 
     @classmethod
     def from_provenance(cls, row: dict[str, str]) -> "QualificationDecision":
         return cls(row.get("Item_ID", ""), row.get("Source_ID", ""), row.get("Field", ""),
                    row.get("Previous_Value", ""), row.get("Candidate_Value", ""), row.get("Final_Value", ""),
                    row.get("Origin", ""), row.get("Confidence", ""), row.get("Evidence", ""),
-                   row.get("Match_Strategy", ""), row.get("Decision", ""))
+                   row.get("Match_Strategy", ""), row.get("Decision", ""), row.get("Rejected_Reason", ""),
+                   row.get("Winning_Origin", ""), row.get("Winning_Value", ""))
 
     @classmethod
     def from_row(cls, row: dict[str, str]) -> "QualificationDecision":
@@ -52,7 +57,9 @@ class QualificationDecision:
         return {"Item_ID": self.item_id, "Source_ID": self.source_id, "Field": self.field,
                 "Previous_Value": self.previous_value, "Candidate_Value": self.candidate_value,
                 "Final_Value": self.final_value, "Origin": self.origin, "Confidence": self.confidence,
-                "Evidence": self.evidence, "Match_Strategy": self.match_strategy, "Decision": self.decision}
+                "Evidence": self.evidence, "Match_Strategy": self.match_strategy, "Decision": self.decision,
+                "Rejected_Reason": self.rejected_reason, "Winning_Origin": self.winning_origin,
+                "Winning_Value": self.winning_value}
 
 def snapshot_fields(items: list[Item]) -> dict[str, dict[str, str]]:
     return {item.Item_ID: {field: str(getattr(item, field, "") or "") for field in QUALIFICATION_FIELDS}
