@@ -101,6 +101,10 @@ jobs:
             python -m cyberwatch ${{ steps.scope.outputs.mode }} --layers "${{ steps.scope.outputs.layers }}" $ARGS
           fi
 
+      - name: Observer l'incrémentalité
+        if: steps.kind.outputs.writes == 'true'
+        run: python scripts/report_run_performance.py --observe >> "$GITHUB_STEP_SUMMARY"
+
       - name: Récapitulatif du run
         if: always() && steps.kind.outputs.writes == 'true'
         run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
