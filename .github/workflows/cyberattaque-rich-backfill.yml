@@ -8,18 +8,20 @@ on:
         type: boolean
         default: true
       semantic_batches:
-        description: "Nombre de passes sémantiques reprenables"
+        description: "Nombre maximal de lots sémantiques"
         type: number
         default: 4
-      batch_minutes:
-        description: "Budget maximal par passe sémantique"
+      semantic_calls_per_batch:
+        description: "Nouveaux appels LLM maximum par lot"
         type: number
-        default: 8
+        default: 25
   push:
     branches: [main]
     paths:
       - '.github/workflows/cyberattaque-rich-backfill.yml'
       - 'cyberwatch/collectors/cyberattaque_*.py'
+      - 'cyberwatch/cyberattaque_semantic_backfill.py'
+      - 'scripts/backfill_cyberattaque_semantic.py'
       - 'scripts/audit_cyberattaque_rich_facts.py'
       - 'scripts/certify_cyberattaque_rich_facts.py'
       - 'tests/test_cyberattaque_*.py'
@@ -62,90 +64,60 @@ jobs:
           python -m cyberwatch build-site
           END=$(date +%s)
           echo "DETERMINISTIC_SECONDS=$((END-START))" >> "$GITHUB_ENV"
-          git config user.name 'cyberwatch-bot'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data assets/data
-          git commit -m 'data: deterministic Cyberattaque.org rich backfill base' || true
-          echo "DETERMINISTIC_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
-      - name: Passes sémantiques bornées et reprenables
+      - name: Backfill sémantique par lots persistants
         if: ${{ github.event_name == 'push' || inputs.semantic }}
         env:
           CYBERATTAQUE_SEMANTIC_ENABLED: '1'
           SEMANTIC_BATCHES: ${{ github.event_name == 'push' && '4' || inputs.semantic_batches }}
-          BATCH_MINUTES: ${{ github.event_name == 'push' && '8' || inputs.batch_minutes }}
+          CALLS_PER_BATCH: ${{ github.event_name == 'push' && '25' || inputs.semantic_calls_per_batch }}
         run: |
-          set -u
-          mkdir -p /tmp/cyberattaque-checkpoints
+          set -euo pipefail
+          git config user.name 'cyberwatch-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           BATCHES="${SEMANTIC_BATCHES:-4}"
-          MINUTES="${BATCH_MINUTES:-8}"
-          CACHE=data/cyberattaque_semantic_cache.json
+          CALLS="${CALLS_PER_BATCH:-25}"
           for batch in $(seq 1 "$BATCHES"); do
-            echo "=== Semantic batch $batch/$BATCHES (budget ${MINUTES}m) ==="
-            START=$(date +%s)
-            set +e
-            timeout --signal=TERM --kill-after=20s "${MINUTES}m" \
-              python -m cyberwatch create --layers core --start 2026-01-01
-            RC=$?
-            set -e
-            END=$(date +%s)
-            if [ -f "$CACHE" ]; then
-              cp "$CACHE" "/tmp/cyberattaque-checkpoints/cache-${batch}.json"
-              CACHE_ENTRIES=$(python - <<'PY'
+            echo "=== Semantic batch $batch/$BATCHES (max calls=$CALLS) ==="
+            python scripts/backfill_cyberattaque_semantic.py \
+              --start 2026-01-01 \
+              --max-calls "$CALLS" \
+              --progress data/quality/cyberattaque_semantic_progress.json \
+              --backlog data/quality/cyberattaque_semantic_backlog.json \
+              | tee "/tmp/cyberattaque-semantic-${batch}.json"
+            cat "/tmp/cyberattaque-semantic-${batch}.json" >> "$GITHUB_STEP_SUMMARY"
+
+            BACKLOG=$(python - <<'PY'
           import json
           from pathlib import Path
-          p=Path('data/cyberattaque_semantic_cache.json')
-          try:
-              data=json.loads(p.read_text(encoding='utf-8'))
-              print(len(data) if isinstance(data,dict) else 0)
-          except Exception:
-              print(0)
+          p=Path('data/quality/cyberattaque_semantic_progress.json')
+          data=json.loads(p.read_text(encoding='utf-8'))
+          print(int(data.get('backlog_remaining') or 0))
           PY
-              )
-            else
-              CACHE_ENTRIES=0
-            fi
-            echo "batch=$batch rc=$RC seconds=$((END-START)) cache_entries=$CACHE_ENTRIES" | tee -a /tmp/cyberattaque-semantic-progress.txt
+            )
 
-            if [ "$RC" -eq 0 ]; then
+            git add -- data/source_facts.csv data/cyberattaque_semantic_cache.json data/quality/cyberattaque_semantic_progress.json data/quality/cyberattaque_semantic_backlog.json
+            if ! git diff --cached --quiet; then
+              git commit -m "data: Cyberattaque semantic checkpoint batch ${batch}"
+              for delay in 0 2 4 8 16; do
+                [ "$delay" -gt 0 ] && sleep "$delay"
+                git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break
+              done
+            fi
+            if [ "$BACKLOG" -eq 0 ]; then
               echo "SEMANTIC_COMPLETE=1" >> "$GITHUB_ENV"
               break
             fi
-            if [ "$RC" -ne 124 ] && [ "$RC" -ne 137 ]; then
-              echo "Passe sémantique interrompue avec rc=$RC" >&2
-              exit "$RC"
-            fi
-
-            # Une passe interrompue ne doit jamais laisser de snapshot canonique partiel.
-            git reset --hard "$DETERMINISTIC_COMMIT"
-            if [ -f "/tmp/cyberattaque-checkpoints/cache-${batch}.json" ]; then
-              cp "/tmp/cyberattaque-checkpoints/cache-${batch}.json" "$CACHE"
-            fi
           done
-          echo '### Progression sémantique Cyberattaque.org' >> "$GITHUB_STEP_SUMMARY"
-          echo '```text' >> "$GITHUB_STEP_SUMMARY"
-          cat /tmp/cyberattaque-semantic-progress.txt >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Finaliser depuis le cache accumulé
-        if: ${{ env.SEMANTIC_COMPLETE != '1' && (github.event_name == 'push' || inputs.semantic) }}
-        env:
-          CYBERATTAQUE_SEMANTIC_ENABLED: '1'
+      - name: Rapport de progression
+        if: ${{ always() }}
         run: |
-          CACHE=data/cyberattaque_semantic_cache.json
-          set +e
-          timeout --signal=TERM --kill-after=20s 15m python -m cyberwatch create --layers core --start 2026-01-01
-          RC=$?
-          set -e
-          if [ "$RC" -eq 0 ]; then
-            echo "SEMANTIC_COMPLETE=1" >> "$GITHUB_ENV"
-          elif [ "$RC" -eq 124 ] || [ "$RC" -eq 137 ]; then
-            if [ -f "$CACHE" ]; then cp "$CACHE" /tmp/cyberattaque-final-cache.json; fi
-            echo "Backlog sémantique encore présent après la passe finale; cache checkpoint conservé." | tee -a /tmp/cyberattaque-semantic-progress.txt
-            git reset --hard "$DETERMINISTIC_COMMIT"
-            if [ -f /tmp/cyberattaque-final-cache.json ]; then cp /tmp/cyberattaque-final-cache.json "$CACHE"; fi
-          else
-            exit "$RC"
+          echo '### Progression sémantique Cyberattaque.org' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f data/quality/cyberattaque_semantic_progress.json ]; then
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat data/quality/cyberattaque_semantic_progress.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Audit complet et échantillon de revue
@@ -176,7 +148,8 @@ jobs:
           python -m pytest \
             tests/test_cyberattaque_rich_facts.py \
             tests/test_cyberattaque_corpus_v2.py \
-            tests/test_cyberattaque_closeout.py -q
+            tests/test_cyberattaque_closeout.py \
+            tests/test_cyberattaque_semantic_backfill.py -q
           python -m cyberwatch check
           python -m cyberwatch test-repeat
 
@@ -194,13 +167,13 @@ jobs:
               raise SystemExit('Cyberattaque.org absent du payload dashboard publié')
           PY
 
-      - name: Publier le backfill, la certification et le checkpoint sémantique
+      - name: Publier le corpus et la certification finale
         run: |
           git config user.name 'cyberwatch-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- data assets/data
-          if git diff --cached --quiet; then echo 'Aucun changement à publier.'; exit 0; fi
-          git commit -m 'data: checkpoint rich facts Cyberattaque.org v3'
+          if git diff --cached --quiet; then echo 'Aucun changement final à publier.'; exit 0; fi
+          git commit -m 'data: certify rich facts Cyberattaque.org v4'
           for delay in 0 2 4 8 16; do
             [ "$delay" -gt 0 ] && sleep "$delay"
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
