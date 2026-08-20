@@ -2,10 +2,33 @@
 from __future__ import annotations
 
 from ..normalize import searchable
+from . import cyberattaque_rich as _rich_module
 from .cyberattaque_rich import CyberattaqueRichCollector
 
 _DISPLAY_STATUSES = {"confirmed", "reported", "claimed", "unknown"}
 _STATUS_SCOPE = {"hypothesis": "Hypothèse", "denied": "Démenti", "negated": "Négation"}
+
+
+def _status_v2(sentence: str) -> str:
+    """La modalité de la proposition prime sur une négation de confirmation voisine."""
+    if _rich_module._DENIED.search(sentence):
+        return "denied"
+    if _rich_module._HYPOTHESIS.search(sentence):
+        return "hypothesis"
+    if _rich_module._NEGATION.search(sentence):
+        return "negated"
+    if _rich_module._CONFIRMED.search(sentence):
+        return "confirmed"
+    if _rich_module._CLAIMED.search(sentence):
+        return "claimed"
+    if _rich_module._REPORTED.search(sentence):
+        return "reported"
+    return "unknown"
+
+
+# Les extracteurs du module v2 résolvent `_status` à l'exécution : cette
+# substitution garde le moteur unique tout en corrigeant la priorité de modalité.
+_rich_module._status = _status_v2
 
 
 def _statement(status: str, scope: str, date: str, evidence: str, value: str = "") -> dict:
