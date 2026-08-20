@@ -4,6 +4,9 @@
 Le garde publie aussi un diagnostic exploitable humainement : toutes les
 classifications Sector erronées après traitement, et celles nouvellement
 introduites par le run. Le rapport CSV peut être conservé comme artefact CI.
+
+Le mode ``--require-zero-wrong`` est réservé aux runs de clôture ``golden-only`` :
+il interdit de publier tant qu'une classification Sector qualifiée reste fausse.
 """
 from __future__ import annotations
 
@@ -108,6 +111,11 @@ def main() -> int:
     parser.add_argument("--before-details", default="")
     parser.add_argument("--after-details", default="")
     parser.add_argument("--report-csv", default="")
+    parser.add_argument(
+        "--require-zero-wrong",
+        action="store_true",
+        help="échoue si une classification Sector qualifiée reste fausse après traitement",
+    )
     args = parser.parse_args()
 
     before = _sector(args.before)
@@ -118,6 +126,8 @@ def main() -> int:
     after_wrong = int(after.get("wrong_classification", 0))
     if after_wrong > before_wrong:
         problems.append(f"wrong_classification {before_wrong} -> {after_wrong}")
+    if args.require_zero_wrong and after_wrong != 0:
+        problems.append(f"closeout_wrong_classification expected=0 got={after_wrong}")
 
     before_precision = float(before.get("precision_when_qualified_pct", 0.0))
     after_precision = float(after.get("precision_when_qualified_pct", 0.0))
