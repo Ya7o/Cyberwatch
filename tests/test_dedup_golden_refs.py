@@ -23,6 +23,22 @@ def test_source_item_id_is_primary_stable_reference(make_item):
     assert result.item is current
 
 
+def test_duplicate_native_id_is_disambiguated_by_stable_url(make_item):
+    one = make_item(source="A", source_item_id="same", url="https://a")
+    one.Item_ID = "ITM-a"
+    two = make_item(source="A", source_item_id="same", url="https://b", published="2026-08-02")
+    two.Item_ID = "ITM-b"
+    row = {
+        "Left_Source_ID": "A",
+        "Left_Source_Item_ID": "same",
+        "Left_Stable_URL": "https://b",
+        "Left_Item_ID": "ITM-old",
+    }
+    result = resolve_golden_side(row, "Left", [one, two])
+    assert result.status == RESOLVED
+    assert result.item is two
+
+
 def test_url_is_fallback_when_source_has_no_native_id(make_item):
     current = make_item(source="BONJOURLAFUITE", source_item_id="", url="https://stable", published="2026-08-01")
     current.Item_ID = "ITM-current"
