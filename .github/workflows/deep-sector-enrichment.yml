@@ -1,5 +1,5 @@
-# closeout trigger: 2026-08-20T08:15+04:00
 name: Deep sector evidence enrichment
+run-name: "Sector — ${{ github.event_name }} — ${{ github.ref_name || github.event.workflow_run.head_branch || 'scheduled' }}"
 
 on:
   push:
@@ -17,6 +17,10 @@ on:
       - 'cyberwatch/sector_registry_safety.py'
       - 'data/sector_auto_policy.json'
       - '.github/workflows/deep-sector-enrichment.yml'
+      - '.github/sector-trigger.txt'
+  workflow_run:
+    workflows: ['Tests']
+    types: [completed]
   schedule:
     - cron: "30 4 * * 1"  # lundi 08:30 à La Réunion
   workflow_dispatch:
@@ -47,60 +51,139 @@ env:
   PYTHONPATH: ${{ github.workspace }}
 
 jobs:
-  legal-identity:
+  scope:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
     outputs:
-      ran: ${{ steps.scope.outputs.run }}
+      run: ${{ steps.decide.outputs.run }}
+      mode: ${{ steps.decide.outputs.mode }}
+      targets: ${{ steps.decide.outputs.targets }}
+      legal_recalc: ${{ steps.decide.outputs.legal_recalc }}
+      changed: ${{ steps.decide.outputs.changed }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Décider le scope Sector de façon déterministe
+        id: decide
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before || '' }}
+          CURRENT_SHA: ${{ github.sha }}
+          WORKFLOW_RUN_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+          WORKFLOW_RUN_BRANCH: ${{ github.event.workflow_run.head_branch || '' }}
+          WORKFLOW_RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion || '' }}
+          DISPATCH_MODE: ${{ inputs.mode || 'sector-only' }}
+          DISPATCH_TARGETS: ${{ inputs.targets || '' }}
+        run: |
+          set -euo pipefail
+          RUN=false
+          MODE=golden-only
+          TARGETS=""
+          LEGAL_RECALC=false
+          CHANGED=""
+
+          sector_paths='^(scripts/enrich_sector_queue\.py|scripts/enrich_sector_golden\.py|scripts/enrich_legal_identity\.py|scripts/check_sector_golden_regression\.py|cyberwatch/company_subject_evidence\.py|cyberwatch/context_sector\.py|cyberwatch/sector_completion\.py|cyberwatch/legal_identity\.py|cyberwatch/sector_registry\.py|cyberwatch/sector_registry_safety\.py|data/sector_auto_policy\.json|\.github/workflows/deep-sector-enrichment\.yml|\.github/sector-trigger\.txt)$'
+          legal_paths='^(scripts/enrich_legal_identity\.py|cyberwatch/legal_identity\.py)$'
+
+          case "$EVENT_NAME" in
+            schedule)
+              RUN=true
+              MODE=full
+              LEGAL_RECALC=true
+              ;;
+            workflow_dispatch)
+              RUN=true
+              MODE="$DISPATCH_MODE"
+              TARGETS="$DISPATCH_TARGETS"
+              [ "$MODE" = "full" ] && LEGAL_RECALC=true
+              ;;
+            push)
+              RUN=true
+              MODE=golden-only
+              if [ -n "$BEFORE_SHA" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+                CHANGED="$(git diff --name-only "$BEFORE_SHA" "$CURRENT_SHA" || true)"
+              else
+                CHANGED="$(git diff-tree --no-commit-id --name-only -r "$CURRENT_SHA" || true)"
+              fi
+              if printf '%s\n' "$CHANGED" | grep -Eq "$legal_paths"; then
+                LEGAL_RECALC=true
+              fi
+              ;;
+            workflow_run)
+              MODE=golden-only
+              if [ "$WORKFLOW_RUN_CONCLUSION" = "success" ] && [ "$WORKFLOW_RUN_BRANCH" = "main" ] && [ -n "$WORKFLOW_RUN_SHA" ]; then
+                git fetch --no-tags origin "$WORKFLOW_RUN_SHA" --depth=2 || true
+                CHANGED="$(git diff-tree --no-commit-id --name-only -r "$WORKFLOW_RUN_SHA" || true)"
+                if printf '%s\n' "$CHANGED" | grep -Eq "$sector_paths"; then
+                  RUN=true
+                fi
+                if printf '%s\n' "$CHANGED" | grep -Eq "$legal_paths"; then
+                  LEGAL_RECALC=true
+                fi
+              fi
+              ;;
+            *)
+              echo "Événement non supporté: $EVENT_NAME" >&2
+              exit 2
+              ;;
+          esac
+
+          case "$MODE" in
+            golden-only|sector-only|full) ;;
+            *) echo "Mode Sector invalide: $MODE" >&2; exit 3 ;;
+          esac
+
+          changed_flat="$(printf '%s' "$CHANGED" | tr '\n' ',' | sed 's/,$//')"
+          echo "run=$RUN" >> "$GITHUB_OUTPUT"
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "targets=$TARGETS" >> "$GITHUB_OUTPUT"
+          echo "legal_recalc=$LEGAL_RECALC" >> "$GITHUB_OUTPUT"
+          echo "changed=$changed_flat" >> "$GITHUB_OUTPUT"
+
+          echo "SECTOR_SCOPE run=$RUN mode=$MODE legal_recalc=$LEGAL_RECALC"
+          echo "SECTOR_SCOPE_CHANGED=${changed_flat:-none}"
+
+  legal-identity:
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    outputs:
+      ran: ${{ steps.result.outputs.ran }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
           fetch-depth: 0
 
-      - name: Décider si l'identité légale doit être recalculée
-        id: scope
+      - name: Publier la décision identité légale
+        id: result
         shell: bash
         run: |
-          RUN=false
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            RUN=true
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            [ "${{ inputs.mode }}" = "full" ] && RUN=true
-          elif [ "${{ github.event_name }}" = "push" ]; then
-            BEFORE="${{ github.event.before }}"
-            if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-              RUN=true
-            else
-              CHANGED="$(git diff --name-only "$BEFORE" "${{ github.sha }}")"
-              echo "Fichiers modifiés:"
-              printf '%s\n' "$CHANGED"
-              if printf '%s\n' "$CHANGED" | grep -Eq '^(scripts/enrich_legal_identity\.py|cyberwatch/legal_identity\.py)$'; then
-                RUN=true
-              fi
-            fi
-          fi
-          echo "run=$RUN" >> "$GITHUB_OUTPUT"
-          echo "LEGAL_IDENTITY_RECALCULATE=$RUN"
+          echo "ran=${{ needs.scope.outputs.legal_recalc == 'true' && 'true' || 'false' }}" >> "$GITHUB_OUTPUT"
+          echo "LEGAL_IDENTITY_RECALCULATE=${{ needs.scope.outputs.legal_recalc }}"
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
-        if: steps.scope.outputs.run == 'true'
+        if: needs.scope.outputs.run == 'true' && needs.scope.outputs.legal_recalc == 'true'
         with:
           python-version: '3.11'
           cache: pip
 
       - name: Installer les dépendances
-        if: steps.scope.outputs.run == 'true'
+        if: needs.scope.outputs.run == 'true' && needs.scope.outputs.legal_recalc == 'true'
         run: pip install -r requirements.txt
 
       - name: Résoudre les identités légales encore inconnues
-        if: steps.scope.outputs.run == 'true'
+        if: needs.scope.outputs.run == 'true' && needs.scope.outputs.legal_recalc == 'true'
         env:
           LEGAL_IDENTITY_MAX_ORGS: "0"
           LEGAL_IDENTITY_WORKERS: "6"
         run: python -m scripts.enrich_legal_identity
 
       - name: Checkpoint du cache d'identité légale
-        if: steps.scope.outputs.run == 'true'
+        if: needs.scope.outputs.run == 'true' && needs.scope.outputs.legal_recalc == 'true'
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "cyberwatch-bot@users.noreply.github.com"
@@ -114,7 +197,8 @@ jobs:
           git push origin HEAD:main
 
   enrich:
-    needs: legal-identity
+    needs: [scope, legal-identity]
+    if: needs.scope.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -126,6 +210,27 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+
+      - name: Vérifier le contrat d'exécution
+        shell: bash
+        env:
+          SECTOR_ENRICHMENT_MODE: ${{ needs.scope.outputs.mode }}
+          SECTOR_ENRICHMENT_TARGET_KEYS: ${{ needs.scope.outputs.targets }}
+          SECTOR_PURGE_GOLDEN_MISMATCHES: "1"
+        run: |
+          set -euo pipefail
+          case "$SECTOR_ENRICHMENT_MODE" in
+            golden-only|sector-only|full) ;;
+            *) echo "Mode Sector invalide: $SECTOR_ENRICHMENT_MODE" >&2; exit 10 ;;
+          esac
+          if [ "$SECTOR_ENRICHMENT_MODE" = "golden-only" ] && [ "$SECTOR_PURGE_GOLDEN_MISMATCHES" != "1" ]; then
+            echo "golden-only sans purge activée" >&2
+            exit 11
+          fi
+          echo "SECTOR_EXECUTION_MODE=$SECTOR_ENRICHMENT_MODE"
+          echo "SECTOR_EXECUTION_SHA=${{ github.sha }}"
+          echo "SECTOR_EXECUTION_TARGETS=${SECTOR_ENRICHMENT_TARGET_KEYS:-none}"
+          echo "SECTOR_EXECUTION_LEGAL_RECALC=${{ needs.legal-identity.outputs.ran }}"
 
       - name: Installer les dépendances
         run: pip install -r requirements.txt
@@ -144,8 +249,8 @@ jobs:
           ORG_ENRICHMENT_MAX_CALLS: "1000"
           SECTOR_ENRICHMENT_MAX_ORGS: "1000"
           SECTOR_ENRICHMENT_WORKERS: "6"
-          SECTOR_ENRICHMENT_MODE: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'golden-only') }}
-          SECTOR_ENRICHMENT_TARGET_KEYS: ${{ inputs.targets || '' }}
+          SECTOR_ENRICHMENT_MODE: ${{ needs.scope.outputs.mode }}
+          SECTOR_ENRICHMENT_TARGET_KEYS: ${{ needs.scope.outputs.targets }}
           SECTOR_PURGE_GOLDEN_MISMATCHES: "1"
         shell: bash
         run: |
@@ -169,7 +274,7 @@ jobs:
 
       - name: Vérifier la précision Sector
         env:
-          SECTOR_ENRICHMENT_MODE: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'golden-only') }}
+          SECTOR_ENRICHMENT_MODE: ${{ needs.scope.outputs.mode }}
         shell: bash
         run: |
           EXTRA_ARGS=()
@@ -193,11 +298,24 @@ jobs:
 
       - name: Résumé diagnostic Sector
         if: always()
+        env:
+          SECTOR_MODE: ${{ needs.scope.outputs.mode }}
+          SECTOR_TARGETS: ${{ needs.scope.outputs.targets }}
         run: |
           echo "## Diagnostic Sector — run ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Mode: ${{ github.event_name == 'schedule' && 'full' || (github.event_name == 'workflow_dispatch' && inputs.mode || 'golden-only') }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Cibles explicites: ${{ inputs.targets || 'aucune' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Mode: $SECTOR_MODE" >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit workflow: ${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Cibles explicites: ${SECTOR_TARGETS:-aucune}" >> "$GITHUB_STEP_SUMMARY"
           echo "Identité légale recalculée: ${{ needs.legal-identity.outputs.ran }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Fichiers déclencheurs: ${{ needs.scope.outputs.changed || 'n/a' }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f /tmp/golden-before.json ] && [ -f /tmp/golden-after.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          for label, path in (("Avant", "/tmp/golden-before.json"), ("Après", "/tmp/golden-after.json")):
+              data = json.load(open(path, encoding="utf-8"))["fields"]["Secteur"]
+              print(f"- {label}: wrong={data.get('wrong_classification')} precision={data.get('precision_when_qualified_pct')}% coverage={data.get('coverage_pct')}% accuracy={data.get('accuracy_pct')}%")
+          PY
+          fi
           if [ -f /tmp/sector-golden-mismatches.csv ]; then
             echo '```csv' >> "$GITHUB_STEP_SUMMARY"
             cat /tmp/sector-golden-mismatches.csv >> "$GITHUB_STEP_SUMMARY"
