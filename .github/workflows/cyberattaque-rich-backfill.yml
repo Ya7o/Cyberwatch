@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
+      PYTHONPATH: .
       OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
       CYBERATTAQUE_SEMANTIC_MODEL: gpt-5-nano
       CYBERATTAQUE_SEMANTIC_MAX_CONTEXT_CHARS: '18000'
@@ -54,6 +55,9 @@ jobs:
           python-version: '3.11'
           cache: pip
       - run: pip install -r requirements.txt
+
+      - name: Smoke test CLI du backfill sémantique
+        run: python scripts/backfill_cyberattaque_semantic.py --help >/dev/null
 
       - name: Rebuild déterministe du corpus 2026
         env:

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
+import sys
 from copy import deepcopy
 from pathlib import Path
 
@@ -18,6 +20,24 @@ def _post(native_id: str, title: str) -> dict:
         "excerpt": {"rendered": "Résumé riche"},
         "content": {"rendered": "Contenu suffisamment ambigu pour le test."},
     }
+
+
+def test_direct_cli_starts_with_repository_on_pythonpath():
+    root = Path(__file__).resolve().parents[1]
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(root)
+    completed = subprocess.run(
+        [sys.executable, "scripts/backfill_cyberattaque_semantic.py", "--help"],
+        cwd=root,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        timeout=20,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert "--max-calls" in completed.stdout
 
 
 def test_budgeted_resume_matches_full_run(monkeypatch, tmp_path: Path):
