@@ -82,6 +82,9 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
+          # Le fast-path reste strictement réservé aux MAJ. CREATE et REPLAY
+          # demeurent des recalculs complets de référence.
+          CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
         run: |
           ARGS=""
           if [ -n "${{ steps.scope.outputs.start }}" ]; then ARGS="--start ${{ steps.scope.outputs.start }}"; fi
