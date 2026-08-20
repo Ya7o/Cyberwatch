@@ -71,12 +71,6 @@
     return normalize(value).replace(/\s+/g, " ");
   }
 
-  function sameSummary(left, right) {
-    const a = normalizeNarrative(left);
-    const b = normalizeNarrative(right);
-    return Boolean(a && b && a === b);
-  }
-
   function narrativeContains(container, detail) {
     const haystack = normalizeNarrative(container);
     const needle = normalizeNarrative(detail);
@@ -360,10 +354,9 @@
   function factHtml(fact, incidentSummary = "") {
     const access = ({ phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" })[fact.initial_access] || fact.initial_access || "";
     const claimStatus = ({ claimed: "Revendiqué", confirmed: "Confirmé", unconfirmed: "Non confirmé", denied: "Démenti" })[fact.claim_status] || fact.claim_status || "";
-    const sourceSummary = sameSummary(fact.summary, incidentSummary) ? "" : fact.summary;
     const impactCovered = narrativeContains(fact.summary, fact.impact) || narrativeContains(incidentSummary, fact.impact);
     const sourceImpact = impactCovered ? "" : fact.impact;
-    const rows = [factRow("Statut", claimStatus), factRow("Acteur", fact.threat_actor), factRow("Tiers impliqué", fact.third_party), factRow("Vecteur d'entrée", access), factRow("Déroulé", attackFlowLabel(fact.attack_flow)), factRow("Localisation précise", fact.fine_location), factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)), factRow("Volume", fact.data_volume), factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : ""), renderDataTypes(fact.data_types), factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""), factRow("CVSS", fact.cvss), factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""), factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""), factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""), factRow("Impact", sourceImpact), factRow("Synthèse", sourceSummary), factRow("Évolution", fact.evolution)].filter(Boolean);
+    const rows = [factRow("Statut", claimStatus), factRow("Acteur", fact.threat_actor), factRow("Tiers impliqué", fact.third_party), factRow("Vecteur d'entrée", access), factRow("Déroulé", attackFlowLabel(fact.attack_flow)), factRow("Localisation précise", fact.fine_location), factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact)), factRow("Volume", fact.data_volume), factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : ""), renderDataTypes(fact.data_types), factRow("Vulnérabilités", Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.join(", ") : ""), factRow("CVSS", fact.cvss), factRow("Date d'attaque", fact.attack_date ? formatDate(fact.attack_date) : ""), factRow("Découverte", fact.discovered_date ? formatDate(fact.discovered_date) : ""), factRow("Score cyberattaque", fact.cyberattack_score != null ? `${fact.cyberattack_score}/100` : ""), factRow("Impact", sourceImpact), factRow("Évolution", fact.evolution)].filter(Boolean);
     const links = [safeUrl(fact.victim_website), ...(fact.evidence_urls || []).map(safeUrl)].filter(Boolean).slice(0, 4);
     if (links.length) rows.push(`<div class="evidence-links">${links.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>`);
     return rows.length ? `<div class="incident-fact"><div class="incident-fact-source">${esc(sourceLabel(fact.source))}</div>${rows.join("")}</div>` : "";
@@ -372,8 +365,7 @@
   function detailHtml(incident) {
     const parts = [];
     const factsInput = Array.isArray(incident.facts) ? incident.facts : [];
-    const hasSourceSummary = factsInput.some((fact) => fact?.summary && !sameSummary(fact.summary, incident.summary));
-    if (incident.summary && !hasSourceSummary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
+    if (incident.summary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`);
     const facts = factsInput.map((fact) => factHtml(fact, incident.summary)).filter(Boolean);
     if (facts.length) parts.push(`<div class="incident-facts-list">${facts.join("")}</div>`);
     if (incident.local) {
