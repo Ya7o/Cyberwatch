@@ -6,7 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 
 from . import (
-    config, context_sector, enrichment, identity, incremental,
+    config, context_sector, enrichment, identity, incremental, qualification_cache,
     sector as sector_policy, sector_registry, sector_registry_safety,
     source_llm_fallback, store,
 )
@@ -94,7 +94,7 @@ def _observe_layer(decisions, ordered, *, origin, confidence, mutate):
     before = snapshot_fields(ordered); result = mutate()
     decisions.extend(record_mutations(before, ordered, origin=origin, confidence=confidence)); return result
 
-def _capture_prequalification_state(ordered: list[Item], source_facts: list[dict], org_cache: list[dict]) -> None:
+def _capture_prequalification_state(ordered: list[Item], source_facts: list[dict], org_cache: list[dict]):
     facts_by_item = defaultdict(list)
     for row in source_facts:
         item_id = (row.get("Item_ID") or "").strip()
@@ -121,11 +121,38 @@ def _capture_prequalification_state(ordered: list[Item], source_facts: list[dict
         policy_version=config.METHOD_ID,
         dependency_digest_value=dependency_digest_value,
     )
+    return dirty_set, dependency_digest_value
+
+def _report_from_cache(payload: dict) -> QualificationReport:
+    parts = qualification_cache.payload_parts(payload)
+    return QualificationReport(
+        parts["items"], parts["incidents"], parts["changes"], parts["provenance"],
+        parts["decisions"], parts["decision_summary"], parts["incident_id_registry"],
+        parts["items_hash"], parts["incidents_hash"],
+    )
 
 def qualify(items: list[Item]) -> QualificationReport:
     ordered = identity.sort_items(items)
     source_facts, org_cache = store.read_csv(store.SOURCE_FACTS_CSV), store.load_org_enrichment_cache()
-    _capture_prequalification_state(ordered, source_facts, org_cache)
+    prequal, dependency_digest_value = _capture_prequalification_state(ordered, source_facts, org_cache)
+
+    cached = qualification_cache.load_cache(store.DATA_DIR)
+    matches, miss_reason = qualification_cache.cache_matches(
+        cached,
+        policy_version=config.METHOD_ID,
+        dependency_digest=dependency_digest_value,
+        prequalification_fingerprints=prequal.fingerprints,
+    )
+    if matches and not prequal.new and not prequal.dirty:
+        qualification_cache.clear_pending_cache()
+        qualification_cache.write_usage_observation(hit=True, skipped_items=len(ordered))
+        return _report_from_cache(cached)
+    qualification_cache.write_usage_observation(
+        hit=False,
+        miss_reason=miss_reason or ("prequalification_changed" if (prequal.new or prequal.dirty) else "cache_rejected"),
+        skipped_items=0,
+    )
+
     previous_provenance = store.load_qualification_provenance(); decisions = []
     restored = restore_legacy_sector_fallbacks(ordered, previous_provenance)
     registry_restored = sector_registry.restore_registry_applications(ordered, previous_provenance)
@@ -149,4 +176,13 @@ def qualify(items: list[Item]) -> QualificationReport:
     provenance.extend(context_provenance); provenance.extend(registry_provenance); provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"], row.get("Origin", "")))
     decisions.sort(key=lambda row: (row.item_id, row.field, row.origin, row.decision))
     incidents, incident_id_registry = build_incidents_with_registry(ordered, store.load_incident_id_registry())
-    return QualificationReport(ordered, incidents, changes, provenance, decisions, summarize_decisions(decisions), incident_id_registry, identity.items_hash(ordered), identity.incidents_hash(incidents))
+    report = QualificationReport(ordered, incidents, changes, provenance, decisions, summarize_decisions(decisions), incident_id_registry, identity.items_hash(ordered), identity.incidents_hash(incidents))
+    qualification_cache.write_pending_cache(
+        qualification_cache.report_to_payload(
+            report,
+            policy_version=config.METHOD_ID,
+            dependency_digest=dependency_digest_value,
+            prequalification_fingerprints=prequal.fingerprints,
+        )
+    )
+    return report
