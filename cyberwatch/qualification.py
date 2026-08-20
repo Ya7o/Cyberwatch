@@ -6,8 +6,9 @@ from collections import defaultdict
 from dataclasses import dataclass
 
 from . import (
-    config, context_sector, enrichment, identity, sector as sector_policy,
-    sector_registry, sector_registry_safety, source_llm_fallback, store,
+    config, context_sector, enrichment, identity, qualification_policy,
+    sector as sector_policy, sector_registry, sector_registry_safety,
+    source_llm_fallback, store,
 )
 from .dedup import build_incidents_with_registry
 from .model import Incident, Item
@@ -113,8 +114,12 @@ def qualify(items: list[Item]) -> QualificationReport:
     changes["sector_registry_auto_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_AUTO for row in registry_rows)
     changes["sector_registry_review_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_REVIEW for row in registry_rows)
     changes["sector_registry_conflict_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_CONFLICT for row in registry_rows)
-    llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered); changes.update(llm_changes); neutralize_sector_fallback(ordered, changes, provenance); decisions.extend(decisions_from_provenance(provenance))
-    provenance.extend(context_provenance); provenance.extend(registry_provenance); provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"], row.get("Origin", "")))
-    decisions.sort(key=lambda row: (row.item_id, row.field, row.origin, row.decision))
+    llm_changes, llm_provenance = source_llm_fallback.apply_source_llm_fallback(ordered); changes.update(llm_changes)
+    neutralize_sector_fallback(ordered, changes, llm_provenance); decisions.extend(decisions_from_provenance(llm_provenance))
+
+    # Point d'écriture canonique final : toutes les couches ont produit leurs candidats,
+    # l'arbitre résout les collisions selon le contrat de précédence et explique les perdants.
+    decisions = qualification_policy.reconcile(ordered, decisions)
+    provenance = [decision.to_row() for decision in decisions]
     incidents, incident_id_registry = build_incidents_with_registry(ordered, store.load_incident_id_registry())
     return QualificationReport(ordered, incidents, changes, provenance, decisions, summarize_decisions(decisions), incident_id_registry, identity.items_hash(ordered), identity.incidents_hash(incidents))
