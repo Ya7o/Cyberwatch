@@ -31,3 +31,8 @@ jobs:
           python scripts/evaluate_dedup_golden.py \
             --golden /tmp/dedup_golden_stable.csv \
             --require-stable-refs
+          echo 'DEDUP_GOLDEN_STABLE_BEGIN'
+          cat /tmp/dedup_golden_stable.csv
+          echo 'DEDUP_GOLDEN_STABLE_END'
+      - name: Certifier deux rebuilds consécutifs
+        run: python scripts/certify_dedup_closeout.py
