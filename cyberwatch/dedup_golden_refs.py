@@ -2,7 +2,8 @@
 
 Le golden historique stocke des Item_ID, qui peuvent changer lors d'une
 reconstruction. Ce module résout en priorité une identité source persistante :
-Source_ID + Source_Item_ID quand l'ID natif existe, sinon Source_ID + URL.
+Source_ID + Source_Item_ID quand l'ID natif existe, avec l'URL comme
+second discriminant lorsqu'un ID natif n'est pas unique ; sinon Source_ID + URL.
 L'Item_ID reste conservé comme trace et fallback de compatibilité pendant la
 migration.
 """
@@ -40,19 +41,17 @@ def stable_ref_for_item(item: Item) -> tuple[str, str, str]:
     return item.Source_ID, item.Source_Item_ID or "", item.URL or ""
 
 
-def _matches_stable_ref(
-    item: Item,
-    source_id: str,
-    source_item_id: str,
-    stable_url: str,
-) -> bool:
-    if not source_id or item.Source_ID != source_id:
-        return False
-    if source_item_id:
-        return item.Source_Item_ID == source_item_id
-    if stable_url:
-        return item.URL == stable_url
-    return False
+def _resolution(matches: list[Item]) -> GoldenResolution:
+    if len(matches) == 1:
+        item = matches[0]
+        return GoldenResolution(RESOLVED, item, (item.Item_ID,))
+    if len(matches) > 1:
+        return GoldenResolution(
+            AMBIGUOUS,
+            None,
+            tuple(sorted(item.Item_ID for item in matches)),
+        )
+    return GoldenResolution(MISSING, None)
 
 
 def resolve_golden_side(
@@ -60,26 +59,37 @@ def resolve_golden_side(
     side: str,
     items: list[Item],
 ) -> GoldenResolution:
-    """Résout un côté Left/Right du golden de façon déterministe."""
+    """Résout un côté Left/Right du golden de façon déterministe.
+
+    Un identifiant natif reste la référence primaire. S'il est réutilisé par
+    plusieurs lignes d'une même source, l'URL historique sert de discriminant
+    secondaire. Cela conserve la robustesse aux changements d'URL lorsque l'ID
+    natif est réellement unique, tout en refusant un choix arbitraire lorsqu'il
+    ne l'est pas.
+    """
     source_id = (row.get(f"{side}_Source_ID") or "").strip()
     source_item_id = (row.get(f"{side}_Source_Item_ID") or "").strip()
     stable_url = (row.get(f"{side}_Stable_URL") or "").strip()
     item_id = (row.get(f"{side}_Item_ID") or "").strip()
 
-    if source_id and (source_item_id or stable_url):
-        matches = [
+    if source_id and source_item_id:
+        native_matches = [
             item for item in items
-            if _matches_stable_ref(item, source_id, source_item_id, stable_url)
+            if item.Source_ID == source_id and item.Source_Item_ID == source_item_id
         ]
-        if len(matches) == 1:
-            return GoldenResolution(RESOLVED, matches[0], (matches[0].Item_ID,))
-        if len(matches) > 1:
-            return GoldenResolution(
-                AMBIGUOUS,
-                None,
-                tuple(sorted(item.Item_ID for item in matches)),
-            )
-        return GoldenResolution(MISSING, None)
+        if len(native_matches) <= 1:
+            return _resolution(native_matches)
+        if stable_url:
+            url_matches = [item for item in native_matches if item.URL == stable_url]
+            if url_matches:
+                return _resolution(url_matches)
+        return _resolution(native_matches)
+
+    if source_id and stable_url:
+        return _resolution([
+            item for item in items
+            if item.Source_ID == source_id and item.URL == stable_url
+        ])
 
     # Compatibilité temporaire avec DEDUP-GOLDEN-1 avant migration complète.
     if item_id:
