@@ -9,6 +9,8 @@ cas repasse par ``qualification.qualify``.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
+import json
 from typing import Iterable
 
 from . import identity
@@ -87,13 +89,37 @@ def qualify_delta(
     return DeltaQualificationResult(report, True, reason)
 
 
+def _rows_hash(rows: Iterable[dict]) -> str:
+    normalized = [
+        {str(key): str(value or "") for key, value in sorted(row.items())}
+        for row in rows
+    ]
+    normalized.sort(
+        key=lambda row: json.dumps(row, ensure_ascii=False, sort_keys=True)
+    )
+    raw = json.dumps(
+        normalized,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
+
+
 def parity_signature(report: QualificationReport) -> dict[str, object]:
-    """Signature minimale pour comparer un chemin delta au canonique."""
+    """Signature stricte pour comparer un chemin delta au canonique.
+
+    Les hashes métier restent centraux, mais la parité couvre aussi la
+    provenance et le registre d'identité : un fast-path n'est pas sûr si les
+    mêmes items/incidents masquent une décision ou une identité différente.
+    """
     return {
         "items_hash": report.items_hash,
         "incidents_hash": report.incidents_hash,
         "items_count": len(report.items),
         "incidents_count": len(report.incidents),
+        "provenance_hash": _rows_hash(report.provenance),
+        "incident_registry_hash": _rows_hash(report.incident_id_registry),
     }
 
 
@@ -101,7 +127,14 @@ def parity_failures(delta: QualificationReport, canonical: QualificationReport) 
     failures: list[str] = []
     left = parity_signature(delta)
     right = parity_signature(canonical)
-    for key in ("items_hash", "incidents_hash", "items_count", "incidents_count"):
+    for key in (
+        "items_hash",
+        "incidents_hash",
+        "items_count",
+        "incidents_count",
+        "provenance_hash",
+        "incident_registry_hash",
+    ):
         if left[key] != right[key]:
             failures.append(f"{key}: delta={left[key]} canonical={right[key]}")
     return failures
