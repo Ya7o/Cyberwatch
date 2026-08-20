@@ -83,9 +83,8 @@ def test_business_change_forces_canonical_fallback():
     assert reason == "items_hash_changed"
 
 
-def test_reuse_path_returns_previous_canonical_snapshot_without_calling_qualify(monkeypatch):
+def test_reuse_path_rebuilds_incidents_without_calling_qualify(monkeypatch):
     previous_items = [_item()]
-    previous_incidents = [_incident()]
 
     def forbidden(_items):
         raise AssertionError("qualify() ne doit pas être appelé sur le fast-path")
@@ -94,15 +93,17 @@ def test_reuse_path_returns_previous_canonical_snapshot_without_calling_qualify(
     result = qualify_delta(
         copy.deepcopy(previous_items),
         previous_items=previous_items,
-        previous_incidents=previous_incidents,
+        previous_incidents=[_incident()],
         previous_provenance=[{"Item_ID": "ITM-1"}],
-        previous_incident_id_registry=[{"Incident_ID": "INC-1"}],
+        previous_incident_id_registry=[],
         work_item_ids=[],
     )
     assert result.reused_snapshot is True
     assert result.fallback_reason == "exact_snapshot_match"
     assert result.report.items_hash == _report().items_hash
-    assert result.report.incidents_hash == _report().incidents_hash
+    assert result.report.changes["incremental_incidents_rebuilt"] == 1
+    assert len(result.report.incidents) == 1
+    assert result.report.incidents[0].Organisation == "Example SA"
 
 
 def test_dirty_path_calls_canonical_qualify(monkeypatch):
