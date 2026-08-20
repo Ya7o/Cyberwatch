@@ -12,7 +12,7 @@ from collections import defaultdict
 import os
 import time
 
-from . import config, incremental, store
+from . import config, identity, incremental, store
 from .incremental_qualification import qualify_delta
 
 _INSTALLED = False
@@ -42,6 +42,11 @@ def last_stats() -> dict[str, object]:
         "prequal_unchanged": _LAST_UNCHANGED,
         "prequal_reuse_rate": (_LAST_UNCHANGED / total) if total else 0.0,
     }
+
+
+def _same_business_snapshot(items, previous_items) -> bool:
+    """Helper historique conservé : Collected_As_Of n'entre pas dans le hash."""
+    return len(items) == len(previous_items) and identity.items_hash(items) == identity.items_hash(previous_items)
 
 
 def _dirty_set(items):
