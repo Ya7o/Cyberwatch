@@ -20,6 +20,7 @@ if str(ROOT) not in sys.path:
 
 from cyberwatch import identity, store
 from cyberwatch.dedup import build_incidents
+from cyberwatch.dedup_metrics import summarize_dedup, write_weak_merges_csv
 from cyberwatch.normalize import organisation_key
 from cyberwatch.site import incidents_payload
 
@@ -88,6 +89,9 @@ def main() -> int:
     items = identity.sort_items(rebuilt_items)
     incidents = build_incidents(items)
     after_hash = identity.incidents_hash(incidents)
+    dedup_summary = summarize_dedup(items)
+    weak_merge_path = store.DATA_DIR / "dedup_weak_merges.csv"
+    weak_merge_count = write_weak_merges_csv(weak_merge_path, items)
 
     store.save_items(items)
     store.save_incidents(incidents)
@@ -104,6 +108,9 @@ def main() -> int:
         "item_ids_changed": changed_item_ids,
         "incidents_hash_before": before_hash,
         "incidents_hash_after": after_hash,
+        "dedup": dedup_summary,
+        "weak_merges": weak_merge_count,
+        "weak_merges_output": str(weak_merge_path.relative_to(ROOT)),
     }
     print("REBUILD_DEDUP_AUDIT " + json.dumps(audit, sort_keys=True, ensure_ascii=False))
     return 0
