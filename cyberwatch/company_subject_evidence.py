@@ -155,6 +155,69 @@ def strong_subject_attributed_activity(
     return scored[0], scored[1]
 
 
+def _same_domain_activity_pages(organisation: str, official_url: str) -> list[str]:
+    """Découvre des pages métier du même domaine quand la navigation ne suffit pas.
+
+    Les résultats du moteur ne sont jamais une preuve : ils servent uniquement à
+    découvrir une URL du domaine officiel déjà validé. La page découverte repasse
+    ensuite les gardes d'identité, d'attribution au sujet et d'activité.
+    """
+    domain = company_evidence._domain(official_url)
+    if not domain:
+        return []
+    result: list[str] = []
+    for query in (
+        f'"{organisation}" activités site:{domain}',
+        f'"{organisation}" métiers site:{domain}',
+        f'"{organisation}" activities site:{domain}',
+        f'"{organisation}" businesses site:{domain}',
+        f'"{organisation}" what we do site:{domain}',
+    ):
+        try:
+            rows = company_evidence._search_links(query)
+        except Exception:
+            rows = []
+        for _title, raw_url in rows:
+            url = company_evidence._unwrap_search_url(raw_url)
+            if not url.startswith(("http://", "https://")):
+                continue
+            if company_evidence._domain(url) != domain:
+                continue
+            if url not in result:
+                result.append(url)
+            if len(result) >= 5:
+                return result
+    return result
+
+
+def _classify_official_page(
+    organisation: str,
+    candidate: str,
+) -> company_evidence.CompanyEvidence | None:
+    priority, body, _about_links, final_url = company_evidence._page(candidate)
+    if not priority and not body:
+        return None
+    evidence_url = final_url or candidate
+    if not official_site_discovery.domain_matches_organisation(organisation, evidence_url):
+        return None
+    if not company_evidence._identity_matches(organisation, evidence_url, priority, body):
+        return None
+    classified = classify_subject_attributed_activity(
+        organisation,
+        company_evidence._clean(" ".join((priority, body[:12000]))),
+    )
+    if classified is None:
+        return None
+    sector, evidence_text = classified
+    return company_evidence.CompanyEvidence(
+        sector=sector,
+        evidence_url=evidence_url,
+        evidence_text=evidence_text,
+        evidence_source=company_evidence._domain(evidence_url) or "official_site",
+        evidence_type="official_subject_activity",
+    )
+
+
 def resolve_official_site_subject_attributed(
     organisation: str,
     candidate_urls: tuple[str, ...] | list[str] | None = None,
@@ -192,28 +255,14 @@ def resolve_official_site_subject_attributed(
                     evidence_type="official_subject_activity",
                 )
 
-        for link in about_links:
+        visited = {evidence_url}
+        for link in list(about_links) + _same_domain_activity_pages(organisation, evidence_url):
+            if link in visited:
+                continue
+            visited.add(link)
             if not official_site_discovery.domain_matches_organisation(organisation, link):
                 continue
-            p_priority, p_body, _links, p_final = company_evidence._page(link)
-            if not p_priority and not p_body:
-                continue
-            page_url = p_final or link
-            if not official_site_discovery.domain_matches_organisation(organisation, page_url):
-                continue
-            if not company_evidence._identity_matches(organisation, page_url, p_priority, p_body):
-                continue
-            classified = classify_subject_attributed_activity(
-                organisation,
-                company_evidence._clean(" ".join((p_priority, p_body[:12000]))),
-            )
-            if classified is not None:
-                sector, evidence_text = classified
-                return company_evidence.CompanyEvidence(
-                    sector=sector,
-                    evidence_url=page_url,
-                    evidence_text=evidence_text,
-                    evidence_source=company_evidence._domain(page_url) or "official_site",
-                    evidence_type="official_subject_activity",
-                )
+            evidence = _classify_official_page(organisation, link)
+            if evidence is not None:
+                return evidence
     return None
