@@ -3,7 +3,7 @@ import pytest
 from cyberwatch import config, sources
 from cyberwatch.collectors import get_collector
 from cyberwatch.collectors.bonjourlafuite import BonjourLaFuiteCollector
-from cyberwatch.collectors.cyberattaque_rich import CyberattaqueRichCollector
+from cyberwatch.collectors.cyberattaque_rich_v2 import CyberattaqueRichV2Collector
 from cyberwatch.collectors.feed import FeedCollector
 from cyberwatch.collectors.ransomware_live import RansomwareLiveCollector
 from cyberwatch.collectors.veillellm import VeilleLlmCollector
@@ -13,7 +13,7 @@ def test_active_sources_route_to_their_declared_collector():
     expected = {
         "BONJOURLAFUITE": BonjourLaFuiteCollector,
         "FRENCHBREACHES": FeedCollector,
-        "CYBERATTAQUE_ORG": CyberattaqueRichCollector,
+        "CYBERATTAQUE_ORG": CyberattaqueRichV2Collector,
         "RANSOMWARE_LIVE": RansomwareLiveCollector,
         "VEILLE_LLM": VeilleLlmCollector,
     }

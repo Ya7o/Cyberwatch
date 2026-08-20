@@ -10,7 +10,7 @@ from .mediawatch import MediaWatchCollector
 from .newsrss import NewsRssCollector
 from .ransomware_live import RansomwareLiveCollector
 from .bonjourlafuite import BonjourLaFuiteCollector
-from .cyberattaque_rich import CyberattaqueRichCollector
+from .cyberattaque_rich_v2 import CyberattaqueRichV2Collector
 from .wordpress import WordPressCollector
 from .veillellm import VeilleLlmCollector
 
@@ -23,7 +23,7 @@ REGISTRY: dict[str, type[Collector]] = {
     "mediawatch": MediaWatchCollector,
     "ransomware_live": RansomwareLiveCollector,
     "bonjourlafuite": BonjourLaFuiteCollector,
-    "cyberattaque_org": CyberattaqueRichCollector,
+    "cyberattaque_org": CyberattaqueRichV2Collector,
     "veillellm": VeilleLlmCollector,
 }
 

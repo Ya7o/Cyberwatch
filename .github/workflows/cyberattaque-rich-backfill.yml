@@ -1,0 +1,78 @@
+name: Cyberattaque.org rich facts backfill
+
+on:
+  workflow_dispatch:
+    inputs:
+      semantic:
+        description: "Activer le filet sémantique LLM pour les articles ambigus"
+        type: boolean
+        default: true
+  push:
+    paths:
+      - '.github/workflows/cyberattaque-rich-backfill.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cyberattaque-rich-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Recollecter le corpus 2026 avec contenu complet
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          CYBERATTAQUE_SEMANTIC_ENABLED: ${{ github.event_name == 'push' && '1' || (inputs.semantic && '1' || '0') }}
+          CYBERATTAQUE_SEMANTIC_MODEL: gpt-5-nano
+          CYBERATTAQUE_SEMANTIC_MAX_CONTEXT_CHARS: '18000'
+          CYBERATTAQUE_SEMANTIC_MAX_OUTPUT_TOKENS: '1800'
+          ORG_ENRICHMENT_ENABLED: '0'
+          AI_MAX_CALLS_PER_RUN: '0'
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: '0'
+        run: |
+          python -m cyberwatch create --layers core --start 2026-01-01
+          python -m cyberwatch build-site
+
+      - name: Audit du corpus Cyberattaque.org
+        run: |
+          python scripts/audit_cyberattaque_rich_facts.py | tee /tmp/cyberattaque-rich-audit.json
+          cat /tmp/cyberattaque-rich-audit.json >> "$GITHUB_STEP_SUMMARY"
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/cyberattaque-rich-audit.json', encoding='utf-8'))
+          articles=data.get('articles',0)
+          rich=data.get('coverage',{}).get('with_rich_facts',0)
+          if articles and rich/articles < 0.80:
+              raise SystemExit(f'Couverture rich_facts insuffisante: {rich}/{articles}')
+          PY
+
+      - name: Contrôles de non-régression
+        run: |
+          python -m pytest tests/test_cyberattaque_rich_facts.py tests/test_cyberattaque_corpus_v2.py -q
+          python -m cyberwatch check
+
+      - name: Publier le backfill et le cache sémantique
+        run: |
+          git config user.name 'cyberwatch-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data assets/data
+          if git diff --cached --quiet; then echo 'Aucun changement à publier.'; exit 0; fi
+          git commit -m 'data: backfill rich facts Cyberattaque.org v2'
+          for delay in 0 2 4 8 16; do
+            [ "$delay" -gt 0 ] && sleep "$delay"
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+          done
+          exit 1
