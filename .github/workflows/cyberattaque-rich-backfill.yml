@@ -80,6 +80,7 @@ jobs:
           set -euo pipefail
           git config user.name 'cyberwatch-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config rebase.autoStash true
           BATCHES="${SEMANTIC_BATCHES:-4}"
           CALLS="${CALLS_PER_BATCH:-25}"
           BACKLOG=-1
@@ -108,15 +109,16 @@ jobs:
               pushed=0
               for delay in 0 2 4 8 16; do
                 [ "$delay" -gt 0 ] && sleep "$delay"
-                if git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+                if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
                   pushed=1
                   break
                 fi
               done
               if [ "$pushed" -ne 1 ]; then
-                echo 'Échec de publication du checkpoint sémantique.' >&2
+                echo 'Échec de publication du checkpoint sémantique : arrêt immédiat pour ne pas perdre la progression.' >&2
                 exit 1
               fi
+              echo "Checkpoint batch ${batch} publié sur ${GITHUB_REF_NAME}."
             fi
             if [ "$BACKLOG" -eq 0 ]; then
               echo "SEMANTIC_COMPLETE=1" >> "$GITHUB_ENV"
@@ -212,12 +214,13 @@ jobs:
         run: |
           git config user.name 'cyberwatch-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config rebase.autoStash true
           git add -- data assets/data
           if git diff --cached --quiet; then echo 'Aucun changement final à publier.'; exit 0; fi
           git commit -m 'data: certify rich facts Cyberattaque.org v4'
           for delay in 0 2 4 8 16; do
             [ "$delay" -gt 0 ] && sleep "$delay"
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
           done
           echo 'Échec de publication du backfill certifié.' >&2
           exit 1
