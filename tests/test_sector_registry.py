@@ -136,6 +136,63 @@ def test_conflicting_known_sector_blocks_auto_structured_propagation(make_item):
     assert target.Sector == config.SECTOR_UNKNOWN
 
 
+def test_strong_official_subject_evidence_can_resolve_weak_conflict(monkeypatch):
+    monkeypatch.setattr(
+        sector_registry_safety.store,
+        "load_org_enrichment_cache",
+        lambda: [{
+            "Organisation_Key": "acme groupe",
+            "Query_Name": "Acme Groupe",
+            "Validated_Via": "official_subject_activity",
+            "Validated_Sector": config.SECTOR_CONSTRUCTION,
+            "Activity_Label": "Acme Groupe, leader européen du BTP et des concessions, développe les territoires.",
+        }],
+    )
+    rows = [{
+        "Organisation_Key": "acme groupe",
+        "Organisation": "Acme Groupe",
+        "Sector": config.SECTOR_UNKNOWN,
+        "Decision": sector_registry.DECISION_CONFLICT,
+        "Confidence": "",
+        "Evidence_Type": "structured_source",
+        "Evidence_Types": "known_item_single | official_subject_activity | structured_source",
+        "Candidate_Sectors": f"{config.SECTOR_CONSTRUCTION} | {config.SECTOR_TRANSPORT}",
+        "Policy_Auto_Enabled": "0",
+    }]
+    result = sector_registry_safety.enforce_candidate_conflicts(rows)
+    assert result[0]["Decision"] == sector_registry.DECISION_AUTO
+    assert result[0]["Sector"] == config.SECTOR_CONSTRUCTION
+    assert result[0]["Evidence_Type"] == "official_subject_activity"
+
+
+def test_manual_reference_conflict_is_never_overridden(monkeypatch):
+    monkeypatch.setattr(
+        sector_registry_safety.store,
+        "load_org_enrichment_cache",
+        lambda: [{
+            "Organisation_Key": "acme groupe",
+            "Query_Name": "Acme Groupe",
+            "Validated_Via": "official_subject_activity",
+            "Validated_Sector": config.SECTOR_CONSTRUCTION,
+            "Activity_Label": "Acme Groupe, leader européen du BTP et des concessions.",
+        }],
+    )
+    rows = [{
+        "Organisation_Key": "acme groupe",
+        "Organisation": "Acme Groupe",
+        "Sector": config.SECTOR_UNKNOWN,
+        "Decision": sector_registry.DECISION_CONFLICT,
+        "Confidence": "",
+        "Evidence_Type": "manual_reference",
+        "Evidence_Types": "manual_reference | official_subject_activity",
+        "Candidate_Sectors": f"{config.SECTOR_CONSTRUCTION} | {config.SECTOR_TRANSPORT}",
+        "Policy_Auto_Enabled": "0",
+    }]
+    result = sector_registry_safety.enforce_candidate_conflicts(rows)
+    assert result[0]["Decision"] == sector_registry.DECISION_CONFLICT
+    assert result[0]["Sector"] == config.SECTOR_UNKNOWN
+
+
 def test_manual_reference_remains_auto(make_item):
     target = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
     reference = {

@@ -55,6 +55,22 @@ def test_subject_attribution_accepts_observed_long_tail_official_phrasing():
         assert result[0] == expected, organisation
 
 
+def test_strong_subject_activity_accepts_explicit_construction_leadership():
+    result = company_subject_evidence.strong_subject_attributed_activity(
+        "Acme Groupe",
+        "Acme Groupe, leader européen du BTP et des concessions, développe les villes et territoires.",
+    )
+    assert result is not None
+    assert result[0] == config.SECTOR_CONSTRUCTION
+
+
+def test_strong_subject_activity_rejects_generic_weak_construction_mention():
+    assert company_subject_evidence.strong_subject_attributed_activity(
+        "Acme",
+        "Acme accompagne ses clients dans leurs projets de construction.",
+    ) is None
+
+
 def test_subject_attribution_rejects_supplier_activity_stor_regression():
     assert company_subject_evidence.classify_subject_attributed_activity(
         "STOR Solutions",
