@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from collections import defaultdict
@@ -17,7 +18,6 @@ from cyberwatch import identity, store
 from cyberwatch.dedup import build_incidents
 from cyberwatch.dedup_metrics import (
     append_run_history,
-    review_queue_rows,
     summarize_dedup,
     write_review_queue_csv,
     write_weak_merges_csv,
@@ -97,7 +97,8 @@ def main() -> int:
     run_history_path = audit_dir / "dedup_runs.csv"
     weak_merge_count = write_weak_merges_csv(weak_merge_path, items)
     review_queue_count = write_review_queue_csv(review_queue_path, items)
-    review_rows = review_queue_rows(items)
+    with review_queue_path.open(encoding="utf-8", newline="") as handle:
+        review_rows = list(csv.DictReader(handle))
     possible_false_merges = sum(row["Risk_Type"] == "POSSIBLE_FALSE_MERGE" for row in review_rows)
     possible_missed_duplicates = sum(row["Risk_Type"] == "POSSIBLE_MISSED_DUPLICATE" for row in review_rows)
 
