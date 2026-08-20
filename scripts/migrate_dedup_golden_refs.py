@@ -46,7 +46,12 @@ def migrate(path: Path, output: Path) -> int:
 
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=BASE_COLUMNS, extrasaction="ignore")
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=BASE_COLUMNS,
+            extrasaction="ignore",
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(migrated)
     return len(migrated)
