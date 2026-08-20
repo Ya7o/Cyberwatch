@@ -37,7 +37,7 @@ def _eligible_auto_positive(r):
     return True,tier
 def _evidence(r,tier):return f"Revue V2 [{tier}] : {r.get('Left_Source_ID','')}/{r.get('Right_Source_ID','')}, même identité organisationnelle, écart {r.get('Days_Apart','')} jour(s). Titres: {(r.get('Left_Title')or'').strip()} | {(r.get('Right_Title')or'').strip()}"
 def _sort(r):
-    days=int(r.get("Days_Apart")or999);same=int(bool(r.get("Left_Company_ID")) and r.get("Left_Company_ID")==r.get("Right_Company_ID"));return(days,-same,r.get("Left_Source_ID",""),r.get("Right_Source_ID",""),min(r.get("Left_Item_ID",""),r.get("Right_Item_ID","")),max(r.get("Left_Item_ID",""),r.get("Right_Item_ID","")))
+    days=int(r.get("Days_Apart") or 999);same=int(bool(r.get("Left_Company_ID")) and r.get("Left_Company_ID")==r.get("Right_Company_ID"));return(days,-same,r.get("Left_Source_ID",""),r.get("Right_Source_ID",""),min(r.get("Left_Item_ID",""),r.get("Right_Item_ID","")),max(r.get("Left_Item_ID",""),r.get("Right_Item_ID","")))
 def build(golden_path,audit_path,review_output,target_cases,refresh=False):
     rows=_read(golden_path)
     if not refresh and len(rows)>=target_cases and rows and all(r.get("Golden_Version")==GOLDEN_V2 for r in rows) and Path(review_output).exists():return len(rows),len(_read(review_output))
