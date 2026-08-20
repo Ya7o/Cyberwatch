@@ -1,4 +1,4 @@
-from cyberwatch import incremental_runtime
+from cyberwatch import incremental, incremental_runtime
 from cyberwatch.incremental import DirtySet
 from cyberwatch.performance_gates import validate_performance_row
 
@@ -41,3 +41,7 @@ def test_runtime_dirty_set_contract_exposes_work_items(monkeypatch):
 def test_incremental_runtime_remains_opt_in(monkeypatch):
     monkeypatch.delenv("CYBERWATCH_INCREMENTAL_QUALIFICATION", raising=False)
     assert incremental_runtime.enabled() is False
+
+
+def test_qualification_policy_is_part_of_incremental_dependency_digest():
+    assert "qualification_policy.py" in incremental.QUALIFICATION_CODE_FILES
