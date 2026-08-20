@@ -1,0 +1,28 @@
+name: Rich Facts Monitoring
+
+on:
+  schedule:
+    - cron: '30 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Cross-source observability
+        run: |
+          python scripts/audit_rich_facts_platform.py --output /tmp/rich-facts-platform.json
+          echo '### Rich Facts — cross-source' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/rich-facts-platform.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - name: Permanent golden set
+        run: python scripts/evaluate_rich_facts_golden.py >> "$GITHUB_STEP_SUMMARY"

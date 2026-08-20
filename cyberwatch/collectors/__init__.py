@@ -11,6 +11,7 @@ from .newsrss import NewsRssCollector
 from .ransomware_live import RansomwareLiveCollector
 from .bonjourlafuite import BonjourLaFuiteCollector
 from .cyberattaque_rich_v2 import CyberattaqueRichV2Collector
+from .frenchbreaches_rich import FrenchBreachesRichCollector
 from .wordpress import WordPressCollector
 from .veillellm import VeilleLlmCollector
 
@@ -24,6 +25,7 @@ REGISTRY: dict[str, type[Collector]] = {
     "ransomware_live": RansomwareLiveCollector,
     "bonjourlafuite": BonjourLaFuiteCollector,
     "cyberattaque_org": CyberattaqueRichV2Collector,
+    "frenchbreaches_rich": FrenchBreachesRichCollector,
     "veillellm": VeilleLlmCollector,
 }
 

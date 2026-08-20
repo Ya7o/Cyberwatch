@@ -46,7 +46,6 @@ def stable_frenchbreaches_detail_text(html_text: str) -> str:
     return text[:cut].strip()
 
 
-
 def discover_feeds(client, page_url: str, source_budget=None) -> list[str]:
     candidates: list[str] = []
     response = client.fetch(page_url, source_budget)
@@ -114,6 +113,28 @@ def _hydrate_frenchbreaches_details(client, entries: list[RawEntry], budget) -> 
     return attempted, hydrated
 
 
+def _enrich_frenchbreaches_rich_facts(entries: list[RawEntry]) -> int:
+    """Attach generic rich facts after hydration; failures stay source-local."""
+    from ..rich_facts import enrich_provenance
+    from .frenchbreaches_rich import extract_frenchbreaches_rich_facts
+
+    enriched = 0
+    for entry in entries:
+        text = "\n".join(part for part in (entry.title, entry.summary, entry.content) if part)
+        rich = extract_frenchbreaches_rich_facts(text)
+        if not rich:
+            continue
+        metadata = dict(entry.source_metadata or {})
+        metadata["rich_facts"] = enrich_provenance(
+            rich,
+            source_id="FRENCHBREACHES",
+            item_id=str(entry.source_item_id or ""),
+        )
+        entry.source_metadata = metadata
+        enriched += 1
+    return enriched
+
+
 class FeedCollector(Collector):
     name = "feed"
 
@@ -164,7 +185,8 @@ class FeedCollector(Collector):
 
             if spec.source_id == "FRENCHBREACHES" and in_window:
                 attempted, hydrated = _hydrate_frenchbreaches_details(client, in_window, budget)
-                detail = f"details_hydrates={hydrated}/{attempted}"
+                enriched = _enrich_frenchbreaches_rich_facts(in_window)
+                detail = f"details_hydrates={hydrated}/{attempted}; rich_facts={enriched}/{len(in_window)}"
                 result.comment = f"{result.comment}; {detail}" if result.comment else detail
 
             result.calls = budget.requests_made
