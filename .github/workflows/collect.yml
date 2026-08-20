@@ -103,6 +103,16 @@ jobs:
         if: steps.kind.outputs.writes == 'true' && steps.scope.outputs.mode != 'replay'
         run: python scripts/report_run_performance.py --observe >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Performance du run
+        if: always() && steps.kind.outputs.writes == 'true'
+        run: |
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "### Performance" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          python scripts/report_run_performance.py --last 3 >> "$GITHUB_STEP_SUMMARY"
+          python scripts/report_source_performance.py >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
       - name: Récapitulatif du run
         if: always() && steps.kind.outputs.writes == 'true'
         run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
