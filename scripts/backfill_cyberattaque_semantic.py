@@ -4,7 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
+
+# A script launched as ``python scripts/foo.py`` gets ``scripts/`` on sys.path,
+# not the repository root. Bootstrap the root so direct CLI execution works in
+# GitHub Actions and locally without relying on an external PYTHONPATH.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from cyberwatch.cyberattaque_semantic_backfill import DEFAULT_ENDPOINT, run
 

@@ -58,7 +58,7 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Smoke test CLI du backfill sémantique
-        run: python scripts/backfill_cyberattaque_semantic.py --help >/dev/null
+        run: env -u PYTHONPATH python scripts/backfill_cyberattaque_semantic.py --help >/dev/null
 
       - name: Rebuild déterministe du corpus 2026
         env:
@@ -82,6 +82,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           BATCHES="${SEMANTIC_BATCHES:-4}"
           CALLS="${CALLS_PER_BATCH:-25}"
+          BACKLOG=-1
           for batch in $(seq 1 "$BATCHES"); do
             echo "=== Semantic batch $batch/$BATCHES (max calls=$CALLS) ==="
             python scripts/backfill_cyberattaque_semantic.py \
@@ -104,16 +105,28 @@ jobs:
             git add -- data/source_facts.csv data/cyberattaque_semantic_cache.json data/quality/cyberattaque_semantic_progress.json data/quality/cyberattaque_semantic_backlog.json
             if ! git diff --cached --quiet; then
               git commit -m "data: Cyberattaque semantic checkpoint batch ${batch}"
+              pushed=0
               for delay in 0 2 4 8 16; do
                 [ "$delay" -gt 0 ] && sleep "$delay"
-                git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break
+                if git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+                  pushed=1
+                  break
+                fi
               done
+              if [ "$pushed" -ne 1 ]; then
+                echo 'Échec de publication du checkpoint sémantique.' >&2
+                exit 1
+              fi
             fi
             if [ "$BACKLOG" -eq 0 ]; then
               echo "SEMANTIC_COMPLETE=1" >> "$GITHUB_ENV"
               break
             fi
           done
+          if [ "$BACKLOG" -gt 0 ]; then
+            echo "Backfill sémantique incomplet : ${BACKLOG} article(s) restent en attente après ${BATCHES} lot(s)." >&2
+            exit 2
+          fi
 
       - name: Rapport de progression
         if: ${{ always() }}
