@@ -18,6 +18,13 @@ from . import (
 )
 from .dedup import build_incidents_with_registry
 from .model import Incident, Item
+from .qualification_decision import (
+    QualificationDecision,
+    decisions_from_provenance,
+    record_mutations,
+    snapshot_fields,
+    summarize_decisions,
+)
 from .sector_fallback_migration import restore_legacy_sector_fallbacks
 
 
@@ -46,6 +53,8 @@ class QualificationReport:
     incidents: list[Incident]
     changes: dict[str, int]
     provenance: list[dict[str, str]]
+    decisions: list[QualificationDecision]
+    decision_summary: list[dict[str, object]]
     incident_id_registry: list[dict[str, str]]
     items_hash: str
     incidents_hash: str
@@ -150,33 +159,88 @@ def neutralize_sector_fallback(
     return neutralized
 
 
+def _observe_layer(
+    decisions: list[QualificationDecision],
+    ordered: list[Item],
+    *,
+    origin: str,
+    confidence: str,
+    mutate,
+):
+    before = snapshot_fields(ordered)
+    result = mutate()
+    decisions.extend(
+        record_mutations(
+            before,
+            ordered,
+            origin=origin,
+            confidence=confidence,
+        )
+    )
+    return result
+
+
 def qualify(items: list[Item]) -> QualificationReport:
     """Applique les couches canoniques avec propagation Sector réversible."""
     ordered = identity.sort_items(items)
     previous_provenance = store.load_qualification_provenance()
+    decisions: list[QualificationDecision] = []
 
     restored = restore_legacy_sector_fallbacks(ordered, previous_provenance)
     registry_restored = sector_registry.restore_registry_applications(ordered, previous_provenance)
 
     reference = enrichment.load_reference()
-    changes = enrichment.enrich_items(ordered, reference)
+    changes = _observe_layer(
+        decisions,
+        ordered,
+        origin="MANUAL_REFERENCE",
+        confidence="HIGH",
+        mutate=lambda: enrichment.enrich_items(ordered, reference),
+    )
     changes["llm_sector_restored"] = restored
     changes["sector_registry_restored"] = registry_restored
-    changes.update(enrichment.backfill_unknowns(ordered, reference))
-    changes["sector_safe_name_backfill"] = backfill_safe_name_sectors(ordered)
+
+    backfill_changes = _observe_layer(
+        decisions,
+        ordered,
+        origin="OFFLINE_BACKFILL",
+        confidence="MEDIUM",
+        mutate=lambda: enrichment.backfill_unknowns(ordered, reference),
+    )
+    changes.update(backfill_changes)
+    changes["sector_safe_name_backfill"] = _observe_layer(
+        decisions,
+        ordered,
+        origin="SAFE_NAME_RULE",
+        confidence="HIGH",
+        mutate=lambda: backfill_safe_name_sectors(ordered),
+    )
 
     source_facts = store.read_csv(store.SOURCE_FACTS_CSV)
     org_cache = store.load_org_enrichment_cache()
-    changes["sector_structured_source_backfill"] = backfill_structured_source_sectors(ordered, source_facts)
+    changes["sector_structured_source_backfill"] = _observe_layer(
+        decisions,
+        ordered,
+        origin="STRUCTURED_SOURCE",
+        confidence="HIGH",
+        mutate=lambda: backfill_structured_source_sectors(ordered, source_facts),
+    )
 
     context_applied, context_provenance, context_conflicts = context_sector.resolve_contextual_sectors(
         ordered,
         source_facts,
         org_cache,
     )
+    decisions.extend(decisions_from_provenance(context_provenance))
     changes["sector_context_applied"] = context_applied
     changes["sector_context_conflicts"] = context_conflicts
-    changes["threat_stabilized"] = stabilize_threats(ordered)
+    changes["threat_stabilized"] = _observe_layer(
+        decisions,
+        ordered,
+        origin="THREAT_STABILIZATION",
+        confidence="HIGH",
+        mutate=lambda: stabilize_threats(ordered),
+    )
 
     registry_rows = sector_registry.build_registry(
         ordered,
@@ -189,6 +253,7 @@ def qualify(items: list[Item]) -> QualificationReport:
     registry_applied, registry_provenance, registry_known_conflicts = sector_registry.apply_registry(
         ordered, registry_rows
     )
+    decisions.extend(decisions_from_provenance(registry_provenance))
     changes["sector_registry_applied"] = registry_applied
     changes["sector_registry_known_conflicts"] = registry_known_conflicts
     changes["sector_registry_auto_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_AUTO for row in registry_rows)
@@ -198,6 +263,7 @@ def qualify(items: list[Item]) -> QualificationReport:
     llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered)
     changes.update(llm_changes)
     neutralize_sector_fallback(ordered, changes, provenance)
+    decisions.extend(decisions_from_provenance(provenance))
 
     provenance.extend(context_provenance)
     provenance.extend(registry_provenance)
@@ -206,6 +272,7 @@ def qualify(items: list[Item]) -> QualificationReport:
             row["Item_ID"], row["Field"], row["Decision"], row.get("Origin", "")
         )
     )
+    decisions.sort(key=lambda row: (row.item_id, row.field, row.origin, row.decision))
 
     incidents, incident_id_registry = build_incidents_with_registry(
         ordered, store.load_incident_id_registry()
@@ -215,6 +282,8 @@ def qualify(items: list[Item]) -> QualificationReport:
         incidents=incidents,
         changes=changes,
         provenance=provenance,
+        decisions=decisions,
+        decision_summary=summarize_decisions(decisions),
         incident_id_registry=incident_id_registry,
         items_hash=identity.items_hash(ordered),
         incidents_hash=identity.incidents_hash(incidents),
