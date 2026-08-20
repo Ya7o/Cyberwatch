@@ -1,0 +1,66 @@
+"""Contrats de non-régression pour le détail des incidents."""
+
+from __future__ import annotations
+
+import re
+
+
+def _read(path: str) -> str:
+    return open(path, encoding="utf-8").read()
+
+
+def _function_body(js: str, name: str, next_name: str) -> str:
+    match = re.search(
+        rf"function {re.escape(name)}\([^)]*\)\s*\{{(.*?)\n  \}}\n\n  function {re.escape(next_name)}",
+        js,
+        re.DOTALL,
+    )
+    assert match, f"fonction {name} introuvable"
+    return match.group(1)
+
+
+def test_detail_incident_est_genere_directement_dans_sources():
+    js = _read("assets/app.js")
+    body = _function_body(js, "renderTable", "incidentDate")
+
+    org_cell = re.search(r'<td data-label=\\"Organisation\\"[^\n]*', body)
+    source_cell = re.search(r'<td data-label=\\"Sources\\"[^\n]*', body)
+
+    assert org_cell
+    assert source_cell
+    assert "incident-details-toggle" not in org_cell.group(0)
+    assert "incident-details-toggle" in source_cell.group(0)
+    assert "sourceLinks(incident)" in source_cell.group(0)
+    assert source_cell.group(0).index("sourceLinks(incident)") < source_cell.group(0).index("incident-details-toggle")
+
+
+def test_synthese_globale_est_conditionnee_avant_rendu():
+    js = _read("assets/app.js")
+    body = _function_body(js, "detailHtml", "sourceHomes")
+
+    assert "const factsInput = Array.isArray(incident.facts) ? incident.facts : []" in body
+    assert "const hasSourceSummary = factsInput.some" in body
+    assert "!sameSummary(fact.summary, incident.summary)" in body
+    assert "if (incident.summary && !hasSourceSummary)" in body
+    assert "factsInput.map((fact) => factHtml(fact, incident.summary))" in body
+
+
+def test_aucun_script_de_patch_detail_n_est_charge():
+    html = _read("index.html")
+    scripts = re.findall(r'<script\s+src="([^"]+)"', html)
+
+    assert scripts == ["assets/app.js"]
+    assert "dashboard-layout-fixes.js" not in html
+    assert "detail-summary-fix.js" not in html
+
+
+def test_incident_et_sources_partagent_le_triangle_detail():
+    css = _read("assets/dashboard-mobile-fixes.css")
+    html = _read("index.html")
+
+    assert '.incident-details-toggle::before' in css
+    assert 'content: "▸"' in css
+    assert '.incident-details-toggle[aria-expanded="true"]::before' in css
+    assert '.sources-detail > summary::before' in css
+    assert '.sources-detail[open] > summary::before' in css
+    assert '<summary>Détail</summary>' in html
