@@ -149,16 +149,26 @@ jobs:
           cat /tmp/cyberattaque-rich-certification.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verdict de clôture opérationnelle
+        if: ${{ github.event_name == 'push' || inputs.semantic }}
         run: |
           python scripts/certify_cyberattaque_semantic_closeout.py \
             --progress data/quality/cyberattaque_semantic_progress.json \
             --certification data/quality/cyberattaque_rich_certification.json \
             --json data/quality/cyberattaque_semantic_closeout.json \
+            --allow-not-ready \
             | tee /tmp/cyberattaque-semantic-closeout.txt
           echo '### Clôture sémantique Cyberattaque.org' >> "$GITHUB_STEP_SUMMARY"
           echo '```text' >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/cyberattaque-semantic-closeout.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Exiger READY quand le backlog est épuisé
+        if: ${{ env.SEMANTIC_COMPLETE == '1' }}
+        run: |
+          python scripts/certify_cyberattaque_semantic_closeout.py \
+            --progress data/quality/cyberattaque_semantic_progress.json \
+            --certification data/quality/cyberattaque_rich_certification.json \
+            --json data/quality/cyberattaque_semantic_closeout.json
 
       - name: Contrôles de non-régression
         run: |
