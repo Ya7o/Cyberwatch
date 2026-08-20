@@ -45,7 +45,7 @@ def test_fast_path_can_be_disabled(monkeypatch):
 
 
 def test_frenchbreaches_detail_cache_avoids_second_network_fetch(monkeypatch, tmp_path):
-    cache_path = tmp_path / "details.json"; monkeypatch.setenv("FRENCHBREACHES_DETAIL_CACHE_PATH", str(cache_path)); monkeypatch.setenv("FRENCHBREACHES_DETAIL_CACHE_TTL_DAYS", "7"); incremental_performance.reset_for_tests()
+    cache_path = tmp_path / "details.json"; monkeypatch.setenv("CYBERWATCH_FRENCHBREACHES_DETAIL_CACHE", "1"); monkeypatch.setenv("FRENCHBREACHES_DETAIL_CACHE_PATH", str(cache_path)); monkeypatch.setenv("FRENCHBREACHES_DETAIL_CACHE_TTL_DAYS", "7"); incremental_performance.reset_for_tests()
     class Budget: exhausted=False; requests_made=0
     class Response: ok=True; text="<article>Texte détaillé stable</article>"
     class Client:
@@ -57,7 +57,7 @@ def test_frenchbreaches_detail_cache_avoids_second_network_fetch(monkeypatch, tm
 
 
 def test_frenchbreaches_detail_cache_invalidates_when_feed_identity_changes(monkeypatch, tmp_path):
-    cache_path = tmp_path / "details.json"; monkeypatch.setenv("FRENCHBREACHES_DETAIL_CACHE_PATH", str(cache_path)); incremental_performance.reset_for_tests()
+    cache_path = tmp_path / "details.json"; monkeypatch.setenv("CYBERWATCH_FRENCHBREACHES_DETAIL_CACHE", "1"); monkeypatch.setenv("FRENCHBREACHES_DETAIL_CACHE_PATH", str(cache_path)); incremental_performance.reset_for_tests()
     class Budget: exhausted=False; requests_made=0
     class Response: ok=True; text="<article>Texte détaillé stable</article>"
     class Client:
