@@ -21,11 +21,18 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-      - name: Intégrité des références golden
-        run: python -m pytest tests/test_dedup_golden_integrity.py tests/test_dedup_golden_refs.py -q
-      - name: Certifier la déduplication stable
+      - name: Intégrité du Golden V2
+        run: python -m pytest tests/test_dedup_golden_integrity.py tests/test_dedup_golden_refs.py tests/test_dedup_golden_v2.py -q
+      - name: Certifier la déduplication stable V2
         run: python scripts/evaluate_dedup_golden.py --require-stable-refs
-      - name: Vérifier l'idempotence de la migration
+      - name: Vérifier l'idempotence du corpus V2
+        run: |
+          cp data/golden/dedup_golden.csv /tmp/dedup_golden_before.csv
+          cp data/golden/dedup_reviewed_v2.csv /tmp/dedup_reviews_before.csv
+          python scripts/promote_dedup_golden_v2.py --target-cases 150
+          cmp /tmp/dedup_golden_before.csv data/golden/dedup_golden.csv
+          cmp /tmp/dedup_reviews_before.csv data/golden/dedup_reviewed_v2.csv
+      - name: Vérifier l'idempotence des références stables
         run: |
           python scripts/migrate_dedup_golden_refs.py --output /tmp/dedup_golden_stable.csv
           cmp data/golden/dedup_golden.csv /tmp/dedup_golden_stable.csv

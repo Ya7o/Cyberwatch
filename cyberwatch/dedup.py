@@ -18,29 +18,18 @@ KEEP_SEPARATE = "KEEP_SEPARATE"
 NO_DECISION = "NO_DECISION"
 PREFERRED_QUALIFICATION_SOURCE = "VEILLE_LLM"
 
-# Un veto explicite ne doit jamais être contourné par l'item d'ancrage d'une
-# composante. Les simples écarts de dates ne sont pas des vetos forts : ils
-# restent gérés par la décision ancre -> nouvel item afin de ne pas casser les
-# corroborations légitimes déjà établies.
 STRONG_KEEP_REASON_CODES = frozenset({
     "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID",
     "INCIDENT_KEEP_CONFLICTING_EVENT_DATE",
     "INCIDENT_KEEP_RECURRENCE_MARKER",
 })
 
-# Une URL n'est un identifiant fort que pour une source dont le contrat indique
-# qu'elle pointe vers une page/item unique. La règle est volontairement fermée :
-# toute nouvelle source doit être ajoutée explicitement après vérification.
 UNIQUE_ITEM_URL_SOURCES = frozenset({
     "BONJOURLAFUITE",
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES",
 })
 
-# RANSOMWARE_LIVE publie souvent la revendication initiale avant qu'un article
-# Cyberattaque.org documente le même épisode. Le cas autorisé reste volontairement
-# étroit : même victime canonique, ransomware des deux côtés, revendication puis
-# corroboration exactement quatre jours plus tard. Au-delà, on reste séparé.
 RANSOMWARE_CORROBORATION_SOURCES = frozenset({
     "RANSOMWARE_LIVE",
     "CYBERATTAQUE_ORG",
@@ -65,7 +54,6 @@ class DedupDecision:
 
 
 def _effective_key(item: Item) -> str:
-    """Identité de dédup sans réécrire la clé/Item_ID historique de l'item."""
     return effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
 
 
@@ -75,14 +63,6 @@ def _recurrence(item: Item) -> bool:
 
 
 def _recurrence_boundary(left: Item, right: Item) -> bool:
-    """Vrai seulement si l'item le plus récent annonce explicitement une récidive.
-
-    Un marqueur de récidive décrit la relation avec un épisode antérieur ; il
-    ne doit pas empêcher deux sources datées du même jour de corroborer ce
-    nouvel épisode. La règle reste symétrique : l'ordre des arguments ne change
-    pas la décision, seul l'item chronologiquement le plus récent peut ouvrir
-    une frontière.
-    """
     left_date = date_or_empty(left.best_date)
     right_date = date_or_empty(right.best_date)
     if not left_date or not right_date or left_date == right_date:
@@ -92,7 +72,6 @@ def _recurrence_boundary(left: Item, right: Item) -> bool:
 
 
 def _same_unique_url(left: Item, right: Item) -> bool:
-    """Vrai seulement si l'URL est un identifiant d'item pour cette source."""
     return bool(
         left.URL
         and left.URL == right.URL
@@ -102,12 +81,6 @@ def _same_unique_url(left: Item, right: Item) -> bool:
 
 
 def _ransomware_corroboration(left: Item, right: Item, days: int) -> bool:
-    """Autorise uniquement une revendication Ransomware.live suivie à J+4.
-
-    La règle n'élargit pas la fenêtre générale : elle encode un contrat de
-    corroboration entre deux sources précises et conserve les vetos de récidive,
-    d'ID natif et d'Event_Date évalués plus tôt dans `decide_merge`.
-    """
     if days != RANSOMWARE_CORROBORATION_DAYS:
         return False
     if {left.Source_ID, right.Source_ID} != RANSOMWARE_CORROBORATION_SOURCES:
@@ -134,8 +107,6 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
             return DedupDecision(MERGE, "INCIDENT_MERGE_SOURCE_ITEM_ID")
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID")
 
-    # Une récidive ouvre une frontière avec un épisode antérieur, mais deux
-    # publications du même jour peuvent décrire ce même nouvel épisode.
     if _recurrence_boundary(left, right):
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_RECURRENCE_MARKER")
 
@@ -143,10 +114,6 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
     if not left_key or left_key != right_key:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
 
-    # Deux dates d'événement explicites et différentes décrivent deux épisodes
-    # distincts. Ce veto est volontairement évalué avant la proximité de date de
-    # publication : une publication rapprochée ne doit jamais effacer une
-    # contradiction événementielle déjà structurée.
     if left.Event_Date and right.Event_Date and left.Event_Date != right.Event_Date:
         return DedupDecision(
             KEEP_SEPARATE,
@@ -189,13 +156,6 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
 
 
 def _has_strong_component_veto(current: list[Item], incoming: Item) -> bool:
-    """Détecte un conflit explicite avec n'importe quel membre de la composante.
-
-    L'algorithme reste ancré pour la décision positive de fusion, mais un veto
-    fort est évalué paire à paire contre tous les membres. Cela empêche qu'un
-    item tiers serve de pont entre deux identifiants natifs incompatibles ou
-    entre deux dates d'événement explicitement distinctes.
-    """
     for member in current:
         decision = decide_merge(member, incoming)
         if (
@@ -206,8 +166,36 @@ def _has_strong_component_veto(current: list[Item], incoming: Item) -> bool:
     return False
 
 
+def _can_extend_component(current: list[Item], incoming: Item) -> bool:
+    """Autorise une corroboration cross-source J+1 sans chaînage ouvert.
+
+    L'ancre reste la règle principale. Cette extension ne sert que lorsqu'une
+    source différente corrobore à J+1 un membre déjà admis. La composante reste
+    bornée par INCIDENT_GAP_DAYS et tous les veto forts sont contrôlés avant
+    l'appel par `group_components`.
+    """
+    incoming_date = date_or_empty(incoming.best_date)
+    if not incoming_date or not current:
+        return False
+    dated = [member for member in current if date_or_empty(member.best_date)]
+    if not dated:
+        return False
+    earliest = min(date_or_empty(member.best_date) for member in dated)
+    if abs((incoming_date - earliest).days) > config.INCIDENT_GAP_DAYS:
+        return False
+    for member in reversed(dated):
+        member_date = date_or_empty(member.best_date)
+        if member.Source_ID == incoming.Source_ID:
+            continue
+        if abs((incoming_date - member_date).days) > 1:
+            continue
+        if decide_merge(member, incoming).action == MERGE:
+            return True
+    return False
+
+
 def group_components(items: list[Item]) -> list[list[Item]]:
-    """Construit des composantes ancrées sans chaînage ni contournement de veto."""
+    """Construit des composantes ancrées avec extension cross-source bornée."""
     by_org: dict[str, list[Item]] = defaultdict(list)
     for item in items:
         key = _effective_key(item)
@@ -227,7 +215,8 @@ def group_components(items: list[Item]) -> list[list[Item]]:
                 current, anchor = [item], item
                 continue
             decision = decide_merge(anchor, item)
-            if decision.action == MERGE and not _has_strong_component_veto(current, item):
+            veto = _has_strong_component_veto(current, item)
+            if not veto and (decision.action == MERGE or _can_extend_component(current, item)):
                 current.append(item)
             else:
                 components.append(current)
@@ -259,7 +248,6 @@ def _majority(values: list[str], fallback: str) -> str:
 
 
 def _strict_majority(values: list[str], fallback: str) -> str:
-    """Majorité sans tie-break arbitraire : une égalité conserve Inconnu."""
     meaningful = [value for value in values if value and value != fallback]
     if not meaningful:
         return fallback
@@ -270,12 +258,6 @@ def _strict_majority(values: list[str], fallback: str) -> str:
 
 
 def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str) -> str:
-    """Préfère VEILLE_LLM pour les champs qu'elle qualifie plus précisément.
-
-    La priorité ne s'applique que si VEILLE_LLM fournit une valeur connue.
-    Sinon, la majorité historique reste inchangée, sauf pour Sector où une
-    égalité conserve désormais Inconnu plutôt qu'un choix alphabétique.
-    """
     preferred = [
         getattr(item, field_name)
         for item in ordered
@@ -291,9 +273,6 @@ def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str
     return _majority(values, fallback)
 
 
-# Priorité métier dédiée à l'agrégation Incident. Elle ne réutilise pas l'ordre
-# historique de config.THREATS : une preuve spécifique de fuite ou de
-# compromission de compte doit battre un simple signal générique d'intrusion.
 _INCIDENT_THREAT_PRIORITY = (
     config.THREAT_RANSOMWARE,
     config.THREAT_DDOS,
@@ -317,11 +296,6 @@ def _priority_threat(values: list[str]) -> str:
 
 
 def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
-    """Écarte les apports analytiques du compteur de corroboration.
-
-    Si un incident n'existe que dans une source analytique, celle-ci reste
-    affichée comme source unique afin de ne jamais créer un incident sans source.
-    """
     from . import sources
 
     evidence = []
@@ -365,7 +339,6 @@ def _incident_from_component(component: list[Item], stable_id: str = "") -> Inci
 def build_incidents_with_registry(
     items: list[Item], registry_rows: list[dict] | None = None,
 ) -> tuple[list[Incident], list[dict[str, str]]]:
-    """Construit INCIDENTS en conservant les ancres historiques persistées."""
     components = group_components(items)
     assigned, updated_registry = assign_incident_ids(components, registry_rows)
     incidents = [
@@ -376,7 +349,6 @@ def build_incidents_with_registry(
 
 
 def build_incidents(items: list[Item]) -> list[Incident]:
-    """Construction pure sans état, utilisée par les tests de règles de dédup."""
     return sort_incidents([
         _incident_from_component(component)
         for component in group_components(items)
