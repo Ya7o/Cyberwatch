@@ -1,6 +1,407 @@
 [
  {
   "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 6800000,
+    "affected_count_raw": "6,8 millions de patients",
+    "affected_unit": "people",
+    "claim_status": "confirmed",
+    "data_volume": "12,8 Go",
+    "item_id": "ITM-26487d3b2a36a30b",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : 12,8 Go de données et 6,8 millions de patients."
+   },
+   {
+    "affected_count": 6800000,
+    "affected_count_raw": "6,8 millions de patients",
+    "affected_unit": "people",
+    "item_id": "ITM-ea71f8687a081d14",
+    "source": "FRENCHBREACHES",
+    "summary": "Éléments documentés : 6,8 millions de patients."
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-F65A98FB9FA4",
+  "items": 2,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "Alaxione",
+  "sector": "Santé",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : 6,8 millions de patients.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/alaxione-mt0ophzmbommap9dya",
+   "https://www.cyberattaque.org/alaxione-68-millions-de-patients-et-plus-de-10-millions-de-rendez-vous-revendiques-dans-une-fuite-massive/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "discovered_date": "2026-08-20",
+    "evidence_urls": [
+     "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering"
+    ],
+    "item_id": "ITM-91291fe3d63c936b",
+    "source": "RANSOMWARE_LIVE",
+    "threat_actor": "everest"
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-C4BD32043428",
+  "items": 1,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "Capgemini Engineering",
+  "sector": "Services aux entreprises",
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "threat": "Ransomware",
+  "urls": [
+   "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 19495,
+    "affected_count_raw": "19 495 enregistrements",
+    "affected_unit": "records",
+    "claim_status": "confirmed",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone",
+     "noms et prénoms"
+    ],
+    "item_id": "ITM-7902d7c7ba499791",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : 19 495 enregistrements ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+   },
+   {
+    "affected_count": 19495,
+    "affected_count_raw": "19 495 enregistrements",
+    "affected_unit": "records",
+    "claim_status": "claimed",
+    "item_id": "ITM-148d65792859dc97",
+    "source": "FRENCHBREACHES",
+    "summary": "Éléments documentés : 19 495 enregistrements."
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-BCBD7A6C4BEC",
+  "items": 2,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "Réserver",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : 19 495 enregistrements ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/r-server-mt0n1r7q49q9x6h207r",
+   "https://www.cyberattaque.org/reserver-fr-19-495-enregistrements-diffuses-gratuitement-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "facts": [
+   {
+    "affected_count": 7500,
+    "affected_count_raw": "7 500 agents",
+    "affected_unit": "people",
+    "claim_status": "confirmed",
+    "data_types": [
+     "Nom, prénom",
+     "Genre",
+     "Date et lieu de naissance",
+     "Nationalité",
+     "Adresse postale",
+     "Numéro de téléphone",
+     "Matricule",
+     "Rattachement administratif",
+     "Affectation géographique",
+     "Statut, corps, grade, niveau, échelon",
+     "Emploi, discipline",
+     "Adresse email",
+     "Numéro de sécurité sociale"
+    ],
+    "evidence_urls": [
+     "https://bonjourlafuite.eu.org/img/ird.png"
+    ],
+    "item_id": "ITM-2398fc903726c14c",
+    "source": "BONJOURLAFUITE",
+    "summary": "Éléments documentés : 7 500 agents ; données concernées : Nom, prénom, Genre et Date et lieu de naissance."
+   },
+   {
+    "affected_count": 7500,
+    "affected_count_raw": "7 500 personnes",
+    "affected_unit": "people",
+    "data_types": [
+     "données personnelles"
+    ],
+    "item_id": "ITM-a841b4d229200c42",
+    "source": "FRENCHBREACHES",
+    "summary": "Éléments documentés : 7 500 personnes ; données concernées : données personnelles."
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-82C56212890E",
+  "items": 2,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "Institut de recherche pour le développement",
+  "sector": "Inconnu",
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : 7 500 personnes ; données concernées : données personnelles.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/ird.png",
+   "https://frenchbreaches.com/alertes/institut-de-recherche-pour-le-d-veloppement-ird-mt0p9vbf00szk0llqusyg"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "facts": [
+   {
+    "affected_count": 7500,
+    "affected_count_raw": "7 500 personnes",
+    "affected_unit": "people",
+    "claim_status": "confirmed",
+    "data_types": [
+     "numéros de téléphone",
+     "adresses postales",
+     "noms et prénoms",
+     "numéros de sécurité sociale",
+     "données personnelles"
+    ],
+    "initial_access": "phishing",
+    "item_id": "ITM-4c31ad23daadfdd4",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : un hameçonnage."
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-2A9888F66F2D",
+  "items": 1,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "Inconnu",
+  "org": "IRD",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
+  "threat": "Compromission de compte / messagerie",
+  "urls": [
+   "https://www.cyberattaque.org/ird-7-500-personnes-exposees-apres-une-intrusion-dans-son-systeme-dinformation/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "facts": [
+   {
+    "affected_count": 22369,
+    "affected_count_raw": "22 369 utilisateurs",
+    "affected_unit": "users",
+    "claim_status": "claimed",
+    "data_types": [
+     "données personnelles"
+    ],
+    "data_volume": "267 Mo",
+    "file_count": 2000,
+    "item_id": "ITM-b84cf8432daa801d",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : 267 Mo de données, 22 369 utilisateurs et 2 000 fichiers ; données concernées : données personnelles.",
+    "threat_actor": "X-VDP-X"
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-8F222C73001E",
+  "items": 1,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "Inconnu",
+  "org": "Klaro",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Éléments documentés : 267 Mo de données, 22 369 utilisateurs et 2 000 fichiers ; données concernées : données personnelles.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://www.cyberattaque.org/klaro-22-369-utilisateurs-exposes-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "facts": [
+   {
+    "attack_flow": [
+     {
+      "action": "Qilin revendique la victime et publie son nom sur son site de fuite sans échantillon publié",
+      "evidence": "Qilin utilise son site de fuite pour exercer une pression sur ses victimes en menaçant de publier des données récupérées lors de ses attaques."
+     }
+    ],
+    "claim_status": "claimed",
+    "item_id": "ITM-a80915894e379c2e",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Déroulé documenté : Qilin revendique la victime et publie son nom sur son site de fuite sans échantillon publié."
+   },
+   {
+    "discovered_date": "2026-08-19",
+    "evidence_urls": [
+     "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=576ca72f-43d1-4fa7-83e2-78db0524ab3f"
+    ],
+    "item_id": "ITM-08ef3509bc450700",
+    "source": "RANSOMWARE_LIVE",
+    "threat_actor": "qilin",
+    "victim_website": "https://www.philippehottinguer.com"
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-F599B89D9F21",
+  "items": 2,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "Philippe Hottinguer Finance",
+  "sector": "Finance / Assurance",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Déroulé documenté : Qilin revendique la victime et publie son nom sur son site de fuite sans échantillon publié.",
+  "threat": "Ransomware",
+  "urls": [
+   "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=576ca72f-43d1-4fa7-83e2-78db0524ab3f",
+   "https://www.cyberattaque.org/philippe-hottinguer-finance-cible-par-le-ransomware-qilin/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "facts": [
+   {
+    "affected_count": 9000,
+    "affected_count_raw": "plus de  9 000 clients",
+    "affected_unit": "clients",
+    "attack_flow": [
+     {
+      "action": "accès non autorisé à Pilot et consultation des réservations",
+      "evidence": "Le hacker affirme avoir réussi à se connecter à Pilot et à consulter les réservations accessibles depuis cet outil interne."
+     }
+    ],
+    "claim_status": "claimed",
+    "data_types": [
+     "IBAN / RIB",
+     "cartes de paiement"
+    ],
+    "initial_access": "compromised_credentials",
+    "item_id": "ITM-2e95686500507378",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : des identifiants compromis. Déroulé documenté : accès non autorisé à Pilot et consultation des réservations."
+   },
+   {
+    "claim_status": "claimed",
+    "item_id": "ITM-72b2101fc9791988",
+    "source": "FRENCHBREACHES"
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-6DC1B3DE66B3",
+  "items": 2,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "Sport 2000",
+  "sector": "Sport",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis. Déroulé documenté : accès non autorisé à Pilot et consultation des réservations.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/sport-2000-mt0d2uylr1i928pr8k8",
+   "https://www.cyberattaque.org/sport-2000-zerobytes-publie-17-851-reservations-de-son-outil-interne-pilot/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-001511C336C7",
+  "items": 1,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "France métropolitaine",
+  "org": "WiziShop",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/wizishop-dropizi-mszyv230fxhdpsb7ppo"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-19",
+  "facts": [
+   {
+    "attack_flow": [
+     {
+      "action": "Exploitation d’une faille de sécurité pour télécharger des factures",
+      "evidence": "Selon l’entreprise, un tiers malveillant a exploité une faille de sécurité afin de télécharger un nombre important de factures."
+     }
+    ],
+    "claim_status": "confirmed",
+    "data_types": [
+     "adresses postales",
+     "identifiants",
+     "mots de passe"
+    ],
+    "initial_access": "vulnerability_exploitation",
+    "item_id": "ITM-5299e7c10746fa62",
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une faille de sécurité pour télécharger des factures."
+   }
+  ],
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "id": "INC-5DCCE36ED83F",
+  "items": 1,
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "location": "Inconnu",
+  "org": "WiziShop, Dropizi et Evolup piratés",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une faille de sécurité pour télécharger des factures.",
+  "threat": "Phishing / fraude",
+  "urls": [
+   "https://www.cyberattaque.org/wizishop-dropizi-et-evolup-pirates-des-factures-clients-depuis-2009-recuperees-par-un-hacker/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
   "date": "2026-08-18",
   "facts": [
    {
@@ -200,7 +601,7 @@
     "affected_count": 1197,
     "affected_count_raw": "1 197 utilisateurs",
     "affected_unit": "users",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -211,7 +612,7 @@
     ],
     "item_id": "ITM-486f08701ff57650",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 1 197 utilisateurs ; données concernées : adresses e-mail, numéros de téléphone et adresses postales."
+    "summary": "Éléments documentés : 1 197 utilisateurs."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -225,7 +626,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 1 197 utilisateurs ; données concernées : adresses e-mail, numéros de téléphone et adresses postales.",
+  "summary": "Éléments documentés : 1 197 utilisateurs.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/foodtrack-msxx35cw3msrmak9egh",
@@ -388,10 +789,10 @@
     "summary": "Éléments documentés : 21,2 Go de données et plus de 107 000 fichiers ; données concernées : adresses e-mail."
    },
    {
-    "affected_count": 45684,
-    "affected_count_raw": "45 684 fichiers",
+    "affected_count": 107000,
+    "affected_count_raw": "plus de 107 000 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -403,7 +804,7 @@
     "file_count": 107000,
     "item_id": "ITM-e7d566defaf80c2f",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 21,2 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+    "summary": "Éléments documentés : 21,2 Go de données et plus de 107 000 fichiers.",
     "threat_actor": "l'auteur"
    }
   ],
@@ -418,7 +819,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 21,2 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 21,2 Go de données et plus de 107 000 fichiers.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/taveau-blgcloud-msyvca8i1xz1mwgxx1",
@@ -457,9 +858,9 @@
     "threat_actor": "ZeroBytes"
    },
    {
-    "affected_count": 346000000,
-    "affected_count_raw": "346 millions de lignes",
-    "affected_unit": "records",
+    "affected_count": 1220000,
+    "affected_count_raw": "1,22 million d’élèves",
+    "affected_unit": "people",
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
@@ -471,7 +872,7 @@
     "file_count": 2500,
     "item_id": "ITM-41b1800a129f39f5",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 43 Go de données, 346 millions de lignes et 2 500 fichiers ; données concernées : adresses e-mail, numéros de téléphone et dates de naissance."
+    "summary": "Éléments documentés : 1,22 million d’élèves ; données concernées : adresses e-mail, numéros de téléphone et dates de naissance."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -574,7 +975,7 @@
     ],
     "item_id": "ITM-1727d5995cd0b94f",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Accès non autorisé à une partie du système d'information détecté puis interrompu."
+    "summary": "Éléments documentés : plus de 50 000 clients."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -583,11 +984,11 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Achat Or et Argent",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Accès non autorisé à une partie du système d'information détecté puis interrompu.",
+  "summary": "Éléments documentés : plus de 50 000 clients.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/achat-or-et-argent-mqguqijb2kwf64ad0w7"
@@ -697,7 +1098,7 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -708,7 +1109,7 @@
     "file_count": 45684,
     "item_id": "ITM-3d4bbd2296a67743",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 3,7 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : 3,7 Go de données."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -778,7 +1179,7 @@
     "data_volume": "282 Ko",
     "item_id": "ITM-08fe35f4fde7b20e",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 282 Ko de données et 2 558 lignes ; données concernées : adresses e-mail, numéros de téléphone et identifiants.",
+    "summary": "Éléments documentés : 2 558 lignes.",
     "threat_actor": "l’auteur"
    }
   ],
@@ -788,11 +1189,11 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "EVA Charleroi",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 282 Ko de données et 2 558 lignes ; données concernées : adresses e-mail, numéros de téléphone et identifiants.",
+  "summary": "Éléments documentés : 2 558 lignes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-charleroi-mswbb37w86m9htgoij3"
@@ -819,7 +1220,7 @@
     "affected_count": 13870,
     "affected_count_raw": "environ 13 870 membres",
     "affected_unit": "people",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "noms et prénoms",
@@ -865,8 +1266,8 @@
    },
    {
     "affected_count": 512,
-    "affected_count_raw": "512 victimes",
-    "affected_unit": "people",
+    "affected_count_raw": "512 utilisateurs",
+    "affected_unit": "users",
     "attack_flow": [
      {
       "action": "Publication sur un forum cybercriminel revendiquant la diffusion d’une base France Casse.",
@@ -881,7 +1282,7 @@
     ],
     "item_id": "ITM-2ccefab3d66d64ac",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Publication sur un forum cybercriminel revendiquant la diffusion d’une base France Casse.."
+    "summary": "Éléments documentés : 512 utilisateurs."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -895,7 +1296,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Publication sur un forum cybercriminel revendiquant la diffusion d’une base France Casse..",
+  "summary": "Éléments documentés : 512 utilisateurs.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/france-casse-msv87fj5v652mg9x2mn",
@@ -921,7 +1322,7 @@
     ],
     "item_id": "ITM-aadcd9745e9d382b",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 435 903 membres ; données concernées : adresses e-mail, numéros de téléphone et adresses postales."
+    "summary": "Éléments documentés : 435 903 membres."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -934,7 +1335,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 435 903 membres ; données concernées : adresses e-mail, numéros de téléphone et adresses postales.",
+  "summary": "Éléments documentés : 435 903 membres.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-danse-msvjcwu35yln9jygazd"
@@ -956,7 +1357,7 @@
     ],
     "item_id": "ITM-c183629523269186",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 472 760 enregistrements ; données concernées : adresses e-mail, numéros de téléphone et adresses postales."
+    "summary": "Éléments documentés : 472 760 enregistrements."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -969,7 +1370,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 472 760 enregistrements ; données concernées : adresses e-mail, numéros de téléphone et adresses postales.",
+  "summary": "Éléments documentés : 472 760 enregistrements.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-motocyclisme-msvj2szkiclvx2gaoc"
@@ -998,7 +1399,7 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -1009,7 +1410,7 @@
     "file_count": 45684,
     "item_id": "ITM-4b79645d80ad2ef9",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 20,6 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+    "summary": "Éléments documentés : 20,6 Go de données.",
     "threat_actor": "l’auteur"
    }
   ],
@@ -1024,7 +1425,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 20,6 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 20,6 Go de données.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-lenormant-blgcloud-msw8bjc0qn0hi4pzoxa",
@@ -1123,11 +1524,6 @@
     ],
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms",
-     "dates de naissance",
-     "données bancaires",
      "données personnelles"
     ],
     "item_id": "ITM-993496f822d07abc",
@@ -1163,7 +1559,7 @@
     "affected_count": 20000,
     "affected_count_raw": "plus de 20 000 personnes",
     "affected_unit": "people",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "noms et prénoms",
@@ -1172,7 +1568,7 @@
     "data_volume": "2,4 Mo",
     "item_id": "ITM-cb125fc4a05c20db",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 2,4 Mo de données et plus de 20 000 personnes ; données concernées : adresses e-mail, noms et prénoms et données personnelles."
+    "summary": "Éléments documentés : plus de 20 000 personnes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1181,11 +1577,11 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "EVA Nantes Sud",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 2,4 Mo de données et plus de 20 000 personnes ; données concernées : adresses e-mail, noms et prénoms et données personnelles.",
+  "summary": "Éléments documentés : plus de 20 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-nantes-sud-mstk3dvhzt4kjp61n2"
@@ -1199,7 +1595,7 @@
     "affected_count": 2800000,
     "affected_count_raw": "2,8 millions d’enregistrements",
     "affected_unit": "records",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "item_id": "ITM-0c4c9229ba436a2d",
     "source": "FRENCHBREACHES",
     "summary": "Éléments documentés : 2,8 millions d’enregistrements.",
@@ -1242,10 +1638,10 @@
     "summary": "Éléments documentés : 13,8 Go de données et 48 290 fichiers ; données concernées : mots de passe et données bancaires."
    },
    {
-    "affected_count": 45684,
-    "affected_count_raw": "45 684 fichiers",
+    "affected_count": 48290,
+    "affected_count_raw": "48 290 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -1256,7 +1652,7 @@
     "file_count": 48290,
     "item_id": "ITM-5384bb2edc1e590e",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 13,8 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : 13,8 Go de données et 48 290 fichiers."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1270,7 +1666,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 13,8 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 13,8 Go de données et 48 290 fichiers.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-bon-mat-riel-blgcloud-mstkb430kht3b29drb",
@@ -1294,11 +1690,11 @@
     "affected_count": 252149,
     "affected_count_raw": "252 149 lignes",
     "affected_unit": "records",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "impact": "Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir lui-même cessé l'extraction.",
     "item_id": "ITM-1405c2be130d1ecd",
     "source": "FRENCHBREACHES",
-    "summary": "Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir lui-même cessé l'extraction."
+    "summary": "Éléments documentés : 252 149 lignes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1312,7 +1708,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Impact documenté : Une extraction volontairement interrompue Contrairement à la précédente fuite liée à impots.gouv.fr , pour laquelle ZeroBytes revendiquait 678 438 lignes avant interruption de son accès, le pirate affirme ici avoir lui-même cessé l'extraction.",
+  "summary": "Éléments documentés : 252 149 lignes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-spdc-mssm0kklrsqu9rd3vd",
@@ -1363,12 +1759,8 @@
     "affected_unit": "people",
     "attack_flow": [
      {
-      "action": "Exploitation de la vulnérabilité CVE-2026-72898 sur Metabase pour obtenir accès administrateur",
-      "evidence": "La faille permet à un attaquant distant et non authentifié d’effectuer une injection SQL dans la base de données de l’application Metabase et d’obtenir un accès administrateur."
-     },
-     {
-      "action": "Exfiltration de données depuis l’entrepôt analytique interne de Scalingo",
-      "evidence": "des données ont été exfiltrées depuis son entrepôt de données analytiques interne."
+      "action": "Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898)",
+      "evidence": "L’incident est lié à l’exploitation d’une vulnérabilité critique dans Metabase, référencée CVE-2026-72898 et évaluée avec un score CVSS de 10/10."
      }
     ],
     "claim_status": "confirmed",
@@ -1383,7 +1775,7 @@
     "initial_access": "vulnerability_exploitation",
     "item_id": "ITM-b8f59e73458e855a",
     "source": "FRENCHBREACHES",
-    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation de la vulnérabilité CVE-2026-72898 sur Metabase pour obtenir accès administrateur → Exfiltration de données depuis l’entrepôt analytique interne de Scalingo. Impact documenté : 10 août à 10h25 : l’instance Metabase…",
+    "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898).",
     "vulnerabilities": [
      "CVE-2026-72898"
     ]
@@ -1399,7 +1791,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation de la vulnérabilité CVE-2026-72898 sur Metabase pour obtenir accès administrateur → Exfiltration de données depuis l’entrepôt analytique interne de Scalingo. Impact documenté : 10 août à 10h25 : l’instance Metabase…",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité. Déroulé documenté : Exploitation d’une vulnérabilité critique dans Metabase (CVE-2026-72898).",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/scalingo-mssmflhnh876wgausf"
@@ -1427,7 +1819,7 @@
     "affected_count": 70974,
     "affected_count_raw": "70 974 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -1438,7 +1830,7 @@
     "file_count": 70974,
     "item_id": "ITM-fac377f6dd0d8ee8",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 16 Go de données et 70 974 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : 16 Go de données et 70 974 fichiers."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1452,7 +1844,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 16 Go de données et 70 974 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 16 Go de données et 70 974 fichiers.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/chupin-blgcloud-mssm9jvahrr2e2nsh7u",
@@ -1538,15 +1930,12 @@
    {
     "claim_status": "confirmed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
      "données personnelles"
     ],
+    "impact": "Exposition de données personnelles des usagers du portail France VAE.",
     "item_id": "ITM-f4d3e4a1b9bf10c0",
     "source": "FRENCHBREACHES",
-    "summary": "Données concernées : adresses e-mail, numéros de téléphone et adresses postales."
+    "summary": "Impact documenté : Exposition de données personnelles des usagers du portail France VAE."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1561,7 +1950,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Données concernées : adresses e-mail, numéros de téléphone et adresses postales.",
+  "summary": "Impact documenté : Exposition de données personnelles des usagers du portail France VAE.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/france-vae.png",
@@ -1661,7 +2050,7 @@
     "impact": "⚠️ La récupération de 678 438 lignes avant interruption de l’accès.",
     "item_id": "ITM-bfc6a693480fb347",
     "source": "FRENCHBREACHES",
-    "summary": "Impact documenté : ⚠️ La récupération de 678 438 lignes avant interruption de l’accès.",
+    "summary": "Fuite confirmée de DGFiP : intrusion fin juin 2026 via usurpation d’identité, entraînant consultation et extraction de données de particuliers et de professionnels (plus de 678 000 personnes touchées).",
     "threat_actor": "ZeroBytes"
    }
   ],
@@ -1675,7 +2064,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Impact documenté : ⚠️ La récupération de 678 438 lignes avant interruption de l’accès.",
+  "summary": "Fuite confirmée de DGFiP : intrusion fin juin 2026 via usurpation d’identité, entraînant consultation et extraction de données de particuliers et de professionnels (plus de 678 000 personnes touchées).",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-dgfip-msq5rgy4cql9o0l7cus"
@@ -1749,7 +2138,7 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -1761,7 +2150,7 @@
     "file_count": 45684,
     "item_id": "ITM-637343689cfb8ae6",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 3,3 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : 3,3 Go de données."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1770,12 +2159,12 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Leroch Distribution",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 3,3 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 3,3 Go de données.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/leroch-distribution-blgcloud-msp7xthowhtnkmx2fk",
@@ -1812,7 +2201,7 @@
       "evidence": "Une publication apparue sur un forum cybercriminel revendique la compromission de BlgCloud, un éditeur français de logiciels..."
      }
     ],
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -1823,7 +2212,7 @@
     "file_count": 10000,
     "item_id": "ITM-88543cf208949594",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Publication sur un forum cybercriminel revendiquant la compromission de BlgCloud et Loutz."
+    "summary": "Éléments documentés : 3,4 Go de données et près de 10 000 fichiers."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1837,7 +2226,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Publication sur un forum cybercriminel revendiquant la compromission de BlgCloud et Loutz.",
+  "summary": "Éléments documentés : 3,4 Go de données et près de 10 000 fichiers.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/loutz-blgcloud-msp7qzkjgh0uwodlovb",
@@ -1867,7 +2256,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Publica",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -1942,20 +2331,20 @@
     "affected_unit": "people",
     "attack_flow": [
      {
-      "action": "Accès non autorisé à l’intranet collaboratif Orion",
-      "evidence": "\"accès non autorisé à son Intranet collaboratif Orion\""
+      "action": "accès non autorisé à l'Intranet collaboratif Orion",
+      "evidence": "...accès non autorisé à son Intranet collaboratif Orion."
      }
     ],
     "claim_status": "confirmed",
     "data_types": [
      "adresses e-mail",
      "noms et prénoms",
-     "mots de passe",
      "données personnelles"
     ],
+    "impact": "exposition de données personnelles d’agents (noms, prénoms, fonctions, e-mails professionnels, localisation, établissement de rattachement)",
     "item_id": "ITM-d08086f886b642e8",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Accès non autorisé à l’intranet collaboratif Orion."
+    "summary": "Déroulé documenté : accès non autorisé à l'Intranet collaboratif Orion. Impact documenté : exposition de données personnelles d’agents (noms, prénoms, fonctions, e-mails professionnels, localisation, établissement de rattachement)."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -1969,7 +2358,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Accès non autorisé à l’intranet collaboratif Orion.",
+  "summary": "Déroulé documenté : accès non autorisé à l'Intranet collaboratif Orion. Impact documenté : exposition de données personnelles d’agents (noms, prénoms, fonctions, e-mails professionnels, localisation, établissement de rattachement).",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/agence-pour-l-enseignement-fran-ais-l-tranger-aefe-msp6elbt3d5a63mumeq",
@@ -2049,7 +2438,7 @@
     "summary": "Déroulé documenté : Publication revendiquée de la base de données clients et du code source. Impact documenté : Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles."
    },
    {
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "mots de passe"
@@ -2126,7 +2515,7 @@
     ],
     "item_id": "ITM-64485c5121289c6d",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : près de 80 000 personnes ; données concernées : adresses e-mail, numéros de téléphone et adresses postales."
+    "summary": "Éléments documentés : près de 80 000 personnes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -2141,7 +2530,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : près de 80 000 personnes ; données concernées : adresses e-mail, numéros de téléphone et adresses postales.",
+  "summary": "Éléments documentés : près de 80 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sant-publique-france-msoz0zsj3vgi774sa0i",
@@ -2258,7 +2647,7 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -2269,7 +2658,7 @@
     "file_count": 45684,
     "item_id": "ITM-49b4bda3f6d704ea",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 6,7 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : 6,7 Go de données."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -2283,7 +2672,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 6,7 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 6,7 Go de données.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-clou-blgcloud-msnd05otu1hyrbmzqy",
@@ -2619,7 +3008,7 @@
     ],
     "item_id": "ITM-9021b9aa28ea4a6a",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : près de 56 000 enregistrements ; données concernées : adresses e-mail, adresses postales et données bancaires."
+    "summary": "Éléments documentés : près de 56 000 enregistrements."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -2660,12 +3049,9 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
-     "adresses e-mail",
-     "numéros de téléphone",
-     "noms et prénoms",
-     "identifiants"
+     "adresses e-mail"
     ],
     "data_volume": "9,33 Go",
     "file_count": 45684,
@@ -2680,7 +3066,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Duvignau 40",
-  "sector": "Industrie / Manufacture",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2728,7 +3114,7 @@
     ],
     "item_id": "ITM-e83033755daac537",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : publication sur un forum cybercriminel revendiquant une fuite."
+    "summary": "Éléments documentés : près de 2 500 personnes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -2742,7 +3128,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : publication sur un forum cybercriminel revendiquant une fuite.",
+  "summary": "Éléments documentés : près de 2 500 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-mans-fc-msm10s9d7aa7x3v9wvi",
@@ -2780,7 +3166,7 @@
       "evidence": "Une publication apparue sur un forum cybercriminel revendique la compromission de BlgCloud"
      }
     ],
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -2833,7 +3219,7 @@
     "affected_count": 80000,
     "affected_count_raw": "plus de 80 000 personnes",
     "affected_unit": "people",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "numéros de téléphone",
      "noms et prénoms"
@@ -2841,7 +3227,7 @@
     "data_volume": "108,8 Mo",
     "item_id": "ITM-5ab13a9b8c40816f",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 108,8 Mo de données et plus de 80 000 personnes ; données concernées : numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : plus de 80 000 personnes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -2855,7 +3241,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 108,8 Mo de données et plus de 80 000 personnes ; données concernées : numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : plus de 80 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/clcv-consommation-logement-et-cadre-de-vie-mskk2jbes84h2ad5fra",
@@ -3022,7 +3408,7 @@
     "affected_count": 45684,
     "affected_count_raw": "45 684 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -3036,7 +3422,7 @@
     "file_count": 45684,
     "item_id": "ITM-410dbe7b91c57c0c",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : 9,33 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+    "summary": "Éléments documentés : 9,33 Go de données."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -3050,7 +3436,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : 9,33 Go de données et 45 684 fichiers ; données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "summary": "Éléments documentés : 9,33 Go de données.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/roussel-agri-62-blgcloud-mskjsgirjuladgvz0sj",
@@ -3127,7 +3513,7 @@
       "evidence": "L’auteur accompagne sa publication d’un échantillon de données personnelles présenté comme preuve de la compromission."
      }
     ],
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "noms et prénoms",
      "identifiants",
@@ -3146,7 +3532,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "AFPA",
-  "sector": "Éducation / Formation",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -3232,7 +3618,7 @@
       "evidence": "\"exfiltré l'intégralité d'une base de données contenant 9 834 utilisateurs\""
      }
     ],
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail",
      "numéros de téléphone",
@@ -3247,7 +3633,7 @@
     "file_count": 5000,
     "item_id": "ITM-dd1b11bea76761ed",
     "source": "FRENCHBREACHES",
-    "summary": "Déroulé documenté : Exfiltration d'une base de données contenant 9 834 utilisateurs."
+    "summary": "Éléments documentés : près de 10 000 personnes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -3260,7 +3646,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Déroulé documenté : Exfiltration d'une base de données contenant 9 834 utilisateurs.",
+  "summary": "Éléments documentés : près de 10 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-lien-autonomie-msj4pgh7huoc9zlfspc"
@@ -3388,7 +3774,7 @@
     "affected_count": 3,
     "affected_count_raw": "3 fichiers",
     "affected_unit": "files",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "identifiants",
      "données personnelles"
@@ -3467,16 +3853,12 @@
     "affected_unit": "clients",
     "claim_status": "confirmed",
     "data_types": [
-     "numéros de téléphone",
-     "adresses postales",
-     "noms et prénoms",
-     "identifiants",
-     "mots de passe",
-     "données bancaires"
+     "numéros de téléphone"
     ],
+    "impact": "Exposition des identités, téléphones, adresses et historiques de commandes de clients.",
     "item_id": "ITM-295bbb44a2869caa",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : plus de 91 000 clients ; données concernées : numéros de téléphone, adresses postales et noms et prénoms."
+    "summary": "Impact documenté : Exposition des identités, téléphones, adresses et historiques de commandes de clients."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -3490,7 +3872,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : plus de 91 000 clients ; données concernées : numéros de téléphone, adresses postales et noms et prénoms.",
+  "summary": "Impact documenté : Exposition des identités, téléphones, adresses et historiques de commandes de clients.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/armurerie-lavaux-mseypxv2fdmjdlqaj78",
@@ -3505,7 +3887,7 @@
     "affected_count": 200,
     "affected_count_raw": "200 victimes",
     "affected_unit": "people",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_volume": "5,5 Go",
     "item_id": "ITM-83c01dd73b4edf67",
     "source": "FRENCHBREACHES",
@@ -3598,8 +3980,7 @@
    {
     "claim_status": "confirmed",
     "data_types": [
-     "numéros de téléphone",
-     "identifiants"
+     "numéros de téléphone"
     ],
     "impact": "La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
     "item_id": "ITM-f690c99943f1ca81",
@@ -3682,7 +4063,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "INSERM",
-  "sector": "Santé",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -3715,13 +4096,13 @@
     "affected_count": 2000,
     "affected_count_raw": "plus de 2 000 personnes",
     "affected_unit": "people",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "data_types": [
      "adresses e-mail"
     ],
     "item_id": "ITM-96728e715b7df298",
     "source": "FRENCHBREACHES",
-    "summary": "Éléments documentés : plus de 2 000 personnes ; données concernées : adresses e-mail."
+    "summary": "Éléments documentés : plus de 2 000 personnes."
    }
   ],
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
@@ -3730,7 +4111,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "MVision",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -3782,10 +4163,10 @@
   "date": "2026-08-05",
   "facts": [
    {
-    "affected_count": 1300000,
-    "affected_count_raw": "Plus de 1,3 million de clients",
+    "affected_count": 1390000,
+    "affected_count_raw": "plus de 1,39 million de clients",
     "affected_unit": "clients",
-    "claim_status": "confirmed",
+    "claim_status": "claimed",
     "initial_access": "remote_access",
     "item_id": "ITM-783dfbd911a6ea5d",
     "source": "FRENCHBREACHES",
@@ -4025,7 +4406,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Voxaly",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -7336,10 +7717,10 @@
  {
   "basis": "EVENT",
   "date": "2026-07-09",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-F565E72ECFBA",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.zinfos974.com/vandalisme-des-perturbations-sur-les-reseaux-mobile-et-fixe-dorange-a-la-reunion/",
@@ -8165,10 +8546,10 @@
  {
   "basis": "EVENT",
   "date": "2026-07-04",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-77C0DC6E016A",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
@@ -8758,10 +9139,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-30",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-AAD55A086D72",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
@@ -8999,10 +9380,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-29",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-8ED480A79AA7",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
@@ -9087,10 +9468,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-29",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-5D92C3C21642",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
@@ -10976,10 +11357,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-13",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-AF9A16B0E1D0",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
@@ -11362,10 +11743,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-11",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-8C2C274A1222",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
@@ -12649,7 +13030,7 @@
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
   "id": "INC-47B24BB72BA7",
   "items": 2,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/",
@@ -17904,7 +18285,7 @@
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
   "id": "INC-73E635BC9E27",
   "items": 2,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
@@ -26003,10 +26384,10 @@
  {
   "basis": "EVENT",
   "date": "2026-02-19",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-78669787EE80",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
@@ -27604,10 +27985,10 @@
  {
   "basis": "EVENT",
   "date": "2026-02-04",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-276D026144B4",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
@@ -27629,10 +28010,10 @@
  {
   "basis": "EVENT",
   "date": "2026-02-04",
-  "first_seen": "2026-08-19T08:28:55.708829+04:00",
+  "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-BE1A2F4FACDB",
   "items": 1,
-  "last_seen": "2026-08-19T08:28:55.708829+04:00",
+  "last_seen": "2026-08-20T11:38:52.928740+04:00",
   "local": {
    "references": [
     "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
