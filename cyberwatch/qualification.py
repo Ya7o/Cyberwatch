@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+import os
 
 from . import (
     config, context_sector, enrichment, identity, incremental, qualification_cache,
@@ -131,6 +132,9 @@ def _report_from_cache(payload: dict) -> QualificationReport:
         parts["items_hash"], parts["incidents_hash"],
     )
 
+def _cache_enabled() -> bool:
+    return os.getenv("CYBERWATCH_QUALIFICATION_CACHE", "0").strip().lower() in {"1", "true", "yes", "on"}
+
 def qualify(items: list[Item]) -> QualificationReport:
     ordered = identity.sort_items(items)
     source_facts, org_cache = store.read_csv(store.SOURCE_FACTS_CSV), store.load_org_enrichment_cache()
@@ -139,20 +143,22 @@ def qualify(items: list[Item]) -> QualificationReport:
     prequal, dependency_digest_value = _capture_prequalification_state(ordered, source_facts, org_cache)
     cache_engine_digest = qualification_cache.engine_digest(store.ROOT)
 
-    cached = qualification_cache.load_cache(store.DATA_DIR)
-    matches, miss_reason = qualification_cache.cache_matches(
-        cached,
-        policy_version=config.METHOD_ID,
-        dependency_digest=dependency_digest_value,
-        engine_digest_value=cache_engine_digest,
-        previous_provenance_digest=qualification_cache.rows_digest(previous_provenance),
-        previous_registry_digest=qualification_cache.rows_digest(previous_registry),
-        prequalification_fingerprints=prequal.fingerprints,
-    )
-    if matches and not prequal.new and not prequal.dirty:
-        qualification_cache.clear_pending_cache()
-        qualification_cache.write_usage_observation(hit=True, skipped_items=len(ordered))
-        return _report_from_cache(cached)
+    miss_reason = "cache_disabled"
+    if _cache_enabled():
+        cached = qualification_cache.load_cache(store.DATA_DIR)
+        matches, miss_reason = qualification_cache.cache_matches(
+            cached,
+            policy_version=config.METHOD_ID,
+            dependency_digest=dependency_digest_value,
+            engine_digest_value=cache_engine_digest,
+            previous_provenance_digest=qualification_cache.rows_digest(previous_provenance),
+            previous_registry_digest=qualification_cache.rows_digest(previous_registry),
+            prequalification_fingerprints=prequal.fingerprints,
+        )
+        if matches and not prequal.new and not prequal.dirty:
+            qualification_cache.clear_pending_cache()
+            qualification_cache.write_usage_observation(hit=True, skipped_items=len(ordered))
+            return _report_from_cache(cached)
     qualification_cache.write_usage_observation(
         hit=False,
         miss_reason=miss_reason or ("prequalification_changed" if (prequal.new or prequal.dirty) else "cache_rejected"),
