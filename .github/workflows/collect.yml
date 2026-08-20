@@ -81,8 +81,6 @@ jobs:
         id: run
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
-          # Les appels entreprise/secteur ne modifient plus directement la DB.
-          # Ils sont traités par le worker Sector puis soumis à la politique AUTO.
           ORG_ENRICHMENT_ENABLED: "0"
         run: |
           ARGS=""
@@ -102,7 +100,7 @@ jobs:
           fi
 
       - name: Observer l'incrémentalité
-        if: steps.kind.outputs.writes == 'true'
+        if: steps.kind.outputs.writes == 'true' && steps.scope.outputs.mode != 'replay'
         run: python scripts/report_run_performance.py --observe >> "$GITHUB_STEP_SUMMARY"
 
       - name: Récapitulatif du run
