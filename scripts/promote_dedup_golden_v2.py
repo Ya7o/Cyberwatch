@@ -42,14 +42,11 @@ SUPPORTED_SOURCE_PAIRS = {
 }
 
 RECURRENCE_RE = re.compile(
-    r"\b(nouvelle?|nouveau|encore|again|second(?:e)?|2(?:e|eme|ème)|"
+    r"\b(nouvelle?|nouveau|encore|again|second(?:e)?|[2-9](?:e|eme|ème)|"
     r"a nouveau|à nouveau|une nouvelle fois|frappe une nouvelle fois|frappé une nouvelle fois)\b",
     re.IGNORECASE,
 )
 
-# These pairs are deliberately sourced from POSSIBLE_MISSED_DUPLICATE rows and
-# were reviewed from their titles/source context, not inferred from the current
-# component assignment.
 MANUAL_POSITIVE_OVERRIDES = {
     frozenset(("ITM-157ec8180d223fb4", "ITM-66285aa24e7daecb")): (
         "City’Pro Marionneau / City'Pro : même victime, même date et même revendication Qilin décrite par Cyberattaque.org et ransomware.live."
@@ -178,6 +175,15 @@ def build(
     target_cases: int,
 ) -> tuple[int, int]:
     golden_rows = _read(golden_path)
+    if (
+        len(golden_rows) >= target_cases
+        and golden_rows
+        and all(row.get("Golden_Version") == GOLDEN_V2 for row in golden_rows)
+        and review_output.exists()
+    ):
+        review_rows = _read(review_output)
+        return len(golden_rows), len(review_rows)
+
     audit_rows = _read(audit_path)
     existing_pairs = {_pair(row) for row in golden_rows}
     selected: list[tuple[dict[str, str], str, str]] = []
@@ -272,7 +278,7 @@ def main() -> int:
     total, promoted = build(
         Path(args.golden), Path(args.audit), Path(args.review_output), args.target_cases
     )
-    print(f"DEDUP_GOLDEN_V2 total={total} promoted={promoted}")
+    print(f"DEDUP_GOLDEN_V2 total={total} reviewed_v2={promoted}")
     return 0
 
 
