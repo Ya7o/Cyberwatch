@@ -1,8 +1,14 @@
+from pathlib import Path
+
 from cyberwatch.incremental import (
+    SHADOW_CACHE_VERSION,
     classify_items,
+    compare_shadow_cache,
+    dependency_digest,
     fingerprints_from_state,
     metric_row,
     qualification_fingerprint,
+    shadow_cache_rows,
     state_rows,
 )
 from cyberwatch.model import Item
@@ -37,13 +43,22 @@ def test_collected_as_of_does_not_invalidate_fingerprint():
     assert left == right
 
 
-def test_business_input_and_policy_changes_invalidate_fingerprint():
+def test_business_input_policy_and_dependency_changes_invalidate_fingerprint():
     item = _item()
-    base = qualification_fingerprint(item, policy_version="P1")
-    assert base != qualification_fingerprint(
-        _item(Title="Example SA confirme une cyberattaque"), policy_version="P1"
+    base = qualification_fingerprint(
+        item, policy_version="P1", dependency_digest_value="D1"
     )
-    assert base != qualification_fingerprint(item, policy_version="P2")
+    assert base != qualification_fingerprint(
+        _item(Title="Example SA confirme une cyberattaque"),
+        policy_version="P1",
+        dependency_digest_value="D1",
+    )
+    assert base != qualification_fingerprint(
+        item, policy_version="P2", dependency_digest_value="D1"
+    )
+    assert base != qualification_fingerprint(
+        item, policy_version="P1", dependency_digest_value="D2"
+    )
 
 
 def test_source_fact_order_is_irrelevant_but_content_change_is_not():
@@ -57,6 +72,33 @@ def test_source_fact_order_is_irrelevant_but_content_change_is_not():
     first = qualification_fingerprint(item, facts, policy_version="P1")
     assert first == qualification_fingerprint(item, reversed(facts), policy_version="P1")
     assert first != qualification_fingerprint(item, changed, policy_version="P1")
+
+
+def test_dependency_digest_tracks_reference_org_cache_and_code(tmp_path: Path):
+    code = tmp_path / "sector.py"
+    code.write_text("VERSION = 1\n", encoding="utf-8")
+    base = dependency_digest(
+        reference_rows=[{"Organisation_Key": "a", "Sector": "Industrie"}],
+        org_cache_rows=[{"Organisation_Key": "a", "Validated_Sector": "Industrie"}],
+        code_paths=[code],
+    )
+    reordered = dependency_digest(
+        reference_rows=[{"Sector": "Industrie", "Organisation_Key": "a"}],
+        org_cache_rows=[{"Validated_Sector": "Industrie", "Organisation_Key": "a"}],
+        code_paths=[code],
+    )
+    assert base == reordered
+    assert base != dependency_digest(
+        reference_rows=[{"Organisation_Key": "a", "Sector": "Santé"}],
+        org_cache_rows=[{"Organisation_Key": "a", "Validated_Sector": "Industrie"}],
+        code_paths=[code],
+    )
+    code.write_text("VERSION = 2\n", encoding="utf-8")
+    assert base != dependency_digest(
+        reference_rows=[{"Organisation_Key": "a", "Sector": "Industrie"}],
+        org_cache_rows=[{"Organisation_Key": "a", "Validated_Sector": "Industrie"}],
+        code_paths=[code],
+    )
 
 
 def test_classify_and_state_round_trip():
@@ -73,22 +115,64 @@ def test_classify_and_state_round_trip():
     assert result.dirty == ("I-2",)
     assert result.unchanged == ("I-1",)
     rows = state_rows(
-        result, policy_version="P1", run_id="RUN-1", as_of="2026-08-20T08:00:00+04:00"
+        result,
+        policy_version="P1",
+        dependency_digest_value="D1",
+        run_id="RUN-1",
+        as_of="2026-08-20T08:00:00+04:00",
     )
     assert fingerprints_from_state(rows) == result.fingerprints
+    assert {row["Dependency_Digest"] for row in rows} == {"D1"}
 
 
-def test_metric_row_reports_reuse():
+def test_shadow_cache_accepts_identical_recalculation_and_detects_mismatch():
+    item = _item(Sector="Industrie")
+    fingerprint = qualification_fingerprint(item, policy_version="P1")
+    provenance = [{
+        "Item_ID": "I-1",
+        "Field": "Sector",
+        "Decision": "APPLIED",
+        "Final_Value": "Industrie",
+    }]
+    previous = shadow_cache_rows(
+        [item], {"I-1": fingerprint}, provenance, run_id="RUN-1", as_of="A1"
+    )
+    assert previous[0]["Cache_Version"] == SHADOW_CACHE_VERSION
+    current = shadow_cache_rows(
+        [item], {"I-1": fingerprint}, provenance, run_id="RUN-2", as_of="A2"
+    )
+    stable = compare_shadow_cache(previous, current, ["I-1"])
+    assert stable.checked == 1
+    assert stable.mismatches == ()
+
+    changed_item = _item(Sector="Santé")
+    changed = shadow_cache_rows(
+        [changed_item], {"I-1": fingerprint}, provenance, run_id="RUN-3", as_of="A3"
+    )
+    mismatch = compare_shadow_cache(previous, changed, ["I-1"])
+    assert mismatch.checked == 1
+    assert mismatch.mismatches == ("I-1",)
+
+
+def test_metric_row_reports_shadow_validation():
     item = _item()
     previous = {"I-1": qualification_fingerprint(item, policy_version="P1")}
     result = classify_items([item], previous, policy_version="P1")
+    shadow_rows = shadow_cache_rows(
+        [item], result.fingerprints, [], run_id="RUN-1", as_of="A1"
+    )
+    shadow = compare_shadow_cache(shadow_rows, shadow_rows, result.unchanged)
     row = metric_row(
         result,
         run_id="RUN-2",
         as_of="2026-08-20T09:00:00+04:00",
         mode="MAJ",
         policy_version="P1",
+        dependency_digest_value="D1",
+        shadow=shadow,
     )
     assert row["Dirty_Items"] == "0"
     assert row["Unchanged_Items"] == "1"
     assert row["Reuse_Rate"] == "1.000000"
+    assert row["Shadow_Checked"] == "1"
+    assert row["Shadow_Mismatches"] == "0"
