@@ -40,8 +40,11 @@ _EXTRA_PATTERNS = {
         r"vente et location de (?:solutions|mat[ée]riel) de manutention)\b",
     ),
     config.SECTOR_CONSTRUCTION: (
-        9,
-        r"\b(r[ée]novation (?:sur[- ]mesure )?de l['’]habitat|"
+        11,
+        r"\b(leader(?: européen| europeen| mondial)? (?:du |de la )?(?:btp|construction)|"
+        r"acteur(?: majeur| de référence| de reference)? (?:du |de la )?(?:btp|construction)|"
+        r"construction et (?:concessions?|travaux publics)|"
+        r"r[ée]novation (?:sur[- ]mesure )?de l['’]habitat|"
         r"r[ée]novation de l['’]habitat|pose de fen[êe]tres|pose de volets|pose de portes)\b",
     ),
     config.SECTOR_SPORT: (
@@ -106,10 +109,11 @@ def _activity_matches(sentence: str) -> list[tuple[int, str, re.Match[str]]]:
     return matches
 
 
-def classify_subject_attributed_activity(
+def classify_subject_attributed_activity_scored(
     organisation: str,
     text: str,
-) -> tuple[str, str] | None:
+) -> tuple[str, str, int] | None:
+    """Retourne le meilleur secteur attribué au sujet avec son score de preuve."""
     for sentence in _sentences(text):
         matches = _activity_matches(sentence)
         if not matches:
@@ -123,8 +127,32 @@ def classify_subject_attributed_activity(
             continue
         if not _org_is_subject(organisation, sentence, top[2].start()):
             continue
-        return top[1], sentence[:500]
+        return top[1], sentence[:500], top[0]
     return None
+
+
+def classify_subject_attributed_activity(
+    organisation: str,
+    text: str,
+) -> tuple[str, str] | None:
+    scored = classify_subject_attributed_activity_scored(organisation, text)
+    if scored is None:
+        return None
+    sector, sentence, _score = scored
+    return sector, sentence
+
+
+def strong_subject_attributed_activity(
+    organisation: str,
+    text: str,
+    *,
+    minimum_score: int = 10,
+) -> tuple[str, str] | None:
+    """N'accepte que les formulations officielles suffisamment discriminantes."""
+    scored = classify_subject_attributed_activity_scored(organisation, text)
+    if scored is None or scored[2] < minimum_score:
+        return None
+    return scored[0], scored[1]
 
 
 def resolve_official_site_subject_attributed(
