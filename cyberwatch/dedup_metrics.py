@@ -21,6 +21,7 @@ from .org_identity import effective_organisation_key
 WEAK_MERGE_REASONS = frozenset({
     "INCIDENT_MERGE_CANONICAL_NAME",
     "INCIDENT_MERGE_ALIAS",
+    "INCIDENT_MERGE_RANSOMWARE_CORROBORATION",
 })
 
 WEAK_MERGE_COLUMNS = [
