@@ -134,13 +134,19 @@ def _report_from_cache(payload: dict) -> QualificationReport:
 def qualify(items: list[Item]) -> QualificationReport:
     ordered = identity.sort_items(items)
     source_facts, org_cache = store.read_csv(store.SOURCE_FACTS_CSV), store.load_org_enrichment_cache()
+    previous_provenance = store.load_qualification_provenance()
+    previous_registry = store.load_incident_id_registry()
     prequal, dependency_digest_value = _capture_prequalification_state(ordered, source_facts, org_cache)
+    cache_engine_digest = qualification_cache.engine_digest(store.ROOT)
 
     cached = qualification_cache.load_cache(store.DATA_DIR)
     matches, miss_reason = qualification_cache.cache_matches(
         cached,
         policy_version=config.METHOD_ID,
         dependency_digest=dependency_digest_value,
+        engine_digest_value=cache_engine_digest,
+        previous_provenance_digest=qualification_cache.rows_digest(previous_provenance),
+        previous_registry_digest=qualification_cache.rows_digest(previous_registry),
         prequalification_fingerprints=prequal.fingerprints,
     )
     if matches and not prequal.new and not prequal.dirty:
@@ -153,7 +159,7 @@ def qualify(items: list[Item]) -> QualificationReport:
         skipped_items=0,
     )
 
-    previous_provenance = store.load_qualification_provenance(); decisions = []
+    decisions = []
     restored = restore_legacy_sector_fallbacks(ordered, previous_provenance)
     registry_restored = sector_registry.restore_registry_applications(ordered, previous_provenance)
     reference = enrichment.load_reference()
@@ -175,13 +181,14 @@ def qualify(items: list[Item]) -> QualificationReport:
     llm_changes, provenance = source_llm_fallback.apply_source_llm_fallback(ordered); changes.update(llm_changes); neutralize_sector_fallback(ordered, changes, provenance); decisions.extend(decisions_from_provenance(provenance))
     provenance.extend(context_provenance); provenance.extend(registry_provenance); provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"], row.get("Origin", "")))
     decisions.sort(key=lambda row: (row.item_id, row.field, row.origin, row.decision))
-    incidents, incident_id_registry = build_incidents_with_registry(ordered, store.load_incident_id_registry())
+    incidents, incident_id_registry = build_incidents_with_registry(ordered, previous_registry)
     report = QualificationReport(ordered, incidents, changes, provenance, decisions, summarize_decisions(decisions), incident_id_registry, identity.items_hash(ordered), identity.incidents_hash(incidents))
     qualification_cache.write_pending_cache(
         qualification_cache.report_to_payload(
             report,
             policy_version=config.METHOD_ID,
             dependency_digest=dependency_digest_value,
+            engine_digest_value=cache_engine_digest,
             prequalification_fingerprints=prequal.fingerprints,
         )
     )
