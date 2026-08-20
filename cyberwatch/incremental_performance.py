@@ -234,10 +234,10 @@ def _patch_frenchbreaches_hydration() -> None:
 
 
 def _patch_qualification_timer() -> None:
-    from . import qualification
-    if getattr(qualification, "_incremental_perf_timer_installed", False):
+    from . import qualification, runner
+    if getattr(runner, "_incremental_perf_qualify_timer_installed", False):
         return
-    original = qualification.qualify
+    original = runner.qualify
 
     def qualify(items):
         global _LAST_QUALIFY_DURATION
@@ -247,7 +247,12 @@ def _patch_qualification_timer() -> None:
         finally:
             _LAST_QUALIFY_DURATION = round(time.monotonic() - started, 3)
 
+    # runner.execute appelle son symbole importé directement ; c'est donc ce
+    # chemin qu'il faut instrumenter. On aligne aussi le module qualification
+    # pour les appels directs utilisés par les commandes/outils.
+    runner.qualify = qualify
     qualification.qualify = qualify
+    runner._incremental_perf_qualify_timer_installed = True
     qualification._incremental_perf_timer_installed = True
 
 
