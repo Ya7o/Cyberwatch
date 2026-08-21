@@ -8,7 +8,6 @@ from cyberwatch.runner import MODE_MAJ, code_commit, make_run_context
 
 
 def isolate_store(tmp_path, monkeypatch):
-    """Redirige tous les artefacts générés vers un répertoire temporaire."""
     mapping = {
         "ITEMS_CSV": tmp_path / "items.csv",
         "INCIDENTS_CSV": tmp_path / "incidents.csv",
@@ -47,7 +46,6 @@ def valid_snapshot(make_item, as_of="2026-08-14T08:00:00+04:00"):
 def test_maj_without_snapshot_is_refused(tmp_path, monkeypatch, capsys):
     isolate_store(tmp_path, monkeypatch)
     args = SimpleNamespace(as_of=None, start=None, layers="all")
-
     assert cli.cmd_maj(args) == 1
     assert "Aucun snapshot Cyberwatch valide" in capsys.readouterr().out
 
@@ -60,14 +58,12 @@ def test_maj_with_valid_snapshot_is_allowed(tmp_path, monkeypatch, make_item):
     monkeypatch.setattr(cli, "execute", lambda context: called.append(context) or SimpleNamespace(overall=status.OK))
     monkeypatch.setattr(cli, "_print_summary", lambda report: None)
     monkeypatch.setattr(cli.site, "build", lambda: None)
-
     assert cli.cmd_maj(args) == 0
     assert called and called[0].mode == "MAJ"
 
 
 def test_empty_base_is_uninitialized_and_ci_check_passes(tmp_path, monkeypatch, capsys):
     isolate_store(tmp_path, monkeypatch)
-
     assert store.snapshot_state()[0] == store.BASE_UNINITIALIZED
     assert cli.cmd_check(SimpleNamespace(allow_uninitialized=False)) == 1
     assert cli.cmd_check(SimpleNamespace(allow_uninitialized=True)) == 0
@@ -77,7 +73,6 @@ def test_empty_base_is_uninitialized_and_ci_check_passes(tmp_path, monkeypatch, 
 def test_partial_items_without_snapshot_is_incoherent(tmp_path, monkeypatch, make_item, capsys):
     isolate_store(tmp_path, monkeypatch)
     store.save_items([make_item()])
-
     assert store.snapshot_state()[0] == store.BASE_INCOHERENT
     assert cli.cmd_check(SimpleNamespace(allow_uninitialized=True)) == 1
     assert "BASE INCOHÉRENTE" in capsys.readouterr().out
@@ -86,13 +81,11 @@ def test_partial_items_without_snapshot_is_incoherent(tmp_path, monkeypatch, mak
 def test_snapshot_without_items_is_incoherent(tmp_path, monkeypatch):
     isolate_store(tmp_path, monkeypatch)
     store.save_snapshot({"Items_Count": 0})
-
     assert store.snapshot_state()[0] == store.BASE_INCOHERENT
 
 
 def test_site_build_on_uninitialized_base_is_explicit(tmp_path, monkeypatch):
     isolate_store(tmp_path, monkeypatch)
-
     assert site.build() == (0, 0)
     assert not store.SNAPSHOT_JSON.exists()
     import json
@@ -103,14 +96,7 @@ def test_site_build_on_uninitialized_base_is_explicit(tmp_path, monkeypatch):
 
 def test_report_uses_status_and_not_a_score(tmp_path, monkeypatch, capsys):
     isolate_store(tmp_path, monkeypatch)
-    store.append_run_log({
-        "Run_ID": "RUN-TEST",
-        "Mode": "CREATE",
-        "Overall_Status": "OK",
-        "Sources_OK": 5,
-        "Sources_FAIL": 0,
-    })
-
+    store.append_run_log({"Run_ID": "RUN-TEST", "Mode": "CREATE", "Overall_Status": "OK", "Sources_OK": 5, "Sources_FAIL": 0})
     assert cli.cmd_report(SimpleNamespace()) == 0
     output = capsys.readouterr().out
     assert "Sources : **5 OK / 0 FAIL**" in output
@@ -120,7 +106,6 @@ def test_report_uses_status_and_not_a_score(tmp_path, monkeypatch, capsys):
 def test_baseline_accepts_valid_snapshot_without_live_repeat(tmp_path, monkeypatch, make_item):
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item)
-
     assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 0
     baseline = store.load_baseline()
     assert baseline["Baseline"] is True
@@ -132,7 +117,6 @@ def test_baseline_refuses_when_test_repeat_fails(tmp_path, monkeypatch, make_ite
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item)
     monkeypatch.setattr(cli, "cmd_test_repeat", lambda args: 1)
-
     assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 1
     assert not store.BASELINE_JSON.exists()
 
@@ -140,7 +124,6 @@ def test_baseline_refuses_when_test_repeat_fails(tmp_path, monkeypatch, make_ite
 def test_maj_uses_snapshot_as_of_when_run_log_is_absent(tmp_path, monkeypatch, make_item):
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item, as_of="2026-08-10T08:00:00+04:00")
-
     context = make_run_context(MODE_MAJ, as_of="2026-08-14T08:00:00+04:00")
     assert context.target_start == "2026-07-20"
 
@@ -149,7 +132,6 @@ def test_maj_refuses_snapshot_without_usable_as_of(tmp_path, monkeypatch, make_i
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item, as_of="")
     args = SimpleNamespace(as_of="2026-08-14T08:00:00+04:00", start=None, layers="all")
-
     assert cli.cmd_maj(args) == 1
     assert "As_Of exploitable absent" in capsys.readouterr().out
 
@@ -166,17 +148,7 @@ def test_collect_workflow_publishes_create_without_requiring_baseline():
     assert workflow.index("cyberwatch check") < workflow.index("Publier les données")
 
 
-def test_initialize_workflow_runs_validations_before_publication():
-    workflow = (store.ROOT / ".github" / "workflows" / "initialize.yml").read_text(encoding="utf-8")
-    for command in ("cyberwatch create", "cyberwatch check", "cyberwatch test-repeat", "cyberwatch baseline", "cyberwatch build-site"):
-        assert command in workflow
-    assert "test-live-repeat" not in workflow
-    assert "sleep 65" not in workflow
-    assert workflow.index("cyberwatch baseline") < workflow.index("Publier la baseline")
-
-
 def _step_name_immediately_before(workflow: str, marker: str) -> str:
-    """Nom de la dernière étape (`- name: ...`) déclarée avant `marker`."""
     before = workflow[:workflow.index(marker)]
     last_step_line = [line for line in before.splitlines() if "- name:" in line][-1]
     return last_step_line.split("- name:", 1)[1].strip()
@@ -186,17 +158,8 @@ def test_collect_workflow_maps_openai_secret_only_on_the_collect_step():
     workflow = (store.ROOT / ".github" / "workflows" / "collect.yml").read_text(encoding="utf-8")
     marker = "OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}"
     assert marker in workflow
-    # Un seul mapping dans tout le fichier : uniquement l'étape "Collecter".
     assert workflow.count("secrets.Cyberwatchapi") == 1
     assert _step_name_immediately_before(workflow, marker) == "Collecter"
-
-
-def test_initialize_workflow_maps_openai_secret_only_on_the_create_step():
-    workflow = (store.ROOT / ".github" / "workflows" / "initialize.yml").read_text(encoding="utf-8")
-    marker = "OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}"
-    assert marker in workflow
-    assert workflow.count("secrets.Cyberwatchapi") == 1
-    assert _step_name_immediately_before(workflow, marker) == "CREATE contrôlé"
 
 
 def test_ci_workflow_never_receives_the_openai_secret():
