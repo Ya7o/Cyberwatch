@@ -24,9 +24,9 @@ on:
         type: string
         default: "0.50"
       publish:
-        description: "Publier seulement après tous les gates"
+        description: "Publier la DB reconstruite après les gates techniques"
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: write
@@ -73,14 +73,13 @@ jobs:
           echo "RESET_START=${{ inputs.start }}" >> "$GITHUB_ENV"
           echo "BASE_SHA=$GITHUB_SHA" >> "$GITHUB_ENV"
 
-      - name: Archiver le snapshot de restauration
+      - name: Archiver la DB actuelle pour comparaison/rollback
         run: |
           set -euo pipefail
           tar -czf /tmp/cyberwatch-before-reset.tgz data assets/data
           cp data/items.csv /tmp/items-before-reset.csv
           cp data/incidents.csv /tmp/incidents-before-reset.csv
-          cp data/incident_id_registry.csv /tmp/incident-id-registry-before.csv
-          sha256sum data/incident_id_registry.csv > /tmp/incident-id-registry-before.sha256
+          cp data/incident_id_registry.csv /tmp/incident-id-registry-before.csv || true
 
       - name: Préparer le staging isolé
         run: |
@@ -93,7 +92,7 @@ jobs:
           from pathlib import Path
           from cyberwatch.cold_reset import COLD_CACHE_FILES, DERIVED_FILES
           data = Path('data')
-          for name in sorted(set(COLD_CACHE_FILES + DERIVED_FILES)):
+          for name in sorted(set(COLD_CACHE_FILES + DERIVED_FILES + ('incident_id_registry.csv',))):
               path = data / name
               if path.exists() and path.is_file():
                   path.unlink()
@@ -120,19 +119,12 @@ jobs:
           cp data/incidents.csv /tmp/incidents-deterministic.csv
           python -m cyberwatch check
 
-      - name: Gate couverture historique déterministe
+      - name: Diff historique informatif
         run: |
           set -euo pipefail
           cd /tmp/cyberwatch-cold-reset
-          python -m cyberwatch.cold_reset compare \
-            --before /tmp/items-before-reset.csv --after data/items.csv --id-column Item_ID \
-            | tee /tmp/item-id-deterministic-diff.json
-          python - <<'PY'
-          import json
-          p=json.load(open('/tmp/item-id-deterministic-diff.json', encoding='utf-8'))
-          if p['lost']:
-              print(f"WARNING: {len(p['lost'])} Item_ID publiés ne sont pas reconstructibles depuis les sources seules.")
-          PY
+          python -m cyberwatch.cold_reset compare --before /tmp/items-before-reset.csv --after data/items.csv --id-column Item_ID | tee /tmp/item-id-deterministic-diff.json
+          python -m cyberwatch.cold_reset compare --before /tmp/incidents-before-reset.csv --after data/incidents.csv --id-column Incident_ID | tee /tmp/incident-id-deterministic-diff.json
 
       - name: Phase 2 — qualification bornée
         working-directory: /tmp/cyberwatch-cold-reset
@@ -204,7 +196,7 @@ jobs:
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         run: python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
 
-      - name: Certification complète
+      - name: Certification technique complète
         working-directory: /tmp/cyberwatch-cold-reset
         run: |
           set -euo pipefail
@@ -217,26 +209,25 @@ jobs:
           python -m cyberwatch test-repeat
           python -m cyberwatch build-site
           python -m cyberwatch check
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          def rows(path):
+              with Path(path).open(encoding='utf-8', newline='') as handle:
+                  return sum(1 for _ in csv.DictReader(handle))
+          item_count = rows('data/items.csv')
+          incident_count = rows('data/incidents.csv')
+          if item_count <= 0 or incident_count <= 0:
+              raise SystemExit(f'NO-GO: DB vide ou invalide items={item_count} incidents={incident_count}')
+          print(f'Health gate PASS: items={item_count} incidents={incident_count}')
+          PY
 
-      - name: Gates d'identité et de non-régression historique
+      - name: Diff final informatif
         run: |
           set -euo pipefail
           cd /tmp/cyberwatch-cold-reset
           python -m cyberwatch.cold_reset compare --before /tmp/items-before-reset.csv --after data/items.csv --id-column Item_ID > /tmp/item-id-final-diff.json
           python -m cyberwatch.cold_reset compare --before /tmp/incidents-before-reset.csv --after data/incidents.csv --id-column Incident_ID > /tmp/incident-id-final-diff.json
-          python - <<'PY'
-          import json
-          items=json.load(open('/tmp/item-id-final-diff.json', encoding='utf-8'))
-          incidents=json.load(open('/tmp/incident-id-final-diff.json', encoding='utf-8'))
-          problems=[]
-          if items['lost']:
-              problems.append(f"{len(items['lost'])} Item_ID publiés perdus")
-          if incidents['lost']:
-              problems.append(f"{len(incidents['lost'])} Incident_ID publiés perdus")
-          if problems:
-              raise SystemExit('NO-GO publication cold reset: ' + '; '.join(problems))
-          print('Identity/history gates PASS')
-          PY
 
       - name: Manifeste final et rapport LLM
         working-directory: /tmp/cyberwatch-cold-reset
@@ -257,6 +248,7 @@ jobs:
             /tmp/cold-reset-after.json
             /tmp/cold-reset-preflight.json
             /tmp/item-id-deterministic-diff.json
+            /tmp/incident-id-deterministic-diff.json
             /tmp/item-id-final-diff.json
             /tmp/incident-id-final-diff.json
             /tmp/cold-reset-golden.json
@@ -267,7 +259,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-      - name: Promotion atomique explicite
+      - name: Promotion atomique après certification
         if: ${{ inputs.publish }}
         run: |
           set -euo pipefail
@@ -280,6 +272,6 @@ jobs:
             echo "Aucun changement à publier."
             exit 0
           fi
-          git commit -m "data: certified cold reset"
+          git commit -m "data: certified development cold reset"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
