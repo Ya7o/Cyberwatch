@@ -201,6 +201,30 @@ jobs:
             --output /tmp/reset-audit.json
           python -m cyberwatch.reset_baseline baseline \
             --output data/post_reset_baseline.json
+          # Les métriques ne doivent pas exister uniquement dans le résumé de
+          # job : l'API n'expose pas GITHUB_STEP_SUMMARY, or ce sont elles qui
+          # tranchent le Go/No-Go d'un reset.
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          audit = json.loads(Path('/tmp/reset-audit.json').read_text())
+          after = audit['after']
+          volume, coverage = after['volume'], after['item_coverage']
+          print(f"AUDIT verdict={audit['verdict']}")
+          print(f"AUDIT items={volume['items']} incidents={volume['incidents']}"
+                f" dup_items={volume['duplicate_item_ids']}"
+                f" dup_incidents={volume['duplicate_incident_ids']}")
+          for field in ('threat', 'sector', 'location'):
+              print(f"AUDIT coverage_{field}={coverage[field]['known_pct']}%")
+          llm = after.get('llm') or {}
+          print(f"AUDIT llm_last_pass_calls={llm.get('calls_attempted', 0)}"
+                f" cost_usd={llm.get('estimated_cost_usd', 0)}")
+          for key, value in (audit.get('deltas') or {}).items():
+              print(f"AUDIT delta_{key}={value}")
+          for warning in audit['blockers'] + audit['warnings']:
+              print(f"AUDIT note: {warning}")
+          PY
       - name: Manifeste final
         working-directory: /tmp/cyberwatch-reset
         run: python -m cyberwatch.cold_reset manifest --mode "$RESET_MODE" --output /tmp/reset-after.json
