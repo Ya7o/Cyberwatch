@@ -24,9 +24,24 @@ jobs:
         run: pip install -r requirements.txt
       - name: Apply semantic reuse refactor
         run: python scripts/_source_facts_semantic_reuse_codemod.py
-      - name: Run source-facts regression tests
+      - name: Remove duplicate qualification timing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('cyberwatch/ai.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''def _post_openai(body: dict, state: AiRunState) -> dict:\n    started = time.monotonic()\n    try:\n        try:\n            result = llm_runtime.runtime().post_response(\n                task="qualification",\n                body=body,\n                api_key=state.api_key,\n            )\n            return result.payload\n        except llm_runtime.LlmError as exc:\n            raise AiCallError(str(exc)) from exc\n    finally:\n        state.llm_duration_seconds += time.monotonic() - started\n'''
+          new = '''def _post_openai(body: dict, state: AiRunState) -> dict:\n    shared = llm_runtime.runtime()\n    before_duration = shared.stats.duration_seconds\n    try:\n        result = shared.post_response(\n            task="qualification",\n            body=body,\n            api_key=state.api_key,\n        )\n        return result.payload\n    except llm_runtime.LlmError as exc:\n        raise AiCallError(str(exc)) from exc\n    finally:\n        state.llm_duration_seconds += max(\n            0.0, shared.stats.duration_seconds - before_duration\n        )\n'''
+          if old not in text:
+              raise SystemExit('ai._post_openai timing pattern not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+      - name: Run source-facts and instrumentation regression tests
         run: |
           python -m pytest \
+            tests/test_llm_runtime.py \
+            tests/test_ai_qualification.py \
+            tests/test_source_performance_instrumentation.py \
             tests/test_source_facts_ai.py \
             tests/test_source_facts_summary_reliability.py \
             tests/test_source_facts_backfill_abstention_retry.py \
@@ -36,6 +51,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- cyberwatch/source_facts_ai.py scripts/_source_facts_semantic_reuse_codemod.py .github/workflows/source-facts-semantic-reuse-codemod.yml
-          git commit -m "Reuse validated rich facts in source facts"
+          git add -- cyberwatch/ai.py cyberwatch/source_facts_ai.py scripts/_source_facts_semantic_reuse_codemod.py .github/workflows/source-facts-semantic-reuse-codemod.yml
+          git commit -m "Reuse validated rich facts and fix LLM timing"
           git push origin HEAD:refactor/unified-llm-runtime
