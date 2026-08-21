@@ -22,11 +22,13 @@ from .sector_completion import install as _install_sector_completion
 from .incremental_performance import install as _install_incremental_performance
 from .incremental_performance_contract import install as _install_incremental_performance_contract
 from .incremental_runtime import install as _install_incremental_runtime
+from .llm_legacy_bridge import install as _install_llm_legacy_bridge
 
 _install_sector_completion()
 _install_incremental_performance()
 _install_incremental_performance_contract()
 _install_incremental_runtime()
+_install_llm_legacy_bridge()
 
 __all__ = ["METHOD_ID"]
 __version__ = "1.0.0"
