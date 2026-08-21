@@ -12,18 +12,39 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 import tarfile
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+#: Référentiels statiques strictement nécessaires au bootstrap ou à une règle
+#: métier stable. Aucun d'eux n'est produit par un run : le code ne sait pas les
+#: régénérer, et aucun ne porte d'identité (`Item_ID`, `Incident_ID`) ni
+#: d'historique de collecte. Cette liste est une allowlist : ajouter un
+#: survivant exige de justifier ici pourquoi la reconstruction ne peut pas le
+#: recréer.
 PRESERVED_DATA_PATHS = frozenset({
+    # Lu à l'import de `cyberwatch.normalize` (ORGANISATION_ALIASES).
     "organisation_aliases.csv",
-    "sector_auto_policy.json",
+    # Lu à l'import de `cyberwatch.org_identity` (TERRITORIAL_IDENTITIES).
     "territorial_identities.csv",
+    # Politique d'activation des canaux Sector. Absent, `sector_registry`
+    # retombe sur DEFAULT_POLICY, plus permissif que la politique voulue.
+    "sector_auto_policy.json",
+    # Référentiel manuel Organisation_Key -> Secteur/Localisation/Périmètre.
+    # Aucun writer dans le dépôt et seul canal Sector activé par la politique
+    # ci-dessus : purgé, la qualification Sector perd sa source de vérité sans
+    # aucun moyen de la reconstruire.
+    "enrichment_reference.csv",
 })
 PRESERVED_SITE_DATA_PATHS: frozenset[str] = frozenset()
+
+#: Ce qui doit être présent AVANT de lancer une reconstruction. Identique à
+#: l'allowlist : tout ce qui survit est nécessaire, tout ce qui est nécessaire
+#: survit.
+REQUIRED_BOOTSTRAP_PATHS = frozenset(f"data/{name}" for name in PRESERVED_DATA_PATHS)
 
 
 @dataclass(frozen=True)
@@ -158,6 +179,37 @@ def verify_zero(root: Path) -> dict:
     }
 
 
+def validate_zero_bootstrap(root: Path) -> dict:
+    """Échoue si un référentiel indispensable manque avant reconstruction.
+
+    `verify_zero` prouve que rien d'historique n'a survécu ; cette fonction
+    prouve le contraire complémentaire : que le strict nécessaire est là. Elle
+    est appelée avant toute reconstruction pour qu'un référentiel manquant
+    coûte une seconde et non une reconstruction complète.
+    """
+    root = root.resolve()
+    present: list[str] = []
+    missing: list[str] = []
+    for relative in sorted(REQUIRED_BOOTSTRAP_PATHS):
+        path = root / relative
+        if path.is_file() and path.stat().st_size > 0:
+            present.append(relative)
+        else:
+            missing.append(relative)
+    return {
+        "schema": "cyberwatch-zero-bootstrap-v1",
+        "verdict": "READY" if not missing else "MISSING",
+        "required": sorted(REQUIRED_BOOTSTRAP_PATHS),
+        "present": present,
+        "missing": missing,
+        "detail": (
+            "staging prêt pour une reconstruction depuis zéro"
+            if not missing
+            else "référentiels de bootstrap absents ou vides : " + ", ".join(missing)
+        ),
+    }
+
+
 def _write_or_print(payload: dict, output: str | None) -> None:
     text = json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if output:
@@ -188,6 +240,10 @@ def main(argv: list[str] | None = None) -> int:
     verify.add_argument("--root", default=str(ROOT))
     verify.add_argument("--output")
 
+    bootstrap = sub.add_parser("validate-bootstrap")
+    bootstrap.add_argument("--root", default=str(ROOT))
+    bootstrap.add_argument("--output")
+
     args = parser.parse_args(argv)
     root = Path(args.root)
     if args.command == "inventory":
@@ -202,6 +258,13 @@ def main(argv: list[str] | None = None) -> int:
         payload = asdict(report)
         _write_or_print(payload, args.output)
         return 2 if report.unexpected_preserved else 0
+    if args.command == "validate-bootstrap":
+        payload = validate_zero_bootstrap(root)
+        _write_or_print(payload, args.output)
+        if payload["verdict"] != "READY":
+            print(payload["detail"], file=sys.stderr)
+            return 2
+        return 0
     payload = verify_zero(root)
     _write_or_print(payload, args.output)
     return 0 if payload["verdict"] == "ZERO" else 2
