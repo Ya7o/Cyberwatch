@@ -1,10 +1,19 @@
 from pathlib import Path
 
+import pytest
+
 from cyberwatch import config
 from cyberwatch.golden import read_csv
 from cyberwatch.golden_review import apply_audit, quality_report, validate_audit
 
 ROOT = Path(__file__).resolve().parents[1]
+GOLDEN_CORPUS = ROOT / "data" / "golden" / "qualification_golden_audit.csv"
+requires_corpus = pytest.mark.skipif(
+    not GOLDEN_CORPUS.exists(),
+    reason=(
+        "corpus golden absent : base génération zéro. Le corpus référence des Item_ID d'une génération antérieure ; il est reconstitué par revue manuelle, pas par une reconstruction."
+    ),
+)
 
 
 def _golden(golden_id="GOLD-0001", **overrides):
@@ -50,6 +59,7 @@ def _audit(golden_id="GOLD-0001", **overrides):
     return row
 
 
+@requires_corpus
 def test_repository_golden_audit_contract_is_valid():
     golden = read_csv(ROOT / "data" / "golden" / "qualification_golden.csv")
     audit = read_csv(ROOT / "data" / "golden" / "qualification_golden_audit.csv")

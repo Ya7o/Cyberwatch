@@ -1,6 +1,8 @@
 import csv
 from pathlib import Path
 
+import pytest
+
 from scripts.promote_dedup_golden_v2 import (
     GOLDEN_V2,
     _eligible_auto_positive,
@@ -8,6 +10,13 @@ from scripts.promote_dedup_golden_v2 import (
 
 GOLDEN = Path("data/golden/dedup_golden.csv")
 REVIEWS = Path("data/golden/dedup_reviewed_v2.csv")
+
+requires_corpus = pytest.mark.skipif(
+    not GOLDEN.exists() or not REVIEWS.exists(),
+    reason=(
+        "corpus golden absent : base génération zéro. Le corpus référence des Item_ID d'une génération antérieure ; il est reconstitué par revue manuelle, pas par une reconstruction."
+    ),
+)
 
 
 def _rows(path: Path):
@@ -19,6 +28,7 @@ def _pair(row):
     return tuple(sorted((row["Left_Item_ID"], row["Right_Item_ID"])))
 
 
+@requires_corpus
 def test_golden_v2_is_large_stable_and_unique():
     rows = _rows(GOLDEN)
     assert len(rows) >= 150
@@ -28,6 +38,7 @@ def test_golden_v2_is_large_stable_and_unique():
     assert all(row["Evidence"].strip() and row["Reviewed_At"].strip() for row in rows)
 
 
+@requires_corpus
 def test_review_ledger_is_materialized_and_linked_to_golden():
     golden_pairs = {_pair(row) for row in _rows(GOLDEN)}
     reviews = _rows(REVIEWS)
