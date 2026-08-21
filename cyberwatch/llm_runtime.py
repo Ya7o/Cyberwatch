@@ -23,11 +23,20 @@ from typing import Any
 
 import requests
 
-DEFAULT_MODEL = "gpt-5-nano"
+# Les tâches LLM Cyberwatch sont des extractions/classifications structurées,
+# revalidées mécaniquement après réponse. GPT-4o mini est donc le défaut coût /
+# latence. Chaque tâche peut toujours le surcharger via sa variable *_MODEL ou
+# OPENAI_MODEL sans changer le code.
+DEFAULT_MODEL = "gpt-4o-mini"
 OPENAI_URL = "https://api.openai.com/v1/responses"
 DEFAULT_TIMEOUT_SECONDS = 30
 DEFAULT_MAX_RETRIES = 2
-DEFAULT_PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
+DEFAULT_PRICING = {
+    "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+    "gpt-4o": {"input": 2.50, "output": 10.00},
+    # Compatibilité des caches/runs historiques encore étiquetés ainsi.
+    "gpt-5-nano": {"input": 0.05, "output": 0.40},
+}
 
 
 def _env_int(name: str, default: int) -> int:
@@ -143,13 +152,7 @@ class LlmRuntime:
             bucket = self._task_bucket(task)
             bucket["calls_attempted"] = int(bucket["calls_attempted"]) + 1
 
-    def _record_success(
-        self,
-        task: str,
-        usage: LlmUsage,
-        duration: float,
-        retries: int,
-    ) -> None:
+    def _record_success(self, task: str, usage: LlmUsage, duration: float, retries: int) -> None:
         with self._lock:
             self.stats.calls_succeeded += 1
             self.stats.retries += retries
@@ -179,32 +182,18 @@ class LlmRuntime:
             bucket["retries"] = int(bucket["retries"]) + retries
             bucket["duration_seconds"] = float(bucket["duration_seconds"]) + duration
 
-    def post_response(
-        self,
-        *,
-        task: str,
-        body: dict[str, Any],
-        api_key: str | None = None,
-    ) -> LlmTransportResult:
+    def post_response(self, *, task: str, body: dict[str, Any], api_key: str | None = None) -> LlmTransportResult:
         key = (api_key or self.api_key or "").strip()
         if not key:
             raise LlmError("OPENAI_API_KEY absente")
         self._reserve_call(task)
-        headers = {
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-        }
+        headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
         started = _monotonic()
         retries = 0
         try:
             while True:
                 try:
-                    response = requests.post(
-                        OPENAI_URL,
-                        json=body,
-                        headers=headers,
-                        timeout=self.timeout_seconds,
-                    )
+                    response = requests.post(OPENAI_URL, json=body, headers=headers, timeout=self.timeout_seconds)
                 except requests.Timeout as exc:
                     with self._lock:
                         self.stats.timeouts += 1
@@ -219,7 +208,6 @@ class LlmRuntime:
                     retries += 1
                     time.sleep(2**retries)
                     continue
-
                 if response.status_code == 200:
                     try:
                         payload = response.json()
@@ -229,13 +217,7 @@ class LlmRuntime:
                     usage = extract_usage(payload, model)
                     duration = _monotonic() - started
                     self._record_success(task, usage, duration, retries)
-                    return LlmTransportResult(
-                        payload=payload,
-                        usage=usage,
-                        duration_seconds=duration,
-                        retries=retries,
-                    )
-
+                    return LlmTransportResult(payload=payload, usage=usage, duration_seconds=duration, retries=retries)
                 retryable = response.status_code == 429 or 500 <= response.status_code < 600
                 if response.status_code == 429:
                     with self._lock:
@@ -252,44 +234,20 @@ class LlmRuntime:
             self._record_failure(task, _monotonic() - started, retries)
             raise
 
-    def call_json(
-        self,
-        *,
-        task: str,
-        model: str,
-        system_prompt: str,
-        user_content: str,
-        schema_name: str,
-        schema: dict[str, Any],
-        max_output_tokens: int,
-        reasoning_effort: str | None = "minimal",
-    ) -> LlmCallResult:
+    def call_json(self, *, task: str, model: str, system_prompt: str, user_content: str, schema_name: str, schema: dict[str, Any], max_output_tokens: int, reasoning_effort: str | None = "minimal") -> LlmCallResult:
         body: dict[str, Any] = {
             "model": model,
-            "input": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_content},
-            ],
-            "text": {
-                "format": {
-                    "type": "json_schema",
-                    "name": schema_name,
-                    "schema": schema,
-                    "strict": True,
-                }
-            },
+            "input": [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_content}],
+            "text": {"format": {"type": "json_schema", "name": schema_name, "schema": schema, "strict": True}},
             "max_output_tokens": max_output_tokens,
         }
-        if reasoning_effort:
+        # GPT-4o / GPT-4o mini n'acceptent pas le paramètre reasoning. Les
+        # modèles de raisonnement peuvent toujours l'utiliser via override.
+        if reasoning_effort and not model.startswith("gpt-4o"):
             body["reasoning"] = {"effort": reasoning_effort}
         transport = self.post_response(task=task, body=body)
         data = extract_output_json(transport.payload)
-        return LlmCallResult(
-            data=data,
-            usage=transport.usage,
-            duration_seconds=transport.duration_seconds,
-            retries=transport.retries,
-        )
+        return LlmCallResult(data=data, usage=transport.usage, duration_seconds=transport.duration_seconds, retries=transport.retries)
 
 
 def pricing_for(model: str) -> dict[str, float]:
@@ -308,14 +266,7 @@ def extract_usage(payload: dict[str, Any], model: str = DEFAULT_MODEL) -> LlmUsa
     output_tokens = int(usage.get("output_tokens", 0) or 0)
     reasoning = int((usage.get("output_tokens_details") or {}).get("reasoning_tokens", 0) or 0)
     total = int(usage.get("total_tokens") or input_tokens + output_tokens)
-    return LlmUsage(
-        input_tokens=input_tokens,
-        cached_input_tokens=cached,
-        output_tokens=output_tokens,
-        reasoning_tokens=reasoning,
-        total_tokens=total,
-        estimated_cost_usd=estimate_cost(model, input_tokens, output_tokens),
-    )
+    return LlmUsage(input_tokens=input_tokens, cached_input_tokens=cached, output_tokens=output_tokens, reasoning_tokens=reasoning, total_tokens=total, estimated_cost_usd=estimate_cost(model, input_tokens, output_tokens))
 
 
 def extract_output_json(payload: dict[str, Any]) -> dict[str, Any]:
