@@ -19,15 +19,29 @@ from .llm_legacy_bridge import normalize_legacy_request
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 
-PROTECTED_FILES = (
-    "incident_id_registry.csv",
-    "organisation_aliases.csv",
-    "organisation_sector_registry.csv",
+#: Référentiels statiques que le code ne sait pas régénérer. Leur absence
+#: interdit toute reconstruction, quel que soit le mode. Miroir de
+#: `zero_reset.PRESERVED_DATA_PATHS`, dont un test garantit l'alignement.
+BOOTSTRAP_REFERENCE_FILES = (
     "enrichment_reference.csv",
-    "territorial_identities.csv",
-    "quality_baseline.json",
+    "organisation_aliases.csv",
     "sector_auto_policy.json",
+    "territorial_identities.csv",
 )
+
+#: État calculé par les runs précédents. Un `rebuild` s'appuie dessus et exige
+#: sa présence ; un `zero` le détruit délibérément, et son absence y est un
+#: résultat attendu, pas une anomalie.
+IDENTITY_STATE_FILES = (
+    "incident_id_registry.csv",
+    "organisation_sector_registry.csv",
+    "quality_baseline.json",
+)
+
+PROTECTED_FILES = tuple(BOOTSTRAP_REFERENCE_FILES + IDENTITY_STATE_FILES)
+
+MODE_REBUILD = "rebuild"
+MODE_ZERO = "zero"
 
 COLD_CACHE_FILES = (
     "ai_qualifications.csv",
@@ -167,10 +181,24 @@ def estimate() -> dict[str, Any]:
     }
 
 
-def preflight() -> dict[str, Any]:
+def preflight(mode: str = MODE_REBUILD) -> dict[str, Any]:
     llm = llm_preflight.summary()
     protected = [file_state(DATA / name) for name in PROTECTED_FILES]
-    missing_protected = [state.path for state in protected if not state.exists]
+    required = set(BOOTSTRAP_REFERENCE_FILES)
+    if mode != MODE_ZERO:
+        required |= set(IDENTITY_STATE_FILES)
+    missing_protected = [
+        state.path
+        for name, state in zip(PROTECTED_FILES, protected)
+        if not state.exists and name in required
+    ]
+    # En mode zero, l'état d'identité a été purgé volontairement : on le
+    # rapporte pour la traçabilité sans en faire un blocage.
+    purged_state = [
+        state.path
+        for name, state in zip(PROTECTED_FILES, protected)
+        if not state.exists and name not in required
+    ]
 
     source_model = llm_runtime.model_for_task("source_facts")
     probe = normalize_legacy_request(
@@ -189,8 +217,10 @@ def preflight() -> dict[str, Any]:
 
     return {
         "offline": True,
+        "mode": mode,
         "verdict": "GO" if not reasons else "NO-GO",
         "reasons": reasons,
+        "purged_state_files": purged_state,
         "routing": llm.get("routing", {}),
         "source_facts_bridge_ok": bridge_ok,
         "protected_files": [asdict(state) for state in protected],
@@ -201,12 +231,13 @@ def preflight() -> dict[str, Any]:
     }
 
 
-def manifest() -> dict[str, Any]:
+def manifest(mode: str = MODE_REBUILD) -> dict[str, Any]:
     names = sorted(set(PROTECTED_FILES + COLD_CACHE_FILES + DERIVED_FILES))
     return {
         "schema": "cyberwatch-cold-reset-manifest-v1",
+        "mode": mode,
         "files": [asdict(file_state(DATA / name)) for name in names],
-        "preflight": preflight(),
+        "preflight": preflight(mode),
     }
 
 
@@ -233,8 +264,10 @@ def compare(before: Path, after: Path, id_column: str) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m cyberwatch.cold_reset")
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("preflight")
+    preflight_parser = sub.add_parser("preflight")
+    preflight_parser.add_argument("--mode", choices=(MODE_REBUILD, MODE_ZERO), default=MODE_REBUILD)
     manifest_parser = sub.add_parser("manifest")
+    manifest_parser.add_argument("--mode", choices=(MODE_REBUILD, MODE_ZERO), default=MODE_REBUILD)
     manifest_parser.add_argument("--output")
     compare_parser = sub.add_parser("compare")
     compare_parser.add_argument("--before", required=True)
@@ -243,11 +276,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "preflight":
-        payload = preflight()
+        payload = preflight(args.mode)
         print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
         return 0 if payload["verdict"] == "GO" else 2
     if args.command == "manifest":
-        payload = manifest()
+        payload = manifest(args.mode)
         text = json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
         if args.output:
             Path(args.output).write_text(text, encoding="utf-8")

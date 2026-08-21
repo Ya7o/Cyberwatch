@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from cyberwatch import config
 from cyberwatch.golden import blind_candidates, evaluate, match_golden, validate_file, validate_golden
 from cyberwatch.golden_challengers import (
@@ -11,6 +13,13 @@ from cyberwatch.golden_challengers import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+GOLDEN_CORPUS = ROOT / "data" / "golden" / "qualification_golden.csv"
+requires_corpus = pytest.mark.skipif(
+    not GOLDEN_CORPUS.exists(),
+    reason=(
+        "corpus golden absent : base génération zéro. Le corpus référence des Item_ID d'une génération antérieure ; il est reconstitué par revue manuelle, pas par une reconstruction."
+    ),
+)
 
 
 def _golden_row(**overrides):
@@ -68,6 +77,7 @@ def _challenger(**overrides):
     return row
 
 
+@requires_corpus
 def test_repository_golden_file_contract_is_valid():
     assert validate_file(ROOT / "data" / "golden" / "qualification_golden.csv") == []
 
