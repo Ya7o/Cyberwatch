@@ -28,7 +28,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: cyberwatch-reset-total
+  group: cyberwatch-data-write
   cancel-in-progress: false
 
 jobs:
