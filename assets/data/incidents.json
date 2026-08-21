@@ -5,6 +5,22 @@
   "facts": [
    {
     "affected_count": 6800000,
+    "affected_count_raw": "6.8 millions de patients",
+    "affected_unit": "people",
+    "claim_status": "confirmed",
+    "data_types": [
+     "Alaxione ment dans sa communication en soutenant qu’il s’agit exclusivement de données de test. Les propres données de l’administrateur de ce site sont dedans",
+     "avec un échange par email concernant une erreur de facturation que personne d’autre ne peut connaître"
+    ],
+    "evidence_urls": [
+     "https://actu.orange.fr/france/cyberattaque-un-site-medical-cible-6-8-millions-de-personnes-concernees-magic-CNT000002rqCsI.html"
+    ],
+    "item_id": "ITM-a8c67b146a456060",
+    "source": "BONJOURLAFUITE",
+    "summary": "Éléments documentés : 6.8 millions de patients ; données concernées : Alaxione ment dans sa communication en soutenant qu’il s’agit exclusivement de données de test. Les propres données de l’administrateur de ce site sont dedans et avec un échange par email concernant une erreur de facturation que personne d’autre ne…"
+   },
+   {
+    "affected_count": 6800000,
     "affected_count_raw": "6,8 millions de patients",
     "affected_unit": "people",
     "claim_status": "confirmed",
@@ -168,20 +184,312 @@
   ],
   "first_seen": "2026-08-20T11:38:52.928740+04:00",
   "id": "INC-F65A98FB9FA4",
-  "items": 2,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "items": 3,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "location": "France métropolitaine",
   "org": "Alaxione",
   "sector": "Santé",
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Éléments documentés : 12,8 Go de données et 6,8 millions de patients.",
   "threat": "Fuite de données",
   "urls": [
+   "https://actu.orange.fr/france/cyberattaque-un-site-medical-cible-6-8-millions-de-personnes-concernees-magic-CNT000002rqCsI.html",
    "https://frenchbreaches.com/alertes/alaxione-mt0ophzmbommap9dya",
    "https://www.cyberattaque.org/alaxione-68-millions-de-patients-et-plus-de-10-millions-de-rendez-vous-revendiques-dans-une-fuite-massive/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 132433,
+    "affected_count_raw": "132 433 fichiers",
+    "affected_unit": "files",
+    "data_volume": "43 Go",
+    "file_count": 132433,
+    "item_id": "ITM-b5c3b342000faf0a",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "Bergerat Rent : 132 433 fichiers publiés après la compromission de son compte BlgCloud",
+       "raw": "132 433 fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 132433
+      }
+     ],
+     "affected_datasets": [
+      {
+       "evidence": "Les attaquants annoncent avoir récupéré 132 433 fichiers.",
+       "status": "reported",
+       "value": "132 433 fichiers"
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "Bergerat Rent : 132 433 fichiers publiés après la compromission de son compte BlgCloud",
+       "status": "unknown",
+       "unit": "files",
+       "value": "132433"
+      },
+      {
+       "evidence": "ChimeraZ vient de publier une base attribuée à l’entreprise représentant  43 Go de données et 132 433 fichiers .",
+       "status": "unknown",
+       "value": "43.0"
+      },
+      {
+       "evidence": "Les données seraient issues de l’environnement BlgCloud utilisé par Bergerat Rent et comprennent notamment des éléments CRM, des e-mails et des documents commerciaux.",
+       "status": "unknown",
+       "value": "adresses e-mail"
+      },
+      {
+       "evidence": "Un des e-mails analysés concerne par exemple une  offre de location accompagnée d’un bon de commande , tandis qu’un autre élément référence une  facture générée dans l’environnement .",
+       "status": "unknown",
+       "value": "adresses e-mail"
+      },
+      {
+       "evidence": "132 433 fichiers publiés après la compromission de son compte BlgCloud.",
+       "scope": "Bergerat Rent",
+       "status": "reported",
+       "value": "132433"
+      },
+      {
+       "evidence": "une base attribuée à l’entreprise représentant 43 Go de données.",
+       "scope": "Bergerat Rent",
+       "status": "reported",
+       "value": "43"
+      },
+      {
+       "evidence": "Les attaquants annoncent avoir récupéré 132 433 fichiers.",
+       "scope": "BlgCloud",
+       "status": "reported",
+       "value": "132 433 fichiers"
+      },
+      {
+       "evidence": "Les données seraient issues de l’environnement BlgCloud utilisé par Bergerat Rent et comprennent notamment des éléments CRM, des e-mails et des documents commerciaux.",
+       "scope": "Bergerat Rent",
+       "status": "reported",
+       "value": "CRM, e-mails, documents commerciaux"
+      },
+      {
+       "evidence": "Cette publication s’inscrit dans la compromission plus large de BlgCloud.",
+       "scope": "BlgCloud",
+       "status": "reported",
+       "value": "compromission"
+      },
+      {
+       "evidence": "les attaquants affirment avoir eu accès à de nombreuses instances clientes de l’éditeur.",
+       "scope": "BlgCloud",
+       "status": "claimed",
+       "value": "accès à de nombreuses instances clientes"
+      },
+      {
+       "evidence": "La présence simultanée de contacts professionnels, échanges commerciaux, factures et bons de commande peut faciliter des campagnes de phishing ciblées.",
+       "scope": "Bergerat Rent",
+       "status": "claimed",
+       "value": "risques de fraude et d’usurpation commerciale"
+      },
+      {
+       "evidence": "Bergerat Rent rejoint une série déjà importante d’entreprises dont les données ont été publiées après la compromission de leur environnement BlgCloud.",
+       "kind": "statement",
+       "scope": "Relation",
+       "status": "claimed",
+       "value": "Bergerat Rent → compromised_via → BlgCloud"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : 43 Go de données et 132 433 fichiers."
+   },
+   {
+    "affected_count": 132433,
+    "affected_count_raw": "132 433 fichiers",
+    "affected_unit": "files",
+    "claim_status": "claimed",
+    "data_volume": "43 Go",
+    "file_count": 132000,
+    "item_id": "ITM-11f6cca2c8dd1c70",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "# Bergerat Rent : 43 Go et plus de 132 000 fichiers revendiqués dans une fuite liée à BlgCloud",
+       "raw": "132 000 fichiers",
+       "status": "claimed",
+       "unit": "files",
+       "value": 132000
+      },
+      {
+       "evidence": "Fuite de données chez Bergerat Rent : 43 Go et 132 433 fichiers exposés (avant ) — évite d'attendre que le header HTML soit lu + grosse amélioration de la vitesse d'apparition visuelle.",
+       "raw": "132 433 fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 132433
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "# Bergerat Rent : 43 Go et plus de 132 000 fichiers revendiqués dans une fuite liée à BlgCloud",
+       "status": "claimed",
+       "unit": "files",
+       "value": "132000"
+      },
+      {
+       "evidence": "Fuite de données chez Bergerat Rent : 43 Go et 132 433 fichiers exposés (avant ) — évite d'attendre que le header HTML soit lu + grosse amélioration de la vitesse d'apparition visuelle.",
+       "status": "unknown",
+       "unit": "files",
+       "value": "132433"
+      },
+      {
+       "evidence": "# Bergerat Rent : 43 Go et plus de 132 000 fichiers revendiqués dans une fuite liée à BlgCloud",
+       "status": "claimed",
+       "value": "43.0"
+      },
+      {
+       "evidence": "Fuite de données chez Bergerat Rent : 43 Go et 132 433 fichiers exposés (avant ) — évite d'attendre que le header HTML soit lu + grosse amélioration de la vitesse d'apparition visuelle.",
+       "status": "unknown",
+       "value": "43.0"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "FRENCHBREACHES",
+    "summary": "Éléments documentés : 43 Go de données et 132 433 fichiers."
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-F25F5F05F47B",
+  "items": 2,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "Bergerat Rent",
+  "sector": "Construction / BTP",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : 43 Go de données et 132 433 fichiers.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/bergerat-rent-blgcloud-mt1zdsa2pfwxiwrzeuf",
+   "https://www.cyberattaque.org/bergerat-rent-132-433-fichiers-publies-apres-la-compromission-de-son-compte-blgcloud/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 722470,
+    "affected_count_raw": "722 470 fichiers",
+    "affected_unit": "files",
+    "claim_status": "claimed",
+    "data_volume": "13,08 Go",
+    "file_count": 722470,
+    "item_id": "ITM-ca9ac8b47f4a0789",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "Selon les informations publiées par Everest, le dépôt contient exactement  722 470 fichiers pour 13,08 Go .",
+       "raw": "722 470 fichiers",
+       "status": "reported",
+       "unit": "files",
+       "value": 722470
+      },
+      {
+       "evidence": "Les cybercriminels affirment détenir  13,08 Go de données représentant 722 470 fichiers  issus d’un ancien dépôt interne d’ Altran , dont les activités d’ingénierie et de R&D sont aujourd’hui intégrées à  Capgemini Engineering .",
+       "raw": "722 470 fichiers",
+       "status": "claimed",
+       "unit": "files",
+       "value": 722470
+      },
+      {
+       "evidence": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
+       "raw": "722 470 fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 722470
+      },
+      {
+       "evidence": "13 Go et plus de 722 000 fichiers attribués à Altran",
+       "raw": "722 000 fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 722000
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "Selon les informations publiées par Everest, le dépôt contient exactement  722 470 fichiers pour 13,08 Go .",
+       "status": "reported",
+       "unit": "files",
+       "value": "722470"
+      },
+      {
+       "evidence": "Les cybercriminels affirment détenir  13,08 Go de données représentant 722 470 fichiers  issus d’un ancien dépôt interne d’ Altran , dont les activités d’ingénierie et de R&D sont aujourd’hui intégrées à  Capgemini Engineering .",
+       "status": "claimed",
+       "unit": "files",
+       "value": "722470"
+      },
+      {
+       "evidence": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
+       "status": "unknown",
+       "unit": "files",
+       "value": "722470"
+      },
+      {
+       "evidence": "13 Go et plus de 722 000 fichiers attribués à Altran",
+       "status": "unknown",
+       "unit": "files",
+       "value": "722000"
+      },
+      {
+       "evidence": "Les cybercriminels affirment détenir  13,08 Go de données représentant 722 470 fichiers  issus d’un ancien dépôt interne d’ Altran , dont les activités d’ingénierie et de R&D sont aujourd’hui intégrées à  Capgemini Engineering .",
+       "status": "claimed",
+       "value": "13.08"
+      },
+      {
+       "evidence": "13 Go et plus de 722 000 fichiers attribués à Altran",
+       "status": "unknown",
+       "value": "13.0"
+      },
+      {
+       "evidence": "Selon les informations publiées par Everest, le dépôt contient exactement  722 470 fichiers pour 13,08 Go .",
+       "status": "reported",
+       "value": "13.08"
+      },
+      {
+       "evidence": "Leur seule présence ne permet cependant pas d’affirmer que des  mots de passe en clair ou des clés privées exploitables  figurent dans les données.",
+       "status": "unknown",
+       "value": "mots de passe"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : 13,08 Go de données et 722 470 fichiers.",
+    "threat_actor": "Everest"
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-795AFE0691D4",
+  "items": 1,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "Inconnu",
+  "org": "Capgemini",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Éléments documentés : 13,08 Go de données et 722 470 fichiers.",
+  "threat": "Ransomware",
+  "urls": [
+   "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
   ]
  },
  {
@@ -212,6 +520,300 @@
   "threat": "Ransomware",
   "urls": [
    "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 2700000,
+    "affected_count_raw": "2,7 millions de fichiers",
+    "affected_unit": "files",
+    "claim_status": "claimed",
+    "data_volume": "1,13 To",
+    "file_count": 2696108,
+    "item_id": "ITM-daafad699c7f4ba6",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "Il affirme détenir  1,13 To de données représentant près de 2,7 millions de fichiers  issus de l’environnement interne du cabinet.",
+       "raw": "2,7 millions de fichiers",
+       "status": "claimed",
+       "unit": "files",
+       "value": 2700000
+      },
+      {
+       "evidence": "L’inventaire revendiqué fait apparaître un périmètre particulièrement large, avec plus de  630 000 fichiers associés à la fiscalité , près de  280 000 liés aux ressources humaines et à la paie  et environ  179 000 liés aux activités bancaires, de trésorerie ou de financement .",
+       "raw": "630 000 fichiers",
+       "status": "claimed",
+       "unit": "files",
+       "value": 630000
+      },
+      {
+       "evidence": "Selon l’inventaire associé à la revendication, les attaquants auraient récupéré  2 696 108 fichiers répartis dans plus de 744 000 dossiers .",
+       "raw": "2 696 108 fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 2696108
+      },
+      {
+       "evidence": "Selon l’inventaire associé à la revendication, les attaquants auraient récupéré  2 696 108 fichiers répartis dans plus de 744 000 dossiers .",
+       "raw": "744 000 dossiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 744000
+      },
+      {
+       "evidence": "La présence de documents obtenus par Cyberattaque.org permet de crédibiliser la nature d’une partie des données revendiquées, mais ne permet pas de vérifier indépendamment les  1,13 To et 2,7 millions de fichiers  annoncés dans leur totalité.",
+       "raw": "2,7 millions de fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 2700000
+      },
+      {
+       "evidence": "Experts Entreprendre : 2,7 millions de fichiers en fuite après une cyberattaque",
+       "raw": "2,7 millions de fichiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 2700000
+      },
+      {
+       "evidence": "Près de 2,7 millions de fichiers dans 744 000 dossiers",
+       "raw": "744 000 dossiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": 744000
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "Il affirme détenir  1,13 To de données représentant près de 2,7 millions de fichiers  issus de l’environnement interne du cabinet.",
+       "status": "claimed",
+       "unit": "files",
+       "value": "2700000"
+      },
+      {
+       "evidence": "L’inventaire revendiqué fait apparaître un périmètre particulièrement large, avec plus de  630 000 fichiers associés à la fiscalité , près de  280 000 liés aux ressources humaines et à la paie  et environ  179 000 liés aux activités bancaires, de trésorerie ou de financement .",
+       "status": "claimed",
+       "unit": "files",
+       "value": "630000"
+      },
+      {
+       "evidence": "Selon l’inventaire associé à la revendication, les attaquants auraient récupéré  2 696 108 fichiers répartis dans plus de 744 000 dossiers .",
+       "status": "unknown",
+       "unit": "files",
+       "value": "2696108"
+      },
+      {
+       "evidence": "Selon l’inventaire associé à la revendication, les attaquants auraient récupéré  2 696 108 fichiers répartis dans plus de 744 000 dossiers .",
+       "status": "unknown",
+       "unit": "files",
+       "value": "744000"
+      },
+      {
+       "evidence": "La présence de documents obtenus par Cyberattaque.org permet de crédibiliser la nature d’une partie des données revendiquées, mais ne permet pas de vérifier indépendamment les  1,13 To et 2,7 millions de fichiers  annoncés dans leur totalité.",
+       "status": "unknown",
+       "unit": "files",
+       "value": "2700000"
+      },
+      {
+       "evidence": "Experts Entreprendre : 2,7 millions de fichiers en fuite après une cyberattaque",
+       "status": "unknown",
+       "unit": "files",
+       "value": "2700000"
+      },
+      {
+       "evidence": "Près de 2,7 millions de fichiers dans 744 000 dossiers",
+       "status": "unknown",
+       "unit": "files",
+       "value": "744000"
+      },
+      {
+       "evidence": "Il affirme détenir  1,13 To de données représentant près de 2,7 millions de fichiers  issus de l’environnement interne du cabinet.",
+       "status": "claimed",
+       "value": "1.13"
+      },
+      {
+       "evidence": "La présence de documents obtenus par Cyberattaque.org permet de crédibiliser la nature d’une partie des données revendiquées, mais ne permet pas de vérifier indépendamment les  1,13 To et 2,7 millions de fichiers  annoncés dans leur totalité.",
+       "status": "unknown",
+       "value": "1.13"
+      },
+      {
+       "evidence": "L’ensemble couvrirait de nombreuses années d’activité et réunirait notamment des  comptes annuels, déclarations fiscales, bulletins et données de paie, contrats, documents bancaires, dossiers juridiques, pièces d’identité, échanges par e-mail et travaux d’audit .",
+       "status": "unknown",
+       "value": "adresses e-mail"
+      },
+      {
+       "evidence": "L’ensemble couvrirait de nombreuses années d’activité et réunirait notamment des  comptes annuels, déclarations fiscales, bulletins et données de paie, contrats, documents bancaires, dossiers juridiques, pièces d’identité, échanges par e-mail et travaux d’audit .",
+       "status": "unknown",
+       "value": "pièces d'identité"
+      },
+      {
+       "evidence": "Ces données peuvent alimenter des tentatives de  fraude au président, changement frauduleux de RIB, phishing ciblé, usurpation d’identité ou escroqueries contre des salariés et partenaires .",
+       "status": "unknown",
+       "value": "données bancaires"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : 1,13 To de données et 2,7 millions de fichiers."
+   },
+   {
+    "discovered_date": "2026-08-20",
+    "evidence_urls": [
+     "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/experts-entreprendre"
+    ],
+    "item_id": "ITM-f38727a182bac79c",
+    "source": "RANSOMWARE_LIVE",
+    "threat_actor": "everest",
+    "victim_website": "https://expert-entreprendre.com"
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-CA9D9ECF1F93",
+  "items": 2,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "Experts Entreprendre",
+  "sector": "Services aux entreprises",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Éléments documentés : 1,13 To de données et 2,7 millions de fichiers.",
+  "threat": "Ransomware",
+  "urls": [
+   "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/experts-entreprendre",
+   "https://www.cyberattaque.org/experts-entreprendre-27-millions-de-fichiers-en-fuite-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 1600,
+    "affected_count_raw": "environ  1 600 enregistrements",
+    "affected_unit": "records",
+    "claim_status": "confirmed",
+    "item_id": "ITM-7ff564a8b1e8a571",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "Un cybercriminel affirme avoir extrait environ  1 600 enregistrements de son CRM  et a publié gratuitement plusieurs fichiers JSON contenant des informations sur ses clients.",
+       "raw": "1 600 enregistrements",
+       "status": "claimed",
+       "unit": "records",
+       "value": 1600
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "Un cybercriminel affirme avoir extrait environ  1 600 enregistrements de son CRM  et a publié gratuitement plusieurs fichiers JSON contenant des informations sur ses clients.",
+       "status": "claimed",
+       "unit": "records",
+       "value": "1600"
+      },
+      {
+       "evidence": "Compte tenu de leur publication, les mots de passe, clés API et autres secrets présents dans les fichiers devraient être considérés comme  potentiellement compromis et remplacés , même lorsque leur validité actuelle n’est pas connue.",
+       "status": "unknown",
+       "value": "mots de passe"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Éléments documentés : environ  1 600 enregistrements."
+   },
+   {
+    "claim_status": "claimed",
+    "data_types": [
+     "mots de passe"
+    ],
+    "item_id": "ITM-9d8bb8665519f8bd",
+    "rich_facts": {
+     "claims": [
+      {
+       "evidence": "Fuite de données FrenchInnov : CRM, mots de passe et clés API exposés (avant ) — évite d'attendre que le header HTML soit lu + grosse amélioration de la vitesse d'apparition visuelle.",
+       "status": "unknown",
+       "value": "mots de passe"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "FRENCHBREACHES"
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-B7D7E578D0CB",
+  "items": 2,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "FrenchInnov",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : environ  1 600 enregistrements.",
+  "threat": "Compromission de compte / messagerie",
+  "urls": [
+   "https://frenchbreaches.com/alertes/frenchinnov-mt1qw0kfdhmqb8emex",
+   "https://www.cyberattaque.org/frenchinnov-1-600-fiches-crm-avec-coordonnees-de-restaurants-diffusees-dans-une-fuite/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 4179,
+    "affected_count_raw": "4 179 clients",
+    "affected_unit": "clients",
+    "data_types": [
+     "données personnelles"
+    ],
+    "item_id": "ITM-f412f85529531773",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "# Fuite de données : 4 179 clients Visa Infinite et Platinum concernés après le piratage d’un prestataire de conciergerie",
+       "raw": "4 179 clients",
+       "status": "unknown",
+       "unit": "clients",
+       "value": 4179
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "# Fuite de données : 4 179 clients Visa Infinite et Platinum concernés après le piratage d’un prestataire de conciergerie",
+       "status": "unknown",
+       "unit": "clients",
+       "value": "4179"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "FRENCHBREACHES",
+    "summary": "Éléments documentés : 4 179 clients ; données concernées : données personnelles."
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-C5CF7480F918",
+  "items": 1,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "John Paul",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : 4 179 clients ; données concernées : données personnelles.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/john-paul-mt1g0ll5v5vh0u0syq8"
   ]
  },
  {
@@ -350,6 +952,260 @@
   "urls": [
    "https://frenchbreaches.com/alertes/r-server-mt0n1r7q49q9x6h207r",
    "https://www.cyberattaque.org/reserver-fr-19-495-enregistrements-diffuses-gratuitement-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "affected_count": 2100000,
+    "affected_count_raw": "plus de 2,1 millions de lignes",
+    "affected_unit": "records",
+    "claim_status": "claimed",
+    "data_types": [
+     "mots de passe"
+    ],
+    "item_id": "ITM-e8555037d51b4ff0",
+    "rich_facts": {
+     "affected_counts": [
+      {
+       "evidence": "# Fuite de données revendiquée visant SFR : plus de 2,1 millions de lignes potentiellement concernées",
+       "raw": "2,1 millions de lignes",
+       "status": "unknown",
+       "unit": "records",
+       "value": 2100000
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "# Fuite de données revendiquée visant SFR : plus de 2,1 millions de lignes potentiellement concernées",
+       "status": "unknown",
+       "unit": "records",
+       "value": "2100000"
+      },
+      {
+       "evidence": "> Les mots de passe et informations bancaires ne sont pas concernés ; SFR indique avoir sécurisé l’accès et notifié la CNIL.",
+       "status": "unknown",
+       "value": "mots de passe"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "FRENCHBREACHES",
+    "summary": "Éléments documentés : plus de 2,1 millions de lignes ; données concernées : mots de passe."
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-B8A9E71CE40B",
+  "items": 1,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "SFR",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Éléments documentés : plus de 2,1 millions de lignes ; données concernées : mots de passe.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/sfr-mrp254s7k2z2s62yzqf"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "claim_status": "confirmed",
+    "data_types": [
+     "Nom, prénom",
+     "Numéro de téléphone",
+     "Adresse email",
+     "Documents administratifs",
+     "Carte d’identité",
+     "IBAN",
+     "Situation personnelle"
+    ],
+    "evidence_urls": [
+     "https://bonjourlafuite.eu.org/img/suez.png"
+    ],
+    "item_id": "ITM-27ee4be820a5f69e",
+    "source": "BONJOURLAFUITE",
+    "summary": "Données concernées : Nom, prénom, Numéro de téléphone et Adresse email."
+   },
+   {
+    "claim_status": "confirmed",
+    "data_types": [
+     "adresses e-mail",
+     "numéros de téléphone",
+     "noms et prénoms",
+     "IBAN / RIB",
+     "données personnelles"
+    ],
+    "item_id": "ITM-48283b2fc86cc545",
+    "rich_facts": {
+     "affected_systems": [
+      {
+       "evidence": "les éléments communiqués ne font pas état d’une intrusion directe dans les systèmes de SUEZ.",
+       "status": "confirmed",
+       "value": "système de prestataire"
+      }
+     ],
+     "claims": [
+      {
+       "evidence": "Identité, coordonnées et RIB potentiellement concernés",
+       "status": "unknown",
+       "value": "données bancaires"
+      },
+      {
+       "evidence": "Le croisement entre  identité, coordonnées, informations contractuelles et données bancaires  peut faciliter des campagnes de phishing particulièrement crédibles, notamment en se faisant passer pour SUEZ, un prestataire ou un service de facturation.",
+       "status": "unknown",
+       "value": "données bancaires"
+      },
+      {
+       "evidence": "SUEZ Eau France informe actuellement certains clients d’un incident de cybersécurité ayant touché l’un de ses prestataires techniques.",
+       "status": "confirmed",
+       "value": "SUEZ Eau France"
+      },
+      {
+       "evidence": "l’attaque a permis à des personnes malveillantes d’accéder à certaines données.",
+       "status": "confirmed",
+       "value": "accès"
+      },
+      {
+       "evidence": "des personnes malveillantes ont pu accéder à certaines données, les extraire et rendre une partie d’entre elles accessible sur Internet.",
+       "status": "reported",
+       "value": "données clients"
+      },
+      {
+       "evidence": "c’est un prestataire technique utilisé par SUEZ Eau France qui aurait été compromis.",
+       "status": "claimed",
+       "value": "compromis via prestataire"
+      },
+      {
+       "evidence": "Le croisement entre identité, coordonnées, informations contractuelles et données bancaires peut faciliter des campagnes de phishing particulièrement crédibles.",
+       "status": "reported",
+       "value": "risques importants de phishing et d’usurpation"
+      },
+      {
+       "evidence": "les données susceptibles d’avoir été exposées comprennent notamment : nom, prénom et coordonnées ; numéros de téléphone et adresses e-mail ; données administratives ou de facturation liées au contrat.",
+       "status": "claimed",
+       "value": "identité, coordonnées et RIB"
+      },
+      {
+       "evidence": "dans certains dossiers, des documents contenant des informations relatives à la situation personnelle.",
+       "status": "claimed",
+       "value": "autres informations personnelles"
+      },
+      {
+       "evidence": "une partie de ces informations aurait ensuite été rendue accessible sur Internet.",
+       "status": "confirmed",
+       "value": "données publiées sur Internet"
+      },
+      {
+       "evidence": "les éléments communiqués ne font pas état d’une intrusion directe dans les systèmes de SUEZ.",
+       "status": "confirmed",
+       "value": "système de prestataire"
+      },
+      {
+       "date": "inconnu",
+       "evidence": "SUEZ mène actuellement des investigations avec le prestataire concerné.",
+       "kind": "statement",
+       "scope": "Chronologie",
+       "status": "unknown",
+       "value": "enquête en cours"
+      },
+      {
+       "date": "inconnu",
+       "evidence": "Le périmètre exact reste encore inconnu.",
+       "kind": "statement",
+       "scope": "Chronologie",
+       "status": "unknown",
+       "value": "périmètre exact inconnu"
+      },
+      {
+       "date": "inconnu",
+       "evidence": "le nombre de personnes concernées et le volume exact de fichiers compromis ne sont pas précisés.",
+       "kind": "statement",
+       "scope": "Chronologie",
+       "status": "unknown",
+       "value": "nombre de personnes concernées"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "CYBERATTAQUE_ORG",
+    "summary": "Données concernées : adresses e-mail, numéros de téléphone et noms et prénoms."
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-CFB3AE4A9D63",
+  "items": 2,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "SUEZ",
+  "sector": "Inconnu",
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Données concernées : adresses e-mail, numéros de téléphone et noms et prénoms.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/suez.png",
+   "https://www.cyberattaque.org/suez-les-donnees-clients-en-fuite-apres-une-cyberattaque-chez-un-prestataire/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "facts": [
+   {
+    "data_types": [
+     "IBAN / RIB",
+     "pièces d'identité",
+     "données personnelles"
+    ],
+    "item_id": "ITM-42e40635dd6dc4e0",
+    "rich_facts": {
+     "claims": [
+      {
+       "evidence": "# SUEZ Eau France : des données personnelles et des RIB potentiellement exposés après la cyberattaque d’un prestataire",
+       "status": "unknown",
+       "value": "données bancaires"
+      },
+      {
+       "evidence": "Fuite de données chez SUEZ : des RIB et pièces d’identité...",
+       "status": "unknown",
+       "value": "données bancaires"
+      },
+      {
+       "evidence": "Fuite de données chez SUEZ : des RIB et pièces d’identité...",
+       "status": "unknown",
+       "value": "pièces d'identité"
+      }
+     ],
+     "version": "2"
+    },
+    "source": "FRENCHBREACHES",
+    "summary": "Données concernées : IBAN / RIB, pièces d'identité et données personnelles."
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-88FCA74B0248",
+  "items": 1,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "Suez Eau France",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Données concernées : IBAN / RIB, pièces d'identité et données personnelles.",
+  "threat": "Incident tiers",
+  "urls": [
+   "https://frenchbreaches.com/alertes/suez-eau-france-mt20mo6pymh9k6m7wzf"
   ]
  },
  {
@@ -2047,7 +2903,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Achat Or et Argent",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2387,7 +3243,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "EVA Charleroi",
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -3686,6 +4542,44 @@
      "Nom, prénom",
      "Adresse email",
      "Numéro de téléphone",
+     "Factures",
+     "Devis",
+     "IBAN"
+    ],
+    "evidence_urls": [
+     "https://bonjourlafuite.eu.org/img/actis-location.png"
+    ],
+    "item_id": "ITM-fd4ec558d614b37a",
+    "source": "BONJOURLAFUITE",
+    "summary": "Données concernées : Nom, prénom, Adresse email et Numéro de téléphone."
+   }
+  ],
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
+  "id": "INC-25C6A92D4C08",
+  "items": 1,
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
+  "location": "France métropolitaine",
+  "org": "Actis Location",
+  "sector": "Inconnu",
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "Données concernées : Nom, prénom, Adresse email et Numéro de téléphone.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/actis-location.png"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-12",
+  "facts": [
+   {
+    "claim_status": "confirmed",
+    "data_types": [
+     "Nom, prénom",
+     "Adresse email",
+     "Numéro de téléphone",
      "Pièces-jointes",
      "Emails échangés"
     ],
@@ -4021,7 +4915,7 @@
   "last_seen": "2026-08-19T07:38:42.720613+04:00",
   "location": "France métropolitaine",
   "org": "Publica",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -6845,6 +7739,16 @@
     ],
     "impact": "La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
     "item_id": "ITM-f690c99943f1ca81",
+    "rich_facts": {
+     "claims": [
+      {
+       "evidence": "> L’État confirme le piratage de Bloctel : 3 millions de numéros de téléphone sont concernés.",
+       "status": "confirmed",
+       "value": "numéros de téléphone"
+      }
+     ],
+     "version": "2"
+    },
     "source": "FRENCHBREACHES",
     "summary": "Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée."
    }
@@ -6861,7 +7765,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Éléments documentés : environ  3 millions d’enregistrements ; données concernées : numéros de téléphone.",
+  "summary": "Impact documenté : La proximité entre les deux événements ne permet toutefois pas d'établir de lien entre l'arrêt du service et la compromission revendiquée.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/bloctel.png",
@@ -13226,10 +14130,10 @@
  {
   "basis": "EVENT",
   "date": "2026-07-09",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-F565E72ECFBA",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.zinfos974.com/vandalisme-des-perturbations-sur-les-reseaux-mobile-et-fixe-dorange-a-la-reunion/",
@@ -15112,10 +16016,10 @@
  {
   "basis": "EVENT",
   "date": "2026-07-04",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-77C0DC6E016A",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
@@ -16232,10 +17136,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-30",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-AAD55A086D72",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
@@ -16646,10 +17550,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-29",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-8ED480A79AA7",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
@@ -16744,10 +17648,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-29",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-5D92C3C21642",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
@@ -20088,10 +20992,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-13",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-AF9A16B0E1D0",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
@@ -20656,10 +21560,10 @@
  {
   "basis": "EVENT",
   "date": "2026-06-11",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-8C2C274A1222",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
@@ -22709,7 +23613,7 @@
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
   "id": "INC-47B24BB72BA7",
   "items": 2,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/",
@@ -30535,7 +31439,7 @@
   "first_seen": "2026-08-19T07:38:42.720613+04:00",
   "id": "INC-73E635BC9E27",
   "items": 2,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
@@ -40939,10 +41843,10 @@
  {
   "basis": "EVENT",
   "date": "2026-02-19",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-78669787EE80",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
@@ -42540,10 +43444,10 @@
  {
   "basis": "EVENT",
   "date": "2026-02-04",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-276D026144B4",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
@@ -42565,10 +43469,10 @@
  {
   "basis": "EVENT",
   "date": "2026-02-04",
-  "first_seen": "2026-08-20T11:38:52.928740+04:00",
+  "first_seen": "2026-08-21T11:40:01.305238+04:00",
   "id": "INC-BE1A2F4FACDB",
   "items": 1,
-  "last_seen": "2026-08-20T11:38:52.928740+04:00",
+  "last_seen": "2026-08-21T11:40:01.305238+04:00",
   "local": {
    "references": [
     "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
