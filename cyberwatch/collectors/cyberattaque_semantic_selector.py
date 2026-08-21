@@ -1,8 +1,8 @@
 """Gap-driven semantic selection for Cyberattaque.org.
 
-The selector intentionally does not use article length or already-extracted richness
-as positive signals. LLM work is reserved for explicit ambiguity/negation or for
-facts that are visibly present in text but missing from deterministic rich facts.
+Length and deterministic richness are deliberately not positive signals. The LLM
+is reserved for explicit ambiguity/negation and unresolved third-party relations,
+which are cases the semantic extractor is designed to disambiguate.
 """
 from __future__ import annotations
 
@@ -15,13 +15,10 @@ SELECTION_VERSION = "2"
 
 _AMBIGUITY = (
     "pourrait", "pourraient", "susceptible", "hypothese", "non confirme",
-    "selon l attaquant", "selon le groupe", "revendique", "revendication",
+    "selon l attaquant", "selon le groupe", "revendique", "revendication", "ambigu",
 )
 _NEGATION = ("n ont pas ete", "n a pas ete", "ne sont pas", "nie ", "dement")
 _THIRD_PARTY = ("prestataire", "fournisseur", "supply chain", "sous traitant", "aws", "azure", "cloud")
-_VULNERABILITY = ("cve-", "vulnerabilite", "faille")
-_IMPACT = ("interruption", "indisponible", "perturbation", "chiffre", "exfiltr", "vole", "fuite")
-_REMEDIATION = ("restaure", "retabli", "correctif", "patch", "isole", "deconnecte", "remediation")
 
 
 @dataclass(frozen=True)
@@ -58,18 +55,7 @@ def decide(text: str, deterministic: dict) -> SelectionDecision:
     if _has_any(low, _THIRD_PARTY) and _count(deterministic.get("relations")) == 0:
         reasons.append("missing_third_party_relation")
         score += 2
-    if _has_any(low, _VULNERABILITY) and not deterministic.get("vulnerabilities"):
-        reasons.append("missing_vulnerability")
-        score += 2
-    if _has_any(low, _IMPACT) and not deterministic.get("impacts"):
-        reasons.append("missing_impact")
-        score += 2
-    if _has_any(low, _REMEDIATION) and not deterministic.get("remediation") and not deterministic.get("remediations"):
-        reasons.append("missing_remediation")
-        score += 2
 
-    # Existing deterministic richness is evidence against spending an LLM call,
-    # never a reason to trigger one by itself.
     richness = sum(_count(deterministic.get(key)) for key in (
         "affected_counts", "data_volumes", "timeline", "relations", "data_types"
     ))
