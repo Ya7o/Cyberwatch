@@ -15,19 +15,13 @@ import json
 import tarfile
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Référentiels structurels : ils décrivent le domaine, pas l'état d'une collecte.
-# Tout nouveau fichier conservé doit être ajouté explicitement ici.
 PRESERVED_DATA_PATHS = frozenset({
     "sector_auto_policy.json",
     "territorial_identities.csv",
 })
-
-# Les fichiers du site sont tous reconstruits. Aucun ancien JSON publié ne doit
-# influencer le nouveau départ.
 PRESERVED_SITE_DATA_PATHS: frozenset[str] = frozenset()
 
 
@@ -66,6 +60,7 @@ def inventory(root: Path) -> dict:
                 "size": path.stat().st_size,
                 "sha256": _sha256(path),
             })
+    payload.sort(key=lambda row: row["path"])
     return {
         "schema": "cyberwatch-zero-reset-inventory-v1",
         "root": str(root),
@@ -113,7 +108,6 @@ def _purge_area(base: Path, preserved: frozenset[str]) -> tuple[list[str], list[
             continue
         path.unlink()
         removed.append(relative)
-    # Nettoyage des dossiers désormais vides, sans toucher à la racine.
     for directory in sorted((p for p in base.rglob("*") if p.is_dir()), reverse=True):
         try:
             directory.rmdir()
