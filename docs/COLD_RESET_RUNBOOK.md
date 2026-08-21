@@ -1,51 +1,99 @@
-# Cold reset de développement
+# Reset total Cyberwatch
 
-Le reset total Cyberwatch sert désormais à valider qu'une base propre peut être reconstruite depuis zéro avec le code actuel. La conservation de l'historique publié n'est pas un critère bloquant pendant cette phase de développement.
+Le workflow `cold-reset.yml` porte deux intentions distinctes :
 
-## Invariants
+- `rebuild` : reconstruction à froid avec purge des caches/sorties dérivées prévues par le protocole historique ;
+- `zero` : archive complète puis destruction de tout état métier actif avant reconstruction fraîche.
 
-- les alias, référentiels Sector, golden datasets et baselines qualité restent protégés ;
-- `incident_id_registry.csv` est réinitialisé dans le staging afin de tester aussi la génération des identités depuis zéro ;
-- le reset travaille dans `/tmp/cyberwatch-cold-reset` et la base canonique n'est remplacée qu'après certification ;
-- les différences d'`Item_ID` et d'`Incident_ID` avant/après sont conservées comme diagnostics mais ne bloquent plus la promotion ;
-- les enrichissements sont exécutés par couches avec budgets indépendants et checkpoints de cache entre passes ;
-- une archive complète de la DB actuelle est conservée pour comparaison et rollback.
+Le mode `zero` est le mode radical. Il sert à vérifier que le code actuel sait reconstruire Cyberwatch sans dépendre silencieusement des registres, caches, historiques, golden datasets ou données publiées de l'ancienne base.
 
-## Avant lancement
+## Invariants du mode `zero`
 
-Exécuter :
+- `confirm_zero` doit valoir exactement `RESET` ;
+- une archive complète `data/` + `assets/data/` est créée et relue avant toute purge ;
+- l'inventaire et le SHA-256 de l'archive sont exportés ;
+- `incident_id_registry.csv`, alias historiques, registres de qualification, caches LLM, historiques de runs, baselines, golden datasets, états incrémentaux et données dashboard sont supprimés du staging ;
+- seuls les référentiels statiques explicitement allowlistés par `cyberwatch.zero_reset` survivent à la purge ;
+- `python -m cyberwatch.zero_reset verify` doit retourner `ZERO` avant toute reconstruction ;
+- la reconstruction ne lit jamais l'archive ; celle-ci est uniquement un mécanisme de rollback/audit ;
+- `publish=false` est la valeur par défaut ; aucune donnée canonique n'est remplacée pendant un dry-run ;
+- lors d'un `zero` publié, un tag Git `archive/pre-zero-<run>-<attempt>` fige le commit exact précédant la remise à zéro ;
+- la première reconstruction fraîche produit la nouvelle `post_reset_baseline.json`.
+
+## Référentiels conservés
+
+La conservation est une allowlist, pas une blacklist. Actuellement seuls :
+
+- `data/sector_auto_policy.json` ;
+- `data/territorial_identities.csv`.
+
+Ces fichiers décrivent des règles/référentiels statiques nécessaires au domaine ; ils ne constituent pas l'état d'une collecte. Ajouter un nouveau survivant exige une modification explicite de l'allowlist et des tests.
+
+## Séquence recommandée
+
+### 1. Dry-run radical
+
+Déclencher `RESET TOTAL` avec :
+
+- `reset_mode=zero` ;
+- `confirm_zero=RESET` ;
+- fenêtre `start` souhaitée ;
+- `publish=false`.
+
+Le workflow exécute :
+
+1. préflight offline ;
+2. baseline et manifeste avant ;
+3. inventaire complet ;
+4. archive certifiée ;
+5. copie du dépôt vers staging isolé ;
+6. purge radicale du staging ;
+7. certification `ZERO` ;
+8. reconstruction déterministe ;
+9. qualification ;
+10. passes sémantiques ;
+11. SourceFacts ;
+12. enrichissement organisations ;
+13. suite de tests, syntaxe des runtimes frontend et `cyberwatch check` ;
+14. audit avant/après ;
+15. génération de la nouvelle baseline ;
+16. export de l'archive et de tous les diagnostics.
+
+### 2. Go / No-Go
+
+Le run est publiable uniquement si :
+
+- la purge a été certifiée `ZERO` ;
+- la reconstruction aboutit ;
+- les tests passent ;
+- le dashboard est générable ;
+- `cyberwatch check` passe ;
+- l'audit post-reset ne contient pas d'anomalie bloquante.
+
+Les écarts de volumes/IDs par rapport à l'ancienne base sont des informations à examiner, pas une raison automatique de restaurer l'ancien état : l'objectif du mode `zero` est précisément de tester la reconstruction fraîche.
+
+### 3. Publication
+
+Relancer avec les mêmes paramètres et `publish=true`.
+
+Avant le remplacement des données, le workflow crée le tag Git d'archive pré-zero. Ensuite seulement, `data/` et `assets/data/` sont remplacés par le staging certifié et commités.
+
+## Rollback
+
+Deux mécanismes indépendants sont disponibles :
+
+1. le tag Git `archive/pre-zero-*`, qui pointe vers le commit complet antérieur ;
+2. l'artifact `cyberwatch-before-reset.tgz`, conservé 30 jours et accompagné de son SHA-256, inventaire et manifeste.
+
+L'archive ne doit jamais être réinjectée automatiquement dans une reconstruction `zero`.
+
+## Commandes locales de certification
 
 ```bash
-python -m cyberwatch.cold_reset preflight
-python -m cyberwatch.cold_reset manifest --output /tmp/cold-reset-before.json
+python -m cyberwatch.zero_reset inventory --output /tmp/zero-before.json
+python -m cyberwatch.zero_reset archive --output /tmp/cyberwatch-before-reset.tgz --report /tmp/archive.json
+python -m cyberwatch.zero_reset purge --root /tmp/cyberwatch-reset --output /tmp/purge.json
+python -m cyberwatch.zero_reset verify --root /tmp/cyberwatch-reset --output /tmp/zero-state.json
 ```
 
-Le préflight doit retourner `GO`. Le manifeste contient les hashes des actifs présents, des caches et sorties dérivées, ainsi qu'une estimation de durée/coût basée sur la télémétrie disponible.
-
-## Séquence du workflow
-
-1. tests complets et préflight offline ;
-2. archive restaurable du snapshot courant ;
-3. staging isolé et purge des sorties, caches froids, états incrémentaux et registre d'incidents ;
-4. reconstruction déterministe sans LLM ni enrichissement réseau ;
-5. diff historique informatif ;
-6. qualification bornée ;
-7. extraction sémantique par passes de 250 appels maximum ;
-8. SourceFacts par passes de 250 appels maximum ;
-9. enrichissement organisation sans LLM ;
-10. golden tests, qualité, répétabilité, contrôles structurels et gate DB non vide ;
-11. diff final avant/après à des fins d'audit ;
-12. export des diagnostics ;
-13. promotion atomique si `publish=true`.
-
-`publish` vaut `true` par défaut pour le reset de développement : la reconstruction est donc publiée automatiquement si et seulement si tous les gates techniques passent.
-
-## Gates bloquants
-
-La promotion reste bloquée sur les échecs techniques : tests, golden dedup, golden qualification, qualité des données, `cyberwatch check`, `test-repeat`, build du site ou DB vide/invalide.
-
-La perte d'anciens `Item_ID` ou `Incident_ID` n'est plus bloquante en phase de développement. Elle reste visible dans les artifacts pour le ré-audit après reset.
-
-## Rollback et ré-audit
-
-Chaque run exporte `cyberwatch-before-reset.tgz`, les manifests avant/après, les diffs d'identités et les rapports LLM. En cas d'échec avant promotion, la base canonique reste intacte. Après une promotion, l'archive permet de restaurer ou simplement de comparer l'ancienne DB avec la nouvelle lors du ré-audit complet.
+`verify` retourne un code non nul dès qu'un fichier d'état non allowlisté survit.
