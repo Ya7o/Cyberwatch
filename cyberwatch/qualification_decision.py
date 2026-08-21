@@ -6,7 +6,18 @@ from .model import Item
 
 QUALIFICATION_FIELDS = ("Sector", "Location", "Threat")
 QUALIFICATION_DECISION_COLUMNS = ["Item_ID","Source_ID","Field","Previous_Value","Candidate_Value","Final_Value","Origin","Confidence","Evidence","Match_Strategy","Decision","Rejected_Reason","Winning_Origin","Winning_Value"]
-ORIGIN_PRIORITY = {"SOURCE_NATIVE":0,"MANUAL_REFERENCE":10,"STRUCTURED_SOURCE":20,"ORG_CONTEXT_SECTOR":30,"ORG_SECTOR_REGISTRY":40,"SAFE_NAME_RULE":50,"OFFLINE_BACKFILL":60,"THREAT_STABILIZATION":70,"LLM_SOURCE_FALLBACK":90}
+ORIGIN_PRIORITY = {
+    "SOURCE_NATIVE": 0,
+    "MANUAL_REFERENCE": 10,
+    "OFFICIAL_SUBJECT_ACTIVITY": 15,
+    "STRUCTURED_SOURCE": 20,
+    "ORG_CONTEXT_SECTOR": 30,
+    "ORG_SECTOR_REGISTRY": 40,
+    "SAFE_NAME_RULE": 50,
+    "OFFLINE_BACKFILL": 60,
+    "THREAT_STABILIZATION": 70,
+    "LLM_SOURCE_FALLBACK": 90,
+}
 
 @dataclass(frozen=True)
 class QualificationDecision:
