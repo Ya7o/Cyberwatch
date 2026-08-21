@@ -45,6 +45,25 @@ def _simple_schema():
     }
 
 
+def test_model_routing_defaults_and_legacy_default(monkeypatch):
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+    monkeypatch.delenv("SOURCE_FACTS_MODEL", raising=False)
+    monkeypatch.delenv("CYBERATTAQUE_SEMANTIC_MODEL", raising=False)
+    assert llm_runtime.model_for_task("qualification") == "gpt-5-nano"
+    assert llm_runtime.model_for_task("source_facts") == "gpt-4o-mini"
+    assert llm_runtime.model_for_task("cyberattaque_semantic") == "gpt-4o-mini"
+    assert llm_runtime.model_for_task("dedup") == "gpt-4o-mini"
+    # Un ancien DEFAULT_MODEL métier ne doit plus neutraliser le routage riche.
+    assert llm_runtime.model_for_task("source_facts", "gpt-5-nano") == "gpt-4o-mini"
+
+
+def test_model_routing_task_override_wins(monkeypatch):
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-4o")
+    monkeypatch.setenv("SOURCE_FACTS_MODEL", "gpt-5-nano")
+    assert llm_runtime.model_for_task("source_facts") == "gpt-5-nano"
+    assert llm_runtime.model_for_task("qualification") == "gpt-4o"
+
+
 def test_runtime_uses_strict_structured_outputs(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
     runtime = llm_runtime.LlmRuntime()
@@ -70,8 +89,30 @@ def test_runtime_uses_strict_structured_outputs(monkeypatch):
     assert seen["text"]["format"]["strict"] is True
     assert seen["reasoning"] == {"effort": "minimal"}
     assert result.usage.input_tokens == 100
+    assert result.model == "gpt-5-nano"
     assert runtime.stats.calls_succeeded == 1
     assert runtime.stats.by_task["unit"]["calls_succeeded"] == 1
+
+
+def test_post_response_enforces_rich_model_for_legacy_body(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+    monkeypatch.delenv("SOURCE_FACTS_MODEL", raising=False)
+    runtime = llm_runtime.LlmRuntime()
+    seen = {}
+
+    def fake_post(url, *, json, headers, timeout):
+        seen.update(json)
+        return _Response(payload=_payload({"value": "ok"}))
+
+    monkeypatch.setattr(llm_runtime.requests, "post", fake_post)
+    result = runtime.post_response(
+        task="source_facts",
+        body={"model": "gpt-5-nano", "input": []},
+    )
+    assert seen["model"] == "gpt-4o-mini"
+    assert result.model == "gpt-4o-mini"
+    assert runtime.stats.by_task["source_facts"]["last_model"] == "gpt-4o-mini"
 
 
 def test_runtime_retries_429(monkeypatch):
@@ -151,6 +192,26 @@ def test_global_budget_blocks_before_transport(monkeypatch):
     assert runtime.stats.calls_budget_blocked == 1
 
 
+def test_task_budget_blocks_before_global_budget(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("LLM_MAX_CALLS_PER_RUN", "10")
+    monkeypatch.setenv("LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN", "0")
+    runtime = llm_runtime.LlmRuntime()
+    called = False
+
+    def fake_post(*args, **kwargs):
+        nonlocal called
+        called = True
+        return _Response(payload=_payload({"value": "ok"}))
+
+    monkeypatch.setattr(llm_runtime.requests, "post", fake_post)
+    with pytest.raises(llm_runtime.LlmBudgetExceeded):
+        runtime.post_response(task="source_facts", body={"model": "gpt-5-nano", "input": []})
+    assert called is False
+    assert runtime.stats.calls_attempted == 0
+    assert runtime.stats.by_task["source_facts"]["calls_budget_blocked"] == 1
+
+
 def test_semantic_claim_validator_requires_exact_evidence_and_number():
     article = "La société confirme que 42 comptes ont été compromis."
     assert semantic_claims._clean_claim(
@@ -194,7 +255,7 @@ def test_candidate_requires_gap_for_length_only():
         "data_types": [{"value": "email"}],
     }
     assert len(text) > 4500
-    assert semantic_claims.is_candidate(text, complete) is True  # richness itself justifies semantic review
+    assert semantic_claims.is_candidate(text, complete) is True
 
 
 def test_extract_output_json_rejects_missing_text():
