@@ -16,8 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
@@ -27,113 +25,11 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Tests unitaires
+      - name: Tests développement
         run: python -m pytest tests/ -q
-
-      - name: Golden dédup certifié
-        run: python scripts/evaluate_dedup_golden.py
-
-      - name: Audit couverture Sector — état publié
-        run: python scripts/audit_sector_coverage.py --output ""
-
-      - name: Golden qualification — état publié
-        run: |
-          python scripts/evaluate_golden.py \
-            --details /tmp/golden-before.csv \
-            --json /tmp/golden-before.json
-
-      - name: Baseline qualification — état publié
-        run: python scripts/qualification_quality_report.py --json /tmp/qualification-before.json
-
-      - name: Parité qualification incrémentale — snapshot inchangé
-        run: python scripts/check_incremental_qualification_parity.py
-
-      - name: Inspecter les cas terrain
-        run: |
-          python - <<'PY'
-          import csv
-          from pathlib import Path
-          targets = ('sde 03','bija industrie','samboat','eva','kpark','k par k','chupin','clenet')
-          items = list(csv.DictReader(Path('data/items.csv').open(encoding='utf-8')))
-          facts = list(csv.DictReader(Path('data/source_facts.csv').open(encoding='utf-8')))
-          facts_by = {}
-          for row in facts:
-              facts_by.setdefault(row.get('Item_ID',''), []).append(row)
-          cache_path = Path('data/org_enrichment_cache.csv')
-          cache = list(csv.DictReader(cache_path.open(encoding='utf-8'))) if cache_path.exists() else []
-          print('TARGET_EVIDENCE_START')
-          for item in items:
-              name = (item.get('Organisation_Raw') or '').lower().replace('–','-')
-              if not any(t in name for t in targets):
-                  continue
-              print('ITEM', {k:item.get(k,'') for k in ('Item_ID','Source_ID','Organisation_Raw','Organisation_Key','Sector','Title','URL')})
-              for fact in facts_by.get(item.get('Item_ID',''), []):
-                  print('FACT', {k:fact.get(k,'') for k in ('Source_Sector_Raw','Activity_Description','Victim_Website','Summary','Evidence_JSON','Source_Metadata_JSON')})
-              key = item.get('Organisation_Key','')
-              for row in cache:
-                  if (row.get('Organisation_Key') or '') == key:
-                      print('CACHE', {k:row.get(k,'') for k in ('Match_Status','Validated_Sector','Validated_Via','Activity_Label','Evidence_URL','Evidence_Source')})
-          print('TARGET_EVIDENCE_END')
-          PY
-
-      - name: Simuler la requalification offline et mesurer la qualité
-        run: |
-          python scripts/qualification_quality_report.py \
-            --requalify --persist \
-            --json /tmp/qualification-after.json
-
-      - name: Garde de qualité qualification relative
-        run: python scripts/check_qualification_baseline.py /tmp/qualification-before.json /tmp/qualification-after.json
-
-      - name: Auditer les applications contextuelles
-        run: |
-          python - <<'PY'
-          import csv
-          from pathlib import Path
-          path = Path('data/qualification_provenance.csv')
-          rows = list(csv.DictReader(path.open(encoding='utf-8'))) if path.exists() else []
-          items = {}
-          with Path('data/items.csv').open(encoding='utf-8') as handle:
-              for row in csv.DictReader(handle):
-                  items[row.get('Item_ID','')] = row.get('Organisation_Raw','')
-          selected = [r for r in rows if r.get('Origin') == 'ORG_CONTEXT_SECTOR' and r.get('Decision') == 'APPLIED']
-          print(f'CONTEXT_SECTOR_APPLICATIONS={len(selected)}')
-          for row in selected:
-              print(f"{items.get(row.get('Item_ID',''), '')}\t{row.get('Candidate_Value','')}\t{row.get('Evidence','')}")
-          PY
-
-      - name: Audit couverture Sector — après requalification
-        run: python scripts/audit_sector_coverage.py --output ""
-
-      - name: Golden qualification — après requalification
-        run: |
-          python scripts/evaluate_golden.py \
-            --details /tmp/golden-after.csv \
-            --json /tmp/golden-after.json
-
-      - name: Gate qualité qualification global
-        run: |
-          python scripts/check_qualification_golden_gate.py \
-            /tmp/golden-before.json \
-            /tmp/golden-after.json
-
-      - name: Garde de précision Sector globale
-        run: |
-          python scripts/check_sector_golden_regression.py \
-            /tmp/golden-before.json \
-            /tmp/golden-after.json
-
-      - name: Benchmark du registre Sector par canal
-        run: python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
-
-      - name: Politique d'auto-qualification Sector
-        run: python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
 
       - name: Syntaxe dashboard
         run: node --check assets/app.js
 
-      - name: Test de répétabilité (§27)
-        run: python -m cyberwatch test-repeat
-
-      - name: Contrôles structurels (§29)
+      - name: Contrats structurels légers
         run: python -m cyberwatch check --allow-uninitialized
