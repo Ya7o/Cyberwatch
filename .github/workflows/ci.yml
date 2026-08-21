@@ -24,6 +24,8 @@ jobs:
       - name: Tests développement
         run: python -m pytest tests/ -q
       - name: Syntaxe dashboard
-        run: node --check assets/app.js
+        run: |
+          node --check assets/app.js
+          node --check assets/p2.js
       - name: Contrats structurels légers
         run: python -m cyberwatch check --allow-uninitialized
