@@ -18,6 +18,7 @@ import os
 from pathlib import Path
 import threading
 import time
+from time import monotonic as _monotonic
 from typing import Any
 
 import requests
@@ -193,7 +194,7 @@ class LlmRuntime:
             "Authorization": f"Bearer {key}",
             "Content-Type": "application/json",
         }
-        started = time.monotonic()
+        started = _monotonic()
         retries = 0
         try:
             while True:
@@ -226,7 +227,7 @@ class LlmRuntime:
                         raise LlmError("réponse OpenAI JSON invalide") from exc
                     model = str(body.get("model") or DEFAULT_MODEL)
                     usage = extract_usage(payload, model)
-                    duration = time.monotonic() - started
+                    duration = _monotonic() - started
                     self._record_success(task, usage, duration, retries)
                     return LlmTransportResult(
                         payload=payload,
@@ -248,7 +249,7 @@ class LlmRuntime:
                     continue
                 raise LlmError(f"HTTP {response.status_code}: {response.text[:200]}")
         except Exception:
-            self._record_failure(task, time.monotonic() - started, retries)
+            self._record_failure(task, _monotonic() - started, retries)
             raise
 
     def call_json(
@@ -292,9 +293,6 @@ class LlmRuntime:
 
 
 def pricing_for(model: str) -> dict[str, float]:
-    # Les modèles inconnus utilisent le tarif conservateur configuré du modèle
-    # par défaut. La table reste centralisée pour éviter les divergences entre
-    # sous-systèmes.
     return DEFAULT_PRICING.get(model, DEFAULT_PRICING[DEFAULT_MODEL])
 
 
