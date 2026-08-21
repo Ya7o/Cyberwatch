@@ -98,6 +98,8 @@ jobs:
           python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           python -m cyberwatch.source_scorecard --markdown >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          python -m cyberwatch.source_portfolio --markdown >> "$GITHUB_STEP_SUMMARY"
       - name: Publier les données
         if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
