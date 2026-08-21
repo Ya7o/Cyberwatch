@@ -21,6 +21,14 @@ Cyberwatch entre en phase de consolidation. Le moteur technique est considéré 
 
 `FROZEN` ne signifie pas immuable. Cela signifie qu'une amélioration purement architecturale, une préparation à un besoin hypothétique ou une abstraction plus élégante ne suffit plus à justifier un chantier.
 
+## Clôture P0
+
+Le développement du P0 est terminé lorsque le workflow de reset certifié et la mesure post-reset sont présents sur `main`.
+
+La clôture opérationnelle du P0 intervient au premier reset total publié qui produit `data/post_reset_baseline.json` avec un audit `GO`. Le runbook est `P0_RESET_BASELINE.md`.
+
+À partir de cette publication, la baseline post-reset devient le point zéro des décisions de performance et de qualité. Elle ne doit pas devenir un nouveau framework de certification : elle sert à constater les régressions réelles avant de rouvrir un domaine gelé.
+
 ## Surface opérationnelle canonique
 
 Trois workflows GitHub Actions structurent l'exploitation :
