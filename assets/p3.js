@@ -46,7 +46,7 @@
       const pairMap = new Map();
       cur.forEach((r) => { if (known(r.threat) && known(r.sector)) { const k = `${r.threat}\u0000${r.sector}`; if (!pairMap.has(k)) pairMap.set(k, []); pairMap.get(k).push(r); } });
       pairMap.forEach((evidence, key) => {
-        if (beforePairs.has(key) || evidence.length < 2) return;
+        if (beforePairs.has(key) || evidence.length < 3) return;
         const [threat, sector] = key.split("\u0000");
         out.push({ kind: "Nouveau couple", dimension: "threat_sector", label: `${threat} × ${sector}`, days, now: evidence.length, before: 0, delta: evidence.length, confidence: confidence(evidence), evidence });
       });
