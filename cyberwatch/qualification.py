@@ -115,12 +115,15 @@ def backfill_structured_source_sectors(items, source_fact_rows=None):
 
 
 def apply_official_subject_activity_sectors(items, org_cache_rows=None):
-    """Matérialise une preuve officielle validée, même sur un secteur déjà connu.
+    """Matérialise uniquement une preuve officielle forte et ré-validable.
 
-    La preuve doit avoir été attribuée au sujet, validée et normalisée dans la
-    taxonomie. Elle est plus forte qu'un hint de source structurée mais reste
-    sous une référence manuelle lors de la réconciliation finale.
+    Le cache seul n'est pas une autorisation : le texte persistant doit encore
+    satisfaire l'attribution au sujet et le seuil fort du classifieur de preuve.
+    Cela permet à une preuve officielle nette d'écraser un hint structuré faible,
+    sans promouvoir automatiquement les anciennes preuves officielles ambiguës.
     """
+    from . import company_subject_evidence
+
     rows = org_cache_rows if org_cache_rows is not None else store.load_org_enrichment_cache()
     official = {}
     for row in rows:
@@ -142,7 +145,14 @@ def apply_official_subject_activity_sectors(items, org_cache_rows=None):
         if row is None:
             continue
         candidate = (row.get("Validated_Sector") or "").strip()
-        if not candidate or item.Sector == candidate:
+        activity = (row.get("Activity_Label") or "").strip()
+        strong = company_subject_evidence.strong_subject_attributed_activity(
+            item.Organisation_Raw,
+            activity,
+        )
+        if strong is None or strong[0] != candidate:
+            continue
+        if item.Sector == candidate:
             continue
         previous = item.Sector
         item.Sector = candidate
@@ -151,7 +161,7 @@ def apply_official_subject_activity_sectors(items, org_cache_rows=None):
             value
             for value in (
                 (row.get("Evidence_URL") or "").strip(),
-                (row.get("Activity_Label") or "").strip(),
+                strong[1],
             )
             if value
         )[:2000]
@@ -165,7 +175,7 @@ def apply_official_subject_activity_sectors(items, org_cache_rows=None):
             "Origin": "OFFICIAL_SUBJECT_ACTIVITY",
             "Confidence": "HIGH",
             "Evidence": evidence,
-            "Match_Strategy": "organisation_key_exact+official_subject_activity",
+            "Match_Strategy": "organisation_key_exact+strong_official_subject_activity",
             "Decision": "APPLIED",
         })
     provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]))
