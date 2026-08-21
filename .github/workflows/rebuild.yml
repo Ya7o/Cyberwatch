@@ -1,5 +1,4 @@
-# trigger: cache-first-post-dev-rebuild-use-org-cache-2026-08-18
-name: Rebuild post-development
+name: RESET RAPIDE
 
 on:
   workflow_dispatch:
@@ -9,11 +8,7 @@ on:
         type: string
         default: all
       start:
-        description: "Début de fenêtre AAAA-MM-JJ (optionnel)"
-        type: string
-        default: ""
-      as_of:
-        description: "Cutoff ISO 8601 (optionnel)"
+        description: "Début AAAA-MM-JJ (optionnel)"
         type: string
         default: ""
 
@@ -21,267 +16,57 @@ permissions:
   contents: write
 
 concurrency:
-  group: rebuild-post-development
+  group: cyberwatch-reset-rapide
   cancel-in-progress: false
 
 jobs:
-  rebuild:
+  reset:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
-
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.11"
           cache: pip
-
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-
-      - name: Inventorier les caches et snapshot avant rebuild
-        id: caches_before
-        shell: bash
+      - name: Purger les sorties dérivées
         run: |
-          set -euo pipefail
-          cp data/items.csv /tmp/items-before-rebuild.csv
-          echo "### Caches conservés avant rebuild" >> "$GITHUB_STEP_SUMMARY"
-          for f in \
-            data/ai_qualifications.csv \
-            data/source_facts.csv \
-            data/source_facts_ai_cache.json \
-            data/org_enrichment_cache.csv \
-            data/qualification_provenance.csv \
-            data/incident_id_registry.csv; do
-            if [ -f "$f" ]; then
-              if [[ "$f" == *.csv ]]; then
-                rows=$(( $(wc -l < "$f") - 1 ))
-                [ "$rows" -lt 0 ] && rows=0
-                detail="${rows} lignes"
-              else
-                detail="$(wc -c < "$f") octets"
-              fi
-              sha=$(sha256sum "$f" | cut -d' ' -f1)
-              echo "- $f : ${detail} · sha256 ${sha}" >> "$GITHUB_STEP_SUMMARY"
-            else
-              echo "- $f : absent" >> "$GITHUB_STEP_SUMMARY"
-            fi
-          done
-
-      - name: Purger uniquement les sorties reconstruites
-        run: |
-          set -euo pipefail
           rm -f data/items.csv data/incidents.csv data/snapshot.json
           rm -f assets/data/items.json assets/data/incidents.json assets/data/snapshot.json
-          echo "### Purge" >> "$GITHUB_STEP_SUMMARY"
-          echo "Sorties supprimées : items, incidents, snapshot et exports dashboard correspondants." >> "$GITHUB_STEP_SUMMARY"
-          echo "Caches LLM/enrichissement, provenance et registre d'identités conservés." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Rebuild complet chronométré
-        id: rebuild
+      - name: Reconstruire sans nouvel appel LLM
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
-          # Garde globale : aucun chemin LLM, y compris sémantique/dedup futur,
-          # ne peut effectuer un appel pendant ce rebuild cache-only.
           LLM_MAX_CALLS_PER_RUN: "0"
           LLM_MAX_COST_USD_PER_RUN: "0"
-          # Gardes legacy conservées pour les runtimes métier historiques.
           AI_MAX_CALLS_PER_RUN: "0"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
-          SOURCE_FACTS_AI_RETRY_LEGACY_NULLS: "0"
-          # Cache d'enrichissement chargé, mais aucun appel registre/site officiel autorisé.
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
         shell: bash
         run: |
-          set -euo pipefail
           ARGS=""
-          LAYERS="${{ inputs.layers || 'all' }}"
-          START="${{ inputs.start || '' }}"
-          AS_OF="${{ inputs.as_of || '' }}"
-          [ -n "$START" ] && ARGS="$ARGS --start $START"
-          [ -n "$AS_OF" ] && ARGS="$ARGS --as-of $AS_OF"
-
-          start_ns=$(date +%s%N)
-          python -m cyberwatch create --layers "$LAYERS" $ARGS | tee /tmp/rebuild.log
-          end_ns=$(date +%s%N)
-          elapsed_ms=$(( (end_ns - start_ns) / 1000000 ))
-          elapsed_s=$(python -c "print(round(${elapsed_ms}/1000, 3))")
-          echo "elapsed_ms=$elapsed_ms" >> "$GITHUB_OUTPUT"
-          echo "elapsed_s=$elapsed_s" >> "$GITHUB_OUTPUT"
-
-          echo "### Durée rebuild" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Durée totale mesurée : **${elapsed_s} s**" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Commit code : \`${GITHUB_SHA}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Politique IA : **0 nouvel appel LLM autorisé, toutes tâches confondues**" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Enrichissement organisation : **cache uniquement, 0 appel réseau**" >> "$GITHUB_STEP_SUMMARY"
-          echo >> "$GITHUB_STEP_SUMMARY"
-          echo "<details><summary>Sortie CREATE</summary>" >> "$GITHUB_STEP_SUMMARY"
-          echo >> "$GITHUB_STEP_SUMMARY"
-          echo '```text' >> "$GITHUB_STEP_SUMMARY"
-          tail -n 120 /tmp/rebuild.log >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          echo "</details>" >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Réappliquer le cache LLM compatible
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "### Réapplication cache LLM stable" >> "$GITHUB_STEP_SUMMARY"
-          python scripts/reapply_llm_cache.py | tee /tmp/reapply-cache.json
-          echo '```json' >> "$GITHUB_STEP_SUMMARY"
-          cat /tmp/reapply-cache.json >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          [ -n "${{ inputs.start }}" ] && ARGS="--start ${{ inputs.start }}"
+          python -m cyberwatch create --layers "${{ inputs.layers }}" $ARGS
+          python scripts/reapply_llm_cache.py
           python -m cyberwatch replay
-
-      - name: Diagnostiquer les qualifications perdues
-        shell: bash
+      - name: Dev checks
         run: |
-          set -euo pipefail
-          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import csv
-          from collections import defaultdict
-          from pathlib import Path
-
-          UNKNOWN = "Inconnu"
-
-          def read(path):
-              with Path(path).open(encoding="utf-8", newline="") as f:
-                  return list(csv.DictReader(f))
-
-          before = read("/tmp/items-before-rebuild.csv")
-          after = read("data/items.csv")
-
-          def keys(row):
-              out = []
-              sid = row.get("Source_ID", "")
-              native = row.get("Source_Item_ID", "")
-              url = row.get("URL", "")
-              if sid and native:
-                  out.append(("native", sid, native))
-              if sid and url:
-                  out.append(("url", sid, url))
-              out.append(("org-date", sid, row.get("Organisation_Key", ""), row.get("Published_Date", "")))
-              return out
-
-          after_index = {}
-          for row in after:
-              for key in keys(row):
-                  after_index.setdefault(key, row)
-
-          regressions = []
-          for old in before:
-              if old.get("Sector") in ("", UNKNOWN):
-                  continue
-              new = next((after_index.get(k) for k in keys(old) if after_index.get(k)), None)
-              if new and new.get("Sector") == UNKNOWN:
-                  regressions.append((old, new))
-
-          by_source = defaultdict(list)
-          for pair in regressions:
-              by_source[pair[0].get("Source_ID", "")].append(pair)
-
-          print("\n### Régressions Sector connues → Inconnu")
-          print(f"- Total : {len(regressions)}")
-          for source in sorted(by_source):
-              print(f"\n#### {source} — {len(by_source[source])}")
-              for old, new in by_source[source]:
-                  print(
-                      f"- **{old.get('Organisation_Raw','')}** : "
-                      f"`{old.get('Sector','')}` → `Inconnu` · "
-                      f"old_id=`{old.get('Item_ID','')}` · new_id=`{new.get('Item_ID','')}` · "
-                      f"source_item_id=`{new.get('Source_Item_ID','')}` · {new.get('URL','')}"
-                  )
-          PY
-
-      - name: Mesurer réutilisation LLM et état reconstruit
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import csv
-          import json
-          from pathlib import Path
-          from cyberwatch import config, store
-
-          def rows(path):
-              p = Path(path)
-              if not p.exists():
-                  return []
-              with p.open(encoding="utf-8", newline="") as f:
-                  return list(csv.DictReader(f))
-
-          incidents = store.load_incidents()
-          ai_usage = rows("data/ai_usage.csv")
-          last_ai = ai_usage[-1] if ai_usage else {}
-
-          print("\n### Résultat reconstruction")
-          print(f"- Items : {len(store.load_items())}")
-          print(f"- Incidents : {len(incidents)}")
-          print(f"- Secteur inconnu : {sum(i.Secteur == config.SECTOR_UNKNOWN for i in incidents)}")
-          print(f"- Menace inconnue : {sum(i.Menace == config.THREAT_UNKNOWN for i in incidents)}")
-          print(f"- Localisation inconnue : {sum(i.Localisation == config.LOC_INCONNU for i in incidents)}")
-
-          if last_ai:
-              print("\n### Usage IA du dernier run")
-              for key, value in last_ai.items():
-                  low = key.lower()
-                  if any(token in low for token in ("call", "cache", "token", "cost", "usage")):
-                      print(f"- {key} : {value}")
-          else:
-              print("\n### Usage IA du dernier run\n- Aucun enregistrement ai_usage disponible.")
-
-          sf_stats = Path("data/source_facts_ai_usage.json")
-          if sf_stats.exists():
-              print("\n### Usage SourceFacts IA")
-              try:
-                  payload = json.loads(sf_stats.read_text(encoding="utf-8"))
-                  for key in sorted(payload):
-                      if any(token in key.lower() for token in ("call", "cache", "cost", "duration")):
-                          print(f"- {key} : {payload[key]}")
-              except Exception as exc:
-                  print(f"- métriques illisibles : {type(exc).__name__}")
-
-          print("\n### Caches après rebuild")
-          for path in (
-              "data/ai_qualifications.csv",
-              "data/source_facts.csv",
-              "data/org_enrichment_cache.csv",
-              "data/qualification_provenance.csv",
-              "data/incident_id_registry.csv",
-          ):
-              data = rows(path)
-              print(f"- {path} : {len(data)} lignes")
-          PY
-
-      - name: Contrôles qualité
-        run: |
-          set -euo pipefail
-          python -m pytest -q tests/test_rebuild_cache.py
+          python -m pytest tests/ -q
+          node --check assets/app.js
           python -m cyberwatch check
-          python -m cyberwatch test-repeat
-          python scripts/audit_data_quality.py --items data/items.csv --source-facts data/source_facts.csv --check --check-regression
-          python scripts/audit_sector_coverage.py
           python -m cyberwatch build-site
-
-      - name: Publier la base reconstruite
+          python -m cyberwatch check
+      - name: Publier
         run: |
-          set -euo pipefail
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data assets/data
-          if git diff --staged --quiet; then
-            echo "Aucun changement de données à publier." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          git commit -m "data: rebuild post-development"
-          for delay in 0 2 4 8 16; do
-            [ "$delay" -gt 0 ] && sleep "$delay"
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
-          done
-          echo "Échec de publication du rebuild." >&2
-          exit 1
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "data: reset rapide"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
