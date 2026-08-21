@@ -12,7 +12,8 @@ Le mode `zero` est le mode radical. Il sert à vérifier que le code actuel sait
 - `confirm_zero` doit valoir exactement `RESET` ;
 - une archive complète `data/` + `assets/data/` est créée et relue avant toute purge ;
 - l'inventaire et le SHA-256 de l'archive sont exportés ;
-- `incident_id_registry.csv`, alias historiques, registres de qualification, caches LLM, historiques de runs, baselines, golden datasets, états incrémentaux et données dashboard sont supprimés du staging ;
+- `incident_id_registry.csv`, registres de qualification, caches LLM, historiques de runs, baselines, golden datasets, états incrémentaux et données dashboard sont supprimés du staging ;
+- les alias d'organisation nécessaires au bootstrap Python sont conservés comme référentiel statique, sans préserver les registres d'identité calculés ;
 - seuls les référentiels statiques explicitement allowlistés par `cyberwatch.zero_reset` survivent à la purge ;
 - `python -m cyberwatch.zero_reset verify` doit retourner `ZERO` avant toute reconstruction ;
 - la reconstruction ne lit jamais l'archive ; celle-ci est uniquement un mécanisme de rollback/audit ;
@@ -24,10 +25,11 @@ Le mode `zero` est le mode radical. Il sert à vérifier que le code actuel sait
 
 La conservation est une allowlist, pas une blacklist. Actuellement seuls :
 
+- `data/organisation_aliases.csv` ;
 - `data/sector_auto_policy.json` ;
 - `data/territorial_identities.csv`.
 
-Ces fichiers décrivent des règles/référentiels statiques nécessaires au domaine ; ils ne constituent pas l'état d'une collecte. Ajouter un nouveau survivant exige une modification explicite de l'allowlist et des tests.
+Ces fichiers décrivent des règles/référentiels statiques nécessaires au domaine ou au bootstrap du programme ; ils ne constituent pas l'état d'une collecte. Ajouter un nouveau survivant exige une modification explicite de l'allowlist et des tests.
 
 ## Séquence recommandée
 
