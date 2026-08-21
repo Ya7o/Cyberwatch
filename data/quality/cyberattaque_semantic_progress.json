@@ -1,17 +1,25 @@
 {
-  "backlog_remaining": 23,
-  "cache_entries": 380,
-  "cache_hits": 377,
-  "completed": 354,
-  "duration_s": 10.871,
-  "failed_retryable": 23,
-  "llm_calls": 0,
+  "backlog_remaining": 26,
+  "cache_entries": 387,
+  "cache_hits": 355,
+  "candidate_rate": 0.8702,
+  "completed": 336,
+  "duration_s": 96.241,
+  "failed_retryable": 26,
+  "llm_calls": 7,
   "matched_items": 416,
   "max_calls": 25,
-  "not_candidates": 39,
+  "not_candidates": 54,
   "pending": 0,
-  "posts_fetched": 483,
+  "posts_fetched": 485,
+  "reason_counts": {
+    "ambiguous_claim": 337,
+    "missing_third_party_relation": 87,
+    "negation_detected": 126
+  },
+  "selection_version": "2",
+  "selector_candidates": 362,
   "source": "CYBERATTAQUE_ORG",
-  "updated": 0,
-  "version": "1"
+  "updated": 25,
+  "version": "2"
 }
