@@ -45,10 +45,10 @@ def _pct_change(current: int, previous: int) -> float | None:
 
 
 def _source_count(row: dict) -> int:
-    sources = row.get("sources") or []
-    if isinstance(sources, str):
-        sources = [part.strip() for part in sources.split("|") if part.strip()]
-    return len(set(sources))
+    source_values = row.get("sources") or []
+    if isinstance(source_values, str):
+        source_values = [part.strip() for part in source_values.split("|") if part.strip()]
+    return len(set(source_values))
 
 
 def _slice(rows: list[dict], as_of: date, days: int, offset: int = 0) -> list[dict]:
@@ -59,10 +59,7 @@ def _slice(rows: list[dict], as_of: date, days: int, offset: int = 0) -> list[di
 
 def _counts(rows: Iterable[dict], key: str) -> list[dict[str, Any]]:
     counter = Counter(str(row.get(key) or UNKNOWN) for row in rows)
-    return [
-        {"label": label, "count": count}
-        for label, count in sorted(counter.items(), key=lambda item: (-item[1], item[0]))
-    ]
+    return [{"label": label, "count": count} for label, count in sorted(counter.items(), key=lambda item: (-item[1], item[0]))]
 
 
 def _entropy(rows: list[dict], key: str) -> float:
@@ -79,13 +76,11 @@ def _confidence(*, count: int, multi_source: int, known_ratio: float) -> dict[st
     corroboration = _ratio(multi_source, count)
     score = round(100 * (0.55 * evidence + 0.25 * corroboration + 0.20 * known_ratio))
     level = "high" if score >= 75 else "medium" if score >= 50 else "low"
-    return {
-        "score": score,
-        "level": level,
-        "incidents": count,
-        "multi_source_incidents": multi_source,
-        "known_ratio": round(known_ratio, 3),
-    }
+    return {"score": score, "level": level, "incidents": count, "multi_source_incidents": multi_source, "known_ratio": round(known_ratio, 3)}
+
+
+def _evidence_ids(rows: list[dict]) -> list[str]:
+    return sorted({str(row.get("id") or "") for row in rows if row.get("id")})[:12]
 
 
 def _dimension_signals(current: list[dict], previous: list[dict], dimension: str, days: int) -> list[dict]:
@@ -95,7 +90,6 @@ def _dimension_signals(current: list[dict], previous: list[dict], dimension: str
     for label in sorted(set(cur) | set(prev)):
         now, before = cur[label], prev[label]
         delta = now - before
-        # Les petits échantillons ne deviennent jamais une tendance.
         if now < 3 or delta < 2:
             continue
         change = _pct_change(now, before)
@@ -103,14 +97,7 @@ def _dimension_signals(current: list[dict], previous: list[dict], dimension: str
             continue
         evidence = [row for row in current if str(row.get(dimension) or UNKNOWN) == label]
         multi = sum(_source_count(row) > 1 for row in evidence)
-        known_fields = sum(
-            sum(_known(row.get(key)) for key in DIMENSIONS) for row in evidence
-        )
-        confidence = _confidence(
-            count=now,
-            multi_source=multi,
-            known_ratio=known_fields / max(1, now * len(DIMENSIONS)),
-        )
+        known_fields = sum(sum(_known(row.get(key)) for key in DIMENSIONS) for row in evidence)
         signals.append({
             "kind": "emerging" if before == 0 else "acceleration",
             "dimension": dimension,
@@ -120,8 +107,8 @@ def _dimension_signals(current: list[dict], previous: list[dict], dimension: str
             "previous": before,
             "delta": delta,
             "change_pct": change,
-            "confidence": confidence,
-            "incident_ids": [str(row.get("id") or "") for row in evidence[:12] if row.get("id")],
+            "confidence": _confidence(count=now, multi_source=multi, known_ratio=known_fields / max(1, now * len(DIMENSIONS))),
+            "incident_ids": _evidence_ids(evidence),
         })
     return signals
 
@@ -137,7 +124,7 @@ def _new_pairs(current: list[dict], previous: list[dict], days: int) -> list[dic
     cur, prev = pairs(current), pairs(previous)
     signals = []
     for pair, evidence in sorted(cur.items()):
-        if pair in prev or len(evidence) < 2:
+        if pair in prev or len(evidence) < 3:
             continue
         signals.append({
             "kind": "new_pair",
@@ -148,12 +135,8 @@ def _new_pairs(current: list[dict], previous: list[dict], days: int) -> list[dic
             "previous": 0,
             "delta": len(evidence),
             "change_pct": 100.0,
-            "confidence": _confidence(
-                count=len(evidence),
-                multi_source=sum(_source_count(row) > 1 for row in evidence),
-                known_ratio=1.0,
-            ),
-            "incident_ids": [str(row.get("id") or "") for row in evidence[:12] if row.get("id")],
+            "confidence": _confidence(count=len(evidence), multi_source=sum(_source_count(row) > 1 for row in evidence), known_ratio=1.0),
+            "incident_ids": _evidence_ids(evidence),
         })
     return signals
 
@@ -166,9 +149,7 @@ def _rank_signal(signal: dict) -> tuple:
 def _narrative(signals: list[dict], windows: dict[str, dict]) -> list[str]:
     lines = []
     for signal in signals[:5]:
-        label = signal["label"]
-        now, before = signal["current"], signal["previous"]
-        days = signal["window_days"]
+        label, now, before, days = signal["label"], signal["current"], signal["previous"], signal["window_days"]
         confidence = signal["confidence"]["level"]
         if signal["kind"] == "emerging":
             lines.append(f"{label} apparaît sur {days} jours avec {now} incidents, contre aucun sur la période précédente (confiance {confidence}).")
@@ -186,65 +167,44 @@ def build_analytics(incidents: list[dict], *, as_of: str | date | None = None) -
     anchor = as_of if isinstance(as_of, date) else _day(as_of)
     dated = [row for row in incidents if _day(row.get("date"))]
     anchor = anchor or (max((_day(row.get("date")) for row in dated), default=None) or date.today())
-
     windows: dict[str, dict] = {}
     for days in WINDOWS:
         current = _slice(dated, anchor, days)
         previous = _slice(dated, anchor, days, offset=days)
         multi = sum(_source_count(row) > 1 for row in current)
         windows[str(days)] = {
-            "current": len(current),
-            "previous": len(previous),
-            "delta": len(current) - len(previous),
-            "change_pct": _pct_change(len(current), len(previous)),
-            "multi_source": multi,
+            "current": len(current), "previous": len(previous), "delta": len(current) - len(previous),
+            "change_pct": _pct_change(len(current), len(previous)), "multi_source": multi,
             "multi_source_pct": round(100 * _ratio(multi, len(current)), 1),
         }
-
     signals = []
     for days in (30, 90):
-        current = _slice(dated, anchor, days)
-        previous = _slice(dated, anchor, days, offset=days)
+        current, previous = _slice(dated, anchor, days), _slice(dated, anchor, days, offset=days)
         for dimension in DIMENSIONS:
             signals.extend(_dimension_signals(current, previous, dimension, days))
         signals.extend(_new_pairs(current, previous, days))
-    # Dédupliquer un même signal présent sur 30 et 90 jours en privilégiant la fenêtre courte.
     unique = {}
     for signal in sorted(signals, key=lambda s: (s["window_days"],) + _rank_signal(s)):
         unique.setdefault((signal["kind"], signal["dimension"], signal["label"]), signal)
     signals = sorted(unique.values(), key=_rank_signal)[:20]
-
     current90 = _slice(dated, anchor, 90)
     coverage = {
         key: {
             "known": sum(_known(row.get(key)) for row in current90),
             "unknown": sum(not _known(row.get(key)) for row in current90),
             "known_pct": round(100 * _ratio(sum(_known(row.get(key)) for row in current90), len(current90)), 1),
-        }
-        for key in DIMENSIONS
+        } for key in DIMENSIONS
     }
     top = {key: _counts(current90, key)[:8] for key in DIMENSIONS}
     org_counts = Counter(str(row.get("org") or UNKNOWN) for row in current90 if _known(row.get("org")))
-    recurring = [
-        {"organisation": label, "incidents": count}
-        for label, count in sorted(org_counts.items(), key=lambda item: (-item[1], item[0]))
-        if count >= 2
-    ][:10]
-
+    recurring = [{"organisation": label, "incidents": count} for label, count in sorted(org_counts.items(), key=lambda item: (-item[1], item[0])) if count >= 2][:10]
     return {
-        "schema": "cyberwatch-analytics-v1",
-        "as_of": anchor.isoformat(),
-        "incident_count": len(incidents),
-        "dated_incidents": len(dated),
-        "windows": windows,
-        "coverage": coverage,
-        "top_90d": top,
+        "schema": "cyberwatch-analytics-v1", "as_of": anchor.isoformat(), "incident_count": len(incidents),
+        "dated_incidents": len(dated), "windows": windows, "coverage": coverage, "top_90d": top,
         "diversity_90d": {key: _entropy(current90, key) for key in DIMENSIONS},
-        "recurring_organisations_90d": recurring,
-        "signals": signals,
-        "briefing": _narrative(signals, windows),
+        "recurring_organisations_90d": recurring, "signals": signals, "briefing": _narrative(signals, windows),
         "method": {
-            "signal_rule": "minimum 3 incidents and +2 delta; acceleration requires >=50% increase; new threat-sector pairs require >=2 incidents",
+            "signal_rule": "minimum 3 incidents and +2 delta; acceleration requires >=50% increase; new threat-sector pairs require >=3 incidents",
             "confidence": "55% sample size + 25% multi-source corroboration + 20% field completeness",
             "warning": "Observed publication patterns are not estimates of true cyber incident prevalence.",
         },
