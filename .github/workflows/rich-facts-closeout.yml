@@ -1,27 +1,6 @@
 name: Rich Facts Closeout
 
 on:
-  pull_request:
-    paths:
-      - 'cyberwatch/rich_facts*.py'
-      - 'cyberwatch/collectors/editorial_semantic.py'
-      - 'cyberwatch/collectors/frenchbreaches_rich.py'
-      - 'cyberwatch/collectors/feed.py'
-      - 'scripts/audit_rich_facts_platform.py'
-      - 'scripts/decide_rich_facts_semantic.py'
-      - 'tests/test_rich_facts_closeout.py'
-      - '.github/workflows/rich-facts-closeout.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'cyberwatch/rich_facts*.py'
-      - 'cyberwatch/collectors/editorial_semantic.py'
-      - 'cyberwatch/collectors/frenchbreaches_rich.py'
-      - 'cyberwatch/collectors/feed.py'
-      - 'scripts/audit_rich_facts_platform.py'
-      - 'scripts/decide_rich_facts_semantic.py'
-      - 'tests/test_rich_facts_closeout.py'
-      - '.github/workflows/rich-facts-closeout.yml'
   workflow_dispatch:
 
 permissions:
@@ -56,7 +35,6 @@ jobs:
         run: python scripts/audit_rich_facts_platform.py
 
   backfill:
-    if: github.event_name != 'pull_request'
     needs: quality
     runs-on: ubuntu-latest
     timeout-minutes: 90
