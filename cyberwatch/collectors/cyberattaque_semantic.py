@@ -53,6 +53,20 @@ def should_use_llm(text: str, deterministic: dict) -> bool:
     return cyberattaque_semantic_selector.decide(text, deterministic).use_llm
 
 
+def _load_cache() -> dict:
+    """Compatibilité backfill : expose toujours le cache Cyberattaque historique."""
+    return semantic_claims._load_cache(_POLICY)
+
+
+def _save_cache(cache: dict) -> None:
+    semantic_claims._save_cache(_POLICY, cache)
+
+
+def _legacy_key(text: str, model: str) -> str:
+    # cyberattaque_semantic_backfill.semantic_key dépend de ce format exact.
+    return f"{PROMPT_VERSION}:{model}:{content_hash(text)}"
+
+
 # Compatibilité des tests et des consommateurs internes : les validateurs restent
 # accessibles depuis ce module, mais leur implémentation n'est plus dupliquée.
 _clean_claim = semantic_claims._clean_claim
@@ -65,9 +79,28 @@ _evidence_present = semantic_claims._evidence_present
 def enrich(text: str, deterministic: dict) -> dict:
     if not should_use_llm(text, deterministic):
         return {}
-    return semantic_claims.enrich(
+
+    model = os.getenv(
+        "CYBERATTAQUE_SEMANTIC_MODEL",
+        os.getenv("OPENAI_MODEL", DEFAULT_MODEL),
+    ).strip() or DEFAULT_MODEL
+    legacy_key = _legacy_key(text or "", model)
+    cache = _load_cache()
+    cached = cache.get(legacy_key)
+    if isinstance(cached, dict):
+        return dict(cached)
+
+    result = semantic_claims.enrich(
         text,
         deterministic,
         source_id="CYBERATTAQUE_ORG",
         policy=_POLICY,
     )
+    if result:
+        # Le moteur commun utilise une clé hashée générique. On conserve en
+        # parallèle l'ancienne clé publique le temps que le backfill et les
+        # caches existants migrent sans rappel API.
+        cache = _load_cache()
+        cache[legacy_key] = dict(result)
+        _save_cache(cache)
+    return result
