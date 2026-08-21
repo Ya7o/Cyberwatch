@@ -10,11 +10,11 @@ from __future__ import annotations
 
 import csv
 import json
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from . import ai, llm_runtime, source_facts_ai
+from . import ai, llm_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -60,9 +60,24 @@ def _model_from_value(value: Any) -> str:
     return ""
 
 
+def _cache_values(payload: Any) -> list[Any]:
+    """Retourne les vraies entrées d'un cache JSON, quel que soit son wrapper."""
+    if not isinstance(payload, dict):
+        return []
+    entries = payload.get("entries")
+    if isinstance(entries, dict):
+        return list(entries.values())
+    # Les caches sémantiques historiques sont plats ; ignorer les métadonnées
+    # conventionnelles si elles existent à côté des entrées.
+    return [
+        value
+        for key, value in payload.items()
+        if not str(key).startswith("_") and isinstance(value, dict)
+    ]
+
+
 def _json_cache_report(name: str, path: Path, task: str) -> CacheReport:
-    payload = _json(path)
-    values = list(payload.values()) if isinstance(payload, dict) else []
+    values = _cache_values(_json(path))
     effective = llm_runtime.model_for_task(task)
     compatible = incompatible = unknown = 0
     for value in values:
@@ -84,9 +99,23 @@ def _json_cache_report(name: str, path: Path, task: str) -> CacheReport:
     )
 
 
+def _latest_qualification_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Reproduit la sémantique du cache runtime : la dernière ligne gagne."""
+    latest: dict[tuple[str, str], dict[str, str]] = {}
+    anonymous: list[dict[str, str]] = []
+    for row in rows:
+        item_id = (row.get("Item_ID") or "").strip()
+        input_hash = (row.get("Input_Hash") or "").strip()
+        if item_id and input_hash:
+            latest[(item_id, input_hash)] = row
+        else:
+            anonymous.append(row)
+    return [*latest.values(), *anonymous]
+
+
 def qualification_report() -> CacheReport:
     path = DATA / "ai_qualifications.csv"
-    rows = _csv_rows(path)
+    rows = _latest_qualification_rows(_csv_rows(path))
     effective = llm_runtime.model_for_task("qualification")
     compatible = incompatible = unknown = 0
     for row in rows:
@@ -137,8 +166,10 @@ def summary() -> dict[str, Any]:
         reasons.append(f"{cold} entrée(s) de cache portent un modèle/prompt incompatible")
     if unknown:
         reasons.append(f"{unknown} entrée(s) de cache ne déclarent pas leur modèle")
-    # Un cache froid n'est pas une erreur : il doit seulement être visible avant
-    # un reset. Le NO-GO est réservé à une couverture connue très faible.
+    # Un cache froid est attendu après une migration de modèle mais il doit être
+    # visible avant reset. En dessous de 75 % de compatibilité connue, le reset
+    # cache-first reste possible mais une régénération LLM doit être planifiée à
+    # part : le préflight retourne donc NO-GO pour un reset avec réchauffage.
     verdict = "GO" if known_hit_rate >= 75.0 else "NO-GO"
     return {
         "offline": True,
@@ -156,7 +187,7 @@ def summary() -> dict[str, Any]:
         "reasons": reasons,
         "warning": (
             "Le préflight estime la compatibilité statique des caches ; il ne déclenche "
-            "aucun LLM et ne prétend pas prédire exactement le nombre de candidats du prochain run."
+            "aucun LLM et ne prédit pas exactement le nombre de candidats du prochain run."
         ),
     }
 
