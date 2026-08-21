@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 PRESERVED_DATA_PATHS = frozenset({
+    "organisation_aliases.csv",
     "sector_auto_policy.json",
     "territorial_identities.csv",
 })
