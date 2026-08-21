@@ -70,6 +70,23 @@ def model_for_task(task: str, explicit: str | None = None) -> str:
     return RICH_MODEL if _is_rich_task(task) else DEFAULT_MODEL
 
 
+def task_for_request(task: str, body: dict[str, Any]) -> str:
+    """Corrige l'attribution de transports legacy vers leur tâche métier.
+
+    Le challenger de déduplication passe historiquement par ``ai._post_openai``
+    et arrive donc avec ``task=qualification``. Le nom du schéma est un contrat
+    stable et non ambigu ; il permet au runtime d'appliquer le quota et la
+    télémétrie ``dedup`` sans modifier le module métier historique.
+    """
+    try:
+        schema_name = str(body["text"]["format"].get("name") or "")
+    except (KeyError, TypeError, AttributeError):
+        schema_name = ""
+    if schema_name == "cyberwatch_dedup_audit":
+        return "dedup"
+    return task
+
+
 def _env_int(name: str, default: int) -> int:
     try:
         return int(os.getenv(name, str(default)))
@@ -250,10 +267,13 @@ class LlmRuntime:
         if not key:
             raise LlmError("OPENAI_API_KEY absente")
 
+        effective_task = task_for_request(task, body)
         request_body = dict(body)
-        request_body["model"] = model_for_task(task, str(body.get("model") or ""))
+        request_body["model"] = model_for_task(
+            effective_task, str(body.get("model") or "")
+        )
         model = request_body["model"]
-        self._reserve_call(task)
+        self._reserve_call(effective_task)
         headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
         started = _monotonic()
         retries = 0
@@ -288,7 +308,7 @@ class LlmRuntime:
                         raise LlmError("réponse OpenAI JSON invalide") from exc
                     usage = extract_usage(payload, model)
                     duration = _monotonic() - started
-                    self._record_success(task, model, usage, duration, retries)
+                    self._record_success(effective_task, model, usage, duration, retries)
                     return LlmTransportResult(payload, usage, duration, retries, model)
 
                 retryable = response.status_code == 429 or 500 <= response.status_code < 600
@@ -304,7 +324,7 @@ class LlmRuntime:
                     continue
                 raise LlmError(f"HTTP {response.status_code}: {response.text[:200]}")
         except Exception:
-            self._record_failure(task, _monotonic() - started, retries)
+            self._record_failure(effective_task, _monotonic() - started, retries)
             raise
 
     def call_json(
