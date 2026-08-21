@@ -31,10 +31,11 @@ def test_two_events_never_become_trend():
     assert payload["signals"] == []
 
 
-def test_new_threat_sector_pair_requires_two_observations():
+def test_new_threat_sector_pair_requires_three_observations():
     rows = [
         _incident("2026-08-20", ident="a1", threat="DDoS", sector="Public"),
         _incident("2026-08-19", ident="a2", threat="DDoS", sector="Public"),
+        _incident("2026-08-18", ident="a3", threat="DDoS", sector="Public"),
     ]
     payload = build_analytics(rows, as_of="2026-08-21")
     assert any(s["kind"] == "new_pair" and "DDoS" in s["label"] for s in payload["signals"])
