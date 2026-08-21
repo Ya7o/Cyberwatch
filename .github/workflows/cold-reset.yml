@@ -295,6 +295,11 @@ jobs:
         if: ${{ inputs.publish && inputs.reset_mode == 'zero' }}
         run: |
           set -euo pipefail
+          # `git tag -a` exige une identité de tagger. Elle doit être posée ici :
+          # cette étape précède la publication, donc elle ne peut pas hériter de
+          # la configuration faite plus bas.
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           tag="archive/pre-zero-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           git tag -a "$tag" "$GITHUB_SHA" -m "Cyberwatch state before zero reset"
           git push origin "$tag"
