@@ -15,7 +15,7 @@ SELECTION_VERSION = "2"
 
 _AMBIGUITY = (
     "pourrait", "pourraient", "susceptible", "hypothese", "non confirme",
-    "selon l attaquant", "selon le groupe", "revendique", "revendication", "ambigu",
+    "selon l attaquant", "selon le groupe", "revendique", "revendication",
 )
 _NEGATION = ("n ont pas ete", "n a pas ete", "ne sont pas", "nie ", "dement")
 _THIRD_PARTY = ("prestataire", "fournisseur", "supply chain", "sous traitant", "aws", "azure", "cloud")
