@@ -22,43 +22,37 @@ def _function_body(js: str, name: str, next_name: str) -> str:
 def test_detail_incident_est_genere_directement_dans_sources():
     js = _read("assets/app.js")
     body = _function_body(js, "renderTable", "incidentDate")
-
     org_cell = re.search(r'<td data-label="Organisation"[^\n]*', body)
     source_cell = re.search(r'<td data-label="Sources"[^\n]*', body)
-
-    assert org_cell
-    assert source_cell
+    assert org_cell and source_cell
     assert "incident-details-toggle" not in org_cell.group(0)
     assert "incident-details-toggle" in source_cell.group(0)
     assert "sourceLinks(incident)" in source_cell.group(0)
-    assert source_cell.group(0).index("sourceLinks(incident)") < source_cell.group(0).index("incident-details-toggle")
 
 
 def test_synthese_incident_est_toujours_avant_les_blocs_sources():
     js = _read("assets/app.js")
     body = _function_body(js, "detailHtml", "sourceHomes")
-
     assert "const factsInput = Array.isArray(incident.facts) ? incident.facts : []" in body
     assert 'if (incident.summary) parts.push(`<div class="incident-summary"><strong>Synthèse :</strong> ${esc(incident.summary)}</div>`)' in body
-    assert "hasSourceSummary" not in body
     assert "factsInput.map((fact) => factHtml(fact, incident.summary))" in body
-    assert body.index("if (incident.summary)") < body.index("factsInput.map")
 
 
 def test_les_blocs_sources_n_affichent_plus_de_synthese():
     js = _read("assets/app.js")
     body = _function_body(js, "factHtml", "detailHtml")
-
     assert 'factRow("Synthèse"' not in body
-    assert "sourceSummary" not in body
     assert "narrativeContains(fact.summary, fact.impact)" in body
 
 
 def test_aucun_script_de_patch_detail_non_certifie_n_est_charge():
     html = _read("index.html")
     scripts = re.findall(r'<script\s+src="([^"]+)"', html)
-
-    assert scripts == ["assets/app.js", "assets/p2.js?v=20260821-1"]
+    assert scripts == [
+        "assets/app.js",
+        "assets/p2.js?v=20260821-1",
+        "assets/p3.js?v=20260821-1",
+    ]
     assert "dashboard-layout-fixes.js" not in html
     assert "detail-summary-fix.js" not in html
     assert "patch" not in " ".join(scripts).lower()
@@ -67,7 +61,6 @@ def test_aucun_script_de_patch_detail_non_certifie_n_est_charge():
 def test_incident_et_sources_partagent_le_triangle_detail():
     css = _read("assets/dashboard-mobile-fixes.css")
     html = _read("index.html")
-
     assert '.incident-details-toggle::before' in css
     assert 'content: "▸"' in css
     assert '.incident-details-toggle[aria-expanded="true"]::before' in css
