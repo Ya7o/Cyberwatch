@@ -45,7 +45,7 @@ concurrency:
 jobs:
   reset:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 360
     env:
       PYTHONUNBUFFERED: "1"
     steps:
@@ -71,7 +71,7 @@ jobs:
       - name: Préflight, baseline avant et archive certifiée
         run: |
           set -euo pipefail
-          python -m cyberwatch.cold_reset preflight | tee /tmp/reset-preflight.json
+          python -m cyberwatch.cold_reset preflight --mode "${{ inputs.reset_mode }}" | tee /tmp/reset-preflight.json
           python -m cyberwatch.cold_reset manifest --output /tmp/reset-before.json
           python -m cyberwatch.reset_baseline baseline --output /tmp/reset-baseline-before.json
           python -m cyberwatch.zero_reset inventory --output /tmp/zero-inventory-before.json
@@ -90,6 +90,10 @@ jobs:
           if [ "$RESET_MODE" = "zero" ]; then
             python -m cyberwatch.zero_reset purge --root . --output /tmp/zero-purge-report.json
             python -m cyberwatch.zero_reset verify --root . --output /tmp/zero-state.json
+            # Dernière barrière avant tout coût de reconstruction : le staging
+            # doit posséder exactement les référentiels statiques requis.
+            python -m cyberwatch.zero_reset validate-bootstrap \
+              --root . --output /tmp/zero-bootstrap.json
           else
             python - <<'PY'
           from pathlib import Path
@@ -199,7 +203,7 @@ jobs:
             --output data/post_reset_baseline.json
       - name: Manifeste final
         working-directory: /tmp/cyberwatch-reset
-        run: python -m cyberwatch.cold_reset manifest --output /tmp/reset-after.json
+        run: python -m cyberwatch.cold_reset manifest --mode "$RESET_MODE" --output /tmp/reset-after.json
       - name: Résumé du reset
         shell: bash
         run: |
@@ -226,8 +230,13 @@ jobs:
           print(f"- LLM dernière passe : **{llm.get('calls_attempted', 0)} appels**, **${llm.get('estimated_cost_usd', 0):.4f}**")
           if os.environ['RESET_MODE'] == 'zero':
               zero = json.loads(Path('/tmp/zero-state.json').read_text())
+              bootstrap = json.loads(Path('/tmp/zero-bootstrap.json').read_text())
               print(f"- État après purge : **{zero['verdict']}**")
+              print(f"- Bootstrap avant reconstruction : **{bootstrap['verdict']}**")
               print('- Registres/caches/historiques antérieurs : **non réinjectés**')
+              print('- Référentiels statiques conservés :')
+              for name in bootstrap['required']:
+                  print(f'  - `{name}`')
           if audit['warnings']:
               print()
               print('### Variations à examiner')
@@ -247,6 +256,7 @@ jobs:
             /tmp/zero-inventory-before.json
             /tmp/zero-purge-report.json
             /tmp/zero-state.json
+            /tmp/zero-bootstrap.json
             /tmp/reset-preflight.json
             /tmp/reset-before.json
             /tmp/reset-baseline-before.json
