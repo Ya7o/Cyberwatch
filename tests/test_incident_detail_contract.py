@@ -54,13 +54,14 @@ def test_les_blocs_sources_n_affichent_plus_de_synthese():
     assert "narrativeContains(fact.summary, fact.impact)" in body
 
 
-def test_aucun_script_de_patch_detail_n_est_charge():
+def test_aucun_script_de_patch_detail_non_certifie_n_est_charge():
     html = _read("index.html")
     scripts = re.findall(r'<script\s+src="([^"]+)"', html)
 
-    assert scripts == ["assets/app.js"]
+    assert scripts == ["assets/app.js", "assets/p2.js?v=20260821-1"]
     assert "dashboard-layout-fixes.js" not in html
     assert "detail-summary-fix.js" not in html
+    assert "patch" not in " ".join(scripts).lower()
 
 
 def test_incident_et_sources_partagent_le_triangle_detail():
