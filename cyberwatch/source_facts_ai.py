@@ -19,6 +19,7 @@ from pathlib import Path
 
 import requests
 
+from . import llm_runtime
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import searchable
@@ -532,30 +533,25 @@ def _extract_output_text(payload: dict) -> str:
 
 
 def _post_openai(body: dict, runtime: _Runtime) -> dict:
-    headers = {"Authorization": f"Bearer {runtime.api_key}", "Content-Type": "application/json"}
-    last_error = ""
-    for attempt in range(3):
-        try:
-            response = requests.post(OPENAI_URL, json=body, headers=headers, timeout=20)
-        except requests.Timeout:
-            runtime.timeouts += 1
-            last_error = "timeout"
-        except requests.RequestException as exc:
-            last_error = type(exc).__name__
-        else:
-            if response.status_code == 200:
-                return response.json()
-            last_error = f"HTTP_{response.status_code}"
-            if response.status_code == 429:
-                runtime.http_429 += 1
-            elif response.status_code >= 500:
-                runtime.http_5xx += 1
-            else:
-                break
-        if attempt < 2:
-            runtime.retries += 1
-            time.sleep(2 ** (attempt + 1))
-    raise SourceFactsAiError(last_error or "api_error")
+    shared = llm_runtime.runtime()
+    before_retries = shared.stats.retries
+    before_timeouts = shared.stats.timeouts
+    before_429 = shared.stats.http_429
+    before_5xx = shared.stats.http_5xx
+    try:
+        result = shared.post_response(
+            task="source_facts",
+            body=body,
+            api_key=runtime.api_key,
+        )
+        return result.payload
+    except llm_runtime.LlmError as exc:
+        raise SourceFactsAiError(str(exc)) from exc
+    finally:
+        runtime.retries += max(0, shared.stats.retries - before_retries)
+        runtime.timeouts += max(0, shared.stats.timeouts - before_timeouts)
+        runtime.http_429 += max(0, shared.stats.http_429 - before_429)
+        runtime.http_5xx += max(0, shared.stats.http_5xx - before_5xx)
 
 
 def _usage(payload: dict) -> tuple[int, int]:
@@ -565,8 +561,8 @@ def _usage(payload: dict) -> tuple[int, int]:
 
 def _usage_cost(payload: dict, model: str) -> float:
     input_tokens, output_tokens = _usage(payload)
-    rates = PRICING.get(model, PRICING[DEFAULT_MODEL])
-    return input_tokens / 1_000_000 * rates["input"] + output_tokens / 1_000_000 * rates["output"]
+    return llm_runtime.estimate_cost(model, input_tokens, output_tokens)
+
 
 
 def _grounded(evidence: str, context: str) -> bool:

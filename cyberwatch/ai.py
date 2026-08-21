@@ -22,7 +22,7 @@ from dataclasses import asdict, dataclass, field
 
 import requests
 
-from . import config, org_enrichment, store
+from . import config, llm_runtime, org_enrichment, store
 from .collectors.base import RawEntry, SourceSpec
 from .identity import SEP
 from .model import Item
@@ -157,8 +157,8 @@ def _pricing_for(model: str) -> dict:
 
 
 def _estimate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
-    rates = _pricing_for(model)
-    return (input_tokens / 1_000_000) * rates["input"] + (output_tokens / 1_000_000) * rates["output"]
+    return llm_runtime.estimate_cost(model, input_tokens, output_tokens)
+
 
 
 def _context(entry: RawEntry, max_chars: int) -> str:
@@ -321,36 +321,17 @@ def _extract_usage(payload: dict) -> dict:
 
 
 def _post_openai(body: dict, state: AiRunState) -> dict:
-    headers = {
-        "Authorization": f"Bearer {state.api_key}",
-        "Content-Type": "application/json",
-    }
     started = time.monotonic()
     try:
-        attempt = 0
-        while True:
-            try:
-                response = requests.post(
-                    OPENAI_URL,
-                    json=body,
-                    headers=headers,
-                    timeout=OPENAI_TIMEOUT_SECONDS,
-                )
-            except requests.RequestException as exc:
-                attempt += 1
-                if attempt > OPENAI_MAX_RETRIES:
-                    raise AiCallError(f"réseau: {type(exc).__name__}") from exc
-                time.sleep(2 ** attempt)
-                continue
-            if response.status_code == 200:
-                return response.json()
-            if response.status_code == 429 or 500 <= response.status_code < 600:
-                attempt += 1
-                if attempt > OPENAI_MAX_RETRIES:
-                    raise AiCallError(f"HTTP {response.status_code} après retries")
-                time.sleep(2 ** attempt)
-                continue
-            raise AiCallError(f"HTTP {response.status_code}: {response.text[:200]}")
+        try:
+            result = llm_runtime.runtime().post_response(
+                task="qualification",
+                body=body,
+                api_key=state.api_key,
+            )
+            return result.payload
+        except llm_runtime.LlmError as exc:
+            raise AiCallError(str(exc)) from exc
     finally:
         state.llm_duration_seconds += time.monotonic() - started
 
