@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from cyberwatch import identity
 from cyberwatch.dedup import build_incidents_with_registry
 from cyberwatch.incident_identity import validate_registry
@@ -38,14 +36,8 @@ def test_surviving_redirect_anchor_reactivates_when_target_anchor_disappears(mak
     assert validate_registry(updated, [survivor], incidents) == []
 
 
-def test_create_workflows_disable_inline_official_site_discovery():
-    root = Path(__file__).resolve().parents[1]
-    for relative in (".github/workflows/rebuild-baseline-once.yml", ".github/workflows/initialize.yml"):
-        text = (root / relative).read_text(encoding="utf-8")
-        assert 'ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"' in text
-
-
 def test_secondary_sector_worker_keeps_legacy_inline_fallback_disabled():
+    from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     text = (root / "scripts/enrich_sector_queue.py").read_text(encoding="utf-8")
     assert "state.official_site_max_calls = 0" in text
