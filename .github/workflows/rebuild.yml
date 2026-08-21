@@ -87,13 +87,18 @@ jobs:
         id: rebuild
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          # Garde globale : aucun chemin LLM, y compris sémantique/dedup futur,
+          # ne peut effectuer un appel pendant ce rebuild cache-only.
+          LLM_MAX_CALLS_PER_RUN: "0"
+          LLM_MAX_COST_USD_PER_RUN: "0"
+          # Gardes legacy conservées pour les runtimes métier historiques.
+          AI_MAX_CALLS_PER_RUN: "0"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
+          SOURCE_FACTS_AI_RETRY_LEGACY_NULLS: "0"
           # Cache d'enrichissement chargé, mais aucun appel registre/site officiel autorisé.
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
-          AI_MAX_CALLS_PER_RUN: "0"
-          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
-          SOURCE_FACTS_AI_RETRY_LEGACY_NULLS: "0"
         shell: bash
         run: |
           set -euo pipefail
@@ -115,7 +120,7 @@ jobs:
           echo "### Durée rebuild" >> "$GITHUB_STEP_SUMMARY"
           echo "- Durée totale mesurée : **${elapsed_s} s**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit code : \`${GITHUB_SHA}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Politique IA : **0 nouvel appel autorisé** (qualification + SourceFacts)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Politique IA : **0 nouvel appel LLM autorisé, toutes tâches confondues**" >> "$GITHUB_STEP_SUMMARY"
           echo "- Enrichissement organisation : **cache uniquement, 0 appel réseau**" >> "$GITHUB_STEP_SUMMARY"
           echo >> "$GITHUB_STEP_SUMMARY"
           echo "<details><summary>Sortie CREATE</summary>" >> "$GITHUB_STEP_SUMMARY"
