@@ -69,6 +69,14 @@ class LlmCallResult:
     retries: int
 
 
+@dataclass(frozen=True)
+class LlmTransportResult:
+    payload: dict[str, Any]
+    usage: LlmUsage
+    duration_seconds: float
+    retries: int
+
+
 @dataclass
 class LlmRuntimeStats:
     calls_attempted: int = 0
@@ -170,42 +178,19 @@ class LlmRuntime:
             bucket["retries"] = int(bucket["retries"]) + retries
             bucket["duration_seconds"] = float(bucket["duration_seconds"]) + duration
 
-    def call_json(
+    def post_response(
         self,
         *,
         task: str,
-        model: str,
-        system_prompt: str,
-        user_content: str,
-        schema_name: str,
-        schema: dict[str, Any],
-        max_output_tokens: int,
-        reasoning_effort: str | None = "minimal",
-    ) -> LlmCallResult:
-        if not self.enabled:
+        body: dict[str, Any],
+        api_key: str | None = None,
+    ) -> LlmTransportResult:
+        key = (api_key or self.api_key or "").strip()
+        if not key:
             raise LlmError("OPENAI_API_KEY absente")
         self._reserve_call(task)
-        body: dict[str, Any] = {
-            "model": model,
-            "input": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_content},
-            ],
-            "text": {
-                "format": {
-                    "type": "json_schema",
-                    "name": schema_name,
-                    "schema": schema,
-                    "strict": True,
-                }
-            },
-            "max_output_tokens": max_output_tokens,
-        }
-        if reasoning_effort:
-            body["reasoning"] = {"effort": reasoning_effort}
-
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Bearer {key}",
             "Content-Type": "application/json",
         }
         started = time.monotonic()
@@ -239,11 +224,16 @@ class LlmRuntime:
                         payload = response.json()
                     except ValueError as exc:
                         raise LlmError("réponse OpenAI JSON invalide") from exc
-                    data = extract_output_json(payload)
+                    model = str(body.get("model") or DEFAULT_MODEL)
                     usage = extract_usage(payload, model)
                     duration = time.monotonic() - started
                     self._record_success(task, usage, duration, retries)
-                    return LlmCallResult(data=data, usage=usage, duration_seconds=duration, retries=retries)
+                    return LlmTransportResult(
+                        payload=payload,
+                        usage=usage,
+                        duration_seconds=duration,
+                        retries=retries,
+                    )
 
                 retryable = response.status_code == 429 or 500 <= response.status_code < 600
                 if response.status_code == 429:
@@ -260,6 +250,45 @@ class LlmRuntime:
         except Exception:
             self._record_failure(task, time.monotonic() - started, retries)
             raise
+
+    def call_json(
+        self,
+        *,
+        task: str,
+        model: str,
+        system_prompt: str,
+        user_content: str,
+        schema_name: str,
+        schema: dict[str, Any],
+        max_output_tokens: int,
+        reasoning_effort: str | None = "minimal",
+    ) -> LlmCallResult:
+        body: dict[str, Any] = {
+            "model": model,
+            "input": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_content},
+            ],
+            "text": {
+                "format": {
+                    "type": "json_schema",
+                    "name": schema_name,
+                    "schema": schema,
+                    "strict": True,
+                }
+            },
+            "max_output_tokens": max_output_tokens,
+        }
+        if reasoning_effort:
+            body["reasoning"] = {"effort": reasoning_effort}
+        transport = self.post_response(task=task, body=body)
+        data = extract_output_json(transport.payload)
+        return LlmCallResult(
+            data=data,
+            usage=transport.usage,
+            duration_seconds=transport.duration_seconds,
+            retries=transport.retries,
+        )
 
 
 def pricing_for(model: str) -> dict[str, float]:
