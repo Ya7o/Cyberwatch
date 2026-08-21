@@ -90,6 +90,12 @@ jobs:
           python -m cyberwatch check
           python -m cyberwatch build-site
           python -m cyberwatch check
+      - name: Résumé du run
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+        shell: bash
+        run: |
+          echo "## Cyberwatch — ${{ steps.scope.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
+          python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
       - name: Publier les données
         if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
