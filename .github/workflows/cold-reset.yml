@@ -1,0 +1,285 @@
+name: Cold reset certified
+
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Début de reconstruction"
+        type: string
+        default: "2026-01-01"
+      as_of:
+        description: "Cutoff ISO 8601 (vide = maintenant)"
+        type: string
+        default: ""
+      semantic_passes:
+        description: "Nombre de passes sémantiques (250 appels max/passe)"
+        type: number
+        default: 2
+      source_facts_passes:
+        description: "Nombre de passes SourceFacts (250 appels max/passe)"
+        type: number
+        default: 2
+      max_llm_cost_usd_per_pass:
+        description: "Plafond LLM partagé par passe"
+        type: string
+        default: "0.50"
+      publish:
+        description: "Publier seulement après tous les gates"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cyberwatch-cold-reset
+  cancel-in-progress: false
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Tests et préflight avant mutation
+        run: |
+          set -euo pipefail
+          python -m pytest tests/ -q
+          python -m cyberwatch.cold_reset preflight | tee /tmp/cold-reset-preflight.json
+          python -m cyberwatch.cold_reset manifest --output /tmp/cold-reset-before.json
+
+      - name: Figer le contexte
+        shell: bash
+        run: |
+          set -euo pipefail
+          AS_OF="${{ inputs.as_of }}"
+          if [ -z "$AS_OF" ]; then
+            AS_OF="$(TZ=Indian/Reunion date --iso-8601=seconds)"
+          fi
+          echo "RESET_AS_OF=$AS_OF" >> "$GITHUB_ENV"
+          echo "RESET_START=${{ inputs.start }}" >> "$GITHUB_ENV"
+          echo "BASE_SHA=$GITHUB_SHA" >> "$GITHUB_ENV"
+
+      - name: Archiver le snapshot de restauration
+        run: |
+          set -euo pipefail
+          tar -czf /tmp/cyberwatch-before-reset.tgz data assets/data
+          cp data/items.csv /tmp/items-before-reset.csv
+          cp data/incidents.csv /tmp/incidents-before-reset.csv
+          cp data/incident_id_registry.csv /tmp/incident-id-registry-before.csv
+          sha256sum data/incident_id_registry.csv > /tmp/incident-id-registry-before.sha256
+
+      - name: Préparer le staging isolé
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/cyberwatch-cold-reset
+          mkdir -p /tmp/cyberwatch-cold-reset
+          rsync -a --exclude '.git' ./ /tmp/cyberwatch-cold-reset/
+          cd /tmp/cyberwatch-cold-reset
+          python - <<'PY'
+          from pathlib import Path
+          from cyberwatch.cold_reset import COLD_CACHE_FILES, DERIVED_FILES
+          data = Path('data')
+          for name in sorted(set(COLD_CACHE_FILES + DERIVED_FILES)):
+              path = data / name
+              if path.exists() and path.is_file():
+                  path.unlink()
+          for path in (Path('assets/data/items.json'), Path('assets/data/incidents.json'), Path('assets/data/snapshot.json')):
+              path.unlink(missing_ok=True)
+          PY
+          python -m cyberwatch check --allow-uninitialized
+
+      - name: Phase 1 — reconstruction déterministe
+        working-directory: /tmp/cyberwatch-cold-reset
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          LLM_MAX_CALLS_PER_RUN: "0"
+          LLM_MAX_COST_USD_PER_RUN: "0"
+          AI_MAX_CALLS_PER_RUN: "0"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
+          ORG_ENRICHMENT_ENABLED: "1"
+          ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+        run: |
+          set -euo pipefail
+          python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+          cp data/items.csv /tmp/items-deterministic.csv
+          cp data/incidents.csv /tmp/incidents-deterministic.csv
+          python -m cyberwatch check
+
+      - name: Gate couverture historique déterministe
+        run: |
+          set -euo pipefail
+          cd /tmp/cyberwatch-cold-reset
+          python -m cyberwatch.cold_reset compare \
+            --before /tmp/items-before-reset.csv --after data/items.csv --id-column Item_ID \
+            | tee /tmp/item-id-deterministic-diff.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/item-id-deterministic-diff.json', encoding='utf-8'))
+          if p['lost']:
+              print(f"WARNING: {len(p['lost'])} Item_ID publiés ne sont pas reconstructibles depuis les sources seules.")
+          PY
+
+      - name: Phase 2 — qualification bornée
+        working-directory: /tmp/cyberwatch-cold-reset
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_CYBERATTAQUE_SEMANTIC_MAX_CALLS_PER_RUN: "0"
+          LLM_EDITORIAL_SEMANTIC_MAX_CALLS_PER_RUN: "0"
+          LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "0"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
+          AI_MAX_CALLS_PER_RUN: "2000"
+          ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+        run: python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+
+      - name: Phase 3 — sémantique par lots avec reprise
+        working-directory: /tmp/cyberwatch-cold-reset
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_QUALIFICATION_MAX_CALLS_PER_RUN: "0"
+          AI_MAX_CALLS_PER_RUN: "0"
+          LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "0"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
+          LLM_CYBERATTAQUE_SEMANTIC_MAX_CALLS_PER_RUN: "250"
+          LLM_EDITORIAL_SEMANTIC_MAX_CALLS_PER_RUN: "250"
+          ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 "${{ inputs.semantic_passes }}"); do
+            echo "Semantic pass $i/${{ inputs.semantic_passes }}"
+            python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+          done
+
+      - name: Phase 4 — SourceFacts par lots avec reprise
+        working-directory: /tmp/cyberwatch-cold-reset
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_QUALIFICATION_MAX_CALLS_PER_RUN: "0"
+          AI_MAX_CALLS_PER_RUN: "0"
+          LLM_CYBERATTAQUE_SEMANTIC_MAX_CALLS_PER_RUN: "0"
+          LLM_EDITORIAL_SEMANTIC_MAX_CALLS_PER_RUN: "0"
+          LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "250"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "250"
+          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 "${{ inputs.source_facts_passes }}"); do
+            echo "SourceFacts pass $i/${{ inputs.source_facts_passes }}"
+            python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+          done
+
+      - name: Phase 5 — enrichissement organisations sans LLM
+        working-directory: /tmp/cyberwatch-cold-reset
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          LLM_MAX_CALLS_PER_RUN: "0"
+          LLM_MAX_COST_USD_PER_RUN: "0"
+          AI_MAX_CALLS_PER_RUN: "0"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
+          ORG_ENRICHMENT_ENABLED: "1"
+          ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "200"
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+        run: python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+
+      - name: Certification complète
+        working-directory: /tmp/cyberwatch-cold-reset
+        run: |
+          set -euo pipefail
+          python -m pytest tests/ -q
+          python scripts/evaluate_dedup_golden.py
+          python scripts/evaluate_golden.py --json /tmp/cold-reset-golden.json
+          python scripts/audit_sector_coverage.py
+          python scripts/audit_data_quality.py --items data/items.csv --source-facts data/source_facts.csv --check --check-regression
+          python -m cyberwatch check
+          python -m cyberwatch test-repeat
+          python -m cyberwatch build-site
+          python -m cyberwatch check
+
+      - name: Gates d'identité et de non-régression historique
+        run: |
+          set -euo pipefail
+          cd /tmp/cyberwatch-cold-reset
+          python -m cyberwatch.cold_reset compare --before /tmp/items-before-reset.csv --after data/items.csv --id-column Item_ID > /tmp/item-id-final-diff.json
+          python -m cyberwatch.cold_reset compare --before /tmp/incidents-before-reset.csv --after data/incidents.csv --id-column Incident_ID > /tmp/incident-id-final-diff.json
+          python - <<'PY'
+          import json
+          items=json.load(open('/tmp/item-id-final-diff.json', encoding='utf-8'))
+          incidents=json.load(open('/tmp/incident-id-final-diff.json', encoding='utf-8'))
+          problems=[]
+          if items['lost']:
+              problems.append(f"{len(items['lost'])} Item_ID publiés perdus")
+          if incidents['lost']:
+              problems.append(f"{len(incidents['lost'])} Incident_ID publiés perdus")
+          if problems:
+              raise SystemExit('NO-GO publication cold reset: ' + '; '.join(problems))
+          print('Identity/history gates PASS')
+          PY
+
+      - name: Manifeste final et rapport LLM
+        working-directory: /tmp/cyberwatch-cold-reset
+        run: |
+          set -euo pipefail
+          python -m cyberwatch.cold_reset manifest --output /tmp/cold-reset-after.json
+          cp data/llm_usage.json /tmp/cold-reset-llm-usage.json || true
+          cp data/source_facts_ai_usage.json /tmp/cold-reset-source-facts-usage.json || true
+
+      - name: Exporter staging et diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cold-reset-${{ github.run_id }}
+          path: |
+            /tmp/cyberwatch-before-reset.tgz
+            /tmp/cold-reset-before.json
+            /tmp/cold-reset-after.json
+            /tmp/cold-reset-preflight.json
+            /tmp/item-id-deterministic-diff.json
+            /tmp/item-id-final-diff.json
+            /tmp/incident-id-final-diff.json
+            /tmp/cold-reset-golden.json
+            /tmp/cold-reset-llm-usage.json
+            /tmp/cold-reset-source-facts-usage.json
+            /tmp/cyberwatch-cold-reset/data/
+            /tmp/cyberwatch-cold-reset/assets/data/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Promotion atomique explicite
+        if: ${{ inputs.publish }}
+        run: |
+          set -euo pipefail
+          rsync -a --delete /tmp/cyberwatch-cold-reset/data/ data/
+          rsync -a --delete /tmp/cyberwatch-cold-reset/assets/data/ assets/data/
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- data assets/data
+          if git diff --staged --quiet; then
+            echo "Aucun changement à publier."
+            exit 0
+          fi
+          git commit -m "data: certified cold reset"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
