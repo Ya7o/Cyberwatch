@@ -156,6 +156,21 @@ jobs:
       - name: Manifeste final
         working-directory: /tmp/cyberwatch-reset
         run: python -m cyberwatch.cold_reset manifest --output /tmp/reset-after.json
+      - name: Résumé du reset
+        shell: bash
+        run: |
+          {
+            echo "## Cyberwatch — reset total"
+            echo ""
+            echo "- Début : \`$RESET_START\`"
+            echo "- Cutoff : \`$RESET_AS_OF\`"
+            echo "- Passes sémantiques : \`${{ inputs.semantic_passes }}\`"
+            echo "- Passes SourceFacts : \`${{ inputs.source_facts_passes }}\`"
+            echo "- Plafond LLM par passe : \`${{ inputs.max_llm_cost_usd_per_pass }} USD\`"
+            echo "- Publication demandée : \`${{ inputs.publish }}\`"
+            echo ""
+            echo "Les manifests avant/après et l'archive de rollback sont joints comme artifact du workflow."
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Exporter archive et résultat
         if: always()
         uses: actions/upload-artifact@v4
