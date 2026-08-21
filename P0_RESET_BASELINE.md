@@ -1,6 +1,32 @@
 # P0 — Reset + baseline
 
-Statut : **PRÊT À EXÉCUTER**
+Statut : **EXÉCUTÉ — génération 1 publiée le 2026-08-21**
+
+Le reset total `zero` a été exécuté et publié. `data/post_reset_baseline.json` est
+la baseline officielle de la **génération 1**, reconstruite intégralement depuis un
+staging certifié `ZERO`.
+
+| | Ancienne base (génération 0) | Génération 1 |
+|---|---:|---:|
+| Items | 1055 | **1051** |
+| Incidents | 868 | **871** |
+| Doublons d'ID | 0 | **0** |
+| Couverture Threat | 99,43 % | **99,43 %** |
+| Couverture Location | 95,26 % | **94,10 %** |
+| Couverture Sector | 45,97 % | **41,67 %** |
+
+La génération 0 est **historique**. Elle reste accessible pour rollback uniquement,
+via le tag `archive/pre-zero-32516336880-1` et l'artifact `reset-total-zero-*`
+accompagné de son SHA-256. Elle ne doit jamais être réinjectée automatiquement dans
+une reconstruction : c'est précisément ce que le mode `zero` sert à rendre inutile.
+
+L'écart de couverture Sector s'explique et se résorbe seul : le registre Sector se
+reconstruit à chaque run depuis `enrichment_reference.csv`, les SourceFacts et le
+cache d'enrichissement organisationnel, or ce cache est reparti de zéro avec un
+plafond de 200 appels par passe, là où la génération 0 l'avait accumulé sur des
+dizaines de runs quotidiens. Chaque `collect.yml` reprend l'enrichissement là où la
+passe précédente s'est arrêtée. Aucun champ n'est comblé artificiellement : une
+organisation non encore enrichie reste `Inconnu`.
 
 Ce chantier ferme la phase plateforme après un reset total certifié et la publication d'une baseline mesurable. Le reset réel reste une opération manuelle car il accède au réseau, utilise le secret OpenAI et peut engager un coût.
 

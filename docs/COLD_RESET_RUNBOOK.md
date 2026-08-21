@@ -109,6 +109,24 @@ Relancer avec les mêmes paramètres et `publish=true`.
 
 Avant le remplacement des données, le workflow crée le tag Git d'archive pré-zero. Ensuite seulement, `data/` et `assets/data/` sont remplacés par le staging certifié et commités.
 
+## Historique des resets publiés
+
+| Date | Run | Mode | Résultat |
+|---|---|---|---|
+| 2026-08-21 | [32516336880](https://github.com/Ya7o/Cyberwatch/actions/runs/32516336880) | `zero` publié | génération 1 : 1051 items, 871 incidents, 5 sources OK, audit `GO`, tag `archive/pre-zero-32516336880-1` |
+
+Deux bugs n'ont pu être découverts qu'à l'exécution réelle et sont corrigés :
+
+- le manifeste final exigeait un état d'identité que le mode `zero` purge à
+  dessein, ce qui faisait échouer le run **après** toute la reconstruction ;
+- `git tag -a` échouait en « Committer identity unknown », l'identité git n'étant
+  posée que dans l'étape de publication, qui s'exécute après le figeage.
+
+Le second est instructif : l'étape n'existe que sous `publish=true`, donc aucun
+dry-run ne pouvait l'exercer. **Un dry-run vert ne couvre pas le chemin de
+publication.** Le garde-fou a néanmoins joué son rôle — le tag précédant l'écriture
+des données, son échec a bloqué la publication et `main` est resté intact.
+
 ## Rollback
 
 Deux mécanismes indépendants sont disponibles :
