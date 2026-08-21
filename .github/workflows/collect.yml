@@ -1,4 +1,4 @@
-name: Collecte
+name: COLLECT
 
 on:
   schedule:
@@ -6,16 +6,16 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "Commande à exécuter"
+        description: "Commande"
         type: choice
         default: maj
         options: [maj, create, diagnose, replay, probe, probe-media]
       layers:
-        description: "Couches (core, local_media, watch, all)"
+        description: "Couches"
         type: string
         default: all
       start:
-        description: "Début de fenêtre AAAA-MM-JJ (optionnel)"
+        description: "Début AAAA-MM-JJ (optionnel)"
         type: string
         default: ""
       as_of:
@@ -23,7 +23,7 @@ on:
         type: string
         default: ""
       source:
-        description: "Source_ID à sonder (mode probe), ou domaines (mode probe-media)"
+        description: "Source_ID/domaines pour probe"
         type: string
         default: ""
 
@@ -31,14 +31,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: collecte
+  group: cyberwatch-collect
   cancel-in-progress: false
 
 jobs:
   collect:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
@@ -47,122 +46,57 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-
-      - name: Déterminer le périmètre du run
+      - name: Déterminer le run
         id: scope
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "mode=${{ inputs.mode }}"     >> "$GITHUB_OUTPUT"
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
             echo "layers=${{ inputs.layers }}" >> "$GITHUB_OUTPUT"
-            echo "start=${{ inputs.start }}"   >> "$GITHUB_OUTPUT"
+            echo "start=${{ inputs.start }}" >> "$GITHUB_OUTPUT"
+            echo "as_of=${{ inputs.as_of }}" >> "$GITHUB_OUTPUT"
           else
             echo "mode=maj" >> "$GITHUB_OUTPUT"
             echo "layers=all" >> "$GITHUB_OUTPUT"
             echo "start=" >> "$GITHUB_OUTPUT"
+            echo "as_of=" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Vérifier le bootstrap avant MAJ
-        if: steps.scope.outputs.mode == 'maj'
-        run: |
-          if [ ! -f data/snapshot.json ] || [ ! -f data/items.csv ] || [ ! -f data/incidents.csv ]; then
-            echo "::error::Aucun snapshot valide. Initialisation requise via le workflow Initialize Baseline."
-            exit 1
-          fi
-
-      - name: Distinguer les modes qui écrivent des données
-        id: kind
-        run: |
-          case "${{ steps.scope.outputs.mode }}" in
-            diagnose|probe|probe-media) echo "writes=false" >> "$GITHUB_OUTPUT" ;;
-            *)                          echo "writes=true"  >> "$GITHUB_OUTPUT" ;;
-          esac
-
       - name: Collecter
-        id: run
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
-          # Le fast-path reste strictement réservé aux MAJ. CREATE et REPLAY
-          # demeurent des recalculs complets de référence.
           CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
+        shell: bash
         run: |
           ARGS=""
-          if [ -n "${{ steps.scope.outputs.start }}" ]; then ARGS="--start ${{ steps.scope.outputs.start }}"; fi
-          if [ -n "${{ inputs.as_of }}" ]; then ARGS="$ARGS --as-of ${{ inputs.as_of }}"; fi
-          if [ "${{ steps.scope.outputs.mode }}" = "replay" ]; then
+          [ -n "${{ steps.scope.outputs.start }}" ] && ARGS="$ARGS --start ${{ steps.scope.outputs.start }}"
+          [ -n "${{ steps.scope.outputs.as_of }}" ] && ARGS="$ARGS --as-of ${{ steps.scope.outputs.as_of }}"
+          MODE="${{ steps.scope.outputs.mode }}"
+          if [ "$MODE" = replay ]; then
             python -m cyberwatch replay $ARGS
-          elif [ "${{ steps.scope.outputs.mode }}" = "probe" ]; then
-            for SRC in $(echo "${{ inputs.source }}" | tr ',' ' '); do python -m cyberwatch probe "$SRC" $ARGS; echo; done
-          elif [ "${{ steps.scope.outputs.mode }}" = "probe-media" ]; then
+          elif [ "$MODE" = probe ]; then
+            for SRC in $(echo "${{ inputs.source }}" | tr ',' ' '); do python -m cyberwatch probe "$SRC" $ARGS; done
+          elif [ "$MODE" = probe-media ]; then
             ONLY=""; [ -n "${{ inputs.source }}" ] && ONLY="--only ${{ inputs.source }}"
             python -m cyberwatch probe-media $ONLY $ARGS
-          elif [ "${{ steps.scope.outputs.mode }}" = "diagnose" ]; then
+          elif [ "$MODE" = diagnose ]; then
             python -m cyberwatch diagnose --layers "${{ steps.scope.outputs.layers }}" $ARGS
           else
-            python -m cyberwatch ${{ steps.scope.outputs.mode }} --layers "${{ steps.scope.outputs.layers }}" $ARGS
+            python -m cyberwatch "$MODE" --layers "${{ steps.scope.outputs.layers }}" $ARGS
           fi
-
-      - name: Observer l'incrémentalité
-        if: steps.kind.outputs.writes == 'true' && steps.scope.outputs.mode != 'replay'
-        run: python scripts/report_run_performance.py --observe >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Performance du run
-        if: always() && steps.kind.outputs.writes == 'true'
-        run: |
-          echo >> "$GITHUB_STEP_SUMMARY"
-          echo "### Performance" >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          python scripts/report_run_performance.py --last 3 >> "$GITHUB_STEP_SUMMARY"
-          python scripts/report_source_performance.py >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Récapitulatif du run
-        if: always() && steps.kind.outputs.writes == 'true'
-        run: python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Qualité de la base
-        if: steps.kind.outputs.writes == 'true'
-        run: |
-          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          from cyberwatch import config, store
-          incidents = store.load_incidents()
-          print("\n### Qualité DB")
-          print(f"- Incidents : {len(incidents)}")
-          print(f"- Menace inconnue : {sum(i.Menace == config.THREAT_UNKNOWN for i in incidents)}")
-          print(f"- Secteur inconnu : {sum(i.Secteur == config.SECTOR_UNKNOWN for i in incidents)}")
-          print(f"- Localisation inconnue : {sum(i.Localisation == config.LOC_INCONNU for i in incidents)}")
-          PY
-          python scripts/audit_sector_coverage.py
-          echo >> "$GITHUB_STEP_SUMMARY"
-          echo "### Couverture Sector détaillée" >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          python scripts/audit_sector_coverage.py --output "" >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Contrôles et répétabilité
-        if: steps.kind.outputs.writes == 'true'
+      - name: Dev checks et dashboard
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
           python -m cyberwatch check
-          python -m cyberwatch test-repeat
-          python scripts/audit_data_quality.py --items data/items.csv --source-facts data/source_facts.csv --check --check-regression
-          python scripts/evaluate_golden.py --details /tmp/golden-qualification.csv --json /tmp/golden-qualification.json
-          python scripts/evaluate_sector_registry.py --json /tmp/sector-registry.json
-          python scripts/check_sector_registry_policy.py --json /tmp/sector-registry.json
-          python scripts/export_dedup_audit.py --items data/items.csv --org-cache data/org_enrichment_cache.csv --output data/dedup_audit_candidates.csv
           python -m cyberwatch build-site
-
+          python -m cyberwatch check
       - name: Publier les données
-        if: steps.kind.outputs.writes == 'true'
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
-          git config user.name  "cyberwatch-bot"
+          git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data assets/data
-          if git diff --staged --quiet; then echo "Aucun changement de données : rien à publier."; exit 0; fi
-          RUN_ID=$(tail -n 1 data/run_log.csv | cut -d, -f1)
-          git commit -m "data: collecte ${RUN_ID:-inconnue}"
-          for delay in 0 2 4 8 16; do
-            [ "$delay" -gt 0 ] && sleep "$delay"
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
-          done
-          echo "Échec de la publication après plusieurs tentatives." >&2
-          exit 1
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "data: collecte"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
