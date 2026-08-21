@@ -1,5 +1,5 @@
 from cyberwatch.collectors.base import SourceSpec
-from cyberwatch.source_portfolio import build_portfolio
+from cyberwatch.source_portfolio import build_portfolio, current_portfolio
 
 
 def _score(source_id, index, reliability=100, recent_runs=10, exclusive=1, warnings=None):
@@ -67,3 +67,10 @@ def test_decision_is_deterministic_across_spec_order():
     ]
     payload = _payload([_score("A", 70)], gaps=["Maurice"])
     assert build_portfolio(payload, specs) == build_portfolio(payload, list(reversed(specs)))
+
+
+def test_current_portfolio_smoke_on_repository_snapshot():
+    payload = current_portfolio()
+    assert payload["schema"] == "cyberwatch-source-portfolio-v1"
+    assert len(payload["active_decisions"]) == 5
+    assert payload["snapshot_run_id"]
