@@ -27,5 +27,6 @@ jobs:
         run: |
           node --check assets/app.js
           node --check assets/p2.js
+          node --check assets/p3.js
       - name: Contrats structurels légers
         run: python -m cyberwatch check --allow-uninitialized

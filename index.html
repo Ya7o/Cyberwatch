@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="assets/dashboard-runtime.css">
 <link rel="stylesheet" href="assets/dashboard-mobile-fixes.css?v=20260820-1">
 <link rel="stylesheet" href="assets/p2.css?v=20260821-1">
+<link rel="stylesheet" href="assets/p3.css?v=20260821-1">
 </head>
 <body>
 
@@ -82,91 +83,38 @@
 
   <section class="grid-2 dashboard-charts" aria-label="Vue d’ensemble">
     <figure class="card chart-month-card">
-      <figcaption>
-        <h2>Incidents par mois</h2>
-        <p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p>
-      </figcaption>
+      <figcaption><h2>Incidents par mois</h2><p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p></figcaption>
       <div class="chart" id="chart-month"></div>
     </figure>
-    <figure class="card">
-      <figcaption>
-        <h2>Incidents par secteur</h2>
-        <p>Répartition lorsque le secteur est connu.</p>
-        <p id="sector-note" class="chart-note"></p>
-      </figcaption>
-      <div class="chart" id="chart-sector"></div>
-    </figure>
-    <figure class="card">
-      <figcaption>
-        <h2>Incidents par menace</h2>
-        <p>Répartition lorsque la menace est connue.</p>
-        <p id="threat-note" class="chart-note"></p>
-      </figcaption>
-      <div class="chart" id="chart-threat"></div>
-    </figure>
-    <figure class="card">
-      <figcaption>
-        <h2>Incidents par territoire</h2>
-        <p>Répartition lorsque le territoire est connu.</p>
-        <p id="location-note" class="chart-note"></p>
-      </figcaption>
-      <div class="chart" id="chart-location"></div>
-    </figure>
+    <figure class="card"><figcaption><h2>Incidents par secteur</h2><p>Répartition lorsque le secteur est connu.</p><p id="sector-note" class="chart-note"></p></figcaption><div class="chart" id="chart-sector"></div></figure>
+    <figure class="card"><figcaption><h2>Incidents par menace</h2><p>Répartition lorsque la menace est connue.</p><p id="threat-note" class="chart-note"></p></figcaption><div class="chart" id="chart-threat"></div></figure>
+    <figure class="card"><figcaption><h2>Incidents par territoire</h2><p>Répartition lorsque le territoire est connu.</p><p id="location-note" class="chart-note"></p></figcaption><div class="chart" id="chart-location"></div></figure>
   </section>
 
   <section class="card incidents-card" aria-labelledby="incidents-title">
-    <div class="card-head">
-      <h2 id="incidents-title">Explorer les incidents</h2>
-      <p id="table-count" class="muted"></p>
-    </div>
-    <div class="table-scroll">
-      <table class="data-table" id="incidents-table">
-        <thead>
-          <tr>
-            <th data-sort="date" aria-sort="descending"><button type="button" class="sort-button">Date</button></th>
-            <th data-sort="org" aria-sort="none"><button type="button" class="sort-button">Organisation</button></th>
-            <th data-sort="sector" aria-sort="none"><button type="button" class="sort-button">Secteur</button></th>
-            <th data-sort="threat" aria-sort="none"><button type="button" class="sort-button">Menace</button></th>
-            <th data-sort="location" aria-sort="none"><button type="button" class="sort-button">Territoire</button></th>
-            <th data-sort="items" aria-sort="none"><button type="button" class="sort-button">Sources</button></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <div class="card-head"><h2 id="incidents-title">Explorer les incidents</h2><p id="table-count" class="muted"></p></div>
+    <div class="table-scroll"><table class="data-table" id="incidents-table"><thead><tr>
+      <th data-sort="date" aria-sort="descending"><button type="button" class="sort-button">Date</button></th>
+      <th data-sort="org" aria-sort="none"><button type="button" class="sort-button">Organisation</button></th>
+      <th data-sort="sector" aria-sort="none"><button type="button" class="sort-button">Secteur</button></th>
+      <th data-sort="threat" aria-sort="none"><button type="button" class="sort-button">Menace</button></th>
+      <th data-sort="location" aria-sort="none"><button type="button" class="sort-button">Territoire</button></th>
+      <th data-sort="items" aria-sort="none"><button type="button" class="sort-button">Sources</button></th>
+    </tr></thead><tbody></tbody></table></div>
     <div id="audit-pager" class="audit-pager" aria-live="polite"></div>
   </section>
 
   <section class="card reliability" id="fiabilite" aria-labelledby="sources-title">
     <h2 id="sources-title">État des sources</h2>
     <div id="sources-list" class="sources-list" aria-live="polite"></div>
-
-    <details class="sources-detail">
-      <summary>Détail</summary>
-      <div class="table-scroll">
-        <table class="data-table" id="sources-detail-table">
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Statut</th>
-              <th>Dernier item</th>
-              <th>Organisation</th>
-              <th>Items vus</th>
-              <th>Items dans la fenêtre</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </details>
-
+    <details class="sources-detail"><summary>Détail</summary><div class="table-scroll"><table class="data-table" id="sources-detail-table"><thead><tr><th>Source</th><th>Statut</th><th>Dernier item</th><th>Organisation</th><th>Items vus</th><th>Items dans la fenêtre</th></tr></thead><tbody></tbody></table></div></details>
     <span id="reliability-summary" hidden></span>
     <div id="blindspots" hidden><ul id="blindspots-list"></ul></div>
   </section>
 </main>
-
 <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
 <script src="assets/app.js"></script>
 <script src="assets/p2.js?v=20260821-1"></script>
+<script src="assets/p3.js?v=20260821-1"></script>
 </body>
 </html>
