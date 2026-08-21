@@ -98,9 +98,12 @@ def run(*, endpoint: str = DEFAULT_ENDPOINT, start: str = "2026-01-01", max_call
             text = "\n".join(part for part in (entry.title, entry.summary, entry.content) if part)
             decision = cyberattaque_semantic_selector.decide(text, deterministic)
             decisions.append(decision)
+            os.environ["CYBERATTAQUE_SEMANTIC_ENABLED"] = "1"
+            candidate = cyberattaque_semantic.should_use_llm(text, deterministic)
+            os.environ["CYBERATTAQUE_SEMANTIC_ENABLED"] = "0"
             key = semantic_key(text)
             base_state = {"item_id": item.Item_ID, "source_item_id": item.Source_Item_ID, "url": item.URL, "content_hash": cyberattaque_semantic.content_hash(text), "semantic_key": key, "selection_version": decision.version, "selection_score": decision.score, "selection_reasons": list(decision.reasons)}
-            if not decision.use_llm:
+            if not candidate:
                 stats["not_candidates"] += 1
                 states.append({**base_state, "status": "not_candidate"})
                 updates.append((item.Item_ID, deterministic))
