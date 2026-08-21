@@ -16,9 +16,6 @@ on:
         description: "Cutoff ISO 8601 (optionnel)"
         type: string
         default: ""
-  push:
-    paths:
-      - ".github/workflows/rebuild.yml"
 
 permissions:
   contents: write
