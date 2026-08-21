@@ -16,6 +16,7 @@ from pathlib import Path
 import requests
 
 from ..normalize import searchable
+from . import cyberattaque_semantic_selector
 
 PROMPT_VERSION = "2026-08-20.cyberattaque-claims.1"
 DEFAULT_MODEL = "gpt-5-nano"
@@ -82,20 +83,10 @@ def _enabled() -> bool:
 
 
 def should_use_llm(text: str, deterministic: dict) -> bool:
-    """Réserve le LLM aux articles réellement riches/ambigus."""
+    """Applique l'unique politique de sélection sémantique versionnée."""
     if not _enabled():
         return False
-    low = searchable(text)
-    ambiguous = any(token in low for token in (
-        "pourrait", "pourraient", "susceptible", "hypothese", "non confirme", "nie ",
-        "n ont pas ete", "n a pas ete", "selon l attaquant", "revendique", "supply chain",
-        "prestataire", "fournisseur", "aws", "azure", "cloud",
-    ))
-    richness = sum(len(deterministic.get(key) or []) for key in (
-        "affected_counts", "data_volumes", "timeline", "relations", "data_types"
-    ))
-    dates = len(re.findall(r"\b\d{1,2}\s+(?:janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[uû]t|septembre|octobre|novembre|d[ée]cembre)\s+20\d{2}\b", text, re.I))
-    return ambiguous or len(text) >= 4500 or richness >= 5 or dates >= 2
+    return cyberattaque_semantic_selector.decide(text, deterministic).use_llm
 
 
 def _extract_output_text(payload: dict) -> str:
@@ -137,7 +128,6 @@ def _numeric_value_supported(value, evidence: str) -> bool:
     evidence_digits = re.sub(r"\D", "", evidence)
     if digits in evidence_digits:
         return True
-    # Autorise 1.8 million -> 1800000.
     millions = re.search(r"(\d+(?:[.,]\d+)?)\s*millions?", evidence, re.I)
     if millions:
         try:

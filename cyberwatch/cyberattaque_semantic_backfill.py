@@ -15,13 +15,14 @@ import requests
 
 from . import store
 from .collectors import cyberattaque_semantic
+from .collectors import cyberattaque_semantic_selector
 from .collectors.base import SourceSpec
 from .collectors.cyberattaque_rich import enrich_entry_metadata
 from .collectors.wordpress import entry_from_post
 
 SOURCE_ID = "CYBERATTAQUE_ORG"
 DEFAULT_ENDPOINT = "https://cyberattaque.org/wp-json/wp/v2"
-BACKLOG_VERSION = "1"
+BACKLOG_VERSION = "2"
 
 
 def _metadata(row: dict) -> dict:
@@ -41,14 +42,7 @@ def fetch_posts(endpoint: str, start: str, timeout: int = 30) -> list[dict]:
     posts: list[dict] = []
     page = 1
     while True:
-        query = {
-            "per_page": "100",
-            "page": str(page),
-            "orderby": "date",
-            "order": "desc",
-            "after": f"{start}T00:00:00",
-            "_fields": "id,date,link,title,excerpt,content",
-        }
+        query = {"per_page": "100", "page": str(page), "orderby": "date", "order": "desc", "after": f"{start}T00:00:00", "_fields": "id,date,link,title,excerpt,content"}
         response = requests.get(f"{endpoint}/posts?{urlencode(query)}", timeout=timeout)
         if response.status_code == 400 and page > 1:
             break
@@ -71,15 +65,7 @@ def _write_json(path: Path, payload) -> None:
     tmp.replace(path)
 
 
-def run(
-    *,
-    endpoint: str = DEFAULT_ENDPOINT,
-    start: str = "2026-01-01",
-    max_calls: int = 30,
-    http_timeout: int = 30,
-    progress_path: Path = Path("data/quality/cyberattaque_semantic_progress.json"),
-    backlog_path: Path = Path("data/quality/cyberattaque_semantic_backlog.json"),
-) -> dict:
+def run(*, endpoint: str = DEFAULT_ENDPOINT, start: str = "2026-01-01", max_calls: int = 30, http_timeout: int = 30, progress_path: Path = Path("data/quality/cyberattaque_semantic_progress.json"), backlog_path: Path = Path("data/quality/cyberattaque_semantic_backlog.json")) -> dict:
     started = time.monotonic()
     items = [item for item in store.load_items() if item.Source_ID == SOURCE_ID]
     by_native = {str(item.Source_Item_ID): item for item in items if item.Source_Item_ID}
@@ -90,27 +76,14 @@ def run(
     spec = SourceSpec(source_id=SOURCE_ID, layer="core", zone="FR", params={"include_content": True})
     posts = fetch_posts(endpoint, start, http_timeout)
 
-    stats = {
-        "version": BACKLOG_VERSION,
-        "source": SOURCE_ID,
-        "posts_fetched": len(posts),
-        "matched_items": 0,
-        "not_candidates": 0,
-        "cache_hits": 0,
-        "llm_calls": 0,
-        "updated": 0,
-        "pending": 0,
-        "failed_retryable": 0,
-        "completed": 0,
-        "max_calls": max(0, max_calls),
-    }
+    stats = {"version": BACKLOG_VERSION, "selection_version": cyberattaque_semantic_selector.SELECTION_VERSION, "source": SOURCE_ID, "posts_fetched": len(posts), "matched_items": 0, "not_candidates": 0, "selector_candidates": 0, "candidate_rate": 0.0, "reason_counts": {}, "cache_hits": 0, "llm_calls": 0, "updated": 0, "pending": 0, "failed_retryable": 0, "completed": 0, "max_calls": max(0, max_calls)}
     states: list[dict] = []
-    candidates: list[tuple[object, str, dict, str]] = []
+    candidates: list[tuple[object, str, dict, str, object]] = []
+    decisions = []
     updates: list[tuple[str, dict]] = []
     original_enabled = os.getenv("CYBERATTAQUE_SEMANTIC_ENABLED")
 
     try:
-        # Base déterministe identique au collecteur, sans possibilité d'appel LLM.
         os.environ["CYBERATTAQUE_SEMANTIC_ENABLED"] = "0"
         for post in posts:
             item = by_native.get(str(post.get("id") or "")) or by_url.get(str(post.get("link") or ""))
@@ -123,37 +96,32 @@ def run(
             enrich_entry_metadata(entry)
             deterministic = (entry.source_metadata or {}).get("rich_facts") or {}
             text = "\n".join(part for part in (entry.title, entry.summary, entry.content) if part)
+            decision = cyberattaque_semantic_selector.decide(text, deterministic)
+            decisions.append(decision)
             os.environ["CYBERATTAQUE_SEMANTIC_ENABLED"] = "1"
             candidate = cyberattaque_semantic.should_use_llm(text, deterministic)
             os.environ["CYBERATTAQUE_SEMANTIC_ENABLED"] = "0"
             key = semantic_key(text)
-            base_state = {
-                "item_id": item.Item_ID,
-                "source_item_id": item.Source_Item_ID,
-                "url": item.URL,
-                "content_hash": cyberattaque_semantic.content_hash(text),
-                "semantic_key": key,
-            }
+            base_state = {"item_id": item.Item_ID, "source_item_id": item.Source_Item_ID, "url": item.URL, "content_hash": cyberattaque_semantic.content_hash(text), "semantic_key": key, "selection_version": decision.version, "selection_score": decision.score, "selection_reasons": list(decision.reasons)}
             if not candidate:
                 stats["not_candidates"] += 1
                 states.append({**base_state, "status": "not_candidate"})
                 updates.append((item.Item_ID, deterministic))
                 continue
+            stats["selector_candidates"] += 1
             if key in initial_cache:
                 stats["cache_hits"] += 1
-            candidates.append((item, text, post, key))
+            candidates.append((item, text, post, key, decision))
+
+        if stats["matched_items"]:
+            stats["candidate_rate"] = round(stats["selector_candidates"] / stats["matched_items"], 4)
+        stats["reason_counts"] = cyberattaque_semantic_selector.reason_counts(decisions)
 
         os.environ["CYBERATTAQUE_SEMANTIC_ENABLED"] = "1"
         calls_left = max(0, max_calls)
-        for item, text, post, key in candidates:
+        for item, text, post, key, decision in candidates:
             cached_before = key in cyberattaque_semantic._load_cache()
-            base_state = {
-                "item_id": item.Item_ID,
-                "source_item_id": item.Source_Item_ID,
-                "url": item.URL,
-                "content_hash": cyberattaque_semantic.content_hash(text),
-                "semantic_key": key,
-            }
+            base_state = {"item_id": item.Item_ID, "source_item_id": item.Source_Item_ID, "url": item.URL, "content_hash": cyberattaque_semantic.content_hash(text), "semantic_key": key, "selection_version": decision.version, "selection_score": decision.score, "selection_reasons": list(decision.reasons)}
             if not cached_before and calls_left <= 0:
                 stats["pending"] += 1
                 states.append({**base_state, "status": "pending"})
@@ -203,5 +171,5 @@ def run(
     stats["duration_s"] = round(time.monotonic() - started, 3)
     stats["cache_entries"] = len(cyberattaque_semantic._load_cache())
     _write_json(progress_path, stats)
-    _write_json(backlog_path, {"version": BACKLOG_VERSION, "source": SOURCE_ID, "states": states})
+    _write_json(backlog_path, {"version": BACKLOG_VERSION, "selection_version": cyberattaque_semantic_selector.SELECTION_VERSION, "source": SOURCE_ID, "states": states})
     return stats
