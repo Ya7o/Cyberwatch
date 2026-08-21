@@ -47,11 +47,12 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-      - name: Préflight et archive
+      - name: Préflight, baseline avant et archive
         run: |
           set -euo pipefail
           python -m cyberwatch.cold_reset preflight | tee /tmp/reset-preflight.json
           python -m cyberwatch.cold_reset manifest --output /tmp/reset-before.json
+          python -m cyberwatch.reset_baseline baseline --output /tmp/reset-baseline-before.json
           tar -czf /tmp/cyberwatch-before-reset.tgz data assets/data
       - name: Préparer le staging à froid
         run: |
@@ -153,24 +154,49 @@ jobs:
           python -m cyberwatch check
           python -m cyberwatch build-site
           python -m cyberwatch check
+      - name: Audit post-reset et baseline officielle
+        working-directory: /tmp/cyberwatch-reset
+        run: |
+          set -euo pipefail
+          python -m cyberwatch.reset_baseline audit \
+            --before /tmp/reset-baseline-before.json \
+            --output /tmp/reset-audit.json
+          python -m cyberwatch.reset_baseline baseline \
+            --output data/post_reset_baseline.json
       - name: Manifeste final
         working-directory: /tmp/cyberwatch-reset
         run: python -m cyberwatch.cold_reset manifest --output /tmp/reset-after.json
       - name: Résumé du reset
         shell: bash
         run: |
-          {
-            echo "## Cyberwatch — reset total"
-            echo ""
-            echo "- Début : \`$RESET_START\`"
-            echo "- Cutoff : \`$RESET_AS_OF\`"
-            echo "- Passes sémantiques : \`${{ inputs.semantic_passes }}\`"
-            echo "- Passes SourceFacts : \`${{ inputs.source_facts_passes }}\`"
-            echo "- Plafond LLM par passe : \`${{ inputs.max_llm_cost_usd_per_pass }} USD\`"
-            echo "- Publication demandée : \`${{ inputs.publish }}\`"
-            echo ""
-            echo "Les manifests avant/après et l'archive de rollback sont joints comme artifact du workflow."
-          } >> "$GITHUB_STEP_SUMMARY"
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          audit = json.loads(Path('/tmp/reset-audit.json').read_text())
+          after = audit['after']
+          volume = after['volume']
+          coverage = after['item_coverage']
+          llm = after.get('llm') or {}
+          print('## Cyberwatch — reset total')
+          print()
+          print(f"- Début : `{__import__('os').environ['RESET_START']}`")
+          print(f"- Cutoff : `{__import__('os').environ['RESET_AS_OF']}`")
+          print(f"- Verdict audit : **{audit['verdict']}**")
+          print(f"- Items : **{volume['items']}**")
+          print(f"- Incidents : **{volume['incidents']}**")
+          print(f"- Threat connu : **{coverage['threat']['known_pct']}%**")
+          print(f"- Sector connu : **{coverage['sector']['known_pct']}%**")
+          print(f"- Location connue : **{coverage['location']['known_pct']}%**")
+          print(f"- LLM dernière passe : **{llm.get('calls_attempted', 0)} appels**, **${llm.get('estimated_cost_usd', 0):.4f}**")
+          if audit['warnings']:
+              print()
+              print('### Variations à examiner')
+              for warning in audit['warnings']:
+                  print(f'- {warning}')
+          print()
+          print('Les manifests, baseline avant, audit, baseline finale et archive de rollback sont joints comme artifact.')
+          PY
       - name: Exporter archive et résultat
         if: always()
         uses: actions/upload-artifact@v4
@@ -180,7 +206,10 @@ jobs:
             /tmp/cyberwatch-before-reset.tgz
             /tmp/reset-preflight.json
             /tmp/reset-before.json
+            /tmp/reset-baseline-before.json
+            /tmp/reset-audit.json
             /tmp/reset-after.json
+            /tmp/cyberwatch-reset/data/post_reset_baseline.json
             /tmp/cyberwatch-reset/data/
             /tmp/cyberwatch-reset/assets/data/
           retention-days: 7
@@ -194,6 +223,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data assets/data
           if git diff --staged --quiet; then exit 0; fi
-          git commit -m "data: reset total"
+          git commit -m "data: reset total et baseline post-reset"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
