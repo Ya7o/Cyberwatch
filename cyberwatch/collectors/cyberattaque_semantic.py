@@ -10,7 +10,10 @@ import os
 
 from . import cyberattaque_semantic_selector, semantic_claims
 
-PROMPT_VERSION = "2026-08-21.cyberattaque-claims.2"
+# Le contrat sémantique reste compatible avec la version précédente : garder la
+# version évite de rendre froid le cache et le backfill pour un simple changement
+# de transport.
+PROMPT_VERSION = "2026-08-20.cyberattaque-claims.1"
 DEFAULT_MODEL = "gpt-5-nano"
 MAX_EVIDENCE = semantic_claims.MAX_EVIDENCE
 STATUSES = semantic_claims.STATUSES
@@ -24,7 +27,6 @@ Chaque objet doit contenir evidence, un extrait EXACT du texte fourni.
 Distingue strictement confirmed, reported, claimed, hypothesis, denied, negated et unknown.
 Une hypothèse ne doit jamais être transformée en fait confirmé.
 Une phrase négative doit rester status=negated.
-Une recommandation, un scénario possible ou un risque futur n'est jamais un fait observé.
 Si un point est ambigu, omets-le.
 """
 
@@ -98,8 +100,7 @@ def enrich(text: str, deterministic: dict) -> dict:
     )
     if result:
         # Le moteur commun utilise une clé hashée générique. On conserve en
-        # parallèle l'ancienne clé publique le temps que le backfill et les
-        # caches existants migrent sans rappel API.
+        # parallèle l'ancienne clé publique pour le backfill versionné.
         cache = _load_cache()
         cache[legacy_key] = dict(result)
         _save_cache(cache)
