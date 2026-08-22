@@ -35,6 +35,40 @@ LOCATIONS = [
 # Territoires du focus « Réunion / Mayotte » du dashboard.
 FOCUS_LOCATIONS = [LOC_REUNION, LOC_MAYOTTE]
 
+#: Libellés lisibles des sources — table unique.
+#: Elle vivait auparavant en double dans `app.js` et `p2.js`, avec deux noms
+#: différents pour la même source (`VEILLE_LLM` s'affichait « veillellmReYt »
+#: d'un côté et « Veille IA » de l'autre). Publiée dans `status.json`, elle est
+#: désormais la seule origine des noms affichés, côté Python comme côté page.
+SOURCE_LABELS = {
+    "FRENCHBREACHES": "FrenchBreaches",
+    "BONJOURLAFUITE": "BonjourLaFuite",
+    "CYBERATTAQUE_ORG": "Cyberattaque.org",
+    "RANSOMWARE_LIVE": "Ransomware.live",
+    "VEILLE_LLM": "Veille locale Réunion / Mayotte",
+    "CERT_MU_ALERTS": "CERT-MU",
+    "CIRT_MG": "CIRT Madagascar",
+    "CERT_SC_ALERTS": "CERT Seychelles",
+    "ZINFOS974_CYBER": "Zinfos974",
+    "LINFO_CYBER": "Linfo.re",
+    "REUNION_ENTITY_WATCH": "Veille entités Réunion",
+    "MAURITIUS_REGIONAL_WATCH": "Veille régionale Maurice",
+    "MADAGASCAR_REGIONAL_WATCH": "Veille régionale Madagascar",
+    "SEYCHELLES_REGIONAL_WATCH": "Veille régionale Seychelles",
+    "COMORES_REGIONAL_WATCH": "Veille régionale Comores",
+    "HACKMAGEDDON": "Hackmageddon",
+}
+
+
+def source_label(source_id: str) -> str:
+    """Nom affichable d'une source ; à défaut, son identifiant tel quel."""
+    return SOURCE_LABELS.get(str(source_id or ""), str(source_id or "Source"))
+
+
+#: Adresse publiée du dashboard, utilisée pour construire les identifiants
+#: stables du flux Atom du périmètre prioritaire.
+SITE_URL = "https://ya7o.github.io/Cyberwatch/"
+
 # --------------------------------------------------------------------------
 # Taxonomie des menaces (§8) — l'ordre de la liste EST l'ordre de priorité.
 # Les motifs sont écrits sans accents : le texte est désaccentué avant test.
