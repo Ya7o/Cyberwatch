@@ -354,7 +354,7 @@
   }
 
   function dataTypesHtml(entries) {
-    const values = (Array.isArray(entries) ? entries : []).map((entry) => entry.value).filter(known);
+    const values = entries.map((entry) => entry.value).filter(known);
     if (!values.length) return "";
     const groups = new Map(DATA_TYPE_FAMILY_ORDER.map((label) => [label, []]));
     const seen = new Set();
@@ -403,7 +403,7 @@
     const fields = validDetail ? detail.fields || {} : {};
     const values = validDetail ? [
       affectedHtml(detail.affected || []),
-      dataTypesHtml(detail.data_types),
+      dataTypesHtml(detail.data_types || []),
       detailField("Acteur", fields.threat_actor?.value),
       detailField("Tiers impliqué", fields.third_party?.value),
       detailField("Vecteur d’entrée", fields.initial_access?.value),
