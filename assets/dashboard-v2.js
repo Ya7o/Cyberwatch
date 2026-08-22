@@ -330,12 +330,6 @@
     return detailField("Volume documenté", values);
   }
 
-  function legacyFactsNotice(value) {
-    return Array.isArray(value)
-      ? '<p class="empty-state">Les faits détaillés seront disponibles après la prochaine régénération du site.</p>'
-      : "";
-  }
-
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
@@ -343,8 +337,9 @@
     const detail = facts[id];
     const sourceLinks = unique(incident.urls || []).map(safeUrl).filter(Boolean);
     const meta = [incident.date ? formatDate(incident.date) : "", incident.threat, incident.sector, incident.location].filter(known).join(" · ");
-    const fields = detail && !Array.isArray(detail) ? detail.fields || {} : {};
-    const values = detail && !Array.isArray(detail) ? [
+    const validDetail = detail && detail.version === 2;
+    const fields = validDetail ? detail.fields || {} : {};
+    const values = validDetail ? [
       affectedHtml(detail.affected || []),
       detailField("Données exposées", (detail.data_types || []).map((entry) => entry.value).filter(known)),
       detailField("Acteur", fields.threat_actor?.value),
@@ -358,8 +353,8 @@
       detailField("Évolution", fields.evolution?.value),
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
-    ].filter(Boolean).join("") : legacyFactsNotice(detail);
-    const summary = cleanSummary((detail && !Array.isArray(detail) && detail.display_summary) || incident.summary);
+    ].filter(Boolean).join("") : "";
+    const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}</div>
       ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
       <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>

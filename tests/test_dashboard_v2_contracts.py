@@ -107,3 +107,18 @@ def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
     assert "resolved = fact_resolution.resolve_all(raw_facts" in site
     assert 'store.write_json(store.SITE_DATA_DIR / "facts.json", resolved)' in site
     assert "analytics.build_analytics(\n        payload" in site
+
+
+def test_runtime_ne_supporte_plus_le_schema_legacy_des_faits():
+    js = _read("assets/dashboard-v2.js")
+    assert "legacyFactsNotice" not in js
+    assert "Array.isArray(detail)" not in js
+    assert "detail.version === 2" in js
+
+
+def test_facts_json_commite_est_strictement_v2():
+    import json
+    facts = json.loads(_read("assets/data/facts.json"))
+    assert isinstance(facts, dict)
+    assert facts
+    assert all(isinstance(detail, dict) and detail.get("version") == 2 for detail in facts.values())
