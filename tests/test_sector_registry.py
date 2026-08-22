@@ -214,6 +214,25 @@ def test_manual_reference_remains_auto(make_item):
     assert row["Sector"] == config.SECTOR_SERVICES
 
 
+def test_reference_csv_covers_known_national_organisations(make_item):
+    """DGFiP et Intermarché ne doivent plus rester Inconnu (référentiel manuel)."""
+    reference = enrichment.load_reference()
+    dgfip = make_item(org="DGFiP", sector=config.SECTOR_UNKNOWN)
+    intermarche = make_item(
+        source_item_id="2", org="Intermarché", sector=config.SECTOR_UNKNOWN,
+        url="https://cyberattaque.org/intermarche",
+    )
+    registry = _safe(sector_registry.build_registry(
+        [dgfip, intermarche], reference, source_fact_rows=[], org_cache_rows=[],
+        previous_provenance=[],
+    ))
+    by_key = {row["Organisation_Key"]: row for row in registry}
+    assert by_key[dgfip.Organisation_Key]["Decision"] == sector_registry.DECISION_AUTO
+    assert by_key[dgfip.Organisation_Key]["Sector"] == config.SECTOR_ADMIN
+    assert by_key[intermarche.Organisation_Key]["Decision"] == sector_registry.DECISION_AUTO
+    assert by_key[intermarche.Organisation_Key]["Sector"] == config.SECTOR_RETAIL
+
+
 def test_queue_prioritises_unmapped_raw_sector(make_item):
     target = make_item(
         source="RANSOMWARE_LIVE", org="Hotel Acme", sector=config.SECTOR_UNKNOWN,

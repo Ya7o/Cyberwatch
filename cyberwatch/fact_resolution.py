@@ -298,8 +298,19 @@ def _summary_priority(record: dict) -> tuple[int, int, int]:
     return unit_rank, semantic_rank, source_rank(record.get("source"))
 
 
+#: Longueur minimale d'un fallback narratif pour qu'il soit préféré à une
+#: synthèse réduite à une métrique brute (§ build_display_summary).
+_SUBSTANTIAL_FALLBACK_CHARS = 40
+
+
 def build_display_summary(resolved: dict, fallback: str = "") -> str:
     sentences: list[str] = []
+
+    impact_field = (resolved.get("fields") or {}).get("impact")
+    impact_text = _text(impact_field.get("value")) if isinstance(impact_field, dict) else ""
+    if impact_text:
+        sentences.append(impact_text if impact_text.endswith((".", "!", "?")) else f"{impact_text}.")
+
     affected = sorted(resolved.get("affected") or [], key=_summary_priority)
     if affected:
         record = affected[0]
@@ -314,7 +325,18 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
         suffix = "…" if len(data_types) > 5 else ""
         sentences.append(f"Données exposées : {shown}{suffix}.")
 
-    return " ".join(sentences) if sentences else _text(fallback)
+    if not sentences:
+        return _text(fallback)
+
+    # Une synthèse réduite à la seule métrique (aucune phrase d'impact
+    # narratif) ne doit pas écraser un fallback déjà substantiel : la métrique
+    # brute seule est trop pauvre dès qu'un récit plus riche existe déjà
+    # (cf. DINUM / Made in Bébé, tableau de revue manuelle points 3-4).
+    clean_fallback = _text(fallback)
+    if not impact_text and clean_fallback and len(clean_fallback) > _SUBSTANTIAL_FALLBACK_CHARS:
+        return clean_fallback
+
+    return " ".join(sentences)
 
 
 def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "") -> dict:

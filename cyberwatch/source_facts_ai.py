@@ -27,7 +27,7 @@ from .normalize import searchable
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-08-17.source-facts.6"
+PROMPT_VERSION = "2026-08-22.source-facts.7"
 SCHEMA_VERSION = "6"
 LEGACY_PROMPT_VERSION = "2026-08-16.source-facts.5"
 LEGACY_SCHEMA_VERSION = "5"
@@ -35,6 +35,12 @@ CACHE_FORMAT = "source-facts-ai-field-cache-v1"
 CONFIDENCE_THRESHOLD = 0.70
 MAX_EVIDENCE_CHARS = 300
 MAX_SUMMARY_CHARS = 320
+#: Longueur maximale de la synthèse produite par le LLM (`summary`) : une
+#: headline factuelle unique, pas un second récit de l'incident. Distincte de
+#: `MAX_SUMMARY_CHARS`, qui borne la composition déterministe multi-champs de
+#: `source_facts._derive_summary` (vecteur + déroulé + impact), plus longue par
+#: nature car elle assemble plusieurs faits concrets.
+MAX_HEADLINE_CHARS = 160
 MAX_ATTACK_FLOW_STEPS = 4
 MAX_FIELD_MISSES = 2
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
@@ -49,10 +55,10 @@ INITIAL_ACCESS_VALUES = {
     "other",
 }
 FIELD_VERSIONS = {
-    "summary": "summary-v2",
+    "summary": "summary-v3",
     "initial_access": "initial-access-v1",
     "attack_flow": "attack-flow-v2",
-    "impact": "impact-v2",
+    "impact": "impact-v3",
     "threat_actor": "threat-actor-v1",
     "third_party": "third-party-v1",
     "data_types": "data-types-v1",
@@ -60,7 +66,7 @@ FIELD_VERSIONS = {
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
 PREVIOUS_FIELD_VERSIONS = {
     "attack_flow": "attack-flow-v1",
-    "impact": "impact-v1",
+    "impact": "impact-v2",
 }
 
 _SYSTEM_PROMPT = """Tu extrais uniquement les faits demandés de l'incident décrit dans l'article fourni.
@@ -72,8 +78,8 @@ Si le vecteur initial est déclaré inconnu, non établi ou non communiqué, ini
 attack_flow contient uniquement des actions de l'attaquant explicitement documentées ; n'ajoute aucune étape intermédiaire et n'inclus jamais confinement, isolation, restauration, investigation, notification ou remédiation de la victime.
 Si une information est ambiguë ou absente, renvoie une valeur vide ou une liste vide.
 data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées.
-summary est une mini-synthèse factuelle de 1 à 2 phrases, idéalement 300 caractères maximum, sans conseil ni spéculation.
-impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident.
+summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
+impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident, jamais un risque possible, une conséquence potentielle ou une mise en garde ("risque de", "expose à", "pourrait entraîner" sont interdits).
 """
 
 _LLM_FIELDS = (
@@ -129,6 +135,16 @@ _DATA_TYPE_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
     ("numéros de sécurité sociale", re.compile(r"\b(?:nir|num[ée]ros?\s+de\s+s[ée]curit[ée]\s+sociale)\b", re.I)),
     ("données personnelles", re.compile(r"\bdonn[ée]es?\s+personnelles?\b", re.I)),
 )
+#: Valeur explicite lorsque l'article affirme une exfiltration mais indique
+#: que le détail des catégories n'est pas communiqué — distincte d'une simple
+#: absence d'extraction (§ point 5 du tableau de revue manuelle : Géotec).
+DATA_TYPES_UNDISCLOSED_LABEL = "catégories de données non précisées par l'organisation"
+_DATA_TYPES_UNDISCLOSED_RE = re.compile(
+    r"\b(?:cat[ée]gories?|types?|nature)\s+(?:de\s+|des\s+)?donn[ée]es?\b.{0,80}\b"
+    r"(?:non\s+(?:pr[ée]cis[ée]e?s?|communiqu[ée]e?s?|divulgu[ée]e?s?|d[ée]taill[ée]e?s?|indiqu[ée]e?s?)|"
+    r"pas\s+(?:encore\s+)?(?:[ée]t[ée]\s+)?(?:pr[ée]cis[ée]e?s?|communiqu[ée]e?s?))\b",
+    re.I,
+)
 _IMPACT_TRIGGER = re.compile(
     r"\b(?:indisponibilit|interruption|perturbation|paralysie|hors\s+ligne|"
     r"services?\s+d[ée]grad[ée]s?|syst[èe]mes?\s+indisponibles?|"
@@ -150,7 +166,9 @@ _INITIAL_ACCESS_UNKNOWN_RE = re.compile(
 _HYPOTHETICAL_RE = re.compile(
     r"\b(?:pourrait|pourraient|peut[- ]?[êe]tre|possible|possiblement|potentiellement|probable|probablement|"
     r"hypoth[èe]se|sc[ée]nario|suspect[ée]?|suppos[ée]?|envisag[ée]?|pr[ée]sum[ée]e?s?|semblerait|"
-    r"serait|agirait|aurait|auraient|susceptible(?:s)?|non\s+confirm[ée]|sans\s+confirmation|reste\s+inconnu)\b",
+    r"serait|agirait|aurait|auraient|susceptible(?:s)?|non\s+confirm[ée]|sans\s+confirmation|reste\s+inconnu|"
+    r"risques?\s+(?:de|d['’])|expose(?:nt|rait|raient)?\s+(?:à|a)|augmente(?:nt|rait|raient)?\s+le\s+risque|"
+    r"laisse(?:nt|rait|raient)?\s+craindre|accroit(?:re|s|)?\s+le\s+risque)\b",
     re.I,
 )
 _RESPONSE_ACTION_RE = re.compile(
@@ -656,7 +674,7 @@ def _normalize(raw: dict, context: str, fields: set[str]) -> dict:
     result: dict = {}
     if "summary" in fields:
         fact = _normalize_fact(raw.get("summary"), context)
-        if fact and len(fact["value"]) <= MAX_SUMMARY_CHARS:
+        if fact and len(fact["value"]) <= MAX_HEADLINE_CHARS:
             result["summary"] = fact
     if "initial_access" in fields:
         fact = _normalize_initial_access(raw.get("initial_access"), context)
@@ -739,6 +757,18 @@ def _deterministic_data_types(context: str) -> list[dict]:
             seen.add(key)
             result.append({"value": canonical, "confidence": 1.0, "evidence": match.group(0).strip()})
             break
+    if not result:
+        # Aucune catégorie précise n'a été trouvée : si l'article affirme
+        # explicitement une exfiltration/exposition tout en indiquant que le
+        # détail n'est pas communiqué, ce fait négatif est conservé plutôt que
+        # de laisser une fiche vide indistincte d'une absence d'extraction.
+        undisclosed = _DATA_TYPES_UNDISCLOSED_RE.search(context)
+        if undisclosed and _DATA_RELATION.search(context) and not _NEGATED_DATA_RELATION.search(context):
+            result.append({
+                "value": DATA_TYPES_UNDISCLOSED_LABEL,
+                "confidence": 1.0,
+                "evidence": undisclosed.group(0).strip(),
+            })
     return result
 
 

@@ -143,6 +143,44 @@ def test_legacy_sans_unite_est_ignore():
     assert resolved["affected"] == []
 
 
+def test_dinum_impact_narratif_prime_sur_metrique_seule():
+    """Point 3 : un article riche ne doit pas se réduire à « X lignes (documenté). »
+    quand un impact narratif validé est disponible."""
+    resolved = fr.resolve_incident_facts([
+        fact(
+            "CYBERATTAQUE_ORG", affected_count=31_544, affected_unit="records", claim_status="unknown",
+            impact="Les services numériques de la DINUM ont été rendus indisponibles pendant plusieurs jours.",
+        ),
+    ], fallback_summary="31 544 enregistrements (documenté).")
+    assert resolved["display_summary"].startswith(
+        "Les services numériques de la DINUM ont été rendus indisponibles"
+    )
+    assert "31 544" in resolved["display_summary"]
+
+
+def test_made_in_bebe_fallback_narratif_prime_sur_metrique_seule_multi_source():
+    """Point 4 : une fusion multi-source sans impact narratif propre ne doit
+    pas écraser un fallback riche par la seule métrique agrégée."""
+    fallback = (
+        "Made in Bébé confirme une fuite de données clients après une intrusion "
+        "sur son site marchand, revendiquée par un groupe cybercriminel."
+    )
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", affected_count=960_106, affected_unit="people", claim_status="claimed"),
+        fact("FRENCHBREACHES", data_types=["emails", "adresses postales"]),
+    ], fallback_summary=fallback)
+    assert resolved["display_summary"] == fallback
+
+
+def test_metrique_seule_reste_utilisee_sans_fallback_substantiel():
+    """La métrique reste affichée telle quelle quand aucun fallback riche
+    n'existe (pas de régression sur le comportement historique)."""
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", affected_count=31_544, affected_unit="records", claim_status="unknown"),
+    ], fallback_summary="")
+    assert resolved["display_summary"] == "31 544 enregistrements (documenté)."
+
+
 def test_source_inconnue_passe_apres_sources_connues():
     assert fr.source_rank("RANSOMWARE_LIVE") < fr.source_rank("SOURCE_EXTERNE")
 
