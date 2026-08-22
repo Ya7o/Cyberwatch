@@ -408,7 +408,7 @@
 
   let lastFocused = null;
 
-  async function openIncident(id) {
+  async function openIncident(id, { fromOrg = null } = {}) {
     const incident = state.byId.get(id);
     if (!incident) return;
     lastFocused = document.activeElement;
@@ -427,7 +427,12 @@
       <p class="dialog-summary"><strong>${esc(provenanceLabel(incident))}</strong> · ${esc((incident.sources || []).map(sourceLabel).join(" · ") || "—")}</p>
       ${links.length ? `<div class="dialog-evidence"><strong>Références</strong>${links.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : ""}
       ${factsSectionHtml(incident, facts[id])}`;
-    $("#detail-dialog-back").hidden = true;
+    // Un incident ouvert depuis la chronologie d'une organisation propose d'y
+    // revenir : sans ce bouton, la navigation organisation → incident était
+    // un aller simple.
+    const back = $("#detail-dialog-back");
+    back.hidden = !fromOrg;
+    back.onclick = fromOrg ? () => openOrganisation(fromOrg) : null;
     const dialog = $("#detail-dialog");
     dialog.showModal();
   }
@@ -450,8 +455,10 @@
       </div>
       <p class="dialog-summary"><strong>Sources</strong> ${esc(sources.join(" · ") || "—")}</p>
       <div class="dialog-summary"><strong>Menaces observées</strong><p>${esc(threats.map((row) => `${row.label} (${row.value})`).join(" · "))}</p></div>
-      <div class="org-history"><h3>Chronologie</h3>${rows.map((row) => `<button type="button" class="org-history-row" data-id="${esc(row.id)}"><time>${esc(formatDate(row.date))}</time><span>${esc(row.threat || "Inconnu")}</span><small>${esc(row.location || "Inconnu")}</small></button>`).join("")}</div>`;
-    $("#detail-dialog-back").hidden = true;
+      <div class="org-history"><h3>Chronologie</h3>${rows.map((row) => `<button type="button" class="org-history-row" data-id="${esc(row.id)}" data-org="${esc(name)}"><time>${esc(formatDate(row.date))}</time><span>${esc(row.threat || "Inconnu")}</span><small>${esc(row.location || "Inconnu")}</small></button>`).join("")}</div>`;
+    const back = $("#detail-dialog-back");
+    back.hidden = true;
+    back.onclick = null;
     $("#detail-dialog").showModal();
   }
 
@@ -462,7 +469,7 @@
       const orgLink = event.target.closest("[data-org-link]");
       if (orgLink) return openOrganisation(orgLink.dataset.orgLink);
       const historyRow = event.target.closest(".org-history-row");
-      if (historyRow) return openIncident(historyRow.dataset.id);
+      if (historyRow) return openIncident(historyRow.dataset.id, { fromOrg: historyRow.dataset.org });
     });
   }
 
@@ -591,7 +598,7 @@
       <div class="incident-side">
         <span class="incident-provenance">${esc(provenanceLabel(incident))}</span>
         <div class="incident-source-badges">${sourceBadges(incident)}</div>
-        <button type="button" class="btn btn-primary" data-open-id="${esc(incident.id)}">Voir l’incident</button>
+        <button type="button" class="btn btn-primary" data-open-id="${esc(incident.id)}" aria-label="Voir l’incident — ${esc(incident.org || "organisation inconnue")}, ${esc(formatDate(incident.date))}">Voir l’incident</button>
       </div>
     </article>`;
   }
