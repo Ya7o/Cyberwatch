@@ -315,6 +315,68 @@
     return `<div class="resolved-field"><dt>${esc(label)}</dt><dd>${rendered}</dd></div>`;
   }
 
+  // Regroupement par famille et code couleur de sensibilité des données
+  // compromises, calculés par règles déterministes côté client — jamais par
+  // le LLM (§ Identité hors LLM, CLAUDE.md).
+  const DATA_TYPE_FAMILY_ORDER = ["Identité", "Coordonnées", "Financières", "Authentification", "Santé", "Professionnelles", "Administratives", "Autres"];
+  // Certains libellés canoniques sont au pluriel avec la marque du pluriel
+  // sur le premier mot ("mots de passe", "cartes de paiement", "pièces
+  // d'identité") : une simple sous-chaîne au singulier ne les retrouve pas
+  // (« mots » ne contient pas « mot »). Les deux formes sont donc listées
+  // explicitement plutôt que de deviner un radical.
+  const DATA_TYPE_FAMILY_RULES = [
+    ["Santé", ["sante", "medical", "medic", "patient", "diagnostic", "patholog", "ordonnance", "traitement", "vaccin"]],
+    ["Financières", ["iban", "rib", "bancair", "carte de paiement", "cartes de paiement", "carte bancaire", "cartes bancaires", "paiement", "transaction", "financement", "factur", "revenu", "salaire", "patrimoine"]],
+    ["Authentification", ["mot de passe", "mots de passe", "password", "hash", "identifiant", "login", "token", "authent", "cle api", "secret", "otp"]],
+    ["Administratives", ["nir", "securite sociale", "passeport", "carte d identite", "cartes d identite", "piece d identite", "pieces d identite", "permis de conduire", "acte de naissance", "justificatif de domicile", "immatriculation", "siret", "siren"]],
+    ["Professionnelles", ["certification", "qualification", "experience", "evaluation", "formation", "parcours professionnel", "emploi", "poste", "metier", "profession", "employeur"]],
+    ["Identité", ["nom", "prenom", "genre", "civilite", "photo", "selfie", "biometr", "nationalite"]],
+    ["Coordonnées", ["mail", "adresse", "telephone", "mobile", "departement", "pays", "ville", "code postal", "numero client", "identifiant client", "date de naissance", "naissance"]],
+  ];
+  const SENSITIVITY_CRITICAL_MARKERS = ["mot de passe", "mots de passe", "password", "hash", "token", "otp", "secret", "cle api", "authent", "sante", "medical", "patient", "diagnostic", "patholog", "ordonnance", "traitement", "vaccin", "nir", "securite sociale", "passeport", "carte d identite", "cartes d identite", "piece d identite", "pieces d identite", "permis de conduire", "biometr", "selfie"];
+  const SENSITIVITY_HIGH_MARKERS = ["iban", "rib", "bancair", "carte de paiement", "cartes de paiement", "carte bancaire", "cartes bancaires", "releve de compte", "revenu", "salaire", "patrimoine"];
+  const SENSITIVITY_MODERATE_MARKERS = ["mail", "telephone", "mobile", "adresse", "numero client", "identifiant client", "date de naissance", "naissance"];
+
+  function dataTypeFamily(value) {
+    const normalized = normalize(value);
+    for (const [label, keywords] of DATA_TYPE_FAMILY_RULES) {
+      if (keywords.some((keyword) => normalized.includes(keyword))) return label;
+    }
+    return "Autres";
+  }
+
+  function dataTypeSensitivity(value) {
+    const normalized = normalize(value);
+    if (SENSITIVITY_CRITICAL_MARKERS.some((marker) => normalized.includes(marker))) return "critical";
+    if (SENSITIVITY_HIGH_MARKERS.some((marker) => normalized.includes(marker))) return "high";
+    if (SENSITIVITY_MODERATE_MARKERS.some((marker) => normalized.includes(marker))) return "moderate";
+    return "";
+  }
+
+  function dataTypesHtml(entries) {
+    const values = (Array.isArray(entries) ? entries : []).map((entry) => entry.value).filter(known);
+    if (!values.length) return "";
+    const groups = new Map(DATA_TYPE_FAMILY_ORDER.map((label) => [label, []]));
+    const seen = new Set();
+    values.forEach((value) => {
+      const cleaned = String(value).trim();
+      if (!cleaned || seen.has(cleaned)) return;
+      seen.add(cleaned);
+      groups.get(dataTypeFamily(cleaned)).push(cleaned);
+    });
+    const rendered = DATA_TYPE_FAMILY_ORDER.map((label) => {
+      const items = groups.get(label) || [];
+      if (!items.length) return "";
+      const chips = items.map((value) => {
+        const tier = dataTypeSensitivity(value);
+        const tierClass = tier ? ` incident-data-value--sensitivity-${tier}` : "";
+        return `<span class="incident-data-value${tierClass}">${esc(value)}</span>`;
+      }).join("");
+      return `<details class="incident-data-group"><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${chips}</div></details>`;
+    }).filter(Boolean).join("");
+    return `<div class="incident-data-types"><div class="incident-data-types-title">Données exposées :</div>${rendered}</div>`;
+  }
+
   function unitLabel(value) {
     return ({ people: "personnes", accounts: "comptes", users: "utilisateurs", clients: "clients", records: "enregistrements", files: "fichiers" })[value] || value || "";
   }
@@ -341,7 +403,7 @@
     const fields = validDetail ? detail.fields || {} : {};
     const values = validDetail ? [
       affectedHtml(detail.affected || []),
-      detailField("Données exposées", (detail.data_types || []).map((entry) => entry.value).filter(known)),
+      dataTypesHtml(detail.data_types),
       detailField("Acteur", fields.threat_actor?.value),
       detailField("Tiers impliqué", fields.third_party?.value),
       detailField("Vecteur d’entrée", fields.initial_access?.value),
