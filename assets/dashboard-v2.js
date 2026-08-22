@@ -1,4 +1,4 @@
-/* Cyberwatch dashboard v2 — interface orientée veille, recherche et observatoire. */
+/* Cyberwatch dashboard v2 — rendu des données canoniques, sans arbitrage métier. */
 (() => {
   "use strict";
 
@@ -7,7 +7,6 @@
   const UNKNOWN = "Inconnu";
   const OCEAN_LOCATIONS = ["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"];
   const FOCUS_LOCATIONS = ["La Réunion", "Mayotte"];
-  const SOURCE_PRIORITY = ["RANSOMWARE_LIVE", "CYBERATTAQUE_ORG", "FRENCHBREACHES", "BONJOURLAFUITE", "VEILLE_LLM"];
   const SOURCE_LABELS = {
     RANSOMWARE_LIVE: "Ransomware.live",
     CYBERATTAQUE_ORG: "Cyberattaque.org",
@@ -21,10 +20,6 @@
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const normalize = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   const sourceLabel = (id) => SOURCE_LABELS[id] || id || "Source";
-  const sourceRank = (id) => {
-    const rank = SOURCE_PRIORITY.indexOf(id);
-    return rank === -1 ? 999 : rank;
-  };
   const known = (value) => Boolean(String(value ?? "").trim()) && String(value).trim() !== UNKNOWN;
   const unique = (values) => Array.from(new Set(values.filter(known)));
   const formatNumber = (value) => new Intl.NumberFormat("fr-FR").format(Number(value));
@@ -103,7 +98,7 @@
 
   function sourceBadges(incident) {
     const homes = new Map((state.status?.sources || []).map((source) => [source.id, safeUrl(source.url)]));
-    return unique(incident.sources || []).sort((a, b) => sourceRank(a) - sourceRank(b)).map((id) => {
+    return unique(incident.sources || []).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr")).map((id) => {
       const url = homes.get(id);
       return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(sourceLabel(id))}</a>` : `<span>${esc(sourceLabel(id))}</span>`;
     }).join("");
@@ -163,23 +158,17 @@
     const total = sources.length || [counts.ok, counts.partial, counts.fail, counts.skipped].reduce((sum, value) => sum + Number(value || 0), 0);
     const ok = Number(counts.ok || 0);
     const run = state.status?.run || {};
-    const label = total ? `${ok}/${total} sources · ${formatDateTime(run.as_of)}` : "État des sources indisponible";
-    $("#run-pill-text").textContent = label;
+    $("#run-pill-text").textContent = total ? `${ok}/${total} sources · ${formatDateTime(run.as_of)}` : "État des sources indisponible";
     $("#run-pill").dataset.status = total && ok === total ? "ok" : "degraded";
   }
 
   function renderVeille() {
-    const analytics = state.status?.analytics;
-    const signal = analytics?.signals?.[0];
+    const signal = state.status?.analytics?.signals?.[0];
     $("#veille-signal").innerHTML = signal ? signalHtml(signal, true) : "";
-
     const local = state.latest.filter((row) => FOCUS_LOCATIONS.includes(row.location));
-    if (!local.length) {
-      $("#focus-body").innerHTML = '<p class="status-bubble status-bubble--quiet">Aucun incident à La Réunion / Mayotte sur les 30 derniers jours.</p>';
-    } else {
-      $("#focus-body").innerHTML = `<p class="status-bubble status-bubble--active"><strong>${local.length}</strong> incident${local.length > 1 ? "s" : ""} à La Réunion / Mayotte sur les 30 derniers jours.</p><div class="focus-list">${local.map(incidentCardHtml).join("")}</div>`;
-    }
-
+    $("#focus-body").innerHTML = local.length
+      ? `<p class="status-bubble status-bubble--active"><strong>${local.length}</strong> incident${local.length > 1 ? "s" : ""} à La Réunion / Mayotte sur les 30 derniers jours.</p><div class="focus-list">${local.map(incidentCardHtml).join("")}</div>`
+      : '<p class="status-bubble status-bubble--quiet">Aucun incident à La Réunion / Mayotte sur les 30 derniers jours.</p>';
     $("#veille-count").textContent = state.latest.length ? `${formatNumber(state.latest.length)} incidents` : "Aucun incident";
     $("#veille-list").innerHTML = state.latest.length ? state.latest.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun incident sur les 30 derniers jours.</p>';
   }
@@ -193,7 +182,7 @@
     const threats = unique(rows.map((row) => row.threat)).sort((a, b) => a.localeCompare(b, "fr"));
     const sectors = unique(rows.map((row) => row.sector)).sort((a, b) => a.localeCompare(b, "fr"));
     const locations = unique(rows.map((row) => row.location)).sort((a, b) => a.localeCompare(b, "fr"));
-    const sources = unique(rows.flatMap((row) => row.sources || [])).sort((a, b) => sourceRank(a) - sourceRank(b));
+    const sources = unique(rows.flatMap((row) => row.sources || [])).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr"));
     $("#s-threat").innerHTML = optionHtml(threats, state.filters.threat, "Toutes");
     $("#s-sector").innerHTML = optionHtml(sectors, state.filters.sector, "Tous");
     $("#s-source").innerHTML = `<option value="">Toutes</option>` + sources.map((value) => `<option value="${esc(value)}" ${value === state.filters.source ? "selected" : ""}>${esc(sourceLabel(value))}</option>`).join("");
@@ -205,9 +194,8 @@
   }
 
   function updateLocationSummary() {
-    const button = $("#location-toggle");
     const count = state.filters.locations.length;
-    button.textContent = count ? `${count} territoire${count > 1 ? "s" : ""} sélectionné${count > 1 ? "s" : ""}` : "Tous les territoires";
+    $("#location-toggle").textContent = count ? `${count} territoire${count > 1 ? "s" : ""} sélectionné${count > 1 ? "s" : ""}` : "Tous les territoires";
   }
 
   function cutoffFor(period) {
@@ -245,7 +233,7 @@
     if (state.filters.q) labels.push(`Recherche : “${state.filters.q}”`);
     if (state.filters.threat) labels.push(`Menace : ${state.filters.threat}`);
     if (state.filters.sector) labels.push(`Secteur : ${state.filters.sector}`);
-    state.filters.locations.forEach((locationValue) => labels.push(`Territoire : ${locationValue}`));
+    state.filters.locations.forEach((value) => labels.push(`Territoire : ${value}`));
     if (state.filters.source) labels.push(`Source : ${sourceLabel(state.filters.source)}`);
     if (state.filters.period !== "all") labels.push(`Période : ${state.filters.period} jours`);
     $("#s-active-filters").innerHTML = labels.map((label) => `<span>${esc(label)}</span>`).join("");
@@ -280,8 +268,7 @@
   function renderMonthly(series) {
     const container = $("#chart-evolution");
     if (!series?.months?.length) { container.innerHTML = '<p class="empty-state">Aucune donnée.</p>'; return; }
-    const rows = series.months.map((month, index) => ({ label: month, count: series.total[index] }));
-    simpleBars(container, rows.slice(-12));
+    simpleBars(container, series.months.map((month, index) => ({ label: month, count: series.total[index] })).slice(-12));
   }
 
   function oceanProfileHtml(profile, label) {
@@ -291,8 +278,7 @@
   }
 
   function renderSources() {
-    const sources = state.status?.sources || [];
-    $("#sources-leds").innerHTML = sources.map((source) => `<div class="source-status"><span class="source-dot" data-status="${esc(source.status || "unknown")}"></span><strong>${esc(sourceLabel(source.id))}</strong><small>${esc(source.status || "—")}</small></div>`).join("");
+    $("#sources-leds").innerHTML = (state.status?.sources || []).map((source) => `<div class="source-status"><span class="source-dot" data-status="${esc(source.status || "unknown")}"></span><strong>${esc(sourceLabel(source.id))}</strong><small>${esc(source.status || "—")}</small></div>`).join("");
   }
 
   function applySearchPatch(patch) {
@@ -323,108 +309,60 @@
     return state.facts;
   }
 
-  function sourceOf(fact) { return fact?.source || fact?.source_id || ""; }
-  function sortedFacts(facts) { return (Array.isArray(facts) ? facts : []).slice().sort((a, b) => sourceRank(sourceOf(a)) - sourceRank(sourceOf(b))); }
-
-  function firstValue(facts, getter) {
-    for (const fact of sortedFacts(facts)) {
-      const value = getter(fact);
-      if (Array.isArray(value) ? value.length : known(value)) return { value, source: sourceOf(fact) };
-    }
-    return null;
-  }
-
-  function richRecords(facts, key) {
-    const selected = new Map();
-    for (const fact of sortedFacts(facts)) {
-      const source = sourceOf(fact);
-      const records = Array.isArray(fact?.rich_facts?.[key]) ? fact.rich_facts[key] : [];
-      for (const record of records) {
-        if (!record || record.value == null) continue;
-        const semantic = normalize([record.scope, record.unit, record.kind].filter(Boolean).join(" ")) || normalize(record.unit || key);
-        if (!selected.has(semantic)) selected.set(semantic, { ...record, source });
-      }
-    }
-    return Array.from(selected.values());
-  }
-
-  function resolveFacts(facts) {
-    const ordered = sortedFacts(facts);
-    const affected = richRecords(ordered, "affected_counts");
-    if (!affected.length) {
-      const fallback = firstValue(ordered, (fact) => fact.affected_count != null ? {
-        value: fact.affected_count,
-        raw: fact.affected_count_raw,
-        unit: fact.affected_unit,
-        status: fact.claim_status,
-      } : null);
-      if (fallback?.value) affected.push({ ...fallback.value, source: fallback.source });
-    }
-    return {
-      affected,
-      actor: firstValue(ordered, (fact) => fact.threat_actor),
-      thirdParty: firstValue(ordered, (fact) => fact.third_party),
-      initialAccess: firstValue(ordered, (fact) => fact.initial_access),
-      dataTypes: firstValue(ordered, (fact) => Array.isArray(fact.data_types) ? fact.data_types.filter(known) : []),
-      vulnerabilities: firstValue(ordered, (fact) => Array.isArray(fact.vulnerabilities) ? fact.vulnerabilities.filter(known) : []),
-      attackDate: firstValue(ordered, (fact) => fact.attack_date),
-      discoveredDate: firstValue(ordered, (fact) => fact.discovered_date),
-      impact: firstValue(ordered, (fact) => fact.impact),
-      evolution: firstValue(ordered, (fact) => fact.evolution),
-      systems: richRecords(ordered, "affected_systems"),
-      datasets: richRecords(ordered, "affected_datasets"),
-    };
-  }
-
-  function unitLabel(value) {
-    return ({ people: "personnes", accounts: "comptes", users: "utilisateurs", clients: "clients", records: "enregistrements", files: "fichiers" })[value] || value || "";
-  }
-  function accessLabel(value) {
-    return ({ phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" })[value] || value;
-  }
-
   function detailField(label, content) {
     if (!content || (Array.isArray(content) && !content.length)) return "";
     const rendered = Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
     return `<div class="resolved-field"><dt>${esc(label)}</dt><dd>${rendered}</dd></div>`;
   }
 
+  function unitLabel(value) {
+    return ({ people: "personnes", accounts: "comptes", users: "utilisateurs", clients: "clients", records: "enregistrements", files: "fichiers" })[value] || value || "";
+  }
+
   function affectedHtml(records) {
-    if (!records.length) return "";
+    if (!Array.isArray(records) || !records.length) return "";
     const values = records.map((record) => {
-      const raw = record.raw || record.affected_count_raw;
-      const value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
-      const scope = record.scope ? ` — ${record.scope}` : "";
-      return `${value}${scope}`;
+      const raw = record.raw || "";
+      let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
+      if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
+      return value;
     });
     return detailField("Volume documenté", values);
+  }
+
+  function legacyFactsNotice(value) {
+    return Array.isArray(value)
+      ? '<p class="empty-state">Les faits détaillés seront disponibles après la prochaine régénération du site.</p>'
+      : "";
   }
 
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
     const facts = await ensureFacts();
-    const resolved = resolveFacts(facts[id] || incident.facts || []);
+    const detail = facts[id];
     const sourceLinks = unique(incident.urls || []).map(safeUrl).filter(Boolean);
-    const summary = cleanSummary(incident.summary);
     const meta = [incident.date ? formatDate(incident.date) : "", incident.threat, incident.sector, incident.location].filter(known).join(" · ");
-    const fields = [
-      affectedHtml(resolved.affected),
-      detailField("Données exposées", resolved.dataTypes?.value),
-      detailField("Acteur", resolved.actor?.value),
-      detailField("Tiers impliqué", resolved.thirdParty?.value),
-      detailField("Vecteur d’entrée", resolved.initialAccess?.value ? accessLabel(resolved.initialAccess.value) : ""),
-      detailField("Vulnérabilités", resolved.vulnerabilities?.value),
-      detailField("Date de l’attaque", resolved.attackDate?.value ? formatDate(resolved.attackDate.value) : ""),
-      detailField("Découverte", resolved.discoveredDate?.value ? formatDate(resolved.discoveredDate.value) : ""),
-      detailField("Impact", resolved.impact?.value),
-      detailField("Évolution", resolved.evolution?.value),
-      detailField("Systèmes concernés", resolved.systems.map((record) => record.value)),
-      detailField("Périmètres de données", resolved.datasets.map((record) => record.value)),
-    ].filter(Boolean).join("");
+    const fields = detail && !Array.isArray(detail) ? detail.fields || {} : {};
+    const values = detail && !Array.isArray(detail) ? [
+      affectedHtml(detail.affected || []),
+      detailField("Données exposées", (detail.data_types || []).map((entry) => entry.value).filter(known)),
+      detailField("Acteur", fields.threat_actor?.value),
+      detailField("Tiers impliqué", fields.third_party?.value),
+      detailField("Vecteur d’entrée", fields.initial_access?.value),
+      detailField("Localisation précise", fields.fine_location?.value),
+      detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
+      detailField("Date de l’attaque", fields.attack_date?.value ? formatDate(fields.attack_date.value) : ""),
+      detailField("Découverte", fields.discovered_date?.value ? formatDate(fields.discovered_date.value) : ""),
+      detailField("Impact", fields.impact?.value),
+      detailField("Évolution", fields.evolution?.value),
+      detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
+      detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
+    ].filter(Boolean).join("") : legacyFactsNotice(detail);
+    const summary = cleanSummary((detail && !Array.isArray(detail) && detail.display_summary) || incident.summary);
     $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}</div>
       ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
-      <section class="resolved-facts"><h3>Éléments documentés</h3>${fields || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
+      <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
       <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div>${sourceLinks.length ? `<div class="evidence-links">${sourceLinks.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : ""}</div>`;
     $("#detail-dialog").showModal();
   }
@@ -475,8 +413,10 @@
       state.filters = { q: "", threat: "", sector: "", locations: [], source: "", period: "all" }; state.sort = "date-desc"; state.page = 1; syncUrl(); renderRecherche();
     });
     $("#s-pager").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-page]"); if (!button) return;
-      state.page += button.dataset.page === "next" ? 1 : -1; syncUrl(); renderRecherche(); window.scrollTo({ top: $("#s-count").offsetTop - 90, behavior: "smooth" });
+      const button = event.target.closest("[data-page]");
+      if (!button) return;
+      state.page += button.dataset.page === "next" ? 1 : -1;
+      syncUrl(); renderRecherche(); window.scrollTo({ top: $("#s-count").offsetTop - 90, behavior: "smooth" });
     });
   }
 
