@@ -147,10 +147,15 @@ def _status(record: dict) -> str:
 
 
 def _record_value(record: dict) -> Any:
-    return record.get("value") if record.get("value") is not None else _text(record.get("raw"))
+    value = record.get("value")
+    return value if value is not None else _text(record.get("raw"))
 
 
 def _same_record_value(left: dict, right: dict) -> bool:
+    left_value = left.get("value")
+    right_value = right.get("value")
+    if left_value is not None and right_value is not None:
+        return str(left_value) == str(right_value)
     return _norm(_record_value(left)) == _norm(_record_value(right))
 
 
@@ -176,43 +181,70 @@ def _legacy_affected_record(fact: dict) -> dict | None:
     }
 
 
-def _insert_count(selected: dict[tuple[str, str], dict], record: dict, source: str) -> None:
-    key = _count_semantic(record)
-    normalized = {
-        **record,
-        "semantic": key[1],
-        "status": _status(record),
-        "source": source,
-        "sources": [source] if source else [],
-    }
-    existing = selected.get(key)
-    if existing is None:
-        selected[key] = normalized
-        return
-    _merge_record(existing, normalized, source)
+def _rich_count_records(fact: dict) -> list[dict]:
+    source = _text(fact.get("source"))
+    rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+    records = rich.get("affected_counts", []) if isinstance(rich, dict) else []
+    result: list[dict] = []
+    if not isinstance(records, list):
+        return result
+    for raw in records:
+        if not isinstance(raw, dict) or raw.get("value") is None:
+            continue
+        key = _count_semantic(raw)
+        result.append({
+            **raw,
+            "unit": key[0],
+            "semantic": key[1],
+            "status": _status(raw),
+            "source": source,
+            "sources": [source] if source else [],
+        })
+    return result
 
 
 def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
-    """Fusionne rich + legacy sous une même clé (unité, sémantique)."""
-    selected: dict[tuple[str, str], dict] = {}
+    """Fusionne rich + legacy, sans perdre les mesures complémentaires.
+
+    Un legacy sans portée explicite hérite d'une sémantique rich uniquement
+    lorsqu'il n'existe qu'une seule portée possible pour cette unité. Si deux
+    portées existent (ex. records total + unique), il reste ``unspecified`` afin
+    de ne jamais inventer la nature du nombre.
+    """
     ordered = _ordered_facts(facts)
+    rich_by_fact = {id(fact): _rich_count_records(fact) for fact in ordered}
+    rich_semantics: dict[str, set[str]] = {}
+    for records in rich_by_fact.values():
+        for record in records:
+            rich_semantics.setdefault(record["unit"], set()).add(record["semantic"])
+
+    selected: dict[tuple[str, str], dict] = {}
     for fact in ordered:
         source = _text(fact.get("source"))
-        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
-        records = rich.get("affected_counts", []) if isinstance(rich, dict) else []
-        if isinstance(records, list):
-            for raw_record in records:
-                if isinstance(raw_record, dict) and raw_record.get("value") is not None:
-                    _insert_count(selected, dict(raw_record), source)
+        for record in rich_by_fact[id(fact)]:
+            key = (record["unit"], record["semantic"])
+            if key not in selected:
+                selected[key] = record
+            else:
+                _merge_record(selected[key], record, source)
 
         legacy = _legacy_affected_record(fact)
-        if legacy:
-            key = (legacy["unit"], legacy["semantic"])
-            existing = selected.get(key)
-            if existing is None:
-                selected[key] = legacy
-            else:
-                _merge_record(existing, legacy, source)
+        if not legacy:
+            continue
+        same_unit = [entry for (unit, _), entry in selected.items() if unit == legacy["unit"]]
+        exact = next((entry for entry in same_unit if _same_record_value(entry, legacy)), None)
+        if exact is not None:
+            _merge_record(exact, legacy, source)
+            continue
+
+        semantics = rich_semantics.get(legacy["unit"], set())
+        if len(semantics) == 1:
+            legacy["semantic"] = next(iter(semantics))
+        key = (legacy["unit"], legacy["semantic"])
+        if key not in selected:
+            selected[key] = legacy
+        else:
+            _merge_record(selected[key], legacy, source)
 
     return list(selected.values())
 
@@ -261,14 +293,7 @@ def _format_count(record: dict) -> str:
 def _summary_priority(record: dict) -> tuple[int, int, int]:
     unit = _text(record.get("unit")).lower()
     semantic = _text(record.get("semantic")).lower()
-    unit_rank = {
-        "people": 0,
-        "clients": 1,
-        "users": 2,
-        "accounts": 3,
-        "records": 4,
-        "files": 5,
-    }.get(unit, 9)
+    unit_rank = {"people": 0, "clients": 1, "users": 2, "accounts": 3, "records": 4, "files": 5}.get(unit, 9)
     semantic_rank = 0 if semantic == "unique" else 1 if semantic == "total" else 2
     return unit_rank, semantic_rank, source_rank(record.get("source"))
 
