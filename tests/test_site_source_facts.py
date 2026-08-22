@@ -194,26 +194,20 @@ def test_build_charge_explicitement_source_facts():
 
 
 def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
-    js = open("assets/app.js", encoding="utf-8").read()
-    html = open("index.html", encoding="utf-8").read()
+    """La table `#incidents-table` a été retirée (masquée par CSS, jamais
+    affichée) : la fiche riche vit maintenant uniquement dans le dialogue
+    partagé des trois vues. Seule cette destination est encore un contrat."""
+    js = open("assets/dashboard.js", encoding="utf-8").read()
 
     assert "function factHtml(fact, incidentSummary" in js
-    assert "function detailHtml(incident)" in js
-    assert "const factsInput = Array.isArray(incident.facts) ? incident.facts : []" in js
-    assert "factsInput.map((fact) => factHtml(fact, incident.summary))" in js
-    assert 'class="incident-facts-list"' in js
+    assert "function factsSectionHtml(incident, facts)" in js
+    assert "const rendered = (facts || []).map((fact) => factHtml(fact, incident.summary))" in js
     assert "attackFlowLabel" in js
     assert "renderDataTypes(fact.data_types)" in js
 
-    header = html.split('<table class="data-table" id="incidents-table">', 1)[1].split("</thead>", 1)[0]
-    for title in ("Date", "Organisation", "Territoire", "Secteur", "Menace", "Sources"):
-        assert f">{title}<" in header
-    for forbidden in ("Acteur", "Volume", "CVSS", "Vulnérabilités", "Vecteur", "Déroulé"):
-        assert f">{forbidden}<" not in header
-
 
 def test_renderer_ui_ne_duplique_pas_affected_files_et_file_count():
-    js = open("assets/app.js", encoding="utf-8").read()
+    js = open("assets/dashboard.js", encoding="utf-8").read()
     assert "function duplicatesDedicatedFileCount(fact)" in js
     assert 'String(fact.affected_unit || "").trim().toLowerCase() !== "files"' in js
     assert 'factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact))' in js

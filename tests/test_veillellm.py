@@ -98,14 +98,21 @@ def test_dashboard_payload_exposes_local_summary_score_and_references():
     assert all(row["local"]["references"] for row in local_rows)
 
 
-def test_dashboard_has_single_reunion_mayotte_filter_for_local_watch():
+def test_dashboard_has_single_reunion_mayotte_focus_block():
+    """Réunion / Mayotte n'est plus un simple bouton de filtre : c'est un bloc
+    dédié en tête de la vue Veille, alimenté par `analytics.focus` (calculé en
+    Python à partir de `config.FOCUS_LOCATIONS`, jamais d'une liste écrite en
+    dur côté JS) et par le score/synthèse locaux de la fiche incident."""
+    from cyberwatch import config
     html = open("index.html", encoding="utf-8").read()
-    app = open("assets/app.js", encoding="utf-8").read()
+    js = open("assets/dashboard.js", encoding="utf-8").read()
 
-    assert 'id="f-local"' in html
-    assert '>Réunion / Mayotte</button>' in html
-    assert 'f-veille-llm' not in html + app
-    assert 'f-presse-mahoraise' not in html + app
-    assert "!incident.local" in app
-    assert "Score cyberattaque" in app
-    assert "Analyse locale" in app
+    assert 'id="focus-card"' in html
+    assert 'id="focus-body"' in html
+    assert "function renderFocusBlock(" in js
+    assert "a?.focus" in js or "analytics.focus" in js.replace("state.analytics", "analytics")
+    assert 'f-veille-llm' not in html + js
+    assert 'f-presse-mahoraise' not in html + js
+    assert "Score cyberattaque" in js
+    assert "Analyse locale" in js
+    assert config.FOCUS_LOCATIONS == ["La Réunion", "Mayotte"]

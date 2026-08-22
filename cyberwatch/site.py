@@ -1,22 +1,32 @@
 """Génération des données consommées par le dashboard GitHub Pages.
 
-Deux fichiers seulement, pour que la page reste simple et se charge d'un bloc :
+Le découpage suit la fréquence d'usage des parcours, pas la structure interne :
 
-- `incidents.json` : la liste des incidents, que le dashboard filtre et agrège
-  côté navigateur ;
-- `status.json`    : santé du dernier run, angles morts, état de veille par
-  entité, historique des runs et état de chaque source (mêmes champs pour
-  toutes, sans traitement spécial par source).
+- `latest.json`    : les 30 derniers jours sans les faits détaillés (~90 Ko),
+  seul fichier nécessaire à la consultation de veille, la plus fréquente ;
+- `incidents.json` : tous les incidents sans les faits détaillés (~450 Ko),
+  chargé en tâche de fond pour la recherche et l'analyse ;
+- `facts.json`     : les faits par incident (~970 Ko), chargé uniquement à
+  l'ouverture d'une fiche ;
+- `status.json`    : santé du dernier run, angles morts, état de chaque source,
+  et les analytics déterministes calculées ici (§Analytics) ;
+- `reunion-mayotte.xml` : flux Atom du périmètre prioritaire, pour être alerté
+  sans visiter le site.
 
-Aucun agrégat métier n'est précalculé : les KPI et graphiques sont recalculés à
-chaque changement de filtre dans le navigateur.
+Les agrégats de *signal* (tendances, signaux, indicateurs) sont calculés ici,
+en Python, où ils sont testés et déterministes. Le navigateur ne recalcule que
+le filtrage et les comptages de la sélection courante : deux implémentations
+d'une même règle finiraient toujours par diverger.
 """
 
 from __future__ import annotations
 
 import json
 
-from . import config, identity, incident_identity, sources, status, store
+from datetime import date, timedelta
+from xml.sax.saxutils import escape as xml_escape
+
+from . import analytics, config, identity, incident_identity, sources, status, store
 from .dedup import group_components
 from .model import Incident, Item
 from .normalize import organisation_key
@@ -451,6 +461,7 @@ def status_payload() -> dict:
                 "status": status.STATUS_LABELS,
                 "run_status": status.RUN_STATUS_LABELS,
                 "candidate_status": status.CANDIDATE_STATUS_LABELS,
+                "sources": config.SOURCE_LABELS,
             },
         }
 
@@ -622,6 +633,7 @@ def status_payload() -> dict:
             "status": status.STATUS_LABELS,
             "run_status": status.RUN_STATUS_LABELS,
             "candidate_status": status.CANDIDATE_STATUS_LABELS,
+            "sources": config.SOURCE_LABELS,
         },
     }
 
@@ -631,6 +643,126 @@ def _to_int(value) -> int:
         return int(float(value))
     except (TypeError, ValueError):
         return 0
+
+
+#: Fenêtre de la vue de veille. Assez large pour qu'un lecteur hebdomadaire
+#: absent deux semaines ne rate rien, assez étroite pour rester légère.
+LATEST_WINDOW_DAYS = 30
+
+#: Un flux borné : au-delà, un lecteur de flux n'apporte plus rien.
+FEED_MAX_ENTRIES = 50
+
+
+def _without_facts(row: dict) -> dict:
+    """Copie publiable sans les faits détaillés.
+
+    Les faits représentent 86 % du poids du payload pour un contenu affiché
+    seulement à l'ouverture d'une fiche ; `summary` et `local`, eux, sont lus
+    dans les listes et restent donc ici.
+    """
+    return {key: value for key, value in row.items() if key != "facts"}
+
+
+def _latest_payload(payload: list[dict]) -> list[dict]:
+    days = [value for value in (_iso_day(row.get("date")) for row in payload) if value]
+    if not days:
+        return []
+    cutoff = (max(days) - timedelta(days=LATEST_WINDOW_DAYS - 1)).isoformat()
+    recent = [row for row in payload if str(row.get("date") or "") >= cutoff]
+    recent.sort(key=lambda row: (str(row.get("date") or ""), str(row.get("id") or "")), reverse=True)
+    return [_without_facts(row) for row in recent]
+
+
+def _iso_day(value) -> date | None:
+    try:
+        return date.fromisoformat(str(value or "")[:10])
+    except ValueError:
+        return None
+
+
+def _feed_timestamp(value: str, fallback: str) -> str:
+    """Horodatage Atom, toujours dérivé des données — jamais de l'heure courante.
+
+    Un flux regénéré sur les mêmes entrées doit être identique octet pour
+    octet, sinon chaque run produirait une modification fantôme.
+    """
+    text = str(value or "").strip()
+    if len(text) >= 20 and "T" in text:
+        return text
+    day = _iso_day(text) or _iso_day(fallback)
+    return f"{day.isoformat()}T00:00:00Z" if day else "1970-01-01T00:00:00Z"
+
+
+def _public_link(urls, fallback: str) -> str:
+    """Première référence consultable publiquement.
+
+    Les sites de revendication en `.onion` sont écartés : un lecteur de flux en
+    ferait un lien cliquable vers l'infrastructure d'un groupe criminel. Le
+    lien retombe alors sur le dashboard, où la référence reste consultable dans
+    son contexte.
+    """
+    for url in (urls or []):
+        text = str(url).strip()
+        if not text.startswith(("http://", "https://")):
+            continue
+        host = text.split("/", 3)[2].lower() if text.count("/") >= 2 else ""
+        if host.endswith(".onion"):
+            continue
+        return text
+    return fallback
+
+
+def focus_feed(payload: list[dict], *, as_of: str, site_url: str) -> str:
+    """Flux Atom du périmètre prioritaire (Réunion / Mayotte).
+
+    Sur un site statique, un flux est le seul mécanisme d'alerte réel : il
+    prévient sans que l'utilisateur ait à venir vérifier. Le périmètre reprend
+    `config.FOCUS_LOCATIONS`, jamais une liste écrite en dur ici.
+    """
+    focus = set(config.FOCUS_LOCATIONS)
+    rows = [row for row in payload if str(row.get("location") or "") in focus]
+    rows.sort(key=lambda row: (str(row.get("date") or ""), str(row.get("id") or "")), reverse=True)
+    rows = rows[:FEED_MAX_ENTRIES]
+
+    updated = _feed_timestamp(as_of, rows[0].get("date") if rows else "")
+    lines = [
+        '<?xml version="1.0" encoding="utf-8"?>',
+        '<feed xmlns="http://www.w3.org/2005/Atom">',
+        f"  <title>Cyberwatch — {xml_escape(' / '.join(config.FOCUS_LOCATIONS))}</title>",
+        "  <subtitle>Incidents cyber publiquement documentés sur le périmètre prioritaire. "
+        "Une absence signifie « aucun incident publiquement observé », jamais « aucun incident réel ».</subtitle>",
+        f"  <id>{xml_escape(site_url)}#focus</id>",
+        f'  <link rel="alternate" href="{xml_escape(site_url)}"/>',
+        f"  <updated>{xml_escape(updated)}</updated>",
+    ]
+    for row in rows:
+        incident_id = str(row.get("id") or "")
+        title = f"{row.get('org') or 'Organisation inconnue'} — {row.get('threat') or 'Menace inconnue'}"
+        detail = [
+            f"{row.get('location') or 'Territoire inconnu'} · {row.get('date') or 'date inconnue'}",
+            f"{len(row.get('sources') or [])} source(s) : {', '.join(row.get('sources') or []) or 'non documentée'}",
+        ]
+        detail[1] = f"{len(row.get('sources') or [])} source(s) : " + (
+            ", ".join(config.source_label(value) for value in (row.get("sources") or [])) or "non documentée"
+        )
+        summary = str(row.get("summary") or "").strip()
+        if summary:
+            detail.append(summary)
+        local = row.get("local") or {}
+        if local.get("summary"):
+            detail.append(f"Analyse locale (score {local.get('score')}/100) : {local['summary']}")
+        link = _public_link(row.get("urls"), site_url)
+        lines += [
+            "  <entry>",
+            f"    <title>{xml_escape(title)}</title>",
+            f"    <id>{xml_escape(f'{site_url}#{incident_id}')}</id>",
+            f'    <link rel="alternate" href="{xml_escape(link)}"/>',
+            f"    <updated>{xml_escape(_feed_timestamp(row.get('last_seen'), row.get('date')))}</updated>",
+            f"    <summary>{xml_escape(' — '.join(detail))}</summary>",
+            "  </entry>",
+        ]
+    lines.append("</feed>")
+    return "\n".join(lines) + "\n"
 
 
 def build() -> tuple[int, int]:
@@ -645,6 +777,23 @@ def build() -> tuple[int, int]:
     )
     state = status_payload()
 
-    store.write_json(store.SITE_DATA_DIR / "incidents.json", payload)
+    # Les signaux sont calculés ici, sur le payload complet (faits compris pour
+    # l'ampleur des fuites), et publiés. Le navigateur ne les recalcule pas.
+    state["analytics"] = analytics.build_analytics(
+        payload,
+        focus_locations=config.FOCUS_LOCATIONS,
+        ocean_locations=config.OCEAN_LOCATIONS,
+    )
+
+    slim = [_without_facts(row) for row in payload]
+    detail = {row["id"]: row["facts"] for row in payload if row.get("facts")}
+
+    store.write_json(store.SITE_DATA_DIR / "incidents.json", slim)
+    store.write_json(store.SITE_DATA_DIR / "latest.json", _latest_payload(payload))
+    store.write_json(store.SITE_DATA_DIR / "facts.json", detail)
     store.write_json(store.SITE_DATA_DIR / "status.json", state)
+    (store.SITE_DATA_DIR / "reunion-mayotte.xml").write_text(
+        focus_feed(payload, as_of=str(state.get("run", {}).get("as_of") or ""), site_url=config.SITE_URL),
+        encoding="utf-8",
+    )
     return len(payload), len(state["sources"])
