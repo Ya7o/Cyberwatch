@@ -32,8 +32,6 @@ SCALAR_FIELDS = (
     "cvss",
     "data_volume",
 )
-LIST_FIELDS = ("data_types", "vulnerabilities")
-RICH_LISTS = ("affected_systems", "affected_datasets")
 UNIT_LABELS = {
     "people": "personnes",
     "accounts": "comptes",
@@ -53,7 +51,6 @@ STATUS_LABELS = {
 
 
 def source_rank(source_id: str | None) -> int:
-    """Rang stable d'une source ; une source inconnue vient toujours après."""
     return _SOURCE_RANK.get(str(source_id or "").strip(), len(SOURCE_PRIORITY) + 100)
 
 
@@ -95,7 +92,6 @@ def _supporting_sources(facts: Iterable[dict], getter: Callable[[dict], Any], ch
 
 
 def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
-    """Résout un champ scalaire : premier fait non vide selon la priorité."""
     ordered = _ordered_facts(facts)
     for fact in ordered:
         value = fact.get(field)
@@ -111,7 +107,6 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
 
 
 def _list_entries(facts: Iterable[dict], field: str) -> list[dict]:
-    """Fusionne des listes compatibles ; la priorité ne sert qu'au libellé canonique."""
     selected: dict[str, dict] = {}
     for fact in _ordered_facts(facts):
         source = _text(fact.get("source"))
@@ -143,9 +138,7 @@ def _scope_kind(record: dict) -> str:
 
 
 def _count_semantic(record: dict) -> tuple[str, str]:
-    """Clé métier : unité + portée ; records total et uniques restent distincts."""
-    unit = _norm(record.get("unit")) or "unknown"
-    return unit, _scope_kind(record)
+    return _norm(record.get("unit")) or "unknown", _scope_kind(record)
 
 
 def _status(record: dict) -> str:
@@ -154,67 +147,73 @@ def _status(record: dict) -> str:
 
 
 def _record_value(record: dict) -> Any:
-    value = record.get("value")
-    if value is None:
-        return _text(record.get("raw"))
-    return value
+    return record.get("value") if record.get("value") is not None else _text(record.get("raw"))
 
 
 def _same_record_value(left: dict, right: dict) -> bool:
     return _norm(_record_value(left)) == _norm(_record_value(right))
 
 
-def _merge_record(existing: dict, record: dict, source: str) -> dict:
-    if source and source not in existing["sources"]:
+def _merge_record(existing: dict, record: dict, source: str) -> None:
+    if source and source not in existing["sources"] and _same_record_value(existing, record):
         existing["sources"].append(source)
-    if _same_record_value(existing, record):
-        return existing
-    # Conflit sur la même sémantique : le premier en ordre de priorité gagne.
-    return existing
+
+
+def _legacy_affected_record(fact: dict) -> dict | None:
+    value = fact.get("affected_count")
+    unit = _norm(fact.get("affected_unit"))
+    if value is None or not unit or unit == "unknown":
+        return None
+    source = _text(fact.get("source"))
+    return {
+        "value": value,
+        "raw": _text(fact.get("affected_count_raw")),
+        "unit": unit,
+        "semantic": "unspecified",
+        "status": _status({"status": fact.get("claim_status")}),
+        "source": source,
+        "sources": [source] if source else [],
+    }
+
+
+def _insert_count(selected: dict[tuple[str, str], dict], record: dict, source: str) -> None:
+    key = _count_semantic(record)
+    normalized = {
+        **record,
+        "semantic": key[1],
+        "status": _status(record),
+        "source": source,
+        "sources": [source] if source else [],
+    }
+    existing = selected.get(key)
+    if existing is None:
+        selected[key] = normalized
+        return
+    _merge_record(existing, normalized, source)
 
 
 def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
+    """Fusionne rich + legacy sous une même clé (unité, sémantique)."""
     selected: dict[tuple[str, str], dict] = {}
     ordered = _ordered_facts(facts)
     for fact in ordered:
         source = _text(fact.get("source"))
-        records = fact.get("rich_facts", {}).get("affected_counts", []) if isinstance(fact.get("rich_facts"), dict) else []
-        if not isinstance(records, list):
-            records = []
-        for raw_record in records:
-            if not isinstance(raw_record, dict) or raw_record.get("value") is None:
-                continue
-            record = dict(raw_record)
-            key = _count_semantic(record)
-            if key not in selected:
-                selected[key] = {
-                    **record,
-                    "semantic": key[1],
-                    "status": _status(record),
-                    "source": source,
-                    "sources": [source] if source else [],
-                }
-            else:
-                _merge_record(selected[key], record, source)
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        records = rich.get("affected_counts", []) if isinstance(rich, dict) else []
+        if isinstance(records, list):
+            for raw_record in records:
+                if isinstance(raw_record, dict) and raw_record.get("value") is not None:
+                    _insert_count(selected, dict(raw_record), source)
 
-    # Fallback pour les extracteurs historiques qui ne publient pas rich_facts.
-    if not selected:
-        for fact in ordered:
-            value = fact.get("affected_count")
-            if value is None:
-                continue
-            unit = _text(fact.get("affected_unit")) or "unknown"
-            record = {
-                "value": value,
-                "raw": _text(fact.get("affected_count_raw")),
-                "unit": unit,
-                "semantic": "unspecified",
-                "status": _norm(fact.get("claim_status")) or "unknown",
-                "source": _text(fact.get("source")),
-                "sources": [_text(fact.get("source"))] if _text(fact.get("source")) else [],
-            }
-            selected[(unit, "unspecified")] = record
-            break
+        legacy = _legacy_affected_record(fact)
+        if legacy:
+            key = (legacy["unit"], legacy["semantic"])
+            existing = selected.get(key)
+            if existing is None:
+                selected[key] = legacy
+            else:
+                _merge_record(existing, legacy, source)
+
     return list(selected.values())
 
 
@@ -254,16 +253,29 @@ def _format_count(record: dict) -> str:
     except (TypeError, ValueError):
         value = _text(record.get("value"))
     unit = UNIT_LABELS.get(_text(record.get("unit")).lower(), _text(record.get("unit")))
-    semantic = _text(record.get("semantic"))
-    if semantic == "unique" and unit == "enregistrements":
+    if _text(record.get("semantic")) == "unique" and unit == "enregistrements":
         unit = "enregistrements uniques"
     return " ".join(part for part in (value, unit) if part).strip()
 
 
+def _summary_priority(record: dict) -> tuple[int, int, int]:
+    unit = _text(record.get("unit")).lower()
+    semantic = _text(record.get("semantic")).lower()
+    unit_rank = {
+        "people": 0,
+        "clients": 1,
+        "users": 2,
+        "accounts": 3,
+        "records": 4,
+        "files": 5,
+    }.get(unit, 9)
+    semantic_rank = 0 if semantic == "unique" else 1 if semantic == "total" else 2
+    return unit_rank, semantic_rank, source_rank(record.get("source"))
+
+
 def build_display_summary(resolved: dict, fallback: str = "") -> str:
-    """Produit une synthèse courte, déterministe et sans LLM."""
     sentences: list[str] = []
-    affected = resolved.get("affected") or []
+    affected = sorted(resolved.get("affected") or [], key=_summary_priority)
     if affected:
         record = affected[0]
         value = _format_count(record)
@@ -277,9 +289,7 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
         suffix = "…" if len(data_types) > 5 else ""
         sentences.append(f"Données exposées : {shown}{suffix}.")
 
-    if sentences:
-        return " ".join(sentences)
-    return _text(fallback)
+    return " ".join(sentences) if sentences else _text(fallback)
 
 
 def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "") -> dict:
