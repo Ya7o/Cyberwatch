@@ -200,11 +200,14 @@ def _rank_signal(signal: dict) -> tuple:
     return (-confidence, -int(signal.get("delta") or 0), str(signal.get("label") or ""))
 
 
+_CONFIDENCE_LABELS_FR = {"high": "élevée", "medium": "moyenne", "low": "faible"}
+
+
 def _narrative(signals: list[dict], windows: dict[str, dict]) -> list[str]:
     lines = []
     for signal in signals[:5]:
         label, now, before, days = signal["label"], signal["current"], signal["previous"], signal["window_days"]
-        confidence = signal["confidence"]["level"]
+        confidence = _CONFIDENCE_LABELS_FR.get(signal["confidence"]["level"], signal["confidence"]["level"])
         if signal["kind"] == "emerging":
             lines.append(f"{label} apparaît sur {days} jours avec {now} incidents, contre aucun sur la période précédente (confiance {confidence}).")
         elif signal["kind"] == "new_pair":
@@ -222,20 +225,41 @@ def _month(value: Any) -> str:
     return day.strftime("%Y-%m") if day else ""
 
 
-def _month_range(rows: list[dict]) -> list[str]:
-    months = sorted({_month(row.get("date")) for row in rows} - {""})
-    if not months:
-        return []
-    year, month = (int(part) for part in months[0].split("-"))
-    end_year, end_month = (int(part) for part in months[-1].split("-"))
+#: Un seul incident daté à +70 ans produisait autrefois un axe de plusieurs
+#: siècles côté navigateur (874 barres, SVG de 43 602 px). La série est
+#: calculée ici, en Python : le garde-fou vit donc désormais à la source,
+#: avant publication, plutôt que dans chaque runtime qui la consomme.
+MAX_SERIES_MONTHS = 36
+
+
+def _month_range(rows: list[dict], anchor: date) -> tuple[list[str], int]:
+    """Mois couverts par `rows`, bornés aux `MAX_SERIES_MONTHS` derniers.
+
+    Renvoie aussi le nombre d'incidents dont la date dépasse `anchor` : ils
+    sont exclus de la série (une date future n'est pas un mois réel) et
+    comptés plutôt que silencieusement supprimés.
+    """
+    anchor_month = anchor.strftime("%Y-%m")
+    all_months = [_month(row.get("date")) for row in rows]
+    kept = sorted({month for month in all_months if month and month <= anchor_month})
+    future = sum(1 for month in all_months if month and month > anchor_month)
+    if not kept:
+        return [], future
+    year, month = (int(part) for part in kept[0].split("-"))
+    end_year, end_month = (int(part) for part in kept[-1].split("-"))
+    span = (end_year - year) * 12 + (end_month - month) + 1
+    if span > MAX_SERIES_MONTHS:
+        offset = (end_year * 12 + end_month - 1) - (MAX_SERIES_MONTHS - 1)
+        year, month = divmod(offset, 12)
+        month += 1
     out = []
     while (year, month) <= (end_year, end_month):
         out.append(f"{year}-{month:02d}")
         month, year = (1, year + 1) if month == 12 else (month + 1, year)
-    return out
+    return out, future
 
 
-def _series(rows: list[dict]) -> dict[str, Any]:
+def _series(rows: list[dict], anchor: date) -> dict[str, Any]:
     """Évolution mois par mois, dimension par dimension.
 
     Publie aussi le nombre de sources distinctes observées chaque mois : une
@@ -243,9 +267,9 @@ def _series(rows: list[dict]) -> dict[str, Any]:
     d'être branchée. Les deux courbes doivent se lire ensemble, sinon une
     hausse de couverture se cite comme une hausse de menace.
     """
-    months = _month_range(rows)
+    months, future = _month_range(rows, anchor)
     if not months:
-        return {"months": [], "total": [], "threat": {}, "sector": {}, "sources_observed": []}
+        return {"months": [], "total": [], "threat": {}, "sector": {}, "sources_observed": [], "excluded_future": future}
     index = {month: position for position, month in enumerate(months)}
     total = [0] * len(months)
     sources: list[set] = [set() for _ in months]
@@ -275,6 +299,7 @@ def _series(rows: list[dict]) -> dict[str, Any]:
         "threat": per_dimension["threat"],
         "sector": per_dimension["sector"],
         "sources_observed": [len(entry) for entry in sources],
+        "excluded_future": future,
     }
 
 
@@ -337,7 +362,7 @@ def _quality(rows: list[dict], anchor: date) -> dict[str, Any]:
         "sources": len(sources),
         "first_date": min(days).isoformat() if days else "",
         "last_date": max(days).isoformat() if days else "",
-        "history_months": (len(_month_range(rows)) if days else 0),
+        "history_months": (len(_month_range(rows, anchor)[0]) if days else 0),
         "unknown_pct": {
             key: round(100 * _ratio(sum(not _known(row.get(key)) for row in rows), total), 1)
             for key in DIMENSIONS
@@ -420,6 +445,7 @@ def build_analytics(
     *,
     as_of: str | date | None = None,
     focus_locations: tuple[str, ...] | list[str] = (),
+    ocean_locations: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     anchor = as_of if isinstance(as_of, date) else _day(as_of)
     dated = [row for row in incidents if _day(row.get("date"))]
@@ -460,10 +486,16 @@ def build_analytics(
         "dated_incidents": len(dated), "windows": windows, "coverage": coverage, "top_90d": top,
         "diversity_90d": {key: _entropy(current90, key) for key in DIMENSIONS},
         "recurring_organisations_90d": recurring, "signals": signals, "briefing": _narrative(signals, windows),
-        "series": _series(dated),
+        "series": _series(dated, anchor),
         "exposure": _exposure(incidents),
         "quality": _quality(incidents, anchor),
+        # Réunion / Mayotte : périmètre prioritaire de la vue Veille.
         "focus": _focus(dated, anchor, tuple(focus_locations)),
+        # Ensemble Océan Indien (surperensemble) : lecture Analyse uniquement,
+        # distincte du périmètre prioritaire — Maurice/Madagascar/Seychelles/
+        # Comores ne partagent pas le cadre réglementaire de départements
+        # français de La Réunion et Mayotte.
+        "ocean": _focus(dated, anchor, tuple(ocean_locations)),
         "method": {
             "signal_rule": "minimum 3 incidents and +2 delta; acceleration requires >=50% increase; new threat-sector pairs require >=3 incidents",
             "base_rate": (

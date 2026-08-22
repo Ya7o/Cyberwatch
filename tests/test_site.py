@@ -140,29 +140,29 @@ class TestDashboardSourcesSection:
         return open(path, encoding="utf-8").read()
 
     def test_vue_globale_reste_compacte_sans_metriques(self):
-        js = self._read("assets/app.js")
+        js = self._read("assets/dashboard.js")
         match = re.search(
-            r"function renderSources\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
+            r"function renderSourcesDetail\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
         )
-        assert match, "renderSources() introuvable"
+        assert match, "renderSourcesDetail() introuvable"
         body = match.group(1)
-        compact_part = body.split("renderSourceDetail(rows)")[0]
+        compact_part = body.split('$("#sources-detail-table tbody")')[0]
         for forbidden in ("items_seen", "items_in_window", "latest_item"):
             assert forbidden not in compact_part
 
     def test_detail_accessible_sous_la_vue_globale_avec_les_six_champs(self):
         html = self._read("index.html")
-        assert '<div id="sources-list"' in html
-        list_pos = html.index('id="sources-list"')
+        assert '<div id="sources-leds"' in html
+        list_pos = html.index('id="sources-leds"')
         detail_pos = html.index('class="sources-detail"')
         assert detail_pos > list_pos, "le détail doit suivre la vue globale"
         assert "<summary>" in html
 
-        js = self._read("assets/app.js")
+        js = self._read("assets/dashboard.js")
         match = re.search(
-            r"function renderSourceDetail\(rows\)\s*\{(.*?)\n  \}", js, re.DOTALL
+            r"function renderSourcesDetail\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
         )
-        assert match, "renderSourceDetail() introuvable"
+        assert match, "renderSourcesDetail() introuvable"
         body = match.group(1)
         for expected in (
             "sourceLabel(source.id)", "source.status", "source.latest_item",
@@ -170,7 +170,14 @@ class TestDashboardSourcesSection:
         ):
             assert expected in body
 
-    def test_veille_llm_affiche_veillellmreyt_dans_le_dashboard(self):
-        js = self._read("assets/app.js")
-        assert 'VEILLE_LLM: "veillellmReYt"' in js
-        assert 'VEILLE_LLM: "Veille IA"' not in js
+    def test_veille_llm_utilise_le_libelle_partage_dans_le_dashboard(self):
+        """`VEILLE_LLM` s'affichait « veillellmReYt » dans app.js et « Veille IA »
+        dans p2.js : deux noms pour la même source. Le libellé vient désormais
+        d'une table unique (`config.SOURCE_LABELS`), publiée dans status.json et
+        lue par le dashboard via `CW.sourceLabel` — jamais codée en dur ici."""
+        js = self._read("assets/dashboard.js") + self._read("assets/shared.js")
+        assert 'veillellmReYt' not in js
+        assert '"VEILLE_LLM":' not in js
+        from cyberwatch import config
+        assert config.source_label("VEILLE_LLM") == config.SOURCE_LABELS["VEILLE_LLM"]
+        assert config.source_label("VEILLE_LLM") != "VEILLE_LLM"

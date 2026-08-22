@@ -2,11 +2,11 @@
  "analytics": {
   "as_of": "2026-08-21",
   "briefing": [
-   "Commerce / Distribution accélère sur 30 jours : 15 incidents contre 5 auparavant (confiance high).",
-   "Administration / Collectivité accélère sur 30 jours : 14 incidents contre 8 auparavant (confiance high).",
-   "Services aux entreprises accélère sur 30 jours : 14 incidents contre 3 auparavant (confiance high).",
-   "Compromission de compte / messagerie accélère sur 30 jours : 11 incidents contre 3 auparavant (confiance high).",
-   "Sport accélère sur 30 jours : 10 incidents contre 3 auparavant (confiance high)."
+   "Commerce / Distribution accélère sur 30 jours : 15 incidents contre 5 auparavant (confiance élevée).",
+   "Administration / Collectivité accélère sur 30 jours : 14 incidents contre 8 auparavant (confiance élevée).",
+   "Services aux entreprises accélère sur 30 jours : 14 incidents contre 3 auparavant (confiance élevée).",
+   "Compromission de compte / messagerie accélère sur 30 jours : 11 incidents contre 3 auparavant (confiance élevée).",
+   "Sport accélère sur 30 jours : 10 incidents contre 3 auparavant (confiance élevée)."
   ],
   "coverage": {
    "location": {
@@ -167,6 +167,127 @@
    "signal_rule": "minimum 3 incidents and +2 delta; acceleration requires >=50% increase; new threat-sector pairs require >=3 incidents",
    "warning": "Observed publication patterns are not estimates of true cyber incident prevalence."
   },
+  "ocean": {
+   "by_location": {
+    "Comores": 0,
+    "La Réunion": 10,
+    "Madagascar": 1,
+    "Maurice": 4,
+    "Mayotte": 4,
+    "Seychelles": 1
+   },
+   "comparison": {
+    "by_source": {
+     "BONJOURLAFUITE": 327,
+     "CYBERATTAQUE_ORG": 423,
+     "FRENCHBREACHES": 100,
+     "RANSOMWARE_LIVE": 175
+    },
+    "dominant_source_pct": 49.7,
+    "incidents": 851,
+    "ransomware_pct": 22.7,
+    "sectors": [
+     {
+      "count": 56,
+      "label": "Administration / Collectivité"
+     },
+     {
+      "count": 46,
+      "label": "Sport"
+     },
+     {
+      "count": 45,
+      "label": "Commerce / Distribution"
+     },
+     {
+      "count": 43,
+      "label": "Services aux entreprises"
+     }
+    ],
+    "threat_profile_reliable": true,
+    "threats": [
+     {
+      "count": 568,
+      "label": "Fuite de données"
+     },
+     {
+      "count": 193,
+      "label": "Ransomware"
+     },
+     {
+      "count": 51,
+      "label": "Phishing / fraude"
+     },
+     {
+      "count": 20,
+      "label": "Compromission de compte / messagerie"
+     }
+    ]
+   },
+   "days_since_last": 3,
+   "incidents": 20,
+   "last_date": "2026-08-18",
+   "locations": [
+    "La Réunion",
+    "Mayotte",
+    "Maurice",
+    "Madagascar",
+    "Seychelles",
+    "Comores"
+   ],
+   "max_gap_days": 49,
+   "median_gap_days": 5,
+   "multi_source": 0,
+   "profile": {
+    "by_source": {
+     "CYBERATTAQUE_ORG": 2,
+     "RANSOMWARE_LIVE": 7,
+     "VEILLE_LLM": 11
+    },
+    "dominant_source_pct": 55.0,
+    "incidents": 20,
+    "ransomware_pct": 35.0,
+    "sectors": [
+     {
+      "count": 5,
+      "label": "Administration / Collectivité"
+     },
+     {
+      "count": 5,
+      "label": "Numérique / Technologie"
+     },
+     {
+      "count": 2,
+      "label": "Finance / Assurance"
+     },
+     {
+      "count": 1,
+      "label": "Construction / BTP"
+     }
+    ],
+    "threat_profile_reliable": false,
+    "threats": [
+     {
+      "count": 7,
+      "label": "Ransomware"
+     },
+     {
+      "count": 6,
+      "label": "Inconnu"
+     },
+     {
+      "count": 5,
+      "label": "Fuite de données"
+     },
+     {
+      "count": 1,
+      "label": "Compromission de compte / messagerie"
+     }
+    ]
+   },
+   "share_pct": 2.3,
+   "silence_is_unusual": false
+  },
   "quality": {
    "corroborated_pct": 18.7,
    "first_date": "2026-01-02",
@@ -228,6 +349,7 @@
   ],
   "schema": "cyberwatch-analytics-v1",
   "series": {
+   "excluded_future": 0,
    "months": [
     "2026-01",
     "2026-02",
@@ -2550,8 +2672,8 @@
     "overall": "OK",
     "qualification_mode": "full",
     "qualification_reason": "disabled",
-    "qualification_runtime_s": 0.022,
-    "qualify_duration_s": 0.022,
+    "qualification_runtime_s": 0.026,
+    "qualify_duration_s": 0.026,
     "requests": 0,
     "run_id": "RUN-20260815T100000",
     "snapshot_items_modified": 0,
@@ -2573,8 +2695,8 @@
     "overall": "OK",
     "qualification_mode": "full",
     "qualification_reason": "disabled",
-    "qualification_runtime_s": 0.023,
-    "qualify_duration_s": 0.023,
+    "qualification_runtime_s": 0.027,
+    "qualify_duration_s": 0.027,
     "requests": 0,
     "run_id": "RUN-20260816T100000",
     "snapshot_items_modified": 0,
@@ -2596,8 +2718,8 @@
     "overall": "OK",
     "qualification_mode": "full",
     "qualification_reason": "disabled",
-    "qualification_runtime_s": 0.015,
-    "qualify_duration_s": 0.015,
+    "qualification_runtime_s": 0.017,
+    "qualify_duration_s": 0.017,
     "requests": 0,
     "run_id": "RUN-20260812T100000",
     "snapshot_items_modified": 0,
@@ -2620,8 +2742,8 @@
    "overall": "OK",
    "qualification_mode": "full",
    "qualification_reason": "disabled",
-   "qualification_runtime_s": 0.015,
-   "qualify_duration_s": 0.015,
+   "qualification_runtime_s": 0.017,
+   "qualify_duration_s": 0.017,
    "requests": 0,
    "run_id": "RUN-20260812T100000",
    "snapshot_items_modified": 0,

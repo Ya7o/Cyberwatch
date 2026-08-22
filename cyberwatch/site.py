@@ -780,7 +780,9 @@ def build() -> tuple[int, int]:
     # Les signaux sont calculés ici, sur le payload complet (faits compris pour
     # l'ampleur des fuites), et publiés. Le navigateur ne les recalcule pas.
     state["analytics"] = analytics.build_analytics(
-        payload, focus_locations=config.FOCUS_LOCATIONS
+        payload,
+        focus_locations=config.FOCUS_LOCATIONS,
+        ocean_locations=config.OCEAN_LOCATIONS,
     )
 
     slim = [_without_facts(row) for row in payload]

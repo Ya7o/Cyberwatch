@@ -35,6 +35,12 @@ LOCATIONS = [
 # Territoires du focus « Réunion / Mayotte » du dashboard.
 FOCUS_LOCATIONS = [LOC_REUNION, LOC_MAYOTTE]
 
+#: Ensemble des territoires Océan Indien suivis, pour la vue Analyse — distinct
+#: de FOCUS_LOCATIONS : Réunion/Mayotte sont des départements français, cadre
+#: réglementaire distinct de Maurice/Madagascar/Seychelles/Comores pour un
+#: consultant. Les deux se lisent séparément dans l'Analyse.
+OCEAN_LOCATIONS = [LOC_REUNION, LOC_MAYOTTE, LOC_MAURICE, LOC_MADAGASCAR, LOC_SEYCHELLES, LOC_COMORES]
+
 #: Libellés lisibles des sources — table unique.
 #: Elle vivait auparavant en double dans `app.js` et `p2.js`, avec deux noms
 #: différents pour la même source (`VEILLE_LLM` s'affichait « veillellmReYt »
