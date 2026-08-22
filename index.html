@@ -26,6 +26,7 @@
 </header>
 
 <main class="wrap" id="contenu">
+  <div id="data-alert" class="data-alert" role="alert" hidden><strong>Données indisponibles.</strong><p id="data-alert-detail"></p></div>
   <nav class="views" aria-label="Vue du dashboard">
     <button type="button" data-view="veille" aria-current="true">Veille</button>
     <button type="button" data-view="recherche" aria-current="false">Recherche</button>
@@ -68,7 +69,7 @@
   <section id="view-analyse" class="view" hidden aria-label="Analyse">
     <div id="analysis-content">
       <p class="reading-line" id="reading-line"></p>
-      <section class="card" aria-labelledby="evolution-title"><div class="card-head"><h2 id="evolution-title">Évolution mensuelle</h2></div><div class="chart" id="chart-evolution"></div></section>
+      <section class="card" aria-labelledby="evolution-title"><div class="card-head"><h2 id="evolution-title">Évolution mensuelle</h2></div><div class="chart" id="chart-evolution"></div><p id="evolution-note" hidden></p></section>
       <section class="analysis-grid">
         <section class="card"><div class="card-head"><h2>Menaces — 90 derniers jours</h2></div><div class="chart" id="chart-threat"></div></section>
         <section class="card"><div class="card-head"><h2>Secteurs — 90 derniers jours</h2></div><div class="chart" id="chart-sector"></div></section>
