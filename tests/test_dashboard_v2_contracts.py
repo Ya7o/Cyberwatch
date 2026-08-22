@@ -1,8 +1,4 @@
-"""Contrats UX de la refonte dashboard v2.
-
-Ces tests protègent les décisions produit demandées après usage réel du dashboard :
-lecture rapide, recherche multi-territoires et résolution des faits par priorité.
-"""
+"""Contrats UX et frontière de responsabilité du dashboard v2."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -81,20 +77,33 @@ def test_signaux_exposent_une_lecture_consultant_et_masquent_les_scores():
     assert "share_pct" not in js
 
 
-def test_priorite_des_sources_est_exactement_celle_du_produit():
+def test_priorite_des_sources_n_existe_plus_dans_le_runtime():
     js = _read("assets/dashboard-v2.js")
-    expected = '["RANSOMWARE_LIVE", "CYBERATTAQUE_ORG", "FRENCHBREACHES", "BONJOURLAFUITE", "VEILLE_LLM"]'
-    assert expected in js
-    assert "sortedFacts(facts)" in js
-    assert "sourceRank(sourceOf(a)) - sourceRank(sourceOf(b))" in js
+    backend = _read("cyberwatch/fact_resolution.py")
+    assert "SOURCE_PRIORITY" not in js
+    assert "sourceRank(" not in js
+    assert "sortedFacts(" not in js
+    assert "firstValue(" not in js
+    assert "function resolveFacts(" not in js
+    expected = '(\n    "RANSOMWARE_LIVE",\n    "CYBERATTAQUE_ORG",\n    "FRENCHBREACHES",\n    "BONJOURLAFUITE",\n    "VEILLE_LLM",\n)'
+    assert expected in backend
 
 
-def test_detail_agrege_les_faits_et_n_affiche_que_les_champs_presents():
+def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents():
     js = _read("assets/dashboard-v2.js")
-    assert "function resolveFacts(facts)" in js
-    assert "function firstValue(facts, getter)" in js
-    assert "function richRecords(facts, key)" in js
+    assert "detail.fields || {}" in js
+    assert "detail.data_types || []" in js
+    assert "detail.affected || []" in js
+    assert "detail.display_summary" in js
     assert "Éléments documentés" in js
     assert "Première observation" not in js
     assert "Dernière observation" not in js
     assert "incident-fact-source" not in js
+
+
+def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
+    site = _read("cyberwatch/site.py")
+    assert "raw_facts = _legacy._source_facts_by_incident" in site
+    assert "resolved = fact_resolution.resolve_all(raw_facts" in site
+    assert 'store.write_json(store.SITE_DATA_DIR / "facts.json", resolved)' in site
+    assert "analytics.build_analytics(\n        payload" in site
