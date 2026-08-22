@@ -24,6 +24,9 @@ from cyberwatch.normalize import load_organisation_aliases, organisation_acronym
     ("Lebonmateriel.fr", "Le Bon Matériel"),
     ("Allopneus", "Allo Pneus"),
     ("MaGestionLocative", "Ma Gestion Locative"),
+    ("Groupe Géotec", "Géotec"),
+    ("SUEZ", "Suez Eau France"),
+    ("IRD", "Institut de recherche pour le développement"),
 ])
 def test_versioned_aliases_are_exact(left, right):
     assert organisation_key(left) == organisation_key(right)

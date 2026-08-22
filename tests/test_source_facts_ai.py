@@ -384,3 +384,69 @@ def test_autres_sources_jamais_envoyees_au_llm(monkeypatch, tmp_path):
     item = _item("BONJOURLAFUITE")
     assert sfa.enrich(item, RawEntry(title="X", content="Données")) is None
     assert not called
+
+
+def test_alaxione_synthese_trop_longue_est_rejetee():
+    """Cas de non-régression : la synthèse doit être une headline, pas un
+    second récit de l'incident (point 1 du tableau de revue manuelle)."""
+    long_summary = (
+        "Alaxione a été victime d'une cyberattaque revendiquée par un groupe "
+        "qui affirme avoir exfiltré plusieurs bases de données clients avant "
+        "de les proposer à la vente sur un forum spécialisé, une opération "
+        "qui rappelle plusieurs incidents similaires observés cette année."
+    )
+    assert len(long_summary) > sfa.MAX_HEADLINE_CHARS
+    context = f"{long_summary} Extrait exact de l'article source."
+    raw = {"summary": {"value": long_summary, "confidence": 0.9, "evidence": long_summary}}
+    result = sfa._normalize(raw, context, {"summary"})
+    assert "summary" not in result
+
+
+def test_alaxione_headline_courte_est_acceptee():
+    short_summary = "Alaxione confirme une fuite de données clients revendiquée par un groupe cybercriminel."
+    assert len(short_summary) <= sfa.MAX_HEADLINE_CHARS
+    context = f"{short_summary} Détails supplémentaires dans l'article."
+    raw = {"summary": {"value": short_summary, "confidence": 0.9, "evidence": short_summary}}
+    result = sfa._normalize(raw, context, {"summary"})
+    assert result["summary"]["value"] == short_summary
+
+
+def test_impact_risque_prospectif_est_rejete():
+    """Point 2 : « risque de », « expose à » et « augmente le risque » ne sont
+    pas des conséquences observées."""
+    context = "L'incident augmente le risque de fraude pour les clients concernés."
+    raw = {"value": "augmente le risque de fraude", "confidence": 0.9, "evidence": context}
+    assert sfa._normalize_impact(raw, context) is None
+
+    context = "La fuite expose les utilisateurs à un risque d'usurpation d'identité."
+    raw = {"value": "expose les utilisateurs à un risque d'usurpation d'identité", "confidence": 0.9, "evidence": context}
+    assert sfa._normalize_impact(raw, context) is None
+
+
+def test_impact_consequence_observee_est_acceptee():
+    context = "La production a été interrompue pendant trois jours suite à l'attaque."
+    raw = {"value": "production interrompue pendant trois jours", "confidence": 0.9, "evidence": context}
+    assert sfa._normalize_impact(raw, context) is not None
+
+
+def test_geotec_categorie_non_precisee_est_conservee():
+    """Point 5 : un fait négatif explicite (exfiltration confirmée, catégories
+    non communiquées) ne doit pas laisser une fiche vide indistincte d'une
+    absence d'extraction."""
+    context = (
+        "Géotec confirme avoir été victime d'une exfiltration de données par un "
+        "groupe de ransomware. Les catégories de données concernées n'ont pas "
+        "été précisées par l'entreprise à ce stade."
+    )
+    result = sfa._deterministic_data_types(context)
+    assert result == [{
+        "value": sfa.DATA_TYPES_UNDISCLOSED_LABEL,
+        "confidence": 1.0,
+        "evidence": "catégories de données concernées n'ont pas été précisées",
+    }]
+
+
+def test_absence_de_toute_mention_reste_vide():
+    """Pas de fuite/exfiltration mentionnée : aucune invention de fait négatif."""
+    context = "Géotec annonce une mise à jour de son site internet."
+    assert sfa._deterministic_data_types(context) == []

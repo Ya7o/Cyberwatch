@@ -446,10 +446,12 @@ button { font-family: inherit; }
 .incident-data-group > summary { cursor: pointer; font-weight: 600; min-height: 24px; padding: 2px 0; }
 .incident-data-values { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
 .incident-data-value { display: inline-flex; padding: 2px 7px; border: 1px solid var(--border); border-radius: 999px; }
-.data-sensitivity { display: inline-flex; margin-left: 7px; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border); font-size: 11px; font-weight: 650; }
-.data-sensitivity--personal { background: rgba(217, 154, 0, .14); }
-.data-sensitivity--sensitive { background: rgba(214, 69, 69, .14); }
-.data-sensitivity--unknown { color: var(--text-secondary); }
+/* Code couleur de sensibilité par catégorie de donnée (§ point 6 du tableau
+   de revue manuelle) : modérée (ex. e-mail/téléphone), élevée (ex. IBAN/RIB),
+   très élevée (ex. mot de passe/santé/pièce d'identité/NIR). */
+.incident-data-value--sensitivity-moderate { background: rgba(217, 154, 0, .16); border-color: rgba(217, 154, 0, .45); }
+.incident-data-value--sensitivity-high { background: rgba(214, 69, 69, .18); border-color: rgba(214, 69, 69, .5); }
+.incident-data-value--sensitivity-critical { background: rgba(214, 69, 69, .38); border-color: rgba(214, 69, 69, .8); font-weight: 650; }
 .local-analysis { padding: 9px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--plane); font-size: 12.5px; }
 .local-score { display: inline-flex; padding: 2px 7px; border: 1px solid var(--border); border-radius: 999px; font-weight: 650; }
 .evidence-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; font-size: 11.5px; }
