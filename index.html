@@ -35,7 +35,7 @@
 
   <section id="view-veille" class="view" aria-label="Veille">
     <div id="veille-signal"></div>
-    <section class="card focus-card" aria-labelledby="focus-title">
+    <section id="focus-card" class="card focus-card" aria-labelledby="focus-title">
       <div class="card-head"><h2 id="focus-title">La Réunion / Mayotte</h2></div>
       <div id="focus-body"></div>
     </section>
@@ -76,7 +76,11 @@
       </section>
       <section class="card" aria-labelledby="signals-title"><div class="card-head"><h2 id="signals-title">Ce qui change</h2></div><div id="signals-list" class="signal-list"></div></section>
       <section class="card" aria-labelledby="ocean-title"><div class="card-head"><h2 id="ocean-title">Océan Indien</h2></div><div class="ocean-compare"><div id="ocean-focus"></div><div id="ocean-ensemble"></div></div></section>
-      <section class="card reliability" id="sources" aria-labelledby="sources-title"><div class="card-head"><h2 id="sources-title">État des sources</h2></div><div id="sources-leds" class="source-leds"></div></section>
+      <section class="card reliability" id="sources" aria-labelledby="sources-title">
+        <div class="card-head"><h2 id="sources-title">État des sources</h2></div>
+        <div id="sources-leds" class="source-leds"></div>
+        <details class="sources-detail" hidden><summary>Détails techniques des sources</summary></details>
+      </section>
     </div>
   </section>
 </main>
