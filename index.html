@@ -4,160 +4,86 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cyberwatch — Observatoire cyber France / Océan Indien</title>
-<meta name="description" content="Incidents cyber publiquement listés en France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles et Comores.">
+<meta name="description" content="Incidents cyber publiquement listés en France métropolitaine et dans l’Océan Indien.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
 <link rel="alternate" type="application/atom+xml" title="Cyberwatch — La Réunion / Mayotte" href="assets/data/reunion-mayotte.xml">
-<link rel="stylesheet" href="assets/style.css?v=20260822-2">
+<link rel="stylesheet" href="assets/style.css?v=20260822-3">
+<link rel="stylesheet" href="assets/dashboard-v2.css?v=20260822-3">
 </head>
 <body>
-
 <a class="skip-link" href="#contenu">Aller au contenu</a>
-
 <header class="topbar">
   <div class="wrap topbar-inner">
     <div class="brand">
       <span class="brand-mark" aria-hidden="true">🛡️</span>
-      <div>
-        <h1>Cyberwatch</h1>
-        <p class="brand-sub">Incidents cyber publiquement listés — France &amp; Océan Indien</p>
-      </div>
+      <div><h1>Cyberwatch</h1><p class="brand-sub">Incidents cyber — France &amp; Océan Indien</p></div>
     </div>
     <div class="topbar-right">
-      <a class="run-pill" id="run-pill" href="?vue=analyse#sources" title="Voir l’état des sources">
-        <span class="run-dot" aria-hidden="true"></span>
-        <span id="run-pill-text">Chargement…</span>
-      </a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de thème">
-        <span data-theme-icon>◐</span>
-      </button>
+      <a class="run-pill" id="run-pill" href="?vue=analyse#sources" title="Voir l’état des sources"><span class="run-dot" aria-hidden="true"></span><span id="run-pill-text">Chargement…</span></a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de thème"><span data-theme-icon>◐</span></button>
     </div>
   </div>
 </header>
 
 <main class="wrap" id="contenu">
-  <div id="data-alert" class="data-alert" role="alert" hidden>
-    <strong>Données indisponibles.</strong>
-    <p id="data-alert-detail"></p>
-    <p class="data-alert-note">Les compteurs et listes ci-dessous ne reflètent pas la base : une liste vide affichée ici est un défaut de chargement, pas une absence d’incident.</p>
-  </div>
-
   <nav class="views" aria-label="Vue du dashboard">
     <button type="button" data-view="veille" aria-current="true">Veille</button>
     <button type="button" data-view="recherche" aria-current="false">Recherche</button>
     <button type="button" data-view="analyse" aria-current="false">Analyse</button>
   </nav>
 
-  <!-- ============================================================ VEILLE -->
   <section id="view-veille" class="view" aria-label="Veille">
-    <p class="freshness" id="freshness"></p>
-    <p class="change-line" id="change-line" aria-live="polite"></p>
-
-    <section class="card focus-card" id="focus-card" aria-labelledby="focus-title">
+    <div id="veille-signal"></div>
+    <section class="card focus-card" aria-labelledby="focus-title">
       <div class="card-head"><h2 id="focus-title">La Réunion / Mayotte</h2></div>
       <div id="focus-body"></div>
     </section>
-
     <section class="card" aria-labelledby="veille-title">
       <div class="card-head"><h2 id="veille-title">Derniers incidents — 30 jours</h2><p class="hint" id="veille-count"></p></div>
       <div id="veille-list" class="incident-list"></div>
     </section>
   </section>
 
-  <!-- ========================================================= RECHERCHE -->
   <section id="view-recherche" class="view" hidden aria-label="Recherche">
+    <div class="quick-filters" aria-label="Raccourcis territoriaux">
+      <button id="quick-focus" class="btn" type="button">Réunion / Mayotte</button>
+      <button id="quick-ocean" class="btn" type="button">Océan Indien</button>
+    </div>
     <div class="search-bar" role="search" aria-label="Recherche des incidents">
       <label class="search-field"><span>Recherche</span><input id="s-q" type="search" autocomplete="off" placeholder="Organisation, menace, secteur, source, synthèse…"></label>
       <label><span>Menace</span><select id="s-threat"><option value="">Toutes</option></select></label>
       <label><span>Secteur</span><select id="s-sector"><option value="">Tous</option></select></label>
-      <label><span>Territoire</span><select id="s-location"><option value="">Tous</option></select></label>
+      <div class="location-picker"><span>Territoire</span><button id="location-toggle" type="button" class="btn">Tous les territoires</button><div id="location-menu" class="location-menu" hidden><div id="s-locations"></div></div></div>
       <label><span>Source</span><select id="s-source"><option value="">Toutes</option></select></label>
       <label><span>Période</span><select id="s-period"><option value="all">Toute la base</option><option value="30">30 jours</option><option value="90">90 jours</option><option value="365">365 jours</option></select></label>
-      <label><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option><option value="sources">Plus corroborés</option></select></label>
+      <label><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option></select></label>
       <button id="s-reset" type="button" class="btn">Réinitialiser</button>
     </div>
     <div class="active-filters" id="s-active-filters"></div>
-    <div class="result-bar">
-      <p class="result-count" id="s-count" role="status" aria-live="polite"></p>
-      <button id="s-copy-link" type="button" class="btn">Copier le lien de cette vue</button>
-    </div>
+    <div class="result-bar"><p class="result-count" id="s-count" role="status" aria-live="polite"></p></div>
     <div id="s-list" class="incident-list"></div>
     <div id="s-pager" class="pager"></div>
-    <p class="coverage-caveat">Une absence dans Cyberwatch signifie « aucun incident publiquement observé dans les sources couvertes », jamais « aucun incident réel ».</p>
   </section>
 
-  <!-- =========================================================== ANALYSE -->
   <section id="view-analyse" class="view" hidden aria-label="Analyse">
-    <p class="reading-line" id="reading-line"></p>
-
-    <section class="card" aria-labelledby="evolution-title">
-      <div class="card-head"><h2 id="evolution-title">Évolution mensuelle</h2><p class="hint">Nombre d’incidents par mois, date d’événement lorsqu’elle est connue sinon date de publication.</p></div>
-      <div class="chart" id="chart-evolution"></div>
-      <p class="chart-note" id="evolution-note"></p>
-      <h3>Par menace et par secteur</h3>
-      <p class="hint">Une hausse de part peut être une hausse de couverture : la ligne « sources actives » se lit à côté.</p>
-      <div class="sparkline-rows" id="evolution-dimensions"></div>
-    </section>
-
-    <section class="grid-2">
-      <figure class="card"><figcaption><h2>Menaces — 90 derniers jours</h2><p class="hint" id="threat-note"></p></figcaption><div class="chart" id="chart-threat"></div></figure>
-      <figure class="card"><figcaption><h2>Secteurs — 90 derniers jours</h2><p class="hint" id="sector-note"></p></figcaption><div class="chart" id="chart-sector"></div></figure>
-    </section>
-
-    <section class="card" aria-labelledby="signals-title">
-      <div class="card-head"><h2 id="signals-title">Ce qui change</h2><p class="hint">Signaux calculés sur les publications observées, jamais assimilés à la prévalence réelle des cyberattaques.</p></div>
-      <div id="signals-list" class="signal-list"></div>
-      <details class="hint"><summary>Comment lire ces signaux</summary><p id="signals-method"></p></details>
-    </section>
-
-    <section class="card" aria-labelledby="ocean-title">
-      <div class="card-head"><h2 id="ocean-title">Océan Indien</h2></div>
-      <div class="ocean-compare">
-        <div><h4>La Réunion / Mayotte</h4><div id="ocean-focus"></div></div>
-        <div><h4>Ensemble Océan Indien</h4><div id="ocean-ensemble"></div></div>
-      </div>
-      <p class="ocean-caveat" id="ocean-caveat"></p>
-    </section>
-
-    <section class="grid-2">
-      <section class="card" aria-labelledby="exposure-title">
-        <div class="card-head"><h2 id="exposure-title">Ampleur des fuites</h2></div>
-        <div id="exposure-body"></div>
+    <div id="analysis-content">
+      <p class="reading-line" id="reading-line"></p>
+      <section class="card" aria-labelledby="evolution-title"><div class="card-head"><h2 id="evolution-title">Évolution mensuelle</h2></div><div class="chart" id="chart-evolution"></div></section>
+      <section class="analysis-grid">
+        <section class="card"><div class="card-head"><h2>Menaces — 90 derniers jours</h2></div><div class="chart" id="chart-threat"></div></section>
+        <section class="card"><div class="card-head"><h2>Secteurs — 90 derniers jours</h2></div><div class="chart" id="chart-sector"></div></section>
       </section>
-      <section class="card" aria-labelledby="quality-title">
-        <div class="card-head"><h2 id="quality-title">Qualité et couverture</h2></div>
-        <div id="quality-body"></div>
-      </section>
-    </section>
-
-    <section class="card" aria-labelledby="cite-title">
-      <div class="card-head"><h2 id="cite-title">Citer cette vue</h2></div>
-      <p class="cite-box" id="cite-box"></p>
-      <div class="cite-actions"><button id="cite-copy" type="button" class="btn">Copier le texte</button></div>
-    </section>
-
-    <section class="card reliability" id="sources" aria-labelledby="sources-title">
-      <div class="card-head"><h2 id="sources-title">État des sources</h2></div>
-      <div id="sources-leds" class="source-leds"></div>
-      <details class="sources-detail"><summary>Détail par source</summary>
-        <div class="table-scroll"><table class="data-table" id="sources-detail-table"><thead><tr><th>Source</th><th>Statut</th><th>Dernier item</th><th>Organisation</th><th>Items vus</th><th>Items dans la fenêtre</th></tr></thead><tbody></tbody></table></div>
-      </details>
-      <div id="blindspots" hidden><h3>Angles morts</h3><ul id="blindspots-list"></ul></div>
-    </section>
+      <section class="card" aria-labelledby="signals-title"><div class="card-head"><h2 id="signals-title">Ce qui change</h2></div><div id="signals-list" class="signal-list"></div></section>
+      <section class="card" aria-labelledby="ocean-title"><div class="card-head"><h2 id="ocean-title">Océan Indien</h2></div><div class="ocean-compare"><div id="ocean-focus"></div><div id="ocean-ensemble"></div></div></section>
+      <section class="card reliability" id="sources" aria-labelledby="sources-title"><div class="card-head"><h2 id="sources-title">État des sources</h2></div><div id="sources-leds" class="source-leds"></div></section>
+    </div>
   </section>
-
-  <footer class="footer">
-    <p>Cyberwatch recense des incidents cyber <strong>publiquement documentés</strong> en France métropolitaine et dans l’Océan Indien. Une absence dans la base signifie « aucun incident publiquement observé dans les sources couvertes », jamais « aucun incident réel ». La méthode complète est documentée dans <a href="https://github.com/Ya7o/Cyberwatch/blob/main/METHODOLOGY.md" target="_blank" rel="noopener noreferrer">METHODOLOGY.md</a>.</p>
-    <p class="footer-meta">Code source et données : <a href="https://github.com/Ya7o/Cyberwatch" target="_blank" rel="noopener noreferrer">github.com/Ya7o/Cyberwatch</a> · Flux La Réunion / Mayotte : <a href="assets/data/reunion-mayotte.xml">reunion-mayotte.xml</a></p>
-  </footer>
 </main>
 
 <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-dialog-title">
   <div id="detail-dialog-content"></div>
-  <form method="dialog"><button id="detail-dialog-back" type="button" class="btn" hidden>← Retour à l’organisation</button><button class="btn">Fermer</button></form>
+  <form method="dialog"><button class="btn">Fermer</button></form>
 </dialog>
-<div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
-
-<script src="assets/shared.js?v=20260822-2"></script>
-<script src="assets/dashboard.js?v=20260822-2"></script>
+<script src="assets/dashboard-v2.js?v=20260822-3"></script>
 </body>
 </html>
