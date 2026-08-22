@@ -27,5 +27,6 @@ jobs:
         run: |
           node --check assets/shared.js
           node --check assets/dashboard.js
+          node --check assets/dashboard-v2.js
       - name: Contrats structurels légers
         run: python -m cyberwatch check --allow-uninitialized
