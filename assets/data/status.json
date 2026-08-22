@@ -1,50 +1,50 @@
 {
  "analytics": {
-  "as_of": "2026-08-21",
+  "as_of": "2026-08-22",
   "briefing": [
-   "Commerce / Distribution accélère sur 30 jours : 15 incidents contre 5 auparavant (confiance élevée).",
-   "Administration / Collectivité accélère sur 30 jours : 14 incidents contre 8 auparavant (confiance élevée).",
-   "Services aux entreprises accélère sur 30 jours : 14 incidents contre 3 auparavant (confiance élevée).",
-   "Compromission de compte / messagerie accélère sur 30 jours : 11 incidents contre 3 auparavant (confiance élevée).",
-   "Sport accélère sur 30 jours : 10 incidents contre 3 auparavant (confiance élevée)."
+   "Commerce / Distribution accélère sur 30 jours : 11 incidents contre 5 auparavant (confiance élevée).",
+   "Compromission de compte / messagerie accélère sur 30 jours : 10 incidents contre 4 auparavant (confiance élevée).",
+   "Services aux entreprises accélère sur 30 jours : 10 incidents contre 3 auparavant (confiance élevée).",
+   "Sport accélère sur 30 jours : 10 incidents contre 3 auparavant (confiance élevée).",
+   "Construction / BTP accélère sur 90 jours : 11 incidents contre 4 auparavant (confiance moyenne)."
   ],
   "coverage": {
    "location": {
-    "known": 375,
-    "known_pct": 95.2,
-    "unknown": 19
+    "known": 363,
+    "known_pct": 94.5,
+    "unknown": 21
    },
    "sector": {
-    "known": 172,
-    "known_pct": 43.6,
-    "unknown": 222
+    "known": 156,
+    "known_pct": 40.6,
+    "unknown": 228
    },
    "threat": {
-    "known": 390,
+    "known": 380,
     "known_pct": 99.0,
     "unknown": 4
    }
   },
-  "dated_incidents": 871,
+  "dated_incidents": 873,
   "diversity_90d": {
-   "location": 0.126,
-   "sector": 0.914,
-   "threat": 0.478
+   "location": 0.129,
+   "sector": 0.941,
+   "threat": 0.486
   },
   "exposure": {
-   "documented": 264,
-   "documented_pct": 30.3,
+   "documented": 265,
+   "documented_pct": 30.4,
    "evidence": {
     "claimed": 88,
     "confirmed": 36,
     "reported": 27,
-    "unknown": 113
+    "unknown": 114
    },
    "max": 600000000,
-   "median": 146000,
+   "median": 143472,
    "note": "Volumes majoritairement revendiqués et non vérifiés ; aucun total n'est publié.",
    "p90": 4500000,
-   "total": 871
+   "total": 873
   },
   "focus": {
    "by_location": {
@@ -54,16 +54,16 @@
    "comparison": {
     "by_source": {
      "BONJOURLAFUITE": 327,
-     "CYBERATTAQUE_ORG": 423,
+     "CYBERATTAQUE_ORG": 425,
      "FRENCHBREACHES": 100,
      "RANSOMWARE_LIVE": 181
     },
-    "dominant_source_pct": 49.4,
-    "incidents": 857,
+    "dominant_source_pct": 49.5,
+    "incidents": 859,
     "ransomware_pct": 23.2,
     "sectors": [
      {
-      "count": 56,
+      "count": 52,
       "label": "Administration / Collectivité"
      },
      {
@@ -71,11 +71,11 @@
       "label": "Sport"
      },
      {
-      "count": 45,
+      "count": 41,
       "label": "Commerce / Distribution"
      },
      {
-      "count": 43,
+      "count": 39,
       "label": "Services aux entreprises"
      }
     ],
@@ -90,7 +90,7 @@
       "label": "Ransomware"
      },
      {
-      "count": 51,
+      "count": 52,
       "label": "Phishing / fraude"
      },
      {
@@ -99,7 +99,7 @@
      }
     ]
    },
-   "days_since_last": 42,
+   "days_since_last": 43,
    "incidents": 14,
    "last_date": "2026-07-10",
    "locations": [
@@ -159,7 +159,7 @@
    "share_pct": 1.6,
    "silence_is_unusual": false
   },
-  "incident_count": 871,
+  "incident_count": 873,
   "method": {
    "base_rate": "a signal must exceed the window's overall growth by 25 points; a category holding more than 60% of the window is excluded. Normalisation applies only when the previous window holds at least 10 incidents.",
    "confidence": "55% sample size + 25% multi-source corroboration + 20% field completeness",
@@ -179,16 +179,16 @@
    "comparison": {
     "by_source": {
      "BONJOURLAFUITE": 327,
-     "CYBERATTAQUE_ORG": 423,
+     "CYBERATTAQUE_ORG": 425,
      "FRENCHBREACHES": 100,
      "RANSOMWARE_LIVE": 175
     },
-    "dominant_source_pct": 49.7,
-    "incidents": 851,
-    "ransomware_pct": 22.7,
+    "dominant_source_pct": 49.8,
+    "incidents": 853,
+    "ransomware_pct": 22.6,
     "sectors": [
      {
-      "count": 56,
+      "count": 52,
       "label": "Administration / Collectivité"
      },
      {
@@ -196,11 +196,11 @@
       "label": "Sport"
      },
      {
-      "count": 45,
+      "count": 41,
       "label": "Commerce / Distribution"
      },
      {
-      "count": 43,
+      "count": 39,
       "label": "Services aux entreprises"
      }
     ],
@@ -215,7 +215,7 @@
       "label": "Ransomware"
      },
      {
-      "count": 51,
+      "count": 52,
       "label": "Phishing / fraude"
      },
      {
@@ -224,7 +224,7 @@
      }
     ]
    },
-   "days_since_last": 3,
+   "days_since_last": 4,
    "incidents": 20,
    "last_date": "2026-08-18",
    "locations": [
@@ -292,18 +292,18 @@
    "corroborated_pct": 18.7,
    "first_date": "2026-01-02",
    "history_months": 8,
-   "incidents": 871,
-   "last_date": "2026-08-21",
-   "mono_source": 708,
+   "incidents": 873,
+   "last_date": "2026-08-22",
+   "mono_source": 710,
    "mono_source_pct": 81.3,
-   "organisations": 815,
+   "organisations": 817,
    "sources": 5,
    "unknown_pct": {
-    "location": 4.1,
-    "sector": 58.2,
+    "location": 4.3,
+    "sector": 59.9,
     "threat": 0.7
    },
-   "with_summary_pct": 72.1
+   "with_summary_pct": 72.2
   },
   "recurring_organisations_90d": [
    {
@@ -369,7 +369,7 @@
      6,
      9,
      10,
-     10
+     6
     ],
     "Commerce / Distribution": [
      7,
@@ -379,7 +379,7 @@
      3,
      3,
      7,
-     13
+     9
     ],
     "Numérique / Technologie": [
      2,
@@ -389,7 +389,7 @@
      6,
      2,
      8,
-     4
+     3
     ],
     "Services aux entreprises": [
      2,
@@ -399,7 +399,7 @@
      7,
      5,
      2,
-     13
+     9
     ],
     "Sport": [
      12,
@@ -419,7 +419,7 @@
      7,
      4,
      7,
-     1
+     0
     ]
    },
    "sources_observed": [
@@ -481,7 +481,7 @@
      19,
      11,
      6,
-     3
+     4
     ],
     "Ransomware": [
      18,
@@ -502,126 +502,57 @@
     121,
     117,
     117,
-    124
+    126
    ]
   },
   "signals": [
    {
-    "base_rate_pct": 48.1,
-    "change_pct": 200.0,
+    "base_rate_pct": 40.5,
+    "change_pct": 120.0,
     "confidence": {
-     "incidents": 15,
-     "known_ratio": 0.978,
+     "incidents": 11,
+     "known_ratio": 0.97,
      "level": "high",
-     "multi_source_incidents": 12,
-     "score": 95
+     "multi_source_incidents": 10,
+     "score": 93
     },
-    "current": 15,
-    "delta": 10,
+    "current": 11,
+    "delta": 6,
     "dimension": "sector",
-    "excess_points": 151.9,
+    "excess_points": 79.5,
     "incident_ids": [
-     "INC-1ECF87546892",
-     "INC-25FD74F96AAB",
      "INC-269BACA246E0",
      "INC-2972BA18B0BD",
-     "INC-4409C5105A68",
      "INC-5548AD317C63",
      "INC-58531D3546D0",
      "INC-616D0ECF3BB3",
      "INC-70AA4EB2D7FE",
      "INC-ACEC6CC2457D",
-     "INC-B99CF5D2A342",
-     "INC-D8F1376548D2"
+     "INC-D8F1376548D2",
+     "INC-DCD90B2A7A2B",
+     "INC-E16B7E7AC982",
+     "INC-FFB6C7F47B15"
     ],
     "kind": "acceleration",
     "label": "Commerce / Distribution",
     "previous": 5,
-    "share_pct": 9.4,
+    "share_pct": 7.1,
     "window_days": 30
    },
    {
-    "base_rate_pct": 48.1,
-    "change_pct": 75.0,
+    "base_rate_pct": 40.5,
+    "change_pct": 150.0,
     "confidence": {
-     "incidents": 14,
-     "known_ratio": 0.976,
-     "level": "high",
-     "multi_source_incidents": 8,
-     "score": 89
-    },
-    "current": 14,
-    "delta": 6,
-    "dimension": "sector",
-    "excess_points": 26.9,
-    "incident_ids": [
-     "INC-299D6B322925",
-     "INC-3ABFF451EA33",
-     "INC-401EAF29A613",
-     "INC-4613053E5C2C",
-     "INC-49E922069E33",
-     "INC-6A65EC7777AA",
-     "INC-90CA773A80A0",
-     "INC-920654387FF9",
-     "INC-938337DBDA6F",
-     "INC-9CEB5476F2D6",
-     "INC-A298A6DBBB1B",
-     "INC-E9B0D5CE48BA"
-    ],
-    "kind": "acceleration",
-    "label": "Administration / Collectivité",
-    "previous": 8,
-    "share_pct": 8.8,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 366.7,
-    "confidence": {
-     "incidents": 14,
-     "known_ratio": 1.0,
-     "level": "high",
-     "multi_source_incidents": 6,
-     "score": 86
-    },
-    "current": 14,
-    "delta": 11,
-    "dimension": "sector",
-    "excess_points": 318.6,
-    "incident_ids": [
-     "INC-195F06B69C3A",
-     "INC-25C6A92D4C08",
-     "INC-33CE65C83FE8",
-     "INC-5712ACB38D5A",
-     "INC-6AABCCAF78AA",
-     "INC-712E1A5D60C6",
-     "INC-727D0E22B7D1",
-     "INC-82C56212890E",
-     "INC-8CAC1A097010",
-     "INC-C4BD32043428",
-     "INC-CA9D9ECF1F93",
-     "INC-D5DF7DDDF9A7"
-    ],
-    "kind": "acceleration",
-    "label": "Services aux entreprises",
-    "previous": 3,
-    "share_pct": 8.8,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 266.7,
-    "confidence": {
-     "incidents": 11,
+     "incidents": 10,
      "known_ratio": 0.667,
      "level": "high",
      "multi_source_incidents": 7,
-     "score": 80
+     "score": 77
     },
-    "current": 11,
-    "delta": 8,
+    "current": 10,
+    "delta": 6,
     "dimension": "threat",
-    "excess_points": 218.6,
+    "excess_points": 109.5,
     "incident_ids": [
      "INC-02F7CC034277",
      "INC-0B6072EBE30D",
@@ -630,19 +561,18 @@
      "INC-5548AD317C63",
      "INC-7486ACBAB8B8",
      "INC-A35F0D19101A",
-     "INC-ADC1FF7A21EE",
      "INC-B7D7E578D0CB",
      "INC-D928BF44651F",
      "INC-F495CED1DF70"
     ],
     "kind": "acceleration",
     "label": "Compromission de compte / messagerie",
-    "previous": 3,
-    "share_pct": 6.9,
+    "previous": 4,
+    "share_pct": 6.4,
     "window_days": 30
    },
    {
-    "base_rate_pct": 48.1,
+    "base_rate_pct": 40.5,
     "change_pct": 233.3,
     "confidence": {
      "incidents": 10,
@@ -654,7 +584,39 @@
     "current": 10,
     "delta": 7,
     "dimension": "sector",
-    "excess_points": 185.2,
+    "excess_points": 192.8,
+    "incident_ids": [
+     "INC-195F06B69C3A",
+     "INC-6AABCCAF78AA",
+     "INC-712E1A5D60C6",
+     "INC-727D0E22B7D1",
+     "INC-89BBF0F35450",
+     "INC-8CAC1A097010",
+     "INC-C4BD32043428",
+     "INC-CA9D9ECF1F93",
+     "INC-D5DF7DDDF9A7",
+     "INC-D9AEFFCC039E"
+    ],
+    "kind": "acceleration",
+    "label": "Services aux entreprises",
+    "previous": 3,
+    "share_pct": 6.4,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": 40.5,
+    "change_pct": 233.3,
+    "confidence": {
+     "incidents": 10,
+     "known_ratio": 1.0,
+     "level": "high",
+     "multi_source_incidents": 4,
+     "score": 76
+    },
+    "current": 10,
+    "delta": 7,
+    "dimension": "sector",
+    "excess_points": 192.8,
     "incident_ids": [
      "INC-1645372F6E23",
      "INC-2EC7AB82A87C",
@@ -670,174 +632,31 @@
     "kind": "acceleration",
     "label": "Sport",
     "previous": 3,
-    "share_pct": 6.2,
+    "share_pct": 6.4,
     "window_days": 30
    },
    {
-    "base_rate_pct": 19.8,
-    "change_pct": 60.0,
+    "base_rate_pct": 13.9,
+    "change_pct": 175.0,
     "confidence": {
-     "incidents": 8,
-     "known_ratio": 1.0,
+     "incidents": 11,
+     "known_ratio": 0.97,
      "level": "medium",
-     "multi_source_incidents": 4,
-     "score": 69
+     "multi_source_incidents": 2,
+     "score": 74
     },
-    "current": 8,
-    "delta": 3,
-    "dimension": "sector",
-    "excess_points": 40.2,
-    "incident_ids": [
-     "INC-0A7235623FF7",
-     "INC-103F25603DE6",
-     "INC-3382F4573B95",
-     "INC-78722404B099",
-     "INC-AB7E14BBE82D",
-     "INC-B56027A9A12A",
-     "INC-B5B0BB894D79",
-     "INC-B730A652EF82"
-    ],
-    "kind": "acceleration",
-    "label": "Santé",
-    "previous": 5,
-    "share_pct": 2.0,
-    "window_days": 90
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 700.0,
-    "confidence": {
-     "incidents": 8,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 3,
-     "score": 66
-    },
-    "current": 8,
+    "current": 11,
     "delta": 7,
     "dimension": "sector",
-    "excess_points": 651.9,
-    "incident_ids": [
-     "INC-30D4081806DA",
-     "INC-4E70364FA984",
-     "INC-904D84D2D2A9",
-     "INC-9F3966170CB4",
-     "INC-B3661B27F815",
-     "INC-CD5ED83ED67D",
-     "INC-D5BEF3A49E4D",
-     "INC-F599B89D9F21"
-    ],
-    "kind": "acceleration",
-    "label": "Finance / Assurance",
-    "previous": 1,
-    "share_pct": 5.0,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 7,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 4,
-     "score": 66
-    },
-    "current": 7,
-    "delta": 7,
-    "dimension": "sector",
-    "excess_points": 51.9,
-    "incident_ids": [
-     "INC-0D87448B9E49",
-     "INC-12FCF8029315",
-     "INC-636BCD8327BD",
-     "INC-9AA189A159FE",
-     "INC-A2EFA116AE83",
-     "INC-C0BE1662A2D7",
-     "INC-FC2583C0B239"
-    ],
-    "kind": "emerging",
-    "label": "Industrie / Manufacture",
-    "previous": 0,
-    "share_pct": 4.4,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 7,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 4,
-     "score": 66
-    },
-    "current": 7,
-    "delta": 7,
-    "dimension": "threat_sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-0D87448B9E49",
-     "INC-12FCF8029315",
-     "INC-636BCD8327BD",
-     "INC-9AA189A159FE",
-     "INC-A2EFA116AE83",
-     "INC-C0BE1662A2D7",
-     "INC-FC2583C0B239"
-    ],
-    "kind": "new_pair",
-    "label": "Ransomware × Industrie / Manufacture",
-    "previous": 0,
-    "share_pct": 4.4,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 6,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 4,
-     "score": 64
-    },
-    "current": 6,
-    "delta": 6,
-    "dimension": "threat_sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-195F06B69C3A",
-     "INC-25C6A92D4C08",
-     "INC-33CE65C83FE8",
-     "INC-5712ACB38D5A",
-     "INC-82C56212890E",
-     "INC-DBB5C48F8E9F"
-    ],
-    "kind": "new_pair",
-    "label": "Fuite de données × Services aux entreprises",
-    "previous": 0,
-    "share_pct": 3.8,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": 19.8,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 8,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 1,
-     "score": 60
-    },
-    "current": 8,
-    "delta": 4,
-    "dimension": "sector",
-    "excess_points": 80.2,
+    "excess_points": 161.1,
     "incident_ids": [
      "INC-03B3CE71D800",
      "INC-1CDB22E1EDC3",
+     "INC-25FD74F96AAB",
      "INC-2ADF511782A4",
      "INC-8ED480A79AA7",
+     "INC-955DDC31941F",
+     "INC-A35F0D19101A",
      "INC-D4EA87305924",
      "INC-EB9B5351806C",
      "INC-F25F5F05F47B",
@@ -846,91 +665,148 @@
     "kind": "acceleration",
     "label": "Construction / BTP",
     "previous": 4,
-    "share_pct": 2.0,
+    "share_pct": 2.9,
     "window_days": 90
    },
    {
-    "base_rate_pct": 19.8,
+    "base_rate_pct": 13.9,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 4,
+     "incidents": 6,
      "known_ratio": 1.0,
      "level": "medium",
-     "multi_source_incidents": 3,
-     "score": 57
+     "multi_source_incidents": 5,
+     "score": 68
     },
-    "current": 4,
-    "delta": 4,
+    "current": 6,
+    "delta": 6,
     "dimension": "threat_sector",
     "excess_points": null,
     "incident_ids": [
+     "INC-00469FB75262",
      "INC-0A7235623FF7",
      "INC-78722404B099",
+     "INC-8A52570CAA45",
      "INC-AB7E14BBE82D",
      "INC-B5B0BB894D79"
     ],
     "kind": "new_pair",
     "label": "Fuite de données × Santé",
     "previous": 0,
-    "share_pct": 1.0,
+    "share_pct": 1.6,
     "window_days": 90
    },
    {
-    "base_rate_pct": 48.1,
+    "base_rate_pct": 40.5,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 5,
+     "incidents": 6,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 5,
+     "score": 68
+    },
+    "current": 6,
+    "delta": 3,
+    "dimension": "sector",
+    "excess_points": 59.5,
+    "incident_ids": [
+     "INC-00469FB75262",
+     "INC-0A7235623FF7",
+     "INC-3382F4573B95",
+     "INC-78722404B099",
+     "INC-8A52570CAA45",
+     "INC-B5B0BB894D79"
+    ],
+    "kind": "acceleration",
+    "label": "Santé",
+    "previous": 3,
+    "share_pct": 3.8,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": 40.5,
+    "change_pct": 600.0,
+    "confidence": {
+     "incidents": 7,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 3,
+     "score": 63
+    },
+    "current": 7,
+    "delta": 6,
+    "dimension": "sector",
+    "excess_points": 559.5,
+    "incident_ids": [
+     "INC-30D4081806DA",
+     "INC-4E70364FA984",
+     "INC-904D84D2D2A9",
+     "INC-9F3966170CB4",
+     "INC-CD5ED83ED67D",
+     "INC-D5BEF3A49E4D",
+     "INC-F599B89D9F21"
+    ],
+    "kind": "acceleration",
+    "label": "Finance / Assurance",
+    "previous": 1,
+    "share_pct": 4.5,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": 40.5,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 4,
      "known_ratio": 1.0,
      "level": "medium",
      "multi_source_incidents": 2,
-     "score": 53
+     "score": 51
     },
-    "current": 5,
-    "delta": 5,
+    "current": 4,
+    "delta": 4,
     "dimension": "threat_sector",
     "excess_points": null,
     "incident_ids": [
      "INC-4E70364FA984",
      "INC-904D84D2D2A9",
      "INC-9F3966170CB4",
-     "INC-B3661B27F815",
      "INC-CD5ED83ED67D"
     ],
     "kind": "new_pair",
     "label": "Fuite de données × Finance / Assurance",
     "previous": 0,
-    "share_pct": 3.1,
+    "share_pct": 2.6,
     "window_days": 30
    },
    {
-    "base_rate_pct": 19.8,
-    "change_pct": 150.0,
+    "base_rate_pct": 40.5,
+    "change_pct": 300.0,
     "confidence": {
-     "incidents": 5,
-     "known_ratio": 0.933,
-     "level": "low",
-     "multi_source_incidents": 1,
-     "score": 47
+     "incidents": 4,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 2,
+     "score": 51
     },
-    "current": 5,
+    "current": 4,
     "delta": 3,
     "dimension": "sector",
-    "excess_points": 130.2,
+    "excess_points": 259.5,
     "incident_ids": [
-     "INC-113CA8D42B56",
-     "INC-879A43B19C7C",
-     "INC-9698B7C5C61F",
-     "INC-C0051BF5837B",
-     "INC-C10EDCA8A9D7"
+     "INC-12FCF8029315",
+     "INC-636BCD8327BD",
+     "INC-9AA189A159FE",
+     "INC-C0BE1662A2D7"
     ],
     "kind": "acceleration",
-    "label": "Hébergement / Tourisme / Restauration",
-    "previous": 2,
-    "share_pct": 1.3,
-    "window_days": 90
+    "label": "Industrie / Manufacture",
+    "previous": 1,
+    "share_pct": 2.6,
+    "window_days": 30
    },
    {
-    "base_rate_pct": 19.8,
+    "base_rate_pct": 13.9,
     "change_pct": 100.0,
     "confidence": {
      "incidents": 4,
@@ -956,7 +832,7 @@
     "window_days": 90
    },
    {
-    "base_rate_pct": 19.8,
+    "base_rate_pct": 13.9,
     "change_pct": 500.0,
     "confidence": {
      "incidents": 6,
@@ -968,7 +844,7 @@
     "current": 6,
     "delta": 5,
     "dimension": "location",
-    "excess_points": 480.2,
+    "excess_points": 486.1,
     "incident_ids": [
      "INC-2673611A058B",
      "INC-47B24BB72BA7",
@@ -980,11 +856,11 @@
     "kind": "acceleration",
     "label": "La Réunion",
     "previous": 1,
-    "share_pct": 1.5,
+    "share_pct": 1.6,
     "window_days": 90
    },
    {
-    "base_rate_pct": 19.8,
+    "base_rate_pct": 13.9,
     "change_pct": 100.0,
     "confidence": {
      "incidents": 4,
@@ -996,7 +872,7 @@
     "current": 4,
     "delta": 4,
     "dimension": "location",
-    "excess_points": 80.2,
+    "excess_points": 86.1,
     "incident_ids": [
      "INC-77C0DC6E016A",
      "INC-8C2C274A1222",
@@ -1008,41 +884,16 @@
     "previous": 0,
     "share_pct": 1.0,
     "window_days": 90
-   },
-   {
-    "base_rate_pct": 48.1,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 3,
-     "known_ratio": 0.889,
-     "level": "low",
-     "multi_source_incidents": 0,
-     "score": 32
-    },
-    "current": 3,
-    "delta": 3,
-    "dimension": "sector",
-    "excess_points": 51.9,
-    "incident_ids": [
-     "INC-6F7EBC321E35",
-     "INC-88FCA74B0248",
-     "INC-B687BD135BCE"
-    ],
-    "kind": "emerging",
-    "label": "Énergie / Utilities",
-    "previous": 0,
-    "share_pct": 1.9,
-    "window_days": 30
    }
   ],
   "top_90d": {
    "location": [
     {
-     "count": 363,
+     "count": 351,
      "label": "France métropolitaine"
     },
     {
-     "count": 19,
+     "count": 21,
      "label": "Inconnu"
     },
     {
@@ -1060,24 +911,20 @@
    ],
    "sector": [
     {
-     "count": 222,
+     "count": 228,
      "label": "Inconnu"
     },
     {
-     "count": 31,
+     "count": 26,
      "label": "Administration / Collectivité"
     },
     {
-     "count": 25,
+     "count": 21,
      "label": "Commerce / Distribution"
     },
     {
-     "count": 20,
+     "count": 16,
      "label": "Services aux entreprises"
-    },
-    {
-     "count": 15,
-     "label": "Numérique / Technologie"
     },
     {
      "count": 15,
@@ -1085,24 +932,28 @@
     },
     {
      "count": 14,
+     "label": "Numérique / Technologie"
+    },
+    {
+     "count": 13,
      "label": "Finance / Assurance"
     },
     {
-     "count": 12,
-     "label": "Éducation / Formation"
+     "count": 11,
+     "label": "Construction / BTP"
     }
    ],
    "threat": [
     {
-     "count": 272,
+     "count": 263,
      "label": "Fuite de données"
     },
     {
-     "count": 75,
+     "count": 73,
      "label": "Ransomware"
     },
     {
-     "count": 21,
+     "count": 22,
      "label": "Phishing / fraude"
     },
     {
@@ -1114,12 +965,12 @@
      "label": "Inconnu"
     },
     {
-     "count": 3,
-     "label": "Malware"
+     "count": 2,
+     "label": "Incident tiers"
     },
     {
-     "count": 1,
-     "label": "Incident tiers"
+     "count": 2,
+     "label": "Malware"
     },
     {
      "count": 1,
@@ -1129,36 +980,36 @@
   },
   "windows": {
    "30": {
-    "change_pct": 48.1,
-    "current": 160,
-    "delta": 52,
+    "change_pct": 40.5,
+    "current": 156,
+    "delta": 45,
     "multi_source": 82,
-    "multi_source_pct": 51.2,
-    "previous": 108
+    "multi_source_pct": 52.6,
+    "previous": 111
    },
    "365": {
     "change_pct": 100.0,
-    "current": 871,
-    "delta": 871,
+    "current": 873,
+    "delta": 873,
     "multi_source": 163,
     "multi_source_pct": 18.7,
     "previous": 0
    },
    "7": {
-    "change_pct": 57.1,
-    "current": 55,
-    "delta": 20,
-    "multi_source": 29,
-    "multi_source_pct": 52.7,
-    "previous": 35
+    "change_pct": 68.8,
+    "current": 54,
+    "delta": 22,
+    "multi_source": 28,
+    "multi_source_pct": 51.8,
+    "previous": 32
    },
    "90": {
-    "change_pct": 19.8,
-    "current": 394,
-    "delta": 65,
+    "change_pct": 13.9,
+    "current": 384,
+    "delta": 47,
     "multi_source": 96,
-    "multi_source_pct": 24.4,
-    "previous": 329
+    "multi_source_pct": 25.0,
+    "previous": 337
    }
   }
  },
@@ -2456,6 +2307,16 @@
    "new_items": 1051,
    "overall": "OK",
    "run_id": "RUN-20260821T230150-7"
+  },
+  {
+   "as_of": "2026-08-22T11:29:48.630850+04:00",
+   "incidents": 873,
+   "items": 1053,
+   "mode": "MAJ",
+   "new_incidents": 2,
+   "new_items": 2,
+   "overall": "OK",
+   "run_id": "RUN-20260822T112948"
   }
  ],
  "initialized": true,
@@ -2672,8 +2533,8 @@
     "overall": "OK",
     "qualification_mode": "full",
     "qualification_reason": "disabled",
-    "qualification_runtime_s": 0.027,
-    "qualify_duration_s": 0.027,
+    "qualification_runtime_s": 0.022,
+    "qualify_duration_s": 0.022,
     "requests": 0,
     "run_id": "RUN-20260815T100000",
     "snapshot_items_modified": 0,
@@ -2695,8 +2556,8 @@
     "overall": "OK",
     "qualification_mode": "full",
     "qualification_reason": "disabled",
-    "qualification_runtime_s": 0.032,
-    "qualify_duration_s": 0.032,
+    "qualification_runtime_s": 0.023,
+    "qualify_duration_s": 0.023,
     "requests": 0,
     "run_id": "RUN-20260816T100000",
     "snapshot_items_modified": 0,
@@ -2718,8 +2579,8 @@
     "overall": "OK",
     "qualification_mode": "full",
     "qualification_reason": "disabled",
-    "qualification_runtime_s": 0.018,
-    "qualify_duration_s": 0.018,
+    "qualification_runtime_s": 0.015,
+    "qualify_duration_s": 0.015,
     "requests": 0,
     "run_id": "RUN-20260812T100000",
     "snapshot_items_modified": 0,
@@ -2727,65 +2588,88 @@
     "sourcefacts_llm_calls": 0,
     "sourcefacts_llm_duration_s": 0,
     "sourcefacts_reused": 0
+   },
+   {
+    "as_of": "2026-08-22T11:29:48.630850+04:00",
+    "duration_s": 136.1,
+    "french_detail_cache_hits": 0,
+    "french_detail_network_fetches": 0,
+    "french_detail_stale_fallbacks": 0,
+    "items_after": 1053,
+    "items_before": 1051,
+    "items_new": 2,
+    "mode": "MAJ",
+    "overall": "OK",
+    "qualification_mode": "full",
+    "qualification_reason": "new_or_dirty_items",
+    "qualification_runtime_s": 1.172,
+    "qualify_duration_s": 1.094,
+    "requests": 71,
+    "run_id": "RUN-20260822T112948",
+    "snapshot_items_modified": 45,
+    "snapshot_items_unchanged": 1006,
+    "sourcefacts_llm_calls": 2,
+    "sourcefacts_llm_duration_s": 6.907,
+    "sourcefacts_reused": 169
    }
   ],
   "latest": {
-   "as_of": "2026-08-12T10:00:00+04:00",
-   "duration_s": 0.0,
+   "as_of": "2026-08-22T11:29:48.630850+04:00",
+   "duration_s": 136.1,
    "french_detail_cache_hits": 0,
    "french_detail_network_fetches": 0,
    "french_detail_stale_fallbacks": 0,
-   "items_after": 1,
-   "items_before": 1,
-   "items_new": 0,
-   "mode": "REPLAY",
+   "items_after": 1053,
+   "items_before": 1051,
+   "items_new": 2,
+   "mode": "MAJ",
    "overall": "OK",
    "qualification_mode": "full",
-   "qualification_reason": "disabled",
-   "qualification_runtime_s": 0.018,
-   "qualify_duration_s": 0.018,
-   "requests": 0,
-   "run_id": "RUN-20260812T100000",
-   "snapshot_items_modified": 0,
-   "snapshot_items_unchanged": 1,
-   "sourcefacts_llm_calls": 0,
-   "sourcefacts_llm_duration_s": 0,
-   "sourcefacts_reused": 0
+   "qualification_reason": "new_or_dirty_items",
+   "qualification_runtime_s": 1.172,
+   "qualify_duration_s": 1.094,
+   "requests": 71,
+   "run_id": "RUN-20260822T112948",
+   "snapshot_items_modified": 45,
+   "snapshot_items_unchanged": 1006,
+   "sourcefacts_llm_calls": 2,
+   "sourcefacts_llm_duration_s": 6.907,
+   "sourcefacts_reused": 169
   }
  },
  "run": {
-  "as_of": "2026-08-21T23:01:50+04:00",
-  "duration": "215.3",
-  "id": "RUN-20260821T230150-7",
-  "incidents": 871,
-  "incidents_hash": "4fab8861d9bb4b11ecb2be37d51cc204a4195df6d5b42d0c3a834cdb8956b09f",
-  "items": 1051,
-  "items_hash": "c6b75bf1e05a70e3984df073cae3a6fe166c643174eae4fcbdce06afa3e873b2",
+  "as_of": "2026-08-22T11:29:48.630850+04:00",
+  "duration": "136.1",
+  "id": "RUN-20260822T112948",
+  "incidents": 873,
+  "incidents_hash": "0e248a9aa9958e2c1aa47a0c17b11edc1a3eedef9803b19ba67b9883848befe0",
+  "items": 1053,
+  "items_hash": "d9e4adb94433cd72ee064c29edb407dc510e5bd0d6a0f4fcb721d493b06c887b",
   "layers": "CORE_DIRECT,LOCAL_MEDIA_DIRECT,ENTITY_WATCH,REGIONAL_WATCH",
-  "mode": "CREATE",
-  "new_incidents": 0,
-  "new_items": 1051,
+  "mode": "MAJ",
+  "new_incidents": 2,
+  "new_items": 2,
   "notes": "",
   "overall": "OK",
-  "requests": 76,
-  "target_end": "2026-08-21",
-  "target_start": "2026-01-01"
+  "requests": 71,
+  "target_end": "2026-08-22",
+  "target_start": "2026-07-31"
  },
  "sources": [
   {
    "access_method": "bonjourlafuite-html-v0",
    "calls": 1,
    "candidate_status": "",
-   "comment": "items_in_window=330",
+   "comment": "items_in_window=20",
    "coverage": 100,
-   "duration": "64.4",
+   "duration": "4.1",
    "history_status": "UNKNOWN",
    "id": "BONJOURLAFUITE",
-   "items": 330,
-   "items_collected": 330,
-   "items_in_window": 330,
+   "items": 20,
+   "items_collected": 20,
+   "items_in_window": 20,
    "items_seen": 532,
-   "last_run": "2026-08-21T23:01:50+04:00",
+   "last_run": "2026-08-22T11:29:48.630850+04:00",
    "latest_item": "2026-08-20",
    "latest_item_org": "Alaxione",
    "layer": "CORE_DIRECT",
@@ -2802,28 +2686,28 @@
   },
   {
    "access_method": "wordpress",
-   "calls": 8,
+   "calls": 3,
    "candidate_status": "",
-   "comment": "articles_seen=444; articles_in_window=444; victims_identified=425; articles_rejected_no_victim=8; articles_rejected_negated=4; articles_rejected_multi=7",
+   "comment": "articles_seen=100; articles_in_window=84; victims_identified=82; articles_rejected_no_victim=2; articles_rejected_negated=0; articles_rejected_multi=0",
    "coverage": 100,
-   "duration": "23.9",
+   "duration": "47.2",
    "history_status": "UNKNOWN",
    "id": "CYBERATTAQUE_ORG",
-   "items": 425,
-   "items_collected": 425,
-   "items_in_window": 444,
-   "items_seen": 444,
-   "last_run": "2026-08-21T23:01:50+04:00",
-   "latest_item": "2026-08-21",
-   "latest_item_org": "Beauty Success",
+   "items": 82,
+   "items_collected": 82,
+   "items_in_window": 84,
+   "items_seen": 100,
+   "last_run": "2026-08-22T11:29:48.630850+04:00",
+   "latest_item": "2026-08-22",
+   "latest_item_org": "DINUM",
    "layer": "CORE_DIRECT",
    "notes": "La catégorie « attaque » du site ne publie que des incidents : son périmètre fait foi, le garde-fou de vocabulaire ne s'y applique pas. Victime extraite seulement depuis une relation explicite ou un préfixe de titre non rédactionnel.",
    "oldest_available_date": "",
    "reason": "Protocole complet, test de succès satisfait.",
    "reason_code": "OK",
    "status": "OK",
-   "units_done": 5,
-   "units_expected": 5,
+   "units_done": 1,
+   "units_expected": 1,
    "url": "https://www.cyberattaque.org/type/attaque/",
    "zero_is_trusted": false,
    "zone": "France métropolitaine"
@@ -2832,16 +2716,16 @@
    "access_method": "feed:https://frenchbreaches.com/feed.xml",
    "calls": 60,
    "candidate_status": "",
-   "comment": "Flux sans pagination disponible : 100 entrées captées (la plus ancienne remonte au 2026-07-28).; details_hydrates=58/58; rich_facts=100/100",
+   "comment": "details_hydrates=58/58; rich_facts=89/89",
    "coverage": 100,
-   "duration": "117.8",
-   "history_status": "TRUNCATED",
+   "duration": "75.5",
+   "history_status": "COMPLETE",
    "id": "FRENCHBREACHES",
-   "items": 100,
-   "items_collected": 100,
-   "items_in_window": 100,
+   "items": 89,
+   "items_collected": 89,
+   "items_in_window": 89,
    "items_seen": 100,
-   "last_run": "2026-08-21T23:01:50+04:00",
+   "last_run": "2026-08-22T11:29:48.630850+04:00",
    "latest_item": "2026-08-21",
    "latest_item_org": "Beauty Success",
    "layer": "CORE_DIRECT",
@@ -2860,16 +2744,16 @@
    "access_method": "https://api.ransomware.live/v2/countryvictims/",
    "calls": 7,
    "candidate_status": "",
-   "comment": "items_seen=687; items_in_window=184",
+   "comment": "items_seen=687; items_in_window=22",
    "coverage": 100,
-   "duration": "7.7",
+   "duration": "8.1",
    "history_status": "UNKNOWN",
    "id": "RANSOMWARE_LIVE",
-   "items": 184,
-   "items_collected": 184,
-   "items_in_window": 184,
+   "items": 22,
+   "items_collected": 22,
+   "items_in_window": 22,
    "items_seen": 687,
-   "last_run": "2026-08-21T23:01:50+04:00",
+   "last_run": "2026-08-22T11:29:48.630850+04:00",
    "latest_item": "2026-08-21",
    "latest_item_org": "Geb Sas",
    "layer": "CORE_DIRECT",
@@ -2888,16 +2772,16 @@
    "access_method": "repository_json",
    "calls": 0,
    "candidate_status": "",
-   "comment": "snapshot_records=12; accepted=12; future=0; requested_window_hits=12",
+   "comment": "snapshot_records=12; accepted=12; future=0; requested_window_hits=0",
    "coverage": 100,
    "duration": "0.0",
    "history_status": "UNKNOWN",
    "id": "VEILLE_LLM",
    "items": 12,
    "items_collected": 12,
-   "items_in_window": 12,
+   "items_in_window": 0,
    "items_seen": 12,
-   "last_run": "2026-08-21T23:01:50+04:00",
+   "last_run": "2026-08-22T11:29:48.630850+04:00",
    "latest_item": "2026-07-09",
    "latest_item_org": "Orange Réunion",
    "layer": "REGIONAL_WATCH",

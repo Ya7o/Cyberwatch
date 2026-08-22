@@ -19725,6 +19725,99 @@
    "summary": "Données revendiquées selon BonjourLaFuite : SCI Fonciere de la tourelle, Aix La Duranner Immo et MARTEAU IMMOBILIER."
   }
  ],
+ "INC-955DDC31941F": [
+  {
+   "affected_count": 49035,
+   "affected_count_raw": "49 035 fichiers",
+   "affected_unit": "files",
+   "data_types": [
+    "adresses e-mail"
+   ],
+   "data_volume": "44 Go",
+   "file_count": 49035,
+   "impact": "Un total de 49 035 fichiers comprenant e-mails, commandes et contrats a été exposé, ce qui augmente le risque de fraude.",
+   "item_id": "ITM-d30f936d36d73f02",
+   "rich_facts": {
+    "affected_counts": [
+     {
+      "evidence": "Dron : 49 035 fichiers publiés après compromission de son compte de BlgCloud",
+      "raw": "49 035 fichiers",
+      "status": "unknown",
+      "unit": "files",
+      "value": 49035
+     }
+    ],
+    "claims": [
+     {
+      "evidence": "Dron : 49 035 fichiers publiés après compromission de son compte de BlgCloud",
+      "status": "unknown",
+      "unit": "files",
+      "value": "49035"
+     },
+     {
+      "evidence": "Le hacker  Snufkxn  vient de publier une base attribuée à l’entreprise représentant  44 Go de données et 49 035 fichiers .",
+      "status": "unknown",
+      "value": "44.0"
+     },
+     {
+      "evidence": "L’un des e-mails analysés concerne par exemple une  commande de transport liée à la reprise de matériel .",
+      "status": "unknown",
+      "value": "adresses e-mail"
+     },
+     {
+      "evidence": "49 035 fichiers publiés après compromission de son compte de BlgCloud",
+      "scope": "Dron",
+      "status": "reported",
+      "value": "49035"
+     },
+     {
+      "evidence": "49 035 fichiers représentant environ 44 Go",
+      "scope": "Dron",
+      "status": "reported",
+      "value": "44"
+     },
+     {
+      "evidence": "Dron rejoint la liste croissante des entreprises dont les données sont publiées après la compromission de leur environnement BlgCloud.",
+      "scope": "Dron",
+      "status": "reported"
+     },
+     {
+      "evidence": "Le hacker Snufkxn vient de publier une base attribuée à l’entreprise...",
+      "scope": "BlgCloud",
+      "status": "claimed",
+      "value": "publication"
+     },
+     {
+      "date": "2023-08-01",
+      "evidence": "Cette publication s’inscrit dans la compromission plus large de BlgCloud.",
+      "kind": "statement",
+      "scope": "Chronologie",
+      "status": "reported",
+      "value": "compromission de BlgCloud"
+     },
+     {
+      "date": ">=2023-08-01",
+      "evidence": "Les attaquants annoncent déjà que la prochaine publication concernera Groupe Bernard.",
+      "kind": "statement",
+      "scope": "Chronologie",
+      "status": "claimed",
+      "value": "annonce de futures publications"
+     },
+     {
+      "evidence": "Dron figurait parmi les entreprises présentées comme accessibles par les attaquants.",
+      "kind": "statement",
+      "scope": "Relation",
+      "status": "claimed",
+      "value": "Dron → compromised_via → BlgCloud"
+     }
+    ],
+    "version": "2"
+   },
+   "source": "CYBERATTAQUE_ORG",
+   "summary": "Impact documenté : Un total de 49 035 fichiers comprenant e-mails, commandes et contrats a été exposé, ce qui augmente le risque de fraude.",
+   "threat_actor": "Snufkxn"
+  }
+ ],
  "INC-95D4D32D77A1": [
   {
    "claim_status": "confirmed",
@@ -26607,6 +26700,127 @@
    "item_id": "ITM-1c429f2e5c0fd626",
    "source": "BONJOURLAFUITE",
    "summary": "Données concernées : Nom, prénom, Date de naissance et Rang de naissance."
+  }
+ ],
+ "INC-C99133F13F25": [
+  {
+   "affected_count": 31544,
+   "affected_count_raw": "31 544 lignes",
+   "affected_unit": "records",
+   "impact": "Exposition potentielle de données sensibles associées à la DINUM.",
+   "item_id": "ITM-fe8f7805fe8b6b60",
+   "rich_facts": {
+    "affected_counts": [
+     {
+      "evidence": "De l’autre, la granularité des fichiers revendiqués et la présence de champs qui ne correspondent pas simplement aux indicateurs présentés publiquement empêchent de considérer automatiquement les  31 544 lignes  comme une simple compilation de données ouvertes.",
+      "raw": "31 544 lignes",
+      "status": "unknown",
+      "unit": "records",
+      "value": 31544
+     },
+     {
+      "evidence": "DINUM : 31 544 lignes liées au cloud de l’État en fuite",
+      "raw": "31 544 lignes",
+      "status": "unknown",
+      "unit": "records",
+      "value": 31544
+     }
+    ],
+    "affected_systems": [
+     {
+      "evidence": "La plateforme cloud.numerique.gouv.fr s’appuie sur Metabase, un outil permettant de connecter des bases de données à des tableaux de bord.",
+      "status": "reported",
+      "value": "Metabase"
+     }
+    ],
+    "claims": [
+     {
+      "evidence": "De l’autre, la granularité des fichiers revendiqués et la présence de champs qui ne correspondent pas simplement aux indicateurs présentés publiquement empêchent de considérer automatiquement les  31 544 lignes  comme une simple compilation de données ouvertes.",
+      "status": "unknown",
+      "unit": "records",
+      "value": "31544"
+     },
+     {
+      "evidence": "DINUM : 31 544 lignes liées au cloud de l’État en fuite",
+      "status": "unknown",
+      "unit": "records",
+      "value": "31544"
+     },
+     {
+      "evidence": "Plusieurs jeux de données contiennent notamment des métadonnées techniques, des commentaires, des informations liées aux commandes ou encore des adresses e-mail.",
+      "status": "unknown",
+      "value": "adresses e-mail"
+     },
+     {
+      "date": "22 août 2026",
+      "evidence": "Le cybercriminel 0xSec affirme avoir récupéré et publié un ensemble de données provenant de cloud.numerique.gouv.fr.",
+      "status": "claimed",
+      "value": "0xSec"
+     },
+     {
+      "date": "22 août 2026",
+      "evidence": "la publication, repérée ce 22 août 2026, contient plusieurs fichiers CSV représentant au total 31 544 lignes.",
+      "status": "reported",
+      "value": "31544"
+     },
+     {
+      "date": "22 août 2026",
+      "evidence": "La publication de 0xSec comprend une dizaine de fichiers CSV couvrant différents aspects de la politique cloud et numérique de l’État.",
+      "status": "claimed",
+      "value": "fichiers CSV"
+     },
+     {
+      "evidence": "Plusieurs jeux de données contiennent notamment des métadonnées techniques, des commentaires, des informations liées aux commandes ou encore des adresses e-mail.",
+      "status": "reported",
+      "value": "métadonnées techniques et adresses e-mail"
+     },
+     {
+      "evidence": "Une exposition de données depuis la plateforme ou depuis certaines requêtes Metabase constitue donc à ce stade un scénario crédible.",
+      "status": "reported",
+      "value": "exposition de données crédible"
+     },
+     {
+      "evidence": "La plateforme cloud.numerique.gouv.fr s’appuie sur Metabase, un outil permettant de connecter des bases de données à des tableaux de bord.",
+      "status": "reported",
+      "value": "Metabase"
+     },
+     {
+      "date": "début août 2026",
+      "evidence": "Début août 2026, l’éditeur a révélé qu’une faille zero-day critique de type injection SQL avait été activement exploitée.",
+      "status": "reported",
+      "value": "faille zero-day critique de type injection SQL"
+     },
+     {
+      "evidence": "Rien ne permet toutefois d’établir que la publication concernant la DINUM est liée à cette faille.",
+      "status": "unknown"
+     },
+     {
+      "evidence": "Il est donc techniquement possible qu’une partie des fichiers ait été obtenue depuis des ressources rendues accessibles par la plateforme elle-même, sans nécessiter d’accès à l’infrastructure interne.",
+      "kind": "statement",
+      "scope": "Hypothèse · Relation",
+      "status": "unknown",
+      "value": "victime → compromised_via → elle-même"
+     },
+     {
+      "evidence": "La plateforme cloud.numerique.gouv.fr s’appuie sur Metabase.",
+      "kind": "statement",
+      "scope": "Relation",
+      "status": "reported",
+      "value": "cloud.numerique.gouv.fr → hosted_by → Metabase"
+     },
+     {
+      "evidence": "Le cybercriminel 0xSec affirme avoir récupéré et publié un ensemble de données.",
+      "kind": "statement",
+      "scope": "Relation",
+      "status": "claimed",
+      "value": "0xSec → claimed_by → publication des données"
+     }
+    ],
+    "version": "2"
+   },
+   "source": "CYBERATTAQUE_ORG",
+   "summary": "Impact documenté : Exposition potentielle de données sensibles associées à la DINUM.",
+   "threat_actor": "0xSec"
   }
  ],
  "INC-C9AF2A0FF170": [
