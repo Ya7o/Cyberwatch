@@ -1,0 +1,64 @@
+name: TEMP facts v2 strict closeout
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  closeout:
+    if: github.head_ref == 'chatgpt/facts-v2-strict-closeout'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: chatgpt/facts-v2-strict-closeout
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Rendre facts v2 strict
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('assets/dashboard-v2.js')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('''  function legacyFactsNotice(value) {\n    return Array.isArray(value)\n      ? '<p class="empty-state">Les faits détaillés seront disponibles après la prochaine régénération du site.</p>'\n      : "";\n  }\n\n''', '')
+          s = s.replace('''    const fields = detail && !Array.isArray(detail) ? detail.fields || {} : {};\n    const values = detail && !Array.isArray(detail) ? [\n''', '''    const validDetail = detail && detail.version === 2 && !Array.isArray(detail);\n    const fields = validDetail ? detail.fields || {} : {};\n    const values = validDetail ? [\n''')
+          s = s.replace('''].filter(Boolean).join("") : legacyFactsNotice(detail);\n    const summary = cleanSummary((detail && !Array.isArray(detail) && detail.display_summary) || incident.summary);\n''', '''].filter(Boolean).join("") : "";\n    const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);\n''')
+          p.write_text(s, encoding='utf-8')
+
+          t = Path('tests/test_dashboard_v2_contracts.py')
+          ts = t.read_text(encoding='utf-8')
+          marker = 'def test_runtime_ne_supporte_plus_le_schema_legacy_des_faits():'
+          if marker not in ts:
+              ts += '''\n\ndef test_runtime_ne_supporte_plus_le_schema_legacy_des_faits():\n    js = _read("assets/dashboard-v2.js")\n    assert "legacyFactsNotice" not in js\n    assert "Array.isArray(detail)" not in js\n    assert "detail.version === 2" in js\n\n\ndef test_facts_json_commite_est_strictement_v2():\n    import json\n    facts = json.loads(_read("assets/data/facts.json"))\n    assert isinstance(facts, dict)\n    assert facts\n    assert all(isinstance(detail, dict) and detail.get("version") == 2 for detail in facts.values())\n''' 
+              t.write_text(ts, encoding='utf-8')
+          PY
+      - name: Régénérer le site
+        run: python -m cyberwatch build-site
+      - name: Valider
+        run: |
+          python -m pytest tests/ -q
+          node --check assets/dashboard-v2.js
+          python -m cyberwatch check --allow-uninitialized
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          facts=json.loads(Path('assets/data/facts.json').read_text(encoding='utf-8'))
+          assert facts and all(isinstance(v, dict) and v.get('version') == 2 for v in facts.values())
+          PY
+      - name: Committer les changements de clôture
+        shell: bash
+        run: |
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/dashboard-v2.js tests/test_dashboard_v2_contracts.py assets/data
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "dashboard: imposer facts v2 et régénérer les données"
+          git push origin HEAD:chatgpt/facts-v2-strict-closeout
