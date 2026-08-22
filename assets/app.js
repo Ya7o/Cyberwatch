@@ -47,11 +47,26 @@
   const state = {
     incidents: [],
     status: null,
+    dataOk: true,
+    statusOk: true,
     sort: { key: "date", dir: -1 },
     page: 1,
     pageSize: 50,
     filters: { ocean: false, local: false, source: "", org: "" },
   };
+
+  /* §Transparence : une source en échec ne doit jamais être transformée en faux
+     succès. Chaque runtime signale son propre défaut de chargement, sans
+     dépendre du chargement des deux autres. */
+  function reportDataFailure(label) {
+    const box = document.getElementById("data-alert");
+    const detail = document.getElementById("data-alert-detail");
+    if (!box || !detail) return;
+    const known = detail.textContent ? detail.textContent.split(" · ") : [];
+    if (!known.includes(label)) known.push(label);
+    detail.textContent = known.join(" · ");
+    box.hidden = false;
+  }
 
   function esc(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -142,18 +157,36 @@
       .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label, "fr"));
   }
 
+  const MAX_CHART_MONTHS = 36;
+
+  /* Une seule date aberrante suffisait à générer un axe de plusieurs siècles :
+     l'axe est borné aux 36 derniers mois observés et les dates postérieures au
+     mois courant sont écartées du graphique — et comptées, jamais tues. */
   function monthRange(rows) {
-    const keys = rows.map((row) => String(row.date || "").slice(0, 7)).filter((key) => /^\d{4}-\d{2}$/.test(key)).sort();
-    if (!keys.length) return [];
-    let [year, month] = keys[0].split("-").map(Number);
+    const now = new Date();
+    const currentKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    const parsed = rows
+      .map((row) => String(row.date || "").slice(0, 7))
+      .filter((key) => /^\d{4}-\d{2}$/.test(key));
+    const keys = parsed.filter((key) => key <= currentKey).sort();
+    const future = parsed.length - keys.length;
+    if (!keys.length) return { months: [], future, truncated: 0 };
     const [endYear, endMonth] = keys[keys.length - 1].split("-").map(Number);
-    const result = [];
+    let [year, month] = keys[0].split("-").map(Number);
+    const span = (endYear - year) * 12 + (endMonth - month) + 1;
+    const truncated = Math.max(0, span - MAX_CHART_MONTHS);
+    if (truncated) {
+      const offset = (endYear * 12 + endMonth - 1) - (MAX_CHART_MONTHS - 1);
+      year = Math.floor(offset / 12);
+      month = (offset % 12) + 1;
+    }
+    const months = [];
     while (year < endYear || (year === endYear && month <= endMonth)) {
-      result.push(`${year}-${String(month).padStart(2, "0")}`);
+      months.push(`${year}-${String(month).padStart(2, "0")}`);
       month += 1;
       if (month > 12) { month = 1; year += 1; }
     }
-    return result;
+    return { months, future, truncated };
   }
 
   const SVG_NS = "http://www.w3.org/2000/svg";
@@ -165,11 +198,12 @@
     return node;
   }
 
-  function bindTooltip(node, html, ariaLabel) {
+  /* Les zones de survol sont décoratives : les valeurs sont portées par
+     l'`aria-label` du graphique entier. Trente-deux arrêts de tabulation dans
+     les graphiques n'apportaient rien de plus et noyaient le parcours clavier. */
+  function bindTooltip(node, html) {
     const tip = $("#tooltip");
-    node.setAttribute("tabindex", "0");
-    node.setAttribute("role", "img");
-    node.setAttribute("aria-label", ariaLabel);
+    node.setAttribute("aria-hidden", "true");
     const show = (event) => {
       if (!tip) return;
       tip.innerHTML = html;
@@ -215,6 +249,12 @@
     return lines;
   }
 
+  function chartLabel(intro, rows) {
+    if (!rows.length) return intro;
+    const listed = rows.slice(0, 8).map((row) => `${row.label} ${row.value}`).join(", ");
+    return `${intro} : ${listed}${rows.length > 8 ? `, et ${rows.length - 8} autres` : ""}.`;
+  }
+
   function barChartHorizontal(container, data) {
     if (!container) return;
     container.innerHTML = "";
@@ -231,7 +271,7 @@
     const right = isMobile ? 36 : 44;
     const plotWidth = Math.max(64, width - labelWidth - right);
     const max = Math.max(...rows.map((row) => row.value), 1);
-    const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": "Répartition par catégorie" });
+    const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": chartLabel("Répartition par catégorie", rows) });
     rows.forEach((row, index) => {
       const y = index * rowHeight + 6;
       const barWidth = Math.max(3, (row.value / max) * plotWidth);
@@ -246,7 +286,7 @@
       svg.appendChild(svgEl("rect", { class: "bar", x: labelWidth, y: barY, width: barWidth, height: 18, rx: 4 }));
       svg.appendChild(svgEl("text", { class: "value-label", x: Math.min(width - 4, labelWidth + barWidth + 8), y: barY + 13 }, String(row.value)));
       const hit = svgEl("rect", { class: "bar-hit", x: 0, y, width, height: rowHeight });
-      bindTooltip(hit, `<strong>${esc(row.label)}</strong> ${row.value} incident${row.value > 1 ? "s" : ""}`, `${row.label} : ${row.value} incidents`);
+      bindTooltip(hit, `<strong>${esc(row.label)}</strong> ${row.value} incident${row.value > 1 ? "s" : ""}`);
       svg.appendChild(hit);
     });
     container.appendChild(svg);
@@ -265,7 +305,10 @@
     const max = Math.max(...data.map((row) => row.value), 1);
     const step = plotWidth / data.length;
     const barWidth = Math.max(5, Math.min(36, step - 8));
-    const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": "Incidents par mois" });
+    const svg = svgEl("svg", {
+      viewBox: `0 0 ${width} ${height}`, width, height, role: "img",
+      "aria-label": chartLabel("Incidents par mois", data.filter((point) => point.value)),
+    });
     data.forEach((point, index) => {
       const barHeight = (point.value / max) * plotHeight;
       const x = margin.left + index * step + (step - barWidth) / 2;
@@ -275,7 +318,7 @@
       const [year, month] = point.label.split("-");
       const label = `${MONTHS[Number(month) - 1]} ${year.slice(2)}`;
       const hit = svgEl("rect", { class: "bar-hit", x: margin.left + index * step, y: margin.top, width: step, height: plotHeight });
-      bindTooltip(hit, `<strong>${esc(label)}</strong> ${point.value} incident${point.value > 1 ? "s" : ""}`, `${label} : ${point.value} incidents`);
+      bindTooltip(hit, `<strong>${esc(label)}</strong> ${point.value} incident${point.value > 1 ? "s" : ""}`);
       svg.appendChild(hit);
       const every = Math.ceil(data.length / 10);
       if (index % every === 0 || index === data.length - 1) {
@@ -539,13 +582,20 @@
   }
 
   function renderCharts(rows) {
-    const months = monthRange(rows);
+    const { months, future, truncated } = monthRange(rows);
     const perMonth = new Map();
     rows.forEach((incident) => {
       const key = String(incident.date || "").slice(0, 7);
       if (key) perMonth.set(key, (perMonth.get(key) || 0) + 1);
     });
     barChartTime($("#chart-month"), months.map((key) => ({ label: key, value: perMonth.get(key) || 0 })));
+    const monthNote = $("#month-note");
+    if (monthNote) {
+      const notes = [];
+      if (truncated) notes.push(`Axe borné aux ${MAX_CHART_MONTHS} derniers mois (${formatNumber(truncated)} mois antérieurs non affichés).`);
+      if (future) notes.push(`${formatNumber(future)} incident${future > 1 ? "s" : ""} à date postérieure au mois courant, écarté${future > 1 ? "s" : ""} du graphique.`);
+      monthNote.textContent = notes.join(" ");
+    }
     barChartHorizontal($("#chart-location"), countBy(rows, "location"));
     barChartHorizontal($("#chart-sector"), countBy(rows, "sector", { dropUnknown: true }));
     barChartHorizontal($("#chart-threat"), countBy(rows, "threat"));
@@ -592,6 +642,16 @@
     const data = state.status;
     const pill = $("#run-pill");
     const text = $("#run-pill-text");
+    if (!state.statusOk) {
+      pill.dataset.status = "";
+      text.textContent = "État des sources indisponible";
+      return;
+    }
+    if (!state.dataOk) {
+      pill.dataset.status = "";
+      text.textContent = "Incidents non chargés";
+      return;
+    }
     if (data?.initialized === false) {
       pill.dataset.status = "";
       text.textContent = "Base non initialisée";
@@ -615,7 +675,35 @@
     renderSources();
   }
 
+  function renderUnavailable() {
+    ["#kpi-incidents", "#kpi-30d", "#kpi-12m"].forEach((selector) => {
+      const node = $(selector);
+      if (node) node.textContent = "—";
+    });
+    ["#kpi-30d-trend", "#kpi-12m-trend"].forEach((selector) => {
+      const node = $(selector);
+      if (node) { node.textContent = "—"; delete node.dataset.direction; }
+    });
+    const note = $("#kpi-incidents-note");
+    if (note) note.textContent = "données non chargées";
+    const ocean = $("#ocean-alert");
+    if (ocean) ocean.hidden = true;
+    ["#chart-month", "#chart-sector", "#chart-threat", "#chart-location"].forEach((selector) => {
+      const node = $(selector);
+      if (node) node.innerHTML = '<p class="empty-chart">Données indisponibles — aucun calcul possible.</p>';
+    });
+    ["#sector-note", "#threat-note", "#location-note"].forEach((selector) => {
+      const node = $(selector);
+      if (node) node.textContent = "";
+    });
+    const count = $("#table-count");
+    if (count) count.textContent = "Données indisponibles";
+    const tbody = $("#incidents-table tbody");
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6">Données indisponibles — la base n’a pas pu être chargée.</td></tr>';
+  }
+
   function renderDataView() {
+    if (!state.dataOk) return renderUnavailable();
     if (state.status?.initialized === false) {
       $("#table-count").textContent = "Base non initialisée";
       $("#incidents-table tbody").innerHTML = '<tr><td colspan="6">Aucune collecte validée disponible.</td></tr>';
@@ -733,10 +821,10 @@
     try {
       const response = await fetch(path, { cache: "no-cache" });
       if (!response.ok) throw new Error(String(response.status));
-      return await response.json();
+      return { ok: true, data: await response.json() };
     } catch (error) {
-      console.warn(`Données indisponibles : ${path}`, error);
-      return fallback;
+      console.error(`Données indisponibles : ${path}`, error);
+      return { ok: false, data: fallback };
     }
   }
 
@@ -745,8 +833,13 @@
       load("assets/data/incidents.json", []),
       load("assets/data/status.json", null),
     ]);
-    state.incidents = Array.isArray(incidents) ? incidents : [];
-    state.status = status;
+    // Un JSON servi mais non conforme est un échec de données, pas une base vide.
+    state.dataOk = incidents.ok && Array.isArray(incidents.data);
+    state.statusOk = status.ok;
+    if (!state.dataOk) reportDataFailure("assets/data/incidents.json");
+    if (!state.statusOk) reportDataFailure("assets/data/status.json");
+    state.incidents = Array.isArray(incidents.data) ? incidents.data : [];
+    state.status = status.data;
     setupTheme();
     setupControls();
     setupResize();

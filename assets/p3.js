@@ -62,7 +62,7 @@
 
   function injectShell() {
     const reliability = $("#fiabilite");
-    if (!reliability || $("#p3-intelligence")) return;
+    if (!reliability || $("#p3-intelligence")) return false;
     const section = document.createElement("section");
     section.id = "p3-intelligence";
     section.className = "p3 card";
@@ -72,6 +72,7 @@
       <div class="p3-grid"><div><h3>Signaux</h3><div id="p3-signals" class="p3-signals"></div></div><div><h3>Contexte de la fenêtre</h3><div id="p3-context" class="p3-context"></div></div></div>
       <details class="p3-method"><summary>Comment lire ces signaux</summary><p>Un signal exige au moins 3 incidents et +2 d'écart ; une accélération exige au moins +50 %. Les petits échantillons sont volontairement écartés. La confiance combine volume, corroboration multi-source et complétude des champs.</p></details>`;
     reliability.parentNode.insertBefore(section, reliability);
+    return true;
   }
 
   let rows = [], anchor = new Date(), windowDays = 30, allSignals = [];
@@ -88,13 +89,21 @@
     $("#p3-context").innerHTML = list("Menaces", threats) + list("Secteurs", sectors) + list("Territoires", locations) + list("Organisations récurrentes", recurring);
   }
 
+  /* La section n'est injectée qu'une fois les données confirmées : une
+     Intelligence vide se lirait comme « aucun signal », alors qu'il s'agit
+     d'une absence de données. */
+  function abort(error) {
+    console.error("P3 intelligence indisponible", error);
+    $("#p3-intelligence")?.remove();
+  }
+
   async function init() {
     try {
-      injectShell();
       const response = await fetch("assets/data/incidents.json", {cache:"no-cache"});
-      if (!response.ok) return;
+      if (!response.ok) return abort(new Error(String(response.status)));
       rows = await response.json();
-      if (!Array.isArray(rows)) return;
+      if (!Array.isArray(rows)) return abort(new Error("payload non conforme"));
+      if (!injectShell()) return;
       const dates = rows.map(dateOf).filter(Boolean).sort((a,b)=>b-a);
       anchor = dates[0] || new Date();
       allSignals = signals(rows, anchor);
@@ -115,7 +124,7 @@
         }
       });
       render();
-    } catch (error) { console.warn("P3 intelligence indisponible", error); }
+    } catch (error) { abort(error); }
   }
   document.addEventListener("DOMContentLoaded", init);
 })();

@@ -12,6 +12,7 @@
   const state = {
     incidents: [],
     status: null,
+    dataOk: true,
     filters: { q: "", threat: "", sector: "", location: "", source: "", period: "all" },
     sort: "date-desc",
     page: 1,
@@ -146,7 +147,7 @@
 
   function injectShell() {
     const charts = $(".dashboard-charts");
-    if (!charts || $("#p2-product")) return;
+    if (!charts || $("#p2-product")) return false;
     const section = document.createElement("section");
     section.id = "p2-product";
     section.className = "p2-product";
@@ -155,7 +156,6 @@
       <div class="p2-heading">
         <div><p class="p2-eyebrow">Exploration produit</p><h2 id="p2-title">Comprendre les incidents</h2>
         <p>Recherche transversale, filtres partageables, vues incident/organisation et tendances.</p></div>
-        <button id="p2-copy-link" type="button" class="p2-secondary">Copier le lien de cette vue</button>
       </div>
       <div class="p2-filters" role="search" aria-label="Recherche avancée des incidents">
         <label class="p2-search"><span>Recherche</span><input id="p2-q" type="search" autocomplete="off" placeholder="Organisation, menace, secteur, source, synthèse…"></label>
@@ -167,21 +167,24 @@
         <label><span>Tri</span><select id="p2-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option><option value="sources">Plus corroborés</option></select></label>
         <button id="p2-reset" type="button" class="p2-reset">Réinitialiser</button>
       </div>
-      <div id="p2-active-filters" class="p2-active-filters" aria-live="polite"></div>
+      <div class="p2-view-bar">
+        <div id="p2-active-filters" class="p2-active-filters" aria-live="polite"></div>
+        <button id="p2-copy-link" type="button" class="p2-secondary">Copier le lien de cette vue</button>
+      </div>
       <div id="p2-summary" class="p2-summary" aria-label="Résumé analytique"></div>
       <div class="p2-insights-grid">
         <article class="card p2-insight"><div class="p2-card-head"><h3>Tendance récente</h3><span>30 / 90 / 365 jours</span></div><div id="p2-trend"></div></article>
         <article class="card p2-insight"><div class="p2-card-head"><h3>Couverture géographique</h3><span>Observation publique, pas exhaustivité</span></div><div id="p2-geo"></div></article>
       </div>
       <section class="card p2-results" aria-labelledby="p2-results-title">
-        <div class="p2-card-head"><div><h3 id="p2-results-title">Incidents</h3><p id="p2-count" class="muted"></p></div><div id="p2-pager-top"></div></div>
-        <div id="p2-list" class="p2-list" aria-live="polite"></div>
+        <div class="p2-card-head"><div><h3 id="p2-results-title">Incidents</h3><p id="p2-count" class="muted" role="status" aria-live="polite"></p></div><div id="p2-pager-top"></div></div>
+        <div id="p2-list" class="p2-list"></div>
         <div id="p2-pager" class="p2-pager"></div>
       </section>
       <p class="p2-coverage-caveat">Une absence dans Cyberwatch signifie « aucun incident publiquement observé dans les sources couvertes », jamais « aucun incident réel ».</p>
       <dialog id="p2-dialog" class="p2-dialog" aria-labelledby="p2-dialog-title"><div id="p2-dialog-content"></div><form method="dialog"><button class="p2-secondary">Fermer</button></form></dialog>`;
     charts.parentNode.insertBefore(section, charts);
-    document.documentElement.classList.add("p2-active");
+    return true;
   }
 
   function readUrl() {
@@ -280,7 +283,9 @@
     state.page = Math.min(state.page, pages);
     const start = (state.page - 1) * state.pageSize;
     const shown = ordered.slice(start, start + state.pageSize);
-    $("#p2-count").textContent = ordered.length ? `${start + 1}–${Math.min(start + shown.length, ordered.length)} sur ${ordered.length}` : "0 incident";
+    $("#p2-count").textContent = ordered.length
+      ? `${start + 1}–${Math.min(start + shown.length, ordered.length)} sur ${ordered.length}`
+      : (state.dataOk ? "0 incident" : "Données indisponibles");
     $("#p2-list").innerHTML = shown.length ? shown.map((incident) => `
       <article class="p2-incident" data-id="${esc(incident.id)}">
         <div class="p2-incident-main"><div class="p2-incident-top"><time datetime="${esc(incident.date)}">${esc(formatDate(incident.date))}</time><span>${esc(incident.location || "Inconnu")}</span></div>
@@ -288,7 +293,9 @@
         <p class="p2-tags"><span>${esc(incident.threat || "Inconnu")}</span><span>${esc(incident.sector || "Inconnu")}</span></p>
         ${incident.summary ? `<p class="p2-summary-text">${esc(incident.summary)}</p>` : ""}</div>
         <div class="p2-incident-side"><span class="p2-provenance">${esc(provenanceLabel(incident))}</span><div class="p2-source-badges">${sourceBadges(incident)}</div><button type="button" class="p2-detail" data-id="${esc(incident.id)}">Voir l’incident</button></div>
-      </article>`).join("") : '<div class="p2-empty"><strong>Aucun résultat.</strong><p>Élargissez les filtres ou réinitialisez la recherche.</p></div>';
+      </article>`).join("") : (state.dataOk
+        ? '<div class="p2-empty"><strong>Aucun résultat.</strong><p>Élargissez les filtres ou réinitialisez la recherche.</p></div>'
+        : '<div class="p2-empty"><strong>Données indisponibles.</strong><p>La base n’a pas pu être chargée : cette liste vide ne signifie pas qu’aucun incident n’est recensé.</p></div>');
     const pager = `<button type="button" data-page="prev" ${state.page <= 1 ? "disabled" : ""}>Précédent</button><span>Page ${state.page} / ${pages}</span><button type="button" data-page="next" ${state.page >= pages ? "disabled" : ""}>Suivant</button>`;
     $("#p2-pager").innerHTML = pager;
     $("#p2-pager-top").innerHTML = `<span class="muted">${ordered.length} résultat${ordered.length > 1 ? "s" : ""}</span>`;
@@ -335,13 +342,32 @@
     $("#p2-dialog").showModal();
   }
 
+  function renderUnavailableInsights() {
+    const cards = [
+      ["—", "incidents dans la vue"],
+      ["—", "organisations distinctes"],
+      ["—", "incidents sur 30 j vs période précédente"],
+      ["—", "incidents multi-sources"],
+      ["—", "menace dominante"],
+      ["—", "secteur dominant documenté"],
+    ];
+    $("#p2-summary").innerHTML = cards.map(([value, label]) => `<article><strong>${esc(value)}</strong><span>${esc(label)}</span></article>`).join("");
+    const message = '<p class="muted">Données indisponibles : aucun calcul n’est possible sur cette vue.</p>';
+    $("#p2-trend").innerHTML = message;
+    $("#p2-geo").innerHTML = message;
+  }
+
   function render() {
     writeUrl();
     renderActiveFilters();
     const rows = filtered();
-    renderSummary(rows);
-    renderTrend(rows);
-    renderGeo(rows);
+    if (state.dataOk) {
+      renderSummary(rows);
+      renderTrend(rows);
+      renderGeo(rows);
+    } else {
+      renderUnavailableInsights();
+    }
     renderList(rows);
   }
 
@@ -378,32 +404,66 @@
     addEventListener("popstate", () => { readUrl(); syncControls(); render(); });
   }
 
+  /* Même contrat que le runtime principal : l'échec remonte, il n'est pas
+     absorbé en valeur de repli silencieuse. */
+  function reportDataFailure(label) {
+    const box = document.getElementById("data-alert");
+    const detail = document.getElementById("data-alert-detail");
+    if (!box || !detail) return;
+    const known = detail.textContent ? detail.textContent.split(" · ") : [];
+    if (!known.includes(label)) known.push(label);
+    detail.textContent = known.join(" · ");
+    box.hidden = false;
+  }
+
   async function load(path, fallback) {
     try {
       const response = await fetch(path, { cache: "no-cache" });
       if (!response.ok) throw new Error(String(response.status));
-      return await response.json();
+      return { ok: true, data: await response.json() };
     } catch (error) {
-      console.warn(`P2: données indisponibles ${path}`, error);
-      return fallback;
+      console.error(`P2: données indisponibles ${path}`, error);
+      return { ok: false, data: fallback };
     }
   }
 
+  /* L'ancien explorateur n'est masqué qu'une fois P2 réellement opérationnel.
+     Poser `p2-active` avant le chargement laissait, en cas d'échec en cours
+     d'initialisation, une coquille vide devant un explorateur masqué : la page
+     affichait alors zéro incident sans dire pourquoi. */
+  function activate() {
+    document.documentElement.classList.add("p2-active");
+  }
+
+  function rollback(error) {
+    console.error("P2 indisponible, retour à l'explorateur historique", error);
+    document.documentElement.classList.remove("p2-active");
+    $("#p2-product")?.remove();
+  }
+
   document.addEventListener("DOMContentLoaded", async () => {
-    injectShell();
-    readUrl();
-    const [incidents, status] = await Promise.all([
-      load("assets/data/incidents.json", []),
-      load("assets/data/status.json", null),
-    ]);
-    state.incidents = Array.isArray(incidents) ? incidents : [];
-    state.status = status;
-    setOptions($("#p2-threat"), uniqueSorted(state.incidents.map((row) => row.threat)), "Toutes");
-    setOptions($("#p2-sector"), uniqueSorted(state.incidents.map((row) => row.sector)), "Tous");
-    setOptions($("#p2-location"), uniqueSorted(state.incidents.map((row) => row.location)), "Tous");
-    setOptions($("#p2-source"), uniqueSorted(state.incidents.flatMap((row) => row.sources || [])), "Toutes");
-    syncControls();
-    bind();
-    render();
+    if (!injectShell()) return;
+    try {
+      readUrl();
+      const [incidents, status] = await Promise.all([
+        load("assets/data/incidents.json", []),
+        load("assets/data/status.json", null),
+      ]);
+      state.dataOk = incidents.ok && Array.isArray(incidents.data);
+      if (!state.dataOk) reportDataFailure("assets/data/incidents.json");
+      if (!status.ok) reportDataFailure("assets/data/status.json");
+      state.incidents = Array.isArray(incidents.data) ? incidents.data : [];
+      state.status = status.data;
+      setOptions($("#p2-threat"), uniqueSorted(state.incidents.map((row) => row.threat)), "Toutes");
+      setOptions($("#p2-sector"), uniqueSorted(state.incidents.map((row) => row.sector)), "Tous");
+      setOptions($("#p2-location"), uniqueSorted(state.incidents.map((row) => row.location)), "Tous");
+      setOptions($("#p2-source"), uniqueSorted(state.incidents.flatMap((row) => row.sources || [])), "Toutes");
+      syncControls();
+      bind();
+      render();
+      activate();
+    } catch (error) {
+      rollback(error);
+    }
   });
 })();

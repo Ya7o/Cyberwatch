@@ -47,11 +47,12 @@ def test_les_blocs_sources_n_affichent_plus_de_synthese():
 
 def test_aucun_script_de_patch_detail_non_certifie_n_est_charge():
     html = _read("index.html")
-    scripts = re.findall(r'<script\s+src="([^"]+)"', html)
+    # Le paramètre de cache n'est pas un contrat : on compare les chemins.
+    scripts = [ref.split("?", 1)[0] for ref in re.findall(r'<script\s+src="([^"]+)"', html)]
     assert scripts == [
         "assets/app.js",
-        "assets/p2.js?v=20260821-1",
-        "assets/p3.js?v=20260821-1",
+        "assets/p2.js",
+        "assets/p3.js",
     ]
     assert "dashboard-layout-fixes.js" not in html
     assert "detail-summary-fix.js" not in html

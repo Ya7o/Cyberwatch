@@ -244,3 +244,31 @@
     justify-content: center;
   }
 }
+
+/* Un échec de chargement doit se lire comme un échec, jamais comme un zéro
+   d'observation : le bandeau est le seul endroit qui distingue les deux. */
+.data-alert {
+  margin-top: var(--gap);
+  padding: 14px 16px;
+  border: 2px solid var(--status-fail);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.data-alert[hidden] { display: none; }
+.data-alert strong { display: block; font-size: 15px; }
+.data-alert p { margin: 6px 0 0; font-size: 13px; color: var(--text-secondary); }
+.data-alert-note { font-style: italic; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-sm) 0;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.skip-link:focus { left: 0; outline: 2px solid var(--series-1); outline-offset: 2px; }

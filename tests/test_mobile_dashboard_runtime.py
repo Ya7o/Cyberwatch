@@ -9,12 +9,22 @@ def _read(path: str) -> str:
     return open(path, encoding="utf-8").read()
 
 
+def _assets(html: str, tag: str) -> list[str]:
+    """Chemins d'assets sans leur paramètre de cache.
+
+    Les tests portent sur l'ordre et la composition du chargement, jamais sur
+    la valeur de `?v=` : épingler la version obligeait à modifier trois tests à
+    chaque publication de correctif CSS.
+    """
+    pattern = r'<script\s+src="([^"]+)"' if tag == "script" else r'<link rel="stylesheet" href="([^"]+)"'
+    return [ref.split("?", 1)[0] for ref in re.findall(pattern, html)]
+
+
 def test_index_charge_un_seul_runtime_dashboard():
     html = _read("index.html")
-    scripts = re.findall(r'<script\s+src="([^"]+)"', html)
-    # ``assets/app.js`` reste l'unique runtime applicatif. Les petits scripts
-    # de correctifs de layout/détail sont des helpers statiques et ne doivent
-    # pas être confondus avec les anciens runtimes parallèles retirés.
+    scripts = _assets(html, "script")
+    # ``assets/app.js`` est chargé une fois et en premier. Les couches produit
+    # P2/P3 s'appuient sur son DOM et ne doivent jamais le précéder.
     assert scripts.count("assets/app.js") == 1
     assert scripts[0] == "assets/app.js"
     assert "dashboard-v2.js" not in html
@@ -26,7 +36,7 @@ def test_styles_structurels_sont_charges_statiquement_avant_le_runtime():
     html = _read("index.html")
     js = _read("assets/app.js")
     runtime_css = _read("assets/dashboard-runtime.css")
-    assert '<link rel="stylesheet" href="assets/dashboard-runtime.css">' in html
+    assert "assets/dashboard-runtime.css" in _assets(html, "link")
     assert html.index("assets/dashboard-runtime.css") < html.index("assets/app.js")
     assert "function installCss" not in js
     assert "dashboard-runtime-css" not in js
@@ -35,10 +45,17 @@ def test_styles_structurels_sont_charges_statiquement_avant_le_runtime():
     assert ".filters-toolbar" in runtime_css
 
 
-def test_incidents_json_n_est_charge_qu_une_fois():
-    js = _read("assets/app.js")
-    assert js.count('load("assets/data/incidents.json"') == 1
-    assert js.count('assets/data/incidents.json') == 1
+def test_chaque_runtime_ne_charge_le_json_qu_une_fois():
+    """Aucun runtime ne doit parser deux fois le même payload.
+
+    Le nom précédent promettait une garantie au niveau de la *page* que ce test
+    ne vérifiait pas : `p2.js` et `p3.js` chargent le même fichier de leur côté.
+    La consolidation des runtimes est suivie dans le plan ; ici on protège
+    l'invariant réellement vérifiable, un chargement par runtime.
+    """
+    assert _read("assets/app.js").count('load("assets/data/incidents.json"') == 1
+    assert _read("assets/p2.js").count('load("assets/data/incidents.json"') == 1
+    assert _read("assets/p3.js").count('fetch("assets/data/incidents.json"') == 1
 
 
 def test_aucun_mutation_observer_de_rendu_secondaire():

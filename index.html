@@ -6,13 +6,15 @@
 <title>Cyberwatch — Observatoire cyber France / Océan Indien</title>
 <meta name="description" content="Incidents cyber publiquement listés en France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles et Comores.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
-<link rel="stylesheet" href="assets/style.css">
-<link rel="stylesheet" href="assets/dashboard-runtime.css">
-<link rel="stylesheet" href="assets/dashboard-mobile-fixes.css?v=20260820-1">
-<link rel="stylesheet" href="assets/p2.css?v=20260821-1">
-<link rel="stylesheet" href="assets/p3.css?v=20260821-1">
+<link rel="stylesheet" href="assets/style.css?v=20260822-1">
+<link rel="stylesheet" href="assets/dashboard-runtime.css?v=20260822-1">
+<link rel="stylesheet" href="assets/dashboard-mobile-fixes.css?v=20260822-1">
+<link rel="stylesheet" href="assets/p2.css?v=20260822-1">
+<link rel="stylesheet" href="assets/p3.css?v=20260822-1">
 </head>
 <body>
+
+<a class="skip-link" href="#contenu">Aller au contenu</a>
 
 <header class="topbar">
   <div class="wrap topbar-inner">
@@ -35,7 +37,13 @@
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="contenu">
+  <div id="data-alert" class="data-alert" role="alert" hidden>
+    <strong>Données indisponibles.</strong>
+    <p id="data-alert-detail"></p>
+    <p class="data-alert-note">Les compteurs et graphiques ci-dessous ne reflètent pas la base : un zéro affiché ici est un défaut de chargement, pas une absence d’incident.</p>
+  </div>
+
   <section class="kpis kpis-overview" aria-label="Indicateurs clés">
     <article class="kpi">
       <h2>Incidents recensés</h2>
@@ -83,7 +91,7 @@
 
   <section class="grid-2 dashboard-charts" aria-label="Vue d’ensemble">
     <figure class="card chart-month-card">
-      <figcaption><h2>Incidents par mois</h2><p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p></figcaption>
+      <figcaption><h2>Incidents par mois</h2><p>Date d'événement lorsqu'elle est connue, sinon date de publication.</p><p id="month-note" class="chart-note"></p></figcaption>
       <div class="chart" id="chart-month"></div>
     </figure>
     <figure class="card"><figcaption><h2>Incidents par secteur</h2><p>Répartition lorsque le secteur est connu.</p><p id="sector-note" class="chart-note"></p></figcaption><div class="chart" id="chart-sector"></div></figure>
@@ -113,8 +121,8 @@
   </section>
 </main>
 <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
-<script src="assets/app.js"></script>
-<script src="assets/p2.js?v=20260821-1"></script>
-<script src="assets/p3.js?v=20260821-1"></script>
+<script src="assets/app.js?v=20260822-1"></script>
+<script src="assets/p2.js?v=20260822-1"></script>
+<script src="assets/p3.js?v=20260822-1"></script>
 </body>
 </html>
