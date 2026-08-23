@@ -938,6 +938,14 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
         evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
         old_meta = _loads_json(str(old.get("Source_Metadata_JSON") or ""))
         new_meta = _loads_json(str(new.get("Source_Metadata_JSON") or ""))
+        # Une réhydratation peut ne produire que le hash de contenu. Conserver
+        # alors les faits riches déjà extraits plutôt que de les effacer à la
+        # faveur du rafraîchissement d'un champ SourceFacts.
+        if isinstance(old_meta, dict) and isinstance(new_meta, dict):
+            merged_meta = dict(old_meta)
+            merged_meta.update(new_meta)
+            new = dict(new)
+            new["Source_Metadata_JSON"] = _dumps_json(merged_meta)
         old_hash = str(old_meta.get("_source_facts_content_hash") or "") if isinstance(old_meta, dict) else ""
         new_hash = str(new_meta.get("_source_facts_content_hash") or "") if isinstance(new_meta, dict) else ""
         content_changed = bool(old_hash and new_hash and old_hash != new_hash)
@@ -999,4 +1007,3 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
         previous = by_id.get(item_id)
         by_id[item_id] = merge_row(previous or {}, row)
     return [by_id[key] for key in sorted(by_id)]
-

@@ -37,6 +37,24 @@ def test_merge_source_facts_idempotent_et_trie():
     assert once[1]["Threat_Actor"] == "nouveau"
 
 
+def test_merge_source_facts_conserve_les_metadonnees_riches_absentes_du_refresh():
+    existing = [{
+        "Item_ID": "ITM-a",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_content_hash": "old",
+            "rich_facts": {"claims": [{"value": "fait documenté"}]},
+        }),
+    }]
+    incoming = [{
+        "Item_ID": "ITM-a",
+        "Source_Metadata_JSON": sf._dumps_json({"_source_facts_content_hash": "new"}),
+    }]
+    merged = sf.merge_source_facts(existing, incoming)[0]
+    metadata = sf._loads_json(merged["Source_Metadata_JSON"])
+    assert metadata["_source_facts_content_hash"] == "new"
+    assert metadata["rich_facts"]["claims"][0]["value"] == "fait documenté"
+
+
 def test_dispatch_et_schema_et_version_v4():
     unknown = spec("AUTRE_SOURCE")
     assert sf.extract_source_fact(make_item("AUTRE_SOURCE"), RawEntry(title="X"), unknown) is None
