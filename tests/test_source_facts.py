@@ -203,6 +203,18 @@ def test_cyberattaque_fallback_deterministe_reste_disponible_sans_llm():
     assert json.loads(fact["Vulnerabilities_JSON"]) == ["CVE-2026-72898"]
 
 
+def test_cyberattaque_editorial_title_is_safe_summary_when_ai_abstains(monkeypatch):
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {})
+    entry = RawEntry(
+        title="Société Exemple : 18 Go de données revendiqués après une attaque ransomware",
+        organisation="Société Exemple",
+        content="Le groupe Qilin revendique une attaque et 18 Go de données.",
+    )
+    fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG", organisation="Société Exemple"), entry, CO)
+    assert fact["Summary"] == entry.title
+    assert json.loads(fact["Evidence_JSON"])["Summary"] == entry.title
+
+
 def test_enrichissement_semantique_est_materialise(monkeypatch):
     monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
         "summary": {
