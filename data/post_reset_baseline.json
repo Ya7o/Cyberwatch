@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-23T12:28:21.223149+00:00",
+  "generated_at": "2026-08-23T13:40:33.895067+00:00",
   "incident_coverage": {
     "location": {
       "known": 121,
@@ -8,10 +8,10 @@
       "unknown_pct": 5.47
     },
     "sector": {
-      "known": 76,
-      "known_pct": 59.38,
-      "unknown": 52,
-      "unknown_pct": 40.62
+      "known": 80,
+      "known_pct": 62.5,
+      "unknown": 48,
+      "unknown_pct": 37.5
     },
     "threat": {
       "known": 122,
@@ -28,10 +28,10 @@
       "unknown_pct": 11.4
     },
     "sector": {
-      "known": 142,
-      "known_pct": 62.28,
-      "unknown": 86,
-      "unknown_pct": 37.72
+      "known": 147,
+      "known_pct": 64.47,
+      "unknown": 81,
+      "unknown_pct": 35.53
     },
     "threat": {
       "known": 222,
@@ -41,12 +41,12 @@
     }
   },
   "latest_run": {
-    "as_of": "2026-08-23T16:11:08+04:00",
-    "duration_seconds": 141.1,
+    "as_of": "2026-08-23T17:20:26+04:00",
+    "duration_seconds": 144.2,
     "mode": "CREATE",
     "overall_status": "OK",
     "requests": 71,
-    "run_id": "RUN-20260823T161108-5",
+    "run_id": "RUN-20260823T172026-5",
     "target_end": "2026-08-23",
     "target_start": "2026-08-01"
   },
@@ -55,7 +55,7 @@
       "cyberattaque_semantic": {
         "cached_input_tokens": 0,
         "calls_attempted": 0,
-        "calls_budget_blocked": 3,
+        "calls_budget_blocked": 5,
         "calls_failed": 0,
         "calls_succeeded": 0,
         "duration_seconds": 0.0,
@@ -80,43 +80,43 @@
   "schema": "cyberwatch-post-reset-baseline-v1",
   "sources": {
     "BONJOURLAFUITE": {
-      "collect_duration_seconds": 1.851,
+      "collect_duration_seconds": 2.08,
       "coverage": "100",
-      "duration_seconds": 2.5,
+      "duration_seconds": 2.7,
       "items": 18,
       "items_collected": 18,
       "new_items": 18,
-      "processing_duration_seconds": 0.603,
+      "processing_duration_seconds": 0.611,
       "status": "OK"
     },
     "CYBERATTAQUE_ORG": {
-      "collect_duration_seconds": 4.341,
+      "collect_duration_seconds": 4.529,
       "coverage": "100",
-      "duration_seconds": 16.4,
+      "duration_seconds": 17.0,
       "items": 84,
       "items_collected": 84,
       "new_items": 84,
-      "processing_duration_seconds": 12.094,
+      "processing_duration_seconds": 12.504,
       "status": "OK"
     },
     "FRENCHBREACHES": {
-      "collect_duration_seconds": 59.195,
+      "collect_duration_seconds": 59.121,
       "coverage": "100",
-      "duration_seconds": 108.1,
+      "duration_seconds": 109.9,
       "items": 91,
       "items_collected": 91,
       "new_items": 91,
-      "processing_duration_seconds": 48.878,
+      "processing_duration_seconds": 50.805,
       "status": "OK"
     },
     "RANSOMWARE_LIVE": {
-      "collect_duration_seconds": 7.428,
+      "collect_duration_seconds": 7.462,
       "coverage": "100",
-      "duration_seconds": 13.4,
+      "duration_seconds": 13.7,
       "items": 23,
       "items_collected": 23,
       "new_items": 23,
-      "processing_duration_seconds": 6.014,
+      "processing_duration_seconds": 6.202,
       "status": "OK"
     },
     "VEILLE_LLM": {
@@ -126,7 +126,7 @@
       "items": 12,
       "items_collected": 12,
       "new_items": 12,
-      "processing_duration_seconds": 0.015,
+      "processing_duration_seconds": 0.017,
       "status": "OK"
     }
   },

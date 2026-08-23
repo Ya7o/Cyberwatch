@@ -392,9 +392,26 @@
     "value": "Numéro de téléphone"
    }
   ],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "comptes gedimat.fr"
+   }
+  ],
+  "display_summary": "Gédimat a été victime d'une cyberattaque entraînant la divulgation de données personnelles liées aux comptes gedimat.fr.",
+  "fields": {
+   "third_party": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Orange Business"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -702,8 +719,17 @@
     "value": "données bancaires"
    }
   ],
-  "datasets": [],
-  "display_summary": "",
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "factures"
+   }
+  ],
+  "display_summary": "WiziShop a connu un incident de sécurité exposant des factures clients depuis 2009.",
   "fields": {
    "initial_access": {
     "source": "CYBERATTAQUE_ORG",
@@ -770,8 +796,16 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "Cyberattaque contre Chat Coco entraînant une fuite massive de données personnelles.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "fuite massive de données personnelles"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1016,7 +1050,16 @@
     "value": "identifiants"
    }
   ],
-  "datasets": [],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "données relatives à des élèves"
+   }
+  ],
   "display_summary": "Éducation nationale : ZeroBytes revendique le vol de 346 millions de lignes de données",
   "fields": {},
   "systems": [],
@@ -2139,7 +2182,16 @@
     "value": "identifiants"
    }
   ],
-  "datasets": [],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "ERP BLG"
+   }
+  ],
   "display_summary": "Clenet : des pirates exploitent une faille de son extranet et accèdent aux données clients et fournisseurs",
   "fields": {
    "initial_access": {
@@ -3583,7 +3635,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "value": "numéros de téléphone"
    },
@@ -3602,8 +3655,17 @@
     "value": "données personnelles"
    }
   ],
-  "datasets": [],
-  "display_summary": "",
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "fichiers de prospection"
+   }
+  ],
+  "display_summary": "Un tiers non autorisé a usurpé un compte professionnel de KparK pour accéder et télécharger des fichiers de prospection.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -4951,7 +5013,15 @@
   ],
   "datasets": [],
   "display_summary": "Steam : noms, adresses et commandes de clients européens exposés après une cyberattaque",
-  "fields": {},
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Des données personnelles de clients européens compromises."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
