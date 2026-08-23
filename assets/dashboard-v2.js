@@ -109,8 +109,13 @@
     return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé, non confirmé)</span>`;
   }
 
+  function threatTentativeChip(incident) {
+    if (known(incident.threat) || !known(incident.threat_tentative)) return "";
+    return `<span class="chip" data-status="PARTIAL">${esc(incident.threat_tentative)} (supposée, non confirmée)</span>`;
+  }
+
   function incidentCardHtml(incident) {
-    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + (incident.sensitive_data_exposed ? `<span data-status="PARTIAL">Données sensibles</span>` : "") + sectorTentativeChip(incident);
+    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + threatTentativeChip(incident) + (incident.sensitive_data_exposed ? `<span data-status="PARTIAL">Données sensibles</span>` : "") + sectorTentativeChip(incident);
     const summary = cleanSummary(incident.summary);
     return `<article class="incident-card" data-id="${esc(incident.id)}">
       <div class="incident-main">

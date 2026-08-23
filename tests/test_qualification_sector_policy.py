@@ -55,7 +55,7 @@ def test_sector_application_is_neutralized_when_policy_disabled(monkeypatch):
     assert changes["llm_sector_policy_rejected"] == 1
     assert provenance[0]["Candidate_Value"] == config.SECTOR_HEALTH
     assert provenance[0]["Final_Value"] == config.SECTOR_UNKNOWN
-    assert provenance[0]["Decision"] == "REJECTED_POLICY_DISABLED"
+    assert provenance[0]["Decision"] == "REJECTED_NO_STRONG_EVIDENCE"
     assert provenance[0]["Confidence"] == ""
     assert "acteur de santé publique" in provenance[0]["Evidence"]
 

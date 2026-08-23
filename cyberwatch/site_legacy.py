@@ -215,6 +215,17 @@ def _source_fact_payload(row: dict) -> dict | None:
     rich_facts = _rich_facts_from_metadata(row)
     if rich_facts:
         payload["rich_facts"] = rich_facts
+    try:
+        metadata = json.loads(str(row.get("Source_Metadata_JSON") or "{}"))
+    except (TypeError, ValueError):
+        metadata = {}
+    tentative = metadata.get("threat_tentative") if isinstance(metadata, dict) else None
+    if isinstance(tentative, dict) and str(tentative.get("value") or "").strip():
+        payload["threat_tentative"] = {
+            "value": str(tentative["value"]).strip(),
+            "evidence": str(tentative.get("evidence") or "").strip()[:300],
+            "confidence": tentative.get("confidence", ""),
+        }
 
     return payload if len(payload) > 2 else None
 
@@ -375,6 +386,13 @@ def incidents_payload(
             summary = _best_source_summary(facts)
             if summary:
                 row["summary"] = summary
+            if incident.Menace == config.THREAT_UNKNOWN:
+                candidates = {
+                    str(fact.get("threat_tentative", {}).get("value") or "").strip()
+                    for fact in facts if isinstance(fact.get("threat_tentative"), dict)
+                }
+                if len(candidates) == 1 and next(iter(candidates)):
+                    row["threat_tentative"] = next(iter(candidates))
         payload.append(row)
     return payload
 

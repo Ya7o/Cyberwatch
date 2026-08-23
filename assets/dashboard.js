@@ -593,12 +593,18 @@
     return `<span>Inconnu</span>`;
   }
 
+  function threatLabelHtml(incident) {
+    if (incident.threat && incident.threat !== "Inconnu") return `<span>${esc(incident.threat)}</span>`;
+    if (incident.threat_tentative) return `<span class="chip" data-status="PARTIAL">${esc(incident.threat_tentative)} (supposée, non confirmée)</span>`;
+    return `<span>Inconnu</span>`;
+  }
+
   function incidentCardHtml(incident) {
     return `<article class="incident-card" data-id="${esc(incident.id)}">
       <div>
         <div class="incident-card-top"><time datetime="${esc(incident.date)}">${esc(formatDate(incident.date))}</time><span>${esc(incident.location || "Inconnu")}</span></div>
         <button type="button" class="incident-org-link" data-open-org="${esc(incident.org)}">${esc(incident.org || "Organisation inconnue")}</button>
-        <p class="incident-tags"><span>${esc(incident.threat || "Inconnu")}</span>${sectorLabelHtml(incident)}</p>
+        <p class="incident-tags">${threatLabelHtml(incident)}${sectorLabelHtml(incident)}</p>
         ${incident.summary ? `<p class="incident-summary-text">${esc(incident.summary)}</p>` : ""}
       </div>
       <div class="incident-side">

@@ -19,7 +19,7 @@ from pathlib import Path
 
 import requests
 
-from . import llm_runtime
+from . import config, llm_runtime
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import searchable
@@ -28,8 +28,8 @@ from .headline import MAX_HEADLINE_CHARS, is_publishable_headline
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-08-23.source-facts.9"
-SCHEMA_VERSION = "8"
+PROMPT_VERSION = "2026-08-23.source-facts.10"
+SCHEMA_VERSION = "9"
 LEGACY_PROMPT_VERSION = "2026-08-16.source-facts.5"
 LEGACY_SCHEMA_VERSION = "5"
 CACHE_FORMAT = "source-facts-ai-field-cache-v1"
@@ -56,6 +56,7 @@ NEW_SEMANTIC_FIELDS = {
     # confirme jamais un secteur seul, il peut seulement l'indiquer « à
     # confirmer » via le resolver organisationnel.
     "activity_description",
+    "threat_candidate",
 }
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
 
@@ -89,6 +90,7 @@ FIELD_VERSIONS = {
     "affected_systems": "affected-systems-v1",
     "affected_datasets": "affected-datasets-v1",
     "activity_description": "activity-description-v1",
+    "threat_candidate": "threat-candidate-v1",
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
 PREVIOUS_FIELD_VERSIONS = {
@@ -107,6 +109,7 @@ Si une information est ambiguë ou absente, renvoie une valeur vide ou une liste
 data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
 activity_description décrit en quelques mots l'activité de la victime seulement lorsque l'article la présente explicitement. Sa preuve doit désigner sans ambiguïté la victime et son activité ; ne rien déduire du nom, de l'attaque ou des données.
+threat_candidate désigne la menace seulement si l'article l'énonce explicitement ; ne l'infère jamais depuis l'acteur, les données ou une hypothèse.
 impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident, jamais un risque possible, une conséquence potentielle ou une mise en garde ("risque de", "expose à", "pourrait entraîner" sont interdits).
 Examine l'ensemble de l'article pour chacun des champs demandés. Conserve toutes les valeurs distinctes lorsqu'un champ accepte une liste. data_types désigne les catégories (noms, e-mails), affected_datasets les ensembles concernés (base clients). affected_counts ne désigne pas data_volumes. attack_date et discovered_date ne sont jamais la date de publication. fine_location est un lieu précis de l'incident, pas la localisation générale de l'organisation.
 """
@@ -117,6 +120,7 @@ _LLM_FIELDS = (
     "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
     "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
     "activity_description",
+    "threat_candidate",
 )
 
 _ACTOR_TRIGGER = re.compile(
@@ -573,6 +577,7 @@ def _schema(fields: set[str]) -> dict:
         "affected_systems": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "affected_datasets": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "activity_description": _fact_schema(),
+        "threat_candidate": {**_fact_schema(), "properties": {**_fact_schema()["properties"], "value": {"type": "string", "enum": ["", *config.THREATS]}}},
     }
     ordered = [name for name in _LLM_FIELDS if name in fields]
     return {
@@ -798,6 +803,12 @@ def _normalize(raw: dict, context: str, fields: set[str]) -> dict:
         fact = _normalize_fact(raw.get("activity_description"), context)
         if fact:
             result["activity_description"] = fact
+    if "threat_candidate" in fields:
+        fact = _normalize_fact(raw.get("threat_candidate"), context)
+        if fact and fact["value"] in config.THREATS and fact["value"] != config.THREAT_UNKNOWN:
+            window = _evidence_window(fact["evidence"], context)
+            if not _HYPOTHETICAL_RE.search(window):
+                result["threat_candidate"] = fact
     for key in ("attack_date", "discovered_date"):
         if key in fields:
             fact = _normalize_fact(raw.get(key), context, require_value_in_evidence=True)

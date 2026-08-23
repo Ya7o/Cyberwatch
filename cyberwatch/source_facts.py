@@ -11,8 +11,8 @@ import json
 import logging
 import re
 
-from . import source_facts_ai
-from .headline import is_publishable_headline, rejection_reason
+from . import config, source_facts_ai
+from .headline import is_organisation_name_only, is_publishable_headline, rejection_reason
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import (
@@ -242,6 +242,14 @@ def _ai_text(ai_result: dict, key: str) -> tuple[str, str]:
     return str(candidate.get("value") or "").strip(), str(candidate.get("evidence") or "").strip()
 
 
+def _ai_threat_candidate(ai_result: dict) -> dict | None:
+    value, evidence = _ai_text(ai_result, "threat_candidate")
+    if value not in config.THREATS or value == config.THREAT_UNKNOWN or not evidence:
+        return None
+    candidate = ai_result.get("threat_candidate") or {}
+    return {"value": value, "evidence": evidence, "confidence": candidate.get("confidence", "")}
+
+
 _STATUS_PRIORITY = {"confirmed": 4, "reported": 3, "claimed": 2, "unknown": 1}
 
 
@@ -354,6 +362,9 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
     fact["Evidence_JSON"] = _dumps_json(evidence)
     semantic_status = fact.pop("_Semantic_Refresh_Status", None)
     metadata = dict(entry.source_metadata or {})
+    threat_tentative = fact.pop("_Threat_Tentative", None)
+    if isinstance(threat_tentative, dict):
+        metadata["threat_tentative"] = threat_tentative
     semantic_rich = fact.pop("_Rich_Facts", None)
     if isinstance(semantic_rich, dict) and semantic_rich:
         existing_rich = metadata.get("rich_facts") if isinstance(metadata.get("rich_facts"), dict) else {}
@@ -377,12 +388,13 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
         # des fallbacks construits à partir de volumes ou de vecteurs. Il offre
         # une sortie sûre lorsque le LLM s'abstient, à condition de respecter
         # exactement le même contrat de publication.
-        if not is_publishable_headline(summary):
+        organisation = entry.organisation or ""
+        if not is_publishable_headline(summary) or is_organisation_name_only(summary, organisation):
             title = " ".join(str(entry.title or "").split()).strip()
-            if is_publishable_headline(title):
+            if is_publishable_headline(title) and not is_organisation_name_only(title, organisation):
                 fact["Summary"] = summary = title
                 evidence["Summary"] = title
-        if is_publishable_headline(summary):
+        if is_publishable_headline(summary) and not is_organisation_name_only(summary, organisation):
             metadata["_source_facts_summary_status"] = "accepted"
         else:
             # Une absence éditoriale est explicite : aucun champ structuré ne
@@ -393,7 +405,10 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
             metadata["_source_facts_summary_status"] = (
                 "abstained" if status == "abstained" else "rejected_quality"
             )
-            metadata["_source_facts_summary_rejection"] = rejection_reason(summary) or status or "missing"
+            metadata["_source_facts_summary_rejection"] = (
+                "organisation_name_only" if is_organisation_name_only(summary, organisation)
+                else rejection_reason(summary) or status or "missing"
+            )
     if metadata:
         fact["Source_Metadata_JSON"] = _dumps_json(metadata)
     # Les fallbacks éditoriaux peuvent ajouter une preuve après la première
@@ -699,6 +714,9 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     organisation = entry.organisation or item.Organisation_Raw
     ai_result = source_facts_ai.enrich(item, entry) or {}
     fact["_Semantic_Refresh_Status"] = source_facts_ai.field_statuses(item, entry)
+    candidate = _ai_threat_candidate(ai_result)
+    if candidate and item.Threat == config.THREAT_UNKNOWN:
+        fact["_Threat_Tentative"] = candidate
 
     canonical, raw = _claim_status(text)
     if raw:
@@ -817,6 +835,9 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
     organisation = entry.organisation or item.Organisation_Raw
     ai_result = source_facts_ai.enrich(item, entry) or {}
     fact["_Semantic_Refresh_Status"] = source_facts_ai.field_statuses(item, entry)
+    candidate = _ai_threat_candidate(ai_result)
+    if candidate and item.Threat == config.THREAT_UNKNOWN:
+        fact["_Threat_Tentative"] = candidate
 
     actor, actor_evidence = _ai_text(ai_result, "threat_actor")
     actor = _valid_actor(actor, organisation)

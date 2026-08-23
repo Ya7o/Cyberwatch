@@ -53,5 +53,12 @@ def rejection_reason(value: object) -> str:
     return ""
 
 
+def is_organisation_name_only(value: object, organisation: object) -> bool:
+    """Un nom de victime n'est jamais une headline d'incident."""
+    text = " ".join(str(value or "").split()).strip().casefold().rstrip(".")
+    org = " ".join(str(organisation or "").split()).strip().casefold().rstrip(".")
+    return bool(text and org and text == org)
+
+
 def is_publishable_headline(value: object) -> bool:
     return not rejection_reason(value)

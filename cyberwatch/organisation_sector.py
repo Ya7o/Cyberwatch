@@ -102,7 +102,6 @@ _STRONG_ITEM_ORIGINS = frozenset({
     "SAFE_NAME_RULE",
     "OFFICIAL_SUBJECT_ACTIVITY",
     "STRUCTURED_SOURCE",
-    "LLM_SOURCE_FALLBACK",
 })
 
 # --------------------------------------------------------------------------

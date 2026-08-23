@@ -97,6 +97,17 @@ def test_activite_llm_citee_est_transmise_aux_faits_source(monkeypatch):
     assert sf._loads_json(fact["Evidence_JSON"])["Activity_Description"].startswith("Exemple SA")
 
 
+def test_nom_seul_ne_devient_jamais_une_synthese(monkeypatch):
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    entry = RawEntry(title="Exemple SA", organisation="Exemple SA", content="Exemple SA confirme un incident.")
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {"summary": {"value": "Exemple SA", "evidence": "Exemple SA"}})
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {"summary": "abstained"})
+    fact = sf.extract_source_fact(item, entry, spec("CYBERATTAQUE_ORG"))
+    assert fact["Summary"] == ""
+    metadata = sf._loads_json(fact["Source_Metadata_JSON"])
+    assert metadata["_source_facts_summary_rejection"] == "organisation_name_only"
+
+
 def test_count_ignore_les_faux_positifs_et_continue_apres_eux():
     for text in ("1er", "27 juillet", "25 ans", "40 devient", "5doigts", "8h", "00h", "2019 diffusée"):
         assert sf._parse_count_phrase(text) == ("", "", "")

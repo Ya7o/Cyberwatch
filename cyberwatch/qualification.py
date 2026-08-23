@@ -43,7 +43,8 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_PHISHING,
     config.THREAT_THIRD_PARTY,
 })
-_SECTOR_FALLBACK_AUTO_APPLY = True
+# Un export LLM peut fournir un candidat sourcé, jamais une confirmation.
+_SECTOR_FALLBACK_AUTO_APPLY = False
 PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 
 
@@ -209,7 +210,7 @@ def neutralize_sector_fallback(items, changes, provenance):
         if item is None or not applied or item.Sector != applied:
             continue
         item.Sector = row.get("Previous_Value") or config.SECTOR_UNKNOWN
-        row["Final_Value"], row["Confidence"], row["Decision"] = item.Sector, "", "REJECTED_POLICY_DISABLED"
+        row["Final_Value"], row["Confidence"], row["Decision"] = item.Sector, "", "REJECTED_NO_STRONG_EVIDENCE"
         neutralized += 1
     if neutralized:
         changes["llm_sector_fallback"] = max(0, changes.get("llm_sector_fallback", 0) - neutralized)
