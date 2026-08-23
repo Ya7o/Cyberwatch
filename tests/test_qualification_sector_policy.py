@@ -1,4 +1,4 @@
-from cyberwatch import config
+from cyberwatch import config, qualification
 from cyberwatch.model import Item
 from cyberwatch.qualification import (
     backfill_structured_source_sectors,
@@ -40,7 +40,8 @@ def _sector_applied(**kwargs):
     return values
 
 
-def test_sector_application_is_neutralized_and_kept_as_diagnostic():
+def test_sector_application_is_neutralized_when_policy_disabled(monkeypatch):
+    monkeypatch.setattr(qualification, "_SECTOR_FALLBACK_AUTO_APPLY", False)
     item = _item()
     provenance = [_sector_applied()]
     changes = {"llm_sector_fallback": 1, "llm_sector_rejected": 4}
@@ -59,7 +60,24 @@ def test_sector_application_is_neutralized_and_kept_as_diagnostic():
     assert "acteur de santé publique" in provenance[0]["Evidence"]
 
 
-def test_location_and_threat_applications_are_not_changed():
+def test_sector_application_is_kept_when_policy_enabled(monkeypatch):
+    monkeypatch.setattr(qualification, "_SECTOR_FALLBACK_AUTO_APPLY", True)
+    item = _item()
+    provenance = [_sector_applied()]
+    changes = {"llm_sector_fallback": 1, "llm_sector_rejected": 4}
+
+    count = neutralize_sector_fallback([item], changes, provenance)
+
+    assert count == 0
+    assert item.Sector == config.SECTOR_HEALTH
+    assert changes["llm_sector_fallback"] == 1
+    assert changes["llm_sector_rejected"] == 4
+    assert "llm_sector_policy_rejected" not in changes
+    assert provenance[0]["Decision"] == "APPLIED"
+
+
+def test_location_and_threat_applications_are_not_changed(monkeypatch):
+    monkeypatch.setattr(qualification, "_SECTOR_FALLBACK_AUTO_APPLY", False)
     item = _item()
     rows = [
         {
@@ -85,7 +103,8 @@ def test_location_and_threat_applications_are_not_changed():
     assert changes["llm_sector_policy_rejected"] == 0
 
 
-def test_unexpected_later_sector_change_is_protected():
+def test_unexpected_later_sector_change_is_protected(monkeypatch):
+    monkeypatch.setattr(qualification, "_SECTOR_FALLBACK_AUTO_APPLY", False)
     item = _item(Sector=config.SECTOR_TECH)
     row = _sector_applied(Final_Value=config.SECTOR_HEALTH)
     changes = {"llm_sector_fallback": 1, "llm_sector_rejected": 0}

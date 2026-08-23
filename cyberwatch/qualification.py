@@ -42,7 +42,7 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_PHISHING,
     config.THREAT_THIRD_PARTY,
 })
-_SECTOR_FALLBACK_AUTO_APPLY = False
+_SECTOR_FALLBACK_AUTO_APPLY = True
 PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 
 
