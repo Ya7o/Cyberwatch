@@ -8401,8 +8401,16 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "La mairie de Sixt-sur-Aff a subi une compromission de son site, avec accès administrateur et défaçage.",
-  "fields": {},
+  "display_summary": "La mairie de Sixt-sur-Aff a subi une attaque, entraînant le piratage et le défaçage de son site WordPress.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Le site WordPress de la mairie a été défaçé."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -14962,7 +14970,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Ressourc'brie a été victime d'un piratage.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -15462,7 +15470,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Cyberattaque contre l'Association de la Caieta, une organisation d'ingénieurs de l'armement, survenue récemment.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -18247,7 +18255,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Les données de plus de 245 000 médecins et professionnels de santé ont été exposées par INSERM.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -24983,7 +24991,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Cyberattaque contre Le Lien Autonomie, un service d’aide à domicile.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -35609,8 +35617,16 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "Intermarché Drive a subi une cyberattaque entraînant la compromission de données personnelles.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Des données personnelles ont été compromises."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -35901,7 +35917,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Intermarché Drive a potentiellement exposé les données de plus de 1,3 million de clients.",
   "fields": {
    "initial_access": {
     "source": "FRENCHBREACHES",
