@@ -17,7 +17,7 @@ import argparse
 import random
 import sys
 
-from . import config, enrichment, identity, incident_identity, site, sources, status, store
+from . import config, enrichment, identity, incident_identity, organisation_sector_llm, site, sources, status, store
 from .collectors.base import Window
 from .collectors.cyberattaque_org import repair_existing_identities
 from .dedup import build_incidents, build_incidents_with_registry
@@ -35,6 +35,7 @@ from .runner import (
     repair_item_integrity,
     save_snapshot_provenance,
 )
+from .normalize import organisation_key
 from .qualification import qualify
 
 
@@ -214,6 +215,67 @@ def cmd_backfill_unknowns(args) -> int:
     )
     site.build()
     print(f"Qualification finale : {qualified.changes}; incidents={len(incidents)}.")
+    return 0
+
+
+def _print_sector_llm_report(report) -> None:
+    print(f"  Organisations sélectionnées : {report.organisations_selected}")
+    print(f"  Cache hits                  : {report.cache_hits}")
+    print(f"  Cache misses                : {report.cache_misses}")
+    print(f"  Appels LLM                  : {report.calls}")
+    print(f"  Candidats                   : {report.candidates}")
+    print(f"  Abstentions                 : {report.abstentions}")
+    print(f"  Coût estimé                 : {report.cost_usd:.4f} USD")
+    print(f"  LLM disponible              : {report.llm_available}")
+    if report.dry_run:
+        print("  DRY-RUN : aucune écriture, aucun appel réseau.")
+    elif report.candidates:
+        print(
+            f"  Cache mis à jour : {len(report.cache_rows)} organisation(s) au total "
+            f"-> data/organisation_sector_llm.csv"
+        )
+        print("  Exécuter ensuite `python -m cyberwatch replay` pour appliquer.")
+    else:
+        print("  Aucun nouveau candidat : cache inchangé.")
+
+
+def cmd_sector_llm(args) -> int:
+    """Complète par LLM organisationnel les organisations encore Inconnu (§26).
+
+    Étape explicite et réseau, jamais appelée par ``qualify()``/``replay``.
+    """
+    items = store.load_items()
+    if not items:
+        print("Aucun item en base : exécuter d'abord CREATE.")
+        return 1
+    report = organisation_sector_llm.enrich_unknown_organisation_sectors(
+        items, reference=enrichment.load_reference(),
+    )
+    print("SECTOR-LLM")
+    _print_sector_llm_report(report)
+    return 0
+
+
+def cmd_sector_backfill(args) -> int:
+    """Backfill historique du reliquat Sector, avec options explicites (§27)."""
+    items = store.load_items()
+    if not items:
+        print("Aucun item en base : exécuter d'abord CREATE.")
+        return 1
+    organisation_keys = None
+    if args.organisation_key:
+        organisation_keys = {organisation_key(args.organisation_key)}
+    report = organisation_sector_llm.enrich_unknown_organisation_sectors(
+        items,
+        reference=enrichment.load_reference(),
+        limit=args.limit,
+        organisation_keys=organisation_keys,
+        dry_run=args.dry_run,
+        force=args.force_llm,
+        no_llm=args.no_llm,
+    )
+    print("SECTOR-BACKFILL")
+    _print_sector_llm_report(report)
     return 0
 
 
@@ -784,6 +846,23 @@ def build_parser() -> argparse.ArgumentParser:
         "backfill-unknowns", help="Compléter uniquement Menace/Localisation inconnues."
     )
     backfill.set_defaults(func=cmd_backfill_unknowns)
+
+    sector_llm = subparsers.add_parser(
+        "sector-llm",
+        help="Compléter par LLM organisationnel les organisations Inconnu récentes.",
+    )
+    sector_llm.set_defaults(func=cmd_sector_llm)
+
+    sector_backfill = subparsers.add_parser(
+        "sector-backfill",
+        help="Backfill historique du reliquat Sector (P0 puis LLM sur cache miss).",
+    )
+    sector_backfill.add_argument("--limit", type=int, default=None, help="Nombre maximal d'organisations traitées.")
+    sector_backfill.add_argument("--organisation-key", default="", help="Ne traiter qu'une seule organisation.")
+    sector_backfill.add_argument("--no-llm", action="store_true", help="Calculer P0 et le cache existant, sans appeler le LLM.")
+    sector_backfill.add_argument("--force-llm", action="store_true", help="Ignorer un cache hit existant et redemander un candidat.")
+    sector_backfill.add_argument("--dry-run", action="store_true", help="Simuler sans aucune écriture ni appel réseau.")
+    sector_backfill.set_defaults(func=cmd_sector_backfill)
 
     repeat = subparsers.add_parser("test-repeat", help="Test de répétabilité (§27).")
     repeat.set_defaults(func=cmd_test_repeat)

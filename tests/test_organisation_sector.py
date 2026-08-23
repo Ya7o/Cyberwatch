@@ -1,6 +1,15 @@
 import random
 
-from cyberwatch import config, enrichment, organisation_sector as osec
+import pytest
+
+from cyberwatch import config, enrichment, organisation_sector as osec, store
+
+
+@pytest.fixture(autouse=True)
+def _isolate_data_dir(monkeypatch, tmp_path):
+    """collect_organisation_evidence lit par défaut le cache LLM (P1) depuis
+    un chemin dérivé de store.ITEMS_CSV : jamais data/ réel dans les tests."""
+    monkeypatch.setattr(store, "ITEMS_CSV", tmp_path / "items.csv")
 
 
 def _reference(key, organisation, sector, *, reason="validation humaine", url="https://acme.example/about"):

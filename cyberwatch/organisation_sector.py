@@ -238,7 +238,7 @@ def _evidence_string(evidence: OrganisationSectorEvidence) -> str:
     return ":".join(parts)
 
 
-def _display_names(items: list[Item]) -> dict[str, str]:
+def display_names(items: list[Item]) -> dict[str, str]:
     counters: dict[str, Counter] = defaultdict(Counter)
     for item in items:
         if item.Organisation_Key and item.Organisation_Raw:
@@ -604,7 +604,7 @@ def resolve_all_organisation_sectors(
         llm_cache_rows=llm_cache_rows,
         policy=policy,
     )
-    display = _display_names(items)
+    display = display_names(items)
     keys = sorted(set(evidence_by_org) | set(display))
     decisions: dict[str, OrganisationSectorDecision] = {}
     for key in keys:
@@ -724,11 +724,28 @@ def load_decisions_csv(path: Path | None = None) -> list[dict]:
 
 
 def summary(decisions: dict[str, OrganisationSectorDecision]) -> dict:
+    """Métriques d'observabilité (§35 du plan).
+
+    Les sous-canaux ``sector_resolved_by_*`` distinguent, parmi les
+    organisations ``CONFIRMED``, celles qui n'ont convergé qu'avec le
+    candidat LLM (``llm_consensus``) des autres, résolues sans lui.
+    """
     counts = Counter(decision.status for decision in decisions.values())
+    confirmed = [d for d in decisions.values() if d.status == STATUS_CONFIRMED]
+    resolved_by_validated_org = sum(
+        EVIDENCE_VALIDATED_ITEM in d.evidence_types for d in confirmed
+    )
+    resolved_by_naf_v2 = sum(EVIDENCE_NAF_PRECISE in d.evidence_types for d in confirmed)
+    resolved_by_llm_consensus = sum(
+        EVIDENCE_LLM_ORGANISATION in d.evidence_types for d in confirmed
+    )
     return {
         "organisation_sector_total": len(decisions),
         "organisation_sector_confirmed": counts.get(STATUS_CONFIRMED, 0),
         "organisation_sector_tentative": counts.get(STATUS_TENTATIVE, 0),
         "organisation_sector_conflict": counts.get(STATUS_CONFLICT, 0),
         "organisation_sector_unknown": counts.get(STATUS_UNKNOWN, 0),
+        "sector_resolved_by_validated_org": resolved_by_validated_org,
+        "sector_resolved_by_naf_v2": resolved_by_naf_v2,
+        "sector_resolved_by_llm_consensus": resolved_by_llm_consensus,
     }
