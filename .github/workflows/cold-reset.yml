@@ -135,14 +135,17 @@ jobs:
         working-directory: /tmp/cyberwatch-reset
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
-          # Budget de la qualification historique (cyberwatch.ai), distinct du
-          # runtime LLM partagé utilisé par les deux étapes suivantes.
+          # La qualification historique passe désormais elle aussi par le
+          # runtime LLM partagé : plafonds global et de tâche doivent donc
+          # être ouverts ensemble (les autres tâches restent fermées).
           AI_MAX_ESTIMATED_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_MAX_CALLS_PER_RUN: "900"
+          LLM_QUALIFICATION_MAX_CALLS_PER_RUN: "900"
           LLM_CYBERATTAQUE_SEMANTIC_MAX_CALLS_PER_RUN: "0"
           LLM_EDITORIAL_SEMANTIC_MAX_CALLS_PER_RUN: "0"
           LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "0"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
-          LLM_MAX_CALLS_PER_RUN: "0"
           AI_MAX_CALLS_PER_RUN: "900"
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
         run: |
@@ -153,6 +156,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_MAX_CALLS_PER_RUN: "400"
           LLM_QUALIFICATION_MAX_CALLS_PER_RUN: "0"
           AI_MAX_CALLS_PER_RUN: "0"
           LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "0"
@@ -175,11 +179,12 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_MAX_CALLS_PER_RUN: "500"
           LLM_QUALIFICATION_MAX_CALLS_PER_RUN: "0"
           AI_MAX_CALLS_PER_RUN: "0"
           LLM_CYBERATTAQUE_SEMANTIC_MAX_CALLS_PER_RUN: "0"
           LLM_EDITORIAL_SEMANTIC_MAX_CALLS_PER_RUN: "0"
-          LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "0"
+          LLM_SOURCE_FACTS_MAX_CALLS_PER_RUN: "500"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "500"
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "0"
