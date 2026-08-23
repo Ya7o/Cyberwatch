@@ -107,7 +107,7 @@ def test_measured_ransomware_aliases_are_mappable_but_broad_categories_stay_unkn
         ("Retail & E-Commerce", config.SECTOR_RETAIL),
         ("Hospitality", config.SECTOR_UNKNOWN),
         ("Agriculture and Food Production", config.SECTOR_UNKNOWN),
-        ("Government & Defense", config.SECTOR_UNKNOWN),
+        ("Government & Defense", config.SECTOR_ADMIN),
         ("Other", config.SECTOR_UNKNOWN),
         ("Not Found", config.SECTOR_UNKNOWN),
     ]

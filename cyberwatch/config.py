@@ -282,6 +282,7 @@ ACTIVITY_TO_SECTOR = {
     "government": SECTOR_ADMIN,
     "government administration": SECTOR_ADMIN,
     "public administration": SECTOR_ADMIN,
+    "government defense": SECTOR_ADMIN,
     "it services": SECTOR_TECH,
     "information technology": SECTOR_TECH,
     "software": SECTOR_TECH,
