@@ -244,17 +244,24 @@ arbitrage explicite.
 | 2 | Écrire le registre et la file dans le pipeline (`write_outputs`) | 0 direct | Très faible — deux fichiers dérivés, débloque la revue manuelle | Qualification | **Fait** |
 | 3 | Persister les échecs de résolution entreprise | 0 direct | Faible — supprime la réinterrogation aveugle, rend le trou mesurable | Enrichissement | Ouvert |
 | 4 | Aligner `structured_source` sur le `DEFAULT_POLICY` du code | — | **Mesuré et refusé** : 83,33 % de précision sur 6 cas, sous le seuil de 95 % (voir mise à jour §3.3) | Politique | **Mesuré, non applicable** |
-| 5 | Réexaminer `_SECTOR_FALLBACK_AUTO_APPLY` pour les 7 cas pleinement validés | +7 items | Moyen — cas les mieux prouvés du corpus, mais constante codée en dur | Qualification | Ouvert |
-| 6 | Alimenter `sector_evidence_text` en amont des exports challenger | jusqu'à +186 items | Élevé — vrai chantier ; sans lui le canal restera mort | Sources | Ouvert |
+| 5 | Réexaminer `_SECTOR_FALLBACK_AUTO_APPLY` pour les 7 cas pleinement validés | +7 items | Moyen — cas les mieux prouvés du corpus, mais constante codée en dur | Qualification | **Fait** |
+| 6 | Alimenter `sector_evidence_text` en amont des exports challenger | jusqu'à +186 items (plafond théorique, pas une estimation — voir plan) | Élevé — vrai chantier ; sans lui le canal restera mort | Sources | Ouvert |
 | 7 | Ajouter `Agriculture / Agroalimentaire` à la taxonomie | +11 items | Décision produit, tranchée | Méthodologie | **Fait** |
 
-Les pistes 1 à 3 étaient des corrections de câblage : elles ne rouvraient aucun
-arbitrage et ne créaient aucune couche. Les pistes 1, 2, 3 et 7 sont
-implémentées (voir `git log` sur cette branche). La piste 4 a été mesurée en
-suivant sa propre procédure (`scripts/evaluate_sector_registry.py` contre le
-golden set restauré) : le résultat est négatif, ce n'est plus une piste
-ouverte mais une conclusion. Les pistes 5 et 6 restent des décisions non
-prises.
+Les pistes 1, 2 et 7 étaient des corrections de câblage ou de taxonomie :
+elles ne rouvraient aucun arbitrage et ne créaient aucune couche. La piste 5
+a été vérifiée nominativement (7/7 cas corrects, dont un confirmé
+indépendamment par le golden set) avant d'être appliquée — c'était un
+interrupteur global, pas une exception ad hoc pour ces 7 cas. Les pistes 1,
+2, 5 et 7 sont implémentées (voir `git log` sur cette branche). La piste 4 a
+été mesurée en suivant sa propre procédure
+(`scripts/evaluate_sector_registry.py` contre le golden set restauré) : le
+résultat est négatif, ce n'est plus une piste ouverte mais une conclusion.
+Les pistes 3 et 6 restent ouvertes ; un plan de développement dédié
+(`/root/.claude/plans/propose-correction-temporal-lake.md` au moment de sa
+rédaction) documente comment les aborder avec deux outils existants,
+testés, mais jamais branchés : `scripts/enrich_sector_queue.py` (piste 3) et
+`sources/veillellm/deep_enrich_unknown_sectors.py` (piste 6).
 
 ## 6. Défaut annexe constaté
 
