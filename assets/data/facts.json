@@ -2353,7 +2353,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Roussel Agri 62 a subi un piratage entraînant la fuite de 9,33 Go de données.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -4999,7 +4999,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "I-CAD, un fichier animalier, a été victime d'une cyberattaque ciblant des e-mails.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -5674,7 +5674,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Groupe Cloué a subi une fuite de 6,7 Go de données suite à une cyberattaque.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -8079,7 +8079,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Les données de 1,36 million de personnes ont été compromises lors d'une cyberattaque contre la Fédération Française de Handball.",
   "fields": {
    "initial_access": {
     "source": "CYBERATTAQUE_ORG",
@@ -34410,8 +34410,15 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "AFPA victime d'un piratage affectant son service de formation professionnelle.",
   "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Le service de formation professionnelle a été touché."
+   },
    "initial_access": {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
