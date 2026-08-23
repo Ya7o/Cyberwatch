@@ -5,18 +5,18 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-08-15T16:14:00+04:00",
+    "generated_at": "2026-08-23T08:02:47+04:00",
     "record_count": 12,
     "schema": "cyberwatch-canonical-v1",
     "watch_result": {
       "new_incidents": 0,
       "enriched_incidents": 0,
-      "corrected_incidents": 12,
-      "note": "Correction de normalisation : alignement du tableau CSV et du JSON sur les valeurs canoniques Cyberwatch pour territoire, secteur et type_menace."
+      "corrected_incidents": 0,
+      "note": "Veille incrémentale : aucun nouvel incident local démontré ni enrichissement fiable identifié ; les 12 incidents existants restent inchangés."
     },
     "coverage": {
       "method": "Balayage ciblé Réunion/Mayotte : sources officielles, presse locale/nationale, observatoires cyber/OSINT accessibles et recherches ciblées sur les réseaux sociaux officiels.",
-      "limitations": "Facebook et certains réseaux sociaux ne rendent pas toutes les publications individuelles indexables ou récupérables. Le post officiel de Saint-Leu story_fbid=1368160182013544&id=saintleu.re reste identifié comme signal primaire non récupérable ; son contenu n’est pas inventé ni fusionné avec un autre incident.",
+      "limitations": "Facebook et certains réseaux sociaux ne rendent pas toutes les publications individuelles indexables ou récupérables. Le post officiel de Saint-Leu story_fbid=1368160182013544&id=saintleu.re reste identifié comme signal primaire non récupérable ; son contenu n’est pas inventé ni fusionné avec un autre incident. Couverture sociale de cette exécution incomplète malgré recherches site:, reprises, indexation et variantes disponibles.",
       "excluded_candidates": [
         {
           "organisation": "Bureau Vallée",
@@ -51,7 +51,7 @@
         "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
       ],
       "synthese": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique. Aucun élément public ne démontre une cyberattaque.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-02-04",
@@ -68,7 +68,7 @@
         "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
       ],
       "synthese": "Sabotage physique d’une infrastructure télécom ; aucune compromission logique documentée.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-02-19",
@@ -85,7 +85,7 @@
         "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
       ],
       "synthese": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-04-24",
@@ -102,7 +102,7 @@
         "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
       ],
       "synthese": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-05-31",
@@ -121,7 +121,7 @@
         "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
       ],
       "synthese": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-11",
@@ -139,7 +139,7 @@
         "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
       ],
       "synthese": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-13",
@@ -156,7 +156,7 @@
         "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
       ],
       "synthese": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-29",
@@ -173,7 +173,7 @@
         "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
       ],
       "synthese": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-29",
@@ -190,7 +190,7 @@
         "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
       ],
       "synthese": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-06-30",
@@ -207,7 +207,7 @@
         "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
       ],
       "synthese": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-07-04",
@@ -224,7 +224,7 @@
         "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
       ],
       "synthese": "Panne télécom confirmée avec impact sur les numéros d’urgence ; aucune information publique ne permet de qualifier une menace cyber.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     },
     {
       "date": "2026-07-09",
@@ -243,7 +243,7 @@
         "https://www.linfo.re/la-reunion/societe/des-actes-de-vandalisme-perturbent-le-reseau-orange-a-la-reunion"
       ],
       "synthese": "Sabotage physique confirmé d’infrastructures télécom ; aucune compromission informatique documentée.",
-      "evolution": "corrige"
+      "evolution": "inchange"
     }
   ]
 }
