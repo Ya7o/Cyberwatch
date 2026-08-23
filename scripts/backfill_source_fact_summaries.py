@@ -266,6 +266,22 @@ def restore_reopened_semantic_fields(
     """Restaure l'abstention si la tentative forcée n'a pas réellement abouti."""
     if not previous:
         return
+
+
+def invalidate_summary_cache(item: Item, entry: RawEntry) -> bool:
+    """Force une seule nouvelle headline, sans toucher aux autres faits."""
+    runtime = source_facts_ai._runtime()
+    expected_hash = source_facts_ai.content_hash(entry)
+    for cache_entry in runtime.cache.values():
+        if not isinstance(cache_entry, dict):
+            continue
+        if (cache_entry.get("item_id"), cache_entry.get("source_id"), cache_entry.get("content_hash"), cache_entry.get("model")) != (item.Item_ID, item.Source_ID, expected_hash, runtime.model):
+            continue
+        fields = cache_entry.get("fields")
+        if isinstance(fields, dict):
+            fields.pop("summary", None)
+            return True
+    return False
     runtime = source_facts_ai._runtime()
     expected_hash = source_facts_ai.content_hash(entry)
     for cache_entry in runtime.cache.values():
@@ -295,6 +311,7 @@ def run_backfill(
     retry_legacy_nulls: bool = False,
     include_existing: bool = False,
     latest_incidents: bool = False,
+    refresh_summary: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
@@ -354,6 +371,8 @@ def run_backfill(
         metrics["hydrated"] += 1
 
         runtime = source_facts_ai._runtime()
+        if refresh_summary:
+            invalidate_summary_cache(item, entry)
         calls_before = runtime.calls
         failures_before = runtime.calls_failed
         reopened = (
@@ -432,6 +451,7 @@ def main() -> int:
         "--latest-incidents", action="store_true",
         help="Sélectionne les incidents distincts les plus récents (une source par incident).",
     )
+    parser.add_argument("--refresh-summary", action="store_true", help="Invalide uniquement la headline mise en cache.")
     parser.add_argument(
         "--max-items", type=int, default=DEFAULT_MAX_ITEMS,
         help=f"Nombre maximal d'items à traiter (défaut: {DEFAULT_MAX_ITEMS}).",
@@ -470,6 +490,7 @@ def main() -> int:
         retry_legacy_nulls=args.retry_legacy_nulls,
         include_existing=args.include_existing,
         latest_incidents=args.latest_incidents,
+        refresh_summary=args.refresh_summary,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0

@@ -45,7 +45,7 @@ jobs:
           set -euo pipefail
           if [ -n "${{ inputs.item_ids }}" ]; then
             python scripts/backfill_source_fact_summaries.py \
-              --max-items "${{ inputs.max_items }}" --item-ids "${{ inputs.item_ids }}" --include-existing | tee /tmp/source-facts-backfill.json
+              --max-items "${{ inputs.max_items }}" --item-ids "${{ inputs.item_ids }}" --include-existing --refresh-summary | tee /tmp/source-facts-backfill.json
           else
             python scripts/backfill_source_fact_summaries.py \
               --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained | tee /tmp/source-facts-backfill.json
