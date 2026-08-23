@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import json
+import re
 from urllib.parse import unquote, urlencode, urlparse
 
 from cyberwatch import site, source_facts, source_facts_ai, sources, store
@@ -26,6 +27,38 @@ TARGET_SOURCES = {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}
 DEFAULT_MAX_ITEMS = 100
 RETRYABLE_SEMANTIC_FIELDS = {"summary", "initial_access", "attack_flow", "impact"}
 _WP_FIELDS = "id,date,link,title,excerpt,content,categories"
+
+
+def cached_summary_with_current_evidence(item: Item, entry: RawEntry) -> str:
+    """Return a prior accepted headline only when its evidence still matches.
+
+    Cache keys deliberately include the full fetched content.  A harmless
+    article layout change therefore creates a new key, although a previously
+    validated factual headline for the same source item remains usable.  This
+    bridge never trusts the cache blindly: the saved evidence must still occur
+    in the currently hydrated editorial text.
+    """
+    context = " ".join((entry.title or "", entry.summary or "", entry.content or ""))
+    compact_context = re.sub(r"\W+", "", context, flags=re.UNICODE).casefold()
+    if not compact_context:
+        return ""
+    entries = getattr(source_facts_ai._runtime(), "cache", {}).values()
+    for cached in entries:
+        if not isinstance(cached, dict):
+            continue
+        if cached.get("item_id") != item.Item_ID or cached.get("source_id") != item.Source_ID:
+            continue
+        summary = (cached.get("fields") or {}).get("summary") or {}
+        value = summary.get("value") if isinstance(summary, dict) else None
+        if not (isinstance(value, dict) and summary.get("status") == "accepted"):
+            continue
+        headline = str(value.get("value") or "").strip()
+        evidence = re.sub(r"\W+", "", str(value.get("evidence") or ""), flags=re.UNICODE).casefold()
+        # Les extraits peuvent être tronqués par une ellipse : un préfixe
+        # substantiel reste une preuve déterministe de rattachement.
+        if len(evidence) >= 24 and evidence[:80] in compact_context and is_publishable_headline(headline):
+            return headline
+    return ""
 
 
 def source_specs() -> dict[str, SourceSpec]:
@@ -379,6 +412,11 @@ def run_backfill(
             # Aucun cache n'est invalidé, donc cette réparation ne peut pas
             # consommer le budget LLM.
             editorial_fields = source_facts_ai.enrich(item, entry)
+            if not is_publishable_headline(str((editorial_fields or {}).get("summary") or "")):
+                editorial_fields = {
+                    **(editorial_fields or {}),
+                    "summary": cached_summary_with_current_evidence(item, entry),
+                }
         calls_before = runtime.calls
         failures_before = runtime.calls_failed
         reopened = (
