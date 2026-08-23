@@ -92,6 +92,14 @@ def test_explicit_item_id_requalifies_an_existing_summary():
     assert [item.Item_ID for item in selected] == ["a"]
 
 
+def test_include_existing_requalifies_les_plus_recents():
+    items = [_item("old", published="2026-08-01"), _item("new", published="2026-08-02")]
+    facts = [{"Item_ID": item.Item_ID, "Source_ID": item.Source_ID, "Summary": "Présente"} for item in items]
+    selected, metrics = backfill.select_candidates(items, facts, include_existing=True, max_items=1)
+    assert [item.Item_ID for item in selected] == ["new"]
+    assert metrics["include_existing"] is True
+
+
 def test_hydrate_cyberattaque_uses_native_wordpress_id():
     item = _item(
         "wp",

@@ -40,8 +40,9 @@ def select_candidates(
     *,
     item_ids: set[str] | None = None,
     max_items: int = DEFAULT_MAX_ITEMS,
+    include_existing: bool = False,
 ) -> tuple[list[Item], dict]:
-    """Sélectionne uniquement les items cibles dont la synthèse source manque."""
+    """Sélectionne les items SourceFacts, les plus récents d'abord."""
     facts_by_id = {
         str(row.get("Item_ID") or ""): row
         for row in source_facts_rows
@@ -57,7 +58,7 @@ def select_candidates(
         if requested and item.Item_ID not in requested:
             continue
         fact = facts_by_id.get(item.Item_ID)
-        if not requested and fact is not None and str(fact.get("Summary") or "").strip():
+        if not (requested or include_existing) and fact is not None and str(fact.get("Summary") or "").strip():
             continue
         if fact is None:
             missing_fact += 1
@@ -79,6 +80,7 @@ def select_candidates(
         "selected_by_source": dict(sorted(Counter(
             item.Source_ID for item in selected
         ).items())),
+        "include_existing": include_existing,
     }
     if requested:
         present = {item.Item_ID for item in candidates}
@@ -252,12 +254,17 @@ def run_backfill(
     dry_run: bool = False,
     retry_abstained: bool = False,
     retry_legacy_nulls: bool = False,
+    include_existing: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
     existing = store.load_source_facts()
     selected, metrics = select_candidates(
-        items, existing, item_ids=item_ids, max_items=max_items
+        items,
+        existing,
+        item_ids=item_ids,
+        max_items=max_items,
+        include_existing=include_existing,
     )
     metrics.update({
         "dry_run": dry_run,
@@ -362,6 +369,10 @@ def main() -> int:
         description="Backfill ciblé des synthèses SourceFacts manquantes."
     )
     parser.add_argument(
+        "--include-existing", action="store_true",
+        help="Requalifie aussi les synthèses déjà présentes, pour un rattrapage qualité.",
+    )
+    parser.add_argument(
         "--max-items", type=int, default=DEFAULT_MAX_ITEMS,
         help=f"Nombre maximal d'items à traiter (défaut: {DEFAULT_MAX_ITEMS}).",
     )
@@ -397,6 +408,7 @@ def main() -> int:
         dry_run=args.dry_run,
         retry_abstained=args.retry_abstained,
         retry_legacy_nulls=args.retry_legacy_nulls,
+        include_existing=args.include_existing,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0
