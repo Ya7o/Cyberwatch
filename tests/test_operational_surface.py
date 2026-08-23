@@ -7,7 +7,7 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 def test_operational_workflow_surface_is_intentionally_small():
     workflow_names = sorted(path.name for path in WORKFLOWS.glob("*.yml"))
-    assert workflow_names == ["ci.yml", "cold-reset.yml", "collect.yml"]
+    assert workflow_names == ["ci.yml", "cold-reset.yml", "collect.yml", "source-facts-backfill.yml"]
 
 
 def test_cold_reset_is_manual_only():
