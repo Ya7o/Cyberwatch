@@ -419,7 +419,7 @@
       <div class="detail-grid">
         <div><span>Date</span><strong>${esc(formatDate(incident.date))}</strong><small>${esc(incident.basis === "EVENT" ? "date d’événement" : "date de publication")}</small></div>
         <div><span>Menace</span><strong>${esc(incident.threat || "Inconnu")}</strong></div>
-        <div><span>Secteur</span><strong>${esc(incident.sector || "Inconnu")}</strong></div>
+        <div><span>Secteur</span><strong>${sectorLabelHtml(incident)}</strong></div>
         <div><span>Territoire</span><strong>${esc(incident.location || "Inconnu")}</strong></div>
         <div><span>Première observation</span><strong>${esc(formatDateTime(incident.first_seen))}</strong></div>
         <div><span>Dernière observation</span><strong>${esc(formatDateTime(incident.last_seen))}</strong></div>
@@ -587,12 +587,18 @@
     </button>`;
   }
 
+  function sectorLabelHtml(incident) {
+    if (incident.sector && incident.sector !== "Inconnu") return `<span>${esc(incident.sector)}</span>`;
+    if (incident.sector_tentative) return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé, non confirmé)</span>`;
+    return `<span>Inconnu</span>`;
+  }
+
   function incidentCardHtml(incident) {
     return `<article class="incident-card" data-id="${esc(incident.id)}">
       <div>
         <div class="incident-card-top"><time datetime="${esc(incident.date)}">${esc(formatDate(incident.date))}</time><span>${esc(incident.location || "Inconnu")}</span></div>
         <button type="button" class="incident-org-link" data-open-org="${esc(incident.org)}">${esc(incident.org || "Organisation inconnue")}</button>
-        <p class="incident-tags"><span>${esc(incident.threat || "Inconnu")}</span><span>${esc(incident.sector || "Inconnu")}</span></p>
+        <p class="incident-tags"><span>${esc(incident.threat || "Inconnu")}</span>${sectorLabelHtml(incident)}</p>
         ${incident.summary ? `<p class="incident-summary-text">${esc(incident.summary)}</p>` : ""}
       </div>
       <div class="incident-side">

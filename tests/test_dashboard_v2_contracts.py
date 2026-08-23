@@ -68,6 +68,15 @@ def test_cartes_ne_rendent_pas_la_provenance_redondante_ni_inconnu():
     assert "[incident.threat, incident.sector].filter(known)" in js
 
 
+def test_secteur_suppose_utilise_un_chip_distinct_du_secteur_confirme():
+    js = _read("assets/dashboard-v2.js")
+    assert "function sectorTentativeChip(incident)" in js
+    assert 'data-status="PARTIAL"' in js
+    assert "(supposé, non confirmé)" in js
+    # Réutilisé identiquement en carte et en détail, jamais dupliqué à la main.
+    assert js.count("sectorTentativeChip(incident)") >= 3
+
+
 def test_signaux_exposent_une_lecture_consultant_et_masquent_les_scores():
     js = _read("assets/dashboard-v2.js")
     assert "Pourquoi ce signal ?" in js

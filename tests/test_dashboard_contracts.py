@@ -337,3 +337,14 @@ def test_resize_ignore_les_micro_variations_et_ne_re_render_pas_toute_la_page():
     resize = re.search(r"function setupResize\(\)\s*\{(.*?)\n  \}", js, re.DOTALL)
     assert resize
     assert 'state.view === "analyse"' in resize.group(1)
+
+
+def test_secteur_suppose_utilise_un_chip_distinct_du_secteur_confirme():
+    """Un secteur rejeté faute de preuve ne doit jamais s'afficher comme un
+    secteur confirmé — ni fusionné avec "Inconnu", ni indiscernable d'un
+    secteur validé par le pipeline de qualification."""
+    js = _read("assets/dashboard.js")
+    assert "function sectorLabelHtml(incident)" in js
+    assert 'data-status="PARTIAL"' in js
+    assert "(supposé, non confirmé)" in js
+    assert js.count("sectorLabelHtml(incident)") >= 3
