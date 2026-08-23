@@ -84,3 +84,37 @@
   .resolved-field { grid-template-columns:minmax(92px,120px) 1fr; gap:.55rem; align-items:baseline; }
   .location-menu { position:fixed; left:1rem; right:1rem; top:20%; max-height:60vh; }
 }
+
+/* Densité et alignement : règles finales V2, placées après les styles
+   historiques afin de supprimer les effets de cascade contradictoires. */
+.search-bar { grid-template-columns:minmax(240px,2fr) repeat(7,minmax(110px,1fr)) auto; gap:.75rem; }
+.search-bar > .btn { min-height:44px; white-space:nowrap; }
+.location-picker { min-width:0; }
+.location-picker > .btn { width:100%; min-height:44px; padding:.5rem .7rem; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.25; }
+.incident-source-badges { justify-content:flex-start; }
+.detail-summary { font-size:1rem; line-height:1.55; padding:.7rem .85rem; border-radius:10px; }
+.resolved-facts { margin-top:.8rem; }
+.resolved-facts h3 { margin-bottom:.5rem; }
+.resolved-field { grid-template-columns:minmax(150px,190px) 1fr; gap:.75rem; padding:.45rem 0; }
+.detail-chip { padding:.16rem .48rem; }
+.incident-data-types { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.35rem .8rem; margin-top:.45rem; }
+.incident-data-types-title { grid-column:1 / -1; margin-bottom:0; }
+.incident-data-group { margin:0; }
+.incident-data-group > summary { min-height:0; padding:.15rem 0; }
+.incident-data-values { margin-top:.25rem; }
+.incident-data-value { padding:.14rem .45rem; }
+.incident-data-value--sensitivity-moderate { background:rgba(190,130,0,.10); border-color:rgba(190,130,0,.34); }
+.incident-data-value--sensitivity-high { background:rgba(190,62,62,.11); border-color:rgba(190,62,62,.38); }
+.incident-data-value--sensitivity-critical { background:rgba(190,62,62,.18); border-color:rgba(190,62,62,.58); }
+.detail-sources { margin-top:.8rem; padding-top:.75rem; gap:.4rem; }
+.detail-sources .incident-source-badges { justify-content:flex-start; }
+
+@media (max-width:1320px) {
+  .search-bar { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .search-field { grid-column:span 2; }
+}
+@media (max-width:760px) {
+  .search-bar { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .search-field { grid-column:1 / -1; }
+  .incident-data-types { grid-template-columns:1fr; }
+}
