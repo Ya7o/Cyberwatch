@@ -80,7 +80,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m cyberwatch.cold_reset preflight --mode "${{ inputs.reset_mode }}" | tee /tmp/reset-preflight.json
-          python -m cyberwatch.cold_reset manifest --output /tmp/reset-before.json
+          python -m cyberwatch.cold_reset manifest \
+            --mode "${{ inputs.reset_mode }}" --output /tmp/reset-before.json
           python -m cyberwatch.reset_baseline baseline --output /tmp/reset-baseline-before.json
           python -m cyberwatch.zero_reset inventory --output /tmp/zero-inventory-before.json
           python -m cyberwatch.zero_reset archive \
