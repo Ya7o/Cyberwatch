@@ -334,6 +334,39 @@ AI_USAGE_COLUMNS = [
 ]
 
 # --------------------------------------------------------------------------
+# DEDUP_AI_DAILY_USAGE — une ligne de synthèse par run du filet quotidien de
+# déduplication (§Lot 14). Colonnes définies ici (et non dans dedup_ai.py)
+# pour éviter un cycle d'import : dedup_ai -> ai -> store, donc store ne peut
+# pas importer dedup_ai directement.
+# --------------------------------------------------------------------------
+
+DEDUP_AI_DAILY_USAGE_COLUMNS = [
+    "Run_ID",
+    "As_Of",
+    "Mode",
+    "Status",
+    "Model",
+    "Prompt_Version",
+    "Candidates_Generated",
+    "Candidates_Selected",
+    "Candidates_Not_Reviewed_Capacity",
+    "LLM_Calls",
+    "LLM_Calls_Succeeded",
+    "LLM_Calls_Failed",
+    "LLM_Cache_Hits",
+    "LLM_Same_Organisation",
+    "LLM_Same_Incident",
+    "LLM_Different",
+    "LLM_Unknown",
+    "Org_Aliases_Applied",
+    "Review_Required",
+    "LLM_Input_Tokens",
+    "LLM_Output_Tokens",
+    "LLM_Cost_USD",
+    "LLM_Duration_Seconds",
+]
+
+# --------------------------------------------------------------------------
 # ORG_ENRICHMENT_CACHE — cache d'enrichissement gratuit d'entreprise (Sector)
 # --------------------------------------------------------------------------
 

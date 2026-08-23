@@ -44,7 +44,7 @@ Cyberwatch privilégie la **traçabilité et la reproductibilité** à la recher
 - mêmes entrées → mêmes identifiants et mêmes hashes ;
 - une source défaillante est journalisée, pas transformée en faux succès ;
 - une donnée insuffisamment prouvée reste `Inconnu` ;
-- l'IA ne décide jamais l'identité d'un item ou d'un incident ;
+- l'identité publiée reste reproductible et déterministe : le LLM peut challenger des candidats de rapprochement lors d'une collecte réelle, mais une décision LLM n'est appliquée qu'après validation par une policy déterministe et ne devient reproductible qu'une fois persistée dans le registre d'identité versionné (§5) ; `REPLAY` ne consulte jamais le LLM ;
 - les CSV de `data/` sont canoniques, `assets/data/` est dérivé ;
 - un rapprochement incertain reste à examiner plutôt que d'être fusionné silencieusement.
 
@@ -81,6 +81,7 @@ Blocs principaux :
 - `cyberwatch/source_facts*.py` : faits structurés extraits des sources ;
 - `cyberwatch/ai.py`, `llm_runtime.py` : filet LLM borné et télémétrie ;
 - `cyberwatch/dedup.py`, `incident_identity.py` : regroupement et stabilité des incidents ;
+- `cyberwatch/dedup_ai.py`, `duplicate_audit.py`, `org_identity.py` : filet LLM de déduplication (candidats, batch quotidien, registre d'identité, §5) ;
 - `cyberwatch/store.py` : stockage atomique ;
 - `cyberwatch/site.py` : données du dashboard ;
 - `cyberwatch/quality.py` : contrôles de cohérence.
@@ -91,11 +92,32 @@ Les domaines Qualification, Identity, Dedup, LLM runtime, Incremental, Quality f
 
 Les valeurs structurées fournies par une source sont privilégiées. Les règles déterministes puis les référentiels complètent les valeurs manquantes. Un filet LLM peut intervenir pendant une vraie collecte lorsque les canaux autorisés le permettent.
 
-Une valeur déjà connue n'est pas écrasée arbitrairement par le filet IA, et l'identité (`Item_ID`, `Organisation_Key`, `Incident_ID`) reste hors de son périmètre.
+Une valeur déjà connue n'est pas écrasée arbitrairement par le filet IA de qualification (§8), et l'identité (`Item_ID`, `Organisation_Key`, `Incident_ID`) reste hors de son périmètre. Le filet LLM de déduplication (ci-dessous) est un mécanisme distinct, avec ses propres garde-fous.
 
 La qualification Sector est volontairement conservatrice : `Inconnu` signifie **preuve insuffisante selon la politique active**.
 
 `data/items.csv` conserve les observations source par source. `data/incidents.csv` contient la vue dédupliquée utilisée par le dashboard. Les rapprochements flous ne sont pas appliqués silencieusement.
+
+### Identité organisationnelle ≠ identité d'incident
+
+Deux questions distinctes, jamais mélangées : « ces deux libellés désignent-ils la même
+organisation victime ? » (identité **organisationnelle**) et « ces deux items décrivent-ils
+le même événement ? » (identité **d'incident**). Une même organisation peut légitimement
+porter plusieurs incidents distincts et non concomitants.
+
+Le moteur déterministe (`normalize.organisation_key`, `organisation_aliases.csv`,
+`org_identity.effective_organisation_key`) reste la première ligne et l'autorité pour
+les deux. Un filet LLM optionnel (`cyberwatch/dedup_ai.py`) challenge, lors d'une MAJ
+réelle, un petit nombre de candidats plausibles issus des items nouveaux ou rafraîchis
+du jour contre le corpus historique — jamais toute la base contre elle-même, jamais plus
+d'un appel LLM par MAJ. Il ne répond jamais qu'à la question organisationnelle de façon
+actionnable : `same_organisation=SAME` avec confiance ≥ 0.95 et sans conflit avec un veto
+déterministe fort peut proposer une équivalence, persistée dans
+`data/organisation_identity_registry.csv` (registre dynamique, distinct de
+`organisation_aliases.csv` qui reste le référentiel statique curé à la main). La question
+d'incident (`same_incident`) est mesurée mais n'est **jamais** appliquée directement : la
+fusion d'incident reste exclusivement décidée par `dedup.group_components`, y compris une
+fois l'identité organisationnelle unifiée. Détails complets : `METHODOLOGY.md` §14.5.
 
 ## 6. Données
 
@@ -109,7 +131,9 @@ Données canoniques principales :
 - `data/source_facts.csv` : faits auxiliaires ;
 - `data/ai_qualifications.csv`, `data/ai_usage.csv` : cache/provenance/coût LLM ;
 - `data/organisation_sector_registry.csv`, `data/sector_enrichment_queue.csv` : registre Sector ;
-- `data/qualification_provenance.csv` : décisions de qualification.
+- `data/qualification_provenance.csv` : décisions de qualification ;
+- `data/organisation_identity_registry.csv` : équivalences d'identité organisationnelle validées (LLM ou manuelles), consultées par `effective_organisation_key` (§5) ;
+- `data/dedup_ai_daily_usage.csv` : télémétrie du filet LLM de déduplication (candidats, décisions, coût, durée).
 
 `assets/data/` est généré depuis les données canoniques pour le dashboard et ne doit pas être édité à la main.
 
@@ -160,13 +184,20 @@ python -m cyberwatch maj
 
 Invariants :
 
-- `replay`, `diagnose`, `probe` et `probe-media` n'appellent pas le filet IA de collecte ;
+- `replay`, `diagnose`, `probe` et `probe-media` n'appellent pas le filet IA de collecte, dédup compris ;
 - `VEILLE_LLM` n'est pas envoyé dans une seconde qualification LLM ;
 - appels et coûts estimés sont journalisés ;
 - une erreur IA ne fait pas échouer toute la collecte ;
-- l'identité reste entièrement déterministe.
+- l'identité reste entièrement déterministe et reproductible — le LLM ne fait que proposer, une policy déterministe valide, seule la persistance rend une décision reproductible (§5).
 
 Le secret OpenAI est injecté dans les workflows de collecte réelle, jamais dans la CI de développement.
+
+Le filet LLM de déduplication (§5) suit les mêmes garanties, avec une contrainte
+supplémentaire propre à `maj` : au plus un appel LLM par run, activé via
+`DEDUP_AI_DAILY_ENABLED=1` (mis par `collect.yml` uniquement pour `maj`, jamais pour
+`create`/`replay`/`diagnose`/`probe`/`probe-media`). Un rattrapage manuel de
+l'historique déjà publié existe séparément : `python scripts/backfill_dedup_identity.py`
+(plusieurs appels autorisés, jamais lancé automatiquement).
 
 ## 9. GitHub Actions
 
@@ -231,6 +262,7 @@ Le développement actif doit désormais privilégier la valeur utilisateur : lis
 | ajouter ou désactiver une source | `cyberwatch/sources.py` + collecteur si nécessaire |
 | changer une taxonomie/règle | `cyberwatch/config.py`, `normalize.py`, `sector.py` |
 | changer la déduplication | `dedup.py`, `incident_identity.py` + tests dédiés |
+| changer le filet LLM de déduplication | `dedup_ai.py`, `duplicate_audit.py`, `org_identity.py` + `tests/fixtures/dedup_identity_cases.json` |
 | changer les colonnes canoniques | `model.py` + stockage/tests/migration nécessaire |
 | modifier le dashboard | `index.html`, `assets/app.js`, `assets/styles.css` |
 | modifier la méthode | `METHODOLOGY.md` et, si nécessaire, `METHOD_ID` |

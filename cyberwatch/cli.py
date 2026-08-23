@@ -652,6 +652,39 @@ def cmd_report(args) -> int:
                 f"taux de cache {ai_usage.get('Org_Enrichment_Cache_Hit_Rate', 0)}"
             )
 
+    dedup_ai_usage = next(
+        (r for r in reversed(store.load_dedup_ai_daily_usage()) if r.get("Run_ID") == run_id),
+        None,
+    )
+    if dedup_ai_usage:
+        print()
+        print("### Filet LLM déduplication (quotidien)")
+        print()
+        print(f"- Statut : **{dedup_ai_usage.get('Status', '')}**")
+        print(
+            f"- Candidats : **{dedup_ai_usage.get('Candidates_Generated', 0)}** générés, "
+            f"{dedup_ai_usage.get('Candidates_Selected', 0)} sélectionnés, "
+            f"{dedup_ai_usage.get('Candidates_Not_Reviewed_Capacity', 0)} non revus (capacité)"
+        )
+        print(
+            f"- Appels LLM : **{dedup_ai_usage.get('LLM_Calls', 0)}** "
+            f"({dedup_ai_usage.get('LLM_Calls_Succeeded', 0)} réussis / "
+            f"{dedup_ai_usage.get('LLM_Calls_Failed', 0)} échoués, "
+            f"cache : {dedup_ai_usage.get('LLM_Cache_Hits', 0)})"
+        )
+        print(
+            f"- Décisions : SAME organisation {dedup_ai_usage.get('LLM_Same_Organisation', 0)} · "
+            f"SAME incident {dedup_ai_usage.get('LLM_Same_Incident', 0)} · "
+            f"DIFFERENT {dedup_ai_usage.get('LLM_Different', 0)} · "
+            f"UNKNOWN {dedup_ai_usage.get('LLM_Unknown', 0)}"
+        )
+        print(f"- Alias d'identité appliqués : **{dedup_ai_usage.get('Org_Aliases_Applied', 0)}**")
+        print(
+            f"- Coût estimé : **${dedup_ai_usage.get('LLM_Cost_USD', 0)}** "
+            f"en {dedup_ai_usage.get('LLM_Duration_Seconds', 0)}s "
+            f"({dedup_ai_usage.get('Model', '')})"
+        )
+
     notes = last.get("Notes", "")
     if notes:
         print()

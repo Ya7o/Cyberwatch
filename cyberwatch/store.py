@@ -15,6 +15,7 @@ from pathlib import Path
 from .model import (
     AI_QUALIFICATIONS_COLUMNS,
     AI_USAGE_COLUMNS,
+    DEDUP_AI_DAILY_USAGE_COLUMNS,
     ENTITY_WATCH_COLUMNS,
     INCIDENT_COLUMNS,
     ITEM_COLUMNS,
@@ -28,6 +29,7 @@ from .model import (
 )
 from .source_llm_fallback import QUALIFICATION_PROVENANCE_COLUMNS
 from .incident_identity import REGISTRY_COLUMNS
+from .org_identity import ORGANISATION_IDENTITY_REGISTRY_COLUMNS
 
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,6 +49,8 @@ AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
 AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
 ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
 INCIDENT_ID_REGISTRY_CSV = DATA_DIR / "incident_id_registry.csv"
+ORGANISATION_IDENTITY_REGISTRY_CSV = DATA_DIR / "organisation_identity_registry.csv"
+DEDUP_AI_DAILY_USAGE_CSV = DATA_DIR / "dedup_ai_daily_usage.csv"
 #: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
 #: inclus dans Items_Hash/Incidents_Hash.
 SOURCE_FACTS_CSV = DATA_DIR / "source_facts.csv"
@@ -158,6 +162,34 @@ def load_incident_id_registry(path: Path | None = None) -> list[dict]:
 def save_incident_id_registry(rows: list[dict], path: Path | None = None) -> None:
     ordered = sorted(rows, key=lambda row: (row.get('Incident_ID', ''), row.get('Anchor_Item_ID', '')))
     write_csv(_incident_registry_path(path), REGISTRY_COLUMNS, ordered)
+
+
+def _organisation_identity_registry_path(path: Path | None = None) -> Path:
+    if path is not None:
+        return path
+    # Même convention que `_incident_registry_path` : suivre le répertoire
+    # d'ITEMS_CSV, afin qu'un test qui isole les données obtienne aussi un
+    # registre d'identité isolé sans risque d'écrire dans data/ réel.
+    return ITEMS_CSV.parent / ORGANISATION_IDENTITY_REGISTRY_CSV.name
+
+
+def load_organisation_identity_registry_rows(path: Path | None = None) -> list[dict]:
+    return read_csv(_organisation_identity_registry_path(path))
+
+
+def save_organisation_identity_registry_rows(rows: list[dict], path: Path | None = None) -> None:
+    ordered = sorted(rows, key=lambda row: (row.get("Alias_Key", ""), row.get("Canonical_Key", "")))
+    write_csv(_organisation_identity_registry_path(path), ORGANISATION_IDENTITY_REGISTRY_COLUMNS, ordered)
+
+
+def append_dedup_ai_daily_usage(row: dict, path: Path | None = None) -> None:
+    """Ajoute la télémétrie du filet quotidien LLM à son historique (§Lot 14)."""
+    target = path or DEDUP_AI_DAILY_USAGE_CSV
+    write_csv(target, DEDUP_AI_DAILY_USAGE_COLUMNS, read_csv(target) + [row])
+
+
+def load_dedup_ai_daily_usage(path: Path | None = None) -> list[dict]:
+    return read_csv(path or DEDUP_AI_DAILY_USAGE_CSV)
 
 
 def save_sources(rows: list[dict], path: Path | None = None) -> None:

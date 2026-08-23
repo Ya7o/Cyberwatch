@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, enrichment, identity, incident_identity, org_enrichment, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
+from . import ai, config, dedup_ai, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -748,6 +748,8 @@ class RunReport:
     incident_id_registry: list[dict] = field(default_factory=list)
     sector_registry_rows: list[dict] = field(default_factory=list)
     sector_queue_rows: list[dict] = field(default_factory=list)
+    dedup_ai_summary: dict = field(default_factory=dict)
+    dedup_ai_problems: list[str] = field(default_factory=list)
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -757,6 +759,113 @@ def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> 
         outcome.status == status.PARTIAL
         and spec.params.get("publication_contract") == "live_watch"
     )
+
+
+def _company_ids_from_cache(rows: list[dict]) -> dict[str, str]:
+    ids: dict[str, str] = {}
+    for row in rows:
+        key = (row.get("Organisation_Key") or "").strip()
+        company_id = (row.get("Company_ID") or "").strip()
+        if key and company_id and row.get("Match_Status") == org_enrichment.MATCHED:
+            ids[key] = company_id
+    return ids
+
+
+def run_daily_dedup_net(
+    items: list[Item],
+    new_or_updated_items: list[Item],
+    source_fact_rows: list[dict],
+    *,
+    run_id: str,
+    as_of: str,
+    mode: str,
+    persist: bool = True,
+) -> tuple[dedup_ai.DedupAiRunState, list[str]]:
+    """Filet LLM post-déterministe quotidien (§Lot 2/3/9).
+
+    Ne modifie jamais directement ``ITEMS``/``INCIDENTS`` : ce point d'entrée
+    ne fait que proposer, challenger puis éventuellement persister des
+    équivalences d'identité organisationnelle validées dans le registre
+    (`org_identity`). Le moteur déterministe (`dedup.group_components`, via
+    `qualify` appelé juste après par `execute`) reste seul responsable de la
+    reconstruction des incidents — y compris de la décision de fusionner ou
+    non deux items dont l'identité vient d'être unifiée : `same_incident` du
+    LLM n'est jamais appliqué directement, uniquement mesuré (§Lot 5).
+
+    Ne lève jamais d'exception : une panne du filet LLM ne doit jamais
+    bloquer une collecte réelle (§Lot 15). ``new_or_updated_items`` vide
+    (rien de neuf aujourd'hui) coûte structurellement zéro appel LLM.
+    """
+    state = dedup_ai.start_run(store.DATA_DIR / "dedup_ai_daily_cache.csv")
+    problems: list[str] = []
+    if new_or_updated_items:
+        try:
+            company_ids = _company_ids_from_cache(store.load_org_enrichment_cache())
+            facts_by_item: dict[str, dict] = {}
+            victim_websites: dict[str, str] = {}
+            for row in source_fact_rows:
+                item_id = (row.get("Item_ID") or "").strip()
+                if not item_id:
+                    continue
+                facts_by_item[item_id] = row
+                website = (row.get("Victim_Website") or "").strip()
+                if website:
+                    victim_websites[item_id] = website
+
+            candidates = duplicate_audit.find_daily_llm_candidates(
+                new_or_updated_items, items,
+                company_ids=company_ids, victim_websites=victim_websites,
+            )
+            decisions = dedup_ai.challenge_candidates_batch(
+                candidates, facts_by_item, state, company_ids,
+            )
+
+            candidates_by_id = {dedup_ai.candidate_id(c): c for c in candidates}
+            registry_proposals = []
+            for pair_key, decision in decisions.items():
+                candidate = candidates_by_id.get(pair_key)
+                if candidate is None:
+                    continue
+                proposal = dedup_ai.validate_ai_dedup_decision(
+                    candidate, decision, model=state.model,
+                )
+                if proposal is not None:
+                    registry_proposals.append(proposal)
+
+            if registry_proposals:
+                existing_rows = store.load_organisation_identity_registry_rows()
+                existing_aliases = {
+                    row.get("Alias_Key", "") for row in existing_rows
+                    if row.get("Decision") == org_identity.DECISION_SAME
+                }
+                merged_rows, merge_problems = org_identity.merge_organisation_identity_rows(
+                    existing_rows, registry_proposals,
+                )
+                problems.extend(merge_problems)
+                merged_aliases = {row.get("Alias_Key", "") for row in merged_rows}
+                state.organisation_identity_rows_applied = len(merged_aliases - existing_aliases)
+                if persist:
+                    # Un run transitoire (`--transient`) prévisualise coût et
+                    # décisions sans jamais réécrire de donnée canonique : le
+                    # registre d'identité en fait partie au même titre que
+                    # ITEMS/INCIDENTS, déférés à `_persist` par `execute`.
+                    store.save_organisation_identity_registry_rows(merged_rows)
+                    org_identity.reload_organisation_identity_registry()
+
+            # Le cache LLM n'est jamais une donnée publiée : il ne fait
+            # qu'éviter une dépense redondante lors d'un run réel ultérieur,
+            # y compris si ce run-ci était transitoire.
+            dedup_ai.save_cache(state)
+        except Exception as exc:  # noqa: BLE001 — filet non bloquant (§Lot 15)
+            problems.append(
+                f"Filet LLM dedup quotidien en échec, ignoré : {type(exc).__name__}: {exc}"[:300]
+            )
+
+    if persist:
+        store.append_dedup_ai_daily_usage(
+            dedup_ai.daily_usage_row(state, run_id=run_id, as_of=as_of, mode=mode)
+        )
+    return state, problems
 
 
 def execute(
@@ -840,6 +949,38 @@ def execute(
         report.source_facts = source_facts.merge_source_facts(facts_base, new_fact_rows)
         report.requests = run_budget.requests_made
         report.ai_usage = ai.finish_run(ai_state, context.run_id, context.as_of, context.mode, sector_stats)
+
+        if context.mode == MODE_MAJ:
+            # Filet LLM post-déterministe (§Lot 2/9) : uniquement le périmètre
+            # collecté aujourd'hui contre la base complète, jamais toute la
+            # base contre elle-même. `run_daily_dedup_net` ne modifie jamais
+            # ITEMS/INCIDENTS directement ; elle peut seulement mettre à jour
+            # le registre d'identité organisationnelle consulté juste après
+            # par `qualify` -> `build_incidents_with_registry`, afin que la
+            # reconstruction déterministe du même run en tienne déjà compte.
+            daily_scope = list({item.Item_ID: item for item in collected if item.Item_ID}.values())
+            dedup_state, dedup_ai_problems = run_daily_dedup_net(
+                report.items, daily_scope, report.source_facts,
+                run_id=context.run_id, as_of=context.as_of, mode=context.mode,
+                persist=persist,
+            )
+            report.dedup_ai_summary = dedup_ai.daily_summary(dedup_state)
+            report.dedup_ai_problems = dedup_ai_problems
+            summary = report.dedup_ai_summary
+            print(
+                "  Filet dedup LLM (§quotidien) : "
+                f"statut={dedup_ai.daily_status(dedup_state)} "
+                f"candidats={summary['dedup_candidates_generated']} "
+                f"(sélectionnés={summary['dedup_candidates_selected']}, "
+                f"non-revus/capacité={summary['dedup_candidates_not_reviewed_capacity']}) "
+                f"appels={summary['dedup_llm_calls']} "
+                f"cache={summary['dedup_llm_cache_hits']} "
+                f"same_org={summary['dedup_llm_same_org']} "
+                f"aliases_appliqués={summary['dedup_org_aliases_applied']} "
+                f"coût=${summary['dedup_llm_cost_usd']:.4f}"
+            )
+            for problem in dedup_ai_problems:
+                print(f"    ! {problem}")
 
     qualified = qualify(report.items)
     report.items = qualified.items

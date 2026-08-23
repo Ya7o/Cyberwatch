@@ -198,9 +198,26 @@ Item_ID     = "ITM-" + SHA256(Source_ID|Source_Item_ID)[:16]
 Incident_ID = "INC-" + SHA256(Organisation_Key|Anchor_Item_ID)[:12].upper()
 ```
 
-Aucun rapprochement flou, aucune fusion assistée par IA. Deux libellés qui ne se
-normalisent pas à l'identique restent deux organisations distinctes :
+`organisation_key` seul ne pratique aucun rapprochement flou : deux libellés qui
+ne se normalisent pas à l'identique restent deux organisations distinctes
+tant qu'aucun alias ni aucune décision validée ne les unifie explicitement —
 **un faux doublon est préférable à une fusion non reproductible.**
+
+L'identité publiée reste entièrement reproductible et déterministe : à
+`ITEMS` et registres identiques, `Organisation_Key` effective, `Item_ID` et
+`Incident_ID` sont toujours les mêmes, quel que soit l'ordre d'arrivée des
+données. Un LLM peut challenger des candidats de rapprochement lors d'une
+collecte réelle (§14.5), mais il ne décide jamais seul : une décision LLM
+n'est appliquée qu'après validation par une policy déterministe
+(`dedup_ai.validate_ai_dedup_decision`), et ne devient reproductible qu'une
+fois persistée dans le registre d'identité organisationnelle versionné
+(`data/organisation_identity_registry.csv`, §14.5). `REPLAY` ne consulte
+jamais le LLM — il lit uniquement ce registre déjà persisté.
+
+L'identité **organisationnelle** (« ces deux libellés désignent-ils la même
+victime ? ») et l'identité **d'incident** (« ces deux items décrivent-ils le
+même événement ? ») sont deux questions strictement indépendantes : une même
+organisation peut légitimement porter plusieurs incidents distincts (§14.5).
 
 ---
 
@@ -788,6 +805,92 @@ reste à corriger, avant de faire à nouveau confiance à
 réel → `METHOD_ID` bumpé de `OBS-FR-OI-SIMPLE-SOURCING-7` à `-8`.
 `History_Status`/les sentinelles `Threat_Actor` n'entrent dans aucun hash
 canonique et n'auraient pas justifié ce bump à eux seuls.
+
+### 14.5 Filet LLM de déduplication (quotidien)
+
+Les deux mécanismes du §14.2 (alias statiques, candidats d'audit
+non fusionnants) restent la première ligne, mais laissent volontairement
+passer des doublons résiduels qu'aucune règle déterministe ne peut couvrir
+sans faux positif — variantes typographiques imprévues, acronymes non
+répertoriés, fautes de frappe. Ce filet ajoute une troisième couche,
+strictement bornée et jamais autorisée à décider seule une identité :
+
+```
+génération de candidats (duplicate_audit.find_daily_llm_candidates)
+  -> au plus 1 batch LLM par MAJ réelle (dedup_ai.challenge_candidates_batch)
+  -> validation déterministe (dedup_ai.validate_ai_dedup_decision)
+  -> registre d'identité organisationnelle (data/organisation_identity_registry.csv)
+  -> qualify() -> build_incidents_with_registry() (déterministe, inchangé)
+```
+
+**Candidats.** Uniquement les items nouveaux ou rafraîchis de la MAJ en
+cours contre le corpus historique (jamais toute la base contre elle-même,
+§Lot 2). Chaque paire porte des signaux explicites et purement descriptifs
+(`duplicate_audit.CandidateSignals` : clé exacte, forme compacte,
+permutation de tokens, inclusion, acronyme, `Company_ID` partagé, domaine
+victime partagé, score fuzzy) — le fuzzy sert uniquement à *proposer* un
+candidat, jamais à l'autoriser : aucun signal, seul ou combiné, ne modifie
+`Organisation_Key`. Au plus 5 candidats retenus par nouvel item, classement
+entièrement déterministe.
+
+**Un seul appel LLM.** `challenge_candidates_batch` structure tous les
+candidats retenus du run en une unique requête à sortie structurée. Aucun
+candidat n'entraîne un second appel : au-delà de la capacité
+(`DEDUP_AI_DAILY_MAX_CANDIDATES`, `DEDUP_AI_MAX_CONTEXT_CHARS`), les
+candidats en trop sont explicitement marqués `NOT_REVIEWED_CAPACITY`,
+jamais silencieusement ignorés. Zéro candidat implique zéro appel. Le
+transport et le budget passent par `llm_runtime` (tâche `dedup`), pas par
+une politique de coût parallèle.
+
+**Deux décisions indépendantes.** Le modèle répond `same_organisation` et
+`same_incident` séparément (`SAME`/`DIFFERENT`/`UNKNOWN`), avec l'invariant
+`same_incident=SAME ⇒ same_organisation=SAME`. Un même organisme peut
+légitimement produire `same_organisation=SAME` / `same_incident=DIFFERENT`
+(deux compromissions distinctes de SFR à des mois d'écart, par exemple) :
+`same_incident` n'est **jamais** appliqué directement — il n'est mesuré que
+pour la télémétrie. Seul `same_organisation` peut aboutir à une écriture,
+et seulement via la policy suivante.
+
+**Politique d'application (`validate_ai_dedup_decision`).** Une proposition
+de ligne de registre n'est produite que si toutes ces conditions sont
+réunies : décision `OK`/`CACHE_HIT`, `same_organisation=SAME`,
+`confidence >= 0.95`, et `dedup.decide_merge(left, right)` ne renvoie
+aucun des trois motifs de veto fort
+(`STRONG_KEEP_REASON_CODES` — conflit de `Source_Item_ID`, marqueur de
+récurrence, `Event_Date` conflictuel une fois l'identité déjà unifiée).
+Ces vetos restent prioritaires : aucune décision LLM ne peut les
+contourner. Une sortie `UNKNOWN` ou `DIFFERENT` ne modifie jamais rien
+(pas d'alias négatif permanent).
+
+**Registre d'identité organisationnelle**
+(`data/organisation_identity_registry.csv`, distinct et complémentaire de
+`organisation_aliases.csv` qui reste le référentiel statique versionné à la
+main) : colonnes `Alias_Key,Canonical_Key,Alias_Raw,Canonical_Raw,Decision,
+Origin,Confidence,Evidence,First_Seen,Last_Validated,Model,Prompt_Version,
+Input_Hash`. Seules les lignes `Decision=SAME` influencent
+`org_identity.effective_organisation_key()`, consultée après les identités
+territoriales fortes et avant la clé canonique. Toute collision
+(`A→C` puis `A→D`) ou tout cycle (`A→B→A`) est une erreur de qualité
+explicite (`org_identity.merge_organisation_identity_rows`), jamais résolue
+arbitrairement. Une fois persisté, le regroupement est reproductible : le
+moteur déterministe (`dedup.group_components`) reconstruit les mêmes
+incidents à chaque run, y compris `REPLAY`, qui ne consulte jamais le LLM
+mais lit ce registre comme n'importe quelle autre donnée persistée.
+
+**Non bloquant.** Une clé API absente, un timeout, une erreur HTTP, un
+budget épuisé ou une sortie structurée invalide n'appliquent aucune
+décision et ne bloquent jamais la collecte — le pipeline déterministe
+continue. Le statut du filet (`OK`/`NO_CANDIDATES`/`LLM_DISABLED`/
+`LLM_ERROR`/`BUDGET_BLOCKED`/`CAPACITY_LIMIT`) et la télémétrie complète
+(candidats, décisions, coût, durée) sont journalisés dans
+`data/dedup_ai_daily_usage.csv` et affichés par `cyberwatch report`.
+
+**Backfill manuel.** `scripts/backfill_dedup_identity.py` est l'équivalent
+volontaire pour rattraper l'historique déjà publié : plusieurs appels
+autorisés, mêmes budget/cache/Structured Outputs, jamais lancé
+automatiquement par `collect.yml`. `DEDUP_AI_DAILY_ENABLED=1` n'active le
+filet que pour `maj` réel (`collect.yml`) ; `create`/`cold-reset` restent
+purement déterministes par défaut.
 
 
 ## Qualification hybride source LLM (v0.7.37)

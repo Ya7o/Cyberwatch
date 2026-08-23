@@ -21,6 +21,22 @@ Cyberwatch entre en phase de consolidation. Le moteur technique est considéré 
 
 `FROZEN` ne signifie pas immuable. Cela signifie qu'une amélioration purement architecturale, une préparation à un besoin hypothétique ou une abstraction plus élégante ne suffit plus à justifier un chantier.
 
+### Réouverture documentée : filet LLM de déduplication (2026-08-23)
+
+Les domaines `Dedup`, `Identity` et `LLM runtime` ont été rouverts pour un
+besoin métier réel et déjà observé : des doublons résiduels (variantes de
+nom, acronymes, fautes de frappe) échappaient au moteur déterministe et aux
+aliases statiques, produisant des organisations distinctes dans le dashboard
+pour une même victime. Le chantier ajoute un filet LLM optionnel, borné à un
+batch par MAJ réelle (`cyberwatch/dedup_ai.py:challenge_candidates_batch`),
+dont les décisions ne sont appliquées qu'après validation déterministe
+(`cyberwatch/dedup_ai.py:validate_ai_dedup_decision`) et persistées dans
+`data/organisation_identity_registry.csv` — jamais une fusion directe. Le
+moteur déterministe (`dedup.decide_merge`/`group_components`) reste seul
+juge de la fusion d'incident ; voir §14.5 de `METHODOLOGY.md`. Les trois
+domaines redeviennent `FROZEN` à l'issue de ce chantier : toute évolution
+ultérieure doit à nouveau satisfaire le critère de réouverture ci-dessous.
+
 ## Clôture P0
 
 Le développement du P0 est terminé lorsque le workflow de reset certifié et la mesure post-reset sont présents sur `main`.
