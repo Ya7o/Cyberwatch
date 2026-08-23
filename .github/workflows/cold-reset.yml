@@ -276,9 +276,9 @@ jobs:
         run: |
           set -euo pipefail
           python -m pytest tests/ -q
-          node --check assets/app.js
-          node --check assets/p2.js
-          node --check assets/p3.js
+          node --check assets/shared.js
+          node --check assets/dashboard.js
+          node --check assets/dashboard-v2.js
           python -m cyberwatch check
           python -m cyberwatch build-site
           python -m cyberwatch check
