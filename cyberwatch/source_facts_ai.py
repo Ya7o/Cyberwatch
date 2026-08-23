@@ -61,7 +61,9 @@ INITIAL_ACCESS_VALUES = {
     "other",
 }
 FIELD_VERSIONS = {
-    "summary": "summary-v4",
+    # V5 invalide uniquement les anciennes headlines acceptées avant le
+    # contrat centralisé ; identités et faits structurés restent inchangés.
+    "summary": "summary-v5",
     "initial_access": "initial-access-v1",
     "attack_flow": "attack-flow-v2",
     "impact": "impact-v3",

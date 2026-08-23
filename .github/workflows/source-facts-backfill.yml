@@ -7,6 +7,11 @@ on:
         description: "Nombre maximal d'incidents distincts récents"
         type: number
         default: 100
+      item_ids:
+        description: "Item_ID optionnels, séparés par des virgules (un par incident)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -38,8 +43,13 @@ jobs:
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.50"
         run: |
           set -euo pipefail
-          python scripts/backfill_source_fact_summaries.py \
-            --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained | tee /tmp/source-facts-backfill.json
+          if [ -n "${{ inputs.item_ids }}" ]; then
+            python scripts/backfill_source_fact_summaries.py \
+              --max-items "${{ inputs.max_items }}" --item-ids "${{ inputs.item_ids }}" --include-existing | tee /tmp/source-facts-backfill.json
+          else
+            python scripts/backfill_source_fact_summaries.py \
+              --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained | tee /tmp/source-facts-backfill.json
+          fi
           cat /tmp/source-facts-backfill.json >> "$GITHUB_STEP_SUMMARY"
       - name: Valider et construire le site
         run: |
