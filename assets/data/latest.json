@@ -1,6 +1,84 @@
 [
  {
   "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-FB978E513818",
+  "items": 2,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "France métropolitaine",
+  "org": "Declic Services",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Environ 13 000 comptes utilisateurs et plus de 6 300 coordonnées bancaires compromises. 13 000 personnes (documenté). Données exposées : données bancaires, identifiants, adresses e-mail, mots de passe, noms, prénoms, adresses, e-mails, numéros de téléphone, historiques de prestations….",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/declic-services-mt50ilbazie0jaelweg",
+   "https://www.cyberattaque.org/declic-services-pirate-62-millions-de-lignes-revendiquees-et-le-site-officiel-detourne-par-zerobytes/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-D66A0A816B56",
+  "items": 1,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "France métropolitaine",
+  "org": "Solimut Mutuelle de France",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Exposition de données personnelles de plus d'un million d'assurés. 770 000 comptes (documenté).",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/solimut-mutuelle-de-france-mt50un0cza4e3fi0er"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-8410CBDEDEAC",
+  "items": 1,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "Inconnu",
+  "org": "SOS Villages de TF1",
+  "sector": "Inconnu",
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Cette vulnérabilité apparaît lorsqu’une application donne accès à une ressource à partir d’un identifiant sans vérifier correctement que la personne effectuant la requête est autorisée à consulter les données correspondantes. 260 000 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, identifiants.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://www.cyberattaque.org/sos-villages-de-tf1-260-000-fiches-avec-les-coordonnees-en-fuite/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-1DB4BB9CBF02",
+  "items": 1,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "Inconnu",
+  "org": "Solimut Mutuelle",
+  "sector": "Services aux entreprises",
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Une fuite a exposé des informations sensibles de 1,25 million d'assurés, incluant des données d'identité et bancaires. 770 467 comptes (documenté). Données exposées : adresses e-mail, numéros de téléphone, dates de naissance, données bancaires, IBAN / RIB….",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://www.cyberattaque.org/solimut-mutuelle-pres-de-125-million-dassures-dans-une-fuite-massive-de-donnees/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
   "date": "2026-08-22",
   "first_seen": "2026-08-22T11:29:48.630850+04:00",
   "id": "INC-C99133F13F25",
@@ -12,7 +90,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Exposition potentielle de données sensibles associées à la DINUM. 31 544 lignes (documenté). Données exposées : adresses e-mail, fichiers CSV, métadonnées techniques et adresses e-mail.",
+  "summary": "Exposition potentielle de données sensibles associées à la DINUM. 31 544 lignes (documenté). Données exposées : adresses e-mail, fichiers CSV, métadonnées techniques, commentaires, adresses e-mail, informations confidentielles.",
   "threat": "Incident tiers",
   "urls": [
    "https://www.cyberattaque.org/dinum-31-544-lignes-liees-au-cloud-de-letat-en-fuite/"
@@ -23,18 +101,76 @@
   "date": "2026-08-22",
   "first_seen": "2026-08-22T11:29:48.630850+04:00",
   "id": "INC-955DDC31941F",
-  "items": 1,
-  "last_seen": "2026-08-22T11:29:48.630850+04:00",
-  "location": "Inconnu",
-  "org": "Dron",
+  "items": 2,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "France métropolitaine",
+  "org": "DRON Location",
   "sector": "Construction / BTP",
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "Un total de 49 035 fichiers comprenant e-mails, commandes et contrats a été exposé, ce qui augmente le risque de fraude. 49 035 fichiers (documenté). Données exposées : adresses e-mail.",
-  "threat": "Phishing / fraude",
+  "summary": "Un total de 49 035 fichiers comprenant e-mails, commandes et contrats a été exposé, ce qui augmente le risque de fraude. 49 035 fichiers (documenté). Données exposées : adresses e-mail, e-mails, commandes, contrats, fiches CRM.",
+  "threat": "Fuite de données",
   "urls": [
+   "https://frenchbreaches.com/alertes/dron-location-blgcloud-mt465b4kyuah04efb8",
    "https://www.cyberattaque.org/dron-49-035-fichiers-publies-apres-compromission-de-son-compte-de-blgcloud/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-22",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-60B7EABB8CEB",
+  "items": 1,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "France métropolitaine",
+  "org": "OTEIS Conseil & Ingénierie",
+  "sector": "Services aux entreprises",
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "threat": "Ransomware",
+  "urls": [
+   "http://fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd.onion/companies/oteis"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-22",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-516C13499640",
+  "items": 1,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "France métropolitaine",
+  "org": "iMapper.tech",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des comptes utilisateurs et informations sensibles seraient exposés.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/imapper-tech-mt4kafe3uah19xev08q"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-22",
+  "first_seen": "2026-08-23T11:31:12.778140+04:00",
+  "id": "INC-24879C0A8E07",
+  "items": 1,
+  "last_seen": "2026-08-23T11:31:12.778140+04:00",
+  "location": "France métropolitaine",
+  "org": "Cloud de l’État",
+  "sector": "Inconnu",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des milliers de données ont été diffusées sur un forum de hackers.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/cloud-de-l-tat-cloud-numerique-gouv-fr-mt4685xhf4it99ffgkq"
   ]
  },
  {
@@ -191,6 +327,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
+  "summary": "L'incident a entraîné une exfiltration de données.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/g-otec-mt2pm5hv08jyfc9vlj2c",
@@ -331,7 +468,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Compte tenu de leur publication, les mots de passe, clés API et autres secrets présents dans les fichiers devraient être considérés comme  potentiellement compromis et remplacés , même lorsque leur validité actuelle n’est pas connue. 1 600 enregistrements (revendiqué). Données exposées : mots de passe.",
+  "summary": "Des données CRM, mots de passe et clés API ont été exposés. 1 600 enregistrements (revendiqué). Données exposées : mots de passe.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
    "https://frenchbreaches.com/alertes/frenchinnov-mt1qw0kfdhmqb8emex",
@@ -867,7 +1004,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Cette confirmation intervient plus d’un mois après une revendication publiée le  12 juillet 2026 , dans laquelle un acteur malveillant affirmait disposer d’un  accès complet et actif à la base de données  de la plateforme française. Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms, dates de naissance, données personnelles….",
+  "summary": "Des données personnelles ont été copiées. Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms, dates de naissance, données personnelles….",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/samboat.png",
@@ -1148,7 +1285,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Données concernées : adresses e-mail, numéros de téléphone et adresses postales.",
+  "summary": "France VAE a subi une cyberattaque entraînant l'exposition de données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/france-vae.png",
@@ -1271,7 +1408,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Cette précision est particulièrement importante pour une pharmacie en ligne : les éléments communiqués ne permettent pas d’affirmer qu’un historique d’achat de médicaments ou d’autres informations susceptibles de révéler des données de santé ont été consultés. Données exposées : adresses e-mail, adresses postales, identifiants, mots de passe, données bancaires….",
+  "summary": "Des informations personnelles de clients ont été consultées. Données exposées : adresses e-mail, adresses postales, identifiants, mots de passe, données bancaires….",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/lasante-net-mspekqmo3e0n0l1rsbe",
@@ -1481,7 +1618,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Aucun accès aux données de santé n’a également été identifié  à ce stade. Données exposées : adresses e-mail, données personnelles, dates de naissance, données bancaires, données de santé.",
+  "summary": "Des personnes non autorisées ont accédé à certaines données personnelles. Données exposées : adresses e-mail, données personnelles, dates de naissance, données bancaires, données de santé.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ville-de-gagny-msmim65d87im5z51ho4",
@@ -1567,6 +1704,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "La mairie de Sixt-sur-Aff a subi une compromission de son site, avec accès administrateur et défaçage.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mairie-de-sixt-sur-aff-msmii0ydaxb7f5pq82k"
@@ -1650,7 +1788,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "# Piratage de Duvignau revendiqué dans le cadre de la fuite BlgCloud : données CRM, e-mails et documents publiés. Données exposées : adresses e-mail, adresses postales, noms et prénoms, identifiants.",
+  "summary": "Données CRM, e-mails et documents publiés. Données exposées : adresses e-mail, adresses postales, noms et prénoms, identifiants.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/duvignau-40-blgcloud-msm86diuc1krxvgldsu",
@@ -1692,7 +1830,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’analyse du fichier revendiqué fait apparaître 2 479 enregistrements après l’en-tête et  2 478 personnes pouvant être distinguées à partir des adresses e-mail , un compte ne comportant pas d’adresse renseignée. 2 478 personnes (documenté). Données exposées : adresses e-mail, identifiants, mots de passe.",
+  "summary": "2 481 lignes de données exposées. 2 478 personnes (documenté). Données exposées : adresses e-mail, identifiants, mots de passe.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-mans-fc-msm10s9d7aa7x3v9wvi",
@@ -1733,7 +1871,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le 8 août 2026, un hacker utilisant le pseudonyme  cyberjuif  affirme avoir récupéré une base au format JSON contenant  80 031 dossiers , pour un volume d’environ 108 759 Ko. 80 000 personnes (documenté). Données exposées : numéros de téléphone.",
+  "summary": "Les données de 80 031 personnes ont été compromises. 80 000 personnes (documenté). Données exposées : numéros de téléphone.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/clcv-consommation-logement-et-cadre-de-vie-mskk2jbes84h2ad5fra",
@@ -2218,7 +2356,7 @@
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Le club parisien apparaît depuis le  5 août 2026  sur le site d’extorsion des cybercriminels, avec un compte à rebours de  246 heures et 21 minutes  avant la publication annoncée des données volées. Données exposées : pièces d'identité, passeports.",
+  "summary": "Une partie de son système d'information a été affectée. Données exposées : pièces d'identité, passeports.",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=84f95786-5afa-42c0-8497-df4f2f88a889",
@@ -2384,7 +2522,7 @@
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Éléments documentés : 210 Go de données.",
+  "summary": "Les données de la Ville de Drancy ont été publiées par les cybercriminels.",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=1277b405-d795-4d1d-bae9-7bd745f18c79",
@@ -2505,6 +2643,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "L'intégralité de la base de données a été exfiltrée.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/emploi-docteur-imago-msalwlhrpzvx55d1kuf"

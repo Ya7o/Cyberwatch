@@ -391,6 +391,29 @@
    "sourcefacts_llm_calls": 0,
    "sourcefacts_llm_duration_s": 0,
    "sourcefacts_reused": 0
+  },
+  {
+   "as_of": "2026-08-23T11:31:12.778140+04:00",
+   "duration_s": 212.4,
+   "french_detail_cache_hits": 0,
+   "french_detail_network_fetches": 0,
+   "french_detail_stale_fallbacks": 0,
+   "items_after": 1062,
+   "items_before": 1053,
+   "items_new": 9,
+   "mode": "MAJ",
+   "overall": "OK",
+   "qualification_mode": "full",
+   "qualification_reason": "new_or_dirty_items",
+   "qualification_runtime_s": 1.536,
+   "qualify_duration_s": 1.437,
+   "requests": 71,
+   "run_id": "RUN-20260823T113112",
+   "snapshot_items_modified": 4,
+   "snapshot_items_unchanged": 1049,
+   "sourcefacts_llm_calls": 27,
+   "sourcefacts_llm_duration_s": 57.86,
+   "sourcefacts_reused": 148
   }
  ]
 }
