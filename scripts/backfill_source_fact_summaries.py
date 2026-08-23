@@ -306,6 +306,7 @@ def run_backfill(
     include_existing: bool = False,
     latest_incidents: bool = False,
     refresh_summary: bool = False,
+    replay_summary_cache: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
@@ -365,13 +366,19 @@ def run_backfill(
         metrics["hydrated"] += 1
 
         runtime = source_facts_ai._runtime()
+        editorial_fields = None
         if refresh_summary:
             invalidate_summary_cache(item, entry)
             source_facts_ai.force_summary_refresh(item, entry)
             # Le backfill doit matérialiser l'appel avant l'extracteur : cela
             # évite qu'un adaptateur source court-circuite silencieusement la
             # couche éditoriale.
-            source_facts_ai.enrich(item, entry)
+            editorial_fields = source_facts_ai.enrich(item, entry)
+        elif replay_summary_cache:
+            # Réinjecte uniquement une headline déjà accepted dans le cache.
+            # Aucun cache n'est invalidé, donc cette réparation ne peut pas
+            # consommer le budget LLM.
+            editorial_fields = source_facts_ai.enrich(item, entry)
         calls_before = runtime.calls
         failures_before = runtime.calls_failed
         reopened = (
@@ -389,6 +396,18 @@ def run_backfill(
             fact = source_facts.extract_source_fact(item, entry, spec)
         finally:
             runtime.retry_legacy_nulls = previous_retry_legacy_nulls
+
+        # ``entry`` est la source de vérité de la passe éditoriale.  Les
+        # adaptateurs historiques peuvent reconstruire une Summary technique
+        # (volumes, vecteur, etc.) après l'enrichissement ; ne leur permettons
+        # pas d'écraser une headline LLM déjà validée et mise en cache.
+        # Cette copie est aussi nécessaire lors d'un rejeu depuis cache :
+        # aucune nouvelle requête ne doit être requise pour republier une
+        # réponse accepted.
+        # ``enrich`` retourne ses champs, il ne modifie pas RawEntry.
+        cached_summary = str((editorial_fields or {}).get("summary") or "").strip()
+        if fact is not None and is_publishable_headline(cached_summary):
+            fact["Summary"] = cached_summary
 
         # Une panne technique ou un budget bloqué ne doit pas dégrader une
         # abstention déjà confirmée. Seule une vraie réponse sémantique peut
@@ -451,6 +470,7 @@ def main() -> int:
         help="Sélectionne les incidents distincts les plus récents (une source par incident).",
     )
     parser.add_argument("--refresh-summary", action="store_true", help="Invalide uniquement la headline mise en cache.")
+    parser.add_argument("--replay-summary-cache", action="store_true", help="Réinjecte les headlines accepted du cache sans appel LLM.")
     parser.add_argument(
         "--max-items", type=int, default=DEFAULT_MAX_ITEMS,
         help=f"Nombre maximal d'items à traiter (défaut: {DEFAULT_MAX_ITEMS}).",
@@ -490,6 +510,7 @@ def main() -> int:
         include_existing=args.include_existing,
         latest_incidents=args.latest_incidents,
         refresh_summary=args.refresh_summary,
+        replay_summary_cache=args.replay_summary_cache,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0

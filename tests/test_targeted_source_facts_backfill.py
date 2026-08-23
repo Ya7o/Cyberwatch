@@ -293,3 +293,33 @@ def test_latest_incidents_selects_one_source_per_deduplicated_incident():
     assert len(selected) == 2
     assert selected[0].Item_ID == "co"
     assert metrics["one_source_per_incident"] is True
+
+
+def test_backfill_keeps_valid_editorial_headline_returned_by_ai(monkeypatch):
+    """An adapter's old technical summary must not overwrite the AI return."""
+    item = _item("headline")
+    saved = []
+    monkeypatch.setattr(backfill.store, "load_items", lambda: [item])
+    monkeypatch.setattr(backfill.store, "load_source_facts", lambda: [])
+    monkeypatch.setattr(backfill, "source_specs", lambda: {
+        "CYBERATTAQUE_ORG": SourceSpec(source_id="CYBERATTAQUE_ORG", layer="core", zone="France")
+    })
+    monkeypatch.setattr(backfill, "hydrate_entry", lambda *_: backfill.RawEntry(
+        title=item.Title, content="Une intrusion est confirmée.", organisation=item.Organisation_Raw,
+    ))
+    monkeypatch.setattr(backfill.source_facts, "extract_source_fact", lambda *_: {
+        "Item_ID": item.Item_ID, "Source_ID": item.Source_ID,
+        "Summary": "Éléments documentés : 43 Go de données.",
+    })
+    monkeypatch.setattr(backfill.source_facts_ai, "enrich", lambda *_: {
+        "summary": "Exemple SA a confirmé une intrusion informatique affectant ses services."
+    })
+    monkeypatch.setattr(backfill.source_facts_ai, "runtime_stats", lambda: {"calls_attempted": 0})
+    monkeypatch.setattr(backfill.source_facts_ai, "_flush_runtime", lambda: None)
+    monkeypatch.setattr(backfill.store, "save_source_facts", lambda rows: saved.append(rows))
+    monkeypatch.setattr(backfill.site, "build", lambda: None)
+
+    metrics = backfill.run_backfill(replay_summary_cache=True)
+
+    assert metrics["headlines_accepted"] == 1
+    assert saved[0][0]["Summary"].startswith("Exemple SA a confirmé")
