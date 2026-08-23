@@ -424,6 +424,8 @@
       detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
       detailField("Date de l’attaque", fields.attack_date?.value ? formatDate(fields.attack_date.value) : ""),
       detailField("Découverte", fields.discovered_date?.value ? formatDate(fields.discovered_date.value) : ""),
+      detailField("CVSS", fields.cvss?.value),
+      detailField("Volume de données", fields.data_volume?.value),
       detailField("Impact", fields.impact?.value),
       detailField("Évolution", fields.evolution?.value),
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),

@@ -28,8 +28,8 @@ from .headline import MAX_HEADLINE_CHARS, is_publishable_headline
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-08-22.source-facts.7"
-SCHEMA_VERSION = "6"
+PROMPT_VERSION = "2026-08-23.source-facts.8"
+SCHEMA_VERSION = "7"
 LEGACY_PROMPT_VERSION = "2026-08-16.source-facts.5"
 LEGACY_SCHEMA_VERSION = "5"
 CACHE_FORMAT = "source-facts-ai-field-cache-v1"
@@ -49,6 +49,10 @@ MAX_SUMMARY_CHARS = 320
 MAX_LABEL_VALUE_CHARS = 120
 MAX_ATTACK_FLOW_STEPS = 4
 MAX_FIELD_MISSES = 2
+NEW_SEMANTIC_FIELDS = {
+    "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
+    "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
+}
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
 
 INITIAL_ACCESS_VALUES = {
@@ -70,6 +74,16 @@ FIELD_VERSIONS = {
     "threat_actor": "threat-actor-v1",
     "third_party": "third-party-v1",
     "data_types": "data-types-v2",
+    "fine_location": "fine-location-v1",
+    "attack_date": "attack-date-v1",
+    "discovered_date": "discovered-date-v1",
+    "evolution": "evolution-v1",
+    "vulnerabilities": "vulnerabilities-v1",
+    "affected_counts": "affected-counts-v1",
+    "data_volumes": "data-volumes-v1",
+    "file_counts": "file-counts-v1",
+    "affected_systems": "affected-systems-v1",
+    "affected_datasets": "affected-datasets-v1",
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
 PREVIOUS_FIELD_VERSIONS = {
@@ -88,11 +102,14 @@ Si une information est ambiguë ou absente, renvoie une valeur vide ou une liste
 data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
 impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident, jamais un risque possible, une conséquence potentielle ou une mise en garde ("risque de", "expose à", "pourrait entraîner" sont interdits).
+Examine l'ensemble de l'article pour chacun des champs demandés. Conserve toutes les valeurs distinctes lorsqu'un champ accepte une liste. data_types désigne les catégories (noms, e-mails), affected_datasets les ensembles concernés (base clients). affected_counts ne désigne pas data_volumes. attack_date et discovered_date ne sont jamais la date de publication. fine_location est un lieu précis de l'incident, pas la localisation générale de l'organisation.
 """
 
 _LLM_FIELDS = (
     "summary", "initial_access", "attack_flow", "impact",
     "threat_actor", "third_party", "data_types",
+    "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
+    "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
 )
 
 _ACTOR_TRIGGER = re.compile(
@@ -512,6 +529,23 @@ def _attack_flow_schema() -> dict:
     }
 
 
+def _record_schema(*, numeric: bool = False) -> dict:
+    """Schema evidence-first for facts which are retained as rich records."""
+    return {
+        "type": "object",
+        "properties": {
+            "value": {"type": "number" if numeric else "string"},
+            "unit": {"type": "string"},
+            "scope": {"type": "string"},
+            "status": {"type": "string"},
+            "confidence": {"type": "number"},
+            "evidence": {"type": "string"},
+        },
+        "required": ["value", "unit", "scope", "status", "confidence", "evidence"],
+        "additionalProperties": False,
+    }
+
+
 def _schema(fields: set[str]) -> dict:
     definitions = {
         "summary": _fact_schema(),
@@ -521,6 +555,16 @@ def _schema(fields: set[str]) -> dict:
         "threat_actor": _fact_schema(),
         "third_party": _fact_schema(),
         "data_types": {"type": "array", "items": _fact_schema(), "maxItems": 20},
+        "fine_location": _fact_schema(),
+        "attack_date": _fact_schema(),
+        "discovered_date": _fact_schema(),
+        "evolution": _fact_schema(),
+        "vulnerabilities": {"type": "array", "items": _fact_schema(), "maxItems": 20},
+        "affected_counts": {"type": "array", "items": _record_schema(numeric=True), "maxItems": 20},
+        "data_volumes": {"type": "array", "items": _record_schema(), "maxItems": 20},
+        "file_counts": {"type": "array", "items": _record_schema(numeric=True), "maxItems": 20},
+        "affected_systems": {"type": "array", "items": _fact_schema(), "maxItems": 20},
+        "affected_datasets": {"type": "array", "items": _fact_schema(), "maxItems": 20},
     }
     ordered = [name for name in _LLM_FIELDS if name in fields]
     return {
@@ -737,6 +781,60 @@ def _normalize(raw: dict, context: str, fields: set[str]) -> dict:
                 values.append(fact)
         if values:
             result["data_types"] = values[:20]
+    for key in ("fine_location", "evolution"):
+        if key in fields:
+            fact = _normalize_fact(raw.get(key), context)
+            if fact:
+                result[key] = fact
+    for key in ("attack_date", "discovered_date"):
+        if key in fields:
+            fact = _normalize_fact(raw.get(key), context, require_value_in_evidence=True)
+            if fact and re.fullmatch(r"\d{4}-\d{2}-\d{2}", fact["value"]):
+                result[key] = fact
+    if "vulnerabilities" in fields:
+        values = []
+        for candidate in raw.get("vulnerabilities", []) if isinstance(raw.get("vulnerabilities"), list) else []:
+            fact = _normalize_fact(candidate, context, require_value_in_evidence=True)
+            if fact and re.fullmatch(r"CVE-\d{4}-\d{4,7}", fact["value"], re.I):
+                values.append(fact)
+        if values:
+            result["vulnerabilities"] = values[:20]
+    for key in ("affected_systems", "affected_datasets"):
+        if key in fields:
+            values = []
+            for candidate in raw.get(key, []) if isinstance(raw.get(key), list) else []:
+                fact = _normalize_fact(candidate, context)
+                # Do not publish empty catch-all labels as systems/datasets.
+                if fact and searchable(fact["value"]) not in {"systeme informatique", "infrastructure informatique", "reseau"}:
+                    values.append(fact)
+            if values:
+                result[key] = values[:20]
+    # The model identifies the relation; Python reconstructs numeric facts
+    # exclusively from the cited source excerpt.
+    from . import source_facts as sf
+    for key, parser in (("affected_counts", sf._parse_count_phrase), ("data_volumes", sf._extract_volume), ("file_counts", sf._extract_file_count)):
+        if key not in fields:
+            continue
+        values = []
+        for candidate in raw.get(key, []) if isinstance(raw.get(key), list) else []:
+            if not isinstance(candidate, dict):
+                continue
+            evidence = " ".join(str(candidate.get("evidence") or "").split()).strip()
+            confidence = _valid_confidence(candidate.get("confidence"))
+            if not evidence or confidence is None or confidence < CONFIDENCE_THRESHOLD or not _grounded(evidence, context):
+                continue
+            parsed = parser(evidence)
+            if key == "affected_counts":
+                value, unit, raw_value = parsed
+                if not value:
+                    continue
+                values.append({"value": int(value), "unit": unit, "scope": str(candidate.get("scope") or "total"), "status": str(candidate.get("status") or "confirmed"), "confidence": confidence, "evidence": evidence, "raw": raw_value})
+            else:
+                if not parsed:
+                    continue
+                values.append({"value": parsed, "unit": str(candidate.get("unit") or ("files" if key == "file_counts" else "")), "scope": str(candidate.get("scope") or "total"), "status": str(candidate.get("status") or "confirmed"), "confidence": confidence, "evidence": evidence})
+        if values:
+            result[key] = values[:20]
     return result
 
 
@@ -863,7 +961,9 @@ def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set
         requested.add("summary")
     if not _has_semantic_context(entry):
         return requested
-    requested.update({"summary", "initial_access", "attack_flow"})
+    # One request contains every semantic gap. Cache filtering later removes
+    # fields already known without splitting this article into several calls.
+    requested.update(NEW_SEMANTIC_FIELDS | {"summary", "initial_access", "attack_flow"})
     if not (seed or {}).get("impact"):
         requested.add("impact")
     return requested
@@ -1006,6 +1106,11 @@ def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry,
             continue
 
         misses = previous_misses + 1 if isinstance(previous, dict) else 1
+        # New fields are a cache backfill. An evidence-grounded model
+        # abstention is final for this content/version, avoiding a second
+        # request merely to ask again for the same absent information.
+        if field in NEW_SEMANTIC_FIELDS and not isinstance(previous, dict):
+            misses = MAX_FIELD_MISSES
         next_status = "abstained" if misses >= MAX_FIELD_MISSES else "miss"
         if misses == 1:
             runtime.semantic_first_misses += 1

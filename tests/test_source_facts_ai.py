@@ -495,3 +495,38 @@ def test_absence_de_toute_mention_reste_vide():
     """Pas de fuite/exfiltration mentionnée : aucune invention de fait négatif."""
     context = "Géotec annonce une mise à jour de son site internet."
     assert sfa._deterministic_data_types(context) == []
+
+
+def test_article_riche_normalise_tous_les_faits_semantiques_et_les_revalide():
+    context = (
+        "L'attaque du 2026-08-12 a exploité CVE-2026-12345 sur le portail VPN. "
+        "150 000 clients sont concernés, 2,4 To de données et 12 000 fichiers ont été exfiltrés. "
+        "La base clients contient des noms et des e-mails. Les serveurs VMware ESXi ont été interrompus 48 h."
+    )
+    raw = {
+        "attack_date": {"value": "2026-08-12", "confidence": .9, "evidence": "attaque du 2026-08-12"},
+        "vulnerabilities": [{"value": "CVE-2026-12345", "confidence": .9, "evidence": "CVE-2026-12345"}],
+        "affected_counts": [{"value": 150000, "unit": "clients", "scope": "total", "status": "confirmed", "confidence": .9, "evidence": "150 000 clients sont concernés"}],
+        "data_volumes": [{"value": "2,4 To", "unit": "TB", "scope": "total", "status": "confirmed", "confidence": .9, "evidence": "2,4 To de données"}],
+        "file_counts": [{"value": 12000, "unit": "files", "scope": "total", "status": "confirmed", "confidence": .9, "evidence": "12 000 fichiers ont été exfiltrés"}],
+        "affected_systems": [{"value": "serveurs VMware ESXi", "confidence": .9, "evidence": "serveurs VMware ESXi"}],
+        "affected_datasets": [{"value": "base clients", "confidence": .9, "evidence": "base clients"}],
+    }
+    fields = set(raw)
+    result = sfa._normalize(raw, context, fields)
+    assert result["attack_date"]["value"] == "2026-08-12"
+    assert result["vulnerabilities"][0]["value"] == "CVE-2026-12345"
+    assert result["affected_counts"][0]["value"] == 150000
+    assert result["data_volumes"][0]["value"] == "2,4 To"
+    assert result["file_counts"][0]["value"] == "12000"
+    assert result["affected_systems"][0]["value"] == "serveurs VMware ESXi"
+    assert result["affected_datasets"][0]["value"] == "base clients"
+
+
+def test_cve_llm_absente_de_la_preuve_et_date_imprecise_sont_rejetee():
+    context = "L'incident a eu lieu courant juillet."
+    result = sfa._normalize({
+        "attack_date": {"value": "2026-07-01", "confidence": .9, "evidence": "courant juillet"},
+        "vulnerabilities": [{"value": "CVE-2026-99999", "confidence": .9, "evidence": "courant juillet"}],
+    }, context, {"attack_date", "vulnerabilities"})
+    assert result == {}
