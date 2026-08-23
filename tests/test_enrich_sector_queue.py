@@ -47,3 +47,41 @@ def test_source_fact_hint_is_prioritised_but_never_replaces_other_hints():
     assert "https://cyberattaque.org/acme" in hints
     assert "https://example.test/about" in hints
     assert "https://registry.example/acme" in hints
+
+
+def test_unmatched_target_is_journalised_as_not_found_with_fetched_at():
+    cache: dict[str, dict] = {}
+    targets = [("acme sarl", "Acme Sarl", ())]
+
+    marked = _module._mark_unmatched_targets_as_attempted(cache, targets, {}, "2026-08-23T10:00:00+04:00")
+
+    assert marked == 1
+    row = cache["acme sarl"]
+    assert row["Match_Status"] == _module.org_enrichment.NOT_FOUND
+    assert row["Fetched_At"] == "2026-08-23T10:00:00+04:00"
+    assert row["Organisation_Key"] == "acme sarl"
+    assert row["Query_Name"] == "Acme Sarl"
+
+
+def test_matched_target_is_never_reclassified_as_not_found():
+    cache: dict[str, dict] = {}
+    targets = [("acme sarl", "Acme Sarl", ())]
+    evidence_by_key = {"acme sarl": ("Acme Sarl", object())}
+
+    marked = _module._mark_unmatched_targets_as_attempted(
+        cache, targets, evidence_by_key, "2026-08-23T10:00:00+04:00"
+    )
+
+    assert marked == 0
+    assert "acme sarl" not in cache
+
+
+def test_unmatched_target_keeps_its_existing_match_status():
+    cache = {"acme sarl": {"Match_Status": _module.org_enrichment.AMBIGUOUS, "Fetched_At": "2026-08-01T00:00:00+04:00"}}
+    targets = [("acme sarl", "Acme Sarl", ())]
+
+    _module._mark_unmatched_targets_as_attempted(cache, targets, {}, "2026-08-23T10:00:00+04:00")
+
+    row = cache["acme sarl"]
+    assert row["Match_Status"] == _module.org_enrichment.AMBIGUOUS
+    assert row["Fetched_At"] == "2026-08-23T10:00:00+04:00"
