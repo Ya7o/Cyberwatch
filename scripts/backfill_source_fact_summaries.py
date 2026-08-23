@@ -17,6 +17,8 @@ from cyberwatch import site, source_facts, source_facts_ai, sources, store
 from cyberwatch.collectors.base import RawEntry, SourceSpec
 from cyberwatch.collectors.feed import stable_frenchbreaches_detail_text
 from cyberwatch.collectors.wordpress import entry_from_post, origin_of
+from cyberwatch.dedup import build_incidents, group_components
+from cyberwatch.headline import is_publishable_headline
 from cyberwatch.http import HttpClient
 from cyberwatch.model import Item
 
@@ -87,6 +89,43 @@ def select_candidates(
         metrics["requested_item_ids"] = sorted(requested)
         metrics["requested_not_eligible"] = sorted(requested - present)
     return selected, metrics
+
+
+def select_latest_incident_candidates(
+    items: list[Item], *, max_items: int = DEFAULT_MAX_ITEMS
+) -> tuple[list[Item], dict]:
+    """Choisit au plus une source éditoriale par incident récent distinct.
+
+    La déduplication reste l'autorité : le LLM n'est jamais appelé deux fois
+    pour les sources d'un même incident tant qu'un autre incident est éligible.
+    """
+    choices: list[tuple[str, str, Item, str]] = []
+    for component in group_components(items):
+        eligible = [item for item in component if item.Source_ID in TARGET_SOURCES]
+        if not eligible:
+            continue
+        # Une page WordPress complète est généralement la source la plus
+        # directement hydratable ; à égalité, on privilégie le titre riche.
+        eligible.sort(key=lambda item: (
+            0 if item.Source_ID == "CYBERATTAQUE_ORG" else 1,
+            -len(item.Title or ""),
+            item.Item_ID,
+        ))
+        chosen = eligible[0]
+        incident = build_incidents(component)[0]
+        date = max((item.Published_Date or "" for item in component), default="")
+        choices.append((date, incident.Incident_ID, chosen, chosen.Source_ID))
+    choices.sort(key=lambda row: (row[0], row[1]), reverse=True)
+    selected_rows = choices[:max(0, max_items)]
+    selected = [row[2] for row in selected_rows]
+    return selected, {
+        "selection_scope": "latest_distinct_incidents",
+        "eligible_incidents": len(choices),
+        "selected": len(selected),
+        "selected_incident_ids": [row[1] for row in selected_rows],
+        "selected_by_source": dict(sorted(Counter(row[3] for row in selected_rows).items())),
+        "one_source_per_incident": True,
+    }
 
 
 def _cyberattaque_post_urls(item: Item, spec: SourceSpec) -> list[str]:
@@ -255,17 +294,20 @@ def run_backfill(
     retry_abstained: bool = False,
     retry_legacy_nulls: bool = False,
     include_existing: bool = False,
+    latest_incidents: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
     existing = store.load_source_facts()
-    selected, metrics = select_candidates(
-        items,
-        existing,
-        item_ids=item_ids,
-        max_items=max_items,
-        include_existing=include_existing,
-    )
+    if latest_incidents:
+        if item_ids:
+            raise ValueError("--latest-incidents ne peut pas être combiné avec --item-ids")
+        selected, metrics = select_latest_incident_candidates(items, max_items=max_items)
+    else:
+        selected, metrics = select_candidates(
+            items, existing, item_ids=item_ids, max_items=max_items,
+            include_existing=include_existing,
+        )
     metrics.update({
         "dry_run": dry_run,
         "retry_abstained": retry_abstained,
@@ -274,8 +316,12 @@ def run_backfill(
         "hydration_failed": 0,
         "source_facts_extracted": 0,
         "source_facts_recovered": 0,
-        "summary_recovered": 0,
-        "still_without_summary": len(selected),
+        "headlines_accepted": 0,
+        "headlines_rejected_quality": 0,
+        "headlines_abstained": 0,
+        "technical_failures": 0,
+        "incidents_covered": len(selected),
+        "incidents_published_without_headline": len(selected),
         "abstained_retry_items": 0,
         "abstained_retry_fields": 0,
         "abstained_retry_restored": 0,
@@ -291,17 +337,19 @@ def run_backfill(
         if row.get("Item_ID")
     }
     incoming: list[dict] = []
-    recovered_summary_ids: list[str] = []
+    accepted_headline_ids: list[str] = []
     retried_item_ids: list[str] = []
 
     for item in selected:
         spec = specs.get(item.Source_ID)
         if spec is None:
             metrics["hydration_failed"] += 1
+            metrics["technical_failures"] += 1
             continue
         entry = hydrate_entry(http, item, spec)
         if entry is None:
             metrics["hydration_failed"] += 1
+            metrics["technical_failures"] += 1
             continue
         metrics["hydrated"] += 1
 
@@ -334,14 +382,22 @@ def run_backfill(
             metrics["abstained_retry_restored"] += len(reopened)
 
         if fact is None:
+            metrics["technical_failures"] += 1
             continue
         incoming.append(fact)
         metrics["source_facts_extracted"] += 1
         if item.Item_ID not in existing_by_id:
             metrics["source_facts_recovered"] += 1
-        if str(fact.get("Summary") or "").strip():
-            metrics["summary_recovered"] += 1
-            recovered_summary_ids.append(item.Item_ID)
+        if is_publishable_headline(fact.get("Summary")):
+            metrics["headlines_accepted"] += 1
+            accepted_headline_ids.append(item.Item_ID)
+        else:
+            status = source_facts._loads_json(str(fact.get("Source_Metadata_JSON") or "")).get("_source_facts_summary_status", "rejected_quality")
+            metric = {
+                "abstained": "headlines_abstained",
+                "technical_failure": "technical_failures",
+            }.get(str(status), "headlines_rejected_quality")
+            metrics[metric] += 1
 
     if incoming:
         store.save_source_facts(source_facts.merge_source_facts(existing, incoming))
@@ -352,8 +408,8 @@ def run_backfill(
     source_facts_ai._flush_runtime()
     site.build()
 
-    metrics["still_without_summary"] = len(selected) - metrics["summary_recovered"]
-    metrics["recovered_summary_item_ids"] = recovered_summary_ids
+    metrics["incidents_published_without_headline"] = len(selected) - metrics["headlines_accepted"]
+    metrics["accepted_headline_item_ids"] = accepted_headline_ids
     metrics["abstained_retry_item_ids"] = retried_item_ids
     metrics["http_requests"] = http.run_budget.requests_made
     metrics["ai_stats"] = ai_stats
@@ -371,6 +427,10 @@ def main() -> int:
     parser.add_argument(
         "--include-existing", action="store_true",
         help="Requalifie aussi les synthèses déjà présentes, pour un rattrapage qualité.",
+    )
+    parser.add_argument(
+        "--latest-incidents", action="store_true",
+        help="Sélectionne les incidents distincts les plus récents (une source par incident).",
     )
     parser.add_argument(
         "--max-items", type=int, default=DEFAULT_MAX_ITEMS,
@@ -409,6 +469,7 @@ def main() -> int:
         retry_abstained=args.retry_abstained,
         retry_legacy_nulls=args.retry_legacy_nulls,
         include_existing=args.include_existing,
+        latest_incidents=args.latest_incidents,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0

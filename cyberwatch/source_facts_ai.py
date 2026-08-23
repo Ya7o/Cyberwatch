@@ -23,6 +23,7 @@ from . import llm_runtime
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import searchable
+from .headline import MAX_HEADLINE_CHARS, is_publishable_headline
 
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
@@ -40,7 +41,6 @@ MAX_SUMMARY_CHARS = 320
 #: `MAX_SUMMARY_CHARS`, qui borne la composition déterministe multi-champs de
 #: `source_facts._derive_summary` (vecteur + déroulé + impact), plus longue par
 #: nature car elle assemble plusieurs faits concrets.
-MAX_HEADLINE_CHARS = 160
 #: Longueur maximale d'une valeur `data_types` individuelle : un type de
 #: donnée est un libellé court (« adresses e-mail », « mots de passe »), pas
 #: un extrait narratif. Ne s'applique qu'à `data_types` : `impact` réutilise
@@ -694,13 +694,7 @@ def _normalize_summary(raw, context: str) -> dict | None:
     if not fact:
         return None
     value = fact["value"]
-    if len(value) > MAX_HEADLINE_CHARS or "\n" in value:
-        return None
-    if value.startswith(("-", "*", "#")) or "**" in value or ": " in value:
-        return None
-    if _HEADLINE_TECHNICAL_RE.search(value) or _HEADLINE_GENERIC_RE.fullmatch(value):
-        return None
-    if len(re.findall(r"[.!?](?:\s|$)", value)) > 1:
+    if not is_publishable_headline(value):
         return None
     return fact
 

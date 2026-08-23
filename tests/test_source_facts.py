@@ -246,7 +246,7 @@ def test_enrichissement_semantique_est_materialise(monkeypatch):
         {"action": "Exploitation de la vulnérabilité", "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI."},
         {"action": "Exfiltration des données", "evidence": "L'attaquant a ensuite exfiltré les données clients."},
     ]
-    assert fact["Summary"].startswith("Intrusion via")
+    assert fact["Summary"] == "Intrusion via une vulnérabilité, suivie d'une exfiltration."
     assert fact["Impact"] == "Des données clients ont été exfiltrées."
     evidence = json.loads(fact["Evidence_JSON"])
     assert evidence["Initial_Access"]

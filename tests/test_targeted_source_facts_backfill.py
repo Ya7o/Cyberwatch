@@ -271,8 +271,8 @@ def test_run_backfill_merges_only_source_facts_and_builds(monkeypatch):
     client = FakeClient({})
     metrics = backfill.run_backfill(client=client)
 
-    assert metrics["summary_recovered"] == 1
-    assert metrics["still_without_summary"] == 0
+    assert metrics["headlines_accepted"] == 1
+    assert metrics["incidents_published_without_headline"] == 0
     assert len(saved) == 1
     assert saved[0][0]["Summary"] == "Synthèse récupérée."
     assert saved[0][0]["Impact"] == "Impact historique"
@@ -281,3 +281,15 @@ def test_run_backfill_merges_only_source_facts_and_builds(monkeypatch):
     assert evidence["Summary"] == "preuve synthèse"
     assert flushed == [True]
     assert built == [True]
+
+
+def test_latest_incidents_selects_one_source_per_deduplicated_incident():
+    same_incident = [
+        _item("co", published="2026-08-03", source_item_id="1"),
+        _item("fb", source_id="FRENCHBREACHES", published="2026-08-04", source_item_id="2"),
+    ]
+    other = _item("other", published="2026-08-02", source_item_id="3")
+    selected, metrics = backfill.select_latest_incident_candidates(same_incident + [other], max_items=2)
+    assert len(selected) == 2
+    assert selected[0].Item_ID == "co"
+    assert metrics["one_source_per_incident"] is True

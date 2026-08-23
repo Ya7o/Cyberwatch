@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       max_items:
-        description: "Nombre maximal d'articles Cyberattaque.org / FrenchBreaches"
+        description: "Nombre maximal d'incidents distincts récents"
         type: number
         default: 100
 
@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/backfill_source_fact_summaries.py \
-            --max-items "${{ inputs.max_items }}" --include-existing | tee /tmp/source-facts-backfill.json
+            --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained | tee /tmp/source-facts-backfill.json
           cat /tmp/source-facts-backfill.json >> "$GITHUB_STEP_SUMMARY"
       - name: Valider et construire le site
         run: |

@@ -12,6 +12,7 @@ import logging
 import re
 
 from . import source_facts_ai
+from .headline import is_publishable_headline, rejection_reason
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import (
@@ -359,6 +360,19 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
         metadata["_source_facts_content_hash"] = source_facts_ai.content_hash(entry)
         if isinstance(semantic_status, dict) and semantic_status:
             metadata["_source_facts_semantic_status"] = semantic_status
+        summary = str(fact.get("Summary") or "").strip()
+        if is_publishable_headline(summary):
+            metadata["_source_facts_summary_status"] = "accepted"
+        else:
+            # Une absence éditoriale est explicite : aucun champ structuré ne
+            # peut désormais servir de substitut pour une carte.
+            fact["Summary"] = ""
+            evidence.pop("Summary", None)
+            status = (semantic_status or {}).get("summary") if isinstance(semantic_status, dict) else ""
+            metadata["_source_facts_summary_status"] = (
+                "abstained" if status == "abstained" else "rejected_quality"
+            )
+            metadata["_source_facts_summary_rejection"] = rejection_reason(summary) or status or "missing"
     if metadata:
         fact["Source_Metadata_JSON"] = _dumps_json(metadata)
     return fact
@@ -584,6 +598,8 @@ def _structured_summary(fact: dict, evidence: dict) -> tuple[str, list[str]]:
 
 
 def _derive_summary(fact: dict, evidence: dict) -> None:
+    if fact.get("Source_ID") in source_facts_ai.TARGET_SOURCES:
+        return
     if str(fact.get("Summary") or "").strip():
         return
     parts: list[str] = []
@@ -938,6 +954,7 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
         evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
         old_meta = _loads_json(str(old.get("Source_Metadata_JSON") or ""))
         new_meta = _loads_json(str(new.get("Source_Metadata_JSON") or ""))
+        new_meta = new_meta if isinstance(new_meta, dict) else {}
         # Une réhydratation peut ne produire que le hash de contenu. Conserver
         # alors les faits riches déjà extraits plutôt que de les effacer à la
         # faveur du rafraîchissement d'un champ SourceFacts.
@@ -961,6 +978,8 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
             # ancien fait qu'après deux abstentions sémantiques sur un contenu
             # effectivement différent.
             field = ai_field_for_column.get(column, "")
+            if column == "Summary" and new_meta.get("_source_facts_summary_status") in {"rejected_quality", "abstained", "technical_failure"}:
+                return True
             return (
                 content_changed
                 and field

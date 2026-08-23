@@ -200,6 +200,10 @@ def test_metrique_seule_reste_utilisee_sans_fallback_substantiel():
 
 
 def test_synthese_technique_ou_generique_est_rejetee():
+    assert not fr.is_publishable_summary("Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.")
+    assert not fr.is_publishable_summary("Impact documenté : les services sont perturbés.")
+    assert not fr.is_publishable_summary("Déroulé documenté : accès → exfiltration.")
+    assert not fr.is_publishable_summary("Données concernées : e-mails, IBAN.")
     assert not fr.is_publishable_summary("Données exposées : e-mails, IBAN.")
     assert not fr.is_publishable_summary("L'incident a entraîné une exfiltration de données.")
     assert not fr.is_publishable_summary("Groupe Géotec a confirmé une exfiltration de données suite à un incident de cybersécurité.")

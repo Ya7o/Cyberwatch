@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from typing import Any, Callable, Iterable
+from .headline import is_publishable_headline
 
 SOURCE_PRIORITY = (
     "RANSOMWARE_LIVE",
@@ -388,14 +389,12 @@ _SUMMARY_METRIC_RE = re.compile(r"^\d[\d\s,.]*(?:enregistrements|fichiers|compte
 
 def is_publishable_summary(value: str) -> bool:
     text = _text(value)
-    if not text or len(text) > 160 or "\n" in text:
+    if not is_publishable_headline(text):
         return False
-    if text.startswith(("-", "*", "#")) or "**" in text or _SUMMARY_TECHNICAL_RE.search(text):
-        return False
-    if (_SUMMARY_GENERIC_RE.fullmatch(text) or _SUMMARY_GENERIC_CONFIRMATION_RE.search(text)
+    if (_SUMMARY_GENERIC_CONFIRMATION_RE.search(text)
             or _SUMMARY_METRIC_RE.match(text)):
         return False
-    return len(re.findall(r"[.!?](?:\s|$)", text)) <= 1
+    return True
 
 
 def build_display_summary(resolved: dict, fallback: str = "") -> str:
