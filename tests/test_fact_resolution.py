@@ -184,6 +184,17 @@ def test_made_in_bebe_fallback_narratif_prime_sur_metrique_seule_multi_source():
     assert resolved["display_summary"] == fallback
 
 
+def test_claim_documente_prime_sur_metrique_et_fallback():
+    """Point 3 : un claim riche est plus informatif qu'un compte seul."""
+    claim = "La base mise en vente contient des informations issues du service client."
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", affected_count=960_106, affected_unit="people", claim_status="claimed",
+             rich_facts={"claims": [{"type": "statement", "status": "reported", "value": "base client", "evidence": claim}]}),
+    ], fallback_summary="Plus de 960 000 personnes seraient concernées par une fuite de données.")
+    assert resolved["display_summary"].startswith(claim)
+    assert "960 106 personnes" in resolved["display_summary"]
+
+
 def test_metrique_seule_reste_utilisee_sans_fallback_substantiel():
     """La métrique reste affichée telle quelle quand aucun fallback riche
     n'existe (pas de régression sur le comportement historique)."""

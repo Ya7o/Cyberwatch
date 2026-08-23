@@ -310,6 +310,42 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
     return list(selected.values())
 
 
+def _claim_entries(facts: Iterable[dict]) -> list[dict]:
+    """Conserve les affirmations riches, avec leur preuve, pour la synthèse.
+
+    Les claims ne sont pas réduits à leur seule valeur : la preuve est le
+    contenu éditorial utile quand aucun impact structuré n'est disponible.
+    """
+    selected: dict[tuple[str, str, str], dict] = {}
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        records = rich.get("claims", []) if isinstance(rich, dict) else []
+        if not isinstance(records, list):
+            continue
+        for raw_record in records:
+            if not isinstance(raw_record, dict):
+                continue
+            evidence = _text(raw_record.get("evidence"))
+            if not evidence:
+                continue
+            value = raw_record.get("value")
+            key = (_norm(raw_record.get("type")), _norm(value), _norm(evidence))
+            if key in selected:
+                if source and source not in selected[key]["sources"]:
+                    selected[key]["sources"].append(source)
+                continue
+            selected[key] = {
+                "value": value,
+                "type": _text(raw_record.get("type")),
+                "status": _status(raw_record),
+                "evidence": evidence,
+                "source": source,
+                "sources": [source] if source else [],
+            }
+    return list(selected.values())
+
+
 def _format_count(record: dict) -> str:
     raw = _text(record.get("raw"))
     if raw:
@@ -345,6 +381,24 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
     if impact_text:
         sentences.append(impact_text if impact_text.endswith((".", "!", "?")) else f"{impact_text}.")
 
+    claims = [claim for claim in (resolved.get("claims") or []) if _text(claim.get("evidence"))]
+    claim_text = ""
+    if not impact_text and claims:
+        # La longueur de la preuve est un proxy stable de son contenu factuel;
+        # les critères secondaires rendent le choix déterministe.
+        best_claim = max(
+            claims,
+            key=lambda claim: (
+                len(_text(claim.get("evidence"))),
+                -source_rank(claim.get("source")),
+                _text(claim.get("source")),
+                _text(claim.get("evidence")),
+            ),
+        )
+        claim_text = _text(best_claim.get("evidence"))
+        if claim_text:
+            sentences.append(claim_text if claim_text.endswith((".", "!", "?")) else f"{claim_text}.")
+
     affected = sorted(resolved.get("affected") or [], key=_summary_priority)
     if affected:
         record = affected[0]
@@ -367,7 +421,7 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
     # brute seule est trop pauvre dès qu'un récit plus riche existe déjà
     # (cf. DINUM / Made in Bébé, tableau de revue manuelle points 3-4).
     clean_fallback = _text(fallback)
-    if not impact_text and clean_fallback and len(clean_fallback) > _SUBSTANTIAL_FALLBACK_CHARS:
+    if not impact_text and not claim_text and clean_fallback and len(clean_fallback) > _SUBSTANTIAL_FALLBACK_CHARS:
         return clean_fallback
 
     return " ".join(sentences)
@@ -384,7 +438,12 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "")
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
     }
-    resolved["display_summary"] = build_display_summary(resolved, fallback=fallback_summary)
+    # Les claims sont déjà publiés dans chaque fait source. Ils servent ici à
+    # composer la synthèse canonique sans dupliquer tout leur détail dans la
+    # vue résolue par incident.
+    resolved["display_summary"] = build_display_summary(
+        {**resolved, "claims": _claim_entries(ordered)}, fallback=fallback_summary
+    )
     return resolved
 
 
