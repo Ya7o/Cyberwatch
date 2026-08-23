@@ -127,6 +127,18 @@ def test_protection_civile_fusionne_volume_et_types_de_donnees():
     assert [entry["value"] for entry in resolved["data_types"]] == ["Noms", "Prénoms", "Téléphones", "Dates de naissance"]
 
 
+def test_data_types_rich_et_legacy_sont_fusionnes_sans_doublon():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"data_types": [
+            {"value": "Adresses e-mail", "status": "confirmed"},
+            {"value": "Numéros de téléphone", "status": "reported"},
+        ]}),
+        fact("FRENCHBREACHES", data_types=["adresses e-mail", "Dates de naissance"]),
+    ])
+    values = [entry["value"] for entry in resolved["data_types"]]
+    assert values == ["Adresses e-mail", "Numéros de téléphone", "Dates de naissance"]
+
+
 def test_statut_revendique_est_conserve_et_resume_deterministe():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [

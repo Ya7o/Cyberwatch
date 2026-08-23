@@ -276,6 +276,40 @@ def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
     return list(selected.values())
 
 
+def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
+    """Fusionne `data_types` legacy (liste plate) et rich (`rich_facts.data_types`).
+
+    Traite chaque fait dans l'ordre de priorité des sources, legacy et rich
+    ensemble, pour que la priorité s'applique uniformément aux deux formats
+    plutôt que de privilégier arbitrairement l'un des deux formats en bloc.
+    """
+    selected: dict[str, dict] = {}
+
+    def add(value: str, source: str) -> None:
+        key = _norm(value)
+        if not key or key in UNKNOWN_VALUES:
+            return
+        entry = selected.get(key)
+        if entry is None:
+            selected[key] = {"value": value, "source": source, "sources": [source] if source else []}
+        elif source and source not in entry["sources"]:
+            entry["sources"].append(source)
+
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        legacy = fact.get("data_types")
+        if isinstance(legacy, list):
+            for raw in legacy:
+                add(_text(raw), source)
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        rich_values = rich.get("data_types") if isinstance(rich, dict) else None
+        if isinstance(rich_values, list):
+            for raw_record in rich_values:
+                if isinstance(raw_record, dict):
+                    add(_text(raw_record.get("value")), source)
+    return list(selected.values())
+
+
 def _format_count(record: dict) -> str:
     raw = _text(record.get("raw"))
     if raw:
@@ -344,7 +378,7 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "")
     resolved = {
         "version": 2,
         "fields": {field: value for field in SCALAR_FIELDS if (value := resolve_scalar(ordered, field))},
-        "data_types": _list_entries(ordered, "data_types"),
+        "data_types": _data_types_entries(ordered),
         "vulnerabilities": _list_entries(ordered, "vulnerabilities"),
         "affected": resolve_affected_counts(ordered),
         "systems": _resolve_rich_entities(ordered, "affected_systems"),

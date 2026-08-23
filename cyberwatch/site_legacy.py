@@ -132,6 +132,7 @@ def _rich_facts_from_metadata(row: dict) -> dict | None:
         ("claims", False),
         ("affected_systems", False),
         ("affected_datasets", False),
+        ("data_types", False),
     )
     for key, is_count in collections:
         values = rich.get(key)

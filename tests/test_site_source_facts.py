@@ -79,6 +79,28 @@ def test_source_fact_payload_omet_les_champs_vides_et_parse_les_listes():
     assert "Extraction_Method" not in payload
 
 
+def test_rich_facts_data_types_est_transmis_au_payload():
+    import json
+
+    payload = site._source_fact_payload({
+        "Item_ID": "ITM-a",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Source_Metadata_JSON": json.dumps({
+            "rich_facts": {
+                "version": "1",
+                "data_types": [
+                    {"value": "adresses e-mail", "status": "confirmed", "evidence": "e-mails exposés"},
+                    {"value": "", "status": "confirmed"},
+                ],
+            }
+        }),
+    })
+
+    assert payload["rich_facts"]["data_types"] == [
+        {"value": "adresses e-mail", "status": "confirmed", "evidence": "e-mails exposés"},
+    ]
+
+
 def test_attack_flow_invalide_est_ignore_sans_casser_le_payload():
     payload = site._source_fact_payload({
         "Item_ID": "ITM-a",

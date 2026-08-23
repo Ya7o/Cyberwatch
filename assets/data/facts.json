@@ -83,7 +83,15 @@
  },
  "INC-00469FB75262": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "fields": {
@@ -151,9 +159,17 @@
  },
  "INC-00D2DD25CE59": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : adresses e-mail.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -188,6 +204,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -760,6 +783,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -817,6 +847,13 @@
    }
   ],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
    {
     "source": "BONJOURLAFUITE",
     "sources": [
@@ -1097,6 +1134,41 @@
     "value": "numéros de téléphone"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -1180,10 +1252,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
    }
   ],
   "datasets": [],
-  "display_summary": "Perturbation opérationnelle de l’activité. Données exposées : adresses e-mail.",
+  "display_summary": "Perturbation opérationnelle de l’activité. Données exposées : adresses e-mail, données RH.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -1321,7 +1400,15 @@
     "value": 41000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 52,6 Go de données et près de  41 000 fichiers.",
   "fields": {
@@ -1549,6 +1636,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -1706,6 +1800,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -1987,6 +2088,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -2121,6 +2229,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -2132,9 +2254,17 @@
  },
  "INC-0A7235623FF7": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : données de santé.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -2194,7 +2324,15 @@
     "value": 482
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 482 enregistrements.",
   "fields": {},
@@ -2260,9 +2398,17 @@
  },
  "INC-0B8645CAD4E0": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données personnelles"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Les données exposées augmentent les risques de phishing et d'escroqueries ciblées contre les motards.",
+  "display_summary": "Les données exposées augmentent les risques de phishing et d'escroqueries ciblées contre les motards. Données exposées : données personnelles.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -2356,6 +2502,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -2490,7 +2643,15 @@
     "value": 304000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 119 Mo de données et plus de  625 000 personnes.",
   "fields": {
@@ -2540,10 +2701,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : noms et prénoms.",
+  "display_summary": "Données exposées : noms et prénoms, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -2874,6 +3042,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "passeports"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -2967,6 +3149,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -3109,9 +3298,17 @@
     "value": 5109
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   }
+  ],
   "datasets": [],
-  "display_summary": "5 109 fichiers (revendiqué).",
+  "display_summary": "5 109 fichiers (revendiqué). Données exposées : adresses e-mail.",
   "fields": {
    "discovered_date": {
     "source": "RANSOMWARE_LIVE",
@@ -3212,6 +3409,41 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -3701,9 +3933,17 @@
  },
  "INC-17B4CD4BB41C": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Perturbations des services informatiques.",
+  "display_summary": "Perturbations des services informatiques. Données exposées : données RH.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -3900,6 +4140,28 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
    }
   ],
   "datasets": [],
@@ -4042,7 +4304,15 @@
     "value": 52000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 27 Mo de données et plus de  146 000 enregistrements.",
   "fields": {
@@ -4335,9 +4605,17 @@
     "value": 21009
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
-  "display_summary": "21 009 employés (documenté).",
+  "display_summary": "21 009 employés (documenté). Données exposées : mots de passe.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -4371,6 +4649,34 @@
  "INC-1D81C37C123D": {
   "affected": [],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "nom, prénom, adresse email, ville, localisation, adresse IP, historique de commandes et d’achats, informations partielles de paiement, données bancaires partiel"
+   },
    {
     "source": "BONJOURLAFUITE",
     "sources": [
@@ -4487,7 +4793,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "value": "adresses e-mail"
    },
@@ -4504,6 +4811,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -4677,6 +5005,27 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -4699,7 +5048,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "L’organisation indique avoir temporairement mis la boutique hors ligne afin d’analyser l’incident et renforcer la sécurité de ses systèmes. Données exposées : adresses e-mail, mots de passe, données personnelles, Adresse email, Mot de passe chiffré (🤷)….",
+  "display_summary": "L’organisation indique avoir temporairement mis la boutique hors ligne afin d’analyser l’incident et renforcer la sécurité de ses systèmes. Données exposées : adresses e-mail, mots de passe, données personnelles, numéros de téléphone, adresses postales….",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -4971,9 +5320,24 @@
  },
  "INC-21BF8F8A7015": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : pièces d'identité, données RH.",
   "fields": {
    "discovered_date": {
     "source": "RANSOMWARE_LIVE",
@@ -5188,10 +5552,31 @@
      "FRENCHBREACHES"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : adresses e-mail.",
+  "display_summary": "Données exposées : adresses e-mail, mots de passe, données bancaires, données de santé.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -5347,6 +5732,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -5707,7 +6099,22 @@
     "value": 59
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "fields": {
@@ -5745,6 +6152,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -6013,7 +6427,22 @@
     "value": 2000000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "fields": {
@@ -6088,6 +6517,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -6282,6 +6718,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
    }
   ],
   "datasets": [],
@@ -6325,6 +6768,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -6443,9 +6900,38 @@
  },
  "INC-2A2858828255": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : dates de naissance, mots de passe, données bancaires, données de santé.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -6687,7 +7173,15 @@
     "value": 318751
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : plus de 318 000 dossiers.",
   "fields": {},
@@ -7479,7 +7973,22 @@
     "value": 1073
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 1,23 Go de données et 1 073 fichiers.",
   "fields": {
@@ -7511,6 +8020,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de sécurité sociale"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -7709,6 +8225,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -7931,9 +8454,45 @@
  },
  "INC-35BBFA3E0F70": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms, adresses postales, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -8092,6 +8651,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -8188,6 +8754,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -8317,6 +8897,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "passeports"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -8625,6 +9219,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
    }
   ],
   "datasets": [],
@@ -8734,6 +9335,20 @@
     "value": "numéros de téléphone"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -8770,7 +9385,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Les rendez-vous mentionnés concernent notamment les visites d’information et de prévention, les visites périodiques, les examens de reprise après arrêt de travail, les visites de pré-embauche ou encore les consultations demandées par l’employeur ou le médecin du travail. 355 112 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, Adresse email, Numéro de téléphone, Nom, prénom….",
+  "display_summary": "Les rendez-vous mentionnés concernent notamment les visites d’information et de prévention, les visites périodiques, les examens de reprise après arrêt de travail, les visites de pré-embauche ou encore les consultations demandées par l’employeur ou le médecin du travail. 355 112 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, données de santé, identifiants, Adresse email….",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -9374,6 +9989,20 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -9490,7 +10119,15 @@
     "value": 678000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données fiscales"
+   }
+  ],
   "datasets": [
    {
     "source": "FRENCHBREACHES",
@@ -9726,6 +10363,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -9944,7 +10588,43 @@
  },
  "INC-42440018E634": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 114 Mo de données et 79 000 fichiers.",
   "fields": {
@@ -9999,7 +10679,22 @@
     "value": 241
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 537 Mo de données et 2 831 645 lignes.",
   "fields": {
@@ -10215,9 +10910,24 @@
  },
  "INC-43AC9A4C158B": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Éléments documentés : 10 Go de données.",
+  "display_summary": "Données exposées : mots de passe, identifiants.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -10294,11 +11004,33 @@
   ],
   "data_types": [
    {
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
+     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -10504,9 +11236,24 @@
  },
  "INC-4613053E5C2C": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : adresses e-mail, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -10559,6 +11306,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -10849,6 +11603,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -11002,9 +11763,17 @@
  },
  "INC-49E922069E33": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
-  "display_summary": "La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre.",
+  "display_summary": "La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre. Données exposées : identifiants.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -11444,10 +12213,38 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
-  "display_summary": "Les mots de passe faibles ou réutilisés peuvent être ciblés par des attaques hors ligne, surtout si les attaquants disposent de temps et de ressources. 72 916 personnes (documenté). Données exposées : mots de passe.",
+  "display_summary": "Les mots de passe faibles ou réutilisés peuvent être ciblés par des attaques hors ligne, surtout si les attaquants disposent de temps et de ressources. 72 916 personnes (documenté). Données exposées : mots de passe, numéros de téléphone, dates de naissance, pièces d'identité, données de santé.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -11775,6 +12572,13 @@
      "FRENCHBREACHES"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -11836,7 +12640,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "value": "données bancaires"
    },
@@ -11992,6 +12797,34 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -12481,6 +13314,41 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -12583,6 +13451,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
    }
   ],
   "datasets": [],
@@ -12800,6 +13675,34 @@
     "value": "noms et prénoms"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -12904,6 +13807,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -13183,6 +14100,20 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -13229,6 +14160,13 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -13251,7 +14189,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Le Kiosque famille mis hors ligne. Données exposées : données personnelles, Nom, prénom, Situation familiale, École de rattachement.",
+  "display_summary": "Le Kiosque famille mis hors ligne. Données exposées : données personnelles, données bancaires, Nom, prénom, Situation familiale, École de rattachement.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -13363,10 +14301,38 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : données personnelles.",
+  "display_summary": "Données exposées : données personnelles, adresses e-mail, numéros de téléphone, mots de passe, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -13518,6 +14484,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -13623,6 +14603,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
    }
   ],
   "datasets": [],
@@ -13820,6 +14814,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -13831,9 +14832,17 @@
  },
  "INC-5C52EDD5395B": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : données de santé.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -14064,9 +15073,17 @@
  },
  "INC-5F211216BEAE": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : mots de passe.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -14236,6 +15253,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "cartes de paiement"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -14254,10 +15292,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : noms et prénoms.",
+  "display_summary": "Données exposées : noms et prénoms, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -14416,7 +15461,57 @@
     "value": 256000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : plus de 256 000 utilisateurs.",
   "fields": {},
@@ -14487,6 +15582,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -14507,6 +15609,13 @@
  "INC-635A5ED339D2": {
   "affected": [],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
    {
     "source": "BONJOURLAFUITE",
     "sources": [
@@ -14769,6 +15878,20 @@
   "affected": [],
   "data_types": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -14777,7 +15900,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : Compte fidélité débité.",
+  "display_summary": "Données exposées : données bancaires, identifiants, Compte fidélité débité.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -14897,7 +16020,15 @@
     "value": 8500
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 54 Go de données et près de  8 500 fichiers.",
   "fields": {
@@ -14964,6 +16095,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -15524,7 +16662,29 @@
     "value": 820000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 105 MB de données et plus de 820 000 comptes.",
   "fields": {
@@ -15662,6 +16822,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données fiscales"
    }
   ],
   "datasets": [
@@ -16103,6 +17270,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -16178,6 +17352,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de sécurité sociale"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -16278,6 +17466,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -16403,6 +17598,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "cartes de paiement"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
    }
   ],
   "datasets": [],
@@ -16502,6 +17711,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -16573,10 +17789,24 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : mots de passe.",
+  "display_summary": "Données exposées : mots de passe, données RH, adresses e-mail.",
   "fields": {
    "discovered_date": {
     "source": "RANSOMWARE_LIVE",
@@ -16665,6 +17895,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "IBAN / RIB"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -16817,6 +18054,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -17315,6 +18559,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -17361,7 +18626,29 @@
     "value": 10000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 21 Go de données, 14,4 millions d’enregistrements et 10 000 fichiers.",
   "fields": {
@@ -17380,6 +18667,41 @@
  "INC-7611699247FE": {
   "affected": [],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
    {
     "source": "BONJOURLAFUITE",
     "sources": [
@@ -17464,6 +18786,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
    }
   ],
   "datasets": [],
@@ -17830,7 +19159,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "value": "numéros de téléphone"
    },
@@ -17847,6 +19177,14 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "données de santé"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -17937,6 +19275,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -18120,7 +19479,15 @@
     "value": 722470
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 13,08 Go de données et 722 470 fichiers.",
   "fields": {
@@ -18158,7 +19525,15 @@
     "value": 349
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : plus de 300 personnes.",
   "fields": {},
@@ -18168,9 +19543,17 @@
  },
  "INC-799E8962A7F9": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -18217,6 +19600,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -18398,9 +19795,17 @@
     "value": 812000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "812 000 clients (documenté).",
+  "display_summary": "812 000 clients (documenté). Données exposées : données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -18543,6 +19948,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données de santé"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
    }
   ],
   "datasets": [],
@@ -18917,10 +20343,45 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : données personnelles.",
+  "display_summary": "Données exposées : données personnelles, adresses e-mail, numéros de téléphone, adresses postales, mots de passe….",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -19077,7 +20538,36 @@
  },
  "INC-85A64E6BB776": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "fichiers d’ingénierie"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "documents nominatifs"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "archives comptables"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "documents fiscaux"
+   }
+  ],
   "datasets": [],
   "display_summary": "Filair, une entreprise française de fabrication métallique, a subi une cyberattaque majeure avec l'exfiltration de près de 50 ans d'archives internes par le groupe de ransomware LAMASHTU, touchant divers domaines de l'entreprise.",
   "fields": {
@@ -19102,9 +20592,24 @@
  },
  "INC-85BE50AE6676": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : adresses e-mail, numéros de téléphone.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -19195,6 +20700,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -19237,9 +20763,17 @@
  },
  "INC-864A0267A60A": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -19314,7 +20848,15 @@
  },
  "INC-86BD88EBD540": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "informations contact"
+   }
+  ],
   "datasets": [],
   "display_summary": "L'association Aréli a subi une cyberattaque le 12 janvier, impactant moins de 2 % de ses données, notamment celles concernant des partenaires.",
   "fields": {},
@@ -19461,6 +21003,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -19607,6 +21156,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -19740,6 +21296,14 @@
      "FRENCHBREACHES"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "données bancaires"
    },
    {
     "source": "FRENCHBREACHES",
@@ -19910,6 +21474,28 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "données RH"
    }
   ],
   "datasets": [],
@@ -19976,6 +21562,13 @@
    }
   ],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   },
    {
     "source": "BONJOURLAFUITE",
     "sources": [
@@ -20223,6 +21816,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -20259,7 +21866,15 @@
     "value": 960106
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : plus de 960 000 personnes.",
   "fields": {
@@ -20518,6 +22133,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -20569,6 +22191,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -20732,6 +22361,20 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -20804,9 +22447,38 @@
  },
  "INC-904D84D2D2A9": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : adresses e-mail, numéros de téléphone, mots de passe, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -20865,7 +22537,22 @@
     "value": 252149
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données cadastrales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données fiscales"
+   }
+  ],
   "datasets": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -20996,6 +22683,13 @@
     "value": "adresses postales"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -21077,6 +22771,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -21134,6 +22842,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -21200,7 +22915,22 @@
  },
  "INC-930F9D0A0F2B": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "profils candidats"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "coordonnées personnelles"
+   }
+  ],
   "datasets": [],
   "display_summary": "Une fuite de données a révélé plus de 100 000 profils candidats exposés de Profil Search, attribuée au hacker Lagui. Les informations incluent des détails personnels tels que nom, adresse email et numéro de téléphone.",
   "fields": {},
@@ -21233,6 +22963,27 @@
    }
   ],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
    {
     "source": "BONJOURLAFUITE",
     "sources": [
@@ -21278,9 +23029,17 @@
  },
  "INC-9398DA2F695C": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "fichiers texte"
+   }
+  ],
   "datasets": [],
-  "display_summary": "des fichiers malveillants déposés sur plus de 15 000 sous-domaines.",
+  "display_summary": "des fichiers malveillants déposés sur plus de 15 000 sous-domaines. Données exposées : fichiers texte.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -21457,6 +23216,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -21930,6 +23703,13 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -21988,6 +23768,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -22066,7 +23853,22 @@
  },
  "INC-984961FE4704": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "fields": {
@@ -22216,6 +24018,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -22249,6 +24058,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "cartes de paiement"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -22408,7 +24224,15 @@
     "value": 621019
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "fields": {
@@ -22707,9 +24531,31 @@
     "value": 91000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
-  "display_summary": "111 528 agents (revendiqué).",
+  "display_summary": "111 528 agents (revendiqué). Données exposées : adresses e-mail, noms et prénoms, identifiants.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -22875,6 +24721,13 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -22960,6 +24813,34 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -23118,6 +24999,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -23222,9 +25110,17 @@
  },
  "INC-A09A6A4C20B6": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Éléments documentés : 50 Go de données.",
+  "display_summary": "Données exposées : données RH.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -23479,7 +25375,29 @@
     "value": 177951
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 177 951 enregistrements.",
   "fields": {},
@@ -23632,10 +25550,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : mots de passe.",
+  "display_summary": "Données exposées : mots de passe, identifiants.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -23728,7 +25653,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "value": "numéros de téléphone"
    },
@@ -23756,7 +25682,43 @@
  },
  "INC-A368F08CBF05": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de contact"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données sensibles au sens de l'article 9 du RGPD"
+   }
+  ],
   "datasets": [],
   "display_summary": "Poulpiquet Immobilier a signalé un incident de cybersécurité affectant un logiciel d'un prestataire, entraînant une potentielle consultation de données clients, sans impact sur les systèmes de l'agence elle-même.",
   "fields": {},
@@ -23925,10 +25887,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
-  "display_summary": "Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles. Données exposées : identifiants, mots de passe.",
+  "display_summary": "Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles. Données exposées : identifiants, mots de passe, adresses e-mail.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -24510,7 +26479,15 @@
     "value": 30728
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 30 728 enregistrements.",
   "fields": {},
@@ -24548,6 +26525,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -24649,6 +26640,34 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -24662,15 +26681,37 @@
   "affected": [],
   "data_types": [
    {
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
+     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Après la découverte de l’intrusion, Terveo a mis son site hors ligne puis l’a entièrement reconstruit sur un serveur neuf . Données exposées : adresses e-mail.",
+  "display_summary": "Après la découverte de l’intrusion, Terveo a mis son site hors ligne puis l’a entièrement reconstruit sur un serveur neuf . Données exposées : adresses e-mail, numéros de téléphone, adresses postales, données bancaires.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -24693,9 +26734,17 @@
  },
  "INC-ACFA66122429": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -24710,10 +26759,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "IBAN / RIB"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : IBAN / RIB.",
+  "display_summary": "Données exposées : IBAN / RIB, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -24939,6 +26995,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -25266,9 +27336,24 @@
  },
  "INC-B246884793EF": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : identifiants, adresses e-mail.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -25480,6 +27565,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -25559,10 +27651,31 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : adresses e-mail.",
+  "display_summary": "Données exposées : adresses e-mail, mots de passe, données bancaires, identifiants.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -25623,10 +27736,31 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : dates de naissance.",
+  "display_summary": "Données exposées : dates de naissance, données de santé, identifiants, mots de passe.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -25657,7 +27791,29 @@
     "value": 189997
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : près de 190 000 enregistrements.",
   "fields": {},
@@ -26028,8 +28184,9 @@
   ],
   "data_types": [
    {
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
+     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "value": "mots de passe"
@@ -26071,6 +28228,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -26902,6 +29080,20 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -27149,7 +29341,15 @@
  },
  "INC-BCF2C8524A9C": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "fields": {
@@ -27273,6 +29473,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
    }
   ],
   "datasets": [],
@@ -27402,6 +29609,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -27538,9 +29752,31 @@
     "value": 12800
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "12 800 agents (documenté).",
+  "display_summary": "12 800 agents (documenté). Données exposées : identifiants, mots de passe, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -28104,6 +30340,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -28156,7 +30406,15 @@
     "value": 44000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : plus de  44 000 personnes.",
   "fields": {},
@@ -28193,6 +30451,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -28237,7 +30502,15 @@
     "value": 558952
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 16,2 Go de données et 1 248 305 enregistrements.",
   "fields": {
@@ -28262,6 +30535,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -28458,9 +30745,24 @@
     "value": 435903
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "dates de naissance"
+   }
+  ],
   "datasets": [],
-  "display_summary": "435 903 membres (documenté).",
+  "display_summary": "435 903 membres (documenté). Données exposées : noms et prénoms, dates de naissance.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -28612,6 +30914,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de sécurité sociale"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -28651,6 +30960,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -29232,6 +31548,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "secrets cloud"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
    }
   ],
   "datasets": [],
@@ -29285,6 +31622,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -29483,9 +31827,31 @@
     "value": 31544
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "fichiers CSV"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "métadonnées techniques et adresses e-mail"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Exposition potentielle de données sensibles associées à la DINUM. 31 544 lignes (documenté).",
+  "display_summary": "Exposition potentielle de données sensibles associées à la DINUM. 31 544 lignes (documenté). Données exposées : adresses e-mail, fichiers CSV, métadonnées techniques et adresses e-mail.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -29726,7 +32092,29 @@
     "value": 2700000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 1,13 To de données et 2,7 millions de fichiers.",
   "fields": {
@@ -29878,6 +32266,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -29929,7 +32324,22 @@
     "value": 80000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : plus de 80 000 clients.",
   "fields": {},
@@ -29978,6 +32388,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -30019,7 +32436,22 @@
     "value": 1000000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : près de 1 million de membres.",
   "fields": {},
@@ -30147,6 +32579,13 @@
   ],
   "data_types": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -30266,6 +32705,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -30523,6 +32976,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "IBAN / RIB"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -30594,6 +33054,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
    }
   ],
   "datasets": [],
@@ -30644,6 +33118,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
    }
   ],
   "datasets": [],
@@ -31095,6 +33583,20 @@
     "value": "adresses e-mail"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -31335,6 +33837,27 @@
   "affected": [],
   "data_types": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -31393,9 +33916,17 @@
  },
  "INC-D9AEFFCC039E": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données RH"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Éléments documentés : 23 Go de données.",
+  "display_summary": "Données exposées : données RH.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -31466,6 +33997,20 @@
     "value": "mots de passe"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -31502,7 +34047,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Des données personnelles de clients européens ont été compromises. Données exposées : mots de passe, Nom, prénom, Adresse postale, Numéro de téléphone, Adresse email….",
+  "display_summary": "Des données personnelles de clients européens ont été compromises. Données exposées : mots de passe, numéros de téléphone, données bancaires, Nom, prénom, Adresse postale….",
   "fields": {
    "impact": {
     "source": "FRENCHBREACHES",
@@ -31687,6 +34232,13 @@
   ],
   "data_types": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -31795,6 +34347,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -31835,6 +34394,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -31883,6 +34463,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "numéros de sécurité sociale"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -31922,6 +34509,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    },
    {
     "source": "BONJOURLAFUITE",
@@ -32030,7 +34624,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Le vecteur d’attaque est désormais considéré comme contenu , mais le service Metabase interne reste hors ligne par précaution. 90 000 personnes (confirmé). Données exposées : mots de passe, données bancaires, Nom, prénom, Login, Adresse email….",
+  "display_summary": "Le vecteur d’attaque est désormais considéré comme contenu , mais le service Metabase interne reste hors ligne par précaution. 90 000 personnes (confirmé). Données exposées : mots de passe, données bancaires, identifiants, Nom, prénom, Login….",
   "fields": {
    "cvss": {
     "source": "FRENCHBREACHES",
@@ -32077,10 +34671,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
-  "display_summary": "Données exposées : mots de passe.",
+  "display_summary": "Données exposées : mots de passe, données bancaires.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -32088,9 +34689,24 @@
  },
  "INC-DD64B224CDEA": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : identifiants, mots de passe.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -32211,7 +34827,29 @@
     "value": 93900
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 209 Mo de données et près de  93 900 enregistrements.",
   "fields": {
@@ -32737,6 +35375,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -32876,9 +35528,31 @@
     "value": 96000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   }
+  ],
   "datasets": [],
-  "display_summary": "96 000 clients (documenté).",
+  "display_summary": "96 000 clients (documenté). Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -33057,6 +35731,13 @@
     "value": "mots de passe"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -33192,6 +35873,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
    }
   ],
   "datasets": [],
@@ -33378,6 +36066,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -34134,9 +36829,17 @@
  },
  "INC-F02C1B31FB8E": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Données exposées : données bancaires.",
   "fields": {
    "discovered_date": {
     "source": "RANSOMWARE_LIVE",
@@ -34166,6 +36869,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
    }
   ],
   "datasets": [],
@@ -34286,6 +36996,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "cartes de paiement"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -34371,7 +37088,15 @@
     "value": 132433
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   }
+  ],
   "datasets": [],
   "display_summary": "Éléments documentés : 43 Go de données et 132 433 fichiers.",
   "fields": {
@@ -34758,7 +37483,22 @@
  },
  "INC-F434C08610EF": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   }
+  ],
   "datasets": [],
   "display_summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "fields": {
@@ -35145,6 +37885,34 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
    }
   ],
   "datasets": [],
@@ -35364,6 +38132,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "IBAN / RIB"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
    }
   ],
   "datasets": [],
@@ -35571,6 +38346,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -35783,6 +38565,27 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données de santé"
    }
   ],
   "datasets": [],
@@ -35822,6 +38625,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
    }
   ],
   "datasets": [],
@@ -35862,8 +38672,9 @@
     "value": "identifiants"
    },
    {
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
+     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "value": "mots de passe"
@@ -36110,6 +38921,13 @@
     "value": "données personnelles"
    },
    {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   },
+   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
@@ -36182,6 +39000,20 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
    }
   ],
   "datasets": [],
@@ -36219,7 +39051,23 @@
     "value": 252149
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "données cadastrales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données fiscales"
+   }
+  ],
   "datasets": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -36239,7 +39087,7 @@
     "value": "données fiscales"
    }
   ],
-  "display_summary": "2 millions de personnes (revendiqué).",
+  "display_summary": "2 millions de personnes (revendiqué). Données exposées : données cadastrales, données fiscales.",
   "fields": {},
   "systems": [
    {
@@ -36492,6 +39340,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "cartes de paiement"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses postales"
    }
   ],
   "datasets": [],
