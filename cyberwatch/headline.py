@@ -20,8 +20,8 @@ _GENERIC = re.compile(
     re.I,
 )
 _EDITORIAL_TITLE = re.compile(
-    r"^[^:\n]{2,80}:\s+.*\b(?:cyberattaque|ransomware|attaque|intrusion|fuite|pirat|"
-    r"donn[ée]es|menac[ée]|revendiqu[ée])\b",
+    r"^(?=[^:\n]{2,80}:\s+)(?=.*\b(?:cyberattaque|ransomware|attaque|intrusion|fuite|pirat|"
+    r"donn[ée]es|menac[ée]s?|revendiqu[ée]s?)\b).+$",
     re.I,
 )
 
