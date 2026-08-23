@@ -1,0 +1,385 @@
+from __future__ import annotations
+
+import json
+
+import pytest
+
+from cyberwatch import config, enrichment, llm_runtime, organisation_sector as osec, store
+from cyberwatch import organisation_sector_llm as osl
+
+
+@pytest.fixture(autouse=True)
+def _isolate_data_dir(monkeypatch, tmp_path):
+    """Jamais d'écriture dans data/ réel : organisation_sector(_llm) dérive
+    tous ses chemins auxiliaires (dont le cache LLM) de store.ITEMS_CSV."""
+    monkeypatch.setattr(store, "ITEMS_CSV", tmp_path / "items.csv")
+
+
+class _Response:
+    def __init__(self, status_code=200, payload=None, text=""):
+        self.status_code = status_code
+        self._payload = payload or {}
+        self.text = text
+
+    def json(self):
+        return self._payload
+
+
+def _payload(data, *, input_tokens=100, output_tokens=20):
+    return {
+        "status": "completed",
+        "output": [{
+            "type": "message",
+            "content": [{"type": "output_text", "text": json.dumps(data)}],
+        }],
+        "usage": {
+            "input_tokens": input_tokens,
+            "input_tokens_details": {"cached_tokens": 0},
+            "output_tokens": output_tokens,
+            "output_tokens_details": {"reasoning_tokens": 0},
+            "total_tokens": input_tokens + output_tokens,
+        },
+    }
+
+
+def _reference(key, organisation, sector):
+    return {
+        key: enrichment.Enrichment(
+            organisation=organisation, sector=sector, location="", scope="France",
+            reason="validation humaine", validation_url="https://acme.example/about",
+        )
+    }
+
+
+def _context(key="acme", organisation="Acme"):
+    return osl.OrganisationContext(organisation_key=key, organisation=organisation)
+
+
+def _enable_llm(monkeypatch, fake_post):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setattr(llm_runtime, "_RUNTIME", llm_runtime.LlmRuntime())
+    monkeypatch.setattr(llm_runtime.requests, "post", fake_post)
+
+
+# --------------------------------------------------------------------------
+# Batching déterministe (§16)
+# --------------------------------------------------------------------------
+
+
+def test_build_batches_is_deterministic_and_stable_order():
+    entries = list(range(95))
+    batches = osl.build_batches(entries, batch_size=40)
+    assert [len(b) for b in batches] == [40, 40, 15]
+    assert batches[0][0] == 0
+    assert batches[-1][-1] == 94
+    # Rejouer avec le même batch_size donne exactement le même découpage.
+    again = osl.build_batches(entries, batch_size=40)
+    assert batches == again
+
+
+def test_select_organisations_for_llm_excludes_confirmed_and_conflict(make_item):
+    confirmed_item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    unknown_item = make_item(source_item_id="2", org="Autre Orga", sector=config.SECTOR_UNKNOWN, url="https://example.org/b")
+    reference = _reference(confirmed_item.Organisation_Key, "Acme", config.SECTOR_SERVICES)
+    items = [confirmed_item, unknown_item]
+    decisions = osec.resolve_all_organisation_sectors(items, reference=reference)
+    selected = osl.select_organisations_for_llm(items, decisions)
+    assert confirmed_item.Organisation_Key not in selected
+    assert unknown_item.Organisation_Key in selected
+    # Une organisation n'apparaît qu'une seule fois.
+    assert len(selected) == len(set(selected))
+
+
+# --------------------------------------------------------------------------
+# Cache et Input_Hash (§18)
+# --------------------------------------------------------------------------
+
+
+def test_input_hash_changes_with_prompt_version_model_and_taxonomy(monkeypatch):
+    context = _context()
+    base = osl.compute_input_hash(context, model="gpt-5-nano", prompt_version="v1")
+    same = osl.compute_input_hash(context, model="gpt-5-nano", prompt_version="v1")
+    assert base == same
+
+    different_prompt = osl.compute_input_hash(context, model="gpt-5-nano", prompt_version="v2")
+    assert different_prompt != base
+
+    different_model = osl.compute_input_hash(context, model="gpt-4o", prompt_version="v1")
+    assert different_model != base
+
+    monkeypatch.setattr(config, "SECTORS", config.SECTORS + ["Nouveau Secteur"])
+    different_taxonomy = osl.compute_input_hash(context, model="gpt-5-nano", prompt_version="v1")
+    assert different_taxonomy != base
+
+
+def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    items = [item]
+    context = osl.build_organisation_context(
+        item.Organisation_Key, items, source_fact_rows=[], org_cache_rows=[],
+    )
+    input_hash = osl.compute_input_hash(context, model="gpt-5-nano", prompt_version=osl.PROMPT_VERSION)
+    cache_rows = [{
+        "Organisation_Key": item.Organisation_Key,
+        "Organisation": "Acme",
+        "Input_Hash": input_hash,
+        "Sector": config.SECTOR_TECH,
+        "Confidence": "0.90",
+        "Basis": "name_semantics",
+        "Reason": "raison",
+        "Model": "gpt-5-nano",
+        "Prompt_Version": osl.PROMPT_VERSION,
+        "Created_At": "2026-01-01T00:00:00Z",
+    }]
+
+    called = {"count": 0}
+
+    def fake_post(url, *, json, headers, timeout):
+        called["count"] += 1
+        return _Response(payload=_payload({"organisations": []}))
+
+    _enable_llm(monkeypatch, fake_post)
+    report = osl.enrich_unknown_organisation_sectors(
+        items, reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=cache_rows,
+    )
+    assert called["count"] == 0
+    assert report.cache_hits == 1
+    assert report.cache_misses == 0
+    assert report.calls == 0
+
+
+def test_cache_miss_triggers_a_call_and_persists_result(make_item, monkeypatch):
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    items = [item]
+
+    def fake_post(url, *, json, headers, timeout):
+        organisations = json["input"][1]["content"]
+        payload = {
+            "organisations": [{
+                "organisation_key": item.Organisation_Key,
+                "sector": config.SECTOR_TECH,
+                "confidence": 0.8,
+                "basis": "name_semantics",
+                "reason": "Nom evocateur d'un acteur technologique.",
+            }],
+        }
+        return _Response(payload=_payload(payload))
+
+    _enable_llm(monkeypatch, fake_post)
+    report = osl.enrich_unknown_organisation_sectors(
+        items, reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=[],
+    )
+    assert report.cache_misses == 1
+    assert report.calls == 1
+    assert report.candidates == 1
+    row = next(r for r in report.cache_rows if r["Organisation_Key"] == item.Organisation_Key)
+    assert row["Sector"] == config.SECTOR_TECH
+
+
+def test_dry_run_never_calls_llm_or_writes(make_item, monkeypatch):
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    items = [item]
+    called = {"count": 0}
+
+    def fake_post(url, *, json, headers, timeout):
+        called["count"] += 1
+        return _Response(payload=_payload({"organisations": []}))
+
+    _enable_llm(monkeypatch, fake_post)
+    report = osl.enrich_unknown_organisation_sectors(
+        items, reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=[], dry_run=True,
+    )
+    assert called["count"] == 0
+    assert report.dry_run is True
+
+
+# --------------------------------------------------------------------------
+# Réponse JSON (§32)
+# --------------------------------------------------------------------------
+
+
+def test_response_parsing_is_resilient_to_bad_entries(monkeypatch):
+    batch = [
+        ("acme", _context("acme", "Acme")),
+        ("orgb", _context("orgb", "Orga B")),
+    ]
+
+    def fake_post(url, *, json, headers, timeout):
+        payload = {
+            "organisations": [
+                {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                # Organisation inconnue dans la réponse : ignorée.
+                {"organisation_key": "unknown-org", "sector": config.SECTOR_TECH, "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                # Duplicat : la seconde entrée pour "acme" est ignorée.
+                {"organisation_key": "acme", "sector": config.SECTOR_HEALTH, "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                # Secteur hors taxonomie.
+                {"organisation_key": "orgb", "sector": "Secteur Invalide", "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+            ],
+        }
+        return _Response(payload=_payload(payload))
+
+    _enable_llm(monkeypatch, fake_post)
+    result = osl.call_llm_batch(batch)
+    assert set(result) == {"acme"}
+    assert result["acme"].sector == config.SECTOR_TECH
+
+
+def test_invalid_confidence_and_basis_are_rejected(monkeypatch):
+    batch = [("acme", _context("acme", "Acme"))]
+
+    def fake_post(url, *, json, headers, timeout):
+        payload = {"organisations": [
+            {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 1.5, "basis": "name_semantics", "reason": "r"},
+        ]}
+        return _Response(payload=_payload(payload))
+
+    _enable_llm(monkeypatch, fake_post)
+    assert osl.call_llm_batch(batch) == {}
+
+    def fake_post_bad_basis(url, *, json, headers, timeout):
+        payload = {"organisations": [
+            {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.5, "basis": "made_up", "reason": "r"},
+        ]}
+        return _Response(payload=_payload(payload))
+
+    monkeypatch.setattr(llm_runtime.requests, "post", fake_post_bad_basis)
+    assert osl.call_llm_batch(batch) == {}
+
+
+def test_insufficient_basis_and_unknown_sector_are_treated_as_abstention(monkeypatch):
+    batch = [("acme", _context("acme", "Acme"))]
+
+    def fake_post(url, *, json, headers, timeout):
+        payload = {"organisations": [
+            {"organisation_key": "acme", "sector": config.SECTOR_UNKNOWN, "confidence": 0.9, "basis": "insufficient", "reason": "aucun signal"},
+        ]}
+        return _Response(payload=_payload(payload))
+
+    _enable_llm(monkeypatch, fake_post)
+    assert osl.call_llm_batch(batch) == {}
+
+
+def test_invalid_json_is_non_blocking(monkeypatch):
+    batch = [("acme", _context("acme", "Acme"))]
+
+    def fake_post(url, *, json, headers, timeout):
+        return _Response(payload={
+            "status": "completed",
+            "output": [{"type": "message", "content": [{"type": "output_text", "text": "not json"}]}],
+            "usage": {},
+        })
+
+    _enable_llm(monkeypatch, fake_post)
+    try:
+        osl.call_llm_batch(batch)
+        raised = False
+    except llm_runtime.LlmError:
+        raised = True
+    assert raised, "une réponse non-JSON doit rester une LlmError gérée par l'appelant"
+
+
+# --------------------------------------------------------------------------
+# Résilience (§34)
+# --------------------------------------------------------------------------
+
+
+def test_missing_api_key_is_non_blocking(make_item, monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setattr(llm_runtime, "_RUNTIME", llm_runtime.LlmRuntime())
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    report = osl.enrich_unknown_organisation_sectors(
+        [item], reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=[],
+    )
+    assert report.llm_available is False
+    assert report.calls == 0
+    assert item.Sector == config.SECTOR_UNKNOWN
+
+
+def test_llm_error_on_one_batch_does_not_abort_enrichment(make_item, monkeypatch):
+    first = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    second = make_item(source_item_id="2", org="Orga B", sector=config.SECTOR_UNKNOWN, url="https://example.org/b")
+
+    def fake_post(url, *, json, headers, timeout):
+        return _Response(status_code=500, text="boom")
+
+    _enable_llm(monkeypatch, fake_post)
+    report = osl.enrich_unknown_organisation_sectors(
+        [first, second], reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=[],
+        batch_size=1,
+    )
+    # Deux lots, deux échecs réseau : aucun appel ne bloque l'autre, et la
+    # fonction retourne normalement (pas d'exception propagée).
+    assert report.candidates == 0
+    assert first.Sector == config.SECTOR_UNKNOWN
+    assert second.Sector == config.SECTOR_UNKNOWN
+
+
+# --------------------------------------------------------------------------
+# Politique de convergence (§20 à §23, §33)
+# --------------------------------------------------------------------------
+
+
+def _llm_evidence(key, organisation, sector, *, basis="name_semantics"):
+    return osec.OrganisationSectorEvidence(
+        key, organisation, sector, osec.EVIDENCE_LLM_ORGANISATION, "0.90",
+        source="llm:gpt-5-nano", evidence_text=basis,
+    )
+
+
+def test_llm_only_is_tentative_never_confirmed():
+    evidence = [_llm_evidence("acme", "Acme", config.SECTOR_TECH)]
+    decision = osec.resolve_organisation_sector("acme", "Acme", evidence)
+    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.sector == config.SECTOR_TECH
+
+
+def test_llm_plus_naf_concordant_confirms(make_item):
+    naf_evidence = osec.OrganisationSectorEvidence(
+        "acme", "Acme", config.SECTOR_HEALTH, osec.EVIDENCE_NAF_PRECISE, "HIGH",
+        source="registre entreprise", evidence_text="Activity_Code=86.10Z",
+    )
+    llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_HEALTH)
+    decision = osec.resolve_organisation_sector("acme", "Acme", [naf_evidence, llm_evidence])
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.sector == config.SECTOR_HEALTH
+
+
+def test_llm_plus_official_subject_activity_concordant_confirms():
+    official = osec.OrganisationSectorEvidence(
+        "acme", "Acme Groupe", config.SECTOR_CONSTRUCTION, osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY, "HIGH",
+    )
+    llm_evidence = _llm_evidence("acme", "Acme Groupe", config.SECTOR_CONSTRUCTION)
+    decision = osec.resolve_organisation_sector("acme", "Acme Groupe", [official, llm_evidence])
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.sector == config.SECTOR_CONSTRUCTION
+
+
+def test_llm_plus_validated_org_concordant_confirms():
+    validated = osec.OrganisationSectorEvidence(
+        "acme", "Acme", config.SECTOR_ENERGY, osec.EVIDENCE_VALIDATED_ITEM, "HIGH",
+    )
+    llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_ENERGY)
+    decision = osec.resolve_organisation_sector("acme", "Acme", [validated, llm_evidence])
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.sector == config.SECTOR_ENERGY
+
+
+def test_llm_contradictory_with_confirmed_never_overrides():
+    strong = osec.OrganisationSectorEvidence(
+        "acme", "Acme", config.SECTOR_HEALTH, osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY, "HIGH",
+    )
+    llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_TECH)
+    decision = osec.resolve_organisation_sector("acme", "Acme", [strong, llm_evidence])
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.sector == config.SECTOR_HEALTH
+    assert any("LLM_CONFLICT_WITH_CONFIRMED" in text for text in decision.evidence)
+
+
+def test_two_weak_conflicting_candidates_stay_conflict_without_tentative():
+    weak_registry_like = osec.OrganisationSectorEvidence(
+        "acme", "Acme", config.SECTOR_RETAIL, osec.EVIDENCE_SOURCE_ACTIVITY, "MEDIUM",
+    )
+    llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_SERVICES)
+    decision = osec.resolve_organisation_sector("acme", "Acme", [weak_registry_like, llm_evidence])
+    assert decision.status == osec.STATUS_CONFLICT
+    assert decision.sector == config.SECTOR_UNKNOWN

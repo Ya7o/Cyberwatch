@@ -9,6 +9,7 @@ from . import (
     identity,
     incremental,
     org_enrichment,
+    organisation_sector,
     qualification_policy,
     sector as sector_policy,
     sector_registry,
@@ -59,6 +60,7 @@ class QualificationReport:
     incidents_hash: str
     registry_rows: list[dict[str, str]] = field(default_factory=list)
     queue_rows: list[dict[str, str]] = field(default_factory=list)
+    organisation_sector_decisions: dict[str, object] = field(default_factory=dict)
 
 
 def stabilize_threats(items):
@@ -261,6 +263,7 @@ def qualify(items):
     decisions = []
     restored = restore_legacy_sector_fallbacks(ordered, previous_provenance)
     registry_restored = sector_registry.restore_registry_applications(ordered, previous_provenance)
+    org_sector_restored = organisation_sector.restore_organisation_sector_applications(ordered, previous_provenance)
     reference = enrichment.load_reference()
     changes = _observe_layer(
         decisions,
@@ -270,6 +273,7 @@ def qualify(items):
         mutate=lambda: enrichment.enrich_items(ordered, reference),
     )
     changes["llm_sector_restored"], changes["sector_registry_restored"] = restored, registry_restored
+    changes["organisation_sector_restored"] = org_sector_restored
 
     changes["sector_structured_source_backfill"] = _observe_layer(
         decisions,
@@ -287,6 +291,21 @@ def qualify(items):
     official_applied, official_provenance = apply_official_subject_activity_sectors(ordered, org_cache)
     decisions.extend(decisions_from_provenance(official_provenance))
     changes["sector_official_subject_activity_applied"] = official_applied
+
+    org_sector_decisions = organisation_sector.resolve_all_organisation_sectors(
+        ordered,
+        reference=reference,
+        source_fact_rows=source_facts,
+        org_cache_rows=org_cache,
+        previous_provenance=previous_provenance,
+    )
+    org_sector_applied, org_sector_provenance = organisation_sector.apply_organisation_sector_decisions(
+        ordered, org_sector_decisions
+    )
+    decisions.extend(decisions_from_provenance(org_sector_provenance))
+    decisions.extend(decisions_from_provenance(organisation_sector.tentative_provenance(ordered, org_sector_decisions)))
+    changes["organisation_sector_applied"] = org_sector_applied
+    changes.update(organisation_sector.summary(org_sector_decisions))
 
     registry_rows = sector_registry.build_registry(
         ordered,
@@ -352,4 +371,5 @@ def qualify(items):
         identity.incidents_hash(incidents),
         registry_rows,
         queue_rows,
+        org_sector_decisions,
     )

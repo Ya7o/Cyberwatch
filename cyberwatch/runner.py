@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, dedup_ai, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
+from . import ai, config, dedup_ai, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, organisation_sector, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -748,6 +748,7 @@ class RunReport:
     incident_id_registry: list[dict] = field(default_factory=list)
     sector_registry_rows: list[dict] = field(default_factory=list)
     sector_queue_rows: list[dict] = field(default_factory=list)
+    organisation_sector_decisions: dict = field(default_factory=dict)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
 
@@ -989,6 +990,7 @@ def execute(
     report.incident_id_registry = qualified.incident_id_registry
     report.sector_registry_rows = qualified.registry_rows
     report.sector_queue_rows = qualified.queue_rows
+    report.organisation_sector_decisions = qualified.organisation_sector_decisions
     report.new_incidents = len([i for i in report.incidents if i.Incident_ID not in previous_ids])
     report.items_hash = qualified.items_hash
     report.incidents_hash = qualified.incidents_hash
@@ -1090,6 +1092,9 @@ def _persist(
             store.save_incident_id_registry(report.incident_id_registry)
             store.save_qualification_provenance(report.qualification_provenance)
             sector_registry.write_outputs(report.sector_registry_rows, report.sector_queue_rows)
+            organisation_sector.write_decisions_csv(
+                report.organisation_sector_decisions, updated_at=context.as_of
+            )
             save_snapshot_provenance(
                 store.load_items(), store.load_incidents(), operation="REPLAY",
                 run_id=context.run_id, mode=context.mode, as_of=context.as_of,
@@ -1133,6 +1138,9 @@ def _persist(
         store.save_source_facts(report.source_facts)
         store.save_qualification_provenance(report.qualification_provenance)
         sector_registry.write_outputs(report.sector_registry_rows, report.sector_queue_rows)
+        organisation_sector.write_decisions_csv(
+            report.organisation_sector_decisions, updated_at=context.as_of
+        )
         save_snapshot_provenance(
             store.load_items(), store.load_incidents(), operation=context.mode,
             run_id=context.run_id, mode=context.mode, as_of=context.as_of,
