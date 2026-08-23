@@ -371,60 +371,40 @@ def _summary_priority(record: dict) -> tuple[int, int, int]:
 #: Longueur minimale d'un fallback narratif pour qu'il soit préféré à une
 #: synthèse réduite à une métrique brute (§ build_display_summary).
 _SUBSTANTIAL_FALLBACK_CHARS = 40
+_SUMMARY_TECHNICAL_RE = re.compile(
+    r"\b(?:header\s+html|javascript|css|vitesse\s+d[’']apparition|chargement|"
+    r"donn[ée]es\s+expos[ée]es\s*:|[ée]l[ée]ments\s+document[ée]s\s*:)", re.I,
+)
+_SUMMARY_GENERIC_RE = re.compile(
+    r"^(?:l[’']incident|la\s+cyberattaque|l[’']attaque|la\s+fuite)\s+.*"
+    r"(?:exfiltration|fuite)\s+de\s+donn[ée]es\.?$", re.I,
+)
+_SUMMARY_GENERIC_CONFIRMATION_RE = re.compile(
+    r"\b(?:confirme|a\s+confirm[ée])\b.*\bexfiltration\s+de\s+donn[ée]es\b.*\bincident\s+de\s+cybers[ée]curit[ée]\b",
+    re.I,
+)
+_SUMMARY_METRIC_RE = re.compile(r"^\d[\d\s,.]*(?:enregistrements|fichiers|comptes|personnes|clients)\b", re.I)
+
+
+def is_publishable_summary(value: str) -> bool:
+    text = _text(value)
+    if not text or len(text) > 160 or "\n" in text:
+        return False
+    if text.startswith(("-", "*", "#")) or "**" in text or _SUMMARY_TECHNICAL_RE.search(text):
+        return False
+    if (_SUMMARY_GENERIC_RE.fullmatch(text) or _SUMMARY_GENERIC_CONFIRMATION_RE.search(text)
+            or _SUMMARY_METRIC_RE.match(text)):
+        return False
+    return len(re.findall(r"[.!?](?:\s|$)", text)) <= 1
 
 
 def build_display_summary(resolved: dict, fallback: str = "") -> str:
-    sentences: list[str] = []
-
-    impact_field = (resolved.get("fields") or {}).get("impact")
-    impact_text = _text(impact_field.get("value")) if isinstance(impact_field, dict) else ""
-    if impact_text:
-        sentences.append(impact_text if impact_text.endswith((".", "!", "?")) else f"{impact_text}.")
-
-    claims = [claim for claim in (resolved.get("claims") or []) if _text(claim.get("evidence"))]
-    claim_text = ""
-    if not impact_text and claims:
-        # La longueur de la preuve est un proxy stable de son contenu factuel;
-        # les critères secondaires rendent le choix déterministe.
-        best_claim = max(
-            claims,
-            key=lambda claim: (
-                len(_text(claim.get("evidence"))),
-                -source_rank(claim.get("source")),
-                _text(claim.get("source")),
-                _text(claim.get("evidence")),
-            ),
-        )
-        claim_text = _text(best_claim.get("evidence"))
-        if claim_text:
-            sentences.append(claim_text if claim_text.endswith((".", "!", "?")) else f"{claim_text}.")
-
-    affected = sorted(resolved.get("affected") or [], key=_summary_priority)
-    if affected:
-        record = affected[0]
-        value = _format_count(record)
-        status = STATUS_LABELS.get(_text(record.get("status")), "documenté")
-        if value:
-            sentences.append(f"{value[0].upper() + value[1:]} ({status}).")
-
-    data_types = [entry.get("value") for entry in (resolved.get("data_types") or []) if entry.get("value")]
-    if data_types:
-        shown = ", ".join(data_types[:5])
-        suffix = "…" if len(data_types) > 5 else ""
-        sentences.append(f"Données exposées : {shown}{suffix}.")
-
-    if not sentences:
-        return _text(fallback)
-
-    # Une synthèse réduite à la seule métrique (aucune phrase d'impact
-    # narratif) ne doit pas écraser un fallback déjà substantiel : la métrique
-    # brute seule est trop pauvre dès qu'un récit plus riche existe déjà
-    # (cf. DINUM / Made in Bébé, tableau de revue manuelle points 3-4).
+    # Une carte ne réassemble jamais impact, volumes ou catégories. Ces faits
+    # restent dans le détail ; seul le résumé éditorial déjà validé est publié.
     clean_fallback = _text(fallback)
-    if not impact_text and not claim_text and clean_fallback and len(clean_fallback) > _SUBSTANTIAL_FALLBACK_CHARS:
+    if is_publishable_summary(clean_fallback):
         return clean_fallback
-
-    return " ".join(sentences)
+    return ""
 
 
 def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "") -> dict:

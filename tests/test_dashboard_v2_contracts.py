@@ -10,6 +10,7 @@ def _read(path: str) -> str:
 
 def test_runtime_v2_est_le_seul_runtime_charge():
     html = _read("index.html")
+    assert html.index('src="assets/shared.js') < html.index('src="assets/dashboard-v2.js')
     assert 'src="assets/dashboard-v2.js' in html
     assert 'src="assets/dashboard.js' not in html
 
@@ -116,6 +117,7 @@ def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
     assert "resolved = fact_resolution.resolve_all(raw_facts" in site
     assert 'store.write_json(store.SITE_DATA_DIR / "facts.json", resolved)' in site
     assert "analytics.build_analytics(\n        payload" in site
+    assert 'row["summary"] = str(detail.get("display_summary") or "")' in site
 
 
 def test_runtime_ne_supporte_plus_le_schema_legacy_des_faits():

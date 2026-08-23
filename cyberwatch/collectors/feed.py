@@ -27,6 +27,12 @@ _DYNAMIC_BLOCK_RE = re.compile(
     r"<(?:script|style|noscript)\b[^>]*>.*?</(?:script|style|noscript)>",
     flags=re.IGNORECASE | re.DOTALL,
 )
+_ARTICLE_ROOT_RE = re.compile(r"<(?:article|main)\b[^>]*>(.*?)</(?:article|main)>", re.IGNORECASE | re.DOTALL)
+_NON_EDITORIAL_RE = re.compile(r"<(?:header|footer|nav|aside|form)\b[^>]*>.*?</(?:header|footer|nav|aside|form)>", re.IGNORECASE | re.DOTALL)
+_TECHNICAL_FRAGMENT_RE = re.compile(
+    r"\s*(?:—|-|\|)\s*[^.]*\b(?:header\s+html|vitesse\s+d['’]apparition|javascript|css|chargement\s+visuel|performance\s+web)\b.*$",
+    re.IGNORECASE,
+)
 _FRENCHBREACHES_SUFFIX_MARKERS = (
     "Alertes liées",
     "Si cet article vous a plu",
@@ -37,7 +43,14 @@ _FRENCHBREACHES_SUFFIX_MARKERS = (
 def stable_frenchbreaches_detail_text(html_text: str) -> str:
     """Texte éditorial stable d'une fiche, sans blocs dynamiques hors article."""
     cleaned_html = _DYNAMIC_BLOCK_RE.sub(" ", html_text or "")
+    cleaned_html = _NON_EDITORIAL_RE.sub(" ", cleaned_html)
+    root = _ARTICLE_ROOT_RE.search(cleaned_html)
+    if root:
+        cleaned_html = root.group(1)
     text = " ".join(strip_html(cleaned_html).split())
+    # Certains thèmes injectent une note de performance dans le contenu rendu.
+    # Elle ne constitue jamais une preuve d'incident.
+    text = _TECHNICAL_FRAGMENT_RE.sub("", text).strip()
     cut = len(text)
     for marker_text in _FRENCHBREACHES_SUFFIX_MARKERS:
         pos = text.find(marker_text)

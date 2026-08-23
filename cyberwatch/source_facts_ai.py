@@ -61,7 +61,7 @@ INITIAL_ACCESS_VALUES = {
     "other",
 }
 FIELD_VERSIONS = {
-    "summary": "summary-v3",
+    "summary": "summary-v4",
     "initial_access": "initial-access-v1",
     "attack_flow": "attack-flow-v2",
     "impact": "impact-v3",
@@ -237,7 +237,7 @@ class _Runtime:
         retry_legacy = os.getenv("SOURCE_FACTS_AI_RETRY_LEGACY_NULLS", "0").strip().lower()
         self.retry_legacy_nulls = retry_legacy not in {"0", "false", "no", "off"}
         self.model = os.getenv("SOURCE_FACTS_AI_MODEL", os.getenv("OPENAI_MODEL", DEFAULT_MODEL)).strip() or DEFAULT_MODEL
-        self.max_calls = _env_int("SOURCE_FACTS_AI_MAX_CALLS_PER_RUN", 250)
+        self.max_calls = _env_int("SOURCE_FACTS_AI_MAX_CALLS_PER_RUN", 30)
         self.max_cost = _env_float("SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN", 0.50)
         self.max_context_chars = _env_int("SOURCE_FACTS_AI_MAX_CONTEXT_CHARS", 10000)
         self.max_output_tokens = _env_int("SOURCE_FACTS_AI_MAX_OUTPUT_TOKENS", 1200)
@@ -678,11 +678,38 @@ def _normalize_impact(raw, context: str) -> dict | None:
     return fact
 
 
+_HEADLINE_TECHNICAL_RE = re.compile(
+    r"\b(?:header\s+html|javascript|css|cookie|lcp|chargement|vitesse\s+d[’']apparition|performance\s+web|navigation|footer|changelog)\b",
+    re.I,
+)
+_HEADLINE_GENERIC_RE = re.compile(
+    r"^(?:l[’']incident|la\s+cyberattaque|l[’']attaque|la\s+fuite)\s+(?:a\s+)?(?:entra[iî]n[ée]|provoqu[ée]|caus[ée])\s+(?:une\s+)?(?:exfiltration|fuite)\s+de\s+donn[ée]es\.?$",
+    re.I,
+)
+
+
+def _normalize_summary(raw, context: str) -> dict | None:
+    """Valide une headline lisible pour la carte, jamais un extrait technique."""
+    fact = _normalize_fact(raw, context)
+    if not fact:
+        return None
+    value = fact["value"]
+    if len(value) > MAX_HEADLINE_CHARS or "\n" in value:
+        return None
+    if value.startswith(("-", "*", "#")) or "**" in value or ": " in value:
+        return None
+    if _HEADLINE_TECHNICAL_RE.search(value) or _HEADLINE_GENERIC_RE.fullmatch(value):
+        return None
+    if len(re.findall(r"[.!?](?:\s|$)", value)) > 1:
+        return None
+    return fact
+
+
 def _normalize(raw: dict, context: str, fields: set[str]) -> dict:
     result: dict = {}
     if "summary" in fields:
-        fact = _normalize_fact(raw.get("summary"), context)
-        if fact and len(fact["value"]) <= MAX_HEADLINE_CHARS:
+        fact = _normalize_summary(raw.get("summary"), context)
+        if fact:
             result["summary"] = fact
     if "initial_access" in fields:
         fact = _normalize_initial_access(raw.get("initial_access"), context)
@@ -836,6 +863,8 @@ def _has_semantic_context(entry: RawEntry) -> bool:
 
 def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set[str]:
     requested = _legacy_fields_needed(item, entry, seed)
+    if _full_context(entry):
+        requested.add("summary")
     if not _has_semantic_context(entry):
         return requested
     requested.update({"summary", "initial_access", "attack_flow"})

@@ -23,36 +23,11 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Environ 13 000 comptes utilisateurs et plus de 6 300 coordonnées bancaires compromises. 13 000 personnes (documenté). Données exposées : données bancaires, identifiants, adresses e-mail, mots de passe, noms, prénoms, adresses, e-mails, numéros de téléphone, historiques de prestations….",
+  "summary": "Déclic Services subit une cyberattaque par ZeroBytes ayant volé 6,2 millions de lignes de données et modifié son site officiel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/declic-services-mt50ilbazie0jaelweg",
    "https://www.cyberattaque.org/declic-services-pirate-62-millions-de-lignes-revendiquees-et-le-site-officiel-detourne-par-zerobytes/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-23",
-  "first_seen": "2026-08-23T11:31:12.778140+04:00",
-  "id": "INC-D66A0A816B56",
-  "items": 1,
-  "last_seen": "2026-08-23T11:31:12.778140+04:00",
-  "location": "France métropolitaine",
-  "org": "Solimut Mutuelle de France",
-  "sector": "Inconnu",
-  "source_links": [
-   {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/solimut-mutuelle-de-france-mt50un0cza4e3fi0er"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Exposition de données personnelles de plus d'un million d'assurés. 770 000 comptes (documenté).",
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/solimut-mutuelle-de-france-mt50un0cza4e3fi0er"
   ]
  },
  {
@@ -74,7 +49,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Cette vulnérabilité apparaît lorsqu’une application donne accès à une ressource à partir d’un identifiant sans vérifier correctement que la personne effectuant la requête est autorisée à consulter les données correspondantes. 260 000 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, identifiants.",
+  "summary": "Une faille IDOR a permis la fuite de 260 000 enregistrements de SOS Villages de TF1.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/sos-villages-de-tf1-260-000-fiches-avec-les-coordonnees-en-fuite/"
@@ -85,23 +60,29 @@
   "date": "2026-08-23",
   "first_seen": "2026-08-23T11:31:12.778140+04:00",
   "id": "INC-1DB4BB9CBF02",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-23T11:31:12.778140+04:00",
-  "location": "Inconnu",
-  "org": "Solimut Mutuelle",
+  "location": "France métropolitaine",
+  "org": "Solimut Mutuelle de France",
   "sector": "Services aux entreprises",
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/solimut-mutuelle-pres-de-125-million-dassures-dans-une-fuite-massive-de-donnees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/solimut-mutuelle-de-france-mt50un0cza4e3fi0er"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "Une fuite a exposé des informations sensibles de 1,25 million d'assurés, incluant des données d'identité et bancaires. 770 467 comptes (documenté). Données exposées : adresses e-mail, numéros de téléphone, dates de naissance, données bancaires, IBAN / RIB….",
+  "summary": "Solimut Mutuelle affirme avoir subi une fuite massive de données touchant 1,25 million d'assurés.",
   "threat": "Fuite de données",
   "urls": [
+   "https://frenchbreaches.com/alertes/solimut-mutuelle-de-france-mt50un0cza4e3fi0er",
    "https://www.cyberattaque.org/solimut-mutuelle-pres-de-125-million-dassures-dans-une-fuite-massive-de-donnees/"
   ]
  },
@@ -124,7 +105,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Exposition potentielle de données sensibles associées à la DINUM. 31 544 lignes (documenté). Données exposées : adresses e-mail, fichiers CSV, métadonnées techniques, commentaires, adresses e-mail, informations confidentielles.",
+  "summary": "Le cybercriminel 0xSec a récupéré et publié 31 544 lignes de données provenant de cloud.numerique.gouv.fr, rattaché à la DINUM.",
   "threat": "Incident tiers",
   "urls": [
    "https://www.cyberattaque.org/dinum-31-544-lignes-liees-au-cloud-de-letat-en-fuite/"
@@ -154,7 +135,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Un total de 49 035 fichiers comprenant e-mails, commandes et contrats a été exposé, ce qui augmente le risque de fraude. 49 035 fichiers (documenté). Données exposées : adresses e-mail, e-mails, commandes, contrats, fiches CRM.",
+  "summary": "Dron Location a subi une fuite de 49 035 fichiers après la compromission de son compte BlgCloud.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/dron-location-blgcloud-mt465b4kyuah04efb8",
@@ -180,7 +161,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Des comptes utilisateurs et informations sensibles seraient exposés.",
+  "summary": "Une fuite de données a été revendiquée par un cybercriminel ciblant iMapper.tech, exposant des comptes utilisateurs et informations sensibles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/imapper-tech-mt4kafe3uah19xev08q"
@@ -205,7 +186,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Des milliers de données ont été diffusées sur un forum de hackers.",
+  "summary": "Des données associées à cloud.numerique.gouv.fr ont été revendiquées sur un forum de cybercriminels.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cloud-de-l-tat-cloud-numerique-gouv-fr-mt4685xhf4it99ffgkq"
@@ -235,7 +216,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le chiffre de  525 000 personnes  reste à distinguer du nombre de bénévoles de la fédération et devra être confirmé au terme des investigations. 525 000 personnes (confirmé). Données exposées : numéros de téléphone, noms et prénoms, dates de naissance, données personnelles.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/protection-civile-mt27j64epv2smy5m0g",
@@ -261,7 +242,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Fuite de données : Bureau Vallée, près de 4,82 millions d’enregistrements revendiqués. 4,82 millions d’enregistrements (revendiqué).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/bureau-vall-e-mt2opn2q7t914mz1rap"
@@ -291,7 +272,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La publication, diffusée le  21 août 2026 , présente une archive d’environ  850 Mo  contenant principalement des informations clients, des adresses et des commandes. 1 136 058 personnes (revendiqué). Données exposées : adresses e-mail, numéros de téléphone, données bancaires.",
+  "summary": "Allobébé a subi une fuite de données de 2 175 216 lignes affectant 1 136 058 clients sur une période allant de 2006 à 2026.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/allob-b-mt2odq6gxcxcl9ddevo",
@@ -322,7 +303,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "En revanche, aucun numéro complet de carte, cryptogramme ou autre donnée bancaire permettant directement d’effectuer un paiement n’apparaît dans les éléments examinés. 960 106 personnes (revendiqué). Données exposées : données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/made-in-b-b-mt2okkwvyi50oh1cfzk",
@@ -348,7 +329,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "> **Resamania confirme qu’un tiers non autorisé a accédé, le 1er août 2026, à des données personnelles hébergées sur une ancienne version de sa plateforme.** Les informations potentiellement compromises comprennent noms, coordonnées et, dans certains cas, **identifiants et mots de passe, IBAN ainsi que des données de santé**.... Données exposées : identifiants, mots de passe, IBAN / RIB, données de santé, données personnelles….",
+  "summary": "Données concernées : identifiants, mots de passe et IBAN / RIB.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/xplor-resamania-ms9zix0ogp9u7xkgvu5"
@@ -378,7 +359,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’auteur de la publication, utilisant le pseudonyme **misere**, affirme disposer de **10 279 819 enregistrements au total**, représentant **5 169 727 enregistrements uniques** après déduplication. 5,16 millions de clients (documenté). Données exposées : adresses e-mail, noms et prénoms, dates de naissance, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/beauty-success-mt2otw6c5dajzvxs38g",
@@ -409,7 +390,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L'incident a entraîné une exfiltration de données.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/g-otec-mt2pm5hv08jyfc9vlj2c",
@@ -440,7 +421,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données chez Bergerat Rent : 43 Go et 132 433 fichiers exposés (avant ) — évite d'attendre que le header HTML soit lu + grosse amélioration de la vitesse d'apparition visuelle. 132 433 fichiers (documenté). Données exposées : adresses e-mail.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/bergerat-rent-blgcloud-mt1zdsa2pfwxiwrzeuf",
@@ -471,7 +452,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "L’inventaire revendiqué fait apparaître un périmètre particulièrement large, avec plus de  630 000 fichiers associés à la fiscalité , près de  280 000 liés aux ressources humaines et à la paie  et environ  179 000 liés aux activités bancaires, de trésorerie ou de financement . 2,7 millions de fichiers (revendiqué). Données exposées : adresses e-mail, pièces d'identité, données bancaires.",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/experts-entreprendre",
@@ -497,7 +478,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Fuite de données : 4 179 clients Visa Infinite et Platinum concernés après le piratage d’un prestataire de conciergerie. 4 179 clients (documenté). Données exposées : données personnelles.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/john-paul-mt1g0ll5v5vh0u0syq8"
@@ -527,7 +508,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’auteur affirme avoir récupéré **19 495 enregistrements** couvrant une période allant de **2016 à 2024** à la suite d’une **mauvaise configuration critique d’une API** qui aurait permis d’accéder à certaines données **sans authentificatio... 19 495 victimes (documenté). Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/r-server-mt0n1r7q49q9x6h207r",
@@ -554,7 +535,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "> Les mots de passe et informations bancaires ne sont pas concernés ; SFR indique avoir sécurisé l’accès et notifié la CNIL. 2,1 millions de lignes (documenté). Données exposées : mots de passe.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sfr-mrp254s7k2z2s62yzqf"
@@ -584,7 +565,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Des données CRM, mots de passe et clés API ont été exposés. 1 600 enregistrements (revendiqué). Données exposées : mots de passe.",
+  "summary": "Des données CRM de près de 1 600 établissements revendiquées après un piratage de FrenchInnov.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/frenchinnov-mt1qw0kfdhmqb8emex",
@@ -616,7 +597,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’entreprise conteste cependant le scénario présenté par le cybercriminel et indique que l’accès aurait concerné  un serveur de test ne contenant pas de données médicales réelles . 6,8 millions de patients (confirmé). Données exposées : données de santé, Alaxione ment dans sa communication en soutenant qu’il s’agit exclusivement de données de test. Les propres données de l’administrateur de ce site sont dedans, avec un échange par email concernant une erreur de facturation que personne d’autre ne peut connaître.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://actu.orange.fr/france/cyberattaque-un-site-medical-cible-6-8-millions-de-personnes-concernees-magic-CNT000002rqCsI.html",
@@ -653,7 +634,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le croisement entre  identité, coordonnées, informations contractuelles et données bancaires  peut faciliter des campagnes de phishing particulièrement crédibles, notamment en se faisant passer pour SUEZ, un prestataire ou un service de facturation. Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms, IBAN / RIB, données personnelles….",
+  "summary": "Données concernées : IBAN / RIB, pièces d'identité et données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/suez.png",
@@ -680,7 +661,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Les cybercriminels affirment détenir  13,08 Go de données représentant 722 470 fichiers  issus d’un ancien dépôt interne d’ Altran , dont les activités d’ingénierie et de R&D sont aujourd’hui intégrées à  Capgemini Engineering . 722 470 fichiers (rapporté). Données exposées : mots de passe.",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
@@ -710,6 +691,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=576ca72f-43d1-4fa7-83e2-78db0524ab3f",
@@ -735,7 +717,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une capture montre par ailleurs près de  2 000 fichiers JSON pour environ 189 Mo , avec des noms faisant référence à des statistiques, comptes, formulaires, revenus, bénéficiaires, organisations ou questionnaires. 22 369 utilisateurs (documenté). Données exposées : données personnelles, adresses e-mail.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/klaro-22-369-utilisateurs-exposes-apres-une-cyberattaque/"
@@ -765,7 +747,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Il reste donc impossible de déterminer si l’accès provient d’identifiants compromis, d’une faiblesse d’authentification ou d’un autre mécanisme. 9 000 clients (documenté). Données exposées : IBAN / RIB, cartes de paiement, identifiants, noms et prénoms.",
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sport-2000-mt0d2uylr1i928pr8k8",
@@ -801,7 +783,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Dans une notification datée du  17 août 2026 , l’IRD précise qu’une intrusion d’origine externe a conduit à l’exposition de données particulièrement sensibles. 7 500 personnes (rapporté). Données exposées : numéros de téléphone, adresses postales, noms et prénoms, numéros de sécurité sociale, données personnelles….",
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/ird.png",
@@ -833,7 +815,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "À ce stade, l’entreprise confirme donc le  téléchargement non autorisé d’un volume important de factures couvrant potentiellement plus de quinze ans d’activité , sans exposition des données bancaires, des mots de passe ou des données des clients finaux des boutiques. Données exposées : adresses postales, identifiants, mots de passe, données bancaires.",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/wizishop-dropizi-mszyv230fxhdpsb7ppo",
@@ -864,7 +846,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Les éléments diffusés comprennent notamment des  e-mails professionnels, données CRM, factures et documents logistiques  issus de l’environnement BlgCloud utilisé par l’entreprise. 107 125 fichiers (documenté). Données exposées : adresses e-mail, identifiants, mots de passe, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/taveau-blgcloud-msyvca8i1xz1mwgxx1",
@@ -915,7 +897,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le  12 août 2026 , la DGCCRF avait confirmé qu’un accès frauduleux à un compte professionnel avait permis à un tiers de récupérer des fichiers contenant environ  3 millions de numéros de téléphone . Données exposées : numéros de téléphone, données bancaires, données personnelles.",
+  "summary": "Données concernées : numéros de téléphone, données bancaires et données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/kpark-mszck35nr7j8i75741n",
@@ -942,7 +924,7 @@
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Un échantillon de 1 092 lignes que nous avions pu analyser contenait notamment des  noms, prénoms, dates et lieux de naissance, adresses, identifiants fonciers et références précises de parcelles , avec les différents titulaires associés aux biens. 1,8 million de comptes (revendiqué). Données exposées : données cadastrales, données fiscales.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/dgfip-cadastre-succession-vacantes-3eme-fuite-pour-bercy/",
@@ -968,7 +950,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Le nombre de personnes concernées est relativement limité, avec  26 personnes identifiables , mais les informations présentes pour certains profils sont parmi les plus sensibles que l’on puisse retrouver dans une fuite. 26 personnes (documenté).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/aastrio-monday-une-ancienne-base-de-donnees-refait-surface-huit-ans-plus-tard/"
@@ -998,7 +980,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’utilisation d’adresses e-mail jetables aurait permis de créer ou d’obtenir des accès conduisant ensuite à la consultation de certaines données. Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms, mots de passe, données bancaires….",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/clenet-blgcloud-mszchi4ekakmbzdtap",
@@ -1024,7 +1006,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "À ce stade, l’entreprise confirme donc une compromission portant sur des  données de contact de clients web , mais pas sur les mots de passe, informations bancaires ou historiques d’achat. Données exposées : données personnelles, adresses e-mail, numéros de téléphone, mots de passe, données bancaires.",
+  "summary": "",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/gedimat-pirate-les-coordonnees-de-clients-web-exposees-apres-une-cyberattaque/"
@@ -1054,7 +1036,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "**Actis Location a confirmé avoir été victime d’un incident de sécurité ayant entraîné un accès non autorisé à certaines données personnelles de ses clients, ainsi qu’à des documents et courriels liés à leur relation contractuelle.**. Données exposées : IBAN / RIB, données personnelles, données bancaires, adresses e-mail, numéros de téléphone.",
+  "summary": "Données concernées : IBAN / RIB et données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/actis-location-mszcfq4rpfe01mp58ei",
@@ -1085,7 +1067,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La fuite concernerait  1 197 comptes utilisateurs  et comprendrait des données personnelles, des commandes, des conversations privées ainsi que différents éléments techniques liés aux comptes et aux paiements. 1 197 utilisateurs (rapporté). Données exposées : données personnelles.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/foodtrack-msxx35cw3msrmak9egh",
@@ -1111,7 +1093,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Les cybercriminels annoncent  7 bases de données, 2 440 tables et environ 238 Mo de données , avec des informations concernant  4 122 personnes . 4 122 personnes (revendiqué). Données exposées : IBAN / RIB, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/syndicat-departemental-energie-de-lallier-cyberattaque/"
@@ -1136,7 +1118,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "La mairie demande une vigilance particulière face aux messages concernant une  facture, un règlement, un changement de coordonnées bancaires ou une demande présentée comme urgente . Données exposées : adresses e-mail, données bancaires.",
+  "summary": "",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/cyberattaque-a-marennes-hiers-brouage-des-pirates-utilisent-les-emails-de-la-mairie/"
@@ -1167,7 +1149,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le premier ensemble, qui représenterait environ  236 millions de lignes brutes , contiendrait notamment des exports BE1D et SCHAAF de l’académie de Créteil, des données SCONET couvrant l’année scolaire 2025-2026 ainsi que des bases liées au  suivi de certains élèves en difficulté . 346 millions de personnes (documenté). Données exposées : adresses e-mail, mots de passe, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-msxi5ti3ty651shezo",
@@ -1199,7 +1181,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Les principaux risques concernent notamment les  faux devis, demandes de paiement frauduleuses, usurpations de fournisseurs ou tentatives de changement de coordonnées bancaires . 39 000 fichiers (documenté). Données exposées : adresses e-mail, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-lenormant-blgcloud-msw8bjc0qn0hi4pzoxa",
@@ -1225,7 +1207,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "FrenchBreaches a identifié une base contenant **435 903 enregistrements** associés à des membres ou adhérents de la fédération. 435 903 membres (documenté). Données exposées : noms et prénoms, dates de naissance.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-danse-msvjcwu35yln9jygazd"
@@ -1256,7 +1238,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Avec  3,7 Go et 49 168 fichiers , Motoculture Cravero rejoint la liste croissante des entreprises dont les données sont publiées après la compromission revendiquée de BlgCloud. 8 500 personnes (documenté). Données exposées : adresses e-mail, identifiants, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cravero-motoculture-blgcloud-msv33dq9e4pzz9hsrts",
@@ -1287,7 +1269,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "D’autres lignes concernent des opérations financières avec notamment un  identifiant de client, un magasin, une devise, un marché, des dates de création et de mise à jour ainsi qu’une référence de sinistre . 13 870 comptes (revendiqué). Données exposées : données personnelles, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/evy-msvpts753it09fb7vvf",
@@ -1323,7 +1305,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Des données personnelles ont été copiées. Données exposées : adresses e-mail, numéros de téléphone, noms et prénoms, dates de naissance, données personnelles….",
+  "summary": "SamBoat a confirmé une fuite de données personnelles après un accès non autorisé à ses systèmes.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/samboat.png",
@@ -1350,7 +1332,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Une fuite de données liée à la Fédération Française de Motocyclisme refait surface : 472 760 enregistrements. 472 760 enregistrements (documenté).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-motocyclisme-msvj2szkiclvx2gaoc"
@@ -1380,7 +1362,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "L’entreprise française apparaît depuis le  15 août 2026  sur le site de fuite des cybercriminels, qui affirment avoir récupéré  18 Go de données représentant 12 578 fichiers . 12 578 fichiers (revendiqué).",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=40c19069-fd91-4f43-846b-71806c93607a",
@@ -1411,7 +1393,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La revendication d’une nouvelle fuite de données visant  France Casse , publiée le 15 août 2026, soulève désormais de  sérieux doutes . 500 clients (documenté).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/france-casse-msv87fj5v652mg9x2mn",
@@ -1437,7 +1419,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Fuite de données revendiquée chez EVA Charleroi :  2 558 lignes d'enregistrements concernés. 2 558 lignes (revendiqué).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-charleroi-mswbb37w86m9htgoij3"
@@ -1463,7 +1445,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Achat Or Et Argent : les données de plus de 50 000 clients... 50 000 clients (documenté).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/achat-or-et-argent-mqguqijb2kwf64ad0w7"
@@ -1494,7 +1476,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le Bon Matériel victime d’une cyberattaque : 13,8 Go de données revendiqués (avant ) — évite d'attendre que le header HTML soit lu + grosse amélioration de la vitesse d'apparition visuelle. 48 290 fichiers (revendiqué). Données exposées : mots de passe, données bancaires, adresses e-mail.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-bon-mat-riel-blgcloud-mstkb430kht3b29drb",
@@ -1521,7 +1503,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Cyberattaque revendiquée contre EVA Nantes Sud : les données de plus de 20 000 personnes potentiellement compromises. 20 000 personnes (documenté).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-nantes-sud-mstk3dvhzt4kjp61n2"
@@ -1546,7 +1528,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Fuite de données revendiquée concernant la Fédération Française de Karaté : 2,8 millions d’enregistrements annoncés. 2,8 millions d’enregistrements (revendiqué).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-karat-msu63ykvxde9hwoosba"
@@ -1576,7 +1558,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Quelques heures après la confirmation officielle d’un  premier accès illégitime ayant permis l’extraction de données fiscales , ZeroBytes affirme avoir compromis un  deuxième service de l’administration  contenant cette fois des données cadastrales. 2 millions de personnes (revendiqué). Données exposées : données cadastrales, données fiscales.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-spdc-mssm0kklrsqu9rd3vd",
@@ -1670,7 +1652,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Chupin SARL : 16 Go et plus de 70 000 fichiers publiés après le piratage de son compte BlgCloud. 70 974 fichiers (documenté). Données exposées : adresses e-mail.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/chupin-blgcloud-mssm9jvahrr2e2nsh7u",
@@ -1697,7 +1679,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "L’auteur situe la compromission au  13 août 2026  et affirme que son fichier ne serait pas identique à la précédente fuite nationale : selon lui, seulement  275 utilisateurs seraient communs  aux deux ensembles de données. 20 274 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, dates de naissance, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/eva-gg-nantes-cyberattaque/"
@@ -1727,7 +1709,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Les cybercriminels affichent une archive contenant  10 382 fichiers pour environ 2,5 Go de données . 10 382 fichiers (documenté).",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://lthicpjqc7gkn5eq3epxndc2uig3yngvcbdya4u3m3byjod5km4yuwqd.onion/#post/blog-4",
@@ -1753,6 +1735,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/publica-mspyx0388ayctyrqby7"
@@ -1808,7 +1791,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Des informations personnelles de clients ont été consultées. Données exposées : adresses e-mail, adresses postales, identifiants, mots de passe, données bancaires….",
+  "summary": "Données concernées : adresses e-mail, adresses postales et identifiants.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/lasante-net-mspekqmo3e0n0l1rsbe",
@@ -1840,7 +1823,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La combinaison des  e-mails professionnels, données CRM, relations commerciales et documents de travail  peut être particulièrement utile pour mener des attaques ciblées. 9 897 fichiers (documenté). Données exposées : adresses e-mail, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/leroch-distribution-blgcloud-msp7xthowhtnkmx2fk",
@@ -1872,7 +1855,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Loutz : 3,4 Go de données, e-mails et documents internes diffusés après une cyberattaque. 9 900 fichiers (documenté). Données exposées : adresses e-mail, noms et prénoms, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/loutz-blgcloud-msp7qzkjgh0uwodlovb",
@@ -1898,7 +1881,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Fuite de données revendiquée sur impots.gouv.fr : 678 438 lignes et des données fiscales sensibles potentiellement compromises. 678 000 personnes (documenté). Données exposées : données fiscales.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-dgfip-msq5rgy4cql9o0l7cus"
@@ -1953,7 +1936,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Leur exposition reste néanmoins problématique : elles peuvent être soumises à des tentatives de cassage hors ligne, en particulier lorsque les utilisateurs ont choisi des mots de passe faibles. Données exposées : identifiants, mots de passe, adresses e-mail.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/heypulse-msogur4agznhs274b3r",
@@ -1985,7 +1968,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Ce chiffre correspond au nombre d’entrées revendiquées dans l’annuaire et ne peut pas nécessairement être assimilé à 30 594 personnes uniques sans analyse des éventuels doublons ou comptes techniques. 30 594 personnes (documenté). Données exposées : adresses e-mail, noms et prénoms, données personnelles.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/agence-pour-l-enseignement-fran-ais-l-tranger-aefe-msp6elbt3d5a63mumeq",
@@ -2011,7 +1994,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "À ce stade, aucune information publiée ne permet toutefois d’affirmer que la base complète des adhérents, des mots de passe ou des données bancaires ont été dérobés. Données exposées : mots de passe, données bancaires.",
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/sun-form-des-pirates-accedent-au-logiciel-de-gestion-et-reclament-de-largent-aux-adherents/"
@@ -2042,7 +2025,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Cette distinction est importante : aucune donnée de santé, diagnostic, dossier patient ou numéro de Sécurité sociale n’apparaît dans les éléments actuellement publiés. 80 000 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, adresses postales, noms et prénoms, données de santé….",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sant-publique-france-msoz0zsj3vgi774sa0i",
@@ -2106,7 +2089,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Des personnes non autorisées ont accédé à certaines données personnelles. Données exposées : adresses e-mail, données personnelles, dates de naissance, données bancaires, données de santé.",
+  "summary": "Données concernées : adresses e-mail et données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ville-de-gagny-msmim65d87im5z51ho4",
@@ -2143,7 +2126,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le vecteur d’attaque est désormais considéré comme contenu , mais le service Metabase interne reste hors ligne par précaution. 90 000 personnes (confirmé). Données exposées : mots de passe, données bancaires, identifiants, Nom, prénom, Login….",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/scalingo.png",
@@ -2180,7 +2163,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Des données personnelles de clients européens ont été compromises. Données exposées : mots de passe, numéros de téléphone, données bancaires, Nom, prénom, Adresse postale….",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/steam.png",
@@ -2262,7 +2245,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le cybercriminel ZeroBytes affirme avoir obtenu l’accès à un  outil interne de la fédération  grâce à des identifiants compromis, avant de contourner les restrictions qui limitaient normalement la consultation aux licenciés d’un seul club. 1,36 million de personnes (documenté). Données exposées : adresses e-mail, noms et prénoms, dates de naissance, pièces d'identité, passeports….",
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-handball-msn9vcfexvsnlnk1ha",
@@ -2293,7 +2276,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Les valeurs publiées étant opaques, rien ne permet toutefois de les présenter comme des mots de passe directement lisibles en clair. 9 146 fichiers (documenté). Données exposées : adresses e-mail, mots de passe.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-clou-blgcloud-msnd05otu1hyrbmzqy",
@@ -2324,7 +2307,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Il ne fait notamment état, dans cette communication, d’aucune exposition de coordonnées bancaires, de mots de passe ou de données de santé. Données exposées : adresses e-mail, mots de passe, données bancaires, données de santé.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/i-cad-msn3ybtatwxhj8nio8n",
@@ -2356,7 +2339,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Données CRM, e-mails et documents publiés. Données exposées : adresses e-mail, adresses postales, noms et prénoms, identifiants.",
+  "summary": "Duvignau 40 a subi une compromission de données, incluant des informations CRM, e-mails et documents.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/duvignau-40-blgcloud-msm86diuc1krxvgldsu",
@@ -2387,7 +2370,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "55 949 enregistrements récupérés avant l’interruption. 21 921 personnes (revendiqué). Données exposées : adresses e-mail, adresses postales, identifiants.",
+  "summary": "Impact documenté : 55 949 enregistrements récupérés avant l’interruption.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/bureau-vall-e-msm7y0p26cnf5r2ewtu",
@@ -2418,7 +2401,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "2 481 lignes de données exposées. 2 478 personnes (documenté). Données exposées : adresses e-mail, identifiants, mots de passe.",
+  "summary": "Des données de près de 2 500 comptes associées au Le Mans FC publiées sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-mans-fc-msm10s9d7aa7x3v9wvi",
@@ -2475,7 +2458,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Les données de 80 031 personnes ont été compromises. 80 000 personnes (documenté). Données exposées : numéros de téléphone.",
+  "summary": "Les données de 80 031 personnes associées à la CLCV seraient compromises.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/clcv-consommation-logement-et-cadre-de-vie-mskk2jbes84h2ad5fra",
@@ -2506,7 +2489,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Fondée en 1986 , la Mutuelle Générale de Prévoyance est spécialisée dans la prévoyance , c’est-à-dire la protection financière des personnes notamment en cas d’arrêt de travail, d’invalidité ou de décès. Données exposées : données bancaires, IBAN / RIB, données de santé.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mutuelle-g-n-rale-de-pr-voyance-msjkkufska3mdj2z8xb",
@@ -2537,7 +2520,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Selon l’entreprise, les données récupérées sur ces instances concernent principalement les noms, prénoms, adresses e-mail et numéros de téléphone professionnels, ainsi que l’historique des messages commerciaux envoyés depuis la plateforme. Données exposées : adresses e-mail, identifiants, mots de passe, numéros de téléphone, noms et prénoms….",
+  "summary": "Données concernées : adresses e-mail, identifiants et mots de passe.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/blgcloud-mskjo8rlb7gngvnvb4k",
@@ -2569,7 +2552,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le  8 août 2026 , les cybercriminels ont publié les données attribuées à  Agri62 / Roussel Agri , présenté comme le  premier leak issu de l’accès aux instances BlgCloud . 23 816 enregistrements (documenté). Données exposées : adresses e-mail, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/roussel-agri-62-blgcloud-mskjsgirjuladgvz0sj",
@@ -2600,7 +2583,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’acteur Cybernox affirme avoir récupéré les données de  101 comptes utilisateurs d’AFPABox  et diffuse surtout ce qu’il présente comme des  identifiants permettant d’accéder à l’interface d’administration du service . 101 comptes (revendiqué). Données exposées : identifiants, mots de passe, données bancaires, pièces d'identité.",
+  "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/afpa-msj805wnmw8zz6kstul",
@@ -2631,7 +2614,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Reflet 2000 : près de 23 Go de données RH, paie et contrats diffusés après une cyberattaque. Données exposées : données RH.",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a016f41ca1953ff139063dbb3c3871fbf732c574f69562ccc6db847eb3f24e2/",
@@ -2658,7 +2641,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Il est important de parler d’enregistrements et non automatiquement de 204 854 victimes uniques : aucun élément ne permet encore de vérifier l’absence de doublons ou de déterminer si plusieurs entrées peuvent correspondre à une même personne. 204 854 victimes (documenté). Données exposées : adresses e-mail, numéros de téléphone, adresses postales, mots de passe, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/petit-gramme-204-854-fiches-clients-en-fuite-apres-une-cyberattaque/"
@@ -2683,7 +2666,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Cyberattaque revendiquée contre Le Lien Autonomie : près de 10 000 personnes et des milliers de documents sensibles potentiellement concernés. 10 000 personnes (documenté).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-lien-autonomie-msj4pgh7huoc9zlfspc"
@@ -2709,6 +2692,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ressourc-brie-msiy6s8ktdtfnh45mbc"
@@ -2738,7 +2722,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La présence d’ allergies  est particulièrement notable : lorsqu’elles sont associées à une personne identifiable, ces informations peuvent constituer des  données de santé , catégorie particulièrement sensible au regard du RGPD. 2 100 personnes (documenté). Données exposées : données de santé, passeports, numéros de sécurité sociale, pièces d'identité.",
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mvision-msgwx7wpe04lm2vdg5t",
@@ -2764,6 +2748,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde"
@@ -2789,6 +2774,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/association-de-la-caieta-msgpkbftje9wtx6u62"
@@ -2819,7 +2805,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "> Selon les informations de FrenchBreaches, la fuite de données visant l’Armurerie Lavaux concernerait plus de 91 000 clients français et 176 000 commandes : identités, téléphones, adresses et historiques de commandes seraient exposés. 91 000 clients (documenté). Données exposées : numéros de téléphone, adresses postales, adresses e-mail, mots de passe.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/armurerie-lavaux-mseypxv2fdmjdlqaj78",
@@ -2850,7 +2836,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’incident reste néanmoins significatif : il montre comment une cyberattaque contre un prestataire peut indirectement exposer des données liées à une grande institution hospitalière,  sans que ses propres serveurs ni les données médicales de ses patients aient été touchés . Données exposées : données de santé.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/hospices-civils-de-lyon-mshd1fdm90trgfi4n8v",
@@ -2887,7 +2873,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Il ne faut toutefois pas traduire les « 3 millions » revendiqués par 3 millions de personnes : plusieurs numéros peuvent être associés à un même identifiant et un consommateur peut inscrire plusieurs lignes sur Bloctel. 3 millions de victimes (revendiqué). Données exposées : numéros de téléphone, identifiants, adresses e-mail, adresses postales, mots de passe….",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/bloctel.png",
@@ -2919,7 +2905,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Aucune donnée de santé, donnée médicale de patient ou information issue des dispositifs de diagnostic n’est annoncée comme compromise dans le communiqué publié le 6 août. Données exposées : données de santé.",
+  "summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/biosynex-msi1a59xyyo8dd0uay9",
@@ -2946,7 +2932,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Une publication apparue sur un forum cybercriminel revendique le piratage d'**Intermarché Drive** et affirme mettre en vente une base de données contenant **1 393 807 enregistrements**. 1,39 million de clients (revendiqué).",
+  "summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msf7vvhryw7nui45uho"
@@ -2971,7 +2957,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "En revanche, l’accès RDP, l’accès à plusieurs serveurs internes et les  1 393 807 lignes revendiquées par ZeroBytes  correspondent à la version des attaquants et n’ont pas été publiquement confirmés par l’enseigne. 287 605 personnes (rapporté). Données exposées : numéros de téléphone, noms et prénoms, dates de naissance, adresses e-mail, mots de passe….",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/intermarche-victime-dune-cyberattaque-les-donnees-de-clients-drive-exposees/"
@@ -3006,7 +2992,7 @@
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Une partie de son système d'information a été affectée. Données exposées : pièces d'identité, passeports.",
+  "summary": "Données concernées : pièces d'identité et passeports.",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=84f95786-5afa-42c0-8497-df4f2f88a889",
@@ -3034,7 +3020,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "> Un cybercriminel affirme diffuser une base de données attribuée à **[Intermarché Drive](https://frenchbreaches.com/alertes/intermarch-drive-msf7vvhryw7nui45uho)** contenant **1 393 807 enregistrements**, soit un volume largement supérieur aux **287 000 clients** précédemment annoncés par l'enseigne. 287 000 clients (revendiqué).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msd3lq1z008txe7ifb90x"
@@ -3064,7 +3050,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La structure des données revendiquées semble toutefois dépasser un simple annuaire interne de chercheurs : l’échantillon visible référence notamment des médecins hospitaliers, des établissements de santé, des équipes médicales et des identifiants professionnels nationaux. 189 997 enregistrements (confirmé). Données exposées : identifiants, mots de passe, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/institut-national-de-la-sant-et-de-la-recherche-m-dicale-inserm-msd3dlb2vc2sd7sibue",
@@ -3101,7 +3087,7 @@
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Le 8 août 2026, l’organisation apparaît sur le site de fuite des cybercriminels, accompagnée de  huit images servant d’échantillon . Données exposées : pièces d'identité, passeports.",
+  "summary": "Données concernées : pièces d'identité et passeports.",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=beeeda5d-f120-4c05-8e03-78c2d8785c59",
@@ -3129,6 +3115,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/voxaly-msde9mck0bpdloz5u6j7"
@@ -3158,7 +3145,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite massive de données personnelles, notamment photos, vidéos, adresses IP et conversations privées. 14 260 comptes (documenté). Données exposées : adresses e-mail, adresses IP, dates de naissance, identifiants, mots de passe.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/chat-coco-mscfkkp86lht0x39su5",
@@ -3194,7 +3181,7 @@
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "À ce stade, l’échantillon de  5 109 fichiers  et les  693 e-mails revendiqués  montrent une compromission suffisamment importante pour exposer des informations commerciales et comptables de Bija Industrie. 21 millions d'enregistrements (revendiqué). Données exposées : adresses e-mail.",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion/company/banadah/",
@@ -3227,7 +3214,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Après la découverte de l’intrusion, Terveo a mis son site hors ligne puis l’a entièrement reconstruit sur un serveur neuf . Données exposées : adresses e-mail, numéros de téléphone, adresses postales, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/terveo-msb0jbxnwduz5ngrumi",
@@ -3258,7 +3245,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "La menace est alors double : perturbation ou chiffrement éventuel du système informatique d’un côté, publication des fichiers volés de l’autre. Données exposées : identifiants.",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/6a32127c5ba7d063fd8b100d461d7dcbadda8e7f2f6511bcb2522552d419d6e2/",
@@ -3285,6 +3272,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ent-seine-et-marne-msbmzcv3k4jirk0p3"
@@ -3310,7 +3298,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Cyberattaque revendiquée contre CY Cergy Paris Université : 1 Go de données diffusé sur un forum cybercriminel.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cy-cergy-paris-universit-msanv9saq6mlky1jlg"
@@ -3340,7 +3328,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Si l’ensemble du dépôt revendiqué est authentique, l’incident figure parmi les fuites RH les plus sensibles en raison de la concentration de documents d’identité, de données bancaires, de numéros de Sécurité sociale et d’informations professionnelles détaillées. 3 500 clients (documenté). Données exposées : IBAN / RIB, pièces d'identité, données bancaires, identifiants, données RH.",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-t2mc-msatleltiim1uf4u47g",
@@ -3366,7 +3354,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Même si l’auteur évoque des identifiants uniques, cela ne suffit pas à confirmer qu’autant de personnes distinctes sont concernées : un même individu peut potentiellement apparaître dans plusieurs clubs, contrats ou historiques. 5 273 884 enregistrements (revendiqué). Données exposées : IBAN / RIB, cartes de paiement, identifiants, données bancaires, mots de passe.",
+  "summary": "",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/xplor-resamania-527-millions-de-dossiers-dadherents-de-salles-de-sport-revendiques/"
@@ -3392,7 +3380,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "L'intégralité de la base de données a été exfiltrée.",
+  "summary": "Une base de données WordPress d'Emploi Docteur Imago a été exfiltrée et diffusée sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/emploi-docteur-imago-msalwlhrpzvx55d1kuf"
@@ -3428,7 +3416,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Un mot de passe volé, une campagne de phishing, la réutilisation d’identifiants ou le détournement d’une session peuvent conduire à ce type de compromission. Données exposées : données RH, identifiants, mots de passe, Nom, prénom, Adresse électronique….",
+  "summary": "Données concernées : Nom, prénom, Adresse électronique et Numéro de téléphone.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/cci-nice.png",
@@ -3461,7 +3449,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le ministère précise que l’environnement compromis ne contenait  aucun mot de passe, aucune coordonnée bancaire et aucune information relative aux élèves . 243 000 agents (documenté). Données exposées : mots de passe, données bancaires, identifiants, Nom, prénom, Statut, fonction….",
+  "summary": "",
   "threat": "Malware",
   "urls": [
    "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-ms98aai3bqkzfv424c",
@@ -3489,6 +3477,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/avocats--trangers-ms94mn1ikiw90wta54"
@@ -3519,7 +3508,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’Amicale Police et Patrimoine fait l’objet d’une revendication publiée le 30 juillet 2026. Données exposées : numéros de téléphone, adresses postales, noms et prénoms, dates de naissance.",
+  "summary": "Données concernées : numéros de téléphone, adresses postales et noms et prénoms.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/amicale-police-et-patrimoine-ms7xe2xpgow9p71fxcj",
@@ -3575,7 +3564,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Les mots de passe publiés sont protégés par des  empreintes de hachage WordPress  et ne sont pas enregistrés en clair. 621 019 clients (documenté). Données exposées : mots de passe.",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Ransomware",
   "urls": [
    "https://frenchbreaches.com/alertes/engie-green-ms793t79jtz46e143go",
@@ -3606,7 +3595,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Selon les publications diffusées par l'entreprise sur Facebook, les informations concernées comprennent notamment **les noms, prénoms, adresses postales, numéros de téléphone, adresses e-mail ainsi que l'historique des commandes**. Données exposées : adresses e-mail, numéros de téléphone, adresses postales, noms et prénoms, mots de passe….",
+  "summary": "Vecteur d’entrée documenté : des identifiants compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/5doigts2pieds-ms7nsxtv858u04k6jvq",
@@ -3637,7 +3626,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le dépôt comprend également  1 945 commandes ,  3 749 lignes de facturation ,  476 expéditions à domicile  et un catalogue de  7 201 références . 5 974 lignes (documenté). Données exposées : adresses e-mail, numéros de téléphone, IBAN / RIB, cartes de paiement, adresses postales.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/lire-demain-ms5pejs6d6m5q6vnf18",
@@ -3668,7 +3657,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Plus largement, Orisha Insurance indique que ses logiciels sont utilisés par environ  5 000 professionnels  et assurent la gestion de  15 millions d’assurés  et de  25 millions de dossiers de sinistres . 25 millions de dossiers (rapporté). Données exposées : données personnelles.",
+  "summary": "Vecteur d’entrée documenté : un accès distant compromis.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/orisha-insurance-cim-ms5ra3ys2j9emgrkcgc",
@@ -3699,7 +3688,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le dépôt concernerait environ  270 personnes , principalement des professionnels ayant contacté ERDIL entre janvier 2022 et juin 2026, ainsi que plusieurs comptes d’administration du site. 270 personnes (documenté). Données exposées : adresses e-mail, identifiants, mots de passe.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/erdil-ms4edb2tfxahd3apfc",
@@ -3731,7 +3720,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le dépôt de près de  9,4 Mo  contient 110 tables WordPress et WooCommerce.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/kaffir-ms4frxcchbuu7iovqa",
@@ -3757,7 +3746,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "# Cyberattaque revendiquée contre Nantes Université : deux sous-domaines compromis et 1 835 comptes utilisateurs annoncés piratés. 1 835 comptes (revendiqué).",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/universit-de-nantes-ms4klkg55ewuy1t1d2l"
@@ -3782,7 +3771,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une vulnérabilité dans la boutique, une extension obsolète, des identifiants administrateurs compromis ou une sauvegarde SQL laissée accessible pourraient permettre l’extraction des tables clients et adresses. Données exposées : mots de passe, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/supreme-body-les-comptes-clients-diffuses-en-ligne-apres-une-cyberattaque/"
@@ -3807,6 +3796,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mairie-d-injoux-g-nissiat-ms4wogn82f107pe49b6"
@@ -3831,7 +3821,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Le hacker ChimeraZ revendique, depuis le 27 juillet 2026, la diffusion d’une base de données attribuée à Allo.Solar…. 101 349 personnes (documenté). Données exposées : cartes de paiement.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/allo-solar-101-349-clients-et-208-694-commandes-exposes-apres-une-cyberattaque/"
@@ -3861,7 +3851,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Cette confirmation intervient après la mise en vente, le  28 juillet 2026 , d’un fichier attribué à Planity et présenté comme contenant plus de  1,08 million d’enregistrements . 465 828 personnes (documenté). Données exposées : adresses e-mail, numéros de téléphone, mots de passe, données bancaires.",
+  "summary": "Vecteur d’entrée documenté : l’exploitation d’une vulnérabilité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/planity-ms4gnp7s4p4ptre2tub",
@@ -3887,7 +3877,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "La compromission de la page d’accueil et l’exposition de comptes administrateurs sont visibles, mais l’exfiltration des  10 Go  et des données étudiantes reste une revendication non confirmée. Données exposées : mots de passe, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/location-etudiant-fr-pirate-10-go-de-donnees-en-fuite/"
@@ -3937,7 +3927,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une faille dans une application web, des identifiants compromis, une interface d’administration exposée ou un serveur de base de données insuffisamment protégé pourraient permettre l’extraction de plusieurs bases depuis un même environnement. 1119 personnes (revendiqué). Données exposées : identifiants, données personnelles, adresses e-mail.",
+  "summary": "",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/batipro-33-pirate-1119-personnes-et-cinq-bases-sql-internes-revendiquees/"
@@ -3967,7 +3957,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Une faille dans l’application, des identifiants administrateurs compromis, une API insuffisamment protégée ou une base exposée pourraient permettre ce type d’extraction. 10 263 personnes (rapporté). Données exposées : adresses e-mail, numéros de téléphone, dates de naissance, identifiants, données personnelles….",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/resaclick-ms4chtqzaljdepplkxm",
@@ -3993,7 +3983,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Verspieren rappelle qu’il ne demandera jamais la transmission de  données bancaires ou de mots de passe par courrier, e-mail ou téléphone . Données exposées : adresses e-mail, numéros de téléphone, mots de passe, données bancaires.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/verspieren-victime-dune-cyberattaque-les-donnees-de-sinistres-euromaster-potentiellement-exposees/"
@@ -4018,7 +4008,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "La fuite devient cependant plus sensible lorsqu’elle associe ces informations à des  numéros de téléphone directs  qui ne figurent pas nécessairement dans les annuaires officiels. 1 100 personnes (documenté). Données exposées : numéros de téléphone, noms et prénoms, adresses e-mail, adresses postales, données bancaires.",
+  "summary": "",
   "threat": "Intrusion",
   "urls": [
    "https://www.cyberattaque.org/cartogip-1-200-contacts-delus-et-dagents-publics-exposes-avec-leurs-numeros-directs/"
@@ -4043,7 +4033,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Cette publication intervient quelques jours après une autre revendication concernant  BANATIC , un service hébergé sur le domaine du ministère de l’Intérieur, pour lequel plus de 91 000 enregistrements avaient été annoncés. 111 528 agents (revendiqué). Données exposées : adresses e-mail, noms et prénoms, identifiants.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/ministere-de-linterieur-111-528-agents-revendiques-dans-une-fuite-massive-de-donnees/"
@@ -4068,7 +4058,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Le volume exact reste à confirmer : l’auteur évoque environ 600 personnes, tout en précisant ne pas avoir analysé l’intégralité des fichiers. 600 personnes (documenté). Données exposées : données bancaires, pièces d'identité.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/alpissimmo-pres-de-600-projets-de-vacances-exposes-avec-coordonnees-et-dates-de-sejour/"
@@ -4093,7 +4083,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "La compromission pourrait provenir d’un compte interne piraté, d’identifiants récupérés par hameçonnage, d’une vulnérabilité dans une application ou d’un service exposé insuffisamment protégé. Données exposées : mots de passe, données bancaires, IBAN / RIB, données de santé, pièces d'identité….",
+  "summary": "Données concernées : mots de passe, données bancaires et IBAN / RIB.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/skolae-victime-dune-intrusion-dans-ses-systemes-informatiques/"
@@ -4118,7 +4108,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une vulnérabilité dans l’application, des identifiants administrateurs compromis, une base accessible depuis Internet ou une mauvaise configuration du serveur pourraient permettre ce type d’extraction. 60 288 comptes (revendiqué). Données exposées : adresses e-mail, identifiants, mots de passe.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/productly-app-57-403-comptes-exposes-apres-une-cyberattaque/"

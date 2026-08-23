@@ -67,18 +67,25 @@ def test_types_de_donnees_deterministes_sans_api(monkeypatch, tmp_path):
     assert sfa.runtime_stats()["calls_attempted"] == 0
 
 
-def test_preflight_deterministe_evite_appel_sur_contenu_pauvre(monkeypatch, tmp_path):
+def test_headline_est_demandee_meme_sur_contenu_court(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     called = []
-    monkeypatch.setattr(sfa, "_post_openai", lambda *_: called.append(True))
+    monkeypatch.setattr(sfa, "_post_openai", lambda *_: called.append(True) or _payload({"summary": {"value": "LockBit revendique une attaque contre Exemple SA.", "confidence": .9, "evidence": "attaque a été revendiquée par LockBit"}}))
     entry = RawEntry(
         title="Exemple SA",
         content="L'attaque a été revendiquée par LockBit.",
     )
-    assert sfa.fields_needed_for_ai(_item(), entry) == set()
-    assert sfa.enrich(_item(), entry) is None
-    assert not called
-    assert sfa.runtime_stats()["items_skipped_no_missing_fields"] == 1
+    assert sfa.fields_needed_for_ai(_item(), entry) == {"summary"}
+    assert sfa.enrich(_item(), entry)["summary"]["value"].startswith("LockBit")
+    assert called
+
+
+def test_headline_technique_ou_generique_est_rejetee():
+    context = "Géotec confirme une exfiltration de données."
+    generic = {"value": "L'incident a entraîné une exfiltration de données.", "confidence": .9, "evidence": context}
+    technical = {"value": "Géotec — grosse amélioration de la vitesse d'apparition visuelle.", "confidence": .9, "evidence": context}
+    assert sfa._normalize_summary(generic, context) is None
+    assert sfa._normalize_summary(technical, context) is None
 
 
 def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):

@@ -82,6 +82,16 @@ def test_select_candidates_respects_explicit_item_ids():
     assert metrics["requested_not_eligible"] == ["missing"]
 
 
+def test_explicit_item_id_requalifies_an_existing_summary():
+    items = [_item("a")]
+    selected, _ = backfill.select_candidates(
+        items,
+        [{"Item_ID": "a", "Source_ID": "CYBERATTAQUE_ORG", "Summary": "Ancienne synthèse"}],
+        item_ids={"a"},
+    )
+    assert [item.Item_ID for item in selected] == ["a"]
+
+
 def test_hydrate_cyberattaque_uses_native_wordpress_id():
     item = _item(
         "wp",

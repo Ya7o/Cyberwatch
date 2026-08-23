@@ -57,7 +57,7 @@ def select_candidates(
         if requested and item.Item_ID not in requested:
             continue
         fact = facts_by_id.get(item.Item_ID)
-        if fact is not None and str(fact.get("Summary") or "").strip():
+        if not requested and fact is not None and str(fact.get("Summary") or "").strip():
             continue
         if fact is None:
             missing_fact += 1

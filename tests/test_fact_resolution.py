@@ -115,7 +115,7 @@ def test_beauty_success_conserve_les_trois_concepts_distincts():
     assert {(r["unit"], r["semantic"]) for r in resolved["affected"]} == {
         ("records", "total"), ("records", "unique"), ("clients", "unspecified")
     }
-    assert resolved["display_summary"].startswith("5 160 000 clients")
+    assert resolved["display_summary"] == ""
 
 
 def test_protection_civile_fusionne_volume_et_types_de_donnees():
@@ -146,8 +146,7 @@ def test_statut_revendique_est_conserve_et_resume_deterministe():
         ]}, data_types=["emails", "téléphones"]),
     ])
     assert resolved["affected"][0]["status"] == "claimed"
-    assert "revendiqué" in resolved["display_summary"]
-    assert "Données exposées" in resolved["display_summary"]
+    assert resolved["display_summary"] == ""
 
 
 def test_legacy_sans_unite_est_ignore():
@@ -164,10 +163,7 @@ def test_dinum_impact_narratif_prime_sur_metrique_seule():
             impact="Les services numériques de la DINUM ont été rendus indisponibles pendant plusieurs jours.",
         ),
     ], fallback_summary="31 544 enregistrements (documenté).")
-    assert resolved["display_summary"].startswith(
-        "Les services numériques de la DINUM ont été rendus indisponibles"
-    )
-    assert "31 544" in resolved["display_summary"]
+    assert resolved["display_summary"] == ""
 
 
 def test_made_in_bebe_fallback_narratif_prime_sur_metrique_seule_multi_source():
@@ -191,8 +187,7 @@ def test_claim_documente_prime_sur_metrique_et_fallback():
         fact("CYBERATTAQUE_ORG", affected_count=960_106, affected_unit="people", claim_status="claimed",
              rich_facts={"claims": [{"type": "statement", "status": "reported", "value": "base client", "evidence": claim}]}),
     ], fallback_summary="Plus de 960 000 personnes seraient concernées par une fuite de données.")
-    assert resolved["display_summary"].startswith(claim)
-    assert "960 106 personnes" in resolved["display_summary"]
+    assert resolved["display_summary"] == "Plus de 960 000 personnes seraient concernées par une fuite de données."
 
 
 def test_metrique_seule_reste_utilisee_sans_fallback_substantiel():
@@ -201,7 +196,19 @@ def test_metrique_seule_reste_utilisee_sans_fallback_substantiel():
     resolved = fr.resolve_incident_facts([
         fact("CYBERATTAQUE_ORG", affected_count=31_544, affected_unit="records", claim_status="unknown"),
     ], fallback_summary="")
-    assert resolved["display_summary"] == "31 544 enregistrements (documenté)."
+    assert resolved["display_summary"] == ""
+
+
+def test_synthese_technique_ou_generique_est_rejetee():
+    assert not fr.is_publishable_summary("Données exposées : e-mails, IBAN.")
+    assert not fr.is_publishable_summary("L'incident a entraîné une exfiltration de données.")
+    assert not fr.is_publishable_summary("Groupe Géotec a confirmé une exfiltration de données suite à un incident de cybersécurité.")
+    assert not fr.is_publishable_summary("43 Go — grosse amélioration de la vitesse d’apparition visuelle.")
+
+
+def test_synthese_editoriale_une_phrase_est_conservee():
+    headline = "Réserver aurait exposé 19 495 enregistrements après une mauvaise configuration d’API."
+    assert fr.resolve_incident_facts([], fallback_summary=headline)["display_summary"] == headline
 
 
 def test_source_inconnue_passe_apres_sources_connues():

@@ -50,6 +50,11 @@ class TestComponents:
         ]
         assert len(build_incidents(items)) == 2
 
+    def test_solimut_alias_fusionne_les_deux_publications(self, make_item):
+        left = make_item(source="CYBERATTAQUE_ORG", org="Solimut Mutuelle", published="2026-08-23", url="https://a")
+        right = make_item(source="FRENCHBREACHES", org="Solimut Mutuelle de France", published="2026-08-23", url="https://b")
+        assert len(build_incidents([left, right])) == 1
+
     def test_item_sans_organisation_ecarte(self, make_item):
         """Pas d'organisation nommée, pas d'incident."""
         items = [make_item(org="", url="https://a/1")]

@@ -43,8 +43,10 @@ def build() -> tuple[int, int]:
     resolved = fact_resolution.resolve_all(raw_facts, fallback_summaries)
     for row in payload:
         detail = resolved.get(str(row.get("id") or ""))
-        if detail and detail.get("display_summary"):
-            row["summary"] = detail["display_summary"]
+        # Le résolveur est l'unique contrat de carte : une abstention qualité
+        # doit retirer une ancienne fiche structurée, jamais la laisser fuir.
+        if detail is not None:
+            row["summary"] = str(detail.get("display_summary") or "")
 
     state = _legacy.status_payload()
 
