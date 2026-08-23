@@ -1,7 +1,7 @@
 """Phase canonique, offline et idempotente de qualification d'un snapshot."""
 from __future__ import annotations
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from . import (
     config,
     context_sector,
@@ -42,7 +42,7 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_PHISHING,
     config.THREAT_THIRD_PARTY,
 })
-_SECTOR_FALLBACK_AUTO_APPLY = False
+_SECTOR_FALLBACK_AUTO_APPLY = True
 PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 
 
@@ -57,6 +57,8 @@ class QualificationReport:
     incident_id_registry: list[dict[str, str]]
     items_hash: str
     incidents_hash: str
+    registry_rows: list[dict[str, str]] = field(default_factory=list)
+    queue_rows: list[dict[str, str]] = field(default_factory=list)
 
 
 def stabilize_threats(items):
@@ -322,6 +324,12 @@ def qualify(items):
     incidents, incident_id_registry = build_incidents_with_registry(
         ordered, store.load_incident_id_registry()
     )
+    queue_rows = sector_registry.build_enrichment_queue(
+        ordered,
+        registry_rows,
+        source_fact_rows=source_facts,
+        challenger_provenance=previous_provenance,
+    )
     return QualificationReport(
         ordered,
         incidents,
@@ -332,4 +340,6 @@ def qualify(items):
         incident_id_registry,
         identity.items_hash(ordered),
         identity.incidents_hash(incidents),
+        registry_rows,
+        queue_rows,
     )

@@ -22,10 +22,14 @@ def build() -> tuple[int, int]:
     incidents = store.load_incidents()
     items = store.load_items()
     raw_facts = _legacy._source_facts_by_incident(items, store.load_source_facts())
+    tentative_sectors = _legacy._qualification_provenance_by_incident(
+        items, store.load_qualification_provenance()
+    )
     payload = _legacy.incidents_payload(
         incidents,
         _legacy._local_analysis_by_incident(items),
         raw_facts,
+        tentative_sectors,
     )
 
     # Le résolveur utilise comme fallback la synthèse historique sélectionnée

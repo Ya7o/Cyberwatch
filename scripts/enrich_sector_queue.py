@@ -59,6 +59,37 @@ def _empty_cache_row() -> dict[str, str]:
     return {column: "" for column in ORG_ENRICHMENT_CACHE_COLUMNS}
 
 
+def _mark_unmatched_targets_as_attempted(
+    cache: dict[str, dict],
+    targets: list[tuple[str, str, tuple[str, ...]]],
+    evidence_by_key: dict[str, tuple[str, object]],
+    now: str,
+) -> int:
+    """Journalise un ``Fetched_At`` pour toute cible tentée sans correspondance.
+
+    Sans cet appel, une organisation testée sans succès reste indiscernable
+    d'une organisation jamais tentée (``Fetched_At`` vide) : ``_cache_fresh``
+    la resélectionne alors à l'identique à chaque exécution, et le reste de
+    la file d'attente n'est jamais atteint. Le statut par défaut est
+    ``NOT_FOUND`` (le délai de nouvelle tentative le plus court de
+    ``_retry_delay``) plutôt que ``AMBIGUOUS`` : ce chemin ne distingue pas
+    les deux cas.
+    """
+    marked = 0
+    for key, organisation, _hints in targets:
+        if key in evidence_by_key:
+            continue
+        marked += 1
+        current = dict(cache.get(key) or _empty_cache_row())
+        current["Organisation_Key"] = current.get("Organisation_Key") or key
+        current["Query_Name"] = current.get("Query_Name") or organisation
+        current["Match_Status"] = current.get("Match_Status") or org_enrichment.NOT_FOUND
+        current["Fetched_At"] = now
+        current["Cache_Version"] = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
+        cache[key] = current
+    return marked
+
+
 def _parse_iso(value: str) -> dt.datetime | None:
     text = str(value or "").strip()
     if not text:
@@ -430,6 +461,10 @@ def main() -> int:
             "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
         })
         state.cache[key] = current
+
+    stats["strict_official_no_match"] = _mark_unmatched_targets_as_attempted(
+        state.cache, targets, evidence_by_key, now
+    )
 
     rows = [
         {column: row.get(column, "") for column in ORG_ENRICHMENT_CACHE_COLUMNS}

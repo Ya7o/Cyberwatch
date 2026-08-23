@@ -1,5 +1,19 @@
 """Fixtures partagées : construction d'items de test."""
 
+import os
+import tempfile
+
+# La télémétrie LLM et performance s'écrit par défaut dans data/, canonique.
+# llm_runtime._write_stats() est enregistrée via atexit, donc posée après le
+# teardown des fixtures pytest : la redirection doit être faite ici, au niveau
+# module, avant tout import de cyberwatch, et jamais retirée. setdefault()
+# laisse un override explicite de l'opérateur prendre le dessus.
+_TELEMETRY_DIR = tempfile.mkdtemp(prefix="cyberwatch-tests-")
+os.environ.setdefault("LLM_USAGE_PATH", os.path.join(_TELEMETRY_DIR, "llm_usage.json"))
+os.environ.setdefault(
+    "CYBERWATCH_PERFORMANCE_LOG_PATH", os.path.join(_TELEMETRY_DIR, "performance_runs.json")
+)
+
 import pytest
 
 from cyberwatch.identity import item_id

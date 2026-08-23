@@ -349,6 +349,8 @@ class _Runtime:
         }
 
     def save_stats(self) -> None:
+        if self.calls == 0 and self.calls_budget_blocked == 0:
+            return
         try:
             self.stats_path.parent.mkdir(parents=True, exist_ok=True)
             tmp = self.stats_path.with_suffix(self.stats_path.suffix + ".tmp")

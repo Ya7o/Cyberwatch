@@ -104,8 +104,13 @@
     }).join("");
   }
 
+  function sectorTentativeChip(incident) {
+    if (known(incident.sector) || !known(incident.sector_tentative)) return "";
+    return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé, non confirmé)</span>`;
+  }
+
   function incidentCardHtml(incident) {
-    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("");
+    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + sectorTentativeChip(incident);
     const summary = cleanSummary(incident.summary);
     return `<article class="incident-card" data-id="${esc(incident.id)}">
       <div class="incident-main">
@@ -417,7 +422,8 @@
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
-    $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}</div>
+    const tentativeChip = sectorTentativeChip(incident);
+    $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}${tentativeChip ? `<p>${tentativeChip}</p>` : ""}</div>
       ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
       <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
       <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div>${sourceLinks.length ? `<div class="evidence-links">${sourceLinks.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : ""}</div>`;

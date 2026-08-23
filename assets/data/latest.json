@@ -123,24 +123,6 @@
   "basis": "PUBLICATION",
   "date": "2026-08-21",
   "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-5712ACB38D5A",
-  "items": 1,
-  "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "France métropolitaine",
-  "org": "Géotec",
-  "sector": "Inconnu",
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/g-otec-mt2pm5hv08jyfc9vlj2c"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-21",
-  "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-4DA3AF4B43D8",
   "items": 1,
   "last_seen": "2026-08-21T23:01:50+04:00",
@@ -200,16 +182,18 @@
   "date": "2026-08-21",
   "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-0B6072EBE30D",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "Inconnu",
-  "org": "Groupe Géotec",
+  "location": "France métropolitaine",
+  "org": "Géotec",
   "sector": "Inconnu",
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "threat": "Compromission de compte / messagerie",
   "urls": [
+   "https://frenchbreaches.com/alertes/g-otec-mt2pm5hv08jyfc9vlj2c",
    "https://www.cyberattaque.org/groupe-geotec-une-cyberattaque-provoque-une-exfiltration-de-donnees-et-perturbe-certains-services/"
   ]
  },
@@ -232,26 +216,6 @@
   "urls": [
    "https://frenchbreaches.com/alertes/bergerat-rent-blgcloud-mt1zdsa2pfwxiwrzeuf",
    "https://www.cyberattaque.org/bergerat-rent-132-433-fichiers-publies-apres-la-compromission-de-son-compte-blgcloud/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-20",
-  "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-CFB3AE4A9D63",
-  "items": 2,
-  "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "France métropolitaine",
-  "org": "SUEZ",
-  "sector": "Inconnu",
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://bonjourlafuite.eu.org/img/suez.png",
-   "https://www.cyberattaque.org/suez-les-donnees-clients-en-fuite-apres-une-cyberattaque-chez-un-prestataire/"
   ]
  },
  {
@@ -343,6 +307,7 @@
   "location": "France métropolitaine",
   "org": "SFR",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -401,18 +366,22 @@
   "date": "2026-08-20",
   "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-88FCA74B0248",
-  "items": 1,
+  "items": 3,
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
-  "org": "Suez Eau France",
+  "org": "SUEZ",
   "sector": "Inconnu",
   "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Données concernées : IBAN / RIB, pièces d'identité et données personnelles.",
-  "threat": "Incident tiers",
+  "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/suez-eau-france-mt20mo6pymh9k6m7wzf"
+   "https://bonjourlafuite.eu.org/img/suez.png",
+   "https://frenchbreaches.com/alertes/suez-eau-france-mt20mo6pymh9k6m7wzf",
+   "https://www.cyberattaque.org/suez-les-donnees-clients-en-fuite-apres-une-cyberattaque-chez-un-prestataire/"
   ]
  },
  {
@@ -477,26 +446,6 @@
   "basis": "PUBLICATION",
   "date": "2026-08-19",
   "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-82C56212890E",
-  "items": 2,
-  "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "France métropolitaine",
-  "org": "Institut de recherche pour le développement",
-  "sector": "Inconnu",
-  "sources": [
-   "BONJOURLAFUITE",
-   "FRENCHBREACHES"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://bonjourlafuite.eu.org/img/ird.png",
-   "https://frenchbreaches.com/alertes/institut-de-recherche-pour-le-d-veloppement-ird-mt0p9vbf00szk0llqusyg"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-19",
-  "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-6DC1B3DE66B3",
   "items": 2,
   "last_seen": "2026-08-21T23:01:50+04:00",
@@ -519,17 +468,21 @@
   "date": "2026-08-19",
   "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-2A9888F66F2D",
-  "items": 1,
+  "items": 3,
   "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "IRD",
   "sector": "Inconnu",
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
+   "https://bonjourlafuite.eu.org/img/ird.png",
+   "https://frenchbreaches.com/alertes/institut-de-recherche-pour-le-d-veloppement-ird-mt0p9vbf00szk0llqusyg",
    "https://www.cyberattaque.org/ird-7-500-personnes-exposees-apres-une-intrusion-dans-son-systeme-dinformation/"
   ]
  },
@@ -642,7 +595,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "DGFiP",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -865,6 +818,7 @@
   "location": "France métropolitaine",
   "org": "Cravero Motoculture",
   "sector": "Inconnu",
+  "sector_tentative": "Construction / BTP",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1046,6 +1000,7 @@
   "location": "France métropolitaine",
   "org": "Achat Or et Argent",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -1086,6 +1041,7 @@
   "location": "France métropolitaine",
   "org": "Le Bon Matériel",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1107,6 +1063,7 @@
   "location": "France métropolitaine",
   "org": "EVA Nantes Sud",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -1144,7 +1101,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Direction générale des Finances publiques",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1208,6 +1165,7 @@
   "location": "France métropolitaine",
   "org": "Chupin",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1229,6 +1187,7 @@
   "location": "France métropolitaine",
   "org": "EVA.gg",
   "sector": "Inconnu",
+  "sector_tentative": "Sport",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -1306,6 +1265,7 @@
   "location": "France métropolitaine",
   "org": "LaSante.net",
   "sector": "Inconnu",
+  "sector_tentative": "Santé",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1327,6 +1287,7 @@
   "location": "France métropolitaine",
   "org": "Leroch Distribution",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1348,6 +1309,7 @@
   "location": "France métropolitaine",
   "org": "Loutz",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1368,7 +1330,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Direction générale des Finances publiques",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -1428,6 +1390,7 @@
   "location": "France métropolitaine",
   "org": "Agence pour l’enseignement français à l’étranger",
   "sector": "Inconnu",
+  "sector_tentative": "Éducation / Formation",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1491,6 +1454,7 @@
   "location": "France métropolitaine",
   "org": "Gédimat",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
@@ -1533,6 +1497,7 @@
   "location": "France métropolitaine",
   "org": "Scalingo",
   "sector": "Inconnu",
+  "sector_tentative": "Services aux entreprises",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
@@ -1578,7 +1543,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sources": [
    "BONJOURLAFUITE"
   ],
@@ -1679,6 +1644,7 @@
   "location": "France métropolitaine",
   "org": "Duvignau 40",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1761,6 +1727,7 @@
   "location": "France métropolitaine",
   "org": "CLCV",
   "sector": "Inconnu",
+  "sector_tentative": "Sport",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1845,6 +1812,7 @@
   "location": "France métropolitaine",
   "org": "Roussel Agri 62",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1908,6 +1876,7 @@
   "location": "France métropolitaine",
   "org": "Petit Gramme",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -1982,6 +1951,7 @@
   "location": "France métropolitaine",
   "org": "Ressourc'brie",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2096,6 +2066,7 @@
   "location": "France métropolitaine",
   "org": "Association de la Caieta",
   "sector": "Inconnu",
+  "sector_tentative": "Sport",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2114,6 +2085,7 @@
   "location": "France métropolitaine",
   "org": "Armurerie Lavaux",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2155,6 +2127,7 @@
   "location": "France métropolitaine",
   "org": "Bloctel",
   "sector": "Inconnu",
+  "sector_tentative": "Sport",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
@@ -2199,6 +2172,7 @@
   "location": "France métropolitaine",
   "org": "Intermarché Drive",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2217,7 +2191,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -2260,6 +2234,7 @@
   "location": "France métropolitaine",
   "org": "Intermarché Drive",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2300,6 +2275,7 @@
   "location": "France métropolitaine",
   "org": "setic-pourtier",
   "sector": "Inconnu",
+  "sector_tentative": "Industrie / Manufacture",
   "sources": [
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
@@ -2359,6 +2335,7 @@
   "location": "France métropolitaine",
   "org": "Questel SAS",
   "sector": "Inconnu",
+  "sector_tentative": "Industrie / Manufacture",
   "sources": [
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
@@ -2442,6 +2419,7 @@
   "location": "France métropolitaine",
   "org": "ENT",
   "sector": "Inconnu",
+  "sector_tentative": "Éducation / Formation",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2460,6 +2438,7 @@
   "location": "France métropolitaine",
   "org": "CY Cergy Paris Université",
   "sector": "Inconnu",
+  "sector_tentative": "Éducation / Formation",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2519,6 +2498,7 @@
   "location": "France métropolitaine",
   "org": "Emploi Docteur Imago",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2537,6 +2517,7 @@
   "location": "France métropolitaine",
   "org": "CCI Nice Côte d’Azur",
   "sector": "Inconnu",
+  "sector_tentative": "Industrie / Manufacture",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
@@ -2583,6 +2564,7 @@
   "location": "France métropolitaine",
   "org": "Avocats-Étrangers",
   "sector": "Inconnu",
+  "sector_tentative": "Services aux entreprises",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -2601,6 +2583,7 @@
   "location": "France métropolitaine",
   "org": "Amicale Police et Patrimoine",
   "sector": "Inconnu",
+  "sector_tentative": "Administration / Collectivité",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2661,7 +2644,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "5doigts2pieds",
-  "sector": "Inconnu",
+  "sector": "Industrie / Manufacture",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2746,6 +2729,7 @@
   "location": "France métropolitaine",
   "org": "Kaffir",
   "sector": "Inconnu",
+  "sector_tentative": "Transport / Logistique",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -2918,7 +2902,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Batipro 33",
-  "sector": "Inconnu",
+  "sector": "Construction / BTP",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
