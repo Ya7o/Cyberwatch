@@ -2,6 +2,7 @@ from cyberwatch import config, org_enrichment, sector, source_facts
 from cyberwatch.collectors.base import RawEntry, SourceSpec
 from cyberwatch.model import Item
 from cyberwatch.sector_completion import (
+    SECTOR_AGRICULTURE,
     SECTOR_ASSOCIATIONS,
     SECTOR_CULTURE,
     SECTOR_HOSPITALITY,
@@ -32,12 +33,17 @@ def _spec(source_id="VEILLE_LLM") -> SourceSpec:
 def test_targeted_taxonomy_stays_canonical():
     assert SECTOR_HOSPITALITY in config.SECTORS
     assert SECTOR_CULTURE in config.SECTORS
+    assert SECTOR_AGRICULTURE in config.SECTORS
     assert SECTOR_ASSOCIATIONS not in config.SECTORS
     assert sector.classify_source_sector("Commerce") == config.SECTOR_RETAIL
     assert sector.classify_source_sector("Tourisme") == SECTOR_HOSPITALITY
     assert sector.classify_source_sector("Médias") == SECTOR_CULTURE
+    assert sector.classify_source_sector("Agriculture and Food Production") == SECTOR_AGRICULTURE
     assert sector.classify_source_sector("Associations") == config.SECTOR_UNKNOWN
     assert sector.classify_source_sector("politique") == config.SECTOR_UNKNOWN
+    # "agriculture" seul reste ambigu, contrairement à la catégorie source
+    # explicite ci-dessus : voir test_categories_source_ambiguës_restent_inconnues.
+    assert sector.classify_source_sector("agriculture") == config.SECTOR_UNKNOWN
 
 
 def test_six_golden_business_patterns_are_general_not_name_exceptions():
@@ -164,6 +170,24 @@ def test_cached_naf_records_are_requalified_without_http(monkeypatch):
     assert state.cache["culture test"]["Validated_Sector"] == SECTOR_CULTURE
     assert state.cache["politique test"]["Validated_Sector"] == ""
     assert state.cache["politique test"]["Validated_Via"] == ""
+
+
+def test_agriculture_naf_subclass_is_precise_enough(monkeypatch):
+    rows = [
+        {
+            "Organisation_Key": "domaine test", "Query_Name": "Domaine Test",
+            "Matched_Name": "DOMAINE TEST", "Company_ID": "5", "Activity_Code": "01.21Z",
+            "Activity_Label": "Culture de la vigne", "Headquarters_Department": "33",
+            "Evidence_Source": "recherche-entreprises.api.gouv.fr", "Evidence_URL": "",
+            "Match_Status": org_enrichment.MATCHED, "Fetched_At": "2026-08-17T10:00:00+04:00",
+            "Validated_Sector": "", "Validated_Via": "",
+            "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
+        },
+    ]
+    monkeypatch.setattr(org_enrichment.store, "load_org_enrichment_cache", lambda: rows)
+    state = org_enrichment.start_state()
+    assert state.cache["domaine test"]["Validated_Sector"] == SECTOR_AGRICULTURE
+    assert state.cache["domaine test"]["Validated_Via"] == "naf_precise"
 
 
 def test_old_broad_naf_code_is_not_forced_into_sport(monkeypatch):

@@ -20,6 +20,7 @@ from .normalize import searchable
 
 SECTOR_HOSPITALITY = "Hébergement / Tourisme / Restauration"
 SECTOR_CULTURE = "Culture / Médias / Loisirs"
+SECTOR_AGRICULTURE = "Agriculture / Agroalimentaire"
 # Conservé comme symbole de compatibilité pour les imports historiques, mais ce
 # secteur n'est plus ajouté à la taxonomie canonique. Les partis/ONG restent
 # Inconnu tant que la taxonomie officielle ne les contient pas.
@@ -32,8 +33,9 @@ def _extend_taxonomy() -> None:
     """Ajoute uniquement les familles réellement retenues dans la taxonomie."""
     setattr(config, "SECTOR_HOSPITALITY", SECTOR_HOSPITALITY)
     setattr(config, "SECTOR_CULTURE", SECTOR_CULTURE)
+    setattr(config, "SECTOR_AGRICULTURE", SECTOR_AGRICULTURE)
 
-    additions = [SECTOR_HOSPITALITY, SECTOR_CULTURE]
+    additions = [SECTOR_HOSPITALITY, SECTOR_CULTURE, SECTOR_AGRICULTURE]
     for value in reversed(additions):
         if value in config.SECTORS:
             continue
@@ -59,6 +61,10 @@ def _extend_taxonomy() -> None:
         "medias": SECTOR_CULTURE,
         "loisirs": SECTOR_CULTURE,
         "entertainment": SECTOR_CULTURE,
+        # Alias exact de la catégorie source RANSOMWARE_LIVE uniquement.
+        # "agriculture" seul reste volontairement absent : jugé trop large,
+        # voir test_categories_source_ambiguës_restent_inconnues.
+        "agriculture and food production": SECTOR_AGRICULTURE,
     })
     # Une ancienne version pouvait avoir muté cette table au sein d'un même
     # processus de test. On retire explicitement les aliases hors contrat.
@@ -172,6 +178,8 @@ def _precise_naf_sector(activity_code: str) -> str:
     if not code:
         return ""
 
+    if code.startswith(("01", "02", "03")):
+        return SECTOR_AGRICULTURE
     if code.startswith(("55", "56", "79")):
         return SECTOR_HOSPITALITY
     if code.startswith(("58", "59", "60", "90", "91", "92")):

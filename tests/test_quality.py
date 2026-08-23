@@ -100,14 +100,19 @@ def test_ransomware_source_sector_audit_separates_raw_mapping_states(make_item):
     assert audit["raw_values"]["Hospitality"]["mapped_sector"] == config.SECTOR_UNKNOWN
 
 
-def test_measured_ransomware_aliases_are_mappable_but_broad_categories_stay_unknown(make_item):
+def test_measured_ransomware_aliases_are_mappable_but_remaining_categories_stay_unknown(make_item):
     raws = [
         ("Professional Services", config.SECTOR_SERVICES),
         ("Technology", config.SECTOR_TECH),
         ("Retail & E-Commerce", config.SECTOR_RETAIL),
-        ("Hospitality", config.SECTOR_UNKNOWN),
-        ("Agriculture and Food Production", config.SECTOR_UNKNOWN),
         ("Government & Defense", config.SECTOR_ADMIN),
+        ("Agriculture and Food Production", config.SECTOR_AGRICULTURE),
+        # Hospitality reste Inconnu : l'inspection nominative des occurrences
+        # encore non qualifiées a montré une précision insuffisante (un
+        # théâtre et une enseigne de crèches classés par la source dans cette
+        # catégorie), contrairement à Government & Defense et Agriculture and
+        # Food Production, mesurées homogènes sur le corpus observé.
+        ("Hospitality", config.SECTOR_UNKNOWN),
         ("Other", config.SECTOR_UNKNOWN),
         ("Not Found", config.SECTOR_UNKNOWN),
     ]
