@@ -131,6 +131,42 @@ La majorité des lignes `REVIEW` concerne des organisations dont les items sont
 déjà qualifiés par ailleurs. Ce levier est réel mais **secondaire** — il ne faut
 pas le confondre avec la cause principale.
 
+**Mise à jour du 2026-08-23 — mesure effective, correction d'une hypothèse de cet
+audit.** `scripts/evaluate_sector_registry.py`, qui mesure chaque canal contre le
+golden set (`data/golden/qualification_golden.csv`), ne pouvait pas tourner : ce
+fichier avait été supprimé par un reset à froid le 2026-08-21 et jamais reconstitué
+(`zero_reset.py` le traite comme état métier régénérable, pas comme référentiel
+protégé). Une copie antérieure au reset a été retrouvée dans les archives du dépôt
+(`bench/results/golden_v2/qualification_golden_v2.csv`, 98 organisations),
+validée sans anomalie par `golden.validate_file` — y compris sa version de
+taxonomie, toujours à jour — puis restaurée à son emplacement canonique.
+
+Résultat de la mesure sur les 7 canaux gelés :
+
+| Canal | Cas | Précision | Verdict |
+|---|---:|---:|---|
+| `structured_source` | 6 | 83,33 % | **échoue** (précision et volume) |
+| `known_item_single` | 24 | 91,67 % | **échoue** (précision) |
+| `consensus_multi_source` | 12 | 83,33 % | **échoue** (précision) |
+| `registry_exact_naf` | 3 | 100 % | **échoue** (volume : 3 < 10 cas minimum) |
+| `official_subject_activity`, `registry_llm`, `legacy_official_site` | 0 | — | **échoue** (aucun cas mesurable) |
+
+**Aucun des 7 canaux ne passe la barre.** L'hypothèse §3.3 ci-dessus, qui
+présentait `structured_source` comme le levier « sûr » parce qu'activé par
+défaut dans le code, ne survit pas à la mesure : 83,33 % de précision observée,
+avec un cas nommé faux — `eiffage` classé `Transport / Logistique` au lieu de
+`Construction / BTP`. C'est exactement ce que le seuil de 95 % est censé
+empêcher, et c'est la preuve que la lecture du code seul (sans mesure) aurait
+conduit à une recommandation incorrecte.
+
+Le levier « rouvrir la politique de canaux » n'est donc pas simplement à
+« mesurer avant d'agir » comme l'avançait la première version de cet audit — sur
+l'échantillon disponible aujourd'hui (98 organisations), **aucun canal
+n'est mesurable comme sûr**. Deux voies pour la suite, aucune tranchée ici :
+élargir le golden set pour donner à `registry_exact_naf` (100 % sur seulement 3
+cas) la chance d'atteindre le seuil de volume, ou accepter que ce levier reste
+fermé tant que l'échantillon ne grandit pas.
+
 Les 7 rejets `REJECTED_POLICY_DISABLED` sont, eux, franchement coûteux : le
 portail les avait pleinement validés (site officiel + activité concordante), et
 `neutralize_sector_fallback` (`qualification.py:184`) les annule via la constante
@@ -202,18 +238,23 @@ qu'en alimentant réellement l'enrichissement entreprise et en persistant les
 Aucune n'est appliquée ici ; chacune touche un domaine `FROZEN` et demande un
 arbitrage explicite.
 
-| # | Piste | Gain | Risque | Domaine |
-|---|---|---:|---|---|
-| 1 | Ajouter `hospitality` et `government defense` à `ACTIVITY_TO_SECTOR` | +22 items | Très faible — correspondance exacte sur secteur structuré, aucune inférence | Qualification |
-| 2 | Écrire le registre et la file dans le pipeline (`write_outputs`) | 0 direct | Très faible — deux fichiers dérivés, débloque la revue manuelle | Qualification |
-| 3 | Persister les échecs de résolution entreprise | 0 direct | Faible — supprime la réinterrogation aveugle, rend le trou mesurable | Enrichissement |
-| 4 | Aligner `structured_source` sur le `DEFAULT_POLICY` du code | +26 items | Moyen — exige la mesure de précision prévue par `minimum_precision_pct` | Politique |
-| 5 | Réexaminer `_SECTOR_FALLBACK_AUTO_APPLY` pour les 7 cas pleinement validés | +7 items | Moyen — cas les mieux prouvés du corpus, mais constante codée en dur | Qualification |
-| 6 | Alimenter `sector_evidence_text` en amont des exports challenger | jusqu'à +186 items | Élevé — vrai chantier ; sans lui le canal restera mort | Sources |
-| 7 | Trancher `Agriculture / Agroalimentaire` dans la taxonomie | +11 items | Décision produit, pas technique | Méthodologie |
+| # | Piste | Gain | Risque | Domaine | Statut (2026-08-23) |
+|---|---|---:|---|---|---|
+| 1 | Mapper `government defense` (mesuré 8/8) ; `hospitality` réexaminé et écarté (précision mitigée, voir mise à jour §3.1) | +8 items | Très faible — correspondance exacte, mesurée | Qualification | **Fait** |
+| 2 | Écrire le registre et la file dans le pipeline (`write_outputs`) | 0 direct | Très faible — deux fichiers dérivés, débloque la revue manuelle | Qualification | **Fait** |
+| 3 | Persister les échecs de résolution entreprise | 0 direct | Faible — supprime la réinterrogation aveugle, rend le trou mesurable | Enrichissement | Ouvert |
+| 4 | Aligner `structured_source` sur le `DEFAULT_POLICY` du code | — | **Mesuré et refusé** : 83,33 % de précision sur 6 cas, sous le seuil de 95 % (voir mise à jour §3.3) | Politique | **Mesuré, non applicable** |
+| 5 | Réexaminer `_SECTOR_FALLBACK_AUTO_APPLY` pour les 7 cas pleinement validés | +7 items | Moyen — cas les mieux prouvés du corpus, mais constante codée en dur | Qualification | Ouvert |
+| 6 | Alimenter `sector_evidence_text` en amont des exports challenger | jusqu'à +186 items | Élevé — vrai chantier ; sans lui le canal restera mort | Sources | Ouvert |
+| 7 | Ajouter `Agriculture / Agroalimentaire` à la taxonomie | +11 items | Décision produit, tranchée | Méthodologie | **Fait** |
 
-Les pistes 1 à 3 sont des corrections de câblage : elles ne rouvrent aucun
-arbitrage et ne créent aucune couche. Les pistes 4 à 7 sont des décisions.
+Les pistes 1 à 3 étaient des corrections de câblage : elles ne rouvraient aucun
+arbitrage et ne créaient aucune couche. Les pistes 1, 2, 3 et 7 sont
+implémentées (voir `git log` sur cette branche). La piste 4 a été mesurée en
+suivant sa propre procédure (`scripts/evaluate_sector_registry.py` contre le
+golden set restauré) : le résultat est négatif, ce n'est plus une piste
+ouverte mais une conclusion. Les pistes 5 et 6 restent des décisions non
+prises.
 
 ## 6. Défaut annexe constaté
 
