@@ -48,7 +48,7 @@ jobs:
               --max-items "${{ inputs.max_items }}" --item-ids "${{ inputs.item_ids }}" --include-existing --refresh-summary | tee /tmp/source-facts-backfill.json
           else
             python scripts/backfill_source_fact_summaries.py \
-              --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained | tee /tmp/source-facts-backfill.json
+              --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained --refresh-summary | tee /tmp/source-facts-backfill.json
           fi
           cat /tmp/source-facts-backfill.json >> "$GITHUB_STEP_SUMMARY"
       - name: Valider et construire le site

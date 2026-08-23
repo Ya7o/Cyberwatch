@@ -368,6 +368,10 @@ def run_backfill(
         if refresh_summary:
             invalidate_summary_cache(item, entry)
             source_facts_ai.force_summary_refresh(item, entry)
+            # Le backfill doit matérialiser l'appel avant l'extracteur : cela
+            # évite qu'un adaptateur source court-circuite silencieusement la
+            # couche éditoriale.
+            source_facts_ai.enrich(item, entry)
         calls_before = runtime.calls
         failures_before = runtime.calls_failed
         reopened = (
