@@ -242,26 +242,58 @@ arbitrage explicite.
 |---|---|---:|---|---|---|
 | 1 | Mapper `government defense` (mesuré 8/8) ; `hospitality` réexaminé et écarté (précision mitigée, voir mise à jour §3.1) | +8 items | Très faible — correspondance exacte, mesurée | Qualification | **Fait** |
 | 2 | Écrire le registre et la file dans le pipeline (`write_outputs`) | 0 direct | Très faible — deux fichiers dérivés, débloque la revue manuelle | Qualification | **Fait** |
-| 3 | Persister les échecs de résolution entreprise | 0 direct | Faible — supprime la réinterrogation aveugle, rend le trou mesurable | Enrichissement | Ouvert |
+| 3 | Persister les échecs de résolution entreprise | 0 direct | **Mesuré** : bug réel confirmé (0 progression possible sans ce correctif), corrigé | Enrichissement | **Fait** |
 | 4 | Aligner `structured_source` sur le `DEFAULT_POLICY` du code | — | **Mesuré et refusé** : 83,33 % de précision sur 6 cas, sous le seuil de 95 % (voir mise à jour §3.3) | Politique | **Mesuré, non applicable** |
 | 5 | Réexaminer `_SECTOR_FALLBACK_AUTO_APPLY` pour les 7 cas pleinement validés | +7 items | Moyen — cas les mieux prouvés du corpus, mais constante codée en dur | Qualification | **Fait** |
-| 6 | Alimenter `sector_evidence_text` en amont des exports challenger | jusqu'à +186 items (plafond théorique, pas une estimation — voir plan) | Élevé — vrai chantier ; sans lui le canal restera mort | Sources | Ouvert |
+| 6 | Alimenter `sector_evidence_text` en amont des exports challenger | jusqu'à +186 items (plafond théorique — voir mesure ci-dessous) | Élevé — vrai chantier ; sans lui le canal restera mort | Sources | **Mesuré, rendement quasi nul** |
 | 7 | Ajouter `Agriculture / Agroalimentaire` à la taxonomie | +11 items | Décision produit, tranchée | Méthodologie | **Fait** |
 
 Les pistes 1, 2 et 7 étaient des corrections de câblage ou de taxonomie :
 elles ne rouvraient aucun arbitrage et ne créaient aucune couche. La piste 5
 a été vérifiée nominativement (7/7 cas corrects, dont un confirmé
 indépendamment par le golden set) avant d'être appliquée — c'était un
-interrupteur global, pas une exception ad hoc pour ces 7 cas. Les pistes 1,
-2, 5 et 7 sont implémentées (voir `git log` sur cette branche). La piste 4 a
+interrupteur global, pas une exception ad hoc pour ces 7 cas. La piste 4 a
 été mesurée en suivant sa propre procédure
 (`scripts/evaluate_sector_registry.py` contre le golden set restauré) : le
 résultat est négatif, ce n'est plus une piste ouverte mais une conclusion.
-Les pistes 3 et 6 restent ouvertes ; un plan de développement dédié
-(`/root/.claude/plans/propose-correction-temporal-lake.md` au moment de sa
-rédaction) documente comment les aborder avec deux outils existants,
-testés, mais jamais branchés : `scripts/enrich_sector_queue.py` (piste 3) et
-`sources/veillellm/deep_enrich_unknown_sectors.py` (piste 6).
+
+**Mise à jour du 2026-08-23 (suite) — pistes 3 et 6 exécutées et mesurées.**
+Un plan de développement dédié a identifié deux outils déjà existants et
+testés mais jamais branchés : `scripts/enrich_sector_queue.py` (registre
+entreprise, piste 3) et `sources/veillellm/deep_enrich_unknown_sectors.py`
+(preuve d'activité challenger, piste 6). Un premier lot de chacun a été
+exécuté en conditions réelles (scraping HTTP déterministe, aucun appel LLM) :
+
+| Outil | Cible | Testé | Correspondances |
+|---|---|---:|---:|
+| `enrich_sector_queue.py` | organisations du registre | 60 | **0** |
+| `deep_enrich_unknown_sectors.py` | records challenger (JSON) | 324 | **0** |
+
+**0 sur un échantillon combiné de 384**, sur deux méthodes indépendantes.
+Cela ne veut pas dire que le reste de la file (≈440 organisations restantes)
+est nécessairement tout aussi vide, mais le signal est net : les
+organisations encore non qualifiées à ce stade sont, dans leur grande
+majorité, sans site officiel identifiable ou vérifiable — pas des cas où
+l'outil échoue à trouver une preuve qui existe, mais des cas où la preuve
+publique elle-même semble absente. Continuer à lancer des lots de 60 sans
+changement de méthode reviendrait à consommer du temps réseau réel pour un
+rendement marginal proche de zéro.
+
+Le correctif de la piste 3 reste acquis et utile indépendamment de ce
+rendement : `data/org_enrichment_cache.csv` passe de 60 à 120 lignes (les 60
+négatifs sont désormais journalisés, `Match_Status=NOT_FOUND`), et surtout,
+**sans lui, aucune progression sur la file n'était possible** — chaque
+exécution retentait indéfiniment les 60 mêmes organisations en tête de file
+(bug confirmé, pas supposé : le second lot a reproduit exactement le premier
+lot de 60 sans le correctif). Voir `git log` sur cette branche pour le détail
+(commits `625ef6a`, `0c6c46b`, `107ab89`).
+
+**Recommandation.** Ne pas relancer d'autres lots de ces deux outils sans
+changement de méthode (par ex. une source de preuve différente, ou une revue
+manuelle ciblée). Le plafond théorique de +186/+330 items cité en §3.1/§3.2
+n'est donc probablement pas atteignable par ce chemin seul ; ~440
+organisations restent `Inconnu` sans qu'une preuve publique exploitable ait
+pu être établie automatiquement.
 
 ## 6. Défaut annexe constaté
 
