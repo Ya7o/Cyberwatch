@@ -88,6 +88,30 @@ def test_headline_technique_ou_generique_est_rejetee():
     assert sfa._normalize_summary(technical, context) is None
 
 
+def test_activity_description_llm_is_grounded_and_becomes_a_provisional_signal():
+    context = (
+        "Exemple SA, éditeur de logiciels de comptabilité pour les PME, "
+        "a confirmé avoir subi une intrusion."
+    )
+    result = sfa._normalize({
+        "activity_description": {
+            "value": "éditeur de logiciels de comptabilité pour les PME",
+            "confidence": 0.92,
+            "evidence": "Exemple SA, éditeur de logiciels de comptabilité pour les PME",
+        },
+    }, context, {"activity_description"})
+    assert result["activity_description"]["value"] == "éditeur de logiciels de comptabilité pour les PME"
+
+    # Une activité sans citation de l'article n'est jamais conservée.
+    assert sfa._normalize({
+        "activity_description": {
+            "value": "éditeur de logiciels",
+            "confidence": 0.92,
+            "evidence": "activité inventée",
+        },
+    }, context, {"activity_description"}) == {}
+
+
 def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     bodies = []

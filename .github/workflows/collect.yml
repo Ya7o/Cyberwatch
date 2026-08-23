@@ -89,6 +89,19 @@ jobs:
           else
             python -m cyberwatch "$MODE" --layers "${{ steps.scope.outputs.layers }}" $ARGS
           fi
+          if [ "$MODE" = maj ] || [ "$MODE" = create ]; then
+            # Après la collecte, les descriptions d'activité éventuellement
+            # extraites par SourceFacts depuis l'article complet sont
+            # disponibles. Le LLM organisationnel les mappe vers la
+            # taxonomie, sans jamais renseigner le secteur canonique : il
+            # alimente seulement le badge « supposé, non confirmé ».
+            LLM_MAX_CALLS_PER_RUN=30 LLM_MAX_COST_USD_PER_RUN=0.10 \
+              LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN=30 \
+              LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN=0.10 \
+              python -m cyberwatch sector-llm
+            # Le cache P1 est relu hors ligne afin de publier la proposition.
+            python -m cyberwatch replay
+          fi
       - name: Dev checks et dashboard
         if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |

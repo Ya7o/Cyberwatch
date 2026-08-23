@@ -202,14 +202,41 @@ jobs:
         working-directory: /tmp/cyberwatch-reset
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
-          LLM_MAX_CALLS_PER_RUN: "0"
-          LLM_MAX_COST_USD_PER_RUN: "0"
+          # Le candidat organisationnel relit les descriptions d'activité
+          # extraites du texte complet des articles à l'étape SourceFacts.
+          # Il ne confirme jamais seul un secteur ; il ne publie que des
+          # propositions « à confirmer ». Cette réserve est le quatrième
+          # canal du plafond global : 900 + 400 + 500 + 200 = 2 000.
+          LLM_MAX_CALLS_PER_RUN: "200"
+          LLM_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
+          LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN: "200"
+          LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN: ${{ inputs.max_llm_cost_usd_per_pass }}
           AI_MAX_CALLS_PER_RUN: "0"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "200"
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
-        run: python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+        run: |
+          python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+          python - <<'PY'
+          import json
+          from dataclasses import asdict
+          from pathlib import Path
+          from cyberwatch import enrichment, llm_runtime, organisation_sector_llm, store
+
+          report = organisation_sector_llm.enrich_unknown_organisation_sectors(
+              store.load_items(), reference=enrichment.load_reference(),
+          )
+          payload = {"report": asdict(report), "llm": llm_runtime.runtime().stats.by_task.get("organisation_sector", {})}
+          Path("/tmp/reset-organisation-sector.json").write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
+          # Relit uniquement le cache P1 et reconstruit les exports : aucune
+          # seconde passe LLM ne peut être déclenchée par CREATE ici.
+          LLM_MAX_CALLS_PER_RUN=0 LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN=0 \
+            python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
       - name: Contrôler le budget LLM global
         working-directory: /tmp/cyberwatch-reset
         run: |
@@ -263,7 +290,17 @@ jobs:
               "cost_usd": number(source_raw.get("estimated_cost_usd")),
               "duration_seconds": number(source_raw.get("total_duration_seconds")),
           }
-          channels = {"qualification": qualification, "semantic": semantic, "source_facts": source_facts}
+          organisation_raw = load("/tmp/reset-organisation-sector.json")
+          organisation_llm = organisation_raw.get("llm") if isinstance(organisation_raw, dict) else {}
+          organisation = {
+              "calls": int(number(organisation_llm.get("calls_attempted"))),
+              "success": int(number(organisation_llm.get("calls_succeeded"))),
+              "failure": int(number(organisation_llm.get("calls_failed"))),
+              "tokens": int(number(organisation_llm.get("total_tokens"))),
+              "cost_usd": number(organisation_llm.get("estimated_cost_usd")),
+              "duration_seconds": number(organisation_llm.get("duration_seconds")),
+          }
+          channels = {"qualification": qualification, "semantic": semantic, "source_facts": source_facts, "organisation_sector": organisation}
           totals = {key: sum(channel[key] for channel in channels.values()) for key in qualification}
           report = {
               "limits": {"calls": 2000, "cost_usd": 2.0},
@@ -390,6 +427,7 @@ jobs:
             /tmp/reset-ai-qualification.csv
             /tmp/reset-llm-semantic.json
             /tmp/reset-source-facts.json
+            /tmp/reset-organisation-sector.json
             /tmp/reset-llm-budget.json
             /tmp/reset-after.json
             /tmp/cyberwatch-reset/data/post_reset_baseline.json

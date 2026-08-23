@@ -76,6 +76,27 @@ def test_erreur_extracteur_ne_bloque_jamais():
         sf._EXTRACTORS["FRENCHBREACHES"] = original
 
 
+def test_activite_llm_citee_est_transmise_aux_faits_source(monkeypatch):
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    entry = RawEntry(
+        title="Exemple SA visée",
+        content="Exemple SA, éditeur de logiciels de comptabilité, a confirmé un incident.",
+    )
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "activity_description": {
+            "value": "éditeur de logiciels de comptabilité",
+            "confidence": 0.91,
+            "evidence": "Exemple SA, éditeur de logiciels de comptabilité",
+        },
+    })
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {})
+
+    fact = sf.extract_source_fact(item, entry, spec("CYBERATTAQUE_ORG"))
+
+    assert fact["Activity_Description"] == "éditeur de logiciels de comptabilité"
+    assert sf._loads_json(fact["Evidence_JSON"])["Activity_Description"].startswith("Exemple SA")
+
+
 def test_count_ignore_les_faux_positifs_et_continue_apres_eux():
     for text in ("1er", "27 juillet", "25 ans", "40 devient", "5doigts", "8h", "00h", "2019 diffusée"):
         assert sf._parse_count_phrase(text) == ("", "", "")
