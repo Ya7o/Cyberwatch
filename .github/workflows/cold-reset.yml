@@ -328,6 +328,42 @@ jobs:
         working-directory: /tmp/cyberwatch-reset
         run: |
           set -euo pipefail
+          python - <<'PY'
+          import csv, json, os
+          from pathlib import Path
+
+          start, end = os.environ["RESET_START"], os.environ["RESET_AS_OF"][:10]
+          data = Path("data")
+          items = list(csv.DictReader((data / "items.csv").open(encoding="utf-8", newline="")))
+          incidents = list(csv.DictReader((data / "incidents.csv").open(encoding="utf-8", newline="")))
+          published = json.loads(Path("assets/data/incidents.json").read_text(encoding="utf-8"))
+          blockers, anomalies = [], []
+          for label, rows, identifier, date_col in (("item", items, "Item_ID", "Published_Date"), ("incident", incidents, "Incident_ID", "Date")):
+              ids = [row.get(identifier, "") for row in rows]
+              if not rows or len(ids) != len(set(ids)):
+                  blockers.append(f"{label}: IDs absents ou dupliqués")
+              for row in rows:
+                  value = row.get(date_col, "")
+                  if not (start <= value <= end):
+                      blockers.append(f"{label} hors fenêtre: {row.get(identifier)}={value}")
+          for row in published:
+              summary, org = (row.get("summary") or "").strip(), (row.get("org") or "").strip()
+              if summary and summary.casefold().rstrip(".") == org.casefold().rstrip("."):
+                  blockers.append(f"synthèse égale à l'organisation: {row.get('id')}")
+              if not org or not row.get("sources"):
+                  blockers.append(f"incident incomplet: {row.get('id')}")
+              if not summary:
+                  anomalies.append({"id": row.get("id"), "severity": "medium", "issue": "summary_absent", "recommendation": "conserver le statut SourceFacts et reprendre si contenu hydratable"})
+              for field, label in (("threat", "menace"), ("sector", "secteur"), ("location", "localisation")):
+                  if row.get(field) in ("", "Inconnu", None):
+                      anomalies.append({"id": row.get("id"), "severity": "low", "issue": f"{label}_unknown", "recommendation": "preuve insuffisante documentée; conserver Inconnu"})
+          payload = {"schema":"cyberwatch-august-quality-audit-v1", "start":start, "end":end, "items":len(items), "incidents":len(incidents), "blockers":sorted(set(blockers)), "anomalies":anomalies, "verdict":"GO" if not blockers else "NO-GO"}
+          Path("data/august_quality_audit.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          Path("/tmp/august-quality-audit.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"verdict": payload["verdict"], "items":len(items), "incidents":len(incidents), "blockers":len(blockers), "anomalies":len(anomalies)}))
+          if blockers:
+              raise SystemExit("Audit qualité août bloquant")
+          PY
           python -m cyberwatch.reset_baseline audit \
             --before /tmp/reset-baseline-before.json \
             --output /tmp/reset-audit.json
@@ -424,6 +460,7 @@ jobs:
             /tmp/reset-before.json
             /tmp/reset-baseline-before.json
             /tmp/reset-audit.json
+            /tmp/august-quality-audit.json
             /tmp/reset-ai-qualification.csv
             /tmp/reset-llm-semantic.json
             /tmp/reset-source-facts.json

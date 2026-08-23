@@ -934,6 +934,18 @@ def execute(
             spec.source_id for spec in sources.active_sources(context.layers)
             if spec.params.get("replace_snapshot")
         }
+        # Le collecteur Veille LLM peut exposer un historique complet. La
+        # fenêtre du run reste néanmoins l'autorité finale, y compris lors
+        # d'un reset zéro : rien hors période ne peut atteindre ITEMS, FACTS
+        # ni la déduplication.
+        collected_ids = {
+            item.Item_ID for item in collected
+            if context.window.contains(item.Published_Date)
+        }
+        collected = [item for item in collected if item.Item_ID in collected_ids]
+        new_fact_rows = [
+            row for row in new_fact_rows if row.get("Item_ID") in collected_ids
+        ]
         merge_base = [item for item in existing_items if item.Source_ID not in replacement_source_ids]
         merged, _ = merge_items(merge_base, collected)
         new_count = sum(item.Item_ID not in existing_item_ids for item in collected)
