@@ -121,35 +121,19 @@
   "date": "2026-08-21",
   "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-0B6072EBE30D",
-  "items": 1,
-  "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "Inconnu",
-  "org": "Groupe Géotec",
-  "sector": "Inconnu",
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "threat": "Compromission de compte / messagerie",
-  "urls": [
-   "https://www.cyberattaque.org/groupe-geotec-une-cyberattaque-provoque-une-exfiltration-de-donnees-et-perturbe-certains-services/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-21",
-  "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-5712ACB38D5A",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Géotec",
   "sector": "Inconnu",
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "threat": "Fuite de données",
+  "threat": "Compromission de compte / messagerie",
   "urls": [
-   "https://frenchbreaches.com/alertes/g-otec-mt2pm5hv08jyfc9vlj2c"
+   "https://frenchbreaches.com/alertes/g-otec-mt2pm5hv08jyfc9vlj2c",
+   "https://www.cyberattaque.org/groupe-geotec-une-cyberattaque-provoque-une-exfiltration-de-donnees-et-perturbe-certains-services/"
   ]
  },
  {
@@ -399,59 +383,23 @@
   "basis": "PUBLICATION",
   "date": "2026-08-20",
   "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-CFB3AE4A9D63",
-  "items": 2,
+  "id": "INC-88FCA74B0248",
+  "items": 3,
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "SUEZ",
   "sector": "Inconnu",
   "sources": [
    "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://bonjourlafuite.eu.org/img/suez.png",
-   "https://www.cyberattaque.org/suez-les-donnees-clients-en-fuite-apres-une-cyberattaque-chez-un-prestataire/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-20",
-  "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-88FCA74B0248",
-  "items": 1,
-  "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "France métropolitaine",
-  "org": "Suez Eau France",
-  "sector": "Inconnu",
-  "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Données concernées : IBAN / RIB, pièces d'identité et données personnelles.",
-  "threat": "Incident tiers",
-  "urls": [
-   "https://frenchbreaches.com/alertes/suez-eau-france-mt20mo6pymh9k6m7wzf"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-19",
-  "first_seen": "2026-08-21T23:01:50+04:00",
-  "id": "INC-82C56212890E",
-  "items": 2,
-  "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "France métropolitaine",
-  "org": "Institut de recherche pour le développement",
-  "sector": "Inconnu",
-  "sources": [
-   "BONJOURLAFUITE",
-   "FRENCHBREACHES"
-  ],
   "threat": "Fuite de données",
   "urls": [
-   "https://bonjourlafuite.eu.org/img/ird.png",
-   "https://frenchbreaches.com/alertes/institut-de-recherche-pour-le-d-veloppement-ird-mt0p9vbf00szk0llqusyg"
+   "https://bonjourlafuite.eu.org/img/suez.png",
+   "https://frenchbreaches.com/alertes/suez-eau-france-mt20mo6pymh9k6m7wzf",
+   "https://www.cyberattaque.org/suez-les-donnees-clients-en-fuite-apres-une-cyberattaque-chez-un-prestataire/"
   ]
  },
  {
@@ -459,17 +407,21 @@
   "date": "2026-08-19",
   "first_seen": "2026-08-21T23:01:50+04:00",
   "id": "INC-2A9888F66F2D",
-  "items": 1,
+  "items": 3,
   "last_seen": "2026-08-21T23:01:50+04:00",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "IRD",
   "sector": "Inconnu",
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Vecteur d’entrée documenté : un hameçonnage.",
   "threat": "Compromission de compte / messagerie",
   "urls": [
+   "https://bonjourlafuite.eu.org/img/ird.png",
+   "https://frenchbreaches.com/alertes/institut-de-recherche-pour-le-d-veloppement-ird-mt0p9vbf00szk0llqusyg",
    "https://www.cyberattaque.org/ird-7-500-personnes-exposees-apres-une-intrusion-dans-son-systeme-dinformation/"
   ]
  },
@@ -624,7 +576,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "DGFiP",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
@@ -1144,7 +1096,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Direction générale des Finances publiques",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
@@ -1285,7 +1237,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Direction générale des Finances publiques",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "FRENCHBREACHES"
   ],
@@ -1574,7 +1526,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sources": [
    "BONJOURLAFUITE"
   ],
@@ -2198,7 +2150,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
@@ -3162,7 +3114,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Gloria Maris Groupe",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -3349,7 +3301,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Armara",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -3521,7 +3473,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Terra Vitis",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -3539,7 +3491,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Vignobles Toutigeac",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -3651,7 +3603,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Cemoi",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -4795,7 +4747,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "ilex-paysages",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -5483,7 +5435,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Amigest",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -5969,7 +5921,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "coe.int",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -7549,7 +7501,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Le Perreux sur Marne",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -8411,7 +8363,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Domaine Des Tournels",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
@@ -9007,7 +8959,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Le Maire de QUIBERON",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
@@ -9661,7 +9613,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "Seychelles",
   "org": "egov.sc",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -12831,7 +12783,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Vexin Normand",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -13313,7 +13265,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Union Laitiere de la Meuse",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -14425,7 +14377,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "cfdt",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -15563,7 +15515,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "FRUIT BONTÉ Agroalimentaire",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -16672,7 +16624,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "Epi du Rouergue",
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
@@ -16727,7 +16679,7 @@
   "last_seen": "2026-08-21T23:01:50+04:00",
   "location": "France métropolitaine",
   "org": "ville-dunkerque",
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sources": [
    "RANSOMWARE_LIVE"
   ],
