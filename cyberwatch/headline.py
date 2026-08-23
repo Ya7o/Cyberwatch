@@ -19,6 +19,11 @@ _GENERIC = re.compile(
     r"(?:entra[iî]n[ée]|provoqu[ée]|caus[ée]|confirm[ée])\s+(?:une\s+)?(?:exfiltration|fuite)\s+de\s+donn[ée]es\.?$",
     re.I,
 )
+_EDITORIAL_TITLE = re.compile(
+    r"^(?=[^:\n]{2,80}:\s+)(?=.*\b(?:cyberattaque|ransomware|attaque|intrusion|fuite|pirat|"
+    r"donn[ée]es|menac[ée]s?|revendiqu[ée]s?)\b).+$",
+    re.I,
+)
 
 
 def rejection_reason(value: object) -> str:
@@ -31,7 +36,11 @@ def rejection_reason(value: object) -> str:
         return "markdown_or_list"
     if _STRUCTURED.search(text):
         return "structured_detail"
-    if ": " in text:
+    # Un deux-points reste interdit pour les listes et les libellés de faits,
+    # mais il est courant dans un vrai titre éditorial (« Organisation :
+    # attaque… »). Le rejeter sans nuance privait notamment les articles
+    # Cyberattaque.org d'une headline source pourtant directement prouvée.
+    if ": " in text and not _EDITORIAL_TITLE.match(text):
         return "list_or_prefix"
     if _TECHNICAL.search(text):
         return "technical_fragment"

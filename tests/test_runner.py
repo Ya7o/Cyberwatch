@@ -348,13 +348,17 @@ class TestSourceFactsPersistence:
         from cyberwatch import store
 
         # Le mode non `offline` traverse aussi `ai.py`/`org_enrichment.py`
-        # (même sans clé API : Status=DISABLED est tout de même journalisé) :
-        # isoler ces CSV est requis pour ne jamais écrire dans data/ réel.
+        # (même sans clé API : Status=DISABLED est tout de même journalisé) et,
+        # en MAJ, `runner.run_daily_dedup_net` (§Lot 2/9 : même sans candidat
+        # ni clé API, la télémétrie NO_CANDIDATES/LLM_DISABLED est journalisée
+        # dans DEDUP_AI_DAILY_USAGE_CSV) : isoler ces CSV est requis pour ne
+        # jamais écrire dans data/ réel.
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
                      "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
                      "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",
-                     "ORG_ENRICHMENT_CACHE_CSV"):
+                     "ORG_ENRICHMENT_CACHE_CSV", "DEDUP_AI_DAILY_USAGE_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
+        monkeypatch.setattr(store, "DATA_DIR", tmp_path)
 
     def test_create_peuple_source_facts(self, tmp_path, monkeypatch):
         from cyberwatch import runner, store
@@ -605,3 +609,186 @@ class TestLatestItemGeneralized:
 
         assert outcome.latest_item_date == "2026-08-13"
         assert outcome.latest_item_org == "France VAE"
+
+
+class TestDailyDedupNet:
+    """Filet LLM post-déterministe quotidien (§Lot 2/9/10/15/17).
+
+    `run_daily_dedup_net` est testée directement (sans traverser tout
+    `execute`) pour les cas unitaires ; `test_replay_never_calls_llm` exerce
+    `execute(offline=True)` en entier pour garantir l'invariant absolu de
+    REPLAY même avec le filet activé et une clé API présente.
+    """
+
+    def _isolate(self, tmp_path, monkeypatch):
+        from cyberwatch import store
+
+        for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
+                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
+                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV", "AI_QUALIFICATIONS_CSV",
+                     "AI_USAGE_CSV", "ORG_ENRICHMENT_CACHE_CSV", "DEDUP_AI_DAILY_USAGE_CSV"):
+            monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
+        monkeypatch.setattr(store, "DATA_DIR", tmp_path)
+
+    def test_no_new_items_is_zero_call(self, tmp_path, monkeypatch, make_item):
+        self._isolate(tmp_path, monkeypatch)
+        state, problems = runner.run_daily_dedup_net(
+            [make_item()], [], [],
+            run_id="RUN-1", as_of="2026-08-20T00:00:00+04:00", mode="MAJ", persist=False,
+        )
+        assert problems == []
+        assert state.batch_calls_attempted == 0
+
+    def test_daily_run_llm_failure_falls_back_deterministic(self, tmp_path, monkeypatch, make_item):
+        """Une panne du filet (ici simulée par une exception dans le
+        challenger batch) ne doit jamais se propager : le run continue avec
+        le pipeline déterministe, la panne est journalisée explicitement."""
+        from cyberwatch import dedup_ai
+
+        self._isolate(tmp_path, monkeypatch)
+        monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+        monkeypatch.setenv("DEDUP_AI_DAILY_ENABLED", "1")
+
+        new_item = make_item(source="A", org="Zorglub Consulting", published="2026-08-20", url="https://a")
+        historical = make_item(source="B", org="ZorglubConsulting", published="2026-01-01", url="https://b")
+
+        def _boom(*args, **kwargs):
+            raise RuntimeError("panne réseau simulée")
+
+        monkeypatch.setattr(dedup_ai, "challenge_candidates_batch", _boom)
+
+        state, problems = runner.run_daily_dedup_net(
+            [new_item, historical], [new_item], [],
+            run_id="RUN-2", as_of="2026-08-20T00:00:00+04:00", mode="MAJ", persist=False,
+        )
+        assert problems
+        assert "panne réseau simulée" in problems[0]
+
+    def test_registry_write_gated_by_persist(self, tmp_path, monkeypatch, make_item):
+        """`--transient` (`persist=False`) ne doit jamais réécrire le registre
+        d'identité, au même titre qu'ITEMS/INCIDENTS."""
+        from cyberwatch import dedup_ai, org_identity, store
+
+        self._isolate(tmp_path, monkeypatch)
+        monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+        monkeypatch.setenv("DEDUP_AI_DAILY_ENABLED", "1")
+
+        new_item = make_item(source="A", org="Zorglub Consulting", published="2026-08-20", url="https://a")
+        historical = make_item(source="B", org="ZorglubConsulting", published="2026-01-01", url="https://b")
+
+        def fake_batch(candidates, facts_by_item, state, company_ids):
+            return {
+                dedup_ai.candidate_id(c): dedup_ai.DedupAiDecision(
+                    status=dedup_ai.STATUS_OK, same_organisation=dedup_ai.SAME,
+                    same_incident=dedup_ai.DIFFERENT, confidence=0.99, evidence="e",
+                )
+                for c in candidates
+            }
+
+        monkeypatch.setattr(dedup_ai, "challenge_candidates_batch", fake_batch)
+
+        runner.run_daily_dedup_net(
+            [new_item, historical], [new_item], [],
+            run_id="RUN-3", as_of="2026-08-20T00:00:00+04:00", mode="MAJ", persist=False,
+        )
+        assert store.load_organisation_identity_registry_rows() == []
+        assert store.load_dedup_ai_daily_usage() == []
+
+    def test_replay_uses_registry_without_llm(self, tmp_path, monkeypatch, make_item):
+        """Invariant absolu (§Lot 10) : REPLAY ne doit jamais appeler le LLM,
+        même avec `OPENAI_API_KEY` et `DEDUP_AI_DAILY_ENABLED=1` — mais doit
+        tout de même reproduire le regroupement issu d'une décision LLM déjà
+        validée et persistée dans une MAJ antérieure, en lisant uniquement le
+        registre déjà sur disque (§Lot 6/9/10)."""
+        from cyberwatch import dedup_ai, llm_runtime, org_identity, store
+
+        self._isolate(tmp_path, monkeypatch)
+        monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+        monkeypatch.setenv("DEDUP_AI_DAILY_ENABLED", "1")
+
+        def _forbidden(*args, **kwargs):
+            raise AssertionError("REPLAY ne doit jamais appeler le LLM")
+
+        monkeypatch.setattr(llm_runtime.LlmRuntime, "call_json", _forbidden)
+        monkeypatch.setattr(dedup_ai.ai, "_post_openai", _forbidden)
+
+        left = make_item(source="A", org="Zorglub Consulting", published="2026-08-01", url="https://a")
+        right = make_item(source="B", org="ZorglubConsulting", published="2026-08-02", url="https://b")
+        store.save_items([left, right])
+        store.save_snapshot({"As_Of": "2026-08-10T10:00:00+04:00"})
+
+        # Simule une décision LLM validée et persistée par une MAJ antérieure.
+        registry_path = tmp_path / "organisation_identity_registry.csv"
+        store.write_csv(
+            registry_path,
+            org_identity.ORGANISATION_IDENTITY_REGISTRY_COLUMNS,
+            [{
+                "Alias_Key": "zorglubconsulting", "Canonical_Key": "zorglub consulting",
+                "Alias_Raw": "ZorglubConsulting", "Canonical_Raw": "Zorglub Consulting",
+                "Decision": "SAME", "Origin": "LLM_CONFIRMED", "Confidence": "0.97",
+                "Evidence": "e", "First_Seen": "2026-08-09T00:00:00+00:00",
+                "Last_Validated": "2026-08-09T00:00:00+00:00", "Model": "gpt-4o-mini",
+                "Prompt_Version": "v1", "Input_Hash": "h",
+            }],
+        )
+        org_identity.reload_organisation_identity_registry(registry_path)
+        try:
+            context = runner.make_run_context(runner.MODE_REPLAY, as_of="2026-08-12T10:00:00+04:00")
+            report = runner.execute(context, offline=True)
+
+            assert report.overall == status.OK
+            assert report.dedup_ai_summary == {}
+            # Le registre déjà persisté suffit à reproduire le regroupement,
+            # sans le moindre appel LLM : les deux items forment un seul incident.
+            matching = [i for i in report.incidents if i.Items_Count == 2]
+            assert len(matching) == 1
+        finally:
+            org_identity.reload_organisation_identity_registry()
+
+
+class TestOrganisationIdentityRegistryDoesNotAffectItemId:
+    """§Lot 8 : le registre n'agit que sur `effective_organisation_key`, la
+    déduplication — jamais sur `Item_ID`, dont la stabilité historique doit
+    être préservée."""
+
+    def test_item_id_unaffected_by_registry(self, monkeypatch):
+        from cyberwatch import identity, org_identity
+        from cyberwatch.normalize import organisation_key
+
+        key = organisation_key("ZorglubConsulting")
+        before = identity.item_id("A", "2026-08-01", key, "https://a")
+        monkeypatch.setattr(
+            org_identity, "ORGANISATION_IDENTITY_REGISTRY",
+            {"zorglubconsulting": "zorglub consulting"},
+        )
+        after = identity.item_id("A", "2026-08-01", key, "https://a")
+        assert before == after
+
+    def test_incident_id_stability_through_registry_regroup(self, make_item, monkeypatch):
+        """§Lot 8/9 : quand le registre unifie deux items jusque-là séparés,
+        l'incident résultant conserve l'identité de son ancre historique la
+        plus ancienne (`incident_identity.assign_incident_ids`) — jamais un
+        Incident_ID fraîchement inventé — et les `Item_ID` ne bougent jamais."""
+        from cyberwatch import org_identity
+        from cyberwatch.dedup import build_incidents_with_registry
+
+        left = make_item(source="A", org="Zorglub Consulting", published="2026-08-01", url="https://a")
+        right = make_item(source="B", org="ZorglubConsulting", published="2026-08-02", url="https://b")
+        left_id_before, right_id_before = left.Item_ID, right.Item_ID
+
+        before, registry = build_incidents_with_registry([left, right], [])
+        assert len(before) == 2
+        pre_existing_incident_ids = {incident.Incident_ID for incident in before}
+
+        monkeypatch.setattr(
+            org_identity, "ORGANISATION_IDENTITY_REGISTRY",
+            {"zorglubconsulting": "zorglub consulting"},
+        )
+        after, _ = build_incidents_with_registry([left, right], registry)
+        assert len(after) == 1
+        # L'Incident_ID survivant est l'un des deux déjà connus (celui dont
+        # l'ancre a été collectée en premier), jamais un troisième ID inédit.
+        assert after[0].Incident_ID in pre_existing_incident_ids
+        # Les Item_ID ne changent jamais, seul le regroupement en incidents change.
+        assert left.Item_ID == left_id_before
+        assert right.Item_ID == right_id_before

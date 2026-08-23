@@ -2,6 +2,7 @@
 
 import pytest
 
+from cyberwatch import org_identity as oi
 from cyberwatch.dedup import MERGE, NO_DECISION, build_incidents, decide_merge
 from cyberwatch.identity import incident_id
 from cyberwatch.normalize import organisation_key
@@ -133,3 +134,126 @@ def test_different_departments_are_not_merged(make_item):
 
     assert decide_merge(left, right).action == NO_DECISION
     assert len(build_incidents([left, right])) == 2
+
+
+# --------------------------------------------------------------------------
+# Registre d'identité organisationnelle validé (§Lot 6/7/17)
+# --------------------------------------------------------------------------
+
+
+def _row(alias_key, canonical_key, *, decision="SAME", origin="LLM_CONFIRMED", confidence="0.97"):
+    return {
+        "Alias_Key": alias_key,
+        "Canonical_Key": canonical_key,
+        "Alias_Raw": alias_key,
+        "Canonical_Raw": canonical_key,
+        "Decision": decision,
+        "Origin": origin,
+        "Confidence": confidence,
+        "Evidence": "e",
+        "First_Seen": "2026-01-01T00:00:00+00:00",
+        "Last_Validated": "2026-01-01T00:00:00+00:00",
+        "Model": "gpt-4o-mini",
+        "Prompt_Version": "v1",
+        "Input_Hash": "h",
+    }
+
+
+def test_registry_persistence(tmp_path):
+    from cyberwatch import store
+
+    merged, problems = oi.merge_organisation_identity_rows([], [_row("aliasco", "canonicalco")])
+    assert problems == []
+
+    path = tmp_path / "organisation_identity_registry.csv"
+    store.write_csv(path, oi.ORGANISATION_IDENTITY_REGISTRY_COLUMNS, merged)
+
+    reloaded = oi.load_organisation_identity_registry(path)
+    assert reloaded == {"aliasco": "canonicalco"}
+
+
+def test_registry_persistence_missing_file_is_empty(tmp_path):
+    assert oi.load_organisation_identity_registry(tmp_path / "absent.csv") == {}
+
+
+def test_registry_convergent_aliases_are_valid():
+    """A -> C et B -> C : convergent vers la même cible, valide (§Lot 6)."""
+    merged, problems = oi.merge_organisation_identity_rows([], [_row("a", "c"), _row("b", "c")])
+    assert problems == []
+    assert {row["Alias_Key"]: row["Canonical_Key"] for row in merged} == {"a": "c", "b": "c"}
+
+
+def test_registry_conflict_rejected():
+    """A -> C déjà persisté ; une nouvelle décision A -> D est une collision
+    silencieuse potentielle : rejetée explicitement, jamais choisie
+    arbitrairement (§Lot 6)."""
+    existing = [_row("a", "c")]
+    merged, problems = oi.merge_organisation_identity_rows(existing, [_row("a", "d")])
+    assert any("collision" in problem for problem in problems)
+    assert {row["Alias_Key"]: row["Canonical_Key"] for row in merged} == {"a": "c"}
+
+
+def test_registry_cycle_rejected():
+    """A -> B déjà persisté ; B -> A formerait un cycle direct : rejeté."""
+    merged, problems = oi.merge_organisation_identity_rows([_row("a", "b")], [_row("b", "a")])
+    assert any("cycle" in problem for problem in problems)
+    assert {row["Alias_Key"] for row in merged} == {"a"}
+
+
+def test_registry_transitive_redirect_is_reflattened():
+    """A -> C déjà persisté ; on ajoute C -> D : A doit se résoudre
+    directement vers D après fusion, la chaîne restant toujours aplatie à un
+    seul saut pour une résolution en O(1) (§Lot 6/7)."""
+    existing = [_row("a", "c")]
+    merged, problems = oi.merge_organisation_identity_rows(existing, [_row("c", "d")])
+    assert problems == []
+    by_alias = {row["Alias_Key"]: row["Canonical_Key"] for row in merged}
+    assert by_alias["a"] == "d"
+    assert by_alias["c"] == "d"
+
+
+def test_registry_invalid_origin_rejected():
+    merged, problems = oi.merge_organisation_identity_rows([], [_row("a", "b", origin="LLM_GUESS")])
+    assert merged == []
+    assert any("Origin invalide" in problem for problem in problems)
+
+
+def test_registry_alias_equal_canonical_rejected():
+    merged, problems = oi.merge_organisation_identity_rows([], [_row("a", "a")])
+    assert merged == []
+    assert problems
+
+
+def test_validate_organisation_identity_registry_reports_collision():
+    rows = [_row("a", "c"), _row("a", "d")]
+    problems = oi.validate_organisation_identity_registry(rows)
+    assert any("collision" in problem for problem in problems)
+
+
+def test_validate_organisation_identity_registry_accepts_clean_rows():
+    rows = [_row("a", "c"), _row("b", "c")]
+    assert oi.validate_organisation_identity_registry(rows) == []
+
+
+def test_effective_org_key_uses_registry(monkeypatch):
+    """§Lot 7 : une équivalence validée et présente dans le registre unifie
+    la clé effective, sans toucher `Organisation_Key` stockée."""
+    monkeypatch.setattr(
+        oi, "ORGANISATION_IDENTITY_REGISTRY",
+        {"zorglubconsulting": "zorglub consulting"},
+    )
+    assert oi.effective_organisation_key("ZorglubConsulting") == "zorglub consulting"
+    assert oi.effective_organisation_key("Zorglub Consulting") == "zorglub consulting"
+
+
+def test_registry_never_overrides_territorial_identity(monkeypatch):
+    """§Lot 7 : l'ordre de résolution place les identités territoriales
+    fortes avant le registre — une entrée de registre mal formée ne peut
+    jamais la contourner."""
+    monkeypatch.setattr(oi, "ORGANISATION_IDENTITY_REGISTRY", {"departement 33": "autre chose"})
+    assert oi.effective_organisation_key("Département de la Gironde") == "departement 33"
+
+
+def test_effective_org_key_without_registry_entry_is_unaffected(monkeypatch):
+    monkeypatch.setattr(oi, "ORGANISATION_IDENTITY_REGISTRY", {"autre alias": "autre canonique"})
+    assert oi.effective_organisation_key("Zorglub Consulting") == "zorglub consulting"

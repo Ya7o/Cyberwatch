@@ -345,7 +345,7 @@ def _blank_fact(item: Item, spec: SourceSpec) -> dict:
 
 
 def _has_content(fact: dict) -> bool:
-    return any(fact.get(col) for col in SOURCE_FACT_COLUMNS if col not in _BASE_COLUMNS)
+    return any(fact.get(col) for col in SOURCE_FACT_COLUMNS if col not in _BASE_COLUMNS) or bool(fact.get("_Rich_Facts"))
 
 
 def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
@@ -354,6 +354,18 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
     fact["Evidence_JSON"] = _dumps_json(evidence)
     semantic_status = fact.pop("_Semantic_Refresh_Status", None)
     metadata = dict(entry.source_metadata or {})
+    semantic_rich = fact.pop("_Rich_Facts", None)
+    if isinstance(semantic_rich, dict) and semantic_rich:
+        existing_rich = metadata.get("rich_facts") if isinstance(metadata.get("rich_facts"), dict) else {}
+        merged_rich = dict(existing_rich)
+        for key, values in semantic_rich.items():
+            if not isinstance(values, list):
+                continue
+            current = merged_rich.get(key) if isinstance(merged_rich.get(key), list) else []
+            # The semantic layer is additive: deterministic collector facts
+            # remain intact and are never overwritten by an LLM interpretation.
+            merged_rich[key] = current + [value for value in values if value not in current]
+        metadata["rich_facts"] = merged_rich
     if fact.get("Source_ID") in source_facts_ai.TARGET_SOURCES:
         # Ces marqueurs restent dans le metadata auxiliaire, jamais dans le
         # schéma public SOURCE_FACT_COLUMNS.
@@ -361,6 +373,15 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
         if isinstance(semantic_status, dict) and semantic_status:
             metadata["_source_facts_semantic_status"] = semantic_status
         summary = str(fact.get("Summary") or "").strip()
+        # Un titre d'article est une headline éditoriale sourcée, à l'inverse
+        # des fallbacks construits à partir de volumes ou de vecteurs. Il offre
+        # une sortie sûre lorsque le LLM s'abstient, à condition de respecter
+        # exactement le même contrat de publication.
+        if not is_publishable_headline(summary):
+            title = " ".join(str(entry.title or "").split()).strip()
+            if is_publishable_headline(title):
+                fact["Summary"] = summary = title
+                evidence["Summary"] = title
         if is_publishable_headline(summary):
             metadata["_source_facts_summary_status"] = "accepted"
         else:
@@ -375,6 +396,9 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
             metadata["_source_facts_summary_rejection"] = rejection_reason(summary) or status or "missing"
     if metadata:
         fact["Source_Metadata_JSON"] = _dumps_json(metadata)
+    # Les fallbacks éditoriaux peuvent ajouter une preuve après la première
+    # sérialisation en tête de fonction.
+    fact["Evidence_JSON"] = _dumps_json(evidence)
     return fact
 
 
@@ -514,6 +538,33 @@ def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> N
     if impact:
         fact["Impact"] = impact
         evidence["Impact"] = impact_evidence
+
+    for key, column in (("fine_location", "Fine_Location"), ("attack_date", "Attack_Date"), ("discovered_date", "Discovered_Date"), ("evolution", "Evolution")):
+        value, proof = _ai_text(ai_result, key)
+        if value and not fact.get(column):
+            fact[column] = value
+            evidence[column] = proof
+
+    vulnerabilities, vulnerability_evidence = _ai_data_types({"data_types": ai_result.get("vulnerabilities", [])})
+    if vulnerabilities:
+        fact["Vulnerabilities_JSON"] = _dumps_json(vulnerabilities)
+        evidence["Vulnerabilities_JSON"] = vulnerability_evidence
+
+    rich: dict[str, list[dict]] = {}
+    for key in ("affected_counts", "data_volumes", "file_counts"):
+        values = _ordered_ai_evidence(ai_result, key)
+        if values:
+            rich[key] = values
+            evidence[key] = [str(value.get("evidence") or "") for value in values]
+    for key in ("affected_systems", "affected_datasets"):
+        values = ai_result.get(key) if isinstance(ai_result, dict) else None
+        if isinstance(values, list):
+            records = [{"value": str(value.get("value") or ""), "status": "confirmed", "evidence": str(value.get("evidence") or "")} for value in values if isinstance(value, dict) and value.get("value")]
+            if records:
+                rich[key] = records
+                evidence[key] = [record["evidence"] for record in records]
+    if rich:
+        fact["_Rich_Facts"] = rich
 
 
 _INITIAL_ACCESS_LABELS = {
@@ -724,7 +775,7 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     _apply_semantic_enrichment(fact, evidence, ai_result)
     _derive_summary(fact, evidence)
 
-    cves = _extract_cves(text)
+    cves = sorted(set(_extract_cves(text)) | set(_loads_json(fact.get("Vulnerabilities_JSON", "")) or []))
     if cves:
         fact["Vulnerabilities_JSON"] = _dumps_json(cves)
         evidence["Vulnerabilities_JSON"] = ", ".join(cves)
@@ -830,7 +881,7 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
     _apply_semantic_enrichment(fact, evidence, ai_result)
     _derive_summary(fact, evidence)
 
-    cves = _extract_cves(text)
+    cves = sorted(set(_extract_cves(text)) | set(_loads_json(fact.get("Vulnerabilities_JSON", "")) or []))
     if cves:
         fact["Vulnerabilities_JSON"] = _dumps_json(cves)
         evidence["Vulnerabilities_JSON"] = ", ".join(cves)

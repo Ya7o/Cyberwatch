@@ -446,6 +446,17 @@ def run_backfill(
         cached_summary = str((editorial_fields or {}).get("summary") or "").strip()
         if fact is not None and is_publishable_headline(cached_summary):
             fact["Summary"] = cached_summary
+        # Même garantie pour un titre éditorial source : le backfill doit
+        # publier le contrat validé, même si un extracteur historique a
+        # reconstruit entre-temps une ancienne synthèse structurée.
+        if fact is not None and not is_publishable_headline(fact.get("Summary")):
+            source_title = " ".join(str(entry.title or "").split()).strip()
+            if is_publishable_headline(source_title):
+                fact["Summary"] = source_title
+                evidence = source_facts._loads_json(str(fact.get("Evidence_JSON") or ""))
+                evidence = evidence if isinstance(evidence, dict) else {}
+                evidence["Summary"] = source_title
+                fact["Evidence_JSON"] = source_facts._dumps_json(evidence)
 
         # Une panne technique ou un budget bloqué ne doit pas dégrader une
         # abstention déjà confirmée. Seule une vraie réponse sémantique peut

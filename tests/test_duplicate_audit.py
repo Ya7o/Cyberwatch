@@ -3,7 +3,10 @@ from cyberwatch.duplicate_audit import (
     DUPLICATE_CANDIDATE_CONCATENATION,
     DUPLICATE_CANDIDATE_PERMUTATION,
     RISK_FALSE_MERGE,
+    RISK_MISSED_DUPLICATE,
+    compute_candidate_signals,
     find_audit_candidates,
+    find_daily_llm_candidates,
     find_duplicate_candidates,
 )
 
@@ -118,3 +121,110 @@ def test_same_source_different_urls_remain_auditable(make_item):
     ]
     candidates = [c for c in find_audit_candidates(items) if c.risk_type == RISK_FALSE_MERGE]
     assert len(candidates) == 1
+
+
+# --------------------------------------------------------------------------
+# Filet quotidien LLM (§Lot 1/2/17) : signaux et périmètre de candidats
+# --------------------------------------------------------------------------
+
+
+def test_candidate_generation_typographic(make_item):
+    """« Zorglub Consulting » / « ZorglubConsulting » : concaténation exacte,
+    pas déjà résolue par un alias statique — doit produire un candidat avec
+    `compact_match=True`."""
+    new_item = make_item(source="A", org="Zorglub Consulting", published="2026-08-01", url="https://a")
+    historical = make_item(source="B", org="ZorglubConsulting", published="2026-01-01", url="https://b")
+
+    candidates = find_daily_llm_candidates([new_item], [new_item, historical])
+    assert len(candidates) == 1
+    candidate = candidates[0]
+    assert candidate.risk_type == RISK_MISSED_DUPLICATE
+    assert candidate.signals.compact_match is True
+    assert candidate.signals.fuzzy_score == 1.0
+
+
+def test_candidate_generation_acronym(make_item):
+    """« FFT » / « Fédération Française de Test » : acronyme exact déterministe
+    (les mots-outils « de » ne comptent pas), non couvert par un alias."""
+    new_item = make_item(source="A", org="FFT", published="2026-08-01", url="https://a")
+    historical = make_item(
+        source="B", org="Fédération Française de Test", published="2026-01-01", url="https://b",
+    )
+
+    candidates = find_daily_llm_candidates([new_item], [new_item, historical])
+    assert len(candidates) == 1
+    assert candidates[0].signals.acronym_match is True
+
+
+def test_candidate_generation_fuzzy_false_positive(make_item):
+    """Le fuzzy peut générer un candidat entre deux fédérations sportives
+    manifestement distinctes (préfixe massif commun) : c'est le comportement
+    voulu (§Lot 1, LOT0 FF_VOILE_VS_VOLLEY). Ce signal seul ne doit jamais
+    être confondu avec une preuve structurelle forte : aucun `strong_signal`
+    n'est levé, seul `fuzzy_score` l'est — la décision d'identité reste
+    entièrement du ressort du LLM (jamais de cette fonction)."""
+    left = make_item(source="A", org="Fédération Française de Voile", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Fédération Française de Volley", published="2026-01-01", url="https://b")
+
+    signals = compute_candidate_signals(left, right)
+    assert signals.fuzzy_score > 0.5
+    assert signals.strong_signal_count == 0
+    assert signals.compact_match is False
+    assert signals.token_permutation is False
+    assert signals.containment is False
+    assert signals.acronym_match is False
+
+    candidates = find_daily_llm_candidates([left], [left, right])
+    assert len(candidates) == 1
+    assert candidates[0].signals.strong_signal_count == 0
+
+
+def test_candidate_generation_skips_pairs_already_resolved_deterministically(make_item):
+    """Une paire déjà unifiée par un alias statique (`organisation_aliases.csv`)
+    n'a aucune raison d'être envoyée au LLM : le moteur déterministe reste la
+    première ligne (§Lot 2)."""
+    new_item = make_item(source="A", org="DGFiP", published="2026-08-01", url="https://a")
+    historical = make_item(
+        source="B", org="Direction générale des Finances publiques",
+        published="2026-01-01", url="https://b",
+    )
+    assert find_daily_llm_candidates([new_item], [new_item, historical]) == []
+
+
+def test_candidate_generation_bounded_per_new_item(make_item):
+    """Au plus `max_candidates_per_item` candidats retenus par nouvel item,
+    même si beaucoup de paires plausibles existent (§Lot 1)."""
+    new_item = make_item(source="A", org="Globex Holding", published="2026-08-10", url="https://new")
+    historical = [
+        make_item(
+            source="B", org=f"Globex Holding {suffix}",
+            published="2026-01-01", url=f"https://h{index}",
+        )
+        for index, suffix in enumerate(["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta"])
+    ]
+    candidates = find_daily_llm_candidates(
+        [new_item], [new_item, *historical], max_candidates_per_item=3,
+    )
+    assert len(candidates) <= 3
+
+
+def test_candidate_generation_no_candidate_for_unrelated_items(make_item):
+    left = make_item(source="A", org="Globex Corp", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Ministère de la Culture", published="2026-08-01", url="https://b")
+    assert find_daily_llm_candidates([left], [left, right]) == []
+
+
+def test_dedup_identity_benchmark_on_regression_corpus():
+    """§Lot 0/16 — critère d'acceptation #12 : 0 faux merge sur le corpus."""
+    import json
+    from pathlib import Path
+
+    from cyberwatch.duplicate_audit import dedup_identity_benchmark
+
+    corpus_path = Path(__file__).resolve().parent / "fixtures" / "dedup_identity_cases.json"
+    cases = json.loads(corpus_path.read_text(encoding="utf-8"))["cases"]
+
+    result = dedup_identity_benchmark(cases)
+    assert result["known_nonduplicate_false_merge_count"] == 0, result["known_nonduplicate_false_merge_cases"]
+    assert result["known_duplicate_recall_total"] > 0
+    assert result["known_duplicate_recall_hits"] == result["known_duplicate_recall_total"]
