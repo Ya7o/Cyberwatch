@@ -31,6 +31,7 @@ jobs:
       - name: Rattraper les synthèses récentes
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          PYTHONPATH: "."
           LLM_MAX_CALLS_PER_RUN: "100"
           LLM_MAX_COST_USD_PER_RUN: "0.50"
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "100"
