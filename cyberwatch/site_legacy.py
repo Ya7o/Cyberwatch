@@ -314,6 +314,27 @@ def _best_source_summary(facts: list[dict]) -> str:
     return str(selected.get("summary") or "").strip()
 
 
+def _source_links(incident: Incident) -> list[dict[str, str]]:
+    """Associe chaque source à sa référence directe, sans homepage de repli."""
+    hosts = {
+        "CYBERATTAQUE_ORG": "cyberattaque.org",
+        "FRENCHBREACHES": "frenchbreaches.com",
+        "BONJOURLAFUITE": "bonjourlafuite.eu.org",
+    }
+    urls = [url for url in incident.Source_URLs.split(" | ") if url.startswith(("http://", "https://"))]
+    used: set[str] = set()
+    result = []
+    for source in incident.Sources.split(" | "):
+        expected = hosts.get(source, "")
+        match = next((url for url in urls if url not in used and (not expected or expected in url)), "")
+        if not match and source == "RANSOMWARE_LIVE":
+            match = next((url for url in urls if url not in used and ".onion/" in url), "")
+        if match:
+            used.add(match)
+            result.append({"source": source, "url": match})
+    return result
+
+
 def incidents_payload(
     incidents: list[Incident],
     local_analysis: dict[str, dict] | None = None,
@@ -336,6 +357,7 @@ def incidents_payload(
             "location": incident.Localisation,
             "sources": [s for s in incident.Sources.split(" | ") if s],
             "urls": [u for u in incident.Source_URLs.split(" | ") if u],
+            "source_links": _source_links(incident),
             "items": incident.Items_Count,
             "first_seen": incident.First_seen,
             "last_seen": incident.Last_seen,

@@ -79,6 +79,10 @@
     return sourceLabels[key] || key || "Source";
   }
 
+  function initialAccessLabel(value) {
+    return ({ phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" })[value] || "";
+  }
+
   /* §Transparence : une source en échec ne doit jamais devenir un faux succès.
      `load` remonte l'issue au lieu de l'absorber dans une valeur de repli. */
   async function load(path, fallback) {
@@ -142,7 +146,7 @@
   window.CW = {
     esc, normalize, safeUrl, host,
     parseDate, formatDate, formatDateTime, formatNumber, plural,
-    setSourceLabels, sourceLabel,
+    setSourceLabels, sourceLabel, initialAccessLabel,
     load, reportDataFailure,
     countBy, searchableText, buildSearchIndex,
   };

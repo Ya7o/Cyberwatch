@@ -28,6 +28,12 @@ class TestComponents:
         ]
         assert len(build_incidents(items)) == 2
 
+    def test_corroboration_ransomware_multisource_a_dix_jours(self, make_item):
+        report = make_item(source="CYBERATTAQUE_ORG", org="Mairie de Drancy", published="2026-07-23", threat=config.THREAT_RANSOMWARE, url="https://a")
+        claim = make_item(source="RANSOMWARE_LIVE", org="Mairie de Drancy", published="2026-08-02", threat=config.THREAT_RANSOMWARE, url="https://b")
+        assert decide_merge(report, claim).action == MERGE
+        assert len(build_incidents([report, claim])) == 1
+
     def test_chaine_j0_j14_j28_ne_depasse_pas_la_fenetre_ancree(self, make_item):
         items = [
             make_item(published="2026-01-01", url="https://a/1"),
@@ -121,12 +127,12 @@ class TestIncidentFields:
         ]
         assert build_incidents(items)[0].Menace == config.THREAT_LEAK
 
-    def test_compromission_domine_intrusion_generique(self, make_item):
+    def test_compromission_historique_ne_devient_plus_une_menace(self, make_item):
         items = [
             make_item(source="A", published="2026-03-01", url="https://a/1", threat=config.THREAT_ACCOUNT),
             make_item(source="B", published="2026-03-03", url="https://a/2", threat=config.THREAT_INTRUSION),
         ]
-        assert build_incidents(items)[0].Menace == config.THREAT_ACCOUNT
+        assert build_incidents(items)[0].Menace == config.THREAT_INTRUSION
 
     def test_son_video_recidive_separe_avril_et_consolide_aout(self, make_item):
         """La récidive ouvre l'épisode d'août par rapport à avril, sans

@@ -96,7 +96,7 @@ class TestThreatTaxonomy:
             ("Attaque DDoS massive", config.THREAT_DDOS),
             ("Déni de service sur le portail", config.THREAT_DDOS),
             ("Un malware détecté sur le réseau", config.THREAT_MALWARE),
-            ("Messagerie compromise du service", config.THREAT_ACCOUNT),
+            ("Messagerie compromise du service", config.THREAT_INTRUSION),
             ("Intrusion dans le système d information", config.THREAT_INTRUSION),
             ("Fuite de données personnelles", config.THREAT_LEAK),
             ("Campagne de phishing", config.THREAT_PHISHING),

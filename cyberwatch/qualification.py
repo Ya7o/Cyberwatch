@@ -65,9 +65,19 @@ def stabilize_threats(items):
     changed = 0
     for item in items:
         before = item.Threat
-        if item.Source_ID in _AUTHORITATIVE_NATIVE_THREAT_SOURCES:
+        if item.Threat == config.THREAT_ACCOUNT:
+            # Catégorie historique : un compte ou une messagerie compromis est
+            # un vecteur, pas une menace principale.
+            item.Threat = (
+                config.THREAT_LEAK
+                if item.Source_ID in _SOURCE_SCOPE_THREATS
+                else config.THREAT_INTRUSION
+            )
+        elif item.Source_ID in _AUTHORITATIVE_NATIVE_THREAT_SOURCES:
             native = (item.Threat_Raw or "").strip()
-            if native in config.THREATS:
+            if native == config.THREAT_ACCOUNT:
+                item.Threat = config.THREAT_INTRUSION
+            elif native in config.THREATS:
                 item.Threat = native
         elif item.Source_ID in _AUTHORITATIVE_DEFAULT_THREATS:
             item.Threat = _AUTHORITATIVE_DEFAULT_THREATS[item.Source_ID]

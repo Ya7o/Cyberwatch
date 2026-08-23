@@ -40,14 +40,14 @@ def test_ransomware_corroboration_is_symmetric(make_item):
     assert decide_merge(claim, report) == decide_merge(report, claim)
 
 
-def test_ransomware_corroboration_does_not_extend_to_j5(make_item):
-    claim, report = _pair(make_item, days=5)
+def test_ransomware_corroboration_does_not_extend_au_dela_de_j14(make_item):
+    claim, report = _pair(make_item, days=15)
 
     assert decide_merge(claim, report).action == KEEP_SEPARATE
     assert len(build_incidents([claim, report])) == 2
 
 
-def test_ransomware_corroboration_requires_exact_source_pair(make_item):
+def test_ransomware_corroboration_accepte_frenchbreaches(make_item):
     claim, _ = _pair(make_item, days=4)
     other = make_item(
         source="FRENCHBREACHES",
@@ -58,7 +58,7 @@ def test_ransomware_corroboration_requires_exact_source_pair(make_item):
         url="https://frenchbreaches.example/filair",
     )
 
-    assert decide_merge(claim, other).action == KEEP_SEPARATE
+    assert decide_merge(claim, other).action == MERGE
 
 
 def test_ransomware_corroboration_requires_ransomware_on_both_sides(make_item):

@@ -19,6 +19,13 @@ _STRUCTURED_SOURCE_SECTOR_ALIASES = {
     "retail e commerce": config.SECTOR_RETAIL,
 }
 
+_KNOWN_ORGANISATION_SECTORS = {
+    "capgemini": config.SECTOR_SERVICES,
+    "capgemini engineering": config.SECTOR_SERVICES,
+    "steam": config.SECTOR_TECH,
+    "afpa": config.SECTOR_EDUCATION,
+}
+
 
 def _contains(haystack: str, needle: str) -> bool:
     pattern = r"(?<!\w)" + re.escape(needle.strip()) + r"(?!\w)"
@@ -171,6 +178,9 @@ def _safe_institutional_name_sector(organisation: str) -> str:
 
 def classify_sector_name(organisation: str) -> str:
     """Classe un nom uniquement avec des preuves nominatives sûres."""
+    known = _KNOWN_ORGANISATION_SECTORS.get(organisation_key(organisation))
+    if known:
+        return known
     sector = _watchlist_sector(organisation)
     if sector != config.SECTOR_UNKNOWN:
         return sector

@@ -12,10 +12,10 @@ def test_specific_leak_beats_generic_cyberattack():
     ) == config.THREAT_LEAK
 
 
-def test_specific_account_compromise_beats_generic_attack():
+def test_account_compromise_is_an_intrusion_not_a_threat_kind():
     assert classify_threat(
         "Cyberattaque avec messagerie compromise du service"
-    ) == config.THREAT_ACCOUNT
+    ) == config.THREAT_INTRUSION
 
 
 def test_ransomware_still_beats_exfiltration():
@@ -65,7 +65,7 @@ def test_veille_native_known_is_preserved(make_item):
     item = make_item(source="VEILLE_LLM", threat=config.THREAT_LEAK)
     item.Threat_Raw = config.THREAT_ACCOUNT
     stabilize_threats([item])
-    assert item.Threat == config.THREAT_ACCOUNT
+    assert item.Threat == config.THREAT_INTRUSION
 
 
 def test_ransomware_live_contract_is_authoritative(make_item):
@@ -99,7 +99,7 @@ def test_incident_leak_beats_generic_intrusion(make_item):
     assert build_incidents(items)[0].Menace == config.THREAT_LEAK
 
 
-def test_incident_account_compromise_beats_generic_intrusion(make_item):
+def test_incident_account_compromise_legacy_value_is_not_published(make_item):
     items = [
         make_item(source="VEILLE_LLM", threat=config.THREAT_ACCOUNT, url="https://a/1"),
         make_item(
@@ -109,7 +109,7 @@ def test_incident_account_compromise_beats_generic_intrusion(make_item):
             url="https://a/2",
         ),
     ]
-    assert build_incidents(items)[0].Menace == config.THREAT_ACCOUNT
+    assert build_incidents(items)[0].Menace == config.THREAT_INTRUSION
 
 
 def test_incident_ransomware_beats_leak_even_when_leak_is_veille(make_item):

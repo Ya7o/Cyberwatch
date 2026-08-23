@@ -154,7 +154,6 @@ _THREAT_SPECIFIC_PRIORITY = (
     config.THREAT_RANSOMWARE,
     config.THREAT_DDOS,
     config.THREAT_MALWARE,
-    config.THREAT_ACCOUNT,
     config.THREAT_LEAK,
     config.THREAT_PHISHING,
     config.THREAT_THIRD_PARTY,

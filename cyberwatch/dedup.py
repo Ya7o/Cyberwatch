@@ -34,7 +34,7 @@ RANSOMWARE_CORROBORATION_SOURCES = frozenset({
     "RANSOMWARE_LIVE",
     "CYBERATTAQUE_ORG",
 })
-RANSOMWARE_CORROBORATION_DAYS = 4
+RANSOMWARE_CORROBORATION_DAYS = 14
 
 RECURRENCE_MARKERS = (
     "nouvelle cyberattaque", "nouvelle attaque", "nouvelle fuite", "a nouveau",
@@ -81,9 +81,10 @@ def _same_unique_url(left: Item, right: Item) -> bool:
 
 
 def _ransomware_corroboration(left: Item, right: Item, days: int) -> bool:
-    if days != RANSOMWARE_CORROBORATION_DAYS:
+    if days > RANSOMWARE_CORROBORATION_DAYS:
         return False
-    if {left.Source_ID, right.Source_ID} != RANSOMWARE_CORROBORATION_SOURCES:
+    sources = {left.Source_ID, right.Source_ID}
+    if "RANSOMWARE_LIVE" not in sources and sources != {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}:
         return False
     if left.Threat != config.THREAT_RANSOMWARE or right.Threat != config.THREAT_RANSOMWARE:
         return False
@@ -95,8 +96,7 @@ def _ransomware_corroboration(left: Item, right: Item, days: int) -> bool:
     return bool(
         claim_date
         and report_date
-        and report_date > claim_date
-        and (report_date - claim_date).days == RANSOMWARE_CORROBORATION_DAYS
+        and abs((report_date - claim_date).days) <= RANSOMWARE_CORROBORATION_DAYS
     )
 
 
@@ -223,6 +223,35 @@ def group_components(items: list[Item]) -> list[list[Item]]:
                 current, anchor = [item], item
         if current:
             components.append(current)
+
+    # Une publication éditoriale peut précéder de plusieurs jours la fiche
+    # ransomware qui la corrobore. La construction ancrée ci-dessus ne voit
+    # pas toujours cette paire si une troisième source a créé entre-temps une
+    # composante distincte ; réunir alors seulement les composantes dont une
+    # paire satisfait déjà la règle de corroboration stricte.
+    merged = True
+    while merged:
+        merged = False
+        for index, left in enumerate(components):
+            match = next((
+                other for other in range(index + 1, len(components))
+                if any(
+                    _ransomware_corroboration(
+                        a, b,
+                        abs((date_or_empty(a.best_date) - date_or_empty(b.best_date)).days),
+                    )
+                    for a in left for b in components[other]
+                    if date_or_empty(a.best_date) and date_or_empty(b.best_date)
+                ) and not any(
+                    decide_merge(a, b).reason_code in STRONG_KEEP_REASON_CODES
+                    for a in left for b in components[other]
+                )
+            ), None)
+            if match is None:
+                continue
+            components[index] = left + components.pop(match)
+            merged = True
+            break
     return components
 
 

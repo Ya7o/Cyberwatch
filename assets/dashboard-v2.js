@@ -97,9 +97,9 @@
   }
 
   function sourceBadges(incident) {
-    const homes = new Map((state.status?.sources || []).map((source) => [source.id, safeUrl(source.url)]));
+    const direct = new Map((incident.source_links || []).map((link) => [link.source, safeUrl(link.url)]));
     return unique(incident.sources || []).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr")).map((id) => {
-      const url = homes.get(id);
+      const url = direct.get(id);
       return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(sourceLabel(id))}</a>` : `<span>${esc(sourceLabel(id))}</span>`;
     }).join("");
   }
@@ -411,7 +411,7 @@
       dataTypesHtml(detail.data_types || []),
       detailField("Acteur", fields.threat_actor?.value),
       detailField("Tiers impliqué", fields.third_party?.value),
-      detailField("Vecteur d’entrée", fields.initial_access?.value),
+      detailField("Vecteur d’entrée", CW.initialAccessLabel(fields.initial_access?.value)),
       detailField("Localisation précise", fields.fine_location?.value),
       detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
       detailField("Date de l’attaque", fields.attack_date?.value ? formatDate(fields.attack_date.value) : ""),
@@ -426,7 +426,7 @@
     $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}${tentativeChip ? `<p>${tentativeChip}</p>` : ""}</div>
       ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
       <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
-      <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div>${sourceLinks.length ? `<div class="evidence-links">${sourceLinks.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : ""}</div>`;
+      <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div></div>`;
     $("#detail-dialog").showModal();
   }
 

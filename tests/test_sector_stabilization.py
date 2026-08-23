@@ -42,6 +42,9 @@ def test_noms_auto_descriptifs_restent_deterministes():
     assert sector.classify_sector_name("Université de Toulouse") == config.SECTOR_EDUCATION
     assert sector.classify_sector_name("Clinique de l'Yvette") == config.SECTOR_HEALTH
     assert sector.classify_sector_name("Mairie de Drancy") == config.SECTOR_ADMIN
+    assert sector.classify_sector_name("Capgemini") == config.SECTOR_SERVICES
+    assert sector.classify_sector_name("Steam") == config.SECTOR_TECH
+    assert sector.classify_sector_name("AFPA") == config.SECTOR_EDUCATION
 
 
 def test_description_metier_expresse_est_classable():
