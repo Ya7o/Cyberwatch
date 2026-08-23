@@ -397,6 +397,18 @@ def is_publishable_summary(value: str) -> bool:
     return True
 
 
+def best_publishable_summary(facts: Iterable[dict]) -> str:
+    """Choisit la meilleure headline déjà validée, jamais un détail structuré."""
+    candidates = []
+    for fact in _ordered_facts(facts):
+        value = _text(fact.get("summary"))
+        if not is_publishable_summary(value):
+            continue
+        richness = sum(bool(fact.get(key)) for key in ("impact", "affected_count", "data_types", "threat_actor"))
+        candidates.append((richness, -source_rank(fact.get("source")), value))
+    return max(candidates)[2] if candidates else ""
+
+
 def build_display_summary(resolved: dict, fallback: str = "") -> str:
     # Une carte ne réassemble jamais impact, volumes ou catégories. Ces faits
     # restent dans le détail ; seul le résumé éditorial déjà validé est publié.

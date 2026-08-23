@@ -36,9 +36,8 @@ def build() -> tuple[int, int]:
     # de façon déterministe. Dès que des faits structurés suffisent, une
     # display_summary compacte et canonique la remplace.
     fallback_summaries = {
-        str(row.get("id") or ""): str(row.get("summary") or "")
-        for row in payload
-        if row.get("id")
+        incident_id: fact_resolution.best_publishable_summary(facts)
+        for incident_id, facts in raw_facts.items()
     }
     resolved = fact_resolution.resolve_all(raw_facts, fallback_summaries)
     for row in payload:

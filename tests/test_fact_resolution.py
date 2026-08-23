@@ -215,6 +215,14 @@ def test_synthese_editoriale_une_phrase_est_conservee():
     assert fr.resolve_incident_facts([], fallback_summary=headline)["display_summary"] == headline
 
 
+def test_headline_acceptee_d_une_source_ne_peut_pas_etre_masquee_par_un_detail_rejete():
+    facts = [
+        fact("CYBERATTAQUE_ORG", summary="Éléments documentés : 20 fichiers."),
+        fact("FRENCHBREACHES", summary="Protection Civile signale une fuite touchant plus de 525 000 profils."),
+    ]
+    assert fr.best_publishable_summary(facts).startswith("Protection Civile")
+
+
 def test_source_inconnue_passe_apres_sources_connues():
     assert fr.source_rank("RANSOMWARE_LIVE") < fr.source_rank("SOURCE_EXTERNE")
 

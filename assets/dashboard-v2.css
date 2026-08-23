@@ -81,6 +81,6 @@
   .incident-side { min-width:0; width:100%; }
   .analysis-grid { grid-template-columns:1fr; }
   .metric-bar { grid-template-columns:minmax(110px,1fr) minmax(80px,2fr) auto; }
-  .resolved-field { grid-template-columns:1fr; gap:.3rem; }
+  .resolved-field { grid-template-columns:minmax(92px,120px) 1fr; gap:.55rem; align-items:baseline; }
   .location-menu { position:fixed; left:1rem; right:1rem; top:20%; max-height:60vh; }
 }

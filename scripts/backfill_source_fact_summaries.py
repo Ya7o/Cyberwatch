@@ -266,6 +266,18 @@ def restore_reopened_semantic_fields(
     """Restaure l'abstention si la tentative forcée n'a pas réellement abouti."""
     if not previous:
         return
+    runtime = source_facts_ai._runtime()
+    expected_hash = source_facts_ai.content_hash(entry)
+    for cache_entry in runtime.cache.values():
+        if not isinstance(cache_entry, dict):
+            continue
+        if (str(cache_entry.get("item_id") or ""), str(cache_entry.get("source_id") or ""), str(cache_entry.get("content_hash") or ""), str(cache_entry.get("model") or "")) != (item.Item_ID, item.Source_ID, expected_hash, runtime.model):
+            continue
+        fields = cache_entry.get("fields")
+        if isinstance(fields, dict):
+            for field, cached in previous.items():
+                fields[field] = dict(cached)
+        return
 
 
 def invalidate_summary_cache(item: Item, entry: RawEntry) -> bool:
@@ -282,24 +294,6 @@ def invalidate_summary_cache(item: Item, entry: RawEntry) -> bool:
             fields.pop("summary", None)
             return True
     return False
-    runtime = source_facts_ai._runtime()
-    expected_hash = source_facts_ai.content_hash(entry)
-    for cache_entry in runtime.cache.values():
-        if not isinstance(cache_entry, dict):
-            continue
-        if str(cache_entry.get("item_id") or "") != item.Item_ID:
-            continue
-        if str(cache_entry.get("source_id") or "") != item.Source_ID:
-            continue
-        if str(cache_entry.get("content_hash") or "") != expected_hash:
-            continue
-        if str(cache_entry.get("model") or "") != runtime.model:
-            continue
-        fields = cache_entry.get("fields")
-        if isinstance(fields, dict):
-            for field, cached in previous.items():
-                fields[field] = dict(cached)
-        return
 
 
 def run_backfill(
