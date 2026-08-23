@@ -10,6 +10,11 @@ from __future__ import annotations
 
 from . import fact_resolution, site_legacy as _legacy
 
+_SENSITIVE = ("mot de passe", "identifiant", "token", "secret", "iban", "bancair", "paiement", "santé", "medical", "nir", "passeport", "pièce d'identité", "biométr")
+
+def _sensitive_types(detail: dict) -> list[str]:
+    return [str(x.get("value")) for x in detail.get("data_types", []) if any(marker in str(x.get("value") or "").casefold() for marker in _SENSITIVE)]
+
 # Compatibilité stricte : les tests et outils internes utilisent plusieurs
 # helpers privés de site.py. On les réexporte sans dupliquer leur code.
 for _name in dir(_legacy):
@@ -46,6 +51,8 @@ def build() -> tuple[int, int]:
         # doit retirer une ancienne fiche structurée, jamais la laisser fuir.
         if detail is not None:
             row["summary"] = str(detail.get("display_summary") or "")
+            row["sensitive_data_types"] = _sensitive_types(detail)
+            row["sensitive_data_exposed"] = bool(row["sensitive_data_types"])
 
     state = _legacy.status_payload()
 
