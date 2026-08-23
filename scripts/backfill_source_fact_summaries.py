@@ -367,6 +367,7 @@ def run_backfill(
         runtime = source_facts_ai._runtime()
         if refresh_summary:
             invalidate_summary_cache(item, entry)
+            source_facts_ai.force_summary_refresh(item, entry)
         calls_before = runtime.calls
         failures_before = runtime.calls_failed
         reopened = (

@@ -1088,6 +1088,9 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
 
     key = _cache_item_key(item, entry, runtime)
     cached, satisfied = _read_field_cache(runtime, key, fields, full_context)
+    if key in getattr(runtime, "force_summary_keys", set()):
+        cached.pop("summary", None)
+        satisfied.discard("summary")
     if satisfied != fields:
         migrated = _migrate_legacy_cache(runtime, key, item, entry, seed, fields - satisfied)
         if migrated:
@@ -1151,3 +1154,12 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         runtime.progress()
         runtime.checkpoint()
     return {**seed, **cached, **normalized} or None
+
+
+def force_summary_refresh(item: Item, entry: RawEntry) -> None:
+    """Force la prochaine extraction de la seule headline pour cet article."""
+    runtime = _runtime()
+    keys = getattr(runtime, "force_summary_keys", None)
+    if keys is None:
+        keys = runtime.force_summary_keys = set()
+    keys.add(_cache_item_key(item, entry, runtime))
