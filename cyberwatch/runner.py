@@ -947,6 +947,7 @@ def _persist(
             store.save_items(report.items)
             store.save_incidents(report.incidents)
             store.save_incident_id_registry(report.incident_id_registry)
+            store.save_qualification_provenance(report.qualification_provenance)
             sector_registry.write_outputs(report.sector_registry_rows, report.sector_queue_rows)
             save_snapshot_provenance(
                 store.load_items(), store.load_incidents(), operation="REPLAY",
