@@ -402,7 +402,7 @@
     "value": "comptes gedimat.fr"
    }
   ],
-  "display_summary": "Gédimat a été victime d'une cyberattaque entraînant la divulgation de données personnelles liées aux comptes gedimat.fr.",
+  "display_summary": "Gédimat a été victime d'une cyberattaque exposant des données personnelles.",
   "fields": {
    "third_party": {
     "source": "FRENCHBREACHES",
@@ -631,7 +631,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "Achat Or et Argent",
+  "display_summary": "Les données de plus de 50 000 clients d'Achat Or et Argent ont été exposées.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -680,9 +680,26 @@
  "INC-24879C0A8E07": {
   "affected": [],
   "data_types": [],
-  "datasets": [],
-  "display_summary": "Cloud de l’État (cloud.numerique.gouv.fr)",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "données du Cloud de l’État"
+   }
+  ],
+  "display_summary": "Des milliers de données du Cloud de l’État ont été diffusées sur un forum de hackers.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Exposition de données sensibles sur un forum de hackers."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1103,7 +1120,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "Fédération Française de Karaté",
+  "display_summary": "Fuite de données de 2,8 millions d’enregistrements à la Fédération Française de Karaté.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -1271,8 +1288,23 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "Mairie de Sixt-sur-Aff",
-  "fields": {},
+  "display_summary": "La mairie de Sixt-sur-Aff a subi un piratage avec un site WordPress défacé.",
+  "fields": {
+   "fine_location": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Sixt-sur-Aff"
+   },
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Site WordPress de la mairie défaçé"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1280,22 +1312,10 @@
  "INC-401EAF29A613": {
   "affected": [
    {
-    "evidence": "# Fuite de données revendiquée sur impots.gouv.fr : 678 438 lignes et des données fiscales sensibles potentiellement compromises",
-    "raw": "678 438 lignes",
-    "scope": "données fiscales",
-    "semantic": "donnees fiscales",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "unit": "records",
-    "value": 678438
-   },
-   {
-    "evidence": "Impôts : plus de 678 000 personnes concernées par une fuite de données...",
-    "raw": "678 000 personnes",
-    "semantic": "unspecified",
+    "evidence": "plus de 678 000 personnes concernées par une fuite de données",
+    "raw": "plus de 678 000 personnes",
+    "scope": "fuités",
+    "semantic": "fuites",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -1305,27 +1325,18 @@
     "value": 678000
    }
   ],
-  "data_types": [
-   {
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "Fuite de données touchant plus de 678 000 personnes à la Direction générale des Finances publiques.",
+  "fields": {
+   "impact": {
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "value": "données fiscales"
+    "value": "Fuite de données personnelles."
    }
-  ],
-  "datasets": [
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "données fiscales"
-   }
-  ],
-  "display_summary": "Direction générale des Finances publiques (DGFiP)",
-  "fields": {},
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1347,7 +1358,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "EVA Charleroi",
+  "display_summary": "EVA Charleroi victime d'une fuite de données révélant 2 558 lignes.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -1532,7 +1543,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Xplor Resamania",
+  "display_summary": "Fuite de données chez Xplor Resamania touchant plus de 5 millions d’adhérents.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -1623,7 +1634,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "iMapper.tech",
+  "display_summary": "iMapper.tech a subi une fuite de données avec des comptes exposés.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -2943,7 +2954,6 @@
  "INC-8BB56F33DD82": {
   "affected": [
    {
-    "evidence": "# Une fuite de données liée à la Fédération Française de Motocyclisme refait surface : 472 760 enregistrements",
     "raw": "472 760 enregistrements",
     "semantic": "unspecified",
     "source": "FRENCHBREACHES",
@@ -2956,9 +2966,26 @@
    }
   ],
   "data_types": [],
-  "datasets": [],
-  "display_summary": "Fédération Française de Motocyclisme",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base de données de la Fédération Française de Motocyclisme"
+   }
+  ],
+  "display_summary": "Fuite de données de 472 760 enregistrements à la Fédération Française de Motocyclisme.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de données personnelles."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -3317,7 +3344,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "EVA Nantes Sud",
+  "display_summary": "EVA Nantes Sud piraté avec les données de plus de 20 000 joueurs affectées.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -3519,7 +3546,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "Bureau Vallée",
+  "display_summary": "Bureau Vallée a subi une fuite de données affectant près de 4,82 millions de dossiers.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -4064,8 +4091,16 @@
    }
   ],
   "datasets": [],
-  "display_summary": "SFR",
-  "fields": {},
+  "display_summary": "SFR a subi une fuite de données revendiquée avec plus de 2,1 millions d'enregistrements volés.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de plus de 2,1 millions d'enregistrements de données."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -4237,7 +4272,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Fédération Française de Danse",
+  "display_summary": "La Fédération Française de Danse a divulgué des données affectant 435 903 adhérents.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -4407,9 +4442,10 @@
  "INC-C5CF7480F918": {
   "affected": [
    {
-    "evidence": "# Fuite de données : 4 179 clients Visa Infinite et Platinum concernés après le piratage d’un prestataire de conciergerie",
+    "evidence": "4 179 clients Visa Infinite et Platinum",
     "raw": "4 179 clients",
-    "semantic": "unspecified",
+    "scope": "Visa Infinite et Platinum",
+    "semantic": "visa infinite et platinum",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -4428,9 +4464,26 @@
     "value": "données personnelles"
    }
   ],
-  "datasets": [],
-  "display_summary": "John Paul",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "clients"
+   }
+  ],
+  "display_summary": "Fuite de données affectant 4 179 clients Visa Infinite et Platinum de John Paul.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de données de clients."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -4839,7 +4892,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "Publica",
+  "display_summary": "Fuite de données clients du service de magazines de Publica.",
   "fields": {},
   "systems": [],
   "version": 2,

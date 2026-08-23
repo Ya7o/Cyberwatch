@@ -1,6 +1,5 @@
 Item_ID,Source_ID,Field,Previous_Value,Candidate_Value,Final_Value,Origin,Confidence,Evidence,Match_Strategy,Decision
 ITM-04a856475a59deb2,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-04d6fe7da62a4060,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-04d6fe7da62a4060,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-057b52f6d1ab1f67,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-057b52f6d1ab1f67,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
@@ -9,9 +8,9 @@ ITM-08fe35f4fde7b20e,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Incon
 ITM-08fe35f4fde7b20e,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-09eb6993763586d8,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-0c4c9229ba436a2d,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-0c71d9ac5b4e6492,BONJOURLAFUITE,Sector,Inconnu,Hébergement / Tourisme / Restauration,Hébergement / Tourisme / Restauration,ORG_CONTEXT_SECTOR,HIGH,source_title_context:SamBoat : la plateforme de location de bateaux frappée par une cyberattaque majeure,organisation_key_context_consensus,APPLIED
+ITM-0ca880336ac1979f,FRENCHBREACHES,Sector,Inconnu,Sport,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Sport:Xplor Resamania est associé à des systèmes de réservation et adhérents de salles de sport; activité principale liée au sport/fitness.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-0ca880336ac1979f,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-138924ed9143382e,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-0e33f948422de680,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Clenet works with clients; likely professional services.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-138924ed9143382e,CYBERATTAQUE_ORG,Threat,Ransomware,Autre cyber,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-13c365aea8d21c31,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-1405c2be130d1ecd,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
@@ -19,55 +18,53 @@ ITM-16b6aa02661200f5,BONJOURLAFUITE,Sector,Inconnu,Administration / Collectivit�
 ITM-1727d5995cd0b94f,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-174aa1135065caa2,FRENCHBREACHES,Sector,Inconnu,Sport,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-174aa1135065caa2,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-176d6d6164dfd493,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-176d6d6164dfd493,CYBERATTAQUE_ORG,Sector,Inconnu,Santé,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Santé:LaSante.net implique données de santé; catégorie Santé.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-176d6d6164dfd493,CYBERATTAQUE_ORG,Sector,Inconnu,Santé,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-176d6d6164dfd493,CYBERATTAQUE_ORG,Threat,Phishing / fraude,Autre cyber,Phishing / fraude,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-1aa602530f6dfa07,CYBERATTAQUE_ORG,Location,Inconnu,La Réunion,La Réunion,LLM_SOURCE_FALLBACK,HIGH,La Réunion,source_url,APPLIED
 ITM-1aa602530f6dfa07,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-1aa602530f6dfa07,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-1f0ab32d274268c5,CYBERATTAQUE_ORG,Sector,Inconnu,Énergie / Utilities,Énergie / Utilities,ORG_CONTEXT_SECTOR,HIGH,source_url_context:/syndicat-departemental-energie-de-lallier-cyberattaque/,organisation_key_context_consensus,APPLIED
 ITM-1f4e8297dec64af5,FRENCHBREACHES,Threat,Ransomware,Fuite de données,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-1f6e17c0ce60e40b,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-206f73f9e8b77bb9,CYBERATTAQUE_ORG,Sector,Inconnu,Services aux entreprises,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Services aux entreprises:Foodtrack—data breach; service industry.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-269b7ed2a6d0b273,FRENCHBREACHES,Sector,Inconnu,Industrie / Manufacture,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-269b7ed2a6d0b273,FRENCHBREACHES,Threat,Ransomware,Fuite de données,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-295bbb44a2869caa,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-2c144248ae323296,BONJOURLAFUITE,Sector,Inconnu,Éducation / Formation,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Éducation / Formation:France VAE credentialing; education.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-2ccefab3d66d64ac,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-301e4ba5ce0f46c3,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-301e4ba5ce0f46c3,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-30b99ffa7476055b,CYBERATTAQUE_ORG,Threat,Ransomware,Ransomware,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-314468b5e3fd3824,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-314468b5e3fd3824,CYBERATTAQUE_ORG,Threat,Ransomware,Autre cyber,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-31a233dafb2b6617,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-31a233dafb2b6617,CYBERATTAQUE_ORG,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Distributeur logistique; retail/ distribution.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-31a233dafb2b6617,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-32a5248d6e3be01d,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-32a5248d6e3be01d,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-33a67e9f40f8745d,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-334a644530169ed8,CYBERATTAQUE_ORG,Sector,Inconnu,Services aux entreprises,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Services aux entreprises:Déclic Services cyber incident; administrative/services.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
+ITM-33a67e9f40f8745d,CYBERATTAQUE_ORG,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Bureau Vallée is a retailer.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-33a67e9f40f8745d,CYBERATTAQUE_ORG,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-33a67e9f40f8745d,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-38174e9817ada1c7,FRENCHBREACHES,Sector,Inconnu,Industrie / Manufacture,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Industrie / Manufacture:Groupe Géotec geotechnical engineering.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-386bf2c572aa1262,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-38c266a12eff1272,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-38f7e4f5a09b85e4,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-3ae917385f81a2aa,VEILLE_LLM,Threat,Intrusion,Inconnu,Inconnu,THREAT_STABILIZATION,HIGH,,,APPLIED
 ITM-3d4bbd2296a67743,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-3e008fa243b802c2,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-4098b59c5c132913,CYBERATTAQUE_ORG,Threat,Phishing / fraude,Autre cyber,Phishing / fraude,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-40b394bef3a1fe44,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-40b394bef3a1fe44,CYBERATTAQUE_ORG,Threat,Phishing / fraude,Ransomware,Phishing / fraude,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-410dbe7b91c57c0c,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-410dbe7b91c57c0c,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-4168c464e94c7b7e,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-4168c464e94c7b7e,CYBERATTAQUE_ORG,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:TERVEO/Terveo semble lié à des données clients et historiques de commandes — activité typique du commerce/vente et gestion de commandes.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-4168c464e94c7b7e,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-42c2d62778eac2cc,FRENCHBREACHES,Sector,Inconnu,Services aux entreprises,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Services aux entreprises:Déclic Services cyber incident; administrative/services.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-465255d6ae8ab559,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-486f08701ff57650,FRENCHBREACHES,Sector,Inconnu,Services aux entreprises,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Services aux entreprises:Foodtrack—data breach; service industry.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-49b4bda3f6d704ea,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-4acbbed09e3890af,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-4acbbed09e3890af,CYBERATTAQUE_ORG,Threat,Phishing / fraude,Intrusion,Phishing / fraude,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-4b79645d80ad2ef9,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-4bfa09a25398f690,CYBERATTAQUE_ORG,Sector,Inconnu,Finance / Assurance,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-4bfa09a25398f690,CYBERATTAQUE_ORG,Threat,Phishing / fraude,Ransomware,Phishing / fraude,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-4e5ee1bd7fd8a874,BONJOURLAFUITE,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Gedimat home improvement retailer.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-50808b81d1fe1645,FRENCHBREACHES,Threat,Incident tiers,Fuite de données,Incident tiers,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-5384bb2edc1e590e,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-582eb78bcb240856,CYBERATTAQUE_ORG,Threat,Fuite de données,Incident tiers,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-589ef74c132ae0a2,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-589ef74c132ae0a2,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-5a921aaebb3181e9,CYBERATTAQUE_ORG,Sector,Inconnu,Administration / Collectivité,Administration / Collectivité,ORGANISATION_SECTOR_P0,HIGH,safe_name:Administration / Collectivité:Ministère de l'Éducation nationale,organisation_key_exact+organisation_sector_resolver,APPLIED
 ITM-5ab13a9b8c40816f,FRENCHBREACHES,Sector,Inconnu,Sport,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
@@ -75,37 +72,38 @@ ITM-5ab13a9b8c40816f,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,F
 ITM-5b224f2217bc78a0,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-5b6991aaa5085b79,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-5b6991aaa5085b79,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-5e135e88502f97bd,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-5e135e88502f97bd,CYBERATTAQUE_ORG,Sector,Inconnu,Administration / Collectivité,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Administration / Collectivité:Bloctel is French consumer protection service for opt-out lists; public administration.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-5e135e88502f97bd,CYBERATTAQUE_ORG,Threat,Fuite de données,Ransomware,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-637343689cfb8ae6,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Distributeur logistique; retail/ distribution.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-637343689cfb8ae6,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-637343689cfb8ae6,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-64485c5121289c6d,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-6540e15e4bb1089d,CYBERATTAQUE_ORG,Threat,Ransomware,Ransomware,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-678f490b7e3fa135,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-678f490b7e3fa135,CYBERATTAQUE_ORG,Threat,Ransomware,Ransomware,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-6c40605f8540852c,CYBERATTAQUE_ORG,Sector,Inconnu,Hébergement / Tourisme / Restauration,Hébergement / Tourisme / Restauration,ORG_CONTEXT_SECTOR,HIGH,source_title_context:SamBoat : la plateforme de location de bateaux frappée par une cyberattaque majeure,organisation_key_context_consensus,APPLIED
 ITM-6e76853753006061,FRENCHBREACHES,Sector,Inconnu,Santé,Santé,ORGANISATION_SECTOR_P0,HIGH,safe_name:Santé:Institut national de la santé et de la recherche médicale,organisation_key_exact+organisation_sector_resolver,APPLIED
 ITM-6e76853753006061,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-6f803c07a32519a9,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-746aed5386a791f2,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Bureau Vallée is a retailer.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-764290f2f70f1276,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-764290f2f70f1276,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-783dfbd911a6ea5d,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Intermarché Drive est une branche de distribution et commerce.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-783dfbd911a6ea5d,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-783dfbd911a6ea5d,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-7abef61056c1dc74,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-7abef61056c1dc74,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-80afdf216d137be6,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-80afdf216d137be6,CYBERATTAQUE_ORG,Sector,Inconnu,Finance / Assurance,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-80afdf216d137be6,CYBERATTAQUE_ORG,Threat,Fuite de données,Ransomware,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-82e696286d6a8f52,FRENCHBREACHES,Sector,Inconnu,Santé,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Santé:Imago medical; health sector.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-82e696286d6a8f52,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-82e696286d6a8f52,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-83c01dd73b4edf67,FRENCHBREACHES,Sector,Inconnu,Sport,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-83c01dd73b4edf67,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-84758253203f8d43,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-84758253203f8d43,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-8734fecfbe81d332,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-8734fecfbe81d332,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-88543cf208949594,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-88543cf208949594,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-89230a8f51b8c522,FRENCHBREACHES,Sector,Inconnu,Santé,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Santé:LaSante.net implique données de santé; catégorie Santé.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-89230a8f51b8c522,FRENCHBREACHES,Sector,Inconnu,Santé,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-89230a8f51b8c522,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-8cf6a69132cf2117,FRENCHBREACHES,Sector,Inconnu,Éducation / Formation,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
@@ -113,42 +111,40 @@ ITM-8cf6a69132cf2117,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,F
 ITM-9021b9aa28ea4a6a,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-91911763bdbfa5aa,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-94f3a30c48dc77ad,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-96728e715b7df298,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Numérique / Technologie:MVision - services audiovisuels techniques pour l’événementiel; technologie/ numérique.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-96728e715b7df298,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-96728e715b7df298,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-993496f822d07abc,FRENCHBREACHES,Sector,Inconnu,Hébergement / Tourisme / Restauration,Hébergement / Tourisme / Restauration,ORG_CONTEXT_SECTOR,HIGH,source_title_context:SamBoat : la plateforme de location de bateaux frappée par une cyberattaque majeure,organisation_key_context_consensus,APPLIED
 ITM-9c8cd87affdadf8a,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-9f6117dfe9bcd437,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-a10d191484db05d5,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-a41c3c69231506b9,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-a935e2896bf42300,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-a954736eafe569de,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Gedimat home improvement retailer.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-a954736eafe569de,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-a954736eafe569de,FRENCHBREACHES,Threat,Incident tiers,Fuite de données,Incident tiers,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-a9e391cbc4f07068,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
-ITM-a9e391cbc4f07068,CYBERATTAQUE_ORG,Sector,Inconnu,Sport,Sport,ORG_CONTEXT_SECTOR,HIGH,source_activity:club de football professionnel,organisation_key_context_consensus,APPLIED
 ITM-a9e391cbc4f07068,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-aa9b72699972ffc5,FRENCHBREACHES,Sector,Inconnu,Industrie / Manufacture,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Industrie / Manufacture:BlgCloud data leakage for multiple clients; seems IT service but not explicit sector.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-aa9b72699972ffc5,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-aadcd9745e9d382b,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-aba3d0296b074c1e,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-aba3d0296b074c1e,CYBERATTAQUE_ORG,Sector,Inconnu,Éducation / Formation,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Éducation / Formation:France VAE credentialing; education.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-aba3d0296b074c1e,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-b19f56f106f4d9d0,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-b2a439e3d1533f8a,BONJOURLAFUITE,Sector,Inconnu,Administration / Collectivité,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Administration / Collectivité:Bloctel is French consumer protection service for opt-out lists; public administration.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-b83d200b5df2be76,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-b8f59e73458e855a,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-baae2bcc12b6b999,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-baae2bcc12b6b999,CYBERATTAQUE_ORG,Threat,Ransomware,Ransomware,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-bb13d17602511733,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-bb13d17602511733,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Numérique / Technologie:MVision - services audiovisuels techniques pour l’événementiel; technologie/ numérique.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-bb13d17602511733,CYBERATTAQUE_ORG,Sector,Inconnu,Santé,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-bb13d17602511733,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-bc8a73cd227f3239,VEILLE_LLM,Threat,Inconnu,Intrusion,Intrusion,THREAT_STABILIZATION,HIGH,,,APPLIED
-ITM-bef54a4a3bb5c9a9,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-bef54a4a3bb5c9a9,CYBERATTAQUE_ORG,Sector,Inconnu,Sport,Sport,ORGANISATION_SECTOR_P0,HIGH,safe_name:Sport:Fédération Française de Handball,organisation_key_exact+organisation_sector_resolver,APPLIED
 ITM-bef54a4a3bb5c9a9,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-bfc6a693480fb347,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-c0642652474ead00,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Intermarché Drive est une branche de distribution et commerce.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-c0642652474ead00,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-c0642652474ead00,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-c1696804ee7c16b8,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-c1696804ee7c16b8,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-c183629523269186,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-c2ee72fcb6ba89cb,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-c2ee72fcb6ba89cb,CYBERATTAQUE_ORG,Threat,Fuite de données,Autre cyber,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-c4b4c011082dd04b,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-cb125fc4a05c20db,FRENCHBREACHES,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
@@ -157,34 +153,36 @@ ITM-ccf5491ab2cd980d,FRENCHBREACHES,Threat,Ransomware,Fuite de données,Ransomwa
 ITM-ce51e4cd76737af7,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-d08086f886b642e8,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-d0c4e4e46300d8ab,CYBERATTAQUE_ORG,Threat,Ransomware,Ransomware,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-d48c60eacc212e96,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-d48c60eacc212e96,CYBERATTAQUE_ORG,Sector,Inconnu,Santé,Santé,ORGANISATION_SECTOR_P0,HIGH,safe_name:Santé:Institut national de la santé et de la recherche médicale,organisation_key_exact+organisation_sector_resolver,APPLIED
 ITM-d48c60eacc212e96,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-d79b2e288ccad695,FRENCHBREACHES,Threat,Ransomware,Fuite de données,Ransomware,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-d9036779f1243d29,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-d9036779f1243d29,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Numérique / Technologie:EVA.gg accounts exposure; tech platform.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-d9036779f1243d29,CYBERATTAQUE_ORG,Sector,Inconnu,Sport,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-d9036779f1243d29,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-dd1b11bea76761ed,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-e2e418cf3d473677,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-e0e250b955073404,BONJOURLAFUITE,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Commerce / Distribution:Clenet works with clients; likely professional services.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-e2e418cf3d473677,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-e3cde8f1f50d0273,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-e3cde8f1f50d0273,CYBERATTAQUE_ORG,Sector,Inconnu,Commerce / Distribution,Inconnu,ORGANISATION_SECTOR_LLM,LOW,"llm_organisation:Commerce / Distribution:France Casse; customer accounts, orders.",organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-e3cde8f1f50d0273,CYBERATTAQUE_ORG,Sector,Inconnu,Commerce / Distribution,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-e3cde8f1f50d0273,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-e5d73bca2b1212d3,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-e64117a9f37a5e2a,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Numérique / Technologie:Nom et contexte suggèrent une activité tech; données insuffisantes mais classé comme numérique/technologie.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-e83033755daac537,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-e8555037d51b4ff0,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Numérique / Technologie:Opérateur télécom; tech.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-e8555037d51b4ff0,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-e8555037d51b4ff0,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-f10fab241bce001a,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
+ITM-ecfb5377a1e581e9,CYBERATTAQUE_ORG,Sector,Inconnu,Industrie / Manufacture,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Industrie / Manufacture:Groupe Géotec geotechnical engineering.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-f10fab241bce001a,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-f4aabe53126031a6,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-f4d3e4a1b9bf10c0,FRENCHBREACHES,Sector,Inconnu,Éducation / Formation,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Éducation / Formation:France VAE credentialing; education.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-f4d3e4a1b9bf10c0,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-f690c99943f1ca81,FRENCHBREACHES,Sector,Inconnu,Administration / Collectivité,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Administration / Collectivité:Bloctel is French consumer protection service for opt-out lists; public administration.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
 ITM-f690c99943f1ca81,FRENCHBREACHES,Sector,Inconnu,Sport,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-f690c99943f1ca81,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-f6f916078e291e8d,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-f6f916078e291e8d,CYBERATTAQUE_ORG,Threat,Phishing / fraude,Autre cyber,Phishing / fraude,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-f796c1c162ca1ac0,CYBERATTAQUE_ORG,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
-ITM-f7bb81100fe07424,CYBERATTAQUE_ORG,Location,Inconnu,France métropolitaine,France métropolitaine,LLM_SOURCE_FALLBACK,HIGH,France,source_url,APPLIED
 ITM-f7bb81100fe07424,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-fac377f6dd0d8ee8,FRENCHBREACHES,Sector,Inconnu,Numérique / Technologie,Inconnu,LLM_SOURCE_FALLBACK,,,source_url,REJECTED_IDENTITY_EVIDENCE
 ITM-fac377f6dd0d8ee8,FRENCHBREACHES,Threat,Fuite de données,Fuite de données,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
 ITM-fcb0961d57bae830,CYBERATTAQUE_ORG,Threat,Fuite de données,Intrusion,Fuite de données,LLM_SOURCE_FALLBACK,,challenger diagnostic only; canonical Threat protected,source_url,PROTECTED
+ITM-fe8f7805fe8b6b60,CYBERATTAQUE_ORG,Sector,Inconnu,Numérique / Technologie,Inconnu,ORGANISATION_SECTOR_LLM,LOW,llm_organisation:Numérique / Technologie:DINUM is numeric governance; cloud of state.,organisation_key_exact+organisation_sector_resolver,REJECTED_NO_STRONG_EVIDENCE
