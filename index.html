@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
 <link rel="alternate" type="application/atom+xml" title="Cyberwatch — La Réunion / Mayotte" href="assets/data/reunion-mayotte.xml">
 <link rel="stylesheet" href="assets/style.css?v=20260822-3">
-<link rel="stylesheet" href="assets/dashboard-v2.css?v=20260822-3">
+<link rel="stylesheet" href="assets/dashboard-v2.css?v=20260823-5">
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -54,10 +54,11 @@
       <label class="search-field"><span>Recherche</span><input id="s-q" type="search" autocomplete="off" placeholder="Organisation, menace, secteur, source, synthèse…"></label>
       <label><span>Menace</span><select id="s-threat"><option value="">Toutes</option></select></label>
       <label><span>Secteur</span><select id="s-sector"><option value="">Tous</option></select></label>
-      <div class="location-picker"><span>Territoire</span><button id="location-toggle" type="button" class="btn">Tous les territoires</button><div id="location-menu" class="location-menu" hidden><div id="s-locations"></div></div></div>
+      <div class="location-picker"><span>Territoire</span><button id="location-toggle" type="button" class="btn" aria-expanded="false">Tous les territoires</button><div id="location-menu" class="location-menu" hidden><div id="s-locations"></div><button id="location-close" type="button" class="btn">Valider / Fermer</button></div></div>
       <label><span>Source</span><select id="s-source"><option value="">Toutes</option></select></label>
       <label><span>Période</span><select id="s-period"><option value="all">Toute la base</option><option value="30">30 jours</option><option value="90">90 jours</option><option value="365">365 jours</option></select></label>
       <label><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option></select></label>
+      <label><span>Résultats / page</span><select id="s-page-size"><option value="30">30</option><option value="100">100</option><option value="250">250</option><option value="500">500</option><option value="1000">1000</option></select></label>
       <button id="s-reset" type="button" class="btn">Réinitialiser</button>
     </div>
     <div class="active-filters" id="s-active-filters"></div>
@@ -79,7 +80,7 @@
       <section class="card reliability" id="sources" aria-labelledby="sources-title">
         <div class="card-head"><h2 id="sources-title">État des sources</h2></div>
         <div id="sources-leds" class="source-leds"></div>
-        <details class="sources-detail" hidden><summary>Détails techniques des sources</summary></details>
+        <div class="sources-detail"><table><thead><tr><th>Source</th><th>Statut</th><th>Dernière exécution</th><th>Durée</th><th>Éléments</th><th>Alerte</th></tr></thead><tbody id="sources-detail-body"></tbody></table></div>
       </section>
     </div>
   </section>
@@ -90,6 +91,6 @@
   <form method="dialog"><button class="btn">Fermer</button></form>
 </dialog>
 <script src="assets/shared.js?v=20260823-4"></script>
-<script src="assets/dashboard-v2.js?v=20260823-4"></script>
+<script src="assets/dashboard-v2.js?v=20260823-5"></script>
 </body>
 </html>

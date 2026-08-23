@@ -39,13 +39,28 @@ def test_recherche_supporte_plusieurs_territoires_et_les_raccourcis():
     assert "locations: []" in js
     assert 'params.getAll("location")' in js
     assert 'params.append("location", value)' in js
-    assert "state.filters.locations.includes(incident.location)" in js
+    assert "state.filters.locations.includes(String(incident.location || UNKNOWN))" in js
 
 
-def test_recherche_reste_paginee_par_30():
+def test_recherche_permet_jusqua_1000_resultats_par_page():
+    html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
     assert "const PAGE_SIZE = 30;" in js
-    assert "rows.slice(start, start + PAGE_SIZE)" in js
+    assert 'id="s-page-size"' in html
+    assert '<option value="1000">1000</option>' in html
+    assert "rows.slice(start, start + state.pageSize)" in js
+    assert 'sessionStorage.setItem("cw-page-size"' in js
+
+
+def test_v2_restores_audit_and_interaction_contracts():
+    html = _read("index.html")
+    js = _read("assets/dashboard-v2.js")
+    assert 'id="location-close"' in html
+    assert 'id="sources-detail-body"' in html
+    assert "closeLocations" in js
+    assert 'event.key === "Escape"' in js
+    assert 'event.target === $("#detail-dialog")' in js
+    assert "sectorRows" in js and "Secteur non renseigné" in js
 
 
 def test_actions_et_blocs_inutiles_sont_supprimes():

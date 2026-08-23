@@ -51,7 +51,7 @@
     status: null,
     filters: { q: "", threat: "", sector: "", locations: [], source: "", period: "all" },
     sort: "date-desc",
-    page: 1,
+    page: 1, pageSize: Number(sessionStorage.getItem("cw-page-size")) || PAGE_SIZE,
   };
 
   async function loadJson(path, fallback) {
@@ -184,9 +184,10 @@
 
   function populateSearchControls() {
     const rows = state.incidents;
-    const threats = unique(rows.map((row) => row.threat)).sort((a, b) => a.localeCompare(b, "fr"));
-    const sectors = unique(rows.map((row) => row.sector)).sort((a, b) => a.localeCompare(b, "fr"));
-    const locations = unique(rows.map((row) => row.location)).sort((a, b) => a.localeCompare(b, "fr"));
+    const withUnknown = (values) => Array.from(new Set(values.map((value) => String(value || UNKNOWN).trim() || UNKNOWN))).sort((a, b) => a.localeCompare(b, "fr"));
+    const threats = withUnknown(rows.map((row) => row.threat));
+    const sectors = withUnknown(rows.map((row) => row.sector));
+    const locations = withUnknown(rows.map((row) => row.location));
     const sources = unique(rows.flatMap((row) => row.sources || [])).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr"));
     $("#s-threat").innerHTML = optionHtml(threats, state.filters.threat, "Toutes");
     $("#s-sector").innerHTML = optionHtml(sectors, state.filters.sector, "Tous");
@@ -195,6 +196,7 @@
     $("#s-q").value = state.filters.q;
     $("#s-period").value = state.filters.period;
     $("#s-sort").value = state.sort;
+    $("#s-page-size").value = String(state.pageSize);
     updateLocationSummary();
   }
 
@@ -214,9 +216,9 @@
     return state.incidents.filter((incident) => {
       const searchText = normalize([incident.org, incident.threat, incident.sector, incident.location, incident.summary, ...(incident.sources || []).map(sourceLabel)].join(" "));
       if (query && !searchText.includes(query)) return false;
-      if (state.filters.threat && incident.threat !== state.filters.threat) return false;
-      if (state.filters.sector && incident.sector !== state.filters.sector) return false;
-      if (state.filters.locations.length && !state.filters.locations.includes(incident.location)) return false;
+      if (state.filters.threat && String(incident.threat || UNKNOWN) !== state.filters.threat) return false;
+      if (state.filters.sector && String(incident.sector || UNKNOWN) !== state.filters.sector) return false;
+      if (state.filters.locations.length && !state.filters.locations.includes(String(incident.location || UNKNOWN))) return false;
       if (state.filters.source && !(incident.sources || []).includes(state.filters.source)) return false;
       if (cutoff) {
         const date = new Date(incident.date);
@@ -249,10 +251,10 @@
     populateSearchControls();
     renderActiveFilters();
     const rows = sortedSearch(filteredSearch());
-    const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+    const pages = Math.max(1, Math.ceil(rows.length / state.pageSize));
     state.page = Math.min(state.page, pages);
-    const start = (state.page - 1) * PAGE_SIZE;
-    const shown = rows.slice(start, start + PAGE_SIZE);
+    const start = (state.page - 1) * state.pageSize;
+    const shown = rows.slice(start, start + state.pageSize);
     $("#s-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""}`;
     $("#s-list").innerHTML = shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun résultat.</p>';
     $("#s-pager").innerHTML = `<button type="button" class="btn" data-page="prev" ${state.page <= 1 ? "disabled" : ""}>← Précédent</button><span>${state.page} / ${pages}</span><button type="button" class="btn" data-page="next" ${state.page >= pages ? "disabled" : ""}>Suivant →</button>`;
@@ -284,6 +286,7 @@
 
   function renderSources() {
     $("#sources-leds").innerHTML = (state.status?.sources || []).map((source) => `<div class="source-status"><span class="source-dot" data-status="${esc(source.status || "unknown")}"></span><strong>${esc(sourceLabel(source.id))}</strong><small>${esc(source.status || "—")}</small></div>`).join("");
+    $("#sources-detail-body").innerHTML = (state.status?.sources || []).map((source) => `<tr><td>${esc(sourceLabel(source.id))}</td><td>${esc(source.status || "—")}</td><td>${esc(formatDateTime(source.last_run))}</td><td>${esc(source.duration ? `${source.duration} s` : "—")}</td><td>${esc(formatNumber(source.items_collected || source.items || 0))}</td><td>${esc(source.reason || source.comment || "—")}</td></tr>`).join("");
   }
 
   function applySearchPatch(patch) {
@@ -301,10 +304,15 @@
     $("#reading-line").innerHTML = `<strong>${formatNumber(q.incidents || a.dated_incidents || 0)}</strong> incidents · <strong>${formatNumber(q.organisations || 0)}</strong> organisations · ${esc(formatDate(q.first_date))} → ${esc(formatDate(q.last_date))}`;
     renderMonthly(a.series);
     simpleBars($("#chart-threat"), a.top_90d?.threat || [], (label) => applySearchPatch({ threat: label, period: "90" }));
-    simpleBars($("#chart-sector"), a.top_90d?.sector || [], (label) => applySearchPatch({ sector: label, period: "90" }));
+    const sectorRows = (a.top_90d?.sector || []).filter((row) => row.label !== UNKNOWN);
+    const sectorUnknown = (a.top_90d?.sector || []).find((row) => row.label === UNKNOWN)?.count || 0;
+    simpleBars($("#chart-sector"), sectorRows, (label) => applySearchPatch({ sector: label, period: "90" }));
+    $("#chart-sector").insertAdjacentHTML("beforeend", `<p class="hint">Secteur non renseigné : ${formatNumber(sectorUnknown)} incident${sectorUnknown > 1 ? "s" : ""}</p>`);
     $("#signals-list").innerHTML = (a.signals || []).slice(0, 12).map((signal) => signalHtml(signal)).join("") || '<p class="empty-state">Aucun signal notable sur la période.</p>';
     $("#ocean-focus").innerHTML = oceanProfileHtml(a.focus?.profile, "La Réunion / Mayotte");
     $("#ocean-ensemble").innerHTML = oceanProfileHtml(a.ocean?.profile, "Ensemble Océan Indien");
+    $("#ocean-focus").onclick = () => applySearchPatch({ locations: FOCUS_LOCATIONS.slice() });
+    $("#ocean-ensemble").onclick = () => applySearchPatch({ locations: OCEAN_LOCATIONS.slice() });
     renderSources();
   }
 
@@ -453,6 +461,9 @@
     });
     const savedTheme = localStorage.getItem("cw-theme");
     if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    $("#run-pill").addEventListener("click", (event) => { event.preventDefault(); state.view = "analyse"; syncUrl(true); render(); requestAnimationFrame(() => $("#sources")?.scrollIntoView({ behavior: "smooth" })); });
+    $("#detail-dialog").addEventListener("click", (event) => { if (event.target === $("#detail-dialog")) $("#detail-dialog").close(); });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && $("#detail-dialog").open) $("#detail-dialog").close(); });
   }
 
   function bindSearch() {
@@ -465,7 +476,11 @@
       state.filters[key] = event.target.value; state.page = 1; syncUrl(); renderRecherche();
     }));
     $("#s-sort").addEventListener("change", (event) => { state.sort = event.target.value; state.page = 1; syncUrl(); renderRecherche(); });
-    $("#location-toggle").addEventListener("click", () => $("#location-menu").toggleAttribute("hidden"));
+    $("#s-page-size").addEventListener("change", (event) => { state.pageSize = Number(event.target.value) || PAGE_SIZE; sessionStorage.setItem("cw-page-size", String(state.pageSize)); state.page = 1; renderRecherche(); });
+    const closeLocations = () => { $("#location-menu").hidden = true; $("#location-toggle").setAttribute("aria-expanded", "false"); };
+    $("#location-toggle").addEventListener("click", () => { const menu = $("#location-menu"); menu.hidden = !menu.hidden; $("#location-toggle").setAttribute("aria-expanded", String(!menu.hidden)); });
+    $("#location-close").addEventListener("click", closeLocations);
+    document.addEventListener("click", (event) => { if (!event.target.closest(".location-picker")) closeLocations(); });
     $("#s-locations").addEventListener("change", () => {
       state.filters.locations = $$("input:checked", $("#s-locations")).map((input) => input.value);
       state.page = 1; updateLocationSummary(); syncUrl(); renderRecherche();

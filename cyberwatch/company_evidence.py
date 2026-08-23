@@ -386,6 +386,10 @@ def _page(url: str) -> tuple[str, str, list[str], str]:
 
 
 def _identity_matches(organisation: str, url: str, priority: str, body: str) -> bool:
+    raw = str(organisation or "").strip().casefold().removeprefix("www.")
+    domain = _domain(url).casefold()
+    if re.fullmatch(r"[a-z0-9-]+(?:\.[a-z0-9-]+)+", raw) and (domain == raw or domain.endswith("." + raw)):
+        return True
     tokens = _org_tokens(organisation)
     if not tokens:
         return False
