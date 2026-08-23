@@ -41,6 +41,12 @@ MAX_SUMMARY_CHARS = 320
 #: `source_facts._derive_summary` (vecteur + déroulé + impact), plus longue par
 #: nature car elle assemble plusieurs faits concrets.
 MAX_HEADLINE_CHARS = 160
+#: Longueur maximale d'une valeur `data_types` individuelle : un type de
+#: donnée est un libellé court (« adresses e-mail », « mots de passe »), pas
+#: un extrait narratif. Ne s'applique qu'à `data_types` : `impact` réutilise
+#: `_normalize_fact` mais a légitimement besoin de bien plus de place (une
+#: phrase de conséquence, jusqu'à `MAX_EVIDENCE_CHARS`).
+MAX_LABEL_VALUE_CHARS = 120
 MAX_ATTACK_FLOW_STEPS = 4
 MAX_FIELD_MISSES = 2
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
@@ -61,7 +67,7 @@ FIELD_VERSIONS = {
     "impact": "impact-v3",
     "threat_actor": "threat-actor-v1",
     "third_party": "third-party-v1",
-    "data_types": "data-types-v1",
+    "data_types": "data-types-v2",
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
 PREVIOUS_FIELD_VERSIONS = {
@@ -700,7 +706,7 @@ def _normalize(raw: dict, context: str, fields: set[str]) -> dict:
         seen = set()
         for candidate in raw.get("data_types", []) if isinstance(raw.get("data_types"), list) else []:
             fact = _normalize_fact(candidate, context)
-            if not fact:
+            if not fact or len(fact["value"]) > MAX_LABEL_VALUE_CHARS:
                 continue
             key = searchable(fact["value"])
             if key and key not in seen:

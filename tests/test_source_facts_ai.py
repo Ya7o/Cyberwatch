@@ -411,6 +411,44 @@ def test_alaxione_headline_courte_est_acceptee():
     assert result["summary"]["value"] == short_summary
 
 
+def test_alaxione_data_type_narratif_est_rejete():
+    """Cas de non-régression : un data_types est un libellé court, pas un
+    extrait narratif accusatoire (point 1 du tableau de revue manuelle)."""
+    long_value = (
+        "Alaxione ment dans sa communication en soutenant qu'il s'agit d'un "
+        "incident mineur alors que les données exfiltrées concernent des "
+        "milliers de clients et de salariés."
+    )
+    assert len(long_value) > sfa.MAX_LABEL_VALUE_CHARS
+    context = f"{long_value} Extrait exact de l'article source."
+    raw = {"data_types": [{"value": long_value, "confidence": 0.9, "evidence": long_value}]}
+    result = sfa._normalize(raw, context, {"data_types"})
+    assert "data_types" not in result
+
+
+def test_data_type_court_est_accepte():
+    short_value = "adresses e-mail"
+    context = f"Fuite de {short_value} confirmée. Extrait exact de l'article source."
+    raw = {"data_types": [{"value": short_value, "confidence": 0.9, "evidence": "adresses e-mail"}]}
+    result = sfa._normalize(raw, context, {"data_types"})
+    assert result["data_types"][0]["value"] == short_value
+
+
+def test_impact_long_reste_accepte_car_hors_perimetre_du_plafond_data_types():
+    """`impact` réutilise `_normalize_fact` mais n'est pas concerné par
+    MAX_LABEL_VALUE_CHARS : une conséquence documentée peut légitimement
+    dépasser 120 caractères (jusqu'à MAX_EVIDENCE_CHARS)."""
+    long_impact = (
+        "L'attaque a entraîné l'arrêt temporaire de plusieurs services internes "
+        "et la mise en place d'une cellule de crise pour limiter la propagation."
+    )
+    assert len(long_impact) > sfa.MAX_LABEL_VALUE_CHARS
+    context = f"{long_impact} Extrait exact de l'article source."
+    raw = {"impact": {"value": long_impact, "confidence": 0.9, "evidence": long_impact}}
+    result = sfa._normalize(raw, context, {"impact"})
+    assert result["impact"]["value"] == long_impact
+
+
 def test_impact_risque_prospectif_est_rejete():
     """Point 2 : « risque de », « expose à » et « augmente le risque » ne sont
     pas des conséquences observées."""
