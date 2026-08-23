@@ -33,7 +33,7 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Rattraper les synthèses récentes
+      - name: Rattraper les faits éditoriaux récents
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           PYTHONPATH: "."
@@ -51,6 +51,21 @@ jobs:
               --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained --refresh-summary | tee /tmp/source-facts-backfill.json
           fi
           cat /tmp/source-facts-backfill.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Proposer les secteurs à confirmer
+        # Les descriptions d'activité, extraites et citées depuis l'article
+        # pendant le rattrapage précédent, sont le seul contexte transmis à
+        # ce classifieur. Son résultat reste TENTATIVE : il n'alimente jamais
+        # les statistiques ni le secteur canonique sans preuve indépendante.
+        env:
+          OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          LLM_MAX_CALLS_PER_RUN: "30"
+          LLM_MAX_COST_USD_PER_RUN: "0.10"
+          LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN: "30"
+          LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN: "0.10"
+        run: |
+          python -m cyberwatch sector-llm | tee /tmp/organisation-sector-backfill.txt
+          python -m cyberwatch replay
+          cat /tmp/organisation-sector-backfill.txt >> "$GITHUB_STEP_SUMMARY"
       - name: Valider et construire le site
         run: |
           python -m pytest tests/test_fact_resolution.py tests/test_source_facts_ai.py tests/test_targeted_source_facts_backfill.py -q
