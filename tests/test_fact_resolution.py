@@ -165,6 +165,44 @@ def test_claim_acteur_type_alimente_le_champ_detail_sans_ecraser_un_scalaire():
     assert resolved["fields"]["threat_actor"]["value"] == "ZeroBytes"
 
 
+def test_claim_vulnerability_alimente_la_liste_publique():
+    """Cas réel constaté sur DINUM : une faille zero-day documentée par un
+    claim `type:"vulnerability"` n'atteignait jamais `vulnerabilities[]`."""
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{
+            "type": "vulnerability", "status": "reported",
+            "value": "faille zero-day critique de type injection SQL",
+            "evidence": "une faille zero-day critique de type injection SQL avait été activement exploitée.",
+        }],
+    })])
+    assert resolved["vulnerabilities"][0]["value"] == "faille zero-day critique de type injection SQL"
+
+
+def test_claim_initial_access_sans_vocabulaire_de_compromission_est_rejete():
+    """Cas réel constaté sur Solimut : un claim étiqueté `initial_access` mais
+    décrivant en réalité la mise en vente des données (pas un vecteur d'entrée)
+    ne doit pas être promu tel quel."""
+    resolved = fr.resolve_incident_facts([fact("FRENCHBREACHES", rich_facts={
+        "claims": [{
+            "type": "initial_access", "status": "claimed",
+            "value": "plusieurs bases de données",
+            "evidence": "revendique la mise en vente de plusieurs bases de données attribuées à Solimut Mutuelle de France.",
+        }],
+    })])
+    assert "initial_access" not in resolved["fields"]
+
+
+def test_claim_initial_access_avec_vocabulaire_de_compromission_est_promu():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{
+            "type": "initial_access", "status": "reported",
+            "value": "compromission d'un compte administrateur via hameçonnage",
+            "evidence": "Elle évoque la compromission des identifiants d'un compte administrateur à la suite d'une campagne d'hameçonnage.",
+        }],
+    })])
+    assert resolved["fields"]["initial_access"]["value"] == "compromission d'un compte administrateur via hameçonnage"
+
+
 def test_prestataire_nomme_dans_la_preuve_alimente_un_tiers_sans_identite_inventee():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [{"status": "confirmed", "evidence": "L'incident a touché un prestataire technique de la victime."}],

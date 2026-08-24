@@ -512,6 +512,19 @@ def _dedupe_claim_entries(entries: Iterable[dict]) -> list[dict]:
     return list(selected.values())
 
 
+# Vocabulaire générique de compromission (pas de nom d'organisation ni de
+# système) : sert uniquement à écarter un claim étiqueté "initial_access" par
+# erreur (ex. une simple mise en vente de données, cas réel constaté sur
+# Solimut) — jamais à deviner un vecteur non documenté.
+_ACCESS_VECTOR_MARKERS = re.compile(
+    r"phishing|hame[cç]onnage|injection|sqli?\b|zero[- ]?day|identifiants?|"
+    r"mots? de passe|credentials?|exploit|vuln[ée]rabilit[ée]|faille|intrusion|"
+    r"brute[- ]force|acc[eè]s (?:non autoris|frauduleux)|compte(?:s)? compromis|"
+    r"fonction d'export|export",
+    re.I,
+)
+
+
 def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
     candidates = [claim for claim in claims if claim.get("type") == claim_type and _known(claim.get("value"))]
     if claim_type == "actor":
@@ -521,10 +534,51 @@ def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
             claim for claim in candidates
             if _norm(claim.get("value")) in _norm(claim.get("evidence"))
         ]
+    elif claim_type == "initial_access":
+        candidates = [
+            claim for claim in candidates
+            if _ACCESS_VECTOR_MARKERS.search(_text(claim.get("evidence")))
+        ]
     if not candidates:
         return None
     claim = sorted(candidates, key=lambda row: (source_rank(row.get("source")), _text(row.get("value"))))[0]
     return {"value": claim["value"], "source": claim.get("source", ""), "sources": claim.get("sources", [])}
+
+
+def _claim_list_entries(claims: Iterable[dict], claim_type: str) -> list[dict]:
+    """Projette les claims d'un type donné (ex. `vulnerability`) vers une liste
+    publique, avec la même déduplication par valeur que les autres listes."""
+    selected: dict[str, dict] = {}
+    for claim in claims:
+        if claim.get("type") != claim_type or not _known(claim.get("value")):
+            continue
+        key = _norm(claim.get("value"))
+        sources = claim.get("sources") or ([claim["source"]] if claim.get("source") else [])
+        entry = selected.get(key)
+        if entry is None:
+            selected[key] = {"value": claim["value"], "source": claim.get("source", ""), "sources": list(sources)}
+        else:
+            for source in sources:
+                if source and source not in entry["sources"]:
+                    entry["sources"].append(source)
+    return list(selected.values())
+
+
+def _merge_list_entries(*lists: list[dict]) -> list[dict]:
+    selected: dict[str, dict] = {}
+    for entries in lists:
+        for entry in entries:
+            key = _norm(entry.get("value"))
+            if not key:
+                continue
+            existing = selected.get(key)
+            if existing is None:
+                selected[key] = dict(entry)
+            else:
+                for source in entry.get("sources", []) or []:
+                    if source and source not in existing.setdefault("sources", []):
+                        existing["sources"].append(source)
+    return list(selected.values())
 
 
 def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
@@ -643,13 +697,13 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     # Les scalaires explicitement extraits restent prioritaires. Les claims
     # typés constituent uniquement un filet de provenance pour les acteurs et
     # tiers, dont l'absence de projection ne doit plus vider une fiche riche.
-    for field, claim_type in (("threat_actor", "actor"), ("third_party", "third_party")):
+    for field, claim_type in (("threat_actor", "actor"), ("third_party", "third_party"), ("initial_access", "initial_access")):
         fields.setdefault(field, _claim_scalar(claims, claim_type))
     resolved = {
         "version": 3,
         "fields": {field: value for field, value in fields.items() if value},
         "data_types": _data_types_entries(ordered),
-        "vulnerabilities": _list_entries(ordered, "vulnerabilities"),
+        "vulnerabilities": _merge_list_entries(_list_entries(ordered, "vulnerabilities"), _claim_list_entries(claims, "vulnerability")),
         "affected": resolve_affected_counts(ordered),
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
