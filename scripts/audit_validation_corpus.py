@@ -31,6 +31,17 @@ def main() -> int:
     for target in corpus.targets:
         targets_by_case.setdefault(target.case_id, set()).add(target.key)
     case_reports = []
+
+    def contains(values, *needles):
+        folded = " ".join(str(value or "").casefold() for value in values)
+        return all(needle.casefold() in folded for needle in needles)
+
+    def claims_of(detail, kind):
+        return [row.get("value") for row in detail.get("claims", []) if isinstance(row, dict) and row.get("type") == kind]
+
+    def field_or_claim(detail, field, kind, *needles):
+        scalar = ((detail.get("fields") or {}).get(field) or {}).get("value")
+        return contains([scalar, *claims_of(detail, kind)], *needles)
     for case_id, expected in sorted(targets_by_case.items()):
         matches = []
         for row in published if isinstance(published, list) else []:
@@ -68,6 +79,32 @@ def main() -> int:
             problems.append("Corpus validation : volume Déclic Services absent")
         if case_id == "solimut" and not any("1244445" in value.replace(" ", "") for value in values):
             problems.append("Corpus validation : volume Solimut absent")
+        # Contrat de complétude issu des cinq fiches de référence : il ne
+        # demande jamais d'inventer un fait, mais bloque si un fait sourcé
+        # attendu est perdu entre extraction, SourceFacts et interface.
+        if case_id == "sport_2000":
+            if not field_or_claim(detail, "threat_actor", "actor", "zerobytes"):
+                problems.append("Corpus validation : acteur Sport 2000 absent")
+            if not contains([entry.get("value") for entry in detail.get("systems", []) if isinstance(entry, dict)] + claims_of(detail, "system"), "pilot"):
+                problems.append("Corpus validation : système Pilot Sport 2000 absent")
+        elif case_id == "dinum":
+            if not field_or_claim(detail, "threat_actor", "actor", "0xsec"):
+                problems.append("Corpus validation : acteur DINUM absent")
+            if not contains([entry.get("value") for entry in detail.get("systems", []) if isinstance(entry, dict)] + claims_of(detail, "system"), "cloud"):
+                problems.append("Corpus validation : système cloud DINUM absent")
+        elif case_id == "declic_services":
+            if not field_or_claim(detail, "threat_actor", "actor", "zerobytes"):
+                problems.append("Corpus validation : acteur Déclic Services absent")
+            if not contains([entry.get("value") for entry in detail.get("systems", []) if isinstance(entry, dict)] + claims_of(detail, "system"), "wordpress"):
+                problems.append("Corpus validation : système WordPress Déclic Services absent")
+        elif case_id == "solimut":
+            if not field_or_claim(detail, "threat_actor", "actor", "misere"):
+                problems.append("Corpus validation : acteur Solimut absent")
+            if not contains([entry.get("value") for entry in detail.get("data_types", []) if isinstance(entry, dict)], "sécurité sociale"):
+                problems.append("Corpus validation : NIR Solimut absent")
+        elif case_id == "suez":
+            if not field_or_claim(detail, "third_party", "third_party", "prestataire"):
+                problems.append("Corpus validation : prestataire SUEZ absent")
         case_reports.append({
             "case": case_id,
             "incident_id": row.get("id"),

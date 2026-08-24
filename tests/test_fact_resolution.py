@@ -123,6 +123,42 @@ def test_type_de_donnee_numerique_ou_trop_long_est_rejete():
     assert [entry["value"] for entry in resolved["data_types"]] == ["IBAN"]
 
 
+def test_claim_legacy_sans_type_et_relation_sont_repares_prudemment():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès à Pilot."}],
+        "relations": [{"subject": "Sport 2000", "relation": "claimed_by", "object": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès à Pilot."}],
+    })])
+    assert any(row["type"] == "actor" and row["value"] == "ZeroBytes" for row in resolved["claims"])
+
+
+def test_reparation_legacy_ne_transforme_pas_un_libelle_technique_en_acteur():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"value": "publication des données", "status": "claimed", "evidence": "La publication des données est revendiquée."}],
+    })])
+    assert resolved["claims"][0]["type"] != "actor"
+
+
+def test_organisation_victime_ne_peut_pas_etre_affichee_comme_acteur():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "actor", "value": "SUEZ Eau France", "status": "confirmed", "evidence": "SUEZ Eau France confirme l'incident."}],
+    })], organisation="SUEZ")
+    assert resolved["claims"] == []
+
+
+def test_claim_acteur_type_alimente_le_champ_detail_sans_ecraser_un_scalaire():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}],
+    })])
+    assert resolved["fields"]["threat_actor"]["value"] == "ZeroBytes"
+
+
+def test_prestataire_nomme_dans_la_preuve_alimente_un_tiers_sans_identite_inventee():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"status": "confirmed", "evidence": "L'incident a touché un prestataire technique de la victime."}],
+    })])
+    assert resolved["fields"]["third_party"]["value"] == "prestataire technique"
+
+
 def test_beauty_success_conserve_les_trois_concepts_distincts():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [

@@ -366,14 +366,15 @@ def _claim_entries(facts: Iterable[dict]) -> list[dict]:
             if not evidence:
                 continue
             value = raw_record.get("value")
-            key = (_norm(raw_record.get("type")), _norm(value), _norm(evidence))
+            claim_type = _text(raw_record.get("type")) or _text(raw_record.get("kind")) or _infer_claim_type(raw_record)
+            key = (_norm(claim_type), _norm(value), _norm(evidence))
             if key in selected:
                 if source and source not in selected[key]["sources"]:
                     selected[key]["sources"].append(source)
                 continue
             selected[key] = {
                 "value": value,
-                "type": _text(raw_record.get("type")),
+                "type": claim_type,
                 "status": _status(raw_record),
                 "evidence": evidence,
                 "actor": _text(raw_record.get("actor")),
@@ -384,6 +385,100 @@ def _claim_entries(facts: Iterable[dict]) -> list[dict]:
                 "sources": [source] if source else [],
             }
     return list(selected.values())
+
+
+def _infer_claim_type(record: dict) -> str:
+    """Répare les claims v2 tronqués sans transformer du texte libre en fait.
+
+    Les formes acceptées sont objectivables par unité, relation ou tournure de
+    preuve ; sinon elles restent des ``statement`` visibles mais non projetées
+    dans un champ métier.
+    """
+    value, evidence = _text(record.get("value")), _norm(record.get("evidence"))
+    if re.fullmatch(r"\d+", value) and _text(record.get("unit")):
+        return "affected_count"
+    actor_words = _norm(value).split()
+    generic_actor = {"fuite", "donnees", "publication", "incident", "cyberattaque", "vol", "compromission", "acces", "extraction"}
+    if (
+        "revendique" in evidence and value and not re.fullmatch(r"\d+", value)
+        and 1 <= len(actor_words) <= 2 and not any(word in generic_actor for word in actor_words)
+    ):
+        return "actor"
+    if any(marker in evidence for marker in ("mise en vente", "publie", "publication", "diffuse")):
+        return "publication"
+    if any(marker in evidence for marker in ("acces et extraction", "extraction des donnees", "compromission", "intrusion")):
+        return "attack_action"
+    return "statement"
+
+
+def _relation_claim_entries(facts: Iterable[dict]) -> list[dict]:
+    rows: list[dict] = []
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        for relation in rich.get("relations", []) if isinstance(rich, dict) else []:
+            if not isinstance(relation, dict):
+                continue
+            subject, kind, obj, evidence = (_text(relation.get(key)) for key in ("subject", "relation", "object", "evidence"))
+            if not subject or not kind or not obj or not evidence:
+                continue
+            if kind == "claimed_by":
+                # Les deux orientations existent dans les extracteurs : le
+                # nom de l'organisation est souvent l'objet, sinon l'acteur.
+                candidates = (subject, obj) if _norm(obj) in {"incident", "cyberattaque"} else (obj, subject)
+                actor = next((candidate for candidate in candidates if _infer_claim_type({"value": candidate, "evidence": "revendique"}) == "actor"), "")
+                if actor:
+                    rows.append({"type": "actor", "value": actor, "status": _status(relation), "evidence": evidence, "source": source, "sources": [source] if source else []})
+            elif kind == "compromised_via":
+                if any(marker in _norm(obj) for marker in ("prestataire", "fournisseur", "sous traitant", "tiers")):
+                    rows.append({"type": "third_party", "value": obj, "status": _status(relation), "evidence": evidence, "source": source, "sources": [source] if source else []})
+    return rows
+
+
+def _evidence_claim_entries(facts: Iterable[dict]) -> list[dict]:
+    """Expose le tiers explicitement nommé dans une preuve même sans valeur.
+
+    Ce filet ne crée qu'un libellé générique (« prestataire technique ») : il
+    ne prétend jamais connaître l'identité du tiers lorsque l'article ne la
+    communique pas.
+    """
+    rows: list[dict] = []
+    marker = re.compile(r"\b(prestataire(?:\s+technique)?|fournisseur|sous[- ]traitant)\b", re.I)
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        for claim in rich.get("claims", []) if isinstance(rich, dict) else []:
+            if not isinstance(claim, dict):
+                continue
+            evidence = _text(claim.get("evidence"))
+            match = marker.search(evidence)
+            if match:
+                rows.append({"type": "third_party", "value": match.group(1).lower(), "status": _status(claim), "evidence": evidence, "source": source, "sources": [source] if source else []})
+    return rows
+
+
+def _dedupe_claim_entries(entries: Iterable[dict]) -> list[dict]:
+    selected: dict[tuple[str, str], dict] = {}
+    for entry in entries:
+        key = (_norm(entry.get("type")), _norm(entry.get("value")))
+        if not key[0] or not key[1]:
+            continue
+        previous = selected.get(key)
+        if previous is None:
+            selected[key] = entry
+        else:
+            for source in entry.get("sources", []):
+                if source and source not in previous["sources"]:
+                    previous["sources"].append(source)
+    return list(selected.values())
+
+
+def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
+    candidates = [claim for claim in claims if claim.get("type") == claim_type and _known(claim.get("value"))]
+    if not candidates:
+        return None
+    claim = sorted(candidates, key=lambda row: (source_rank(row.get("source")), _text(row.get("value"))))[0]
+    return {"value": claim["value"], "source": claim.get("source", ""), "sources": claim.get("sources", [])}
 
 
 def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
@@ -484,17 +579,35 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
     return ""
 
 
-def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "") -> dict:
+def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "", organisation: str = "") -> dict:
     ordered = _ordered_facts(facts)
+    claims = _dedupe_claim_entries(_claim_entries(ordered) + _relation_claim_entries(ordered) + _evidence_claim_entries(ordered))
+    organisation_norm = _norm(organisation)
+    if organisation_norm:
+        claims = [
+            claim for claim in claims
+            if not (
+                claim.get("type") == "actor"
+                and (_norm(claim.get("value")) == organisation_norm
+                     or organisation_norm in _norm(claim.get("value"))
+                     or _norm(claim.get("value")) in organisation_norm)
+            )
+        ]
+    fields = {field: value for field in SCALAR_FIELDS if (value := resolve_scalar(ordered, field))}
+    # Les scalaires explicitement extraits restent prioritaires. Les claims
+    # typés constituent uniquement un filet de provenance pour les acteurs et
+    # tiers, dont l'absence de projection ne doit plus vider une fiche riche.
+    for field, claim_type in (("threat_actor", "actor"), ("third_party", "third_party")):
+        fields.setdefault(field, _claim_scalar(claims, claim_type))
     resolved = {
         "version": 3,
-        "fields": {field: value for field in SCALAR_FIELDS if (value := resolve_scalar(ordered, field))},
+        "fields": {field: value for field, value in fields.items() if value},
         "data_types": _data_types_entries(ordered),
         "vulnerabilities": _list_entries(ordered, "vulnerabilities"),
         "affected": resolve_affected_counts(ordered),
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
-        "claims": _claim_entries(ordered),
+        "claims": claims,
         "timeline": _timeline_entries(ordered),
     }
     # Les claims sont déjà publiés dans chaque fait source. Ils servent ici à
@@ -506,10 +619,19 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "")
     return resolved
 
 
-def resolve_all(raw_by_incident: dict[str, list[dict]], summaries: dict[str, str] | None = None) -> dict[str, dict]:
+def resolve_all(
+    raw_by_incident: dict[str, list[dict]],
+    summaries: dict[str, str] | None = None,
+    organisations: dict[str, str] | None = None,
+) -> dict[str, dict]:
     summaries = summaries or {}
+    organisations = organisations or {}
     return {
-        incident_id: resolve_incident_facts(facts, fallback_summary=summaries.get(incident_id, ""))
+        incident_id: resolve_incident_facts(
+            facts,
+            fallback_summary=summaries.get(incident_id, ""),
+            organisation=organisations.get(incident_id, ""),
+        )
         for incident_id, facts in raw_by_incident.items()
         if facts
     }

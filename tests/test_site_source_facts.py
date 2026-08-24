@@ -101,6 +101,27 @@ def test_rich_facts_data_types_est_transmis_au_payload():
     ]
 
 
+def test_rich_facts_preserve_type_timeline_relations_et_volumes():
+    import json
+
+    payload = site._source_fact_payload({
+        "Item_ID": "ITM-a",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Source_Metadata_JSON": json.dumps({"rich_facts": {
+            "version": "2",
+            "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}],
+            "timeline": [{"date": "2026-08-20", "event": "Incident détecté", "status": "reported", "evidence": "Incident détecté le 20 août."}],
+            "relations": [{"subject": "victime", "relation": "compromised_via", "object": "prestataire technique", "status": "confirmed", "evidence": "Le prestataire technique est compromis."}],
+            "data_volumes": [{"value": "12", "unit": "GB", "status": "claimed", "evidence": "12 GB de données."}],
+        }}),
+    })
+    rich = payload["rich_facts"]
+    assert rich["claims"][0]["type"] == "actor"
+    assert rich["timeline"][0]["event"] == "Incident détecté"
+    assert rich["relations"][0]["relation"] == "compromised_via"
+    assert rich["data_volumes"][0]["unit"] == "gb"
+
+
 def test_attack_flow_invalide_est_ignore_sans_casser_le_payload():
     payload = site._source_fact_payload({
         "Item_ID": "ITM-a",

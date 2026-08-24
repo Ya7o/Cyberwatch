@@ -65,8 +65,14 @@ _SUMMARY_RICHNESS_KEYS = (
     "initial_access", "attack_flow", "impact", "threat_actor",
     "data_types", "vulnerabilities", "affected_count", "rich_facts",
 )
-_RICH_STATUSES = {"confirmed", "reported", "claimed", "unknown"}
+_RICH_STATUSES = {"confirmed", "reported", "claimed", "hypothesis", "denied", "negated", "unknown"}
 _RICH_UNITS = {"people", "accounts", "users", "clients", "records", "files"}
+_RICH_VOLUME_UNITS = {"B", "KB", "MB", "GB", "TB", "PB"}
+_RICH_CLAIM_TYPES = {
+    "affected_count", "data_volume", "data_type", "system", "dataset", "initial_access",
+    "attack_action", "impact", "remediation", "actor", "third_party", "vulnerability",
+    "publication", "statement",
+}
 
 
 def _component_incident_id(ordered: list[Item]) -> str:
@@ -88,8 +94,10 @@ def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
     result: dict[str, object] = {}
     status_value = str(value.get("status") or "unknown").strip().lower()
     result["status"] = status_value if status_value in _RICH_STATUSES else "unknown"
-    for key in ("kind", "scope", "date", "evidence", "raw"):
+    for key in ("type", "kind", "scope", "date", "actor", "subject", "relation", "object", "event", "evidence", "raw"):
         text = str(value.get(key) or "").strip()
+        if key == "type" and text not in _RICH_CLAIM_TYPES:
+            continue
         if text:
             result[key] = text[:500]
     if count:
@@ -109,7 +117,7 @@ def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
         if not text_value and isinstance(numeric, (int, float)):
             result["value"] = int(numeric)
         unit = str(value.get("unit") or "").strip().lower()
-        if unit in _RICH_UNITS:
+        if unit in _RICH_UNITS or unit.upper() in _RICH_VOLUME_UNITS:
             result["unit"] = unit
     return result if len(result) > 1 else None
 
@@ -133,6 +141,10 @@ def _rich_facts_from_metadata(row: dict) -> dict | None:
         ("affected_systems", False),
         ("affected_datasets", False),
         ("data_types", False),
+        ("data_volumes", False),
+        ("vulnerabilities", False),
+        ("timeline", False),
+        ("relations", False),
     )
     for key, is_count in collections:
         values = rich.get(key)

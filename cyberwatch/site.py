@@ -73,7 +73,7 @@ def build() -> tuple[int, int]:
         )
         for incident_id, facts in raw_facts.items()
     }
-    resolved = fact_resolution.resolve_all(raw_facts, fallback_summaries)
+    resolved = fact_resolution.resolve_all(raw_facts, fallback_summaries, organisations)
     for row in payload:
         detail = resolved.get(str(row.get("id") or ""))
         # Le résolveur est l'unique contrat de carte : une abstention qualité

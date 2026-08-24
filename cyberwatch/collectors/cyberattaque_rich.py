@@ -51,9 +51,16 @@ _DATA_TYPES = (
 )
 _SCOPE_PATTERNS = (
     ("SPDC", re.compile(r"\b(?:Serveur\s+Professionnel\s+de\s+Donn[ée]es\s+Cadastrales|SPDC)\b", re.I), "system"),
+    ("Pilot / pilot.sport2000.fr", re.compile(r"\bpilot\.sport2000\.fr\b|\b(?:outil|application|plateforme|syst[èe]me)\s+(?:interne\s+)?Pilot\b", re.I), "system"),
+    ("cloud.numerique.gouv.fr", re.compile(r"\bcloud\.numerique\.gouv\.fr\b", re.I), "system"),
+    ("Metabase", re.compile(r"\bMetabase\b", re.I), "system"),
+    ("WordPress", re.compile(r"\bWordPress\b", re.I), "system"),
+    ("ERP", re.compile(r"\bERP\b", re.I), "system"),
     ("données cadastrales", re.compile(r"\bdonn[ée]es\s+cadastrales\b", re.I), "dataset"),
     ("successions vacantes", re.compile(r"\bsuccessions?\s+vacantes?\b", re.I), "dataset"),
     ("données fiscales", re.compile(r"\bdonn[ée]es\s+fiscales\b", re.I), "dataset"),
+    ("réservations", re.compile(r"\br[ée]servations?\b", re.I), "dataset"),
+    ("données clients", re.compile(r"\bdonn[ée]es\s+clients?\b", re.I), "dataset"),
 )
 _EVENT_TRIGGER = re.compile(r"\b(?:attaque|cyberattaque|intrusion|compromission|fuite|exfiltr|vol[ée]?|publi|revendiqu|confirm|d[ée]tect|notifi|corrig|restaur|isol|chiffr|ransomware|secret|vuln[ée]rabilit)\w*\b", re.I)
 _THIRD_PARTY = re.compile(r"\b(?:via|chez|par)\s+(?:le|la|l['’])?\s*(?:prestataire|fournisseur|h[ée]bergeur|sous[- ]traitant|plateforme)\s+([A-Z][\w.&'’+-]{2,60})", re.I)
