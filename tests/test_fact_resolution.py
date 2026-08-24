@@ -118,6 +118,32 @@ def test_claims_timeline_et_systemes_semantiques_sont_publies():
     assert resolved["timeline"][0]["event"] == "Publication de la revendication"
 
 
+def test_claim_statement_dupliquant_une_entree_timeline_est_ecarte():
+    """Cas réel constaté sur SUEZ : un claim `statement` (destiné à "Faits
+    sourcés") reprenait mot pour mot l'evidence d'une entrée `timeline`."""
+    evidence = "L'attaque a permis à des personnes malveillantes d'accéder à certaines données et de les extraire."
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "statement", "value": "Accès et extraction de données", "status": "confirmed", "evidence": evidence}],
+        "timeline": [{"date": "2026-08-20", "event": "Accès et extraction", "status": "confirmed", "evidence": evidence}],
+    })])
+    assert resolved["claims"] == []
+    assert resolved["timeline"][0]["event"] == "Accès et extraction"
+
+
+def test_systeme_agrege_redondant_avec_ses_composants_est_ecarte():
+    """Cas réel constaté sur Déclic Services : "WordPress", "ERP" et un 3ᵉ
+    chip "WordPress, ERP, base de production" qui répète les deux premiers."""
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "affected_systems": [
+            {"value": "WordPress", "evidence": "le site WordPress exposé publiquement"},
+            {"value": "ERP", "evidence": "un ERP accessible depuis Internet"},
+            {"value": "WordPress, ERP, base de production", "evidence": "chaîne passant par WordPress, un ERP, la base de production"},
+        ],
+    })])
+    values = {entry["value"] for entry in resolved["systems"]}
+    assert values == {"WordPress", "ERP"}
+
+
 def test_type_de_donnee_numerique_ou_trop_long_est_rejete():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", data_types=["779750", "x" * 121, "IBAN"])])
     assert [entry["value"] for entry in resolved["data_types"]] == ["IBAN"]

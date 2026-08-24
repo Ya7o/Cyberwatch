@@ -333,7 +333,25 @@ def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
                 }
             elif source and source not in selected[semantic]["sources"]:
                 selected[semantic]["sources"].append(source)
-    return list(selected.values())
+    return _drop_aggregate_duplicates(list(selected.values()))
+
+
+def _drop_aggregate_duplicates(entries: list[dict]) -> list[dict]:
+    """Retire une entrée qui n'est qu'une concaténation d'au moins deux autres
+    valeurs déjà listées séparément (ex. systèmes "WordPress", "ERP" *et* un
+    3ᵉ chip "WordPress, ERP, base de production" qui répète les deux premiers)."""
+    values_norm = [_norm(entry.get("value")) for entry in entries]
+    kept = []
+    for index, entry in enumerate(entries):
+        value_norm = values_norm[index]
+        contained = [
+            other for other_index, other in enumerate(values_norm)
+            if other_index != index and other and other != value_norm and other in value_norm
+        ]
+        if len(contained) >= 2:
+            continue
+        kept.append(entry)
+    return kept
 
 
 def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
@@ -600,6 +618,27 @@ def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
     return list(selected.values())
 
 
+def _drop_claims_duplicating_timeline(claims: list[dict], timeline: list[dict]) -> list[dict]:
+    """Un extracteur peut publier le même fait à la fois comme claim
+    `statement` et comme entrée `timeline` (même evidence, parfois tronquée).
+    Le fait reste dans la chronologie ; le doublon générique n'apporte rien
+    de plus dans "Faits sourcés"."""
+    timeline_evidence = [_norm(row.get("evidence")) for row in timeline if row.get("evidence")]
+    if not timeline_evidence:
+        return claims
+    kept = []
+    for claim in claims:
+        if claim.get("type") == "statement":
+            evidence_norm = _norm(claim.get("evidence"))
+            if evidence_norm and any(
+                evidence_norm == te or evidence_norm in te or te in evidence_norm
+                for te in timeline_evidence
+            ):
+                continue
+        kept.append(claim)
+    return kept
+
+
 def _format_count(record: dict) -> str:
     raw = _text(record.get("raw"))
     if raw:
@@ -699,6 +738,8 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     # tiers, dont l'absence de projection ne doit plus vider une fiche riche.
     for field, claim_type in (("threat_actor", "actor"), ("third_party", "third_party"), ("initial_access", "initial_access")):
         fields.setdefault(field, _claim_scalar(claims, claim_type))
+    timeline = _timeline_entries(ordered)
+    claims = _drop_claims_duplicating_timeline(claims, timeline)
     resolved = {
         "version": 3,
         "fields": {field: value for field, value in fields.items() if value},
@@ -708,7 +749,7 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
         "claims": claims,
-        "timeline": _timeline_entries(ordered),
+        "timeline": timeline,
     }
     # Les claims sont déjà publiés dans chaque fait source. Ils servent ici à
     # composer la synthèse canonique sans dupliquer tout leur détail dans la
