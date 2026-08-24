@@ -135,11 +135,16 @@ def test_faits_sources_ne_repetent_pas_acteur_et_tiers_deja_affiches():
     assert "documentedClaimsHtml(detail.claims || [], incident.org, fields)" in js
 
 
-def test_detail_ecarte_les_champs_techniques_a_qualite_variable():
+def test_detail_ecarte_les_champs_encore_non_fiabilises():
+    """Vecteur d'entrée et Vulnérabilités sont réintégrés : fact_resolution.py
+    les projette désormais depuis des claims typés avec un garde-fou de
+    cohérence (voir _claim_scalar/_claim_list_entries). Les autres champs
+    restent écartés tant qu'ils n'ont pas de mécanisme de fiabilisation
+    équivalent — leur source brute (CSV) est vide sur tout l'échantillon."""
     js = _read("assets/dashboard-v2.js")
-    assert 'detailField("Vecteur d’entrée"' not in js
+    assert 'detailField("Vecteur d’entrée"' in js
+    assert 'detailField("Vulnérabilités"' in js
     assert 'detailField("Localisation précise"' not in js
-    assert 'detailField("Vulnérabilités"' not in js
     assert 'detailField("Date de l’attaque"' not in js
     assert 'detailField("Découverte"' not in js
     assert 'detailField("CVSS"' not in js

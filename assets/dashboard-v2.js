@@ -450,10 +450,12 @@
       dataTypesHtml(detail.data_types || []),
       detailField("Acteur", fields.threat_actor?.value),
       detailField("Tiers impliqué", fields.third_party?.value),
+      detailField("Vecteur d’entrée", fields.initial_access?.value),
       detailField("Volume de données", fields.data_volume?.value),
       detailField("Impact", fields.impact?.value),
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
+      detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
       documentedClaimsHtml(detail.claims || [], incident.org, fields),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
