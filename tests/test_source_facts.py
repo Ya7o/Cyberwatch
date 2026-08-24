@@ -288,6 +288,26 @@ def test_cyberattaque_editorial_title_is_safe_summary_when_ai_abstains(monkeypat
     assert json.loads(fact["Evidence_JSON"])["Summary"] == entry.title
 
 
+def test_cyberattaque_uses_canonical_item_title_when_hydration_omits_it(monkeypatch):
+    """Régression Sport 2000 : l'échec LLM ne doit pas vider une carte."""
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {})
+    title = "Sport 2000 : ZeroBytes publie 17 851 réservations de son outil interne Pilot"
+    item = Item(
+        Item_ID="ITM-sport", Source_ID="CYBERATTAQUE_ORG",
+        Organisation_Raw="Sport 2000", Title=title,
+    )
+    # L'hydratation est volontairement limitée au corps : le titre doit venir
+    # de l'item déjà normalisé par la collecte.
+    entry = RawEntry(
+        organisation="Sport 2000",
+        content="ZeroBytes revendique avoir publié des réservations issues de Pilot.",
+    )
+
+    fact = sf.extract_source_fact(item, entry, CO)
+    assert fact["Summary"] == title
+    assert json.loads(fact["Evidence_JSON"])["Summary"] == title
+
+
 def test_enrichissement_semantique_est_materialise(monkeypatch):
     monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
         "summary": {

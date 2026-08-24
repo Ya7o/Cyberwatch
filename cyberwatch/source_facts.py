@@ -393,7 +393,11 @@ def _finalize(fact: dict, item: Item, entry: RawEntry, evidence: dict) -> dict |
         # qui fait autorité pour rejeter un nom seul, y compris au reset zéro.
         organisation = item.Organisation_Raw or entry.organisation or ""
         if not is_publishable_headline(summary) or is_organisation_name_only(summary, organisation):
-            title = " ".join(str(entry.title or "").split()).strip()
+            # Certains adaptateurs d'hydratation ne réinjectent que le corps
+            # dans RawEntry. Le titre canonique est néanmoins conservé sur
+            # Item : l'utiliser évite qu'une indisponibilité LLM transforme un
+            # article éditorial correctement collecté en synthèse vide.
+            title = " ".join(str(entry.title or item.Title or "").split()).strip()
             if is_publishable_headline(title) and not is_organisation_name_only(title, organisation):
                 fact["Summary"] = summary = title
                 evidence["Summary"] = title
