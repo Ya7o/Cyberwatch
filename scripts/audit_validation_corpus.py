@@ -62,6 +62,12 @@ def main() -> int:
         initial_access = str(((detail.get("fields") or {}).get("initial_access") or {}).get("value") or "")
         if case_id == "sport_2000" and initial_access == "compromised_credentials":
             problems.append("Corpus validation : Sport 2000 infère encore des identifiants compromis")
+        if case_id == "sport_2000":
+            exposed = [str(entry.get("value") or "") for entry in detail.get("data_types", []) if isinstance(entry, dict)]
+            if contains(exposed, "IBAN") or contains(exposed, "cartes de paiement"):
+                problems.append("Corpus validation : Sport 2000 présente des données bancaires explicitement absentes")
+            if row.get("sensitive_data_exposed"):
+                problems.append("Corpus validation : Sport 2000 porte à tort le tag Données sensibles")
         if case_id in {"declic_services", "solimut", "suez"} and not row.get("sensitive_data_exposed"):
             problems.append(f"Corpus validation : données sensibles non signalées pour {case_id}")
         values = {str(entry.get("value") or "").casefold() for entry in detail.get("affected", []) if isinstance(entry, dict)}
