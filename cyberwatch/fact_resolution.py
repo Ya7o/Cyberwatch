@@ -53,6 +53,12 @@ STATUS_LABELS = {
 }
 _NUMERIC_ONLY_RE = re.compile(r"^[\d\s,.;: ]+$")
 _MAX_DATA_TYPE_CHARS = 120
+_ACTOR_PREFIX_RE = re.compile(
+    r"^(?:(?:le|la|un|une)\s+(?:cybercriminel|hacker|pirate|"
+    r"attaquant|acteur|groupe|collectif|gang)|(?:cybercriminel|hacker|"
+    r"pirate|attaquant|groupe|collectif|gang))\s+",
+    re.I,
+)
 
 
 def source_rank(source_id: str | None) -> int:
@@ -67,6 +73,16 @@ def _norm(value: Any) -> str:
     text = unicodedata.normalize("NFD", _text(value))
     text = "".join(char for char in text if unicodedata.category(char) != "Mn")
     return re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+
+
+def _actor_label(value: Any) -> str:
+    """Conserve le nom de l'acteur, jamais sa désignation narrative.
+
+    Les extracteurs peuvent citer « le cybercriminel misere » : c'est une
+    preuve utile, mais le champ canonique doit être `misere` afin de rester
+    comparable entre les sources et les runs zéro.
+    """
+    return _ACTOR_PREFIX_RE.sub("", _text(value)).strip(" ,;:-")
 
 
 def _known(value: Any) -> bool:
@@ -99,14 +115,18 @@ def _supporting_sources(facts: Iterable[dict], getter: Callable[[dict], Any], ch
 def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
     ordered = _ordered_facts(facts)
     for fact in ordered:
-        value = fact.get(field)
+        value = _actor_label(fact.get(field)) if field == "threat_actor" else fact.get(field)
         if not _known(value):
             continue
         source = _text(fact.get("source"))
         return {
             "value": value,
             "source": source,
-            "sources": _supporting_sources(ordered, lambda row: row.get(field), value),
+            "sources": _supporting_sources(
+                ordered,
+                (lambda row: _actor_label(row.get(field))) if field == "threat_actor" else (lambda row: row.get(field)),
+                value,
+            ),
         }
     return None
 

@@ -221,6 +221,13 @@ def test_data_type_rich_negated_is_not_published_as_exposed():
     assert [entry["value"] for entry in resolved["data_types"]] == ["Adresses e-mail"]
 
 
+def test_actor_scalar_drops_narrative_prefix():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", threat_actor="Le cybercriminel misere"),
+    ])
+    assert resolved["fields"]["threat_actor"]["value"] == "misere"
+
+
 def test_statut_revendique_est_conserve_et_resume_deterministe():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [
