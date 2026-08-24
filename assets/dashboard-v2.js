@@ -405,13 +405,18 @@
 
   function affectedHtml(records) {
     if (!Array.isArray(records) || !records.length) return "";
-    const values = records.map((record) => {
+    // Un chiffre contesté (négation) ou hypothétique porte le même poids
+    // visuel qu'un chiffre confirmé si on le rend en simple detail-chip : le
+    // badge de statut, déjà utilisé pour les faits sourcés, distingue les deux.
+    const chips = records.map((record) => {
       const raw = record.raw || "";
       let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
       if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
-      return value;
+      const status = record.status || "unknown";
+      const statusLabel = CLAIM_STATUS_LABELS[status] || "Documenté";
+      return `<span class="detail-chip">${esc(value)} <span class="claim-status claim-status--${esc(status)}">${esc(statusLabel)}</span></span>`;
     });
-    return detailField("Volume documenté", values);
+    return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${chips.join("")}</dd></div>`;
   }
 
   const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };

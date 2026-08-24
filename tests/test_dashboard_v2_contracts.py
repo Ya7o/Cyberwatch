@@ -126,6 +126,15 @@ def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents()
     assert "incident-fact-source" not in js
 
 
+def test_volume_documente_porte_un_badge_de_statut_par_entree():
+    """DINUM a un volume au statut "negated" (contesté) — il ne doit pas avoir
+    le même poids visuel qu'un volume confirmé."""
+    js = _read("assets/dashboard-v2.js")
+    assert "function affectedHtml(records)" in js
+    assert 'claim-status claim-status--${esc(status)}' in js
+    assert "CLAIM_STATUS_LABELS[status]" in js
+
+
 def test_faits_sources_ne_repetent_pas_acteur_et_tiers_deja_affiches():
     """Acteur/Tiers rendus une seule fois : Solimut affichait "misere" jusqu'à
     3 fois (fields.threat_actor + claim actor + suffixe attack_action)."""
