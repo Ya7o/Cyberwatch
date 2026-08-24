@@ -91,6 +91,15 @@ def test_access_hypothesis_is_not_misclassified_as_exposed_credentials():
     assert {row["value"] for row in entry.source_metadata["rich_facts"]["data_types"]} == {"adresses e-mail"}
 
 
+def test_booking_identifier_is_not_an_authentication_credential():
+    entry = RawEntry(
+        title="Exemple : fuite de données",
+        content="Les données exposées comprennent une référence et un identifiant de réservation.",
+    )
+    enrich_entry_metadata(entry)
+    assert [row["value"] for row in entry.source_metadata["rich_facts"]["data_types"]] == ["références de réservation"]
+
+
 def test_assures_are_retained_as_people_counts():
     entry = RawEntry(title="Exemple", content="Une fuite concerne 1 244 445 assurés.")
     enrich_entry_metadata(entry)

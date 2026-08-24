@@ -506,6 +506,22 @@ def test_data_type_court_est_accepte():
     assert result["data_types"][0]["value"] == short_value
 
 
+def test_data_type_cited_only_in_a_denial_is_rejected():
+    context = (
+        "Les réservations contiennent des noms et des adresses e-mail. "
+        "Nous n'avons pas identifié de numéro complet de carte bancaire ni d'IBAN."
+    )
+    raw = {
+        "data_types": [
+            {"value": "IBAN / RIB", "confidence": 0.9, "evidence": "IBAN"},
+            {"value": "cartes de paiement", "confidence": 0.9, "evidence": "carte bancaire"},
+            {"value": "adresses e-mail", "confidence": 0.9, "evidence": "adresses e-mail"},
+        ]
+    }
+    result = sfa._normalize(raw, context, {"data_types"})
+    assert [row["value"] for row in result["data_types"]] == ["adresses e-mail"]
+
+
 def test_impact_long_reste_accepte_car_hors_perimetre_du_plafond_data_types():
     """`impact` réutilise `_normalize_fact` mais n'est pas concerné par
     MAX_LABEL_VALUE_CHARS : une conséquence documentée peut légitimement

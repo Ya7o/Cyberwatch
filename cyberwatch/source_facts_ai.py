@@ -82,7 +82,9 @@ FIELD_VERSIONS = {
     "impact": "impact-v3",
     "threat_actor": "threat-actor-v1",
     "third_party": "third-party-v1",
-    "data_types": "data-types-v2",
+    # V3 invalide les valeurs LLM dont la « preuve » n'était qu'un mot
+    # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
+    "data_types": "data-types-v3",
     "fine_location": "fine-location-v1",
     "attack_date": "attack-date-v1",
     "discovered_date": "discovered-date-v1",
@@ -175,6 +177,11 @@ _DATA_RELATION = re.compile(
 _NEGATED_DATA_RELATION = re.compile(
     r"\b(?:aucune?\s+(?:donn[ée]e|information)|pas\s+de\s+(?:donn[ée]e|information)|"
     r"n['’ ](?:a|ont)\s+pas\s+[ée]t[ée]\s+(?:expos[ée]e|vol[ée]e|compromise))",
+    re.I,
+)
+_NEGATED_DATA_VALUE_PREFIX = re.compile(
+    r"\b(?:aucun(?:e)?|pas\s+de|sans|n['’ ](?:ai|as|a|avons|avez|ont)\s+pas"
+    r"(?:\s+(?:[a-zà-öø-ÿ'’-]+)){0,5})\b.{0,90}$",
     re.I,
 )
 _DATA_TYPE_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
@@ -704,6 +711,32 @@ def _evidence_window(evidence: str, context: str, radius: int = 180) -> str:
     return context[max(0, pos - radius): min(len(context), pos + len(evidence) + radius)]
 
 
+def _evidence_sentence(evidence: str, context: str) -> str:
+    """Retourne la phrase source qui contient l'extrait cité par le modèle."""
+    if not evidence or not context:
+        return evidence or ""
+    pos = context.casefold().find(evidence.casefold())
+    if pos < 0:
+        return evidence
+    start = max(context.rfind(".", 0, pos), context.rfind("!", 0, pos), context.rfind("?", 0, pos)) + 1
+    ends = [point for point in (context.find(".", pos), context.find("!", pos), context.find("?", pos)) if point >= 0]
+    end = min(ends) + 1 if ends else len(context)
+    return context[start:end]
+
+
+def _negated_data_type(value: str, evidence: str, context: str) -> bool:
+    """Vérifie qu'une catégorie LLM n'est pas citée pour nier son exposition."""
+    sentence = _evidence_sentence(evidence, context)
+    value_key = searchable(value)
+    for canonical, pattern in _DATA_TYPE_PATTERNS:
+        if searchable(canonical) != value_key:
+            continue
+        for match in pattern.finditer(sentence):
+            if _NEGATED_DATA_VALUE_PREFIX.search(sentence[:match.start()]):
+                return True
+    return False
+
+
 def _valid_confidence(value) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
@@ -831,6 +864,8 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
         for candidate in raw.get("data_types", []) if isinstance(raw.get("data_types"), list) else []:
             fact = _normalize_fact(candidate, context)
             if not fact or len(fact["value"]) > MAX_LABEL_VALUE_CHARS:
+                continue
+            if _negated_data_type(fact["value"], fact["evidence"], context):
                 continue
             key = searchable(fact["value"])
             if key and key not in seen:

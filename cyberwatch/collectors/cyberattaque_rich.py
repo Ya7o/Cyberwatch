@@ -174,7 +174,17 @@ def _extract_data_types(sentences: list[str]) -> list[dict]:
         if status in {"negated", "denied"}:
             continue
         for label, pattern in _DATA_TYPES:
-            if pattern.search(sentence): rows.append({"value":label,"status":status,"date":_date(sentence),"evidence":sentence[:420]})
+            if not pattern.search(sentence):
+                continue
+            # Un « identifiant de réservation » est une référence métier,
+            # pas un identifiant d'authentification. Le conserver sous le
+            # libellé générique déclencherait à tort le tag Données sensibles.
+            value = (
+                "références de réservation"
+                if label == "identifiants" and re.search(r"\b(?:r[ée]servation|commande|dossier)\b", sentence, re.I)
+                else label
+            )
+            rows.append({"value":value,"status":status,"date":_date(sentence),"evidence":sentence[:420]})
     return _dedupe(rows,("value","status"))
 
 
