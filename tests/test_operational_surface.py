@@ -1,4 +1,6 @@
 from pathlib import Path
+import re
+import textwrap
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +37,18 @@ def test_five_cases_reset_is_manual_and_requires_explicit_confirmation():
     assert "schedule:" not in content
     assert "FIVE_CASES_RESET" in content
     assert "validation/five_cases.json" in content
+
+
+def test_five_cases_reset_embedded_budget_script_compiles():
+    """Le garde-fou financier ne doit pas bloquer la publication par syntaxe."""
+    content = (WORKFLOWS / "reset-validation-five-cases.yml").read_text(encoding="utf-8")
+    match = re.search(
+        r"python - <<'PY'\n(?P<script>.*?)\n\s+PY\n",
+        content,
+        flags=re.DOTALL,
+    )
+    assert match, "script Python de budget introuvable"
+    compile(textwrap.dedent(match.group("script")), "reset-validation-budget", "exec")
 
 
 def test_cold_reset_certifies_before_publication():

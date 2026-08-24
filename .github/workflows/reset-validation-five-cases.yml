@@ -124,7 +124,7 @@ jobs:
           def num(value):
               try: return float(value or 0)
               except (TypeError, ValueError): return 0.0
-          rows = list(csv.DictReader(Path("data/ai_usage.csv").open(encoding="utf-8", newline=")))
+          rows = list(csv.DictReader(Path("data/ai_usage.csv").open(encoding="utf-8", newline="")))
           qualification = rows[-1] if rows else {}
           source = json.loads(Path("data/source_facts_ai_usage.json").read_text(encoding="utf-8"))
           semantic_runtime = json.loads(Path("/tmp/five-cases-semantic-usage.json").read_text(encoding="utf-8"))
