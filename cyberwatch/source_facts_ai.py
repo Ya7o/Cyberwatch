@@ -74,7 +74,10 @@ FIELD_VERSIONS = {
     # V5 invalide uniquement les anciennes headlines acceptées avant le
     # contrat centralisé ; identités et faits structurés restent inchangés.
     "summary": "summary-v5",
-    "initial_access": "initial-access-v1",
+    # V2 interdit les faux positifs du type « impossible de déterminer si
+    # l'accès provient d'identifiants compromis ». La version fait invalider
+    # uniquement ce champ dans les caches existants.
+    "initial_access": "initial-access-v2",
     "attack_flow": "attack-flow-v2",
     "impact": "impact-v3",
     "threat_actor": "threat-actor-v1",
@@ -218,6 +221,13 @@ _INITIAL_ACCESS_UNKNOWN_RE = re.compile(
     r"\b(?:vecteur|point\s+d['’]entr[ée]e|origine|m[ée]thode\s+d['’]intrusion|acc[èe]s\s+initial)\b"
     r".{0,80}\b(?:inconnu|inconnue|non\s+(?:connu|connue|communiqu[ée]|[ée]tabli|[ée]tablie|d[ée]termin[ée])|"
     r"n['’ ]est\s+pas\s+(?:connu|connue|communiqu[ée]|[ée]tabli|[ée]tablie|d[ée]termin[ée]))\b",
+    re.I,
+)
+_INITIAL_ACCESS_UNCERTAIN_RE = re.compile(
+    r"\b(?:impossible|difficile)\s+de\s+(?:d[ée]terminer|[ée]tablir|confirmer)\s+si\b.{0,180}"
+    r"\b(?:acc[èe]s|intrusion|compromission|vecteur|point\s+d['’]entr[ée]e)\b|"
+    r"\b(?:acc[èe]s|intrusion|compromission|vecteur|point\s+d['’]entr[ée]e)\b.{0,180}"
+    r"\b(?:reste|demeure)\s+(?:inconnu|inconnue|non\s+(?:[ée]tabli|[ée]tablie|d[ée]termin[ée]|confirm[ée]|confirm[ée]e))\b",
     re.I,
 )
 _INITIAL_ACCESS_CAUSAL_RE = re.compile(
@@ -717,7 +727,7 @@ def _normalize_fact(raw, context: str, require_value_in_evidence: bool = False) 
 
 
 def _normalize_initial_access(raw, context: str) -> dict | None:
-    if _INITIAL_ACCESS_UNKNOWN_RE.search(context or ""):
+    if _INITIAL_ACCESS_UNKNOWN_RE.search(context or "") or _INITIAL_ACCESS_UNCERTAIN_RE.search(context or ""):
         return None
     fact = _normalize_fact(raw, context)
     if not fact or fact["value"] not in INITIAL_ACCESS_VALUES:
@@ -912,7 +922,11 @@ _INITIAL_ACCESS_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
 
 
 def _deterministic_initial_access(context: str) -> dict | None:
-    if not context or _INITIAL_ACCESS_UNKNOWN_RE.search(context):
+    if (
+        not context
+        or _INITIAL_ACCESS_UNKNOWN_RE.search(context)
+        or _INITIAL_ACCESS_UNCERTAIN_RE.search(context)
+    ):
         return None
     for segment in re.split(r"(?<=[.!?;])\s+|\n+", context):
         cleaned = " ".join(segment.split()).strip()

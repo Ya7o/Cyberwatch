@@ -248,6 +248,22 @@ def test_identifiants_exposes_ne_qualifient_pas_seuls_le_vecteur(monkeypatch, tm
     assert "initial_access" not in result
 
 
+def test_vecteur_conditionnel_impossible_a_determiner_est_inconnu():
+    """Régression Sport 2000 : une alternative n'est pas un vecteur établi."""
+    context = (
+        "Il reste donc impossible de déterminer si l’accès provient "
+        "d’identifiants compromis, d’une faiblesse d’authentification ou d’un autre mécanisme."
+    )
+    candidate = {
+        "value": "compromised_credentials",
+        "confidence": .99,
+        "evidence": context,
+    }
+
+    assert sfa._deterministic_initial_access(context) is None
+    assert sfa._normalize_initial_access(candidate, context) is None
+
+
 def test_attack_flow_exclut_remediation_et_hypotheses(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     entry = RawEntry(
