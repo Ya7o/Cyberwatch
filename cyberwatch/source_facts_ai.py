@@ -82,9 +82,9 @@ FIELD_VERSIONS = {
     "impact": "impact-v3",
     "threat_actor": "threat-actor-v1",
     "third_party": "third-party-v1",
-    # V3 invalide les valeurs LLM dont la « preuve » n'était qu'un mot
+    # V4 invalide les valeurs LLM/déterministes dont la « preuve » n'était qu'un mot
     # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
-    "data_types": "data-types-v3",
+    "data_types": "data-types-v4",
     "fine_location": "fine-location-v1",
     "attack_date": "attack-date-v1",
     "discovered_date": "discovered-date-v1",
@@ -984,7 +984,11 @@ def _deterministic_data_types(context: str) -> list[dict]:
             start = max(0, match.start() - 180)
             end = min(len(context), match.end() + 180)
             window = context[start:end]
-            if _NEGATED_DATA_RELATION.search(window) or not _DATA_RELATION.search(window):
+            if (
+                _NEGATED_DATA_RELATION.search(window)
+                or _negated_data_type(canonical, match.group(0), context)
+                or not _DATA_RELATION.search(window)
+            ):
                 continue
             key = searchable(canonical)
             if key in seen:

@@ -508,7 +508,7 @@ def test_data_type_court_est_accepte():
 
 def test_data_type_cited_only_in_a_denial_is_rejected():
     context = (
-        "Les réservations contiennent des noms et des adresses e-mail. "
+        "Les données exposées comprennent des noms et des adresses e-mail. "
         "Nous n'avons pas identifié de numéro complet de carte bancaire ni d'IBAN."
     )
     raw = {
@@ -520,6 +520,15 @@ def test_data_type_cited_only_in_a_denial_is_rejected():
     }
     result = sfa._normalize(raw, context, {"data_types"})
     assert [row["value"] for row in result["data_types"]] == ["adresses e-mail"]
+
+
+def test_deterministic_data_type_cited_only_in_a_denial_is_rejected():
+    context = (
+        "Les données exposées comprennent des noms et des adresses e-mail. "
+        "Nous n'avons pas identifié de numéro complet de carte bancaire ni d'IBAN."
+    )
+    values = sfa._deterministic_data_types(context)
+    assert [row["value"] for row in values] == ["adresses e-mail"]
 
 
 def test_impact_long_reste_accepte_car_hors_perimetre_du_plafond_data_types():
