@@ -330,7 +330,10 @@
   function detailField(label, content) {
     if (!content || (Array.isArray(content) && !content.length)) return "";
     const rendered = Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
-    const layout = Array.isArray(content) ? " resolved-field--chips" : "";
+    // Sur téléphone, une valeur narrative ne doit pas être écrasée dans la
+    // petite colonne de droite. Les champs courts restent, eux, compacts.
+    const needsFullWidth = Array.isArray(content) || String(content).trim().length > 26;
+    const layout = needsFullWidth ? " resolved-field--wide" : "";
     return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd>${rendered}</dd></div>`;
   }
 
@@ -426,7 +429,8 @@
       const status = CLAIM_STATUS_LABELS[claim.status] || "Documenté";
       const actor = claim.type === "attack_action" && known(claim.actor) ? ` — ${claim.actor}` : "";
       const proof = claim.evidence ? ` title="${esc(claim.evidence)}"` : "";
-      return `<div class="resolved-field claim-field"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)} <span class="claim-status claim-status--${esc(claim.status || "unknown")}">${esc(status)}</span></dd></div>`;
+      const wide = String(`${claim.value || ""}${actor}`).trim().length > 26 ? " resolved-field--wide" : "";
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)} <span class="claim-status claim-status--${esc(claim.status || "unknown")}">${esc(status)}</span></dd></div>`;
     }).join("")}</div>`;
   }
   function timelineHtml(rows) {
@@ -434,7 +438,8 @@
     return `<div class="documented-claims"><h4>Chronologie documentée</h4>${rows.slice(0, 8).map((row) => {
       const status = CLAIM_STATUS_LABELS[row.status] || "Documenté";
       const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
-      return `<div class="resolved-field claim-field"><dt>${esc(row.date || "Date")}</dt><dd${proof}>${esc(row.event)} <span class="claim-status claim-status--${esc(row.status || "unknown")}">${esc(status)}</span></dd></div>`;
+      const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(row.date || "Date")}</dt><dd${proof}>${esc(row.event)} <span class="claim-status claim-status--${esc(row.status || "unknown")}">${esc(status)}</span></dd></div>`;
     }).join("")}</div>`;
   }
 

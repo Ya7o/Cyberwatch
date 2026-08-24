@@ -126,11 +126,12 @@ def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents()
     assert "incident-fact-source" not in js
 
 
-def test_detail_mobile_donne_toute_la_largeur_aux_listes_de_badges():
+def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():
     js = _read("assets/dashboard-v2.js")
     css = _read("assets/dashboard-v2.css")
-    assert 'resolved-field--chips' in js
-    assert '.resolved-field--chips { grid-template-columns:1fr;' in css
+    assert 'resolved-field--wide' in js
+    assert 'String(content).trim().length > 26' in js
+    assert '.resolved-field--wide { grid-template-columns:1fr;' in css
 
 
 def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
