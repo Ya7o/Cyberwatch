@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import atexit
 from collections import Counter
+from dataclasses import dataclass
 import hashlib
 import json
 import math
@@ -122,6 +123,26 @@ _LLM_FIELDS = (
     "activity_description",
     "threat_candidate",
 )
+_EDITORIAL_FIELDS = {
+    "summary", "initial_access", "attack_flow", "impact", "threat_actor",
+    "third_party", "fine_location", "attack_date", "discovered_date",
+    "evolution", "threat_candidate", "activity_description",
+}
+_STRUCTURED_FIELDS = set(_LLM_FIELDS) - _EDITORIAL_FIELDS
+
+
+@dataclass(frozen=True)
+class SemanticExtraction:
+    """Résultat d'une unique passe sémantique sur un article hydraté.
+
+    Le backfill transmet cet objet à SourceFacts au lieu de demander une
+    seconde interprétation de la même page entre cache et publication.
+    """
+
+    item_id: str
+    content_hash: str
+    fields: dict
+    statuses: dict
 
 _ACTOR_TRIGGER = re.compile(
     r"\b(?:attribu[ée]e?|imput[ée]e?|associ[ée]e?)\s+(?:à|a|au|aux)\s+"
@@ -197,6 +218,15 @@ _INITIAL_ACCESS_UNKNOWN_RE = re.compile(
     r"\b(?:vecteur|point\s+d['’]entr[ée]e|origine|m[ée]thode\s+d['’]intrusion|acc[èe]s\s+initial)\b"
     r".{0,80}\b(?:inconnu|inconnue|non\s+(?:connu|connue|communiqu[ée]|[ée]tabli|[ée]tablie|d[ée]termin[ée])|"
     r"n['’ ]est\s+pas\s+(?:connu|connue|communiqu[ée]|[ée]tabli|[ée]tablie|d[ée]termin[ée]))\b",
+    re.I,
+)
+_INITIAL_ACCESS_CAUSAL_RE = re.compile(
+    r"\b(?:a|ont|aurait|auraient)\s+permis\b|\b(?:via|gr[âa]ce\s+[àa]|en\s+utilisant|"
+    r"[àa]\s+l['’]aide\s+de|en\s+exploitant|d[uû]\s+[àa]|pour\s+(?:obtenir|acc[ée]der))\b",
+    re.I,
+)
+_INITIAL_ACCESS_EVENT_RE = re.compile(
+    r"\b(?:acc[èe]s|intrusion|compromission|p[ée]n[ée]tration|connexion)\b",
     re.I,
 )
 _HYPOTHETICAL_RE = re.compile(
@@ -693,7 +723,11 @@ def _normalize_initial_access(raw, context: str) -> dict | None:
     if not fact or fact["value"] not in INITIAL_ACCESS_VALUES:
         return None
     window = _evidence_window(fact["evidence"], context)
-    if _HYPOTHETICAL_RE.search(window):
+    if (
+        _HYPOTHETICAL_RE.search(window)
+        or not _INITIAL_ACCESS_EVENT_RE.search(window)
+        or not _INITIAL_ACCESS_CAUSAL_RE.search(window)
+    ):
         return None
     return fact
 
@@ -1209,7 +1243,12 @@ def _error_category(exc: Exception) -> str:
     return type(exc).__name__
 
 
-def enrich(item: Item, entry: RawEntry) -> dict | None:
+def enrich(
+    item: Item,
+    entry: RawEntry,
+    *,
+    requested_fields: set[str] | None = None,
+) -> dict | None:
     if item.Source_ID not in TARGET_SOURCES:
         return None
     full_context = _full_context(entry)
@@ -1220,19 +1259,22 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
     runtime.items_eligible += 1
     seed = _deterministic_seed(entry)
     fields = _fields_needed(item, entry, seed)
+    requested = set(requested_fields or ())
+    if requested_fields is not None:
+        fields &= requested
     if not fields:
         runtime.skipped_no_missing_fields += 1
         return seed or None
 
     key = _cache_item_key(item, entry, runtime)
-    if key in getattr(runtime, "force_field_keys", {}):
-        fields |= set(_LLM_FIELDS)
+    forced_fields = getattr(runtime, "force_field_keys", {}).get(key, set())
+    if forced_fields:
+        fields |= set(forced_fields if requested_fields is None else forced_fields & requested)
     organisation = item.Organisation_Raw or entry.organisation
     cached, satisfied = _read_field_cache(runtime, key, fields, full_context, organisation)
     if key in getattr(runtime, "force_summary_keys", set()):
         cached.pop("summary", None)
         satisfied.discard("summary")
-    forced_fields = getattr(runtime, "force_field_keys", {}).get(key, set())
     if forced_fields:
         for field in forced_fields & fields:
             cached.pop(field, None)
@@ -1282,6 +1324,7 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
     runtime.fields_requested_new.update(missing)
     started = time.monotonic()
     normalized: dict = {}
+    completed_forced_refresh = False
     try:
         payload = _post_openai(body, runtime)
         raw = json.loads(_extract_output_text(payload))
@@ -1294,6 +1337,7 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         runtime.output_tokens += output_tokens
         runtime.cost += _usage_cost(payload, runtime.model)
         runtime.calls_succeeded += 1
+        completed_forced_refresh = bool(forced_fields)
     except (SourceFactsAiError, ValueError, TypeError, json.JSONDecodeError) as exc:
         runtime.calls_failed += 1
         runtime.error_reasons[_error_category(exc)] += 1
@@ -1301,7 +1345,50 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         runtime.durations.append(time.monotonic() - started)
         runtime.progress()
         runtime.checkpoint()
+    # Une invalidation complète est monousage : le résultat de cette passe est
+    # transmis tel quel à SourceFacts. La conserver rendrait le second
+    # consommateur du même article coûteux et non déterministe.
+    if completed_forced_refresh:
+        forced = getattr(runtime, "force_field_keys", {})
+        remaining = set(forced.get(key, set())) - set(forced_fields & fields)
+        if remaining:
+            forced[key] = remaining
+        else:
+            forced.pop(key, None)
     return {**seed, **cached, **normalized} or None
+
+
+def extract_semantic(item: Item, entry: RawEntry) -> SemanticExtraction:
+    """Exécute les contrats éditorial et structuré, puis fige leur résultat."""
+    # Compatibilité avec les adaptateurs/tests qui remplacent encore `enrich`
+    # par une fonction historique à deux arguments.
+    try:
+        fields = enrich(item, entry, requested_fields=_EDITORIAL_FIELDS) or {}
+    except TypeError as exc:
+        if "requested_fields" not in str(exc):
+            raise
+        fields = enrich(item, entry) or {}
+        return SemanticExtraction(
+            item_id=item.Item_ID,
+            content_hash=content_hash(entry),
+            fields=dict(fields),
+            statuses=dict(field_statuses(item, entry)),
+        )
+    context = _full_context(entry)
+    # Les articles courts ont rarement des jeux de données ou une chronologie
+    # suffisamment explicites. Une seconde passe leur ferait seulement payer
+    # des abstentions ; les articles riches reçoivent ce contrat spécialisé.
+    if len(context) >= 700 or _SEMANTIC_DATA_TYPES_TRIGGER.search(context):
+        fields = {
+            **fields,
+            **(enrich(item, entry, requested_fields=_STRUCTURED_FIELDS) or {}),
+        }
+    return SemanticExtraction(
+        item_id=item.Item_ID,
+        content_hash=content_hash(entry),
+        fields=dict(fields),
+        statuses=dict(field_statuses(item, entry)),
+    )
 
 
 def force_summary_refresh(item: Item, entry: RawEntry) -> None:

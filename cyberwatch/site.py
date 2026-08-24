@@ -8,12 +8,28 @@ canonique résolue par :mod:`cyberwatch.fact_resolution`.
 """
 from __future__ import annotations
 
-from . import fact_resolution, site_legacy as _legacy
+from . import config, fact_resolution, site_legacy as _legacy, store
+from .normalize import organisation_key
 
 _SENSITIVE = ("mot de passe", "identifiant", "token", "secret", "iban", "bancair", "paiement", "santé", "medical", "nir", "passeport", "pièce d'identité", "biométr")
 
 def _sensitive_types(detail: dict) -> list[str]:
     return [str(x.get("value")) for x in detail.get("data_types", []) if any(marker in str(x.get("value") or "").casefold() for marker in _SENSITIVE)]
+
+
+def _sector_status(row: dict, queues: dict[str, dict]) -> dict:
+    """Rend l'absence de secteur explicable dans le JSON public."""
+    if row.get("sector") != config.SECTOR_UNKNOWN:
+        return {"status": "confirmed"}
+    if row.get("sector_tentative"):
+        return {"status": "tentative", "candidate": str(row["sector_tentative"])}
+    queue = queues.get(organisation_key(str(row.get("org") or "")))
+    if queue:
+        return {
+            "status": "unknown",
+            "reason": str(queue.get("Category") or "NO_EVIDENCE"),
+        }
+    return {"status": "identity_unmapped", "reason": "missing_sector_queue"}
 
 # Compatibilité stricte : les tests et outils internes utilisent plusieurs
 # helpers privés de site.py. On les réexporte sans dupliquer leur code.
@@ -36,6 +52,13 @@ def build() -> tuple[int, int]:
         raw_facts,
         tentative_sectors,
     )
+    sector_queue = {
+        str(row.get("Organisation_Key") or ""): row
+        for row in store.read_csv(store.DATA_DIR / "sector_enrichment_queue.csv")
+        if row.get("Organisation_Key")
+    }
+    for row in payload:
+        row["sector_status"] = _sector_status(row, sector_queue)
 
     # Le résolveur utilise comme fallback la synthèse historique sélectionnée
     # de façon déterministe. Dès que des faits structurés suffisent, une

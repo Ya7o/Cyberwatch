@@ -7,7 +7,7 @@ from cyberwatch.model import Item
 
 
 def _entry(content="same content", url="https://example.test/item"):
-    return SimpleNamespace(title="Incident", summary="Résumé", content=content, url=url, published="2026-08-20")
+    return SimpleNamespace(title="Incident", summary="Résumé", content=content, url=url, published="2026-08-20", organisation="", source_metadata={})
 
 
 def _item():
@@ -42,6 +42,31 @@ def test_does_not_reuse_source_fact_when_extraction_version_changed(monkeypatch)
 def test_fast_path_can_be_disabled(monkeypatch):
     entry = _entry(); monkeypatch.setattr(store, "load_source_facts", lambda: [_cached_row(entry)]); monkeypatch.setenv("CYBERWATCH_INCREMENTAL_SOURCE_FACTS", "0"); incremental_performance.reset_for_tests()
     assert incremental_performance._reusable_fact(_item(), entry, _spec()) is None
+
+
+def test_semantic_snapshot_bypasses_full_fact_cache(monkeypatch):
+    entry = _entry("Une intrusion a exposé des données clients.")
+    item = _item()
+    monkeypatch.setattr(
+        incremental_performance,
+        "_reusable_fact",
+        lambda *_: {"Item_ID": item.Item_ID, "Summary": "Ancien fait mis en cache"},
+    )
+    semantic = source_facts_ai.SemanticExtraction(
+        item_id=item.Item_ID,
+        content_hash=source_facts_ai.content_hash(entry),
+        fields={
+            "summary": {
+                "value": "Une intrusion a exposé des données clients.",
+                "evidence": "Une intrusion a exposé des données clients.",
+            },
+        },
+        statuses={"summary": "accepted"},
+    )
+
+    fact = source_facts.extract_source_fact(item, entry, _spec(), semantic=semantic)
+
+    assert fact["Summary"] == "Une intrusion a exposé des données clients."
 
 
 def test_frenchbreaches_detail_cache_avoids_second_network_fetch(monkeypatch, tmp_path):

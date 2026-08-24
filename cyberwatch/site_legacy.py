@@ -346,6 +346,19 @@ def _source_links(incident: Incident) -> list[dict[str, str]]:
     return result
 
 
+def _source_link_status(incident: Incident, links: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Expose la raison d'absence d'un lien direct, sans inventer d'URL."""
+    linked = {str(link.get("source") or "") for link in links}
+    return [
+        {
+            "source": source,
+            "status": "direct" if source in linked else "no_direct_url",
+        }
+        for source in incident.Sources.split(" | ")
+        if source
+    ]
+
+
 def incidents_payload(
     incidents: list[Incident],
     local_analysis: dict[str, dict] | None = None,
@@ -358,6 +371,7 @@ def incidents_payload(
     tentative_sectors = tentative_sectors or {}
     payload = []
     for incident in incidents:
+        source_links = _source_links(incident)
         row = {
             "id": incident.Incident_ID,
             "date": incident.Date,
@@ -368,7 +382,8 @@ def incidents_payload(
             "location": incident.Localisation,
             "sources": [s for s in incident.Sources.split(" | ") if s],
             "urls": [u for u in incident.Source_URLs.split(" | ") if u],
-            "source_links": _source_links(incident),
+            "source_links": source_links,
+            "source_link_status": _source_link_status(incident, source_links),
             "items": incident.Items_Count,
             "first_seen": incident.First_seen,
             "last_seen": incident.Last_seen,

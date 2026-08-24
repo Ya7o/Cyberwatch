@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 
 from cyberwatch import source_facts as sf
+from cyberwatch import source_facts_ai as sfa
 from cyberwatch.collectors.base import RawEntry, SourceSpec, Window
 from cyberwatch.collectors.bonjourlafuite import parse_timeline
 from cyberwatch.collectors.ransomware_live import _entry_from_record
@@ -95,6 +96,32 @@ def test_activite_llm_citee_est_transmise_aux_faits_source(monkeypatch):
 
     assert fact["Activity_Description"] == "éditeur de logiciels de comptabilité"
     assert sf._loads_json(fact["Evidence_JSON"])["Activity_Description"].startswith("Exemple SA")
+
+
+def test_snapshot_semantique_est_consomme_sans_second_appel(monkeypatch):
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    entry = RawEntry(
+        title="Exemple SA visée",
+        content="Exemple SA a confirmé qu'un prestataire compromis a exposé des données clients.",
+    )
+    semantic = sfa.SemanticExtraction(
+        item_id=item.Item_ID,
+        content_hash=sfa.content_hash(entry),
+        fields={
+            "summary": {"value": "Un prestataire compromis a exposé des données clients d’Exemple SA.", "evidence": "un prestataire compromis a exposé des données clients"},
+            "third_party": {"value": "prestataire", "evidence": "un prestataire compromis"},
+            "impact": {"value": "Des données clients ont été exposées.", "evidence": "a exposé des données clients"},
+            "affected_datasets": [{"value": "données clients", "evidence": "données clients"}],
+        },
+        statuses={"summary": "accepted"},
+    )
+    monkeypatch.setattr(sfa, "extract_semantic", lambda *_: (_ for _ in ()).throw(AssertionError("second call")))
+
+    fact = sf.extract_source_fact(item, entry, spec("CYBERATTAQUE_ORG"), semantic=semantic)
+
+    assert fact["Summary"].startswith("Un prestataire")
+    assert fact["Third_Party"] == "prestataire"
+    assert sf.semantic_promotion_gaps(fact, semantic) == []
 
 
 def test_nom_seul_ne_devient_jamais_une_synthese(monkeypatch):

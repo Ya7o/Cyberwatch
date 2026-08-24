@@ -585,6 +585,57 @@ def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> N
         fact["_Rich_Facts"] = rich
 
 
+def semantic_promotion_gaps(
+    fact: dict,
+    semantic: source_facts_ai.SemanticExtraction | None,
+) -> list[str]:
+    """Retourne les champs LLM sourcés qui n'ont pas atteint le fait source.
+
+    Ce contrôle ne devine rien : un champ vide n'est pas un écart. Il protège
+    uniquement la frontière cache/SourceFacts/publication contre une perte de
+    valeur déjà validée et citée.
+    """
+    if semantic is None:
+        return []
+    fields = semantic.fields if isinstance(semantic.fields, dict) else {}
+    metadata = _loads_json(str(fact.get("Source_Metadata_JSON") or ""))
+    metadata = metadata if isinstance(metadata, dict) else {}
+    rich = metadata.get("rich_facts") if isinstance(metadata.get("rich_facts"), dict) else {}
+    scalar = {
+        "summary": "Summary",
+        "initial_access": "Initial_Access",
+        "attack_flow": "Attack_Flow_JSON",
+        "impact": "Impact",
+        "threat_actor": "Threat_Actor",
+        "third_party": "Third_Party",
+        "fine_location": "Fine_Location",
+        "attack_date": "Attack_Date",
+        "discovered_date": "Discovered_Date",
+        "evolution": "Evolution",
+        "vulnerabilities": "Vulnerabilities_JSON",
+        "data_types": "Data_Types_JSON",
+        "activity_description": "Activity_Description",
+    }
+    rich_fields = {
+        "affected_counts",
+        "data_volumes",
+        "file_counts",
+        "affected_systems",
+        "affected_datasets",
+    }
+    gaps: list[str] = []
+    for key, value in fields.items():
+        if value in (None, "", [], {}):
+            continue
+        if key in scalar and not fact.get(scalar[key]):
+            gaps.append(key)
+        elif key in rich_fields and not rich.get(key):
+            gaps.append(key)
+        elif key == "threat_candidate" and not metadata.get("threat_tentative"):
+            gaps.append(key)
+    return sorted(set(gaps))
+
+
 _INITIAL_ACCESS_LABELS = {
     "phishing": "un hameçonnage",
     "compromised_credentials": "des identifiants compromis",
@@ -710,13 +761,20 @@ def _derive_summary(fact: dict, evidence: dict) -> None:
         evidence["Summary"] = " | ".join(dict.fromkeys(proofs))[:source_facts_ai.MAX_EVIDENCE_CHARS]
 
 
-def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
+def _from_frenchbreaches(
+    item: Item,
+    entry: RawEntry,
+    spec: SourceSpec,
+    *,
+    semantic: source_facts_ai.SemanticExtraction | None = None,
+) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
     text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
     organisation = entry.organisation or item.Organisation_Raw
-    ai_result = source_facts_ai.enrich(item, entry) or {}
-    fact["_Semantic_Refresh_Status"] = source_facts_ai.field_statuses(item, entry)
+    semantic = semantic or source_facts_ai.extract_semantic(item, entry)
+    ai_result = semantic.fields
+    fact["_Semantic_Refresh_Status"] = semantic.statuses
     candidate = _ai_threat_candidate(ai_result)
     if candidate and item.Threat == config.THREAT_UNKNOWN:
         fact["_Threat_Tentative"] = candidate
@@ -831,13 +889,20 @@ _WEBSITE_RE = re.compile(
 )
 
 
-def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
+def _from_cyberattaque_org(
+    item: Item,
+    entry: RawEntry,
+    spec: SourceSpec,
+    *,
+    semantic: source_facts_ai.SemanticExtraction | None = None,
+) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
     text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
     organisation = entry.organisation or item.Organisation_Raw
-    ai_result = source_facts_ai.enrich(item, entry) or {}
-    fact["_Semantic_Refresh_Status"] = source_facts_ai.field_statuses(item, entry)
+    semantic = semantic or source_facts_ai.extract_semantic(item, entry)
+    ai_result = semantic.fields
+    fact["_Semantic_Refresh_Status"] = semantic.statuses
     candidate = _ai_threat_candidate(ai_result)
     if candidate and item.Threat == config.THREAT_UNKNOWN:
         fact["_Threat_Tentative"] = candidate
@@ -994,12 +1059,25 @@ _EXTRACTORS = {
 }
 
 
-def extract_source_fact(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
+def extract_source_fact(
+    item: Item,
+    entry: RawEntry,
+    spec: SourceSpec,
+    *,
+    semantic: source_facts_ai.SemanticExtraction | None = None,
+) -> dict | None:
     """Retourne un fait source ou None. Une erreur auxiliaire ne bloque jamais la collecte."""
     extractor = _EXTRACTORS.get(spec.source_id)
     if extractor is None:
         return None
     try:
+        if item.Source_ID in source_facts_ai.TARGET_SOURCES:
+            if semantic and (
+                semantic.item_id != item.Item_ID
+                or semantic.content_hash != source_facts_ai.content_hash(entry)
+            ):
+                raise ValueError("semantic_extraction_mismatch")
+            return extractor(item, entry, spec, semantic=semantic)
         return extractor(item, entry, spec)
     except Exception as exc:
         logger.warning(

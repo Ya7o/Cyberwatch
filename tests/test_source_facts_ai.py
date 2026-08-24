@@ -223,6 +223,31 @@ def test_vecteur_inconnu_ne_devient_jamais_une_hypothese(monkeypatch, tmp_path):
     assert "initial_access" not in result
 
 
+def test_identifiants_exposes_ne_qualifient_pas_seuls_le_vecteur(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    entry = RawEntry(
+        title="Sport 2000",
+        content=(
+            "Les données publiées contiennent des identifiants et des moyens de paiement. "
+            "L'origine de l'intrusion n'est pas établie."
+        ),
+    )
+
+    def fake_post(body, _runtime):
+        return _payload(_output_for(
+            body,
+            initial_access={
+                "value": "compromised_credentials",
+                "confidence": .95,
+                "evidence": "Les données publiées contiennent des identifiants",
+            },
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    result = sfa.enrich(_item(), entry) or {}
+    assert "initial_access" not in result
+
+
 def test_attack_flow_exclut_remediation_et_hypotheses(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     entry = RawEntry(

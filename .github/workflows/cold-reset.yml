@@ -324,6 +324,10 @@ jobs:
           python -m cyberwatch check
           python -m cyberwatch build-site
           python -m cyberwatch check
+          # Le rapport est matérialisé depuis les statuts SourceFacts déjà
+          # persistés : aucune nouvelle collecte ni requête LLM n'est lancée.
+          PYTHONPATH=. python scripts/report_source_fact_coverage.py
+          PYTHONPATH=. python scripts/audit_publication_contract.py
       - name: Audit post-reset et baseline officielle
         working-directory: /tmp/cyberwatch-reset
         run: |

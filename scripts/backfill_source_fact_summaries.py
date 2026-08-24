@@ -12,6 +12,7 @@ import argparse
 from collections import Counter
 import json
 import re
+from pathlib import Path
 from urllib.parse import unquote, urlencode, urlparse
 
 from cyberwatch import site, source_facts, source_facts_ai, sources, store
@@ -341,6 +342,7 @@ def run_backfill(
     refresh_summary: bool = False,
     refresh_complete: bool = False,
     replay_summary_cache: bool = False,
+    report_path: Path | None = None,
     client: HttpClient | None = None,
 ) -> dict:
     items = store.load_items()
@@ -372,6 +374,7 @@ def run_backfill(
         "abstained_retry_items": 0,
         "abstained_retry_fields": 0,
         "abstained_retry_restored": 0,
+        "semantic_promotion_gaps": 0,
     })
     if dry_run or not selected:
         return metrics
@@ -416,23 +419,27 @@ def run_backfill(
         metrics["hydrated"] += 1
 
         runtime = source_facts_ai._runtime()
+        semantic = None
         editorial_fields = None
         if refresh_complete:
             invalidate_summary_cache(item, entry)
             source_facts_ai.force_full_refresh(item, entry)
-            editorial_fields = source_facts_ai.enrich(item, entry)
+            semantic = source_facts_ai.extract_semantic(item, entry)
+            editorial_fields = semantic.fields
         elif refresh_summary:
             invalidate_summary_cache(item, entry)
             source_facts_ai.force_summary_refresh(item, entry)
             # Le backfill doit matérialiser l'appel avant l'extracteur : cela
             # évite qu'un adaptateur source court-circuite silencieusement la
             # couche éditoriale.
-            editorial_fields = source_facts_ai.enrich(item, entry)
+            semantic = source_facts_ai.extract_semantic(item, entry)
+            editorial_fields = semantic.fields
         elif replay_summary_cache:
             # Réinjecte uniquement une headline déjà accepted dans le cache.
             # Aucun cache n'est invalidé, donc cette réparation ne peut pas
             # consommer le budget LLM.
-            editorial_fields = source_facts_ai.enrich(item, entry)
+            semantic = source_facts_ai.extract_semantic(item, entry)
+            editorial_fields = semantic.fields
             if not is_publishable_headline(str((editorial_fields or {}).get("summary") or "")):
                 editorial_fields = {
                     **(editorial_fields or {}),
@@ -452,7 +459,7 @@ def run_backfill(
         previous_retry_legacy_nulls = runtime.retry_legacy_nulls
         runtime.retry_legacy_nulls = bool(retry_legacy_nulls)
         try:
-            fact = source_facts.extract_source_fact(item, entry, spec)
+            fact = source_facts.extract_source_fact(item, entry, spec, semantic=semantic)
         finally:
             runtime.retry_legacy_nulls = previous_retry_legacy_nulls
 
@@ -506,6 +513,8 @@ def run_backfill(
             })
             continue
         incoming.append(fact)
+        promotion_gaps = source_facts.semantic_promotion_gaps(fact, semantic)
+        metrics["semantic_promotion_gaps"] += len(promotion_gaps)
         metrics["source_facts_extracted"] += 1
         if item.Item_ID not in existing_by_id:
             metrics["source_facts_recovered"] += 1
@@ -536,6 +545,7 @@ def run_backfill(
             ),
             "reason": metadata.get("_source_facts_summary_reason") or "",
             "headline": str(fact.get("Summary") or ""),
+            "promotion_gaps": promotion_gaps,
         })
 
     if incoming:
@@ -553,16 +563,122 @@ def run_backfill(
     metrics["http_requests"] = http.run_budget.requests_made
     metrics["ai_stats"] = ai_stats
     metrics["incident_reports"] = item_reports
-    store.write_json(store.DATA_DIR / "source_facts_backfill_report.json", {
-        "schema_version": 1,
-        "metrics": {key: value for key, value in metrics.items() if key != "incident_reports"},
-        "incidents": item_reports,
-    })
+    if report_path is not None:
+        incident_reports = _published_incident_reports(items, item_reports)
+        metrics["incidents_reported"] = len(incident_reports)
+        store.write_json(report_path, {
+            "schema_version": 3,
+            "metrics": {key: value for key, value in metrics.items() if key != "incident_reports"},
+            "incidents": incident_reports,
+        })
     return metrics
 
 
 def _parse_item_ids(raw: str) -> set[str]:
     return {value.strip() for value in (raw or "").split(",") if value.strip()}
+
+
+def _published_incident_reports(items: list[Item], item_reports: list[dict]) -> list[dict]:
+    """Construit le rapport depuis les incidents effectivement publiés."""
+    payload_path = store.SITE_DATA_DIR / "incidents.json"
+    try:
+        published = json.loads(payload_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    item_url = {item.Item_ID: item.URL for item in items if item.Item_ID and item.URL}
+    by_url: dict[str, list[dict]] = {}
+    for report in item_reports:
+        url = item_url.get(str(report.get("item_id") or ""), "")
+        if url:
+            by_url.setdefault(url, []).append(report)
+
+    reports: list[dict] = []
+    for incident in published if isinstance(published, list) else []:
+        urls = {str(value) for value in incident.get("urls", []) if value}
+        source_reports = [report for url in urls for report in by_url.get(url, [])]
+        sources = [str(value) for value in incident.get("sources", []) if value]
+        summary = str(incident.get("summary") or "").strip()
+        if summary:
+            status, reason = "accepted", ""
+        elif not set(sources) & TARGET_SOURCES:
+            status, reason = "missing_content", "non_editorial_source"
+        elif source_reports:
+            statuses = {str(report.get("status") or "") for report in source_reports}
+            status = next((value for value in ("technical_failure", "abstained", "rejected_quality") if value in statuses), "missing_content")
+            reason = next((str(report.get("reason") or "") for report in source_reports if report.get("reason")), "headline_not_published")
+        else:
+            status, reason = "missing_content", "not_selected"
+        reports.append({
+            "incident_id": str(incident.get("id") or ""),
+            "organisation": str(incident.get("org") or ""),
+            "sources": sources,
+            "summary_status": status,
+            "summary_reason": reason,
+            "summary": summary,
+            "source_reports": source_reports,
+            "promotion_gaps": sorted({
+                gap for report in source_reports for gap in report.get("promotion_gaps", [])
+            }),
+        })
+    return reports
+
+
+def reports_from_existing_source_facts(
+    items: list[Item], source_facts_rows: list[dict]
+) -> list[dict]:
+    """Materialise the public quality report without invoking the LLM.
+
+    A reset and a normal collection both need a report for *every* published
+    incident, not only for the subset selected by a corrective backfill.  The
+    SourceFacts row is already the durable record of the outcome of a
+    semantic extraction, so reading it is sufficient and cannot create a
+    second paid call.
+    """
+    by_id = {
+        str(row.get("Item_ID") or ""): row
+        for row in source_facts_rows
+        if row.get("Item_ID")
+    }
+    item_reports: list[dict] = []
+    for item in items:
+        if item.Source_ID not in TARGET_SOURCES:
+            continue
+        fact = by_id.get(item.Item_ID)
+        if fact is None:
+            item_reports.append({
+                "item_id": item.Item_ID,
+                "source_id": item.Source_ID,
+                "organisation": item.Organisation_Raw,
+                "hydrated": False,
+                "status": "missing_content",
+                "reason": "source_fact_missing",
+                "headline": "",
+                "promotion_gaps": [],
+            })
+            continue
+        metadata = source_facts._loads_json(str(fact.get("Source_Metadata_JSON") or ""))
+        metadata = metadata if isinstance(metadata, dict) else {}
+        headline = str(fact.get("Summary") or "").strip()
+        accepted = is_publishable_headline(headline) and not is_organisation_name_only(
+            headline, item.Organisation_Raw
+        )
+        item_reports.append({
+            "item_id": item.Item_ID,
+            "source_id": item.Source_ID,
+            "organisation": item.Organisation_Raw,
+            "hydrated": True,
+            "status": "accepted" if accepted else str(
+                metadata.get("_source_facts_summary_status") or "rejected_quality"
+            ),
+            "reason": str(
+                metadata.get("_source_facts_summary_reason")
+                or metadata.get("_source_facts_summary_rejection")
+                or ("headline_not_publishable" if headline else "headline_missing")
+            ),
+            "headline": headline,
+            "promotion_gaps": [],
+        })
+    return _published_incident_reports(items, item_reports)
 
 
 def main() -> int:
@@ -624,6 +740,7 @@ def main() -> int:
         refresh_summary=args.refresh_summary,
         refresh_complete=args.refresh_complete,
         replay_summary_cache=args.replay_summary_cache,
+        report_path=store.DATA_DIR / "source_facts_backfill_report.json",
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))
     return 0

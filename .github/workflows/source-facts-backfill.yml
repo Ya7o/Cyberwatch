@@ -77,6 +77,10 @@ jobs:
           node --check assets/dashboard-v2.js
           python -m cyberwatch check
           python -m cyberwatch build-site
+          # Le replay de secteur peut régénérer les incidents : rematérialiser
+          # le rapport à partir des faits persistés avant le gate final.
+          PYTHONPATH=. python scripts/report_source_fact_coverage.py
+          PYTHONPATH=. python scripts/audit_publication_contract.py
       - name: Publier les données générées
         run: |
           git config user.name "cyberwatch-bot"

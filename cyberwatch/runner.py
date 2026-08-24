@@ -49,6 +49,20 @@ MODE_REPLAY = "REPLAY"
 MODE_DIAGNOSE = "DIAGNOSE"
 
 
+def _extract_source_fact_for_entry(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
+    """Extract a source fact from one immutable semantic snapshot.
+
+    Passing the snapshot is deliberate: a complete-fact cache is allowed to
+    answer normal unchanged collection, but it must never hide a freshly
+    validated semantic field after a schema/prompt evolution.  The semantic
+    cache itself still prevents a paid request for unchanged content.
+    """
+    semantic = None
+    if item.Source_ID in source_facts_ai.TARGET_SOURCES:
+        semantic = source_facts_ai.extract_semantic(item, entry)
+    return source_facts.extract_source_fact(item, entry, spec, semantic=semantic)
+
+
 def _local_title_names_a_victim(entry: RawEntry, organisation: str) -> bool:
     """Évite de transformer une alerte préventive en incident subi.
 
@@ -502,7 +516,7 @@ def run_source(
             ):
                 item.Location = spec.location_rule
             if fact_rows is not None:
-                fact = source_facts.extract_source_fact(item, entry, spec)
+                fact = _extract_source_fact_for_entry(item, entry, spec)
                 if fact is not None:
                     fact_rows.append(fact)
         elif requires_victim:

@@ -266,8 +266,8 @@ def _patch_source_facts() -> None:
 
     original_extract: Callable = source_facts.extract_source_fact
 
-    def extract_source_fact(item, entry, spec):
-        fact = original_extract(item, entry, spec)
+    def extract_source_fact(item, entry, spec, **kwargs):
+        fact = original_extract(item, entry, spec, **kwargs)
         if fact is None or item.Sector != config.SECTOR_UNKNOWN:
             return fact
 

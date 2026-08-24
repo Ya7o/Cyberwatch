@@ -101,14 +101,17 @@ def _patch_source_facts() -> None:
         return
     original_extract: Callable = source_facts.extract_source_fact
 
-    def extract_source_fact(item, entry, spec):
+    def extract_source_fact(item, entry, spec, **kwargs):
         global _FULL_FACT_CACHE_HITS
-        cached = _reusable_fact(item, entry, spec)
-        if cached is not None:
-            _FULL_FACT_CACHE_HITS += 1
-            _apply_cached_sector_side_effect(item, cached)
-            return cached
-        return original_extract(item, entry, spec)
+        # Une passe sémantique explicite est une nouvelle vérité sourcée : elle
+        # ne doit jamais être court-circuitée par le cache de faits complet.
+        if kwargs.get("semantic") is None:
+            cached = _reusable_fact(item, entry, spec)
+            if cached is not None:
+                _FULL_FACT_CACHE_HITS += 1
+                _apply_cached_sector_side_effect(item, cached)
+                return cached
+        return original_extract(item, entry, spec, **kwargs)
 
     source_facts.extract_source_fact = extract_source_fact
     source_facts._incremental_performance_installed = True

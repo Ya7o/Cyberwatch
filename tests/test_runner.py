@@ -425,6 +425,41 @@ class TestSourceFactsPersistence:
         assert facts[0]["Source_ID"] == "X"
 
 
+def test_runner_passes_one_semantic_snapshot_to_source_facts(monkeypatch, make_item):
+    """Un cache complet ne peut plus masquer une extraction sémantique fraîche."""
+    from cyberwatch import runner, source_facts_ai
+    from cyberwatch.collectors.base import RawEntry, SourceSpec
+
+    item = make_item()
+    item.Source_ID = "CYBERATTAQUE_ORG"
+    entry = RawEntry(title="Exemple", content="Un incident est confirmé.")
+    snapshot = source_facts_ai.SemanticExtraction(
+        item_id=item.Item_ID,
+        content_hash=source_facts_ai.content_hash(entry),
+        fields={"summary": "Exemple SA a confirmé un incident affectant ses services."},
+        statuses={"summary": "accepted"},
+    )
+    captured = {}
+    monkeypatch.setattr(runner.source_facts_ai, "extract_semantic", lambda *_: snapshot)
+
+    def _extract(*_args, **kwargs):
+        captured["semantic"] = kwargs.get("semantic")
+        return {"Item_ID": item.Item_ID}
+
+    monkeypatch.setattr(
+        runner.source_facts,
+        "extract_source_fact",
+        _extract,
+    )
+
+    result = runner._extract_source_fact_for_entry(
+        item, entry, SourceSpec(source_id="CYBERATTAQUE_ORG", layer="core", zone="France")
+    )
+
+    assert result == {"Item_ID": item.Item_ID}
+    assert captured["semantic"] is snapshot
+
+
 class TestFauxPositifFourriere:
     """Régression sur le cas réel qui a pollué la base.
 

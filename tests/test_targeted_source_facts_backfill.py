@@ -262,11 +262,16 @@ def test_run_backfill_merges_only_source_facts_and_builds(monkeypatch):
             organisation=item.Organisation_Raw,
         ),
     )
-    monkeypatch.setattr(backfill.source_facts, "extract_source_fact", lambda *_args: new)
+    monkeypatch.setattr(backfill.source_facts, "extract_source_fact", lambda *_args, **_kwargs: new)
     monkeypatch.setattr(backfill.store, "save_source_facts", lambda rows: saved.append(rows))
     monkeypatch.setattr(backfill.source_facts_ai, "runtime_stats", lambda: {"calls_attempted": 1})
     monkeypatch.setattr(backfill.source_facts_ai, "_flush_runtime", lambda: flushed.append(True))
     monkeypatch.setattr(backfill.site, "build", lambda: built.append(True))
+    monkeypatch.setattr(
+        backfill.store,
+        "write_json",
+        lambda *_args: (_ for _ in ()).throw(AssertionError("rapport inattendu")),
+    )
 
     client = FakeClient({})
     metrics = backfill.run_backfill(client=client)
@@ -281,6 +286,35 @@ def test_run_backfill_merges_only_source_facts_and_builds(monkeypatch):
     assert evidence["Summary"] == "preuve synthèse"
     assert flushed == [True]
     assert built == [True]
+
+
+def test_reports_from_existing_source_facts_explains_missing_headline(monkeypatch, tmp_path):
+    item = _item("report", url="https://example.test/report")
+    monkeypatch.setattr(backfill.store, "SITE_DATA_DIR", tmp_path)
+    (tmp_path / "incidents.json").write_text(json.dumps([{
+        "id": "INC-report", "org": item.Organisation_Raw,
+        "sources": [item.Source_ID], "urls": [item.URL], "summary": "",
+    }]), encoding="utf-8")
+    reports = backfill.reports_from_existing_source_facts([item], [{
+        "Item_ID": item.Item_ID,
+        "Summary": "",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_summary_status": "abstained",
+            "_source_facts_summary_reason": "insufficient_distinct_fact",
+        }),
+    }])
+
+    assert reports == [{
+        "incident_id": "INC-report", "organisation": "Exemple SA",
+        "sources": ["CYBERATTAQUE_ORG"], "summary_status": "abstained",
+        "summary_reason": "insufficient_distinct_fact", "summary": "",
+        "source_reports": [{
+            "item_id": "report", "source_id": "CYBERATTAQUE_ORG",
+            "organisation": "Exemple SA", "hydrated": True,
+            "status": "abstained", "reason": "insufficient_distinct_fact",
+            "headline": "", "promotion_gaps": [],
+        }], "promotion_gaps": [],
+    }]
 
 
 def test_latest_incidents_selects_one_source_per_deduplicated_incident():
@@ -307,7 +341,7 @@ def test_backfill_keeps_valid_editorial_headline_returned_by_ai(monkeypatch):
     monkeypatch.setattr(backfill, "hydrate_entry", lambda *_: backfill.RawEntry(
         title=item.Title, content="Une intrusion est confirmée.", organisation=item.Organisation_Raw,
     ))
-    monkeypatch.setattr(backfill.source_facts, "extract_source_fact", lambda *_: {
+    monkeypatch.setattr(backfill.source_facts, "extract_source_fact", lambda *_, **__: {
         "Item_ID": item.Item_ID, "Source_ID": item.Source_ID,
         "Summary": "Éléments documentés : 43 Go de données.",
     })
