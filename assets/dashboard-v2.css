@@ -123,4 +123,8 @@
   .search-bar { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .search-field { grid-column:1 / -1; }
   .incident-data-types { grid-template-columns:1fr; }
+  /* Les volumes et autres listes de badges ne doivent jamais être comprimés
+     dans la seconde colonne du couple libellé/valeur sur téléphone. */
+  .resolved-field--chips { grid-template-columns:1fr; gap:.3rem; }
+  .resolved-field--chips dd { justify-content:flex-start; }
 }

@@ -330,7 +330,8 @@
   function detailField(label, content) {
     if (!content || (Array.isArray(content) && !content.length)) return "";
     const rendered = Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
-    return `<div class="resolved-field"><dt>${esc(label)}</dt><dd>${rendered}</dd></div>`;
+    const layout = Array.isArray(content) ? " resolved-field--chips" : "";
+    return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd>${rendered}</dd></div>`;
   }
 
   // Regroupement par famille et code couleur de sensibilité des données
