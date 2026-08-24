@@ -7,6 +7,10 @@ on:
         description: "Nombre maximal d'incidents distincts récents"
         type: number
         default: 100
+      max_llm_calls:
+        description: "Plafond total strict des appels SourceFacts"
+        type: number
+        default: 500
       item_ids:
         description: "Item_ID optionnels, séparés par des virgules (un par incident)"
         required: false
@@ -23,7 +27,7 @@ concurrency:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -37,18 +41,18 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           PYTHONPATH: "."
-          LLM_MAX_CALLS_PER_RUN: "100"
+          LLM_MAX_CALLS_PER_RUN: "${{ inputs.max_llm_calls }}"
           LLM_MAX_COST_USD_PER_RUN: "0.50"
-          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "100"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "${{ inputs.max_llm_calls }}"
           SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.50"
         run: |
           set -euo pipefail
           if [ -n "${{ inputs.item_ids }}" ]; then
             python scripts/backfill_source_fact_summaries.py \
-              --max-items "${{ inputs.max_items }}" --item-ids "${{ inputs.item_ids }}" --include-existing --refresh-summary | tee /tmp/source-facts-backfill.json
+              --max-items "${{ inputs.max_items }}" --item-ids "${{ inputs.item_ids }}" --include-existing --refresh-complete | tee /tmp/source-facts-backfill.json
           else
             python scripts/backfill_source_fact_summaries.py \
-              --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained --refresh-summary | tee /tmp/source-facts-backfill.json
+              --max-items "${{ inputs.max_items }}" --latest-incidents --include-existing --retry-abstained --refresh-complete | tee /tmp/source-facts-backfill.json
           fi
           cat /tmp/source-facts-backfill.json >> "$GITHUB_STEP_SUMMARY"
       - name: Proposer les secteurs à confirmer

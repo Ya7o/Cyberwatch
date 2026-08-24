@@ -532,6 +532,20 @@ def test_normalisation_llm_rejette_le_nom_canonique_seul():
     assert result == {}
 
 
+def test_force_full_refresh_reouvre_tous_les_champs_semantiques(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    item, entry = _item(), RawEntry(title="Exemple SA", content="Article éditorial complet.")
+    runtime = sfa._runtime()
+    key = sfa._cache_item_key(item, entry, runtime)
+    runtime.cache[key] = {"fields": {
+        "summary": {"version": sfa.FIELD_VERSIONS["summary"], "status": "accepted", "value": {"value": "Résumé utile", "evidence": "Article"}},
+        "impact": {"version": sfa.FIELD_VERSIONS["impact"], "status": "accepted", "value": {"value": "Impact", "evidence": "Article"}},
+    }}
+
+    sfa.force_full_refresh(item, entry)
+    assert runtime.force_field_keys[key] == set(sfa._LLM_FIELDS)
+
+
 def test_article_riche_normalise_tous_les_faits_semantiques_et_les_revalide():
     context = (
         "L'attaque du 2026-08-12 a exploité CVE-2026-12345 sur le portail VPN. "

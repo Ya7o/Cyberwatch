@@ -19,7 +19,7 @@ from cyberwatch.collectors.base import RawEntry, SourceSpec
 from cyberwatch.collectors.feed import stable_frenchbreaches_detail_text
 from cyberwatch.collectors.wordpress import entry_from_post, origin_of
 from cyberwatch.dedup import build_incidents, group_components
-from cyberwatch.headline import is_publishable_headline
+from cyberwatch.headline import is_organisation_name_only, is_publishable_headline
 from cyberwatch.http import HttpClient
 from cyberwatch.model import Item
 
@@ -339,6 +339,7 @@ def run_backfill(
     include_existing: bool = False,
     latest_incidents: bool = False,
     refresh_summary: bool = False,
+    refresh_complete: bool = False,
     replay_summary_cache: bool = False,
     client: HttpClient | None = None,
 ) -> dict:
@@ -357,6 +358,7 @@ def run_backfill(
         "dry_run": dry_run,
         "retry_abstained": retry_abstained,
         "retry_legacy_nulls": retry_legacy_nulls,
+        "refresh_complete": refresh_complete,
         "hydrated": 0,
         "hydration_failed": 0,
         "source_facts_extracted": 0,
@@ -384,23 +386,42 @@ def run_backfill(
     incoming: list[dict] = []
     accepted_headline_ids: list[str] = []
     retried_item_ids: list[str] = []
+    item_reports: list[dict] = []
 
     for item in selected:
         spec = specs.get(item.Source_ID)
         if spec is None:
             metrics["hydration_failed"] += 1
             metrics["technical_failures"] += 1
+            item_reports.append({
+                "item_id": item.Item_ID,
+                "source_id": item.Source_ID,
+                "organisation": item.Organisation_Raw,
+                "status": "technical_failure",
+                "reason": "source_spec_missing",
+            })
             continue
         entry = hydrate_entry(http, item, spec)
         if entry is None:
             metrics["hydration_failed"] += 1
             metrics["technical_failures"] += 1
+            item_reports.append({
+                "item_id": item.Item_ID,
+                "source_id": item.Source_ID,
+                "organisation": item.Organisation_Raw,
+                "status": "technical_failure",
+                "reason": "hydration_failed",
+            })
             continue
         metrics["hydrated"] += 1
 
         runtime = source_facts_ai._runtime()
         editorial_fields = None
-        if refresh_summary:
+        if refresh_complete:
+            invalidate_summary_cache(item, entry)
+            source_facts_ai.force_full_refresh(item, entry)
+            editorial_fields = source_facts_ai.enrich(item, entry)
+        elif refresh_summary:
             invalidate_summary_cache(item, entry)
             source_facts_ai.force_summary_refresh(item, entry)
             # Le backfill doit matérialiser l'appel avant l'extracteur : cela
@@ -444,14 +465,21 @@ def run_backfill(
         # réponse accepted.
         # ``enrich`` retourne ses champs, il ne modifie pas RawEntry.
         cached_summary = str((editorial_fields or {}).get("summary") or "").strip()
-        if fact is not None and is_publishable_headline(cached_summary):
+        if fact is not None and is_publishable_headline(cached_summary) and not is_organisation_name_only(
+            cached_summary, item.Organisation_Raw
+        ):
             fact["Summary"] = cached_summary
         # Même garantie pour un titre éditorial source : le backfill doit
         # publier le contrat validé, même si un extracteur historique a
         # reconstruit entre-temps une ancienne synthèse structurée.
-        if fact is not None and not is_publishable_headline(fact.get("Summary")):
+        if fact is not None and (
+            not is_publishable_headline(fact.get("Summary"))
+            or is_organisation_name_only(fact.get("Summary"), item.Organisation_Raw)
+        ):
             source_title = " ".join(str(entry.title or "").split()).strip()
-            if is_publishable_headline(source_title):
+            if is_publishable_headline(source_title) and not is_organisation_name_only(
+                source_title, item.Organisation_Raw
+            ):
                 fact["Summary"] = source_title
                 evidence = source_facts._loads_json(str(fact.get("Evidence_JSON") or ""))
                 evidence = evidence if isinstance(evidence, dict) else {}
@@ -469,21 +497,46 @@ def run_backfill(
 
         if fact is None:
             metrics["technical_failures"] += 1
+            item_reports.append({
+                "item_id": item.Item_ID,
+                "source_id": item.Source_ID,
+                "organisation": item.Organisation_Raw,
+                "status": "technical_failure",
+                "reason": "source_facts_extraction_failed",
+            })
             continue
         incoming.append(fact)
         metrics["source_facts_extracted"] += 1
         if item.Item_ID not in existing_by_id:
             metrics["source_facts_recovered"] += 1
-        if is_publishable_headline(fact.get("Summary")):
+        headline_accepted = is_publishable_headline(fact.get("Summary")) and not is_organisation_name_only(
+            fact.get("Summary"), item.Organisation_Raw
+        )
+        if headline_accepted:
             metrics["headlines_accepted"] += 1
             accepted_headline_ids.append(item.Item_ID)
         else:
-            status = source_facts._loads_json(str(fact.get("Source_Metadata_JSON") or "")).get("_source_facts_summary_status", "rejected_quality")
+            metadata = source_facts._loads_json(str(fact.get("Source_Metadata_JSON") or ""))
+            metadata = metadata if isinstance(metadata, dict) else {}
+            status = metadata.get("_source_facts_summary_status", "rejected_quality")
             metric = {
                 "abstained": "headlines_abstained",
                 "technical_failure": "technical_failures",
             }.get(str(status), "headlines_rejected_quality")
             metrics[metric] += 1
+        metadata = source_facts._loads_json(str(fact.get("Source_Metadata_JSON") or ""))
+        metadata = metadata if isinstance(metadata, dict) else {}
+        item_reports.append({
+            "item_id": item.Item_ID,
+            "source_id": item.Source_ID,
+            "organisation": item.Organisation_Raw,
+            "hydrated": True,
+            "status": "accepted" if headline_accepted else str(
+                metadata.get("_source_facts_summary_status") or "rejected_quality"
+            ),
+            "reason": metadata.get("_source_facts_summary_reason") or "",
+            "headline": str(fact.get("Summary") or ""),
+        })
 
     if incoming:
         store.save_source_facts(source_facts.merge_source_facts(existing, incoming))
@@ -499,6 +552,12 @@ def run_backfill(
     metrics["abstained_retry_item_ids"] = retried_item_ids
     metrics["http_requests"] = http.run_budget.requests_made
     metrics["ai_stats"] = ai_stats
+    metrics["incident_reports"] = item_reports
+    store.write_json(store.DATA_DIR / "source_facts_backfill_report.json", {
+        "schema_version": 1,
+        "metrics": {key: value for key, value in metrics.items() if key != "incident_reports"},
+        "incidents": item_reports,
+    })
     return metrics
 
 
@@ -519,6 +578,10 @@ def main() -> int:
         help="Sélectionne les incidents distincts les plus récents (une source par incident).",
     )
     parser.add_argument("--refresh-summary", action="store_true", help="Invalide uniquement la headline mise en cache.")
+    parser.add_argument(
+        "--refresh-complete", action="store_true",
+        help="Rouvre tous les faits sémantiques d'un article hydraté (backfill explicite seulement).",
+    )
     parser.add_argument("--replay-summary-cache", action="store_true", help="Réinjecte les headlines accepted du cache sans appel LLM.")
     parser.add_argument(
         "--max-items", type=int, default=DEFAULT_MAX_ITEMS,
@@ -559,6 +622,7 @@ def main() -> int:
         include_existing=args.include_existing,
         latest_incidents=args.latest_incidents,
         refresh_summary=args.refresh_summary,
+        refresh_complete=args.refresh_complete,
         replay_summary_cache=args.replay_summary_cache,
     )
     print(json.dumps(metrics, ensure_ascii=False, sort_keys=True, indent=2))

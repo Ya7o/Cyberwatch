@@ -1225,11 +1225,18 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         return seed or None
 
     key = _cache_item_key(item, entry, runtime)
+    if key in getattr(runtime, "force_field_keys", {}):
+        fields |= set(_LLM_FIELDS)
     organisation = item.Organisation_Raw or entry.organisation
     cached, satisfied = _read_field_cache(runtime, key, fields, full_context, organisation)
     if key in getattr(runtime, "force_summary_keys", set()):
         cached.pop("summary", None)
         satisfied.discard("summary")
+    forced_fields = getattr(runtime, "force_field_keys", {}).get(key, set())
+    if forced_fields:
+        for field in forced_fields & fields:
+            cached.pop(field, None)
+            satisfied.discard(field)
     if satisfied != fields:
         migrated = _migrate_legacy_cache(runtime, key, item, entry, seed, fields - satisfied)
         if migrated:
@@ -1304,3 +1311,17 @@ def force_summary_refresh(item: Item, entry: RawEntry) -> None:
     if keys is None:
         keys = runtime.force_summary_keys = set()
     keys.add(_cache_item_key(item, entry, runtime))
+
+
+def force_full_refresh(item: Item, entry: RawEntry) -> None:
+    """Rouvre tous les faits sémantiques d'un article, sans toucher à son identité.
+
+    Réservé aux backfills explicitement demandés : la collecte quotidienne
+    conserve le cache par contenu et ne repaie jamais un article inchangé.
+    """
+    runtime = _runtime()
+    key = _cache_item_key(item, entry, runtime)
+    forced = getattr(runtime, "force_field_keys", None)
+    if forced is None:
+        forced = runtime.force_field_keys = {}
+    forced[key] = set(_LLM_FIELDS)
