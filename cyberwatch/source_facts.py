@@ -356,7 +356,7 @@ def _has_content(fact: dict) -> bool:
     return any(fact.get(col) for col in SOURCE_FACT_COLUMNS if col not in _BASE_COLUMNS) or bool(fact.get("_Rich_Facts"))
 
 
-def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
+def _finalize(fact: dict, item: Item, entry: RawEntry, evidence: dict) -> dict | None:
     if not _has_content(fact):
         return None
     fact["Evidence_JSON"] = _dumps_json(evidence)
@@ -388,7 +388,10 @@ def _finalize(fact: dict, entry: RawEntry, evidence: dict) -> dict | None:
         # des fallbacks construits à partir de volumes ou de vecteurs. Il offre
         # une sortie sûre lorsque le LLM s'abstient, à condition de respecter
         # exactement le même contrat de publication.
-        organisation = entry.organisation or ""
+        # FrenchBreaches ne renseigne pas systématiquement l'organisation sur
+        # RawEntry. L'item a déjà été résolu de manière canonique : c'est lui
+        # qui fait autorité pour rejeter un nom seul, y compris au reset zéro.
+        organisation = item.Organisation_Raw or entry.organisation or ""
         if not is_publishable_headline(summary) or is_organisation_name_only(summary, organisation):
             title = " ".join(str(entry.title or "").split()).strip()
             if is_publishable_headline(title) and not is_organisation_name_only(title, organisation):
@@ -482,7 +485,7 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
     source_urls = meta.get("source_urls") or []
     if source_urls:
         fact["Evidence_URLs_JSON"] = _dumps_json(source_urls)
-    return _finalize(fact, entry, evidence)
+    return _finalize(fact, item, entry, evidence)
 
 
 _CLAIM_STATUS_MAP = (
@@ -808,7 +811,7 @@ def _from_frenchbreaches(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
         fact["Activity_Description"] = activity
         if activity_evidence:
             evidence["Activity_Description"] = activity_evidence
-    return _finalize(fact, entry, evidence)
+    return _finalize(fact, item, entry, evidence)
 
 
 _CO_THIRD_PARTY_RE = tuple(re.compile(pattern, re.I) for pattern in (
@@ -924,7 +927,7 @@ def _from_cyberattaque_org(item: Item, entry: RawEntry, spec: SourceSpec) -> dic
         fact["Activity_Description"] = activity
         if activity_evidence:
             evidence["Activity_Description"] = activity_evidence
-    return _finalize(fact, entry, evidence)
+    return _finalize(fact, item, entry, evidence)
 
 
 def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
@@ -951,7 +954,7 @@ def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict
     claim_url = _normalise_url(meta.get("claim_url", ""))
     if claim_url:
         fact["Evidence_URLs_JSON"] = _dumps_json([claim_url])
-    return _finalize(fact, entry, evidence)
+    return _finalize(fact, item, entry, evidence)
 
 
 def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
@@ -979,7 +982,7 @@ def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | Non
         fact["Source_Sector_Raw"] = meta["secteur"]
     if meta.get("sources"):
         fact["Evidence_URLs_JSON"] = _dumps_json(meta["sources"])
-    return _finalize(fact, entry, {})
+    return _finalize(fact, item, entry, {})
 
 
 _EXTRACTORS = {

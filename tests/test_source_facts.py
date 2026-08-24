@@ -108,6 +108,20 @@ def test_nom_seul_ne_devient_jamais_une_synthese(monkeypatch):
     assert metadata["_source_facts_summary_rejection"] == "organisation_name_only"
 
 
+def test_nom_seul_est_rejete_meme_si_raw_entry_n_a_pas_l_organisation(monkeypatch):
+    item = make_item("FRENCHBREACHES", organisation="Exemple SA")
+    entry = RawEntry(title="Exemple SA", content="Article complet sur un incident.")
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "summary": {"value": "Exemple SA", "evidence": "Exemple SA"}
+    })
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {})
+
+    fact = sf.extract_source_fact(item, entry, spec("FRENCHBREACHES"))
+
+    assert fact["Summary"] == ""
+    assert sf._loads_json(fact["Source_Metadata_JSON"])["_source_facts_summary_rejection"] == "organisation_name_only"
+
+
 def test_count_ignore_les_faux_positifs_et_continue_apres_eux():
     for text in ("1er", "27 juillet", "25 ans", "40 devient", "5doigts", "8h", "00h", "2019 diffusée"):
         assert sf._parse_count_phrase(text) == ("", "", "")

@@ -25,6 +25,11 @@ def test_domain_identity_accepts_deterministic_acronym():
     )
 
 
+def test_explicit_organisation_domain_is_tried_before_guesses():
+    candidates = official_site_discovery._direct_domain_guesses("iMapper.tech")
+    assert candidates[0] == "https://imapper.tech/"
+
+
 def test_wikidata_is_only_discovery_and_requires_exact_label(monkeypatch):
     calls = []
 

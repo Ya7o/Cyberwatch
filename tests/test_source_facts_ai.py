@@ -521,6 +521,17 @@ def test_absence_de_toute_mention_reste_vide():
     assert sfa._deterministic_data_types(context) == []
 
 
+def test_normalisation_llm_rejette_le_nom_canonique_seul():
+    context = "L'article décrit un incident chez Exemple SA."
+    result = sfa._normalize(
+        {"summary": {"value": "Exemple SA", "confidence": .9, "evidence": "Exemple SA"}},
+        context,
+        {"summary"},
+        "Exemple SA",
+    )
+    assert result == {}
+
+
 def test_article_riche_normalise_tous_les_faits_semantiques_et_les_revalide():
     context = (
         "L'attaque du 2026-08-12 a exploité CVE-2026-12345 sur le portail VPN. "

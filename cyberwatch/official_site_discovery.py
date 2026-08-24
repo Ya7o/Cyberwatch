@@ -102,9 +102,19 @@ def domain_matches_organisation(organisation: str, url: str) -> bool:
 
 
 def _direct_domain_guesses(organisation: str) -> list[str]:
+    raw_domain = str(organisation or "").strip().casefold().rstrip(".")
+    explicit = []
+    # Un nom déjà sous forme de domaine est un signal plus fiable qu'une
+    # permutation .fr/.com/.org. Conserver son TLD est notamment nécessaire
+    # pour les organisations telles que iMapper.tech.
+    if re.fullmatch(r"[a-z0-9-]+(?:\.[a-z0-9-]+)+", raw_domain):
+        candidate = f"https://{raw_domain}/"
+        if domain_matches_organisation(organisation, candidate):
+            explicit.append(candidate)
+
     words = _words(organisation)
     if not words:
-        return []
+        return explicit
 
     aliases: list[str] = []
     distinctive = [w for w in words if w not in _GENERIC_DOMAIN_TOKENS]
@@ -120,7 +130,7 @@ def _direct_domain_guesses(organisation: str) -> list[str]:
             url = f"https://{alias}.{suffix}/"
             if domain_matches_organisation(organisation, url):
                 result.append(url)
-    return result[:6]
+    return (explicit + [url for url in result if url not in explicit])[:6]
 
 
 def _wikidata_exact_label(row: dict, organisation: str) -> bool:

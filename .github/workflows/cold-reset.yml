@@ -331,12 +331,24 @@ jobs:
           python - <<'PY'
           import csv, json, os
           from pathlib import Path
+          from cyberwatch.model import Item
+          from cyberwatch.site_legacy import _components_with_stable_incident_ids
 
           start, end = os.environ["RESET_START"], os.environ["RESET_AS_OF"][:10]
           data = Path("data")
           items = list(csv.DictReader((data / "items.csv").open(encoding="utf-8", newline="")))
           incidents = list(csv.DictReader((data / "incidents.csv").open(encoding="utf-8", newline="")))
           published = json.loads(Path("assets/data/incidents.json").read_text(encoding="utf-8"))
+          source_facts = {
+              row.get("Item_ID", ""): row
+              for row in csv.DictReader((data / "source_facts.csv").open(encoding="utf-8", newline=""))
+          }
+          components = {
+              incident_id: component
+              for component, incident_id in _components_with_stable_incident_ids(
+                  [Item.from_row(row) for row in items]
+              )
+          }
           blockers, anomalies = [], []
           for label, rows, identifier, date_col in (("item", items, "Item_ID", "Published_Date"), ("incident", incidents, "Incident_ID", "Date")):
               ids = [row.get(identifier, "") for row in rows]
@@ -357,7 +369,35 @@ jobs:
               for field, label in (("threat", "menace"), ("sector", "secteur"), ("location", "localisation")):
                   if row.get(field) in ("", "Inconnu", None):
                       anomalies.append({"id": row.get("id"), "severity": "low", "issue": f"{label}_unknown", "recommendation": "preuve insuffisante documentée; conserver Inconnu"})
-          payload = {"schema":"cyberwatch-august-quality-audit-v1", "start":start, "end":end, "items":len(items), "incidents":len(incidents), "blockers":sorted(set(blockers)), "anomalies":anomalies, "verdict":"GO" if not blockers else "NO-GO"}
+          incident_reports = []
+          for row in published:
+              incident_id = str(row.get("id") or "")
+              summary_statuses, summary_reasons = [], []
+              for item in components.get(incident_id, []):
+                  metadata = json.loads(source_facts.get(item.Item_ID, {}).get("Source_Metadata_JSON") or "{}")
+                  summary_statuses.append({"source": item.Source_ID, "status": metadata.get("_source_facts_summary_status", "missing_content")})
+                  reason = metadata.get("_source_facts_summary_rejection")
+                  if reason:
+                      summary_reasons.append({"source": item.Source_ID, "reason": reason})
+              tentative = str(row.get("sector_tentative") or "")
+              sector = str(row.get("sector") or "Inconnu")
+              incident_reports.append({
+                  "id": incident_id,
+                  "organisation": row.get("org"),
+                  "date": row.get("date"),
+                  "date_basis": row.get("basis"),
+                  "sources": row.get("source_links") or [],
+                  "summary": row.get("summary") or "",
+                  "summary_statuses": summary_statuses,
+                  "summary_reasons": summary_reasons,
+                  "sector": sector,
+                  "sector_status": "confirmed" if sector != "Inconnu" else ("tentative" if tentative else "unknown_no_evidence"),
+                  "sector_tentative": tentative,
+                  "threat": row.get("threat"),
+                  "location": row.get("location"),
+                  "sensitive_data_exposed": bool(row.get("sensitive_data_exposed")),
+              })
+          payload = {"schema":"cyberwatch-august-quality-audit-v2", "start":start, "end":end, "items":len(items), "incidents":len(incidents), "blockers":sorted(set(blockers)), "anomalies":anomalies, "incident_reports":incident_reports, "verdict":"GO" if not blockers else "NO-GO"}
           Path("data/august_quality_audit.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           Path("/tmp/august-quality-audit.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           print(json.dumps({"verdict": payload["verdict"], "items":len(items), "incidents":len(incidents), "blockers":len(blockers), "anomalies":len(anomalies)}))

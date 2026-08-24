@@ -23,7 +23,7 @@ from . import config, llm_runtime
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import searchable
-from .headline import MAX_HEADLINE_CHARS, is_publishable_headline
+from .headline import MAX_HEADLINE_CHARS, is_organisation_name_only, is_publishable_headline
 
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
@@ -747,21 +747,21 @@ _HEADLINE_GENERIC_RE = re.compile(
 )
 
 
-def _normalize_summary(raw, context: str) -> dict | None:
+def _normalize_summary(raw, context: str, organisation: str = "") -> dict | None:
     """Valide une headline lisible pour la carte, jamais un extrait technique."""
     fact = _normalize_fact(raw, context)
     if not fact:
         return None
     value = fact["value"]
-    if not is_publishable_headline(value):
+    if not is_publishable_headline(value) or is_organisation_name_only(value, organisation):
         return None
     return fact
 
 
-def _normalize(raw: dict, context: str, fields: set[str]) -> dict:
+def _normalize(raw: dict, context: str, fields: set[str], organisation: str = "") -> dict:
     result: dict = {}
     if "summary" in fields:
-        fact = _normalize_summary(raw.get("summary"), context)
+        fact = _normalize_summary(raw.get("summary"), context, organisation)
         if fact:
             result["summary"] = fact
     if "initial_access" in fields:
@@ -1036,7 +1036,9 @@ def _cache_miss_count(cached: dict) -> int:
         return 0
 
 
-def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: str = "") -> tuple[dict, set[str]]:
+def _read_field_cache(
+    runtime: _Runtime, key: str, fields: set[str], context: str = "", organisation: str = ""
+) -> tuple[dict, set[str]]:
     entry = runtime.cache.get(key)
     if not isinstance(entry, dict) or not isinstance(entry.get("fields"), dict):
         return {}, set()
@@ -1057,6 +1059,14 @@ def _read_field_cache(runtime: _Runtime, key: str, fields: set[str], context: st
                 continue
 
         value = cached.get("value")
+        # Les caches V5 peuvent contenir des noms seuls issus d'articles dont
+        # RawEntry.organisation était vide. On n'invalide que cette headline,
+        # jamais les faits, identités ou autres champs du même article.
+        headline = value.get("value") if isinstance(value, dict) else value
+        if field == "summary" and is_organisation_name_only(headline, organisation):
+            cached.update({"status": "miss", "misses": 0, "value": None})
+            runtime.fields_invalidated += 1
+            continue
         status = str(cached.get("status") or "").strip().lower()
         if not status:
             if _cache_value_present(value):
@@ -1215,14 +1225,17 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         return seed or None
 
     key = _cache_item_key(item, entry, runtime)
-    cached, satisfied = _read_field_cache(runtime, key, fields, full_context)
+    organisation = item.Organisation_Raw or entry.organisation
+    cached, satisfied = _read_field_cache(runtime, key, fields, full_context, organisation)
     if key in getattr(runtime, "force_summary_keys", set()):
         cached.pop("summary", None)
         satisfied.discard("summary")
     if satisfied != fields:
         migrated = _migrate_legacy_cache(runtime, key, item, entry, seed, fields - satisfied)
         if migrated:
-            legacy_values, legacy_satisfied = _read_field_cache(runtime, key, migrated, full_context)
+            legacy_values, legacy_satisfied = _read_field_cache(
+                runtime, key, migrated, full_context, organisation
+            )
             cached.update(legacy_values)
             satisfied |= legacy_satisfied
 
@@ -1267,7 +1280,7 @@ def enrich(item: Item, entry: RawEntry) -> dict | None:
         raw = json.loads(_extract_output_text(payload))
         if not isinstance(raw, dict):
             raise SourceFactsAiError("response_not_object")
-        normalized = _normalize(raw, context, missing)
+        normalized = _normalize(raw, context, missing, item.Organisation_Raw or entry.organisation)
         _store_field_cache(runtime, key, item, entry, missing, normalized)
         input_tokens, output_tokens = _usage(payload)
         runtime.input_tokens += input_tokens
