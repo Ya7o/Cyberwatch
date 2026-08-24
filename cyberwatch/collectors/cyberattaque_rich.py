@@ -48,6 +48,23 @@ _DATA_TYPES = (
     ("données fiscales", re.compile(r"\bdonn[ée]es\s+fiscales\b", re.I)),
     ("données RH", re.compile(r"\b(?:donn[ée]es?|documents?)\s+(?:RH|ressources\s+humaines)\b", re.I)),
     ("secrets cloud", re.compile(r"\b(?:secret|cl[ée]|token|credentials?)\s+(?:AWS|Azure|cloud)\b", re.I)),
+    ("BIC / SWIFT", re.compile(r"\b(?:BIC|SWIFT)\b", re.I)),
+    ("informations de séjour", re.compile(r"\b(?:s[ée]jour|h[ée]bergement)\b", re.I)),
+    ("produits réservés", re.compile(r"\b(?:produits?\s+r[ée]serv[ée]s?|r[ée]servations?\s+(?:de|d['’])?produits?)\b", re.I)),
+    ("montants", re.compile(r"\b(?:montants?|prix|sommes?)\b", re.I)),
+    ("SIREN / SIRET", re.compile(r"\bSIRE[NT]\b", re.I)),
+    ("commentaires", re.compile(r"\bcommentaires?\b", re.I)),
+    ("métadonnées techniques", re.compile(r"\bm[ée]tadonn[ée]es?\b", re.I)),
+    ("informations de commandes", re.compile(r"\b(?:informations?\s+(?:de|d['’])?commandes?|commandes?)\b", re.I)),
+    ("données comptables", re.compile(r"\b(?:donn[ée]es?\s+comptables?|comptabilit[ée])\b", re.I)),
+    ("facturation", re.compile(r"\bfacturation\b", re.I)),
+    ("contrats", re.compile(r"\bcontrats?\b", re.I)),
+    ("factures", re.compile(r"\bfactures?\b", re.I)),
+    ("documents internes", re.compile(r"\bdocuments?\s+internes?\b", re.I)),
+    ("données techniques", re.compile(r"\bdonn[ée]es?\s+techniques?\b", re.I)),
+    ("photographies", re.compile(r"\b(?:photographies?|photos?)\b", re.I)),
+    ("situation personnelle", re.compile(r"\bsituation\s+personnelle\b", re.I)),
+    ("informations administratives", re.compile(r"\binformations?\s+administratives?\b", re.I)),
 )
 _SCOPE_PATTERNS = (
     ("SPDC", re.compile(r"\b(?:Serveur\s+Professionnel\s+de\s+Donn[ée]es\s+Cadastrales|SPDC)\b", re.I), "system"),
@@ -137,10 +154,20 @@ def _extract_volumes(sentences: list[str]) -> list[dict]:
 
 def _extract_data_types(sentences: list[str]) -> list[dict]:
     rows=[]
+    # Les CMS représentent souvent une liste « données exposées » sous forme
+    # de puces isolées. La phrase d'introduction porte le contexte cyber ; il
+    # doit rester applicable aux éléments immédiats, sans jamais parcourir tout
+    # l'article hors de cette fenêtre bornée.
+    context_left = 0
     for sentence in sentences:
         status=_status(sentence)
-        # Un type cité sans relation à l'incident n'est pas accepté.
-        if not re.search(r"\b(?:donn[ée]es?|fuite|vol|expos|comprom|exfiltr|publi|concern|contiend|inclu)\w*\b", sentence, re.I): continue
+        incident_context = bool(re.search(r"\b(?:donn[ée]es?|fuite|vol|expos|comprom|exfiltr|publi|concern|contiend|inclu)\w*\b", sentence, re.I))
+        if incident_context:
+            context_left = 12
+        elif context_left:
+            context_left -= 1
+        else:
+            continue
         for label, pattern in _DATA_TYPES:
             if pattern.search(sentence): rows.append({"value":label,"status":status,"date":_date(sentence),"evidence":sentence[:420]})
     return _dedupe(rows,("value","status"))

@@ -62,6 +62,16 @@ def test_rich_metadata_keeps_evidence_and_claim_statuses():
     assert all(claim.get("evidence") for claim in claims)
 
 
+def test_data_types_in_bullets_inherit_the_nearby_incident_context():
+    entry = RawEntry(
+        title="Exemple : fuite de données",
+        content="Les données exposées comprennent :\n- des adresses e-mail\n- des adresses postales\n- des contrats\n- des IBAN.",
+    )
+    enrich_entry_metadata(entry)
+    values = {row["value"] for row in entry.source_metadata["rich_facts"]["data_types"]}
+    assert {"adresses e-mail", "adresses postales", "contrats", "données bancaires"} <= values
+
+
 def test_site_payload_publishes_sanitized_rich_facts():
     entry = _dgfip_entry()
     enrich_entry_metadata(entry)
