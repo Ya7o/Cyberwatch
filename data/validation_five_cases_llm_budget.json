@@ -6,15 +6,15 @@
   "channels": {
     "qualification": {
       "calls": 4,
-      "cost_usd": 0.000106
+      "cost_usd": 0.000109
     },
     "source_facts": {
       "calls": 14,
-      "cost_usd": 0.001314
+      "cost_usd": 0.001328
     },
     "runtime_semantic": {
       "calls": 20,
-      "cost_usd": 0.007750999999999999,
+      "cost_usd": 0.0074056,
       "by_task": {
         "cyberattaque_semantic": {
           "cached_input_tokens": 0,
@@ -22,16 +22,16 @@
           "calls_budget_blocked": 0,
           "calls_failed": 0,
           "calls_succeeded": 5,
-          "duration_seconds": 46.67227067099992,
-          "estimated_cost_usd": 0.0036717,
+          "duration_seconds": 48.91421511300007,
+          "estimated_cost_usd": 0.0032679,
           "input_tokens": 8442,
           "last_model": "gpt-4o-mini",
           "max_calls": 10,
           "max_cost_usd": 0.05,
-          "output_tokens": 4009,
+          "output_tokens": 3336,
           "reasoning_tokens": 0,
           "retries": 0,
-          "total_tokens": 12451
+          "total_tokens": 11778
         },
         "editorial_semantic": {
           "cached_input_tokens": 0,
@@ -39,16 +39,16 @@
           "calls_budget_blocked": 64,
           "calls_failed": 0,
           "calls_succeeded": 10,
-          "duration_seconds": 48.86238313399997,
-          "estimated_cost_usd": 0.00265935,
+          "duration_seconds": 43.69462669100028,
+          "estimated_cost_usd": 0.00270075,
           "input_tokens": 5925,
           "last_model": "gpt-4o-mini",
           "max_calls": 10,
           "max_cost_usd": 0.05,
-          "output_tokens": 2951,
+          "output_tokens": 3020,
           "reasoning_tokens": 0,
           "retries": 0,
-          "total_tokens": 8876
+          "total_tokens": 8945
         },
         "qualification": {
           "cached_input_tokens": 0,
@@ -56,39 +56,39 @@
           "calls_budget_blocked": 3,
           "calls_failed": 0,
           "calls_succeeded": 1,
-          "duration_seconds": 2.062185908999993,
-          "estimated_cost_usd": 0.00010550000000000002,
+          "duration_seconds": 1.319923982999967,
+          "estimated_cost_usd": 0.00010870000000000001,
           "input_tokens": 1430,
           "last_model": "gpt-5-nano",
           "max_calls": 20,
           "max_cost_usd": 0.25,
-          "output_tokens": 85,
+          "output_tokens": 93,
           "reasoning_tokens": 0,
           "retries": 0,
-          "total_tokens": 1515
+          "total_tokens": 1523
         },
         "source_facts": {
-          "cached_input_tokens": 1024,
+          "cached_input_tokens": 0,
           "calls_attempted": 4,
           "calls_budget_blocked": 10,
           "calls_failed": 0,
           "calls_succeeded": 4,
-          "duration_seconds": 20.507430673000044,
-          "estimated_cost_usd": 0.00131445,
+          "duration_seconds": 17.223387826999897,
+          "estimated_cost_usd": 0.00132825,
           "input_tokens": 4563,
           "last_model": "gpt-4o-mini",
           "max_calls": 40,
           "max_cost_usd": 0.75,
-          "output_tokens": 1050,
+          "output_tokens": 1073,
           "reasoning_tokens": 0,
           "retries": 0,
-          "total_tokens": 5613
+          "total_tokens": 5636
         }
       }
     },
     "organisation_sector": {
       "calls": 1,
-      "cost_usd": 0.0001529,
+      "cost_usd": 0.00014545,
       "by_task": {
         "organisation_sector": {
           "cached_input_tokens": 0,
@@ -96,23 +96,23 @@
           "calls_budget_blocked": 0,
           "calls_failed": 0,
           "calls_succeeded": 1,
-          "duration_seconds": 2.040801258999977,
-          "estimated_cost_usd": 0.0001529,
-          "input_tokens": 914,
+          "duration_seconds": 2.3689104149999594,
+          "estimated_cost_usd": 0.00014545,
+          "input_tokens": 909,
           "last_model": "gpt-5-nano",
           "max_calls": 20,
           "max_cost_usd": 0.1,
-          "output_tokens": 268,
+          "output_tokens": 250,
           "reasoning_tokens": 0,
           "retries": 0,
-          "total_tokens": 1182
+          "total_tokens": 1159
         }
       }
     }
   },
   "totals": {
     "calls": 39,
-    "cost_usd": 0.009324
+    "cost_usd": 0.008988
   },
   "verdict": "PASS"
 }

@@ -2,10 +2,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-23",
-  "first_seen": "2026-08-24T11:16:45+04:00",
+  "first_seen": "2026-08-24T11:30:34+04:00",
   "id": "INC-FB978E513818",
   "items": 2,
-  "last_seen": "2026-08-24T11:16:45+04:00",
+  "last_seen": "2026-08-24T11:30:34+04:00",
   "location": "France métropolitaine",
   "org": "Declic Services",
   "sector": "Inconnu",
@@ -16,7 +16,8 @@
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires",
-   "identifiants"
+   "identifiants",
+   "coordonnées bancaires"
   ],
   "source_link_status": [
    {
@@ -52,10 +53,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-23",
-  "first_seen": "2026-08-24T11:16:45+04:00",
+  "first_seen": "2026-08-24T11:30:34+04:00",
   "id": "INC-1DB4BB9CBF02",
   "items": 2,
-  "last_seen": "2026-08-24T11:16:45+04:00",
+  "last_seen": "2026-08-24T11:30:34+04:00",
   "location": "France métropolitaine",
   "org": "Solimut Mutuelle de France",
   "sector": "Inconnu",
@@ -67,7 +68,8 @@
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires",
-   "IBAN / RIB"
+   "IBAN / RIB",
+   "IBAN"
   ],
   "source_link_status": [
    {
@@ -103,10 +105,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-22",
-  "first_seen": "2026-08-24T11:16:45+04:00",
+  "first_seen": "2026-08-24T11:30:34+04:00",
   "id": "INC-C99133F13F25",
   "items": 1,
-  "last_seen": "2026-08-24T11:16:45+04:00",
+  "last_seen": "2026-08-24T11:30:34+04:00",
   "location": "France métropolitaine",
   "org": "DINUM",
   "sector": "Administration / Collectivité",
@@ -141,17 +143,18 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-24T11:16:45+04:00",
+  "first_seen": "2026-08-24T11:30:34+04:00",
   "id": "INC-CFB3AE4A9D63",
   "items": 3,
-  "last_seen": "2026-08-24T11:16:45+04:00",
+  "last_seen": "2026-08-24T11:30:34+04:00",
   "location": "France métropolitaine",
   "org": "SUEZ",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
+   "candidate": "Services aux entreprises",
+   "status": "tentative"
   },
+  "sector_tentative": "Services aux entreprises",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "IBAN / RIB",
@@ -202,22 +205,18 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-24T11:16:45+04:00",
+  "first_seen": "2026-08-24T11:30:34+04:00",
   "id": "INC-6DC1B3DE66B3",
   "items": 2,
-  "last_seen": "2026-08-24T11:16:45+04:00",
+  "last_seen": "2026-08-24T11:30:34+04:00",
   "location": "France métropolitaine",
   "org": "Sport 2000",
   "sector": "Sport",
   "sector_status": {
    "status": "confirmed"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "IBAN / RIB",
-   "cartes de paiement",
-   "identifiants"
-  ],
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
   "source_link_status": [
    {
     "source": "CYBERATTAQUE_ORG",
