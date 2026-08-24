@@ -299,6 +299,10 @@ def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
             value = _text(raw_record.get("value"))
             if not value:
                 continue
+            if key == "affected_systems" and any(marker in _norm(value) for marker in ("prestataire", "fournisseur", "sous traitant", "tiers")):
+                # Un tiers est un contexte de compromission, pas un système de
+                # la victime. Il est affiché dans son champ dédié.
+                continue
             semantic = _norm(raw_record.get("kind")) or _norm(raw_record.get("scope")) or _norm(value)
             if semantic not in selected:
                 selected[semantic] = {
@@ -475,6 +479,13 @@ def _dedupe_claim_entries(entries: Iterable[dict]) -> list[dict]:
 
 def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
     candidates = [claim for claim in claims if claim.get("type") == claim_type and _known(claim.get("value"))]
+    if claim_type == "actor":
+        # Un nom d'acteur doit figurer dans l'extrait de preuve : un modèle ne
+        # peut pas propager un autre acteur simplement cité dans l'article.
+        candidates = [
+            claim for claim in candidates
+            if _norm(claim.get("value")) in _norm(claim.get("evidence"))
+        ]
     if not candidates:
         return None
     claim = sorted(candidates, key=lambda row: (source_rank(row.get("source")), _text(row.get("value"))))[0]

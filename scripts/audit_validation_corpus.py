@@ -100,11 +100,16 @@ def main() -> int:
         elif case_id == "solimut":
             if not field_or_claim(detail, "threat_actor", "actor", "misere"):
                 problems.append("Corpus validation : acteur Solimut absent")
+            actor = str(((detail.get("fields") or {}).get("threat_actor") or {}).get("value") or "")
+            if actor.casefold() != "misere":
+                problems.append("Corpus validation : acteur principal Solimut incorrect")
             if not contains([entry.get("value") for entry in detail.get("data_types", []) if isinstance(entry, dict)], "sécurité sociale"):
                 problems.append("Corpus validation : NIR Solimut absent")
         elif case_id == "suez":
             if not field_or_claim(detail, "third_party", "third_party", "prestataire"):
                 problems.append("Corpus validation : prestataire SUEZ absent")
+            if any("prestataire" in str(entry.get("value") or "").casefold() for entry in detail.get("systems", []) if isinstance(entry, dict)):
+                problems.append("Corpus validation : tiers SUEZ présenté à tort comme système")
         case_reports.append({
             "case": case_id,
             "incident_id": row.get("id"),

@@ -159,6 +159,23 @@ def test_prestataire_nomme_dans_la_preuve_alimente_un_tiers_sans_identite_invent
     assert resolved["fields"]["third_party"]["value"] == "prestataire technique"
 
 
+def test_acteur_cite_sans_preuve_n_est_pas_choisi_comme_acteur_principal():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [
+            {"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "Des éléments plus précis sur l'exfiltration."},
+            {"type": "actor", "value": "misere", "status": "claimed", "evidence": "Le hacker misere revendique la fuite."},
+        ],
+    })])
+    assert resolved["fields"]["threat_actor"]["value"] == "misere"
+
+
+def test_tiers_ne_devient_pas_systeme_concerne():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "affected_systems": [{"value": "prestataire technique de la victime", "status": "confirmed"}],
+    })])
+    assert resolved["systems"] == []
+
+
 def test_beauty_success_conserve_les_trois_concepts_distincts():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [
