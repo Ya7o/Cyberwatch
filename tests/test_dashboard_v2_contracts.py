@@ -93,6 +93,15 @@ def test_secteur_suppose_utilise_un_chip_distinct_du_secteur_confirme():
     assert js.count("sectorTentativeChip(incident)") >= 3
 
 
+def test_secteur_sans_aucun_candidat_est_explicite_plutot_que_silencieux():
+    """Cas réel constaté sur Déclic Services : contrairement à SUEZ/Solimut
+    (un candidat tentatif existe), aucun indice de secteur n'était affiché du
+    tout quand sector_status.status vaut "unknown" (NO_EVIDENCE)."""
+    js = _read("assets/dashboard-v2.js")
+    assert 'incident.sector_status?.status === "unknown"' in js
+    assert "Secteur non déterminé" in js
+
+
 def test_signaux_exposent_une_lecture_consultant_et_masquent_les_scores():
     js = _read("assets/dashboard-v2.js")
     assert "Pourquoi ce signal ?" in js

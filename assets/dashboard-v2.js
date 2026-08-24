@@ -105,8 +105,18 @@
   }
 
   function sectorTentativeChip(incident) {
-    if (known(incident.sector) || !known(incident.sector_tentative)) return "";
-    return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé, non confirmé)</span>`;
+    if (known(incident.sector)) return "";
+    if (known(incident.sector_tentative)) {
+      return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé, non confirmé)</span>`;
+    }
+    // Sans candidat du tout (sector_status.status === "unknown"), le secteur
+    // était auparavant simplement absent de l'affichage — contrairement aux
+    // cas où un candidat existe. Les deux variantes de "Inconnu" doivent
+    // rester lisibles de la même façon plutôt que l'une d'elles disparaissant.
+    if (incident.sector_status?.status === "unknown") {
+      return `<span class="chip" data-status="UNKNOWN">Secteur non déterminé (aucune preuve disponible)</span>`;
+    }
+    return "";
   }
 
   function threatTentativeChip(incident) {
