@@ -130,6 +130,40 @@ def test_claim_statement_dupliquant_une_entree_timeline_est_ecarte():
     assert resolved["timeline"][0]["event"] == "Accès et extraction"
 
 
+def test_markdown_brut_est_retire_de_la_chronologie():
+    """Cas réel constaté sur FRENCHBREACHES (Déclic Services, Solimut) : des
+    astérisques Markdown fuyaient telles quelles dans l'evidence affichée."""
+    resolved = fr.resolve_incident_facts([fact("FRENCHBREACHES", rich_facts={
+        "timeline": [{
+            "date": "2026-08-22", "status": "claimed",
+            "event": "Une publication diffusée le **22 août 2026** sur un forum revendique une compromission.",
+            "evidence": "Une publication diffusée le **22 août 2026** sur un forum revendique une compromission.",
+        }],
+    })])
+    assert "**" not in resolved["timeline"][0]["event"]
+    assert "**" not in resolved["timeline"][0]["evidence"]
+
+
+def test_date_en_toutes_lettres_est_normalisee_en_iso_dans_la_chronologie():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "timeline": [{"date": "10 août 2026", "status": "reported", "event": "Début de l'intrusion", "evidence": "le début de l'intrusion au 10 août 2026"}],
+    })])
+    assert resolved["timeline"][0]["date"] == "2026-08-10"
+
+
+def test_deux_formulations_du_meme_jour_ne_gardent_que_la_plus_concise():
+    """Cas réel constaté sur Déclic Services : une phrase brute et son libellé
+    nettoyé décrivaient le même événement du même jour."""
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "timeline": [
+            {"date": "2026-08-10", "status": "unknown", "event": "Une chronologie fait remonter le début de l'intrusion au 10 août 2026.", "evidence": "une chronologie fait remonter le début de l'intrusion au 10 août 2026"},
+            {"date": "2026-08-10", "status": "reported", "event": "Début de l'intrusion", "evidence": "le début de l'intrusion au 10 août 2026"},
+        ],
+    })])
+    assert len(resolved["timeline"]) == 1
+    assert resolved["timeline"][0]["event"] == "Début de l'intrusion"
+
+
 def test_systeme_agrege_redondant_avec_ses_composants_est_ecarte():
     """Cas réel constaté sur Déclic Services : "WordPress", "ERP" et un 3ᵉ
     chip "WordPress, ERP, base de production" qui répète les deux premiers."""

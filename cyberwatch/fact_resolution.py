@@ -11,6 +11,7 @@ import re
 import unicodedata
 from typing import Any, Callable, Iterable
 from .headline import is_publishable_headline
+from .normalize import parse_date
 
 SOURCE_PRIORITY = (
     "RANSOMWARE_LIVE",
@@ -599,6 +600,16 @@ def _merge_list_entries(*lists: list[dict]) -> list[dict]:
     return list(selected.values())
 
 
+_MARKDOWN_EMPHASIS_RE = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
+
+
+def _strip_markdown_emphasis(text: str) -> str:
+    """Retire le gras Markdown (`**...**`/`__...__`) qui a pu fuiter tel quel
+    depuis un article source (constaté sur FRENCHBREACHES) — garde le texte,
+    jamais la syntaxe d'édition."""
+    return _MARKDOWN_EMPHASIS_RE.sub(lambda m: m.group(1) or m.group(2), text)
+
+
 def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
     selected: dict[tuple[str, str, str], dict] = {}
     for fact in _ordered_facts(facts):
@@ -607,7 +618,10 @@ def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
         for row in rich.get("timeline", []) if isinstance(rich, dict) else []:
             if not isinstance(row, dict):
                 continue
-            date, event, evidence = _text(row.get("date")), _text(row.get("event")), _text(row.get("evidence"))
+            raw_date = _text(row.get("date"))
+            date = parse_date(raw_date) or raw_date
+            event = _strip_markdown_emphasis(_text(row.get("event")))
+            evidence = _strip_markdown_emphasis(_text(row.get("evidence")))
             if not event or not evidence:
                 continue
             key = (_norm(date), _norm(event), _norm(evidence))
@@ -615,7 +629,30 @@ def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
                 selected[key] = {"date": date, "event": event, "status": _status(row), "evidence": evidence, "source": source, "sources": [source] if source else []}
             elif source and source not in selected[key]["sources"]:
                 selected[key]["sources"].append(source)
-    return list(selected.values())
+    return _drop_timeline_evidence_duplicates(list(selected.values()))
+
+
+def _drop_timeline_evidence_duplicates(entries: list[dict]) -> list[dict]:
+    """Deux entrées du même jour dont l'evidence de l'une n'est qu'un extrait
+    de l'autre décrivent le même fait publié en deux formulations (phrase
+    brute vs libellé nettoyé, cas constaté sur Déclic Services et Solimut) —
+    ne garder que la formulation la plus concise."""
+    kept: list[dict] = []
+    for entry in entries:
+        merged = False
+        for index, existing in enumerate(kept):
+            if _norm(entry.get("date")) != _norm(existing.get("date")):
+                continue
+            evidence_a, evidence_b = _norm(entry.get("evidence")), _norm(existing.get("evidence"))
+            if not evidence_a or not evidence_b or (evidence_a not in evidence_b and evidence_b not in evidence_a):
+                continue
+            if len(entry.get("event", "")) < len(existing.get("event", "")):
+                kept[index] = entry
+            merged = True
+            break
+        if not merged:
+            kept.append(entry)
+    return kept
 
 
 def _drop_claims_duplicating_timeline(claims: list[dict], timeline: list[dict]) -> list[dict]:
