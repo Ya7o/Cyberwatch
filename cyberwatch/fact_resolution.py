@@ -11,7 +11,7 @@ import re
 import unicodedata
 from typing import Any, Callable, Iterable
 from .headline import is_publishable_headline
-from .normalize import canonical_data_type, parse_date
+from .normalize import canonical_data_type, extract_unique_value_counts, parse_date
 
 SOURCE_PRIORITY = (
     "RANSOMWARE_LIVE",
@@ -750,6 +750,48 @@ def best_publishable_summary(facts: Iterable[dict], *, organisation: str = "") -
     return max(candidates)[2] if candidates else ""
 
 
+def _evidence_unique_value_counts(facts: Iterable[dict]) -> list[dict]:
+    """Retrouve, dans l'evidence déjà stockée des claims, un décompte de
+    valeurs uniques par type de donnée jamais extrait comme fait séparé (ex.
+    "14 947 adresses e-mail uniques" cité dans l'evidence d'un autre claim).
+
+    Complète le filet déjà appliqué par le collecteur (extract_unique_value_
+    counts, normalize.py) pour les données déjà collectées avant sa mise en
+    place — sans dépendre d'une nouvelle collecte.
+    """
+    rows: list[dict] = []
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        seen_evidence: set[str] = set()
+        for claim in rich.get("claims", []) if isinstance(rich, dict) else []:
+            if not isinstance(claim, dict):
+                continue
+            evidence = _text(claim.get("evidence"))
+            if not evidence or evidence in seen_evidence:
+                continue
+            seen_evidence.add(evidence)
+            for value, unit, raw in extract_unique_value_counts(evidence):
+                rows.append({
+                    "value": value, "unit": unit, "raw": raw, "semantic": "unspecified",
+                    "status": _status(claim), "source": source, "sources": [source] if source else [],
+                    "evidence": evidence,
+                })
+    return rows
+
+
+def _merge_affected(base: list[dict], extra: list[dict]) -> list[dict]:
+    seen = {(_norm(entry.get("unit")), _norm(_record_value(entry))) for entry in base}
+    merged = list(base)
+    for entry in extra:
+        key = (_norm(entry.get("unit")), _norm(_record_value(entry)))
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(entry)
+    return merged
+
+
 def build_display_summary(resolved: dict, fallback: str = "") -> str:
     # Une carte ne réassemble jamais impact, volumes ou catégories. Ces faits
     # restent dans le détail ; seul le résumé éditorial déjà validé est publié.
@@ -786,7 +828,7 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
         "fields": {field: value for field, value in fields.items() if value},
         "data_types": _data_types_entries(ordered),
         "vulnerabilities": _merge_list_entries(_list_entries(ordered, "vulnerabilities"), _claim_list_entries(claims, "vulnerability")),
-        "affected": resolve_affected_counts(ordered),
+        "affected": _merge_affected(resolve_affected_counts(ordered), _evidence_unique_value_counts(ordered)),
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
         "claims": claims,

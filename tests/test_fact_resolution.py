@@ -442,6 +442,31 @@ def test_source_inconnue_passe_apres_sources_connues():
     assert fr.source_rank("RANSOMWARE_LIVE") < fr.source_rank("SOURCE_EXTERNE")
 
 
+def test_decompte_de_valeurs_uniques_cite_dans_l_evidence_est_recupere():
+    """Cas réel constaté sur Déclic Services : la phrase source citait
+    "14 947 adresses e-mail uniques, 6 451 IBAN uniques" dans l'evidence d'un
+    claim "mots de passe", mais ni l'un ni l'autre n'était extrait comme
+    volume séparé."""
+    evidence = (
+        "Le hacker précise lui-même qu'il s'agit de données brutes non dédupliquées et "
+        "revendique notamment 14 947 adresses e-mail uniques, 6 451 IBAN uniques et "
+        "plusieurs centaines de hachages de mots de passe distincts."
+    )
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "data_type", "value": "mots de passe", "status": "claimed", "evidence": evidence}],
+    })])
+    by_unit = {entry["unit"]: entry["value"] for entry in resolved["affected"]}
+    assert by_unit["adresses e-mail"] == 14947
+    assert by_unit["données bancaires"] == 6451
+
+
+def test_decompte_de_valeur_unique_sans_type_de_donnee_reconnu_est_ignore():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "statement", "value": "x", "status": "unknown", "evidence": "L'article cite 42 visiteurs uniques ce mois-ci."}],
+    })])
+    assert resolved["affected"] == []
+
+
 def test_resultat_est_deterministe_independamment_de_l_ordre_entree():
     facts = [
         fact("FRENCHBREACHES", threat_actor="B", data_types=["Nom"], affected_count=100, affected_unit="people"),

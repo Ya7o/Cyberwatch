@@ -11,6 +11,9 @@ from cyberwatch.normalize import (
     find_known_entity,
     looks_cyber,
     organisation_from_title,
+    canonical_data_type,
+    extract_unique_value_counts,
+    is_recognized_data_type,
     organisation_key,
     parse_date,
 )
@@ -489,3 +492,34 @@ class TestSecteurPrecedence:
     )
     def test_activite_ransomware_live_traduite(self, activity, expected):
         assert classify_sector("", given=activity) == expected
+
+
+class TestCanonicalDataType:
+    """Une même catégorie de donnée peut être écrite différemment selon la
+    source (Cyberattaque.org, FrenchBreaches, BonjourLaFuite) : ces deux
+    fonctions ramènent chaque libellé à une forme canonique partagée."""
+
+    def test_deux_formulations_convergent(self):
+        assert canonical_data_type("adresses e-mail") == canonical_data_type("Adresse email")
+
+    def test_libelle_inconnu_reste_inchange(self):
+        assert canonical_data_type("fiches individuelles") == "fiches individuelles"
+
+    def test_is_recognized_reste_vrai_meme_deja_canonique(self):
+        assert is_recognized_data_type("adresses e-mail") is True
+        assert is_recognized_data_type("fiches individuelles") is False
+
+
+class TestExtractUniqueValueCounts:
+    """Cas réel constaté sur Déclic Services : une phrase source citait
+    plusieurs comptages qualifiés qu'un décompte générique de personnes/
+    comptes/enregistrements ne capte pas."""
+
+    def test_deux_comptages_dans_la_meme_phrase(self):
+        text = "revendique notamment 14 947 adresses e-mail uniques, 6 451 IBAN uniques et le reste."
+        results = extract_unique_value_counts(text)
+        assert (14947, "adresses e-mail", "14 947 adresses e-mail uniques") in results
+        assert (6451, "données bancaires", "6 451 IBAN uniques") in results
+
+    def test_libelle_sans_type_de_donnee_reconnu_est_ignore(self):
+        assert extract_unique_value_counts("42 visiteurs uniques ce mois-ci") == []

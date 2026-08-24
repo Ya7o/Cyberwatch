@@ -80,6 +80,48 @@ def canonical_data_type(value: str) -> str:
     return value
 
 
+def is_recognized_data_type(value: str) -> bool:
+    """Indique si `value` matche un type de donnée connu de la taxonomie.
+
+    Contrairement à comparer `canonical_data_type(value) == value`, reste
+    correct même quand la valeur d'origine est déjà sous sa forme canonique
+    (ex. "adresses e-mail" matche son propre motif)."""
+    return any(pattern.search(value) for _, pattern in DATA_TYPE_CANONICAL_PATTERNS)
+
+
+#: Une même phrase source cite souvent plusieurs comptages qualifiés
+#: ("14 947 adresses e-mail uniques, 6 451 IBAN uniques") qu'un décompte
+#: générique de personnes/comptes/enregistrements ne capte pas. Réutilisable
+#: à la fois par l'extraction (collectors/cyberattaque_rich.py) et par la
+#: consolidation (fact_resolution.py, pour retrouver un décompte déjà présent
+#: dans l'evidence d'un claim existant mais jamais extrait séparément).
+UNIQUE_VALUE_COUNT_RE = re.compile(
+    r"(?P<number>\d[\d\s .,]*\d|\d)\s*(?:de\s+|d['’])?\s*(?P<label>[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s\-'’]{2,50}?)\s+uniques?\b",
+    re.I,
+)
+
+
+def extract_unique_value_counts(text: str) -> list[tuple[int, str, str]]:
+    """Retourne (nombre, type_de_donnée_canonique, texte_brut) pour chaque
+    décompte de valeurs uniques par type de donnée reconnu dans `text`.
+
+    N'invente jamais d'unité : un décompte dont le libellé ne matche aucun
+    type de donnée connu est simplement ignoré.
+    """
+    results = []
+    for match in UNIQUE_VALUE_COUNT_RE.finditer(text or ""):
+        label = match.group("label").strip()
+        if not is_recognized_data_type(label):
+            continue
+        cleaned = match.group("number").replace(" ", "").replace(" ", "")
+        try:
+            value = int(cleaned.replace(".", "").replace(",", ""))
+        except ValueError:
+            continue
+        results.append((value, canonical_data_type(label), match.group(0).strip()))
+    return results
+
+
 def strip_accents(text: str) -> str:
     """Décomposition NFKD puis retrait des marques diacritiques."""
     decomposed = unicodedata.normalize("NFKD", text)

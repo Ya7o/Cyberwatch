@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 
 from ..normalize import DATA_TYPE_CANONICAL_PATTERNS as _DATA_TYPES
-from ..normalize import searchable
+from ..normalize import extract_unique_value_counts, searchable
 from .cyberattaque_org import CyberattaqueOrgCollector
 from . import cyberattaque_semantic
 from .base import entry_allowed_before_enrichment
@@ -120,6 +120,21 @@ def _extract_volumes(sentences: list[str]) -> list[dict]:
     return _dedupe(rows,("value","unit","scope","status"))
 
 
+# Une même phrase source cite souvent plusieurs comptages qualifiés
+# ("14 947 adresses e-mail uniques, 6 451 IBAN uniques") : _COUNT_RE ne les
+# capte pas car son unité est fermée aux personnes/comptes/enregistrements.
+# extract_unique_value_counts() (normalize.py) cible spécifiquement les
+# décomptes de valeurs uniques par type de donnée, avec la même taxonomie
+# canonique que _extract_data_types() — partagée aussi avec fact_resolution.py
+# pour retrouver ces décomptes dans l'evidence déjà collectée.
+def _extract_unique_value_counts(sentences: list[str]) -> list[dict]:
+    rows = []
+    for sentence in sentences:
+        for value, unit, raw in extract_unique_value_counts(sentence):
+            rows.append({"value": value, "unit": unit, "raw": raw, "status": _status(sentence), "scope": _scope(sentence), "date": _date(sentence), "evidence": sentence[:420]})
+    return _dedupe(rows, ("value", "unit", "scope", "status"))
+
+
 def _extract_data_types(sentences: list[str]) -> list[dict]:
     rows=[]
     # Les CMS représentent souvent une liste « données exposées » sous forme
@@ -221,7 +236,7 @@ def enrich_entry_metadata(entry) -> None:
     systems,datasets=_extract_scopes(sentences)
     base={
         "version":"2",
-        "affected_counts":_extract_counts(sentences),
+        "affected_counts":_extract_counts(sentences)+_extract_unique_value_counts(sentences),
         "data_volumes":_extract_volumes(sentences),
         "data_types":_extract_data_types(sentences),
         "affected_systems":systems,
