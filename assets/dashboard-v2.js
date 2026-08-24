@@ -416,12 +416,15 @@
 
   const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
-  function documentedClaimsHtml(claims, organisation) {
+  function documentedClaimsHtml(claims, organisation, fields) {
     if (!Array.isArray(claims)) return "";
+    const alreadyShown = { actor: normalize(fields?.threat_actor?.value), third_party: normalize(fields?.third_party?.value) };
     const shown = claims.filter((claim) => {
       const type = claim.type || "";
       if (!CLAIM_LABELS[type] || !known(claim.value)) return false;
-      return !(type === "actor" && normalize(claim.value) === normalize(organisation));
+      if (type === "actor" && normalize(claim.value) === normalize(organisation)) return false;
+      if ((type === "actor" || type === "third_party") && alreadyShown[type] && normalize(claim.value) === alreadyShown[type]) return false;
+      return true;
     }).slice(0, 12);
     if (!shown.length) return "";
     return `<div class="documented-claims"><h4>Faits sourcés</h4>${shown.map((claim) => {
@@ -451,7 +454,7 @@
       detailField("Impact", fields.impact?.value),
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
-      documentedClaimsHtml(detail.claims || [], incident.org),
+      documentedClaimsHtml(detail.claims || [], incident.org, fields),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     const tentativeChip = sectorTentativeChip(incident);

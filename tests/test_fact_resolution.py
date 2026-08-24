@@ -123,6 +123,19 @@ def test_type_de_donnee_numerique_ou_trop_long_est_rejete():
     assert [entry["value"] for entry in resolved["data_types"]] == ["IBAN"]
 
 
+def test_triplet_relation_brut_est_filtre_des_claims():
+    """Un format interne "sujet → relation → objet" n'est jamais publiable tel quel
+    (cas réel constaté sur DINUM avant correction du collecteur)."""
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{
+            "type": "statement", "status": "unknown",
+            "value": "victime → compromised_via → elle-même",
+            "evidence": "Il est donc techniquement possible qu'une partie des fichiers ait été obtenue depuis des ressources rendues accessibles par la plateforme elle-même.",
+        }],
+    })])
+    assert resolved["claims"] == []
+
+
 def test_claim_legacy_sans_type_et_relation_sont_repares_prudemment():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [{"value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès à Pilot."}],

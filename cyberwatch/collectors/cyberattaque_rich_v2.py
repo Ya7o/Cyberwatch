@@ -67,10 +67,13 @@ def _augment(entry) -> None:
     for row in rich.get("timeline") or []:
         if isinstance(row, dict):
             labelled = {"status": row.get("status"), "scope": "Chronologie", "date": row.get("date"), "evidence": row.get("evidence"), "value": row.get("event")}; add(labelled)
-    for row in rich.get("relations") or []:
-        if isinstance(row, dict):
-            relation = f"{row.get('subject','')} → {row.get('relation','')} → {row.get('object','')}".strip()
-            labelled = {"status": row.get("status"), "scope": "Relation", "date": "", "evidence": row.get("evidence"), "value": relation}; add(labelled)
+    # Les relations (sujet/prédicat/objet) ne sont volontairement pas projetées ici :
+    # fact_resolution.py::_relation_claim_entries() lit déjà rich_facts.relations
+    # directement et les traduit en champs métier lisibles (Acteur, Tiers impliqué).
+    # Un join brut "sujet → relation → objet" n'est jamais une phrase publiable
+    # (cf. doctrine "précision > taux de remplissage", METHODOLOGY.md §13) ; une
+    # relation non couverte par un champ métier reste donc simplement absente
+    # plutôt que montrée à l'utilisateur sous forme de jargon d'extraction.
     for row in rich.get("vulnerabilities") or []:
         if isinstance(row, dict):
             labelled = {"status": row.get("status"), "scope": "Vulnérabilité", "date": "", "evidence": row.get("evidence"), "value": row.get("value")}; add(labelled)

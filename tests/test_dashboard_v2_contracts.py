@@ -126,6 +126,15 @@ def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents()
     assert "incident-fact-source" not in js
 
 
+def test_faits_sources_ne_repetent_pas_acteur_et_tiers_deja_affiches():
+    """Acteur/Tiers rendus une seule fois : Solimut affichait "misere" jusqu'à
+    3 fois (fields.threat_actor + claim actor + suffixe attack_action)."""
+    js = _read("assets/dashboard-v2.js")
+    assert "function documentedClaimsHtml(claims, organisation, fields)" in js
+    assert "alreadyShown" in js
+    assert "documentedClaimsHtml(detail.claims || [], incident.org, fields)" in js
+
+
 def test_detail_ecarte_les_champs_techniques_a_qualite_variable():
     js = _read("assets/dashboard-v2.js")
     assert 'detailField("Vecteur d’entrée"' not in js

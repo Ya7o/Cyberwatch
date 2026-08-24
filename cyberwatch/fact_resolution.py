@@ -376,6 +376,9 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
     return list(selected.values())
 
 
+_RAW_RELATION_TRIPLE = re.compile(r"^.+ → .+ → .+$")
+
+
 def _claim_entries(facts: Iterable[dict]) -> list[dict]:
     """Conserve les affirmations riches, avec leur preuve, pour la synthèse.
 
@@ -396,6 +399,12 @@ def _claim_entries(facts: Iterable[dict]) -> list[dict]:
             if not evidence:
                 continue
             value = raw_record.get("value")
+            if _RAW_RELATION_TRIPLE.match(_text(value)):
+                # Filet contre un format interne "sujet → relation → objet" qui a pu
+                # être stocké par un collecteur avant correction (jamais une phrase
+                # publiable) — la relation, si utile, est déjà traduite ailleurs par
+                # _relation_claim_entries().
+                continue
             claim_type = _text(raw_record.get("type")) or _text(raw_record.get("kind")) or _infer_claim_type(raw_record)
             key = (_norm(claim_type), _norm(value), _norm(evidence))
             if key in selected:
