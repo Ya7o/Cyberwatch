@@ -228,6 +228,20 @@ def test_claim_acteur_type_alimente_le_champ_detail_sans_ecraser_un_scalaire():
     assert resolved["fields"]["threat_actor"]["value"] == "ZeroBytes"
 
 
+def test_champ_scalaire_republie_le_statut_du_claim_gagnant():
+    """Le statut est republié sur le champ résolu (via claims ou via colonne
+    CSV directe) pour que le frontend puisse afficher le badge une seule
+    fois, sur le champ lui-même, plutôt que de le répéter dans "Faits
+    sourcés"."""
+    via_claim = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}],
+    })])
+    assert via_claim["fields"]["threat_actor"]["status"] == "claimed"
+
+    via_colonne = fr.resolve_incident_facts([fact("FRENCHBREACHES", threat_actor="misere", claim_status="confirmed")])
+    assert via_colonne["fields"]["threat_actor"]["status"] == "confirmed"
+
+
 def test_claim_vulnerability_alimente_la_liste_publique():
     """Cas réel constaté sur DINUM : une faille zero-day documentée par un
     claim `type:"vulnerability"` n'atteignait jamais `vulnerabilities[]`."""

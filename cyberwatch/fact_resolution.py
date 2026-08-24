@@ -128,6 +128,10 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
                 (lambda row: _actor_label(row.get(field))) if field == "threat_actor" else (lambda row: row.get(field)),
                 value,
             ),
+            # Statut déclaratif de la ligne source (confirmé/revendiqué/...),
+            # republié pour que l'affichage porte le badge sur le champ lui
+            # même plutôt que de le répéter dans une liste de faits séparée.
+            "status": _status({"status": fact.get("claim_status")}),
         }
     return None
 
@@ -565,7 +569,10 @@ def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
     if not candidates:
         return None
     claim = sorted(candidates, key=lambda row: (source_rank(row.get("source")), _text(row.get("value"))))[0]
-    return {"value": claim["value"], "source": claim.get("source", ""), "sources": claim.get("sources", [])}
+    return {
+        "value": claim["value"], "source": claim.get("source", ""), "sources": claim.get("sources", []),
+        "status": _status(claim),
+    }
 
 
 def _claim_list_entries(claims: Iterable[dict], claim_type: str) -> list[dict]:
