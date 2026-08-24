@@ -93,21 +93,9 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "confirmed",
+    "status": "claimed",
     "unit": "people",
     "value": 1244445
-   },
-   {
-    "evidence": "Ces données comprendraient notamment 779 750 IBAN.",
-    "raw": "779750",
-    "semantic": "unspecified",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "unit": "accounts",
-    "value": 779750
    },
    {
     "evidence": "# Fuite de données Solimut Mutuelle : plus d’un million d’assurés et 770 000 comptes bancaires apparaîtraient dans les données",
@@ -125,8 +113,8 @@
     "date": "2026-08-22",
     "evidence": "plus d’un million d’assurés et 770 000 comptes bancaires apparaîtraient dans les données",
     "raw": "770000",
-    "scope": "Solimut Mutuelle",
-    "semantic": "solimut mutuelle",
+    "scope": "données de Solimut Mutuelle",
+    "semantic": "donnees de solimut mutuelle",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -293,7 +281,7 @@
    },
    {
     "actor": "",
-    "date": "",
+    "date": "23 août 2026",
     "evidence": "Solimut Mutuelle de France confirme désormais officiellement avoir été victime d’une cyberattaque ayant entraîné une violation de données personnelles.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
@@ -314,7 +302,7 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "confirmed",
+    "status": "claimed",
     "type": "",
     "unit": "",
     "value": "1244445"
@@ -322,44 +310,44 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "Ces données comprendraient notamment 779 750 IBAN.",
+    "evidence": "Selon misere, certaines tables contiennent des numéros de sécurité sociale (NIR), des dates de naissance, téléphones, e-mails, adresses, professions et coordonnées bancaires.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
+    "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "779750"
+    "value": "numéros de sécurité sociale (NIR)"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "les personnes disposant de cette base pourraient construire des campagnes de phishing extrêmement crédibles.",
-    "scope": "campagnes",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "",
-    "unit": "",
-    "value": "phishing"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "ZeroBytes affirme que la vulnérabilité utilisée demeure toujours exploitable.",
+    "evidence": "ce croisement constitue l’un des aspects les plus préoccupants de la fuite.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
+    "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "SQL injection"
+    "value": "usurpation d'identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker annonce également 2 989 149 enregistrements d’adresses.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "",
+    "unit": "",
+    "value": "2989149"
    },
    {
     "actor": "",
@@ -377,8 +365,8 @@
    },
    {
     "actor": "",
-    "date": "2023-08-23T20:00:00Z",
-    "evidence": "Ce 23 août, vers 20h, le groupe Solimut confirme sur son site et sur Linkedin, avoir subi une cyberattaque.",
+    "date": "23 août 2026",
+    "evidence": "Solimut Mutuelle de France confirme désormais officiellement avoir été victime d’une cyberattaque.",
     "scope": "Chronologie",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -387,12 +375,12 @@
     "status": "confirmed",
     "type": "",
     "unit": "",
-    "value": "Solimut confirme la cyberattaque"
+    "value": "victime d’une cyberattaque"
    },
    {
     "actor": "",
-    "date": "2023-08-23",
-    "evidence": "La mutuelle a également indiqué avoir informé l’Autorité de contrôle prudentiel et de résolution (ACPR) et prévoit une notification auprès de la CNIL dans les délais réglementaires.",
+    "date": "23 août 2026",
+    "evidence": "La mutuelle a également indiqué avoir informé l’Autorité de contrôle prudentiel et de résolution (ACPR) et prévoit une notification auprès de la CNIL.",
     "scope": "Chronologie",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -401,13 +389,27 @@
     "status": "reported",
     "type": "",
     "unit": "",
-    "value": "Solimut informe l'ACPR et la CNIL"
+    "value": "notification à la CNIL"
    },
    {
     "actor": "",
-    "date": "2023-08-23",
+    "date": ">23 août 2026",
+    "evidence": "ZeroBytes affirme que la vulnérabilité utilisée demeure toujours exploitable à l’heure où il communique.",
+    "scope": "Hypothèse · Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "",
+    "unit": "",
+    "value": "vulnérabilité exploitable"
+   },
+   {
+    "actor": "",
+    "date": "",
     "evidence": "Solimut Mutuelle de France fait l’objet d’une revendication de fuite de données.",
-    "scope": "Chronologie",
+    "scope": "Relation",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -415,7 +417,35 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "misere revendique la fuite"
+    "value": "Solimut Mutuelle de France → claimed_by → misere"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Cyberattaque.org s’est procuré les échantillons diffusés par misere.",
+    "scope": "Relation",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "",
+    "unit": "",
+    "value": "Solimut Mutuelle de France → hosted_by → Cyberattaque.org"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les personnes disposant de cette base pourraient construire des campagnes de phishing extrêmement crédibles.",
+    "scope": "Relation",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "",
+    "unit": "",
+    "value": "les données → uses → identités complètes et coordonnées"
    },
    {
     "actor": "",
@@ -433,9 +463,23 @@
    },
    {
     "actor": "",
+    "date": "",
+    "evidence": "Le cybercriminel **misere** affirme détenir d’importants volumes de données concernant des assur...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "",
+    "unit": "",
+    "value": "misere"
+   },
+   {
+    "actor": "",
     "date": "2026-08-22",
     "evidence": "plus d’un million d’assurés et 770 000 comptes bancaires apparaîtraient dans les données",
-    "scope": "Solimut Mutuelle",
+    "scope": "données de Solimut Mutuelle",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -444,20 +488,6 @@
     "type": "",
     "unit": "",
     "value": "770000"
-   },
-   {
-    "actor": "",
-    "date": "2026-08-22",
-    "evidence": "revendique la mise en vente de plusieurs bases de données attribuées à Solimut Mutuelle de France",
-    "scope": "Solimut Mutuelle",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "",
-    "unit": "",
-    "value": "mise en vente"
    }
   ],
   "data_types": [
@@ -509,6 +539,13 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "numéros de sécurité sociale (NIR)"
    }
   ],
   "datasets": [],
@@ -519,7 +556,7 @@
     "sources": [
      "FRENCHBREACHES"
     ],
-    "value": "Exposition de données personnelles et bancaires."
+    "value": "Exposition de données personnelles de plus d'un million d'assurés et 770 000 comptes bancaires."
    }
   },
   "systems": [],
@@ -564,6 +601,18 @@
     "status": "unknown",
     "unit": "clients",
     "value": 9000
+   },
+   {
+    "evidence": "Le décompte des enregistrements distincts fait apparaître un peu plus de 9 000 clients dans la base.",
+    "raw": "9850",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "unit": "clients",
+    "value": 9850
    }
   ],
   "claims": [
@@ -639,8 +688,8 @@
    },
    {
     "actor": "",
-    "date": "",
-    "evidence": "Sport 2000 fait l’objet d’une nouvelle revendication de cyberattaque signée ZeroBytes.",
+    "date": "2026-08-19",
+    "evidence": "Le hacker affirme avoir pénétré pilot.sport2000.fr, présenté comme le système interne utilisé pour gérer les réservations de location.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -653,22 +702,22 @@
    },
    {
     "actor": "",
-    "date": "19 août 2026",
-    "evidence": "Le hacker affirme avoir pénétré pilot.sport2000.fr.",
-    "scope": "pilot.sport2000.fr",
+    "date": "",
+    "evidence": "Le décompte des enregistrements distincts fait apparaître un peu plus de 9 000 clients dans la base.",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
+    "status": "reported",
     "type": "",
-    "unit": "",
-    "value": "pénétré"
+    "unit": "clients",
+    "value": "9850"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "avant d’en extraire 17 851 réservations et de publier gratuitement les données récupérées.",
+    "evidence": "ZeroBytes explique avoir commencé par utiliser une fonction d’export disponible dans Pilot, qui lui aurait permis de récupérer environ 14 500 réservations valides.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -682,35 +731,7 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "Le décompte des enregistrements distincts fait apparaître un peu plus de 9 000 clients.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "",
-    "unit": "clients",
-    "value": "9000"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Aucune vulnérabilité précise n’est revendiquée. Il reste donc impossible de déterminer si l’accès provient d’identifiants compromis, d’une faiblesse d’authentification ou d’un autre mécanisme.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "",
-    "unit": "",
-    "value": "inconnue"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "L’analyse des données montre que les fiches réunissent de nombreuses informations permettant de reconstituer précisément le contexte d’un séjour et d’une location.",
+    "evidence": "Les fiches de réservation sont particulièrement détaillées.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -719,12 +740,26 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "informations clients"
+    "value": "données de réservation"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "un fraudeur dispose d’un contexte suffisant pour fabriquer un faux message Sport 2000 particulièrement convaincant.",
+    "evidence": "Aucune vulnérabilité précise n’est revendiquée.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "",
+    "unit": "",
+    "value": null
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "le hacker affirme avoir publié gratuitement la base complète récupérée.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -733,7 +768,7 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "faux message de fraude"
+    "value": "base complète récupérée"
    },
    {
     "actor": "",
@@ -747,21 +782,21 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "accès à Pilot"
+    "value": "Accès à Pilot par ZeroBytes"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "Aucune vulnérabilité précise n’est revendiquée.",
+    "evidence": "Sport 2000 fait l’objet d’une nouvelle revendication de cyberattaque signée ZeroBytes.",
     "scope": "Relation",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
+    "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "Pilot → compromised_via → inconnue"
+    "value": "ZeroBytes → claimed_by → Sport 2000"
    }
   ],
   "data_types": [
@@ -798,20 +833,12 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "value": "informations clients"
+    "value": "données de réservation"
    }
   ],
   "datasets": [],
   "display_summary": "Sport 2000 : ZeroBytes publie 17 851 réservations de son outil interne Pilot",
-  "fields": {
-   "fine_location": {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "pilot.sport2000.fr"
-   }
-  },
+  "fields": {},
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -877,7 +904,7 @@
    },
    {
     "actor": "",
-    "date": "2026-08-22",
+    "date": "",
     "evidence": "Le cybercriminel 0xSec affirme avoir récupéré et publié un ensemble de données provenant de cloud.numerique.gouv.fr.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
@@ -891,28 +918,28 @@
    },
    {
     "actor": "",
-    "date": "2026-08-22",
+    "date": "22 août 2026",
     "evidence": "La publication, repérée ce 22 août 2026, contient plusieurs fichiers CSV représentant au total 31 544 lignes.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
+    "status": "reported",
     "type": "",
     "unit": "",
     "value": "31544"
    },
    {
     "actor": "",
-    "date": "2026-08-22",
+    "date": "",
     "evidence": "La publication de 0xSec comprend une dizaine de fichiers CSV couvrant différents aspects de la politique cloud et numérique de l’État.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
+    "status": "reported",
     "type": "",
     "unit": "",
     "value": "fichiers CSV"
@@ -920,7 +947,7 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "Une exposition de données depuis la plateforme ou depuis certaines requêtes Metabase constitue donc à ce stade un scénario crédible.",
+    "evidence": "Reste à déterminer si l’ensemble des colonnes et des lignes publiées était effectivement accessible volontairement au public ou si 0xSec a pu récupérer des informations qui n’étaient normalement pas destinées à être exposées.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -929,12 +956,12 @@
     "status": "unknown",
     "type": "",
     "unit": "",
-    "value": "exposition de données"
+    "value": null
    },
    {
     "actor": "",
-    "date": "2026-08",
-    "evidence": "Début août 2026, l’éditeur a révélé qu’une faille zero-day critique de type injection SQL avait été activement exploitée.",
+    "date": "début août 2026",
+    "evidence": "Début août 2026, l’éditeur a révélé qu’une faille zero-day critique de type injection SQL avait été activement exploitée pour compromettre des instances et accéder aux données.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -944,6 +971,20 @@
     "type": "",
     "unit": "",
     "value": "faille zero-day critique de type injection SQL"
+   },
+   {
+    "actor": "",
+    "date": "début août 2026",
+    "evidence": "Début août 2026, l’éditeur a révélé qu’une faille zero-day critique de type injection SQL avait été activement exploitée.",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "",
+    "unit": "",
+    "value": "Révélation d'une faille zero-day"
    },
    {
     "actor": "",
@@ -958,6 +999,20 @@
     "type": "",
     "unit": "",
     "value": "victime → compromised_via → elle-même"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une grande partie de ces informations prises individuellement peut être obtenue depuis des sources ouvertes.",
+    "scope": "Relation",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "",
+    "unit": "",
+    "value": "DINUM → affects → 31 544 lignes de données"
    }
   ],
   "data_types": [
@@ -1032,8 +1087,8 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "SUEZ Eau France confirme donc l’existence de l’incident chez son prestataire ainsi que l’accès, l’extraction et la mise en ligne d’une partie des données.",
-    "scope": "",
+    "evidence": "des personnes malveillantes ont pu accéder à certaines données, les extraire et rendre une partie d’entre elles accessible sur Internet.",
+    "scope": "certaines données",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -1041,7 +1096,49 @@
     "status": "confirmed",
     "type": "",
     "unit": "",
-    "value": "accès, extraction, mise en ligne"
+    "value": "accès"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "SUEZ précise ne pas être en mesure de confirmer que les données personnelles de chaque destinataire ont effectivement été dérobées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "",
+    "unit": "",
+    "value": "données personnelles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "En revanche, le nombre de personnes concernées et le volume exact de fichiers compromis ne sont pas précisés dans la notification obtenue par Cyberattaque.org.",
+    "scope": "nombre de personnes concernées",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "",
+    "unit": "",
+    "value": null
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les données susceptibles d’avoir été exposées comprennent notamment : nom, prénom et coordonnées ; numéros de téléphone et adresses e-mail ; données administratives ou de facturation liées au contrat ; dans certains cas, pièces d’identité ou photographies ; dans certaines situations, coordonnées bancaires de type RIB ou IBAN.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "",
+    "unit": "",
+    "value": "identité, coordonnées, RIB"
    },
    {
     "actor": "",
@@ -1055,35 +1152,63 @@
     "status": "unknown",
     "type": "",
     "unit": "",
-    "value": "phishing, usurpation d'identité"
+    "value": "risques de phishing et d’usurpation"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "c’est un prestataire technique utilisé par SUEZ Eau France qui aurait été compromis.",
+    "evidence": "L’attaque a permis à des personnes malveillantes d’accéder à certaines données et de les extraire.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
+    "status": "confirmed",
     "type": "",
     "unit": "",
-    "value": "prestataire compromis"
+    "value": "extraction des données"
    },
    {
     "actor": "",
-    "date": "",
-    "evidence": "Le périmètre exact reste encore inconnu.",
-    "scope": "",
+    "date": "non spécifié",
+    "evidence": "SUEZ Eau France confirme donc l’existence de l’incident chez son prestataire.",
+    "scope": "Chronologie",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "unknown",
+    "status": "confirmed",
     "type": "",
     "unit": "",
-    "value": null
+    "value": "incident chez le prestataire"
+   },
+   {
+    "actor": "",
+    "date": "non spécifié",
+    "evidence": "l’accès, l’extraction et la mise en ligne d’une partie des données.",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "",
+    "unit": "",
+    "value": "accès et extraction de données"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "SUEZ Eau France informe actuellement certains clients d’un incident de cybersécurité.",
+    "scope": "Relation",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "",
+    "unit": "",
+    "value": "SUEZ Eau France → claimed_by → incident de cybersécurité"
    },
    {
     "actor": "",
@@ -1173,6 +1298,13 @@
      "FRENCHBREACHES"
     ],
     "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "identité, coordonnées, RIB"
    },
    {
     "source": "FRENCHBREACHES",
@@ -1301,33 +1433,6 @@
     "status": "unknown",
     "unit": "people",
     "value": 13000
-   },
-   {
-    "evidence": "L’attaquant affirme avoir récupéré environ 13 000 comptes utilisateurs.",
-    "raw": "13000",
-    "scope": "base de données",
-    "semantic": "base de donnees",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "unit": "people",
-    "value": 13000
-   },
-   {
-    "date": "2026-08-22",
-    "evidence": "plus de 6,2 millions d’enregistrements revendiqués par ZeroBytes.",
-    "raw": "6200000",
-    "scope": "Declic Services",
-    "semantic": "declic services",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "unit": "records",
-    "value": 6200000
    }
   ],
   "claims": [
@@ -1502,8 +1607,8 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "L’attaquant affirme avoir récupéré environ 13 000 comptes utilisateurs.",
-    "scope": "base de données",
+    "evidence": "le hacker ZeroBytes revendique le vol de la base de données",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -1511,13 +1616,13 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "13000"
+    "value": "ZeroBytes"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "plus de 6 300 coordonnées bancaires.",
-    "scope": "base de données",
+    "evidence": "6 271 531 lignes brutes",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -1525,83 +1630,27 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "6300"
-   },
-   {
-    "actor": "",
-    "date": "2026-08-10",
-    "evidence": "Une chronologie de l’incident dont Cyberattaque.org a eu connaissance fait remonter le début de l’intrusion au 10 août 2026.",
-    "scope": "impact",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "",
-    "unit": "",
-    "value": null
+    "value": "6271531"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "la compromission des identifiants d’un compte administrateur à la suite d’une campagne d’hameçonnage.",
-    "scope": "intrusion",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "",
-    "unit": "",
-    "value": null
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "ZeroBytes est parvenu à modifier le site declicservices.fr actuellement accessible au public.",
-    "scope": "site web",
+    "evidence": "accéder aux informations d’environ  12 400 clients",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
     "type": "",
-    "unit": "",
-    "value": "declicservices.fr"
+    "unit": "clients",
+    "value": "12400"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "Le chiffre de 6 271 531 lignes annoncé par ZeroBytes ne correspond pas à autant de victimes.",
-    "scope": "données",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "",
-    "unit": "",
-    "value": null
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "ZeroBytes affirme pour sa part avoir commencé par le site WordPress exposé publiquement.",
-    "scope": "infrastructure",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "",
-    "unit": "",
-    "value": "WordPress"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Des clients auraient déjà signalé des SMS frauduleux utilisant des informations relatives à leurs prestations.",
-    "scope": "tentatives d’arnaque",
+    "evidence": "des clients auraient déjà signalé des SMS frauduleux",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -1614,8 +1663,8 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "de découvrir un ERP accessible depuis Internet.",
-    "scope": "infrastructure",
+    "evidence": "une vulnérabilité de cet ERP lui aurait ensuite permis d’atteindre la base de production",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -1623,12 +1672,82 @@
     "status": "claimed",
     "type": "",
     "unit": "",
-    "value": "ERP"
+    "value": "vulnérabilité de l'ERP"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "la compromission des identifiants d’un compte administrateur à la suite d’une campagne d’hameçonnage",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "",
+    "unit": "",
+    "value": "hameçonnage"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "ZeroBytes affirme pour sa part avoir commencé par le site WordPress exposé publiquement",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "",
+    "unit": "",
+    "value": "WordPress"
+   },
+   {
+    "actor": "",
+    "date": "2026-08-10",
+    "evidence": "Une chronologie de l’incident dont  Cyberattaque.org a eu connaissance  fait remonter le début de l’intrusion au  10 août 2026 .",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "",
+    "unit": "",
+    "value": "Une chronologie de l’incident dont  Cyberattaque.org a eu connaissance  fait remonter le début de l’intrusion au  10 août 2026 ."
+   },
+   {
+    "actor": "",
+    "date": "2026-08-10",
+    "evidence": "fait remonter le début de l’intrusion au  10 août 2026",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "",
+    "unit": "",
+    "value": "Début de l'intrusion"
+   },
+   {
+    "actor": "",
+    "date": "2026-08-14",
+    "evidence": "l’intrusion aurait pris fin le  14 août",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "",
+    "unit": "",
+    "value": "Fin de l'intrusion"
    },
    {
     "actor": "",
     "date": "2026-08-15",
-    "evidence": "Des journaux d’accès anormaux auraient ensuite été détectés par l’équipe informatique le 15 août.",
+    "evidence": "journaux d’accès anormaux auraient ensuite été détectés par l’équipe informatique le  15 août",
     "scope": "Chronologie",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -1641,22 +1760,8 @@
    },
    {
     "actor": "",
-    "date": "2026-08-14",
-    "evidence": "Selon cette même chronologie, l’intrusion aurait pris fin le 14 août.",
-    "scope": "Chronologie",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "",
-    "unit": "",
-    "value": "Fin de l'intrusion"
-   },
-   {
-    "actor": "",
     "date": "2026-08-23",
-    "evidence": "Aucune notification à la CNIL ni information des personnes concernées n’aurait encore été réalisée au 23 août.",
+    "evidence": "aucune notification à la CNIL ni information des personnes concernées n’aurait encore été réalisée au  23 août",
     "scope": "Chronologie",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -1665,7 +1770,7 @@
     "status": "reported",
     "type": "",
     "unit": "",
-    "value": "Notification à la CNIL"
+    "value": "Aucune notification à la CNIL"
    },
    {
     "actor": "",
@@ -1684,7 +1789,7 @@
    {
     "actor": "",
     "date": "2026-08-22",
-    "evidence": "Une publication diffusée le **22 août 2026** sur un forum fréquenté par des cybercriminels revendique une compromission de **Declic Services**.",
+    "evidence": "Une publication diffusée le **22 août 2026** sur un forum fréquenté par des cybercriminels revendique une compromission de **Declic Services**. Le groupe **ZeroBytes** affirme avoir obtenu un accès à la base de données de l’entreprise et proposer à la vente son contenu.",
     "scope": "",
     "source": "FRENCHBREACHES",
     "sources": [
@@ -1697,35 +1802,7 @@
    },
    {
     "actor": "",
-    "date": "2026-08-22",
-    "evidence": "plus de 6,2 millions d’enregistrements revendiqués par ZeroBytes.",
-    "scope": "Declic Services",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "",
-    "unit": "",
-    "value": "6200000"
-   },
-   {
-    "actor": "",
-    "date": "2026-08-22",
-    "evidence": "Le groupe **ZeroBytes** affirme avoir obtenu un accès à la base de données de l’entreprise.",
-    "scope": "Declic Services",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "",
-    "unit": "",
-    "value": "base de données"
-   },
-   {
-    "actor": "",
-    "date": "2026-08-22",
+    "date": "",
     "evidence": "revendique une compromission de **Declic Services**.",
     "scope": "Declic Services",
     "source": "FRENCHBREACHES",
@@ -1766,24 +1843,17 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "mots de passe"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "base de données"
    }
   ],
   "datasets": [],
-  "display_summary": "ZeroBytes revendique la compromission de Declic Services avec plus de 6,2 millions d'enregistrements volés.",
+  "display_summary": "ZeroBytes revendique l'accès à la base de données de Declic Services, avec plus de 6,2 millions d'enregistrements exposés.",
   "fields": {
    "impact": {
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "value": "Plus de 6,2 millions d'enregistrements revendiqués comme volés."
+    "value": "Plus de 6,2 millions d'enregistrements revendiqués."
    }
   },
   "systems": [
@@ -1793,7 +1863,7 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
-    "value": "declicservices.fr"
+    "value": "WordPress"
    }
   ],
   "timeline": [],
