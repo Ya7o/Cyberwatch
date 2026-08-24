@@ -138,6 +138,13 @@ def test_detail_ecarte_les_champs_techniques_a_qualite_variable():
     assert 'initial_access: "Vecteur d’entrée"' not in js
 
 
+def test_detail_ne_rend_pas_la_chronologie_brute():
+    js = _read("assets/dashboard-v2.js")
+    assert "function timelineHtml" not in js
+    assert "Chronologie documentée" not in js
+    assert "detail.timeline" not in js
+
+
 def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():
     js = _read("assets/dashboard-v2.js")
     css = _read("assets/dashboard-v2.css")

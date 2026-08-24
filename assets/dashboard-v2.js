@@ -433,16 +433,6 @@
       return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)} <span class="claim-status claim-status--${esc(claim.status || "unknown")}">${esc(status)}</span></dd></div>`;
     }).join("")}</div>`;
   }
-  function timelineHtml(rows) {
-    if (!Array.isArray(rows) || !rows.length) return "";
-    return `<div class="documented-claims"><h4>Chronologie documentée</h4>${rows.slice(0, 8).map((row) => {
-      const status = CLAIM_STATUS_LABELS[row.status] || "Documenté";
-      const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
-      const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(row.date || "Date")}</dt><dd${proof}>${esc(row.event)} <span class="claim-status claim-status--${esc(row.status || "unknown")}">${esc(status)}</span></dd></div>`;
-    }).join("")}</div>`;
-  }
-
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
@@ -462,7 +452,6 @@
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
       documentedClaimsHtml(detail.claims || [], incident.org),
-      timelineHtml(detail.timeline || []),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     const tentativeChip = sectorTentativeChip(incident);
