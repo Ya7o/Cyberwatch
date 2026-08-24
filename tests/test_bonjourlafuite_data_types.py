@@ -100,15 +100,19 @@ def test_payload_dashboard_transmet_la_liste_sans_transformation():
 
 
 def test_dashboard_regroupe_les_types_et_garde_un_fallback_autres():
-    dashboard = (Path(__file__).parents[1] / "assets" / "dashboard.js").read_text(encoding="utf-8")
+    """Cible `dashboard-v2.js` (`dataTypeFamily()`/`DATA_TYPE_FAMILY_RULES`),
+    le runtime actif — `dashboard.js` (v1) qu'il a remplacé a été retiré."""
+    dashboard = (Path(__file__).parents[1] / "assets" / "dashboard-v2.js").read_text(encoding="utf-8")
     for label in (
-        "Identité & coordonnées",
-        "Profession / formation",
-        "Finance & transactions",
         "Santé",
-        "Accès & authentification",
+        "Financières",
+        "Authentification",
+        "Administratives",
+        "Professionnelles",
+        "Identité",
+        "Coordonnées",
         "Autres",
     ):
         assert label in dashboard
-    assert "renderDataTypes(fact.data_types)" in dashboard
-    assert 'factRow("Types de données"' not in dashboard
+    assert "function dataTypeFamily(value)" in dashboard
+    assert "dataTypesHtml(detail.data_types || [])" in dashboard

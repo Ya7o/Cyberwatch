@@ -134,19 +134,19 @@ class TestHistoryStatusPayload:
 
 class TestDashboardSourcesSection:
     """Vue globale compacte (nom + couleur seulement) et détail homogène
-    (mêmes six champs pour toute source) accessible sous la vue globale."""
+    (mêmes six champs pour toute source) accessible sous la vue globale.
+
+    Cible `assets/dashboard-v2.js` (`renderSources()`), le runtime actif —
+    `dashboard.js` (v1) qu'il a remplacé a été retiré."""
 
     def _read(self, path):
         return open(path, encoding="utf-8").read()
 
     def test_vue_globale_reste_compacte_sans_metriques(self):
-        js = self._read("assets/dashboard.js")
-        match = re.search(
-            r"function renderSourcesDetail\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
-        )
-        assert match, "renderSourcesDetail() introuvable"
-        body = match.group(1)
-        compact_part = body.split('$("#sources-detail-table tbody")')[0]
+        js = self._read("assets/dashboard-v2.js")
+        match = re.search(r'"#sources-leds"\)\.innerHTML = .*?;', js)
+        assert match, "rendu de #sources-leds introuvable"
+        compact_part = match.group(0)
         for forbidden in ("items_seen", "items_in_window", "latest_item"):
             assert forbidden not in compact_part
 
@@ -158,15 +158,13 @@ class TestDashboardSourcesSection:
         assert detail_pos > list_pos, "le détail doit suivre la vue globale"
         assert "<summary>" in html
 
-        js = self._read("assets/dashboard.js")
-        match = re.search(
-            r"function renderSourcesDetail\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
-        )
-        assert match, "renderSourcesDetail() introuvable"
-        body = match.group(1)
+        js = self._read("assets/dashboard-v2.js")
+        match = re.search(r'"#sources-detail-body"\)\.innerHTML = .*?;', js)
+        assert match, "rendu de #sources-detail-body introuvable"
+        body = match.group(0)
         for expected in (
-            "sourceLabel(source.id)", "source.status", "source.latest_item",
-            "source.latest_item_org", "source.items_seen", "source.items_in_window",
+            "sourceLabel(source.id)", "source.status", "formatDateTime(source.last_run)",
+            "source.duration", "source.items_collected", "source.reason",
         ):
             assert expected in body
 
@@ -174,8 +172,8 @@ class TestDashboardSourcesSection:
         """`VEILLE_LLM` s'affichait « veillellmReYt » dans app.js et « Veille IA »
         dans p2.js : deux noms pour la même source. Le libellé vient désormais
         d'une table unique (`config.SOURCE_LABELS`), publiée dans status.json et
-        lue par le dashboard via `CW.sourceLabel` — jamais codée en dur ici."""
-        js = self._read("assets/dashboard.js") + self._read("assets/shared.js")
+        lue par le dashboard via `sourceLabel()` — jamais codée en dur ici."""
+        js = self._read("assets/dashboard-v2.js")
         assert 'veillellmReYt' not in js
         assert '"VEILLE_LLM":' not in js
         from cyberwatch import config

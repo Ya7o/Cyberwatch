@@ -73,7 +73,6 @@ jobs:
       - name: Valider et construire le site
         run: |
           python -m pytest tests/test_fact_resolution.py tests/test_source_facts_ai.py tests/test_targeted_source_facts_backfill.py -q
-          node --check assets/shared.js
           node --check assets/dashboard-v2.js
           python -m cyberwatch check
           python -m cyberwatch build-site

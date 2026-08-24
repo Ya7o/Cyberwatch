@@ -6,7 +6,11 @@
   const PAGE_SIZE = 30;
   const UNKNOWN = "Inconnu";
   const OCEAN_LOCATIONS = ["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"];
-  const FOCUS_LOCATIONS = ["La Réunion", "Mayotte"];
+  const FOCUS_LOCATIONS_FALLBACK = ["La Réunion", "Mayotte"];
+  // config.FOCUS_LOCATIONS (Python) est déjà publié dans status.json
+  // (focus_locations) : le lire évite qu'une liste dupliquée côté JS ne
+  // dérive silencieusement de la source de vérité si elle change un jour.
+  const focusLocations = () => state.status?.focus_locations || FOCUS_LOCATIONS_FALLBACK;
   const SOURCE_LABELS = {
     RANSOMWARE_LIVE: "Ransomware.live",
     CYBERATTAQUE_ORG: "Cyberattaque.org",
@@ -185,7 +189,7 @@
   function renderVeille() {
     const signal = state.status?.analytics?.signals?.[0];
     $("#veille-signal").innerHTML = signal ? signalHtml(signal, true) : "";
-    const local = state.latest.filter((row) => FOCUS_LOCATIONS.includes(row.location));
+    const local = state.latest.filter((row) => focusLocations().includes(row.location));
     $("#focus-body").innerHTML = local.length
       ? `<p class="status-bubble status-bubble--active"><strong>${local.length}</strong> incident${local.length > 1 ? "s" : ""} à La Réunion / Mayotte sur les 30 derniers jours.</p><div class="focus-list">${local.map(incidentCardHtml).join("")}</div>`
       : '<p class="status-bubble status-bubble--quiet">Aucun incident à La Réunion / Mayotte sur les 30 derniers jours.</p>';
@@ -326,7 +330,7 @@
     $("#signals-list").innerHTML = (a.signals || []).slice(0, 12).map((signal) => signalHtml(signal)).join("") || '<p class="empty-state">Aucun signal notable sur la période.</p>';
     $("#ocean-focus").innerHTML = oceanProfileHtml(a.focus?.profile, "La Réunion / Mayotte");
     $("#ocean-ensemble").innerHTML = oceanProfileHtml(a.ocean?.profile, "Ensemble Océan Indien");
-    $("#ocean-focus").onclick = () => applySearchPatch({ locations: FOCUS_LOCATIONS.slice() });
+    $("#ocean-focus").onclick = () => applySearchPatch({ locations: focusLocations().slice() });
     $("#ocean-ensemble").onclick = () => applySearchPatch({ locations: OCEAN_LOCATIONS.slice() });
     renderSources();
   }
@@ -543,7 +547,7 @@
       state.filters.locations = $$("input:checked", $("#s-locations")).map((input) => input.value);
       state.page = 1; updateLocationSummary(); syncUrl(); renderRecherche();
     });
-    $("#quick-focus").addEventListener("click", () => { state.filters.locations = FOCUS_LOCATIONS.slice(); state.page = 1; syncUrl(); renderRecherche(); });
+    $("#quick-focus").addEventListener("click", () => { state.filters.locations = focusLocations().slice(); state.page = 1; syncUrl(); renderRecherche(); });
     $("#quick-ocean").addEventListener("click", () => { state.filters.locations = OCEAN_LOCATIONS.slice(); state.page = 1; syncUrl(); renderRecherche(); });
     $("#s-reset").addEventListener("click", () => {
       state.filters = { q: "", threat: "", sector: "", locations: [], source: "", period: "all" }; state.sort = "date-desc"; state.page = 1; syncUrl(); renderRecherche();

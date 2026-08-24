@@ -331,22 +331,11 @@ def test_build_charge_explicitement_qualification_provenance():
     assert "store.load_qualification_provenance()" in source
 
 
-def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
-    """La table `#incidents-table` a été retirée (masquée par CSS, jamais
-    affichée) : la fiche riche vit maintenant uniquement dans le dialogue
-    partagé des trois vues. Seule cette destination est encore un contrat."""
-    js = open("assets/dashboard.js", encoding="utf-8").read()
-
-    assert "function factHtml(fact, incidentSummary" in js
-    assert "function factsSectionHtml(incident, facts)" in js
-    assert "const rendered = (facts || []).map((fact) => factHtml(fact, incident.summary))" in js
-    assert "attackFlowLabel" in js
-    assert "renderDataTypes(fact.data_types)" in js
-
-
-def test_renderer_ui_ne_duplique_pas_affected_files_et_file_count():
-    js = open("assets/dashboard.js", encoding="utf-8").read()
-    assert "function duplicatesDedicatedFileCount(fact)" in js
-    assert 'String(fact.affected_unit || "").trim().toLowerCase() !== "files"' in js
-    assert 'factRow("Données touchées", duplicatesDedicatedFileCount(fact) ? "" : affectedLabel(fact))' in js
-    assert 'factRow("Fichiers", fact.file_count != null ? formatNumber(fact.file_count) : "")' in js
+# Les deux tests qui suivaient ici (`test_renderer_ui_est_conditionnel_et_
+# sans_nouvelles_colonnes`, `test_renderer_ui_ne_duplique_pas_affected_
+# files_et_file_count`) ciblaient le rendu par fait-source de `dashboard.js`
+# (v1) : `factHtml`/`factsSectionHtml`/`duplicatesDedicatedFileCount`, une
+# carte par fait brut. `dashboard-v2.js` utilise un modèle différent — la vue
+# consolidée par incident (`fact_resolution.py::resolve_incident_facts()`,
+# `openIncident()`/`documentedClaimsHtml()`/`affectedHtml()`), sans
+# équivalent direct de ces fonctions ; supprimés avec `dashboard.js`.

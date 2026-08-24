@@ -9,10 +9,15 @@ def _read(path: str) -> str:
 
 
 def test_runtime_v2_est_le_seul_runtime_charge():
+    """dashboard-v2.js est autonome (ses propres esc/normalize/formatDate/...) :
+    shared.js et dashboard.js (l'ancien runtime qu'il a remplacé) ont été
+    supprimés plutôt que chargés sans être utilisés."""
     html = _read("index.html")
-    assert html.index('src="assets/shared.js') < html.index('src="assets/dashboard-v2.js')
     assert 'src="assets/dashboard-v2.js' in html
     assert 'src="assets/dashboard.js' not in html
+    assert 'src="assets/shared.js' not in html
+    assert not (ROOT / "assets" / "dashboard.js").exists()
+    assert not (ROOT / "assets" / "shared.js").exists()
 
 
 def test_header_regroupe_sante_sources_et_date_collecte():

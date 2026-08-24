@@ -104,19 +104,20 @@ def test_dashboard_payload_exposes_local_summary_score_and_references():
 
 def test_dashboard_has_single_reunion_mayotte_focus_block():
     """Réunion / Mayotte n'est plus un simple bouton de filtre : c'est un bloc
-    dédié en tête de la vue Veille, alimenté par `analytics.focus` (calculé en
-    Python à partir de `config.FOCUS_LOCATIONS`, jamais d'une liste écrite en
-    dur côté JS) et par le score/synthèse locaux de la fiche incident."""
+    dédié en tête de la vue Veille, alimenté par les incidents dont la
+    localisation est dans `config.FOCUS_LOCATIONS`, jamais d'une liste
+    écrite en dur côté JS. Cible `dashboard-v2.js`, le runtime actif —
+    `dashboard.js` (v1) qu'il a remplacé a été retiré."""
     from cyberwatch import config
     html = open("index.html", encoding="utf-8").read()
-    js = open("assets/dashboard.js", encoding="utf-8").read()
+    js = open("assets/dashboard-v2.js", encoding="utf-8").read()
 
     assert 'id="focus-card"' in html
     assert 'id="focus-body"' in html
-    assert "function renderFocusBlock(" in js
-    assert "a?.focus" in js or "analytics.focus" in js.replace("state.analytics", "analytics")
+    assert "function renderVeille(" in js
+    # config.FOCUS_LOCATIONS est publié dans status.json (focus_locations) et
+    # lu dynamiquement plutôt que dupliqué comme constante JS figée.
+    assert "state.status?.focus_locations" in js
     assert 'f-veille-llm' not in html + js
     assert 'f-presse-mahoraise' not in html + js
-    assert "Score cyberattaque" in js
-    assert "Analyse locale" in js
     assert config.FOCUS_LOCATIONS == ["La Réunion", "Mayotte"]
