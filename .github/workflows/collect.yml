@@ -1,8 +1,8 @@
 name: COLLECT
 
 on:
-  schedule:
-    - cron: "0 7 * * *"
+  # La publication automatique est suspendue pendant la validation du corpus
+  # à cinq cas. Les collectes restent déclenchables explicitement ci-dessous.
   workflow_dispatch:
     inputs:
       mode:
