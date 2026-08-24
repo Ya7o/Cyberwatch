@@ -126,6 +126,18 @@ def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents()
     assert "incident-fact-source" not in js
 
 
+def test_detail_ecarte_les_champs_techniques_a_qualite_variable():
+    js = _read("assets/dashboard-v2.js")
+    assert 'detailField("Vecteur d’entrée"' not in js
+    assert 'detailField("Localisation précise"' not in js
+    assert 'detailField("Vulnérabilités"' not in js
+    assert 'detailField("Date de l’attaque"' not in js
+    assert 'detailField("Découverte"' not in js
+    assert 'detailField("CVSS"' not in js
+    assert 'detailField("Évolution"' not in js
+    assert 'initial_access: "Vecteur d’entrée"' not in js
+
+
 def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():
     js = _read("assets/dashboard-v2.js")
     css = _read("assets/dashboard-v2.css")

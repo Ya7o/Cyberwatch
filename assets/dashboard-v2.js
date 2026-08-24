@@ -414,7 +414,7 @@
     return detailField("Volume documenté", values);
   }
 
-  const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", initial_access: "Vecteur d’entrée", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
+  const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
   function documentedClaimsHtml(claims, organisation) {
     if (!Array.isArray(claims)) return "";
@@ -457,15 +457,8 @@
       dataTypesHtml(detail.data_types || []),
       detailField("Acteur", fields.threat_actor?.value),
       detailField("Tiers impliqué", fields.third_party?.value),
-      detailField("Vecteur d’entrée", CW.initialAccessLabel(fields.initial_access?.value)),
-      detailField("Localisation précise", fields.fine_location?.value),
-      detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
-      detailField("Date de l’attaque", fields.attack_date?.value ? formatDate(fields.attack_date.value) : ""),
-      detailField("Découverte", fields.discovered_date?.value ? formatDate(fields.discovered_date.value) : ""),
-      detailField("CVSS", fields.cvss?.value),
       detailField("Volume de données", fields.data_volume?.value),
       detailField("Impact", fields.impact?.value),
-      detailField("Évolution", fields.evolution?.value),
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
       documentedClaimsHtml(detail.claims || [], incident.org),
