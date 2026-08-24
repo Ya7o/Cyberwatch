@@ -161,11 +161,18 @@ def test_detail_ecarte_les_champs_encore_non_fiabilises():
     assert 'initial_access: "Vecteur d’entrée"' not in js
 
 
-def test_detail_ne_rend_pas_la_chronologie_brute():
+def test_detail_rend_la_chronologie_dedupliquee():
+    """La chronologie brute avait été retirée car elle dupliquait les faits
+    sourcés et mélangeait formats de date/markdown non nettoyés. Ces deux
+    causes sont désormais corrigées côté fact_resolution.py
+    (_drop_claims_duplicating_timeline, _drop_timeline_evidence_duplicates,
+    normalisation ISO, retrait du markdown) : la chronologie est réaffichée,
+    triée, avec les dates passées par formatDate()."""
     js = _read("assets/dashboard-v2.js")
-    assert "function timelineHtml" not in js
-    assert "Chronologie documentée" not in js
-    assert "detail.timeline" not in js
+    assert "function timelineHtml(rows)" in js
+    assert '<h4>Chronologie</h4>' in js
+    assert "timelineHtml(detail.timeline || [])" in js
+    assert "formatDate(row.date)" in js
 
 
 def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():

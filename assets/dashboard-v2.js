@@ -441,6 +441,19 @@
       return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)} <span class="claim-status claim-status--${esc(claim.status || "unknown")}">${esc(status)}</span></dd></div>`;
     }).join("")}</div>`;
   }
+  function timelineHtml(rows) {
+    if (!Array.isArray(rows) || !rows.length) return "";
+    // fact_resolution.py::_timeline_entries() déduplique déjà les entrées qui
+    // ne font que reformuler le même jour (voir _drop_timeline_evidence_duplicates) :
+    // seul le tri chronologique reste à faire ici.
+    const sorted = [...rows].sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
+    return `<div class="documented-claims"><h4>Chronologie</h4>${sorted.slice(0, 8).map((row) => {
+      const status = CLAIM_STATUS_LABELS[row.status] || "Documenté";
+      const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
+      const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(formatDate(row.date))}</dt><dd${proof}>${esc(row.event)} <span class="claim-status claim-status--${esc(row.status || "unknown")}">${esc(status)}</span></dd></div>`;
+    }).join("")}</div>`;
+  }
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
@@ -461,6 +474,7 @@
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
       detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
+      timelineHtml(detail.timeline || []),
       documentedClaimsHtml(detail.claims || [], incident.org, fields),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
