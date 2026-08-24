@@ -27,6 +27,58 @@ _DOMAIN_SUFFIX_RE = re.compile(r"\.(?:fr|com|net|org|eu|io|app)$", flags=re.IGNO
 _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _SPACES_RE = re.compile(r"\s+")
 
+# --------------------------------------------------------------------------
+# Types de données exposées : taxonomie canonique partagée
+# --------------------------------------------------------------------------
+#
+# Référentiel unique de libellés de types de données, utilisé à la fois par
+# l'extraction déterministe (collectors/cyberattaque_rich.py) et par la
+# consolidation multi-sources (fact_resolution.py). Sans ce partage, deux
+# sources peuvent décrire le même type sous deux formulations (ex.
+# "adresses e-mail" vs "Adresse email") qui ne se dédupliquent jamais.
+DATA_TYPE_CANONICAL_PATTERNS = (
+    ("adresses e-mail", re.compile(r"\b(?:adresses?\s+)?e-?mails?|courriels?\b", re.I)),
+    ("numéros de téléphone", re.compile(r"\b(?:num[ée]ros?\s+de\s+)?t[ée]l[ée]phones?\b", re.I)),
+    ("adresses postales", re.compile(r"\badresses?\s+(?:postales?|physiques?)\b", re.I)),
+    ("noms et prénoms", re.compile(r"\bnoms?\b.{0,30}\bpr[ée]noms?\b|\bpr[ée]noms?\b", re.I)),
+    ("dates de naissance", re.compile(r"\bdates?\s+de\s+naissance\b", re.I)),
+    ("identifiants", re.compile(r"\bidentifiants?(?:\s+de\s+connexion)?\b", re.I)),
+    ("mots de passe", re.compile(r"\bmots?\s+de\s+passe|passwords?\b", re.I)),
+    ("données bancaires", re.compile(r"\b(?:donn[ée]es?|coordonn[ée]es?)\s+bancaires?|\bIBAN\b|\bRIB\b", re.I)),
+    ("données de santé", re.compile(r"\bdonn[ée]es?\s+(?:de\s+sant[ée]|m[ée]dicales?)\b", re.I)),
+    ("pièces d'identité", re.compile(r"\b(?:pi[èe]ces?|cartes?)\s+d['’ ]identit[ée]|passeports?\b", re.I)),
+    ("données cadastrales", re.compile(r"\bdonn[ée]es\s+cadastrales\b", re.I)),
+    ("données fiscales", re.compile(r"\bdonn[ée]es\s+fiscales\b", re.I)),
+    ("données RH", re.compile(r"\b(?:donn[ée]es?|documents?)\s+(?:RH|ressources\s+humaines)\b", re.I)),
+    ("secrets cloud", re.compile(r"\b(?:secret|cl[ée]|token|credentials?)\s+(?:AWS|Azure|cloud)\b", re.I)),
+    ("BIC / SWIFT", re.compile(r"\b(?:BIC|SWIFT)\b", re.I)),
+    ("informations de séjour", re.compile(r"\b(?:s[ée]jour|h[ée]bergement)\b", re.I)),
+    ("produits réservés", re.compile(r"\b(?:produits?\s+r[ée]serv[ée]s?|r[ée]servations?\s+(?:de|d['’])?produits?)\b", re.I)),
+    ("montants", re.compile(r"\b(?:montants?|prix|sommes?)\b", re.I)),
+    ("SIREN / SIRET", re.compile(r"\bSIRE[NT]\b", re.I)),
+    ("commentaires", re.compile(r"\bcommentaires?\b", re.I)),
+    ("métadonnées techniques", re.compile(r"\bm[ée]tadonn[ée]es?\b", re.I)),
+    ("informations de commandes", re.compile(r"\b(?:informations?\s+(?:de|d['’])?commandes?|commandes?)\b", re.I)),
+    ("données comptables", re.compile(r"\b(?:donn[ée]es?\s+comptables?|comptabilit[ée])\b", re.I)),
+    ("facturation", re.compile(r"\bfacturation\b", re.I)),
+    ("contrats", re.compile(r"\bcontrats?\b", re.I)),
+    ("factures", re.compile(r"\bfactures?\b", re.I)),
+    ("documents internes", re.compile(r"\bdocuments?\s+internes?\b", re.I)),
+    ("données techniques", re.compile(r"\bdonn[ée]es?\s+techniques?\b", re.I)),
+    ("photographies", re.compile(r"\b(?:photographies?|photos?)\b", re.I)),
+    ("situation personnelle", re.compile(r"\bsituation\s+personnelle\b", re.I)),
+    ("informations administratives", re.compile(r"\b(?:informations?|documents?)\s+administrati(?:ves?|fs?)\b", re.I)),
+)
+
+
+def canonical_data_type(value: str) -> str:
+    """Ramène un libellé de type de donnée à sa forme canonique si connue,
+    sinon retourne la valeur telle quelle (jamais d'invention)."""
+    for canonical, pattern in DATA_TYPE_CANONICAL_PATTERNS:
+        if pattern.search(value):
+            return canonical
+    return value
+
 
 def strip_accents(text: str) -> str:
     """Décomposition NFKD puis retrait des marques diacritiques."""

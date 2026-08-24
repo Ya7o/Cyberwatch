@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import re
 
+from ..normalize import DATA_TYPE_CANONICAL_PATTERNS as _DATA_TYPES
 from ..normalize import searchable
 from .cyberattaque_org import CyberattaqueOrgCollector
 from . import cyberattaque_semantic
@@ -33,39 +34,6 @@ _DATE_RE = re.compile(r"\b(?:le\s+)?(?P<day>\d{1,2})\s+(?P<month>janvier|f[ée]v
 _MONTHS = {"janvier":1,"fevrier":2,"mars":3,"avril":4,"mai":5,"juin":6,"juillet":7,"aout":8,"septembre":9,"octobre":10,"novembre":11,"decembre":12}
 _CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.I)
 
-_DATA_TYPES = (
-    ("adresses e-mail", re.compile(r"\b(?:adresses?\s+)?e-?mails?|courriels?\b", re.I)),
-    ("numéros de téléphone", re.compile(r"\b(?:num[ée]ros?\s+de\s+)?t[ée]l[ée]phones?\b", re.I)),
-    ("adresses postales", re.compile(r"\badresses?\s+(?:postales?|physiques?)\b", re.I)),
-    ("noms et prénoms", re.compile(r"\bnoms?\b.{0,30}\bpr[ée]noms?\b|\bpr[ée]noms?\b", re.I)),
-    ("dates de naissance", re.compile(r"\bdates?\s+de\s+naissance\b", re.I)),
-    ("identifiants", re.compile(r"\bidentifiants?(?:\s+de\s+connexion)?\b", re.I)),
-    ("mots de passe", re.compile(r"\bmots?\s+de\s+passe|passwords?\b", re.I)),
-    ("données bancaires", re.compile(r"\b(?:donn[ée]es?|coordonn[ée]es?)\s+bancaires?|\bIBAN\b|\bRIB\b", re.I)),
-    ("données de santé", re.compile(r"\bdonn[ée]es?\s+(?:de\s+sant[ée]|m[ée]dicales?)\b", re.I)),
-    ("pièces d'identité", re.compile(r"\bpi[èe]ces?\s+d['’ ]identit[ée]|passeports?\b", re.I)),
-    ("données cadastrales", re.compile(r"\bdonn[ée]es\s+cadastrales\b", re.I)),
-    ("données fiscales", re.compile(r"\bdonn[ée]es\s+fiscales\b", re.I)),
-    ("données RH", re.compile(r"\b(?:donn[ée]es?|documents?)\s+(?:RH|ressources\s+humaines)\b", re.I)),
-    ("secrets cloud", re.compile(r"\b(?:secret|cl[ée]|token|credentials?)\s+(?:AWS|Azure|cloud)\b", re.I)),
-    ("BIC / SWIFT", re.compile(r"\b(?:BIC|SWIFT)\b", re.I)),
-    ("informations de séjour", re.compile(r"\b(?:s[ée]jour|h[ée]bergement)\b", re.I)),
-    ("produits réservés", re.compile(r"\b(?:produits?\s+r[ée]serv[ée]s?|r[ée]servations?\s+(?:de|d['’])?produits?)\b", re.I)),
-    ("montants", re.compile(r"\b(?:montants?|prix|sommes?)\b", re.I)),
-    ("SIREN / SIRET", re.compile(r"\bSIRE[NT]\b", re.I)),
-    ("commentaires", re.compile(r"\bcommentaires?\b", re.I)),
-    ("métadonnées techniques", re.compile(r"\bm[ée]tadonn[ée]es?\b", re.I)),
-    ("informations de commandes", re.compile(r"\b(?:informations?\s+(?:de|d['’])?commandes?|commandes?)\b", re.I)),
-    ("données comptables", re.compile(r"\b(?:donn[ée]es?\s+comptables?|comptabilit[ée])\b", re.I)),
-    ("facturation", re.compile(r"\bfacturation\b", re.I)),
-    ("contrats", re.compile(r"\bcontrats?\b", re.I)),
-    ("factures", re.compile(r"\bfactures?\b", re.I)),
-    ("documents internes", re.compile(r"\bdocuments?\s+internes?\b", re.I)),
-    ("données techniques", re.compile(r"\bdonn[ée]es?\s+techniques?\b", re.I)),
-    ("photographies", re.compile(r"\b(?:photographies?|photos?)\b", re.I)),
-    ("situation personnelle", re.compile(r"\bsituation\s+personnelle\b", re.I)),
-    ("informations administratives", re.compile(r"\binformations?\s+administratives?\b", re.I)),
-)
 _SCOPE_PATTERNS = (
     ("SPDC", re.compile(r"\b(?:Serveur\s+Professionnel\s+de\s+Donn[ée]es\s+Cadastrales|SPDC)\b", re.I), "system"),
     ("Pilot / pilot.sport2000.fr", re.compile(r"\bpilot\.sport2000\.fr\b|\b(?:outil|application|plateforme|syst[èe]me)\s+(?:interne\s+)?Pilot\b", re.I), "system"),

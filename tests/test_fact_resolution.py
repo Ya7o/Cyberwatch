@@ -44,7 +44,10 @@ def test_listes_complementaires_sont_fusionnees_sans_doublons():
         fact("FRENCHBREACHES", data_types=["nom", "Date de naissance"]),
     ])
     values = [entry["value"] for entry in resolved["data_types"]]
-    assert values == ["Nom", "Téléphone", "Date de naissance"]
+    # "Téléphone"/"Date de naissance" sont ramenés à leur forme canonique
+    # (cf. canonical_data_type()) ; "Nom" seul ne matche aucun motif connu et
+    # reste tel quel — précision plutôt qu'une fusion devinée.
+    assert values == ["Nom", "numéros de téléphone", "dates de naissance"]
     assert resolved["data_types"][0]["sources"] == ["CYBERATTAQUE_ORG", "FRENCHBREACHES"]
 
 
@@ -180,7 +183,7 @@ def test_systeme_agrege_redondant_avec_ses_composants_est_ecarte():
 
 def test_type_de_donnee_numerique_ou_trop_long_est_rejete():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", data_types=["779750", "x" * 121, "IBAN"])])
-    assert [entry["value"] for entry in resolved["data_types"]] == ["IBAN"]
+    assert [entry["value"] for entry in resolved["data_types"]] == ["données bancaires"]
 
 
 def test_triplet_relation_brut_est_filtre_des_claims():
@@ -307,7 +310,7 @@ def test_protection_civile_fusionne_volume_et_types_de_donnees():
         fact("FRENCHBREACHES", data_types=["noms", "Dates de naissance"]),
     ])
     assert resolved["affected"][0]["value"] == 525_000
-    assert [entry["value"] for entry in resolved["data_types"]] == ["Noms", "Prénoms", "Téléphones", "Dates de naissance"]
+    assert [entry["value"] for entry in resolved["data_types"]] == ["Noms", "noms et prénoms", "numéros de téléphone", "dates de naissance"]
 
 
 def test_data_types_rich_et_legacy_sont_fusionnes_sans_doublon():
@@ -319,7 +322,7 @@ def test_data_types_rich_et_legacy_sont_fusionnes_sans_doublon():
         fact("FRENCHBREACHES", data_types=["adresses e-mail", "Dates de naissance"]),
     ])
     values = [entry["value"] for entry in resolved["data_types"]]
-    assert values == ["Adresses e-mail", "Numéros de téléphone", "Dates de naissance"]
+    assert values == ["adresses e-mail", "numéros de téléphone", "dates de naissance"]
 
 
 def test_data_type_rich_negated_is_not_published_as_exposed():
@@ -329,7 +332,19 @@ def test_data_type_rich_negated_is_not_published_as_exposed():
             {"value": "Adresses e-mail", "status": "reported"},
         ]}),
     ])
-    assert [entry["value"] for entry in resolved["data_types"]] == ["Adresses e-mail"]
+    assert [entry["value"] for entry in resolved["data_types"]] == ["adresses e-mail"]
+
+
+def test_meme_type_de_donnee_formule_differemment_selon_la_source_ne_fait_pas_doublon():
+    """Cas réel constaté sur SUEZ : CYBERATTAQUE_ORG écrit "adresses e-mail",
+    BONJOURLAFUITE écrit "Adresse email" — même type, deux formulations."""
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", data_types=["adresses e-mail"]),
+        fact("BONJOURLAFUITE", data_types=["Adresse email"]),
+    ])
+    assert len(resolved["data_types"]) == 1
+    assert resolved["data_types"][0]["value"] == "adresses e-mail"
+    assert resolved["data_types"][0]["sources"] == ["CYBERATTAQUE_ORG", "BONJOURLAFUITE"]
 
 
 def test_actor_scalar_drops_narrative_prefix():

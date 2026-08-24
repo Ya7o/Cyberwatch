@@ -11,7 +11,7 @@ import re
 import unicodedata
 from typing import Any, Callable, Iterable
 from .headline import is_publishable_headline
-from .normalize import parse_date
+from .normalize import canonical_data_type, parse_date
 
 SOURCE_PRIORITY = (
     "RANSOMWARE_LIVE",
@@ -371,9 +371,13 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         # is presented as the exact opposite fact.
         if _norm(status) in {"negated", "denied"}:
             return
-        key = _norm(value)
-        if not key or key in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
+        if not value or _norm(value) in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
             return
+        # Deux sources peuvent décrire le même type sous deux formulations
+        # (ex. "adresses e-mail" vs "Adresse email") : les ramener à un même
+        # libellé canonique avant déduplication évite un doublon visuel.
+        value = canonical_data_type(value)
+        key = _norm(value)
         entry = selected.get(key)
         if entry is None:
             selected[key] = {"value": value, "source": source, "sources": [source] if source else []}

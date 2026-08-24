@@ -481,13 +481,6 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "value": "IBAN / RIB"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
     "value": "numéros de sécurité sociale"
    },
    {
@@ -510,13 +503,6 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "données techniques"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "IBAN"
    }
   ],
   "datasets": [],
@@ -1590,21 +1576,24 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "value": "adresses e-mail"
    },
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "value": "numéros de téléphone"
    },
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "value": "noms et prénoms"
    },
@@ -1612,9 +1601,10 @@
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
+     "FRENCHBREACHES",
+     "BONJOURLAFUITE"
     ],
-    "value": "IBAN / RIB"
+    "value": "données bancaires"
    },
    {
     "source": "CYBERATTAQUE_ORG",
@@ -1623,14 +1613,6 @@
      "FRENCHBREACHES"
     ],
     "value": "données personnelles"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
-    ],
-    "value": "données bancaires"
    },
    {
     "source": "CYBERATTAQUE_ORG",
@@ -1650,7 +1632,8 @@
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
+     "FRENCHBREACHES",
+     "BONJOURLAFUITE"
     ],
     "value": "pièces d'identité"
    },
@@ -1670,53 +1653,11 @@
     "value": "situation personnelle"
    },
    {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "identité, coordonnées, RIB"
-   },
-   {
     "source": "BONJOURLAFUITE",
     "sources": [
      "BONJOURLAFUITE"
     ],
-    "value": "Nom, prénom"
-   },
-   {
-    "source": "BONJOURLAFUITE",
-    "sources": [
-     "BONJOURLAFUITE"
-    ],
-    "value": "Numéro de téléphone"
-   },
-   {
-    "source": "BONJOURLAFUITE",
-    "sources": [
-     "BONJOURLAFUITE"
-    ],
-    "value": "Adresse email"
-   },
-   {
-    "source": "BONJOURLAFUITE",
-    "sources": [
-     "BONJOURLAFUITE"
-    ],
-    "value": "Documents administratifs"
-   },
-   {
-    "source": "BONJOURLAFUITE",
-    "sources": [
-     "BONJOURLAFUITE"
-    ],
-    "value": "Carte d’identité"
-   },
-   {
-    "source": "BONJOURLAFUITE",
-    "sources": [
-     "BONJOURLAFUITE"
-    ],
-    "value": "IBAN"
+    "value": "informations administratives"
    }
   ],
   "datasets": [
@@ -2158,13 +2099,6 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "adresses postales"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "coordonnées bancaires"
    }
   ],
   "datasets": [],
