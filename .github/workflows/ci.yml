@@ -30,7 +30,7 @@ jobs:
           node --check assets/dashboard-v2.js
       - name: Contrats structurels légers
         run: python -m cyberwatch check --allow-uninitialized
-      - name: Construire le dashboard et valider facts v2
+      - name: Construire le dashboard et valider facts v3
         run: |
           python -m cyberwatch build-site
           python - <<'PY'
@@ -38,6 +38,6 @@ jobs:
           from pathlib import Path
           payload = json.loads(Path('assets/data/facts.json').read_text(encoding='utf-8'))
           assert isinstance(payload, dict) and payload, 'facts.json doit être un objet non vide'
-          assert all(isinstance(detail, dict) and detail.get('version') == 2 for detail in payload.values())
+          assert all(isinstance(detail, dict) and detail.get('version') == 3 for detail in payload.values())
           assert all(not isinstance(detail, list) for detail in payload.values())
           PY
