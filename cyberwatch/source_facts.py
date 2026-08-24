@@ -169,6 +169,7 @@ _ACTOR_SENTINELS = {
     "attaquant", "l attaquant", "l'attaquant", "auteur", "inconnu", "non identifie",
     "non identifie publiquement", "n a", "na", "n/a",
     "ransomware", "rancongiciel", "cybercriminel", "cybercriminels", "pirate", "pirates",
+    "article", "publication", "source", "entreprise", "societe", "organisation", "victime", "groupe",
 }
 
 
@@ -896,6 +897,15 @@ _CO_THIRD_PARTY_RE = tuple(re.compile(pattern, re.I) for pattern in (
 _CO_THREAT_ACTOR_RE = tuple(re.compile(pattern, re.I) for pattern in (
     r"\b(?:le\s+)?groupe\s+([A-Za-z0-9][\w.&'’+-]{1,40})\s+a\s+revendiqu[ée]",
     r"revendiqu[ée]e?\s+par\s+(?:le\s+groupe\s+)?([A-Za-z0-9][\w.&'’+-]{1,40})",
+    # Les articles emploient aussi activement le pseudonyme de l'auteur
+    # ("ZeroBytes revendique", "0xSec affirme").  Le capture reste un seul
+    # identifiant et passe par _valid_actor : aucun répertoire d'acteurs.
+    r"\b([A-Za-z0-9][\w.&'’+-]{1,40})\s+(?:revendique|affirme|d[ée]clare|indique)\b",
+))
+_CO_INITIAL_ACCESS_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
+    # Catégorie factuelle, sans inférer le prestataire ni le mode technique.
+    r"(\b(?:cyberattaque|compromission|incident)\b.{0,80}\b(?:chez\s+(?:un|une)|d['’]un)\s+(?:prestataire|tiers)\b)",
+    r"(\b(?:prestataire|tiers)\b.{0,40}\bcompromis\b)",
 ))
 _WEBSITE_RE = re.compile(
     r"\bsite\s+(?:officiel\s+|web\s+)?(?:de\s+la\s+victime\s+)?[:\s]+"
@@ -939,6 +949,16 @@ def _from_cyberattaque_org(
     if third_party:
         fact["Third_Party"] = third_party
         evidence["Third_Party"] = third_party_evidence
+
+    # Le LLM, s'il a une preuve, reste prioritaire ; ce repli ne classe que
+    # la compromission explicitement attribuée à un tiers dans le texte.
+    if not fact.get("Initial_Access"):
+        initial_access, initial_evidence = _first_valid_match(
+            _CO_INITIAL_ACCESS_PATTERNS, text, lambda value, _organisation: value, organisation
+        )
+        if initial_access:
+            fact["Initial_Access"] = "third_party"
+            evidence["Initial_Access"] = initial_evidence
 
     ai_status, ai_status_evidence = _ai_text(ai_result, "claim_status")
     if ai_status in {"confirmed", "claimed", "unconfirmed", "denied"}:

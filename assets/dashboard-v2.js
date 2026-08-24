@@ -7,19 +7,11 @@
   const UNKNOWN = "Inconnu";
   const OCEAN_LOCATIONS = ["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"];
   const FOCUS_LOCATIONS = ["La Réunion", "Mayotte"];
-  const SOURCE_LABELS = {
-    RANSOMWARE_LIVE: "Ransomware.live",
-    CYBERATTAQUE_ORG: "Cyberattaque.org",
-    FRENCHBREACHES: "FrenchBreaches",
-    BONJOURLAFUITE: "BonjourLaFuite",
-    VEILLE_LLM: "Veille locale Réunion / Mayotte",
-  };
-
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const normalize = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const sourceLabel = (id) => SOURCE_LABELS[id] || id || "Source";
+  const sourceLabel = (id) => window.CW?.sourceLabel(id) || id || "Source";
   const known = (value) => Boolean(String(value ?? "").trim()) && String(value).trim() !== UNKNOWN;
   const unique = (values) => Array.from(new Set(values.filter(known)));
   const formatNumber = (value) => new Intl.NumberFormat("fr-FR").format(Number(value));
@@ -414,6 +406,23 @@
     return detailField("Volume documenté", values);
   }
 
+  function timelineHtml(entries) {
+    if (!Array.isArray(entries) || !entries.length) return "";
+    const rows = entries.filter((entry) => known(entry.event));
+    if (!rows.length) return "";
+    return `<div class="documented-claims"><h4>Chronologie</h4>${rows.map((entry) => {
+      const status = CLAIM_STATUS_LABELS[entry.status] || "Documenté";
+      const date = known(entry.date) ? formatDate(entry.date) : "Date non précisée";
+      const proof = entry.evidence ? ` title="${esc(entry.evidence)}"` : "";
+      return `<div class="resolved-field resolved-field--wide"><dt>${esc(date)}</dt><dd${proof}>${esc(entry.event)} <span class="claim-status claim-status--${esc(entry.status || "unknown")}">${esc(status)}</span></dd></div>`;
+    }).join("")}</div>`;
+  }
+
+  function detailSection(title, fields) {
+    const content = fields.filter(Boolean).join("");
+    return content ? `<section class="resolved-facts-section"><h4>${esc(title)}</h4>${content}</section>` : "";
+  }
+
   const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
   function documentedClaimsHtml(claims, organisation) {
@@ -443,14 +452,28 @@
     const validDetail = detail && detail.version === 3;
     const fields = validDetail ? detail.fields || {} : {};
     const values = validDetail ? [
-      affectedHtml(detail.affected || []),
-      dataTypesHtml(detail.data_types || []),
-      detailField("Acteur", fields.threat_actor?.value),
-      detailField("Tiers impliqué", fields.third_party?.value),
-      detailField("Volume de données", fields.data_volume?.value),
-      detailField("Impact", fields.impact?.value),
-      detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
-      detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
+      detailSection("Qui / Comment", [
+        detailField("Acteur revendicateur", fields.threat_actor?.value),
+        detailField("Tiers impliqué", fields.third_party?.value),
+        detailField("Vecteur d’entrée", window.CW?.initialAccessLabel(fields.initial_access?.value)),
+        detailField("Vulnérabilités exploitées", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
+        detailField("CVSS", fields.cvss?.value),
+      ]),
+      detailSection("Quand", [
+        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : ""),
+        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : ""),
+        timelineHtml(detail.timeline || []),
+      ]),
+      detailSection("Quoi (impact & données)", [
+        affectedHtml(detail.affected || []),
+        dataTypesHtml(detail.data_types || []),
+        detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
+        detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
+        detailField("Volume de données", fields.data_volume?.value),
+        detailField("Impact", fields.impact?.value),
+        detailField("Localisation précise", fields.fine_location?.value),
+        detailField("Évolution / suite donnée", fields.evolution?.value),
+      ]),
       documentedClaimsHtml(detail.claims || [], incident.org),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
@@ -541,6 +564,7 @@
     ]);
     state.latest = Array.isArray(latest) ? latest : [];
     state.status = status;
+    window.CW?.setSourceLabels(status?.labels?.sources);
     state.incidents = Array.isArray(incidents) ? incidents : [];
     state.incidentsLoaded = true;
     renderHeader();

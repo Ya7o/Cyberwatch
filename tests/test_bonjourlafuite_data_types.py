@@ -100,15 +100,15 @@ def test_payload_dashboard_transmet_la_liste_sans_transformation():
 
 
 def test_dashboard_regroupe_les_types_et_garde_un_fallback_autres():
-    dashboard = (Path(__file__).parents[1] / "assets" / "dashboard.js").read_text(encoding="utf-8")
+    dashboard = (Path(__file__).parents[1] / "assets" / "dashboard-v2.js").read_text(encoding="utf-8")
     for label in (
-        "Identité & coordonnées",
-        "Profession / formation",
-        "Finance & transactions",
+        "Identité",
+        "Coordonnées",
+        "Financières",
         "Santé",
-        "Accès & authentification",
+        "Authentification",
         "Autres",
     ):
         assert label in dashboard
-    assert "renderDataTypes(fact.data_types)" in dashboard
-    assert 'factRow("Types de données"' not in dashboard
+    assert "function dataTypesHtml(entries)" in dashboard
+    assert "dataTypeFamily" in dashboard

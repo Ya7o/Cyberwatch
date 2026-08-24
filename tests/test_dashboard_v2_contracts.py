@@ -126,23 +126,29 @@ def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents()
     assert "incident-fact-source" not in js
 
 
-def test_detail_ecarte_les_champs_techniques_a_qualite_variable():
+def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
     js = _read("assets/dashboard-v2.js")
-    assert 'detailField("Vecteur d’entrée"' not in js
-    assert 'detailField("Localisation précise"' not in js
-    assert 'detailField("Vulnérabilités"' not in js
-    assert 'detailField("Date de l’attaque"' not in js
-    assert 'detailField("Découverte"' not in js
-    assert 'detailField("CVSS"' not in js
-    assert 'detailField("Évolution"' not in js
+    assert 'detailField("Vecteur d’entrée"' in js
+    assert 'detailField("Localisation précise"' in js
+    assert 'detailField("Vulnérabilités exploitées"' in js
+    assert 'detailField("Date de l’attaque"' in js
+    assert 'detailField("Date de découverte"' in js
+    assert 'detailField("CVSS"' in js
+    assert 'detailField("Évolution / suite donnée"' in js
     assert 'initial_access: "Vecteur d’entrée"' not in js
 
 
-def test_detail_ne_rend_pas_la_chronologie_brute():
+def test_detail_rend_la_chronologie_resolue_lorsqu_elle_est_presente():
     js = _read("assets/dashboard-v2.js")
-    assert "function timelineHtml" not in js
-    assert "Chronologie documentée" not in js
-    assert "detail.timeline" not in js
+    assert "function timelineHtml" in js
+    assert "Chronologie" in js
+    assert "detail.timeline || []" in js
+
+
+def test_libelles_de_sources_viennent_du_status_publie():
+    js = _read("assets/dashboard-v2.js")
+    assert "const SOURCE_LABELS" not in js
+    assert "window.CW?.setSourceLabels(status?.labels?.sources)" in js
 
 
 def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():

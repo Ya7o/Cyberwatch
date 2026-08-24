@@ -140,13 +140,13 @@ class TestDashboardSourcesSection:
         return open(path, encoding="utf-8").read()
 
     def test_vue_globale_reste_compacte_sans_metriques(self):
-        js = self._read("assets/dashboard.js")
+        js = self._read("assets/dashboard-v2.js")
         match = re.search(
-            r"function renderSourcesDetail\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
+            r"function renderSources\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
         )
         assert match, "renderSourcesDetail() introuvable"
         body = match.group(1)
-        compact_part = body.split('$("#sources-detail-table tbody")')[0]
+        compact_part = body.split('$("#sources-detail-body")')[0]
         for forbidden in ("items_seen", "items_in_window", "latest_item"):
             assert forbidden not in compact_part
 
@@ -158,15 +158,15 @@ class TestDashboardSourcesSection:
         assert detail_pos > list_pos, "le détail doit suivre la vue globale"
         assert "<summary>" in html
 
-        js = self._read("assets/dashboard.js")
+        js = self._read("assets/dashboard-v2.js")
         match = re.search(
-            r"function renderSourcesDetail\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
+            r"function renderSources\(\)\s*\{(.*?)\n  \}", js, re.DOTALL
         )
         assert match, "renderSourcesDetail() introuvable"
         body = match.group(1)
         for expected in (
-            "sourceLabel(source.id)", "source.status", "source.latest_item",
-            "source.latest_item_org", "source.items_seen", "source.items_in_window",
+            "sourceLabel(source.id)", "source.status", "source.last_run",
+            "source.duration", "source.items_collected", "source.reason",
         ):
             assert expected in body
 
@@ -175,7 +175,7 @@ class TestDashboardSourcesSection:
         dans p2.js : deux noms pour la même source. Le libellé vient désormais
         d'une table unique (`config.SOURCE_LABELS`), publiée dans status.json et
         lue par le dashboard via `CW.sourceLabel` — jamais codée en dur ici."""
-        js = self._read("assets/dashboard.js") + self._read("assets/shared.js")
+        js = self._read("assets/dashboard-v2.js") + self._read("assets/shared.js")
         assert 'veillellmReYt' not in js
         assert '"VEILLE_LLM":' not in js
         from cyberwatch import config
