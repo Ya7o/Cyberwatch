@@ -247,6 +247,18 @@ def _clean_timeline(raw: object, article: str) -> dict[str, str] | None:
     }
 
 
+def _relation_endpoint_grounded(endpoint: str, evidence: str) -> bool:
+    """Un sujet/objet de relation doit apparaître dans sa propre preuve.
+
+    Une preuve peut être un extrait réel de l'article (donc valider
+    ``_evidence_present``) sans pour autant parler du sujet ou de l'objet
+    annoncés par le modèle — signe d'une relation contaminée par le contexte
+    d'un autre incident traité dans le même lot plutôt qu'ancrée dans le
+    texte qu'elle prétend citer.
+    """
+    return bool(endpoint) and searchable(endpoint) in searchable(evidence)
+
+
 def _clean_relation(raw: object, article: str) -> dict[str, str] | None:
     if not isinstance(raw, dict):
         return None
@@ -255,6 +267,8 @@ def _clean_relation(raw: object, article: str) -> dict[str, str] | None:
     obj = str(raw.get("object") or "").strip()
     relation = str(raw.get("relation") or "").strip().lower()
     if not subject or not obj or relation not in RELATIONS or not _evidence_present(evidence, article):
+        return None
+    if not _relation_endpoint_grounded(subject, evidence) and not _relation_endpoint_grounded(obj, evidence):
         return None
     status = str(raw.get("status") or "unknown").strip().lower()
     return {
