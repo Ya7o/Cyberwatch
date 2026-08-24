@@ -17,7 +17,7 @@ from .base import entry_allowed_before_enrichment
 STATUSES = {"confirmed", "reported", "claimed", "hypothesis", "denied", "negated", "unknown"}
 _STATUS_PRIORITY = {"confirmed": 7, "reported": 6, "claimed": 5, "hypothesis": 3, "denied": 2, "negated": 1, "unknown": 0}
 _HYPOTHESIS = re.compile(r"\b(?:pourrait|pourraient|susceptible|potentiellement|possible|hypoth[èe]se|serait|seraient|aurait|auraient)\b", re.I)
-_NEGATION = re.compile(r"\b(?:n['’ ](?:a|ont|est|sont)\s+pas|ne\s+.{0,40}\s+pas|aucun(?:e)?|sans\s+(?:preuve|confirmation)|non\s+touch[ée]|pas\s+touch[ée])\b", re.I)
+_NEGATION = re.compile(r"\b(?:n['’ ](?:ai|as|a|avons|avez|ont|est|sommes|[êe]tes|sont)\s+pas|ne\s+.{0,40}\s+pas|aucun(?:e)?|sans\s+(?:preuve|confirmation)|non\s+touch[ée]|pas\s+touch[ée]|impossible\s+de\s+(?:d[ée]terminer|savoir|[ée]tablir))\b", re.I)
 _DENIED = re.compile(r"\b(?:d[ée]ment|d[ée]menti|nie|nient|conteste|contestent)\b", re.I)
 _CONFIRMED = re.compile(r"\b(?:confirme|confirm[ée]e?s?|reconna[iî]t|reconnu|admet|admis|officiellement)\b", re.I)
 _CLAIMED = re.compile(r"\b(?:revendiqu[ée]e?s?|affirme|affirment|dit\s+avoir|selon\s+(?:l['’]?attaquant|le\s+groupe|les\s+pirates?))\b", re.I)
@@ -167,6 +167,11 @@ def _extract_data_types(sentences: list[str]) -> list[dict]:
         elif context_left:
             context_left -= 1
         else:
+            continue
+        # A denial belongs to the source text, not to the positive list of
+        # exposed categories.  Keeping it here would make a statement such as
+        # "aucun IBAN identifié" appear as an exposed IBAN downstream.
+        if status in {"negated", "denied"}:
             continue
         for label, pattern in _DATA_TYPES:
             if pattern.search(sentence): rows.append({"value":label,"status":status,"date":_date(sentence),"evidence":sentence[:420]})

@@ -307,7 +307,18 @@ def _ai_data_types(ai_result: dict) -> tuple[list[str], dict[str, str]]:
         value = str(candidate.get("value") or "").strip(" .")
         proof = str(candidate.get("evidence") or "").strip()
         key = searchable(value)
-        if not value or not proof or key in seen:
+        # LLM candidates are accepted only when their cited sentence states an
+        # exposure.  A negated citation ("pas d'IBAN", "aucun mot de passe")
+        # must not leak into Data_Types_JSON as a positive exposure.
+        negated = re.search(
+            r"\b(?:aucun(?:e)?|sans)\b.{0,48}\b(?:IBAN|RIB|mot(?:s)?\s+de\s+passe|"
+            r"donn[ée]es?\s+bancaires?|carte(?:s)?\s+(?:bancaires?|de\s+paiement))\b|"
+            r"\b(?:n['’ ](?:ai|as|a|avons|avez|ont|est|sommes|[êe]tes|sont)\s+pas|"
+            r"ne\s+.{0,40}\s+pas|impossible\s+de\s+(?:d[ée]terminer|savoir|[ée]tablir))\b",
+            proof,
+            re.I,
+        )
+        if not value or not proof or key in seen or negated:
             continue
         seen.add(key)
         result.append(value)

@@ -325,7 +325,13 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
     """
     selected: dict[str, dict] = {}
 
-    def add(value: str, source: str) -> None:
+    def add(value: str, source: str, status: str = "") -> None:
+        # A type mentioned only to say it was *not* exposed is useful in the
+        # source-level audit trail, but must never become a public "Données
+        # exposées" chip.  Otherwise a denial such as "aucun IBAN identifié"
+        # is presented as the exact opposite fact.
+        if _norm(status) in {"negated", "denied"}:
+            return
         key = _norm(value)
         if not key or key in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
             return
@@ -346,7 +352,7 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         if isinstance(rich_values, list):
             for raw_record in rich_values:
                 if isinstance(raw_record, dict):
-                    add(_text(raw_record.get("value")), source)
+                    add(_text(raw_record.get("value")), source, _text(raw_record.get("status")))
     return list(selected.values())
 
 

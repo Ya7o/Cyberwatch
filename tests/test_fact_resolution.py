@@ -211,6 +211,16 @@ def test_data_types_rich_et_legacy_sont_fusionnes_sans_doublon():
     assert values == ["Adresses e-mail", "Numéros de téléphone", "Dates de naissance"]
 
 
+def test_data_type_rich_negated_is_not_published_as_exposed():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"data_types": [
+            {"value": "IBAN / RIB", "status": "negated"},
+            {"value": "Adresses e-mail", "status": "reported"},
+        ]}),
+    ])
+    assert [entry["value"] for entry in resolved["data_types"]] == ["Adresses e-mail"]
+
+
 def test_statut_revendique_est_conserve_et_resume_deterministe():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [

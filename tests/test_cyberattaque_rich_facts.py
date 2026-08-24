@@ -72,6 +72,25 @@ def test_data_types_in_bullets_inherit_the_nearby_incident_context():
     assert {"adresses e-mail", "adresses postales", "contrats", "données bancaires"} <= values
 
 
+def test_negated_data_types_are_not_published_as_exposed():
+    entry = RawEntry(
+        title="Exemple : fuite de données",
+        content="Les données exposées comprennent des e-mails. Aucun IBAN ni carte bancaire n'a été identifié.",
+    )
+    enrich_entry_metadata(entry)
+    rows = entry.source_metadata["rich_facts"]["data_types"]
+    assert {row["value"] for row in rows} == {"adresses e-mail"}
+
+
+def test_access_hypothesis_is_not_misclassified_as_exposed_credentials():
+    entry = RawEntry(
+        title="Exemple : fuite de données",
+        content="Les données exposées comprennent des e-mails. Il reste impossible de déterminer si l'accès provient d'identifiants compromis.",
+    )
+    enrich_entry_metadata(entry)
+    assert {row["value"] for row in entry.source_metadata["rich_facts"]["data_types"]} == {"adresses e-mail"}
+
+
 def test_assures_are_retained_as_people_counts():
     entry = RawEntry(title="Exemple", content="Une fuite concerne 1 244 445 assurés.")
     enrich_entry_metadata(entry)
