@@ -143,6 +143,16 @@ Pour les deux derniers, le rejet reste acceptable dans l'architecture actuelle �
 - ne pas utiliser le benchmark LLM dans le pipeline de production;
 - ne pas éclater automatiquement tous les articles MULTI tant que la règle de création de plusieurs ITEMS n'est pas explicitement conçue.
 
+### Seuil de réexamen de `_SCOPE_PATTERNS`
+
+La liste fermée de systèmes reste appropriée tant qu'elle couvre des cas rares
+et explicitement vérifiés. Consigner chaque ajout manuel sur les runs réels
+2026. Réexaminer une extraction générique uniquement si **trois ajouts ou plus
+sur un même mois** concernent des systèmes distincts, ou si deux ajouts
+consécutifs échouent pour la même structure syntaxique. Le réexamen devra
+inclure un échantillon de faux positifs et des tests de non-régression ; ce
+seuil n'autorise pas, à lui seul, une généralisation automatique.
+
 ## Utilisation future
 
 Matérialiser le golden set :

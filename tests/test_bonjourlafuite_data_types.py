@@ -115,4 +115,5 @@ def test_dashboard_regroupe_les_types_et_garde_un_fallback_autres():
     ):
         assert label in dashboard
     assert "function dataTypeFamily(value)" in dashboard
+    assert "function dataTypesHtml(entries)" in dashboard
     assert "dataTypesHtml(detail.data_types || [])" in dashboard

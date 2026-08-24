@@ -158,21 +158,23 @@ def test_faits_sources_ne_repetent_pas_acteur_et_tiers_deja_affiches():
     assert "documentedClaimsHtml(detail.claims || [], incident.org, fields)" in js
 
 
-def test_detail_ecarte_les_champs_encore_non_fiabilises():
-    """Vecteur d'entrée et Vulnérabilités sont réintégrés : fact_resolution.py
-    les projette désormais depuis des claims typés avec un garde-fou de
-    cohérence (voir _claim_scalar/_claim_list_entries). Les autres champs
-    restent écartés tant qu'ils n'ont pas de mécanisme de fiabilisation
-    équivalent — leur source brute (CSV) est vide sur tout l'échantillon."""
+def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
+    """Vecteur d'entrée/CVSS/dates/localisation précise/évolution sont
+    réintégrés (structure en sections `main`) : `fact_resolution.py` les
+    projette désormais depuis des claims typés avec un garde-fou de
+    cohérence (voir `_claim_scalar`/`_claim_list_entries`)."""
     js = _read("assets/dashboard-v2.js")
     assert 'detailField("Vecteur d’entrée"' in js
-    assert 'detailField("Vulnérabilités"' in js
-    assert 'detailField("Localisation précise"' not in js
-    assert 'detailField("Date de l’attaque"' not in js
-    assert 'detailField("Découverte"' not in js
-    assert 'detailField("CVSS"' not in js
-    assert 'detailField("Évolution"' not in js
-    assert 'initial_access: "Vecteur d’entrée"' not in js
+    assert 'detailField("Localisation précise"' in js
+    assert 'detailField("Vulnérabilités exploitées"' in js
+    assert 'detailField("Date de l’attaque"' in js
+    assert 'detailField("Date de découverte"' in js
+    assert 'detailField("CVSS"' in js
+    assert 'detailField("Évolution / suite donnée"' in js
+    # Pas de mapping figé window.CW-only : initialAccessLabel() reste local
+    # et retombe sur le texte libre si la valeur ne matche aucune énumération.
+    assert "const initialAccessLabel" in js
+    assert "window.CW" not in js
 
 
 def test_detail_rend_la_chronologie_dedupliquee():
@@ -187,6 +189,14 @@ def test_detail_rend_la_chronologie_dedupliquee():
     assert '<h4>Chronologie</h4>' in js
     assert "timelineHtml(detail.timeline || [])" in js
     assert "formatDate(row.date)" in js
+
+
+def test_libelles_de_sources_ne_dependent_pas_de_shared_js():
+    """`shared.js` a été supprimé (E2) : les libellés de source restent une
+    constante locale à `dashboard-v2.js`, jamais un appel à `window.CW`."""
+    js = _read("assets/dashboard-v2.js")
+    assert "const SOURCE_LABELS" in js
+    assert "window.CW" not in js
 
 
 def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():

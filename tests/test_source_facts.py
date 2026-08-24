@@ -124,6 +124,29 @@ def test_snapshot_semantique_est_consomme_sans_second_appel(monkeypatch):
     assert sf.semantic_promotion_gaps(fact, semantic) == []
 
 
+def test_cyberattaque_acteur_actif_et_tiers_compromis_sont_extraits_sans_liste_fermee(monkeypatch):
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    monkeypatch.setattr(sf.source_facts_ai, "extract_semantic", lambda *_: sfa.SemanticExtraction(
+        item_id=item.Item_ID, content_hash="test", fields={}, statuses={}
+    ))
+    cases = (
+        ("ZeroBytes revendique l'accès aux données.", "ZeroBytes"),
+        ("0xSec affirme avoir obtenu les fichiers.", "0xSec"),
+        ("misere déclare détenir une base.", "misere"),
+    )
+    for content, actor in cases:
+        fact = sf.extract_source_fact(item, RawEntry(title="Exemple SA", content=content), spec("CYBERATTAQUE_ORG"))
+        assert fact["Threat_Actor"] == actor
+
+    fact = sf.extract_source_fact(
+        item,
+        RawEntry(title="Exemple SA", content="Une cyberattaque chez un prestataire technique a exposé des données."),
+        spec("CYBERATTAQUE_ORG"),
+    )
+    assert fact["Initial_Access"] == "third_party"
+    assert sf._loads_json(fact["Evidence_JSON"])["Initial_Access"] == "cyberattaque chez un prestataire"
+
+
 def test_nom_seul_ne_devient_jamais_une_synthese(monkeypatch):
     item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
     entry = RawEntry(title="Exemple SA", organisation="Exemple SA", content="Exemple SA confirme un incident.")

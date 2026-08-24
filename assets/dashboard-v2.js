@@ -341,6 +341,14 @@
     return state.facts;
   }
 
+  // Petite énumération fermée pour les valeurs déterministes connues
+  // (ex. "third_party" posé par cyberwatch/source_facts.py) ; toute autre
+  // valeur (texte libre promu par fact_resolution.py::_claim_scalar()) est
+  // affichée telle quelle plutôt que masquée — brancher ce libellé sur
+  // shared.js aurait effacé silencieusement ce texte libre.
+  const INITIAL_ACCESS_LABELS = { phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" };
+  const initialAccessLabel = (value) => INITIAL_ACCESS_LABELS[value] || value || "";
+
   function detailField(label, content) {
     if (!content || (Array.isArray(content) && !content.length)) return "";
     const rendered = Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
@@ -433,6 +441,23 @@
     return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${chips.join("")}</dd></div>`;
   }
 
+  function timelineHtml(entries) {
+    if (!Array.isArray(entries) || !entries.length) return "";
+    const rows = entries.filter((entry) => known(entry.event));
+    if (!rows.length) return "";
+    return `<div class="documented-claims"><h4>Chronologie</h4>${rows.map((entry) => {
+      const status = CLAIM_STATUS_LABELS[entry.status] || "Documenté";
+      const date = known(entry.date) ? formatDate(entry.date) : "Date non précisée";
+      const proof = entry.evidence ? ` title="${esc(entry.evidence)}"` : "";
+      return `<div class="resolved-field resolved-field--wide"><dt>${esc(date)}</dt><dd${proof}>${esc(entry.event)} <span class="claim-status claim-status--${esc(entry.status || "unknown")}">${esc(status)}</span></dd></div>`;
+    }).join("")}</div>`;
+  }
+
+  function detailSection(title, fields) {
+    const content = fields.filter(Boolean).join("");
+    return content ? `<section class="resolved-facts-section"><h4>${esc(title)}</h4>${content}</section>` : "";
+  }
+
   const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
   function documentedClaimsHtml(claims, organisation, fields) {
@@ -478,17 +503,28 @@
     const validDetail = detail && detail.version === 3;
     const fields = validDetail ? detail.fields || {} : {};
     const values = validDetail ? [
-      affectedHtml(detail.affected || []),
-      dataTypesHtml(detail.data_types || []),
-      detailField("Acteur", fields.threat_actor?.value),
-      detailField("Tiers impliqué", fields.third_party?.value),
-      detailField("Vecteur d’entrée", fields.initial_access?.value),
-      detailField("Volume de données", fields.data_volume?.value),
-      detailField("Impact", fields.impact?.value),
-      detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
-      detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
-      detailField("Vulnérabilités", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
-      timelineHtml(detail.timeline || []),
+      detailSection("Qui / Comment", [
+        detailField("Acteur revendicateur", fields.threat_actor?.value),
+        detailField("Tiers impliqué", fields.third_party?.value),
+        detailField("Vecteur d’entrée", initialAccessLabel(fields.initial_access?.value)),
+        detailField("Vulnérabilités exploitées", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
+        detailField("CVSS", fields.cvss?.value),
+      ]),
+      detailSection("Quand", [
+        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : ""),
+        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : ""),
+        timelineHtml(detail.timeline || []),
+      ]),
+      detailSection("Quoi (impact & données)", [
+        affectedHtml(detail.affected || []),
+        dataTypesHtml(detail.data_types || []),
+        detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
+        detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
+        detailField("Volume de données", fields.data_volume?.value),
+        detailField("Impact", fields.impact?.value),
+        detailField("Localisation précise", fields.fine_location?.value),
+        detailField("Évolution / suite donnée", fields.evolution?.value),
+      ]),
       documentedClaimsHtml(detail.claims || [], incident.org, fields),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);

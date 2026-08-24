@@ -120,4 +120,5 @@ def test_dashboard_has_single_reunion_mayotte_focus_block():
     assert "state.status?.focus_locations" in js
     assert 'f-veille-llm' not in html + js
     assert 'f-presse-mahoraise' not in html + js
+    assert "La Réunion / Mayotte" in js
     assert config.FOCUS_LOCATIONS == ["La Réunion", "Mayotte"]
