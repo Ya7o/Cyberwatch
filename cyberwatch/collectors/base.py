@@ -17,6 +17,7 @@ quand son protocole définit lui-même le statut sans couverture ni borne.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from urllib.parse import urlsplit, urlunsplit
 
 from .. import status
 from ..normalize import date_or_empty
@@ -44,6 +45,22 @@ class Window:
         if begin is None or finish is None:
             return 0
         return max(1, (finish - begin).days + 1)
+
+
+def _canonical_entry_url(value: str) -> str:
+    parsed = urlsplit((value or "").strip())
+    path = parsed.path.rstrip("/") or "/"
+    return urlunsplit((parsed.scheme.lower(), parsed.netloc.lower(), path, parsed.query, ""))
+
+
+def entry_allowed_before_enrichment(spec: "SourceSpec", entry: "RawEntry") -> bool:
+    """Applique une liste blanche optionnelle avant tout enrichissement coûteux."""
+    allowed = spec.params.get("validation_allowed_urls") if isinstance(spec.params, dict) else None
+    if not allowed:
+        return True
+    return _canonical_entry_url(entry.url) in {
+        _canonical_entry_url(str(url)) for url in allowed
+    }
 
 
 @dataclass

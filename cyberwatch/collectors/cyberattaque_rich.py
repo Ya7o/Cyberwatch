@@ -12,6 +12,7 @@ import re
 from ..normalize import searchable
 from .cyberattaque_org import CyberattaqueOrgCollector
 from . import cyberattaque_semantic
+from .base import entry_allowed_before_enrichment
 
 STATUSES = {"confirmed", "reported", "claimed", "hypothesis", "denied", "negated", "unknown"}
 _STATUS_PRIORITY = {"confirmed": 7, "reported": 6, "claimed": 5, "hypothesis": 3, "denied": 2, "negated": 1, "unknown": 0}
@@ -233,5 +234,7 @@ class CyberattaqueRichCollector(CyberattaqueOrgCollector):
     name="cyberattaque_org"
     def collect(self,client,spec,window):
         result=super().collect(client,spec,window)
-        for entry in result.entries: enrich_entry_metadata(entry)
+        for entry in result.entries:
+            if entry_allowed_before_enrichment(spec, entry):
+                enrich_entry_metadata(entry)
         return result

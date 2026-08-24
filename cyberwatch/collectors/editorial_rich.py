@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..rich_facts import enrich_provenance
+from .base import entry_allowed_before_enrichment
 from .feed import FeedCollector
 
 
@@ -28,5 +29,7 @@ class EditorialRichFeedCollector(FeedCollector):
         result = super().collect(client, spec, window)
         source_id = self.source_id or getattr(spec, "source_id", "")
         for entry in result.entries:
+            if not entry_allowed_before_enrichment(spec, entry):
+                continue
             apply_rich_extractor(entry, self.extract_rich_facts, source_id=source_id)
         return result

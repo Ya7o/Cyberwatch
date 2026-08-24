@@ -7,7 +7,10 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 def test_operational_workflow_surface_is_intentionally_small():
     workflow_names = sorted(path.name for path in WORKFLOWS.glob("*.yml"))
-    assert workflow_names == ["ci.yml", "cold-reset.yml", "collect.yml", "source-facts-backfill.yml"]
+    assert workflow_names == [
+        "ci.yml", "cold-reset.yml", "collect.yml",
+        "reset-validation-five-cases.yml", "source-facts-backfill.yml",
+    ]
 
 
 def test_cold_reset_is_manual_only():
@@ -24,6 +27,14 @@ def test_collect_is_the_only_scheduled_data_workflow():
         if "schedule:" in path.read_text(encoding="utf-8"):
             scheduled.append(path.name)
     assert scheduled == ["collect.yml"]
+
+
+def test_five_cases_reset_is_manual_and_requires_explicit_confirmation():
+    content = (WORKFLOWS / "reset-validation-five-cases.yml").read_text(encoding="utf-8")
+    assert "workflow_dispatch:" in content
+    assert "schedule:" not in content
+    assert "FIVE_CASES_RESET" in content
+    assert "validation/five_cases.json" in content
 
 
 def test_cold_reset_certifies_before_publication():

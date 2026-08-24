@@ -16,9 +16,9 @@ import time
 from collections import defaultdict
 import os
 import subprocess
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
-from . import ai, config, dedup_ai, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, organisation_sector, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
+from . import ai, config, dedup_ai, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, organisation_sector, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, validation_corpus, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -167,6 +167,7 @@ class RunContext:
     mode: str
     layers: list[str]
     method_id: str = config.METHOD_ID
+    validation_corpus: validation_corpus.ValidationCorpus | None = None
 
     @property
     def window(self) -> Window:
@@ -178,6 +179,7 @@ def make_run_context(
     as_of: str | None = None,
     target_start: str | None = None,
     layers: list[str] | None = None,
+    validation_corpus_path: str | None = None,
 ) -> RunContext:
     now = (
         dt.datetime.fromisoformat(as_of)
@@ -213,6 +215,10 @@ def make_run_context(
         target_end=end,
         mode=mode,
         layers=layers or config.LAYER_GROUPS["all"],
+        validation_corpus=(
+            validation_corpus.ValidationCorpus.load(validation_corpus_path)
+            if validation_corpus_path else None
+        ),
     )
 
 
@@ -489,7 +495,13 @@ def run_source(
     cyberattaque_rejected_negated = 0
     cyberattaque_rejected_multi = 0
     cyberattaque_rejected_no_victim = 0
+    validation_excluded = 0
     for entry in result.entries:
+        if context.validation_corpus and not context.validation_corpus.accepts(
+            spec.source_id, entry.url
+        ):
+            validation_excluded += 1
+            continue
         if requires_victim and looks_cyber(entry.title, entry.summary, entry.content):
             articles_cyber += 1
         if spec.source_id == "CYBERATTAQUE_ORG" and is_negated_incident(entry.title, entry.summary, entry.content):
@@ -609,6 +621,9 @@ def run_source(
             f"victims_identified={len(items)}; articles_rejected_no_victim={cyberattaque_rejected_no_victim}; "
             f"articles_rejected_negated={cyberattaque_rejected_negated}; articles_rejected_multi={cyberattaque_rejected_multi}"
         )
+        outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
+    if context.validation_corpus:
+        extra = f"validation_corpus={context.validation_corpus.name}; entries_excluded={validation_excluded}"
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)
     if items:
@@ -914,7 +929,20 @@ def execute(
         watch_rows: list[dict] = []
         new_fact_rows: list[dict] = []
 
-        for spec in sources.active_sources(context.layers):
+        active_specs = sources.active_sources(context.layers)
+        if context.validation_corpus:
+            active_specs = [
+                replace(
+                    spec,
+                    params={
+                        **spec.params,
+                        "validation_allowed_urls": context.validation_corpus.urls_for_source(spec.source_id),
+                    },
+                )
+                for spec in active_specs
+                if spec.source_id in context.validation_corpus.source_ids
+            ]
+        for spec in active_specs:
             outcome, items, rows = run_source(
                 client, spec, context, known_orgs, entity_index, territories, reference, ai_state,
                 sector_stats, new_fact_rows,
@@ -945,7 +973,7 @@ def execute(
             )
 
         replacement_source_ids = {
-            spec.source_id for spec in sources.active_sources(context.layers)
+            spec.source_id for spec in active_specs
             if spec.params.get("replace_snapshot")
         }
         # Le collecteur Veille LLM peut exposer un historique complet. La
@@ -1027,7 +1055,11 @@ def execute(
         ) else status.BROKEN
     )
     selected_source_ids = {spec.source_id for spec in sources.active_sources(context.layers)}
+    if context.validation_corpus:
+        selected_source_ids &= set(context.validation_corpus.source_ids)
     report.problems = pre_export_checks(report.items, report.incidents, report.outcomes, selected_source_ids)
+    if context.validation_corpus:
+        report.problems.extend(context.validation_corpus.audit(report.items, report.incidents))
     report.problems.extend(incident_identity.validate_registry(
         report.incident_id_registry, report.items, report.incidents
     ))

@@ -90,7 +90,8 @@ def _print_summary(report) -> None:
 
 def cmd_create(args) -> int:
     context = make_run_context(
-        MODE_CREATE, args.as_of, args.start, _layers_from(args.layers)
+        MODE_CREATE, args.as_of, args.start, _layers_from(args.layers),
+        validation_corpus_path=getattr(args, "validation_corpus", ""),
     )
     print(f"CREATE {context.run_id} — fenêtre {context.target_start} -> {context.target_end}")
     transient = getattr(args, "transient", False)
@@ -855,6 +856,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     create = subparsers.add_parser("create", help="Construire la base depuis zéro.")
     add_common(create)
+    create.add_argument(
+        "--validation-corpus",
+        help="Manifeste de liste blanche : collecte réelle limitée aux articles désignés.",
+    )
     create.set_defaults(func=cmd_create)
 
     maj = subparsers.add_parser("maj", help="Mettre à jour la base.")
