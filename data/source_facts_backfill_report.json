@@ -1,51 +1,169 @@
 {
  "incidents": [
   {
-   "headline": "Exemple SA a confirmé une intrusion informatique affectant ses services.",
-   "hydrated": true,
-   "item_id": "headline",
-   "organisation": "Exemple SA",
-   "reason": "",
-   "source_id": "CYBERATTAQUE_ORG",
-   "status": "accepted"
+   "incident_id": "INC-FB978E513818",
+   "organisation": "Declic Services",
+   "promotion_gaps": [],
+   "source_reports": [
+    {
+     "headline": "",
+     "hydrated": true,
+     "item_id": "ITM-334a644530169ed8",
+     "organisation": "Déclic Services",
+     "promotion_gaps": [],
+     "reason": "empty",
+     "source_id": "CYBERATTAQUE_ORG",
+     "status": "rejected_quality"
+    },
+    {
+     "headline": "ZeroBytes revendique la compromission de Declic Services avec plus de 6,2 millions d'enregistrements volés.",
+     "hydrated": true,
+     "item_id": "ITM-42c2d62778eac2cc",
+     "organisation": "Declic Services",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "FRENCHBREACHES",
+     "status": "accepted"
+    }
+   ],
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "summary": "ZeroBytes revendique la compromission de Declic Services avec plus de 6,2 millions d'enregistrements volés.",
+   "summary_reason": "",
+   "summary_status": "accepted"
+  },
+  {
+   "incident_id": "INC-1DB4BB9CBF02",
+   "organisation": "Solimut Mutuelle de France",
+   "promotion_gaps": [],
+   "source_reports": [
+    {
+     "headline": "Une fuite de données chez Solimut Mutuelle de France expose plus d'un million d'assurés et 770 000 comptes bancaires.",
+     "hydrated": true,
+     "item_id": "ITM-e6adc4fb818b5817",
+     "organisation": "Solimut Mutuelle de France",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "FRENCHBREACHES",
+     "status": "accepted"
+    },
+    {
+     "headline": "Solimut Mutuelle : près de 1,25 million d’assurés dans une fuite massive de données",
+     "hydrated": true,
+     "item_id": "ITM-0498c7b472b003ac",
+     "organisation": "Solimut Mutuelle",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "CYBERATTAQUE_ORG",
+     "status": "accepted"
+    }
+   ],
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "summary": "Solimut Mutuelle : près de 1,25 million d’assurés dans une fuite massive de données",
+   "summary_reason": "",
+   "summary_status": "accepted"
+  },
+  {
+   "incident_id": "INC-C99133F13F25",
+   "organisation": "DINUM",
+   "promotion_gaps": [],
+   "source_reports": [
+    {
+     "headline": "DINUM : 31 544 lignes liées au cloud de l’État en fuite",
+     "hydrated": true,
+     "item_id": "ITM-fe8f7805fe8b6b60",
+     "organisation": "DINUM",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "CYBERATTAQUE_ORG",
+     "status": "accepted"
+    }
+   ],
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "summary": "DINUM : 31 544 lignes liées au cloud de l’État en fuite",
+   "summary_reason": "",
+   "summary_status": "accepted"
+  },
+  {
+   "incident_id": "INC-CFB3AE4A9D63",
+   "organisation": "SUEZ",
+   "promotion_gaps": [],
+   "source_reports": [
+    {
+     "headline": "SUEZ : Les données clients en fuite après une cyberattaque chez un prestataire",
+     "hydrated": true,
+     "item_id": "ITM-48283b2fc86cc545",
+     "organisation": "SUEZ",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "CYBERATTAQUE_ORG",
+     "status": "accepted"
+    },
+    {
+     "headline": "Suez Eau France a signalé une exposition potentielle de données personnelles suite à une cyberattaque de son prestataire technique.",
+     "hydrated": true,
+     "item_id": "ITM-42e40635dd6dc4e0",
+     "organisation": "Suez Eau France",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "FRENCHBREACHES",
+     "status": "accepted"
+    }
+   ],
+   "sources": [
+    "BONJOURLAFUITE",
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "summary": "SUEZ : Les données clients en fuite après une cyberattaque chez un prestataire",
+   "summary_reason": "",
+   "summary_status": "accepted"
+  },
+  {
+   "incident_id": "INC-6DC1B3DE66B3",
+   "organisation": "Sport 2000",
+   "promotion_gaps": [],
+   "source_reports": [
+    {
+     "headline": "Sport 2000 : ZeroBytes publie 17 851 réservations de son outil interne Pilot",
+     "hydrated": true,
+     "item_id": "ITM-2e95686500507378",
+     "organisation": "Sport 2000",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "CYBERATTAQUE_ORG",
+     "status": "accepted"
+    },
+    {
+     "headline": "Sport 2000 a subi une intrusion entraînant le vol de 17 851 réservations.",
+     "hydrated": true,
+     "item_id": "ITM-72b2101fc9791988",
+     "organisation": "Sport 2000",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "FRENCHBREACHES",
+     "status": "accepted"
+    }
+   ],
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "summary": "Sport 2000 : ZeroBytes publie 17 851 réservations de son outil interne Pilot",
+   "summary_reason": "",
+   "summary_status": "accepted"
   }
  ],
  "metrics": {
-  "abstained_retry_fields": 0,
-  "abstained_retry_item_ids": [],
-  "abstained_retry_items": 0,
-  "abstained_retry_restored": 0,
-  "accepted_headline_item_ids": [
-   "headline"
-  ],
-  "ai_stats": {
-   "calls_attempted": 0
-  },
-  "candidates_by_source": {
-   "CYBERATTAQUE_ORG": 1
-  },
-  "candidates_total": 1,
-  "candidates_without_source_fact": 1,
-  "dry_run": false,
-  "headlines_abstained": 0,
-  "headlines_accepted": 1,
-  "headlines_rejected_quality": 0,
-  "http_requests": 0,
-  "hydrated": 1,
-  "hydration_failed": 0,
-  "incidents_covered": 1,
-  "incidents_published_without_headline": 0,
-  "include_existing": false,
-  "refresh_complete": false,
-  "retry_abstained": false,
-  "retry_legacy_nulls": false,
-  "selected": 1,
-  "selected_by_source": {
-   "CYBERATTAQUE_ORG": 1
-  },
-  "source_facts_extracted": 1,
-  "source_facts_recovered": 1,
-  "technical_failures": 0
+  "incidents_reported": 5,
+  "mode": "persisted_source_facts_audit"
  },
- "schema_version": 1
+ "schema_version": 3
 }

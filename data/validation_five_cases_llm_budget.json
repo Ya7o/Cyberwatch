@@ -1,0 +1,118 @@
+{
+  "limits": {
+    "calls": 100,
+    "cost_usd": 0.5
+  },
+  "channels": {
+    "qualification": {
+      "calls": 5,
+      "cost_usd": 0.000141
+    },
+    "source_facts": {
+      "calls": 14,
+      "cost_usd": 0.001289
+    },
+    "runtime_semantic": {
+      "calls": 20,
+      "cost_usd": 0.0073935999999999984,
+      "by_task": {
+        "cyberattaque_semantic": {
+          "cached_input_tokens": 0,
+          "calls_attempted": 5,
+          "calls_budget_blocked": 0,
+          "calls_failed": 0,
+          "calls_succeeded": 5,
+          "duration_seconds": 43.45099211899992,
+          "estimated_cost_usd": 0.0031922999999999995,
+          "input_tokens": 8442,
+          "last_model": "gpt-4o-mini",
+          "max_calls": 10,
+          "max_cost_usd": 0.05,
+          "output_tokens": 3210,
+          "reasoning_tokens": 0,
+          "retries": 0,
+          "total_tokens": 11652
+        },
+        "editorial_semantic": {
+          "cached_input_tokens": 0,
+          "calls_attempted": 10,
+          "calls_budget_blocked": 63,
+          "calls_failed": 0,
+          "calls_succeeded": 10,
+          "duration_seconds": 42.59618496600001,
+          "estimated_cost_usd": 0.00277095,
+          "input_tokens": 5905,
+          "last_model": "gpt-4o-mini",
+          "max_calls": 10,
+          "max_cost_usd": 0.05,
+          "output_tokens": 3142,
+          "reasoning_tokens": 0,
+          "retries": 0,
+          "total_tokens": 9047
+        },
+        "qualification": {
+          "cached_input_tokens": 0,
+          "calls_attempted": 1,
+          "calls_budget_blocked": 4,
+          "calls_failed": 0,
+          "calls_succeeded": 1,
+          "duration_seconds": 1.5822889490000307,
+          "estimated_cost_usd": 0.00014110000000000001,
+          "input_tokens": 1430,
+          "last_model": "gpt-5-nano",
+          "max_calls": 20,
+          "max_cost_usd": 0.25,
+          "output_tokens": 174,
+          "reasoning_tokens": 0,
+          "retries": 0,
+          "total_tokens": 1604
+        },
+        "source_facts": {
+          "cached_input_tokens": 0,
+          "calls_attempted": 4,
+          "calls_budget_blocked": 10,
+          "calls_failed": 0,
+          "calls_succeeded": 4,
+          "duration_seconds": 12.993474956999933,
+          "estimated_cost_usd": 0.00128925,
+          "input_tokens": 4563,
+          "last_model": "gpt-4o-mini",
+          "max_calls": 40,
+          "max_cost_usd": 0.75,
+          "output_tokens": 1008,
+          "reasoning_tokens": 0,
+          "retries": 0,
+          "total_tokens": 5571
+        }
+      }
+    },
+    "organisation_sector": {
+      "calls": 1,
+      "cost_usd": 0.00016355,
+      "by_task": {
+        "organisation_sector": {
+          "cached_input_tokens": 0,
+          "calls_attempted": 1,
+          "calls_budget_blocked": 0,
+          "calls_failed": 0,
+          "calls_succeeded": 1,
+          "duration_seconds": 2.2117692799999986,
+          "estimated_cost_usd": 0.00016355,
+          "input_tokens": 1007,
+          "last_model": "gpt-5-nano",
+          "max_calls": 20,
+          "max_cost_usd": 0.1,
+          "output_tokens": 283,
+          "reasoning_tokens": 0,
+          "retries": 0,
+          "total_tokens": 1290
+        }
+      }
+    }
+  },
+  "totals": {
+    "calls": 40,
+    "cost_usd": 0.008987
+  },
+  "verdict": "PASS"
+}
