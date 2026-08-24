@@ -2,14 +2,49 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-23",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
+  "id": "INC-9BB1C862798A",
+  "items": 2,
+  "last_seen": "2026-08-24T06:55:09+04:00",
+  "location": "France métropolitaine",
+  "org": "Axess",
+  "sector": "Services aux entreprises",
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires",
+   "IBAN / RIB"
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/axess-67-bases-de-donnees-et-pres-de-19-000-comptes-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/axess-mt60wcdaj4woi57opzf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Axess : 67 bases de données et près de 19 000 comptes en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/axess-mt60wcdaj4woi57opzf",
+   "https://www.cyberattaque.org/axess-67-bases-de-donnees-et-pres-de-19-000-comptes-en-fuite-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-FB978E513818",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Declic Services",
   "sector": "Inconnu",
-  "sector_tentative": "Services aux entreprises",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires",
@@ -29,7 +64,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Declic Services",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/declic-services-mt50ilbazie0jaelweg",
@@ -39,10 +74,37 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-23",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
+  "id": "INC-9618210E3C5B",
+  "items": 1,
+  "last_seen": "2026-08-24T06:55:09+04:00",
+  "location": "Inconnu",
+  "org": "Netim",
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Netim : code source, données clients et infrastructure interne menacés de publication par un ransomware",
+  "threat": "Ransomware",
+  "urls": [
+   "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-1DB4BB9CBF02",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Solimut Mutuelle de France",
   "sector": "Finance / Assurance",
@@ -75,10 +137,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-23",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-8410CBDEDEAC",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "SOS Villages de TF1",
   "sector": "Inconnu",
@@ -104,10 +166,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-22",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-24879C0A8E07",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Cloud de l’État",
   "sector": "Inconnu",
@@ -122,7 +184,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Des milliers de données du Cloud de l’État ont été diffusées sur un forum de hackers.",
+  "summary": "Cloud de l’État (cloud.numerique.gouv.fr)",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cloud-de-l-tat-cloud-numerique-gouv-fr-mt4685xhf4it99ffgkq"
@@ -131,14 +193,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-22",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-C99133F13F25",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "DINUM",
   "sector": "Inconnu",
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -159,10 +220,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-22",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-530667B06195",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "DRON Location",
   "sector": "Construction / BTP",
@@ -192,14 +253,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-22",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-516C13499640",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "iMapper.tech",
   "sector": "Inconnu",
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -211,7 +271,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "iMapper.tech a subi une fuite de données avec des comptes exposés.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/imapper-tech-mt4kafe3uah19xev08q"
@@ -220,13 +280,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-8EF888B8811C",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Allobébé",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires"
@@ -255,10 +315,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-33CE65C83FE8",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Beauty Success",
   "sector": "Services aux entreprises",
@@ -290,10 +350,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-9E057A069623",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Bureau Vallée",
   "sector": "Inconnu",
@@ -309,7 +369,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Bureau Vallée a subi une fuite de données affectant près de 4,82 millions de dossiers.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/bureau-vall-e-mt2opn2q7t914mz1rap"
@@ -318,10 +378,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-01FD97B9B929",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Géotec",
   "sector": "Inconnu",
@@ -352,10 +412,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-8D9D60B0322A",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Made in Bébé",
   "sector": "Inconnu",
@@ -387,10 +447,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-CEF8515C5B59",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Protection Civile",
   "sector": "Inconnu",
@@ -420,14 +480,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-21",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-4DA3AF4B43D8",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Xplor Resamania",
   "sector": "Inconnu",
-  "sector_tentative": "Sport",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants",
@@ -444,7 +503,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données chez Xplor Resamania touchant plus de 5 millions d’adhérents.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/xplor-resamania-ms9zix0ogp9u7xkgvu5"
@@ -453,10 +512,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-8A52570CAA45",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Alaxione",
   "sector": "Numérique / Technologie",
@@ -490,10 +549,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-F25F5F05F47B",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Bergerat Rent",
   "sector": "Construction / BTP",
@@ -523,37 +582,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-795AFE0691D4",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "location": "France métropolitaine",
-  "org": "Capgemini",
-  "sector": "Services aux entreprises",
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
-  "threat": "Ransomware",
-  "urls": [
-   "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-CA9D9ECF1F93",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Experts Entreprendre",
   "sector": "Services aux entreprises",
@@ -585,10 +617,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B7D7E578D0CB",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "FrenchInnov",
   "sector": "Inconnu",
@@ -618,10 +650,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-C5CF7480F918",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "John Paul",
   "sector": "Culture / Médias / Loisirs",
@@ -636,7 +668,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données affectant 4 179 clients Visa Infinite et Platinum de John Paul.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/john-paul-mt1g0ll5v5vh0u0syq8"
@@ -645,14 +677,46 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
+  "id": "INC-795AFE0691D4",
+  "items": 2,
+  "last_seen": "2026-08-24T06:55:09+04:00",
+  "location": "France métropolitaine",
+  "org": "NETIM COMPANY",
+  "sector": "Inconnu",
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
+  "threat": "Ransomware",
+  "urls": [
+   "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3",
+   "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-BCBD7A6C4BEC",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Réserver",
   "sector": "Inconnu",
-  "sector_tentative": "Commerce / Distribution",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -679,10 +743,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B8A9E71CE40B",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "SFR",
   "sector": "Inconnu",
@@ -698,7 +762,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "SFR a subi une fuite de données revendiquée avec plus de 2,1 millions d'enregistrements volés.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sfr-mrp254s7k2z2s62yzqf"
@@ -707,10 +771,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-20",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-CFB3AE4A9D63",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "SUEZ",
   "sector": "Énergie / Utilities",
@@ -750,10 +814,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-82C56212890E",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "IRD",
   "sector": "Services aux entreprises",
@@ -789,10 +853,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-8F222C73001E",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "Klaro",
   "sector": "Inconnu",
@@ -816,10 +880,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-F599B89D9F21",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Philippe Hottinguer Finance",
   "sector": "Finance / Assurance",
@@ -849,10 +913,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-6DC1B3DE66B3",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Sport 2000",
   "sector": "Sport",
@@ -876,7 +940,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Sport 2000",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sport-2000-mt0d2uylr1i928pr8k8",
@@ -886,10 +950,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-19",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2524D6D14D15",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "WiziShop",
   "sector": "Numérique / Technologie",
@@ -912,7 +976,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "WiziShop a connu un incident de sécurité exposant des factures clients depuis 2009.",
+  "summary": "WiziShop a subi un incident de sécurité exposant des factures clients depuis 2009.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/wizishop-dropizi-mszyv230fxhdpsb7ppo",
@@ -922,10 +986,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-78A855CB3BF4",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "Aastrio / Monday",
   "sector": "Inconnu",
@@ -949,10 +1013,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-195F06B69C3A",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Actis Location",
   "sector": "Services aux entreprises",
@@ -985,10 +1049,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-70AA4EB2D7FE",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Clenet",
   "sector": "Commerce / Distribution",
@@ -1021,10 +1085,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-90CA773A80A0",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "DGFiP",
   "sector": "Administration / Collectivité",
@@ -1050,14 +1114,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-02F7CC034277",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Foodtrack",
   "sector": "Inconnu",
-  "sector_tentative": "Services aux entreprises",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -1084,10 +1147,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-58531D3546D0",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "Gedimat",
   "sector": "Commerce / Distribution",
@@ -1113,10 +1176,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-A35F0D19101A",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "KparK",
   "sector": "Inconnu",
@@ -1138,7 +1201,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Un tiers non autorisé a usurpé un compte professionnel de KparK pour accéder et télécharger des fichiers de prospection.",
+  "summary": "KparK informe d'un incident de sécurité impliquant des fichiers de prospection transmis au service Bloctel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/kpark-mszck35nr7j8i75741n",
@@ -1148,10 +1211,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-CD5ED83ED67D",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Mutuelle Générale de Prévoyance",
   "sector": "Finance / Assurance",
@@ -1172,10 +1235,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-18",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-DCD90B2A7A2B",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Taveau",
   "sector": "Commerce / Distribution",
@@ -1208,10 +1271,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-17",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-299D6B322925",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Ministère de l'Éducation nationale",
   "sector": "Administration / Collectivité",
@@ -1245,10 +1308,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-17",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-6F7EBC321E35",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "SDE 03",
   "sector": "Énergie / Utilities",
@@ -1275,10 +1338,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-17",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-4613053E5C2C",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "Inconnu",
   "org": "Ville de Marennes-Hiers-Brouage",
   "sector": "Administration / Collectivité",
@@ -1304,10 +1367,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-1ECF87546892",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Achat Or et Argent",
   "sector": "Commerce / Distribution",
@@ -1322,7 +1385,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Les données de plus de 50 000 clients d'Achat Or et Argent ont été exposées.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/achat-or-et-argent-mqguqijb2kwf64ad0w7"
@@ -1331,10 +1394,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B99CF5D2A342",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Cravero Motoculture",
   "sector": "Commerce / Distribution",
@@ -1367,10 +1430,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-41A8AB5D39A1",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "EVA Charleroi",
   "sector": "Inconnu",
@@ -1386,7 +1449,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "EVA Charleroi victime d'une fuite de données révélant 2 558 lignes.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-charleroi-mswbb37w86m9htgoij3"
@@ -1395,10 +1458,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-9F3966170CB4",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "EVY",
   "sector": "Finance / Assurance",
@@ -1430,10 +1493,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-616D0ECF3BB3",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "France-Casse",
   "sector": "Commerce / Distribution",
@@ -1463,10 +1526,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-C32E5C6268C3",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Fédération Française de Danse",
   "sector": "Sport",
@@ -1481,7 +1544,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "La Fédération Française de Danse a divulgué des données affectant 435 903 adhérents.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-danse-msvjcwu35yln9jygazd"
@@ -1490,10 +1553,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-8BB56F33DD82",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Fédération Française de Motocyclisme",
   "sector": "Sport",
@@ -1508,7 +1571,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données de 472 760 enregistrements à la Fédération Française de Motocyclisme.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-motocyclisme-msvj2szkiclvx2gaoc"
@@ -1517,10 +1580,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-D8F1376548D2",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Groupe Lenormant",
   "sector": "Commerce / Distribution",
@@ -1552,10 +1615,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-16",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-9698B7C5C61F",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "SamBoat",
   "sector": "Hébergement / Tourisme / Restauration",
@@ -1593,10 +1656,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-15",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-9504AB2AB6DD",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "EVA Nantes Sud",
   "sector": "Inconnu",
@@ -1612,7 +1675,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "EVA Nantes Sud piraté avec les données de plus de 20 000 joueurs affectées.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-nantes-sud-mstk3dvhzt4kjp61n2"
@@ -1621,10 +1684,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-15",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2EC7AB82A87C",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Fédération Française de Karaté",
   "sector": "Sport",
@@ -1639,7 +1702,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données de 2,8 millions d’enregistrements à la Fédération Française de Karaté.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-karat-msu63ykvxde9hwoosba"
@@ -1648,10 +1711,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-15",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-DBB5C48F8E9F",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Le Bon Matériel",
   "sector": "Services aux entreprises",
@@ -1683,10 +1746,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-14",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-FDB7ABF9F4D9",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Direction générale des Finances publiques",
   "sector": "Administration / Collectivité",
@@ -1716,10 +1779,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-14",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-25FD74F96AAB",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "KparK",
   "sector": "Commerce / Distribution",
@@ -1743,14 +1806,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-13",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-CCF2D31F14AD",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Chupin",
-  "sector": "Inconnu",
-  "sector_tentative": "Numérique / Technologie",
+  "sector": "Agriculture / Agroalimentaire",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -1777,13 +1839,14 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-13",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-C571C9260435",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "EVA.gg",
   "sector": "Inconnu",
+  "sector_tentative": "Sport",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants"
@@ -1806,14 +1869,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-13",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-F302E8F60941",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "France VAE",
   "sector": "Inconnu",
-  "sector_tentative": "Éducation / Formation",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -1846,10 +1908,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-25C6A92D4C08",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Actis Location",
   "sector": "Services aux entreprises",
@@ -1875,14 +1937,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B62D4B603863",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Clenet",
   "sector": "Inconnu",
-  "sector_tentative": "Commerce / Distribution",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -1903,10 +1964,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-401EAF29A613",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Direction générale des Finances publiques",
   "sector": "Administration / Collectivité",
@@ -1921,7 +1982,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données touchant plus de 678 000 personnes à la Direction générale des Finances publiques.",
+  "summary": "Direction générale des Finances publiques (DGFiP)",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-dgfip-msq5rgy4cql9o0l7cus"
@@ -1930,10 +1991,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-AC05B943F109",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "LaSante.net",
   "sector": "Inconnu",
@@ -1968,10 +2029,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-710FA7F5B953",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Leroch Distribution",
   "sector": "Inconnu",
@@ -2004,10 +2065,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-5A332CAA7665",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Loutz",
   "sector": "Numérique / Technologie",
@@ -2039,10 +2100,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-D0942B1FAC63",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Publica",
   "sector": "Inconnu",
@@ -2057,7 +2118,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données clients du service de magazines de Publica.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/publica-mspyx0388ayctyrqby7"
@@ -2066,10 +2127,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-12",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-E16B7E7AC982",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "SON VIDEO",
   "sector": "Commerce / Distribution",
@@ -2099,10 +2160,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-11",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-A298A6DBBB1B",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Agence pour l’enseignement français à l’étranger",
   "sector": "Administration / Collectivité",
@@ -2132,10 +2193,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-11",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-19373D28E57B",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Gédimat",
   "sector": "Inconnu",
@@ -2156,7 +2217,7 @@
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "Gédimat a été victime d'une cyberattaque exposant des données personnelles.",
+  "summary": "Gédimat a subi une cyberattaque entraînant la divulgation de données personnelles liées aux comptes gedimat.fr.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/gedimat.png",
@@ -2166,10 +2227,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-11",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-A41F80656811",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "HeyPulse",
   "sector": "Inconnu",
@@ -2201,10 +2262,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-11",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-78722404B099",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Santé publique France",
   "sector": "Santé",
@@ -2227,7 +2288,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Santé publique France",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sant-publique-france-msoz0zsj3vgi774sa0i",
@@ -2238,10 +2299,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-11",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-984961FE4704",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Sun Form",
   "sector": "Sport",
@@ -2267,10 +2328,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-3879A78A2B32",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Fédération Française de Handball",
   "sector": "Sport",
@@ -2303,10 +2364,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-269BACA246E0",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Groupe Cloué",
   "sector": "Commerce / Distribution",
@@ -2336,10 +2397,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2482980D1F89",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "I-CAD",
   "sector": "Inconnu",
@@ -2362,7 +2423,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "I-CAD",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/i-cad-msn3ybtatwxhj8nio8n",
@@ -2372,10 +2433,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-93CC7076F6BA",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché",
   "sector": "Commerce / Distribution",
@@ -2399,10 +2460,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-3ABFF451EA33",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Mairie de Sixt-sur-Aff",
   "sector": "Administration / Collectivité",
@@ -2417,7 +2478,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "La mairie de Sixt-sur-Aff a subi un piratage avec un site WordPress défacé.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mairie-de-sixt-sur-aff-msmii0ydaxb7f5pq82k"
@@ -2426,10 +2487,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-DD3823C68E8B",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Scalingo",
   "sector": "Numérique / Technologie",
@@ -2470,10 +2531,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-DAB365872289",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Steam",
   "sector": "Numérique / Technologie",
@@ -2511,10 +2572,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-10",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-FB41041C22B5",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Ville de Gagny",
   "sector": "Administration / Collectivité",
@@ -2547,10 +2608,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-09",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2972BA18B0BD",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Bureau Vallée",
   "sector": "Commerce / Distribution",
@@ -2582,10 +2643,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-09",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-E0D9184FDC8A",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Duvignau 40",
   "sector": "Inconnu",
@@ -2618,10 +2679,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-09",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-1645372F6E23",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Le Mans FC",
   "sector": "Sport",
@@ -2653,13 +2714,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-08",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-1DC7E716ACF6",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "BlgCloud",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants",
@@ -2689,10 +2750,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-08",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-9A02875C9EAF",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "CLCV",
   "sector": "Inconnu",
@@ -2723,10 +2784,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-08",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-4E70364FA984",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Mutuelle Générale de Prévoyance",
   "sector": "Finance / Assurance",
@@ -2760,10 +2821,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-08",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B3661B27F815",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Prelys Courtage",
   "sector": "Finance / Assurance",
@@ -2787,13 +2848,14 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-08",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-0C988C5686B1",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Roussel Agri 62",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires"
@@ -2822,10 +2884,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-07",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-F495CED1DF70",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "AFPA",
   "sector": "Éducation / Formation",
@@ -2848,7 +2910,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "AFPA",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/afpa-msj805wnmw8zz6kstul",
@@ -2858,10 +2920,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-07",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B29167CCA7EA",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Le Lien Autonomie",
   "sector": "Inconnu",
@@ -2876,7 +2938,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "{'value': 'Cyberattaque contre Le Lien Autonomie', 'confidence': 1.0, 'evidence': 'Cyberattaque contre Le Lien Autonomie'}",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-lien-autonomie-msj4pgh7huoc9zlfspc"
@@ -2885,10 +2947,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-07",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-C8E36234E8B8",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Petit Gramme",
   "sector": "Commerce / Distribution",
@@ -2914,10 +2976,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-07",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-699B9802A943",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Ressourc'brie",
   "sector": "Inconnu",
@@ -2933,7 +2995,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Ressourc'brie est victime d'un piratage.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ressourc-brie-msiy6s8ktdtfnh45mbc"
@@ -2942,10 +3004,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-12FCF8029315",
   "items": 14,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "ALIZE",
   "sector": "Services aux entreprises",
@@ -2992,10 +3054,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-4409C5105A68",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Armurerie Lavaux",
   "sector": "Commerce / Distribution",
@@ -3015,7 +3077,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Armurerie Lavaux",
+  "summary": "Détenteurs d’armes à nouveau dans le viseur : l’Armurerie Lavaux confirme une cyberattaque",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/armurerie-lavaux-mseypxv2fdmjdlqaj78",
@@ -3025,10 +3087,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-6BD5D5EC1331",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Association de la Caieta",
   "sector": "Inconnu",
@@ -3044,7 +3106,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Cyberattaque contre l'Association de la Caieta, une association d'ingénieurs de l'armement.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/association-de-la-caieta-msgpkbftje9wtx6u62"
@@ -3053,10 +3115,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-00469FB75262",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Biosynex",
   "sector": "Inconnu",
@@ -3088,14 +3150,14 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-060DC2411CB8",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Bloctel",
   "sector": "Inconnu",
-  "sector_tentative": "Administration / Collectivité",
+  "sector_tentative": "Sport",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants",
@@ -3131,10 +3193,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-0A7235623FF7",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Hospices Civils de Lyon",
   "sector": "Santé",
@@ -3166,10 +3228,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-7FD50AB5A075",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "INSERM",
   "sector": "Santé",
@@ -3184,7 +3246,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Les données de plus de 245 000 médecins et professionnels de santé ont été compromises dans une cyberattaque visant l'INSERM.",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde"
@@ -3193,10 +3255,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-06",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-C4FDBE0127EC",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "MVision",
   "sector": "Inconnu",
@@ -3229,10 +3291,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-05",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-7888D67D988E",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché",
   "sector": "Commerce / Distribution",
@@ -3258,10 +3320,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-05",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-FE7999A11279",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché Drive",
   "sector": "Inconnu",
@@ -3277,7 +3339,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Intermarché Drive",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msf7vvhryw7nui45uho"
@@ -3286,10 +3348,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-05",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-51115A21B49B",
   "items": 3,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Stade Francais",
   "sector": "Sport",
@@ -3327,13 +3389,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2566FE1D9FA1",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Chat Coco",
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants"
@@ -3362,10 +3424,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-B5B0BB894D79",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Institut national de la santé et de la recherche médicale",
   "sector": "Santé",
@@ -3398,10 +3460,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-FD24A0215B5D",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Intermarché Drive",
   "sector": "Inconnu",
@@ -3417,7 +3479,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Intermarché Drive",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msd3lq1z008txe7ifb90x"
@@ -3426,10 +3488,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-D9AEFFCC039E",
   "items": 4,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Setic Pourtier",
   "sector": "Inconnu",
@@ -3466,10 +3528,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-03",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-78907BFC117D",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Voxaly",
   "sector": "Inconnu",
@@ -3484,7 +3546,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Voxaly",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/voxaly-msde9mck0bpdloz5u6j7"
@@ -3493,10 +3555,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2B603127BE7C",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "ENT",
   "sector": "Inconnu",
@@ -3521,10 +3583,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-6279DE88C132",
   "items": 4,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Mairie de Drancy",
   "sector": "Administration / Collectivité",
@@ -3551,7 +3613,7 @@
    "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Mairie de Drancy",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=1277b405-d795-4d1d-bae9-7bd745f18c79",
@@ -3563,10 +3625,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-636BCD8327BD",
   "items": 4,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Questel SAS",
   "sector": "Commerce / Distribution",
@@ -3603,10 +3665,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-ACEC6CC2457D",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "TERVEO",
   "sector": "Commerce / Distribution",
@@ -3638,10 +3700,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-02",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-49E922069E33",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "ville-rinxent",
   "sector": "Administration / Collectivité",
@@ -3673,10 +3735,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-01",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-873F607D35AE",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "CCI Nice Côte d’Azur",
   "sector": "Inconnu",
@@ -3702,10 +3764,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-01",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-D398A12C63DE",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "CY Cergy Paris Université",
   "sector": "Éducation / Formation",
@@ -3720,7 +3782,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "CY Cergy Paris Université",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cy-cergy-paris-universit-msanv9saq6mlky1jlg"
@@ -3729,13 +3791,14 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-01",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-2B3200F7788D",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Emploi Docteur Imago",
   "sector": "Inconnu",
+  "sector_tentative": "Commerce / Distribution",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -3747,7 +3810,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Emploi Docteur Imago",
+  "summary": "",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/emploi-docteur-imago-msalwlhrpzvx55d1kuf"
@@ -3756,10 +3819,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-01",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-89BBF0F35450",
   "items": 2,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Groupe T2MC",
   "sector": "Inconnu",
@@ -3793,10 +3856,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-01",
-  "first_seen": "2026-08-23T17:20:26+04:00",
+  "first_seen": "2026-08-24T06:55:09+04:00",
   "id": "INC-608290BC3A26",
   "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
+  "last_seen": "2026-08-24T06:55:09+04:00",
   "location": "France métropolitaine",
   "org": "Xplor Resamania",
   "sector": "Sport",
@@ -3820,383 +3883,6 @@
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/xplor-resamania-527-millions-de-dossiers-dadherents-de-salles-de-sport-revendiques/"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-07-09",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-F565E72ECFBA",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.zinfos974.com/vandalisme-des-perturbations-sur-les-reseaux-mobile-et-fixe-dorange-a-la-reunion/",
-    "https://imazpress.com/toute-l-actu/actes-de-vandalisme-sur-le-reseau-orange-perturbations-sur-les-services-mobile-et-fixe-dans-toute-l-ile",
-    "https://www.linfo.re/la-reunion/societe/des-actes-de-vandalisme-perturbent-le-reseau-orange-a-la-reunion"
-   ],
-   "score": 15,
-   "summary": "Sabotage physique confirmé d’infrastructures télécom ; aucune compromission informatique documentée."
-  },
-  "location": "La Réunion",
-  "org": "Orange Réunion",
-  "sector": "Numérique / Technologie",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Inconnu",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-07-04",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-77C0DC6E016A",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
-   ],
-   "score": 10,
-   "summary": "Panne télécom confirmée avec impact sur les numéros d’urgence ; aucune information publique ne permet de qualifier une menace cyber."
-  },
-  "location": "Mayotte",
-  "org": "Orange / SFR et services d’urgence",
-  "sector": "Numérique / Technologie",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Inconnu",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-06-30",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-AAD55A086D72",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
-   ],
-   "score": 80,
-   "summary": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle."
-  },
-  "location": "La Réunion",
-  "org": "Lycée polyvalent Paul Moreau",
-  "sector": "Éducation / Formation",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-06-29",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-8ED480A79AA7",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
-   ],
-   "score": 60,
-   "summary": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission."
-  },
-  "location": "La Réunion",
-  "org": "EGEP Réunion",
-  "sector": "Construction / BTP",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-06-29",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-5D92C3C21642",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
-   ],
-   "score": 30,
-   "summary": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique."
-  },
-  "location": "La Réunion",
-  "org": "Le Quotidien de La Réunion",
-  "sector": "Inconnu",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Inconnu",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-06-13",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-AF9A16B0E1D0",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
-   ],
-   "score": 25,
-   "summary": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber."
-  },
-  "location": "Mayotte",
-  "org": "Commune de Ouangani",
-  "sector": "Administration / Collectivité",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Inconnu",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-06-11",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-8C2C274A1222",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
-    "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
-   ],
-   "score": 100,
-   "summary": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique."
-  },
-  "location": "Mayotte",
-  "org": "Ville de Mamoudzou",
-  "sector": "Administration / Collectivité",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Intrusion",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-05-31",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-FCF1477F983E",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/",
-    "https://frenchbreaches.com/alertes/air-austral-mpvvb04ho44kuefgda",
-    "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
-   ],
-   "score": 100,
-   "summary": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation."
-  },
-  "location": "La Réunion",
-  "org": "Air Austral",
-  "sector": "Transport / Logistique",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-04-24",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-3DC541F4D1AC",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
-   ],
-   "score": 75,
-   "summary": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime."
-  },
-  "location": "La Réunion",
-  "org": "STOR Solutions",
-  "sector": "Numérique / Technologie",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Intrusion",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-02-19",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-78669787EE80",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
-   ],
-   "score": 65,
-   "summary": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF."
-  },
-  "location": "La Réunion",
-  "org": "EPF Réunion / VALGO",
-  "sector": "Administration / Collectivité",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-02-04",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-276D026144B4",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
-   ],
-   "score": 15,
-   "summary": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique. Aucun élément public ne démontre une cyberattaque."
-  },
-  "location": "La Réunion",
-  "org": "Commune de Saint-Leu",
-  "sector": "Administration / Collectivité",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Inconnu",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-  ]
- },
- {
-  "basis": "EVENT",
-  "date": "2026-02-04",
-  "first_seen": "2026-08-23T17:20:26+04:00",
-  "id": "INC-BE1A2F4FACDB",
-  "items": 1,
-  "last_seen": "2026-08-23T17:20:26+04:00",
-  "local": {
-   "references": [
-    "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
-   ],
-   "score": 10,
-   "summary": "Sabotage physique d’une infrastructure télécom ; aucune compromission logique documentée."
-  },
-  "location": "La Réunion",
-  "org": "Infrastructure fibre multi-opérateurs / PBO",
-  "sector": "Numérique / Technologie",
-  "source_links": [
-   {
-    "source": "VEILLE_LLM",
-    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "threat": "Inconnu",
-  "urls": [
-   "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json"
   ]
  }
 ]
