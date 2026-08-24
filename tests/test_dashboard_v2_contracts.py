@@ -139,12 +139,12 @@ def test_runtime_ne_supporte_plus_le_schema_legacy_des_faits():
     js = _read("assets/dashboard-v2.js")
     assert "legacyFactsNotice" not in js
     assert "Array.isArray(detail)" not in js
-    assert "detail.version === 2" in js
+    assert "detail.version === 3" in js
 
 
-def test_facts_json_commite_est_strictement_v2():
+def test_facts_json_commite_est_strictement_v3():
     import json
     facts = json.loads(_read("assets/data/facts.json"))
     assert isinstance(facts, dict)
     assert facts
-    assert all(isinstance(detail, dict) and detail.get("version") == 2 for detail in facts.values())
+    assert all(isinstance(detail, dict) and detail.get("version") == 3 for detail in facts.values())

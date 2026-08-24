@@ -53,6 +53,21 @@ def main() -> int:
             problems.append("Corpus validation : Sport 2000 infère encore des identifiants compromis")
         if case_id in {"declic_services", "solimut", "suez"} and not row.get("sensitive_data_exposed"):
             problems.append(f"Corpus validation : données sensibles non signalées pour {case_id}")
+        values = {str(entry.get("value") or "").casefold() for entry in detail.get("affected", []) if isinstance(entry, dict)}
+        claims = detail.get("claims", []) if isinstance(detail.get("claims"), list) else []
+        if case_id == "sport_2000" and not any("zerobytes" in str(claim.get("value") or "").casefold() for claim in claims if isinstance(claim, dict)):
+            problems.append("Corpus validation : acteur Sport 2000 absent des faits sourcés")
+        if case_id == "dinum":
+            if row.get("threat") != "Fuite de données":
+                problems.append("Corpus validation : DINUM doit être qualifié Fuite de données")
+            if row.get("sector") != "Administration / Collectivité" or row.get("location") != "France métropolitaine":
+                problems.append("Corpus validation : référentiel déterministe DINUM non appliqué")
+            if not any("31544" in value.replace(" ", "") for value in values):
+                problems.append("Corpus validation : volume DINUM absent")
+        if case_id == "declic_services" and not any("6271531" in value.replace(" ", "") for value in values):
+            problems.append("Corpus validation : volume Déclic Services absent")
+        if case_id == "solimut" and not any("1244445" in value.replace(" ", "") for value in values):
+            problems.append("Corpus validation : volume Solimut absent")
         case_reports.append({
             "case": case_id,
             "incident_id": row.get("id"),

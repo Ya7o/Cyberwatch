@@ -108,6 +108,12 @@
 .incident-data-value--sensitivity-critical { background:rgba(190,62,62,.18); border-color:rgba(190,62,62,.58); }
 .detail-sources { margin-top:.8rem; padding-top:.75rem; gap:.4rem; }
 .detail-sources .incident-source-badges { justify-content:flex-start; }
+.documented-claims { margin-top:.6rem; }
+.documented-claims h4 { margin:.55rem 0 .15rem; font-size:.88rem; color:var(--muted); }
+.claim-field dd { align-items:center; }
+.claim-status { display:inline-block; margin-left:.2rem; padding:.08rem .38rem; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:.72rem; line-height:1.2; }
+.claim-status--confirmed { border-color:rgba(30,130,80,.45); color:#167147; }
+.claim-status--claimed,.claim-status--hypothesis { border-color:rgba(180,125,0,.45); color:#8a5d00; }
 
 @media (max-width:1320px) {
   .search-bar { grid-template-columns:repeat(4,minmax(0,1fr)); }

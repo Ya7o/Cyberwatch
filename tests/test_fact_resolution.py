@@ -86,19 +86,17 @@ def test_legacy_identique_au_rich_ne_cree_pas_de_doublon():
     assert resolved["affected"][0]["semantic"] == "total"
 
 
-def test_conflit_cross_format_meme_unite_garde_source_prioritaire_si_semantique_non_ambigue():
+def test_conflit_cross_format_meme_unite_conserve_les_mesures_distinctes():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", affected_count=10_000, affected_unit="records", claim_status="claimed"),
         fact("CYBERATTAQUE_ORG", rich_facts={"affected_counts": [
             {"value": 9_000, "unit": "records", "scope": "total", "status": "reported"},
         ]}),
     ])
-    assert len(resolved["affected"]) == 1
-    assert resolved["affected"][0]["value"] == 10_000
-    assert resolved["affected"][0]["source"] == "RANSOMWARE_LIVE"
+    assert {row["value"] for row in resolved["affected"]} == {9_000, 10_000}
 
 
-def test_conflit_meme_semantique_garde_source_prioritaire():
+def test_conflit_meme_semantique_conserve_les_valeurs_sourcees():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [
             {"value": 1000, "unit": "records", "scope": "total", "status": "claimed"},
@@ -107,9 +105,22 @@ def test_conflit_meme_semantique_garde_source_prioritaire():
             {"value": 900, "unit": "records", "scope": "total", "status": "reported"},
         ]}),
     ])
-    assert len(resolved["affected"]) == 1
-    assert resolved["affected"][0]["value"] == 1000
-    assert resolved["affected"][0]["source"] == "RANSOMWARE_LIVE"
+    assert {row["value"] for row in resolved["affected"]} == {900, 1000}
+
+
+def test_claims_timeline_et_systemes_semantiques_sont_publies():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}, {"type": "system", "value": "Pilot", "status": "reported", "evidence": "Le système Pilot est concerné."}],
+        "timeline": [{"date": "2026-08-19", "event": "Publication de la revendication", "status": "reported", "evidence": "L'article est publié le 19 août."}],
+    })])
+    assert resolved["claims"][0]["status"] == "claimed"
+    assert resolved["systems"][0]["value"] == "Pilot"
+    assert resolved["timeline"][0]["event"] == "Publication de la revendication"
+
+
+def test_type_de_donnee_numerique_ou_trop_long_est_rejete():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", data_types=["779750", "x" * 121, "IBAN"])])
+    assert [entry["value"] for entry in resolved["data_types"]] == ["IBAN"]
 
 
 def test_beauty_success_conserve_les_trois_concepts_distincts():

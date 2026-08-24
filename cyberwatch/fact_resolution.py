@@ -45,10 +45,14 @@ STATUS_LABELS = {
     "confirmed": "confirmé",
     "reported": "rapporté",
     "claimed": "revendiqué",
-    "unknown": "documenté",
+    "unknown": "inconnu",
     "unconfirmed": "non confirmé",
     "denied": "démenti",
+    "negated": "démenti",
+    "hypothesis": "hypothèse",
 }
+_NUMERIC_ONLY_RE = re.compile(r"^[\d\s,.;: ]+$")
+_MAX_DATA_TYPE_CHARS = 120
 
 
 def source_rank(source_id: str | None) -> int:
@@ -185,7 +189,28 @@ def _legacy_affected_record(fact: dict) -> dict | None:
 def _rich_count_records(fact: dict) -> list[dict]:
     source = _text(fact.get("source"))
     rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
-    records = rich.get("affected_counts", []) if isinstance(rich, dict) else []
+    records = list(rich.get("affected_counts", []) if isinstance(rich, dict) else [])
+    # Certains exports historiques de claims ont perdu leur champ ``type``
+    # mais ont conservé valeur, unité et preuve. On répare seulement cette
+    # forme objectivable ; aucun texte libre n'est promu en volume.
+    for claim in rich.get("claims", []) if isinstance(rich, dict) else []:
+        if not isinstance(claim, dict):
+            continue
+        value = _text(claim.get("value"))
+        evidence = _text(claim.get("evidence"))
+        unit = _norm(claim.get("unit"))
+        if not re.fullmatch(r"\d+", value):
+            continue
+        evidence_norm = _norm(evidence)
+        if not unit:
+            if any(marker in evidence_norm for marker in ("assure", "personne", "client", "utilisateur")):
+                unit = "people"
+            elif any(marker in evidence_norm for marker in ("iban", "compte bancaire", "comptes")):
+                unit = "accounts"
+            elif any(marker in evidence_norm for marker in ("ligne", "enregistrement")):
+                unit = "records"
+        if unit:
+            records.append({**claim, "value": int(value), "unit": unit, "raw": _text(claim.get("raw")) or value})
     result: list[dict] = []
     if not isinstance(records, list):
         return result
@@ -219,11 +244,14 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         for record in records:
             rich_semantics.setdefault(record["unit"], set()).add(record["semantic"])
 
-    selected: dict[tuple[str, str], dict] = {}
+    # La clé inclut la valeur : deux chiffres différents peuvent être tous les
+    # deux sourcés (total, échantillon, comptage d'un acteur). Les écraser par
+    # priorité de source détruit une information utile et fausse l'audit.
+    selected: dict[tuple[str, str, str], dict] = {}
     for fact in ordered:
         source = _text(fact.get("source"))
         for record in rich_by_fact[id(fact)]:
-            key = (record["unit"], record["semantic"])
+            key = (record["unit"], record["semantic"], _norm(_record_value(record)))
             if key not in selected:
                 selected[key] = record
             else:
@@ -232,7 +260,7 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         legacy = _legacy_affected_record(fact)
         if not legacy:
             continue
-        same_unit = [entry for (unit, _), entry in selected.items() if unit == legacy["unit"]]
+        same_unit = [entry for (unit, _, _), entry in selected.items() if unit == legacy["unit"]]
         exact = next((entry for entry in same_unit if _same_record_value(entry, legacy)), None)
         if exact is not None:
             _merge_record(exact, legacy, source)
@@ -241,7 +269,7 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         semantics = rich_semantics.get(legacy["unit"], set())
         if len(semantics) == 1:
             legacy["semantic"] = next(iter(semantics))
-        key = (legacy["unit"], legacy["semantic"])
+        key = (legacy["unit"], legacy["semantic"], _norm(_record_value(legacy)))
         if key not in selected:
             selected[key] = legacy
         else:
@@ -255,7 +283,14 @@ def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
     for fact in _ordered_facts(facts):
         source = _text(fact.get("source"))
         rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
-        records = rich.get(key, []) if isinstance(rich, dict) else []
+        records = list(rich.get(key, []) if isinstance(rich, dict) else [])
+        # Les extracteurs sémantiques peuvent conserver un système ou un
+        # périmètre dans claims : il doit arriver au même contrat public.
+        claim_type = "system" if key == "affected_systems" else "dataset"
+        records.extend(
+            row for row in (rich.get("claims", []) if isinstance(rich, dict) else [])
+            if isinstance(row, dict) and _norm(row.get("type")) == claim_type
+        )
         if not isinstance(records, list):
             continue
         for raw_record in records:
@@ -288,7 +323,7 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
 
     def add(value: str, source: str) -> None:
         key = _norm(value)
-        if not key or key in UNKNOWN_VALUES:
+        if not key or key in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
             return
         entry = selected.get(key)
         if entry is None:
@@ -341,9 +376,32 @@ def _claim_entries(facts: Iterable[dict]) -> list[dict]:
                 "type": _text(raw_record.get("type")),
                 "status": _status(raw_record),
                 "evidence": evidence,
+                "actor": _text(raw_record.get("actor")),
+                "date": _text(raw_record.get("date")),
+                "scope": _text(raw_record.get("scope")),
+                "unit": _text(raw_record.get("unit")),
                 "source": source,
                 "sources": [source] if source else [],
             }
+    return list(selected.values())
+
+
+def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
+    selected: dict[tuple[str, str, str], dict] = {}
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        for row in rich.get("timeline", []) if isinstance(rich, dict) else []:
+            if not isinstance(row, dict):
+                continue
+            date, event, evidence = _text(row.get("date")), _text(row.get("event")), _text(row.get("evidence"))
+            if not event or not evidence:
+                continue
+            key = (_norm(date), _norm(event), _norm(evidence))
+            if key not in selected:
+                selected[key] = {"date": date, "event": event, "status": _status(row), "evidence": evidence, "source": source, "sources": [source] if source else []}
+            elif source and source not in selected[key]["sources"]:
+                selected[key]["sources"].append(source)
     return list(selected.values())
 
 
@@ -429,19 +487,21 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
 def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "") -> dict:
     ordered = _ordered_facts(facts)
     resolved = {
-        "version": 2,
+        "version": 3,
         "fields": {field: value for field in SCALAR_FIELDS if (value := resolve_scalar(ordered, field))},
         "data_types": _data_types_entries(ordered),
         "vulnerabilities": _list_entries(ordered, "vulnerabilities"),
         "affected": resolve_affected_counts(ordered),
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
+        "claims": _claim_entries(ordered),
+        "timeline": _timeline_entries(ordered),
     }
     # Les claims sont déjà publiés dans chaque fait source. Ils servent ici à
     # composer la synthèse canonique sans dupliquer tout leur détail dans la
     # vue résolue par incident.
     resolved["display_summary"] = build_display_summary(
-        {**resolved, "claims": _claim_entries(ordered)}, fallback=fallback_summary
+        resolved, fallback=fallback_summary
     )
     return resolved
 

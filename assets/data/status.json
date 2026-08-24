@@ -2,19 +2,19 @@
  "analytics": {
   "as_of": "2026-08-23",
   "briefing": [
-   "France métropolitaine apparaît sur 30 jours avec 4 incidents, contre aucun sur la période précédente (confiance moyenne).",
-   "Fuite de données apparaît sur 30 jours avec 4 incidents, contre aucun sur la période précédente (confiance moyenne)."
+   "France métropolitaine apparaît sur 30 jours avec 5 incidents, contre aucun sur la période précédente (confiance moyenne).",
+   "Fuite de données apparaît sur 30 jours avec 5 incidents, contre aucun sur la période précédente (confiance moyenne)."
   ],
   "coverage": {
    "location": {
-    "known": 4,
-    "known_pct": 80.0,
-    "unknown": 1
+    "known": 5,
+    "known_pct": 100.0,
+    "unknown": 0
    },
    "sector": {
-    "known": 1,
-    "known_pct": 20.0,
-    "unknown": 4
+    "known": 2,
+    "known_pct": 40.0,
+    "unknown": 3
    },
    "threat": {
     "known": 5,
@@ -25,8 +25,8 @@
   "dated_incidents": 5,
   "diversity_90d": {
    "location": 0.0,
-   "sector": 0.0,
-   "threat": 0.722
+   "sector": 1.0,
+   "threat": 0.0
   },
   "exposure": {
    "documented": 4,
@@ -58,18 +58,18 @@
     "sectors": [
      {
       "count": 1,
+      "label": "Administration / Collectivité"
+     },
+     {
+      "count": 1,
       "label": "Sport"
      }
     ],
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 4,
+      "count": 5,
       "label": "Fuite de données"
-     },
-     {
-      "count": 1,
-      "label": "Incident tiers"
      }
     ]
    },
@@ -124,18 +124,18 @@
     "sectors": [
      {
       "count": 1,
+      "label": "Administration / Collectivité"
+     },
+     {
+      "count": 1,
       "label": "Sport"
      }
     ],
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 4,
+      "count": 5,
       "label": "Fuite de données"
-     },
-     {
-      "count": 1,
-      "label": "Incident tiers"
      }
     ]
    },
@@ -176,8 +176,8 @@
    "organisations": 5,
    "sources": 3,
    "unknown_pct": {
-    "location": 20.0,
-    "sector": 80.0,
+    "location": 0.0,
+    "sector": 60.0,
     "threat": 0.0
    },
    "with_summary_pct": 100.0
@@ -190,6 +190,9 @@
     "2026-08"
    ],
    "sector": {
+    "Administration / Collectivité": [
+     1
+    ],
     "Sport": [
      1
     ]
@@ -199,10 +202,7 @@
    ],
    "threat": {
     "Fuite de données": [
-     4
-    ],
-    "Incident tiers": [
-     1
+     5
     ]
    },
    "total": [
@@ -214,70 +214,72 @@
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 4,
-     "known_ratio": 0.75,
+     "incidents": 5,
+     "known_ratio": 0.8,
      "level": "medium",
      "multi_source_incidents": 4,
-     "score": 58
+     "score": 59
     },
-    "current": 4,
-    "delta": 4,
+    "current": 5,
+    "delta": 5,
     "dimension": "location",
     "excess_points": null,
     "incident_ids": [
      "INC-1DB4BB9CBF02",
      "INC-6DC1B3DE66B3",
+     "INC-C99133F13F25",
      "INC-CFB3AE4A9D63",
      "INC-FB978E513818"
     ],
     "kind": "emerging",
     "label": "France métropolitaine",
     "previous": 0,
-    "share_pct": 80.0,
+    "share_pct": 100.0,
     "window_days": 30
    },
    {
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 4,
-     "known_ratio": 0.75,
+     "incidents": 5,
+     "known_ratio": 0.8,
      "level": "medium",
      "multi_source_incidents": 4,
-     "score": 58
+     "score": 59
     },
-    "current": 4,
-    "delta": 4,
+    "current": 5,
+    "delta": 5,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
      "INC-1DB4BB9CBF02",
      "INC-6DC1B3DE66B3",
+     "INC-C99133F13F25",
      "INC-CFB3AE4A9D63",
      "INC-FB978E513818"
     ],
     "kind": "emerging",
     "label": "Fuite de données",
     "previous": 0,
-    "share_pct": 80.0,
+    "share_pct": 100.0,
     "window_days": 30
    }
   ],
   "top_90d": {
    "location": [
     {
-     "count": 4,
+     "count": 5,
      "label": "France métropolitaine"
-    },
-    {
-     "count": 1,
-     "label": "Inconnu"
     }
    ],
    "sector": [
     {
-     "count": 4,
+     "count": 3,
      "label": "Inconnu"
+    },
+    {
+     "count": 1,
+     "label": "Administration / Collectivité"
     },
     {
      "count": 1,
@@ -286,12 +288,8 @@
    ],
    "threat": [
     {
-     "count": 4,
+     "count": 5,
      "label": "Fuite de données"
-    },
-    {
-     "count": 1,
-     "label": "Incident tiers"
     }
    ]
   },

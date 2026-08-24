@@ -410,6 +410,33 @@
     return detailField("Volume documenté", values);
   }
 
+  const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", initial_access: "Vecteur d’entrée", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
+  const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
+  function documentedClaimsHtml(claims, organisation) {
+    if (!Array.isArray(claims)) return "";
+    const shown = claims.filter((claim) => {
+      const type = claim.type || "";
+      if (!CLAIM_LABELS[type] || !known(claim.value)) return false;
+      return !(type === "actor" && normalize(claim.value) === normalize(organisation));
+    }).slice(0, 12);
+    if (!shown.length) return "";
+    return `<div class="documented-claims"><h4>Faits sourcés</h4>${shown.map((claim) => {
+      const label = CLAIM_LABELS[claim.type] || "Information documentée";
+      const status = CLAIM_STATUS_LABELS[claim.status] || "Documenté";
+      const actor = claim.type === "attack_action" && known(claim.actor) ? ` — ${claim.actor}` : "";
+      const proof = claim.evidence ? ` title="${esc(claim.evidence)}"` : "";
+      return `<div class="resolved-field claim-field"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)} <span class="claim-status claim-status--${esc(claim.status || "unknown")}">${esc(status)}</span></dd></div>`;
+    }).join("")}</div>`;
+  }
+  function timelineHtml(rows) {
+    if (!Array.isArray(rows) || !rows.length) return "";
+    return `<div class="documented-claims"><h4>Chronologie documentée</h4>${rows.slice(0, 8).map((row) => {
+      const status = CLAIM_STATUS_LABELS[row.status] || "Documenté";
+      const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
+      return `<div class="resolved-field claim-field"><dt>${esc(row.date || "Date")}</dt><dd${proof}>${esc(row.event)} <span class="claim-status claim-status--${esc(row.status || "unknown")}">${esc(status)}</span></dd></div>`;
+    }).join("")}</div>`;
+  }
+
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
@@ -417,7 +444,7 @@
     const detail = facts[id];
     const sourceLinks = unique(incident.urls || []).map(safeUrl).filter(Boolean);
     const meta = [incident.date ? formatDate(incident.date) : "", incident.threat, incident.sector, incident.location].filter(known).join(" · ");
-    const validDetail = detail && detail.version === 2;
+    const validDetail = detail && detail.version === 3;
     const fields = validDetail ? detail.fields || {} : {};
     const values = validDetail ? [
       affectedHtml(detail.affected || []),
@@ -435,6 +462,8 @@
       detailField("Évolution", fields.evolution?.value),
       detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
       detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
+      documentedClaimsHtml(detail.claims || [], incident.org),
+      timelineHtml(detail.timeline || []),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     const tentativeChip = sectorTentativeChip(incident);

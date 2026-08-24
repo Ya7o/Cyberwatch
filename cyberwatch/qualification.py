@@ -26,6 +26,7 @@ from .qualification_decision import (
     snapshot_fields,
     summarize_decisions,
 )
+from .normalize import classify_threat, searchable
 from .sector_fallback_migration import restore_legacy_sector_fallbacks
 
 _AUTHORITATIVE_NATIVE_THREAT_SOURCES = frozenset({"VEILLE_LLM"})
@@ -68,6 +69,15 @@ def stabilize_threats(items):
     changed = 0
     for item in items:
         before = item.Threat
+        # Une fuite/exposition explicitement formulée dans le titre ou le
+        # libellé source reste la menace principale. Un prestataire compromis
+        # est alors un fait de contexte, jamais une catégorie qui l'écrase.
+        explicit = classify_threat(item.Title, item.Threat_Raw)
+        explicit_leak_words = ("fuite", "exposition de donnees", "donnees publiees", "donnees volees", "donnees exfiltrees")
+        if explicit == config.THREAT_LEAK or any(word in searchable(f"{item.Title} {item.Threat_Raw}") for word in explicit_leak_words):
+            item.Threat = config.THREAT_LEAK
+            changed += item.Threat != before
+            continue
         if item.Threat == config.THREAT_ACCOUNT:
             # Catégorie historique : un compte ou une messagerie compromis est
             # un vecteur, pas une menace principale.
