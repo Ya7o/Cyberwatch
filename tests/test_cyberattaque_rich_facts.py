@@ -72,6 +72,12 @@ def test_data_types_in_bullets_inherit_the_nearby_incident_context():
     assert {"adresses e-mail", "adresses postales", "contrats", "données bancaires"} <= values
 
 
+def test_assures_are_retained_as_people_counts():
+    entry = RawEntry(title="Exemple", content="Une fuite concerne 1 244 445 assurés.")
+    enrich_entry_metadata(entry)
+    assert any(row["value"] == 1_244_445 and row["unit"] == "people" for row in entry.source_metadata["rich_facts"]["affected_counts"])
+
+
 def test_site_payload_publishes_sanitized_rich_facts():
     entry = _dgfip_entry()
     enrich_entry_metadata(entry)

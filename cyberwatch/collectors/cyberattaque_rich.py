@@ -23,9 +23,9 @@ _CONFIRMED = re.compile(r"\b(?:confirme|confirm[ée]e?s?|reconna[iî]t|reconnu|a
 _CLAIMED = re.compile(r"\b(?:revendiqu[ée]e?s?|affirme|affirment|dit\s+avoir|selon\s+(?:l['’]?attaquant|le\s+groupe|les\s+pirates?))\b", re.I)
 _REPORTED = re.compile(r"\b(?:rapport[ée]e?s?|indique|indiquent|selon\s+(?:le|la|les|un|une)\s+)\b", re.I)
 
-_COUNT_RE = re.compile(r"(?P<number>\d[\d\s\u202f.,]*\d|\d)\s*(?P<scale>millions?|milliers?|mille)?\s*(?:de\s+|d['’])?\s*(?P<unit>comptes?|personnes?|utilisateurs?|clients?|lignes?|enregistrements?|dossiers?|fichiers?|victimes?|agents?|employ[ée]s?)\b", re.I)
+_COUNT_RE = re.compile(r"(?P<number>\d[\d\s\u202f.,]*\d|\d)\s*(?P<scale>millions?|milliers?|mille)?\s*(?:de\s+|d['’])?\s*(?P<unit>comptes?|personnes?|utilisateurs?|clients?|lignes?|enregistrements?|dossiers?|fichiers?|victimes?|agents?|employ[ée]s?|assur[ée]s?)\b", re.I)
 _UNIT_MAP = {
-    "compte":"accounts","comptes":"accounts","personne":"people","personnes":"people","victime":"people","victimes":"people","agent":"people","agents":"people","employe":"people","employes":"people","employee":"people","employees":"people",
+    "compte":"accounts","comptes":"accounts","personne":"people","personnes":"people","victime":"people","victimes":"people","agent":"people","agents":"people","employe":"people","employes":"people","employee":"people","employees":"people","assure":"people","assures":"people",
     "utilisateur":"users","utilisateurs":"users","client":"clients","clients":"clients","ligne":"records","lignes":"records","enregistrement":"records","enregistrements":"records","dossier":"files","dossiers":"files","fichier":"files","fichiers":"files",
 }
 _VOLUME_RE = re.compile(r"(?P<number>\d+(?:[.,]\d+)?)\s*(?P<unit>Ko|Mo|Go|To|KB|MB|GB|TB)\b", re.I)

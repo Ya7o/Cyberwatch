@@ -108,7 +108,7 @@ _UNIT_MAP = {
     "salarie": "people", "salaries": "people",
     "patient": "people", "patients": "people",
     "eleve": "people", "eleves": "people",
-    "abonne": "people", "abonnes": "people",
+    "abonne": "people", "abonnes": "people", "assure": "people", "assures": "people",
     "enregistrement": "records", "enregistrements": "records",
     "ligne": "records", "lignes": "records",
     "dossier": "files", "dossiers": "files",
