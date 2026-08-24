@@ -20,6 +20,14 @@ def test_priorite_source_et_fallback_scalaire():
     assert fallback["fields"]["threat_actor"]["value"] == "acteur documenté"
 
 
+def test_nom_organisation_n_est_jamais_une_synthese_publiable():
+    assert not fr.is_publishable_summary("Exemple SA", organisation="Exemple SA")
+    assert fr.best_publishable_summary([
+        fact("CYBERATTAQUE_ORG", summary="Exemple SA"),
+        fact("FRENCHBREACHES", summary="Exemple SA subit une fuite de données clients."),
+    ], organisation="Exemple SA") == "Exemple SA subit une fuite de données clients."
+
+
 def test_valeur_identique_agrege_les_sources():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", third_party="Prestataire X"),

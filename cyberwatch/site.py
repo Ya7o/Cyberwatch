@@ -40,8 +40,14 @@ def build() -> tuple[int, int]:
     # Le résolveur utilise comme fallback la synthèse historique sélectionnée
     # de façon déterministe. Dès que des faits structurés suffisent, une
     # display_summary compacte et canonique la remplace.
+    organisations = {
+        str(row.get("id") or ""): str(row.get("org") or "")
+        for row in payload
+    }
     fallback_summaries = {
-        incident_id: fact_resolution.best_publishable_summary(facts)
+        incident_id: fact_resolution.best_publishable_summary(
+            facts, organisation=organisations.get(incident_id, "")
+        )
         for incident_id, facts in raw_facts.items()
     }
     resolved = fact_resolution.resolve_all(raw_facts, fallback_summaries)

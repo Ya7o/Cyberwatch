@@ -387,9 +387,17 @@ _SUMMARY_GENERIC_CONFIRMATION_RE = re.compile(
 _SUMMARY_METRIC_RE = re.compile(r"^\d[\d\s,.]*(?:enregistrements|fichiers|comptes|personnes|clients)\b", re.I)
 
 
-def is_publishable_summary(value: str) -> bool:
+def is_publishable_summary(value: str, *, organisation: str = "") -> bool:
+    """Retourne si une headline peut être affichée sur une carte incident.
+
+    Une valeur égale au nom canonique de l'organisation est une ancienne
+    valeur de repli, pas une synthèse. Cette vérification doit aussi couvrir
+    les faits historiques qui n'ont pas nécessairement traversé SourceFacts.
+    """
     text = _text(value)
     if not is_publishable_headline(text):
+        return False
+    if organisation and _norm(text) == _norm(organisation):
         return False
     if (_SUMMARY_GENERIC_CONFIRMATION_RE.search(text)
             or _SUMMARY_METRIC_RE.match(text)):
@@ -397,12 +405,12 @@ def is_publishable_summary(value: str) -> bool:
     return True
 
 
-def best_publishable_summary(facts: Iterable[dict]) -> str:
+def best_publishable_summary(facts: Iterable[dict], *, organisation: str = "") -> str:
     """Choisit la meilleure headline déjà validée, jamais un détail structuré."""
     candidates = []
     for fact in _ordered_facts(facts):
         value = _text(fact.get("summary"))
-        if not is_publishable_summary(value):
+        if not is_publishable_summary(value, organisation=organisation):
             continue
         richness = sum(bool(fact.get(key)) for key in ("impact", "affected_count", "data_types", "threat_actor"))
         candidates.append((richness, -source_rank(fact.get("source")), value))
