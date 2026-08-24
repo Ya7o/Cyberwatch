@@ -45,6 +45,7 @@
   "location": "France métropolitaine",
   "org": "Declic Services",
   "sector": "Inconnu",
+  "sector_tentative": "Services aux entreprises",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires",
@@ -184,7 +185,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Cloud de l’État (cloud.numerique.gouv.fr)",
+  "summary": "Des milliers de données du Cloud de l’État ont été diffusées sur un forum de hackers.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cloud-de-l-tat-cloud-numerique-gouv-fr-mt4685xhf4it99ffgkq"
@@ -271,7 +272,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "iMapper.tech a subi une fuite de données avec des comptes exposés.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/imapper-tech-mt4kafe3uah19xev08q"
@@ -369,7 +370,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Bureau Vallée a subi une fuite de données affectant près de 4,82 millions de données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/bureau-vall-e-mt2opn2q7t914mz1rap"
@@ -487,13 +488,8 @@
   "location": "France métropolitaine",
   "org": "Xplor Resamania",
   "sector": "Inconnu",
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "identifiants",
-   "IBAN / RIB",
-   "données de santé",
-   "données bancaires"
-  ],
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
   "source_links": [
    {
     "source": "FRENCHBREACHES",
@@ -503,7 +499,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Fuite de données chez Xplor Resamania affectant plus de 5 millions d'adhérents.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/xplor-resamania-ms9zix0ogp9u7xkgvu5"
@@ -624,6 +620,7 @@
   "location": "France métropolitaine",
   "org": "FrenchInnov",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -668,7 +665,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Fuite de données affectant 4 179 clients Visa Infinite et Platinum chez John Paul.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/john-paul-mt1g0ll5v5vh0u0syq8"
@@ -762,7 +759,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "SFR subit une fuite de données avec plus de 2,1 millions de données revendiquées.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/sfr-mrp254s7k2z2s62yzqf"
@@ -1385,7 +1382,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Les données de plus de 50 000 clients de Achat Or et Argent ont été compromises.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/achat-or-et-argent-mqguqijb2kwf64ad0w7"
@@ -1449,7 +1446,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "EVA Charleroi a subi une fuite de données affectant 2 558 lignes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-charleroi-mswbb37w86m9htgoij3"
@@ -1544,7 +1541,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "La Fédération Française de Danse a subi une atteinte touchant 435 903 adhérents.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-danse-msvjcwu35yln9jygazd"
@@ -1571,7 +1568,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Fuite de données touchant 472 760 utilisateurs de la Fédération Française de Motocyclisme.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-motocyclisme-msvj2szkiclvx2gaoc"
@@ -1675,7 +1672,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "EVA Nantes Sud a été piraté, exposant les données de plus de 20 000 joueurs.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/eva-nantes-sud-mstk3dvhzt4kjp61n2"
@@ -1702,7 +1699,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Fuite de données de 2,8 millions d’enregistrements à la Fédération Française de Karaté.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-karat-msu63ykvxde9hwoosba"
@@ -1944,6 +1941,7 @@
   "location": "France métropolitaine",
   "org": "Clenet",
   "sector": "Inconnu",
+  "sector_tentative": "Services aux entreprises",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -1982,7 +1980,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Direction générale des Finances publiques (DGFiP)",
+  "summary": "Plus de 678 000 personnes concernées par une fuite de données à la Direction générale des Finances publiques.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/direction-g-n-rale-des-finances-publiques-dgfip-msq5rgy4cql9o0l7cus"
@@ -2118,7 +2116,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Publica a subi une fuite de données clients du service de magazines.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/publica-mspyx0388ayctyrqby7"
@@ -2217,7 +2215,7 @@
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "Gédimat a subi une cyberattaque entraînant la divulgation de données personnelles liées aux comptes gedimat.fr.",
+  "summary": "Gédimat a été victime d'une cyberattaque avec des données personnelles compromises.",
   "threat": "Fuite de données",
   "urls": [
    "https://bonjourlafuite.eu.org/img/gedimat.png",
@@ -2234,6 +2232,7 @@
   "location": "France métropolitaine",
   "org": "HeyPulse",
   "sector": "Inconnu",
+  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants"
@@ -2478,7 +2477,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "La mairie de Sixt-sur-Aff a été piratée, son site WordPress a été défacé.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/mairie-de-sixt-sur-aff-msmii0ydaxb7f5pq82k"
@@ -2650,7 +2649,6 @@
   "location": "France métropolitaine",
   "org": "Duvignau 40",
   "sector": "Inconnu",
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants"
@@ -2757,7 +2755,7 @@
   "location": "France métropolitaine",
   "org": "CLCV",
   "sector": "Inconnu",
-  "sector_tentative": "Sport",
+  "sector_tentative": "Commerce / Distribution",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -2855,7 +2853,6 @@
   "location": "France métropolitaine",
   "org": "Roussel Agri 62",
   "sector": "Inconnu",
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires"
@@ -2938,7 +2935,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Cyberattaque ciblant Le Lien Autonomie, service d’aide à domicile.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/le-lien-autonomie-msj4pgh7huoc9zlfspc"
@@ -2995,7 +2992,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Ressourc'brie a été victime d'un piratage.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ressourc-brie-msiy6s8ktdtfnh45mbc"
@@ -3106,7 +3103,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Une cyberattaque a eu lieu contre l'Association de la Caieta, une organisation d'ingénieurs de l'armement.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/association-de-la-caieta-msgpkbftje9wtx6u62"
@@ -3157,7 +3154,7 @@
   "location": "France métropolitaine",
   "org": "Bloctel",
   "sector": "Inconnu",
-  "sector_tentative": "Sport",
+  "sector_tentative": "Services aux entreprises",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants",
@@ -3246,7 +3243,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Les données de plus de 245 000 médecins et professionnels de santé ont été compromises dans l'incident de l'INSERM.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/inserm-mshn3qktwz0jhhrvfde"
@@ -3339,7 +3336,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Intermarché Drive a subi une violation de données affectant plus de 1,3 million de clients.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msf7vvhryw7nui45uho"
@@ -3479,7 +3476,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Intermarché Drive a subi une cyberattaque impliquant des données personnelles.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/intermarch-drive-msd3lq1z008txe7ifb90x"
@@ -3546,7 +3543,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Voxaly, spécialiste du vote électronique, visé par une fuite de données.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/voxaly-msde9mck0bpdloz5u6j7"
@@ -3562,7 +3559,6 @@
   "location": "France métropolitaine",
   "org": "ENT",
   "sector": "Inconnu",
-  "sector_tentative": "Éducation / Formation",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_links": [
@@ -3574,7 +3570,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "ENT (Seine et Marne)",
+  "summary": "{'value': 'Cyberattaque ciblant le portail ENT de Seine-et-Marne.', 'confidence': 1.0, 'evidence': 'Cyberattaque : le portail ENT de Seine'}",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/ent-seine-et-marne-msbmzcv3k4jirk0p3"
@@ -3782,7 +3778,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "CY Cergy Paris Université a été la cible d'une cyberattaque revendiquée.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/cy-cergy-paris-universit-msanv9saq6mlky1jlg"
@@ -3810,7 +3806,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Un pirate revendique le vol des données de l'entreprise Emploi Docteur Imago.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/emploi-docteur-imago-msalwlhrpzvx55d1kuf"

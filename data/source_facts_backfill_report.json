@@ -1,0 +1,51 @@
+{
+ "incidents": [
+  {
+   "headline": "Exemple SA a confirmé une intrusion informatique affectant ses services.",
+   "hydrated": true,
+   "item_id": "headline",
+   "organisation": "Exemple SA",
+   "reason": "",
+   "source_id": "CYBERATTAQUE_ORG",
+   "status": "accepted"
+  }
+ ],
+ "metrics": {
+  "abstained_retry_fields": 0,
+  "abstained_retry_item_ids": [],
+  "abstained_retry_items": 0,
+  "abstained_retry_restored": 0,
+  "accepted_headline_item_ids": [
+   "headline"
+  ],
+  "ai_stats": {
+   "calls_attempted": 0
+  },
+  "candidates_by_source": {
+   "CYBERATTAQUE_ORG": 1
+  },
+  "candidates_total": 1,
+  "candidates_without_source_fact": 1,
+  "dry_run": false,
+  "headlines_abstained": 0,
+  "headlines_accepted": 1,
+  "headlines_rejected_quality": 0,
+  "http_requests": 0,
+  "hydrated": 1,
+  "hydration_failed": 0,
+  "incidents_covered": 1,
+  "incidents_published_without_headline": 0,
+  "include_existing": false,
+  "refresh_complete": false,
+  "retry_abstained": false,
+  "retry_legacy_nulls": false,
+  "selected": 1,
+  "selected_by_source": {
+   "CYBERATTAQUE_ORG": 1
+  },
+  "source_facts_extracted": 1,
+  "source_facts_recovered": 1,
+  "technical_failures": 0
+ },
+ "schema_version": 1
+}

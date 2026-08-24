@@ -402,8 +402,15 @@
     "value": "comptes gedimat.fr"
    }
   ],
-  "display_summary": "Gédimat a subi une cyberattaque entraînant la divulgation de données personnelles liées aux comptes gedimat.fr.",
+  "display_summary": "Gédimat a été victime d'une cyberattaque avec des données personnelles compromises.",
   "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "des données personnelles compromises."
+   },
    "third_party": {
     "source": "FRENCHBREACHES",
     "sources": [
@@ -617,9 +624,10 @@
  "INC-1ECF87546892": {
   "affected": [
    {
-    "evidence": "Achat Or Et Argent : les données de plus de 50 000 clients...",
-    "raw": "50 000 clients",
-    "semantic": "unspecified",
+    "evidence": "les données de plus de 50 000 clients...",
+    "raw": "plus de 50 000 clients",
+    "scope": "total",
+    "semantic": "total",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -629,10 +637,35 @@
     "value": 50000
    }
   ],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données clients"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Les données de plus de 50 000 clients de Achat Or et Argent ont été compromises.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données de clients compromises"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -679,10 +712,33 @@
  },
  "INC-24879C0A8E07": {
   "affected": [],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données personnelles"
+   }
+  ],
   "datasets": [],
-  "display_summary": "Cloud de l’État (cloud.numerique.gouv.fr)",
-  "fields": {},
+  "display_summary": "Des milliers de données du Cloud de l’État ont été diffusées sur un forum de hackers.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Des milliers de données diffusées."
+   },
+   "threat_actor": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "forum de hackers"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1078,7 +1134,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Un pirate revendique le vol des données de l'entreprise Emploi Docteur Imago.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -1088,8 +1144,16 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "ENT (Seine et Marne)",
-  "fields": {},
+  "display_summary": "{'value': 'Cyberattaque ciblant le portail ENT de Seine-et-Marne.', 'confidence': 1.0, 'evidence': 'Cyberattaque : le portail ENT de Seine'}",
+  "fields": {
+   "fine_location": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Seine et Marne"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1097,22 +1161,39 @@
  "INC-2EC7AB82A87C": {
   "affected": [
    {
-    "evidence": "# Fuite de données revendiquée concernant la Fédération Française de Karaté : 2,8 millions d’enregistrements annoncés",
+    "evidence": "fuite de données de 2,8 millions d’enregistrements",
     "raw": "2,8 millions d’enregistrements",
-    "semantic": "unspecified",
+    "scope": "total",
+    "semantic": "total",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "claimed",
+    "status": "unknown",
     "unit": "records",
     "value": 2800000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "enregistrements"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "Fuite de données de 2,8 millions d’enregistrements à la Fédération Française de Karaté.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de 2,8 millions d’enregistrements."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1279,7 +1360,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "La mairie de Sixt-sur-Aff a été piratée, son site WordPress a été défacé.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -1288,22 +1369,10 @@
  "INC-401EAF29A613": {
   "affected": [
    {
-    "evidence": "# Fuite de données revendiquée sur impots.gouv.fr : 678 438 lignes et des données fiscales sensibles potentiellement compromises",
-    "raw": "678 438 lignes",
-    "scope": "données fiscales",
-    "semantic": "donnees fiscales",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "unit": "records",
-    "value": 678438
-   },
-   {
-    "evidence": "Impôts : plus de 678 000 personnes concernées par une fuite de données...",
-    "raw": "678 000 personnes",
-    "semantic": "unspecified",
+    "evidence": "plus de 678 000 personnes concernées par une fuite de données.",
+    "raw": "plus de 678 000 personnes",
+    "scope": "fuite de données",
+    "semantic": "fuite de donnees",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -1313,27 +1382,18 @@
     "value": 678000
    }
   ],
-  "data_types": [
-   {
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "Plus de 678 000 personnes concernées par une fuite de données à la Direction générale des Finances publiques.",
+  "fields": {
+   "impact": {
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "value": "données fiscales"
+    "value": "Fuite de données personnelles."
    }
-  ],
-  "datasets": [
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "données fiscales"
-   }
-  ],
-  "display_summary": "Direction générale des Finances publiques (DGFiP)",
-  "fields": {},
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1341,21 +1401,22 @@
  "INC-41A8AB5D39A1": {
   "affected": [
    {
-    "evidence": "# Fuite de données revendiquée chez EVA Charleroi :  2 558 lignes d'enregistrements concernés",
+    "evidence": "2 558 lignes... (avant )",
     "raw": "2 558 lignes",
-    "semantic": "unspecified",
+    "scope": "fuite de données",
+    "semantic": "fuite de donnees",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "claimed",
+    "status": "unknown",
     "unit": "records",
     "value": 2558
    }
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "EVA Charleroi a subi une fuite de données affectant 2 558 lignes.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -1501,47 +1562,29 @@
     "sources": [
      "FRENCHBREACHES"
     ],
-    "value": "identifiants"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "mots de passe"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "IBAN / RIB"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "données de santé"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "données personnelles"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "données bancaires"
+    "value": "données adhérents"
    }
   ],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base de données des adhérents"
+   }
+  ],
+  "display_summary": "Fuite de données chez Xplor Resamania affectant plus de 5 millions d'adhérents.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Exposition des données de plus de 5 millions d'adhérents."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1631,8 +1674,16 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "iMapper.tech a subi une fuite de données avec des comptes exposés.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "comptes exposés"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -1998,7 +2049,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Ressourc'brie a été victime d'un piratage.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -2008,7 +2059,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Une cyberattaque a eu lieu contre l'Association de la Caieta, une organisation d'ingénieurs de l'armement.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -2439,7 +2490,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Voxaly, spécialiste du vote électronique, visé par une fuite de données.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -2516,10 +2567,35 @@
  },
  "INC-7FD50AB5A075": {
   "affected": [],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données de médecins"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base de données des médecins"
+   }
+  ],
+  "display_summary": "Les données de plus de 245 000 médecins et professionnels de santé ont été compromises dans l'incident de l'INSERM.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Compromission de données de plus de 245 000 médecins et professionnels de santé."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -2965,7 +3041,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Fuite de données touchant 472 760 utilisateurs de la Fédération Française de Motocyclisme.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -3311,22 +3387,46 @@
  "INC-9504AB2AB6DD": {
   "affected": [
    {
-    "evidence": "# Cyberattaque revendiquée contre EVA Nantes Sud : les données de plus de 20 000 personnes potentiellement compromises",
-    "raw": "20 000 personnes",
+    "raw": "plus de 20 000 personnes",
     "semantic": "unspecified",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "claimed",
     "unit": "people",
     "value": 20000
    }
   ],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données de joueurs"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base de données des joueurs"
+   }
+  ],
+  "display_summary": "EVA Nantes Sud a été piraté, exposant les données de plus de 20 000 joueurs.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "exposition des données de plus de 20 000 joueurs"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -3609,10 +3709,26 @@
     "value": 4820000
    }
   ],
-  "data_types": [],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "données personnelles"
+   }
+  ],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "Bureau Vallée a subi une fuite de données affectant près de 4,82 millions de données personnelles.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de données personnelles."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -3928,7 +4044,7 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Cyberattaque ciblant Le Lien Autonomie, service d’aide à domicile.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -4156,8 +4272,16 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "SFR subit une fuite de données avec plus de 2,1 millions de données revendiquées.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de données avec plus de 2,1 millions de données concernées."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -4329,8 +4453,16 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "La Fédération Française de Danse a subi une atteinte touchant 435 903 adhérents.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "435 903 adhérents concernés"
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -4499,9 +4631,10 @@
  "INC-C5CF7480F918": {
   "affected": [
    {
-    "evidence": "# Fuite de données : 4 179 clients Visa Infinite et Platinum concernés après le piratage d’un prestataire de conciergerie",
+    "evidence": "Fuite de données John Paul : 4 179 clients Visa Infinite et Platinum.",
     "raw": "4 179 clients",
-    "semantic": "unspecified",
+    "scope": "Visa Infinite et Platinum",
+    "semantic": "visa infinite et platinum",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -4517,12 +4650,36 @@
     "sources": [
      "FRENCHBREACHES"
     ],
-    "value": "données personnelles"
+    "value": "noms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "e-mails"
    }
   ],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Fuite de données affectant 4 179 clients Visa Infinite et Platinum chez John Paul.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Fuite de données de 4 179 clients."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -4931,7 +5088,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Publica a subi une fuite de données clients du service de magazines.",
   "fields": {},
   "systems": [],
   "version": 2,
@@ -4941,7 +5098,7 @@
   "affected": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "CY Cergy Paris Université a été la cible d'une cyberattaque revendiquée.",
   "fields": {
    "data_volume": {
     "source": "FRENCHBREACHES",
@@ -5938,8 +6095,16 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "Intermarché Drive a subi une cyberattaque impliquant des données personnelles.",
+  "fields": {
+   "impact": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "Exposition de données personnelles."
+   }
+  },
   "systems": [],
   "version": 2,
   "vulnerabilities": []
@@ -6027,42 +6192,23 @@
  "INC-FE7999A11279": {
   "affected": [
    {
-    "evidence": "Une publication apparue sur un forum cybercriminel revendique le piratage d'**Intermarché Drive** et affirme mettre en vente une base de données contenant **1 393 807 enregistrements**.",
-    "raw": "1 393 807 enregistrements",
-    "semantic": "unspecified",
+    "evidence": "Plus de 1,3 million de clients Intermarché Drive potentiellement...",
+    "raw": "Plus de 1,3 million de clients",
+    "scope": "Intermarché Drive",
+    "semantic": "intermarche drive",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "claimed",
-    "unit": "records",
-    "value": 1393807
-   },
-   {
-    "evidence": "# Intermarché Drive : un cybercriminel revendique la mise en vente de la base de données de plus de 1,39 million de clients",
-    "raw": "1,39 million de clients",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
+    "status": "unknown",
     "unit": "clients",
-    "value": 1390000
+    "value": 1300000
    }
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
-  "fields": {
-   "initial_access": {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "value": "remote_access"
-   }
-  },
+  "display_summary": "Intermarché Drive a subi une violation de données affectant plus de 1,3 million de clients.",
+  "fields": {},
   "systems": [],
   "version": 2,
   "vulnerabilities": []
