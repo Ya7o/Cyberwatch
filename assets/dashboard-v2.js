@@ -438,17 +438,27 @@
     return ` <span class="claim-status claim-status--${esc(status)}">${esc(label)}</span>`;
   }
 
+  const VOLUME_VISIBLE_CAP = 4;
   function affectedHtml(records) {
     if (!Array.isArray(records) || !records.length) return detailField("Volume documenté", []);
-    // Le badge de statut ne vit que sur le champ Acteur (retour utilisateur) :
-    // ces puces restent volontairement neutres, sans badge par entrée.
-    const chips = records.map((record) => {
+    const chipText = (record) => {
       const raw = record.raw || "";
       let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
       if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
-      return `<span class="detail-chip">${esc(value)}</span>`;
-    });
-    return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${chips.join("")}</dd></div>`;
+      return value;
+    };
+    const chip = (record) => `<span class="detail-chip">${esc(chipText(record))}</span>`;
+    // Le badge de statut ne vit que sur le champ Acteur (retour utilisateur) :
+    // ces puces restent volontairement neutres, sans badge par entrée.
+    // Une dizaine de chiffres proches est illisible d'un coup d'œil : seuls
+    // les plus significatifs restent visibles, le reste se déplie.
+    const sorted = [...records].sort((a, b) => (Number(b.value) || 0) - (Number(a.value) || 0));
+    const visible = sorted.slice(0, VOLUME_VISIBLE_CAP);
+    const rest = sorted.slice(VOLUME_VISIBLE_CAP);
+    const restHtml = rest.length
+      ? `<details class="volume-more"><summary>${rest.length} autre${rest.length > 1 ? "s" : ""} valeur${rest.length > 1 ? "s" : ""}</summary>${rest.map(chip).join("")}</details>`
+      : "";
+    return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${visible.map(chip).join("")}${restHtml}</dd></div>`;
   }
 
   function timelineHtml(rows) {
@@ -476,26 +486,7 @@
     return `<details class="resolved-facts-section resolved-facts-section--collapsible"><summary>${esc(title)}</summary>${content}</details>`;
   }
 
-  const CLAIM_LABELS = { attack_action: "Action documentée", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
-  function documentedClaimsHtml(claims) {
-    // Acteur, tiers impliqué et impact ont désormais leur propre champ
-    // structuré (voir openIncident) : les répéter ici serait la redondance
-    // visible dans l'audit. Cette section ne garde donc que les types de
-    // claims sans équivalent structuré, et sans badge de statut — celui-ci
-    // ne vit que sur le champ Acteur (retour utilisateur).
-    if (!Array.isArray(claims)) return "";
-    const shown = claims.filter((claim) => CLAIM_LABELS[claim.type || ""] && known(claim.value)).slice(0, 12);
-    if (!shown.length) return "";
-    const rows = shown.map((claim) => {
-      const label = CLAIM_LABELS[claim.type] || "Information documentée";
-      const actor = claim.type === "attack_action" && known(claim.actor) ? ` — ${claim.actor}` : "";
-      const proof = claim.evidence ? ` title="${esc(claim.evidence)}"` : "";
-      const wide = String(`${claim.value || ""}${actor}`).trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)}</dd></div>`;
-    }).join("");
-    return `<details class="documented-claims"><summary>Autres éléments documentés (${shown.length})</summary>${rows}</details>`;
-  }
 
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
@@ -529,7 +520,6 @@
         detailField("Systèmes & périmètres concernés", systemsAndPerimeters),
         detailField("Impact", fields.impact?.value),
       ]),
-      documentedClaimsHtml(detail.claims || []),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     const tentativeChip = sectorTentativeChip(incident);

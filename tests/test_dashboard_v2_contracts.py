@@ -151,17 +151,14 @@ def test_volume_documente_porte_un_badge_de_statut_par_entree():
 
 def test_le_badge_de_statut_n_apparait_qu_au_niveau_de_l_acteur():
     """Retour utilisateur round 2 : les bulles "Revendiqué" apparaissaient
-    encore sur Tiers/Impact, chaque puce de Volume documenté, chaque ligne de
-    chronologie et chaque ligne d'"Autres éléments documentés" — pas
-    seulement une fois. Le badge ne doit plus vivre que sur "Acteur
-    revendicateur"."""
+    encore sur Tiers/Impact, chaque puce de Volume documenté et chaque ligne
+    de chronologie — pas seulement une fois. Le badge ne doit plus vivre que
+    sur "Acteur revendicateur"."""
     js = _read("assets/dashboard-v2.js")
-    assert "function documentedClaimsHtml(claims)" in js
-    assert 'const CLAIM_LABELS = { attack_action: "Action documentée", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };' in js
+    assert "function documentedClaimsHtml" not in js
     assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status)' in js
     assert 'detailField("Tiers impliqué", fields.third_party?.value)' in js
     assert 'detailField("Impact", fields.impact?.value)' in js
-    assert "documentedClaimsHtml(detail.claims || [])" in js
     # statusBadge() n'est plus appelé que dans sa propre définition et dans
     # detailField() (qui ne le déclenche que si un status lui est passé —
     # seul l'appel Acteur ci-dessus lui en passe un).
@@ -310,3 +307,48 @@ def test_facts_json_commite_est_strictement_v3():
     assert isinstance(facts, dict)
     assert facts
     assert all(isinstance(detail, dict) and detail.get("version") == 3 for detail in facts.values())
+
+
+def test_groupes_et_puces_de_donnees_partagent_l_echelle_typographique_harmonisee():
+    """Root cause round 3 : `.incident-data-group > summary` (style.css, code
+    hérité) porte `font-weight:600` sans aucune taille de police, donc il
+    hérite du corps de page (~16px) — bien plus gros que le reste de la
+    fiche redessinée (.82-.86rem). Même lacune sur `.incident-data-value`."""
+    css = _read("assets/dashboard-v2.css")
+    assert ".incident-data-group > summary { min-height:0; padding:.15rem 0; font-size:.86rem; color:var(--text-secondary); }" in css
+    assert ".incident-data-value { padding:.14rem .45rem; font-size:.82rem; }" in css
+    assert ".incident-data-types-title { grid-column:1 / -1; margin-bottom:0; font-size:.86rem; }" in css
+
+
+def test_volume_documente_plafonne_les_puces_visibles():
+    """Retour utilisateur round 3 : jusqu'à 10-12 puces dans "Volume
+    documenté" (cas réel Solimut) rendaient le champ illisible. Seules les
+    plus significatives restent visibles ; le reste se déplie."""
+    js = _read("assets/dashboard-v2.js")
+    assert "const VOLUME_VISIBLE_CAP = 4;" in js
+    assert "const sorted = [...records].sort((a, b) => (Number(b.value) || 0) - (Number(a.value) || 0));" in js
+    assert 'class="volume-more"' in js
+
+
+def test_autres_elements_documentes_est_retire_de_la_fiche():
+    """Retour utilisateur round 3 : même après le filtre anti-générique du
+    round 2 (voir fact_resolution.py::_is_generic_claim_value), un résidu
+    comme "accès, extraction et mise en ligne de données" reste un
+    passe-partout sans valeur ajoutée pour un incident précis. Section
+    retirée plutôt qu'un 3ᵉ raffinement de filtre."""
+    js = _read("assets/dashboard-v2.js")
+    assert "documentedClaimsHtml" not in js
+    assert "detail.claims" not in js
+
+
+def test_boucle_de_reparation_des_claims_numeriques_ignore_les_claims_deja_types():
+    """Root cause round 3 : la boucle de réparation de `_rich_count_records()`
+    (destinée, selon son propre commentaire, aux claims qui ont "perdu leur
+    type") s'appliquait en réalité à tous les claims numériques, dupliquant
+    dans "Volume documenté" des claims déjà typés `affected_count`/
+    `data_volume` — avec un `raw` non formaté en prime (cas réel Solimut :
+    "1000000" affiché sans séparateur ni unité)."""
+    backend = _read("cyberwatch/fact_resolution.py")
+    assert 'if _text(claim.get("type")):' in backend
+    assert '"raw": _text(claim.get("raw"))})' in backend
+    assert '"raw": _text(claim.get("raw")) or value})' not in backend

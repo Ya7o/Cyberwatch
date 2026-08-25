@@ -88,12 +88,6 @@
    seule ligne — un rectangle arrondi reste propre dans les deux cas. */
 .detail-chip { border:1px solid var(--border); border-radius:12px; padding:.18rem .5rem; font-size:.82rem; }
 .detail-empty { color:var(--text-muted); }
-/* Section repliable réutilisée pour la chronologie détaillée et les
-   éléments documentés résiduels : un <details> natif, comme ailleurs dans
-   le dashboard (types de données, détail des sources). */
-.documented-claims > summary { cursor:pointer; padding:.4rem 0; font-size:.86rem; color:var(--text-muted); user-select:none; list-style-position:outside; }
-.documented-claims > summary:hover { color:inherit; }
-.documented-claims[open] > summary { margin-bottom:.2rem; }
 .detail-sources { margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:grid; gap:.6rem; }
 .evidence-links { display:flex; flex-wrap:wrap; gap:.5rem; }
 .evidence-links a { font-size:.82rem; }
@@ -120,17 +114,28 @@
 .resolved-field { grid-template-columns:minmax(150px,190px) 1fr; gap:.75rem; padding:.45rem 0; }
 .detail-chip { padding:.16rem .48rem; }
 .incident-data-types { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.35rem .8rem; margin-top:.45rem; }
-.incident-data-types-title { grid-column:1 / -1; margin-bottom:0; }
+/* style.css définit .incident-data-group/.incident-data-value (legacy,
+   réutilisés ici) sans taille de police : ils héritaient donc du corps de
+   page (~16px), plus gros que tout le reste de la fiche redessinée
+   (.82-.86rem). Rebranchés ici sur la même échelle harmonisée. */
+.incident-data-types-title { grid-column:1 / -1; margin-bottom:0; font-size:.86rem; }
 .incident-data-group { margin:0; }
-.incident-data-group > summary { min-height:0; padding:.15rem 0; }
+.incident-data-group > summary { min-height:0; padding:.15rem 0; font-size:.86rem; color:var(--text-secondary); }
 .incident-data-values { margin-top:.25rem; }
-.incident-data-value { padding:.14rem .45rem; }
+.incident-data-value { padding:.14rem .45rem; font-size:.82rem; }
 .incident-data-value--sensitivity-moderate { background:rgba(190,130,0,.10); border-color:rgba(190,130,0,.34); }
 .incident-data-value--sensitivity-high { background:rgba(190,62,62,.11); border-color:rgba(190,62,62,.38); }
 .incident-data-value--sensitivity-critical { background:rgba(190,62,62,.18); border-color:rgba(190,62,62,.58); }
+/* "+N autres valeurs" : repli du même type que les groupes de données
+   ci-dessus, pour ne pas noyer la fiche sous une dizaine de puces. */
+.volume-more { flex-basis:100%; margin-top:.2rem; }
+.volume-more > summary { cursor:pointer; font-size:.82rem; color:var(--text-muted); list-style:none; }
+.volume-more > summary::-webkit-details-marker { display:none; }
+.volume-more > summary::before { content:"+ "; }
+.volume-more[open] > summary { margin-bottom:.35rem; }
+.volume-more .detail-chip { margin:.15rem .35rem .15rem 0; display:inline-block; }
 .detail-sources { margin-top:.8rem; padding-top:.75rem; gap:.4rem; }
 .detail-sources .incident-source-badges { justify-content:flex-start; }
-.documented-claims { margin-top:.6rem; }
 .claim-field dd { align-items:center; }
 .claim-status { display:inline-block; margin-left:.2rem; padding:.08rem .38rem; border:1px solid var(--border); border-radius:999px; color:var(--text-muted); font-size:.72rem; line-height:1.2; }
 .claim-status--confirmed { border-color:rgba(30,130,80,.45); color:#167147; }
