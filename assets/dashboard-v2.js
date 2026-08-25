@@ -419,7 +419,11 @@
         const tierClass = tier ? ` incident-data-value--sensitivity-${tier}` : "";
         return `<span class="incident-data-value${tierClass}">${esc(value)}</span>`;
       }).join("");
-      return `<details class="incident-data-group"><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${chips}</div></details>`;
+      // Un groupe contenant du sensible (mot de passe, IBAN, santé…) mérite
+      // d'être visible sans clic supplémentaire, contrairement à un groupe
+      // anodin (ex. coordonnées) qui reste replié par défaut.
+      const hasSensitive = items.some((value) => ["critical", "high"].includes(dataTypeSensitivity(value)));
+      return `<details class="incident-data-group"${hasSensitive ? " open" : ""}><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${chips}</div></details>`;
     }).filter(Boolean).join("");
     return `<div class="incident-data-types"><div class="incident-data-types-title">Données exposées :</div>${rendered}</div>`;
   }
@@ -436,14 +440,13 @@
 
   function affectedHtml(records) {
     if (!Array.isArray(records) || !records.length) return detailField("Volume documenté", []);
-    // Un chiffre contesté (négation) ou hypothétique porte le même poids
-    // visuel qu'un chiffre confirmé si on le rend en simple detail-chip : le
-    // badge de statut, déjà utilisé pour les faits sourcés, distingue les deux.
+    // Le badge de statut ne vit que sur le champ Acteur (retour utilisateur) :
+    // ces puces restent volontairement neutres, sans badge par entrée.
     const chips = records.map((record) => {
       const raw = record.raw || "";
       let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
       if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
-      return `<span class="detail-chip">${esc(value)}${statusBadge(record.status || "unknown")}</span>`;
+      return `<span class="detail-chip">${esc(value)}</span>`;
     });
     return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${chips.join("")}</dd></div>`;
   }
@@ -459,23 +462,28 @@
       const date = known(row.date) ? formatDate(row.date) : "Date non précisée";
       const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
       const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(date)}</dt><dd${proof}>${esc(row.event)}${statusBadge(row.status || "unknown")}</dd></div>`;
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(date)}</dt><dd${proof}>${esc(row.event)}</dd></div>`;
     }).join("");
   }
 
-  function detailSection(title, fields) {
+  function detailSection(title, fields, { collapsible = false } = {}) {
     const content = fields.filter(Boolean).join("");
-    return content ? `<section class="resolved-facts-section"><h4>${esc(title)}</h4>${content}</section>` : "";
+    if (!content) return "";
+    if (!collapsible) return `<section class="resolved-facts-section"><h4>${esc(title)}</h4>${content}</section>`;
+    // Repliée par défaut : la section entière (titre + contenu), pas
+    // seulement une liste imbriquée à l'intérieur (retour utilisateur sur
+    // la chronologie, "trop imposante" quand tout est déplié d'un coup).
+    return `<details class="resolved-facts-section resolved-facts-section--collapsible"><summary>${esc(title)}</summary>${content}</details>`;
   }
 
   const CLAIM_LABELS = { attack_action: "Action documentée", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
   function documentedClaimsHtml(claims) {
     // Acteur, tiers impliqué et impact ont désormais leur propre champ
-    // structuré avec badge de statut (voir openIncident) : les répéter ici
-    // serait la redondance visible dans l'audit ("Revendiqué" plusieurs
-    // fois). Cette section ne garde donc que les types de claims sans
-    // équivalent structuré.
+    // structuré (voir openIncident) : les répéter ici serait la redondance
+    // visible dans l'audit. Cette section ne garde donc que les types de
+    // claims sans équivalent structuré, et sans badge de statut — celui-ci
+    // ne vit que sur le champ Acteur (retour utilisateur).
     if (!Array.isArray(claims)) return "";
     const shown = claims.filter((claim) => CLAIM_LABELS[claim.type || ""] && known(claim.value)).slice(0, 12);
     if (!shown.length) return "";
@@ -484,7 +492,7 @@
       const actor = claim.type === "attack_action" && known(claim.actor) ? ` — ${claim.actor}` : "";
       const proof = claim.evidence ? ` title="${esc(claim.evidence)}"` : "";
       const wide = String(`${claim.value || ""}${actor}`).trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)}${statusBadge(claim.status || "unknown")}</dd></div>`;
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)}</dd></div>`;
     }).join("");
     return `<details class="documented-claims"><summary>Autres éléments documentés (${shown.length})</summary>${rows}</details>`;
   }
@@ -505,7 +513,7 @@
     const values = validDetail ? [
       detailSection("Acteur & vecteur", [
         detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status),
-        detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status),
+        detailField("Tiers impliqué", fields.third_party?.value),
         detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : ""),
         detailField("Vulnérabilités exploitées", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
         detailField("CVSS", fields.cvss?.value),
@@ -513,17 +521,13 @@
       detailSection("Chronologie", [
         detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : ""),
         detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : ""),
-        timelineRows
-          ? `<details class="documented-claims"><summary>Chronologie détaillée</summary>${timelineRows}</details>`
-          : detailField("Chronologie détaillée", []),
-      ]),
+        timelineRows,
+      ], { collapsible: true }),
       detailSection("Impact & données compromises", [
         affectedHtml(detail.affected || []),
         dataTypesHtml(detail.data_types || []),
         detailField("Systèmes & périmètres concernés", systemsAndPerimeters),
-        detailField("Impact", fields.impact?.value, fields.impact?.status),
-        detailField("Localisation précise", fields.fine_location?.value),
-        detailField("Évolution / suite donnée", fields.evolution?.value),
+        detailField("Impact", fields.impact?.value),
       ]),
       documentedClaimsHtml(detail.claims || []),
     ].filter(Boolean).join("") : "";

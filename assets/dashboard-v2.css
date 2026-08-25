@@ -24,16 +24,16 @@
 .signal-card + .signal-card { margin-top:.75rem; }
 .signal-card--compact { margin:0; }
 .signal-card-head { display:flex; gap:.7rem; align-items:flex-start; }
-.signal-card-head p { margin:.25rem 0 0; color:var(--muted); }
+.signal-card-head p { margin:.25rem 0 0; color:var(--text-muted); }
 .trend-arrow { font-size:1.35rem; font-weight:800; line-height:1; }
 .signal-card details { border-top:1px solid var(--border); padding-top:.7rem; }
 .signal-card summary { cursor:pointer; font-weight:650; }
-.signal-why { padding:.55rem 0 0; color:var(--muted); }
+.signal-why { padding:.55rem 0 0; color:var(--text-muted); }
 .signal-why ul { margin:.45rem 0 0 1.2rem; }
 .search-bar { align-items:end; }
 .quick-filters { display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 .85rem; }
 .location-picker { position:relative; }
-.location-picker > span { display:block; font-size:.78rem; margin-bottom:.28rem; color:var(--muted); }
+.location-picker > span { display:block; font-size:.78rem; margin-bottom:.28rem; color:var(--text-muted); }
 .location-menu { position:absolute; z-index:20; min-width:260px; max-height:320px; overflow:auto; top:calc(100% + .4rem); left:0; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:0 16px 40px rgba(0,0,0,.16); padding:.5rem; }
 .location-menu[hidden] { display:none; }
 .location-menu label { display:flex; align-items:center; gap:.45rem; padding:.45rem .5rem; border-radius:8px; }
@@ -50,10 +50,10 @@
 .ocean-compare { gap:1rem; }
 .ocean-profile { display:grid; gap:.3rem; }
 .ocean-profile span { font-size:1.4rem; font-weight:750; }
-.ocean-profile small { color:var(--muted); line-height:1.45; }
+.ocean-profile small { color:var(--text-muted); line-height:1.45; }
 .source-leds { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:.6rem; }
 .source-status { border:1px solid var(--border); border-radius:10px; padding:.7rem; display:grid; grid-template-columns:auto 1fr; column-gap:.5rem; align-items:center; }
-.source-status small { grid-column:2; color:var(--muted); }
+.source-status small { grid-column:2; color:var(--text-muted); }
 .source-dot { width:.6rem; height:.6rem; border-radius:50%; background:#999; }
 .source-dot[data-status="OK"],.source-dot[data-status="ok"] { background:#21a366; }
 .sources-detail { overflow:auto; margin-top:1rem; }
@@ -68,22 +68,30 @@
 .detail-dialog { width:min(840px,calc(100vw - 2rem)); max-height:88vh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
 .detail-heading { margin-bottom:.8rem; }
 .detail-heading h2 { margin-bottom:.25rem; }
-.detail-heading p { margin:0; color:var(--muted); }
+.detail-heading p { margin:0; color:var(--text-muted); }
 .detail-summary { font-size:1.02rem; line-height:1.6; padding:.85rem 1rem; background:var(--surface-soft,var(--surface)); border-radius:12px; }
 .resolved-facts { margin-top:1rem; }
 .resolved-facts h3 { margin-bottom:.75rem; }
 .resolved-facts-section { margin-top:1.1rem; }
 .resolved-facts-section:first-child { margin-top:0; }
-.resolved-facts-section h4 { margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.02em; }
+.resolved-facts-section h4 { margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.02em; }
+/* Variante repliable : le titre de section devient le déclencheur du
+   <details>, avec le même habillage typographique que le h4 ci-dessus. */
+.resolved-facts-section--collapsible > summary { cursor:pointer; margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.02em; user-select:none; }
+.resolved-facts-section--collapsible[open] > summary { margin-bottom:.3rem; }
 .resolved-field { display:grid; grid-template-columns:minmax(150px,220px) 1fr; gap:1rem; padding:.65rem 0; border-top:1px solid var(--border); }
-.resolved-field dt { color:var(--muted); font-size:.86rem; }
+.resolved-field dt { color:var(--text-muted); font-size:.86rem; }
 .resolved-field dd { margin:0; line-height:1.5; display:flex; gap:.35rem; flex-wrap:wrap; align-items:center; }
-.detail-chip { border:1px solid var(--border); border-radius:999px; padding:.18rem .5rem; font-size:.82rem; }
-.detail-empty { color:var(--muted); }
+/* Rayon modéré plutôt qu'une pilule pleine (999px) : une puce longue
+   ("14 947 adresses e-mail uniques") s'enroule parfois sur 2 lignes, et une
+   pilule pleine se déforme visuellement dès qu'elle n'est plus sur une
+   seule ligne — un rectangle arrondi reste propre dans les deux cas. */
+.detail-chip { border:1px solid var(--border); border-radius:12px; padding:.18rem .5rem; font-size:.82rem; }
+.detail-empty { color:var(--text-muted); }
 /* Section repliable réutilisée pour la chronologie détaillée et les
    éléments documentés résiduels : un <details> natif, comme ailleurs dans
    le dashboard (types de données, détail des sources). */
-.documented-claims > summary { cursor:pointer; padding:.4rem 0; font-size:.86rem; color:var(--muted); user-select:none; list-style-position:outside; }
+.documented-claims > summary { cursor:pointer; padding:.4rem 0; font-size:.86rem; color:var(--text-muted); user-select:none; list-style-position:outside; }
 .documented-claims > summary:hover { color:inherit; }
 .documented-claims[open] > summary { margin-bottom:.2rem; }
 .detail-sources { margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:grid; gap:.6rem; }
@@ -124,7 +132,7 @@
 .detail-sources .incident-source-badges { justify-content:flex-start; }
 .documented-claims { margin-top:.6rem; }
 .claim-field dd { align-items:center; }
-.claim-status { display:inline-block; margin-left:.2rem; padding:.08rem .38rem; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:.72rem; line-height:1.2; }
+.claim-status { display:inline-block; margin-left:.2rem; padding:.08rem .38rem; border:1px solid var(--border); border-radius:999px; color:var(--text-muted); font-size:.72rem; line-height:1.2; }
 .claim-status--confirmed { border-color:rgba(30,130,80,.45); color:#167147; }
 .claim-status--claimed,.claim-status--hypothesis { border-color:rgba(180,125,0,.45); color:#8a5d00; }
 
@@ -149,5 +157,5 @@
   .resolved-field dt, .resolved-field dd { font-size:.84rem; }
   .detail-dialog { max-height:92vh; }
   .detail-heading h2 { font-size:1.15rem; }
-  .resolved-facts-section h4 { font-size:.76rem; }
+  .resolved-facts-section h4, .resolved-facts-section--collapsible > summary { font-size:.76rem; }
 }

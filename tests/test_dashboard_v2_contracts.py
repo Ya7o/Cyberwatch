@@ -149,39 +149,50 @@ def test_volume_documente_porte_un_badge_de_statut_par_entree():
     assert "CLAIM_STATUS_LABELS[status]" in js
 
 
-def test_faits_sources_ne_repetent_pas_acteur_et_tiers_deja_affiches():
-    """Acteur/Tiers/Impact rendus une seule fois : Solimut affichait "misere"
-    jusqu'à 3 fois (fields.threat_actor + claim actor + suffixe attack_action).
-    Le badge de statut du claim gagnant est désormais republié par
-    fact_resolution.py directement sur le champ structuré (fields.X.status) :
-    "Autres éléments documentés" ne garde donc que les types de claims sans
-    champ structuré équivalent (acteur/tiers/impact en sont exclus)."""
+def test_le_badge_de_statut_n_apparait_qu_au_niveau_de_l_acteur():
+    """Retour utilisateur round 2 : les bulles "Revendiqué" apparaissaient
+    encore sur Tiers/Impact, chaque puce de Volume documenté, chaque ligne de
+    chronologie et chaque ligne d'"Autres éléments documentés" — pas
+    seulement une fois. Le badge ne doit plus vivre que sur "Acteur
+    revendicateur"."""
     js = _read("assets/dashboard-v2.js")
     assert "function documentedClaimsHtml(claims)" in js
     assert 'const CLAIM_LABELS = { attack_action: "Action documentée", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };' in js
     assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status)' in js
-    assert 'detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status)' in js
-    assert 'detailField("Impact", fields.impact?.value, fields.impact?.status)' in js
+    assert 'detailField("Tiers impliqué", fields.third_party?.value)' in js
+    assert 'detailField("Impact", fields.impact?.value)' in js
     assert "documentedClaimsHtml(detail.claims || [])" in js
+    # statusBadge() n'est plus appelé que dans sa propre définition et dans
+    # detailField() (qui ne le déclenche que si un status lui est passé —
+    # seul l'appel Acteur ci-dessus lui en passe un).
+    assert js.count("statusBadge(") == 2
 
 
 def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
-    """Vecteur d'entrée/CVSS/dates/localisation précise/évolution sont
-    réintégrés (structure en sections `main`) : `fact_resolution.py` les
-    projette désormais depuis des claims typés avec un garde-fou de
-    cohérence (voir `_claim_scalar`/`_claim_list_entries`)."""
+    """Vecteur d'entrée/CVSS/dates sont réintégrés (structure en sections
+    `main`) : `fact_resolution.py` les projette désormais depuis des claims
+    typés avec un garde-fou de cohérence (voir `_claim_scalar`/
+    `_claim_list_entries`)."""
     js = _read("assets/dashboard-v2.js")
     assert 'detailField("Vecteur d’entrée"' in js
-    assert 'detailField("Localisation précise"' in js
     assert 'detailField("Vulnérabilités exploitées"' in js
     assert 'detailField("Date de l’attaque"' in js
     assert 'detailField("Date de découverte"' in js
     assert 'detailField("CVSS"' in js
-    assert 'detailField("Évolution / suite donnée"' in js
     # Pas de mapping figé window.CW-only : initialAccessLabel() reste local
     # et retombe sur le texte libre si la valeur ne matche aucune énumération.
     assert "const initialAccessLabel" in js
     assert "window.CW" not in js
+
+
+def test_localisation_precise_et_evolution_sont_retirees_de_la_fiche():
+    """Retour utilisateur round 2 : ces deux champs sont vides sur les 5
+    incidents de l'échantillon et n'apportent rien à l'usage réel — retrait
+    ciblé, pas un retour en arrière sur "toujours afficher les champs
+    retenus" (les autres champs vides continuent d'afficher un "—")."""
+    js = _read("assets/dashboard-v2.js")
+    assert 'detailField("Localisation précise"' not in js
+    assert 'detailField("Évolution / suite donnée"' not in js
 
 
 def test_detail_rend_la_chronologie_dedupliquee():
@@ -190,14 +201,27 @@ def test_detail_rend_la_chronologie_dedupliquee():
     causes sont désormais corrigées côté fact_resolution.py
     (_drop_claims_duplicating_timeline, _drop_timeline_evidence_duplicates,
     normalisation ISO, retrait du markdown) : la chronologie est réaffichée,
-    triée, avec les dates passées par formatDate(). Retour utilisateur (audit
-    UX) : elle est repliée par défaut (trop imposante) dans un <details>."""
+    triée, avec les dates passées par formatDate()."""
     js = _read("assets/dashboard-v2.js")
     assert "function timelineHtml(rows)" in js
     assert 'detailSection("Chronologie"' in js
-    assert '<details class="documented-claims"><summary>Chronologie détaillée</summary>' in js
     assert "timelineRows" in js
     assert "formatDate(row.date)" in js
+
+
+def test_chronologie_se_replie_en_un_seul_bloc():
+    """Retour utilisateur round 2 : round 1 ne repliait que la liste détaillée
+    ("Chronologie détaillée"), les deux champs de dates restant toujours
+    visibles au niveau de la section. La section "Chronologie" entière doit
+    désormais se plier/déplier d'un coup, sans repli imbriqué à l'intérieur."""
+    js = _read("assets/dashboard-v2.js")
+    assert "function detailSection(title, fields, { collapsible = false } = {})" in js
+    assert 'return `<details class="resolved-facts-section resolved-facts-section--collapsible"><summary>${esc(title)}</summary>${content}</details>`;' in js
+    assert 'detailSection("Chronologie", [' in js
+    assert "{ collapsible: true }" in js
+    # Plus de repli imbriqué dans le repli : la chronologie détaillée n'est
+    # plus enveloppée dans son propre <details> séparé.
+    assert '<summary>Chronologie détaillée</summary>' not in js
 
 
 def test_detail_revient_en_haut_du_popup_a_chaque_ouverture():
@@ -216,6 +240,27 @@ def test_toutes_les_caracteristiques_retenues_s_affichent_meme_vides():
     js = _read("assets/dashboard-v2.js")
     assert 'const empty = !content || (Array.isArray(content) && !content.length);' in js
     assert '<span class="detail-empty">—</span>' in js
+
+
+def test_groupe_de_donnees_sensibles_est_deplie_par_defaut():
+    """Retour utilisateur round 2 : un groupe contenant du IBAN, un mot de
+    passe ou une donnée de santé mérite d'être visible sans clic
+    supplémentaire, contrairement à un groupe anodin (coordonnées…)."""
+    js = _read("assets/dashboard-v2.js")
+    assert 'const hasSensitive = items.some((value) => ["critical", "high"].includes(dataTypeSensitivity(value)));' in js
+    assert '<details class="incident-data-group"${hasSensitive ? " open" : ""}>' in js
+
+
+def test_couleurs_de_la_fiche_reutilisent_les_variables_reellement_definies():
+    """Root cause round 2 : `--muted` n'était défini nulle part dans le CSS —
+    tous les `var(--muted)` de dashboard-v2.css retombaient silencieusement
+    sur la couleur héritée (donc du texte plein, pas gris), sauf
+    `.incident-data-types-title` (style.css) qui utilise `--text-muted`,
+    réellement défini — d'où l'impression d'un gris isolé, non harmonisé."""
+    css = _read("assets/dashboard-v2.css")
+    assert "var(--muted)" not in css
+    assert "color:var(--text-muted)" in css
+    assert "color:var(--text-secondary)" in css
 
 
 def test_systemes_et_perimetres_sont_un_seul_champ_fusionne():
