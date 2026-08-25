@@ -72,10 +72,11 @@ jobs:
           ORG_ENRICHMENT_ENABLED: "0"
           CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
           # Filet LLM post-déterministe de déduplication (§Lot 18) : un seul
-          # batch au plus par MAJ réelle. Jamais activé pour replay/diagnose/
-          # probe/probe-media/create — voir runner.run_daily_dedup_net, qui
-          # ne se déclenche de toute façon que pour MODE_MAJ non hors-ligne.
-          DEDUP_AI_DAILY_ENABLED: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
+          # batch au plus par run réel (MAJ ou CREATE). Jamais activé pour
+          # replay/diagnose/probe/probe-media — voir runner.run_daily_dedup_net,
+          # qui ne se déclenche de toute façon que pour MODE_MAJ/MODE_CREATE
+          # non hors-ligne.
+          DEDUP_AI_DAILY_ENABLED: ${{ (steps.scope.outputs.mode == 'maj' || steps.scope.outputs.mode == 'create') && '1' || '0' }}
         shell: bash
         run: |
           ARGS=""

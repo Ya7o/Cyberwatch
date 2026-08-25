@@ -134,8 +134,8 @@ class DedupAiRunState:
     max_cost: float = 0.10
     max_context_chars: int = 8000
     max_output_tokens: int = 350
-    #: Filet quotidien (§Lot 4) : off par défaut, activé explicitement en MAJ
-    #: réelle par `DEDUP_AI_DAILY_ENABLED=1`.
+    #: Filet quotidien (§Lot 4) : off par défaut, activé explicitement pour
+    #: une collecte réelle (MAJ ou CREATE) par `DEDUP_AI_DAILY_ENABLED=1`.
     daily_enabled: bool = False
     daily_max_candidates: int = 40
     calls_attempted: int = 0

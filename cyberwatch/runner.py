@@ -1005,13 +1005,22 @@ def execute(
         report.requests = run_budget.requests_made
         report.ai_usage = ai.finish_run(ai_state, context.run_id, context.as_of, context.mode, sector_stats)
 
-        if context.mode == MODE_MAJ:
-            # Filet LLM post-déterministe (§Lot 2/9) : uniquement le périmètre
-            # collecté aujourd'hui contre la base complète, jamais toute la
-            # base contre elle-même. `run_daily_dedup_net` ne modifie jamais
-            # ITEMS/INCIDENTS directement ; elle peut seulement mettre à jour
-            # le registre d'identité organisationnelle consulté juste après
-            # par `qualify` -> `build_incidents_with_registry`, afin que la
+        if context.mode in (MODE_MAJ, MODE_CREATE):
+            # Filet LLM post-déterministe (§Lot 2/9) : en MAJ, uniquement le
+            # périmètre collecté aujourd'hui contre la base complète, jamais
+            # toute la base contre elle-même. En CREATE, `existing_items` est
+            # vide (reconstruction depuis zéro, cf. plus haut) : la base
+            # complète EST le périmètre collecté, donc le filet compare de
+            # fait le lot construit à lui-même — cas réel qui motive cette
+            # extension (audit post-reset 2026-08-25, doublon "Banque
+            # Alimentaire de la Croix-Rouge à Strasbourg" / "Banque
+            # Alimentaire de Strasbourg" jamais soumis à révision faute
+            # d'exécution en CREATE). Reste borné à un seul appel réseau au
+            # plus par run (§Lot 4), quelle que soit la taille du lot.
+            # `run_daily_dedup_net` ne modifie jamais ITEMS/INCIDENTS
+            # directement ; elle peut seulement mettre à jour le registre
+            # d'identité organisationnelle consulté juste après par
+            # `qualify` -> `build_incidents_with_registry`, afin que la
             # reconstruction déterministe du même run en tienne déjà compte.
             daily_scope = list({item.Item_ID: item for item in collected if item.Item_ID}.values())
             dedup_state, dedup_ai_problems = run_daily_dedup_net(

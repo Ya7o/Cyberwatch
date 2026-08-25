@@ -780,6 +780,28 @@ class TestDailyDedupNet:
         finally:
             org_identity.reload_organisation_identity_registry()
 
+    def test_create_declenche_aussi_le_filet(self, tmp_path, monkeypatch):
+        """Cas réel constaté (audit post-reset 2026-08-25) : un reset total
+        (CREATE) publiait "Banque Alimentaire de la Croix-Rouge à
+        Strasbourg" et "Banque Alimentaire de Strasbourg" comme deux
+        incidents distincts sans jamais soumettre la paire au filet LLM,
+        celui-ci étant gelé sur MODE_MAJ. `execute()` doit désormais
+        invoquer `run_daily_dedup_net` pour CREATE aussi bien que pour MAJ.
+        VEILLE_LLM (seule source de LAYER_REGIONAL_WATCH) lit un snapshot
+        JSON local : ce test exerce `execute(offline=False)` sans la moindre
+        collecte réseau, comme `TestSourceFactsPersistence`."""
+        self._isolate(tmp_path, monkeypatch)
+        context = runner.make_run_context(
+            runner.MODE_CREATE, as_of="2026-08-25T10:00:00+04:00",
+            layers=[config.LAYER_REGIONAL_WATCH],
+        )
+        report = runner.execute(context, offline=False)
+
+        assert report.overall == status.OK
+        assert report.dedup_ai_summary != {}
+        assert report.dedup_ai_summary["dedup_candidates_generated"] > 0
+        assert report.dedup_ai_problems == []
+
 
 class TestOrganisationIdentityRegistryDoesNotAffectItemId:
     """§Lot 8 : le registre n'agit que sur `effective_organisation_key`, la

@@ -216,6 +216,16 @@ jobs:
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "200"
           ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
+          # Filet LLM post-déterministe de déduplication (§Lot 18,
+          # runner.run_daily_dedup_net) : activé uniquement sur cette
+          # dernière passe CREATE, une fois qualification/sémantique/
+          # SourceFacts déjà peuplés (contexte le plus riche pour la revue).
+          # Ne pas l'activer sur les 4 passes précédentes : chacune
+          # reconstruit le lot depuis zéro par re-collecte réseau, donc
+          # l'activer partout multiplierait le même appel jusqu'à 5 fois
+          # pour un lot largement identique. Borné à un seul appel réseau
+          # au plus par passe (§Lot 4), quelle que soit la taille du lot.
+          DEDUP_AI_DAILY_ENABLED: "1"
         run: |
           python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
           python - <<'PY'
@@ -234,8 +244,10 @@ jobs:
           print(json.dumps(payload, ensure_ascii=False))
           PY
           # Relit uniquement le cache P1 et reconstruit les exports : aucune
-          # seconde passe LLM ne peut être déclenchée par CREATE ici.
-          LLM_MAX_CALLS_PER_RUN=0 LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN=0 \
+          # seconde passe LLM ne peut être déclenchée par CREATE ici (le
+          # filet dedup, hérité activé de l'étape ci-dessus, est aussi
+          # explicitement refermé).
+          LLM_MAX_CALLS_PER_RUN=0 LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN=0 DEDUP_AI_DAILY_ENABLED=0 \
             python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
       - name: Contrôler le budget LLM global
         working-directory: /tmp/cyberwatch-reset
