@@ -290,44 +290,6 @@
   "basis": "PUBLICATION",
   "date": "2026-08-23",
   "first_seen": "2026-08-25T08:43:27.204306+04:00",
-  "id": "INC-9618210E3C5B",
-  "items": 1,
-  "last_seen": "2026-08-25T08:43:27.204306+04:00",
-  "location": "Inconnu",
-  "org": "Netim",
-  "sector": "Hébergement / Tourisme / Restauration",
-  "sector_status": {
-   "status": "confirmed"
-  },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "données liées aux systèmes de paiement"
-  ],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Netim : code source, données clients et infrastructure interne menacés de publication par un ransomware",
-  "threat": "Ransomware",
-  "urls": [
-   "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-23",
-  "first_seen": "2026-08-25T08:43:27.204306+04:00",
   "id": "INC-8410CBDEDEAC",
   "items": 1,
   "last_seen": "2026-08-25T08:43:27.204306+04:00",
@@ -418,7 +380,7 @@
   "date": "2026-08-23",
   "first_seen": "2026-08-25T08:43:27.204306+04:00",
   "id": "INC-1CD988A56061",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-25T08:43:27.204306+04:00",
   "location": "France métropolitaine",
   "org": "NETIM COMPANY",
@@ -426,9 +388,15 @@
   "sector_status": {
    "status": "confirmed"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données liées aux systèmes de paiement"
+  ],
   "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
    {
     "source": "FRENCHBREACHES",
     "status": "direct"
@@ -436,17 +404,23 @@
   ],
   "source_links": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
+   },
+   {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le groupe de ransomware DYSPHOR1A revendique une cyberattaque contre NETIM COMPANY avec accès à son infrastructure interne.",
-  "threat": "Fuite de données",
+  "summary": "Netim : code source, données clients et infrastructure interne menacés de publication par un ransomware",
+  "threat": "Ransomware",
   "urls": [
-   "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3"
+   "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3",
+   "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
   ]
  },
  {
@@ -1312,10 +1286,10 @@
   "date": "2026-08-20",
   "first_seen": "2026-08-25T08:43:27.204306+04:00",
   "id": "INC-795AFE0691D4",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-25T08:43:27.204306+04:00",
-  "location": "Inconnu",
-  "org": "Capgemini",
+  "location": "France métropolitaine",
+  "org": "Capgemini Engineering",
   "sector": "Services aux entreprises",
   "sector_status": {
    "status": "confirmed"
@@ -1328,20 +1302,30 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
    }
   ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
   ],
   "summary": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
   "threat": "Ransomware",
   "urls": [
+   "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering",
    "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
   ]
  },
@@ -4820,7 +4804,7 @@
   "date": "2026-08-06",
   "first_seen": "2026-08-25T08:43:27.204306+04:00",
   "id": "INC-12FCF8029315",
-  "items": 14,
+  "items": 13,
   "last_seen": "2026-08-25T08:43:27.204306+04:00",
   "location": "France métropolitaine",
   "org": "ALIZE",
@@ -4868,7 +4852,6 @@
   "urls": [
    "http://4zrjdyuq4sjogm2epwwoleegquavhwo3o7fakstnlgox6guqt3qpe4qd.onion/posts/bouygues-es.fr/",
    "http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/7c38473b-91cb-4ca1-a5a2-6f3b6d9b750b",
-   "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering",
    "http://fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd.onion/companies/oteis",
    "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=26abaf2b-fb11-4a68-a1cb-1cd418b7e57b",
    "http://incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.onion/blog/disclosures/6a84277a9cd108bf265a45d9",
