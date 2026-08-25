@@ -228,6 +228,15 @@ jobs:
           DEDUP_AI_DAILY_ENABLED: "1"
         run: |
           python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
+          # Coût/appels du filet dedup (§Lot 18) : persistés par le run
+          # ci-dessus dans data/dedup_ai_daily_usage.csv (append), pas dans
+          # l'état en mémoire llm_runtime — celui-ci ne survit pas au
+          # sous-processus `create` qui vient de se terminer. Copié ici pour
+          # que l'étape "Contrôler le budget LLM global" puisse l'inclure
+          # dans le total, au même titre que les 3 autres canaux.
+          if [ -f data/dedup_ai_daily_usage.csv ]; then
+            cp data/dedup_ai_daily_usage.csv /tmp/reset-dedup.csv
+          fi
           python - <<'PY'
           import json
           from dataclasses import asdict
@@ -312,7 +321,24 @@ jobs:
               "cost_usd": number(organisation_llm.get("estimated_cost_usd")),
               "duration_seconds": number(organisation_llm.get("duration_seconds")),
           }
-          channels = {"qualification": qualification, "semantic": semantic, "source_facts": source_facts, "organisation_sector": organisation}
+          dedup = {"calls": 0, "success": 0, "failure": 0, "tokens": 0, "cost_usd": 0.0, "duration_seconds": 0.0}
+          dedup_path = Path("/tmp/reset-dedup.csv")
+          if dedup_path.exists():
+              dedup_rows = list(csv.DictReader(dedup_path.open(encoding="utf-8", newline="")))
+              if dedup_rows:
+                  dedup_row = dedup_rows[-1]
+                  dedup = {
+                      "calls": int(number(dedup_row.get("LLM_Calls"))),
+                      "success": int(number(dedup_row.get("LLM_Calls_Succeeded"))),
+                      "failure": int(number(dedup_row.get("LLM_Calls_Failed"))),
+                      "tokens": int(number(dedup_row.get("LLM_Input_Tokens"))) + int(number(dedup_row.get("LLM_Output_Tokens"))),
+                      "cost_usd": number(dedup_row.get("LLM_Cost_USD")),
+                      "duration_seconds": number(dedup_row.get("LLM_Duration_Seconds")),
+                  }
+          channels = {
+              "qualification": qualification, "semantic": semantic, "source_facts": source_facts,
+              "organisation_sector": organisation, "dedup": dedup,
+          }
           totals = {key: sum(channel[key] for channel in channels.values()) for key in qualification}
           report = {
               "limits": {"calls": 2000, "cost_usd": 2.0},
