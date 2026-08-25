@@ -2,8 +2,8 @@
   "schema": "cyberwatch-august-quality-audit-v2",
   "start": "2026-08-24",
   "end": "2026-08-25",
-  "items": 10,
-  "incidents": 7,
+  "items": 12,
+  "incidents": 9,
   "blockers": [],
   "anomalies": [
     {
@@ -37,6 +37,18 @@
       "recommendation": "preuve insuffisante documentée; conserver Inconnu"
     },
     {
+      "id": "INC-909ACD6770F0",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-909ACD6770F0",
+      "severity": "low",
+      "issue": "localisation_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
       "id": "INC-7F84F57DB9BD",
       "severity": "low",
       "issue": "secteur_unknown",
@@ -44,6 +56,12 @@
     },
     {
       "id": "INC-B448DE3FC7B8",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-C150F062C71D",
       "severity": "low",
       "issue": "secteur_unknown",
       "recommendation": "preuve insuffisante documentée; conserver Inconnu"
@@ -61,7 +79,7 @@
           "url": "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
         }
       ],
-      "summary": "Une fuite de 10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg a été divulguée par le hacker Lagui1337.",
+      "summary": "10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg ont fuité sur internet.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -87,7 +105,7 @@
           "url": "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j"
         }
       ],
-      "summary": "Fuite de données de plus de 10 000 dossiers à la Banque Alimentaire de Strasbourg revendiquée sur un forum de cybercriminels.",
+      "summary": "Une fuite de données de 10 073 dossiers a été revendiquée sur un forum par un cybercriminel.",
       "summary_statuses": [
         {
           "source": "FRENCHBREACHES",
@@ -103,6 +121,32 @@
       "sensitive_data_exposed": false
     },
     {
+      "id": "INC-BEF232902387",
+      "organisation": "Dipeeo",
+      "date": "2026-08-25",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/dipeeo-les-donnees-rgpd-de-ses-clients-exposees-apres-une-cyberattaque/"
+        }
+      ],
+      "summary": "Dipeeo subit une fuite de données RGPD suite à une cyberattaque revendiquée par le hacker 0xSec.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Numérique / Technologie",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    },
+    {
       "id": "INC-13626C7AD262",
       "organisation": "Docurba",
       "date": "2026-08-25",
@@ -113,7 +157,7 @@
           "url": "https://www.cyberattaque.org/docurba-plus-de-5-000-lignes-dutilisateurs-de-la-plateforme-de-letat-diffusees-par-un-hacker/"
         }
       ],
-      "summary": "Plus de 5 000 lignes d’utilisateurs de Docurba diffusées par le hacker 0xSec.",
+      "summary": "Fuite de données sur Docurba avec 5 152 lignes d'utilisateurs publiées par le hacker 0xSec.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -139,7 +183,7 @@
           "url": "https://www.cyberattaque.org/emil-frey-france-une-fuite-de-donnees-expose-des-leads-et-des-collaborateurs/"
         }
       ],
-      "summary": "Une fuite de données chez Emil Frey France expose des leads et des coordonnées professionnelles de collaborateurs.",
+      "summary": "Emil Frey France : une fuite de données expose des leads et des collaborateurs",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -153,6 +197,32 @@
       "threat": "Fuite de données",
       "location": "France métropolitaine",
       "sensitive_data_exposed": true
+    },
+    {
+      "id": "INC-909ACD6770F0",
+      "organisation": "TimeTonic",
+      "date": "2026-08-25",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/timetonic-3-bases-de-donnees-exposees-apres-une-cyberattaque/"
+        }
+      ],
+      "summary": "TimeTonic a subi une cyberattaque, entraînant l'exposition de trois bases de données contenant des données sensibles.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "tentative",
+      "sector_tentative": "Numérique / Technologie",
+      "threat": "Fuite de données",
+      "location": "Inconnu",
+      "sensitive_data_exposed": false
     },
     {
       "id": "INC-7F84F57DB9BD",
@@ -169,7 +239,7 @@
           "url": "https://frenchbreaches.com/alertes/groupe-bernard-blgcloud-mt7k8j5h05wkmuoyjbj"
         }
       ],
-      "summary": "Le Groupe Bernard a subi une cyberattaque entraînant la publication de 22,25 Go de données et 330 563 fichiers.",
+      "summary": "Le Groupe Bernard a subi une cyberattaque avec 22,25 Go de données publiées par le hacker NikolaT.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -203,7 +273,7 @@
           "url": "https://frenchbreaches.com/alertes/klark-ai-mt6t1mwhjzd3u98q3vr"
         }
       ],
-      "summary": "Klark.ai a subi une fuite de données exposant près de 500k personnes.",
+      "summary": "Klark.ai a subi une importante fuite de données affectant près de 500 000 personnes.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -216,8 +286,8 @@
       ],
       "summary_reasons": [],
       "sector": "Inconnu",
-      "sector_status": "tentative",
-      "sector_tentative": "Numérique / Technologie",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "France métropolitaine",
       "sensitive_data_exposed": true
@@ -237,7 +307,7 @@
           "url": "https://frenchbreaches.com/alertes/youfid-mt6v6n1zy4kdlfxng5"
         }
       ],
-      "summary": "YouFid revendique une fuite de données de près de 1,9 million de profils clients.",
+      "summary": "YouFid a subi une fuite massive de près de 1,9 million de profils clients revendiqués par le hacker Lagui1337.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -249,9 +319,9 @@
         }
       ],
       "summary_reasons": [],
-      "sector": "Services aux entreprises",
-      "sector_status": "confirmed",
-      "sector_tentative": "",
+      "sector": "Inconnu",
+      "sector_status": "tentative",
+      "sector_tentative": "Commerce / Distribution",
       "threat": "Fuite de données",
       "location": "France métropolitaine",
       "sensitive_data_exposed": true
