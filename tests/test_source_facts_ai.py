@@ -645,3 +645,17 @@ def test_cve_llm_absente_de_la_preuve_et_date_imprecise_sont_rejetee():
         "vulnerabilities": [{"value": "CVE-2026-99999", "confidence": .9, "evidence": "courant juillet"}],
     }, context, {"attack_date", "vulnerabilities"})
     assert result == {}
+
+
+def test_prompt_precise_acteur_distinct_de_la_victime_et_impact_non_redondant():
+    """Cas réels constatés (audit 2026-08-25) : threat_actor="qui"/"L'entreprise"
+    (sujet grammatical d'un verbe déclaratif capté sans vérification) sur
+    Groupe Bernard/Emil Frey France, et impact qui ne fait que reformuler
+    les valeurs déjà extraites dans Systèmes & périmètres sur Emil Frey
+    France. Le prompt n'avait aucune consigne dédiée à threat_actor, et
+    aucune consigne empêchant impact de paraphraser data_types/
+    affected_datasets."""
+    prompt = sfa._SYSTEM_PROMPT
+    assert "entité distincte de la victime" in prompt
+    assert "jamais un pronom" in prompt
+    assert "ne doit jamais se limiter à reformuler" in prompt
