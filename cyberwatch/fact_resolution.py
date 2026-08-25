@@ -221,6 +221,13 @@ def _rich_count_records(fact: dict) -> list[dict]:
     for claim in rich.get("claims", []) if isinstance(rich, dict) else []:
         if not isinstance(claim, dict):
             continue
+        if _text(claim.get("type")):
+            # Un claim déjà typé (ex. affected_count/data_volume) n'a pas
+            # "perdu" son type : il est déjà représenté dans claims[] et ne
+            # doit pas être dupliqué ici avec une unité devinée de moindre
+            # qualité (cas réel Solimut : deux figures déjà exposées
+            # ailleurs réapparaissaient en plus, affichées sans formatage).
+            continue
         value = _text(claim.get("value"))
         evidence = _text(claim.get("evidence"))
         unit = _norm(claim.get("unit"))
@@ -235,7 +242,10 @@ def _rich_count_records(fact: dict) -> list[dict]:
             elif any(marker in evidence_norm for marker in ("ligne", "enregistrement")):
                 unit = "records"
         if unit:
-            records.append({**claim, "value": int(value), "unit": unit, "raw": _text(claim.get("raw")) or value})
+            # Pas de repli sur la valeur brute non formatée : un `raw`
+            # absent doit laisser le frontend formater (séparateurs de
+            # milliers + unité), pas afficher un nombre nu sans unité.
+            records.append({**claim, "value": int(value), "unit": unit, "raw": _text(claim.get("raw"))})
     result: list[dict] = []
     if not isinstance(records, list):
         return result

@@ -351,6 +351,38 @@ def test_beauty_success_conserve_les_trois_concepts_distincts():
     assert resolved["display_summary"] == ""
 
 
+def test_claim_numerique_deja_type_n_est_pas_duplique_dans_affected():
+    """Cas réel constaté sur Solimut : un claim déjà typé `affected_count`
+    (avec sa propre unité) réapparaissait une seconde fois dans "Volume
+    documenté", cette fois sans `raw` formaté (affiché "1000000" au lieu de
+    "1 000 000 personnes"). La boucle de réparation de `_rich_count_records()`
+    est réservée aux claims qui ont réellement perdu leur `type` ; un claim
+    déjà typé ne doit ni être répété, ni voir sa valeur brute non formatée
+    promue en `raw`."""
+    resolved = fr.resolve_incident_facts([fact("FRENCHBREACHES", rich_facts={
+        "claims": [{
+            "type": "affected_count", "status": "reported", "value": "1000000",
+            "evidence": "plus d'un million d'assurés apparaîtraient dans les données.",
+        }],
+    })])
+    assert resolved["affected"] == []
+
+
+def test_claim_sans_type_reste_repare_en_volume():
+    """Le filet de réparation garde son utilité réelle : un claim qui a
+    effectivement perdu son `type` (export historique) doit toujours être
+    promu en volume, avec une unité devinée depuis l'evidence."""
+    resolved = fr.resolve_incident_facts([fact("FRENCHBREACHES", rich_facts={
+        "claims": [{
+            "status": "reported", "value": "50000",
+            "evidence": "50 000 clients seraient concernés par cette fuite.",
+        }],
+    })])
+    assert len(resolved["affected"]) == 1
+    assert resolved["affected"][0]["unit"] == "people"
+    assert resolved["affected"][0]["value"] == 50000
+
+
 def test_meme_volume_affiche_deux_fois_avec_semantique_differente_ne_fait_pas_doublon():
     """Cas réel constaté sur Sport 2000 : "9 000 clients" apparaissait deux
     fois dans "Volume documenté" car deux enregistrements portaient la même
