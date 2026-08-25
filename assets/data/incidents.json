@@ -290,11 +290,11 @@
   "basis": "PUBLICATION",
   "date": "2026-08-23",
   "first_seen": "2026-08-25T08:43:27.204306+04:00",
-  "id": "INC-1CD988A56061",
-  "items": 2,
+  "id": "INC-8EE29B93634C",
+  "items": 1,
   "last_seen": "2026-08-25T08:43:27.204306+04:00",
-  "location": "France métropolitaine",
-  "org": "NETIM COMPANY",
+  "location": "Inconnu",
+  "org": "Netim",
   "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
    "status": "confirmed"
@@ -307,7 +307,39 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
-   },
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Netim : code source, données clients et infrastructure interne menacés de publication par un ransomware",
+  "threat": "Ransomware",
+  "urls": [
+   "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-23",
+  "first_seen": "2026-08-25T08:43:27.204306+04:00",
+  "id": "INC-1CD988A56061",
+  "items": 1,
+  "last_seen": "2026-08-25T08:43:27.204306+04:00",
+  "location": "France métropolitaine",
+  "org": "NETIM COMPANY",
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
    {
     "source": "FRENCHBREACHES",
     "status": "direct"
@@ -315,23 +347,17 @@
   ],
   "source_links": [
    {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
-   },
-   {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Netim : code source, données clients et infrastructure interne menacés de publication par un ransomware",
-  "threat": "Ransomware",
+  "summary": "Le groupe de ransomware DYSPHOR1A revendique une cyberattaque contre NETIM COMPANY avec accès à son infrastructure interne.",
+  "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3",
-   "https://www.cyberattaque.org/netim-code-source-cyberattaque-ransomware/"
+   "https://frenchbreaches.com/alertes/netim-company-mt60oa0h3iof98zmci3"
   ]
  },
  {
@@ -1080,10 +1106,10 @@
   "date": "2026-08-20",
   "first_seen": "2026-08-25T08:43:27.204306+04:00",
   "id": "INC-795AFE0691D4",
-  "items": 2,
+  "items": 1,
   "last_seen": "2026-08-25T08:43:27.204306+04:00",
-  "location": "France métropolitaine",
-  "org": "Capgemini Engineering",
+  "location": "Inconnu",
+  "org": "Capgemini",
   "sector": "Services aux entreprises",
   "sector_status": {
    "status": "confirmed"
@@ -1096,7 +1122,39 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
-   },
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
+  "threat": "Ransomware",
+  "urls": [
+   "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-20",
+  "first_seen": "2026-08-25T08:43:27.204306+04:00",
+  "id": "INC-C4BD32043428",
+  "items": 1,
+  "last_seen": "2026-08-25T08:43:27.204306+04:00",
+  "location": "France métropolitaine",
+  "org": "Capgemini Engineering",
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
    {
     "source": "RANSOMWARE_LIVE",
     "status": "direct"
@@ -1104,23 +1162,17 @@
   ],
   "source_links": [
    {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
-   },
-   {
     "source": "RANSOMWARE_LIVE",
     "url": "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Capgemini : 722 470 fichiers d’Altran menacés de publication dans 6 jours",
+  "summary": "",
   "threat": "Ransomware",
   "urls": [
-   "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering",
-   "https://www.cyberattaque.org/capgemini-altran-cyberattaque/"
+   "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/capgemini-engineering"
   ]
  },
  {
