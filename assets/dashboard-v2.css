@@ -61,17 +61,31 @@
 .sources-detail th,.sources-detail td { padding:.55rem; border-top:1px solid var(--border); text-align:left; vertical-align:top; }
 .ocean-profile { cursor:pointer; border-radius:10px; padding:.65rem; }
 .ocean-profile:hover { background:var(--surface-soft,var(--surface)); }
-.detail-dialog { width:min(840px,calc(100vw - 2rem)); max-height:88vh; }
+/* Sans overflow-y explicite, un <dialog> natif ne scrolle pas son propre
+   contenu : au-delà de max-height, le contenu débordait hors de la boîte
+   plutôt que de proposer un ascenseur interne (cause probable des retours
+   "scrolling" sur mobile). */
+.detail-dialog { width:min(840px,calc(100vw - 2rem)); max-height:88vh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
 .detail-heading { margin-bottom:.8rem; }
 .detail-heading h2 { margin-bottom:.25rem; }
 .detail-heading p { margin:0; color:var(--muted); }
 .detail-summary { font-size:1.02rem; line-height:1.6; padding:.85rem 1rem; background:var(--surface-soft,var(--surface)); border-radius:12px; }
 .resolved-facts { margin-top:1rem; }
 .resolved-facts h3 { margin-bottom:.75rem; }
+.resolved-facts-section { margin-top:1.1rem; }
+.resolved-facts-section:first-child { margin-top:0; }
+.resolved-facts-section h4 { margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.02em; }
 .resolved-field { display:grid; grid-template-columns:minmax(150px,220px) 1fr; gap:1rem; padding:.65rem 0; border-top:1px solid var(--border); }
 .resolved-field dt { color:var(--muted); font-size:.86rem; }
-.resolved-field dd { margin:0; line-height:1.5; display:flex; gap:.35rem; flex-wrap:wrap; }
+.resolved-field dd { margin:0; line-height:1.5; display:flex; gap:.35rem; flex-wrap:wrap; align-items:center; }
 .detail-chip { border:1px solid var(--border); border-radius:999px; padding:.18rem .5rem; font-size:.82rem; }
+.detail-empty { color:var(--muted); }
+/* Section repliable réutilisée pour la chronologie détaillée et les
+   éléments documentés résiduels : un <details> natif, comme ailleurs dans
+   le dashboard (types de données, détail des sources). */
+.documented-claims > summary { cursor:pointer; padding:.4rem 0; font-size:.86rem; color:var(--muted); user-select:none; list-style-position:outside; }
+.documented-claims > summary:hover { color:inherit; }
+.documented-claims[open] > summary { margin-bottom:.2rem; }
 .detail-sources { margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:grid; gap:.6rem; }
 .evidence-links { display:flex; flex-wrap:wrap; gap:.5rem; }
 .evidence-links a { font-size:.82rem; }
@@ -109,7 +123,6 @@
 .detail-sources { margin-top:.8rem; padding-top:.75rem; gap:.4rem; }
 .detail-sources .incident-source-badges { justify-content:flex-start; }
 .documented-claims { margin-top:.6rem; }
-.documented-claims h4 { margin:.55rem 0 .15rem; font-size:.88rem; color:var(--muted); }
 .claim-field dd { align-items:center; }
 .claim-status { display:inline-block; margin-left:.2rem; padding:.08rem .38rem; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:.72rem; line-height:1.2; }
 .claim-status--confirmed { border-color:rgba(30,130,80,.45); color:#167147; }
@@ -128,4 +141,13 @@
      courtes restent en ligne pour conserver une fiche dense. */
   .resolved-field--wide { grid-template-columns:1fr; gap:.3rem; }
   .resolved-field--wide dd { justify-content:flex-start; }
+  /* La règle de densité V2 (ligne ~98) fixe une colonne d'étiquette
+     150-190px, chargée après la règle mobile 92-120px de style.css : à
+     poids de sélecteur égal, elle l'emportait même sur petit écran et
+     grignotait la place de la valeur. On la resserre ici pour de bon. */
+  .resolved-field { grid-template-columns:minmax(96px,128px) 1fr; gap:.5rem; padding:.5rem 0; }
+  .resolved-field dt, .resolved-field dd { font-size:.84rem; }
+  .detail-dialog { max-height:92vh; }
+  .detail-heading h2 { font-size:1.15rem; }
+  .resolved-facts-section h4 { font-size:.76rem; }
 }

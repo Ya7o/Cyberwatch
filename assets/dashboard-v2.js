@@ -349,14 +349,17 @@
   const INITIAL_ACCESS_LABELS = { phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" };
   const initialAccessLabel = (value) => INITIAL_ACCESS_LABELS[value] || value || "";
 
-  function detailField(label, content) {
-    if (!content || (Array.isArray(content) && !content.length)) return "";
-    const rendered = Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
+  function detailField(label, content, status) {
+    const empty = !content || (Array.isArray(content) && !content.length);
+    const rendered = empty
+      ? '<span class="detail-empty">—</span>'
+      : Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
+    const badge = !empty && status ? statusBadge(status) : "";
     // Sur téléphone, une valeur narrative ne doit pas être écrasée dans la
     // petite colonne de droite. Les champs courts restent, eux, compacts.
-    const needsFullWidth = Array.isArray(content) || String(content).trim().length > 26;
+    const needsFullWidth = Array.isArray(content) || String(content || "").trim().length > 26;
     const layout = needsFullWidth ? " resolved-field--wide" : "";
-    return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd>${rendered}</dd></div>`;
+    return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd>${rendered}${badge}</dd></div>`;
   }
 
   // Regroupement par famille et code couleur de sensibilité des données
@@ -398,8 +401,8 @@
   }
 
   function dataTypesHtml(entries) {
-    const values = entries.map((entry) => entry.value).filter(known);
-    if (!values.length) return "";
+    const values = (entries || []).map((entry) => entry.value).filter(known);
+    if (!values.length) return detailField("Données exposées", []);
     const groups = new Map(DATA_TYPE_FAMILY_ORDER.map((label) => [label, []]));
     const seen = new Set();
     values.forEach((value) => {
@@ -425,8 +428,14 @@
     return ({ people: "personnes", accounts: "comptes", users: "utilisateurs", clients: "clients", records: "enregistrements", files: "fichiers" })[value] || value || "";
   }
 
+  function statusBadge(status) {
+    if (!status || status === "unknown") return "";
+    const label = CLAIM_STATUS_LABELS[status] || "Documenté";
+    return ` <span class="claim-status claim-status--${esc(status)}">${esc(label)}</span>`;
+  }
+
   function affectedHtml(records) {
-    if (!Array.isArray(records) || !records.length) return "";
+    if (!Array.isArray(records) || !records.length) return detailField("Volume documenté", []);
     // Un chiffre contesté (négation) ou hypothétique porte le même poids
     // visuel qu'un chiffre confirmé si on le rend en simple detail-chip : le
     // badge de statut, déjà utilisé pour les faits sourcés, distingue les deux.
@@ -434,23 +443,24 @@
       const raw = record.raw || "";
       let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
       if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
-      const status = record.status || "unknown";
-      const statusLabel = CLAIM_STATUS_LABELS[status] || "Documenté";
-      return `<span class="detail-chip">${esc(value)} <span class="claim-status claim-status--${esc(status)}">${esc(statusLabel)}</span></span>`;
+      return `<span class="detail-chip">${esc(value)}${statusBadge(record.status || "unknown")}</span>`;
     });
     return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${chips.join("")}</dd></div>`;
   }
 
-  function timelineHtml(entries) {
-    if (!Array.isArray(entries) || !entries.length) return "";
-    const rows = entries.filter((entry) => known(entry.event));
-    if (!rows.length) return "";
-    return `<div class="documented-claims"><h4>Chronologie</h4>${rows.map((entry) => {
-      const status = CLAIM_STATUS_LABELS[entry.status] || "Documenté";
-      const date = known(entry.date) ? formatDate(entry.date) : "Date non précisée";
-      const proof = entry.evidence ? ` title="${esc(entry.evidence)}"` : "";
-      return `<div class="resolved-field resolved-field--wide"><dt>${esc(date)}</dt><dd${proof}>${esc(entry.event)} <span class="claim-status claim-status--${esc(entry.status || "unknown")}">${esc(status)}</span></dd></div>`;
-    }).join("")}</div>`;
+  function timelineHtml(rows) {
+    if (!Array.isArray(rows) || !rows.length) return "";
+    // fact_resolution.py::_timeline_entries() déduplique déjà les entrées qui
+    // ne font que reformuler le même jour (voir _drop_timeline_evidence_duplicates) :
+    // seul le tri chronologique reste à faire ici.
+    const sorted = [...rows].filter((row) => known(row.event)).sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
+    if (!sorted.length) return "";
+    return sorted.map((row) => {
+      const date = known(row.date) ? formatDate(row.date) : "Date non précisée";
+      const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
+      const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(date)}</dt><dd${proof}>${esc(row.event)}${statusBadge(row.status || "unknown")}</dd></div>`;
+    }).join("");
   }
 
   function detailSection(title, fields) {
@@ -458,41 +468,27 @@
     return content ? `<section class="resolved-facts-section"><h4>${esc(title)}</h4>${content}</section>` : "";
   }
 
-  const CLAIM_LABELS = { actor: "Acteur", third_party: "Tiers impliqué", attack_action: "Action documentée", impact: "Impact", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
+  const CLAIM_LABELS = { attack_action: "Action documentée", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };
   const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
-  function documentedClaimsHtml(claims, organisation, fields) {
+  function documentedClaimsHtml(claims) {
+    // Acteur, tiers impliqué et impact ont désormais leur propre champ
+    // structuré avec badge de statut (voir openIncident) : les répéter ici
+    // serait la redondance visible dans l'audit ("Revendiqué" plusieurs
+    // fois). Cette section ne garde donc que les types de claims sans
+    // équivalent structuré.
     if (!Array.isArray(claims)) return "";
-    const alreadyShown = { actor: normalize(fields?.threat_actor?.value), third_party: normalize(fields?.third_party?.value) };
-    const shown = claims.filter((claim) => {
-      const type = claim.type || "";
-      if (!CLAIM_LABELS[type] || !known(claim.value)) return false;
-      if (type === "actor" && normalize(claim.value) === normalize(organisation)) return false;
-      if ((type === "actor" || type === "third_party") && alreadyShown[type] && normalize(claim.value) === alreadyShown[type]) return false;
-      return true;
-    }).slice(0, 12);
+    const shown = claims.filter((claim) => CLAIM_LABELS[claim.type || ""] && known(claim.value)).slice(0, 12);
     if (!shown.length) return "";
-    return `<div class="documented-claims"><h4>Faits sourcés</h4>${shown.map((claim) => {
+    const rows = shown.map((claim) => {
       const label = CLAIM_LABELS[claim.type] || "Information documentée";
-      const status = CLAIM_STATUS_LABELS[claim.status] || "Documenté";
       const actor = claim.type === "attack_action" && known(claim.actor) ? ` — ${claim.actor}` : "";
       const proof = claim.evidence ? ` title="${esc(claim.evidence)}"` : "";
       const wide = String(`${claim.value || ""}${actor}`).trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)} <span class="claim-status claim-status--${esc(claim.status || "unknown")}">${esc(status)}</span></dd></div>`;
-    }).join("")}</div>`;
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(label)}</dt><dd${proof}>${esc(claim.value)}${esc(actor)}${statusBadge(claim.status || "unknown")}</dd></div>`;
+    }).join("");
+    return `<details class="documented-claims"><summary>Autres éléments documentés (${shown.length})</summary>${rows}</details>`;
   }
-  function timelineHtml(rows) {
-    if (!Array.isArray(rows) || !rows.length) return "";
-    // fact_resolution.py::_timeline_entries() déduplique déjà les entrées qui
-    // ne font que reformuler le même jour (voir _drop_timeline_evidence_duplicates) :
-    // seul le tri chronologique reste à faire ici.
-    const sorted = [...rows].sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
-    return `<div class="documented-claims"><h4>Chronologie</h4>${sorted.slice(0, 8).map((row) => {
-      const status = CLAIM_STATUS_LABELS[row.status] || "Documenté";
-      const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
-      const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(formatDate(row.date))}</dt><dd${proof}>${esc(row.event)} <span class="claim-status claim-status--${esc(row.status || "unknown")}">${esc(status)}</span></dd></div>`;
-    }).join("")}</div>`;
-  }
+
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
@@ -502,30 +498,34 @@
     const meta = [incident.date ? formatDate(incident.date) : "", incident.threat, incident.sector, incident.location].filter(known).join(" · ");
     const validDetail = detail && detail.version === 3;
     const fields = validDetail ? detail.fields || {} : {};
+    const systemsAndPerimeters = validDetail
+      ? unique([...(detail.systems || []).map((entry) => entry.value), ...(detail.datasets || []).map((entry) => entry.value)])
+      : [];
+    const timelineRows = validDetail ? timelineHtml(detail.timeline || []) : "";
     const values = validDetail ? [
-      detailSection("Qui / Comment", [
-        detailField("Acteur revendicateur", fields.threat_actor?.value),
-        detailField("Tiers impliqué", fields.third_party?.value),
-        detailField("Vecteur d’entrée", initialAccessLabel(fields.initial_access?.value)),
+      detailSection("Acteur & vecteur", [
+        detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status),
+        detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status),
+        detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : ""),
         detailField("Vulnérabilités exploitées", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
         detailField("CVSS", fields.cvss?.value),
       ]),
-      detailSection("Quand", [
+      detailSection("Chronologie", [
         detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : ""),
         detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : ""),
-        timelineHtml(detail.timeline || []),
+        timelineRows
+          ? `<details class="documented-claims"><summary>Chronologie détaillée</summary>${timelineRows}</details>`
+          : detailField("Chronologie détaillée", []),
       ]),
-      detailSection("Quoi (impact & données)", [
+      detailSection("Impact & données compromises", [
         affectedHtml(detail.affected || []),
         dataTypesHtml(detail.data_types || []),
-        detailField("Systèmes concernés", (detail.systems || []).map((entry) => entry.value).filter(known)),
-        detailField("Périmètres de données", (detail.datasets || []).map((entry) => entry.value).filter(known)),
-        detailField("Volume de données", fields.data_volume?.value),
-        detailField("Impact", fields.impact?.value),
+        detailField("Systèmes & périmètres concernés", systemsAndPerimeters),
+        detailField("Impact", fields.impact?.value, fields.impact?.status),
         detailField("Localisation précise", fields.fine_location?.value),
         detailField("Évolution / suite donnée", fields.evolution?.value),
       ]),
-      documentedClaimsHtml(detail.claims || [], incident.org, fields),
+      documentedClaimsHtml(detail.claims || []),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     const tentativeChip = sectorTentativeChip(incident);
@@ -533,7 +533,11 @@
       ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
       <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
       <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div></div>`;
+    // Réouvrir la fiche d'un autre incident doit repartir du haut : un
+    // <dialog> natif ne réinitialise pas toujours son scroll interne.
+    $("#detail-dialog-content").scrollTop = 0;
     $("#detail-dialog").showModal();
+    $("#detail-dialog").scrollTop = 0;
   }
 
   function bindGlobal() {

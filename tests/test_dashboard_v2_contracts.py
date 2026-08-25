@@ -150,12 +150,19 @@ def test_volume_documente_porte_un_badge_de_statut_par_entree():
 
 
 def test_faits_sources_ne_repetent_pas_acteur_et_tiers_deja_affiches():
-    """Acteur/Tiers rendus une seule fois : Solimut affichait "misere" jusqu'à
-    3 fois (fields.threat_actor + claim actor + suffixe attack_action)."""
+    """Acteur/Tiers/Impact rendus une seule fois : Solimut affichait "misere"
+    jusqu'à 3 fois (fields.threat_actor + claim actor + suffixe attack_action).
+    Le badge de statut du claim gagnant est désormais republié par
+    fact_resolution.py directement sur le champ structuré (fields.X.status) :
+    "Autres éléments documentés" ne garde donc que les types de claims sans
+    champ structuré équivalent (acteur/tiers/impact en sont exclus)."""
     js = _read("assets/dashboard-v2.js")
-    assert "function documentedClaimsHtml(claims, organisation, fields)" in js
-    assert "alreadyShown" in js
-    assert "documentedClaimsHtml(detail.claims || [], incident.org, fields)" in js
+    assert "function documentedClaimsHtml(claims)" in js
+    assert 'const CLAIM_LABELS = { attack_action: "Action documentée", publication: "Publication", remediation: "Mesure prise", statement: "Information documentée" };' in js
+    assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status)' in js
+    assert 'detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status)' in js
+    assert 'detailField("Impact", fields.impact?.value, fields.impact?.status)' in js
+    assert "documentedClaimsHtml(detail.claims || [])" in js
 
 
 def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
@@ -183,12 +190,41 @@ def test_detail_rend_la_chronologie_dedupliquee():
     causes sont désormais corrigées côté fact_resolution.py
     (_drop_claims_duplicating_timeline, _drop_timeline_evidence_duplicates,
     normalisation ISO, retrait du markdown) : la chronologie est réaffichée,
-    triée, avec les dates passées par formatDate()."""
+    triée, avec les dates passées par formatDate(). Retour utilisateur (audit
+    UX) : elle est repliée par défaut (trop imposante) dans un <details>."""
     js = _read("assets/dashboard-v2.js")
     assert "function timelineHtml(rows)" in js
-    assert '<h4>Chronologie</h4>' in js
-    assert "timelineHtml(detail.timeline || [])" in js
+    assert 'detailSection("Chronologie"' in js
+    assert '<details class="documented-claims"><summary>Chronologie détaillée</summary>' in js
+    assert "timelineRows" in js
     assert "formatDate(row.date)" in js
+
+
+def test_detail_revient_en_haut_du_popup_a_chaque_ouverture():
+    """Un <dialog> natif ne réinitialise pas toujours son scroll interne :
+    rouvrir la fiche d'un autre incident après avoir scrollé loin dans le
+    précédent laissait l'utilisateur au milieu de la nouvelle fiche."""
+    js = _read("assets/dashboard-v2.js")
+    assert '$("#detail-dialog-content").scrollTop = 0;' in js
+    assert '$("#detail-dialog").scrollTop = 0;' in js
+
+
+def test_toutes_les_caracteristiques_retenues_s_affichent_meme_vides():
+    """Changement de philosophie assumé (retour utilisateur) : une fiche
+    incident garde toujours la même forme prévisible, plutôt que de masquer
+    silencieusement les champs sans valeur documentée."""
+    js = _read("assets/dashboard-v2.js")
+    assert 'const empty = !content || (Array.isArray(content) && !content.length);' in js
+    assert '<span class="detail-empty">—</span>' in js
+
+
+def test_systemes_et_perimetres_sont_un_seul_champ_fusionne():
+    """"Périmètres de données" redisait ce que "Systèmes concernés" exprimait
+    déjà (retour utilisateur : champ perçu comme redondant)."""
+    js = _read("assets/dashboard-v2.js")
+    assert 'detailField("Systèmes & périmètres concernés", systemsAndPerimeters)' in js
+    assert "detailField(\"Systèmes concernés\"" not in js
+    assert "detailField(\"Périmètres de données\"" not in js
 
 
 def test_libelles_de_sources_ne_dependent_pas_de_shared_js():
@@ -203,7 +239,7 @@ def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():
     js = _read("assets/dashboard-v2.js")
     css = _read("assets/dashboard-v2.css")
     assert 'resolved-field--wide' in js
-    assert 'String(content).trim().length > 26' in js
+    assert 'String(content || "").trim().length > 26' in js
     assert '.resolved-field--wide { grid-template-columns:1fr;' in css
 
 
