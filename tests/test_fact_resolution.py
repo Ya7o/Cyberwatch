@@ -287,6 +287,19 @@ def test_prestataire_nomme_dans_la_preuve_alimente_un_tiers_sans_identite_invent
     assert resolved["fields"]["third_party"]["value"] == "prestataire technique"
 
 
+def test_impact_narratif_sans_colonne_legacy_vient_du_claim():
+    """Cas réel constaté sur DINUM/SUEZ : un claim de type "impact" existe
+    (texte narratif sourcé) mais aucune colonne Impact legacy n'est
+    renseignée. Sans ce filet, fields.impact restait absent alors qu'un
+    badge de statut aurait pu s'afficher sur le champ (voir points 3+8 de
+    l'audit UX) — la même logique que threat_actor/third_party s'applique."""
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{"type": "impact", "value": "Services rendus indisponibles plusieurs jours.", "status": "confirmed", "evidence": "Les services ont été rendus indisponibles plusieurs jours."}],
+    })])
+    assert resolved["fields"]["impact"]["value"] == "Services rendus indisponibles plusieurs jours."
+    assert resolved["fields"]["impact"]["status"] == "confirmed"
+
+
 def test_acteur_cite_sans_preuve_n_est_pas_choisi_comme_acteur_principal():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [
@@ -316,6 +329,24 @@ def test_beauty_success_conserve_les_trois_concepts_distincts():
         ("records", "total"), ("records", "unique"), ("clients", "unspecified")
     }
     assert resolved["display_summary"] == ""
+
+
+def test_meme_volume_affiche_deux_fois_avec_semantique_differente_ne_fait_pas_doublon():
+    """Cas réel constaté sur Sport 2000 : "9 000 clients" apparaissait deux
+    fois dans "Volume documenté" car deux enregistrements portaient la même
+    valeur/unité affichée mais une sémantique interne différente ("total" vs
+    "unspecified", invisible à l'écran)."""
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"affected_counts": [
+            {"value": 9_000, "unit": "people", "raw": "9 000 clients", "scope": "total", "status": "claimed"},
+        ]}),
+        fact("FRENCHBREACHES", rich_facts={"affected_counts": [
+            {"value": 9_000, "unit": "people", "raw": "9 000 clients", "status": "reported"},
+        ]}),
+    ])
+    assert len(resolved["affected"]) == 1
+    assert resolved["affected"][0]["semantic"] == "total"
+    assert set(resolved["affected"][0]["sources"]) == {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}
 
 
 def test_protection_civile_fusionne_volume_et_types_de_donnees():

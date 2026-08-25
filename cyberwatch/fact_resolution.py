@@ -254,6 +254,44 @@ def _rich_count_records(fact: dict) -> list[dict]:
     return result
 
 
+_SEMANTIC_INFORMATIVENESS = {"unique": 2, "total": 2, "unspecified": 0}
+
+
+def _affected_display_key(record: dict) -> str:
+    raw = _text(record.get("raw"))
+    if raw:
+        return f"raw:{_norm(raw)}"
+    return f"{_norm(record.get('unit'))}:{_record_value(record)}"
+
+
+def _dedupe_affected_display(records: list[dict]) -> list[dict]:
+    """Fusionne les entrées qui afficheraient le même texte (ex. "9 000
+    clients") mais que la sémantique interne ("total" vs "unspecified")
+    empêchait de dédupliquer plus haut. Ce doublon est invisible dans les
+    données mais visible à l'écran — cas réel constaté sur Sport 2000."""
+    grouped: dict[str, list[dict]] = {}
+    for record in records:
+        grouped.setdefault(_affected_display_key(record), []).append(record)
+    result = []
+    for group in grouped.values():
+        if len(group) == 1:
+            result.append(group[0])
+            continue
+        ranked = sorted(
+            group,
+            key=lambda r: (-_SEMANTIC_INFORMATIVENESS.get(_norm(r.get("semantic")), 1), _norm(r.get("semantic"))),
+        )
+        winner = dict(ranked[0])
+        sources = list(winner.get("sources") or [])
+        for other in ranked[1:]:
+            for source in other.get("sources") or []:
+                if source not in sources:
+                    sources.append(source)
+        winner["sources"] = sources
+        result.append(winner)
+    return result
+
+
 def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
     """Fusionne rich + legacy, sans perdre les mesures complémentaires.
 
@@ -300,7 +338,7 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         else:
             _merge_record(selected[key], legacy, source)
 
-    return list(selected.values())
+    return _dedupe_affected_display(list(selected.values()))
 
 
 def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
@@ -826,7 +864,7 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     # Les scalaires explicitement extraits restent prioritaires. Les claims
     # typés constituent uniquement un filet de provenance pour les acteurs et
     # tiers, dont l'absence de projection ne doit plus vider une fiche riche.
-    for field, claim_type in (("threat_actor", "actor"), ("third_party", "third_party"), ("initial_access", "initial_access")):
+    for field, claim_type in (("threat_actor", "actor"), ("third_party", "third_party"), ("initial_access", "initial_access"), ("impact", "impact")):
         fields.setdefault(field, _claim_scalar(claims, claim_type))
     timeline = _timeline_entries(ordered)
     claims = _drop_claims_duplicating_timeline(claims, timeline)

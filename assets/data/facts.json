@@ -601,18 +601,6 @@
     "status": "unknown",
     "unit": "clients",
     "value": 9000
-   },
-   {
-    "evidence": "Après déduplication des enregistrements, la base contient un peu plus de  9 000 clients distincts .",
-    "raw": "9 000 clients",
-    "semantic": "unspecified",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "unit": "clients",
-    "value": 9000
    }
   ],
   "claims": [
@@ -1318,6 +1306,14 @@
   "datasets": [],
   "display_summary": "DINUM : 31 544 lignes liées au cloud de l’État en fuite",
   "fields": {
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "value": "accès aux données par 0xSec"
+   },
    "threat_actor": {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -1677,6 +1673,14 @@
   ],
   "display_summary": "SUEZ : Les données clients en fuite après une cyberattaque chez un prestataire",
   "fields": {
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "value": "risques de phishing et usurpation d'identité"
+   },
    "third_party": {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
