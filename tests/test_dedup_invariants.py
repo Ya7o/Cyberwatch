@@ -1,3 +1,4 @@
+from cyberwatch import config
 from cyberwatch.dedup import KEEP_SEPARATE, build_incidents, decide_merge, group_components
 
 
@@ -85,6 +86,71 @@ def test_grouping_never_loses_or_duplicates_items(make_item):
 
     assert sorted(flattened) == sorted(item.Item_ID for item in items)
     assert len(flattened) == len(set(flattened))
+
+
+def test_ransomware_reunification_never_bridges_different_organisations(make_item):
+    """Cas réel constaté (audit post-run 2026-08-25) : 11 organisations
+    distinctes (ALIZE, Actini Group, Bouygues ES, Medicos...) publiées à
+    quelques jours d'écart les unes des autres, toutes taguées Ransomware,
+    se recollaient transitivement en un seul incident "ALIZE" — la passe de
+    réunification de group_components() ne vérifiait que la fenêtre de
+    corroboration (_ransomware_corroboration), jamais l'identité de
+    l'organisation. Chaque maillon de la chaîne est à 1 jour du suivant
+    (bien en-deçà des 14 jours de RANSOMWARE_CORROBORATION_DAYS)."""
+    orgs = ["Alize", "Actini Group", "Bouygues ES", "Ernat Bureau Etudes", "Medicos"]
+    items = [
+        make_item(
+            source="RANSOMWARE_LIVE",
+            org=org,
+            published=f"2026-08-{6 + index:02d}",
+            threat=config.THREAT_RANSOMWARE,
+            title=f"{org} revendiqué par un groupe",
+            url=f"https://claim.example/{index}",
+        )
+        for index, org in enumerate(orgs)
+    ]
+
+    components = group_components(items)
+
+    assert len(components) == len(orgs)
+    assert sorted(len(component) for component in components) == [1] * len(orgs)
+    assert len(build_incidents(items)) == len(orgs)
+
+
+def test_ransomware_reunification_still_bridges_the_same_organisation(make_item):
+    """Le cas visé par le commentaire du code reste couvert : un article
+    éditorial et une revendication ransomware sur la MÊME victime, coupés en
+    deux composantes par la construction ancrée (une troisième source crée
+    une composante intermédiaire), doivent toujours se recoller."""
+    claim = make_item(
+        source="RANSOMWARE_LIVE",
+        org="Filair",
+        published="2026-08-01",
+        threat=config.THREAT_RANSOMWARE,
+        title="Filair revendiqué par un groupe",
+        url="https://claim.example/filair",
+    )
+    other_org_bridge = make_item(
+        source="FRENCHBREACHES",
+        org="Autre Victime",
+        published="2026-08-05",
+        threat=config.THREAT_RANSOMWARE,
+        title="Autre Victime",
+        url="https://claim.example/autre-victime",
+    )
+    report = make_item(
+        source="CYBERATTAQUE_ORG",
+        org="Filair",
+        published="2026-08-10",
+        threat=config.THREAT_RANSOMWARE,
+        title="Filair victime d'une cyberattaque",
+        url="https://cyberattaque.example/filair",
+    )
+
+    components = group_components([claim, other_org_bridge, report])
+
+    filair_component = next(c for c in components if any(i.Item_ID == claim.Item_ID for i in c))
+    assert {i.Item_ID for i in filair_component} == {claim.Item_ID, report.Item_ID}
 
 
 def test_component_never_contains_conflicting_native_ids_for_same_source(make_item):

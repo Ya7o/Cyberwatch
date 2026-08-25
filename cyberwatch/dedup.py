@@ -229,6 +229,16 @@ def group_components(items: list[Item]) -> list[list[Item]]:
     # pas toujours cette paire si une troisième source a créé entre-temps une
     # composante distincte ; réunir alors seulement les composantes dont une
     # paire satisfait déjà la règle de corroboration stricte.
+    #
+    # `_ransomware_corroboration` ne vérifie que la fenêtre de jours et la
+    # combinaison de sources : sans le contrôle `_effective_key` ci-dessous,
+    # une chaîne d'articles ransomware sur des victimes distinctes mais
+    # publiés à moins de 14 jours d'écart se recolle transitivement en un
+    # seul incident (cas réel constaté : 11 organisations distinctes
+    # fusionnées sous "ALIZE"). La paire qui déclenche la réunion doit donc
+    # être la même organisation, exactement comme le cas visé par le
+    # commentaire ci-dessus (un article et une revendication sur la même
+    # victime, coupés en deux composantes par la construction ancrée).
     merged = True
     while merged:
         merged = False
@@ -236,7 +246,8 @@ def group_components(items: list[Item]) -> list[list[Item]]:
             match = next((
                 other for other in range(index + 1, len(components))
                 if any(
-                    _ransomware_corroboration(
+                    _effective_key(a) == _effective_key(b)
+                    and _ransomware_corroboration(
                         a, b,
                         abs((date_or_empty(a.best_date) - date_or_empty(b.best_date)).days),
                     )

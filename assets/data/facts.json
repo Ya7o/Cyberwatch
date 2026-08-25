@@ -1304,6 +1304,58 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-0D87448B9E49": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Cyberattaque revendiquée contre Actini : près de 71 Go de données revendiqués par un groupe de ransomware",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "71.0"
+   }
+  ],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "data_volume": {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "71 Go"
+   },
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-07"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "krybit"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-12FCF8029315": {
   "affected": [
    {
@@ -1541,20 +1593,6 @@
     "type": "impact",
     "unit": "",
     "value": "exposition d'informations commerciales"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "# Cyberattaque revendiquée contre Actini : près de 71 Go de données revendiqués par un groupe de ransomware",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "data_volume",
-    "unit": "",
-    "value": "71.0"
    }
   ],
   "data_types": [
@@ -1618,21 +1656,13 @@
   "datasets": [],
   "display_summary": "Bija Industrie : 693 mails en fuite et 5 109 fichiers internes déjà publiés",
   "fields": {
-   "data_volume": {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "confirmed",
-    "value": "71 Go"
-   },
    "discovered_date": {
     "source": "RANSOMWARE_LIVE",
     "sources": [
      "RANSOMWARE_LIVE"
     ],
     "status": "unknown",
-    "value": "2026-08-07"
+    "value": "2026-08-16"
    },
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -1648,7 +1678,7 @@
      "RANSOMWARE_LIVE"
     ],
     "status": "unknown",
-    "value": "bravox"
+    "value": "medusalocker"
    }
   },
   "systems": [],
@@ -5614,6 +5644,35 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-3382F4573B95": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-07"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "bravox"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-33CE65C83FE8": {
   "affected": [
    {
@@ -6317,6 +6376,35 @@
     "status": "reported"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-389099DB2A5A": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-21"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "thegentlemen"
+   }
+  },
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -8616,6 +8704,35 @@
    }
   ]
  },
+ "INC-60B7EABB8CEB": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-22"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "coinbasecartel"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-616D0ECF3BB3": {
   "affected": [
    {
@@ -8980,16 +9097,6 @@
     "type": "impact",
     "unit": "",
     "value": "risque d’usurpation d’identité"
-   },
-   {
-    "evidence": "# Cyberattaque revendiquée contre Setic Pourtier : le groupe LockBit 5.0 affirme détenir des données de l'entreprise",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "actor",
-    "value": "LockBit"
    }
   ],
   "data_types": [
@@ -9017,7 +9124,7 @@
      "RANSOMWARE_LIVE"
     ],
     "status": "unknown",
-    "value": "2026-08-03"
+    "value": "2026-08-08"
    },
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -9030,10 +9137,11 @@
    "threat_actor": {
     "source": "RANSOMWARE_LIVE",
     "sources": [
-     "RANSOMWARE_LIVE"
+     "RANSOMWARE_LIVE",
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
-    "value": "lockbit5"
+    "value": "qilin"
    }
   },
   "systems": [],
@@ -9315,6 +9423,35 @@
     "status": "claimed"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-6AABCCAF78AA": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-16"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "lockbit5"
+   }
+  },
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -10571,6 +10708,35 @@
     "status": "claimed"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-712E1A5D60C6": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-07"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "krybit"
+   }
+  },
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -12971,6 +13137,35 @@
   "datasets": [],
   "display_summary": "",
   "fields": {},
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-8CAC1A097010": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-16"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "lockbit5"
+   }
+  },
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -16174,6 +16369,46 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-A2EFA116AE83": {
+  "affected": [],
+  "claims": [
+   {
+    "evidence": "# Cyberattaque revendiquée contre Setic Pourtier : le groupe LockBit 5.0 affirme détenir des données de l'entreprise",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "LockBit"
+   }
+  ],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-03"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "lockbit5"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-A35F0D19101A": {
   "affected": [],
   "claims": [
@@ -17775,6 +18010,35 @@
   "datasets": [],
   "display_summary": "",
   "fields": {},
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-B687BD135BCE": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-07"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "L Group"
+   }
+  },
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -22206,6 +22470,64 @@
     "status": "claimed"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-D5BEF3A49E4D": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-18"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "incransom"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-D5DF7DDDF9A7": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-08-06"
+   },
+   "threat_actor": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "qilin"
+   }
+  },
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
