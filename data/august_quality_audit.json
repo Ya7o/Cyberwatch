@@ -1,0 +1,191 @@
+{
+  "schema": "cyberwatch-august-quality-audit-v2",
+  "start": "2026-08-24",
+  "end": "2026-08-25",
+  "items": 8,
+  "incidents": 5,
+  "blockers": [],
+  "anomalies": [
+    {
+      "id": "INC-CE5E54EC9CED",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-CE5E54EC9CED",
+      "severity": "low",
+      "issue": "localisation_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-0EF43ECA1026",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-B448DE3FC7B8",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    }
+  ],
+  "incident_reports": [
+    {
+      "id": "INC-CE5E54EC9CED",
+      "organisation": "Banque Alimentaire de la Croix-Rouge à Strasbourg",
+      "date": "2026-08-25",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
+        }
+      ],
+      "summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "tentative",
+      "sector_tentative": "Hébergement / Tourisme / Restauration",
+      "threat": "Fuite de données",
+      "location": "Inconnu",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-0EF43ECA1026",
+      "organisation": "Banque Alimentaire de Strasbourg",
+      "date": "2026-08-25",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j"
+        }
+      ],
+      "summary": "Une fuite de plus de 10 000 dossiers de la Banque Alimentaire de Strasbourg a été revendiquée sur un forum de cybercriminels.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "tentative",
+      "sector_tentative": "Hébergement / Tourisme / Restauration",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-7F84F57DB9BD",
+      "organisation": "Groupe Bernard",
+      "date": "2026-08-24",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/groupe-bernard-2225-go-de-donnees-et-330-563-fichiers-publies-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/groupe-bernard-blgcloud-mt7k8j5h05wkmuoyjbj"
+        }
+      ],
+      "summary": "Groupe Bernard : 22,25 Go de données et 330 563 fichiers publiés après une cyberattaque",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Commerce / Distribution",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    },
+    {
+      "id": "INC-B448DE3FC7B8",
+      "organisation": "Klark AI",
+      "date": "2026-08-24",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/klark-ai-pres-de-500k-personnes-exposees-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/klark-ai-mt6t1mwhjzd3u98q3vr"
+        }
+      ],
+      "summary": "Klark.ai a subi une fuite massive expose près de 500 000 personnes avec plus de 140 Go de données volées.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "tentative",
+      "sector_tentative": "Numérique / Technologie",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    },
+    {
+      "id": "INC-C150F062C71D",
+      "organisation": "YouFid",
+      "date": "2026-08-24",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/youfid-pres-de-19-million-de-profils-clients-revendiques-dans-une-fuite-massive/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/youfid-mt6v6n1zy4kdlfxng5"
+        }
+      ],
+      "summary": "YouFid a subi une fuite massive revendiquée de près de 1,9 million de profils clients.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Services aux entreprises",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    }
+  ],
+  "verdict": "GO"
+}
