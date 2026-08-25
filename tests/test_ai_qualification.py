@@ -128,6 +128,10 @@ class TestOverwritePolicy:
         assert state.calls_succeeded == 0
 
     def test_confidence_insuffisante_garde_inconnu(self, make_item, monkeypatch):
+        """Cause racine 5 (audit 2026-08-25) : Sector n'est plus jamais
+        envoyé à ce filet par item — aucune valeur, confiance suffisante ou
+        non, ne peut donc plus en sortir. L'appel simulé n'est ici jamais
+        déclenché puisque Sector était le seul champ encore Inconnu."""
         item = make_item(sector=config.SECTOR_UNKNOWN)
         entry = RawEntry(
             title="La mairie de Testville victime d'un rançongiciel",
@@ -138,21 +142,14 @@ class TestOverwritePolicy:
         )
         monkeypatch.setattr(
             ai, "_call_openai",
-            lambda *a, **k: _payload(
-                sector=_field(
-                    "Santé", confidence=0.2,
-                    evidence="gère les services municipaux de l'état civil et de l'urbanisme",
-                )
-            ),
+            lambda *a, **k: pytest.fail("Sector ne doit plus jamais être demandé à ce filet"),
         )
         state = enabled_state()
 
         ai.qualify_item(item, entry, SPEC, state)
 
         assert item.Sector == config.SECTOR_UNKNOWN
-        # La réponse était structurée et valide : c'est un succès d'appel,
-        # simplement en dessous du seuil d'application.
-        assert state.calls_succeeded == 1
+        assert state.calls_succeeded == 0
 
     def test_location_sans_evidence_dans_le_contexte_reste_inconnue(self, make_item, monkeypatch):
         item = make_item(location=config.LOC_INCONNU)
@@ -562,12 +559,7 @@ class TestPerSourceBehavior:
         )
         monkeypatch.setattr(
             ai, "_call_openai",
-            lambda *a, **k: _payload(
-                sector=_field(
-                    "Industrie / Manufacture",
-                    evidence="produit des pièces automobiles pour l'industrie",
-                )
-            ),
+            lambda *a, **k: pytest.fail("Sector ne doit plus jamais être demandé à ce filet"),
         )
         spec = SourceSpec(source_id="RANSOMWARE_LIVE", layer=config.LAYER_CORE, zone="Multi",
                            collector="ransomware_live")
@@ -576,7 +568,10 @@ class TestPerSourceBehavior:
 
         assert item.Threat == "Ransomware"
         assert item.Location == "France métropolitaine"
-        assert item.Sector == "Industrie / Manufacture"
+        # Cause racine 5 (audit 2026-08-25) : ce filet par item ne tranche
+        # plus jamais Sector — seule l'arbitration organisation_sector.py
+        # (§qualify, hors de qualify_item) peut encore le résoudre.
+        assert item.Sector == config.SECTOR_UNKNOWN
 
     def test_source_marquee_skip_ai_qualification_est_exclue(self, make_item, monkeypatch):
         item = make_item(threat=config.THREAT_UNKNOWN)
@@ -697,7 +692,16 @@ class TestReportIntegration:
 
 
 class TestSectorEvidenceGrounding:
-    def test_evidence_ancree_et_descriptive_est_appliquee(self, make_item, monkeypatch):
+    def test_evidence_ancree_meme_forte_ne_tranche_plus_sector_seule(self, make_item, monkeypatch):
+        """Cause racine 5 (audit 2026-08-25, cas réel YouFid) : ce filet par
+        item a longtemps pu trancher Sector à lui seul dès qu'une preuve
+        bien ancrée existait dans CET article — avant même que
+        organisation_sector.py (§qualify) n'arbitre ce même signal face aux
+        autres sources/items de l'organisation. Résultat observé : un
+        verdict Sector isolé, plus faible, pouvait s'appliquer et bloquer
+        l'arbitrage réel simplement parce qu'il s'exécutait plus tôt. Même
+        une preuve parfaitement ancrée et descriptive ne doit donc plus
+        jamais suffire ici ; Sector reste Inconnu à l'issue de ce filet."""
         item = make_item(sector=config.SECTOR_UNKNOWN)
         entry = RawEntry(
             title="Scalingo victime d'une fuite de données",
@@ -708,18 +712,14 @@ class TestSectorEvidenceGrounding:
         )
         monkeypatch.setattr(
             ai, "_call_openai",
-            lambda *a, **k: _payload(sector=_field(
-                "Numérique / Technologie",
-                evidence="hébergeur cloud qui propose des services de déploiement d'applications",
-            )),
+            lambda *a, **k: pytest.fail("Sector ne doit plus jamais être demandé à ce filet"),
         )
         state = enabled_state()
 
         ai.qualify_item(item, entry, SPEC, state)
 
-        assert item.Sector == "Numérique / Technologie"
-        assert state.calls_succeeded == 1
-        assert state.sector_evidence_rejected == 0
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.calls_succeeded == 0
 
     def test_rejet_sector_seul_ne_casse_pas_threat_dans_le_meme_appel(self, make_item, monkeypatch):
         """Non-régression critique : un appel combiné Threat+Sector où seul
@@ -876,11 +876,15 @@ def enabled_state_with_enrichment(**overrides) -> ai.AiRunState:
 
 
 class TestSectorEnrichmentEscalation:
-    def test_contexte_source_resout_apres_echec_enrichissement(self, make_item, monkeypatch):
+    def test_contexte_source_ne_resout_plus_seul_apres_echec_enrichissement(self, make_item, monkeypatch):
         """Cas Bureau Vallée : l'enrichissement (Phase 1, §Sector fiabilité)
-        est désormais toujours tenté en premier — un LLM ne doit être qu'un
-        dernier recours. Ici il ne trouve rien (`None`), et c'est le LLM sur
-        contexte source (Phase 2) qui résout Sector depuis une description
+        est toujours tenté en premier. Ici il ne trouve rien (`None`).
+        Cause racine 5 (audit 2026-08-25) : le LLM sur contexte source
+        (l'ancienne « Phase 2 ») ne doit plus jamais trancher Sector à lui
+        seul depuis une simple description métier de CET article — cette
+        décision revient désormais uniquement à l'arbitrage
+        organisation_sector.py (§qualify), hors de qualify_item. Sector
+        reste donc Inconnu à l'issue de ce filet, même avec une description
         métier explicitement ancrée."""
         item = make_item(sector=config.SECTOR_UNKNOWN)
         entry = RawEntry(
@@ -892,18 +896,15 @@ class TestSectorEnrichmentEscalation:
         )
         monkeypatch.setattr(
             ai, "_call_openai",
-            lambda *a, **k: _payload(sector=_field(
-                "Commerce / Distribution",
-                evidence="enseigne de distribution de fournitures de bureau",
-            )),
+            lambda *a, **k: pytest.fail("Sector ne doit plus jamais être demandé à ce filet"),
         )
         monkeypatch.setattr(org_enrichment, "resolve", lambda *a, **k: None)
         state = enabled_state_with_enrichment()
 
         ai.qualify_item(item, entry, SPEC, state)
 
-        assert item.Sector == "Commerce / Distribution"
-        assert state.sector_resolved_source_llm == 1
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.sector_resolved_source_llm == 0
 
     def test_sans_enrichissement_active_ransomware_seul_reste_inconnu(self, make_item, monkeypatch):
         """Cas Savills sans enrichissement (état par défaut, opt-in) : aucun
@@ -1153,7 +1154,10 @@ class TestSectorEnrichmentEscalation:
 
 class TestSectorMetrics:
     def test_nouvelles_colonnes_ai_usage_refletent_chaque_voie_de_resolution(self, make_item, monkeypatch):
-        # Un item résolu par le contexte source.
+        # Cause racine 5 (audit 2026-08-25) : le contexte source ne résout
+        # plus jamais Sector via ce filet par item (Sector_Resolved_Source_LLM
+        # reste à 0) — seul l'enrichissement officiel déterministe/LLM reste
+        # capable de le faire ici ; ce premier item reste donc Inconnu.
         item_llm = make_item(source_item_id="a", org="Scalingo", sector=config.SECTOR_UNKNOWN)
         entry_llm = RawEntry(
             title="Scalingo victime d'une fuite de données",
@@ -1174,8 +1178,7 @@ class TestSectorMetrics:
         )
 
         def fake_call_openai(item_, entry_, spec_, requested, state_):
-            if item_.Item_ID == item_llm.Item_ID:
-                return _payload(sector=_field("Numérique / Technologie", evidence="hébergeur cloud"))
+            assert "Sector" not in requested
             return _payload()
 
         monkeypatch.setattr(ai, "_call_openai", fake_call_openai)
@@ -1196,12 +1199,14 @@ class TestSectorMetrics:
         assert row["Sector_Initial_Unknown"] == 5
         assert row["Sector_Resolved_Reference"] == 1
         assert row["Sector_Resolved_Deterministic"] == 1
-        assert row["Sector_Resolved_Source_LLM"] == 1
+        assert row["Sector_Resolved_Source_LLM"] == 0
         assert row["Sector_Resolved_Enriched_Deterministic"] == 1
         assert row["Sector_Resolved_Enriched_LLM"] == 0
         assert row["Sector_Enrichment_Cache_Hit"] == 0
-        # 5 (avant tout) - 1 (référence) - 1 (déterministe) - 1 (LLM source)
-        # - 1 (enrichi déterministe) = 1 restant, cohérent avec le seul item
-        # non couvert par ce scénario à deux items.
-        assert row["Sector_Remaining_Unknown"] == 1
+        # 5 (avant tout) - 1 (référence) - 1 (déterministe) - 0 (LLM source,
+        # cause racine 5 : ce filet par item ne résout plus jamais Sector) -
+        # 1 (enrichi déterministe) = 2 restants : item_llm (jamais résolu
+        # sans preuve officielle) et le seul item non couvert par ce
+        # scénario à deux items.
+        assert row["Sector_Remaining_Unknown"] == 2
         assert row["Org_Enrichment_Calls"] == 0

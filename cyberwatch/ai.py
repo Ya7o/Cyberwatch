@@ -528,9 +528,20 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
         if sector_requested
         else ""
     )
-    call_requested = requested
+    # Cause racine 5 (audit 2026-08-25, cas réel YouFid) : ce filet par item
+    # ne doit plus jamais trancher Sector lui-même à partir du seul texte de
+    # CET article. organisation_sector.py (§qualify) recollecte déjà ce même
+    # signal (Activity_Description) via un classificateur plus strict et
+    # l'arbitre face aux autres sources/items de la même organisation avant
+    # d'appliquer quoi que ce soit ; un appel isolé ici pouvait produire un
+    # verdict différent de cette arbitration et l'emporter simplement parce
+    # qu'il s'exécutait plus tôt (Item.Sector non-Inconnu avant l'arbitrage).
+    # Sector reste décidé plus loin dans ce même module uniquement via les
+    # escalades ancrées sur un enrichissement officiel validé
+    # (_escalate_org_enrichment_deterministic / _escalate_sector_llm), jamais
+    # par ce texte brut à l'aveugle.
+    call_requested = [name for name in requested if name != "Sector"]
     if sector_requested and not sector_activity:
-        call_requested = [name for name in requested if name != "Sector"]
         state.sector_evidence_rejected += 1
         if _sector_skip_is_structural(item, entry, spec, state.max_context_chars):
             state.sector_llm_skipped += 1
