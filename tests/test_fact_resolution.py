@@ -155,6 +155,25 @@ def test_chiffre_rond_et_precis_ne_produisent_qu_une_seule_entree():
     assert set(resolved["affected"][0]["sources"]) == {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}
 
 
+def test_meme_chiffre_avec_et_sans_raw_ne_produit_qu_une_seule_entree():
+    """Cas réel constaté sur données publiées (reset 2026-08-25, Groupe
+    Bernard) : la fiche affichait "330 563 fichiers" deux fois. L'extraction
+    amont avait rempli `scope` avec le nom de l'organisation sur une partie
+    des enregistrements, ce qui leur donnait une sémantique distincte, et
+    l'enregistrement survivant de ce groupe avait perdu son `raw`. Les deux
+    entrées s'affichaient pourtant au texte identique (l'une depuis `raw`,
+    l'autre reconstruite depuis `value`+`unit`) : c'est bien un doublon
+    visuel, quelle que soit la cause amont."""
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"affected_counts": [
+            {"value": 330_563, "unit": "files", "raw": "330 563 fichiers", "status": "claimed"},
+            {"value": 330_563, "unit": "files", "raw": "", "scope": "Groupe Bernard", "status": "reported"},
+        ]}),
+    ])
+    assert len(resolved["affected"]) == 1
+    assert resolved["affected"][0]["value"] == 330_563
+
+
 def test_claims_timeline_et_systemes_semantiques_sont_publies():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}, {"type": "system", "value": "Pilot", "status": "reported", "evidence": "Le système Pilot est concerné."}],

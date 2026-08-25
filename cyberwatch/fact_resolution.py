@@ -305,10 +305,18 @@ _SEMANTIC_INFORMATIVENESS = {"unique": 2, "total": 2, "unspecified": 0}
 
 
 def _affected_display_key(record: dict) -> str:
-    raw = _text(record.get("raw"))
-    if raw:
-        return f"raw:{_norm(raw)}"
-    return f"{_norm(record.get('unit'))}:{_record_value(record)}"
+    """Deux mesures qui s'affichent au même texte sont un doublon visuel.
+
+    La clé porte donc sur le texte réellement rendu (`_format_count`), pas sur
+    la présence du champ `raw`. Cas réel constaté (reset 2026-08-25, Groupe
+    Bernard) : deux enregistrements de même valeur et même unité
+    (330563/files) s'affichaient tous deux "330 563 fichiers" — l'un depuis
+    son `raw`, l'autre reconstruit depuis `value`+`unit` faute de `raw`.
+    L'ancienne clé les distinguait sur ce seul détail interne
+    (`raw:330 563 fichiers` vs `files:330563`) et publiait donc deux puces
+    identiques.
+    """
+    return _norm(_format_count(record))
 
 
 def _rounding_power(value: int) -> int:
