@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T13:54:34.600819+00:00",
+  "generated_at": "2026-08-25T14:18:37.032629+00:00",
   "incident_coverage": {
     "location": {
       "known": 5,
@@ -41,12 +41,12 @@
     }
   },
   "latest_run": {
-    "as_of": "2026-08-25T17:45:31+04:00",
-    "duration_seconds": 91.0,
+    "as_of": "2026-08-25T18:10:58+04:00",
+    "duration_seconds": 91.3,
     "mode": "CREATE",
     "overall_status": "OK",
     "requests": 20,
-    "run_id": "RUN-20260825T174531-6",
+    "run_id": "RUN-20260825T181058-6",
     "target_end": "2026-08-25",
     "target_start": "2026-08-24"
   },
@@ -58,29 +58,29 @@
         "calls_budget_blocked": 0,
         "calls_failed": 0,
         "calls_succeeded": 1,
-        "duration_seconds": 4.242255806000003,
-        "estimated_cost_usd": 0.00026040000000000004,
-        "input_tokens": 1184,
+        "duration_seconds": 3.8725219439999705,
+        "estimated_cost_usd": 0.00024400000000000002,
+        "input_tokens": 1208,
         "last_model": "gpt-5-nano",
         "max_calls": 200,
         "max_cost_usd": 0.5,
-        "output_tokens": 503,
+        "output_tokens": 459,
         "reasoning_tokens": 0,
         "retries": 0,
-        "total_tokens": 1687
+        "total_tokens": 1667
       }
     },
     "calls_attempted": 1,
     "calls_failed": 0,
     "calls_succeeded": 1,
-    "duration_seconds": 4.242,
-    "estimated_cost_usd": 0.00026,
-    "total_tokens": 1687
+    "duration_seconds": 3.873,
+    "estimated_cost_usd": 0.000244,
+    "total_tokens": 1667
   },
   "schema": "cyberwatch-post-reset-baseline-v1",
   "sources": {
     "BONJOURLAFUITE": {
-      "collect_duration_seconds": 1.448,
+      "collect_duration_seconds": 1.425,
       "coverage": "100",
       "duration_seconds": 1.4,
       "items": 0,
@@ -90,27 +90,27 @@
       "status": "OK"
     },
     "CYBERATTAQUE_ORG": {
-      "collect_duration_seconds": 3.34,
+      "collect_duration_seconds": 3.519,
       "coverage": "100",
-      "duration_seconds": 3.9,
+      "duration_seconds": 4.1,
       "items": 5,
       "items_collected": 5,
       "new_items": 5,
-      "processing_duration_seconds": 0.544,
+      "processing_duration_seconds": 0.555,
       "status": "OK"
     },
     "FRENCHBREACHES": {
-      "collect_duration_seconds": 5.072,
+      "collect_duration_seconds": 5.153,
       "coverage": "100",
-      "duration_seconds": 7.3,
+      "duration_seconds": 7.4,
       "items": 4,
       "items_collected": 4,
       "new_items": 4,
-      "processing_duration_seconds": 2.215,
+      "processing_duration_seconds": 2.207,
       "status": "OK"
     },
     "RANSOMWARE_LIVE": {
-      "collect_duration_seconds": 78.263,
+      "collect_duration_seconds": 78.319,
       "coverage": "100",
       "duration_seconds": 78.3,
       "items": 0,
@@ -126,7 +126,7 @@
       "items": 0,
       "items_collected": 16,
       "new_items": 0,
-      "processing_duration_seconds": 0.022,
+      "processing_duration_seconds": 0.024,
       "status": "OK"
     }
   },
