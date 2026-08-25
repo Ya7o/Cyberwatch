@@ -214,7 +214,15 @@ def start_run(cache_path: Path) -> DedupAiRunState:
         cache_path=cache_path,
         max_calls=_env_int("DEDUP_AI_MAX_CALLS", 50),
         max_cost=_env_float("DEDUP_AI_MAX_COST_USD", 0.10),
-        max_context_chars=_env_int("DEDUP_AI_MAX_CONTEXT_CHARS", 8000),
+        # Cas réel constaté sur RUN-20260825T084327 (fenêtre MAJ à recouvrement
+        # de 21 jours, §MAJ_OVERLAP_DAYS) : 428 candidats générés, 8000
+        # caractères n'en laissaient passer que 4 avant capacité — parmi les
+        # 424 non revus, au moins 3 paires (Capgemini/Capgemini Engineering,
+        # Netim/Netim Company, Intermarché/Intermarché Drive) étaient des
+        # doublons réels confirmés manuellement. Un seul appel/jour reste la
+        # règle (§Lot 4) ; le coût suit le nombre de candidats effectivement
+        # envoyés et reste négligeable (~$0.0002/candidat mesuré ce jour-là).
+        max_context_chars=_env_int("DEDUP_AI_MAX_CONTEXT_CHARS", 40000),
         # 350 suffisait pour une décision paire-à-paire ; le batch quotidien
         # (§Lot 3/4) répond potentiellement pour des dizaines de candidats
         # dans le même appel — un plafond trop bas tronquerait la sortie

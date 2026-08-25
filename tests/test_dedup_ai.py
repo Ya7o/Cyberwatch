@@ -252,6 +252,18 @@ def test_batch_capacity_limit(monkeypatch, tmp_path, make_item):
     assert dedup_ai.daily_summary(state)["dedup_candidates_not_reviewed_capacity"] == 3
 
 
+def test_budget_par_defaut_absorbe_un_run_maj_realiste(monkeypatch, tmp_path):
+    """Cas réel constaté sur RUN-20260825T084327 : 428 candidats générés par
+    une MAJ à recouvrement de 21 jours, mais 8000 caractères n'en laissaient
+    passer que 4 avant capacité — 3 doublons réels confirmés (Capgemini,
+    Netim, Intermarché) sont restés parmi les 424 non revus. Le budget par
+    défaut doit être assez grand pour ne plus être le facteur limitant sur un
+    run de cette taille."""
+    monkeypatch.delenv("DEDUP_AI_MAX_CONTEXT_CHARS", raising=False)
+    state = dedup_ai.start_run(tmp_path / "dedup_ai_daily_cache.csv")
+    assert state.max_context_chars >= 40000
+
+
 def test_batch_schema_validation(monkeypatch, tmp_path, make_item):
     """Une valeur hors énumération invalide uniquement la décision concernée,
     sans faire planter le batch entier."""
