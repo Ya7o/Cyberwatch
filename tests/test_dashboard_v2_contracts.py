@@ -93,7 +93,7 @@ def test_secteur_suppose_utilise_un_chip_distinct_du_secteur_confirme():
     js = _read("assets/dashboard-v2.js")
     assert "function sectorTentativeChip(incident)" in js
     assert 'data-status="PARTIAL"' in js
-    assert "(supposé, non confirmé)" in js
+    assert "(supposé)" in js
     # Réutilisé identiquement en carte et en détail, jamais dupliqué à la main.
     assert js.count("sectorTentativeChip(incident)") >= 3
 
@@ -313,10 +313,16 @@ def test_groupes_et_puces_de_donnees_partagent_l_echelle_typographique_harmonise
     """Root cause round 3 : `.incident-data-group > summary` (style.css, code
     hérité) porte `font-weight:600` sans aucune taille de police, donc il
     hérite du corps de page (~16px) — bien plus gros que le reste de la
-    fiche redessinée (.82-.86rem). Même lacune sur `.incident-data-value`."""
+    fiche redessinée (.82-.86rem). Même lacune sur `.incident-data-value`.
+
+    Round 4 : `.incident-data-value` héritait aussi de style.css un rayon de
+    coin plein (`border-radius:999px`, pastille), jamais aligné sur les
+    autres puces de la fiche (`.detail-chip`, réduites à 12px dès le round 2
+    pour éviter l'effet pastille déformée sur texte long) — retour
+    utilisateur réel ("parfois une bulle, parfois pas")."""
     css = _read("assets/dashboard-v2.css")
     assert ".incident-data-group > summary { min-height:0; padding:.15rem 0; font-size:.86rem; color:var(--text-secondary); }" in css
-    assert ".incident-data-value { padding:.14rem .45rem; font-size:.82rem; }" in css
+    assert ".incident-data-value { padding:.14rem .45rem; font-size:.82rem; border-radius:12px; }" in css
     assert ".incident-data-types-title { grid-column:1 / -1; margin-bottom:0; font-size:.86rem; }" in css
 
 

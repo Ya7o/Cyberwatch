@@ -110,22 +110,26 @@
 
   function sectorTentativeChip(incident) {
     if (known(incident.sector)) return "";
+    // Le point coloré du chip (`.chip[data-status]::before`) porte déjà
+    // visuellement l'information "non confirmé" : répéter la précision en
+    // toutes lettres ne faisait qu'étirer la pastille en bulle démesurée
+    // (retour utilisateur réel) pour une redondance.
     if (known(incident.sector_tentative)) {
-      return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé, non confirmé)</span>`;
+      return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé)</span>`;
     }
     // Sans candidat du tout (sector_status.status === "unknown"), le secteur
     // était auparavant simplement absent de l'affichage — contrairement aux
     // cas où un candidat existe. Les deux variantes de "Inconnu" doivent
     // rester lisibles de la même façon plutôt que l'une d'elles disparaissant.
     if (incident.sector_status?.status === "unknown") {
-      return `<span class="chip" data-status="UNKNOWN">Secteur non déterminé (aucune preuve disponible)</span>`;
+      return `<span class="chip" data-status="UNKNOWN">Secteur non déterminé</span>`;
     }
     return "";
   }
 
   function threatTentativeChip(incident) {
     if (known(incident.threat) || !known(incident.threat_tentative)) return "";
-    return `<span class="chip" data-status="PARTIAL">${esc(incident.threat_tentative)} (supposée, non confirmée)</span>`;
+    return `<span class="chip" data-status="PARTIAL">${esc(incident.threat_tentative)} (supposée)</span>`;
   }
 
   function incidentCardHtml(incident) {
@@ -365,7 +369,7 @@
   // Regroupement par famille et code couleur de sensibilité des données
   // compromises, calculés par règles déterministes côté client — jamais par
   // le LLM (§ Identité hors LLM, CLAUDE.md).
-  const DATA_TYPE_FAMILY_ORDER = ["Identité", "Coordonnées", "Financières", "Authentification", "Santé", "Professionnelles", "Administratives", "Autres"];
+  const DATA_TYPE_FAMILY_ORDER = ["Identité", "Coordonnées", "Financières", "Authentification", "Santé", "Professionnelles", "Administratives"];
   // Certains libellés canoniques sont au pluriel avec la marque du pluriel
   // sur le premier mot ("mots de passe", "cartes de paiement", "pièces
   // d'identité") : une simple sous-chaîne au singulier ne les retrouve pas
@@ -384,19 +388,35 @@
   const SENSITIVITY_HIGH_MARKERS = ["iban", "rib", "bancair", "carte de paiement", "cartes de paiement", "carte bancaire", "cartes bancaires", "releve de compte", "revenu", "salaire", "patrimoine"];
   const SENSITIVITY_MODERATE_MARKERS = ["mail", "telephone", "mobile", "adresse", "numero client", "identifiant client", "date de naissance", "naissance"];
 
+  // Une correspondance en sous-chaîne brute matche aussi au milieu d'un mot
+  // (ex. le mot-clé "formation" est littéralement contenu dans "information"),
+  // ce qui a bucketé à tort des valeurs anglaises non canonisées ("case
+  // information") dans "Professionnelles". Exiger que le mot-clé démarre un
+  // mot (précédé d'une espace ou du début de chaîne) suffit à éliminer ce
+  // faux positif tout en gardant les radicaux volontaires ("medic" doit
+  // toujours matcher "medical") : les libellés canoniques partagés avec le
+  // backend (cyberwatch/normalize.py::canonical_data_type) sont toujours des
+  // mots bien séparés, jamais des collisions médianes de ce genre.
+  const startsAtWordBoundary = (normalized, keyword) => ` ${normalized} `.includes(` ${keyword}`);
+
   function dataTypeFamily(value) {
     const normalized = normalize(value);
     for (const [label, keywords] of DATA_TYPE_FAMILY_RULES) {
-      if (keywords.some((keyword) => normalized.includes(keyword))) return label;
+      if (keywords.some((keyword) => startsAtWordBoundary(normalized, keyword))) return label;
     }
-    return "Autres";
+    // Un fourre-tout "Autres" a longtemps affiché ici des valeurs de piètre
+    // qualité (phrases brutes non canonisées, parfois en anglais — retour
+    // utilisateur réel) sans rien apporter : une valeur non reconnue est
+    // désormais simplement absente de "Données exposées" plutôt qu'exposée
+    // telle quelle dans un panier générique.
+    return null;
   }
 
   function dataTypeSensitivity(value) {
     const normalized = normalize(value);
-    if (SENSITIVITY_CRITICAL_MARKERS.some((marker) => normalized.includes(marker))) return "critical";
-    if (SENSITIVITY_HIGH_MARKERS.some((marker) => normalized.includes(marker))) return "high";
-    if (SENSITIVITY_MODERATE_MARKERS.some((marker) => normalized.includes(marker))) return "moderate";
+    if (SENSITIVITY_CRITICAL_MARKERS.some((marker) => startsAtWordBoundary(normalized, marker))) return "critical";
+    if (SENSITIVITY_HIGH_MARKERS.some((marker) => startsAtWordBoundary(normalized, marker))) return "high";
+    if (SENSITIVITY_MODERATE_MARKERS.some((marker) => startsAtWordBoundary(normalized, marker))) return "moderate";
     return "";
   }
 
@@ -408,8 +428,10 @@
     values.forEach((value) => {
       const cleaned = String(value).trim();
       if (!cleaned || seen.has(cleaned)) return;
+      const family = dataTypeFamily(cleaned);
+      if (!family) return;
       seen.add(cleaned);
-      groups.get(dataTypeFamily(cleaned)).push(cleaned);
+      groups.get(family).push(cleaned);
     });
     const rendered = DATA_TYPE_FAMILY_ORDER.map((label) => {
       const items = groups.get(label) || [];

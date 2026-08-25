@@ -115,14 +115,16 @@
 .detail-chip { padding:.16rem .48rem; }
 .incident-data-types { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.35rem .8rem; margin-top:.45rem; }
 /* style.css définit .incident-data-group/.incident-data-value (legacy,
-   réutilisés ici) sans taille de police : ils héritaient donc du corps de
-   page (~16px), plus gros que tout le reste de la fiche redessinée
-   (.82-.86rem). Rebranchés ici sur la même échelle harmonisée. */
+   réutilisés ici) sans taille de police ni rayon de coin harmonisés : ils
+   héritaient donc du corps de page (~16px) et d'une pastille pleine
+   (border-radius:999px), plus gros et visuellement différent du reste de la
+   fiche redessinée (.82-.86rem, .detail-chip en 12px depuis le round 2).
+   Rebranchés ici sur la même échelle et la même forme. */
 .incident-data-types-title { grid-column:1 / -1; margin-bottom:0; font-size:.86rem; }
 .incident-data-group { margin:0; }
 .incident-data-group > summary { min-height:0; padding:.15rem 0; font-size:.86rem; color:var(--text-secondary); }
 .incident-data-values { margin-top:.25rem; }
-.incident-data-value { padding:.14rem .45rem; font-size:.82rem; }
+.incident-data-value { padding:.14rem .45rem; font-size:.82rem; border-radius:12px; }
 .incident-data-value--sensitivity-moderate { background:rgba(190,130,0,.10); border-color:rgba(190,130,0,.34); }
 .incident-data-value--sensitivity-high { background:rgba(190,62,62,.11); border-color:rgba(190,62,62,.38); }
 .incident-data-value--sensitivity-critical { background:rgba(190,62,62,.18); border-color:rgba(190,62,62,.58); }
