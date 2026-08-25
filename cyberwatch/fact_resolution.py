@@ -86,6 +86,36 @@ def _actor_label(value: Any) -> str:
     return _ACTOR_PREFIX_RE.sub("", _text(value)).strip(" ,;:-")
 
 
+#: Cas réel constaté (audit 2026-08-25) : l'extraction LLM capte parfois le
+#: sujet grammatical d'un verbe déclaratif ("qui indique", "L'entreprise
+#: indique") comme s'il s'agissait de l'acteur revendicateur, alors qu'il
+#: s'agit d'un pronom relatif ou de la victime elle-même. Filet déterministe
+#: gratuit en complément du prompt (source_facts_ai.py) : rejette ces deux
+#: formes plutôt que de les publier comme un acteur nommé.
+_ACTOR_PRONOUN_BLOCKLIST = {
+    "qui", "il", "elle", "ils", "elles",
+    "celui ci", "celle ci", "celui la", "celle la",
+    "ce dernier", "cette derniere", "ces derniers", "ces dernieres",
+}
+
+
+def _is_actor_value_valid(value: Any, organisation: str = "") -> bool:
+    """Rejette un acteur qui n'est en réalité qu'un artefact grammatical :
+    un pronom relatif/démonstratif capté devant un verbe déclaratif, ou le
+    nom de la victime elle-même repris comme sujet de la phrase."""
+    norm = _norm(value)
+    if not norm or norm in _ACTOR_PRONOUN_BLOCKLIST:
+        return False
+    organisation_norm = _norm(organisation)
+    if organisation_norm and (
+        norm == organisation_norm
+        or organisation_norm in norm
+        or norm in organisation_norm
+    ):
+        return False
+    return True
+
+
 def _known(value: Any) -> bool:
     if value is None:
         return False
@@ -274,6 +304,87 @@ def _affected_display_key(record: dict) -> str:
     return f"{_norm(record.get('unit'))}:{_record_value(record)}"
 
 
+def _rounding_power(value: int) -> int:
+    """Plus grande puissance de 10 (>= 1000) dont `value` est multiple, 0 si
+    `value` n'a pas la structure d'un chiffre arrondi (ex. 330000 -> 10000,
+    330563 -> 0)."""
+    if value <= 0 or value % 1000:
+        return 0
+    power = 1000
+    while value % (power * 10) == 0:
+        power *= 10
+    return power
+
+
+#: Écart relatif maximal toléré entre les deux valeurs (5 %) : un simple
+#: rapprochement structurel ("10000 a la forme d'un arrondi") ne suffit pas
+#: — sans ce plafond, 9000 et 10000 (deux chiffres réellement distincts,
+#: cf. test_conflit_cross_format_meme_unite_conserve_les_mesures_distinctes)
+#: seraient confondus puisque 10000 est structurellement l'arrondi au
+#: millier de tout nombre entre 5000 et 15000.
+_MAX_ROUNDING_RELATIVE_GAP = 0.05
+
+
+def _numbers_are_rounding_pair(a: int, b: int) -> bool:
+    """Vrai si l'un des deux chiffres est la version arrondie de l'autre à
+    sa propre puissance de 10 (330000 est l'arrondi de 330563 au millier
+    près ; 10000 est l'arrondi de 10073) ET que l'écart relatif entre les
+    deux reste faible — une imprécision de rapport plausible, pas deux
+    chiffres réellement différents."""
+    if a == b:
+        return False
+    larger, smaller = (a, b) if a > b else (b, a)
+    if smaller <= 0 or (larger - smaller) / larger > _MAX_ROUNDING_RELATIVE_GAP:
+        return False
+    for round_value, other in ((a, b), (b, a)):
+        power = _rounding_power(round_value)
+        if power and round(other / power) * power == round_value:
+            return True
+    return False
+
+
+def _dedupe_affected_rounding(records: list[dict]) -> list[dict]:
+    """Un chiffre rond et un chiffre précis du même ordre de grandeur, même
+    unité, décrivent presque toujours le même fait rapporté avec une
+    précision différente par deux sources — pas deux volumes distincts. Cas
+    réels constatés (§audit 2026-08-25) : Groupe Bernard (330 563 vs
+    330 000 fichiers), Banque Alimentaire de la Croix-Rouge à Strasbourg
+    (10 073 vs 10 000). La valeur la plus précise (jamais "ronde") est
+    conservée ; les sources du chiffre arrondi lui sont rattachées plutôt
+    que d'afficher un doublon."""
+    def sort_key(record: dict) -> tuple[int, int]:
+        try:
+            value = int(record.get("value"))
+        except (TypeError, ValueError):
+            return (0, 0)
+        return (_rounding_power(value), -value)
+
+    kept: list[dict] = []
+    for record in sorted(records, key=sort_key):
+        try:
+            numeric = int(record.get("value"))
+        except (TypeError, ValueError):
+            kept.append(record)
+            continue
+        unit = _norm(record.get("unit"))
+        match = next(
+            (
+                k for k in kept
+                if _norm(k.get("unit")) == unit
+                and isinstance(k.get("value"), int)
+                and _numbers_are_rounding_pair(numeric, k["value"])
+            ),
+            None,
+        )
+        if match is None:
+            kept.append(record)
+            continue
+        for source in record.get("sources") or []:
+            if source not in match["sources"]:
+                match["sources"].append(source)
+    return kept
+
+
 def _dedupe_affected_display(records: list[dict]) -> list[dict]:
     """Fusionne les entrées qui afficheraient le même texte (ex. "9 000
     clients") mais que la sémantique interne ("total" vs "unspecified")
@@ -311,7 +422,18 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
     de ne jamais inventer la nature du nombre.
     """
     ordered = _ordered_facts(facts)
-    rich_by_fact = {id(fact): _rich_count_records(fact) for fact in ordered}
+    # Un chiffre explicitement démenti par l'article ("n'ont pas été
+    # vérifiés", "ne correspondent pas nécessairement à...") ne doit jamais
+    # s'afficher comme un fait ordinaire — même garde que _data_types_entries
+    # pour negated/denied, jusqu'ici absente de ce côté (§audit 2026-08-25 :
+    # cas réel YouFid 1,9M démenti affiché comme un second chiffre normal).
+    rich_by_fact = {
+        id(fact): [
+            record for record in _rich_count_records(fact)
+            if record.get("status") not in {"negated", "denied"}
+        ]
+        for fact in ordered
+    }
     rich_semantics: dict[str, set[str]] = {}
     for records in rich_by_fact.values():
         for record in records:
@@ -331,7 +453,7 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
                 _merge_record(selected[key], record, source)
 
         legacy = _legacy_affected_record(fact)
-        if not legacy:
+        if not legacy or legacy.get("status") in {"negated", "denied"}:
             continue
         same_unit = [entry for (unit, _, _), entry in selected.items() if unit == legacy["unit"]]
         exact = next((entry for entry in same_unit if _same_record_value(entry, legacy)), None)
@@ -348,7 +470,7 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         else:
             _merge_record(selected[key], legacy, source)
 
-    return _dedupe_affected_display(list(selected.values()))
+    return _dedupe_affected_rounding(_dedupe_affected_display(list(selected.values())))
 
 
 def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
@@ -877,18 +999,18 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
 def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "", organisation: str = "") -> dict:
     ordered = _ordered_facts(facts)
     claims = _dedupe_claim_entries(_claim_entries(ordered) + _relation_claim_entries(ordered) + _evidence_claim_entries(ordered))
-    organisation_norm = _norm(organisation)
-    if organisation_norm:
-        claims = [
-            claim for claim in claims
-            if not (
-                claim.get("type") == "actor"
-                and (_norm(claim.get("value")) == organisation_norm
-                     or organisation_norm in _norm(claim.get("value"))
-                     or _norm(claim.get("value")) in organisation_norm)
-            )
-        ]
+    claims = [
+        claim for claim in claims
+        if claim.get("type") != "actor" or _is_actor_value_valid(claim.get("value"), organisation)
+    ]
     fields = {field: value for field in SCALAR_FIELDS if (value := resolve_scalar(ordered, field))}
+    # Même filet que ci-dessus pour le scalaire principal : resolve_scalar()
+    # ne connaît pas l'organisation et ne peut donc pas l'appliquer lui-même.
+    # Cas réel : "L'entreprise indique" promu en fields.threat_actor pour
+    # Emil Frey France (§ audit 2026-08-25), invisible au filtre des claims
+    # ci-dessus qui ne portait que sur claims[], jamais sur fields.
+    if "threat_actor" in fields and not _is_actor_value_valid(fields["threat_actor"]["value"], organisation):
+        del fields["threat_actor"]
     # Les scalaires explicitement extraits restent prioritaires. Les claims
     # typés constituent uniquement un filet de provenance pour les acteurs et
     # tiers, dont l'absence de projection ne doit plus vider une fiche riche.

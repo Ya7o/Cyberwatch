@@ -111,6 +111,50 @@ def test_conflit_meme_semantique_conserve_les_valeurs_sourcees():
     assert {row["value"] for row in resolved["affected"]} == {900, 1000}
 
 
+def test_chiffre_demente_n_est_pas_publie():
+    """Cas réel (audit 2026-08-25, Banque Alimentaire de la Croix-Rouge à
+    Strasbourg) : quand la seule valeur disponible est explicitement
+    démentie par l'article, elle ne doit pas s'afficher comme un fait
+    ordinaire — même garde que _data_types_entries pour negated/denied,
+    jusqu'ici absente côté affected[]."""
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"affected_counts": [
+            {"value": 10_073, "unit": "records", "scope": "total", "status": "negated"},
+        ]}),
+    ])
+    assert resolved["affected"] == []
+
+
+def test_chiffre_demente_ne_masque_pas_le_chiffre_confirme():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"affected_counts": [
+            {"value": 1_899_454, "unit": "records", "scope": "total", "status": "claimed"},
+        ]}),
+        fact("FRENCHBREACHES", affected_count=42, affected_unit="people", claim_status="negated"),
+    ])
+    values = {(row["unit"], row["value"]) for row in resolved["affected"]}
+    assert ("records", 1_899_454) in values
+    assert ("people", 42) not in values
+
+
+def test_chiffre_rond_et_precis_ne_produisent_qu_une_seule_entree():
+    """Cas réels (audit 2026-08-25) : Groupe Bernard (330 563 vs 330 000
+    fichiers), Banque Alimentaire de la Croix-Rouge à Strasbourg (10 073 vs
+    10 000) — deux sources rapportant le même volume avec une précision
+    différente, jusqu'ici affichées comme deux chiffres distincts."""
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", rich_facts={"affected_counts": [
+            {"value": 330_563, "unit": "files", "scope": "total", "status": "claimed"},
+        ]}),
+        fact("FRENCHBREACHES", rich_facts={"affected_counts": [
+            {"value": 330_000, "unit": "files", "scope": "total", "status": "claimed"},
+        ]}),
+    ])
+    assert len(resolved["affected"]) == 1
+    assert resolved["affected"][0]["value"] == 330_563
+    assert set(resolved["affected"][0]["sources"]) == {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}
+
+
 def test_claims_timeline_et_systemes_semantiques_sont_publies():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}, {"type": "system", "value": "Pilot", "status": "reported", "evidence": "Le système Pilot est concerné."}],
@@ -223,6 +267,29 @@ def test_organisation_victime_ne_peut_pas_etre_affichee_comme_acteur():
         "claims": [{"type": "actor", "value": "SUEZ Eau France", "status": "confirmed", "evidence": "SUEZ Eau France confirme l'incident."}],
     })], organisation="SUEZ")
     assert resolved["claims"] == []
+
+
+def test_acteur_scalaire_victime_n_est_pas_publie():
+    """Cas réel constaté (audit 2026-08-25, Emil Frey France) : le champ
+    threat_actor scalaire (colonne directe, pas rich_facts.claims) peut
+    valoir le nom de la victime elle-même ("L'entreprise indique...") sans
+    passer par le filtre déjà existant pour claims[] — celui-ci ne portait
+    que sur les claims, jamais sur fields.threat_actor."""
+    resolved = fr.resolve_incident_facts(
+        [fact("CYBERATTAQUE_ORG", threat_actor="L'entreprise", claim_status="confirmed")],
+        organisation="L'entreprise",
+    )
+    assert "threat_actor" not in resolved["fields"]
+
+
+def test_acteur_pronom_n_est_pas_publie():
+    """Cas réel constaté (audit 2026-08-25, Groupe Bernard) : "qui indique"
+    a produit threat_actor="qui" — un pronom relatif capté comme sujet
+    grammatical, pas un acteur nommé."""
+    resolved = fr.resolve_incident_facts(
+        [fact("CYBERATTAQUE_ORG", threat_actor="qui", claim_status="claimed")],
+    )
+    assert "threat_actor" not in resolved["fields"]
 
 
 def test_claim_acteur_type_alimente_le_champ_detail_sans_ecraser_un_scalaire():
