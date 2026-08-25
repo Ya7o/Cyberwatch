@@ -470,6 +470,11 @@ def _claim_entries(facts: Iterable[dict]) -> list[dict]:
                 # publiable) — la relation, si utile, est déjà traduite ailleurs par
                 # _relation_claim_entries().
                 continue
+            if _is_generic_claim_value(value):
+                # Un claim réduit à un mot générique ("compromission" seul) ne
+                # documente rien de propre à cet incident précis — cas réel
+                # constaté sur Déclic Services dans "Autres éléments documentés".
+                continue
             claim_type = _text(raw_record.get("type")) or _text(raw_record.get("kind")) or _infer_claim_type(raw_record)
             key = (_norm(claim_type), _norm(value), _norm(evidence))
             if key in selected:
@@ -491,6 +496,20 @@ def _claim_entries(facts: Iterable[dict]) -> list[dict]:
     return list(selected.values())
 
 
+_GENERIC_CLAIM_TERMS = {"fuite", "donnees", "publication", "incident", "cyberattaque", "vol", "compromission", "acces", "extraction"}
+_CLAIM_VALUE_STOPWORDS = {"de", "des", "du", "la", "le", "les", "d", "un", "une", "et"}
+
+
+def _is_generic_claim_value(value: str) -> bool:
+    """Un claim dont la valeur ne contient aucun mot propre à l'incident
+    ("compromission", "fuite de données") ne documente rien de plus que le
+    fait même qu'un incident existe : il est filtré. Un seul mot spécifique
+    ("compromission d'un compte administrateur via hameçonnage") suffit à
+    conserver le claim."""
+    words = [word for word in _norm(value).split() if word not in _CLAIM_VALUE_STOPWORDS]
+    return bool(words) and all(word in _GENERIC_CLAIM_TERMS for word in words)
+
+
 def _infer_claim_type(record: dict) -> str:
     """Répare les claims v2 tronqués sans transformer du texte libre en fait.
 
@@ -502,10 +521,9 @@ def _infer_claim_type(record: dict) -> str:
     if re.fullmatch(r"\d+", value) and _text(record.get("unit")):
         return "affected_count"
     actor_words = _norm(value).split()
-    generic_actor = {"fuite", "donnees", "publication", "incident", "cyberattaque", "vol", "compromission", "acces", "extraction"}
     if (
         "revendique" in evidence and value and not re.fullmatch(r"\d+", value)
-        and 1 <= len(actor_words) <= 2 and not any(word in generic_actor for word in actor_words)
+        and 1 <= len(actor_words) <= 2 and not any(word in _GENERIC_CLAIM_TERMS for word in actor_words)
     ):
         return "actor"
     if any(marker in evidence for marker in ("mise en vente", "publie", "publication", "diffuse")):

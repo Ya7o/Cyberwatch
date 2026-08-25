@@ -208,10 +208,14 @@ def test_claim_legacy_sans_type_et_relation_sont_repares_prudemment():
 
 
 def test_reparation_legacy_ne_transforme_pas_un_libelle_technique_en_acteur():
+    """"Publication des données" est entièrement composé de termes génériques
+    (voir _GENERIC_CLAIM_TERMS) : il est désormais filtré comme non
+    informatif (point 7 de l'audit UX round 2), ce qui garantit à plus forte
+    raison qu'il n'est jamais promu en acteur."""
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [{"value": "publication des données", "status": "claimed", "evidence": "La publication des données est revendiquée."}],
     })])
-    assert resolved["claims"][0]["type"] != "actor"
+    assert resolved["claims"] == []
 
 
 def test_organisation_victime_ne_peut_pas_etre_affichee_comme_acteur():
@@ -278,6 +282,22 @@ def test_claim_initial_access_avec_vocabulaire_de_compromission_est_promu():
         }],
     })])
     assert resolved["fields"]["initial_access"]["value"] == "compromission d'un compte administrateur via hameçonnage"
+
+
+def test_claim_reduit_a_un_mot_generique_est_filtre():
+    """Cas réel constaté sur Déclic Services : "Autres éléments documentés"
+    affichait `Action documentée: "compromission"` — une valeur qui ne dit
+    rien de propre à cet incident précis. Un claim similaire mais avec un
+    contenu spécifique reste conservé."""
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [
+            {"type": "attack_action", "status": "claimed", "value": "compromission", "evidence": "ZeroBytes revendique la compromission du site."},
+            {"type": "attack_action", "status": "claimed", "value": "compromission du serveur WordPress via un plugin vulnérable", "evidence": "ZeroBytes détaille la compromission du serveur WordPress via un plugin vulnérable."},
+        ],
+    })])
+    values = [claim["value"] for claim in resolved["claims"]]
+    assert "compromission" not in values
+    assert "compromission du serveur WordPress via un plugin vulnérable" in values
 
 
 def test_prestataire_nomme_dans_la_preuve_alimente_un_tiers_sans_identite_inventee():
