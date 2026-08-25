@@ -107,3 +107,15 @@ def test_editorial_collectors_do_not_enrich_entries_outside_the_allowlist(monkey
 
     assert cyber_calls == ["https://example.test/keep"]
     assert editorial_calls == ["https://example.test/keep"]
+
+
+def test_validation_corpus_flag_exists_on_create_and_maj():
+    """`--validation-corpus` n'avait longtemps existé que sur `create` alors
+    que `runner.make_run_context` le prend en charge indifféremment des deux
+    modes — un oubli de câblage CLI, pas une restriction voulue."""
+    from cyberwatch.cli import build_parser
+
+    parser = build_parser()
+    for subcommand in ("create", "maj"):
+        args = parser.parse_args([subcommand, "--validation-corpus", "corpus.json"])
+        assert args.validation_corpus == "corpus.json"

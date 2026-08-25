@@ -115,7 +115,8 @@ def cmd_maj(args) -> int:
         return 1
     try:
         context = make_run_context(
-            MODE_MAJ, args.as_of, args.start, _layers_from(args.layers)
+            MODE_MAJ, args.as_of, args.start, _layers_from(args.layers),
+            validation_corpus_path=getattr(args, "validation_corpus", ""),
         )
     except ValueError as error:
         print(f"ERREUR : {error}")
@@ -864,6 +865,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     maj = subparsers.add_parser("maj", help="Mettre à jour la base.")
     add_common(maj)
+    maj.add_argument(
+        "--validation-corpus",
+        help="Manifeste de liste blanche : collecte réelle limitée aux articles désignés.",
+    )
     maj.set_defaults(func=cmd_maj)
 
     replay = subparsers.add_parser("replay", help="Reconstruire INCIDENTS sans réseau.")
