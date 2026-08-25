@@ -80,7 +80,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Une fuite de plus de 10 000 dossiers de la Banque Alimentaire de Strasbourg a été revendiquée sur un forum de cybercriminels.",
+  "display_summary": "Fuite de données de plus de 10 000 dossiers à la Banque Alimentaire de Strasbourg revendiquée sur un forum de cybercriminalité.",
   "fields": {
    "data_volume": {
     "source": "FRENCHBREACHES",
@@ -104,7 +104,179 @@
      "FRENCHBREACHES"
     ],
     "status": "claimed",
-    "value": "10 073 enregistrements de données personnelles exposés."
+    "value": "Exposition de 10 073 enregistrements de données personnelles."
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-4A5084AD59D0": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom et prénom ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse e-mail professionnelle  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Même en l’absence de mots de passe ou de coordonnées bancaires, des  données de prospects associées à des identités et coordonnées professionnelles  peuvent être utilisées pour préparer des campagnes de phishing ou d’usurpation particulièrement crédibles.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Même en l’absence de mots de passe ou de coordonnées bancaires, des  données de prospects associées à des identités et coordonnées professionnelles  peuvent être utilisées pour préparer des campagnes de phishing ou d’usurpation particulièrement crédibles.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "données bancaires"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "données de leads"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "informations professionnelles concernant des collaborateurs"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "nom et prénom"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "fonction professionnelle"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "adresse e-mail professionnelle"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "données associées à des leads commerciaux"
+   }
+  ],
+  "display_summary": "Emil Frey France : une fuite de données expose des leads et des collaborateurs",
+  "fields": {
+   "evolution": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Le périmètre de la fuite est désormais identifié et circonscrit."
+   },
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Des données de leads et des coordonnées professionnelles de collaborateurs ont été exposées."
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "L’entreprise"
    }
   },
   "systems": [],
@@ -115,7 +287,7 @@
  "INC-7F84F57DB9BD": {
   "affected": [
    {
-    "evidence": "330 563 fichiers revendiqués",
+    "evidence": "NikolaT revendique au total 330 563 fichiers pour un volume de 22,25 Go.",
     "raw": "330 563 fichiers",
     "scope": "total",
     "semantic": "total",
@@ -271,7 +443,7 @@
     "value": "mots de passe"
    },
    {
-    "actor": "",
+    "actor": "NikolaT",
     "date": "",
     "evidence": "Les éléments diffusés comprennent notamment des données CRM, des documents commerciaux ainsi que des informations associées aux utilisateurs de la plateforme.",
     "scope": "Groupe Bernard",
@@ -279,7 +451,7 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
+    "status": "claimed",
     "type": "data_type",
     "unit": "",
     "value": "données CRM, documents commerciaux"
@@ -287,16 +459,16 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "Les principaux risques concernent notamment le phishing ciblé, l’usurpation de fournisseurs ou de collaborateurs et les fraudes commerciales.",
+    "evidence": "les éléments disponibles pointent vers une compromission de l’environnement BlgCloud utilisé par le Groupe Bernard.",
     "scope": "Groupe Bernard",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "hypothesis",
-    "type": "impact",
+    "type": "initial_access",
     "unit": "",
-    "value": "phishing ciblé, usurpation de fournisseurs, fraudes commerciales"
+    "value": "BlgCloud"
    },
    {
     "actor": "",
@@ -313,7 +485,7 @@
     "value": "330000"
    },
    {
-    "evidence": "NikolaT revendique au total 330 563 fichiers pour un volume de 22,25 Go.",
+    "evidence": "NikolaT annonce avoir publié 22,25 Go de données représentant 330 563 fichiers associés à l’environnement du groupe.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -388,18 +560,10 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "données CRM"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "documents commerciaux"
+    "value": "données CRM, documents commerciaux"
    }
   ],
-  "display_summary": "Groupe Bernard : 22,25 Go de données et 330 563 fichiers publiés après une cyberattaque",
+  "display_summary": "Le Groupe Bernard a subi une cyberattaque ayant entraîné la publication de 22,25 Go de données.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -416,7 +580,7 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
-    "value": "publications successives de données compromises"
+    "value": "Cette attaque fait partie de la série liée à BlgCloud."
    },
    "fine_location": {
     "source": "CYBERATTAQUE_ORG",
@@ -424,15 +588,15 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
-    "value": "Bretagne, Loire-Atlantique"
+    "value": "Bretagne"
    },
    "impact": {
-    "source": "CYBERATTAQUE_ORG",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
-    "value": "exposition de données sensibles"
+    "value": "Exposition de 330 563 fichiers du Groupe Bernard."
    },
    "threat_actor": {
     "source": "CYBERATTAQUE_ORG",
@@ -444,38 +608,17 @@
    }
   },
   "systems": [],
-  "timeline": [
-   {
-    "date": "2026",
-    "event": "Mise à jour des enregistrements CRM",
-    "evidence": "Certains enregistrements CRM consultés ont été mis à jour en 2026.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported"
-   },
-   {
-    "date": "2026",
-    "event": "Dernières connexions des comptes utilisateurs",
-    "evidence": "Les échantillons de comptes utilisateurs font également apparaître des dernières connexions remontant à juillet 2026.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported"
-   }
-  ],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
  "INC-B448DE3FC7B8": {
   "affected": [
    {
-    "evidence": "Le périmètre humain est estimé autour de 500 000 personnes.",
+    "evidence": "périmètre humain est estimé autour de 500 000 personnes",
     "raw": "500 000 personnes",
-    "scope": "utilisateurs de Klark.ai et clients",
-    "semantic": "utilisateurs de klark ai et clients",
+    "scope": "Klark.ai",
+    "semantic": "klark ai",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG",
@@ -615,7 +758,21 @@
    {
     "actor": "0xSec",
     "date": "",
-    "evidence": "le hacker 0xSec affirme avoir récupéré plus de 140 Go de données provenant de quatre bases différentes.",
+    "evidence": "le hacker 0xSec affirme avoir récupéré plus de 140 Go de données",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "0xSec"
+   },
+   {
+    "actor": "0xSec",
+    "date": "",
+    "evidence": "le hacker 0xSec affirme avoir récupéré plus de 140 Go de données.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -623,27 +780,27 @@
     ],
     "status": "claimed",
     "type": "data_volume",
-    "unit": "gb",
+    "unit": "",
     "value": "140"
    },
    {
     "actor": "0xSec",
     "date": "",
     "evidence": "L’ensemble représenterait 162 fichiers CSV.",
-    "scope": "CSV",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
     "type": "dataset",
-    "unit": "files",
+    "unit": "",
     "value": "162"
    },
    {
     "actor": "0xSec",
     "date": "",
-    "evidence": "les quatre bases contiennent notamment : noms, prénoms, e-mails et numéros de téléphone ; hachages de mots de passe ; conversations et échanges de support ; journaux techniques ; clés API et secrets d’API ; quelques coordonnées bancaires de type IBAN ; différentes autres données liées aux comptes et aux conversations.",
+    "evidence": "Selon 0xSec, les quatre bases contiennent notamment : noms, prénoms, e-mails et numéros de téléphone.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -652,21 +809,35 @@
     "status": "claimed",
     "type": "data_type",
     "unit": "",
-    "value": "noms, prénoms, e-mails, numéros de téléphone, hachages de mots de passe, conversations, journaux techniques, clés API, quelques coordonnées bancaires"
+    "value": "noms, prénoms, e-mails et numéros de téléphone"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "Associées aux noms, e-mails et téléphones, ces données peuvent permettre de construire des campagnes de phishing extrêmement crédibles.",
+    "evidence": "Une fuite de conversations de support peut être particulièrement exploitable.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "hypothesis",
+    "status": "claimed",
     "type": "impact",
     "unit": "",
-    "value": "phishing"
+    "value": "fuite de conversations"
+   },
+   {
+    "actor": "0xSec",
+    "date": "",
+    "evidence": "La présence revendiquée de clés API et de secrets techniques constitue un autre point sensible.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "présence de clés API et de secrets techniques"
    }
   ],
   "data_types": [
@@ -721,18 +892,10 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "quatre bases différentes"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "value": "162"
+    "value": "quatre bases de données"
    }
   ],
-  "display_summary": "Klark.ai a subi une fuite massive expose près de 500 000 personnes avec plus de 140 Go de données volées.",
+  "display_summary": "Klark.ai a subi une fuite de données touchant près de 500 000 personnes.",
   "fields": {
    "data_volume": {
     "source": "CYBERATTAQUE_ORG",
@@ -748,7 +911,7 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
-    "value": "Exposition de près de 500 000 personnes et fuite de données sensibles."
+    "value": "Exposition de données personnelles, conversations et secrets techniques."
    },
    "threat_actor": {
     "source": "CYBERATTAQUE_ORG",
@@ -773,7 +936,15 @@
    }
   ],
   "version": 3,
-  "vulnerabilities": []
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "présence de clés API et de secrets techniques"
+   }
+  ]
  },
  "INC-C150F062C71D": {
   "affected": [
@@ -922,24 +1093,10 @@
     "value": "identifiants"
    },
    {
-    "actor": "",
+    "actor": "Lagui1337",
     "date": "",
-    "evidence": "Le hacker Lagui1337 affirme disposer de 1 899 454 enregistrements issus de comptes liés à des programmes de fidélité.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "actor",
-    "unit": "",
-    "value": "Lagui1337"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "La base est actuellement annoncée au format JSONL avec 1 899 454 lignes.",
-    "scope": "",
+    "evidence": "La base est actuellement annoncée au format JSONL avec  1 899 454 lignes.",
+    "scope": "base de données",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -950,32 +1107,56 @@
     "value": "1899454"
    },
    {
-    "actor": "",
+    "actor": "Lagui1337",
     "date": "",
-    "evidence": "Les échantillons obtenus par Cyberattaque.org permettent néanmoins de confirmer la présence effective de coordonnées personnelles, dates de naissance et données de fidélité.",
-    "scope": "",
+    "evidence": "les échantillons obtenus par  Cyberattaque.org  permettent néanmoins de confirmer la présence effective de  coordonnées personnelles, dates de naissance et données de fidélité.",
+    "scope": "les éléments diffusés",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "coordonnées personnelles, dates de naissance, données de fidélité"
+   },
+   {
+    "actor": "Lagui1337",
+    "date": "",
+    "evidence": "La base est proposée à la vente pour  1 000 euros.",
+    "scope": "Lagui1337",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "reported",
-    "type": "data_type",
+    "type": "attack_action",
     "unit": "",
-    "value": "personnel et de fidélité"
+    "value": "vente de données"
    },
    {
-    "actor": "",
+    "actor": "unknown",
     "date": "",
-    "evidence": "Ces informations offrent suffisamment de contexte pour préparer des campagnes de phishing particulièrement crédibles.",
-    "scope": "",
+    "evidence": "Ces informations offrent suffisamment de contexte pour préparer des campagnes de  phishing particulièrement crédibles.",
+    "scope": "attaque",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "hypothesis",
-    "type": "data_type",
+    "status": "claimed",
+    "type": "impact",
     "unit": "",
-    "value": "phishing"
+    "value": "préparation de campagnes de phishing"
+   },
+   {
+    "evidence": "Le hacker  Lagui1337  affirme disposer de  1 899 454 enregistrements.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "Lagui1337"
    }
   ],
   "data_types": [
@@ -1024,24 +1205,10 @@
      "CYBERATTAQUE_ORG"
     ],
     "value": "identifiants"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "personnel et de fidélité"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "phishing"
    }
   ],
   "datasets": [],
-  "display_summary": "YouFid a subi une fuite massive revendiquée de près de 1,9 million de profils clients.",
+  "display_summary": "YouFid revendique une fuite de près de 1,9 million de profils clients par le hacker Lagui1337.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
@@ -1049,7 +1216,7 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
-    "value": "Près de 1,9 million de profils clients exposés avec des données personnelles sensibles."
+    "value": "1,9 million de profils clients exposés."
    },
    "threat_actor": {
     "source": "CYBERATTAQUE_ORG",
@@ -1152,38 +1319,10 @@
     "value": "numéros de téléphone"
    },
    {
-    "actor": "Lagui1337",
-    "date": "",
-    "evidence": "Une base contenant 10 073 lignes de bénéficiaires de l’aide alimentaire à Strasbourg vient d’être diffusée par le hacker Lagui1337.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "attack_action",
-    "unit": "",
-    "value": "diffusée par le hacker Lagui1337"
-   },
-   {
     "actor": "",
     "date": "",
-    "evidence": "Le contenu est particulièrement sensible : il comprend des identités, dates de naissance, informations de dossier et périodes de droits.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "identités, dates de naissance, informations de dossier et périodes de droits"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Une base contenant 10 073 lignes de bénéficiaires de l’aide alimentaire à Strasbourg.",
-    "scope": "",
+    "evidence": "Une base contenant 10 073 lignes de bénéficiaires de l’aide alimentaire à Strasbourg vient d’être diffusée par le…",
+    "scope": "beneficiaries",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -1196,114 +1335,26 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "les fichiers montrent clairement des informations relatives à des bénéficiaires de l’aide alimentaire strasbourgeoise.",
-    "scope": "",
+    "evidence": "Des mineurs directement identifiables dans les fichiers.",
+    "scope": "exposed_information",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "children"
+   },
+   {
+    "evidence": "Une base contenant 10 073 lignes de bénéficiaires de l’aide alimentaire à Strasbourg vient d’être diffusée par le hacker Lagui1337.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
     "type": "actor",
-    "unit": "",
-    "value": "Banque Alimentaire de Strasbourg et Croix-Rouge"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Un risque important pour des personnes déjà vulnérables.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "impact",
-    "unit": "",
-    "value": "risque important pour des personnes déjà vulnérables"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Ils contiennent notamment : noms, prénoms, genre et dates de naissance ; commune, code postal et parfois adresse complète ; e-mails et numéros de téléphone lorsqu’ils sont renseignés.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "noms, prénoms, genre et dates de naissance, commune, code postal et parfois adresse complète, e-mails et numéros de téléphone"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "numéros de dossier et de carte ; statut de référent ou de bénéficiaire.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "numéros de dossier et de carte, statut de référent ou de bénéficiaire"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "dates de début et de fin de droits ; date du dernier passage ; nombre de bénéficiaires rattachés au même dossier.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "dates de début et de fin de droits, date du dernier passage, nombre de bénéficiaires rattachés au même dossier"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Plusieurs lignes correspondent à des mineurs nés dans les années 2010 et 2020.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "donnees de mineurs"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "certains dossiers affichent encore des droits actifs en 2026 et des passages enregistrés jusqu’en août 2026.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "données toujours actives jusqu'en août 2026"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "La fuite révèle donc bien plus qu’une simple liste de contacts.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_type",
-    "unit": "",
-    "value": "fichiers contenant des informations sensibles"
+    "value": "Lagui1337"
    }
   ],
   "data_types": [
@@ -1340,35 +1391,7 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "value": "numéros de dossier et de carte, statut de référent ou de bénéficiaire"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "dates de début et de fin de droits, date du dernier passage, nombre de bénéficiaires rattachés au même dossier"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "donnees de mineurs"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "données toujours actives jusqu'en août 2026"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "value": "fichiers contenant des informations sensibles"
+    "value": "children"
    }
   ],
   "datasets": [
@@ -1378,26 +1401,26 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "base de données des bénéficiaires de l’aide alimentaire à Strasbourg"
+    "value": "base de données de bénéficiaires de l’aide alimentaire"
    }
   ],
-  "display_summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
+  "display_summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de l'aide alimentaire de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
   "fields": {
-   "fine_location": {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "Strasbourg"
-   },
    "impact": {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
-    "value": "La fuite expose des informations sensibles de bénéficiaires de l'aide alimentaire, y compris des mineurs."
+    "value": "Les données sensibles de bénéficiaires, y compris des mineurs, sont exposées."
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Lagui1337"
    }
   },
   "systems": [],

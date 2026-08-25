@@ -2,8 +2,8 @@
   "schema": "cyberwatch-august-quality-audit-v2",
   "start": "2026-08-24",
   "end": "2026-08-25",
-  "items": 8,
-  "incidents": 5,
+  "items": 9,
+  "incidents": 6,
   "blockers": [],
   "anomalies": [
     {
@@ -43,7 +43,7 @@
           "url": "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
         }
       ],
-      "summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
+      "summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de l'aide alimentaire de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -52,8 +52,8 @@
       ],
       "summary_reasons": [],
       "sector": "Inconnu",
-      "sector_status": "tentative",
-      "sector_tentative": "Hébergement / Tourisme / Restauration",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "Inconnu",
       "sensitive_data_exposed": false
@@ -69,7 +69,7 @@
           "url": "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j"
         }
       ],
-      "summary": "Une fuite de plus de 10 000 dossiers de la Banque Alimentaire de Strasbourg a été revendiquée sur un forum de cybercriminels.",
+      "summary": "Fuite de données de plus de 10 000 dossiers à la Banque Alimentaire de Strasbourg revendiquée sur un forum de cybercriminalité.",
       "summary_statuses": [
         {
           "source": "FRENCHBREACHES",
@@ -78,11 +78,37 @@
       ],
       "summary_reasons": [],
       "sector": "Inconnu",
-      "sector_status": "tentative",
-      "sector_tentative": "Hébergement / Tourisme / Restauration",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "France métropolitaine",
       "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-4A5084AD59D0",
+      "organisation": "Emil Frey France",
+      "date": "2026-08-25",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/emil-frey-france-une-fuite-de-donnees-expose-des-leads-et-des-collaborateurs/"
+        }
+      ],
+      "summary": "Emil Frey France : une fuite de données expose des leads et des collaborateurs",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Commerce / Distribution",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
     },
     {
       "id": "INC-7F84F57DB9BD",
@@ -99,7 +125,7 @@
           "url": "https://frenchbreaches.com/alertes/groupe-bernard-blgcloud-mt7k8j5h05wkmuoyjbj"
         }
       ],
-      "summary": "Groupe Bernard : 22,25 Go de données et 330 563 fichiers publiés après une cyberattaque",
+      "summary": "Le Groupe Bernard a subi une cyberattaque ayant entraîné la publication de 22,25 Go de données.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -133,7 +159,7 @@
           "url": "https://frenchbreaches.com/alertes/klark-ai-mt6t1mwhjzd3u98q3vr"
         }
       ],
-      "summary": "Klark.ai a subi une fuite massive expose près de 500 000 personnes avec plus de 140 Go de données volées.",
+      "summary": "Klark.ai a subi une fuite de données touchant près de 500 000 personnes.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -167,7 +193,7 @@
           "url": "https://frenchbreaches.com/alertes/youfid-mt6v6n1zy4kdlfxng5"
         }
       ],
-      "summary": "YouFid a subi une fuite massive revendiquée de près de 1,9 million de profils clients.",
+      "summary": "YouFid revendique une fuite de près de 1,9 million de profils clients par le hacker Lagui1337.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -175,11 +201,16 @@
         },
         {
           "source": "FRENCHBREACHES",
-          "status": "accepted"
+          "status": "rejected_quality"
         }
       ],
-      "summary_reasons": [],
-      "sector": "Services aux entreprises",
+      "summary_reasons": [
+        {
+          "source": "FRENCHBREACHES",
+          "reason": "empty"
+        }
+      ],
+      "sector": "Numérique / Technologie",
       "sector_status": "confirmed",
       "sector_tentative": "",
       "threat": "Fuite de données",

@@ -2,18 +2,17 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-25T15:17:24+04:00",
+  "first_seen": "2026-08-25T17:45:31+04:00",
   "id": "INC-CE5E54EC9CED",
   "items": 1,
-  "last_seen": "2026-08-25T15:17:24+04:00",
+  "last_seen": "2026-08-25T17:45:31+04:00",
   "location": "Inconnu",
   "org": "Banque Alimentaire de la Croix-Rouge à Strasbourg",
   "sector": "Inconnu",
   "sector_status": {
-   "candidate": "Hébergement / Tourisme / Restauration",
-   "status": "tentative"
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
   },
-  "sector_tentative": "Hébergement / Tourisme / Restauration",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
@@ -31,7 +30,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
+  "summary": "Une fuite de données expose 10 073 fiches de bénéficiaires de l'aide alimentaire de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
@@ -40,18 +39,55 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-25T15:17:24+04:00",
+  "first_seen": "2026-08-25T17:45:31+04:00",
+  "id": "INC-4A5084AD59D0",
+  "items": 1,
+  "last_seen": "2026-08-25T17:45:31+04:00",
+  "location": "France métropolitaine",
+  "org": "Emil Frey France",
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/emil-frey-france-une-fuite-de-donnees-expose-des-leads-et-des-collaborateurs/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Emil Frey France : une fuite de données expose des leads et des collaborateurs",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://www.cyberattaque.org/emil-frey-france-une-fuite-de-donnees-expose-des-leads-et-des-collaborateurs/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-08-25",
+  "first_seen": "2026-08-25T17:45:31+04:00",
   "id": "INC-0EF43ECA1026",
   "items": 1,
-  "last_seen": "2026-08-25T15:17:24+04:00",
+  "last_seen": "2026-08-25T17:45:31+04:00",
   "location": "France métropolitaine",
   "org": "Banque Alimentaire de Strasbourg",
   "sector": "Inconnu",
   "sector_status": {
-   "candidate": "Hébergement / Tourisme / Restauration",
-   "status": "tentative"
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
   },
-  "sector_tentative": "Hébergement / Tourisme / Restauration",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
@@ -69,7 +105,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Une fuite de plus de 10 000 dossiers de la Banque Alimentaire de Strasbourg a été revendiquée sur un forum de cybercriminels.",
+  "summary": "Fuite de données de plus de 10 000 dossiers à la Banque Alimentaire de Strasbourg revendiquée sur un forum de cybercriminalité.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j"
@@ -78,13 +114,13 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-24",
-  "first_seen": "2026-08-25T15:17:24+04:00",
+  "first_seen": "2026-08-25T17:45:31+04:00",
   "id": "INC-C150F062C71D",
   "items": 2,
-  "last_seen": "2026-08-25T15:17:24+04:00",
+  "last_seen": "2026-08-25T17:45:31+04:00",
   "location": "France métropolitaine",
   "org": "YouFid",
-  "sector": "Services aux entreprises",
+  "sector": "Numérique / Technologie",
   "sector_status": {
    "status": "confirmed"
   },
@@ -116,7 +152,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "YouFid a subi une fuite massive revendiquée de près de 1,9 million de profils clients.",
+  "summary": "YouFid revendique une fuite de près de 1,9 million de profils clients par le hacker Lagui1337.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/youfid-mt6v6n1zy4kdlfxng5",
@@ -126,10 +162,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-24",
-  "first_seen": "2026-08-25T15:17:24+04:00",
+  "first_seen": "2026-08-25T17:45:31+04:00",
   "id": "INC-B448DE3FC7B8",
   "items": 2,
-  "last_seen": "2026-08-25T15:17:24+04:00",
+  "last_seen": "2026-08-25T17:45:31+04:00",
   "location": "France métropolitaine",
   "org": "Klark AI",
   "sector": "Inconnu",
@@ -166,7 +202,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Klark.ai a subi une fuite massive expose près de 500 000 personnes avec plus de 140 Go de données volées.",
+  "summary": "Klark.ai a subi une fuite de données touchant près de 500 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/klark-ai-mt6t1mwhjzd3u98q3vr",
@@ -176,10 +212,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-24",
-  "first_seen": "2026-08-25T15:17:24+04:00",
+  "first_seen": "2026-08-25T17:45:31+04:00",
   "id": "INC-7F84F57DB9BD",
   "items": 2,
-  "last_seen": "2026-08-25T15:17:24+04:00",
+  "last_seen": "2026-08-25T17:45:31+04:00",
   "location": "France métropolitaine",
   "org": "Groupe Bernard",
   "sector": "Commerce / Distribution",
@@ -214,7 +250,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Groupe Bernard : 22,25 Go de données et 330 563 fichiers publiés après une cyberattaque",
+  "summary": "Le Groupe Bernard a subi une cyberattaque ayant entraîné la publication de 22,25 Go de données.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-bernard-blgcloud-mt7k8j5h05wkmuoyjbj",

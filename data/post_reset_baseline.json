@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-08-25T11:25:56.786403+00:00",
+  "generated_at": "2026-08-25T13:54:34.600819+00:00",
   "incident_coverage": {
     "location": {
-      "known": 4,
-      "known_pct": 80.0,
+      "known": 5,
+      "known_pct": 83.33,
       "unknown": 1,
-      "unknown_pct": 20.0
+      "unknown_pct": 16.67
     },
     "sector": {
-      "known": 2,
-      "known_pct": 40.0,
+      "known": 3,
+      "known_pct": 50.0,
       "unknown": 3,
-      "unknown_pct": 60.0
+      "unknown_pct": 50.0
     },
     "threat": {
-      "known": 5,
+      "known": 6,
       "known_pct": 100.0,
       "unknown": 0,
       "unknown_pct": 0.0
@@ -22,31 +22,31 @@
   },
   "item_coverage": {
     "location": {
-      "known": 4,
-      "known_pct": 50.0,
+      "known": 5,
+      "known_pct": 55.56,
       "unknown": 4,
-      "unknown_pct": 50.0
+      "unknown_pct": 44.44
     },
     "sector": {
-      "known": 2,
-      "known_pct": 25.0,
+      "known": 3,
+      "known_pct": 33.33,
       "unknown": 6,
-      "unknown_pct": 75.0
+      "unknown_pct": 66.67
     },
     "threat": {
-      "known": 8,
+      "known": 9,
       "known_pct": 100.0,
       "unknown": 0,
       "unknown_pct": 0.0
     }
   },
   "latest_run": {
-    "as_of": "2026-08-25T15:17:24+04:00",
-    "duration_seconds": 94.8,
+    "as_of": "2026-08-25T17:45:31+04:00",
+    "duration_seconds": 91.0,
     "mode": "CREATE",
     "overall_status": "OK",
     "requests": 20,
-    "run_id": "RUN-20260825T151724-6",
+    "run_id": "RUN-20260825T174531-6",
     "target_end": "2026-08-25",
     "target_start": "2026-08-24"
   },
@@ -58,31 +58,31 @@
         "calls_budget_blocked": 0,
         "calls_failed": 0,
         "calls_succeeded": 1,
-        "duration_seconds": 4.082204398999977,
-        "estimated_cost_usd": 0.00018055000000000002,
-        "input_tokens": 1051,
+        "duration_seconds": 4.242255806000003,
+        "estimated_cost_usd": 0.00026040000000000004,
+        "input_tokens": 1184,
         "last_model": "gpt-5-nano",
         "max_calls": 200,
         "max_cost_usd": 0.5,
-        "output_tokens": 320,
+        "output_tokens": 503,
         "reasoning_tokens": 0,
         "retries": 0,
-        "total_tokens": 1371
+        "total_tokens": 1687
       }
     },
     "calls_attempted": 1,
     "calls_failed": 0,
     "calls_succeeded": 1,
-    "duration_seconds": 4.082,
-    "estimated_cost_usd": 0.000181,
-    "total_tokens": 1371
+    "duration_seconds": 4.242,
+    "estimated_cost_usd": 0.00026,
+    "total_tokens": 1687
   },
   "schema": "cyberwatch-post-reset-baseline-v1",
   "sources": {
     "BONJOURLAFUITE": {
-      "collect_duration_seconds": 1.63,
+      "collect_duration_seconds": 1.448,
       "coverage": "100",
-      "duration_seconds": 1.6,
+      "duration_seconds": 1.4,
       "items": 0,
       "items_collected": 0,
       "new_items": 0,
@@ -90,29 +90,29 @@
       "status": "OK"
     },
     "CYBERATTAQUE_ORG": {
-      "collect_duration_seconds": 3.988,
+      "collect_duration_seconds": 3.34,
       "coverage": "100",
-      "duration_seconds": 4.7,
-      "items": 4,
-      "items_collected": 4,
-      "new_items": 4,
-      "processing_duration_seconds": 0.746,
+      "duration_seconds": 3.9,
+      "items": 5,
+      "items_collected": 5,
+      "new_items": 5,
+      "processing_duration_seconds": 0.544,
       "status": "OK"
     },
     "FRENCHBREACHES": {
-      "collect_duration_seconds": 5.162,
+      "collect_duration_seconds": 5.072,
       "coverage": "100",
-      "duration_seconds": 9.8,
+      "duration_seconds": 7.3,
       "items": 4,
       "items_collected": 4,
       "new_items": 4,
-      "processing_duration_seconds": 4.655,
+      "processing_duration_seconds": 2.215,
       "status": "OK"
     },
     "RANSOMWARE_LIVE": {
-      "collect_duration_seconds": 78.522,
+      "collect_duration_seconds": 78.263,
       "coverage": "100",
-      "duration_seconds": 78.5,
+      "duration_seconds": 78.3,
       "items": 0,
       "items_collected": 0,
       "new_items": 0,
@@ -126,15 +126,15 @@
       "items": 0,
       "items_collected": 16,
       "new_items": 0,
-      "processing_duration_seconds": 0.02,
+      "processing_duration_seconds": 0.022,
       "status": "OK"
     }
   },
   "volume": {
     "duplicate_incident_ids": 0,
     "duplicate_item_ids": 0,
-    "incidents": 5,
-    "items": 8,
-    "items_per_incident": 1.6
+    "incidents": 6,
+    "items": 9,
+    "items_per_incident": 1.5
   }
 }
