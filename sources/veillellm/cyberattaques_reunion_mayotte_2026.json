@@ -5,18 +5,18 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-08-24T08:54:21+04:00",
-    "record_count": 12,
+    "generated_at": "2026-08-25T08:15:40+04:00",
+    "record_count": 16,
     "schema": "cyberwatch-canonical-v1",
     "watch_result": {
-      "new_incidents": 0,
+      "new_incidents": 4,
       "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Veille incrémentale : aucun nouvel incident local démontré ni enrichissement fiable identifié ; les 12 incidents existants restent inchangés."
+      "note": "Veille incrémentale : quatre indisponibilités de sites radio SRR/SFR datées d’août 2026 ont été ajoutées comme pannes réseau d’origine cyber non démontrée ; les 12 incidents existants restent inchangés."
     },
     "coverage": {
-      "method": "Balayage ciblé Réunion/Mayotte : sources officielles, presse locale/nationale, observatoires cyber/OSINT accessibles et recherches ciblées sur les réseaux sociaux officiels.",
-      "limitations": "Facebook et certains réseaux sociaux ne rendent pas toutes les publications individuelles indexables ou récupérables. Le post officiel de Saint-Leu story_fbid=1368160182013544&id=saintleu.re reste identifié comme signal primaire non récupérable ; son contenu n’est pas inventé ni fusionné avec un autre incident. Couverture sociale de cette exécution incomplète malgré recherches site:, reprises, indexation et variantes disponibles.",
+      "method": "Balayage ciblé Réunion/Mayotte : 24 communes de La Réunion et 17 communes de Mayotte, sources officielles, presse locale/nationale, observatoires cyber/OSINT accessibles et recherches ciblées sur les réseaux sociaux officiels.",
+      "limitations": "Facebook et certains réseaux sociaux ne rendent pas toutes les publications individuelles indexables ou récupérables. Le post officiel de Saint-Leu story_fbid=1368160182013544&id=saintleu.re reste identifié comme signal primaire non récupérable ; son contenu n’est pas inventé ni fusionné avec un autre incident. Couverture sociale de cette exécution incomplète malgré recherches site:, reprises, indexation et variantes disponibles. Les quatre nouveaux signaux SRR/SFR documentent des indisponibilités réseau, sans cause cyber démontrée.",
       "excluded_candidates": [
         {
           "organisation": "Bureau Vallée",
@@ -47,9 +47,7 @@
       "statut": "Incident de donnée numérique signalé ; origine cyber non démontrée",
       "score_cyberattaque": 15,
       "impact_connu": "Une administrée a appris que son dossier numérique de renouvellement de passeport et de carte d’identité, déposé plusieurs mois auparavant et présenté comme archivé, était introuvable ; elle a dû recommencer ses démarches.",
-      "sources": [
-        "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
-      ],
+      "sources": ["https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"],
       "synthese": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique. Aucun élément public ne démontre une cyberattaque.",
       "evolution": "inchange"
     },
@@ -64,9 +62,7 @@
       "statut": "Atteinte malveillante physique confirmée ; cyberattaque non démontrée",
       "score_cyberattaque": 10,
       "impact_connu": "Un point de branchement optique a été retrouvé ouvert et endommagé, privant de nombreux abonnés de plusieurs opérateurs d’Internet et de téléphonie.",
-      "sources": [
-        "https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"
-      ],
+      "sources": ["https://freedom.fr/saint-paul-un-point-de-branchement-optique-vandalise-prive-plusieurs-abonnes-dinternet-et-de-telephone/"],
       "synthese": "Sabotage physique d’une infrastructure télécom ; aucune compromission logique documentée.",
       "evolution": "inchange"
     },
@@ -81,9 +77,7 @@
       "statut": "Revendication non corroborée",
       "score_cyberattaque": 65,
       "impact_connu": "Des données attribuées à l'EPF Réunion sont citées dans une fuite revendiquée visant VALGO ; volume global revendiqué de 279 Go.",
-      "sources": [
-        "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
-      ],
+      "sources": ["https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"],
       "synthese": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
       "evolution": "inchange"
     },
@@ -98,9 +92,7 @@
       "statut": "Revendication avec éléments techniques",
       "score_cyberattaque": 75,
       "impact_connu": "Captures présentées comme provenant de consoles réseau, cartographies d'architecture et supervision électrique ; accès et ampleur revendiqués non confirmés indépendamment.",
-      "sources": [
-        "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
-      ],
+      "sources": ["https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"],
       "synthese": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime.",
       "evolution": "inchange"
     },
@@ -115,11 +107,7 @@
       "statut": "Incident rapporté comme confirmé par la compagnie ; attribution et ampleur non corroborées",
       "score_cyberattaque": 100,
       "impact_connu": "Publication d'une base attribuée à Air Austral contenant des informations professionnelles de salariés. Les sources OSINT évoquent environ 1 000 comptes, mais l'authenticité complète, l'origine des données et l'ampleur restent non confirmées indépendamment.",
-      "sources": [
-        "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/",
-        "https://frenchbreaches.com/alertes/air-austral-mpvvb04ho44kuefgda",
-        "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
-      ],
+      "sources": ["https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/","https://frenchbreaches.com/alertes/air-austral-mpvvb04ho44kuefgda","https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"],
       "synthese": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation.",
       "evolution": "inchange"
     },
@@ -134,10 +122,7 @@
       "statut": "Confirmé officiellement",
       "score_cyberattaque": 100,
       "impact_connu": "Messagerie affectée, envoi de courriels non sollicités, mesures conservatoires et correctives ; aucune fuite de données identifiée à ce stade selon la Ville.",
-      "sources": [
-        "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
-        "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
-      ],
+      "sources": ["https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/","https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"],
       "synthese": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
       "evolution": "inchange"
     },
@@ -152,9 +137,7 @@
       "statut": "Incident informatique confirmé ; origine cyber non démontrée",
       "score_cyberattaque": 25,
       "impact_connu": "Certains services municipaux ne fonctionnaient plus, perturbant temporairement les démarches et l'accès aux informations.",
-      "sources": [
-        "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
-      ],
+      "sources": ["https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"],
       "synthese": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber.",
       "evolution": "inchange"
     },
@@ -169,9 +152,7 @@
       "statut": "Incident informatique confirmé ; origine cyber non démontrée",
       "score_cyberattaque": 30,
       "impact_connu": "Édition du journal réduite de 32 à 16 pages à la suite d'un incident informatique.",
-      "sources": [
-        "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
-      ],
+      "sources": ["https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"],
       "synthese": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique.",
       "evolution": "inchange"
     },
@@ -186,9 +167,7 @@
       "statut": "Revendication non corroborée",
       "score_cyberattaque": 60,
       "impact_connu": "EGEP Réunion est citée parmi huit entreprises dont des bases ou documents liés à Axonaut auraient été compromis ; le vecteur d'accès n'est pas établi.",
-      "sources": [
-        "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
-      ],
+      "sources": ["https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"],
       "synthese": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
       "evolution": "inchange"
     },
@@ -203,9 +182,7 @@
       "statut": "Revendication crédible avec échantillons ; non confirmée officiellement",
       "score_cyberattaque": 80,
       "impact_connu": "L'auteur revendique 716 enregistrements ; les échantillons montrent des données d'identité, de scolarité et des identifiants liés à Pix.",
-      "sources": [
-        "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
-      ],
+      "sources": ["https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"],
       "synthese": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle.",
       "evolution": "inchange"
     },
@@ -220,9 +197,7 @@
       "statut": "Panne réseau confirmée officiellement ; origine cyber non démontrée",
       "score_cyberattaque": 10,
       "impact_connu": "Certains usagers ne pouvaient plus joindre les numéros courts 15, 17 et 18 en raison d’une panne affectant les réseaux SFR et Orange ; des numéros alternatifs ont été publiés par la préfecture.",
-      "sources": [
-        "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"
-      ],
+      "sources": ["https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Perturbation-des-appels-vers-les-numeros-d-urgence-15-17-et-18"],
       "synthese": "Panne télécom confirmée avec impact sur les numéros d’urgence ; aucune information publique ne permet de qualifier une menace cyber.",
       "evolution": "inchange"
     },
@@ -237,13 +212,69 @@
       "statut": "Actes malveillants physiques confirmés par l’opérateur ; cyberattaque logique non démontrée",
       "score_cyberattaque": 15,
       "impact_connu": "Des installations du réseau Orange à Saint-Denis ont été volontairement dégradées, provoquant des perturbations des services mobile, fixe et Internet, avec des effets signalés dans l’île.",
-      "sources": [
-        "https://www.zinfos974.com/vandalisme-des-perturbations-sur-les-reseaux-mobile-et-fixe-dorange-a-la-reunion/",
-        "https://imazpress.com/toute-l-actu/actes-de-vandalisme-sur-le-reseau-orange-perturbations-sur-les-services-mobile-et-fixe-dans-toute-l-ile",
-        "https://www.linfo.re/la-reunion/societe/des-actes-de-vandalisme-perturbent-le-reseau-orange-a-la-reunion"
-      ],
+      "sources": ["https://www.zinfos974.com/vandalisme-des-perturbations-sur-les-reseaux-mobile-et-fixe-dorange-a-la-reunion/","https://imazpress.com/toute-l-actu/actes-de-vandalisme-sur-le-reseau-orange-perturbations-sur-les-services-mobile-et-fixe-dans-toute-l-ile","https://www.linfo.re/la-reunion/societe/des-actes-de-vandalisme-perturbent-le-reseau-orange-a-la-reunion"],
       "synthese": "Sabotage physique confirmé d’infrastructures télécom ; aucune compromission informatique documentée.",
       "evolution": "inchange"
+    },
+    {
+      "date": "2026-08-09",
+      "organisation": "SRR / SFR",
+      "territoire": "Mayotte",
+      "localisation": "Mamoudzou",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
+      "acteur": "Inconnu",
+      "statut": "Indisponibilité de site radio déclarée par l’opérateur ; origine cyber non démontrée",
+      "score_cyberattaque": 10,
+      "impact_connu": "Un site radio SRR/SFR situé à Mamoudzou est signalé indisponible ou dégradé à la suite d’un incident réseau dans la publication de transparence opérateur.",
+      "sources": ["https://assistance.sfr.fr/carte-incident-reseau-mobile-srr.html"],
+      "synthese": "Signal de panne de réseau mobile publié par l’opérateur. Aucun élément public ne démontre une cyberattaque, un sabotage ou une compromission logique.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-08-12",
+      "organisation": "SRR / SFR",
+      "territoire": "La Réunion",
+      "localisation": "Bras-Panon",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
+      "acteur": "Inconnu",
+      "statut": "Indisponibilité de site radio déclarée par l’opérateur ; origine cyber non démontrée",
+      "score_cyberattaque": 10,
+      "impact_connu": "Un site radio SRR/SFR situé à Bras-Panon est signalé indisponible ou dégradé à la suite d’un incident réseau dans la publication de transparence opérateur.",
+      "sources": ["https://assistance.sfr.fr/carte-incident-reseau-mobile-srr.html"],
+      "synthese": "Signal de panne de réseau mobile publié par l’opérateur. Aucun élément public ne démontre une cyberattaque, un sabotage ou une compromission logique.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-08-18",
+      "organisation": "SRR / SFR",
+      "territoire": "La Réunion",
+      "localisation": "Le Tampon",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
+      "acteur": "Inconnu",
+      "statut": "Indisponibilité de site radio déclarée par l’opérateur ; origine cyber non démontrée",
+      "score_cyberattaque": 10,
+      "impact_connu": "Un site radio SRR/SFR situé au Tampon est signalé indisponible ou dégradé à la suite d’un incident réseau dans la publication de transparence opérateur.",
+      "sources": ["https://assistance.sfr.fr/carte-incident-reseau-mobile-srr.html"],
+      "synthese": "Signal de panne de réseau mobile publié par l’opérateur. Aucun élément public ne démontre une cyberattaque, un sabotage ou une compromission logique.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-08-19",
+      "organisation": "SRR / SFR",
+      "territoire": "La Réunion",
+      "localisation": "Saint-Denis",
+      "secteur": "Numérique / Technologie",
+      "type_menace": "Inconnu",
+      "acteur": "Inconnu",
+      "statut": "Indisponibilité de site radio déclarée par l’opérateur ; origine cyber non démontrée",
+      "score_cyberattaque": 10,
+      "impact_connu": "Un site radio SRR/SFR situé à Saint-Denis est signalé indisponible ou dégradé à la suite d’un incident réseau dans la publication de transparence opérateur.",
+      "sources": ["https://assistance.sfr.fr/carte-incident-reseau-mobile-srr.html"],
+      "synthese": "Signal de panne de réseau mobile publié par l’opérateur. Aucun élément public ne démontre une cyberattaque, un sabotage ou une compromission logique.",
+      "evolution": "nouveau"
     }
   ]
 }
