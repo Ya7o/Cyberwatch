@@ -35,7 +35,6 @@ from .normalize import (
     searchable,
     classify_threat,
     clean_organisation,
-    extract_activity_description,
     find_known_entity,
     looks_cyber,
     organisation_from_entry_title,
@@ -314,18 +313,30 @@ def entry_to_item(
     if sector_stats is not None and resolved_by_reference:
         sector_stats["resolved_reference"] = sector_stats.get("resolved_reference", 0) + 1
 
-    # Trois preuves déterministes distinctes, jamais mélangées : hint structuré,
-    # nom d'organisation avec vocabulaire nominatif strict, puis description
-    # d'activité explicitement extraite. Le récit cyber complet n'est jamais
-    # passé aux règles Sector.
+    # Deux preuves déterministes distinctes, jamais mélangées : hint
+    # structuré (liste d'entités surveillées déjà validée), puis nom
+    # d'organisation avec vocabulaire nominatif strict. Le récit cyber
+    # complet n'est jamais passé aux règles Sector.
+    #
+    # Un 3e étage existait ici (classify_sector_activity sur une description
+    # d'activité extraite du texte brut) : un classificateur généraliste et
+    # permissif, jamais vérifié ensuite — Item.Sector devenant non-Inconnu
+    # dès l'ingestion, il bloquait silencieusement tout le dispositif conçu
+    # pour arbitrer correctement (organisation_sector.py, ses garde-fous de
+    # conflit, et l'enrichissement LLM), qui ne s'applique que si Sector est
+    # encore Inconnu. Cas réel constaté (§audit 2026-08-25) : Groupe Bernard
+    # publié "Commerce / Distribution" confirmé sans jamais avoir été
+    # vérifié ; Emil Frey France publié "Commerce / Distribution" alors que
+    # organisation_sector.py calculait un vrai CONFLICT face à un NAF
+    # officiel "Finance / Assurance", jamais surfacé. Le même signal
+    # (Activity_Description) est déjà collecté correctement, avec un
+    # classificateur volontairement plus strict, par
+    # organisation_sector.py::_source_activity_evidence — supprimé ici pour
+    # que ce mécanisme existant fasse réellement l'arbitrage.
     if sector == config.SECTOR_UNKNOWN and sector_hint:
         sector = sector_policy.classify_source_sector(sector_hint)
     if sector == config.SECTOR_UNKNOWN:
         sector = sector_policy.classify_sector_name(organisation)
-    if sector == config.SECTOR_UNKNOWN:
-        activity_description = extract_activity_description(text)
-        if activity_description:
-            sector = sector_policy.classify_sector_activity(activity_description)
     if (
         sector_stats is not None
         and sector_was_unknown

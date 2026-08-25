@@ -46,6 +46,35 @@ class TestEntryToItem:
         assert item.Location == config.LOC_INCONNU
         assert item.Item_ID.startswith("ITM-")
 
+    def test_activite_generique_ne_definit_plus_le_secteur_a_l_ingestion(self):
+        """Cas réel constaté (audit 2026-08-25, Groupe Bernard) : un
+        classificateur d'activité généraliste et jamais vérifié fixait
+        directement Item.Sector à l'ingestion ("distributeur de matériel
+        agricole" -> Commerce / Distribution), court-circuitant tout le
+        pipeline d'arbitrage (organisation_sector.py) qui ne s'applique que
+        si Sector est encore Inconnu à ce moment-là. La description
+        d'activité reste disponible pour ce pipeline via source_facts
+        (organisation_sector.py::_source_activity_evidence, déjà en place),
+        mais ne doit plus jamais fixer Sector directement ici."""
+        spec = SourceSpec(
+            source_id="CYBERATTAQUE_ORG",
+            layer=config.LAYER_CORE,
+            zone=config.LOC_FRANCE,
+            location_rule=config.LOC_FRANCE,
+        )
+        entry = RawEntry(
+            title="XYZ Corp victime d'une cyberattaque",
+            summary="XYZ Corp, distributeur de matériel agricole, a été victime d'une cyberattaque.",
+            url="https://www.cyberattaque.org/xyz",
+            published="2026-08-24",
+            organisation="XYZ Corp",
+        )
+        item = entry_to_item(entry, spec, AS_OF, {}, {})
+
+        assert item is not None
+        assert item.Organisation_Raw == "XYZ Corp"
+        assert item.Sector == config.SECTOR_UNKNOWN
+
     def test_entree_non_cyber_ecartee(self):
         """Une rubrique « Numérique » ne doit pas tout déverser dans ITEMS."""
         entry = RawEntry(

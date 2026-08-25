@@ -84,7 +84,18 @@ def test_cyberattaque_article_complet_ne_peut_plus_creer_sport():
     assert item.Sector == config.SECTOR_UNKNOWN
 
 
-def test_cyberattaque_activite_explicite_peut_resoudre_le_secteur():
+def test_cyberattaque_activite_explicite_ne_fixe_plus_le_secteur_a_l_ingestion():
+    """Cause racine 5 (audit 2026-08-25, cas réel Groupe Bernard) : `entry_to_item`
+    écrivait autrefois `Item.Sector` directement depuis `classify_sector_activity`
+    appliqué au texte brut de l'article, avant toute vérification. Comme
+    `apply_organisation_sector_decisions` ne s'applique que si `Sector` est
+    encore Inconnu, ce court-circuit empêchait le pipeline d'arbitrage
+    (`organisation_sector.py`, preuve `EVIDENCE_SOURCE_ACTIVITY` déjà collectée
+    via le classificateur strict `context_sector.classify_explicit_activity`)
+    de jamais se prononcer — un secteur non vérifié s'affichait comme
+    "confirmé". `Item.Sector` doit rester Inconnu à l'ingestion pour ce
+    signal ; seule la description d'activité disponible dans les
+    source_facts permet ensuite au pipeline d'arbitrage de trancher."""
     entry = RawEntry(
         title="Exemple Distribution : cyberattaque",
         summary="Exemple Distribution est une entreprise spécialisée dans le commerce de fournitures de bureau.",
@@ -94,7 +105,7 @@ def test_cyberattaque_activite_explicite_peut_resoudre_le_secteur():
     )
     item = runner.entry_to_item(entry, CYBERATTAQUE, "2026-08-16T00:00:00+04:00", {}, {})
     assert item is not None
-    assert item.Sector == config.SECTOR_RETAIL
+    assert item.Sector == config.SECTOR_UNKNOWN
 
 
 def test_bonjourlafuite_nom_seul_ne_declenche_pas_llm_sector(make_item):
