@@ -282,6 +282,20 @@ def test_acteur_scalaire_victime_n_est_pas_publie():
     assert "threat_actor" not in resolved["fields"]
 
 
+def test_acteur_periphrase_generique_de_la_victime_n_est_pas_publie():
+    """Cas réel constaté après le fix du prompt (reset 2026-08-25, Emil Frey
+    France) : le LLM peut désigner la victime par une périphrase générique
+    ("L'entreprise indique...") plutôt que par le nom exact de
+    l'organisation. Le filtre par collision de nom ne suffit pas ici
+    puisque "L'entreprise" != "Emil Frey France" ; il faut aussi un filtre
+    par périphrase générique, indépendant du nom réel de l'organisation."""
+    resolved = fr.resolve_incident_facts(
+        [fact("CYBERATTAQUE_ORG", threat_actor="L'entreprise", claim_status="confirmed")],
+        organisation="Emil Frey France",
+    )
+    assert "threat_actor" not in resolved["fields"]
+
+
 def test_acteur_pronom_n_est_pas_publie():
     """Cas réel constaté (audit 2026-08-25, Groupe Bernard) : "qui indique"
     a produit threat_actor="qui" — un pronom relatif capté comme sujet

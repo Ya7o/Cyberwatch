@@ -96,6 +96,13 @@ _ACTOR_PRONOUN_BLOCKLIST = {
     "qui", "il", "elle", "ils", "elles",
     "celui ci", "celle ci", "celui la", "celle la",
     "ce dernier", "cette derniere", "ces derniers", "ces dernieres",
+    # Cas réel constaté après le fix du prompt (reset 2026-08-25, Emil Frey
+    # France) : le LLM peut encore désigner la victime par une périphrase
+    # générique plutôt que par son nom propre. Ces formes ne sont jamais un
+    # acteur nommé, quelle que soit l'organisation concernée.
+    "l entreprise", "la societe", "la victime", "l organisation",
+    "la structure", "l etablissement", "la compagnie", "la firme",
+    "l entite",
 }
 
 
