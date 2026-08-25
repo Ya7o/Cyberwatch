@@ -423,6 +423,24 @@ def test_validate_applies_high_confidence_same_organisation(make_item):
     }
 
 
+def test_validate_applies_confidence_juste_au_dessus_du_seuil(make_item):
+    """Cas réel constaté (reset 2026-08-25, "Banque Alimentaire de la
+    Croix-Rouge à Strasbourg" / "Banque Alimentaire de Strasbourg") : le
+    filet a jugé SAME/SAME avec 5 faits concordants mais seulement 0.90 de
+    confiance. L'ancien seuil de 0.95 rejetait cette décision correcte, le
+    registre d'identité n'était jamais écrit, et le doublon était publié."""
+    left = make_item(source="A", org="Zorglub6 Consulting", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Zorglub6Consulting", published="2026-01-01", url="https://b")
+    candidate = find_daily_llm_candidates([left], [left, right])[0]
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK, same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.SAME, confidence=0.90, evidence="e",
+    )
+    proposal = dedup_ai.validate_ai_dedup_decision(candidate, decision, model="gpt-4o-mini")
+    assert proposal is not None
+    assert proposal["Decision"] == "SAME"
+
+
 def test_validate_rejects_low_confidence(make_item):
     left = make_item(source="A", org="Zorglub8 Consulting", published="2026-08-01", url="https://a")
     right = make_item(source="B", org="Zorglub8Consulting", published="2026-01-01", url="https://b")

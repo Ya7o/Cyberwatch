@@ -57,7 +57,16 @@ DAILY_BATCH_SCHEMA_VERSION = "1"
 #: puisse être proposée au registre d'identité (§Lot 5). ``same_incident``
 #: n'a pas de seuil équivalent : il ne pilote jamais d'écriture, la fusion
 #: d'incident restant exclusivement déterministe (`dedup.group_components`).
-ORG_IDENTITY_CONFIDENCE_THRESHOLD = 0.95
+#:
+#: Abaissé de 0.95 à 0.85 sur cas réel mesuré (reset 2026-08-25) : la paire
+#: "Banque Alimentaire de la Croix-Rouge à Strasbourg" / "Banque Alimentaire
+#: de Strasbourg" a bien été jugée SAME/SAME par le filet, avec 5 faits
+#: concordants (Organisation_Key, Date, Affected_Count, Impact, Summary),
+#: mais à 0.90 de confiance — donc rejetée, registre jamais écrit, doublon
+#: publié. Une confiance de 0.90 sur un faisceau aussi net n'est pas un
+#: doute réel ; 0.95 exigeait une quasi-certitude que le modèle n'exprime
+#: quasiment jamais, rendant ce canal d'application inopérant en pratique.
+ORG_IDENTITY_CONFIDENCE_THRESHOLD = 0.85
 
 CACHE_COLUMNS = [
     "Pair_Key",
