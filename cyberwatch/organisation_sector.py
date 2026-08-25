@@ -71,6 +71,11 @@ DECISIONS_COLUMNS = [
 #: Toujours lu hors-ligne : ce module ne déclenche jamais d'appel réseau.
 LLM_CACHE_CSV = store.DATA_DIR / "organisation_sector_llm.csv"
 
+#: Cache page officielle (cf. domain_page_sector.py), relu hors-ligne comme
+#: le cache LLM ci-dessus : le worker fait le réseau, ce module ne fait que
+#: relire ce qu'il a persisté.
+DOMAIN_PAGE_CACHE_CSV = store.DATA_DIR / "organisation_domain_page.csv"
+
 EVIDENCE_MANUAL_REFERENCE = "manual_reference"
 EVIDENCE_STRUCTURED_SOURCE = "structured_source"
 EVIDENCE_SAFE_NAME = "safe_name"
@@ -78,6 +83,7 @@ EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY = "official_subject_activity"
 EVIDENCE_NAF_PRECISE = "naf_precise_v2"
 EVIDENCE_VALIDATED_ITEM = "validated_item"
 EVIDENCE_SOURCE_ACTIVITY = "source_activity"
+EVIDENCE_DOMAIN_PAGE = "domain_page"
 EVIDENCE_LLM_ORGANISATION = "llm_organisation"
 
 #: Types de preuve suffisamment sûrs pour, seuls, confirmer ou mettre en
@@ -377,6 +383,30 @@ def _source_activity_evidence(items: list[Item], source_fact_rows: list[dict]):
             )
 
 
+def _domain_page_evidence(domain_page_rows: list[dict]):
+    """Relit le cache page officielle (:mod:`cyberwatch.domain_page_sector`).
+
+    Purement offline, comme tous les collecteurs de ce module : le worker a
+    déjà fait l'accès réseau et persisté son résultat. Preuve faible
+    (``MEDIUM``, hors ``STRONG_EVIDENCE_TYPES``) : le nom d'une organisation
+    étant son domaine prouve à qui appartient la page, pas que la
+    présentation commerciale qu'on y lit soit une qualification de secteur
+    fiable — elle entre donc dans l'arbitrage, elle ne le tranche pas.
+    """
+    for row in domain_page_rows:
+        key = (row.get("Organisation_Key") or "").strip()
+        sector = (row.get("Sector") or "").strip()
+        if not key or sector not in config.SECTORS or sector == config.SECTOR_UNKNOWN:
+            continue
+        yield OrganisationSectorEvidence(
+            key, row.get("Organisation", "") or key, sector,
+            EVIDENCE_DOMAIN_PAGE, "MEDIUM",
+            source="domain_page",
+            evidence_text=(row.get("Page_Description") or row.get("Page_Title") or ""),
+            evidence_url=row.get("URL", ""),
+        )
+
+
 def _llm_organisation_evidence(llm_cache_rows: list[dict]):
     """Relit le cache LLM organisationnel (P1) déjà persisté sur disque.
 
@@ -440,6 +470,7 @@ def collect_organisation_evidence(
     org_cache_rows: list[dict] | None = None,
     previous_provenance: list[dict] | None = None,
     llm_cache_rows: list[dict] | None = None,
+    domain_page_rows: list[dict] | None = None,
     policy: dict | None = None,
 ) -> dict[str, list[OrganisationSectorEvidence]]:
     """Agrège toutes les preuves connues, groupées par ``Organisation_Key``.
@@ -453,6 +484,8 @@ def collect_organisation_evidence(
     org_cache_rows = org_cache_rows if org_cache_rows is not None else store.load_org_enrichment_cache()
     previous_provenance = previous_provenance or []
     llm_cache_rows = llm_cache_rows if llm_cache_rows is not None else store.read_csv(_aux_path(LLM_CACHE_CSV))
+    if domain_page_rows is None:
+        domain_page_rows = store.read_csv(_aux_path(DOMAIN_PAGE_CACHE_CSV))
     policy = policy or sector_registry.load_policy()
 
     grouped: dict[str, list[OrganisationSectorEvidence]] = defaultdict(list)
@@ -475,6 +508,7 @@ def collect_organisation_evidence(
         _official_subject_activity_evidence(items, org_cache_rows),
         _naf_precise_evidence(org_cache_rows),
         _source_activity_evidence(items, source_fact_rows),
+        _domain_page_evidence(domain_page_rows),
         _validated_item_evidence(items, previous_provenance),
         _llm_organisation_evidence(llm_cache_rows),
     )
@@ -592,6 +626,7 @@ def resolve_all_organisation_sectors(
     org_cache_rows: list[dict] | None = None,
     previous_provenance: list[dict] | None = None,
     llm_cache_rows: list[dict] | None = None,
+    domain_page_rows: list[dict] | None = None,
     policy: dict | None = None,
 ) -> dict[str, OrganisationSectorDecision]:
     evidence_by_org = collect_organisation_evidence(
@@ -601,6 +636,7 @@ def resolve_all_organisation_sectors(
         org_cache_rows=org_cache_rows,
         previous_provenance=previous_provenance,
         llm_cache_rows=llm_cache_rows,
+        domain_page_rows=domain_page_rows,
         policy=policy,
     )
     display = display_names(items)
