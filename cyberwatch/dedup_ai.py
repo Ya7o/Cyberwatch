@@ -50,7 +50,7 @@ SCHEMA_VERSION = "1"
 #: batch n'invalide jamais silencieusement le cache pair-à-pair existant, et
 #: réciproquement.
 DAILY_BATCH_SCHEMA_NAME = "cyberwatch_dedup_batch_audit"
-DAILY_BATCH_PROMPT_VERSION = "2026-08-23.1"
+DAILY_BATCH_PROMPT_VERSION = "2026-08-25.1"
 DAILY_BATCH_SCHEMA_VERSION = "1"
 
 #: Seuil de confiance requis pour qu'une décision LLM ``same_organisation``
@@ -621,9 +621,22 @@ BATCH_SYSTEM_PROMPT = (
     "dates proches : deux compromissions distinctes de la meme organisation "
     "restent same_organisation=SAME et same_incident=DIFFERENT. "
     "same_incident=SAME est impossible si same_organisation n'est pas SAME. "
+    "Un nom d'organisation quasi identique (variante, sigle, filiale du meme "
+    "nom) associe a une date de publication identique ou tres proche (1 a 2 "
+    "jours) est une preuve forte de same_organisation, meme si les articles "
+    "proviennent de sources differentes avec des details complementaires "
+    "plutot qu'identiques. Un ecart entre deux chiffres numeriques (ex. un "
+    "nombre de personnes affectees) n'est pas en soi un signal de conflit "
+    "lorsque l'un est un chiffre rond manifestement approximatif (ex. 10 000) "
+    "et l'autre un chiffre precis du meme ordre de grandeur (ex. 10 073) : "
+    "deux sources independantes rapportent frequemment le meme evenement "
+    "avec des precisions differentes. Ne classe ce type d'ecart en "
+    "conflicting_facts que si les ordres de grandeur different reellement "
+    "(ex. 10 000 contre 50 000). "
     "matched_facts et conflicting_facts citent brievement les champs fournis "
     "qui appuient ou contredisent ta decision. Une fusion abusive est plus "
-    "grave qu'un doublon laisse separe : en cas de doute, reponds UNKNOWN."
+    "grave qu'un doublon laisse separe : en cas de doute reel, reponds "
+    "UNKNOWN."
 )
 
 
@@ -635,7 +648,16 @@ def _batch_schema() -> dict:
             "candidate_id": {"type": "string"},
             "same_organisation": label,
             "same_incident": label,
-            "confidence": {"type": "number"},
+            "confidence": {
+                "type": "number",
+                "description": (
+                    "Ta confiance dans CE verdict (same_organisation/"
+                    "same_incident) — 0 si tu hesites fortement, proche de 1 "
+                    "si l'evidence est sans ambiguite. Jamais un score de "
+                    "ressemblance textuelle des libelles : celui-ci t'est "
+                    "deja fourni separement dans signals.fuzzy_score."
+                ),
+            },
             "matched_facts": {"type": "array", "items": {"type": "string"}},
             "conflicting_facts": {"type": "array", "items": {"type": "string"}},
             "evidence": {"type": "string"},

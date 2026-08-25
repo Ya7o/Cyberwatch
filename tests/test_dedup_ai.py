@@ -264,6 +264,41 @@ def test_budget_par_defaut_absorbe_un_run_maj_realiste(monkeypatch, tmp_path):
     assert state.max_context_chars >= 40000
 
 
+def test_prompt_calibre_le_poids_du_nom_et_des_ecarts_numeriques():
+    """Cas réel constaté (audit 2026-08-25) : "Banque Alimentaire de la
+    Croix-Rouge à Strasbourg" / "Banque Alimentaire de Strasbourg", même
+    date, noms quasi identiques (score flou 0.82), a été jugé DIFFERENT par
+    le seul motif "Affected_Count: 10073 vs 10000" — un artefact d'arrondi
+    entre deux sources, pas un vrai conflit. Sans contrepoids explicite au
+    principe de prudence existant, tout écart visible se lit comme un
+    doute. Le prompt doit désormais dire explicitement que (a) nom quasi
+    identique + date très proche est une preuve forte de same_organisation,
+    et (b) un chiffre rond face à un chiffre précis du même ordre de
+    grandeur n'est pas un signal de conflit."""
+    prompt = dedup_ai.BATCH_SYSTEM_PROMPT
+    assert "date de publication identique ou tres proche" in prompt
+    assert "preuve forte de same_organisation" in prompt
+    assert "chiffre rond" in prompt
+    assert "meme ordre de grandeur" in prompt
+    # Le principe de prudence reste explicite : ce n'est pas un
+    # contournement codé en dur, seulement une recalibration de ce qui
+    # compte comme doute réel pour le LLM.
+    assert "Une fusion abusive est plus grave qu'un doublon laisse separe" in prompt
+
+
+def test_confidence_schema_precise_ce_qu_elle_mesure():
+    """Root cause distincte trouvée en creusant le cas ci-dessus : la
+    confiance renvoyée par le modèle pour le verdict DIFFERENT (0.8169)
+    correspondait exactement au fuzzy_score de sélection du candidat, déjà
+    visible dans signals.fuzzy_score — sans description dans le schéma,
+    rien n'empêchait le modèle de recopier ce signal d'entrée plutôt que
+    d'exprimer sa propre certitude sur son verdict."""
+    schema = dedup_ai._batch_schema()
+    confidence = schema["properties"]["decisions"]["items"]["properties"]["confidence"]
+    assert confidence.get("description")
+    assert "fuzzy_score" in confidence["description"]
+
+
 def test_batch_schema_validation(monkeypatch, tmp_path, make_item):
     """Une valeur hors énumération invalide uniquement la décision concernée,
     sans faire planter le batch entier."""
