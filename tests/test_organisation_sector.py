@@ -89,12 +89,46 @@ def test_no_propagation_from_weak_source_activity_alone(make_item):
         [source, sibling], reference={}, source_fact_rows=source_fact_rows,
     )
     decision = decisions[source.Organisation_Key]
-    # §9 Cas 4 : une preuve faible seule, sans LLM, reste Inconnu (pas de
-    # propagation, pas de TENTATIVE — le P1 pourra fournir un candidat).
+    # §9 Cas 4 : un texte que le classificateur strict ne reconnaît pas
+    # (aucun motif métier sûr) ne produit aucune preuve du tout, donc reste
+    # Inconnu. Cas différent de test_tentative_from_classifiable_source_activity_alone
+    # ci-dessous, où le texte EST reconnu par le classificateur.
     assert decision.status == osec.STATUS_UNKNOWN
     changed, provenance = osec.apply_organisation_sector_decisions([source, sibling], decisions)
     assert changed == 0
     assert provenance == []
+
+
+def test_tentative_from_classifiable_source_activity_alone(make_item):
+    """Révision §9 Cas 4 (audit 2026-08-26, cas réels Klark.ai/TimeTonic/
+    Groupe Bernard) : un indice métier explicite et classable — le
+    classificateur strict le reconnaît, pas un simple mot-clé du récit —
+    suffit désormais seul à afficher un secteur "supposé" (TENTATIVE)
+    plutôt que rien, même sans candidat LLM convergent. Jamais Confirmé ni
+    appliqué à Item.Sector pour autant : seule une véritable corroboration
+    (preuve forte ou LLM convergent) permet cela."""
+    source = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    sibling = make_item(source_item_id="2", org="Acme", sector=config.SECTOR_UNKNOWN, url="https://example.org/b")
+    source_fact_rows = [{
+        "Item_ID": source.Item_ID,
+        "Activity_Description": "Acme développe une plateforme d'intelligence artificielle pour la relation client.",
+    }]
+    decisions = osec.resolve_all_organisation_sectors(
+        [source, sibling], reference={}, source_fact_rows=source_fact_rows,
+    )
+    decision = decisions[source.Organisation_Key]
+
+    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.sector == config.SECTOR_TECH
+    assert osec.EVIDENCE_SOURCE_ACTIVITY in decision.evidence_types
+
+    changed, _provenance = osec.apply_organisation_sector_decisions([source, sibling], decisions)
+    assert changed == 0
+    assert source.Sector == config.SECTOR_UNKNOWN
+
+    tentative = osec.tentative_provenance([source, sibling], decisions)
+    assert {row["Item_ID"] for row in tentative} == {source.Item_ID, sibling.Item_ID}
+    assert all(row["Candidate_Value"] == config.SECTOR_TECH for row in tentative)
 
 
 def test_no_propagation_from_org_sector_registry_origin(make_item):

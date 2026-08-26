@@ -600,7 +600,18 @@ def resolve_organisation_sector(
     candidate_sectors = sorted({e.sector for e in llm} | {e.sector for e in weak})
     if len(candidate_sectors) == 1:
         if not llm:
-            # Signal faible seul, sans LLM : §9 Cas 4 -> Inconnu à ce stade.
+            # §9 Cas 4, révisé (audit 2026-08-26) : un indice métier explicite
+            # et classable (source_activity — texte cité, jugé par le
+            # classificateur strict, jamais par un simple mot-clé du récit)
+            # suffit désormais seul à afficher un secteur "supposé" plutôt que
+            # rien. Toujours jamais Confirmé sans corroboration ; les autres
+            # types de preuve faible (ex. domain_page, moins éprouvé) restent
+            # soumis à la règle précédente et exigent la convergence LLM.
+            if any(e.evidence_type == EVIDENCE_SOURCE_ACTIVITY for e in weak):
+                return _build_decision(
+                    organisation_key, organisation, STATUS_TENTATIVE, candidate_sectors[0], (), ordered,
+                    confidence="LOW",
+                )
             return _build_decision(
                 organisation_key, organisation, STATUS_UNKNOWN, config.SECTOR_UNKNOWN, (), ordered,
             )
