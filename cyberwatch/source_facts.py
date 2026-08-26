@@ -891,14 +891,20 @@ def _from_frenchbreaches(
     if cvss:
         fact["CVSS_Raw"] = cvss
 
-    activity, activity_evidence = _ai_activity(ai_result, organisation)
-    if not activity:
-        activity = _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
+    # Audit 2026-08-26 (run réel, cas Dipeeo/FRENCHBREACHES) : le fallback
+    # déterministe ci-dessous peut fournir `activity` même quand la propre
+    # activity_description du LLM a échoué sa preuve — mais
+    # activity_sector_match n'a de sens que rattaché à la description que ce
+    # MÊME appel LLM vient de produire (jamais au fallback déterministe, ni
+    # à rien d'autre). Sans ce garde-fou, un secteur pouvait survivre alors
+    # que sa propre description avait été rejetée.
+    llm_activity, activity_evidence = _ai_activity(ai_result, organisation)
+    activity = llm_activity or _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
     if activity:
         fact["Activity_Description"] = activity
         if activity_evidence:
             evidence["Activity_Description"] = activity_evidence
-    sector_match, sector_match_evidence = _ai_sector_match(ai_result)
+    sector_match, sector_match_evidence = _ai_sector_match(ai_result) if llm_activity else ("", "")
     if sector_match:
         fact["Activity_Sector_Match"] = sector_match
         evidence["Activity_Sector_Match"] = sector_match_evidence
@@ -1037,14 +1043,20 @@ def _from_cyberattaque_org(
             fact["Victim_Website"] = website
             evidence["Victim_Website"] = website_match.group(0).strip()
 
-    activity, activity_evidence = _ai_activity(ai_result, organisation)
-    if not activity:
-        activity = _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
+    # Audit 2026-08-26 (run réel, cas Dipeeo/FRENCHBREACHES) : le fallback
+    # déterministe ci-dessous peut fournir `activity` même quand la propre
+    # activity_description du LLM a échoué sa preuve — mais
+    # activity_sector_match n'a de sens que rattaché à la description que ce
+    # MÊME appel LLM vient de produire (jamais au fallback déterministe, ni
+    # à rien d'autre). Sans ce garde-fou, un secteur pouvait survivre alors
+    # que sa propre description avait été rejetée.
+    llm_activity, activity_evidence = _ai_activity(ai_result, organisation)
+    activity = llm_activity or _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
     if activity:
         fact["Activity_Description"] = activity
         if activity_evidence:
             evidence["Activity_Description"] = activity_evidence
-    sector_match, sector_match_evidence = _ai_sector_match(ai_result)
+    sector_match, sector_match_evidence = _ai_sector_match(ai_result) if llm_activity else ("", "")
     if sector_match:
         fact["Activity_Sector_Match"] = sector_match
         evidence["Activity_Sector_Match"] = sector_match_evidence

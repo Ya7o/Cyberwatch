@@ -126,6 +126,38 @@ def test_activity_sector_match_llm_est_transmis_aux_faits_source(monkeypatch):
     assert "intelligence artificielle" in sf._loads_json(fact["Evidence_JSON"])["Activity_Sector_Match"]
 
 
+def test_activity_sector_match_orpheline_dune_description_rejetee(monkeypatch):
+    """Cas réel (audit 2026-08-26, Dipeeo/FRENCHBREACHES) : le LLM peut
+    produire un activity_sector_match valide alors que sa propre
+    activity_description a échoué sa preuve (nom de l'organisation absent
+    du texte cité) — ce secteur ne doit plus jamais survivre seul, même si
+    le fallback déterministe fournit une Activity_Description de
+    substitution juste après."""
+    item = make_item("FRENCHBREACHES", organisation="Dipeeo")
+    entry = RawEntry(
+        title="Dipeeo visée",
+        content="Dipeeo, spécialiste RGPD, a confirmé une fuite de données. Accompagnement DPO externalisé.",
+    )
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "activity_description": {
+            "value": "accompagnement RGPD et DPO externalisé",
+            "confidence": 0.9,
+            # Preuve sans le nom de l'organisation : _ai_activity la rejette.
+            "evidence": "spécialiste RGPD, a confirmé une fuite de données",
+        },
+        "activity_sector_match": {
+            "value": "Numérique / Technologie",
+            "confidence": 0.9,
+            "evidence": "Accompagnement DPO externalisé",
+        },
+    })
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {})
+
+    fact = sf.extract_source_fact(item, entry, spec("FRENCHBREACHES"))
+
+    assert fact.get("Activity_Sector_Match", "") == ""
+
+
 def test_activity_sector_match_inconnu_nest_jamais_publie(monkeypatch):
     """Inconnu est une valeur d'enum valide côté schéma (le modèle doit
     pouvoir la choisir), mais ne doit jamais être publiée comme un fait :

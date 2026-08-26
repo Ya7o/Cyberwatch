@@ -39,8 +39,15 @@ from . import config, llm_runtime, organisation_sector as osec, store
 from .model import Item
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-26.3"
-DEFAULT_BATCH_SIZE = 40
+PROMPT_VERSION = "2026-08-26.4"
+#: Audit 2026-08-26 (run réel 32968633926) : 11 organisations très
+#: différentes traitées en un seul appel n'ont produit que 75 tokens de
+#: sortie au total (~7/organisation) — famine de tokens qui expliquait des
+#: jugements incohérents (ex. Klark AI classé sur la base de la fuite de
+#: données plutôt que son activité, pourtant présente dans le contexte).
+#: Réduit fortement pour que chaque organisation reçoive une part
+#: significative de l'attention du modèle.
+DEFAULT_BATCH_SIZE = 6
 MAX_OUTPUT_TOKENS = 4000
 #: Bornes de compacité du contexte transmis (§13 du plan) : reproductible et
 #: hashable, jamais le corpus complet des incidents.
@@ -386,6 +393,11 @@ def call_llm_batch(
         schema_name=_SCHEMA_NAME,
         schema=_schema(),
         max_output_tokens=MAX_OUTPUT_TOKENS,
+        # Audit 2026-08-26 : seule tâche du code à s'écarter de "minimal"
+        # (partout ailleurs par défaut) — justifié par la preuve concrète de
+        # famine de tokens (run 32968633926, 75 tokens de sortie pour 11
+        # organisations) et un coût actuel négligeable pour cette tâche.
+        reasoning_effort="medium",
     )
     raw = result.data.get("organisations")
     if not isinstance(raw, list):

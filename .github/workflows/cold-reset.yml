@@ -215,17 +215,19 @@ jobs:
           SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "0"
           ORG_ENRICHMENT_ENABLED: "1"
           ORG_ENRICHMENT_MAX_CALLS_PER_RUN: "200"
-          # Réactivé (audit 2026-08-26) : ce sont des requêtes HTTP
-          # déterministes (moteur de recherche + scraping HTML), aucun coût
-          # LLM. Reste borné pour ne pas allonger indéfiniment le reset sur
-          # un lot qui grandirait ; 40 couvre largement le volume observé
-          # sur l'échantillon actuel (quelques organisations Inconnu/run).
-          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "40"
-          # Diagnostic temporaire (audit 2026-08-26) : le canal ci-dessus
-          # tourne (appels réseau réels) mais rend 0 résultat sur 19
-          # tentatives cumulées sur deux runs de contrôle. À retirer avec
-          # company_evidence._DEBUG_OFFICIAL_SITE une fois la cause confirmée.
-          CYBERWATCH_DEBUG_OFFICIAL_SITE: "1"
+          # Désactivé (audit 2026-08-26, run 32968633926) : cause confirmée
+          # du "0 résultat sur 19 tentatives" — les recherches Bing/DuckDuckGo
+          # renvoient des résultats totalement hors-sujet (contenu adulte,
+          # cours de bourse) pour chaque organisation testée, tous moteurs
+          # confondus, signe d'un blocage anti-bot contre les IPs partagées
+          # des runners GitHub Actions. Ce n'est pas un bug de scoring côté
+          # Cyberwatch (_candidate_relevance rejette correctement ces
+          # résultats) : la recherche elle-même est inexploitable depuis cet
+          # environnement. Continuer à l'exécuter ne fait que consommer du
+          # temps de run pour un résultat déjà connu comme non exploitable.
+          # domain_page_sector.py (nom = domaine, requête HTTP directe sans
+          # recherche moteur) n'est pas concerné et reste actif ailleurs.
+          ORG_OFFICIAL_SITE_MAX_CALLS_PER_RUN: "0"
           # Filet LLM post-déterministe de déduplication (§Lot 18,
           # runner.run_daily_dedup_net) : activé uniquement sur cette
           # dernière passe CREATE, une fois qualification/sémantique/

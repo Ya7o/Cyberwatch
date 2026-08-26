@@ -101,12 +101,13 @@ FIELD_VERSIONS = {
     "affected_systems": "affected-systems-v1",
     "affected_datasets": "affected-datasets-v1",
     "activity_description": "activity-description-v1",
-    # V3 (audit 2026-08-26, revirement de politique) : le rapprochement
-    # forcé interdit en v2 est désormais explicitement demandé — une
-    # activité associative/caritative/politique doit recevoir le secteur
-    # professionnel le plus proche plutôt que Inconnu. Invalide uniquement
-    # ce champ dans le cache existant, activity_description est inchangé.
-    "activity_sector_match": "activity-sector-match-v3",
+    # V4 (audit 2026-08-26, cas réel Dipeeo/FRENCHBREACHES) : un
+    # activity_sector_match ne survit plus jamais si l'activity_description
+    # du même appel LLM a échoué sa propre preuve (cf.
+    # source_facts.py::_from_frenchbreaches/_from_cyberattaque_org) — un
+    # secteur ne peut plus être orphelin d'une description. Invalide
+    # uniquement ce champ, activity_description est inchangé.
+    "activity_sector_match": "activity-sector-match-v4",
     "threat_candidate": "threat-candidate-v1",
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
