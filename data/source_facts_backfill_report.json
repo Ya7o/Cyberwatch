@@ -1,12 +1,45 @@
 {
  "incidents": [
   {
-   "incident_id": "INC-FDDD01AD7CCD",
+   "incident_id": "INC-1C0F22CBA9B6",
+   "organisation": "L.Commerce",
+   "promotion_gaps": [],
+   "source_reports": [
+    {
+     "headline": "",
+     "hydrated": true,
+     "item_id": "ITM-076df2e08db865d0",
+     "organisation": "L.Commerce",
+     "promotion_gaps": [],
+     "reason": "empty",
+     "source_id": "FRENCHBREACHES",
+     "status": "rejected_quality"
+    }
+   ],
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "summary": "",
+   "summary_reason": "empty",
+   "summary_status": "rejected_quality"
+  },
+  {
+   "incident_id": "INC-F7C59EF6524E",
    "organisation": "Wesh bien",
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "WeshBien.com a subi une fuite de données affectant près de 9 400 comptes, incluant des profils de mineurs.",
+     "headline": "WeshBien a subi une fuite de données de 9 396 profils, incluant des informations sensibles sur des mineurs.",
+     "hydrated": true,
+     "item_id": "ITM-731896c31bc56f98",
+     "organisation": "WeshBien",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "CYBERATTAQUE_ORG",
+     "status": "accepted"
+    },
+    {
+     "headline": "Fuite de données sur la plateforme sociale WeshBien avec près de 9 400 comptes revendiqués, incluant des profils de mineurs.",
      "hydrated": true,
      "item_id": "ITM-30a4355c65065065",
      "organisation": "Wesh bien",
@@ -17,9 +50,10 @@
     }
    ],
    "sources": [
+    "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
-   "summary": "WeshBien.com a subi une fuite de données affectant près de 9 400 comptes, incluant des profils de mineurs.",
+   "summary": "WeshBien a subi une fuite de données de 9 396 profils, incluant des informations sensibles sur des mineurs.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -29,7 +63,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "Fuite de 10 073 fiches de bénéficiaires par le hacker Lagui1337 liée à la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
+     "headline": "Une fuite de données a exposé 10 073 fiches de bénéficiaires de l'aide alimentaire à Strasbourg.",
      "hydrated": true,
      "item_id": "ITM-fde367b9b2fb884e",
      "organisation": "Banque Alimentaire de la Croix-Rouge à Strasbourg",
@@ -42,7 +76,7 @@
    "sources": [
     "CYBERATTAQUE_ORG"
    ],
-   "summary": "Fuite de 10 073 fiches de bénéficiaires par le hacker Lagui1337 liée à la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
+   "summary": "Une fuite de données a exposé 10 073 fiches de bénéficiaires de l'aide alimentaire à Strasbourg.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -52,7 +86,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "Fuite de données revendiquée de 10 073 dossiers à la Banque Alimentaire de Strasbourg.",
+     "headline": "Fuite de données de 10 073 enregistrements revendiquée sur un forum par la Banque Alimentaire de Strasbourg.",
      "hydrated": true,
      "item_id": "ITM-d739a58ce3618849",
      "organisation": "Banque Alimentaire de Strasbourg",
@@ -65,7 +99,7 @@
    "sources": [
     "FRENCHBREACHES"
    ],
-   "summary": "Fuite de données revendiquée de 10 073 dossiers à la Banque Alimentaire de Strasbourg.",
+   "summary": "Fuite de données de 10 073 enregistrements revendiquée sur un forum par la Banque Alimentaire de Strasbourg.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -75,6 +109,16 @@
    "promotion_gaps": [],
    "source_reports": [
     {
+     "headline": "Dipeeo a subi une fuite de données avec 11 fichiers JSON de sa plateforme RGPD revendiqués sur un forum cybercriminel.",
+     "hydrated": true,
+     "item_id": "ITM-b696d3d10d5e1dac",
+     "organisation": "Dipeeo",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "FRENCHBREACHES",
+     "status": "accepted"
+    },
+    {
      "headline": "Dipeeo subit une fuite de données RGPD de ses clients après une cyberattaque revendiquée par le hacker 0xSec.",
      "hydrated": true,
      "item_id": "ITM-76191ed87a8abd0f",
@@ -82,16 +126,6 @@
      "promotion_gaps": [],
      "reason": "headline_not_publishable",
      "source_id": "CYBERATTAQUE_ORG",
-     "status": "accepted"
-    },
-    {
-     "headline": "Dipeeo a subi une fuite de données avec la divulgation de 11 fichiers JSON revendiqués sur un forum cybercriminel.",
-     "hydrated": true,
-     "item_id": "ITM-b696d3d10d5e1dac",
-     "organisation": "Dipeeo",
-     "promotion_gaps": [],
-     "reason": "headline_not_publishable",
-     "source_id": "FRENCHBREACHES",
      "status": "accepted"
     }
    ],
@@ -109,7 +143,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "Docurba a subi une fuite de données divulguant 5 152 lignes d'utilisateurs par le hacker 0xSec.",
+     "headline": "Plus de 5 000 lignes d'utilisateurs de la plateforme l'État Docurba diffusées par le hacker 0xSec.",
      "hydrated": true,
      "item_id": "ITM-a879bcbdf559a5c8",
      "organisation": "Docurba",
@@ -122,7 +156,7 @@
    "sources": [
     "CYBERATTAQUE_ORG"
    ],
-   "summary": "Docurba a subi une fuite de données divulguant 5 152 lignes d'utilisateurs par le hacker 0xSec.",
+   "summary": "Plus de 5 000 lignes d'utilisateurs de la plateforme l'État Docurba diffusées par le hacker 0xSec.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -132,7 +166,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "Une base de données de Docurba a été divulguée, affectant plus de 2 700 comptes utilisateurs.",
+     "headline": "Une base de données de Docurba, plateforme numérique de l'État français, contenant plus de 2 700 comptes utilisateurs a été divulguée.",
      "hydrated": true,
      "item_id": "ITM-7d362c05be0ae073",
      "organisation": "Docurba.gouv.fr",
@@ -145,7 +179,7 @@
    "sources": [
     "FRENCHBREACHES"
    ],
-   "summary": "Une base de données de Docurba a été divulguée, affectant plus de 2 700 comptes utilisateurs.",
+   "summary": "Une base de données de Docurba, plateforme numérique de l'État français, contenant plus de 2 700 comptes utilisateurs a été divulguée.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -155,7 +189,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "Emil Frey France a confirmé une fuite de données exposant des leads et des informations sur des collaborateurs.",
+     "headline": "Emil Frey France : une fuite de données expose des leads et des collaborateurs",
      "hydrated": true,
      "item_id": "ITM-e5f950b0daeb841d",
      "organisation": "Emil Frey France",
@@ -165,7 +199,7 @@
      "status": "accepted"
     },
     {
-     "headline": "Emil Frey France a confirmé une fuite de données due à un incident de cybersécurité.",
+     "headline": "Emil Frey France a confirmé une fuite de données suite à un incident de cybersécurité.",
      "hydrated": true,
      "item_id": "ITM-7a1a656c8b1768b4",
      "organisation": "Emil Frey France",
@@ -179,7 +213,7 @@
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
-   "summary": "Emil Frey France a confirmé une fuite de données exposant des leads et des informations sur des collaborateurs.",
+   "summary": "Emil Frey France : une fuite de données expose des leads et des collaborateurs",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -189,7 +223,17 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "TeleCoop piraté : des données clients exposées via une faille Metabase",
+     "headline": "TeleCoop a confirmé une fuite de données personnelles de clients et sociétaires due à un incident de cybersécurité.",
+     "hydrated": true,
+     "item_id": "ITM-f80cb7977ad7144a",
+     "organisation": "TeleCoop",
+     "promotion_gaps": [],
+     "reason": "headline_not_publishable",
+     "source_id": "FRENCHBREACHES",
+     "status": "accepted"
+    },
+    {
+     "headline": "TeleCoop a été victime d'une attaque ayant exposé des données personnelles de clients via une vulnérabilité Metabase.",
      "hydrated": true,
      "item_id": "ITM-321d95275c4cd90e",
      "organisation": "TeleCoop",
@@ -197,23 +241,13 @@
      "reason": "headline_not_publishable",
      "source_id": "CYBERATTAQUE_ORG",
      "status": "accepted"
-    },
-    {
-     "headline": "",
-     "hydrated": true,
-     "item_id": "ITM-f80cb7977ad7144a",
-     "organisation": "TeleCoop",
-     "promotion_gaps": [],
-     "reason": "empty",
-     "source_id": "FRENCHBREACHES",
-     "status": "rejected_quality"
     }
    ],
    "sources": [
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
-   "summary": "TeleCoop piraté : des données clients exposées via une faille Metabase",
+   "summary": "TeleCoop a confirmé une fuite de données personnelles de clients et sociétaires due à un incident de cybersécurité.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -223,7 +257,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "TimeTonic a subi une cyberattaque entraînant l'exposition de 67 fichiers de données personnelles.",
+     "headline": "TimeTonic a subi une fuite de données avec l'exposition de 67 fichiers contenant des informations sur plus de 50 000 personnes.",
      "hydrated": true,
      "item_id": "ITM-0b9b9760f81af7c2",
      "organisation": "TimeTonic",
@@ -233,7 +267,7 @@
      "status": "accepted"
     },
     {
-     "headline": "Trois bases de données et 67 fichiers de TimeTonic revendiqués sur un forum cybercriminel.",
+     "headline": "TimeTonic a subi une fuite de données comprenant trois bases de données et 67 fichiers revendiqués.",
      "hydrated": true,
      "item_id": "ITM-9d9815a5f2d59dfb",
      "organisation": "Timetonic",
@@ -247,7 +281,7 @@
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
-   "summary": "TimeTonic a subi une cyberattaque entraînant l'exposition de 67 fichiers de données personnelles.",
+   "summary": "TimeTonic a subi une fuite de données avec l'exposition de 67 fichiers contenant des informations sur plus de 50 000 personnes.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -257,7 +291,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "Le Groupe Bernard subit une fuite de 22,25 Go de données, 330 563 fichiers publiés par le hacker NikolaT.",
+     "headline": "Le Groupe Bernard a subi une cyberattaque ayant entraîné la fuite de 22,25 Go de données et 330 563 fichiers.",
      "hydrated": true,
      "item_id": "ITM-3c23b8cb2c009f41",
      "organisation": "Groupe Bernard",
@@ -267,7 +301,7 @@
      "status": "accepted"
     },
     {
-     "headline": "Une fuite de données au Groupe Bernard revendique 22,25 Go et plus de 330 000 fichiers exposés.",
+     "headline": "Fuite de 22,25 Go et plus de 330 000 fichiers revendiqués du Groupe Bernard.",
      "hydrated": true,
      "item_id": "ITM-15ebbb75170138f5",
      "organisation": "Groupe Bernard",
@@ -281,7 +315,7 @@
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
-   "summary": "Le Groupe Bernard subit une fuite de 22,25 Go de données, 330 563 fichiers publiés par le hacker NikolaT.",
+   "summary": "Le Groupe Bernard a subi une cyberattaque ayant entraîné la fuite de 22,25 Go de données et 330 563 fichiers.",
    "summary_reason": "",
    "summary_status": "accepted"
   },
@@ -301,7 +335,7 @@
      "status": "accepted"
     },
     {
-     "headline": "Klark AI a subi une importante fuite de données touchant potentiellement 500 000 personnes.",
+     "headline": "Klark AI victime d'une fuite de données touchant possiblement 500 000 personnes.",
      "hydrated": true,
      "item_id": "ITM-d2be6bada0a2c076",
      "organisation": "Klark AI",
@@ -325,7 +359,7 @@
    "promotion_gaps": [],
    "source_reports": [
     {
-     "headline": "YouFid a subi une fuite de données de près de 1,9 million de profils clients sur un forum cybercriminel.",
+     "headline": "YouFid a subi une fuite de données impliquant près de 1,9 million de profils clients.",
      "hydrated": true,
      "item_id": "ITM-a1f1a90db06b0211",
      "organisation": "YouFid",
@@ -335,7 +369,7 @@
      "status": "accepted"
     },
     {
-     "headline": "YouFid revendique une fuite de près de 1,9 million de profils clients par le hacker Lagui1337.",
+     "headline": "YouFid revendique une fuite de près de 1,9 million de profils clients.",
      "hydrated": true,
      "item_id": "ITM-a924baa376351e74",
      "organisation": "YouFid",
@@ -349,13 +383,13 @@
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
-   "summary": "YouFid revendique une fuite de près de 1,9 million de profils clients par le hacker Lagui1337.",
+   "summary": "YouFid revendique une fuite de près de 1,9 million de profils clients.",
    "summary_reason": "",
    "summary_status": "accepted"
   }
  ],
  "metrics": {
-  "incidents_reported": 12,
+  "incidents_reported": 13,
   "mode": "persisted_source_facts_audit"
  },
  "schema_version": 3
