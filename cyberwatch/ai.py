@@ -31,6 +31,10 @@ from .normalize import extract_activity_description, organisation_key, searchabl
 DEFAULT_MODEL = "gpt-5-nano"
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
 
+#: Origine de provenance pour la mutation directe de Sector à l'ingestion
+#: via le registre entreprise (audit 2026-08-26, cf. AiRunState.provenance).
+ORIGIN_ORG_ENRICHMENT_DETERMINISTIC_ITEM = "ORG_ENRICHMENT_DETERMINISTIC_ITEM"
+
 PROMPT_VERSION = "2026-08-16.1"
 SCHEMA_VERSION = "2"
 
@@ -122,6 +126,12 @@ class AiRunState:
     sector_resolved_enriched_llm: int = 0
     sector_llm_skipped: int = 0
     started: float = field(default_factory=time.monotonic)
+    #: Lignes de provenance pour les mutations Sector/Location faites ici,
+    #: à l'ingestion (audit 2026-08-26) : cette escalade mutait Item.Sector
+    #: sans jamais laisser de trace dans qualification_provenance.csv,
+    #: obligeant à croiser org_enrichment_cache.csv pour comprendre une
+    #: décision. Fusionnées par runner.py dans report.qualification_provenance.
+    provenance: list[dict] = field(default_factory=list)
 
 
 def start_run() -> AiRunState:
@@ -651,6 +661,27 @@ def _apply_and_count_sector(
         state.sector_resolved_source_llm += 1
 
 
+def _org_enrichment_provenance_row(item: Item, sector: str, record) -> dict:
+    """Trace la mutation Sector faite par ``_escalate_org_enrichment_deterministic``.
+
+    Auparavant silencieuse (audit 2026-08-26) : reconstituer une décision
+    exigeait de croiser org_enrichment_cache.csv en plus de ce fichier.
+    """
+    return {
+        "Item_ID": item.Item_ID,
+        "Source_ID": item.Source_ID,
+        "Field": "Sector",
+        "Previous_Value": config.SECTOR_UNKNOWN,
+        "Candidate_Value": sector,
+        "Final_Value": sector,
+        "Origin": ORIGIN_ORG_ENRICHMENT_DETERMINISTIC_ITEM,
+        "Confidence": "HIGH",
+        "Evidence": f"registre entreprise: Activity_Code={record.Activity_Code}; Activity_Label={record.Activity_Label}"[:2000],
+        "Match_Strategy": "organisation_key_exact+recherche_entreprises_api_gouv",
+        "Decision": "APPLIED",
+    }
+
+
 def _escalate_org_enrichment_deterministic(
     item: Item,
     entry: RawEntry,
@@ -685,6 +716,7 @@ def _escalate_org_enrichment_deterministic(
         return
 
     if record.Validated_Sector:
+        state.provenance.append(_org_enrichment_provenance_row(item, record.Validated_Sector, record))
         item.Sector = record.Validated_Sector
         state.sector_resolved_enrichment_cache += 1
         state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
@@ -694,6 +726,7 @@ def _escalate_org_enrichment_deterministic(
     if sector == config.SECTOR_UNKNOWN:
         return
 
+    state.provenance.append(_org_enrichment_provenance_row(item, sector, record))
     item.Sector = sector
     record.Validated_Sector = sector
     record.Validated_Via = "deterministic"

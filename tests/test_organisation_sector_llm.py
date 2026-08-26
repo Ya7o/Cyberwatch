@@ -372,14 +372,22 @@ def test_llm_contradictory_with_confirmed_never_overrides():
     decision = osec.resolve_organisation_sector("acme", "Acme", [strong, llm_evidence])
     assert decision.status == osec.STATUS_CONFIRMED
     assert decision.sector == config.SECTOR_HEALTH
-    assert any("LLM_CONFLICT_WITH_CONFIRMED" in text for text in decision.evidence)
+    assert decision.winning_evidence_type == osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY
+    assert config.SECTOR_TECH in decision.conflicting_sectors
 
 
-def test_two_weak_conflicting_candidates_stay_conflict_without_tentative():
+def test_source_activity_outranks_llm_organisation_on_disagreement():
+    """Révision de l'arbitrage (audit 2026-08-26) : ce n'était un CONFLICT
+    non résolu qu'avant la préséance complète. source_activity est plus
+    déterministe que llm_organisation (préséance du plus au moins
+    déterministe) : il gagne désormais, en TENTATIVE (aucun des deux types
+    n'est une preuve forte)."""
     weak_registry_like = osec.OrganisationSectorEvidence(
         "acme", "Acme", config.SECTOR_RETAIL, osec.EVIDENCE_SOURCE_ACTIVITY, "MEDIUM",
     )
     llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_SERVICES)
     decision = osec.resolve_organisation_sector("acme", "Acme", [weak_registry_like, llm_evidence])
-    assert decision.status == osec.STATUS_CONFLICT
-    assert decision.sector == config.SECTOR_UNKNOWN
+    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.sector == config.SECTOR_RETAIL
+    assert decision.winning_evidence_type == osec.EVIDENCE_SOURCE_ACTIVITY
+    assert config.SECTOR_SERVICES in decision.conflicting_sectors

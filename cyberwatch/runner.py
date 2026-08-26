@@ -924,6 +924,7 @@ def execute(
     existing_items = [] if context.mode == MODE_CREATE else snapshot_items
     existing_item_ids = {item.Item_ID for item in existing_items}
 
+    ai_state: ai.AiRunState | None = None
     if offline:
         report.items = existing_items
     else:
@@ -1060,7 +1061,17 @@ def execute(
     qualified = qualify(report.items)
     report.items = qualified.items
     report.incidents = qualified.incidents
-    report.qualification_provenance = qualified.provenance
+    # ai_state.provenance (audit 2026-08-26) : mutations Sector faites à
+    # l'ingestion (registre entreprise, cf. ai._escalate_org_enrichment_deterministic)
+    # avant même que qualify() ne tourne — jamais lues depuis le disque par
+    # qualify(), donc fusionnées ici pour que qualification_provenance.csv
+    # reste la trace complète d'une décision, sans avoir à croiser
+    # org_enrichment_cache.csv en plus.
+    ingestion_provenance = sorted(
+        ai_state.provenance if ai_state is not None else [],
+        key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]),
+    )
+    report.qualification_provenance = ingestion_provenance + qualified.provenance
     report.incident_id_registry = qualified.incident_id_registry
     report.sector_registry_rows = qualified.registry_rows
     report.sector_queue_rows = qualified.queue_rows

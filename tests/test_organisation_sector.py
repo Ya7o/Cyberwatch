@@ -174,7 +174,14 @@ def test_no_self_validation_circularity(make_item):
     assert osec.EVIDENCE_VALIDATED_ITEM not in types
 
 
-def test_conflict_between_two_strong_evidences(make_item):
+def test_manual_reference_outranks_official_subject_activity_no_longer_conflicts(make_item):
+    """Révision de l'arbitrage (audit 2026-08-26) : un désaccord entre deux
+    TYPES de preuve différents n'est plus un CONFLICT non résolu — la
+    préséance tranche toujours (manual_reference > official_subject_activity
+    ici). Le secteur perdant reste journalisé dans conflicting_sectors pour
+    l'auditabilité, sans jamais l'emporter. Seule une contradiction interne
+    au type le plus prioritaire présent reste un CONFLICT
+    (cf. test_same_type_internal_disagreement_still_conflicts)."""
     item = make_item(org="Acme Groupe", sector=config.SECTOR_UNKNOWN)
     org_cache_rows = [
         {
@@ -191,11 +198,67 @@ def test_conflict_between_two_strong_evidences(make_item):
         [item], reference=reference, org_cache_rows=org_cache_rows,
     )
     decision = decisions[item.Organisation_Key]
-    assert decision.status == osec.STATUS_CONFLICT
-    assert decision.sector == config.SECTOR_UNKNOWN
-    assert set(decision.conflicting_sectors) == {config.SECTOR_CONSTRUCTION, config.SECTOR_TECH}
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.sector == config.SECTOR_TECH
+    assert decision.winning_evidence_type == osec.EVIDENCE_MANUAL_REFERENCE
+    assert config.SECTOR_CONSTRUCTION in decision.conflicting_sectors
 
     changed, provenance = osec.apply_organisation_sector_decisions([item], decisions)
+    assert changed == 1
+    assert item.Sector == config.SECTOR_TECH
+
+
+def test_same_type_internal_disagreement_still_conflicts(make_item):
+    """Deux preuves du MÊME type le plus prioritaire présent qui se
+    contredisent restent un CONFLICT : ce n'est pas un désaccord entre deux
+    sources indépendantes que la préséance peut trancher, mais une donnée
+    incohérente avec elle-même à la source la plus fiable."""
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    evidence_a = osec.OrganisationSectorEvidence(
+        item.Organisation_Key, "Acme", config.SECTOR_TECH, osec.EVIDENCE_MANUAL_REFERENCE, "HIGH",
+    )
+    evidence_b = osec.OrganisationSectorEvidence(
+        item.Organisation_Key, "Acme", config.SECTOR_HEALTH, osec.EVIDENCE_MANUAL_REFERENCE, "HIGH",
+    )
+    decision = osec.resolve_organisation_sector(item.Organisation_Key, "Acme", [evidence_a, evidence_b])
+    assert decision.status == osec.STATUS_CONFLICT
+    assert decision.sector == config.SECTOR_UNKNOWN
+    assert set(decision.conflicting_sectors) == {config.SECTOR_TECH, config.SECTOR_HEALTH}
+    assert decision.winning_evidence_type == osec.EVIDENCE_MANUAL_REFERENCE
+
+
+def test_cross_type_disagreement_precedence_winner(make_item):
+    """naf_precise_v2 est plus prioritaire qu'official_subject_activity :
+    en cas de désaccord, il gagne et l'autre reste en conflicting_sectors."""
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    naf_evidence = osec.OrganisationSectorEvidence(
+        item.Organisation_Key, "Acme", config.SECTOR_HEALTH, osec.EVIDENCE_NAF_PRECISE, "HIGH",
+    )
+    official_evidence = osec.OrganisationSectorEvidence(
+        item.Organisation_Key, "Acme", config.SECTOR_CONSTRUCTION, osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY, "HIGH",
+    )
+    decision = osec.resolve_organisation_sector(item.Organisation_Key, "Acme", [naf_evidence, official_evidence])
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.sector == config.SECTOR_HEALTH
+    assert decision.winning_evidence_type == osec.EVIDENCE_NAF_PRECISE
+    assert config.SECTOR_CONSTRUCTION in decision.conflicting_sectors
+
+
+def test_single_llm_evidence_alone_is_tentative(make_item):
+    """Généralisation de '1 indice minimum = supposé' : même le type le
+    moins prioritaire (llm_organisation), seul, suffit désormais à un
+    TENTATIVE — ce n'est plus un cas spécial câblé en dur pour
+    source_activity uniquement."""
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    llm_evidence = osec.OrganisationSectorEvidence(
+        item.Organisation_Key, "Acme", config.SECTOR_TECH, osec.EVIDENCE_LLM_ORGANISATION, "0.80",
+    )
+    decision = osec.resolve_organisation_sector(item.Organisation_Key, "Acme", [llm_evidence])
+    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.sector == config.SECTOR_TECH
+    assert decision.winning_evidence_type == osec.EVIDENCE_LLM_ORGANISATION
+
+    changed, _provenance = osec.apply_organisation_sector_decisions([item], {item.Organisation_Key: decision})
     assert changed == 0
     assert item.Sector == config.SECTOR_UNKNOWN
 

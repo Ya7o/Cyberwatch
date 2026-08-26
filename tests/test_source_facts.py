@@ -150,6 +150,38 @@ def test_activity_sector_match_inconnu_nest_jamais_publie(monkeypatch):
     assert fact.get("Activity_Sector_Match", "") == ""
 
 
+def test_activite_associative_sans_equivalent_taxonomie_reste_inconnue(monkeypatch):
+    """Cas réel (audit 2026-08-26, Banque Alimentaire de Strasbourg) : une
+    activité associative/caritative n'a pas d'équivalent dans la taxonomie
+    Secteur et ne doit jamais être approximée vers le secteur professionnel
+    le plus proche (ex. "Services aux entreprises"). Le prompt demande
+    désormais explicitement Inconnu dans ce cas ; ce test fige le
+    comportement attendu côté pipeline quand le modèle s'y conforme."""
+    item = make_item("FRENCHBREACHES", organisation="Banque Alimentaire de Strasbourg")
+    entry = RawEntry(
+        title="Banque Alimentaire de Strasbourg visée",
+        content="La Banque Alimentaire de Strasbourg a confirmé une fuite de données.",
+    )
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "activity_description": {
+            "value": "Banque alimentaire",
+            "confidence": 0.9,
+            "evidence": "La Banque Alimentaire de Strasbourg a confirmé une fuite de données",
+        },
+        "activity_sector_match": {
+            "value": "Inconnu",
+            "confidence": 0.9,
+            "evidence": "La Banque Alimentaire de Strasbourg a confirmé une fuite de données",
+        },
+    })
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {})
+
+    fact = sf.extract_source_fact(item, entry, spec("FRENCHBREACHES"))
+
+    assert fact["Activity_Description"] == "Banque alimentaire"
+    assert fact.get("Activity_Sector_Match", "") == ""
+
+
 def test_snapshot_semantique_est_consomme_sans_second_appel(monkeypatch):
     item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
     entry = RawEntry(

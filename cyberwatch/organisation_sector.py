@@ -17,15 +17,27 @@ Statuts possibles :
     CONFLICT    preuves fortes contradictoires
     UNKNOWN     aucune conclusion exploitable
 
-Règle d'arbitrage (déterministe, indépendante de l'ordre des candidats) :
+Règle d'arbitrage (déterministe, indépendante de l'ordre des candidats — audit
+2026-08-26, révision de la règle d'origine) : préséance complète entre types
+de preuve, du plus au moins déterministe (cf. ``PRECEDENCE``). Le premier type
+présent pour l'organisation tranche :
 
-    - une seule preuve forte                      -> CONFIRMED
-    - plusieurs preuves fortes convergentes        -> CONFIRMED
-    - plusieurs preuves fortes contradictoires      -> CONFLICT (jamais tranché
-      par majorité, par confiance LLM ou par ordre d'arrivée)
-    - uniquement des preuves faibles / LLM seul     -> TENTATIVE si un candidat
-      unique se dégage, sinon UNKNOWN
-    - candidats faibles/LLM contradictoires entre eux -> CONFLICT
+    - le type gagnant est une preuve forte (cf. ``STRONG_EVIDENCE_TYPES``)
+      -> CONFIRMED, quel que soit un désaccord d'un type moins prioritaire
+      (le perdant reste journalisé dans ``conflicting_sectors``, il ne
+      l'emporte jamais)
+    - le type gagnant est faible / LLM              -> TENTATIVE (tout type
+      faible isolé suffit désormais, pas seulement ``source_activity``)
+    - plusieurs preuves du même type (le plus prioritaire présent) se
+      contredisent entre elles                      -> CONFLICT (jamais
+      arbitré silencieusement, jamais redescendu vers un type moins
+      prioritaire même unanime)
+    - aucune preuve                                 -> UNKNOWN
+
+Un conflit entre deux types différents n'existe donc plus : la préséance le
+tranche toujours. Seule une incohérence interne au type le plus fiable
+présent reste un ``CONFLICT`` (donnée en contradiction avec elle-même, pas un
+simple désaccord entre deux sources indépendantes).
 
 Anti-bouclage : une décision appliquée par ce module (``Origin`` égal à
 ``ORIGIN`` ou ``ORIGIN_LLM`` dans ``qualification_provenance.csv``) n'est
@@ -64,7 +76,7 @@ DECISIONS_CSV = store.DATA_DIR / "organisation_sector_decisions.csv"
 DECISIONS_COLUMNS = [
     "Organisation_Key", "Organisation", "Sector", "Status", "Confidence",
     "Evidence_Types", "Evidence_Count", "Evidence", "Conflicting_Sectors",
-    "Decision_Origin", "Updated_At",
+    "Winning_Evidence_Type", "Decision_Origin", "Updated_At",
 ]
 
 #: Cache du candidat LLM organisationnel (P1, cf. organisation_sector_llm.py).
@@ -212,6 +224,12 @@ class OrganisationSectorDecision:
     evidence_count: int
     evidence: tuple[str, ...]
     conflicting_sectors: tuple[str, ...] = ()
+    #: Type de preuve qui a tranché (§ arbitrage par préséance, audit
+    #: 2026-08-26) : le premier type présent dans PRECEDENCE pour cette
+    #: organisation. Vide seulement pour UNKNOWN (aucune preuve). Sur
+    #: CONFLICT, désigne le type le plus prioritaire présent mais dont les
+    #: preuves internes se contredisent (jamais arbitré silencieusement).
+    winning_evidence_type: str = ""
 
     def to_row(self, *, updated_at: str = "") -> dict:
         origin = ORIGIN_LLM if EVIDENCE_LLM_ORGANISATION in self.evidence_types else ORIGIN
@@ -225,6 +243,7 @@ class OrganisationSectorDecision:
             "Evidence_Count": str(self.evidence_count),
             "Evidence": " | ".join(self.evidence),
             "Conflicting_Sectors": " | ".join(self.conflicting_sectors),
+            "Winning_Evidence_Type": self.winning_evidence_type,
             "Decision_Origin": origin,
             "Updated_At": updated_at,
         }
@@ -409,14 +428,14 @@ def _domain_page_evidence(domain_page_rows: list[dict]):
     """
     for row in domain_page_rows:
         key = (row.get("Organisation_Key") or "").strip()
-        sector = (row.get("Sector") or "").strip()
+        sector = (row.get("Activity_Sector_Match") or "").strip()
         if not key or sector not in config.SECTORS or sector == config.SECTOR_UNKNOWN:
             continue
         yield OrganisationSectorEvidence(
             key, row.get("Organisation", "") or key, sector,
             EVIDENCE_DOMAIN_PAGE, "MEDIUM",
-            source="domain_page",
-            evidence_text=(row.get("Page_Description") or row.get("Page_Title") or ""),
+            source=f"domain_page:{row.get('Extraction_Source', '')}" if row.get("Extraction_Source") else "domain_page",
+            evidence_text=(row.get("Activity_Description") or row.get("Page_Description") or row.get("Page_Title") or ""),
             evidence_url=row.get("URL", ""),
         )
 
@@ -544,6 +563,26 @@ def collect_organisation_evidence(
 # --------------------------------------------------------------------------
 
 
+#: Ordre de préséance du plus au moins déterministe (audit 2026-08-26). Un
+#: conflit entre deux TYPES différents est désormais toujours tranché par
+#: cet ordre, jamais laissé en CONFLICT — seule une contradiction interne au
+#: type le plus prioritaire présent (deux preuves du même type qui se
+#: contredisent) reste un CONFLICT. Fonction pure de la préséance déclarée
+#: ici, jamais de l'ordre d'arrivée des preuves : le déterminisme est
+#: préservé, seule la définition du conflit change.
+PRECEDENCE: tuple[str, ...] = (
+    EVIDENCE_MANUAL_REFERENCE,
+    EVIDENCE_NAF_PRECISE,
+    EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY,
+    EVIDENCE_STRUCTURED_SOURCE,
+    EVIDENCE_VALIDATED_ITEM,
+    EVIDENCE_SAFE_NAME,
+    EVIDENCE_DOMAIN_PAGE,
+    EVIDENCE_SOURCE_ACTIVITY,
+    EVIDENCE_LLM_ORGANISATION,
+)
+
+
 def _build_decision(
     organisation_key: str,
     organisation: str,
@@ -553,12 +592,14 @@ def _build_decision(
     evidence_list: list[OrganisationSectorEvidence],
     *,
     confidence: str = "",
+    winning_evidence_type: str = "",
 ) -> OrganisationSectorDecision:
     evidence_types = tuple(sorted({e.evidence_type for e in evidence_list}))
     evidence_strings = tuple(_evidence_string(e) for e in evidence_list)
     return OrganisationSectorDecision(
         organisation_key, organisation, sector, status, confidence,
         evidence_types, len(evidence_list), evidence_strings, conflicting_sectors,
+        winning_evidence_type,
     )
 
 
@@ -571,73 +612,54 @@ def resolve_organisation_sector(
 
     Fonction pure, indépendante de l'ordre de ``evidence_list`` : le tri est
     effectué en interne pour que la sortie ne dépende jamais de l'ordre
-    d'entrée (déterminisme requis par §9, §30).
+    d'entrée (déterminisme requis par §9, §30). Arbitrage par préséance
+    (cf. ``PRECEDENCE`` et le docstring du module) : le premier type présent
+    tranche, quel que soit un désaccord d'un type moins prioritaire.
     """
     ordered = sorted(
         evidence_list,
         key=lambda e: (e.evidence_type, e.sector, e.source, e.evidence_text, e.evidence_url, e.item_id),
     )
-    strong = [e for e in ordered if e.evidence_type in STRONG_EVIDENCE_TYPES]
-    llm = [e for e in ordered if e.evidence_type == EVIDENCE_LLM_ORGANISATION]
-    weak = [
-        e for e in ordered
-        if e.evidence_type not in STRONG_EVIDENCE_TYPES and e.evidence_type != EVIDENCE_LLM_ORGANISATION
-    ]
-    strong_sectors = sorted({e.sector for e in strong})
-
-    if len(strong_sectors) > 1:
-        # Un conflit fort n'est jamais tranché par majorité, ordre ou LLM.
+    if not ordered:
         return _build_decision(
-            organisation_key, organisation, STATUS_CONFLICT, config.SECTOR_UNKNOWN,
-            tuple(strong_sectors), ordered,
+            organisation_key, organisation, STATUS_UNKNOWN, config.SECTOR_UNKNOWN, (), ordered,
         )
 
-    if len(strong_sectors) == 1:
-        # Une preuve forte confirme, seule ou convergente ; un candidat LLM
-        # contradictoire est journalisé mais ne peut jamais l'emporter.
-        confirmed = strong_sectors[0]
-        annotated = ordered
-        if llm and any(e.sector != confirmed for e in llm):
-            annotated = ordered + [
-                OrganisationSectorEvidence(
-                    organisation_key, organisation, confirmed,
-                    "LLM_CONFLICT_WITH_CONFIRMED", "",
-                    evidence_text=f"LLM proposait {sorted({e.sector for e in llm})}",
-                )
-            ]
-        return _build_decision(
-            organisation_key, organisation, STATUS_CONFIRMED, confirmed, (), annotated,
-            confidence="HIGH",
-        )
+    by_type: dict[str, list[OrganisationSectorEvidence]] = defaultdict(list)
+    for e in ordered:
+        by_type[e.evidence_type].append(e)
 
-    # Aucune preuve forte indépendante : le LLM ne peut jamais suffire seul.
-    candidate_sectors = sorted({e.sector for e in llm} | {e.sector for e in weak})
-    if len(candidate_sectors) == 1:
-        if not llm:
-            # §9 Cas 4, révisé (audit 2026-08-26) : un indice métier explicite
-            # et classable (source_activity — texte cité, jugé par le
-            # classificateur strict, jamais par un simple mot-clé du récit)
-            # suffit désormais seul à afficher un secteur "supposé" plutôt que
-            # rien. Toujours jamais Confirmé sans corroboration ; les autres
-            # types de preuve faible (ex. domain_page, moins éprouvé) restent
-            # soumis à la règle précédente et exigent la convergence LLM.
-            if any(e.evidence_type == EVIDENCE_SOURCE_ACTIVITY for e in weak):
-                return _build_decision(
-                    organisation_key, organisation, STATUS_TENTATIVE, candidate_sectors[0], (), ordered,
-                    confidence="LOW",
-                )
+    for evidence_type in PRECEDENCE:
+        candidates = by_type.get(evidence_type)
+        if not candidates:
+            continue
+        sectors_at_type = sorted({e.sector for e in candidates})
+        if len(sectors_at_type) > 1:
+            # Contradiction interne au type le plus prioritaire présent :
+            # jamais arbitrée silencieusement, jamais résolue en redescendant
+            # vers un type moins prioritaire même unanime.
             return _build_decision(
-                organisation_key, organisation, STATUS_UNKNOWN, config.SECTOR_UNKNOWN, (), ordered,
+                organisation_key, organisation, STATUS_CONFLICT, config.SECTOR_UNKNOWN,
+                tuple(sectors_at_type), ordered, winning_evidence_type=evidence_type,
             )
+        winning_sector = sectors_at_type[0]
+        status = STATUS_CONFIRMED if evidence_type in STRONG_EVIDENCE_TYPES else STATUS_TENTATIVE
+        confidence = "HIGH" if status == STATUS_CONFIRMED else "LOW"
+        # Types moins prioritaires en désaccord : journalisés pour audit,
+        # jamais capables de l'emporter sur le type gagnant.
+        losing_sectors = sorted({
+            e.sector for e in ordered
+            if e.evidence_type != evidence_type and e.sector != winning_sector
+        })
         return _build_decision(
-            organisation_key, organisation, STATUS_TENTATIVE, candidate_sectors[0], (), ordered,
-            confidence="LOW",
+            organisation_key, organisation, status, winning_sector,
+            tuple(losing_sectors), ordered, confidence=confidence,
+            winning_evidence_type=evidence_type,
         )
-    if len(candidate_sectors) > 1:
-        return _build_decision(
-            organisation_key, organisation, STATUS_CONFLICT, config.SECTOR_UNKNOWN,
-            tuple(candidate_sectors), ordered,
-        )
+
+    # Garde défensive : un evidence_type absent de PRECEDENCE ne devrait
+    # jamais exister en pratique (tous les collecteurs de ce module émettent
+    # un type listé ci-dessus).
     return _build_decision(
         organisation_key, organisation, STATUS_UNKNOWN, config.SECTOR_UNKNOWN, (), ordered,
     )
@@ -789,6 +811,12 @@ def summary(decisions: dict[str, OrganisationSectorDecision]) -> dict:
     Les sous-canaux ``sector_resolved_by_*`` distinguent, parmi les
     organisations ``CONFIRMED``, celles qui n'ont convergé qu'avec le
     candidat LLM (``llm_consensus``) des autres, résolues sans lui.
+
+    ``sector_winning_evidence_type`` (audit 2026-08-26, arbitrage par
+    préséance) donne, pour tout le run, le décompte par type de preuve
+    *gagnant* (celui qui a réellement tranché, cf. ``PRECEDENCE``) parmi les
+    décisions CONFIRMED/TENTATIVE — la vue qui répond directement à « quel
+    canal contribue vraiment » sans relire le code.
     """
     counts = Counter(decision.status for decision in decisions.values())
     confirmed = [d for d in decisions.values() if d.status == STATUS_CONFIRMED]
@@ -799,7 +827,12 @@ def summary(decisions: dict[str, OrganisationSectorDecision]) -> dict:
     resolved_by_llm_consensus = sum(
         EVIDENCE_LLM_ORGANISATION in d.evidence_types for d in confirmed
     )
-    return {
+    winning_type_counts = Counter(
+        decision.winning_evidence_type
+        for decision in decisions.values()
+        if decision.status in (STATUS_CONFIRMED, STATUS_TENTATIVE) and decision.winning_evidence_type
+    )
+    result = {
         "organisation_sector_total": len(decisions),
         "organisation_sector_confirmed": counts.get(STATUS_CONFIRMED, 0),
         "organisation_sector_tentative": counts.get(STATUS_TENTATIVE, 0),
@@ -809,3 +842,8 @@ def summary(decisions: dict[str, OrganisationSectorDecision]) -> dict:
         "sector_resolved_by_naf_v2": resolved_by_naf_v2,
         "sector_resolved_by_llm_consensus": resolved_by_llm_consensus,
     }
+    # Compteur par type de preuve gagnant, une clé plate par type (jamais un
+    # dict imbriqué : `changes` reste un `dict[str, int]` partout ailleurs).
+    for evidence_type in PRECEDENCE:
+        result[f"sector_won_by_{evidence_type}"] = winning_type_counts.get(evidence_type, 0)
+    return result

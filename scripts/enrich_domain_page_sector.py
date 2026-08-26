@@ -64,7 +64,7 @@ def main() -> int:
             stats["no_evidence"] += 1
         print(
             f"  {organisation} -> {row['URL']} : {row['Status']}"
-            + (f" ({row['Sector']})" if row["Sector"] else "")
+            + (f" ({row['Activity_Sector_Match']} — {row['Activity_Description']})" if row["Activity_Sector_Match"] else "")
         )
 
     # Les échecs sont persistés au même titre que les succès : sans cela, un

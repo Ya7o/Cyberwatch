@@ -73,6 +73,51 @@ def test_distribution_de_vehicules_est_classable():
     assert context_sector.classify_explicit_activity("Distribution de véhicules.") == config.SECTOR_RETAIL
 
 
+def test_admin_sante_education_finance_transport_services_sont_desormais_classables():
+    """Audit 2026-08-26 : classify_explicit_activity n'avait aucun marqueur
+    pour 6 des 12 secteurs statiques (Admin, Santé, Éducation, Finance,
+    Transport, Services). Les phrases testées ici sont portées telles
+    quelles depuis des listes déjà validées ailleurs dans le moteur
+    (config.SECTOR_NAME_RULES / SECTOR_ACTIVITY_RULES /
+    sector_completion._strong_activity_sector), jamais inventées."""
+    assert context_sector.classify_explicit_activity(
+        "Service départemental d'incendie et de secours du département"
+    ) == config.SECTOR_ADMIN
+    assert context_sector.classify_explicit_activity(
+        "Centre hospitalier universitaire desservant plusieurs communes"
+    ) == config.SECTOR_HEALTH
+    assert context_sector.classify_explicit_activity(
+        "Grande école d'ingénieurs formant aux métiers du numérique"
+    ) == config.SECTOR_EDUCATION
+    assert context_sector.classify_explicit_activity(
+        "Caisse d'épargne régionale proposant des produits d'épargne"
+    ) == config.SECTOR_FINANCE
+    assert context_sector.classify_explicit_activity(
+        "Compagnie aérienne assurant des liaisons régionales"
+    ) == config.SECTOR_TRANSPORT
+    assert context_sector.classify_explicit_activity(
+        "Cabinet d'avocats spécialisé en droit des affaires"
+    ) == config.SECTOR_SERVICES
+
+
+def test_admin_sante_education_finance_transport_services_termes_generiques_restent_inconnus():
+    """Un mot générique isolé (jamais une locution institutionnelle
+    multi-mots) ne doit jamais suffire, même adjacent à un des nouveaux
+    marqueurs — même discipline que les blocs préexistants."""
+    assert context_sector.classify_explicit_activity(
+        "Solution médicale innovante pour le suivi à domicile"
+    ) == config.SECTOR_UNKNOWN
+    assert context_sector.classify_explicit_activity(
+        "Plateforme de gestion financière pour indépendants"
+    ) == config.SECTOR_UNKNOWN
+    assert context_sector.classify_explicit_activity(
+        "Solution de transport à la demande pour les entreprises"
+    ) == config.SECTOR_UNKNOWN
+    assert context_sector.classify_explicit_activity(
+        "Cabinet de conseil en stratégie d'entreprise"
+    ) == config.SECTOR_UNKNOWN
+
+
 def test_source_title_context_resolves_samboat_without_external_search():
     item = _item(
         "I1",

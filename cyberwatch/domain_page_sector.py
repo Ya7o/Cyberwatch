@@ -38,8 +38,19 @@ from . import (
 from .model import Item
 
 CACHE_CSV = osec.DOMAIN_PAGE_CACHE_CSV
+#: Audit 2026-08-26 : ``Sector`` renommé ``Activity_Sector_Match`` et
+#: ``Activity_Description`` ajouté, pour le même contrat à 2 champs que
+#: source_facts_ai.py (activité déclarée puis rapprochement taxonomie),
+#: plutôt qu'un blob brut titre/description. Aucune ligne de production
+#: n'existait avant ce changement (ce cache n'a jamais tourné en conditions
+#: réelles) : pas de migration nécessaire. ``Extraction_Source`` distingue
+#: une classification gratuite (``deterministic``) d'un fallback payant
+#: (``llm``) ou d'une abstention LLM (``llm_declined``, jamais redemandée
+#: sans ``--force-llm``, cf. domain_page_sector_llm.py), pour l'audit de coût
+#: comme pour éviter de rejouer indéfiniment une question sans réponse.
 CACHE_COLUMNS = [
-    "Organisation_Key", "Organisation", "URL", "Status", "Sector",
+    "Organisation_Key", "Organisation", "URL", "Status",
+    "Activity_Description", "Activity_Sector_Match", "Extraction_Source",
     "Page_Title", "Page_Description", "Fetched_At",
 ]
 
@@ -110,6 +121,14 @@ def extract_page_activity(html: str) -> tuple[str, str]:
     )
 
 
+def _empty_row(base: dict, status: str) -> dict:
+    return {
+        **base, "Status": status,
+        "Activity_Description": "", "Activity_Sector_Match": "", "Extraction_Source": "",
+        "Page_Title": "", "Page_Description": "",
+    }
+
+
 def resolve_domain_page(organisation: str) -> dict | None:
     """Un accès réseau borné, jamais bloquant. ``None`` = non applicable."""
     domain = organisation_is_domain(organisation)
@@ -122,26 +141,44 @@ def resolve_domain_page(organisation: str) -> dict | None:
 
     # Garde d'identité : la page doit appartenir à l'organisation nommée.
     if not official_site_discovery.domain_matches_organisation(organisation, url):
-        return {**base, "Status": STATUS_NO_EVIDENCE, "Sector": "", "Page_Title": "", "Page_Description": ""}
+        return _empty_row(base, STATUS_NO_EVIDENCE)
 
     response = company_evidence._http_get(url, timeout=FETCH_TIMEOUT_SECONDS)
     if response is None:
-        return {**base, "Status": STATUS_UNREACHABLE, "Sector": "", "Page_Title": "", "Page_Description": ""}
+        return _empty_row(base, STATUS_UNREACHABLE)
+
+    # Audit 2026-08-26 : _http_get suit les redirections (allow_redirects=True)
+    # sans jamais revalider l'identité sur l'URL finale. Un domaine qui
+    # redirige vers un site sans rapport serait sinon accepté à tort. Un mock
+    # de test sans attribut/valeur `.url` retombe sur `url` (pas de vérité
+    # différente disponible) : comportement inchangé pour ces tests, jamais
+    # pour un vrai `requests.Response` (`.url` y est toujours renseigné).
+    final_url = getattr(response, "url", "") or url
+    base["URL"] = final_url
+    if final_url != url and not official_site_discovery.domain_matches_organisation(organisation, final_url):
+        return _empty_row(base, STATUS_NO_EVIDENCE)
 
     title, description = extract_page_activity(response.text)
     sector = config.SECTOR_UNKNOWN
+    activity_text = ""
     for text in (description, title):
         if not text:
             continue
         candidate = context_sector.classify_explicit_activity(text)
         if candidate != config.SECTOR_UNKNOWN:
             sector = candidate
+            activity_text = text
             break
 
     return {
         **base,
         "Status": STATUS_MATCHED if sector != config.SECTOR_UNKNOWN else STATUS_NO_EVIDENCE,
-        "Sector": sector if sector != config.SECTOR_UNKNOWN else "",
+        # Jamais d'activité publiée sans secteur classé : même discipline
+        # anti-hallucination que source_facts_ai.py (une preuve, c'est un
+        # secteur nommé, jamais un texte non classé).
+        "Activity_Description": activity_text if sector != config.SECTOR_UNKNOWN else "",
+        "Activity_Sector_Match": sector if sector != config.SECTOR_UNKNOWN else "",
+        "Extraction_Source": "deterministic" if sector != config.SECTOR_UNKNOWN else "",
         "Page_Title": title,
         "Page_Description": description,
     }

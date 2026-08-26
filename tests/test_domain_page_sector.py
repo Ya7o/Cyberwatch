@@ -33,9 +33,10 @@ def _isolate_data_dir(monkeypatch, tmp_path):
 
 
 class _Response:
-    def __init__(self, text: str):
+    def __init__(self, text: str, url: str = ""):
         self.text = text
         self.status_code = 200
+        self.url = url
 
 
 _KLARK_HTML = (
@@ -130,7 +131,9 @@ def test_resolution_extrait_un_secteur_depuis_la_page(monkeypatch):
     row = dps.resolve_domain_page("Klark.ai")
 
     assert row["Status"] == dps.STATUS_MATCHED
-    assert row["Sector"] == config.SECTOR_TECH
+    assert row["Activity_Sector_Match"] == config.SECTOR_TECH
+    assert row["Activity_Description"]
+    assert row["Extraction_Source"] == "deterministic"
     assert row["URL"] == "https://klark.ai/"
 
 
@@ -143,7 +146,7 @@ def test_page_injoignable_ne_leve_jamais(monkeypatch):
     row = dps.resolve_domain_page("Klark.ai")
 
     assert row["Status"] == dps.STATUS_UNREACHABLE
-    assert row["Sector"] == ""
+    assert row["Activity_Sector_Match"] == ""
 
 
 def test_domaine_non_attribuable_ne_lit_jamais_la_page(monkeypatch):
@@ -160,6 +163,46 @@ def test_domaine_non_attribuable_ne_lit_jamais_la_page(monkeypatch):
     assert row["Status"] == dps.STATUS_NO_EVIDENCE
 
 
+def test_redirection_vers_un_domaine_sans_rapport_est_rejetee(monkeypatch):
+    """Audit 2026-08-26 : _http_get suit les redirections sans jamais
+    revalider l'identité sur l'URL finale. Un domaine qui redirige vers un
+    site sans rapport ne doit jamais publier de secteur."""
+    monkeypatch.setattr(
+        official_site_discovery, "domain_matches_organisation",
+        lambda org, url: "klark" in url,
+    )
+    monkeypatch.setattr(
+        dps.company_evidence, "_http_get",
+        lambda *a, **k: _Response(_KLARK_HTML, url="https://parking-page-inconnue.example/"),
+    )
+
+    row = dps.resolve_domain_page("Klark.ai")
+
+    assert row["Status"] == dps.STATUS_NO_EVIDENCE
+    assert row["Activity_Sector_Match"] == ""
+    assert row["URL"] == "https://parking-page-inconnue.example/"
+
+
+def test_redirection_vers_le_meme_domaine_reste_acceptee(monkeypatch):
+    """Une redirection apex -> www (même marque) ne doit pas être rejetée :
+    seule une redirection hors-marque doit l'être."""
+    monkeypatch.setattr(official_site_discovery, "domain_matches_organisation", lambda *a: True)
+    monkeypatch.setattr(
+        dps.company_evidence, "_http_get",
+        lambda *a, **k: _Response(_KLARK_HTML, url="https://www.klark.ai/"),
+    )
+    monkeypatch.setattr(
+        dps.context_sector, "classify_explicit_activity",
+        lambda text: config.SECTOR_TECH if "intelligence" in text else config.SECTOR_UNKNOWN,
+    )
+
+    row = dps.resolve_domain_page("Klark.ai")
+
+    assert row["Status"] == dps.STATUS_MATCHED
+    assert row["Activity_Sector_Match"] == config.SECTOR_TECH
+    assert row["URL"] == "https://www.klark.ai/"
+
+
 def test_page_sans_activite_classable_reste_sans_preuve(monkeypatch):
     """Un argumentaire commercial trop générique ne devient jamais un
     secteur : `classify_explicit_activity` refuse, le canal n'invente rien."""
@@ -172,7 +215,7 @@ def test_page_sans_activite_classable_reste_sans_preuve(monkeypatch):
     row = dps.resolve_domain_page("Klark.ai")
 
     assert row["Status"] == dps.STATUS_NO_EVIDENCE
-    assert row["Sector"] == ""
+    assert row["Activity_Sector_Match"] == ""
 
 
 # --------------------------------------------------------------------------
@@ -183,17 +226,20 @@ def test_page_sans_activite_classable_reste_sans_preuve(monkeypatch):
 def _cache_row(item, sector=config.SECTOR_TECH):
     return {
         "Organisation_Key": item.Organisation_Key, "Organisation": item.Organisation_Raw,
-        "URL": "https://klark.ai/", "Status": dps.STATUS_MATCHED, "Sector": sector,
+        "URL": "https://klark.ai/", "Status": dps.STATUS_MATCHED,
+        "Activity_Sector_Match": sector, "Extraction_Source": "deterministic",
         "Page_Title": "Klark", "Page_Description": "Plateforme SaaS d'intelligence artificielle",
         "Fetched_At": "2026-08-25T00:00:00+00:00",
     }
 
 
-def test_preuve_page_seule_reste_inconnu(make_item):
-    """Preuve MEDIUM hors STRONG_EVIDENCE_TYPES. L'arbitrage applique donc
-    §9 Cas 4 : un signal faible seul, sans candidat LLM convergent, laisse
-    l'organisation Inconnu. Ce canal ne peut jamais, à lui seul, publier un
-    secteur — il ne fait qu'ajouter une preuve à l'arbitrage existant."""
+def test_preuve_page_seule_donne_un_tentative(make_item):
+    """Preuve MEDIUM hors STRONG_EVIDENCE_TYPES. Révision de l'arbitrage
+    (audit 2026-08-26, généralisation de '1 indice minimum = supposé') :
+    un signal faible seul, même sans candidat LLM convergent, suffit
+    désormais à un TENTATIVE plutôt que de laisser l'organisation Inconnu.
+    Ce canal ne peut toujours jamais, à lui seul, publier un secteur
+    Confirmé — TENTATIVE n'est jamais appliqué à Item.Sector."""
     item = make_item(org="Klark.ai", sector=config.SECTOR_UNKNOWN)
 
     decisions = osec.resolve_all_organisation_sectors(
@@ -203,8 +249,9 @@ def test_preuve_page_seule_reste_inconnu(make_item):
     decision = decisions[item.Organisation_Key]
 
     assert osec.EVIDENCE_DOMAIN_PAGE not in osec.STRONG_EVIDENCE_TYPES
-    assert decision.status == osec.STATUS_UNKNOWN
-    assert decision.sector == config.SECTOR_UNKNOWN
+    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.sector == config.SECTOR_TECH
+    assert decision.winning_evidence_type == osec.EVIDENCE_DOMAIN_PAGE
 
     changed, _provenance = osec.apply_organisation_sector_decisions([item], decisions)
     assert changed == 0

@@ -17,7 +17,7 @@ import argparse
 import random
 import sys
 
-from . import config, enrichment, identity, incident_identity, organisation_sector_llm, site, sources, status, store
+from . import config, domain_page_sector, domain_page_sector_llm, enrichment, identity, incident_identity, organisation_sector_llm, site, sources, status, store
 from .collectors.base import Window
 from .collectors.cyberattaque_org import repair_existing_identities
 from .dedup import build_incidents, build_incidents_with_registry
@@ -255,6 +255,40 @@ def cmd_sector_llm(args) -> int:
     )
     print("SECTOR-LLM")
     _print_sector_llm_report(report)
+    return 0
+
+
+def _print_domain_page_llm_report(report) -> None:
+    print(f"  Lignes sélectionnées : {report.rows_selected}")
+    print(f"  Appels LLM           : {report.calls}")
+    print(f"  Résolus              : {report.resolved}")
+    print(f"  Abstentions          : {report.abstentions}")
+    print(f"  Coût estimé          : {report.cost_usd:.4f} USD")
+    print(f"  LLM disponible       : {report.llm_available}")
+    if report.dry_run:
+        print("  DRY-RUN : aucune écriture, aucun appel réseau.")
+    elif report.calls:
+        print(f"  Cache mis à jour : {len(report.cache_rows)} ligne(s) au total -> data/organisation_domain_page.csv")
+    else:
+        print("  Aucun appel effectué : cache inchangé.")
+
+
+def cmd_domain_page_llm(args) -> int:
+    """Fallback LLM sur le texte déjà scrappé par domain_page_sector.py (§3).
+
+    Étape explicite et réseau, jamais appelée par ``create``/``maj``/
+    ``replay``/``qualify()``, et ne fait elle-même aucun accès HTTP : relit
+    uniquement le cache que ``scripts/enrich_domain_page_sector.py`` a déjà
+    peuplé, complète en LLM les seules lignes que le classificateur
+    déterministe n'a pas su classer.
+    """
+    report = domain_page_sector_llm.enrich_domain_page_sectors(
+        limit=args.limit,
+        dry_run=args.dry_run,
+        force=args.force_llm,
+    )
+    print("DOMAIN-PAGE-LLM")
+    _print_domain_page_llm_report(report)
     return 0
 
 
@@ -906,6 +940,15 @@ def build_parser() -> argparse.ArgumentParser:
     sector_backfill.add_argument("--force-llm", action="store_true", help="Ignorer un cache hit existant et redemander un candidat.")
     sector_backfill.add_argument("--dry-run", action="store_true", help="Simuler sans aucune écriture ni appel réseau.")
     sector_backfill.set_defaults(func=cmd_sector_backfill)
+
+    domain_page_llm = subparsers.add_parser(
+        "domain-page-llm",
+        help="Fallback LLM sur le texte page officielle déjà scrappé (jamais d'accès réseau HTTP).",
+    )
+    domain_page_llm.add_argument("--limit", type=int, default=None, help="Nombre maximal de lignes traitées.")
+    domain_page_llm.add_argument("--force-llm", action="store_true", help="Redemander un candidat même après une abstention (llm_declined).")
+    domain_page_llm.add_argument("--dry-run", action="store_true", help="Simuler sans aucune écriture ni appel réseau.")
+    domain_page_llm.set_defaults(func=cmd_domain_page_llm)
 
     repeat = subparsers.add_parser("test-repeat", help="Test de répétabilité (§27).")
     repeat.set_defaults(func=cmd_test_repeat)

@@ -954,6 +954,15 @@ class TestSectorEnrichmentEscalation:
         assert item.Sector == "Construction / BTP"
         assert state.sector_resolved_enriched_deterministic == 1
         assert state.sector_resolved_enriched_llm == 0
+        # Audit 2026-08-26 : cette mutation était auparavant invisible dans
+        # qualification_provenance.csv (seulement des compteurs internes).
+        assert len(state.provenance) == 1
+        row = state.provenance[0]
+        assert row["Item_ID"] == item.Item_ID
+        assert row["Field"] == "Sector"
+        assert row["Final_Value"] == "Construction / BTP"
+        assert row["Origin"] == ai.ORIGIN_ORG_ENRICHMENT_DETERMINISTIC_ITEM
+        assert row["Decision"] == "APPLIED"
 
     def test_plusieurs_candidats_ambigus_najamais_de_choix_arbitraire(self, make_item, monkeypatch):
         """Cas Gédimat : AMBIGUOUS ne doit jamais résoudre Sector."""

@@ -118,6 +118,59 @@ def classify_explicit_activity(activity: str) -> str:
     )):
         return config.SECTOR_SPORT
 
+    # Audit 2026-08-26 : cette fonction n'avait aucun marqueur pour Admin,
+    # Santé, Éducation, Finance, Transport, Services (6 des 12 secteurs
+    # statiques). Les phrases ci-dessous ne sont pas inventées : elles sont
+    # portées telles quelles depuis des listes déjà validées ailleurs dans le
+    # moteur (config.SECTOR_NAME_RULES, config.SECTOR_ACTIVITY_RULES,
+    # sector_completion._strong_activity_sector) — jamais un mot générique
+    # isolé ("medical", "transport", "finance"...), toujours une locution
+    # institutionnelle multi-mots, dans le même esprit étroit que ci-dessus.
+    if any(marker in text for marker in (
+        "service departemental d incendie",
+        "protection civile",
+        "gendarmerie nationale",
+        "sapeurs pompiers",
+    )):
+        return config.SECTOR_ADMIN
+
+    if any(marker in text for marker in (
+        "centre hospitalier",
+        "hospices civils",
+    )):
+        return config.SECTOR_HEALTH
+
+    # Portées depuis sector_completion._strong_activity_sector (déjà
+    # auditées côté ingestion), pour combler l'absence totale de marqueur
+    # Éducation dans ce classificateur-ci.
+    if any(marker in text for marker in (
+        "ecole d ingenieurs",
+        "ecole d ingenieur",
+        "grande ecole",
+        "etablissement d enseignement superieur",
+    )):
+        return config.SECTOR_EDUCATION
+
+    if any(marker in text for marker in (
+        "caisse d epargne",
+        "credit agricole",
+    )):
+        return config.SECTOR_FINANCE
+
+    if any(marker in text for marker in (
+        "compagnie aerienne",
+        "grand port",
+        "port maritime",
+    )):
+        return config.SECTOR_TRANSPORT
+
+    if any(marker in text for marker in (
+        "cabinet d avocats",
+        "cabinet comptable",
+        "expertise comptable",
+    )):
+        return config.SECTOR_SERVICES
+
     return config.SECTOR_UNKNOWN
 
 
