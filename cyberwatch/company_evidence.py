@@ -427,13 +427,32 @@ def classify_official_activity(text: str) -> tuple[str, str] | None:
     return top[1], _excerpt(text, top[2])
 
 
+#: Cas réel (audit 2026-08-26) : le classificateur déterministe officiel est
+#: volontairement strict (deux points d'avance requis) et rate des activités
+#: pourtant réelles. La page reste identifiée avec certitude comme officielle
+#: (garde d'identité déjà passée) : son titre/meta reste une preuve utile
+#: pour l'arbitrage LLM (organisation_sector_llm.py, qui lit déjà
+#: Activity_Label sans condition), même sans classification déterministe.
+MAX_OFFICIAL_TEXT_CHARS = 400
+
+
 def resolve_official_site(organisation: str) -> CompanyEvidence | None:
-    """Résout un secteur depuis le site officiel, sans jamais lever d'erreur."""
+    """Résout un secteur depuis le site officiel, sans jamais lever d'erreur.
+
+    Si aucun candidat identité-validé ne se classe déterministement, le titre
+    + meta description du premier candidat validé est tout de même retourné
+    (``sector=""``, ``evidence_type="official_site_text"``) : un texte, pas
+    un secteur. Ce type de preuve n'entre jamais dans
+    ``STRONG_EVIDENCE_TYPES`` et n'est jamais confondu avec
+    ``official_subject_activity`` (organisation_sector.py ne cherche que cette
+    valeur exacte pour la preuve forte).
+    """
     try:
         candidates = _discover_official_sites(organisation)
     except Exception:
         return None
 
+    fallback: CompanyEvidence | None = None
     for candidate in candidates:
         priority, body, about_links, final_url = _page(candidate)
         if not priority and not body:
@@ -465,6 +484,14 @@ def resolve_official_site(organisation: str) -> CompanyEvidence | None:
             classified = classify_official_activity(body[:16000])
 
         if classified is None:
+            if fallback is None and priority:
+                fallback = CompanyEvidence(
+                    sector="",
+                    evidence_url=evidence_url,
+                    evidence_text=priority[:MAX_OFFICIAL_TEXT_CHARS],
+                    evidence_source=_domain(evidence_url) or "official_site",
+                    evidence_type="official_site_text",
+                )
             continue
         sector, evidence_text = classified
         return CompanyEvidence(
@@ -473,4 +500,4 @@ def resolve_official_site(organisation: str) -> CompanyEvidence | None:
             evidence_text=evidence_text,
             evidence_source=_domain(evidence_url) or "official_site",
         )
-    return None
+    return fallback

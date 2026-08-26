@@ -48,6 +48,64 @@ def test_resolve_official_site_exige_identite_et_page_officielle(monkeypatch):
     assert evidence.evidence_source == "intermarche.com"
 
 
+def test_page_officielle_non_classable_reste_une_preuve_texte(monkeypatch):
+    """Cas réel (audit 2026-08-26, Klark.ai) : le classificateur officiel
+    strict rate une activité pourtant réelle. La page reste identifiée avec
+    certitude comme officielle (garde d'identité déjà passée) : son titre +
+    meta reste une preuve texte pour l'arbitrage LLM, jamais un secteur en
+    soi (sector="", evidence_type="official_site_text")."""
+    monkeypatch.setattr(
+        company_evidence, "_discover_official_sites", lambda org: ["https://klark.ai/"],
+    )
+    monkeypatch.setattr(
+        company_evidence, "_page",
+        lambda url: (
+            "Klark - plateforme d'intelligence artificielle pour la relation client",
+            "Klark aide les équipes support à répondre plus vite.",
+            [],
+            "https://klark.ai/",
+        ),
+    )
+
+    evidence = company_evidence.resolve_official_site("Klark.ai")
+
+    assert evidence is not None
+    assert evidence.sector == ""
+    assert evidence.evidence_type == "official_site_text"
+    assert "intelligence artificielle" in evidence.evidence_text
+    assert evidence.evidence_url == "https://klark.ai/"
+
+
+def test_page_officielle_classable_prime_sur_le_texte_seul(monkeypatch):
+    """Un candidat qui classe déterministement doit toujours l'emporter sur
+    le fallback texte d'un autre candidat, même découvert avant lui."""
+    pages = {
+        "https://faux-site.example/": (
+            "Bienvenue chez Klark, une entreprise innovante",
+            "",
+            [],
+            "https://faux-site.example/",
+        ),
+        "https://klark.ai/": (
+            "Klark - vos courses en ligne et votre magasin",
+            "Klark est une enseigne de supermarchés française.",
+            [],
+            "https://klark.ai/",
+        ),
+    }
+    monkeypatch.setattr(
+        company_evidence, "_discover_official_sites",
+        lambda org: ["https://faux-site.example/", "https://klark.ai/"],
+    )
+    monkeypatch.setattr(company_evidence, "_page", lambda url: pages[url])
+
+    evidence = company_evidence.resolve_official_site("Klark")
+
+    assert evidence is not None
+    assert evidence.sector == config.SECTOR_RETAIL
+    assert evidence.evidence_url == "https://klark.ai/"
+
+
 def test_org_enrichment_utilise_site_officiel_apres_not_found_registre(monkeypatch):
     state = org_enrichment.OrgEnrichmentState(
         enabled=True,
