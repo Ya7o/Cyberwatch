@@ -23,7 +23,15 @@ import requests
 from . import config
 from .normalize import searchable
 
-USER_AGENT = "Mozilla/5.0 (compatible; Cyberwatch/1.0; +https://github.com/Ya7o/Cyberwatch)"
+#: Cas réel (audit 2026-08-26) : ce module avait son propre User-Agent
+#: dédié, distinct de celui du reste du projet. Les 9 tentatives réelles du
+#: run RESET du 26/08 (DuckDuckGo + Bing) sont toutes revenues sans aucun
+#: candidat, en un temps trop court pour un vrai scraping abouti. Plutôt que
+#: de se déguiser en navigateur anonyme (contraire au principe du projet,
+#: cf. ``config.HTTP_USER_AGENT_FALLBACK``), on réutilise le même mécanisme
+#: à deux niveaux que ``http.py`` : s'identifier, et ne se replier que sur un
+#: agent de repli lui aussi identifiable si l'agent identifié est refusé.
+USER_AGENT = config.HTTP_USER_AGENT
 SEARCH_TIMEOUT_SECONDS = 10
 PAGE_TIMEOUT_SECONDS = 10
 MAX_SEARCH_RESULTS = 5
@@ -283,18 +291,19 @@ class _PageParser(HTMLParser):
 
 
 def _http_get(url: str, *, timeout: int) -> requests.Response | None:
-    try:
-        response = requests.get(
-            url,
-            timeout=timeout,
-            allow_redirects=True,
-            headers={"User-Agent": USER_AGENT},
-        )
-    except requests.RequestException:
-        return None
-    if response.status_code >= 400:
-        return None
-    return response
+    for agent in (USER_AGENT, config.HTTP_USER_AGENT_FALLBACK):
+        try:
+            response = requests.get(
+                url,
+                timeout=timeout,
+                allow_redirects=True,
+                headers={"User-Agent": agent},
+            )
+        except requests.RequestException:
+            continue
+        if response.status_code < 400:
+            return response
+    return None
 
 
 def _search_links(query: str) -> list[tuple[str, str]]:

@@ -6,6 +6,34 @@ from cyberwatch import ai, company_evidence, config, org_enrichment
 from cyberwatch.collectors.base import RawEntry, SourceSpec
 
 
+def test_http_get_se_replie_sur_l_agent_alternatif_si_le_premier_est_refuse(monkeypatch):
+    """Cas réel (audit 2026-08-26) : les 9 tentatives réelles du run RESET du
+    26/08 sont toutes revenues sans candidat. Le module reste toujours
+    identifiable (jamais de déguisement en navigateur anonyme) mais doit
+    pouvoir se replier sur l'agent alternatif du projet, comme http.py, si le
+    premier agent est refusé."""
+    calls = []
+
+    class FakeResponse:
+        def __init__(self, status_code):
+            self.status_code = status_code
+            self.text = "<html></html>"
+
+    def fake_get(url, timeout, allow_redirects, headers):
+        calls.append(headers["User-Agent"])
+        if headers["User-Agent"] == company_evidence.USER_AGENT:
+            return FakeResponse(403)
+        return FakeResponse(200)
+
+    monkeypatch.setattr(company_evidence.requests, "get", fake_get)
+
+    response = company_evidence._http_get("https://example.org/", timeout=5)
+
+    assert response is not None
+    assert response.status_code == 200
+    assert calls == [company_evidence.USER_AGENT, config.HTTP_USER_AGENT_FALLBACK]
+
+
 def test_classification_officielle_intermarche_commerce():
     result = company_evidence.classify_official_activity(
         "Intermarché est une enseigne de supermarchés. "
