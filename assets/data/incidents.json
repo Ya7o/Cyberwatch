@@ -2,22 +2,27 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
-  "id": "INC-CE5E54EC9CED",
-  "items": 1,
-  "last_seen": "2026-08-26T07:26:09+04:00",
-  "location": "Inconnu",
-  "org": "Banque Alimentaire de la Croix-Rouge à Strasbourg",
+  "first_seen": "2026-08-26T08:03:15+04:00",
+  "id": "INC-0EF43ECA1026",
+  "items": 2,
+  "last_seen": "2026-08-26T08:03:15+04:00",
+  "location": "France métropolitaine",
+  "org": "Banque Alimentaire de Strasbourg",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
+   "candidate": "Hébergement / Tourisme / Restauration",
+   "status": "tentative"
   },
+  "sector_tentative": "Hébergement / Tourisme / Restauration",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
    {
     "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
     "status": "direct"
    }
   ],
@@ -25,61 +30,30 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Fuite de 10 073 fiches de bénéficiaires de la Banque Alimentaire de la Croix-Rouge à Strasbourg.",
-  "threat": "Fuite de données",
-  "urls": [
-   "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
-  "id": "INC-0EF43ECA1026",
-  "items": 1,
-  "last_seen": "2026-08-26T07:26:09+04:00",
-  "location": "France métropolitaine",
-  "org": "Banque Alimentaire de Strasbourg",
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
-  },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
+   },
    {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données revendiquée par un cybercriminel concernant plus de 10 000 dossiers de la Banque Alimentaire de Strasbourg.",
+  "summary": "La Banque Alimentaire de Strasbourg a subi une fuite de données de plus de 10 000 dossiers revendiquée sur un forum.",
   "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j"
+   "https://frenchbreaches.com/alertes/banque-alimentaire-de-strasbourg-mt89jp2oj5vvmzw9w4j",
+   "https://www.cyberattaque.org/banque-alimentaire-de-la-croix-rouge-a-strasbourg-10-073-fiches-de-beneficiaires-en-fuite/"
   ]
  },
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-BEF232902387",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "Dipeeo",
   "sector": "Numérique / Technologie",
@@ -114,7 +88,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Dipeeo : les données RGPD de ses clients exposées après une cyberattaque",
+  "summary": "Dipeeo a subi une cyberattaque entraînant l'exposition des données RGPD de ses clients.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/dipeeo-mt92blpt805eb19szgb",
@@ -124,17 +98,18 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-13626C7AD262",
   "items": 1,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "Inconnu",
   "org": "Docurba",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
+   "candidate": "Numérique / Technologie",
+   "status": "tentative"
   },
+  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants"
@@ -154,7 +129,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Docurba a subi une fuite de données de 5 152 lignes d'utilisateurs revendiquée par le hacker 0xSec.",
+  "summary": "Un hacker a diffusé 5 152 lignes de données d'utilisateurs de Docurba, plateforme numérique de l'État.",
   "threat": "Fuite de données",
   "urls": [
    "https://www.cyberattaque.org/docurba-plus-de-5-000-lignes-dutilisateurs-de-la-plateforme-de-letat-diffusees-par-un-hacker/"
@@ -163,17 +138,18 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-AC37FD77124B",
   "items": 1,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "Docurba.gouv.fr",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
+   "candidate": "Numérique / Technologie",
+   "status": "tentative"
   },
+  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
@@ -191,7 +167,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Plus de 2 700 comptes utilisateurs de Docurba.gouv.fr revendiqués sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/docurba-gouv-fr-mt926ef1e9hbxb4hwu"
@@ -200,10 +176,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-4A5084AD59D0",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "Emil Frey France",
   "sector": "Finance / Assurance",
@@ -238,7 +214,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Emil Frey France a confirmé une fuite de données exposant des informations sur des leads et des collaborateurs.",
+  "summary": "Une fuite de données chez Emil Frey France expose des leads et des coordonnées professionnelles de collaborateurs.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/emil-frey-france-mt92ee51kf5jca5u0vc",
@@ -248,18 +224,17 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-19D4905E1353",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "TeleCoop",
   "sector": "Inconnu",
   "sector_status": {
-   "candidate": "Numérique / Technologie",
-   "status": "tentative"
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
   },
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
@@ -286,7 +261,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "TeleCoop a été victime d'une cyberattaque ayant exposé des données personnelles de clients via une vulnérabilité Metabase.",
+  "summary": "TeleCoop a subi un incident de cybersécurité entraînant une fuite de données personnelles de clients.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/telecoop-mt92pqrix4829xkc6hj",
@@ -296,18 +271,16 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-25",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-909ACD6770F0",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "Timetonic",
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "candidate": "Numérique / Technologie",
-   "status": "tentative"
+   "status": "confirmed"
   },
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
@@ -334,7 +307,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "TimeTonic : 3 bases de données exposées après une cyberattaque",
+  "summary": "TimeTonic a subi une cyberattaque entraînant l'exposition de trois bases de données contenant des informations sur plus de 50 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va",
@@ -344,18 +317,16 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-24",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-7F84F57DB9BD",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "Groupe Bernard",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "candidate": "Agriculture / Agroalimentaire",
-   "status": "tentative"
+   "status": "confirmed"
   },
-  "sector_tentative": "Agriculture / Agroalimentaire",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "identifiants"
@@ -384,7 +355,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le Groupe Bernard a subi une cyberattaque entraînant la publication de 22,25 Go de données et 330 563 fichiers.",
+  "summary": "22,25 Go de données et 330 563 fichiers publiés après une cyberattaque ciblant le Groupe Bernard.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/groupe-bernard-blgcloud-mt7k8j5h05wkmuoyjbj",
@@ -394,18 +365,16 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-24",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-B448DE3FC7B8",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "Klark AI",
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "candidate": "Numérique / Technologie",
-   "status": "tentative"
+   "status": "confirmed"
   },
-  "sector_tentative": "Numérique / Technologie",
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
    "données bancaires"
@@ -434,7 +403,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Klark.ai fait l'objet d'une fuite massive de données affectant près de 500 000 personnes, selon le hacker 0xSec.",
+  "summary": "Klark.ai a subi une fuite massive de données exposant près de 500 000 personnes.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/klark-ai-mt6t1mwhjzd3u98q3vr",
@@ -444,10 +413,10 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-08-24",
-  "first_seen": "2026-08-26T07:26:09+04:00",
+  "first_seen": "2026-08-26T08:03:15+04:00",
   "id": "INC-C150F062C71D",
   "items": 2,
-  "last_seen": "2026-08-26T07:26:09+04:00",
+  "last_seen": "2026-08-26T08:03:15+04:00",
   "location": "France métropolitaine",
   "org": "YouFid",
   "sector": "Inconnu",
@@ -484,7 +453,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "YouFid a subi une fuite massive de données avec près de 1,9 million de profils clients revendiqués.",
+  "summary": "YouFid a subi une fuite de données avec près de 1,9 million de profils clients revendiqués sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/youfid-mt6v6n1zy4kdlfxng5",
