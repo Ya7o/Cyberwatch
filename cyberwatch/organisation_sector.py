@@ -12,22 +12,22 @@ via une preuve explicite ``llm_organisation``, jamais suffisante seule.
 
 Statuts possibles :
 
-    CONFIRMED   suffisamment prouvé pour renseigner Item.Sector
-    TENTATIVE   candidat crédible mais non confirmé (alimente sector_tentative)
-    CONFLICT    preuves fortes contradictoires
-    UNKNOWN     aucune conclusion exploitable
+    CONFIRMED   au moins un type de preuve gagnant désigne Item.Sector
+                (confidence HIGH si le type gagnant est fort, LOW s'il est
+                faible/LLM — mais dans les deux cas appliqué, cf. §revirement
+                ci-dessous)
+    CONFLICT    preuves du même type (le plus prioritaire présent) qui se
+                contredisent entre elles
+    UNKNOWN     aucune preuve du tout
 
 Règle d'arbitrage (déterministe, indépendante de l'ordre des candidats — audit
 2026-08-26, révision de la règle d'origine) : préséance complète entre types
 de preuve, du plus au moins déterministe (cf. ``PRECEDENCE``). Le premier type
 présent pour l'organisation tranche :
 
-    - le type gagnant est une preuve forte (cf. ``STRONG_EVIDENCE_TYPES``)
-      -> CONFIRMED, quel que soit un désaccord d'un type moins prioritaire
-      (le perdant reste journalisé dans ``conflicting_sectors``, il ne
-      l'emporte jamais)
-    - le type gagnant est faible / LLM              -> TENTATIVE (tout type
-      faible isolé suffit désormais, pas seulement ``source_activity``)
+    - un type gagnant se dégage (fort ou faible/LLM) -> CONFIRMED, quel que
+      soit un désaccord d'un type moins prioritaire (le perdant reste
+      journalisé dans ``conflicting_sectors``, il ne l'emporte jamais)
     - plusieurs preuves du même type (le plus prioritaire présent) se
       contredisent entre elles                      -> CONFLICT (jamais
       arbitré silencieusement, jamais redescendu vers un type moins
@@ -38,6 +38,14 @@ Un conflit entre deux types différents n'existe donc plus : la préséance le
 tranche toujours. Seule une incohérence interne au type le plus fiable
 présent reste un ``CONFLICT`` (donnée en contradiction avec elle-même, pas un
 simple désaccord entre deux sources indépendantes).
+
+Revirement de politique (audit 2026-08-26, décision explicite) : une
+proposition faible/LLM seule est désormais **appliquée** à Item.Sector
+(comme une preuve forte), et non plus seulement journalisée sans effet — le
+statut ``TENTATIVE`` et le mécanisme ``sector_tentative`` qui l'accompagnait
+sont retirés. Ce module choisit systématiquement le secteur le plus proche
+disponible plutôt que ``Inconnu`` dès qu'un type de preuve, même faible,
+existe ; seule une absence totale de preuve reste ``UNKNOWN``.
 
 Anti-bouclage : une décision appliquée par ce module (``Origin`` égal à
 ``ORIGIN`` ou ``ORIGIN_LLM`` dans ``qualification_provenance.csv``) n'est
@@ -63,7 +71,6 @@ from . import (
 from .model import Item
 
 STATUS_CONFIRMED = "CONFIRMED"
-STATUS_TENTATIVE = "TENTATIVE"
 STATUS_CONFLICT = "CONFLICT"
 STATUS_UNKNOWN = "UNKNOWN"
 
@@ -643,8 +650,13 @@ def resolve_organisation_sector(
                 tuple(sectors_at_type), ordered, winning_evidence_type=evidence_type,
             )
         winning_sector = sectors_at_type[0]
-        status = STATUS_CONFIRMED if evidence_type in STRONG_EVIDENCE_TYPES else STATUS_TENTATIVE
-        confidence = "HIGH" if status == STATUS_CONFIRMED else "LOW"
+        # Audit 2026-08-26 (revirement de politique, confirmé explicitement) :
+        # une proposition faible/LLM seule est désormais appliquée comme les
+        # preuves fortes, plutôt que journalisée sans effet (§ancien
+        # STATUS_TENTATIVE, retiré). Seule la confiance distingue encore une
+        # preuve forte d'un rapprochement LLM.
+        status = STATUS_CONFIRMED
+        confidence = "HIGH" if evidence_type in STRONG_EVIDENCE_TYPES else "LOW"
         # Types moins prioritaires en désaccord : journalisés pour audit,
         # jamais capables de l'emporter sur le type gagnant.
         losing_sectors = sorted({
@@ -760,37 +772,6 @@ def apply_organisation_sector_decisions(
     return changed, provenance
 
 
-def tentative_provenance(
-    items: list[Item],
-    decisions: dict[str, OrganisationSectorDecision],
-) -> list[dict]:
-    """Journalise les candidats ``TENTATIVE`` pour le mécanisme existant
-    ``sector_tentative`` (§21/§37) : réutilise la même liste blanche de
-    ``Decision`` que :func:`cyberwatch.site_legacy._qualification_provenance_by_incident`,
-    sans ajouter de seconde mécanique d'affichage.
-    """
-    rows: list[dict] = []
-    for item in items:
-        decision = decisions.get(item.Organisation_Key)
-        if decision is None or decision.status != STATUS_TENTATIVE or item.Sector != config.SECTOR_UNKNOWN:
-            continue
-        rows.append({
-            "Item_ID": item.Item_ID,
-            "Source_ID": item.Source_ID,
-            "Field": "Sector",
-            "Previous_Value": item.Sector,
-            "Candidate_Value": decision.sector,
-            "Final_Value": "",
-            "Origin": ORIGIN_LLM,
-            "Confidence": decision.confidence,
-            "Evidence": " | ".join(decision.evidence)[:2000],
-            "Match_Strategy": "organisation_key_exact+organisation_sector_resolver",
-            "Decision": "REJECTED_NO_STRONG_EVIDENCE",
-        })
-    rows.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]))
-    return rows
-
-
 def write_decisions_csv(
     decisions: dict[str, OrganisationSectorDecision],
     *,
@@ -815,8 +796,8 @@ def summary(decisions: dict[str, OrganisationSectorDecision]) -> dict:
     ``sector_winning_evidence_type`` (audit 2026-08-26, arbitrage par
     préséance) donne, pour tout le run, le décompte par type de preuve
     *gagnant* (celui qui a réellement tranché, cf. ``PRECEDENCE``) parmi les
-    décisions CONFIRMED/TENTATIVE — la vue qui répond directement à « quel
-    canal contribue vraiment » sans relire le code.
+    décisions CONFIRMED — la vue qui répond directement à « quel canal
+    contribue vraiment » sans relire le code.
     """
     counts = Counter(decision.status for decision in decisions.values())
     confirmed = [d for d in decisions.values() if d.status == STATUS_CONFIRMED]
@@ -830,12 +811,11 @@ def summary(decisions: dict[str, OrganisationSectorDecision]) -> dict:
     winning_type_counts = Counter(
         decision.winning_evidence_type
         for decision in decisions.values()
-        if decision.status in (STATUS_CONFIRMED, STATUS_TENTATIVE) and decision.winning_evidence_type
+        if decision.status == STATUS_CONFIRMED and decision.winning_evidence_type
     )
     result = {
         "organisation_sector_total": len(decisions),
         "organisation_sector_confirmed": counts.get(STATUS_CONFIRMED, 0),
-        "organisation_sector_tentative": counts.get(STATUS_TENTATIVE, 0),
         "organisation_sector_conflict": counts.get(STATUS_CONFLICT, 0),
         "organisation_sector_unknown": counts.get(STATUS_UNKNOWN, 0),
         "sector_resolved_by_validated_org": resolved_by_validated_org,

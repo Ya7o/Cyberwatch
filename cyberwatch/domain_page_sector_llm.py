@@ -29,7 +29,7 @@ from . import config, domain_page_sector as dps, llm_runtime, store
 from .normalize import searchable
 
 TASK = "domain_page_sector"
-PROMPT_VERSION = "2026-08-26.1"
+PROMPT_VERSION = "2026-08-26.2"
 DEFAULT_BATCH_SIZE = 20
 MAX_OUTPUT_TOKENS = 800
 MAX_TEXT_CHARS = dps.MAX_TEXT_CHARS
@@ -44,15 +44,16 @@ SYSTEM_PROMPT = (
     "activity_description décrit en quelques mots l'activité affichée par la "
     "page, seulement si le texte fourni la présente explicitement ; sa preuve "
     "doit être une citation exacte du texte fourni.\n"
-    "activity_sector_match reprend cette activité et la rapproche du secteur "
-    "de la liste fournie qui correspond sans ambiguïté, ou Inconnu si aucun "
-    "secteur ne correspond clairement ou si le texte est un argumentaire "
-    "commercial trop générique pour être classé. Une activité associative, "
-    "caritative, syndicale, politique, cultuelle ou d'intérêt général n'a pas "
-    "d'équivalent dans la liste fournie : ne force jamais un rapprochement "
-    "approximatif, renvoie Inconnu dans ce cas.\n"
-    "Si tu ne peux rien établir, laisse les deux champs vides plutôt que de "
-    "deviner."
+    "activity_sector_match reprend cette activité et choisis, parmi le "
+    "secteur de la liste fournie, celui qui s'en rapproche le plus. Même une "
+    "activité associative, caritative, syndicale, politique ou cultuelle "
+    "doit recevoir le secteur professionnel le plus proche plutôt que "
+    "Inconnu : choisis toujours la meilleure approximation disponible. Ne "
+    "renvoie Inconnu que si le texte fourni est un argumentaire commercial "
+    "trop générique pour établir la moindre activité.\n"
+    "Si le titre et la meta-description ne permettent d'établir aucune "
+    "activité du tout, laisse les deux champs vides plutôt que de deviner "
+    "sans texte source."
 )
 
 

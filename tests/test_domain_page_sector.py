@@ -233,13 +233,13 @@ def _cache_row(item, sector=config.SECTOR_TECH):
     }
 
 
-def test_preuve_page_seule_donne_un_tentative(make_item):
-    """Preuve MEDIUM hors STRONG_EVIDENCE_TYPES. Révision de l'arbitrage
-    (audit 2026-08-26, généralisation de '1 indice minimum = supposé') :
-    un signal faible seul, même sans candidat LLM convergent, suffit
-    désormais à un TENTATIVE plutôt que de laisser l'organisation Inconnu.
-    Ce canal ne peut toujours jamais, à lui seul, publier un secteur
-    Confirmé — TENTATIVE n'est jamais appliqué à Item.Sector."""
+def test_preuve_page_seule_est_confirmee_et_appliquee(make_item):
+    """Preuve MEDIUM hors STRONG_EVIDENCE_TYPES. Revirement de politique
+    (audit 2026-08-26, décision explicite) : un signal faible seul, même
+    sans candidat LLM convergent, suffit désormais à CONFIRMER et à
+    appliquer un secteur — ancien STATUS_TENTATIVE (jamais appliqué)
+    retiré. La confiance reste LOW pour distinguer ce cas d'une preuve
+    forte."""
     item = make_item(org="Klark.ai", sector=config.SECTOR_UNKNOWN)
 
     decisions = osec.resolve_all_organisation_sectors(
@@ -249,19 +249,22 @@ def test_preuve_page_seule_donne_un_tentative(make_item):
     decision = decisions[item.Organisation_Key]
 
     assert osec.EVIDENCE_DOMAIN_PAGE not in osec.STRONG_EVIDENCE_TYPES
-    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.confidence == "LOW"
     assert decision.sector == config.SECTOR_TECH
     assert decision.winning_evidence_type == osec.EVIDENCE_DOMAIN_PAGE
 
     changed, _provenance = osec.apply_organisation_sector_decisions([item], decisions)
-    assert changed == 0
-    assert item.Sector == config.SECTOR_UNKNOWN
+    assert changed == 1
+    assert item.Sector == config.SECTOR_TECH
 
 
-def test_preuve_page_convergente_avec_le_llm_donne_un_tentative(make_item):
+def test_preuve_page_convergente_avec_le_llm_est_confirmee(make_item):
     """La valeur réelle de ce canal : faire converger un second signal
-    indépendant avec le candidat LLM, ce qui fait passer l'organisation de
-    Inconnu à TENTATIVE (candidat journalisé, toujours pas appliqué)."""
+    indépendant avec le candidat LLM. Sous la nouvelle politique, la
+    convergence n'est plus nécessaire pour appliquer un secteur (un seul
+    type de preuve y suffit déjà), mais elle reste possible et cohérente :
+    domain_page (plus prioritaire) l'emporte ici sur llm_organisation."""
     item = make_item(org="Klark.ai", sector=config.SECTOR_UNKNOWN)
     llm_row = {
         "Organisation_Key": item.Organisation_Key, "Organisation": item.Organisation_Raw,
@@ -275,7 +278,7 @@ def test_preuve_page_convergente_avec_le_llm_donne_un_tentative(make_item):
     )
     decision = decisions[item.Organisation_Key]
 
-    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.status == osec.STATUS_CONFIRMED
     assert decision.sector == config.SECTOR_TECH
     assert osec.EVIDENCE_DOMAIN_PAGE in decision.evidence_types
 

@@ -99,14 +99,17 @@ def test_no_propagation_from_weak_source_activity_alone(make_item):
     assert provenance == []
 
 
-def test_tentative_from_classifiable_source_activity_alone(make_item):
+def test_classifiable_source_activity_alone_is_confirmed_and_applied(make_item):
     """Révision §9 Cas 4 (audit 2026-08-26, cas réels Klark.ai/TimeTonic/
-    Groupe Bernard) : un indice métier explicite et classable — le
+    Groupe Bernard), puis revirement de politique (audit 2026-08-26,
+    décision explicite) : un indice métier explicite et classable — le
     classificateur strict le reconnaît, pas un simple mot-clé du récit —
-    suffit désormais seul à afficher un secteur "supposé" (TENTATIVE)
-    plutôt que rien, même sans candidat LLM convergent. Jamais Confirmé ni
-    appliqué à Item.Sector pour autant : seule une véritable corroboration
-    (preuve forte ou LLM convergent) permet cela."""
+    suffit désormais seul à CONFIRMER et à appliquer un secteur à
+    Item.Sector, même sans candidat LLM convergent. Une proposition
+    faible/LLM seule n'est plus journalisée sans effet (ancien
+    STATUS_TENTATIVE, retiré) : elle est désormais traitée comme une
+    preuve forte du point de vue de l'application, avec une confiance
+    LOW pour la distinguer."""
     source = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
     sibling = make_item(source_item_id="2", org="Acme", sector=config.SECTOR_UNKNOWN, url="https://example.org/b")
     source_fact_rows = [{
@@ -118,17 +121,15 @@ def test_tentative_from_classifiable_source_activity_alone(make_item):
     )
     decision = decisions[source.Organisation_Key]
 
-    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.confidence == "LOW"
     assert decision.sector == config.SECTOR_TECH
     assert osec.EVIDENCE_SOURCE_ACTIVITY in decision.evidence_types
 
     changed, _provenance = osec.apply_organisation_sector_decisions([source, sibling], decisions)
-    assert changed == 0
-    assert source.Sector == config.SECTOR_UNKNOWN
-
-    tentative = osec.tentative_provenance([source, sibling], decisions)
-    assert {row["Item_ID"] for row in tentative} == {source.Item_ID, sibling.Item_ID}
-    assert all(row["Candidate_Value"] == config.SECTOR_TECH for row in tentative)
+    assert changed == 2
+    assert source.Sector == config.SECTOR_TECH
+    assert sibling.Sector == config.SECTOR_TECH
 
 
 def test_no_propagation_from_org_sector_registry_origin(make_item):
@@ -244,23 +245,26 @@ def test_cross_type_disagreement_precedence_winner(make_item):
     assert config.SECTOR_CONSTRUCTION in decision.conflicting_sectors
 
 
-def test_single_llm_evidence_alone_is_tentative(make_item):
-    """Généralisation de '1 indice minimum = supposé' : même le type le
-    moins prioritaire (llm_organisation), seul, suffit désormais à un
-    TENTATIVE — ce n'est plus un cas spécial câblé en dur pour
-    source_activity uniquement."""
+def test_single_llm_evidence_alone_is_confirmed_and_applied(make_item):
+    """Généralisation de '1 indice minimum suffit' (revirement de politique,
+    audit 2026-08-26) : même le type le moins prioritaire
+    (llm_organisation), seul, suffit désormais à CONFIRMER et appliquer un
+    secteur — ce n'est plus un cas spécial câblé en dur pour
+    source_activity uniquement, et ce n'est plus seulement journalisé
+    (ancien STATUS_TENTATIVE, retiré)."""
     item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
     llm_evidence = osec.OrganisationSectorEvidence(
         item.Organisation_Key, "Acme", config.SECTOR_TECH, osec.EVIDENCE_LLM_ORGANISATION, "0.80",
     )
     decision = osec.resolve_organisation_sector(item.Organisation_Key, "Acme", [llm_evidence])
-    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.confidence == "LOW"
     assert decision.sector == config.SECTOR_TECH
     assert decision.winning_evidence_type == osec.EVIDENCE_LLM_ORGANISATION
 
     changed, _provenance = osec.apply_organisation_sector_decisions([item], {item.Organisation_Key: decision})
-    assert changed == 0
-    assert item.Sector == config.SECTOR_UNKNOWN
+    assert changed == 1
+    assert item.Sector == config.SECTOR_TECH
 
 
 def test_multiple_identical_strong_evidences_confirm(make_item):

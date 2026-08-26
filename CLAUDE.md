@@ -13,6 +13,7 @@ collecte -> normalisation -> qualification -> déduplication -> contrôles -> sn
 - **Déterminisme** : mêmes entrées -> mêmes `Item_ID`, `Organisation_Key`, `Incident_ID` et hashes.
 - **Transparence** : une source en échec ou partielle ne doit jamais être transformée en faux succès.
 - **Pas de donnée inventée** : absence de preuve, panne réseau, budget ou clé manquante -> `Inconnu` ou statut explicite.
+  - **Exception documentée (Sector)** : à la différence des autres champs, lorsque l'activité de l'organisation victime est connue mais qu'aucun secteur de la taxonomie ne lui correspond exactement (association, culte, syndicat, parti politique...), le moteur choisit le secteur le plus proche plutôt que `Inconnu` (décision explicite du 2026-08-26). Cette exception est portée par les 3 canaux LLM Secteur (`source_facts_ai.py`, `domain_page_sector_llm.py`, `organisation_sector_llm.py`) et par l'arbitrage de `organisation_sector.py`, qui applique désormais toute proposition, même faible/LLM seule, comme `Item.Sector`. Elle ne s'applique qu'à `Sector` : `Threat`, `Location`, l'identité et la déduplication restent strictement soumis au principe général ci-dessus.
 - **Isolation des sources** : une source défaillante ne doit pas faire tomber silencieusement les autres.
 - **Identité hors LLM** : aucun LLM ne décide l'identité d'un item, d'une organisation ou d'un incident.
 - **Données canoniques** : `data/` est canonique ; `assets/data/` est dérivé et doit être régénéré.

@@ -314,7 +314,6 @@ def qualify(items):
         ordered, org_sector_decisions
     )
     decisions.extend(decisions_from_provenance(org_sector_provenance))
-    decisions.extend(decisions_from_provenance(organisation_sector.tentative_provenance(ordered, org_sector_decisions)))
     changes["organisation_sector_applied"] = org_sector_applied
     changes.update(organisation_sector.summary(org_sector_decisions))
 

@@ -113,6 +113,12 @@ def test_input_hash_changes_with_prompt_version_model_and_taxonomy(monkeypatch):
 
 
 def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
+    """Revirement de politique (audit 2026-08-26) : un candidat déjà en
+    cache résout désormais l'organisation en CONFIRMED (appliqué), pas
+    seulement TENTATIVE — elle n'est donc plus du tout sélectionnée par
+    select_organisations_for_llm (déjà résolue), et jamais seulement un
+    "cache hit" parmi d'autres candidats sélectionnés. Dans les deux cas,
+    la garantie qui compte reste la même : aucun appel LLM n'est fait."""
     item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
     items = [item]
     context = osl.build_organisation_context(
@@ -143,7 +149,8 @@ def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
         items, reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=cache_rows,
     )
     assert called["count"] == 0
-    assert report.cache_hits == 1
+    assert report.organisations_selected == 0
+    assert report.cache_hits == 0
     assert report.cache_misses == 0
     assert report.calls == 0
 
@@ -326,10 +333,16 @@ def _llm_evidence(key, organisation, sector, *, basis="name_semantics"):
     )
 
 
-def test_llm_only_is_tentative_never_confirmed():
+def test_llm_only_is_confirmed_with_low_confidence():
+    """Revirement de politique (audit 2026-08-26, décision explicite) :
+    un candidat LLM organisationnel seul, sans corroboration, est
+    désormais CONFIRMÉ et appliqué à Item.Sector (ancien
+    STATUS_TENTATIVE, jamais appliqué, retiré) — seule la confiance LOW
+    le distingue encore d'une preuve forte."""
     evidence = [_llm_evidence("acme", "Acme", config.SECTOR_TECH)]
     decision = osec.resolve_organisation_sector("acme", "Acme", evidence)
-    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.confidence == "LOW"
     assert decision.sector == config.SECTOR_TECH
 
 
@@ -380,14 +393,17 @@ def test_source_activity_outranks_llm_organisation_on_disagreement():
     """Révision de l'arbitrage (audit 2026-08-26) : ce n'était un CONFLICT
     non résolu qu'avant la préséance complète. source_activity est plus
     déterministe que llm_organisation (préséance du plus au moins
-    déterministe) : il gagne désormais, en TENTATIVE (aucun des deux types
-    n'est une preuve forte)."""
+    déterministe) : il gagne désormais, CONFIRMÉ avec une confiance LOW
+    (aucun des deux types n'est une preuve forte, mais toute proposition
+    gagnante est désormais appliquée — revirement de politique du
+    2026-08-26)."""
     weak_registry_like = osec.OrganisationSectorEvidence(
         "acme", "Acme", config.SECTOR_RETAIL, osec.EVIDENCE_SOURCE_ACTIVITY, "MEDIUM",
     )
     llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_SERVICES)
     decision = osec.resolve_organisation_sector("acme", "Acme", [weak_registry_like, llm_evidence])
-    assert decision.status == osec.STATUS_TENTATIVE
+    assert decision.status == osec.STATUS_CONFIRMED
+    assert decision.confidence == "LOW"
     assert decision.sector == config.SECTOR_RETAIL
     assert decision.winning_evidence_type == osec.EVIDENCE_SOURCE_ACTIVITY
     assert config.SECTOR_SERVICES in decision.conflicting_sectors

@@ -22,8 +22,13 @@ SECTOR_HOSPITALITY = "Hébergement / Tourisme / Restauration"
 SECTOR_CULTURE = "Culture / Médias / Loisirs"
 SECTOR_AGRICULTURE = "Agriculture / Agroalimentaire"
 # Conservé comme symbole de compatibilité pour les imports historiques, mais ce
-# secteur n'est plus ajouté à la taxonomie canonique. Les partis/ONG restent
-# Inconnu tant que la taxonomie officielle ne les contient pas.
+# secteur n'est jamais ajouté à la taxonomie canonique : les classificateurs
+# déterministes de ce module (_strong_activity_sector notamment) ne classent
+# donc jamais un parti/une ONG. Depuis le 2026-08-26, ceci ne décrit plus le
+# comportement des 3 canaux LLM Secteur (source_facts_ai.py,
+# domain_page_sector_llm.py, organisation_sector_llm.py), qui choisissent
+# désormais le secteur professionnel le plus proche plutôt que Inconnu pour
+# ce type d'organisation (cf. CLAUDE.md, exception Sector).
 SECTOR_ASSOCIATIONS = "Associations / ONG / Politique"
 
 _INSTALLED = False

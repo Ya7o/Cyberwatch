@@ -28,7 +28,7 @@ from . import config, llm_runtime, organisation_sector as osec, store
 from .model import Item
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-23.1"
+PROMPT_VERSION = "2026-08-26.2"
 DEFAULT_BATCH_SIZE = 40
 MAX_OUTPUT_TOKENS = 4000
 #: Bornes de compacité du contexte transmis (§13 du plan) : reproductible et
@@ -58,8 +58,12 @@ SYSTEM_PROMPT = (
     "victimes de la fuite ; le type d'incident cyber.\n"
     "Exemples : présence de RIB != Finance ; données médicales != forcément "
     "Santé ; données de livraison != Transport.\n"
-    "Si tu ne peux pas déterminer le secteur avec suffisamment de confiance, "
-    "réponds Inconnu (basis=insufficient).\n"
+    "Choisis toujours le secteur de la liste le plus proche de l'activité de "
+    "l'organisation, même approximatif (association, culte, syndicat, parti "
+    "politique compris : choisis le secteur professionnel le plus proche "
+    "plutôt que Inconnu). Ne réponds Inconnu (basis=insufficient) que si le "
+    "contexte fourni ne contient réellement aucun indice exploitable (ni "
+    "nom, ni activité, ni secteur source, ni connaissance interne).\n"
     "'organisation_knowledge' signifie uniquement que tu utilises tes "
     "connaissances internes préexistantes sur cette organisation : cela ne "
     "signifie jamais une recherche web, une preuve officielle ou une preuve "
@@ -235,12 +239,12 @@ def select_organisations_for_llm(
 ) -> list[str]:
     """File organisationnelle déterministe : une organisation, une fois.
 
-    Exclut toute organisation déjà ``CONFIRMED`` ou en ``CONFLICT`` (un
-    conflit, fort ou entre candidats faibles, n'est jamais arbitré par le
-    LLM — §6, §12). ``TENTATIVE`` reste sélectionnable : un précédent
-    candidat LLM devenu obsolète (Input_Hash différent) doit pouvoir être
-    redemandé ; un cache toujours valide sera de toute façon un cache hit et
-    n'appellera pas le LLM (cf. ``enrich_unknown_organisation_sectors``).
+    Exclut toute organisation déjà ``CONFIRMED`` (qu'elle le soit via une
+    preuve forte ou via un rapprochement faible/LLM déjà appliqué — audit
+    2026-08-26, ``STATUS_TENTATIVE`` retiré, tout type de preuve gagnant
+    applique désormais ``Item.Sector``) ou en ``CONFLICT`` (un conflit
+    interne au type le plus prioritaire n'est jamais arbitré par le LLM —
+    §6, §12). Seul ``UNKNOWN`` (aucune preuve du tout) reste sélectionnable.
     """
     known_keys = {item.Organisation_Key for item in items if item.Organisation_Key}
     candidates = sorted(known_keys | set(decisions))
@@ -249,7 +253,7 @@ def select_organisations_for_llm(
         if organisation_keys is not None and key not in organisation_keys:
             continue
         decision = decisions.get(key)
-        if decision is None or decision.status not in (osec.STATUS_UNKNOWN, osec.STATUS_TENTATIVE):
+        if decision is None or decision.status != osec.STATUS_UNKNOWN:
             continue
         selected.append(key)
     return selected
