@@ -407,6 +407,15 @@ SOURCE_FACT_COLUMNS = [
     "Fine_Location",
     "Source_Sector_Raw",
     "Activity_Description",
+    # Cas réel (audit 2026-08-26) : le classificateur déterministe qui
+    # relisait Activity_Description (context_sector.classify_explicit_activity)
+    # perdait le match à chaque reformulation d'un run à l'autre (ex. "Distribution
+    # de véhicules" -> "Distribution automobile"). Le LLM d'extraction, qui lit
+    # déjà l'article complet et rédige Activity_Description, fait ici le
+    # rapprochement avec la taxonomie Secteur dans le même appel — jamais un
+    # canal LLM supplémentaire. Reste une preuve faible parmi d'autres pour
+    # organisation_sector.py, jamais une décision Sector en soi.
+    "Activity_Sector_Match",
     "Affected_Count",
     "Affected_Unit",
     "Affected_Count_Raw",

@@ -236,6 +236,19 @@ def _ai_activity(ai_result: dict, organisation: str) -> tuple[str, str]:
     return value, evidence
 
 
+def _ai_sector_match(ai_result: dict) -> tuple[str, str]:
+    """Rapprochement taxonomie Secteur produit par le même appel LLM que
+    activity_description (§audit 2026-08-26) : jamais un canal LLM séparé."""
+    candidate = ai_result.get("activity_sector_match") if isinstance(ai_result, dict) else None
+    if not isinstance(candidate, dict):
+        return "", ""
+    value = str(candidate.get("value") or "").strip()
+    evidence = str(candidate.get("evidence") or "").strip()
+    if not value or value not in config.SECTORS or value == config.SECTOR_UNKNOWN or not evidence:
+        return "", ""
+    return value, evidence
+
+
 def _ai_text(ai_result: dict, key: str) -> tuple[str, str]:
     candidate = ai_result.get(key) if isinstance(ai_result, dict) else None
     if not isinstance(candidate, dict):
@@ -885,6 +898,10 @@ def _from_frenchbreaches(
         fact["Activity_Description"] = activity
         if activity_evidence:
             evidence["Activity_Description"] = activity_evidence
+    sector_match, sector_match_evidence = _ai_sector_match(ai_result)
+    if sector_match:
+        fact["Activity_Sector_Match"] = sector_match
+        evidence["Activity_Sector_Match"] = sector_match_evidence
     return _finalize(fact, item, entry, evidence)
 
 
@@ -1027,6 +1044,10 @@ def _from_cyberattaque_org(
         fact["Activity_Description"] = activity
         if activity_evidence:
             evidence["Activity_Description"] = activity_evidence
+    sector_match, sector_match_evidence = _ai_sector_match(ai_result)
+    if sector_match:
+        fact["Activity_Sector_Match"] = sector_match
+        evidence["Activity_Sector_Match"] = sector_match_evidence
     return _finalize(fact, item, entry, evidence)
 
 

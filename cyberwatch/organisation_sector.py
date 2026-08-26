@@ -360,19 +360,33 @@ def _naf_precise_evidence(org_cache_rows: list[dict]):
 
 
 def _source_activity_evidence(items: list[Item], source_fact_rows: list[dict]):
-    descriptions: dict[str, set[str]] = defaultdict(set)
+    """Rapproche la description d'activité d'un secteur de la taxonomie.
+
+    Priorité au rapprochement produit par le LLM d'extraction lui-même
+    (Activity_Sector_Match, §audit 2026-08-26) : il lit l'article complet et
+    n'est pas sensible à la reformulation d'un run à l'autre, contrairement au
+    classificateur déterministe (cas réel : "Distribution de véhicules" ->
+    "Distribution automobile" faisait perdre le match d'un run au suivant).
+    classify_explicit_activity reste un filet pour les lignes plus anciennes
+    sans ce champ, ou pour le petit nombre de formulations très sûres qu'il
+    reconnaît déjà — jamais retiré, seulement plus jamais étendu.
+    """
+    pairs: dict[str, set[tuple[str, str]]] = defaultdict(set)
     for row in source_fact_rows:
         item_id = (row.get("Item_ID") or "").strip()
         description = (row.get("Activity_Description") or "").strip()
+        sector_match = (row.get("Activity_Sector_Match") or "").strip()
         if item_id and description:
-            descriptions[item_id].add(description)
+            pairs[item_id].add((description, sector_match))
     by_id = {item.Item_ID: item for item in items if item.Item_ID}
-    for item_id, texts in descriptions.items():
+    for item_id, texts in pairs.items():
         item = by_id.get(item_id)
         if item is None:
             continue
-        for text in sorted(texts):
-            sector = context_sector.classify_explicit_activity(text)
+        for text, sector_match in sorted(texts):
+            sector = sector_match if sector_match in config.SECTORS else config.SECTOR_UNKNOWN
+            if sector == config.SECTOR_UNKNOWN:
+                sector = context_sector.classify_explicit_activity(text)
             if sector == config.SECTOR_UNKNOWN:
                 continue
             yield OrganisationSectorEvidence(

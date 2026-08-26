@@ -98,6 +98,58 @@ def test_activite_llm_citee_est_transmise_aux_faits_source(monkeypatch):
     assert sf._loads_json(fact["Evidence_JSON"])["Activity_Description"].startswith("Exemple SA")
 
 
+def test_activity_sector_match_llm_est_transmis_aux_faits_source(monkeypatch):
+    """Cas réel (audit 2026-08-26) : le rapprochement taxonomie est produit
+    par le même appel LLM qu'activity_description, jamais un canal séparé."""
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    entry = RawEntry(
+        title="Exemple SA visée",
+        content="Exemple SA développe une plateforme d'intelligence artificielle pour la relation client.",
+    )
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "activity_description": {
+            "value": "développe une plateforme d'intelligence artificielle",
+            "confidence": 0.9,
+            "evidence": "Exemple SA développe une plateforme d'intelligence artificielle",
+        },
+        "activity_sector_match": {
+            "value": "Numérique / Technologie",
+            "confidence": 0.9,
+            "evidence": "Exemple SA développe une plateforme d'intelligence artificielle",
+        },
+    })
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {})
+
+    fact = sf.extract_source_fact(item, entry, spec("CYBERATTAQUE_ORG"))
+
+    assert fact["Activity_Sector_Match"] == "Numérique / Technologie"
+    assert "intelligence artificielle" in sf._loads_json(fact["Evidence_JSON"])["Activity_Sector_Match"]
+
+
+def test_activity_sector_match_inconnu_nest_jamais_publie(monkeypatch):
+    """Inconnu est une valeur d'enum valide côté schéma (le modèle doit
+    pouvoir la choisir), mais ne doit jamais être publiée comme un fait :
+    une preuve, c'est un secteur nommé, jamais l'absence de preuve."""
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    entry = RawEntry(
+        title="Exemple SA visée",
+        content="Exemple SA, éditeur de logiciels de comptabilité, a confirmé un incident.",
+    )
+    monkeypatch.setattr(sf.source_facts_ai, "enrich", lambda *_: {
+        "activity_description": {
+            "value": "éditeur de logiciels de comptabilité",
+            "confidence": 0.9,
+            "evidence": "Exemple SA, éditeur de logiciels de comptabilité",
+        },
+        "activity_sector_match": {"value": "Inconnu", "confidence": 0.9, "evidence": "Exemple SA a subi un incident"},
+    })
+    monkeypatch.setattr(sf.source_facts_ai, "field_statuses", lambda *_: {})
+
+    fact = sf.extract_source_fact(item, entry, spec("CYBERATTAQUE_ORG"))
+
+    assert fact.get("Activity_Sector_Match", "") == ""
+
+
 def test_snapshot_semantique_est_consomme_sans_second_appel(monkeypatch):
     item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
     entry = RawEntry(

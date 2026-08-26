@@ -29,7 +29,7 @@ from .headline import MAX_HEADLINE_CHARS, is_organisation_name_only, is_publisha
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-08-25.source-facts.11"
+PROMPT_VERSION = "2026-08-26.source-facts.12"
 SCHEMA_VERSION = "9"
 LEGACY_PROMPT_VERSION = "2026-08-16.source-facts.5"
 LEGACY_SCHEMA_VERSION = "5"
@@ -57,6 +57,11 @@ NEW_SEMANTIC_FIELDS = {
     # confirme jamais un secteur seul, il peut seulement l'indiquer « à
     # confirmer » via le resolver organisationnel.
     "activity_description",
+    # Rapprochement avec la taxonomie Secteur, produit par le même appel que
+    # activity_description ci-dessus (même contexte, même preuve) plutôt que
+    # par un classificateur déterministe séparé qui perd le match à chaque
+    # reformulation. Preuve faible, jamais une décision Sector en soi.
+    "activity_sector_match",
     "threat_candidate",
 }
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
@@ -96,6 +101,7 @@ FIELD_VERSIONS = {
     "affected_systems": "affected-systems-v1",
     "affected_datasets": "affected-datasets-v1",
     "activity_description": "activity-description-v1",
+    "activity_sector_match": "activity-sector-match-v1",
     "threat_candidate": "threat-candidate-v1",
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
@@ -116,6 +122,7 @@ Si une information est ambiguë ou absente, renvoie une valeur vide ou une liste
 data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
 activity_description décrit en quelques mots l'activité de la victime seulement lorsque l'article la présente explicitement. Sa preuve doit désigner sans ambiguïté la victime et son activité ; ne rien déduire du nom, de l'attaque ou des données.
+activity_sector_match reprend l'activité que tu viens de décrire dans activity_description et la rapproche du secteur de la liste fournie qui correspond sans ambiguïté à cette activité, quelle que soit la formulation exacte de l'article (ex. « développe des applications métiers », « plateforme No-Code », « éditeur de logiciels » désignent tous Numérique / Technologie). N'utilise jamais le type de données volées, les victimes de la fuite ou le type d'incident pour choisir un secteur. Si aucun secteur de la liste ne correspond clairement, ou si activity_description est vide, renvoie Inconnu.
 threat_candidate désigne la menace seulement si l'article l'énonce explicitement ; ne l'infère jamais depuis l'acteur, les données ou une hypothèse.
 threat_actor doit être une entité distincte de la victime, explicitement identifiée comme responsable de l'attaque (pseudonyme, groupe nommé, société tierce) : jamais un pronom ("qui", "il", "elle"...) ni le nom de la victime elle-même, même si ce mot précède directement un verbe déclaratif comme "indique" ou "affirme". En cas de doute sur la nature du sujet, laisse threat_actor vide.
 impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident, jamais un risque possible, une conséquence potentielle ou une mise en garde ("risque de", "expose à", "pourrait entraîner" sont interdits). impact ne doit jamais se limiter à reformuler les catégories de données ou jeux de données déjà couverts par data_types/affected_datasets ; s'il n'y a pas de conséquence distincte explicitement rapportée (risque, réaction, coût, mesure prise), impact doit rester vide.
@@ -127,13 +134,13 @@ _LLM_FIELDS = (
     "threat_actor", "third_party", "data_types",
     "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
     "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
-    "activity_description",
+    "activity_description", "activity_sector_match",
     "threat_candidate",
 )
 _EDITORIAL_FIELDS = {
     "summary", "initial_access", "attack_flow", "impact", "threat_actor",
     "third_party", "fine_location", "attack_date", "discovered_date",
-    "evolution", "threat_candidate", "activity_description",
+    "evolution", "threat_candidate", "activity_description", "activity_sector_match",
 }
 _STRUCTURED_FIELDS = set(_LLM_FIELDS) - _EDITORIAL_FIELDS
 
@@ -626,6 +633,7 @@ def _schema(fields: set[str]) -> dict:
         "affected_systems": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "affected_datasets": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "activity_description": _fact_schema(),
+        "activity_sector_match": {**_fact_schema(), "properties": {**_fact_schema()["properties"], "value": {"type": "string", "enum": [*config.SECTORS]}}},
         "threat_candidate": {**_fact_schema(), "properties": {**_fact_schema()["properties"], "value": {"type": "string", "enum": ["", *config.THREATS]}}},
     }
     ordered = [name for name in _LLM_FIELDS if name in fields]
@@ -884,6 +892,10 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
         fact = _normalize_fact(raw.get("activity_description"), context)
         if fact:
             result["activity_description"] = fact
+    if "activity_sector_match" in fields:
+        fact = _normalize_fact(raw.get("activity_sector_match"), context)
+        if fact and fact["value"] in config.SECTORS and fact["value"] != config.SECTOR_UNKNOWN:
+            result["activity_sector_match"] = fact
     if "threat_candidate" in fields:
         fact = _normalize_fact(raw.get("threat_candidate"), context)
         if fact and fact["value"] in config.THREATS and fact["value"] != config.THREAT_UNKNOWN:
