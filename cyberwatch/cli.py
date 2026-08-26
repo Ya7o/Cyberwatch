@@ -17,7 +17,7 @@ import argparse
 import random
 import sys
 
-from . import config, domain_page_sector, domain_page_sector_llm, enrichment, identity, incident_identity, organisation_sector_llm, site, sources, status, store
+from . import config, domain_page_sector, domain_page_sector_llm, enrichment, identity, incident_identity, organisation_sector, organisation_sector_llm, site, sources, status, store
 from .collectors.base import Window
 from .collectors.cyberattaque_org import repair_existing_identities
 from .dedup import build_incidents, build_incidents_with_registry
@@ -212,6 +212,9 @@ def cmd_backfill_unknowns(args) -> int:
     store.save_incidents(incidents)
     store.save_qualification_provenance(qualified.provenance)
     store.save_incident_id_registry(qualified.incident_id_registry)
+    organisation_sector.write_decisions_csv(qualified.organisation_sector_decisions)
+    organisation_sector.write_evidence_csv(qualified.organisation_sector_evidence)
+    organisation_sector_llm.save_cache(qualified.organisation_sector_llm_cache)
     save_snapshot_provenance(
         store.load_items(), store.load_incidents(), operation="BACKFILL_UNKNOWNS",
     )
@@ -242,9 +245,10 @@ def _print_sector_llm_report(report) -> None:
 
 
 def cmd_sector_llm(args) -> int:
-    """Complète par LLM organisationnel les organisations encore Inconnu (§26).
+    """Force le rattrapage LLM des organisations encore Inconnu (§26).
 
-    Étape explicite et réseau, jamais appelée par ``qualify()``/``replay``.
+    CREATE/MAJ exécutent déjà cette étape automatiquement. Cette commande
+    reste un outil de rattrapage ; REPLAY demeure strictement hors ligne.
     """
     items = store.load_items()
     if not items:
@@ -276,11 +280,9 @@ def _print_domain_page_llm_report(report) -> None:
 def cmd_domain_page_llm(args) -> int:
     """Fallback LLM sur le texte déjà scrappé par domain_page_sector.py (§3).
 
-    Étape explicite et réseau, jamais appelée par ``create``/``maj``/
-    ``replay``/``qualify()``, et ne fait elle-même aucun accès HTTP : relit
-    uniquement le cache que ``scripts/enrich_domain_page_sector.py`` a déjà
-    peuplé, complète en LLM les seules lignes que le classificateur
-    déterministe n'a pas su classer.
+    CREATE/MAJ exécutent déjà ce fallback sur les pages applicables. Cette
+    commande permet un rattrapage ciblé ou forcé ; elle ne fait elle-même
+    aucun accès HTTP et relit uniquement le cache de pages.
     """
     report = domain_page_sector_llm.enrich_domain_page_sectors(
         limit=args.limit,

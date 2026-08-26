@@ -73,14 +73,21 @@ def enrich_unknowns(
     return sector, location
 
 
-def enrich_items(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
+def enrich_items(
+    items: list[Item],
+    reference: dict[str, Enrichment],
+    *,
+    include_sector: bool = True,
+) -> dict[str, int]:
     """Applique le référentiel aux seuls champs inconnus et compte les impacts."""
     report = {"sector": 0, "location": 0, "ocean_indian": 0, "france": 0}
     for item in items:
         before_sector, before_location = item.Sector, item.Location
-        item.Sector, item.Location = enrich_unknowns(
+        candidate_sector, item.Location = enrich_unknowns(
             item.Organisation_Raw, item.Sector, item.Location, reference
         )
+        if include_sector:
+            item.Sector = candidate_sector
         entry = reference.get(organisation_key(item.Organisation_Raw))
         if item.Sector != before_sector:
             report["sector"] += 1

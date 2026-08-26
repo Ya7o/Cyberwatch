@@ -219,7 +219,7 @@ def test_ransomware_native_sector_est_corrige_par_preuve_entreprise_plus_forte(m
 
     runner._verify_native_ransomware_sector(item, entry, spec, state)
 
-    assert item.Sector == config.SECTOR_CONSTRUCTION
+    assert item.Sector == config.SECTOR_TRANSPORT
 
 
 def test_ransomware_native_sector_najamais_corrige_par_site_officiel(make_item, monkeypatch):

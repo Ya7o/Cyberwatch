@@ -80,15 +80,22 @@ def install() -> None:
 
     canonical = runner.qualify
 
-    def runtime_qualify(items):
+    def runtime_qualify(items, **qualification_kwargs):
         global _LAST_MODE, _LAST_REASON, _LAST_DURATION
         global _LAST_NEW, _LAST_DIRTY, _LAST_UNCHANGED
         started = time.monotonic()
         try:
+            # Le pipeline Sector V2 reçoit les preuves du run courant et doit
+            # régénérer ses sorties d'audit/cache. L'ancien fast-path ne sait
+            # réutiliser que ITEMS/INCIDENTS et perdrait ces sorties.
+            if qualification_kwargs:
+                _LAST_MODE, _LAST_REASON = "full", "sector_pipeline_context"
+                _LAST_NEW = _LAST_DIRTY = _LAST_UNCHANGED = 0
+                return canonical(items, **qualification_kwargs)
             if not enabled():
                 _LAST_MODE, _LAST_REASON = "full", "disabled"
                 _LAST_NEW = _LAST_DIRTY = _LAST_UNCHANGED = 0
-                return canonical(items)
+                return canonical(items, **qualification_kwargs)
 
             dirty = _dirty_set(items)
             _LAST_NEW = len(dirty.new)
@@ -97,12 +104,12 @@ def install() -> None:
             if dirty.work_item_ids:
                 _LAST_MODE = "full"
                 _LAST_REASON = "new_or_dirty_items"
-                return canonical(items)
+                return canonical(items, **qualification_kwargs)
 
             previous_items = store.load_items()
             if len(previous_items) != len(items):
                 _LAST_MODE, _LAST_REASON = "full", "snapshot_count_changed"
-                return canonical(items)
+                return canonical(items, **qualification_kwargs)
 
             result = qualify_delta(
                 items,

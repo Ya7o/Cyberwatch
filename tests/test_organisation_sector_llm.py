@@ -112,6 +112,32 @@ def test_input_hash_changes_with_prompt_version_model_and_taxonomy(monkeypatch):
     assert different_taxonomy != base
 
 
+def test_context_keeps_at_least_one_evidence_per_produced_channel(make_item):
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    evidence = [
+        osec.OrganisationSectorEvidence(
+            item.Organisation_Key, "Acme", config.SECTOR_TECH,
+            osec.EVIDENCE_SOURCE_ACTIVITY, "MEDIUM",
+            source=f"article:{index}", evidence_text=f"preuve {index}",
+        )
+        for index in range(20)
+    ]
+    evidence.append(osec.OrganisationSectorEvidence(
+        item.Organisation_Key, "Acme", config.SECTOR_SERVICES,
+        osec.EVIDENCE_DOMAIN_PAGE, "MEDIUM",
+        source="domain_page", evidence_text="cabinet de conseil",
+    ))
+
+    context = osl.build_organisation_context(
+        item.Organisation_Key, [item], source_fact_rows=[], org_cache_rows=[],
+        evidence=evidence,
+    )
+
+    assert {value["type"] for value in context.evidence_details} >= {
+        osec.EVIDENCE_SOURCE_ACTIVITY, osec.EVIDENCE_DOMAIN_PAGE,
+    }
+
+
 def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
     """Revirement de politique (audit 2026-08-26) : un candidat déjà en
     cache résout désormais l'organisation en CONFIRMED (appliqué), pas
@@ -149,10 +175,36 @@ def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
         items, reference={}, source_fact_rows=[], org_cache_rows=[], cache_rows=cache_rows,
     )
     assert called["count"] == 0
-    assert report.organisations_selected == 0
-    assert report.cache_hits == 0
+    assert report.organisations_selected == 1
+    assert report.cache_hits == 1
     assert report.cache_misses == 0
     assert report.calls == 0
+
+
+def test_stale_cache_is_a_miss_and_is_not_reinjected(make_item):
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    stale = [{
+        "Organisation_Key": item.Organisation_Key,
+        "Organisation": "Acme",
+        "Input_Hash": "obsolete",
+        "Sector": config.SECTOR_HEALTH,
+        "Confidence": "0.90",
+        "Basis": "name_semantics",
+        "Reason": "ancienne décision",
+        "Model": "gpt-5-nano",
+        "Prompt_Version": "ancienne-version",
+        "Created_At": "2026-01-01T00:00:00Z",
+    }]
+
+    report = osl.enrich_unknown_organisation_sectors(
+        [item], reference={}, source_fact_rows=[], org_cache_rows=[],
+        cache_rows=stale, no_llm=True, persist=False,
+    )
+
+    assert report.organisations_selected == 1
+    assert report.cache_hits == 0
+    assert report.cache_misses == 1
+    assert report.cache_rows == []
 
 
 def test_cache_miss_triggers_a_call_and_persists_result(make_item, monkeypatch):

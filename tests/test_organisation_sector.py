@@ -2,7 +2,7 @@ import random
 
 import pytest
 
-from cyberwatch import config, enrichment, organisation_sector as osec, store
+from cyberwatch import config, enrichment, org_enrichment, organisation_sector as osec, store
 
 
 @pytest.fixture(autouse=True)
@@ -44,6 +44,9 @@ def test_propagation_from_naf_precise(make_item):
     org_cache_rows = [{
         "Organisation_Key": source.Organisation_Key,
         "Query_Name": "Acme Sante",
+        "Match_Status": "MATCHED",
+        "Company_ID": "123456789",
+        "Cache_Version": "4",
         "Activity_Code": "86.10Z",
     }]
     decisions = osec.resolve_all_organisation_sectors(
@@ -57,6 +60,46 @@ def test_propagation_from_naf_precise(make_item):
     changed, provenance = osec.apply_organisation_sector_decisions([source, sibling], decisions)
     assert changed == 2
     assert sibling.Sector == config.SECTOR_HEALTH
+
+
+def test_naf_requires_a_current_validated_legal_identity(make_item):
+    item = make_item(org="Acme Sante", sector=config.SECTOR_UNKNOWN)
+    base = {
+        "Organisation_Key": item.Organisation_Key,
+        "Query_Name": "Acme Sante",
+        "Company_ID": "123456789",
+        "Activity_Code": "86.10Z",
+        "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
+    }
+    for invalid in (
+        {**base, "Match_Status": "AMBIGUOUS"},
+        {**base, "Match_Status": "MATCHED", "Company_ID": ""},
+        {**base, "Match_Status": "MATCHED", "Cache_Version": "old"},
+    ):
+        decisions = osec.resolve_all_organisation_sectors(
+            [item], reference={}, org_cache_rows=[invalid], llm_cache_rows=[],
+        )
+        assert decisions[item.Organisation_Key].status == osec.STATUS_UNKNOWN
+
+
+def test_evidence_audit_has_an_outcome_for_every_stage(make_item):
+    item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
+    evidence = osec.collect_organisation_evidence(
+        [item], reference={}, source_fact_rows=[{
+            "Item_ID": item.Item_ID,
+            "Source_ID": item.Source_ID,
+            "Activity_Description": "Acme développe une plateforme SaaS.",
+            "Activity_Sector_Match": config.SECTOR_TECH,
+        }], org_cache_rows=[], llm_cache_rows=[], domain_page_rows=[],
+    )
+    rows = osec.evidence_audit_rows([item], evidence)
+    assert {row["Evidence_Type"] for row in rows} == set(osec.AUDITED_EVIDENCE_TYPES)
+    assert all(row["Outcome"] in {"PRODUCED", "NO_MATCH", "NOT_APPLICABLE"} for row in rows)
+    assert any(
+        row["Evidence_Type"] == osec.EVIDENCE_SOURCE_ACTIVITY
+        and row["Outcome"] == "PRODUCED"
+        for row in rows
+    )
 
 
 def test_official_subject_activity_alone_no_longer_confirms(make_item):
@@ -276,6 +319,9 @@ def test_multiple_identical_strong_evidences_confirm(make_item):
     org_cache_rows = [{
         "Organisation_Key": first.Organisation_Key,
         "Query_Name": "Acme",
+        "Match_Status": "MATCHED",
+        "Company_ID": "123456789",
+        "Cache_Version": "4",
         "Activity_Code": "70.22Z",
     }]
     decisions = osec.resolve_all_organisation_sectors(
@@ -323,11 +369,11 @@ def test_second_replay_is_idempotent(make_item):
     assert sibling.Sector == config.SECTOR_SERVICES
 
 
-def test_known_item_is_never_overwritten_by_weaker_evidence(make_item):
+def test_manual_authority_overwrites_known_item(make_item):
     item = make_item(org="Acme", sector=config.SECTOR_HEALTH)
     reference = _reference(item.Organisation_Key, "Acme", config.SECTOR_TECH)
     decisions = osec.resolve_all_organisation_sectors([item], reference=reference)
     changed, provenance = osec.apply_organisation_sector_decisions([item], decisions)
-    assert changed == 0
-    assert provenance == []
-    assert item.Sector == config.SECTOR_HEALTH
+    assert changed == 1
+    assert provenance[0]["Previous_Value"] == config.SECTOR_HEALTH
+    assert item.Sector == config.SECTOR_TECH

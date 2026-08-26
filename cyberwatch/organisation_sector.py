@@ -61,7 +61,9 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+import hashlib
 from pathlib import Path
+import re
 
 from . import (
     company_subject_evidence,
@@ -71,8 +73,10 @@ from . import (
     sector as sector_policy,
     sector_registry,
     store,
+    watchlists,
 )
 from .model import Item
+from .normalize import organisation_key
 
 STATUS_CONFIRMED = "CONFIRMED"
 STATUS_CONFLICT = "CONFLICT"
@@ -87,7 +91,14 @@ DECISIONS_CSV = store.DATA_DIR / "organisation_sector_decisions.csv"
 DECISIONS_COLUMNS = [
     "Organisation_Key", "Organisation", "Sector", "Status", "Confidence",
     "Evidence_Types", "Evidence_Count", "Evidence", "Conflicting_Sectors",
-    "Winning_Evidence_Type", "Decision_Origin", "Updated_At",
+    "Evidence_IDs", "Winning_Evidence_Type", "Decision_Origin", "Updated_At",
+]
+
+EVIDENCE_CSV = store.DATA_DIR / "organisation_sector_evidence.csv"
+EVIDENCE_COLUMNS = [
+    "Evidence_ID", "Organisation_Key", "Organisation", "Item_ID",
+    "Evidence_Type", "Producer", "Outcome", "Candidate_Sector",
+    "Confidence", "Authority", "Source", "Evidence_Text", "Evidence_URL",
 ]
 
 #: Cache du candidat LLM organisationnel (P1, cf. organisation_sector_llm.py).
@@ -101,6 +112,7 @@ DOMAIN_PAGE_CACHE_CSV = store.DATA_DIR / "organisation_domain_page.csv"
 
 EVIDENCE_MANUAL_REFERENCE = "manual_reference"
 EVIDENCE_STRUCTURED_SOURCE = "structured_source"
+EVIDENCE_WATCHLIST_HINT = "watchlist_hint"
 EVIDENCE_SAFE_NAME = "safe_name"
 EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY = "official_subject_activity"
 EVIDENCE_NAF_PRECISE = "naf_precise_v2"
@@ -233,6 +245,20 @@ class OrganisationSectorEvidence:
     item_id: str = ""
 
 
+AUDITED_EVIDENCE_TYPES: tuple[str, ...] = (
+    EVIDENCE_MANUAL_REFERENCE,
+    EVIDENCE_NAF_PRECISE,
+    EVIDENCE_STRUCTURED_SOURCE,
+    EVIDENCE_WATCHLIST_HINT,
+    EVIDENCE_SAFE_NAME,
+    EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY,
+    EVIDENCE_OFFICIAL_SITE,
+    EVIDENCE_SOURCE_ACTIVITY,
+    EVIDENCE_DOMAIN_PAGE,
+    EVIDENCE_LLM_ORGANISATION,
+)
+
+
 @dataclass(frozen=True)
 class OrganisationSectorDecision:
     organisation_key: str
@@ -250,9 +276,10 @@ class OrganisationSectorDecision:
     #: CONFLICT, désigne le type le plus prioritaire présent mais dont les
     #: preuves internes se contredisent (jamais arbitré silencieusement).
     winning_evidence_type: str = ""
+    evidence_ids: tuple[str, ...] = ()
 
     def to_row(self, *, updated_at: str = "") -> dict:
-        origin = ORIGIN_LLM if EVIDENCE_LLM_ORGANISATION in self.evidence_types else ORIGIN
+        origin = ORIGIN_LLM if self.winning_evidence_type == EVIDENCE_LLM_ORGANISATION else ORIGIN
         return {
             "Organisation_Key": self.organisation_key,
             "Organisation": self.organisation,
@@ -263,6 +290,7 @@ class OrganisationSectorDecision:
             "Evidence_Count": str(self.evidence_count),
             "Evidence": " | ".join(self.evidence),
             "Conflicting_Sectors": " | ".join(self.conflicting_sectors),
+            "Evidence_IDs": " | ".join(self.evidence_ids),
             "Winning_Evidence_Type": self.winning_evidence_type,
             "Decision_Origin": origin,
             "Updated_At": updated_at,
@@ -282,6 +310,15 @@ def _evidence_string(evidence: OrganisationSectorEvidence) -> str:
     return ":".join(parts)
 
 
+def _evidence_id(evidence: OrganisationSectorEvidence) -> str:
+    raw = "|".join((
+        evidence.organisation_key, evidence.evidence_type, evidence.sector,
+        evidence.source, evidence.item_id, evidence.evidence_url,
+        evidence.evidence_text,
+    ))
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]
+
+
 def display_names(items: list[Item]) -> dict[str, str]:
     counters: dict[str, Counter] = defaultdict(Counter)
     for item in items:
@@ -298,8 +335,10 @@ def display_names(items: list[Item]) -> dict[str, str]:
 # --------------------------------------------------------------------------
 
 
-def _manual_reference_evidence(reference: dict):
+def _manual_reference_evidence(reference: dict, allowed_keys: set[str]):
     for key, entry in reference.items():
+        if key not in allowed_keys:
+            continue
         sector = getattr(entry, "sector", "")
         if not key or sector not in config.SECTORS or sector == config.SECTOR_UNKNOWN:
             continue
@@ -312,13 +351,36 @@ def _manual_reference_evidence(reference: dict):
         )
 
 
+def _watchlist_evidence(items: list[Item]):
+    """Expose les secteurs des entités surveillées comme indices faibles."""
+    by_label: dict[str, tuple[str, str]] = {}
+    for entity in watchlists.ALL_ENTITIES:
+        for label in watchlists.identifying_labels(entity):
+            key = organisation_key(label)
+            if key and entity.sector_hint:
+                by_label[key] = (entity.sector_hint, entity.name)
+    seen: set[tuple[str, str]] = set()
+    for item in items:
+        match = by_label.get(item.Organisation_Key)
+        marker = (item.Organisation_Key, item.Item_ID)
+        if match is None or marker in seen:
+            continue
+        sector, canonical_name = match
+        if sector not in config.SECTORS or sector == config.SECTOR_UNKNOWN:
+            continue
+        seen.add(marker)
+        yield OrganisationSectorEvidence(
+            item.Organisation_Key, item.Organisation_Raw, sector,
+            EVIDENCE_WATCHLIST_HINT, "MEDIUM",
+            source="watchlists.ALL_ENTITIES", evidence_text=canonical_name,
+            item_id=item.Item_ID,
+        )
+
+
 def _structured_source_evidence(items: list[Item], source_fact_rows: list[dict], policy: dict):
-    if not sector_registry.channel_enabled(EVIDENCE_STRUCTURED_SOURCE, policy):
-        return
+    del policy
     by_id = {item.Item_ID: item for item in items if item.Item_ID}
     for row in source_fact_rows:
-        if row.get("Source_ID") != "RANSOMWARE_LIVE":
-            continue
         item = by_id.get((row.get("Item_ID") or "").strip())
         if item is None:
             continue
@@ -328,8 +390,8 @@ def _structured_source_evidence(items: list[Item], source_fact_rows: list[dict],
             continue
         yield OrganisationSectorEvidence(
             item.Organisation_Key, item.Organisation_Raw, sector,
-            EVIDENCE_STRUCTURED_SOURCE, "HIGH",
-            source="ransomware.live:sector", evidence_text=raw,
+            EVIDENCE_STRUCTURED_SOURCE, "MEDIUM",
+            source=f"{row.get('Source_ID', item.Source_ID)}:sector", evidence_text=raw,
             evidence_url=item.URL, item_id=item.Item_ID,
         )
 
@@ -411,7 +473,12 @@ def _official_site_evidence(org_cache_rows: list[dict]):
 def _naf_precise_evidence(org_cache_rows: list[dict]):
     for row in org_cache_rows:
         key = (row.get("Organisation_Key") or "").strip()
-        if not key:
+        if (
+            not key
+            or row.get("Match_Status") != org_enrichment.MATCHED
+            or not (row.get("Company_ID") or "").strip()
+            or row.get("Cache_Version") != org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
+        ):
             continue
         code = (row.get("Activity_Code") or "").strip()
         sector = precise_naf_sector(code)
@@ -569,10 +636,13 @@ def collect_organisation_evidence(
         domain_page_rows = store.read_csv(_aux_path(DOMAIN_PAGE_CACHE_CSV))
     policy = policy or sector_registry.load_policy()
 
+    present_keys = {item.Organisation_Key for item in items if item.Organisation_Key}
     grouped: dict[str, list[OrganisationSectorEvidence]] = defaultdict(list)
     seen: set[tuple] = set()
 
     def _add(evidence: OrganisationSectorEvidence) -> None:
+        if evidence.organisation_key not in present_keys:
+            return
         marker = (
             evidence.organisation_key, evidence.sector, evidence.evidence_type,
             evidence.source, evidence.item_id, evidence.evidence_url, evidence.evidence_text,
@@ -583,15 +653,15 @@ def collect_organisation_evidence(
         grouped[evidence.organisation_key].append(evidence)
 
     collectors = (
-        _manual_reference_evidence(reference),
+        _manual_reference_evidence(reference, present_keys),
         _structured_source_evidence(items, source_fact_rows, policy),
+        _watchlist_evidence(items),
         _safe_name_evidence(items),
         _official_subject_activity_evidence(items, org_cache_rows),
         _official_site_evidence(org_cache_rows),
         _naf_precise_evidence(org_cache_rows),
         _source_activity_evidence(items, source_fact_rows),
         _domain_page_evidence(domain_page_rows),
-        _validated_item_evidence(items, previous_provenance),
         _llm_organisation_evidence(llm_cache_rows),
     )
     for collector in collectors:
@@ -648,10 +718,11 @@ def _build_decision(
 ) -> OrganisationSectorDecision:
     evidence_types = tuple(sorted({e.evidence_type for e in evidence_list}))
     evidence_strings = tuple(_evidence_string(e) for e in evidence_list)
+    evidence_ids = tuple(_evidence_id(e) for e in evidence_list)
     return OrganisationSectorDecision(
         organisation_key, organisation, sector, status, confidence,
         evidence_types, len(evidence_list), evidence_strings, conflicting_sectors,
-        winning_evidence_type,
+        winning_evidence_type, evidence_ids,
     )
 
 
@@ -783,10 +854,10 @@ def apply_organisation_sector_decisions(
     items: list[Item],
     decisions: dict[str, OrganisationSectorDecision],
 ) -> tuple[int, list[dict]]:
-    """Applique uniquement les décisions ``CONFIRMED`` aux items ``Inconnu``.
+    """Applique la décision organisationnelle à tous les items concernés.
 
-    Un secteur canonique déjà connu n'est jamais écrasé par un signal plus
-    faible ; seuls les items encore ``Inconnu`` sont mutés.
+    Ce résolveur est l'unique écrivain final de ``Item.Sector``. Une valeur
+    historique ou préremplie ne protège donc plus une ancienne erreur.
     """
     changed = 0
     provenance: list[dict] = []
@@ -794,12 +865,12 @@ def apply_organisation_sector_decisions(
         decision = decisions.get(item.Organisation_Key)
         if decision is None or decision.status != STATUS_CONFIRMED:
             continue
-        if item.Sector != config.SECTOR_UNKNOWN:
+        if item.Sector == decision.sector:
             continue
         previous = item.Sector
         item.Sector = decision.sector
         changed += 1
-        origin = ORIGIN_LLM if EVIDENCE_LLM_ORGANISATION in decision.evidence_types else ORIGIN
+        origin = ORIGIN_LLM if decision.winning_evidence_type == EVIDENCE_LLM_ORGANISATION else ORIGIN
         provenance.append({
             "Item_ID": item.Item_ID,
             "Source_ID": item.Source_ID,
@@ -815,6 +886,98 @@ def apply_organisation_sector_decisions(
         })
     provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]))
     return changed, provenance
+
+
+def evidence_audit_rows(
+    items: list[Item],
+    evidence_by_org: dict[str, list[OrganisationSectorEvidence]],
+    *,
+    org_cache_rows: list[dict] | None = None,
+    domain_page_rows: list[dict] | None = None,
+    llm_outcomes: dict[str, str] | None = None,
+) -> list[dict[str, str]]:
+    """Matérialise une ligne par preuve et par étape sans résultat."""
+    display = display_names(items)
+    org_cache_by_key = {
+        row.get("Organisation_Key", ""): row for row in (org_cache_rows or [])
+        if row.get("Organisation_Key")
+    }
+    domain_by_key = {
+        row.get("Organisation_Key", ""): row for row in (domain_page_rows or [])
+        if row.get("Organisation_Key")
+    }
+    llm_outcomes = llm_outcomes or {}
+
+    def missing_outcome(key: str, evidence_type: str) -> str:
+        if evidence_type == EVIDENCE_LLM_ORGANISATION:
+            return llm_outcomes.get(key, "NO_MATCH")
+        if evidence_type == EVIDENCE_WATCHLIST_HINT:
+            return "NOT_APPLICABLE"
+        if evidence_type == EVIDENCE_DOMAIN_PAGE:
+            if not re.fullmatch(r"[a-z0-9-]+(?:\.[a-z0-9-]+)+", display[key].casefold().rstrip(".")):
+                return "NOT_APPLICABLE"
+            status = (domain_by_key.get(key) or {}).get("Status", "")
+            return "ERROR" if status == "UNREACHABLE" else "NO_MATCH"
+        if evidence_type in {
+            EVIDENCE_NAF_PRECISE, EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY,
+            EVIDENCE_OFFICIAL_SITE,
+        }:
+            status = (org_cache_by_key.get(key) or {}).get("Match_Status", "")
+            return "ERROR" if status == org_enrichment.ERROR else "NO_MATCH"
+        return "NO_MATCH"
+
+    rows: list[dict[str, str]] = []
+    for key in sorted(display):
+        by_type: dict[str, list[OrganisationSectorEvidence]] = defaultdict(list)
+        for evidence in evidence_by_org.get(key, []):
+            by_type[evidence.evidence_type].append(evidence)
+        for evidence_type in AUDITED_EVIDENCE_TYPES:
+            values = by_type.get(evidence_type, [])
+            if not values:
+                outcome = missing_outcome(key, evidence_type)
+                raw_id = f"{key}|{evidence_type}|{outcome}"
+                rows.append({
+                    "Evidence_ID": hashlib.sha256(raw_id.encode("utf-8")).hexdigest()[:24],
+                    "Organisation_Key": key,
+                    "Organisation": display[key],
+                    "Item_ID": "",
+                    "Evidence_Type": evidence_type,
+                    "Producer": evidence_type,
+                    "Outcome": outcome,
+                    "Candidate_Sector": "",
+                    "Confidence": "",
+                    "Authority": "",
+                    "Source": "",
+                    "Evidence_Text": "",
+                    "Evidence_URL": "",
+                })
+                continue
+            for evidence in values:
+                authority = (
+                    "MANUAL" if evidence.evidence_type == EVIDENCE_MANUAL_REFERENCE
+                    else "NAF" if evidence.evidence_type == EVIDENCE_NAF_PRECISE
+                    else ""
+                )
+                rows.append({
+                    "Evidence_ID": _evidence_id(evidence),
+                    "Organisation_Key": key,
+                    "Organisation": display[key],
+                    "Item_ID": evidence.item_id,
+                    "Evidence_Type": evidence.evidence_type,
+                    "Producer": evidence.evidence_type,
+                    "Outcome": "PRODUCED",
+                    "Candidate_Sector": evidence.sector,
+                    "Confidence": evidence.confidence,
+                    "Authority": authority,
+                    "Source": evidence.source,
+                    "Evidence_Text": evidence.evidence_text,
+                    "Evidence_URL": evidence.evidence_url,
+                })
+    return rows
+
+
+def write_evidence_csv(rows: list[dict], *, path: Path | None = None) -> None:
+    store.write_csv(path or _aux_path(EVIDENCE_CSV), EVIDENCE_COLUMNS, rows)
 
 
 def write_decisions_csv(

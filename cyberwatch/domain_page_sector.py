@@ -202,9 +202,44 @@ def select_organisations(items: list[Item]) -> list[tuple[str, str]]:
 
 
 def load_cache(path=None) -> list[dict]:
-    return store.read_csv(path or CACHE_CSV)
+    return store.read_csv(path or (store.ITEMS_CSV.parent / CACHE_CSV.name))
 
 
 def save_cache(rows: list[dict], path=None) -> None:
     ordered = sorted(rows, key=lambda row: row.get("Organisation_Key", ""))
-    store.write_csv(path or CACHE_CSV, CACHE_COLUMNS, ordered)
+    store.write_csv(path or (store.ITEMS_CSV.parent / CACHE_CSV.name), CACHE_COLUMNS, ordered)
+
+
+def enrich_domain_pages(
+    items: list[Item],
+    *,
+    cache_rows: list[dict] | None = None,
+    allow_network: bool = True,
+    limit: int = 20,
+) -> list[dict]:
+    """Collecte les pages de domaines applicables sans décider ``Sector``.
+
+    Cette fonction ne persiste rien : le runner inclut ses lignes dans la
+    transaction finale du snapshot. En mode hors ligne, elle se contente du
+    cache fourni.
+    """
+    by_key = {
+        row.get("Organisation_Key", ""): dict(row)
+        for row in (cache_rows if cache_rows is not None else load_cache())
+        if row.get("Organisation_Key")
+    }
+    if not allow_network:
+        return sorted(by_key.values(), key=lambda row: row.get("Organisation_Key", ""))
+    candidates = [
+        pair for pair in select_organisations(items)
+        if pair[0] not in by_key
+    ]
+    if limit > 0:
+        candidates = candidates[:limit]
+    for key, organisation in candidates:
+        row = resolve_domain_page(organisation)
+        if row is None:
+            continue
+        row["Organisation_Key"] = key
+        by_key[key] = row
+    return sorted(by_key.values(), key=lambda row: row.get("Organisation_Key", ""))

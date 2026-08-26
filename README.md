@@ -131,6 +131,7 @@ Données canoniques principales :
 - `data/source_facts.csv` : faits auxiliaires ;
 - `data/ai_qualifications.csv`, `data/ai_usage.csv` : cache/provenance/coût LLM ;
 - `data/organisation_sector_registry.csv`, `data/sector_enrichment_queue.csv` : registre Sector ;
+- `data/organisation_sector_evidence.csv`, `data/organisation_sector_decisions.csv` : preuves par étape et décision finale Sector ;
 - `data/qualification_provenance.csv` : décisions de qualification ;
 - `data/organisation_identity_registry.csv` : équivalences d'identité organisationnelle validées (LLM ou manuelles), consultées par `effective_organisation_key` (§5) ;
 - `data/dedup_ai_daily_usage.csv` : télémétrie du filet LLM de déduplication (candidats, décisions, coût, durée).

@@ -229,11 +229,11 @@ def _patch_qualification_timer() -> None:
         return
     original = runner.qualify
 
-    def qualify(items):
+    def qualify(items, **qualification_kwargs):
         global _LAST_QUALIFY_DURATION
         started = time.monotonic()
         try:
-            return original(items)
+            return original(items, **qualification_kwargs)
         finally:
             _LAST_QUALIFY_DURATION = round(time.monotonic() - started, 3)
 

@@ -39,7 +39,7 @@ from . import config, llm_runtime, organisation_sector as osec, store
 from .model import Item
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-26.4"
+PROMPT_VERSION = "2026-08-26.5"
 #: Audit 2026-08-26 (run réel 32968633926) : 11 organisations très
 #: différentes traitées en un seul appel n'ont produit que 75 tokens de
 #: sortie au total (~7/organisation) — famine de tokens qui expliquait des
@@ -88,6 +88,9 @@ SYSTEM_PROMPT = (
     "entrée ; en cas de désaccord entre preuves, retiens le secteur le "
     "mieux corroboré par l'ensemble, pas seulement la preuve la plus "
     "récente ou la plus détaillée.\n"
+    "evidence_stage_outcomes indique aussi, pour chaque technique attendue, "
+    "si elle a produit une preuve ou n'a trouvé aucun match. Une étape sans "
+    "match n'est pas une preuve négative contre les autres.\n"
     "Le secteur correspond à l'activité principale de l'organisation victime.\n"
     "Ne déduis jamais le secteur depuis : le type de données volées ; les "
     "victimes de la fuite ; le type d'incident cyber.\n"
@@ -162,6 +165,7 @@ class OrganisationContext:
     titles: tuple[str, ...] = ()
     candidate_sectors: tuple[str, ...] = ()
     evidence_types: tuple[str, ...] = ()
+    evidence_stage_outcomes: tuple[dict, ...] = ()
     #: Une entrée par preuve faible collectée par
     #: organisation_sector.collect_organisation_evidence (audit 2026-08-26,
     #: refonte "preuves partout, décision unique à la fin") :
@@ -185,6 +189,7 @@ class OrganisationContext:
             "titles": list(self.titles),
             "candidate_sectors": list(self.candidate_sectors),
             "evidence_types": list(self.evidence_types),
+            "evidence_stage_outcomes": [dict(value) for value in self.evidence_stage_outcomes],
             "evidence_details": [dict(e) for e in self.evidence_details],
         }
 
@@ -227,9 +232,30 @@ def build_organisation_context(
     evidence = evidence or []
     candidate_sectors = tuple(sorted({e.sector for e in evidence if e.sector != config.SECTOR_UNKNOWN}))
     evidence_types = tuple(sorted({e.evidence_type for e in evidence}))
-    # Preuves détaillées (audit 2026-08-26, refonte "preuves partout, décision
-    # unique à la fin") : triées pour rester déterministes, une ligne par
-    # preuve distincte, tronquées pour rester bornées.
+    ordered_evidence = sorted(
+        evidence,
+        key=lambda e: (e.evidence_type, e.sector, e.source, e.evidence_text, e.evidence_url),
+    )
+    # Réserver d'abord une place à chaque canal produit, puis compléter avec
+    # les preuves restantes. Une simple tranche globale pouvait masquer un
+    # canal entier lorsque les premières étapes étaient très prolifiques.
+    selected_evidence = []
+    seen_details: set[tuple] = set()
+    for evidence_type in osec.AUDITED_EVIDENCE_TYPES:
+        candidate = next((e for e in ordered_evidence if e.evidence_type == evidence_type), None)
+        if candidate is None:
+            continue
+        marker = (candidate.evidence_type, candidate.sector, candidate.source, candidate.evidence_text, candidate.evidence_url)
+        selected_evidence.append(candidate)
+        seen_details.add(marker)
+    for candidate in ordered_evidence:
+        marker = (candidate.evidence_type, candidate.sector, candidate.source, candidate.evidence_text, candidate.evidence_url)
+        if marker in seen_details:
+            continue
+        selected_evidence.append(candidate)
+        seen_details.add(marker)
+        if len(selected_evidence) >= MAX_EVIDENCE_ITEMS:
+            break
     evidence_details = tuple(
         {
             "type": e.evidence_type,
@@ -238,10 +264,15 @@ def build_organisation_context(
             "source": e.source,
             "url": e.evidence_url,
         }
-        for e in sorted(
-            evidence,
-            key=lambda e: (e.evidence_type, e.sector, e.source, e.evidence_text, e.evidence_url),
-        )[:MAX_EVIDENCE_ITEMS]
+        for e in selected_evidence[:max(MAX_EVIDENCE_ITEMS, len(osec.AUDITED_EVIDENCE_TYPES))]
+    )
+    evidence_stage_outcomes = tuple(
+        {
+            "type": evidence_type,
+            "outcome": "PRODUCED" if evidence_type in evidence_types else "NO_MATCH",
+        }
+        for evidence_type in osec.AUDITED_EVIDENCE_TYPES
+        if evidence_type != osec.EVIDENCE_LLM_ORGANISATION
     )
 
     return OrganisationContext(
@@ -257,6 +288,7 @@ def build_organisation_context(
         titles=titles,
         candidate_sectors=candidate_sectors,
         evidence_types=evidence_types,
+        evidence_stage_outcomes=evidence_stage_outcomes,
         evidence_details=evidence_details,
     )
 
@@ -435,6 +467,7 @@ class EnrichmentReport:
     dry_run: bool = False
     cost_usd: float = 0.0
     cache_rows: list[dict] = field(default_factory=list)
+    outcomes: dict[str, str] = field(default_factory=dict)
 
 
 def enrich_unknown_organisation_sectors(
@@ -443,6 +476,7 @@ def enrich_unknown_organisation_sectors(
     reference: dict,
     source_fact_rows: list[dict] | None = None,
     org_cache_rows: list[dict] | None = None,
+    domain_page_rows: list[dict] | None = None,
     previous_provenance: list[dict] | None = None,
     cache_rows: list[dict] | None = None,
     batch_size: int = DEFAULT_BATCH_SIZE,
@@ -454,6 +488,7 @@ def enrich_unknown_organisation_sectors(
     api_key: str | None = None,
     model: str | None = None,
     prompt_version: str = PROMPT_VERSION,
+    persist: bool = True,
 ) -> EnrichmentReport:
     """Seule fonction de ce module autorisée à appeler le réseau/LLM.
 
@@ -470,13 +505,16 @@ def enrich_unknown_organisation_sectors(
     cache_rows = list(cache_rows) if cache_rows is not None else load_cache()
     effective_model = llm_runtime.model_for_task(TASK, model)
 
+    # Sélection sans cache LLM : une ligne obsolète ne doit jamais devenir
+    # CONFIRMED avant la comparaison de son Input_Hash au contexte courant.
     decisions = osec.resolve_all_organisation_sectors(
         items,
         reference=reference,
         source_fact_rows=source_fact_rows,
         org_cache_rows=org_cache_rows,
+        domain_page_rows=domain_page_rows,
         previous_provenance=previous_provenance,
-        llm_cache_rows=cache_rows,
+        llm_cache_rows=[],
     )
     selected = select_organisations_for_llm(items, decisions, organisation_keys=organisation_keys)
     if limit is not None:
@@ -490,6 +528,7 @@ def enrich_unknown_organisation_sectors(
         reference=reference,
         source_fact_rows=source_fact_rows,
         org_cache_rows=org_cache_rows,
+        domain_page_rows=domain_page_rows,
         previous_provenance=previous_provenance,
         llm_cache_rows=[],
     )
@@ -500,7 +539,18 @@ def enrich_unknown_organisation_sectors(
         llm_available=llm_runtime.runtime().enabled,
         dry_run=dry_run,
     )
+    for key, decision in decisions.items():
+        if decision.status != osec.STATUS_UNKNOWN:
+            report.outcomes[key] = "NOT_APPLICABLE"
 
+    updated_rows = dict(cache_by_key)
+    present_keys = {item.Organisation_Key for item in items if item.Organisation_Key}
+    selected_set = set(selected)
+    # Une organisation résolue par une autorité n'a plus de décision LLM
+    # active. Retirer son ancienne ligne évite de la présenter comme preuve
+    # secondaire valide dans le rapport final.
+    for key in present_keys - selected_set:
+        updated_rows.pop(key, None)
     pending: list[tuple[str, OrganisationContext, str]] = []
     for key in selected:
         context = build_organisation_context(
@@ -511,19 +561,26 @@ def enrich_unknown_organisation_sectors(
         cached = cache_by_key.get(key)
         if not force and cached is not None and cached.get("Input_Hash") == input_hash:
             report.cache_hits += 1
+            report.outcomes[key] = "PRODUCED"
             continue
+        # Une entrée périmée ne doit pas être réinjectée si le nouvel appel
+        # échoue, si le budget est épuisé ou si le LLM est désactivé.
+        updated_rows.pop(key, None)
         report.cache_misses += 1
         pending.append((key, context, input_hash))
 
-    updated_rows = dict(cache_by_key)
     if not dry_run and not no_llm and pending and llm_runtime.runtime().enabled:
         now = datetime.now(timezone.utc).isoformat()
         for batch in build_batches([(key, context) for key, context, _hash in pending], batch_size):
             try:
                 results = call_llm_batch(batch, api_key=api_key)
             except llm_runtime.LlmBudgetExceeded:
+                for key, _context in batch:
+                    report.outcomes.setdefault(key, "BUDGET_BLOCKED")
                 break
             except llm_runtime.LlmError:
+                for key, _context in batch:
+                    report.outcomes[key] = "ERROR"
                 continue
             report.calls += 1
             batch_keys = {key for key, _context in batch}
@@ -532,8 +589,10 @@ def enrich_unknown_organisation_sectors(
                 candidate = results.get(key)
                 if candidate is None:
                     report.abstentions += 1
+                    report.outcomes[key] = "NO_MATCH"
                     continue
                 report.candidates += 1
+                report.outcomes[key] = "PRODUCED"
                 context = next(context for pending_key, context, _hash in pending if pending_key == key)
                 updated_rows[key] = {
                     "Organisation_Key": key,
@@ -548,8 +607,19 @@ def enrich_unknown_organisation_sectors(
                     "Created_At": now,
                 }
 
+    if dry_run or no_llm:
+        fallback_outcome = "NOT_APPLICABLE" if dry_run or no_llm else "ERROR"
+        for key, _context, _input_hash in pending:
+            report.outcomes.setdefault(key, fallback_outcome)
+    elif pending and not llm_runtime.runtime().enabled:
+        for key, _context, _input_hash in pending:
+            report.outcomes.setdefault(key, "ERROR")
+    else:
+        for key, _context, _input_hash in pending:
+            report.outcomes.setdefault(key, "BUDGET_BLOCKED")
+
     report.cost_usd = llm_runtime.runtime().stats.by_task.get(TASK, {}).get("estimated_cost_usd", 0.0)
     report.cache_rows = sorted(updated_rows.values(), key=lambda row: row.get("Organisation_Key", ""))
-    if not dry_run and updated_rows != cache_by_key:
+    if persist and not dry_run and updated_rows != cache_by_key:
         save_cache(report.cache_rows)
     return report

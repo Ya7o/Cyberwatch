@@ -16,8 +16,9 @@ par une preuve extraite du texte fourni. Une valeur non ancrée dans le texte
 de la page est rejetée — même discipline anti-hallucination que
 ``source_facts_ai._normalize_fact``.
 
-Étape explicite et réseau, jamais appelée par ``create``/``maj``/``replay``/
-``qualify()`` : uniquement la commande ``domain-page-llm``.
+Étape automatique de ``create``/``maj`` pour les pages applicables, et
+réutilisable explicitement via la commande ``domain-page-llm``. ``replay``
+reste cache-only et ne l'appelle jamais.
 """
 from __future__ import annotations
 
@@ -186,6 +187,7 @@ def enrich_domain_page_sectors(
     limit: int | None = None,
     dry_run: bool = False,
     force: bool = False,
+    persist: bool = True,
 ) -> DomainPageLlmReport:
     """Complète par LLM les lignes NO_EVIDENCE de ``organisation_domain_page.csv``.
 
@@ -241,6 +243,6 @@ def enrich_domain_page_sectors(
 
     report.cost_usd = llm_runtime.runtime().stats.by_task.get(TASK, {}).get("estimated_cost_usd", 0.0)
     report.cache_rows = sorted(by_key.values(), key=lambda row: row.get("Organisation_Key", ""))
-    if not dry_run and report.calls:
+    if persist and not dry_run and report.calls:
         dps.save_cache(report.cache_rows)
     return report

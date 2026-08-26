@@ -951,18 +951,11 @@ class TestSectorEnrichmentEscalation:
 
         ai.qualify_item(item, entry, SPEC, state)
 
-        assert item.Sector == "Construction / BTP"
+        assert item.Sector == config.SECTOR_UNKNOWN
         assert state.sector_resolved_enriched_deterministic == 1
         assert state.sector_resolved_enriched_llm == 0
-        # Audit 2026-08-26 : cette mutation était auparavant invisible dans
-        # qualification_provenance.csv (seulement des compteurs internes).
-        assert len(state.provenance) == 1
-        row = state.provenance[0]
-        assert row["Item_ID"] == item.Item_ID
-        assert row["Field"] == "Sector"
-        assert row["Final_Value"] == "Construction / BTP"
-        assert row["Origin"] == ai.ORIGIN_ORG_ENRICHMENT_DETERMINISTIC_ITEM
-        assert row["Decision"] == "APPLIED"
+        assert state.provenance == []
+        assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Sector"] == "Construction / BTP"
 
     def test_plusieurs_candidats_ambigus_najamais_de_choix_arbitraire(self, make_item, monkeypatch):
         """Cas Gédimat : AMBIGUOUS ne doit jamais résoudre Sector."""
@@ -1000,8 +993,9 @@ class TestSectorEnrichmentEscalation:
 
         ai.qualify_item(item, entry, SPEC, state)
 
-        assert item.Sector == "Commerce / Distribution"
+        assert item.Sector == config.SECTOR_UNKNOWN
         assert state.sector_resolved_enriched_deterministic == 1
+        assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Sector"] == "Commerce / Distribution"
 
     def test_cache_deja_valide_ne_rappelle_ni_http_ni_llm(self, make_item, monkeypatch):
         item = make_item(org="Scalingo", sector=config.SECTOR_UNKNOWN)
@@ -1021,7 +1015,7 @@ class TestSectorEnrichmentEscalation:
 
         ai.qualify_item(item, entry, SPEC, state)
 
-        assert item.Sector == "Numérique / Technologie"
+        assert item.Sector == config.SECTOR_UNKNOWN
         assert state.sector_resolved_enrichment_cache == 1
         assert state.sector_resolved_enriched_deterministic == 0
 
@@ -1044,7 +1038,8 @@ class TestSectorEnrichmentEscalation:
 
         ai.qualify_item(item, entry, SPEC, state)
 
-        assert item.Sector == "Commerce / Distribution"
+        assert item.Sector == config.SECTOR_UNKNOWN
+        assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Sector"] == "Commerce / Distribution"
 
     def test_sans_cle_openai_et_activite_non_mappable_reste_inconnu_sans_crash(self, make_item, monkeypatch):
         item = make_item(org="Bloctel", sector=config.SECTOR_UNKNOWN)

@@ -40,7 +40,7 @@ class TestEntryToItem:
         assert item.Organisation_Raw == "Mairie de Saint-Leu"
         assert item.Organisation_Key == "mairie de saint leu"
         assert item.Threat == config.THREAT_LEAK
-        assert item.Sector == config.SECTOR_ADMIN
+        assert item.Sector == config.SECTOR_UNKNOWN
         # `entry_to_item` conserve désormais le défaut source pour l'étape
         # suivante du pipeline afin que l'enrichissement entreprise reste prioritaire.
         assert item.Location == config.LOC_INCONNU
@@ -172,7 +172,7 @@ class TestEntryToItem:
             organisation="Air Austral",
         )
         item = entry_to_item(entry, SPEC, AS_OF, {}, index)
-        assert item.Sector == config.SECTOR_TRANSPORT
+        assert item.Sector == config.SECTOR_UNKNOWN
 
 
 class TestHistoryStatus:
@@ -553,7 +553,7 @@ class TestTerritoireDeLEntite:
         )
         assert item.Organisation_Raw == "Air Austral"
         assert item.Location == config.LOC_REUNION
-        assert item.Sector == config.SECTOR_TRANSPORT
+        assert item.Sector == config.SECTOR_UNKNOWN
 
     def test_organisation_inconnue_ne_recoit_pas_un_defaut_france(self):
         from cyberwatch import sources, watchlists

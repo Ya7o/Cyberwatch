@@ -31,10 +31,6 @@ from .normalize import extract_activity_description, organisation_key, searchabl
 DEFAULT_MODEL = "gpt-5-nano"
 PRICING = {DEFAULT_MODEL: {"input": 0.05, "output": 0.40}}
 
-#: Origine de provenance pour la mutation directe de Sector à l'ingestion
-#: via le registre entreprise (audit 2026-08-26, cf. AiRunState.provenance).
-ORIGIN_ORG_ENRICHMENT_DETERMINISTIC_ITEM = "ORG_ENRICHMENT_DETERMINISTIC_ITEM"
-
 PROMPT_VERSION = "2026-08-16.1"
 SCHEMA_VERSION = "2"
 
@@ -126,11 +122,8 @@ class AiRunState:
     sector_resolved_enriched_llm: int = 0
     sector_llm_skipped: int = 0
     started: float = field(default_factory=time.monotonic)
-    #: Lignes de provenance pour les mutations Sector/Location faites ici,
-    #: à l'ingestion (audit 2026-08-26) : cette escalade mutait Item.Sector
-    #: sans jamais laisser de trace dans qualification_provenance.csv,
-    #: obligeant à croiser org_enrichment_cache.csv pour comprendre une
-    #: décision. Fusionnées par runner.py dans report.qualification_provenance.
+    #: Compatibilité des consommateurs historiques. Sector n'est plus muté à
+    #: l'ingestion ; la provenance finale est produite par le résolveur unique.
     provenance: list[dict] = field(default_factory=list)
 
 
@@ -636,27 +629,6 @@ def _apply_and_count_sector(
         state.sector_resolved_source_llm += 1
 
 
-def _org_enrichment_provenance_row(item: Item, sector: str, record) -> dict:
-    """Trace la mutation Sector faite par ``_escalate_org_enrichment_deterministic``.
-
-    Auparavant silencieuse (audit 2026-08-26) : reconstituer une décision
-    exigeait de croiser org_enrichment_cache.csv en plus de ce fichier.
-    """
-    return {
-        "Item_ID": item.Item_ID,
-        "Source_ID": item.Source_ID,
-        "Field": "Sector",
-        "Previous_Value": config.SECTOR_UNKNOWN,
-        "Candidate_Value": sector,
-        "Final_Value": sector,
-        "Origin": ORIGIN_ORG_ENRICHMENT_DETERMINISTIC_ITEM,
-        "Confidence": "HIGH",
-        "Evidence": f"registre entreprise: Activity_Code={record.Activity_Code}; Activity_Label={record.Activity_Label}"[:2000],
-        "Match_Strategy": "organisation_key_exact+recherche_entreprises_api_gouv",
-        "Decision": "APPLIED",
-    }
-
-
 def _escalate_org_enrichment_deterministic(
     item: Item,
     entry: RawEntry,
@@ -690,8 +662,9 @@ def _escalate_org_enrichment_deterministic(
     if item.Sector != config.SECTOR_UNKNOWN or not record.Activity_Label:
         return
 
-    # Refonte 2026-08-26 ("preuves partout, décision unique à la fin") : seul
-    # un vrai code NAF (Validated_Via == "deterministic") court-circuite ici.
+    # Refonte 2026-08-26 ("preuves partout, décision unique à la fin") : un
+    # vrai code NAF est conservé dans le cache comme autorité candidate, mais
+    # n'est appliqué que plus tard par organisation_sector.py.
     # Cas réel qui a motivé ce garde-fou : Klark AI, dont le cache portait
     # Validated_Sector="Services aux entreprises"/Validated_Via="official_site"
     # (texte du site officiel scrappé, classé par un regex — jamais un code
@@ -701,10 +674,7 @@ def _escalate_org_enrichment_deterministic(
     # par organisation_sector.py (canal EVIDENCE_OFFICIAL_SITE), jamais
     # appliqué ici.
     if record.Validated_Sector and record.Validated_Via == "deterministic":
-        state.provenance.append(_org_enrichment_provenance_row(item, record.Validated_Sector, record))
-        item.Sector = record.Validated_Sector
         state.sector_resolved_enrichment_cache += 1
-        state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
         return
 
     # Un Validated_Via déjà renseigné (ex. "official_site"/"official_site_text")
@@ -718,14 +688,11 @@ def _escalate_org_enrichment_deterministic(
     if sector == config.SECTOR_UNKNOWN:
         return
 
-    state.provenance.append(_org_enrichment_provenance_row(item, sector, record))
-    item.Sector = sector
     record.Validated_Sector = sector
     record.Validated_Via = "deterministic"
     record.Cache_Version = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
     org_state.cache[item.Organisation_Key] = asdict(record)
     state.sector_resolved_enriched_deterministic += 1
-    state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
 
 
 def _row_from_decision(
@@ -784,15 +751,16 @@ def finish_run(
     as_of: str,
     mode: str,
     sector_pre_stats: dict | None = None,
+    persist: bool = True,
 ) -> dict:
-    if state.enabled:
+    if persist and state.enabled:
         rows = sorted(
             state.cache.values(),
             key=lambda r: (r.get("Item_ID", ""), r.get("Input_Hash", "")),
         )
         store.save_ai_qualifications(rows)
 
-    if state.org_enrichment.enabled:
+    if persist and state.org_enrichment.enabled:
         org_rows = sorted(
             state.org_enrichment.cache.values(),
             key=lambda r: r.get("Organisation_Key", ""),

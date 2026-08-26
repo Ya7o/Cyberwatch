@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field, replace
 
-from . import ai, config, dedup_ai, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, organisation_sector, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, validation_corpus, watchlists
+from . import ai, config, dedup_ai, domain_page_sector, domain_page_sector_llm, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, organisation_sector, organisation_sector_llm, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, validation_corpus, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -298,17 +298,22 @@ def entry_to_item(
 
     # Les secteurs structurés sont normalisés sans passer par les règles de
     # texte libre. Une catégorie source trop large reste volontairement Inconnu.
-    sector = sector_policy.classify_source_sector(entry.sector)
+    native_sector = sector_policy.classify_source_sector(entry.sector)
+    # Sector reste indécidé pendant l'ingestion. La valeur source brute sera
+    # persistée dans source_facts puis présentée au résolveur organisationnel.
+    sector = config.SECTOR_UNKNOWN
     location = classify_location(given=entry.location)
 
-    if sector_stats is not None and sector != config.SECTOR_UNKNOWN:
+    if sector_stats is not None and native_sector != config.SECTOR_UNKNOWN:
         sector_stats["resolved_native"] = sector_stats.get("resolved_native", 0) + 1
-    sector_was_unknown = sector == config.SECTOR_UNKNOWN
+    sector_was_unknown = True
     if sector_stats is not None and sector_was_unknown:
         sector_stats["initial_unknown"] = sector_stats.get("initial_unknown", 0) + 1
 
-    sector, location = enrichment.enrich_unknowns(organisation, sector, location, reference or {})
-    resolved_by_reference = sector_was_unknown and sector != config.SECTOR_UNKNOWN
+    reference_sector, location = enrichment.enrich_unknowns(
+        organisation, sector, location, reference or {}
+    )
+    resolved_by_reference = reference_sector != config.SECTOR_UNKNOWN
 
     if sector_stats is not None and resolved_by_reference:
         sector_stats["resolved_reference"] = sector_stats.get("resolved_reference", 0) + 1
@@ -333,15 +338,16 @@ def entry_to_item(
     # classificateur volontairement plus strict, par
     # organisation_sector.py::_source_activity_evidence — supprimé ici pour
     # que ce mécanisme existant fasse réellement l'arbitrage.
-    if sector == config.SECTOR_UNKNOWN and sector_hint:
-        sector = sector_policy.classify_source_sector(sector_hint)
-    if sector == config.SECTOR_UNKNOWN:
-        sector = sector_policy.classify_sector_name(organisation)
+    deterministic_candidate = config.SECTOR_UNKNOWN
+    if sector_hint:
+        deterministic_candidate = sector_policy.classify_source_sector(sector_hint)
+    if deterministic_candidate == config.SECTOR_UNKNOWN:
+        deterministic_candidate = sector_policy.classify_sector_name(organisation)
     if (
         sector_stats is not None
         and sector_was_unknown
         and not resolved_by_reference
-        and sector != config.SECTOR_UNKNOWN
+        and deterministic_candidate != config.SECTOR_UNKNOWN
     ):
         sector_stats["resolved_deterministic"] = sector_stats.get("resolved_deterministic", 0) + 1
 
@@ -386,13 +392,10 @@ def _verify_native_ransomware_sector(
     spec: SourceSpec,
     ai_state: ai.AiRunState,
 ) -> None:
-    """Corrige un secteur ransomware.live uniquement avec une preuve plus forte.
+    """Compatibilité : enrichit le cache sans modifier le secteur natif.
 
-    Le secteur structuré de ransomware.live reste le fallback de couverture.
-    En revanche, s'il contredit un registre exact validé ou une preuve de site
-    officiel déjà acceptée, la preuve organisationnelle gagne. Une absence de
-    match, une ambiguïté ou un NAF non mappable ne dégrade jamais le secteur
-    source en ``Inconnu``.
+    Le résolveur organisationnel arbitre ensuite secteur source et NAF ; cette
+    fonction historique ne possède plus aucun droit d'écriture final.
     """
     if spec.source_id != "RANSOMWARE_LIVE":
         return
@@ -414,20 +417,17 @@ def _verify_native_ransomware_sector(
     if record is None or record.Match_Status != org_enrichment.MATCHED:
         return
 
-    # Refonte 2026-08-26 ("preuves partout, décision unique à la fin") : seul
-    # un vrai code NAF (Validated_Via == "deterministic") peut corriger ici,
-    # même garde-fou que ai.py::_escalate_org_enrichment_deterministic — un
-    # secteur "official_site" (texte de site scrappé, jamais un code NAF)
-    # reste une preuve faible pour organisation_sector.py, jamais appliqué
-    # directement (cas réel Klark AI qui a motivé cette refonte).
+    # Seul le candidat est calculé pour les consommateurs historiques ; il
+    # reste une preuve et n'est jamais appliqué ici.
     if record.Validated_Sector and record.Validated_Via == "deterministic":
         candidate = record.Validated_Sector
     elif not record.Validated_Via and record.Activity_Label:
         candidate = org_enrichment.sector_for_activity_label(record.Activity_Label)
     else:
         candidate = config.SECTOR_UNKNOWN
-    if candidate and candidate != config.SECTOR_UNKNOWN and candidate != item.Sector:
-        item.Sector = candidate
+    # Le candidat reste dans le cache entreprise et sera collecté par
+    # organisation_sector. Cette fonction historique ne décide plus Sector.
+    del candidate
 
 
 def _resolve_history_status(result: CollectResult, source_status: str, window: Window) -> tuple[str, str]:
@@ -537,7 +537,6 @@ def run_source(
         if item is not None:
             items.append(item)
             if ai_state is not None:
-                _verify_native_ransomware_sector(item, entry, spec, ai_state)
                 ai.qualify_item(item, entry, spec, ai_state)
             # Stabilisation Location v0.7.32 : hors pipeline IA, le défaut de
             # source reste le dernier recours après l'enrichissement potentiel.
@@ -798,6 +797,9 @@ class RunReport:
     sector_registry_rows: list[dict] = field(default_factory=list)
     sector_queue_rows: list[dict] = field(default_factory=list)
     organisation_sector_decisions: dict = field(default_factory=dict)
+    organisation_sector_evidence: list[dict] = field(default_factory=list)
+    organisation_sector_llm_cache: list[dict] = field(default_factory=list)
+    organisation_domain_pages: list[dict] = field(default_factory=list)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
 
@@ -1024,7 +1026,10 @@ def execute(
         facts_base = [row for row in existing_facts if row.get("Source_ID") not in replacement_source_ids]
         report.source_facts = source_facts.merge_source_facts(facts_base, new_fact_rows)
         report.requests = run_budget.requests_made
-        report.ai_usage = ai.finish_run(ai_state, context.run_id, context.as_of, context.mode, sector_stats)
+        report.ai_usage = ai.finish_run(
+            ai_state, context.run_id, context.as_of, context.mode, sector_stats,
+            persist=persist,
+        )
 
         if context.mode in (MODE_MAJ, MODE_CREATE):
             # Filet LLM post-déterministe (§Lot 2/9) : en MAJ, uniquement le
@@ -1067,24 +1072,43 @@ def execute(
             for problem in dedup_ai_problems:
                 print(f"    ! {problem}")
 
-    qualified = qualify(report.items)
+    qualification_source_facts = (
+        store.load_source_facts() if offline else report.source_facts
+    )
+    qualification_org_cache = (
+        sorted(ai_state.org_enrichment.cache.values(), key=lambda row: row.get("Organisation_Key", ""))
+        if ai_state is not None
+        else store.load_org_enrichment_cache()
+    )
+    domain_rows = domain_page_sector.enrich_domain_pages(
+        report.items,
+        cache_rows=domain_page_sector.load_cache(),
+        allow_network=not offline and context.mode in (MODE_CREATE, MODE_MAJ),
+    )
+    if not offline and context.mode in (MODE_CREATE, MODE_MAJ):
+        domain_llm_report = domain_page_sector_llm.enrich_domain_page_sectors(
+            cache_rows=domain_rows,
+            persist=False,
+        )
+        domain_rows = domain_llm_report.cache_rows
+    report.organisation_domain_pages = domain_rows
+    qualified = qualify(
+        report.items,
+        source_fact_rows=qualification_source_facts,
+        org_cache_rows=qualification_org_cache,
+        domain_page_rows=domain_rows,
+        allow_llm=not offline and context.mode in (MODE_CREATE, MODE_MAJ),
+        persist_llm_cache=False,
+    )
     report.items = qualified.items
     report.incidents = qualified.incidents
-    # ai_state.provenance (audit 2026-08-26) : mutations Sector faites à
-    # l'ingestion (registre entreprise, cf. ai._escalate_org_enrichment_deterministic)
-    # avant même que qualify() ne tourne — jamais lues depuis le disque par
-    # qualify(), donc fusionnées ici pour que qualification_provenance.csv
-    # reste la trace complète d'une décision, sans avoir à croiser
-    # org_enrichment_cache.csv en plus.
-    ingestion_provenance = sorted(
-        ai_state.provenance if ai_state is not None else [],
-        key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]),
-    )
-    report.qualification_provenance = ingestion_provenance + qualified.provenance
+    report.qualification_provenance = qualified.provenance
     report.incident_id_registry = qualified.incident_id_registry
     report.sector_registry_rows = qualified.registry_rows
     report.sector_queue_rows = qualified.queue_rows
     report.organisation_sector_decisions = qualified.organisation_sector_decisions
+    report.organisation_sector_evidence = qualified.organisation_sector_evidence
+    report.organisation_sector_llm_cache = qualified.organisation_sector_llm_cache
     report.new_incidents = len([i for i in report.incidents if i.Incident_ID not in previous_ids])
     report.items_hash = qualified.items_hash
     report.incidents_hash = qualified.incidents_hash
@@ -1193,6 +1217,9 @@ def _persist(
             organisation_sector.write_decisions_csv(
                 report.organisation_sector_decisions, updated_at=context.as_of
             )
+            organisation_sector.write_evidence_csv(report.organisation_sector_evidence)
+            organisation_sector_llm.save_cache(report.organisation_sector_llm_cache)
+            domain_page_sector.save_cache(report.organisation_domain_pages)
             save_snapshot_provenance(
                 store.load_items(), store.load_incidents(), operation="REPLAY",
                 run_id=context.run_id, mode=context.mode, as_of=context.as_of,
@@ -1239,6 +1266,9 @@ def _persist(
         organisation_sector.write_decisions_csv(
             report.organisation_sector_decisions, updated_at=context.as_of
         )
+        organisation_sector.write_evidence_csv(report.organisation_sector_evidence)
+        organisation_sector_llm.save_cache(report.organisation_sector_llm_cache)
+        domain_page_sector.save_cache(report.organisation_domain_pages)
         save_snapshot_provenance(
             store.load_items(), store.load_incidents(), operation=context.mode,
             run_id=context.run_id, mode=context.mode, as_of=context.as_of,

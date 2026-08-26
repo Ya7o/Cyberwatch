@@ -204,7 +204,8 @@ def test_one_org_enrichment_resolves_sector_and_location_together(monkeypatch):
     entry = RawEntry(title=item.Title, published=item.Published_Date, summary="Incident confirmé.", url=item.URL)
     ai.qualify_item(item, entry, spec, state)
     assert len(calls) == 1
-    assert item.Sector == config.SECTOR_TECH
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Sector"] == config.SECTOR_TECH
     assert item.Location == config.LOC_MAYOTTE
 
 
@@ -230,7 +231,8 @@ def test_org_enrichment_never_overwrites_known_location(monkeypatch):
     assert spec is not None
     entry = RawEntry(title=item.Title, published=item.Published_Date, summary="Incident confirmé.", url=item.URL)
     ai.qualify_item(item, entry, spec, state)
-    assert item.Sector == config.SECTOR_TECH
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert state.org_enrichment.cache[item.Organisation_Key]["Validated_Sector"] == config.SECTOR_TECH
     assert item.Location == config.LOC_REUNION
 
 

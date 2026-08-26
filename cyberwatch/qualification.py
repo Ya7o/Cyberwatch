@@ -63,6 +63,8 @@ class QualificationReport:
     registry_rows: list[dict[str, str]] = field(default_factory=list)
     queue_rows: list[dict[str, str]] = field(default_factory=list)
     organisation_sector_decisions: dict[str, object] = field(default_factory=dict)
+    organisation_sector_evidence: list[dict[str, str]] = field(default_factory=list)
+    organisation_sector_llm_cache: list[dict[str, str]] = field(default_factory=list)
 
 
 def stabilize_threats(items):
@@ -252,10 +254,18 @@ def _capture_prequalification_state(ordered, source_facts, org_cache):
     )
 
 
-def qualify(items):
+def qualify(
+    items,
+    *,
+    source_fact_rows: list[dict] | None = None,
+    org_cache_rows: list[dict] | None = None,
+    domain_page_rows: list[dict] | None = None,
+    allow_llm: bool = True,
+    persist_llm_cache: bool = False,
+):
     ordered = identity.sort_items(items)
-    source_facts = store.read_csv(store.SOURCE_FACTS_CSV)
-    org_cache = store.load_org_enrichment_cache()
+    source_facts = source_fact_rows if source_fact_rows is not None else store.read_csv(store.SOURCE_FACTS_CSV)
+    org_cache = org_cache_rows if org_cache_rows is not None else store.load_org_enrichment_cache()
     _capture_prequalification_state(ordered, source_facts, org_cache)
     previous_provenance = store.load_qualification_provenance()
     decisions = []
@@ -268,7 +278,7 @@ def qualify(items):
         ordered,
         origin="MANUAL_REFERENCE",
         confidence="HIGH",
-        mutate=lambda: enrichment.enrich_items(ordered, reference),
+        mutate=lambda: enrichment.enrich_items(ordered, reference, include_sector=False),
     )
     changes["llm_sector_restored"], changes["sector_registry_restored"] = restored, registry_restored
     changes["organisation_sector_restored"] = org_sector_restored
@@ -282,17 +292,18 @@ def qualify(items):
     # safe_name) de façon indépendante. Le premier qui s'exécutait gagnait
     # selon l'ordre du code, pas selon le mérite de la preuve (cas réel :
     # Klark AI classé "Services aux entreprises" par un mécanisme d'ingestion
-    # séparé avant que ce module n'ait pu arbitrer). Seules deux autorités
-    # court-circuitent encore directement : la référence manuelle
-    # (ci-dessus) et le NAF précis (dans organisation_sector.py et, à
-    # l'ingestion, ai.py — seulement si Validated_Via == "deterministic").
+    # séparé avant que ce module n'ait pu arbitrer). Les deux autorités
+    # (référence humaine et NAF officiel validé) sont elles aussi appliquées
+    # ici par le même résolveur, jamais pendant l'ingestion.
 
     org_sector_decisions = organisation_sector.resolve_all_organisation_sectors(
         ordered,
         reference=reference,
         source_fact_rows=source_facts,
         org_cache_rows=org_cache,
+        domain_page_rows=domain_page_rows,
         previous_provenance=previous_provenance,
+        llm_cache_rows=[],
     )
     org_sector_applied, org_sector_provenance = organisation_sector.apply_organisation_sector_decisions(
         ordered, org_sector_decisions
@@ -312,7 +323,10 @@ def qualify(items):
         reference=reference,
         source_fact_rows=source_facts,
         org_cache_rows=org_cache,
+        domain_page_rows=domain_page_rows,
         previous_provenance=previous_provenance,
+        no_llm=not allow_llm,
+        persist=persist_llm_cache,
     )
     changes["organisation_sector_llm_selected"] = llm_report.organisations_selected
     changes["organisation_sector_llm_calls"] = llm_report.calls
@@ -324,6 +338,7 @@ def qualify(items):
         reference=reference,
         source_fact_rows=source_facts,
         org_cache_rows=org_cache,
+        domain_page_rows=domain_page_rows,
         previous_provenance=previous_provenance,
         llm_cache_rows=llm_report.cache_rows,
     )
@@ -333,6 +348,23 @@ def qualify(items):
     decisions.extend(decisions_from_provenance(org_sector_llm_provenance))
     changes["organisation_sector_applied"] += org_sector_llm_applied
     changes.update(organisation_sector.summary(org_sector_decisions))
+
+    final_evidence_by_org = organisation_sector.collect_organisation_evidence(
+        ordered,
+        reference=reference,
+        source_fact_rows=source_facts,
+        org_cache_rows=org_cache,
+        domain_page_rows=domain_page_rows,
+        previous_provenance=previous_provenance,
+        llm_cache_rows=llm_report.cache_rows,
+    )
+    org_sector_evidence = organisation_sector.evidence_audit_rows(
+        ordered,
+        final_evidence_by_org,
+        org_cache_rows=org_cache,
+        domain_page_rows=domain_page_rows,
+        llm_outcomes=llm_report.outcomes,
+    )
 
     registry_rows = sector_registry.build_registry(
         ordered,
@@ -393,4 +425,6 @@ def qualify(items):
         registry_rows,
         queue_rows,
         org_sector_decisions,
+        org_sector_evidence,
+        llm_report.cache_rows,
     )
