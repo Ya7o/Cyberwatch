@@ -13,7 +13,9 @@ LLM ne sont utilisés ici. En cas de doute sur l'identité ou l'activité,
 from __future__ import annotations
 
 import html
+import os
 import re
+import sys
 from dataclasses import dataclass
 from html.parser import HTMLParser
 from urllib.parse import parse_qs, quote_plus, unquote, urljoin, urlparse
@@ -22,6 +24,20 @@ import requests
 
 from . import config
 from .normalize import searchable
+
+#: Diagnostic temporaire (audit 2026-08-26) : le canal recherche de site
+#: officiel tourne (appels réseau réels, budget consommé) mais rend 0
+#: résultat sur 19 tentatives cumulées sur deux runs de contrôle. Ce
+#: marqueur, désactivé par défaut, sert à isoler où précisément la chaîne
+#: échoue (aucun candidat retourné par les moteurs, ou candidats rejetés en
+#: aval) avant de choisir un correctif définitif. À retirer une fois la
+#: cause confirmée.
+_DEBUG_OFFICIAL_SITE = os.environ.get("CYBERWATCH_DEBUG_OFFICIAL_SITE") == "1"
+
+
+def _debug_official_site(message: str) -> None:
+    if _DEBUG_OFFICIAL_SITE:
+        print(f"[debug official_site] {message}", file=sys.stderr)
 
 #: Cas réel (audit 2026-08-26) : ce module avait son propre User-Agent
 #: dédié, distinct de celui du reste du projet. Les 9 tentatives réelles du
@@ -316,12 +332,18 @@ def _search_links(query: str) -> list[tuple[str, str]]:
     for search_url in urls:
         response = _http_get(search_url, timeout=SEARCH_TIMEOUT_SECONDS)
         if response is None:
+            _debug_official_site(f"search engine={search_url!r} -> aucune réponse (échec réseau/statut>=400 des deux agents)")
             continue
         parser = _LinksParser()
         try:
             parser.feed(response.text)
         except Exception:
+            _debug_official_site(f"search engine={search_url!r} status={response.status_code} len={len(response.text)} -> échec parsing HTML")
             continue
+        _debug_official_site(
+            f"search engine={search_url!r} status={response.status_code} "
+            f"len={len(response.text)} liens_bruts={len(parser.links)}"
+        )
         for title, url in parser.links:
             url = _unwrap_search_url(url)
             if not url.startswith(("http://", "https://")) or _blocked(url) or url in seen:
@@ -353,17 +375,22 @@ def _discover_official_sites(organisation: str) -> list[str]:
         f'"{organisation}" site officiel',
         f'"{organisation}" mentions légales',
     ):
-        for title, url in _search_links(query):
+        links = _search_links(query)
+        _debug_official_site(f"organisation={organisation!r} query={query!r} -> {len(links)} lien(s) brut(s)")
+        for title, url in links:
             score = _candidate_relevance(organisation, title, url)
             if score < 3:
+                _debug_official_site(f"  rejeté score={score} title={title!r} url={url!r}")
                 continue
             candidates[url] = max(score, candidates.get(url, 0))
-    return [
+    result = [
         url
         for url, _score in sorted(
             candidates.items(), key=lambda item: (-item[1], item[0])
         )
     ][:MAX_SEARCH_RESULTS]
+    _debug_official_site(f"organisation={organisation!r} -> {len(result)} candidat(s) retenu(s): {result}")
+    return result
 
 
 def _page(url: str) -> tuple[str, str, list[str], str]:
@@ -458,15 +485,18 @@ def resolve_official_site(organisation: str) -> CompanyEvidence | None:
     """
     try:
         candidates = _discover_official_sites(organisation)
-    except Exception:
+    except Exception as exc:
+        _debug_official_site(f"organisation={organisation!r} -> exception à la découverte: {exc!r}")
         return None
 
     fallback: CompanyEvidence | None = None
     for candidate in candidates:
         priority, body, about_links, final_url = _page(candidate)
         if not priority and not body:
+            _debug_official_site(f"  candidat={candidate!r} -> page vide/injoignable")
             continue
         if not _identity_matches(organisation, final_url or candidate, priority, body):
+            _debug_official_site(f"  candidat={candidate!r} final_url={final_url!r} -> identité non validée")
             continue
 
         classified = classify_official_activity(priority)
