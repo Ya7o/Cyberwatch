@@ -1,20 +1,31 @@
-"""Candidat LLM organisationnel (P1) — jamais de recherche Internet.
+"""Décision LLM organisationnelle finale — jamais de recherche Internet.
+
+Refonte 2026-08-26 ("preuves partout, décision unique à la fin", cas réel
+Klark AI qui a motivé cette refonte : un mécanisme d'ingestion séparé avait
+appliqué directement un secteur approximatif avant que la moindre autre
+preuve n'ait sa chance). Ce module répond désormais à la question qui
+tranche Sector pour toute organisation que ni la référence manuelle ni un
+code NAF précis n'ont résolue : à partir de l'ensemble des preuves faibles
+déjà collectées par :mod:`cyberwatch.organisation_sector`
+(``collect_organisation_evidence`` — structured_source, safe_name,
+official_subject_activity, source_activity, domain_page, official_site),
+quel est le secteur le plus proche pour cette organisation ? Aucune
+recherche web, aucun outil, aucun accès réseau autre que l'appel structuré
+au modèle lui-même.
 
 Ce module ne remplace pas :mod:`cyberwatch.ai` (classifieur item-level à
-partir d'``Activity_Description``). Il répond à une question différente :
-quel est le meilleur secteur candidat pour une ORGANISATION, à partir des
-informations déjà présentes dans Cyberwatch ? Aucune recherche web, aucun
-outil, aucun accès réseau autre que l'appel structuré au modèle lui-même.
+partir d'``Activity_Description``, jamais Sector depuis la refonte).
 
-Le LLM ne produit jamais, seul, une preuve suffisante pour ``CONFIRMED`` : son
-candidat reste ``TENTATIVE`` tant qu'aucune preuve indépendante ne converge
-(cf. :mod:`cyberwatch.organisation_sector`, qui applique cette règle et relit
-le cache écrit ici hors-ligne).
-
-``replay`` reste strictement offline : ce module n'est appelé que par les
-commandes explicites ``sector-llm`` / ``sector-backfill``, jamais par
-``qualify()``. Une clé absente, un budget épuisé ou une panne réseau ne
-bloquent jamais : les organisations concernées restent simplement ``UNKNOWN``.
+Étape **obligatoire** de ``qualification.qualify()`` (plus une commande
+manuelle à part) : appelée automatiquement pour toute organisation encore
+``UNKNOWN`` après le passage des deux autorités (référence manuelle, NAF
+précis). Sa réponse (``llm_organisation``) devient alors la décision
+(confidence toujours ``LOW``, jamais une preuve forte — cf. le revirement de
+politique "plus proche que Inconnu" de :mod:`cyberwatch.organisation_sector`).
+``sector-llm``/``sector-backfill`` restent utiles en rattrapage manuel (ex.
+budget épuisé lors du run d'origine), mais ne sont plus le seul chemin
+d'accès. Une clé absente, un budget épuisé ou une panne réseau ne bloquent
+jamais : les organisations concernées restent simplement ``UNKNOWN``.
 """
 from __future__ import annotations
 
@@ -28,7 +39,7 @@ from . import config, llm_runtime, organisation_sector as osec, store
 from .model import Item
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-26.2"
+PROMPT_VERSION = "2026-08-26.3"
 DEFAULT_BATCH_SIZE = 40
 MAX_OUTPUT_TOKENS = 4000
 #: Bornes de compacité du contexte transmis (§13 du plan) : reproductible et
@@ -37,6 +48,14 @@ MAX_ALIASES = 5
 MAX_TITLES = 3
 MAX_ACTIVITY_DESCRIPTIONS = 3
 MAX_SOURCE_SECTOR_RAW = 3
+#: Nombre maximal de preuves détaillées transmises (audit 2026-08-26, refonte
+#: "preuves partout, décision unique à la fin") : chaque étape qui a déposé
+#: une preuve pour cette organisation (structured_source, safe_name,
+#: official_subject_activity, source_activity, domain_page, official_site)
+#: doit être visible du LLM final, pas seulement résumée en un ensemble de
+#: secteurs candidats — borné pour rester reproductible et hashable.
+MAX_EVIDENCE_ITEMS = 12
+MAX_EVIDENCE_TEXT_CHARS = 300
 
 CACHE_CSV = osec.LLM_CACHE_CSV
 CACHE_COLUMNS = [
@@ -53,6 +72,15 @@ SYSTEM_PROMPT = (
     "Tu es un classificateur strict pour un observatoire d'incidents cyber.\n"
     "Tu n'as pas accès à Internet. Tu ne dois pas supposer avoir effectué une "
     "recherche web. Utilise uniquement les informations fournies.\n"
+    "Tu es l'étape finale : chaque organisation te parvient avec "
+    "evidence_details, la liste de TOUTES les preuves déjà rassemblées par "
+    "les étapes précédentes (registre entreprise, site officiel, extraction "
+    "d'article, mots-clés déterministes...), chacune avec son type, le "
+    "secteur qu'elle suggère, son texte et sa source. Examine l'ensemble de "
+    "cette liste avant de trancher — ne te limite jamais à la première "
+    "entrée ; en cas de désaccord entre preuves, retiens le secteur le "
+    "mieux corroboré par l'ensemble, pas seulement la preuve la plus "
+    "récente ou la plus détaillée.\n"
     "Le secteur correspond à l'activité principale de l'organisation victime.\n"
     "Ne déduis jamais le secteur depuis : le type de données volées ; les "
     "victimes de la fuite ; le type d'incident cyber.\n"
@@ -81,14 +109,24 @@ def _schema() -> dict:
                 "type": "array",
                 "items": {
                     "type": "object",
+                    # Audit 2026-08-26 : "reason" et "basis" sont déclarés AVANT
+                    # "sector" à dessein — en Structured Outputs strict, le
+                    # modèle génère les champs dans cet ordre. Un cas réel
+                    # (Banque Alimentaire de la Croix-Rouge à Strasbourg)
+                    # montrait "sector" déclaré en premier : le modèle committait
+                    # sa réponse avant même d'avoir raisonné, produisant un
+                    # "reason" qui se corrigeait lui-même ("... n'est pas exact
+                    # mais le secteur le plus pertinent est ...") sans que
+                    # "sector" en tienne compte. Raisonner d'abord, décider
+                    # ensuite.
                     "properties": {
                         "organisation_key": {"type": "string"},
-                        "sector": {"type": "string", "enum": list(config.SECTORS)},
-                        "confidence": {"type": "number"},
-                        "basis": {"type": "string", "enum": list(BASIS_VALUES)},
                         "reason": {"type": "string"},
+                        "basis": {"type": "string", "enum": list(BASIS_VALUES)},
+                        "confidence": {"type": "number"},
+                        "sector": {"type": "string", "enum": list(config.SECTORS)},
                     },
-                    "required": ["organisation_key", "sector", "confidence", "basis", "reason"],
+                    "required": ["organisation_key", "reason", "basis", "confidence", "sector"],
                     "additionalProperties": False,
                 },
             },
@@ -117,6 +155,14 @@ class OrganisationContext:
     titles: tuple[str, ...] = ()
     candidate_sectors: tuple[str, ...] = ()
     evidence_types: tuple[str, ...] = ()
+    #: Une entrée par preuve faible collectée par
+    #: organisation_sector.collect_organisation_evidence (audit 2026-08-26,
+    #: refonte "preuves partout, décision unique à la fin") :
+    #: {"type", "sector", "text", "source", "url"}. Remplace le résumé
+    #: agrégé (candidate_sectors/evidence_types) par le détail complet —
+    #: le LLM voit ce que CHAQUE étape a réellement trouvé, pas seulement
+    #: l'ensemble des secteurs qui en ressortent.
+    evidence_details: tuple[dict, ...] = ()
 
     def to_payload(self) -> dict:
         return {
@@ -132,6 +178,7 @@ class OrganisationContext:
             "titles": list(self.titles),
             "candidate_sectors": list(self.candidate_sectors),
             "evidence_types": list(self.evidence_types),
+            "evidence_details": [dict(e) for e in self.evidence_details],
         }
 
 
@@ -173,6 +220,22 @@ def build_organisation_context(
     evidence = evidence or []
     candidate_sectors = tuple(sorted({e.sector for e in evidence if e.sector != config.SECTOR_UNKNOWN}))
     evidence_types = tuple(sorted({e.evidence_type for e in evidence}))
+    # Preuves détaillées (audit 2026-08-26, refonte "preuves partout, décision
+    # unique à la fin") : triées pour rester déterministes, une ligne par
+    # preuve distincte, tronquées pour rester bornées.
+    evidence_details = tuple(
+        {
+            "type": e.evidence_type,
+            "sector": e.sector,
+            "text": (e.evidence_text or "")[:MAX_EVIDENCE_TEXT_CHARS],
+            "source": e.source,
+            "url": e.evidence_url,
+        }
+        for e in sorted(
+            evidence,
+            key=lambda e: (e.evidence_type, e.sector, e.source, e.evidence_text, e.evidence_url),
+        )[:MAX_EVIDENCE_ITEMS]
+    )
 
     return OrganisationContext(
         organisation_key=organisation_key,
@@ -187,6 +250,7 @@ def build_organisation_context(
         titles=titles,
         candidate_sectors=candidate_sectors,
         evidence_types=evidence_types,
+        evidence_details=evidence_details,
     )
 
 

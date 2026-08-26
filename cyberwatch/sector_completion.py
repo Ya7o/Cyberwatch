@@ -13,8 +13,6 @@ acceptées. Les valeurs hors taxonomie canonique restent ``Inconnu``.
 """
 from __future__ import annotations
 
-from typing import Callable
-
 from . import config
 from .normalize import searchable
 
@@ -263,43 +261,25 @@ def _patch_enrichment() -> None:
     enrichment._sector_completion_installed = True
 
 
-def _patch_source_facts() -> None:
-    from . import sector, source_facts
-
-    if getattr(source_facts, "_sector_completion_installed", False):
-        return
-
-    original_extract: Callable = source_facts.extract_source_fact
-
-    def extract_source_fact(item, entry, spec, **kwargs):
-        fact = original_extract(item, entry, spec, **kwargs)
-        if fact is None or item.Sector != config.SECTOR_UNKNOWN:
-            return fact
-
-        raw_sector = str(fact.get("Source_Sector_Raw") or "").strip()
-        if raw_sector:
-            candidate = sector.classify_source_sector(raw_sector)
-            if candidate in config.SECTORS and candidate != config.SECTOR_UNKNOWN:
-                item.Sector = candidate
-                return fact
-
-        activity = str(fact.get("Activity_Description") or "").strip()
-        candidate = _strong_activity_sector(activity)
-        if candidate in config.SECTORS and candidate != config.SECTOR_UNKNOWN:
-            item.Sector = candidate
-        return fact
-
-    source_facts.extract_source_fact = extract_source_fact
-    source_facts._sector_completion_installed = True
-
-
 def install() -> None:
-    """Installe l'extension une seule fois par processus."""
+    """Installe l'extension une seule fois par processus.
+
+    Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    l'ancien ``_patch_source_facts`` de ce module est retiré — il appliquait
+    Item.Sector directement à l'ingestion dès qu'un Source_Sector_Raw ou un
+    Activity_Description classable existait, en concurrence avec
+    organisation_sector.py (qui recollecte la même preuve via ses propres
+    canaux structured_source/source_activity) — le premier des deux qui
+    s'exécutait gagnait selon l'ordre du code, pas selon le mérite de la
+    preuve (même défaut que le cas réel Klark AI qui a motivé cette
+    refonte). La preuve reste disponible pour organisation_sector.py via
+    Source_Sector_Raw/Activity_Description dans source_facts.csv, jamais
+    appliquée ici.
+    """
     global _INSTALLED
     if _INSTALLED:
         return
     _extend_taxonomy()
     _patch_org_enrichment()
     _patch_enrichment()
-    _patch_source_facts()
     _INSTALLED = True

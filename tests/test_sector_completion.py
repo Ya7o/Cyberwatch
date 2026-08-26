@@ -73,7 +73,13 @@ def test_six_golden_business_patterns_are_general_not_name_exceptions():
     ) == config.SECTOR_UNKNOWN
 
 
-def test_source_fact_sector_promotes_unknown_item():
+def test_source_fact_sector_raw_is_kept_as_evidence_not_applied():
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    l'ancien patch d'ingestion qui appliquait Item.Sector directement dès un
+    Source_Sector_Raw classable est retiré — en concurrence avec
+    organisation_sector.py, qui recollecte la même preuve
+    (EVIDENCE_STRUCTURED_SOURCE) indépendamment. Source_Sector_Raw reste
+    extrait tel quel, jamais appliqué ici."""
     item = _item()
     entry = RawEntry(
         title="Organisation Test",
@@ -84,10 +90,12 @@ def test_source_fact_sector_promotes_unknown_item():
     fact = source_facts.extract_source_fact(item, entry, _spec())
     assert fact is not None
     assert fact["Source_Sector_Raw"] == "Commerce"
-    assert item.Sector == config.SECTOR_RETAIL
+    assert item.Sector == config.SECTOR_UNKNOWN
 
 
-def test_source_fact_new_taxonomy_promotes_unknown_item():
+def test_source_fact_new_taxonomy_sector_raw_is_kept_as_evidence_not_applied():
+    """Même refonte : "Tourisme" (taxonomie étendue Hébergement) reste une
+    preuve pour organisation_sector.py, jamais appliqué ici."""
     item = _item()
     entry = RawEntry(
         title="Organisation Test",
@@ -95,8 +103,10 @@ def test_source_fact_new_taxonomy_promotes_unknown_item():
         organisation="Organisation Test",
         source_metadata={"secteur": "Tourisme"},
     )
-    source_facts.extract_source_fact(item, entry, _spec())
-    assert item.Sector == SECTOR_HOSPITALITY
+    fact = source_facts.extract_source_fact(item, entry, _spec())
+    assert fact is not None
+    assert fact["Source_Sector_Raw"] == "Tourisme"
+    assert item.Sector == config.SECTOR_UNKNOWN
 
 
 def test_activity_rules_keep_noncanonical_associations_out():

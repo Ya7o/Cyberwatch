@@ -287,7 +287,14 @@ def test_budget_officiel_epuise_ne_fige_pas_not_found(monkeypatch):
     assert "intermarche" not in state.cache
 
 
-def test_ai_applique_preuve_officielle_sans_appel_openai(make_item, monkeypatch):
+def test_ai_najamais_applique_une_preuve_site_officiel_directement(make_item, monkeypatch):
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin"),
+    cas réel Klark AI : un secteur validé via "official_site" (texte du
+    site officiel scrappé, classé par un regex — jamais un code NAF) ne
+    doit plus jamais être appliqué directement à l'ingestion, contrairement
+    au comportement antérieur. Il reste lu comme preuve faible
+    (EVIDENCE_OFFICIAL_SITE) par organisation_sector.py, qui le transmet au
+    LLM organisationnel final plutôt que de le décider seul."""
     item = make_item(
         source="BONJOURLAFUITE",
         org="Intermarché",
@@ -331,6 +338,6 @@ def test_ai_applique_preuve_officielle_sans_appel_openai(make_item, monkeypatch)
     state = ai.AiRunState(enabled=False, org_enrichment=org_state)
     ai.qualify_item(item, entry, spec, state)
 
-    assert item.Sector == config.SECTOR_RETAIL
-    assert state.sector_resolved_enrichment_cache == 1
+    assert item.Sector == config.SECTOR_UNKNOWN
+    assert state.sector_resolved_enrichment_cache == 0
     assert state.calls_attempted == 0

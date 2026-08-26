@@ -4,12 +4,12 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from . import (
     config,
-    context_sector,
     enrichment,
     identity,
     incremental,
     org_enrichment,
     organisation_sector,
+    organisation_sector_llm,
     qualification_policy,
     sector as sector_policy,
     sector_registry,
@@ -100,19 +100,6 @@ def stabilize_threats(items):
                 item.Threat = scoped
         if item.Threat != before:
             changed += 1
-    return changed
-
-
-def backfill_safe_name_sectors(items):
-    changed = 0
-    for item in items:
-        if item.Sector != config.SECTOR_UNKNOWN:
-            continue
-        candidate = sector_policy.classify_sector_name(item.Organisation_Raw)
-        if candidate == config.SECTOR_UNKNOWN:
-            continue
-        item.Sector = candidate
-        changed += 1
     return changed
 
 
@@ -286,22 +273,19 @@ def qualify(items):
     changes["llm_sector_restored"], changes["sector_registry_restored"] = restored, registry_restored
     changes["organisation_sector_restored"] = org_sector_restored
 
-    changes["sector_structured_source_backfill"] = _observe_layer(
-        decisions,
-        ordered,
-        origin="STRUCTURED_SOURCE",
-        confidence="HIGH",
-        mutate=lambda: backfill_structured_source_sectors(ordered, source_facts),
-    )
-    context_applied, context_provenance, context_conflicts = context_sector.resolve_contextual_sectors(
-        ordered, source_facts, org_cache
-    )
-    decisions.extend(decisions_from_provenance(context_provenance))
-    changes["sector_context_applied"], changes["sector_context_conflicts"] = context_applied, context_conflicts
-
-    official_applied, official_provenance = apply_official_subject_activity_sectors(ordered, org_cache)
-    decisions.extend(decisions_from_provenance(official_provenance))
-    changes["sector_official_subject_activity_applied"] = official_applied
+    # Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    # backfill_structured_source_sectors, context_sector.resolve_contextual_sectors,
+    # apply_official_subject_activity_sectors et backfill_safe_name_sectors ne
+    # sont plus appelés ici — chacun appliquait directement Item.Sector en
+    # concurrence avec organisation_sector.py, qui collecte déjà la même
+    # preuve (structured_source/source_activity/official_subject_activity/
+    # safe_name) de façon indépendante. Le premier qui s'exécutait gagnait
+    # selon l'ordre du code, pas selon le mérite de la preuve (cas réel :
+    # Klark AI classé "Services aux entreprises" par un mécanisme d'ingestion
+    # séparé avant que ce module n'ait pu arbitrer). Seules deux autorités
+    # court-circuitent encore directement : la référence manuelle
+    # (ci-dessus) et le NAF précis (dans organisation_sector.py et, à
+    # l'ingestion, ai.py — seulement si Validated_Via == "deterministic").
 
     org_sector_decisions = organisation_sector.resolve_all_organisation_sectors(
         ordered,
@@ -315,6 +299,39 @@ def qualify(items):
     )
     decisions.extend(decisions_from_provenance(org_sector_provenance))
     changes["organisation_sector_applied"] = org_sector_applied
+
+    # Étape finale obligatoire : toute organisation qu'aucune des deux
+    # autorités (référence manuelle, NAF précis) n'a résolue passe par le LLM
+    # organisationnel, qui voit l'ensemble des preuves faibles déjà
+    # collectées (structured_source, safe_name, official_subject_activity,
+    # source_activity, domain_page, official_site) plutôt qu'un arbitrage
+    # déterministe entre elles. Non bloquant : budget épuisé ou erreur API ->
+    # l'organisation reste Inconnu, jamais d'échec de run.
+    llm_report = organisation_sector_llm.enrich_unknown_organisation_sectors(
+        ordered,
+        reference=reference,
+        source_fact_rows=source_facts,
+        org_cache_rows=org_cache,
+        previous_provenance=previous_provenance,
+    )
+    changes["organisation_sector_llm_selected"] = llm_report.organisations_selected
+    changes["organisation_sector_llm_calls"] = llm_report.calls
+    changes["organisation_sector_llm_candidates"] = llm_report.candidates
+    changes["organisation_sector_llm_abstentions"] = llm_report.abstentions
+
+    org_sector_decisions = organisation_sector.resolve_all_organisation_sectors(
+        ordered,
+        reference=reference,
+        source_fact_rows=source_facts,
+        org_cache_rows=org_cache,
+        previous_provenance=previous_provenance,
+        llm_cache_rows=llm_report.cache_rows,
+    )
+    org_sector_llm_applied, org_sector_llm_provenance = organisation_sector.apply_organisation_sector_decisions(
+        ordered, org_sector_decisions
+    )
+    decisions.extend(decisions_from_provenance(org_sector_llm_provenance))
+    changes["organisation_sector_applied"] += org_sector_llm_applied
     changes.update(organisation_sector.summary(org_sector_decisions))
 
     registry_rows = sector_registry.build_registry(
@@ -325,19 +342,13 @@ def qualify(items):
         previous_provenance=previous_provenance,
     )
     sector_registry_safety.enforce_candidate_conflicts(registry_rows)
-    registry_applied, registry_provenance, registry_known_conflicts = sector_registry.apply_registry(ordered, registry_rows)
-    decisions.extend(decisions_from_provenance(registry_provenance))
-    changes["sector_registry_applied"], changes["sector_registry_known_conflicts"] = registry_applied, registry_known_conflicts
+    # apply_registry (auto-application) est retiré : 0 application réelle
+    # constatée, entièrement supplanté par organisation_sector.py + le LLM
+    # final ci-dessus. build_registry/build_enrichment_queue restent pour
+    # alimenter la file de revue humaine (site.py lit sector_enrichment_queue.csv).
     changes["sector_registry_auto_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_AUTO for row in registry_rows)
     changes["sector_registry_review_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_REVIEW for row in registry_rows)
     changes["sector_registry_conflict_orgs"] = sum(row.get("Decision") == sector_registry.DECISION_CONFLICT for row in registry_rows)
-    changes["sector_safe_name_backfill"] = _observe_layer(
-        decisions,
-        ordered,
-        origin="SAFE_NAME_RULE",
-        confidence="HIGH",
-        mutate=lambda: backfill_safe_name_sectors(ordered),
-    )
     changes.update(
         _observe_layer(
             decisions,

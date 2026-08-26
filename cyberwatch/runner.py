@@ -414,9 +414,18 @@ def _verify_native_ransomware_sector(
     if record is None or record.Match_Status != org_enrichment.MATCHED:
         return
 
-    candidate = record.Validated_Sector
-    if not candidate and record.Activity_Label:
+    # Refonte 2026-08-26 ("preuves partout, décision unique à la fin") : seul
+    # un vrai code NAF (Validated_Via == "deterministic") peut corriger ici,
+    # même garde-fou que ai.py::_escalate_org_enrichment_deterministic — un
+    # secteur "official_site" (texte de site scrappé, jamais un code NAF)
+    # reste une preuve faible pour organisation_sector.py, jamais appliqué
+    # directement (cas réel Klark AI qui a motivé cette refonte).
+    if record.Validated_Sector and record.Validated_Via == "deterministic":
+        candidate = record.Validated_Sector
+    elif not record.Validated_Via and record.Activity_Label:
         candidate = org_enrichment.sector_for_activity_label(record.Activity_Label)
+    else:
+        candidate = config.SECTOR_UNKNOWN
     if candidate and candidate != config.SECTOR_UNKNOWN and candidate != item.Sector:
         item.Sector = candidate
 

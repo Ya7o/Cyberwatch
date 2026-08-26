@@ -6,46 +6,50 @@ ni la nature des données volées, ni le contexte de l'incident.
 Ce module résout ``Sector`` au niveau ``Organisation_Key``, à partir des
 preuves déjà collectées ailleurs dans Cyberwatch (référentiel manuel, sources
 structurées, cache d'enrichissement entreprise, provenance de qualification).
-Aucun accès réseau, aucun LLM : le complément par LLM organisationnel (P1) vit
-dans :mod:`cyberwatch.organisation_sector_llm` et n'alimente ce resolver que
-via une preuve explicite ``llm_organisation``, jamais suffisante seule.
+Aucun accès réseau, aucun LLM ici : le complément par LLM organisationnel vit
+dans :mod:`cyberwatch.organisation_sector_llm`.
+
+Refonte 2026-08-26 (« preuves partout, décision unique à la fin », audit du
+cas réel Klark AI — voir ``EVIDENCE_OFFICIAL_SITE`` — appliqué à tort par un
+mécanisme d'ingestion séparé avant que ce module n'ait pu arbitrer quoi que
+ce soit) : seules deux autorités court-circuitent tout le reste sans jamais
+solliciter de LLM — ``manual_reference`` (validation humaine) et
+``naf_precise_v2`` (code NAF officiel). Tous les autres types de preuve
+(``structured_source``, ``safe_name``, ``official_subject_activity``,
+``source_activity``, ``domain_page``, ``official_site``) ne décident plus
+jamais seuls : ils sont uniquement collectés ici pour alimenter le contexte
+transmis au LLM organisationnel, devenu une étape **obligatoire** de
+``qualify()`` (plus une commande manuelle à part) pour toute organisation
+qu'aucune des deux autorités n'a résolue. Sa réponse (``llm_organisation``)
+devient alors la décision, avec une confiance toujours ``LOW`` (jamais une
+preuve forte, mais appliquée : voir le revirement de politique du
+2026-08-26 sur "plus proche que Inconnu", ci-dessous).
 
 Statuts possibles :
 
-    CONFIRMED   au moins un type de preuve gagnant désigne Item.Sector
-                (confidence HIGH si le type gagnant est fort, LOW s'il est
-                faible/LLM — mais dans les deux cas appliqué, cf. §revirement
-                ci-dessous)
-    CONFLICT    preuves du même type (le plus prioritaire présent) qui se
-                contredisent entre elles
-    UNKNOWN     aucune preuve du tout
+    CONFIRMED   manual_reference, naf_precise_v2, ou (après son passage
+                obligatoire) llm_organisation a tranché pour cette
+                organisation — HIGH pour les deux premiers, LOW pour le LLM
+    CONFLICT    preuves du même type (manual_reference ou naf_precise_v2)
+                qui se contredisent entre elles
+    UNKNOWN     aucune des deux autorités, et le LLM final n'a pas encore
+                tranché (budget épuisé, erreur API non bloquante, ou pas
+                encore exécuté pour cette organisation)
 
-Règle d'arbitrage (déterministe, indépendante de l'ordre des candidats — audit
-2026-08-26, révision de la règle d'origine) : préséance complète entre types
-de preuve, du plus au moins déterministe (cf. ``PRECEDENCE``). Le premier type
-présent pour l'organisation tranche :
+Règle d'arbitrage (déterministe, indépendante de l'ordre des candidats —
+cf. ``PRECEDENCE``, réduite à ces 3 types) : le premier type présent pour
+l'organisation tranche, sans jamais redescendre vers un type moins
+prioritaire même unanime ; seule une contradiction interne au type le plus
+prioritaire présent reste un ``CONFLICT``.
 
-    - un type gagnant se dégage (fort ou faible/LLM) -> CONFIRMED, quel que
-      soit un désaccord d'un type moins prioritaire (le perdant reste
-      journalisé dans ``conflicting_sectors``, il ne l'emporte jamais)
-    - plusieurs preuves du même type (le plus prioritaire présent) se
-      contredisent entre elles                      -> CONFLICT (jamais
-      arbitré silencieusement, jamais redescendu vers un type moins
-      prioritaire même unanime)
-    - aucune preuve                                 -> UNKNOWN
-
-Un conflit entre deux types différents n'existe donc plus : la préséance le
-tranche toujours. Seule une incohérence interne au type le plus fiable
-présent reste un ``CONFLICT`` (donnée en contradiction avec elle-même, pas un
-simple désaccord entre deux sources indépendantes).
-
-Revirement de politique (audit 2026-08-26, décision explicite) : une
-proposition faible/LLM seule est désormais **appliquée** à Item.Sector
-(comme une preuve forte), et non plus seulement journalisée sans effet — le
-statut ``TENTATIVE`` et le mécanisme ``sector_tentative`` qui l'accompagnait
-sont retirés. Ce module choisit systématiquement le secteur le plus proche
-disponible plutôt que ``Inconnu`` dès qu'un type de preuve, même faible,
-existe ; seule une absence totale de preuve reste ``UNKNOWN``.
+Revirement de politique (audit 2026-08-26, décision explicite, préexistant à
+cette refonte et toujours en vigueur) : une proposition LLM seule est
+appliquée à Item.Sector comme une preuve forte (statut ``TENTATIVE``, jamais
+appliqué, retiré) — ce module choisit systématiquement le secteur le plus
+proche disponible plutôt que ``Inconnu``, y compris pour une activité
+associative/caritative/politique ; seule une absence totale de résolution
+(les deux autorités absentes ET le LLM final non concluant) reste
+``UNKNOWN``.
 
 Anti-bouclage : une décision appliquée par ce module (``Origin`` égal à
 ``ORIGIN`` ou ``ORIGIN_LLM`` dans ``qualification_provenance.csv``) n'est
@@ -104,18 +108,27 @@ EVIDENCE_VALIDATED_ITEM = "validated_item"
 EVIDENCE_SOURCE_ACTIVITY = "source_activity"
 EVIDENCE_DOMAIN_PAGE = "domain_page"
 EVIDENCE_LLM_ORGANISATION = "llm_organisation"
+#: Audit 2026-08-26 (refonte "preuves partout, décision unique à la fin") :
+#: un site officiel trouvé par la recherche générale
+#: (company_evidence.resolve_official_site), classé par un regex déterministe
+#: (classify_official_activity), PAS un code NAF. Cas réel qui a motivé cette
+#: refonte : Klark AI classé "Services aux entreprises" sur le seul mot
+#: "consulting firm", appliqué directement à l'ingestion avant que la
+#: moindre autre preuve (ex. "intelligence artificielle") ait sa chance.
+#: Ce canal n'est plus jamais appliqué seul : une preuve parmi d'autres,
+#: transmise au LLM final (§organisation_sector_llm.py).
+EVIDENCE_OFFICIAL_SITE = "official_site"
 
-#: Types de preuve suffisamment sûrs pour, seuls, confirmer ou mettre en
-#: conflit une organisation (§5/§9 du plan). ``structured_source`` n'y entre
-#: que si son sous-canal est explicitement activé par la politique partagée
-#: de :mod:`cyberwatch.sector_registry` (aucune politique parallèle créée).
+#: Types de preuve qui court-circuitent tout le reste : une autorité externe
+#: (NAF officiel) ou une validation humaine, jamais un LLM. Audit 2026-08-26
+#: (refonte "preuves partout, décision unique à la fin") : tous les autres
+#: types de preuve (safe_name, official_subject_activity, validated_item,
+#: structured_source, domain_page, official_site, source_activity) ne
+#: confirment plus jamais seuls — ils alimentent uniquement le contexte du
+#: LLM final (cf. PRECEDENCE plus bas, qui ne les liste plus).
 STRONG_EVIDENCE_TYPES = frozenset({
     EVIDENCE_MANUAL_REFERENCE,
-    EVIDENCE_SAFE_NAME,
-    EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY,
     EVIDENCE_NAF_PRECISE,
-    EVIDENCE_VALIDATED_ITEM,
-    EVIDENCE_STRUCTURED_SOURCE,
 })
 
 #: Origines de ``qualification_provenance.csv`` acceptées comme preuve qu'un
@@ -367,6 +380,34 @@ def _official_subject_activity_evidence(items: list[Item], org_cache_rows: list[
         )
 
 
+def _official_site_evidence(org_cache_rows: list[dict]):
+    """Site officiel trouvé par la recherche générale, classé par un regex
+    déterministe (:func:`cyberwatch.company_evidence.classify_official_activity`),
+    jamais par un code NAF. Audit 2026-08-26 : cas réel Klark AI, appliqué à
+    tort directement à l'ingestion (``Services aux entreprises`` sur le seul
+    mot "consulting firm"). Preuve faible désormais : jamais dans
+    ``STRONG_EVIDENCE_TYPES``, jamais dans ``PRECEDENCE`` — uniquement du
+    contexte pour le LLM final.
+    """
+    for row in org_cache_rows:
+        key = (row.get("Organisation_Key") or "").strip()
+        sector = (row.get("Validated_Sector") or "").strip()
+        if (
+            key
+            and row.get("Match_Status") == org_enrichment.MATCHED
+            and row.get("Validated_Via") == "official_site"
+            and sector in config.SECTORS
+            and sector != config.SECTOR_UNKNOWN
+        ):
+            yield OrganisationSectorEvidence(
+                key, row.get("Matched_Name") or row.get("Query_Name") or key, sector,
+                EVIDENCE_OFFICIAL_SITE, "MEDIUM",
+                source=row.get("Evidence_Source", ""),
+                evidence_text=(row.get("Activity_Label") or "")[:400],
+                evidence_url=row.get("Evidence_URL", ""),
+            )
+
+
 def _naf_precise_evidence(org_cache_rows: list[dict]):
     for row in org_cache_rows:
         key = (row.get("Organisation_Key") or "").strip()
@@ -546,6 +587,7 @@ def collect_organisation_evidence(
         _structured_source_evidence(items, source_fact_rows, policy),
         _safe_name_evidence(items),
         _official_subject_activity_evidence(items, org_cache_rows),
+        _official_site_evidence(org_cache_rows),
         _naf_precise_evidence(org_cache_rows),
         _source_activity_evidence(items, source_fact_rows),
         _domain_page_evidence(domain_page_rows),
@@ -570,22 +612,25 @@ def collect_organisation_evidence(
 # --------------------------------------------------------------------------
 
 
-#: Ordre de préséance du plus au moins déterministe (audit 2026-08-26). Un
-#: conflit entre deux TYPES différents est désormais toujours tranché par
-#: cet ordre, jamais laissé en CONFLICT — seule une contradiction interne au
-#: type le plus prioritaire présent (deux preuves du même type qui se
-#: contredisent) reste un CONFLICT. Fonction pure de la préséance déclarée
-#: ici, jamais de l'ordre d'arrivée des preuves : le déterminisme est
-#: préservé, seule la définition du conflit change.
+#: Ordre de préséance (audit 2026-08-26, refonte "preuves partout, décision
+#: unique à la fin"). Réduit à 3 types depuis le revirement précédent :
+#: ``manual_reference``/``naf_precise_v2`` restent deux autorités qui
+#: court-circuitent tout le reste (aucun appel LLM, comportement inchangé).
+#: Tous les autres types de preuve (structured_source, safe_name,
+#: official_subject_activity, source_activity, domain_page, official_site)
+#: NE sont PLUS dans cette liste : ils ne décident plus jamais seuls, ils ne
+#: font qu'alimenter le contexte transmis au LLM organisationnel
+#: (:mod:`cyberwatch.organisation_sector_llm`), devenu une étape obligatoire
+#: de ``qualify()``. ``llm_organisation`` reste en 3e position : après son
+#: passage obligatoire, sa réponse (dernier recours, jamais une preuve
+#: forte : confidence toujours LOW) devient la décision pour toute
+#: organisation qu'aucune des deux autorités n'a su résoudre. Une
+#: contradiction interne à un même type reste un CONFLICT, jamais arbitrée
+#: silencieusement ; le déterminisme est préservé (fonction pure de la
+#: préséance déclarée ici, jamais de l'ordre d'arrivée des preuves).
 PRECEDENCE: tuple[str, ...] = (
     EVIDENCE_MANUAL_REFERENCE,
     EVIDENCE_NAF_PRECISE,
-    EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY,
-    EVIDENCE_STRUCTURED_SOURCE,
-    EVIDENCE_VALIDATED_ITEM,
-    EVIDENCE_SAFE_NAME,
-    EVIDENCE_DOMAIN_PAGE,
-    EVIDENCE_SOURCE_ACTIVITY,
     EVIDENCE_LLM_ORGANISATION,
 )
 

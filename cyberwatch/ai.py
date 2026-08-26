@@ -372,34 +372,6 @@ def _call_openai(item: Item, entry: RawEntry, spec: SourceSpec, requested: list[
     return _post_openai(body, state)
 
 
-def _call_openai_sector_label(activity_label: str, state: AiRunState) -> dict:
-    body = {
-        "model": state.model,
-        "input": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": (
-                    "=== Activity_Description officielle ===\n"
-                    f"{activity_label}\n\n"
-                    "Sector uniquement. Si le libellé est trop large, réponds Inconnu."
-                ),
-            },
-        ],
-        "text": {
-            "format": {
-                "type": "json_schema",
-                "name": "cyberwatch_qualification",
-                "schema": _build_schema(["Sector"]),
-                "strict": True,
-            }
-        },
-        "reasoning": {"effort": "minimal"},
-        "max_output_tokens": state.max_output_tokens,
-    }
-    return _post_openai(body, state)
-
-
 _SECTOR_INCIDENT_VOCAB: set[str] | None = None
 
 
@@ -645,8 +617,11 @@ def qualify_item(item: Item, entry: RawEntry, spec: SourceSpec, state: AiRunStat
                         state,
                     )
 
-    if sector_requested and item.Sector == config.SECTOR_UNKNOWN:
-        _escalate_sector_llm(item, entry, spec, state)
+    # Refonte 2026-08-26 : _escalate_sector_llm retiré, Sector n'est plus
+    # jamais décidé par une escalade LLM précoce ici — voir
+    # organisation_sector_llm.py, devenu l'étape finale obligatoire dans
+    # qualification.qualify(), qui voit l'ensemble des preuves plutôt qu'un
+    # seul item isolé.
 
 
 def _apply_and_count_sector(
@@ -715,11 +690,28 @@ def _escalate_org_enrichment_deterministic(
     if item.Sector != config.SECTOR_UNKNOWN or not record.Activity_Label:
         return
 
-    if record.Validated_Sector:
+    # Refonte 2026-08-26 ("preuves partout, décision unique à la fin") : seul
+    # un vrai code NAF (Validated_Via == "deterministic") court-circuite ici.
+    # Cas réel qui a motivé ce garde-fou : Klark AI, dont le cache portait
+    # Validated_Sector="Services aux entreprises"/Validated_Via="official_site"
+    # (texte du site officiel scrappé, classé par un regex — jamais un code
+    # NAF) et qui était pourtant appliqué directement ici sans distinction,
+    # avant que la moindre autre preuve (ex. "intelligence artificielle")
+    # n'ait sa chance. Un secteur non-NAF déjà en cache reste lu comme preuve
+    # par organisation_sector.py (canal EVIDENCE_OFFICIAL_SITE), jamais
+    # appliqué ici.
+    if record.Validated_Sector and record.Validated_Via == "deterministic":
         state.provenance.append(_org_enrichment_provenance_row(item, record.Validated_Sector, record))
         item.Sector = record.Validated_Sector
         state.sector_resolved_enrichment_cache += 1
         state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
+        return
+
+    # Un Validated_Via déjà renseigné (ex. "official_site"/"official_site_text")
+    # signifie que ce record vient du repli site officiel, jamais du candidat
+    # registre lui-même : sector_for_activity_label ne mappe que des libellés
+    # de section NAF, jamais du texte de site scrappé.
+    if record.Validated_Via:
         return
 
     sector = org_enrichment.sector_for_activity_label(record.Activity_Label)
@@ -734,73 +726,6 @@ def _escalate_org_enrichment_deterministic(
     org_state.cache[item.Organisation_Key] = asdict(record)
     state.sector_resolved_enriched_deterministic += 1
     state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
-
-
-def _escalate_sector_llm(
-    item: Item,
-    entry: RawEntry,
-    spec: SourceSpec,
-    state: AiRunState,
-) -> None:
-    del entry, spec
-    if item.Sector != config.SECTOR_UNKNOWN or not state.enabled:
-        return
-    org_state = state.org_enrichment
-    record_row = org_state.cache.get(item.Organisation_Key)
-    if not record_row or record_row.get("Match_Status") != org_enrichment.MATCHED:
-        return
-    activity_label = record_row.get("Activity_Label", "")
-    if not activity_label or record_row.get("Validated_Via") == "llm_declined":
-        return
-    if record_row.get("Validated_Via") in ("deterministic", "llm"):
-        return
-    if state.calls_attempted >= state.max_calls or state.estimated_cost_usd >= state.max_cost:
-        return
-
-    state.calls_attempted += 1
-    try:
-        payload = _call_openai_sector_label(activity_label, state)
-        raw = _extract_output_json(payload)
-    except AiCallError as exc:
-        state.calls_failed += 1
-        print(f"Qualification IA : escalade Secteur échouée pour {item.Item_ID} ({exc}).")
-        return
-
-    usage = _extract_usage(payload)
-    state.input_tokens += usage["input_tokens"]
-    state.cached_input_tokens += usage["cached_input_tokens"]
-    state.output_tokens += usage["output_tokens"]
-    state.reasoning_tokens += usage["reasoning_tokens"]
-    state.total_tokens += usage["total_tokens"]
-    state.estimated_cost_usd += _estimate_cost(
-        state.model,
-        usage["input_tokens"],
-        usage["output_tokens"],
-    )
-
-    decision, _rejected = _validate(
-        raw,
-        ["Sector"],
-        activity_label,
-        item.Organisation_Key,
-        sector_context=activity_label,
-    )
-    value = decision.get("Sector")
-    confidence = decision.get("Sector_Confidence", 0.0)
-
-    updated = dict(record_row)
-    updated["Cache_Version"] = org_enrichment.ORG_ENRICHMENT_CACHE_VERSION
-    if value and value != config.SECTOR_UNKNOWN and confidence >= FIELD_SPECS["Sector"][3]:
-        state.calls_succeeded += 1
-        item.Sector = value
-        updated["Validated_Sector"] = value
-        updated["Validated_Via"] = "llm"
-        state.sector_resolved_enriched_llm += 1
-        state.qualified["Sector"] = state.qualified.get("Sector", 0) + 1
-    else:
-        state.calls_failed += 1
-        updated["Validated_Via"] = "llm_declined"
-    org_state.cache[item.Organisation_Key] = updated
 
 
 def _row_from_decision(

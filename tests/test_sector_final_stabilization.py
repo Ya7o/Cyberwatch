@@ -222,6 +222,50 @@ def test_ransomware_native_sector_est_corrige_par_preuve_entreprise_plus_forte(m
     assert item.Sector == config.SECTOR_CONSTRUCTION
 
 
+def test_ransomware_native_sector_najamais_corrige_par_site_officiel(make_item, monkeypatch):
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin"),
+    même garde-fou que ai.py::_escalate_org_enrichment_deterministic : un
+    Validated_Via == "official_site" (texte de site scrappé, jamais un code
+    NAF) ne doit plus jamais corriger directement le secteur natif — cas
+    réel Klark AI qui a motivé cette refonte."""
+    item = make_item(
+        source="RANSOMWARE_LIVE",
+        org="Eiffage",
+        sector=config.SECTOR_TRANSPORT,
+        threat=config.THREAT_RANSOMWARE,
+        location=config.LOC_FRANCE,
+    )
+    entry = RawEntry(
+        title="Eiffage revendiqué par un groupe ransomware",
+        published="2026-03-01",
+        organisation="Eiffage",
+        sector="Transportation",
+    )
+    spec = SourceSpec(
+        source_id="RANSOMWARE_LIVE",
+        layer=config.LAYER_CORE,
+        zone="Multi",
+        collector="ransomware_live",
+    )
+    record = org_enrichment.OrgEnrichmentRecord(
+        Organisation_Key=item.Organisation_Key,
+        Query_Name="Eiffage",
+        Matched_Name="Eiffage",
+        Activity_Label="Eiffage, leader du BTP et des concessions.",
+        Match_Status=org_enrichment.MATCHED,
+        Fetched_At="2026-08-17",
+        Validated_Sector=config.SECTOR_CONSTRUCTION,
+        Validated_Via="official_site",
+        Cache_Version=org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
+    )
+    monkeypatch.setattr(org_enrichment, "resolve", lambda *a, **k: record)
+    state = SimpleNamespace(org_enrichment=org_enrichment.OrgEnrichmentState(enabled=True))
+
+    runner._verify_native_ransomware_sector(item, entry, spec, state)
+
+    assert item.Sector == config.SECTOR_TRANSPORT
+
+
 def test_ransomware_native_sector_reste_fallback_sans_preuve_plus_forte(make_item, monkeypatch):
     item = make_item(
         source="RANSOMWARE_LIVE",

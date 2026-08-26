@@ -377,33 +377,39 @@ def test_llm_plus_validated_org_concordant_confirms():
     assert decision.sector == config.SECTOR_ENERGY
 
 
-def test_llm_contradictory_with_confirmed_never_overrides():
-    strong = osec.OrganisationSectorEvidence(
+def test_llm_wins_when_official_subject_activity_disagrees():
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    official_subject_activity n'est plus dans PRECEDENCE (ni dans
+    STRONG_EVIDENCE_TYPES) — ce n'est plus qu'un contexte parmi d'autres
+    pour le LLM final. llm_organisation, seul type restant présent ici,
+    tranche donc désormais seul (confidence LOW, jamais une preuve forte),
+    et le secteur écarté reste journalisé pour audit."""
+    weak_official = osec.OrganisationSectorEvidence(
         "acme", "Acme", config.SECTOR_HEALTH, osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY, "HIGH",
     )
     llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_TECH)
-    decision = osec.resolve_organisation_sector("acme", "Acme", [strong, llm_evidence])
+    decision = osec.resolve_organisation_sector("acme", "Acme", [weak_official, llm_evidence])
+    assert osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY not in osec.PRECEDENCE
     assert decision.status == osec.STATUS_CONFIRMED
-    assert decision.sector == config.SECTOR_HEALTH
-    assert decision.winning_evidence_type == osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY
-    assert config.SECTOR_TECH in decision.conflicting_sectors
+    assert decision.confidence == "LOW"
+    assert decision.sector == config.SECTOR_TECH
+    assert decision.winning_evidence_type == osec.EVIDENCE_LLM_ORGANISATION
+    assert config.SECTOR_HEALTH in decision.conflicting_sectors
 
 
-def test_source_activity_outranks_llm_organisation_on_disagreement():
-    """Révision de l'arbitrage (audit 2026-08-26) : ce n'était un CONFLICT
-    non résolu qu'avant la préséance complète. source_activity est plus
-    déterministe que llm_organisation (préséance du plus au moins
-    déterministe) : il gagne désormais, CONFIRMÉ avec une confiance LOW
-    (aucun des deux types n'est une preuve forte, mais toute proposition
-    gagnante est désormais appliquée — revirement de politique du
-    2026-08-26)."""
+def test_llm_wins_when_source_activity_disagrees():
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    source_activity n'est plus dans PRECEDENCE — ce n'est plus qu'un
+    contexte pour le LLM final, jamais un concurrent dans l'arbitrage.
+    llm_organisation, seul type restant présent, tranche seul."""
     weak_registry_like = osec.OrganisationSectorEvidence(
         "acme", "Acme", config.SECTOR_RETAIL, osec.EVIDENCE_SOURCE_ACTIVITY, "MEDIUM",
     )
     llm_evidence = _llm_evidence("acme", "Acme", config.SECTOR_SERVICES)
     decision = osec.resolve_organisation_sector("acme", "Acme", [weak_registry_like, llm_evidence])
+    assert osec.EVIDENCE_SOURCE_ACTIVITY not in osec.PRECEDENCE
     assert decision.status == osec.STATUS_CONFIRMED
     assert decision.confidence == "LOW"
-    assert decision.sector == config.SECTOR_RETAIL
-    assert decision.winning_evidence_type == osec.EVIDENCE_SOURCE_ACTIVITY
-    assert config.SECTOR_SERVICES in decision.conflicting_sectors
+    assert decision.sector == config.SECTOR_SERVICES
+    assert decision.winning_evidence_type == osec.EVIDENCE_LLM_ORGANISATION
+    assert config.SECTOR_RETAIL in decision.conflicting_sectors

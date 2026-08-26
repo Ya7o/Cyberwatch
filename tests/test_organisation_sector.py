@@ -59,7 +59,12 @@ def test_propagation_from_naf_precise(make_item):
     assert sibling.Sector == config.SECTOR_HEALTH
 
 
-def test_propagation_from_official_subject_activity(make_item):
+def test_official_subject_activity_alone_no_longer_confirms(make_item):
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    official_subject_activity n'est plus dans PRECEDENCE — comme tous les
+    types faibles, il alimente uniquement le contexte du LLM organisationnel
+    final (organisation_sector_llm.py, appel obligatoire dans qualify()),
+    jamais une décision directe à lui seul."""
     source = make_item(org="Acme Groupe", sector=config.SECTOR_UNKNOWN)
     sibling = make_item(source_item_id="2", org="Acme Groupe", sector=config.SECTOR_UNKNOWN, url="https://example.org/b")
     org_cache_rows = [{
@@ -74,8 +79,8 @@ def test_propagation_from_official_subject_activity(make_item):
         [source, sibling], reference={}, org_cache_rows=org_cache_rows,
     )
     decision = decisions[source.Organisation_Key]
-    assert decision.status == osec.STATUS_CONFIRMED
-    assert decision.sector == config.SECTOR_CONSTRUCTION
+    assert osec.EVIDENCE_OFFICIAL_SUBJECT_ACTIVITY not in osec.PRECEDENCE
+    assert decision.status == osec.STATUS_UNKNOWN
 
 
 def test_no_propagation_from_weak_source_activity_alone(make_item):
@@ -99,17 +104,15 @@ def test_no_propagation_from_weak_source_activity_alone(make_item):
     assert provenance == []
 
 
-def test_classifiable_source_activity_alone_is_confirmed_and_applied(make_item):
+def test_classifiable_source_activity_alone_is_only_context_now(make_item):
     """Révision §9 Cas 4 (audit 2026-08-26, cas réels Klark.ai/TimeTonic/
-    Groupe Bernard), puis revirement de politique (audit 2026-08-26,
-    décision explicite) : un indice métier explicite et classable — le
-    classificateur strict le reconnaît, pas un simple mot-clé du récit —
-    suffit désormais seul à CONFIRMER et à appliquer un secteur à
-    Item.Sector, même sans candidat LLM convergent. Une proposition
-    faible/LLM seule n'est plus journalisée sans effet (ancien
-    STATUS_TENTATIVE, retiré) : elle est désormais traitée comme une
-    preuve forte du point de vue de l'application, avec une confiance
-    LOW pour la distinguer."""
+    Groupe Bernard), puis refonte du 2026-08-26 ("preuves partout, décision
+    unique à la fin") : source_activity n'est plus dans PRECEDENCE — il
+    n'alimente désormais que le contexte transmis au LLM organisationnel
+    final, jamais une décision directe, même pour un indice métier
+    explicite et classable. L'organisation reste UNKNOWN tant que le LLM
+    final (organisation_sector_llm.py, appel obligatoire de qualify()) n'a
+    pas tranché à partir de ce même contexte."""
     source = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
     sibling = make_item(source_item_id="2", org="Acme", sector=config.SECTOR_UNKNOWN, url="https://example.org/b")
     source_fact_rows = [{
@@ -121,15 +124,14 @@ def test_classifiable_source_activity_alone_is_confirmed_and_applied(make_item):
     )
     decision = decisions[source.Organisation_Key]
 
-    assert decision.status == osec.STATUS_CONFIRMED
-    assert decision.confidence == "LOW"
-    assert decision.sector == config.SECTOR_TECH
+    assert osec.EVIDENCE_SOURCE_ACTIVITY not in osec.PRECEDENCE
+    assert decision.status == osec.STATUS_UNKNOWN
     assert osec.EVIDENCE_SOURCE_ACTIVITY in decision.evidence_types
 
     changed, _provenance = osec.apply_organisation_sector_decisions([source, sibling], decisions)
-    assert changed == 2
-    assert source.Sector == config.SECTOR_TECH
-    assert sibling.Sector == config.SECTOR_TECH
+    assert changed == 0
+    assert source.Sector == config.SECTOR_UNKNOWN
+    assert sibling.Sector == config.SECTOR_UNKNOWN
 
 
 def test_no_propagation_from_org_sector_registry_origin(make_item):

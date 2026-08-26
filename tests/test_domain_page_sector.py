@@ -233,13 +233,14 @@ def _cache_row(item, sector=config.SECTOR_TECH):
     }
 
 
-def test_preuve_page_seule_est_confirmee_et_appliquee(make_item):
-    """Preuve MEDIUM hors STRONG_EVIDENCE_TYPES. Revirement de politique
-    (audit 2026-08-26, décision explicite) : un signal faible seul, même
-    sans candidat LLM convergent, suffit désormais à CONFIRMER et à
-    appliquer un secteur — ancien STATUS_TENTATIVE (jamais appliqué)
-    retiré. La confiance reste LOW pour distinguer ce cas d'une preuve
-    forte."""
+def test_preuve_page_seule_reste_inconnue_avant_le_llm_final(make_item):
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    domain_page n'est plus dans PRECEDENCE — comme tous les types faibles,
+    il alimente uniquement le contexte du LLM organisationnel final, jamais
+    une décision directe. Sans candidat LLM en cache, l'organisation reste
+    UNKNOWN ; c'est seulement le passage obligatoire par
+    organisation_sector_llm.py (qualification.qualify()) qui produirait
+    ensuite un candidat à partir de ce même contexte."""
     item = make_item(org="Klark.ai", sector=config.SECTOR_UNKNOWN)
 
     decisions = osec.resolve_all_organisation_sectors(
@@ -249,14 +250,12 @@ def test_preuve_page_seule_est_confirmee_et_appliquee(make_item):
     decision = decisions[item.Organisation_Key]
 
     assert osec.EVIDENCE_DOMAIN_PAGE not in osec.STRONG_EVIDENCE_TYPES
-    assert decision.status == osec.STATUS_CONFIRMED
-    assert decision.confidence == "LOW"
-    assert decision.sector == config.SECTOR_TECH
-    assert decision.winning_evidence_type == osec.EVIDENCE_DOMAIN_PAGE
+    assert osec.EVIDENCE_DOMAIN_PAGE not in osec.PRECEDENCE
+    assert decision.status == osec.STATUS_UNKNOWN
 
     changed, _provenance = osec.apply_organisation_sector_decisions([item], decisions)
-    assert changed == 1
-    assert item.Sector == config.SECTOR_TECH
+    assert changed == 0
+    assert item.Sector == config.SECTOR_UNKNOWN
 
 
 def test_preuve_page_convergente_avec_le_llm_est_confirmee(make_item):

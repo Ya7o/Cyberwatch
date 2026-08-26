@@ -75,27 +75,15 @@ def _reusable_fact(item, entry, spec) -> dict | None:
     return dict(cached)
 
 
-def _apply_cached_sector_side_effect(item, fact: dict) -> None:
-    try:
-        from . import config, sector
-        from .sector_completion import _strong_activity_sector
-    except ImportError:
-        return
-    if item.Sector != config.SECTOR_UNKNOWN:
-        return
-    raw_sector = str(fact.get("Source_Sector_Raw") or "").strip()
-    if raw_sector:
-        candidate = sector.classify_source_sector(raw_sector)
-        if candidate in config.SECTORS and candidate != config.SECTOR_UNKNOWN:
-            item.Sector = candidate
-            return
-    activity = str(fact.get("Activity_Description") or "").strip()
-    candidate = _strong_activity_sector(activity)
-    if candidate in config.SECTORS and candidate != config.SECTOR_UNKNOWN:
-        item.Sector = candidate
-
-
 def _patch_source_facts() -> None:
+    """Refonte 2026-08-26 ("preuves partout, décision unique à la fin") :
+    l'ancien ``_apply_cached_sector_side_effect`` appliquait Item.Sector
+    directement sur le chemin cache-hit, en concurrence avec
+    organisation_sector.py — retiré, même raison que le patch jumeau de
+    :mod:`cyberwatch.sector_completion`. La preuve reste disponible via
+    Source_Sector_Raw/Activity_Description dans le fait mis en cache,
+    jamais appliquée ici.
+    """
     from . import source_facts
     if getattr(source_facts, "_incremental_performance_installed", False):
         return
@@ -109,7 +97,6 @@ def _patch_source_facts() -> None:
             cached = _reusable_fact(item, entry, spec)
             if cached is not None:
                 _FULL_FACT_CACHE_HITS += 1
-                _apply_cached_sector_side_effect(item, cached)
                 return cached
         return original_extract(item, entry, spec, **kwargs)
 
