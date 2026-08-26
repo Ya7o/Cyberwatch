@@ -71,8 +71,26 @@ def classify_explicit_activity(activity: str) -> str:
         "vente d accessoires",
         "vente d equipements",
         "vente de pieces",
+        # Cas réel (audit 2026-08-26, Groupe Bernard) : "distribution ET LA
+        # MAINTENANCE de matériel agricole" ne matche pas "distribution de
+        # materiel" (clause intercalée). "materiel agricole" est un signal
+        # sûr en lui-même, indépendamment de la formulation autour.
+        "materiel agricole",
+        # Cas réel (Emil Frey France) : même famille que "distribution de
+        # materiel" ci-dessus, un produit différent.
+        "distribution de vehicules",
     )):
         return config.SECTOR_RETAIL
+
+    # Cas réels (audit 2026-08-26, Klark.ai / TimeTonic) : une plateforme
+    # logicielle explicitement décrite comme telle est un signal sûr, dans
+    # le même esprit étroit que les autres blocs de cette fonction — deux
+    # formulations observées, rien de plus large.
+    if any(marker in text for marker in (
+        "intelligence artificielle",
+        "plateforme no code",
+    )):
+        return config.SECTOR_TECH
 
     if any(marker in text for marker in (
         "renovation de l habitat",

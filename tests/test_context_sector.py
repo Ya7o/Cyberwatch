@@ -43,6 +43,36 @@ def test_context_activity_examples_from_observed_long_tail():
     ) == config.SECTOR_RETAIL
 
 
+def test_activite_logicielle_explicite_est_classable():
+    """Cas réels (audit 2026-08-26) : Klark.ai et TimeTonic décrivaient
+    explicitement une plateforme logicielle, mais classify_explicit_activity
+    n'avait aucun vocabulaire tech/SaaS/IA — seulement énergie, hôtellerie,
+    commerce-matériel, BTP, industrie et sport-esport."""
+    assert context_sector.classify_explicit_activity(
+        "Klark.ai développe une plateforme d'intelligence artificielle destinée aux équipes de relation client."
+    ) == config.SECTOR_TECH
+    assert context_sector.classify_explicit_activity(
+        "TimeTonic développe une plateforme No-Code de gestion et d'automatisation."
+    ) == config.SECTOR_TECH
+
+
+def test_distribution_de_materiel_agricole_avec_clause_intercalee_est_classable():
+    """Cas réel (audit 2026-08-26, Groupe Bernard) : "distribution ET LA
+    MAINTENANCE de matériel agricole" ne matchait pas le motif existant
+    "distribution de materiel" à cause de la clause intercalée. "materiel
+    agricole" est un signal sûr en lui-même, indépendamment de la formulation
+    autour."""
+    assert context_sector.classify_explicit_activity(
+        "spécialisé dans la distribution et la maintenance de matériel agricole"
+    ) == config.SECTOR_RETAIL
+
+
+def test_distribution_de_vehicules_est_classable():
+    """Cas réel (audit 2026-08-26, Emil Frey France) : même famille que
+    "distribution de materiel", un produit différent."""
+    assert context_sector.classify_explicit_activity("Distribution de véhicules.") == config.SECTOR_RETAIL
+
+
 def test_source_title_context_resolves_samboat_without_external_search():
     item = _item(
         "I1",
