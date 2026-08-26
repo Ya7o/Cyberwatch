@@ -14,7 +14,22 @@ from cyberwatch import (
     domain_page_sector as dps,
     official_site_discovery,
     organisation_sector as osec,
+    store,
 )
+
+
+@pytest.fixture(autouse=True)
+def _isolate_data_dir(monkeypatch, tmp_path):
+    """resolve_all_organisation_sectors lit par défaut le cache LLM (P1) et
+    le cache page officielle depuis un chemin dérivé de store.ITEMS_CSV :
+    jamais data/ réel dans les tests (même précaution que
+    test_organisation_sector.py). Un run de reset réel peuple
+    data/organisation_sector_llm.csv avant que les tests ne s'exécutent ;
+    sans cette isolation, un test comme "preuve seule -> Inconnu" devient
+    non déterministe selon ce que la passe précédente a écrit pour la même
+    organisation (constaté en CI : "Klark AI" y obtenait déjà un candidat
+    LLM réel, faisant échouer l'assertion UNKNOWN)."""
+    monkeypatch.setattr(store, "ITEMS_CSV", tmp_path / "items.csv")
 
 
 class _Response:
