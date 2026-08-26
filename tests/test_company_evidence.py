@@ -34,6 +34,27 @@ def test_http_get_se_replie_sur_l_agent_alternatif_si_le_premier_est_refuse(monk
     assert calls == [company_evidence.USER_AGENT, config.HTTP_USER_AGENT_FALLBACK]
 
 
+def test_unwrap_search_url_decode_le_lien_bing():
+    """Cas réel (audit 2026-08-26) : Bing renvoyait de vrais résultats
+    (40-50 liens/requête, non bloqué) mais 100% étaient jetés en aval car
+    ce désenveloppement ne connaissait que le format DuckDuckGo — les liens
+    Bing restaient des URLs bing.com et tombaient dans BLOCKED_DOMAINS
+    quelle que soit leur vraie destination."""
+    wrapped = (
+        "https://www.bing.com/ck/a?!&&p=abc"
+        "&u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS9tZW50aW9ucy1sZWdhbGVz&ntb=1"
+    )
+
+    assert company_evidence._unwrap_search_url(wrapped) == (
+        "https://example.com/mentions-legales"
+    )
+
+
+def test_unwrap_search_url_bing_sans_parametre_u_reste_inchange():
+    url = "https://www.bing.com/search?q=test"
+    assert company_evidence._unwrap_search_url(url) == url
+
+
 def test_classification_officielle_intermarche_commerce():
     result = company_evidence.classify_official_activity(
         "Intermarché est une enseigne de supermarchés. "

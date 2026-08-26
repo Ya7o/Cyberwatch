@@ -12,6 +12,7 @@ LLM ne sont utilisés ici. En cas de doute sur l'identité ou l'activité,
 
 from __future__ import annotations
 
+import base64
 import html
 import os
 import re
@@ -199,6 +200,17 @@ def _clean(value: str) -> str:
 
 
 def _unwrap_search_url(url: str) -> str:
+    """Retrouve la destination réelle derrière un lien de moteur de recherche.
+
+    Cas réel (audit 2026-08-26) : Bing renvoyait de vrais résultats (statut
+    200, 40-50 liens par requête, moteur non bloqué) mais 100% étaient
+    éliminés en aval — ce désenveloppement ne connaissait que le format de
+    redirection DuckDuckGo (``uddg=``), donc les liens Bing restaient des
+    URLs ``bing.com`` et tombaient dans ``BLOCKED_DOMAINS`` (le moteur
+    lui-même, jamais un site officiel), quel que soit leur vraie
+    destination. Bing encode celle-ci en base64 urlsafe sans padding,
+    préfixée ``a1``, dans le paramètre ``u`` de ses liens ``bing.com/ck/a``.
+    """
     if not url:
         return ""
     parsed = urlparse(url)
@@ -207,6 +219,15 @@ def _unwrap_search_url(url: str) -> str:
             return unquote(parse_qs(parsed.query).get("uddg", [""])[0])
         except Exception:
             return ""
+    if "bing.com" in parsed.netloc:
+        wrapped = parse_qs(parsed.query).get("u", [""])[0]
+        if wrapped.startswith("a1"):
+            try:
+                payload = wrapped[2:]
+                padded = payload + "=" * (-len(payload) % 4)
+                return base64.urlsafe_b64decode(padded).decode("utf-8", "ignore")
+            except Exception:
+                return ""
     return url
 
 
