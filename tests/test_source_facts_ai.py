@@ -531,6 +531,42 @@ def test_deterministic_data_type_cited_only_in_a_denial_is_rejected():
     assert [row["value"] for row in values] == ["adresses e-mail"]
 
 
+def test_deterministic_data_types_rejette_une_negation_placee_apres_la_liste():
+    context = (
+        "Les données clients exposées comprennent le nom, l'adresse e-mail et le téléphone. "
+        "Les informations bancaires, identifiants de connexion et mots de passe "
+        "ne sont pas concernés par cette fuite."
+    )
+
+    assert [row["value"] for row in sfa._deterministic_data_types(context)] == [
+        "adresses e-mail",
+        "numéros de téléphone",
+    ]
+
+
+def test_deterministic_data_types_rejette_une_negation_placee_avant_la_liste():
+    context = (
+        "Les données exposées comprennent le nom, l'adresse e-mail et le téléphone. "
+        "Pas de mots de passe ni de cartes bancaires concernés."
+    )
+
+    assert [row["value"] for row in sfa._deterministic_data_types(context)] == [
+        "adresses e-mail",
+        "numéros de téléphone",
+    ]
+
+
+def test_vulnerabilite_de_contexte_corrigee_n_est_pas_le_vecteur_de_l_incident():
+    context = (
+        "Des indices orientent vers une extraction via Metabase. "
+        "Le contexte actuel est particulier : une vulnérabilité critique de "
+        "Metabase permettant un accès administrateur a récemment été corrigée "
+        "après avoir été exploitée comme zero-day."
+    )
+
+    assert sfa._deterministic_initial_access(context) is None
+
+
 def test_impact_long_reste_accepte_car_hors_perimetre_du_plafond_data_types():
     """`impact` réutilise `_normalize_fact` mais n'est pas concerné par
     MAX_LABEL_VALUE_CHARS : une conséquence documentée peut légitimement

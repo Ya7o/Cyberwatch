@@ -26,7 +26,7 @@ from .normalize import (
 
 logger = logging.getLogger(__name__)
 
-SOURCE_FACTS_VERSION = "4"
+SOURCE_FACTS_VERSION = "5"
 
 _BASE_COLUMNS = {
     "Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version",
@@ -169,10 +169,12 @@ def _normalise_url(value: str) -> str:
 
 _ACTOR_SENTINELS = {
     "", "un", "une", "le", "la", "les", "hacker", "le hacker", "un hacker",
+    "de", "et", "group", "groupe",
     "attaquant", "l attaquant", "l'attaquant", "auteur", "inconnu", "non identifie",
     "non identifie publiquement", "n a", "na", "n/a",
     "ransomware", "rancongiciel", "cybercriminel", "cybercriminels", "pirate", "pirates",
-    "article", "publication", "source", "entreprise", "societe", "organisation", "victime", "groupe",
+    "article", "publication", "source", "entreprise", "l entreprise", "l'entreprise",
+    "societe", "la societe", "organisation", "l organisation", "l'organisation", "victime",
 }
 
 

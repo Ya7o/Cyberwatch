@@ -51,6 +51,19 @@ def test_listes_complementaires_sont_fusionnees_sans_doublons():
     assert resolved["data_types"][0]["sources"] == ["CYBERATTAQUE_ORG", "FRENCHBREACHES"]
 
 
+def test_type_de_donnee_mentionne_apres_pas_de_n_est_pas_publie():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        rich_facts={"data_types": [{
+            "value": "mots de passe",
+            "status": "unknown",
+            "evidence": "Pas de mots de passe ni de cartes bancaires concernés.",
+        }]},
+    )])
+
+    assert resolved["data_types"] == []
+
+
 def test_records_total_et_uniques_ne_sont_pas_ecrases():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [
@@ -122,6 +135,44 @@ def test_chiffre_demente_n_est_pas_publie():
             {"value": 10_073, "unit": "records", "scope": "total", "status": "negated"},
         ]}),
     ])
+    assert resolved["affected"] == []
+
+
+def test_chiffre_hypothetique_et_son_repli_legacy_ne_sont_pas_publies():
+    resolved = fr.resolve_incident_facts([fact(
+        "FRENCHBREACHES",
+        affected_count=18_875,
+        affected_unit="clients",
+        claim_status="claimed",
+        rich_facts={"affected_counts": [{
+            "value": 18_875,
+            "unit": "clients",
+            "status": "hypothesis",
+            "evidence": "18 875 clients potentiellement concernés.",
+        }]},
+    )])
+
+    assert resolved["affected"] == []
+
+
+def test_projection_unknown_du_meme_chiffre_hypothetique_est_aussi_rejetee():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "affected_counts": [
+            {
+                "value": 12_400,
+                "unit": "clients",
+                "status": "hypothesis",
+                "evidence": "L'attaquant aurait pu accéder à 12 400 clients.",
+            },
+            {
+                "value": 12_400,
+                "unit": "clients",
+                "status": "unknown",
+                "evidence": "12 400 clients dans une chronologie non confirmée.",
+            },
+        ],
+    })])
+
     assert resolved["affected"] == []
 
 
@@ -325,6 +376,14 @@ def test_acteur_pronom_n_est_pas_publie():
     assert "threat_actor" not in resolved["fields"]
 
 
+def test_fragments_grammaticaux_ne_sont_pas_publies_comme_acteurs():
+    for value in ("de", "et", "group", "groupe"):
+        resolved = fr.resolve_incident_facts([
+            fact("CYBERATTAQUE_ORG", threat_actor=value, claim_status="claimed")
+        ])
+        assert "threat_actor" not in resolved["fields"]
+
+
 def test_claim_acteur_type_alimente_le_champ_detail_sans_ecraser_un_scalaire():
     resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
         "claims": [{"type": "actor", "value": "ZeroBytes", "status": "claimed", "evidence": "ZeroBytes revendique l'accès."}],
@@ -405,6 +464,104 @@ def test_prestataire_nomme_dans_la_preuve_alimente_un_tiers_sans_identite_invent
         "claims": [{"status": "confirmed", "evidence": "L'incident a touché un prestataire technique de la victime."}],
     })])
     assert resolved["fields"]["third_party"]["value"] == "prestataire technique"
+
+
+def test_tiers_hypothetique_ne_devient_pas_un_tiers_implique():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [{
+            "type": "third_party",
+            "value": "fournisseur",
+            "status": "hypothesis",
+            "evidence": "Ces données pourraient alimenter une fraude au faux fournisseur.",
+        }],
+    })])
+
+    assert "third_party" not in resolved["fields"]
+
+
+def test_vulnerabilite_de_contexte_ne_devient_pas_vecteur_initial():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        initial_access="vulnerability_exploitation",
+        initial_access_evidence=(
+            "Le contexte actuel est particulier : une vulnérabilité critique "
+            "de Metabase a récemment été corrigée."
+        ),
+    )])
+
+    assert "initial_access" not in resolved["fields"]
+
+
+def test_statut_confirme_global_ne_confirme_pas_les_types_seulement_revendiques():
+    evidence = (
+        "TeleCoop confirme certains accès à des données personnelles, tandis "
+        "que le hacker revendique des données bancaires et des pièces d'identité."
+    )
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        claim_status="confirmed",
+        data_types=["données personnelles", "données bancaires"],
+        rich_facts={"data_types": [
+            {"value": "données personnelles", "status": "confirmed", "evidence": evidence},
+            {"value": "données bancaires", "status": "confirmed", "evidence": evidence},
+        ]},
+    )])
+
+    statuses = {entry["value"]: entry["status"] for entry in resolved["data_types"]}
+    assert statuses == {"données personnelles": "confirmed", "données bancaires": "claimed"}
+
+
+def test_statut_scalaire_suit_la_revendication_dans_sa_preuve():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        threat_actor="ZeroBytes",
+        threat_actor_evidence="ZeroBytes revendique le vol de la base.",
+        claim_status="confirmed",
+    )])
+
+    assert resolved["fields"]["threat_actor"]["status"] == "claimed"
+
+
+def test_volume_legacy_herite_du_statut_de_sa_preuve_riche():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        data_volume="335 Mo",
+        claim_status="confirmed",
+        rich_facts={"data_volumes": [{
+            "value": 335,
+            "unit": "MO",
+            "status": "claimed",
+            "evidence": "Le hacker revendique 335 Mo de données.",
+        }]},
+    )])
+
+    assert resolved["fields"]["data_volume"]["status"] == "claimed"
+
+
+def test_decompte_specifique_remplace_la_reparation_generique_du_meme_extrait():
+    evidence = (
+        "Le hacker revendique 14 947 adresses e-mail uniques et "
+        "6 451 IBAN uniques."
+    )
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "affected_counts": [{
+            "value": 14_947,
+            "unit": "accounts",
+            "status": "claimed",
+            "evidence": evidence,
+        }],
+        "claims": [{
+            "type": "data_type",
+            "value": "adresses e-mail",
+            "status": "claimed",
+            "evidence": evidence,
+        }],
+    })])
+
+    assert [(row["value"], row["unit"]) for row in resolved["affected"]] == [
+        (14_947, "adresses e-mail"),
+        (6_451, "données bancaires"),
+    ]
 
 
 def test_impact_narratif_sans_colonne_legacy_vient_du_claim():

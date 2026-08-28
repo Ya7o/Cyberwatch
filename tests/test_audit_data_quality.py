@@ -48,6 +48,13 @@ def test_audit_signale_les_agregats_numeriques_simples():
     assert audit.summary(rows)["aggregates"] == ["11 agences", "4 SDIS"]
 
 
+def test_audit_ne_prend_pas_une_esperluette_legale_pour_un_agregat():
+    rows = [row("1")]
+    rows[0]["Organisation_Raw"] = "OTEIS Conseil & Ingénierie"
+
+    assert audit.summary(rows)["aggregates"] == []
+
+
 def fact_row(item_id: str, source_id: str, threat_actor: str) -> dict:
     return {"Item_ID": item_id, "Source_ID": source_id, "Threat_Actor": threat_actor}
 

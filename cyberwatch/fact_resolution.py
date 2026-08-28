@@ -99,6 +99,7 @@ def _actor_label(value: Any) -> str:
 #: formes plutôt que de les publier comme un acteur nommé.
 _ACTOR_PRONOUN_BLOCKLIST = {
     "qui", "il", "elle", "ils", "elles",
+    "de", "et", "group", "groupe",
     "celui ci", "celle ci", "celui la", "celle la",
     "ce dernier", "cette derniere", "ces derniers", "ces dernieres",
     # Cas réel constaté après le fix du prompt (reset 2026-08-25, Emil Frey
@@ -200,7 +201,22 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
         if not _known(value):
             continue
         source = _text(fact.get("source"))
-        return {
+        evidence = _text(fact.get(f"{field}_evidence"))
+        resolved_status = _status({"status": fact.get("claim_status")})
+        if field == "data_volume":
+            rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+            volume_rows = rich.get("data_volumes") if isinstance(rich, dict) else []
+            volume_record = next((
+                row for row in (volume_rows if isinstance(volume_rows, list) else [])
+                if isinstance(row, dict)
+                and _status(row) not in {"negated", "denied", "hypothesis"}
+            ), None)
+            if volume_record:
+                resolved_status = _status(volume_record)
+                evidence = _text(volume_record.get("evidence")) or evidence
+        if resolved_status == "confirmed" and re.search(r"\b(?:revendiqu|affirme)\w*\b", evidence, re.I):
+            resolved_status = "claimed"
+        result = {
             "value": value,
             "source": source,
             "sources": _supporting_sources(
@@ -211,8 +227,11 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
             # Statut déclaratif de la ligne source (confirmé/revendiqué/...),
             # republié pour que l'affichage porte le badge sur le champ lui
             # même plutôt que de le répéter dans une liste de faits séparée.
-            "status": _status({"status": fact.get("claim_status")}),
+            "status": resolved_status,
         }
+        if evidence:
+            result["evidence"] = evidence
+        return result
     return None
 
 
@@ -302,6 +321,8 @@ def _incident_count_is_publishable(record: dict) -> bool:
     preuve est disponible, un chiffre décrivant seulement la population ou le
     réseau de la victime doit porter un lien explicite avec l'incident.
     """
+    if _status(record) in {"negated", "denied", "hypothesis"}:
+        return False
     evidence = _text(record.get("evidence"))
     if not evidence:
         return True
@@ -630,15 +651,20 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
     # s'afficher comme un fait ordinaire — même garde que _data_types_entries
     # pour negated/denied, jusqu'ici absente de ce côté (§audit 2026-08-25 :
     # cas réel YouFid 1,9M démenti affiché comme un second chiffre normal).
+    rejected_signatures = {
+        id(fact): _rejected_rich_count_signatures(fact)
+        for fact in ordered
+    }
     rich_by_fact = {
         id(fact): [
             record for record in _rich_count_records(fact)
-            if record.get("status") not in {"negated", "denied"}
+            if record.get("status") not in {"negated", "denied", "hypothesis"}
+            and not (
+                record.get("status") == "unknown"
+                and (_norm(record.get("unit")) or "unknown", _text(record.get("value")))
+                in rejected_signatures[id(fact)]
+            )
         ]
-        for fact in ordered
-    }
-    rejected_signatures = {
-        id(fact): _rejected_rich_count_signatures(fact)
         for fact in ordered
     }
     rich_semantics: dict[str, set[str]] = {}
@@ -774,6 +800,23 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         # exposées" chip.  Otherwise a denial such as "aucun IBAN identifié"
         # is presented as the exact opposite fact.
         normalized_status = _status({"status": status})
+        evidence_norm = _norm(evidence)
+        value_norm = _norm(value)
+        value_pos = evidence_norm.find(value_norm) if value_norm else -1
+        if value_pos >= 0 and re.search(
+            r"\b(?:aucun|aucune|pas de|sans)\b.{0,100}$",
+            evidence_norm[max(0, value_pos - 120):value_pos],
+        ):
+            return
+        # Une phrase peut confirmer l'incident puis opposer les catégories
+        # uniquement revendiquées par l'attaquant (cas TeleCoop). Le statut
+        # suit le verbe déclaratif placé avant la catégorie, pas le statut
+        # global de l'article.
+        if normalized_status == "confirmed" and "revendiqu" in evidence_norm:
+            claim_pos = evidence_norm.rfind("revendiqu")
+            value_pos = evidence_norm.rfind(value_norm) if value_norm else -1
+            if value_pos >= claim_pos >= 0:
+                normalized_status = "claimed"
         if normalized_status in {"negated", "denied", "hypothesis"}:
             return
         if evidence and _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
@@ -812,13 +855,6 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
             for record in (rich_values if isinstance(rich_values, list) else [])
             if isinstance(record, dict) and _status(record) in {"negated", "denied"}
         )
-        legacy = fact.get("data_types")
-        if isinstance(legacy, list):
-            for raw in legacy:
-                add(
-                    _text(raw), source, _text(fact.get("claim_status")),
-                    negated_texts=negated_texts,
-                )
         if isinstance(rich_values, list):
             for raw_record in rich_values:
                 if isinstance(raw_record, dict):
@@ -828,6 +864,14 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
                         _text(raw_record.get("evidence")),
                         negated_texts,
                     )
+        legacy = fact.get("data_types")
+        if isinstance(legacy, list):
+            for raw in legacy:
+                # Claim_Status qualifie l'incident, pas chaque catégorie. Le
+                # statut précis vient des faits riches lorsqu'ils existent ;
+                # un reliquat legacy reste inconnu plutôt que d'être promu
+                # artificiellement « confirmé ».
+                add(_text(raw), source, "unknown", negated_texts=negated_texts)
     return list(selected.values())
 
 
@@ -996,6 +1040,29 @@ _ACCESS_VECTOR_MARKERS = re.compile(
     r"fonction d'export|export",
     re.I,
 )
+_INITIAL_ACCESS_CONTEXT_ONLY_RE = re.compile(
+    r"\b(?:le contexte actuel|indices? (?:qui )?orientent|r[ée]cemment corrig[ée]e?|"
+    r"hypoth[èe]se|pourrait|permettrait)\b",
+    re.I,
+)
+
+
+def _initial_access_is_publishable(entry: dict) -> bool:
+    value = _norm(entry.get("value"))
+    evidence = _text(entry.get("evidence"))
+    if _status(entry) in {"negated", "denied", "hypothesis"}:
+        return False
+    if evidence and (
+        _HYPOTHETICAL_EVIDENCE_RE.search(evidence)
+        or _INITIAL_ACCESS_CONTEXT_ONLY_RE.search(evidence)
+    ):
+        return False
+    # « exploitation de vulnérabilité » est le scalaire le plus susceptible
+    # d'être déduit d'un simple paragraphe de contexte technique. Sans preuve
+    # attachée, le champ reste vide plutôt que d'affirmer le vecteur.
+    if value == "vulnerability exploitation":
+        return bool(evidence and _ACCESS_VECTOR_MARKERS.search(evidence))
+    return True
 
 _IMPACT_CONSEQUENCE_RE = re.compile(
     r"\b(?:indisponib|interruption|arr[êe]t|perturb|fraude|usage frauduleux|"
@@ -1026,7 +1093,13 @@ def _impact_is_publishable(value: Any, status: str = "") -> bool:
 
 
 def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
-    candidates = [claim for claim in claims if claim.get("type") == claim_type and _known(claim.get("value"))]
+    candidates = [
+        claim for claim in claims
+        if claim.get("type") == claim_type
+        and _known(claim.get("value"))
+        and _status(claim) not in {"negated", "denied", "hypothesis"}
+        and not _HYPOTHETICAL_EVIDENCE_RE.search(_text(claim.get("evidence")))
+    ]
     if claim_type == "actor":
         # Un nom d'acteur doit figurer dans l'extrait de preuve : un modèle ne
         # peut pas propager un autre acteur simplement cité dans l'article.
@@ -1291,6 +1364,28 @@ def _merge_affected(base: list[dict], extra: list[dict]) -> list[dict]:
         key = (_norm(entry.get("unit")), _norm(_record_value(entry)))
         if key in seen:
             continue
+        # Un même extrait peut d'abord être réparé en unité générique
+        # `accounts`, puis relu comme décompte spécifique (adresses e-mail,
+        # IBAN...). La seconde forme est plus précise et remplace la première
+        # au lieu de créer deux puces pour le même nombre.
+        specific_unit = _text(entry.get("unit"))
+        duplicate_index = next((
+            index for index, existing in enumerate(merged)
+            if _norm(existing.get("unit")) == "accounts"
+            and is_recognized_data_type(specific_unit)
+            and _norm(_record_value(existing)) == _norm(_record_value(entry))
+            and _norm(existing.get("evidence")) == _norm(entry.get("evidence"))
+        ), None)
+        if duplicate_index is not None:
+            existing = merged[duplicate_index]
+            replacement = dict(entry)
+            replacement["sources"] = list(dict.fromkeys(
+                list(existing.get("sources") or []) + list(entry.get("sources") or [])
+            ))
+            merged[duplicate_index] = replacement
+            seen.discard((_norm(existing.get("unit")), _norm(_record_value(existing))))
+            seen.add(key)
+            continue
         seen.add(key)
         merged.append(entry)
     return merged
@@ -1331,6 +1426,8 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
         fields["impact"].get("value"), fields["impact"].get("status", "")
     ):
         del fields["impact"]
+    if "initial_access" in fields and not _initial_access_is_publishable(fields["initial_access"]):
+        del fields["initial_access"]
     # Les scalaires explicitement extraits restent prioritaires. Les claims
     # typés constituent uniquement un filet de provenance pour les acteurs et
     # tiers, dont l'absence de projection ne doit plus vider une fiche riche.

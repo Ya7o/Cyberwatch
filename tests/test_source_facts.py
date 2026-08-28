@@ -62,8 +62,8 @@ def test_dispatch_et_schema_et_version_v4():
     entry = RawEntry(title="Exemple", summary="Revendiquée par le groupe X, CVE-2026-11111 exploitée.")
     fact = sf.extract_source_fact(make_item(), entry, spec("FRENCHBREACHES"))
     assert set(fact) == set(SOURCE_FACT_COLUMNS)
-    assert fact["Extraction_Version"] == "4"
-    assert sf.SOURCE_FACTS_VERSION == "4"
+    assert fact["Extraction_Version"] == "5"
+    assert sf.SOURCE_FACTS_VERSION == "5"
     assert "Initial_Access" in SOURCE_FACT_COLUMNS
     assert "Attack_Flow_JSON" in SOURCE_FACT_COLUMNS
 
@@ -261,6 +261,25 @@ def test_cyberattaque_acteur_actif_et_tiers_compromis_sont_extraits_sans_liste_f
     )
     assert fact["Initial_Access"] == "third_party"
     assert sf._loads_json(fact["Evidence_JSON"])["Initial_Access"] == "cyberattaque chez un prestataire"
+
+
+def test_cyberattaque_rejette_les_fragments_grammaticaux_comme_acteurs(monkeypatch):
+    item = make_item("CYBERATTAQUE_ORG", organisation="Exemple SA")
+    monkeypatch.setattr(sf.source_facts_ai, "extract_semantic", lambda *_: sfa.SemanticExtraction(
+        item_id=item.Item_ID, content_hash="test", fields={}, statuses={}
+    ))
+
+    for content in (
+        "L'accès est revendiqué par le groupe de pirates.",
+        "Le rapport est complet et affirme une exposition.",
+        "Mistertemp group revendique une analyse interne.",
+    ):
+        fact = sf.extract_source_fact(
+            item,
+            RawEntry(title="Exemple SA", content=content),
+            spec("CYBERATTAQUE_ORG"),
+        )
+        assert fact is None or fact["Threat_Actor"] == ""
 
 
 def test_nom_seul_ne_devient_jamais_une_synthese(monkeypatch):

@@ -27,6 +27,16 @@ from cyberwatch.normalize import load_organisation_aliases, organisation_acronym
     ("Groupe Géotec", "Géotec"),
     ("SUEZ", "Suez Eau France"),
     ("IRD", "Institut de recherche pour le développement"),
+    # Reset préproduction 2026-08-28 : désignations croisées vérifiées dans
+    # les deux sources éditoriales pour le même événement et la même date.
+    ("Cloud de l'État", "DINUM"),
+    ("NETIM COMPANY", "Netim"),
+    ("Solimut", "Solimut Mutuelle"),
+    ("Banque Alimentaire de Strasbourg", "Banque Alimentaire de la Croix-Rouge à Strasbourg"),
+    ("Docurba.gouv.fr", "Docurba"),
+    ("Wesh bien", "WeshBien"),
+    ("L.Commerce", "Allo E.Leclerc"),
+    ("Eusko", "Euskal Moneta"),
 ])
 def test_versioned_aliases_are_exact(left, right):
     assert organisation_key(left) == organisation_key(right)

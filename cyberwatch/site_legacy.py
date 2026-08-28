@@ -211,6 +211,24 @@ def _source_fact_payload(row: dict) -> dict | None:
         if cleaned:
             payload[key] = cleaned
 
+    # Le résolveur a besoin de la preuve du scalaire pour distinguer un
+    # vecteur effectivement documenté d'une hypothèse ou d'un simple rappel
+    # technique. La preuve reste bornée et ne remplace jamais la valeur.
+    try:
+        evidence_map = json.loads(str(row.get("Evidence_JSON") or "{}"))
+    except (TypeError, ValueError):
+        evidence_map = {}
+    if isinstance(evidence_map, dict):
+        for column, key in _FACT_TEXT_FIELDS.items():
+            proof = evidence_map.get(column)
+            if isinstance(proof, dict):
+                proof = proof.get("text") or proof.get("evidence") or ""
+            if isinstance(proof, list):
+                proof = " ".join(str(value) for value in proof if value)
+            proof_text = str(proof or "").strip()
+            if proof_text and key in payload:
+                payload[f"{key}_evidence"] = proof_text[:600]
+
     raw_flow = str(row.get("Attack_Flow_JSON") or "").strip()
     if raw_flow:
         try:

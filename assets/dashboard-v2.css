@@ -78,6 +78,9 @@
 /* Variante repliable : le titre de section devient le déclencheur du
    <details>, avec le même habillage typographique que le h4 ci-dessus. */
 .resolved-facts-section--collapsible > summary { cursor:pointer; margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.02em; user-select:none; }
+.resolved-facts-section--collapsible > summary:focus-visible,
+.incident-data-group > summary:focus-visible,
+.volume-more > summary:focus-visible { outline:2px solid var(--series-1); outline-offset:2px; border-radius:4px; }
 .resolved-facts-section--collapsible[open] > summary { margin-bottom:.3rem; }
 .resolved-field { display:grid; grid-template-columns:minmax(150px,220px) 1fr; gap:1rem; padding:.65rem 0; border-top:1px solid var(--border); }
 .resolved-field dt { color:var(--text-muted); font-size:.86rem; }

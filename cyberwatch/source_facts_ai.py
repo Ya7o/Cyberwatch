@@ -82,7 +82,7 @@ FIELD_VERSIONS = {
     # V2 interdit les faux positifs du type « impossible de déterminer si
     # l'accès provient d'identifiants compromis ». La version fait invalider
     # uniquement ce champ dans les caches existants.
-    "initial_access": "initial-access-v2",
+    "initial_access": "initial-access-v3",
     "attack_flow": "attack-flow-v2",
     "impact": "impact-v3",
     # V2 invalide les sujets déclaratifs captés comme attaquants (ex. « L
@@ -93,7 +93,7 @@ FIELD_VERSIONS = {
     "third_party": "third-party-v1",
     # V4 invalide les valeurs LLM/déterministes dont la « preuve » n'était qu'un mot
     # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
-    "data_types": "data-types-v5",
+    "data_types": "data-types-v7",
     "fine_location": "fine-location-v1",
     "attack_date": "attack-date-v1",
     "discovered_date": "discovered-date-v1",
@@ -203,6 +203,13 @@ _NEGATED_DATA_RELATION = re.compile(
 _NEGATED_DATA_VALUE_PREFIX = re.compile(
     r"\b(?:aucun(?:e)?|pas\s+de|sans|n['’ ](?:ai|as|a|avons|avez|ont)\s+pas"
     r"(?:\s+(?:[a-zà-öø-ÿ'’-]+)){0,5})\b.{0,90}$",
+    re.I,
+)
+_NEGATED_DATA_VALUE_SENTENCE = re.compile(
+    r"\b(?:ne|n['’])\b.{0,140}\b(?:sont|seraient|figurent|font|ont\s+[ée]t[ée])\b"
+    r".{0,60}\bpas\b.{0,80}\b(?:concern[ée]s?|expos[ée]s?|compromis(?:es)?|"
+    r"inclus(?:es)?|r[ée]cup[ée]r[ée]s?|vol[ée]s?)\b|"
+    r"\b(?:ne\s+sont\s+pas|n['’]ont\s+pas\s+[ée]t[ée])\s+concern[ée]s?\b",
     re.I,
 )
 _DATA_TYPE_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
@@ -991,7 +998,16 @@ def _deterministic_initial_access(context: str) -> dict | None:
         return None
     for segment in re.split(r"(?<=[.!?;])\s+|\n+", context):
         cleaned = " ".join(segment.split()).strip()
-        if not cleaned or _HYPOTHETICAL_RE.search(cleaned):
+        if (
+            not cleaned
+            or _HYPOTHETICAL_RE.search(cleaned)
+            or re.search(
+                r"\b(?:le contexte actuel|indices? (?:qui )?orientent|"
+                r"r[ée]cemment corrig[ée]e?|hypoth[èe]se)\b",
+                cleaned,
+                re.I,
+            )
+        ):
             continue
         for category, pattern in _INITIAL_ACCESS_PATTERNS:
             if pattern.search(cleaned):
@@ -1007,11 +1023,29 @@ def _deterministic_data_types(context: str) -> list[dict]:
     seen: set[str] = set()
     for canonical, pattern in _DATA_TYPE_PATTERNS:
         for match in pattern.finditer(context):
+            sentence_start = max(
+                context.rfind(".", 0, match.start()),
+                context.rfind("!", 0, match.start()),
+                context.rfind("?", 0, match.start()),
+                context.rfind("\n", 0, match.start()),
+            ) + 1
+            sentence_ends = [
+                point for point in (
+                    context.find(".", match.end()),
+                    context.find("!", match.end()),
+                    context.find("?", match.end()),
+                    context.find("\n", match.end()),
+                )
+                if point >= 0
+            ]
+            sentence_end = min(sentence_ends) + 1 if sentence_ends else len(context)
+            sentence = context[sentence_start:sentence_end]
             start = max(0, match.start() - 180)
             end = min(len(context), match.end() + 180)
             window = context[start:end]
             if (
-                _NEGATED_DATA_RELATION.search(window)
+                _NEGATED_DATA_VALUE_SENTENCE.search(sentence)
+                or _NEGATED_DATA_RELATION.search(window)
                 or _negated_data_type(canonical, match.group(0), context)
                 or not _DATA_RELATION.search(window)
             ):

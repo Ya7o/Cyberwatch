@@ -40,7 +40,11 @@ def summary(rows):
     def stats(values):
         return {"items":len(values), "threat_unknown":sum(r["Threat"]==UNKNOWN for r in values), "sector_unknown":sum(r["Sector"]==UNKNOWN for r in values), "location_unknown":sum(r["Location"]==UNKNOWN for r in values), "organisation_empty":sum(not r["Organisation_Raw"] for r in values)}
     aggregate = re.compile(r"\b\d+\s+(?:sdis|agences?|écoles?|ecoles?|hôpitaux?|hopitaux?)\b", re.I)
-    return {"global":stats(rows), "sources":{s:stats(v) for s,v in sorted(sources.items())}, "threat":dict(sorted(Counter(r["Threat"] for r in rows).items())), "sector":dict(sorted(Counter(r["Sector"] for r in rows).items())), "location":dict(sorted(Counter(r["Location"] for r in rows).items())), "aggregates":sorted({r["Organisation_Raw"] for r in rows if any(x in r["Organisation_Raw"].lower() for x in ("&", "/", " et ")) or aggregate.search(r["Organisation_Raw"] or "")})}
+    # Une esperluette, une barre ou « et » appartiennent souvent à la raison
+    # sociale légitime (par exemple « OTEIS Conseil & Ingénierie »). Ce ne
+    # sont pas des preuves d'un regroupement de victimes. Seules les formes
+    # explicitement quantifiées sont signalées ici.
+    return {"global":stats(rows), "sources":{s:stats(v) for s,v in sorted(sources.items())}, "threat":dict(sorted(Counter(r["Threat"] for r in rows).items())), "sector":dict(sorted(Counter(r["Sector"] for r in rows).items())), "location":dict(sorted(Counter(r["Location"] for r in rows).items())), "aggregates":sorted({r["Organisation_Raw"] for r in rows if aggregate.search(r["Organisation_Raw"] or "")})}
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))

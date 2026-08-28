@@ -458,6 +458,7 @@ jobs:
           PY
           python -m cyberwatch.reset_baseline audit \
             --before /tmp/reset-baseline-before.json \
+            --strict \
             --output /tmp/reset-audit.json
           python -m cyberwatch.reset_baseline baseline \
             --output data/post_reset_baseline.json
