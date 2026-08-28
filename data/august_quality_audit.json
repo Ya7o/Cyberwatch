@@ -9,23 +9,11 @@
     {
       "id": "INC-A98BE35D4960",
       "severity": "low",
-      "issue": "secteur_unknown",
-      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
-    },
-    {
-      "id": "INC-A98BE35D4960",
-      "severity": "low",
       "issue": "localisation_unknown",
       "recommendation": "preuve insuffisante documentée; conserver Inconnu"
     },
     {
       "id": "INC-BAD0A56226CC",
-      "severity": "low",
-      "issue": "secteur_unknown",
-      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
-    },
-    {
-      "id": "INC-39FEFF5E9810",
       "severity": "low",
       "issue": "secteur_unknown",
       "recommendation": "preuve insuffisante documentée; conserver Inconnu"
@@ -43,7 +31,7 @@
           "url": "https://www.cyberattaque.org/allo-e-leclerc-un-prestataire-pirate-des-donnees-clients-exposees/"
         }
       ],
-      "summary": "Allo E.Leclerc a signalé une fuite de données clients due au piratage d'un prestataire logistique.",
+      "summary": "Allo E.Leclerc informe d'une exposition de données clients suite à un piratage d'un prestataire logistique.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -51,8 +39,8 @@
         }
       ],
       "summary_reasons": [],
-      "sector": "Inconnu",
-      "sector_status": "unknown_no_evidence",
+      "sector": "Commerce / Distribution",
+      "sector_status": "confirmed",
       "sector_tentative": "",
       "threat": "Phishing / fraude",
       "location": "Inconnu",
@@ -73,7 +61,7 @@
           "url": "https://frenchbreaches.com/alertes/euskal-moneta-eusko-mtbr7on3s5riduqxif"
         }
       ],
-      "summary": "Euskal Moneta a subi une cyberattaque avec accès non confirmé aux données personnelles de 6 000 adhérents.",
+      "summary": "Euskal Moneta a détecté une cyberattaque le 17 août 2026, potentiellement impliquant l'accès à des données personnelles de 6 000 adhérents.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -107,7 +95,7 @@
           "url": "https://frenchbreaches.com/alertes/journaux-fr-mtbj5s58u9984dymo3"
         }
       ],
-      "summary": "La plateforme Journaux.fr a subi une fuite de 270 000 données de livraison en raison d'une cyberattaque.",
+      "summary": "Une fuite de 270 000 données de livraison signalée sur Journaux.fr après une cyberattaque revendiquée par le hacker Alduin.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -158,8 +146,8 @@
           "reason": "empty"
         }
       ],
-      "sector": "Inconnu",
-      "sector_status": "unknown_no_evidence",
+      "sector": "Services aux entreprises",
+      "sector_status": "confirmed",
       "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "France métropolitaine",

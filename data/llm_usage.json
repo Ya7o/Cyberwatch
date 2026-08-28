@@ -1,36 +1,36 @@
 {
   "by_task": {
-    "organisation_sector": {
+    "dedup": {
       "cached_input_tokens": 0,
-      "calls_attempted": 0,
-      "calls_budget_blocked": 1,
+      "calls_attempted": 1,
+      "calls_budget_blocked": 0,
       "calls_failed": 0,
-      "calls_succeeded": 0,
-      "duration_seconds": 0.0,
-      "estimated_cost_usd": 0.0,
-      "input_tokens": 0,
-      "last_model": "",
-      "max_calls": 0,
+      "calls_succeeded": 1,
+      "duration_seconds": 2.490770430999987,
+      "estimated_cost_usd": 0.00029535,
+      "input_tokens": 1385,
+      "last_model": "gpt-4o-mini",
+      "max_calls": 200,
       "max_cost_usd": 0.5,
-      "output_tokens": 0,
+      "output_tokens": 146,
       "reasoning_tokens": 0,
       "retries": 0,
-      "total_tokens": 0
+      "total_tokens": 1531
     }
   },
   "cached_input_tokens": 0,
-  "calls_attempted": 0,
-  "calls_budget_blocked": 1,
+  "calls_attempted": 1,
+  "calls_budget_blocked": 0,
   "calls_failed": 0,
-  "calls_succeeded": 0,
-  "duration_seconds": 0.0,
-  "estimated_cost_usd": 0.0,
+  "calls_succeeded": 1,
+  "duration_seconds": 2.490770430999987,
+  "estimated_cost_usd": 0.00029535,
   "http_429": 0,
   "http_5xx": 0,
-  "input_tokens": 0,
-  "max_calls": 0,
+  "input_tokens": 1385,
+  "max_calls": 200,
   "max_cost_usd": 0.5,
-  "output_tokens": 0,
+  "output_tokens": 146,
   "reasoning_tokens": 0,
   "retries": 0,
   "routing": {
@@ -44,5 +44,5 @@
     ]
   },
   "timeouts": 0,
-  "total_tokens": 0
+  "total_tokens": 1531
 }

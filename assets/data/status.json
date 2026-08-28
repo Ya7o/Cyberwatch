@@ -12,9 +12,9 @@
     "unknown": 1
    },
    "sector": {
-    "known": 1,
-    "known_pct": 25.0,
-    "unknown": 3
+    "known": 3,
+    "known_pct": 75.0,
+    "unknown": 1
    },
    "threat": {
     "known": 4,
@@ -25,7 +25,7 @@
   "dated_incidents": 4,
   "diversity_90d": {
    "location": 0.0,
-   "sector": 0.0,
+   "sector": 0.918,
    "threat": 0.811
   },
   "exposure": {
@@ -56,8 +56,12 @@
     "ransomware_pct": 0.0,
     "sectors": [
      {
-      "count": 1,
+      "count": 2,
       "label": "Commerce / Distribution"
+     },
+     {
+      "count": 1,
+      "label": "Services aux entreprises"
      }
     ],
     "threat_profile_reliable": false,
@@ -121,8 +125,12 @@
     "ransomware_pct": 0.0,
     "sectors": [
      {
-      "count": 1,
+      "count": 2,
       "label": "Commerce / Distribution"
+     },
+     {
+      "count": 1,
+      "label": "Services aux entreprises"
      }
     ],
     "threat_profile_reliable": false,
@@ -175,7 +183,7 @@
    "sources": 2,
    "unknown_pct": {
     "location": 25.0,
-    "sector": 75.0,
+    "sector": 25.0,
     "threat": 0.0
    },
    "with_summary_pct": 100.0
@@ -189,6 +197,9 @@
    ],
    "sector": {
     "Commerce / Distribution": [
+     2
+    ],
+    "Services aux entreprises": [
      1
     ]
    },
@@ -213,10 +224,10 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 3,
-     "known_ratio": 0.778,
+     "known_ratio": 0.889,
      "level": "medium",
      "multi_source_incidents": 3,
-     "score": 54
+     "score": 57
     },
     "current": 3,
     "delta": 3,
@@ -238,10 +249,10 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 3,
-     "known_ratio": 0.778,
+     "known_ratio": 0.889,
      "level": "medium",
      "multi_source_incidents": 3,
-     "score": 54
+     "score": 57
     },
     "current": 3,
     "delta": 3,
@@ -272,12 +283,16 @@
    ],
    "sector": [
     {
-     "count": 3,
+     "count": 2,
+     "label": "Commerce / Distribution"
+    },
+    {
+     "count": 1,
      "label": "Inconnu"
     },
     {
      "count": 1,
-     "label": "Commerce / Distribution"
+     "label": "Services aux entreprises"
     }
    ],
    "threat": [
@@ -1552,64 +1567,64 @@
  ],
  "history": [
   {
-   "as_of": "2026-08-28T07:32:41+04:00",
+   "as_of": "2026-08-28T07:46:36+04:00",
    "incidents": 5,
    "items": 7,
    "mode": "CREATE",
    "new_incidents": 5,
    "new_items": 7,
    "overall": "OK",
-   "run_id": "RUN-20260828T073241"
+   "run_id": "RUN-20260828T074636"
   },
   {
-   "as_of": "2026-08-28T07:32:41+04:00",
+   "as_of": "2026-08-28T07:46:36+04:00",
    "incidents": 5,
    "items": 7,
    "mode": "CREATE",
    "new_incidents": 0,
    "new_items": 7,
    "overall": "OK",
-   "run_id": "RUN-20260828T073241-2"
+   "run_id": "RUN-20260828T074636-2"
   },
   {
-   "as_of": "2026-08-28T07:32:41+04:00",
+   "as_of": "2026-08-28T07:46:36+04:00",
    "incidents": 5,
    "items": 7,
    "mode": "CREATE",
    "new_incidents": 0,
    "new_items": 7,
    "overall": "OK",
-   "run_id": "RUN-20260828T073241-3"
+   "run_id": "RUN-20260828T074636-3"
   },
   {
-   "as_of": "2026-08-28T07:32:41+04:00",
+   "as_of": "2026-08-28T07:46:36+04:00",
    "incidents": 5,
    "items": 7,
    "mode": "CREATE",
    "new_incidents": 0,
    "new_items": 7,
    "overall": "OK",
-   "run_id": "RUN-20260828T073241-4"
+   "run_id": "RUN-20260828T074636-4"
   },
   {
-   "as_of": "2026-08-28T07:32:41+04:00",
+   "as_of": "2026-08-28T07:46:36+04:00",
    "incidents": 4,
    "items": 7,
    "mode": "CREATE",
    "new_incidents": 0,
    "new_items": 7,
    "overall": "OK",
-   "run_id": "RUN-20260828T073241-5"
+   "run_id": "RUN-20260828T074636-5"
   },
   {
-   "as_of": "2026-08-28T07:32:41+04:00",
+   "as_of": "2026-08-28T07:46:36+04:00",
    "incidents": 4,
    "items": 7,
    "mode": "CREATE",
    "new_incidents": 0,
    "new_items": 7,
    "overall": "OK",
-   "run_id": "RUN-20260828T073241-6"
+   "run_id": "RUN-20260828T074636-6"
   }
  ],
  "initialized": true,
@@ -1651,20 +1666,20 @@
  },
  "method_id": "OBS-FR-OI-SIMPLE-SOURCING-8",
  "run": {
-  "as_of": "2026-08-28T07:32:41+04:00",
-  "duration": "19.3",
-  "id": "RUN-20260828T073241-6",
+  "as_of": "2026-08-28T07:46:36+04:00",
+  "duration": "89.6",
+  "id": "RUN-20260828T074636-6",
   "incidents": 4,
-  "incidents_hash": "f28fbf3fbe68d95aae51de64012df8e2c907b1d3a59fab05982b061e11ff5e75",
+  "incidents_hash": "4c8678faef0dad8d43db0bd76075fb242e216bd568bf35815e8f30f605ab2e9d",
   "items": 7,
-  "items_hash": "b079fa8411f17721c809dfc5beb56ced7e76083f3454b93bfff4509bca499b9b",
+  "items_hash": "4f87bc3d947d8a8aa4aa960e1d5d3bb311a41d9d2bdf0179669762ea3cc40798",
   "layers": "CORE_DIRECT,LOCAL_MEDIA_DIRECT,ENTITY_WATCH,REGIONAL_WATCH",
   "mode": "CREATE",
   "new_incidents": 0,
   "new_items": 7,
   "notes": "",
   "overall": "OK",
-  "requests": 16,
+  "requests": 19,
   "target_end": "2026-08-28",
   "target_start": "2026-08-27"
  },
@@ -1675,14 +1690,14 @@
    "candidate_status": "",
    "comment": "items_in_window=0",
    "coverage": 100,
-   "duration": "1.8",
+   "duration": "1.3",
    "history_status": "UNKNOWN",
    "id": "BONJOURLAFUITE",
    "items": 0,
    "items_collected": 0,
    "items_in_window": 0,
    "items_seen": 536,
-   "last_run": "2026-08-28T07:32:41+04:00",
+   "last_run": "2026-08-28T07:46:36+04:00",
    "latest_item": "",
    "latest_item_org": "",
    "layer": "CORE_DIRECT",
@@ -1703,14 +1718,14 @@
    "candidate_status": "",
    "comment": "articles_seen=100; articles_in_window=4; victims_identified=4; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
    "coverage": 100,
-   "duration": "4.6",
+   "duration": "4.5",
    "history_status": "UNKNOWN",
    "id": "CYBERATTAQUE_ORG",
    "items": 4,
    "items_collected": 4,
    "items_in_window": 4,
    "items_seen": 100,
-   "last_run": "2026-08-28T07:32:41+04:00",
+   "last_run": "2026-08-28T07:46:36+04:00",
    "latest_item": "2026-08-27",
    "latest_item_org": "Mistertemp’ group",
    "layer": "CORE_DIRECT",
@@ -1731,14 +1746,14 @@
    "candidate_status": "",
    "comment": "details_hydrates=3/3; rich_facts=3/3",
    "coverage": 100,
-   "duration": "5.6",
+   "duration": "5.3",
    "history_status": "COMPLETE",
    "id": "FRENCHBREACHES",
    "items": 3,
    "items_collected": 3,
    "items_in_window": 3,
    "items_seen": 100,
-   "last_run": "2026-08-28T07:32:41+04:00",
+   "last_run": "2026-08-28T07:46:36+04:00",
    "latest_item": "2026-08-27",
    "latest_item_org": "Mistertemp' group",
    "layer": "CORE_DIRECT",
@@ -1755,18 +1770,18 @@
   },
   {
    "access_method": "https://api.ransomware.live/v2/countryvictims/",
-   "calls": 7,
+   "calls": 10,
    "candidate_status": "",
-   "comment": "items_seen=688; items_in_window=0",
+   "comment": "items_seen=688; items_in_window=0; rate_limit_retries=1",
    "coverage": 100,
-   "duration": "7.1",
+   "duration": "78.3",
    "history_status": "UNKNOWN",
    "id": "RANSOMWARE_LIVE",
    "items": 0,
    "items_collected": 0,
    "items_in_window": 0,
    "items_seen": 688,
-   "last_run": "2026-08-28T07:32:41+04:00",
+   "last_run": "2026-08-28T07:46:36+04:00",
    "latest_item": "",
    "latest_item_org": "",
    "layer": "CORE_DIRECT",
@@ -1794,7 +1809,7 @@
    "items_collected": 16,
    "items_in_window": 0,
    "items_seen": 16,
-   "last_run": "2026-08-28T07:32:41+04:00",
+   "last_run": "2026-08-28T07:46:36+04:00",
    "latest_item": "2026-08-19",
    "latest_item_org": "SRR / SFR",
    "layer": "REGIONAL_WATCH",
