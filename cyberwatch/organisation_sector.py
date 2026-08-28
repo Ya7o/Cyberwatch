@@ -60,7 +60,7 @@ comme :func:`cyberwatch.sector_registry.restore_registry_applications`.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import hashlib
 from pathlib import Path
 import re
@@ -69,6 +69,7 @@ from . import (
     company_subject_evidence,
     config,
     context_sector,
+    org_identity,
     org_enrichment,
     sector as sector_policy,
     sector_registry,
@@ -319,11 +320,25 @@ def _evidence_id(evidence: OrganisationSectorEvidence) -> str:
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]
 
 
+def sector_organisation_key(item: Item) -> str:
+    """Identité canonique utilisée pour une unique décision Sector.
+
+    Le registre d'identité peut être enrichi pendant le même run, juste avant
+    ``qualify``. Deux alias déjà reconnus comme une même organisation doivent
+    donc partager leurs preuves et la décision LLM finale, même si leurs
+    ``Item.Organisation_Key`` historiques restent distinctes.
+    """
+    return org_identity.effective_organisation_key(
+        item.Organisation_Raw, item.Organisation_Key,
+    )
+
+
 def display_names(items: list[Item]) -> dict[str, str]:
     counters: dict[str, Counter] = defaultdict(Counter)
     for item in items:
-        if item.Organisation_Key and item.Organisation_Raw:
-            counters[item.Organisation_Key][item.Organisation_Raw] += 1
+        key = sector_organisation_key(item)
+        if key and item.Organisation_Raw:
+            counters[key][item.Organisation_Raw] += 1
     return {
         key: sorted(counter.items(), key=lambda pair: (-pair[1], pair[0]))[0][0]
         for key, counter in counters.items()
@@ -636,13 +651,19 @@ def collect_organisation_evidence(
         domain_page_rows = store.read_csv(_aux_path(DOMAIN_PAGE_CACHE_CSV))
     policy = policy or sector_registry.load_policy()
 
-    present_keys = {item.Organisation_Key for item in items if item.Organisation_Key}
+    present_keys = {sector_organisation_key(item) for item in items if sector_organisation_key(item)}
+    reference_keys = present_keys | {item.Organisation_Key for item in items if item.Organisation_Key}
     grouped: dict[str, list[OrganisationSectorEvidence]] = defaultdict(list)
     seen: set[tuple] = set()
 
     def _add(evidence: OrganisationSectorEvidence) -> None:
-        if evidence.organisation_key not in present_keys:
+        canonical_key = org_identity.effective_organisation_key(
+            evidence.organisation, evidence.organisation_key,
+        )
+        if canonical_key not in present_keys:
             return
+        if canonical_key != evidence.organisation_key:
+            evidence = replace(evidence, organisation_key=canonical_key)
         marker = (
             evidence.organisation_key, evidence.sector, evidence.evidence_type,
             evidence.source, evidence.item_id, evidence.evidence_url, evidence.evidence_text,
@@ -653,7 +674,7 @@ def collect_organisation_evidence(
         grouped[evidence.organisation_key].append(evidence)
 
     collectors = (
-        _manual_reference_evidence(reference, present_keys),
+        _manual_reference_evidence(reference, reference_keys),
         _structured_source_evidence(items, source_fact_rows, policy),
         _watchlist_evidence(items),
         _safe_name_evidence(items),
@@ -862,7 +883,7 @@ def apply_organisation_sector_decisions(
     changed = 0
     provenance: list[dict] = []
     for item in items:
-        decision = decisions.get(item.Organisation_Key)
+        decision = decisions.get(sector_organisation_key(item))
         if decision is None or decision.status != STATUS_CONFIRMED:
             continue
         if item.Sector == decision.sector:
@@ -898,14 +919,21 @@ def evidence_audit_rows(
 ) -> list[dict[str, str]]:
     """Matérialise une ligne par preuve et par étape sans résultat."""
     display = display_names(items)
-    org_cache_by_key = {
-        row.get("Organisation_Key", ""): row for row in (org_cache_rows or [])
-        if row.get("Organisation_Key")
-    }
-    domain_by_key = {
-        row.get("Organisation_Key", ""): row for row in (domain_page_rows or [])
-        if row.get("Organisation_Key")
-    }
+    org_cache_by_key = {}
+    for row in org_cache_rows or []:
+        key = org_identity.effective_organisation_key(
+            row.get("Matched_Name") or row.get("Query_Name") or "",
+            row.get("Organisation_Key", ""),
+        )
+        if key:
+            org_cache_by_key[key] = row
+    domain_by_key = {}
+    for row in domain_page_rows or []:
+        key = org_identity.effective_organisation_key(
+            row.get("Organisation", ""), row.get("Organisation_Key", ""),
+        )
+        if key:
+            domain_by_key[key] = row
     llm_outcomes = llm_outcomes or {}
 
     def missing_outcome(key: str, evidence_type: str) -> str:

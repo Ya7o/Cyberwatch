@@ -35,7 +35,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
-from . import config, llm_runtime, organisation_sector as osec, store
+from . import config, llm_runtime, org_identity, organisation_sector as osec, store
 from .model import Item
 
 TASK = "organisation_sector"
@@ -209,7 +209,10 @@ def build_organisation_context(
     org_cache_rows: list[dict],
     evidence: list[osec.OrganisationSectorEvidence] | None = None,
 ) -> OrganisationContext:
-    org_items = [item for item in items if item.Organisation_Key == organisation_key]
+    org_items = [
+        item for item in items
+        if osec.sector_organisation_key(item) == organisation_key
+    ]
     display = osec.display_names(org_items).get(organisation_key, organisation_key)
     aliases = tuple(sorted({item.Organisation_Raw for item in org_items if item.Organisation_Raw}))[:MAX_ALIASES]
     source_ids = tuple(sorted({item.Source_ID for item in org_items if item.Source_ID}))
@@ -229,7 +232,13 @@ def build_organisation_context(
             descriptions.add(description)
 
     cache_row = next(
-        (row for row in org_cache_rows if (row.get("Organisation_Key") or "").strip() == organisation_key),
+        (
+            row for row in org_cache_rows
+            if org_identity.effective_organisation_key(
+                row.get("Matched_Name") or row.get("Query_Name") or "",
+                (row.get("Organisation_Key") or "").strip(),
+            ) == organisation_key
+        ),
         None,
     ) or {}
     website = ""
@@ -333,7 +342,17 @@ def save_cache(rows: list[dict], path=None) -> None:
 
 
 def _cache_by_key(rows: list[dict]) -> dict[str, dict]:
-    return {row.get("Organisation_Key", ""): row for row in rows if row.get("Organisation_Key")}
+    indexed: dict[str, dict] = {}
+    for row in rows:
+        key = org_identity.effective_organisation_key(
+            row.get("Organisation", ""), row.get("Organisation_Key", ""),
+        )
+        if not key:
+            continue
+        canonical = dict(row)
+        canonical["Organisation_Key"] = key
+        indexed[key] = canonical
+    return indexed
 
 
 # --------------------------------------------------------------------------
@@ -356,7 +375,15 @@ def select_organisations_for_llm(
     interne au type le plus prioritaire n'est jamais arbitré par le LLM —
     §6, §12). Seul ``UNKNOWN`` (aucune preuve du tout) reste sélectionnable.
     """
-    known_keys = {item.Organisation_Key for item in items if item.Organisation_Key}
+    known_keys = {
+        osec.sector_organisation_key(item)
+        for item in items if osec.sector_organisation_key(item)
+    }
+    if organisation_keys is not None:
+        organisation_keys = {
+            org_identity.effective_organisation_key("", key)
+            for key in organisation_keys
+        }
     candidates = sorted(known_keys | set(decisions))
     selected = []
     for key in candidates:
@@ -551,7 +578,10 @@ def enrich_unknown_organisation_sectors(
             report.outcomes[key] = "NOT_APPLICABLE"
 
     updated_rows = dict(cache_by_key)
-    present_keys = {item.Organisation_Key for item in items if item.Organisation_Key}
+    present_keys = {
+        osec.sector_organisation_key(item)
+        for item in items if osec.sector_organisation_key(item)
+    }
     selected_set = set(selected)
     # Une organisation résolue par une autorité n'a plus de décision LLM
     # active. Retirer son ancienne ligne évite de la présenter comme preuve

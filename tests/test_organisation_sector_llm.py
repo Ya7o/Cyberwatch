@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from cyberwatch import config, enrichment, llm_runtime, organisation_sector as osec, store
+from cyberwatch import config, enrichment, llm_runtime, org_identity, organisation_sector as osec, store
 from cyberwatch import organisation_sector_llm as osl
 
 
@@ -136,6 +136,73 @@ def test_context_keeps_at_least_one_evidence_per_produced_channel(make_item):
     assert {value["type"] for value in context.evidence_details} >= {
         osec.EVIDENCE_SOURCE_ACTIVITY, osec.EVIDENCE_DOMAIN_PAGE,
     }
+
+
+def test_identity_aliases_share_evidence_and_one_final_decision(make_item, monkeypatch):
+    alias = make_item(
+        org="Eusko", sector=config.SECTOR_UNKNOWN, source="CYBERATTAQUE_ORG",
+    )
+    canonical = make_item(
+        source_item_id="2", org="Euskal Moneta", sector=config.SECTOR_UNKNOWN,
+        source="FRENCHBREACHES", url="https://example.org/euskal-moneta",
+    )
+    monkeypatch.setattr(
+        org_identity, "ORGANISATION_IDENTITY_REGISTRY",
+        {alias.Organisation_Key: canonical.Organisation_Key},
+    )
+    facts = [
+        {
+            "Item_ID": alias.Item_ID,
+            "Activity_Description": "gestion de la monnaie locale Eusko",
+            "Activity_Sector_Match": config.SECTOR_CULTURE,
+        },
+        {
+            "Item_ID": canonical.Item_ID,
+            "Activity_Description": "monnaie locale complémentaire basque",
+            "Activity_Sector_Match": config.SECTOR_FINANCE,
+        },
+    ]
+    items = [alias, canonical]
+
+    evidence = osec.collect_organisation_evidence(
+        items, reference={}, source_fact_rows=facts, org_cache_rows=[],
+        llm_cache_rows=[], domain_page_rows=[],
+    )
+    assert set(evidence) == {canonical.Organisation_Key}
+    assert {value.sector for value in evidence[canonical.Organisation_Key]} == {
+        config.SECTOR_CULTURE, config.SECTOR_FINANCE,
+    }
+
+    decisions = osec.resolve_all_organisation_sectors(
+        items, reference={}, source_fact_rows=facts, org_cache_rows=[],
+        llm_cache_rows=[], domain_page_rows=[],
+    )
+    assert osl.select_organisations_for_llm(items, decisions) == [canonical.Organisation_Key]
+    context = osl.build_organisation_context(
+        canonical.Organisation_Key, items, source_fact_rows=facts,
+        org_cache_rows=[], evidence=evidence[canonical.Organisation_Key],
+    )
+    assert set(context.aliases) == {"Eusko", "Euskal Moneta"}
+    assert set(context.source_ids) == {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}
+    assert set(context.activity_descriptions) == {
+        "gestion de la monnaie locale Eusko",
+        "monnaie locale complémentaire basque",
+    }
+
+    final = osec.resolve_all_organisation_sectors(
+        items, reference={}, source_fact_rows=facts, org_cache_rows=[],
+        domain_page_rows=[], llm_cache_rows=[{
+            "Organisation_Key": canonical.Organisation_Key,
+            "Organisation": "Euskal Moneta",
+            "Sector": config.SECTOR_FINANCE,
+            "Confidence": "0.90",
+            "Model": "gpt-5-nano",
+            "Reason": "activité de gestion d'une monnaie locale",
+        }],
+    )
+    changed, _provenance = osec.apply_organisation_sector_decisions(items, final)
+    assert changed == 2
+    assert {item.Sector for item in items} == {config.SECTOR_FINANCE}
 
 
 def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
