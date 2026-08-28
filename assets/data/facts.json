@@ -19,8 +19,8 @@
    {
     "actor": "Mistertemp’ group",
     "date": "2026-07-29",
-    "evidence": "un accès non autorisé à certaines données personnelles présentes dans ses systèmes.",
-    "scope": "certaines données personnelles",
+    "evidence": "l’incident s’est produit le 29 juillet 2026 au sein de ses systèmes informatiques et qu’il a permis un accès non autorisé à certaines données personnelles.",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -31,23 +31,9 @@
     "value": "accès non autorisé"
    },
    {
-    "actor": "Mistertemp’ group",
+    "actor": "",
     "date": "",
-    "evidence": "aucune altération ou suppression des données concernées n’aurait été constatée.",
-    "scope": "des données concernées",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "impact",
-    "unit": "",
-    "value": "aucune altération ou suppression"
-   },
-   {
-    "actor": "Mistertemp’ group",
-    "date": "2026-07-29",
-    "evidence": "elle confirme uniquement que des données personnelles sont concernées.",
+    "evidence": "Elle confirme uniquement que des données personnelles sont concernées.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -61,30 +47,44 @@
    {
     "actor": "Mistertemp’ group",
     "date": "",
-    "evidence": "aucun usage frauduleux des données concernées n’a été identifié à ce jour.",
+    "evidence": "le groupe indique avoir depuis contenu l’incident et corrigé la vulnérabilité.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
-    "type": "statement",
+    "status": "confirmed",
+    "type": "vulnerability",
     "unit": "",
-    "value": "aucun usage frauduleux"
+    "value": "corrected"
    },
    {
     "actor": "Mistertemp’ group",
     "date": "",
-    "evidence": "mentionne en revanche explicitement la correction d’une vulnérabilité après la détection de l’incident.",
+    "evidence": "Le groupe précise qu’aucun usage frauduleux des données concernées n’a été identifié à ce jour.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed",
-    "type": "vulnerability",
+    "type": "attack_action",
     "unit": "",
-    "value": "correction de la vulnérabilité"
+    "value": "aucun usage frauduleux identifié"
+   },
+   {
+    "actor": "Mistertemp’ group",
+    "date": "",
+    "evidence": "La réalité de l’incident est en revanche désormais confirmée directement par Mistertemp’ group.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "statement",
+    "unit": "",
+    "value": "incident confirmé"
    }
   ],
   "data_types": [
@@ -116,21 +116,13 @@
   ],
   "display_summary": "Mistertemp’ group piraté : une fuite de données touche le groupe derrière Aquila RH, Lynx RH et Vitalis Médical",
   "fields": {
-   "evolution": {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "La vulnérabilité a été corrigée."
-   },
    "impact": {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "Aucun usage frauduleux des données concernées n’a été identifié à ce jour."
+    "value": "Aucun usage frauduleux identifié à ce jour."
    }
   },
   "systems": [],
@@ -138,7 +130,7 @@
    {
     "date": "2026-07-29",
     "event": "incident de sécurité informatique",
-    "evidence": "un incident de sécurité informatique survenu le 29 juillet 2026.",
+    "evidence": "l’incident s’est produit le 29 juillet 2026 au sein de ses systèmes informatiques et qu’il a permis un accès non autorisé à certaines données personnelles.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -147,8 +139,8 @@
    },
    {
     "date": "2026-07-29",
-    "event": "atteinte à des données personnelles",
-    "evidence": "un accès non autorisé à certaines données personnelles.",
+    "event": "corrigé la vulnérabilité",
+    "evidence": "le groupe indique avoir depuis contenu l’incident et corrigé la vulnérabilité.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -163,16 +155,17 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "value": "correction de la vulnérabilité"
+    "value": "corrected"
    }
   ]
  },
  "INC-3C7D00DC15F3": {
   "affected": [
    {
-    "evidence": "Le hacker  Alduin  affirme avoir récupéré environ  270 000 enregistrements  liés à la facturation et à la livraison de commandes.",
-    "raw": "270 000 enregistrements",
-    "semantic": "unspecified",
+    "date": "2026-08-27",
+    "evidence": "Alduin affirme avoir récupéré environ 270 000 enregistrements liés à la facturation et à la livraison de commandes.",
+    "scope": "livraison",
+    "semantic": "livraison",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -294,24 +287,10 @@
     "value": "identifiants"
    },
    {
-    "actor": "Cyberattaque.org",
-    "date": "null",
-    "evidence": "Les fichiers analysés par Cyberattaque.org permettent néanmoins de confirmer la présence effective de données de livraison, de facturation et d’identifiants de commandes dans les éléments diffusés.",
-    "scope": "null",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "type": "data_type",
-    "unit": "",
-    "value": "données de livraison, de facturation et d’identifiants de commandes"
-   },
-   {
     "actor": "Alduin",
-    "date": "null",
+    "date": "unknown",
     "evidence": "Alduin affirme par ailleurs avoir identifié une faiblesse dans une API de Journaux.fr qui permettrait à un utilisateur authentifié de modifier artificiellement le crédit associé à son propre compte.",
-    "scope": "null",
+    "scope": "manipulation du crédit",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -319,24 +298,24 @@
     "status": "hypothesis",
     "type": "vulnerability",
     "unit": "",
-    "value": "une faiblesse dans une API qui permettrait à un utilisateur authentifié de modifier artificiellement le crédit d’un compte"
+    "value": "une faiblesse dans une API de Journaux.fr"
    },
    {
-    "actor": "null",
-    "date": "null",
-    "evidence": "Sa réalité et son périmètre devront être confirmés par Journaux.fr, mais elle pourrait permettre une manipulation frauduleuse du solde interne si elle est toujours exploitable.",
-    "scope": "null",
+    "actor": "unknown",
+    "date": "unknown",
+    "evidence": "Une base associant identité, adresse et numéro réel de commande peut faciliter des campagnes de phishing particulièrement crédibles.",
+    "scope": "arnaques ciblées",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "hypothesis",
+    "status": "reported",
     "type": "impact",
     "unit": "",
-    "value": "manipulation frauduleuse du solde interne"
+    "value": "faciliter des campagnes de phishing"
    },
    {
-    "evidence": "Le hacker Alduin affirme avoir récupéré environ 270 000 enregistrements.",
+    "evidence": "Alduin affirme avoir récupéré environ 270 000 enregistrements liés à la facturation et à la livraison de commandes.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -390,10 +369,10 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "base de données client"
+    "value": "données de livraison et de facturation de Journaux.fr"
    }
   ],
-  "display_summary": "Une fuite de 270 000 données de livraison signalée sur Journaux.fr après une cyberattaque revendiquée par le hacker Alduin.",
+  "display_summary": "270 000 données de livraison de Journaux.fr divulguées après une cyberattaque revendiquée par le hacker Alduin.",
   "fields": {
    "impact": {
     "source": "FRENCHBREACHES",
@@ -401,7 +380,7 @@
      "FRENCHBREACHES"
     ],
     "status": "claimed",
-    "value": "Les informations de 270 000 personnes sont revendiquées."
+    "value": "Les données revendiquées seraient principalement liées à la facturation."
    },
    "threat_actor": {
     "source": "CYBERATTAQUE_ORG",
@@ -416,13 +395,23 @@
   "timeline": [
    {
     "date": "2026-08-27",
-    "event": "revendication de fuite de données par Alduin",
-    "evidence": "Journaux.fr, plateforme française de vente de journaux et magazines en ligne, fait l’objet d’une revendication de fuite de données publiée ce 27 août 2026.",
+    "event": "Journaux.fr , plateforme française de vente de journaux et magazines en ligne, fait l’objet d’une revendication de fuite de données publiée ce  27 août 2026 .",
+    "evidence": "Journaux.fr , plateforme française de vente de journaux et magazines en ligne, fait l’objet d’une revendication de fuite de données publiée ce  27 août 2026 .",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed"
+    "status": "unknown"
+   },
+   {
+    "date": "2026-08-27",
+    "event": "présence de données confirmée par Cyberattaque.org",
+    "evidence": "les fichiers analysés par Cyberattaque.org permettent néanmoins de confirmer la présence effective de données de livraison, de facturation et d’identifiants de commandes dans les éléments diffusés.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
    }
   ],
   "version": 3,
@@ -432,7 +421,7 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "value": "une faiblesse dans une API qui permettrait à un utilisateur authentifié de modifier artificiellement le crédit d’un compte"
+    "value": "une faiblesse dans une API de Journaux.fr"
    }
   ]
  },
@@ -496,10 +485,10 @@
     "value": "données clients"
    },
    {
-    "actor": "",
-    "date": "",
-    "evidence": "L Commerce, la société derrière le service Allo E.Leclerc, informe certains clients qu’un de ses prestataires logistiques externes a été victime d’un incident de sécurité informatique.",
-    "scope": "",
+    "actor": "L Commerce",
+    "date": "null",
+    "evidence": "L Commerce , la société derrière le service Allo E.Leclerc , informe certains clients qu’un de ses prestataires logistiques externes a été victime d’un incident de sécurité informatique.",
+    "scope": "null",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -510,10 +499,24 @@
     "value": "L Commerce"
    },
    {
-    "actor": "",
-    "date": "",
+    "actor": "null",
+    "date": "null",
+    "evidence": "Cette compromission a entraîné un accès non autorisé à plusieurs données personnelles.",
+    "scope": "null",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "accès non autorisé à plusieurs données personnelles"
+   },
+   {
+    "actor": "null",
+    "date": "null",
     "evidence": "les attaquants ont pu accéder à plusieurs catégories de données permettant d’identifier et de contacter les clients.",
-    "scope": "",
+    "scope": "null",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -521,13 +524,13 @@
     "status": "reported",
     "type": "data_type",
     "unit": "",
-    "value": "nom et prénom, adresse e-mail, numéro de téléphone"
+    "value": "nom, prénom, adresse e-mail, numéro de téléphone"
    },
    {
-    "actor": "",
-    "date": "",
-    "evidence": "les informations bancaires, identifiants de connexion et mots de passe ne sont pas concernés par cette fuite.",
-    "scope": "",
+    "actor": "null",
+    "date": "null",
+    "evidence": "L’entreprise précise en revanche que les informations bancaires, identifiants de connexion et mots de passe ne sont pas concernés par cette fuite.",
+    "scope": "null",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -538,42 +541,46 @@
     "value": "informations bancaires, identifiants de connexion et mots de passe"
    },
    {
-    "actor": "",
-    "date": "",
-    "evidence": "La combinaison entre nom, adresse e-mail et numéro de téléphone peut être utilisée pour construire des campagnes de phishing crédibles.",
-    "scope": "",
+    "actor": "null",
+    "date": "null",
+    "evidence": "L’incident ne concerne donc pas directement les systèmes d’Allo E.Leclerc mais ceux d’un partenaire utilisé pour ses opérations logistiques.",
+    "scope": "null",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "reported",
-    "type": "impact",
+    "type": "system",
     "unit": "",
-    "value": "risque accru de phishing et d’usurpation"
+    "value": "systèmes d’Allo E.Leclerc"
    },
    {
-    "actor": "",
-    "date": "",
+    "actor": "L Commerce",
+    "date": "null",
     "evidence": "L Commerce indique avoir notifié l’incident à la CNIL conformément à la réglementation.",
-    "scope": "",
+    "scope": "null",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "reported",
+    "type": "remediation",
+    "unit": "",
+    "value": "notifié à la CNIL"
+   },
+   {
+    "actor": "L Commerce",
+    "date": "null",
+    "evidence": "L’entreprise recommande donc à ses clients de rester vigilants face aux communications inhabituelles ou aux demandes d’actions suspectes reçues après cet incident.",
+    "scope": "null",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
     "type": "statement",
     "unit": "",
-    "value": "La CNIL a été informée"
-   },
-   {
-    "evidence": "L Commerce, la société derrière le service Allo E.Leclerc, informe certains clients qu’un de ses prestataires logistiques externes a été victime d’un incident de sécurité informatique.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "actor",
-    "value": "prestataire logistique"
+    "value": "rester vigilants face aux communications inhabituelles"
    },
    {
     "evidence": "Allo E.Leclerc : un prestataire piraté, des données clients exposées",
@@ -638,7 +645,31 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "données personnelles des clients"
+    "value": "données personnelles"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "nom et prénom"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "adresse e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "numéro de téléphone"
    }
   ],
   "display_summary": "Allo E.Leclerc informe d'une exposition de données clients suite à un piratage d'un prestataire logistique.",
@@ -648,8 +679,8 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported",
-    "value": "risque accru de phishing et d’usurpation"
+    "status": "unknown",
+    "value": "Des données personnelles d'identification des clients ont été compromises."
    },
    "third_party": {
     "source": "CYBERATTAQUE_ORG",
@@ -668,29 +699,25 @@
     "value": "Commerce"
    }
   },
-  "systems": [],
-  "timeline": [
+  "systems": [
    {
-    "date": "non précisé",
-    "event": "incident de sécurité informatique",
-    "evidence": "L Commerce, la société derrière le service Allo E.Leclerc, informe certains clients qu’un de ses prestataires logistiques externes a été victime d’un incident de sécurité informatique.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported"
+    "status": "reported",
+    "value": "systèmes d’Allo E.Leclerc"
    },
    {
-    "date": "non précisé",
-    "event": "notification aux clients",
-    "evidence": "Les personnes concernées sont également directement prévenues par l’entreprise.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "reported"
+    "status": "reported",
+    "value": "systèmes d’Allo E.Leclerc"
    }
   ],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -742,7 +769,7 @@
     "actor": "",
     "date": "",
     "evidence": "Environ 6 000 particuliers et professionnels ont été informés de l’incident.",
-    "scope": "particuliers et professionnels",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -755,22 +782,8 @@
    {
     "actor": "",
     "date": "",
-    "evidence": "les attaquants seraient parvenus à obtenir un niveau d’accès suffisamment important à son infrastructure pour que la consultation ou la copie de données personnelles de ses adhérents ne puisse pas être exclue.",
-    "scope": "adhérents",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "data_type",
-    "unit": "",
-    "value": "données personnelles"
-   },
-   {
-    "actor": "",
-    "date": "",
     "evidence": "Euskal Moneta indique toutefois ne disposer d’aucune preuve confirmant une exfiltration ou une utilisation effective des données.",
-    "scope": "aucune",
+    "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -778,26 +791,12 @@
     "status": "negated",
     "type": "data_type",
     "unit": "",
-    "value": "exfiltration de données personnelles"
+    "value": "exfiltration ou utilisation effective des données"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "Euskal Moneta indique également ne disposer d’aucun élément démontrant une utilisation frauduleuse des informations de ses adhérents.",
-    "scope": "adhérents",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "negated",
-    "type": "data_type",
-    "unit": "",
-    "value": "utilisation frauduleuse des informations"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Le principal risque reste donc pour l’instant potentiel.",
+    "evidence": "l’attaquant aurait obtenu un accès suffisamment étendu aux systèmes pour que l’association ne puisse pas garantir que les informations présentes sur ses serveurs n’ont pas été consultées ou copiées.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -806,21 +805,91 @@
     "status": "unknown",
     "type": "impact",
     "unit": "",
-    "value": "risque potentiel"
+    "value": "consultation ou la copie de données personnelles"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "La méthode technique utilisée pour entrer dans l’infrastructure ainsi que la durée exacte de cet accès ne sont pas encore précisées publiquement.",
+    "evidence": "Les serveurs concernés contiennent notamment des données personnelles relatives aux adhérents, des informations concernant les entreprises membres du réseau ainsi que des RIB nécessaires à certains services proposés par Euskal Moneta.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "unknown",
-    "type": "initial_access",
+    "status": "reported",
+    "type": "data_type",
     "unit": "",
-    "value": "méthode technique non précisée"
+    "value": "données personnelles, RIB"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "rien ne permet pour le moment d’affirmer que les coordonnées bancaires ont été récupérées par les attaquants.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "impact",
+    "unit": "",
+    "value": "récupération des coordonnées bancaires"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "l’objectif principal des attaquants n’aurait pas été le vol des fichiers des adhérents, mais l’exploitation du domaine et de l’infrastructure d’Euskal Moneta au profit d’un site de jeux et paris en ligne basé en Indonésie.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "attack_action",
+    "unit": "",
+    "value": "exploitation du domaine et de l’infrastructure"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Euskal Moneta a choisi de reconstruire son infrastructure informatique afin de repartir sur un environnement sécurisé.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "remediation",
+    "unit": "",
+    "value": "reconstruire l'infrastructure informatique"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "aucune exfiltration de données personnelles n’est actuellement confirmée.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "data_volume",
+    "unit": "",
+    "value": "exfiltration de données personnelles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Si des coordonnées personnelles ou bancaires ont effectivement été copiées, elles pourraient notamment être utilisées pour du phishing ciblé, de l’usurpation ou des tentatives de fraude.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "impact",
+    "unit": "",
+    "value": "phishing ciblé, usurpation ou tentatives de fraude"
    }
   ],
   "data_types": [
@@ -847,26 +916,18 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "données personnelles relatives aux adhérents"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "RIB nécessaires à certains services proposés par Euskal Moneta"
+    "value": "données personnelles des adhérents, RIB"
    }
   ],
-  "display_summary": "Euskal Moneta a détecté une cyberattaque le 17 août 2026, potentiellement impliquant l'accès à des données personnelles de 6 000 adhérents.",
+  "display_summary": "Euskal Moneta a détecté une cyberattaque le 17 août 2026, potentiellement impliquant l'accès à des données personnelles d'adhérents.",
   "fields": {
    "impact": {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "confirmed",
-    "value": "potentielle consultation de données personnelles"
+    "status": "unknown",
+    "value": "consultation ou la copie de données personnelles"
    }
   },
   "systems": [],
@@ -883,8 +944,8 @@
    },
    {
     "date": "2026-08-17",
-    "event": "détection de la cyberattaque",
-    "evidence": "La compromission a été découverte le 17 août.",
+    "event": "Cyberattaque détectée",
+    "evidence": "Une intrusion détectée le 17 août",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"

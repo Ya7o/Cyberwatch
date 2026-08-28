@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T03:55:53.249855+00:00",
+  "generated_at": "2026-08-28T04:13:12.142234+00:00",
   "incident_coverage": {
     "location": {
       "known": 3,
@@ -8,10 +8,10 @@
       "unknown_pct": 25.0
     },
     "sector": {
-      "known": 3,
-      "known_pct": 75.0,
-      "unknown": 1,
-      "unknown_pct": 25.0
+      "known": 4,
+      "known_pct": 100.0,
+      "unknown": 0,
+      "unknown_pct": 0.0
     },
     "threat": {
       "known": 4,
@@ -41,12 +41,12 @@
     }
   },
   "latest_run": {
-    "as_of": "2026-08-28T07:46:36+04:00",
-    "duration_seconds": 89.6,
+    "as_of": "2026-08-28T08:01:49+04:00",
+    "duration_seconds": 97.9,
     "mode": "CREATE",
     "overall_status": "OK",
     "requests": 19,
-    "run_id": "RUN-20260828T074636-6",
+    "run_id": "RUN-20260828T080149-6",
     "target_end": "2026-08-28",
     "target_start": "2026-08-27"
   },
@@ -58,31 +58,48 @@
         "calls_budget_blocked": 0,
         "calls_failed": 0,
         "calls_succeeded": 1,
-        "duration_seconds": 2.490770430999987,
-        "estimated_cost_usd": 0.00029535,
-        "input_tokens": 1385,
+        "duration_seconds": 2.129867601000001,
+        "estimated_cost_usd": 0.00030015,
+        "input_tokens": 1357,
         "last_model": "gpt-4o-mini",
         "max_calls": 200,
         "max_cost_usd": 0.5,
-        "output_tokens": 146,
+        "output_tokens": 161,
         "reasoning_tokens": 0,
         "retries": 0,
-        "total_tokens": 1531
+        "total_tokens": 1518
+      },
+      "organisation_sector": {
+        "cached_input_tokens": 0,
+        "calls_attempted": 1,
+        "calls_budget_blocked": 0,
+        "calls_failed": 0,
+        "calls_succeeded": 1,
+        "duration_seconds": 19.4290864190001,
+        "estimated_cost_usd": 0.0015464000000000003,
+        "input_tokens": 1672,
+        "last_model": "gpt-5-nano",
+        "max_calls": 200,
+        "max_cost_usd": 0.5,
+        "output_tokens": 3657,
+        "reasoning_tokens": 3392,
+        "retries": 0,
+        "total_tokens": 5329
       }
     },
-    "calls_attempted": 1,
+    "calls_attempted": 2,
     "calls_failed": 0,
-    "calls_succeeded": 1,
-    "duration_seconds": 2.491,
-    "estimated_cost_usd": 0.000295,
-    "total_tokens": 1531
+    "calls_succeeded": 2,
+    "duration_seconds": 21.559,
+    "estimated_cost_usd": 0.001847,
+    "total_tokens": 6847
   },
   "schema": "cyberwatch-post-reset-baseline-v1",
   "sources": {
     "BONJOURLAFUITE": {
-      "collect_duration_seconds": 1.325,
+      "collect_duration_seconds": 1.98,
       "coverage": "100",
-      "duration_seconds": 1.3,
+      "duration_seconds": 2.0,
       "items": 0,
       "items_collected": 0,
       "new_items": 0,
@@ -90,29 +107,29 @@
       "status": "OK"
     },
     "CYBERATTAQUE_ORG": {
-      "collect_duration_seconds": 3.623,
+      "collect_duration_seconds": 3.714,
       "coverage": "100",
-      "duration_seconds": 4.5,
+      "duration_seconds": 5.0,
       "items": 4,
       "items_collected": 4,
       "new_items": 4,
-      "processing_duration_seconds": 0.875,
+      "processing_duration_seconds": 1.24,
       "status": "OK"
     },
     "FRENCHBREACHES": {
-      "collect_duration_seconds": 4.071,
+      "collect_duration_seconds": 4.076,
       "coverage": "100",
-      "duration_seconds": 5.3,
+      "duration_seconds": 5.4,
       "items": 3,
       "items_collected": 3,
       "new_items": 3,
-      "processing_duration_seconds": 1.233,
+      "processing_duration_seconds": 1.365,
       "status": "OK"
     },
     "RANSOMWARE_LIVE": {
-      "collect_duration_seconds": 78.283,
+      "collect_duration_seconds": 85.432,
       "coverage": "100",
-      "duration_seconds": 78.3,
+      "duration_seconds": 85.4,
       "items": 0,
       "items_collected": 0,
       "new_items": 0,
@@ -120,13 +137,13 @@
       "status": "OK"
     },
     "VEILLE_LLM": {
-      "collect_duration_seconds": 0.001,
+      "collect_duration_seconds": 0.0,
       "coverage": "100",
       "duration_seconds": 0.0,
       "items": 0,
       "items_collected": 16,
       "new_items": 0,
-      "processing_duration_seconds": 0.04,
+      "processing_duration_seconds": 0.023,
       "status": "OK"
     }
   },

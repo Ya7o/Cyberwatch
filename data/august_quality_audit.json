@@ -11,12 +11,6 @@
       "severity": "low",
       "issue": "localisation_unknown",
       "recommendation": "preuve insuffisante documentée; conserver Inconnu"
-    },
-    {
-      "id": "INC-BAD0A56226CC",
-      "severity": "low",
-      "issue": "secteur_unknown",
-      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
     }
   ],
   "incident_reports": [
@@ -61,7 +55,7 @@
           "url": "https://frenchbreaches.com/alertes/euskal-moneta-eusko-mtbr7on3s5riduqxif"
         }
       ],
-      "summary": "Euskal Moneta a détecté une cyberattaque le 17 août 2026, potentiellement impliquant l'accès à des données personnelles de 6 000 adhérents.",
+      "summary": "Euskal Moneta a détecté une cyberattaque le 17 août 2026, potentiellement impliquant l'accès à des données personnelles d'adhérents.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -73,8 +67,8 @@
         }
       ],
       "summary_reasons": [],
-      "sector": "Inconnu",
-      "sector_status": "unknown_no_evidence",
+      "sector": "Finance / Assurance",
+      "sector_status": "confirmed",
       "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "France métropolitaine",
@@ -95,7 +89,7 @@
           "url": "https://frenchbreaches.com/alertes/journaux-fr-mtbj5s58u9984dymo3"
         }
       ],
-      "summary": "Une fuite de 270 000 données de livraison signalée sur Journaux.fr après une cyberattaque revendiquée par le hacker Alduin.",
+      "summary": "270 000 données de livraison de Journaux.fr divulguées après une cyberattaque revendiquée par le hacker Alduin.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
