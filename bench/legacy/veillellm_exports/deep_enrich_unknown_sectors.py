@@ -21,14 +21,14 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from cyberwatch import company_evidence, config  # noqa: E402
 from cyberwatch.normalize import classify_sector, searchable  # noqa: E402
 
-OUT = ROOT / "sources" / "veillellm"
+OUT = Path(__file__).resolve().parent
 ITEMS_CSV = ROOT / "data" / "items.csv"
 
 DATASETS = {

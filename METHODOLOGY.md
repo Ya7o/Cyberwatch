@@ -26,9 +26,18 @@ toute mise à jour de la référence reste visible dans Git.
 La couverture locale est fournie par le snapshot versionné **Veille LLM**
 (`sources/veillellm/cyberattaques_reunion_mayotte_2026.json`). Il est relu en
 totalité à chaque run afin qu'une découverte historique tardive soit intégrée
-sans dépendre de la fenêtre réseau de MAJ. Tous les dossiers valides sont
-matérialisés dans `ITEMS`, quel que soit leur `score_cyberattaque` : le score
-reste une information affichée au dashboard, jamais un critère d'exclusion.
+sans dépendre de la fenêtre réseau de MAJ. Le snapshot conserve deux états :
+`ACCEPTED` lorsqu'une preuve publique démontre le caractère cyber et
+`CANDIDATE` lorsque le signal reste une panne, un incident informatique, un
+sabotage physique ou une rumeur sans origine cyber démontrée. Seuls les
+`ACCEPTED` sont matérialisés dans `ITEMS`. Le score reste une information
+analytique et ne décide jamais l'admission.
+
+Le contrat `cyberwatch-veille-v2` impose les compteurs, l'admission, sa raison,
+les territoires et au moins une URL documentaire. Un `ACCEPTED` ne peut pas
+porter `type_menace=Inconnu` : lorsque le caractère cyber est établi mais pas
+sa nature précise, la valeur canonique est `Autre cyber`. Un snapshot âgé de
+plus de deux jours est exposé `PARTIAL` mais ne bloque pas les autres sources.
 
 Veille LLM est une source analytique : ses références documentaires sont exposées
 au dashboard mais ne gonflent jamais le compteur de corroboration éditoriale.
@@ -893,6 +902,14 @@ filet que pour `maj` réel (`collect.yml`) ; `create`/`cold-reset` restent
 purement déterministes par défaut.
 
 
-## Qualification hybride source LLM (v0.7.37)
+## Retrait du fallback des exports ChatGPT globaux (v0.7.38)
 
-Les exports JSON versionnés `sources/veillellm` restent des challengers analytiques. Pour `FRENCHBREACHES` et `CYBERATTAQUE_ORG`, ils peuvent compléter une `Localisation=Inconnu` sans jamais écraser une valeur connue. Un `Secteur=Inconnu` n'est complété que sur raccord par URL source exacte avec preuve externe conservée dans l'export. La `Menace` n'est jamais modifiée par ces challengers. `VEILLE_LLM` Réunion/Mayotte reste une source native distincte selon son contrat existant. Les décisions sont journalisées dans `data/qualification_provenance.csv`.
+Les anciennes tables ChatGPT de `FRENCHBREACHES` et `CYBERATTAQUE_ORG` sont
+archivées sous `bench/legacy/veillellm_exports`. Elles ne complètent plus aucun
+champ de production : elles étaient figées au 17 août 2026, recréaient deux
+sources déjà collectées directement et leur seul effet encore actif était un
+fallback de localisation non soumis à un contrat de fraîcheur. Les SourceFacts,
+la qualification canonique et les collecteurs directs les remplacent.
+
+`VEILLE_LLM` désigne désormais exclusivement la veille complémentaire
+Réunion/Mayotte et suit le contrat d'admission décrit plus haut.

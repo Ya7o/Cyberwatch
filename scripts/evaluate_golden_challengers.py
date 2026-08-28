@@ -84,11 +84,11 @@ def main() -> None:
     parser.add_argument("--incidents", default=str(ROOT / "data" / "incidents.csv"))
     parser.add_argument(
         "--frenchbreaches",
-        default=str(ROOT / "sources" / "veillellm" / "frenchbreaches_2026.json"),
+        default=str(ROOT / "bench" / "legacy" / "veillellm_exports" / "frenchbreaches_2026.json"),
     )
     parser.add_argument(
         "--cyberattaque",
-        default=str(ROOT / "sources" / "veillellm" / "cyberattaque_org_2026.json"),
+        default=str(ROOT / "bench" / "legacy" / "veillellm_exports" / "cyberattaque_org_2026.json"),
     )
     parser.add_argument(
         "--reunion-mayotte",

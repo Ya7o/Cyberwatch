@@ -438,17 +438,19 @@ def _local_analysis_by_incident(items: list[Item]) -> dict[str, dict]:
     except (OSError, ValueError, TypeError):
         return {}
 
-    records = data.get("incidents") or []
+    records = data.get("records") or []
     by_key: dict[tuple[str, str], dict] = {}
     for record in records:
         if not isinstance(record, dict):
+            continue
+        if str(record.get("admission") or "").strip().upper() != "ACCEPTED":
             continue
         try:
             score = int(record.get("score_cyberattaque"))
         except (TypeError, ValueError):
             continue
-        # Le score reste une information affichable, jamais un critère
-        # d'exclusion : tous les dossiers valides sont importés et joints.
+        # Le score reste une information affichable ; l'admission est décidée
+        # en amont par le contrat de la routine et validée par le collecteur.
         organisation = str(record.get("organisation") or "").strip()
         date = str(record.get("date") or "").strip()
         summary = str(record.get("synthese") or "").strip()

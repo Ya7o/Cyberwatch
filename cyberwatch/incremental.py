@@ -32,7 +32,6 @@ QUALIFICATION_CODE_FILES = (
     "context_sector.py",
     "sector_registry.py",
     "sector_registry_safety.py",
-    "source_llm_fallback.py",
     "sector_fallback_migration.py",
 )
 

@@ -64,7 +64,14 @@ Le pipeline publié repose actuellement sur cinq sources actives :
 | `RANSOMWARE_LIVE` | ransomware, groupe, pays et parfois secteur | API JSON |
 | `VEILLE_LLM` | couverture analytique La Réunion + Mayotte | snapshot JSON versionné |
 
-`VEILLE_LLM` est relu intégralement à chaque run. Son `score_cyberattaque` est une information, jamais un seuil d'exclusion. Lorsqu'un incident existe aussi dans une source directe, cette source analytique ne gonfle pas artificiellement le nombre de corroborations éditoriales.
+`VEILLE_LLM` est relu intégralement à chaque run. Son `score_cyberattaque` est
+une information, jamais un seuil d'exclusion. La routine conserve les signaux
+non démontrés comme `CANDIDATE`, mais seuls les dossiers `ACCEPTED` par preuve
+cyber explicite entrent dans la base. Lorsqu'un incident existe aussi dans une
+source directe, cette source analytique ne gonfle pas artificiellement le
+nombre de corroborations éditoriales. Les anciennes tables ChatGPT globales de
+FrenchBreaches et Cyberattaque.org sont archivées comme benchmarks et ne sont
+plus lues en production.
 
 D'autres sources peuvent rester présentes dans le référentiel lorsqu'elles sont volontairement inactives. Leur protocole et leur motif de désactivation sont conservés plutôt que masqués.
 

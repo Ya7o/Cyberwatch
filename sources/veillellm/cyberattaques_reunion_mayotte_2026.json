@@ -7,7 +7,9 @@
     "year": 2026,
     "generated_at": "2026-08-25T08:15:40+04:00",
     "record_count": 16,
-    "schema": "cyberwatch-canonical-v1",
+    "accepted_count": 6,
+    "candidate_count": 10,
+    "schema": "cyberwatch-veille-v2",
     "watch_result": {
       "new_incidents": 4,
       "enriched_incidents": 0,
@@ -32,13 +34,15 @@
       "type_menace_obligatoire": true,
       "secteur_obligatoire": true,
       "territoire_obligatoire": true,
-      "csv_aligne_sur_json": true
+      "admission_explicite": true
     }
   },
-  "incidents": [
+  "records": [
     {
       "date": "2026-02-04",
       "organisation": "Commune de Saint-Leu",
+      "admission": "CANDIDATE",
+      "admission_reason": "Aucune preuve publique d'une origine cyber.",
       "territoire": "La Réunion",
       "localisation": "Saint-Leu",
       "secteur": "Administration / Collectivité",
@@ -54,6 +58,8 @@
     {
       "date": "2026-02-04",
       "organisation": "Infrastructure fibre multi-opérateurs / PBO",
+      "admission": "CANDIDATE",
+      "admission_reason": "Sabotage physique documenté, sans compromission informatique.",
       "territoire": "La Réunion",
       "localisation": "Saint-Paul — Le Ruisseau, Bois-de-Nèfles",
       "secteur": "Numérique / Technologie",
@@ -69,6 +75,8 @@
     {
       "date": "2026-02-19",
       "organisation": "EPF Réunion / VALGO",
+      "admission": "ACCEPTED",
+      "admission_reason": "Fuite de données revendiquée et rattachée explicitement à une entité réunionnaise.",
       "territoire": "La Réunion",
       "localisation": "Sainte-Marie",
       "secteur": "Administration / Collectivité",
@@ -84,6 +92,8 @@
     {
       "date": "2026-04-24",
       "organisation": "STOR Solutions",
+      "admission": "ACCEPTED",
+      "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
       "territoire": "La Réunion",
       "localisation": "Sainte-Clotilde / Saint-Denis",
       "secteur": "Numérique / Technologie",
@@ -99,6 +109,8 @@
     {
       "date": "2026-05-31",
       "organisation": "Air Austral",
+      "admission": "ACCEPTED",
+      "admission_reason": "Fuite de données documentée et incident rapporté comme confirmé par la victime.",
       "territoire": "La Réunion",
       "localisation": "Sainte-Marie",
       "secteur": "Transport / Logistique",
@@ -114,6 +126,8 @@
     {
       "date": "2026-06-11",
       "organisation": "Ville de Mamoudzou",
+      "admission": "ACCEPTED",
+      "admission_reason": "Incident de cybersécurité confirmé officiellement par la victime.",
       "territoire": "Mayotte",
       "localisation": "Mamoudzou",
       "secteur": "Administration / Collectivité",
@@ -129,6 +143,8 @@
     {
       "date": "2026-06-13",
       "organisation": "Commune de Ouangani",
+      "admission": "CANDIDATE",
+      "admission_reason": "Incident informatique documenté, mais origine cyber non démontrée.",
       "territoire": "Mayotte",
       "localisation": "Ouangani",
       "secteur": "Administration / Collectivité",
@@ -144,6 +160,8 @@
     {
       "date": "2026-06-29",
       "organisation": "Le Quotidien de La Réunion",
+      "admission": "CANDIDATE",
+      "admission_reason": "Impact informatique documenté sans preuve d'une action cyber.",
       "territoire": "La Réunion",
       "localisation": "La Réunion",
       "secteur": "Inconnu",
@@ -159,6 +177,8 @@
     {
       "date": "2026-06-29",
       "organisation": "EGEP Réunion",
+      "admission": "ACCEPTED",
+      "admission_reason": "Fuite de données revendiquée visant explicitement l'entreprise réunionnaise.",
       "territoire": "La Réunion",
       "localisation": "Saint-Joseph",
       "secteur": "Construction / BTP",
@@ -174,6 +194,8 @@
     {
       "date": "2026-06-30",
       "organisation": "Lycée polyvalent Paul Moreau",
+      "admission": "ACCEPTED",
+      "admission_reason": "Exfiltration revendiquée avec échantillons de données attribués à l'établissement.",
       "territoire": "La Réunion",
       "localisation": "Bras-Panon",
       "secteur": "Éducation / Formation",
@@ -189,6 +211,8 @@
     {
       "date": "2026-07-04",
       "organisation": "Orange / SFR et services d’urgence",
+      "admission": "CANDIDATE",
+      "admission_reason": "Panne télécom documentée sans preuve d'une origine cyber.",
       "territoire": "Mayotte",
       "localisation": "Mayotte — impact multi-secteurs",
       "secteur": "Numérique / Technologie",
@@ -204,6 +228,8 @@
     {
       "date": "2026-07-09",
       "organisation": "Orange Réunion",
+      "admission": "CANDIDATE",
+      "admission_reason": "Vandalisme physique documenté sans compromission informatique.",
       "territoire": "La Réunion",
       "localisation": "Saint-Denis — impact dans l’île",
       "secteur": "Numérique / Technologie",
@@ -219,6 +245,8 @@
     {
       "date": "2026-08-09",
       "organisation": "SRR / SFR",
+      "admission": "CANDIDATE",
+      "admission_reason": "Indisponibilité réseau documentée sans preuve d'une origine cyber.",
       "territoire": "Mayotte",
       "localisation": "Mamoudzou",
       "secteur": "Numérique / Technologie",
@@ -234,6 +262,8 @@
     {
       "date": "2026-08-12",
       "organisation": "SRR / SFR",
+      "admission": "CANDIDATE",
+      "admission_reason": "Indisponibilité réseau documentée sans preuve d'une origine cyber.",
       "territoire": "La Réunion",
       "localisation": "Bras-Panon",
       "secteur": "Numérique / Technologie",
@@ -249,6 +279,8 @@
     {
       "date": "2026-08-18",
       "organisation": "SRR / SFR",
+      "admission": "CANDIDATE",
+      "admission_reason": "Indisponibilité réseau documentée sans preuve d'une origine cyber.",
       "territoire": "La Réunion",
       "localisation": "Le Tampon",
       "secteur": "Numérique / Technologie",
@@ -264,6 +296,8 @@
     {
       "date": "2026-08-19",
       "organisation": "SRR / SFR",
+      "admission": "CANDIDATE",
+      "admission_reason": "Indisponibilité réseau documentée sans preuve d'une origine cyber.",
       "territoire": "La Réunion",
       "localisation": "Saint-Denis",
       "secteur": "Numérique / Technologie",

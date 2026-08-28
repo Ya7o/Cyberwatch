@@ -312,6 +312,11 @@ REGIONAL_WATCH_SOURCES = [
             "scope_is_cyber": True,
             "replace_snapshot": True,
             "non_evidence_source": True,
+            # Une routine de veille quotidienne peut être retardée sans rendre
+            # la collecte globale inutilisable. Au-delà de deux jours, la
+            # source devient PARTIAL (visible) mais reste non bloquante.
+            "max_snapshot_age_days": 2,
+            "publication_contract": "live_watch",
             # Déjà issue d'une analyse LLM structurée (territoire, secteur,
             # menace, synthèse, score) : ne pas faire interpréter la sortie
             # d'un LLM par un second LLM.
@@ -319,15 +324,18 @@ REGIONAL_WATCH_SOURCES = [
         },
         protocol=(
             "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "
-            "le record_count et les URLs de référence ; importer tous les dossiers valides, "
-            "quel que soit leur score cyberattaque, y compris les découvertes historiques tardives."
+            "la fraîcheur, les compteurs et les URLs de référence ; importer uniquement "
+            "les dossiers explicitement admis ACCEPTED. Les signaux CANDIDATE restent "
+            "dans le snapshot pour audit sans devenir des incidents."
         ),
         success_test=(
-            "JSON valide, record_count cohérent, tous les dossiers structurés importés ; "
-            "le score cyberattaque reste une information affichée, jamais un filtre d'exclusion."
+            "JSON v2 valide et âgé d'au plus deux jours ; compteurs cohérents ; tous les "
+            "ACCEPTED sont importés et aucun CANDIDATE n'est publié."
         ),
         notes=(
-            "Source locale analytique issue de Veille LLM pour La Réunion et Mayotte. Snapshot remplacé à chaque run ; "
+            "Source locale analytique issue de Veille LLM pour La Réunion et Mayotte. "
+            "L'admission dépend de preuves cyber explicites, jamais du score seul. "
+            "Snapshot remplacé à chaque run ; "
             "elle ne compte pas comme corroboration éditoriale supplémentaire lorsqu'une "
             "source directe couvre déjà le même incident."
         ),

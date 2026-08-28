@@ -14,7 +14,6 @@ from . import (
     sector as sector_policy,
     sector_registry,
     sector_registry_safety,
-    source_llm_fallback,
     store,
 )
 from .dedup import build_incidents_with_registry
@@ -44,8 +43,6 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_PHISHING,
     config.THREAT_THIRD_PARTY,
 })
-# Un export LLM peut fournir un candidat sourcé, jamais une confirmation.
-_SECTOR_FALLBACK_AUTO_APPLY = False
 PREQUAL_STATE_CSV = store.DATA_DIR / "prequalification_state.csv"
 
 
@@ -194,29 +191,6 @@ def apply_official_subject_activity_sectors(items, org_cache_rows=None):
         })
     provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]))
     return changed, provenance
-
-
-def neutralize_sector_fallback(items, changes, provenance):
-    if _SECTOR_FALLBACK_AUTO_APPLY:
-        return 0
-    by_id = {item.Item_ID: item for item in items if item.Item_ID}
-    neutralized = 0
-    for row in provenance:
-        if row.get("Origin") != "LLM_SOURCE_FALLBACK" or row.get("Field") != "Sector" or row.get("Decision") != "APPLIED":
-            continue
-        item = by_id.get(row.get("Item_ID", ""))
-        applied = row.get("Final_Value", "")
-        if item is None or not applied or item.Sector != applied:
-            continue
-        item.Sector = row.get("Previous_Value") or config.SECTOR_UNKNOWN
-        row["Final_Value"], row["Confidence"], row["Decision"] = item.Sector, "", "REJECTED_NO_STRONG_EVIDENCE"
-        neutralized += 1
-    if neutralized:
-        changes["llm_sector_fallback"] = max(0, changes.get("llm_sector_fallback", 0) - neutralized)
-        changes["llm_sector_rejected"] = changes.get("llm_sector_rejected", 0) + neutralized
-    changes["llm_sector_policy_rejected"] = neutralized
-    provenance.sort(key=lambda row: (row["Item_ID"], row["Field"], row["Decision"]))
-    return neutralized
 
 
 def _observe_layer(decisions, ordered, *, origin, confidence, mutate):
@@ -397,10 +371,6 @@ def qualify(
         confidence="HIGH",
         mutate=lambda: stabilize_threats(ordered),
     )
-    llm_changes, llm_provenance = source_llm_fallback.apply_source_llm_fallback(ordered)
-    changes.update(llm_changes)
-    neutralize_sector_fallback(ordered, changes, llm_provenance)
-    decisions.extend(decisions_from_provenance(llm_provenance))
     decisions = qualification_policy.reconcile(ordered, decisions)
     provenance = [decision.to_row() for decision in decisions]
     incidents, incident_id_registry = build_incidents_with_registry(

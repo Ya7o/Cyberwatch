@@ -27,9 +27,22 @@ from .model import (
     Incident,
     Item,
 )
-from .source_llm_fallback import QUALIFICATION_PROVENANCE_COLUMNS
 from .incident_identity import REGISTRY_COLUMNS
 from .org_identity import ORGANISATION_IDENTITY_REGISTRY_COLUMNS
+
+QUALIFICATION_PROVENANCE_COLUMNS = [
+    "Item_ID",
+    "Source_ID",
+    "Field",
+    "Previous_Value",
+    "Candidate_Value",
+    "Final_Value",
+    "Origin",
+    "Confidence",
+    "Evidence",
+    "Match_Strategy",
+    "Decision",
+]
 
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent

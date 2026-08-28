@@ -18,6 +18,8 @@ ORIGIN_PRIORITY = {
     "SAFE_NAME_RULE": 50,
     "OFFLINE_BACKFILL": 60,
     "THREAT_STABILIZATION": 70,
+    # Canal retiré de la production le 2026-08-28. Conservé pour relire les
+    # provenances historiques et permettre la migration des anciens secteurs.
     "LLM_SOURCE_FALLBACK": 90,
 }
 

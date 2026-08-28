@@ -1,6 +1,9 @@
 import json
+from dataclasses import replace
 
-from cyberwatch import config, identity, site, sources, store
+import pytest
+
+from cyberwatch import config, identity, site, sources, status, store
 from cyberwatch.collectors import get_collector
 from cyberwatch.collectors.base import Window
 from cyberwatch.dedup import build_incidents
@@ -29,13 +32,12 @@ def test_veille_llm_source_is_active_local_snapshot():
     assert spec.layer == config.LAYER_REGIONAL_WATCH
     assert spec.params["replace_snapshot"] is True
     assert spec.params["non_evidence_source"] is True
+    assert spec.params["max_snapshot_age_days"] == 2
+    assert spec.params["publication_contract"] == "live_watch"
     assert spec.zone == "La Réunion / Mayotte"
 
 
-def test_veille_llm_imports_full_snapshot_regardless_of_score():
-    """Le score cyberattaque est affichable, jamais un critère d'exclusion :
-    tous les dossiers valides et non futurs sont importés, y compris les
-    scores faibles (<50)."""
+def test_veille_llm_imports_only_explicitly_accepted_records():
     spec = sources.by_id("VEILLE_LLM")
     assert "min_score" not in spec.params
     with open(spec.params["path"], encoding="utf-8") as handle:
@@ -44,28 +46,71 @@ def test_veille_llm_imports_full_snapshot_regardless_of_score():
         None, spec, Window("2026-01-01", "2026-08-15")
     )
     assert result.resolve() == ("OK", 100)
-    assert result.items_seen == raw["metadata"]["record_count"] == len(raw["incidents"])
-    expected = [row for row in raw["incidents"] if row["date"] <= "2026-08-15"]
+    assert raw["metadata"]["record_count"] == len(raw["records"])
+    assert raw["metadata"]["accepted_count"] == sum(
+        row["admission"] == "ACCEPTED" for row in raw["records"]
+    )
+    assert raw["metadata"]["candidate_count"] == sum(
+        row["admission"] == "CANDIDATE" for row in raw["records"]
+    )
+    expected = [
+        row for row in raw["records"]
+        if row["admission"] == "ACCEPTED" and row["date"] <= "2026-08-15"
+    ]
     assert len(result.entries) == len(expected)
-    assert any(int(row["score_cyberattaque"]) < 50 for row in expected)
+    assert result.items_seen == raw["metadata"]["accepted_count"]
+    assert {entry.organisation for entry in result.entries} == {
+        row["organisation"] for row in expected
+    }
+    assert all(entry.url == row["sources"][0] for entry, row in zip(result.entries, expected))
     assert all(entry.location in {config.LOC_REUNION, config.LOC_MAYOTTE} for entry in result.entries)
 
 
-def test_veille_llm_low_score_item_is_retained_and_visible():
-    """Un item Veille LLM avec un score < 50 reste importé et visible dans
-    ITEMS — le score n'est jamais un filtre d'exclusion."""
+def test_veille_llm_admission_not_score_controls_publication(tmp_path, monkeypatch):
     spec = sources.by_id("VEILLE_LLM")
     with open(spec.params["path"], encoding="utf-8") as handle:
         raw = json.load(handle)
-    low_score_records = [r for r in raw["incidents"] if int(r["score_cyberattaque"]) < 50]
-    assert low_score_records, "fixture attendue avec au moins un score <50"
+    accepted = next(row for row in raw["records"] if row["admission"] == "ACCEPTED")
+    candidate = next(row for row in raw["records"] if row["admission"] == "CANDIDATE")
+    accepted["score_cyberattaque"] = 1
+    candidate["score_cyberattaque"] = 100
+    path = tmp_path / "snapshot.json"
+    path.write_text(json.dumps(raw), encoding="utf-8")
+    monkeypatch.setattr(store, "ROOT", tmp_path)
+    local_spec = replace(spec, params={**spec.params, "path": "snapshot.json"})
 
     result = get_collector(spec.collector).collect(
-        None, spec, Window("2026-01-01", "2026-08-15")
+        None, local_spec, Window("2026-01-01", "2026-08-15")
     )
-    low_score_orgs = {r["organisation"] for r in low_score_records}
     entry_orgs = {entry.organisation for entry in result.entries}
-    assert low_score_orgs & entry_orgs == low_score_orgs
+    assert accepted["organisation"] in entry_orgs
+    assert candidate["organisation"] not in entry_orgs
+
+
+def test_veille_llm_stale_snapshot_is_visible_but_non_blocking():
+    spec = sources.by_id("VEILLE_LLM")
+    result = get_collector(spec.collector).collect(
+        None, spec, Window("2026-08-27", "2026-08-28")
+    )
+    assert result.resolve() == (status.PARTIAL, 99)
+    assert "freshness_days=3" in result.comment
+
+
+def test_veille_llm_rejects_accepted_record_without_cyber_threat(tmp_path, monkeypatch):
+    spec = sources.by_id("VEILLE_LLM")
+    with open(spec.params["path"], encoding="utf-8") as handle:
+        raw = json.load(handle)
+    accepted = next(row for row in raw["records"] if row["admission"] == "ACCEPTED")
+    accepted["type_menace"] = config.THREAT_UNKNOWN
+    path = tmp_path / "snapshot.json"
+    path.write_text(json.dumps(raw), encoding="utf-8")
+    monkeypatch.setattr(store, "ROOT", tmp_path)
+    local_spec = replace(spec, params={**spec.params, "path": "snapshot.json"})
+
+    with pytest.raises(ValueError, match="accepté sans menace cyber qualifiée"):
+        get_collector(spec.collector).collect(
+            None, local_spec, Window("2026-01-01", "2026-08-15")
+        )
 
 
 def test_veille_llm_does_not_inflate_direct_source_count():

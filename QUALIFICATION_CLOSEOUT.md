@@ -35,8 +35,12 @@ SOURCE_NATIVE
 > SAFE_NAME_RULE
 > OFFLINE_BACKFILL
 > THREAT_STABILIZATION
-> LLM_SOURCE_FALLBACK
 ```
+
+Depuis le 28 août 2026, `LLM_SOURCE_FALLBACK` n'est plus un producteur actif :
+les tables ChatGPT globales qui l'alimentaient ont été archivées comme
+benchmarks. Son identifiant reste interprétable uniquement pour relire les
+anciennes provenances et restaurer les valeurs historiques contaminées.
 
 Les trois champs `Sector`, `Location` et `Threat` partagent le même contrat décisionnel.
 

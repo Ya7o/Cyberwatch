@@ -1,7 +1,7 @@
 import csv
 
 from cyberwatch import company_evidence, config
-from sources.veillellm.deep_enrich_unknown_sectors import (
+from bench.legacy.veillellm_exports.deep_enrich_unknown_sectors import (
     apply_evidence,
     candidate_official_urls,
     classify_primary_activity,
@@ -246,7 +246,7 @@ def test_validate_candidate_rejects_secondary_activity_on_official_page(monkeypa
 
 def test_research_stops_on_first_validated_candidate(monkeypatch):
     monkeypatch.setattr(
-        "sources.veillellm.deep_enrich_unknown_sectors.candidate_official_urls",
+        "bench.legacy.veillellm_exports.deep_enrich_unknown_sectors.candidate_official_urls",
         lambda row: ("https://exemple.fr", "https://exemple.com"),
     )
     calls = []
@@ -264,7 +264,7 @@ def test_research_stops_on_first_validated_candidate(monkeypatch):
         return None
 
     monkeypatch.setattr(
-        "sources.veillellm.deep_enrich_unknown_sectors.validate_official_candidate",
+        "bench.legacy.veillellm_exports.deep_enrich_unknown_sectors.validate_official_candidate",
         validate,
     )
     evidence, tested = research_official_evidence({"organisation": "Exemple"})
