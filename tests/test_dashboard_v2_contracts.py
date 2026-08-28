@@ -347,14 +347,11 @@ def test_autres_elements_documentes_est_retire_de_la_fiche():
     assert "detail.claims" not in js
 
 
-def test_boucle_de_reparation_des_claims_numeriques_ignore_les_claims_deja_types():
-    """Root cause round 3 : la boucle de réparation de `_rich_count_records()`
-    (destinée, selon son propre commentaire, aux claims qui ont "perdu leur
-    type") s'appliquait en réalité à tous les claims numériques, dupliquant
-    dans "Volume documenté" des claims déjà typés `affected_count`/
-    `data_volume` — avec un `raw` non formaté en prime (cas réel Solimut :
-    "1000000" affiché sans séparateur ni unité)."""
+def test_boucle_de_reparation_des_claims_numeriques_evite_les_doublons():
+    """Un affected_count typé peut être réparé s'il manque dans la collection
+    dédiée, mais jamais dupliqué ni promu avec sa valeur brute non formatée."""
     backend = _read("cyberwatch/fact_resolution.py")
-    assert 'if _text(claim.get("type")):' in backend
+    assert 'if value in represented_values:' in backend
+    assert 'claim_type and claim_type != "affected count"' in backend
     assert '"raw": _text(claim.get("raw"))})' in backend
     assert '"raw": _text(claim.get("raw")) or value})' not in backend

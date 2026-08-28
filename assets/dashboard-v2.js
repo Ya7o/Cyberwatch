@@ -133,7 +133,7 @@
   }
 
   function incidentCardHtml(incident) {
-    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + threatTentativeChip(incident) + (incident.sensitive_data_exposed ? `<span data-status="PARTIAL">Données sensibles</span>` : "") + sectorTentativeChip(incident);
+    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + threatTentativeChip(incident) + (incident.sensitive_data_exposed ? `<span data-status="PARTIAL">Données sensibles signalées</span>` : "") + sectorTentativeChip(incident);
     const summary = cleanSummary(incident.summary);
     return `<article class="incident-card" data-id="${esc(incident.id)}">
       <div class="incident-main">
@@ -422,7 +422,7 @@
 
   function dataTypesHtml(entries) {
     const values = (entries || []).map((entry) => entry.value).filter(known);
-    if (!values.length) return detailField("Données exposées", []);
+    if (!values.length) return detailField("Données concernées", []);
     const groups = new Map(DATA_TYPE_FAMILY_ORDER.map((label) => [label, []]));
     const seen = new Set();
     values.forEach((value) => {
@@ -447,7 +447,7 @@
       const hasSensitive = items.some((value) => ["critical", "high"].includes(dataTypeSensitivity(value)));
       return `<details class="incident-data-group"${hasSensitive ? " open" : ""}><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${chips}</div></details>`;
     }).filter(Boolean).join("");
-    return `<div class="incident-data-types"><div class="incident-data-types-title">Données exposées :</div>${rendered}</div>`;
+    return `<div class="incident-data-types"><div class="incident-data-types-title">Données concernées :</div>${rendered}</div>`;
   }
 
   function unitLabel(value) {
@@ -536,7 +536,7 @@
         detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : ""),
         timelineRows,
       ], { collapsible: true }),
-      detailSection("Impact & données compromises", [
+      detailSection("Impact & données documentées", [
         affectedHtml(detail.affected || []),
         dataTypesHtml(detail.data_types || []),
         detailField("Systèmes & périmètres concernés", systemsAndPerimeters),

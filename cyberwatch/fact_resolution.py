@@ -11,7 +11,12 @@ import re
 import unicodedata
 from typing import Any, Callable, Iterable
 from .headline import is_publishable_headline
-from .normalize import canonical_data_type, extract_unique_value_counts, parse_date
+from .normalize import (
+    canonical_data_type,
+    extract_unique_value_counts,
+    is_recognized_data_type,
+    parse_date,
+)
 
 SOURCE_PRIORITY = (
     "RANSOMWARE_LIVE",
@@ -105,6 +110,17 @@ _ACTOR_PRONOUN_BLOCKLIST = {
     "l entite",
 }
 
+_VICTIM_DECLARATION_RE = re.compile(
+    r"\b(?:informe|indique|confirme|a d[ée]tect[ée]|a [ée]t[ée] victime|"
+    r"soci[ée]t[ée] derri[èe]re|personnes concern[ée]es|ses syst[èe]mes)\b",
+    re.I,
+)
+_ATTACKER_ATTRIBUTION_RE = re.compile(
+    r"\b(?:revendique|revendiqu[ée]e? par|attribu[ée]e? [àa]|responsable de|"
+    r"attaquant|hacker|pirate|groupe cybercriminel)\b",
+    re.I,
+)
+
 
 def _is_actor_value_valid(value: Any, organisation: str = "") -> bool:
     """Rejette un acteur qui n'est en réalité qu'un artefact grammatical :
@@ -121,6 +137,33 @@ def _is_actor_value_valid(value: Any, organisation: str = "") -> bool:
     ):
         return False
     return True
+
+
+def _victim_actor_aliases(facts: Iterable[dict], organisation: str) -> list[str]:
+    """Retrouve les noms de victime secondaires cités comme sujets déclarants.
+
+    Une marque peut être publiée sous un autre nom que sa société opératrice
+    (Allo E.Leclerc / L Commerce). Comparer seulement l'acteur au libellé de
+    l'incident ne suffit alors pas à éliminer la victime captée comme acteur.
+    """
+    # Une chaîne vide conserve l'application de la blocklist générique
+    # (`qui`, `l'entreprise`, etc.) même sans organisation connue.
+    aliases = [organisation]
+    for fact in _ordered_facts(facts):
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        for claim in rich.get("claims", []) if isinstance(rich, dict) else []:
+            if not isinstance(claim, dict) or _norm(claim.get("type")) != "actor":
+                continue
+            evidence = _text(claim.get("evidence"))
+            value = _text(claim.get("value"))
+            if (
+                value
+                and _VICTIM_DECLARATION_RE.search(evidence)
+                and not _ATTACKER_ATTRIBUTION_RE.search(evidence)
+                and all(_norm(value) != _norm(existing) for existing in aliases)
+            ):
+                aliases.append(value)
+    return aliases
 
 
 def _known(value: Any) -> bool:
@@ -213,6 +256,62 @@ def _status(record: dict) -> str:
     return value if value in STATUS_LABELS else "unknown"
 
 
+_STATUS_RANK = {
+    "confirmed": 5,
+    "reported": 4,
+    "claimed": 3,
+    "unknown": 2,
+    "hypothesis": 1,
+    "unconfirmed": 1,
+    "denied": 0,
+    "negated": 0,
+}
+
+_NEGATED_EVIDENCE_RE = re.compile(
+    r"\b(?:ne|n['’])\b.{0,80}\b(?:pas|aucun|aucune|nullement)\b|"
+    r"\b(?:ne sont pas|n'est pas|non concern[ée]s?|non expos[ée]s?)\b",
+    re.I,
+)
+_HYPOTHETICAL_EVIDENCE_RE = re.compile(
+    r"\b(?:pourrait|pourraient|permettrait|potentielle?|peut par exemple|"
+    r"si .{0,80}(?:[ée]t[ée]|avait)|risque(?:nt)? de|ne signifie toutefois pas)\b",
+    re.I,
+)
+_INCIDENT_COUNT_CONTEXT_RE = re.compile(
+    r"\b(?:incident|attaque|cyberattaque|fuite|expos[ée]|touch[ée]|concern[ée]|"
+    r"affect[ée]|victime|compromis|exfiltr|vol[ée]|r[ée]cup[ée]r|revendiqu|"
+    r"inform[ée]s? de l['’]incident|donn[ée]es?|enregistrements?)\b",
+    re.I,
+)
+_BACKGROUND_COUNT_CONTEXT_RE = re.compile(
+    r"\b(?:en circulation|dans (?:son|le) r[ée]seau|utilisateurs? particuliers|"
+    r"professionnels? dans son r[ée]seau|membres? du r[ée]seau)\b",
+    re.I,
+)
+
+
+def _better_status(left: str, right: str) -> str:
+    left_status, right_status = _status({"status": left}), _status({"status": right})
+    return right_status if _STATUS_RANK[right_status] > _STATUS_RANK[left_status] else left_status
+
+
+def _incident_count_is_publishable(record: dict) -> bool:
+    """Écarte les chiffres de contexte commercial pris pour des victimes.
+
+    Un nombre sans preuve reste accepté pour compatibilité legacy. Dès qu'une
+    preuve est disponible, un chiffre décrivant seulement la population ou le
+    réseau de la victime doit porter un lien explicite avec l'incident.
+    """
+    evidence = _text(record.get("evidence"))
+    if not evidence:
+        return True
+    if _NEGATED_EVIDENCE_RE.search(evidence):
+        return False
+    if _BACKGROUND_COUNT_CONTEXT_RE.search(evidence) and not _INCIDENT_COUNT_CONTEXT_RE.search(evidence):
+        return False
+    return True
+
+
 def _record_value(record: dict) -> Any:
     value = record.get("value")
     return value if value is not None else _text(record.get("raw"))
@@ -253,26 +352,35 @@ def _rich_count_records(fact: dict) -> list[dict]:
     rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
     records = list(rich.get("affected_counts", []) if isinstance(rich, dict) else [])
     # Certains exports historiques de claims ont perdu leur champ ``type``
-    # mais ont conservé valeur, unité et preuve. On répare seulement cette
-    # forme objectivable ; aucun texte libre n'est promu en volume.
+    # mais ont conservé valeur, unité et preuve. D'autres ont conservé le type
+    # `affected_count` mais pas l'unité et n'ont, par erreur, aucune copie dans
+    # `affected_counts` (cas réel Euskal Moneta : 6 000 personnes informées).
+    # On ne répare que les formes numériques objectivables, jamais du texte
+    # libre, et uniquement lorsqu'aucun record équivalent n'existe déjà.
+    represented_values = {
+        _text(record.get("value"))
+        for record in records
+        if isinstance(record, dict) and record.get("value") is not None
+    }
     for claim in rich.get("claims", []) if isinstance(rich, dict) else []:
         if not isinstance(claim, dict):
             continue
-        if _text(claim.get("type")):
-            # Un claim déjà typé (ex. affected_count/data_volume) n'a pas
-            # "perdu" son type : il est déjà représenté dans claims[] et ne
-            # doit pas être dupliqué ici avec une unité devinée de moindre
-            # qualité (cas réel Solimut : deux figures déjà exposées
-            # ailleurs réapparaissaient en plus, affichées sans formatage).
+        claim_type = _norm(claim.get("type"))
+        if claim_type and claim_type != "affected count":
             continue
         value = _text(claim.get("value"))
+        if value in represented_values:
+            continue
         evidence = _text(claim.get("evidence"))
         unit = _norm(claim.get("unit"))
         if not re.fullmatch(r"\d+", value):
             continue
         evidence_norm = _norm(evidence)
         if not unit:
-            if any(marker in evidence_norm for marker in ("assure", "personne", "client", "utilisateur")):
+            if any(marker in evidence_norm for marker in (
+                "assure", "personne", "client", "utilisateur", "particulier",
+                "professionnel", "adherent",
+            )):
                 unit = "people"
             elif any(marker in evidence_norm for marker in ("iban", "compte bancaire", "comptes")):
                 unit = "accounts"
@@ -283,6 +391,7 @@ def _rich_count_records(fact: dict) -> list[dict]:
             # absent doit laisser le frontend formater (séparateurs de
             # milliers + unité), pas afficher un nombre nu sans unité.
             records.append({**claim, "value": int(value), "unit": unit, "raw": _text(claim.get("raw"))})
+            represented_values.add(value)
     result: list[dict] = []
     if not isinstance(records, list):
         return result
@@ -290,15 +399,34 @@ def _rich_count_records(fact: dict) -> list[dict]:
         if not isinstance(raw, dict) or raw.get("value") is None:
             continue
         key = _count_semantic(raw)
-        result.append({
+        record = {
             **raw,
             "unit": key[0],
             "semantic": key[1],
             "status": _status(raw),
             "source": source,
             "sources": [source] if source else [],
-        })
+        }
+        if _incident_count_is_publishable(record):
+            result.append(record)
     return result
+
+
+def _rejected_rich_count_signatures(fact: dict) -> set[tuple[str, str]]:
+    """Signatures rich rejetées qui doivent neutraliser leur doublon legacy."""
+    rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+    rows = list(rich.get("affected_counts", []) if isinstance(rich, dict) else [])
+    rows.extend(
+        claim for claim in (rich.get("claims", []) if isinstance(rich, dict) else [])
+        if isinstance(claim, dict) and _norm(claim.get("type")) == "affected count"
+    )
+    rejected: set[tuple[str, str]] = set()
+    for row in rows:
+        if not isinstance(row, dict) or row.get("value") is None:
+            continue
+        if not _incident_count_is_publishable(row):
+            rejected.add((_norm(row.get("unit")) or "unknown", _text(row.get("value"))))
+    return rejected
 
 
 _SEMANTIC_INFORMATIVENESS = {"unique": 2, "total": 2, "unspecified": 0}
@@ -428,6 +556,66 @@ def _dedupe_affected_display(records: list[dict]) -> list[dict]:
     return result
 
 
+def _dedupe_affected_same_evidence(records: list[dict]) -> list[dict]:
+    """Fusionne deux projections du même chiffre issues de la même preuve.
+
+    Les adaptateurs peuvent extraire une mesure à la fois comme compte rich
+    et comme compte sémantique plus précis. Si valeur, unité et preuve sont
+    identiques, les portées internes différentes ne justifient pas deux puces
+    publiques. Le qualificatif brut (« environ ») et le meilleur statut sont
+    conservés.
+    """
+    selected: dict[tuple[str, str, str], dict] = {}
+    passthrough: list[dict] = []
+    for record in records:
+        # Deux extracteurs peuvent conserver ou retirer le sujet narratif
+        # ("Le hacker Alduin affirme..." / "Alduin affirme..."). Il s'agit
+        # néanmoins de la même phrase-source : neutraliser seulement ce
+        # préfixe contrôlé évite le doublon sans fusionner deux preuves
+        # réellement distinctes qui citeraient le même nombre.
+        evidence = _norm(_ACTOR_PREFIX_RE.sub("", _text(record.get("evidence"))))
+        if not evidence:
+            passthrough.append(record)
+            continue
+        key = (_norm(record.get("unit")), _text(record.get("value")), evidence)
+        existing = selected.get(key)
+        if existing is None:
+            selected[key] = dict(record)
+            continue
+        raw = _text(record.get("raw"))
+        existing_raw = _text(existing.get("raw"))
+        if raw and (
+            not existing_raw
+            or (re.search(r"\b(?:environ|pr[eè]s de|plus de|au moins)\b", raw, re.I)
+                and not re.search(r"\b(?:environ|pr[eè]s de|plus de|au moins)\b", existing_raw, re.I))
+        ):
+            existing["raw"] = raw
+        existing["status"] = _better_status(
+            _text(existing.get("status")), _text(record.get("status"))
+        )
+        for source in record.get("sources", []) or []:
+            if source and source not in existing.setdefault("sources", []):
+                existing["sources"].append(source)
+    return passthrough + list(selected.values())
+
+
+def _looks_like_atomic_data_type(value: str) -> bool:
+    """Distingue une catégorie de donnée d'un périmètre de données.
+
+    ``is_recognized_data_type`` est volontairement tolérant : il reconnaît
+    par exemple ``facturation`` au sein de "données de livraison et de
+    facturation de Journaux.fr". Ce libellé complet décrit toutefois un jeu
+    de données et doit rester dans le périmètre. Une catégorie atomique reste
+    courte et proche de son libellé canonique.
+    """
+    if not is_recognized_data_type(value):
+        return False
+    canonical = _text(canonical_data_type(value))
+    value_words = _norm(value).split()
+    canonical_words = _norm(canonical).split()
+    return bool(canonical_words) and len(value_words) <= len(canonical_words) + 2
+
+
 def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
     """Fusionne rich + legacy, sans perdre les mesures complémentaires.
 
@@ -447,6 +635,10 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
             record for record in _rich_count_records(fact)
             if record.get("status") not in {"negated", "denied"}
         ]
+        for fact in ordered
+    }
+    rejected_signatures = {
+        id(fact): _rejected_rich_count_signatures(fact)
         for fact in ordered
     }
     rich_semantics: dict[str, set[str]] = {}
@@ -470,6 +662,8 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         legacy = _legacy_affected_record(fact)
         if not legacy or legacy.get("status") in {"negated", "denied"}:
             continue
+        if (legacy["unit"], _text(legacy.get("value"))) in rejected_signatures[id(fact)]:
+            continue
         same_unit = [entry for (unit, _, _), entry in selected.items() if unit == legacy["unit"]]
         exact = next((entry for entry in same_unit if _same_record_value(entry, legacy)), None)
         if exact is not None:
@@ -485,7 +679,8 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
         else:
             _merge_record(selected[key], legacy, source)
 
-    return _dedupe_affected_rounding(_dedupe_affected_display(list(selected.values())))
+    rows = _dedupe_affected_same_evidence(list(selected.values()))
+    return _dedupe_affected_rounding(_dedupe_affected_display(rows))
 
 
 def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
@@ -509,15 +704,29 @@ def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
             value = _text(raw_record.get("value"))
             if not value:
                 continue
+            status = _status(raw_record)
+            evidence = _text(raw_record.get("evidence"))
+            if status in {"negated", "denied", "hypothesis"}:
+                continue
+            if evidence and _NEGATED_EVIDENCE_RE.search(evidence):
+                continue
             if key == "affected_systems" and any(marker in _norm(value) for marker in ("prestataire", "fournisseur", "sous traitant", "tiers")):
                 # Un tiers est un contexte de compromission, pas un système de
                 # la victime. Il est affiché dans son champ dédié.
+                continue
+            if key == "affected_datasets" and (
+                _looks_like_atomic_data_type(value)
+                or _norm(value) in {"donnees personnelles", "informations personnelles"}
+            ):
+                # Une catégorie atomique appartient à `data_types`, pas aux
+                # périmètres. La publier dans les deux zones créait six faux
+                # « systèmes » sur Allo E.Leclerc.
                 continue
             semantic = _norm(raw_record.get("kind")) or _norm(raw_record.get("scope")) or _norm(value)
             if semantic not in selected:
                 selected[semantic] = {
                     "value": value,
-                    "status": _status(raw_record),
+                    "status": status,
                     "source": source,
                     "sources": [source] if source else [],
                 }
@@ -553,12 +762,21 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
     """
     selected: dict[str, dict] = {}
 
-    def add(value: str, source: str, status: str = "") -> None:
+    def add(
+        value: str,
+        source: str,
+        status: str = "",
+        evidence: str = "",
+        negated_texts: tuple[str, ...] = (),
+    ) -> None:
         # A type mentioned only to say it was *not* exposed is useful in the
         # source-level audit trail, but must never become a public "Données
         # exposées" chip.  Otherwise a denial such as "aucun IBAN identifié"
         # is presented as the exact opposite fact.
-        if _norm(status) in {"negated", "denied"}:
+        normalized_status = _status({"status": status})
+        if normalized_status in {"negated", "denied", "hypothesis"}:
+            return
+        if evidence and _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
             return
         if not value or _norm(value) in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
             return
@@ -567,24 +785,49 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         # libellé canonique avant déduplication évite un doublon visuel.
         value = canonical_data_type(value)
         key = _norm(value)
+        if key and any(key in negated or negated in key for negated in negated_texts):
+            return
         entry = selected.get(key)
         if entry is None:
-            selected[key] = {"value": value, "source": source, "sources": [source] if source else []}
-        elif source and source not in entry["sources"]:
-            entry["sources"].append(source)
+            selected[key] = {
+                "value": value,
+                "status": normalized_status,
+                "source": source,
+                "sources": [source] if source else [],
+            }
+        else:
+            if source and source not in entry["sources"]:
+                entry["sources"].append(source)
+            entry["status"] = _better_status(entry.get("status", ""), normalized_status)
 
     for fact in _ordered_facts(facts):
         source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        rich_values = rich.get("data_types") if isinstance(rich, dict) else None
+        negated_texts = tuple(
+            _norm(" ".join((
+                _text(record.get("value")),
+                _text(record.get("evidence")),
+            )))
+            for record in (rich_values if isinstance(rich_values, list) else [])
+            if isinstance(record, dict) and _status(record) in {"negated", "denied"}
+        )
         legacy = fact.get("data_types")
         if isinstance(legacy, list):
             for raw in legacy:
-                add(_text(raw), source)
-        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
-        rich_values = rich.get("data_types") if isinstance(rich, dict) else None
+                add(
+                    _text(raw), source, _text(fact.get("claim_status")),
+                    negated_texts=negated_texts,
+                )
         if isinstance(rich_values, list):
             for raw_record in rich_values:
                 if isinstance(raw_record, dict):
-                    add(_text(raw_record.get("value")), source, _text(raw_record.get("status")))
+                    add(
+                        _text(raw_record.get("value")), source,
+                        _text(raw_record.get("status")),
+                        _text(raw_record.get("evidence")),
+                        negated_texts,
+                    )
     return list(selected.values())
 
 
@@ -754,6 +997,33 @@ _ACCESS_VECTOR_MARKERS = re.compile(
     re.I,
 )
 
+_IMPACT_CONSEQUENCE_RE = re.compile(
+    r"\b(?:indisponib|interruption|arr[êe]t|perturb|fraude|usage frauduleux|"
+    r"alt[ée]ration|suppression|destruction|perte financi[èe]re|co[uû]t|"
+    r"ran[çc]on|activit[ée] ralentie|services? affect[ée]s?)\b",
+    re.I,
+)
+_DATA_ONLY_IMPACT_RE = re.compile(
+    r"\b(?:donn[ée]es?|informations?|fichiers?)\b.*\b(?:expos[ée]s?|"
+    r"compromis(?:es)?|revendiqu[ée]es?|li[ée]es?|consult[ée]es?|copi[ée]es?|"
+    r"consultation|copie|acc[eè]s non autoris[ée])\b|"
+    r"\b(?:expos[ée]s?|compromis(?:es)?|revendiqu[ée]es?|li[ée]es?|"
+    r"consult[ée]es?|copi[ée]es?|consultation|copie|acc[eè]s non autoris[ée])\b"
+    r".*\b(?:donn[ée]es?|informations?|fichiers?)\b",
+    re.I,
+)
+
+
+def _impact_is_publishable(value: Any, status: str = "") -> bool:
+    text = _text(value)
+    if not text or _status({"status": status}) in {"negated", "denied", "hypothesis"}:
+        return False
+    if _HYPOTHETICAL_EVIDENCE_RE.search(text):
+        return False
+    if _DATA_ONLY_IMPACT_RE.search(text) and not _IMPACT_CONSEQUENCE_RE.search(text):
+        return False
+    return True
+
 
 def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
     candidates = [claim for claim in claims if claim.get("type") == claim_type and _known(claim.get("value"))]
@@ -768,6 +1038,11 @@ def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
         candidates = [
             claim for claim in candidates
             if _ACCESS_VECTOR_MARKERS.search(_text(claim.get("evidence")))
+        ]
+    elif claim_type == "impact":
+        candidates = [
+            claim for claim in candidates
+            if _impact_is_publishable(claim.get("value"), _status(claim))
         ]
     if not candidates:
         return None
@@ -785,11 +1060,30 @@ def _claim_list_entries(claims: Iterable[dict], claim_type: str) -> list[dict]:
     for claim in claims:
         if claim.get("type") != claim_type or not _known(claim.get("value")):
             continue
+        status = _status(claim)
+        evidence = _text(claim.get("evidence"))
+        if status in {"negated", "denied", "hypothesis"}:
+            continue
+        if claim_type == "vulnerability":
+            value_norm = _norm(claim.get("value"))
+            # « corrected » décrit la remédiation, pas la faille exploitée.
+            # Une faiblesse seulement potentielle reste dans la trace source,
+            # mais pas sous le libellé affirmatif « vulnérabilité exploitée ».
+            if value_norm in {
+                "corrected", "corrige", "corrigee", "correction",
+                "vulnerability", "vulnerabilite", "faille",
+            } or _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
+                continue
         key = _norm(claim.get("value"))
         sources = claim.get("sources") or ([claim["source"]] if claim.get("source") else [])
         entry = selected.get(key)
         if entry is None:
-            selected[key] = {"value": claim["value"], "source": claim.get("source", ""), "sources": list(sources)}
+            selected[key] = {
+                "value": claim["value"],
+                "status": status,
+                "source": claim.get("source", ""),
+                "sources": list(sources),
+            }
         else:
             for source in sources:
                 if source and source not in entry["sources"]:
@@ -1013,10 +1307,14 @@ def build_display_summary(resolved: dict, fallback: str = "") -> str:
 
 def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "", organisation: str = "") -> dict:
     ordered = _ordered_facts(facts)
+    victim_aliases = _victim_actor_aliases(ordered, organisation)
     claims = _dedupe_claim_entries(_claim_entries(ordered) + _relation_claim_entries(ordered) + _evidence_claim_entries(ordered))
     claims = [
         claim for claim in claims
-        if claim.get("type") != "actor" or _is_actor_value_valid(claim.get("value"), organisation)
+        if claim.get("type") != "actor" or all(
+            _is_actor_value_valid(claim.get("value"), alias)
+            for alias in victim_aliases
+        )
     ]
     fields = {field: value for field in SCALAR_FIELDS if (value := resolve_scalar(ordered, field))}
     # Même filet que ci-dessus pour le scalaire principal : resolve_scalar()
@@ -1024,8 +1322,15 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     # Cas réel : "L'entreprise indique" promu en fields.threat_actor pour
     # Emil Frey France (§ audit 2026-08-25), invisible au filtre des claims
     # ci-dessus qui ne portait que sur claims[], jamais sur fields.
-    if "threat_actor" in fields and not _is_actor_value_valid(fields["threat_actor"]["value"], organisation):
+    if "threat_actor" in fields and not all(
+        _is_actor_value_valid(fields["threat_actor"]["value"], alias)
+        for alias in victim_aliases
+    ):
         del fields["threat_actor"]
+    if "impact" in fields and not _impact_is_publishable(
+        fields["impact"].get("value"), fields["impact"].get("status", "")
+    ):
+        del fields["impact"]
     # Les scalaires explicitement extraits restent prioritaires. Les claims
     # typés constituent uniquement un filet de provenance pour les acteurs et
     # tiers, dont l'absence de projection ne doit plus vider une fiche riche.

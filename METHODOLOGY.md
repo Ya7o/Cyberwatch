@@ -1,6 +1,6 @@
 # Méthodologie exécutable OBS-FR-OI
 
-**`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-9`**
+**`Method_ID : OBS-FR-OI-SIMPLE-SOURCING-10`**
 **Périmètre :** France métropolitaine, La Réunion, Mayotte, Maurice, Madagascar, Seychelles, Comores.
 
 ## Pipeline canonique de qualification
@@ -907,6 +907,42 @@ volontaire pour rattraper l'historique déjà publié : plusieurs appels
 autorisés, mêmes budget/cache/Structured Outputs, jamais lancé
 automatiquement par `collect.yml`. `DEDUP_AI_DAILY_ENABLED=1` active le filet
 sur les runs réels `maj` et `create`, toujours avec un seul batch borné.
+
+
+## 15. Résolution des caractéristiques de la fiche incident
+
+La fiche détail ne lit jamais directement une valeur isolée d'un collecteur.
+Les faits bruts par source restent conservés dans `source_facts.csv` pour
+l'audit ; `fact_resolution.resolve_incident_facts()` produit ensuite une vue
+publique unique, déterministe et traçable, exportée dans
+`assets/data/facts.json`. Le navigateur ne refait aucun arbitrage métier.
+
+**Doctrine de publication.** Précision avant remplissage : une case vide est
+préférée à une caractéristique seulement possible. Sont donc exclus des champs
+publics les hypothèses, les faits niés, les catégories explicitement dites non
+concernées, les simples populations générales de l'organisation et les mesures
+correctives qui ne prouvent pas le vecteur réellement exploité. Une société
+opératrice ou une marque victime ne peut pas devenir acteur de menace du seul
+fait qu'elle est le sujet grammatical d'une déclaration.
+
+**Volumes et périmètres.** Deux projections de la même phrase-source, du même
+nombre et de la même unité sont fusionnées, en conservant le qualificatif
+(`environ`, `au moins`, etc.) et le statut le plus documenté. Des unités
+différentes restent distinctes. Les types de données atomiques sont séparés des
+jeux ou périmètres composés afin de ne pas répéter des coordonnées comme
+« systèmes », tout en conservant un périmètre tel que « données de livraison et
+de facturation ».
+
+**Présentation prudente.** La fiche parle de données « concernées » et
+« documentées », jamais automatiquement « compromises » ou « exposées ».
+`confirmed`, `reported`, `claimed`, `unknown`, `hypothesis` et les statuts
+négatifs restent portés par le contrat JSON même lorsqu'un composant visuel ne
+les affiche pas. Les sources cliquables restent attachées à l'incident et les
+preuves textuelles demeurent dans le contrat résolu pour le contrôle.
+
+Cette modification change les caractéristiques publiques d'un incident sans
+modifier les faits bruts : `METHOD_ID` est donc bumpé de
+`OBS-FR-OI-SIMPLE-SOURCING-9` à `-10`.
 
 
 ## Retrait du fallback des exports ChatGPT globaux (v0.7.38)

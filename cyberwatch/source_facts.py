@@ -109,6 +109,9 @@ _UNIT_MAP = {
     "patient": "people", "patients": "people",
     "eleve": "people", "eleves": "people",
     "abonne": "people", "abonnes": "people", "assure": "people", "assures": "people",
+    "adherent": "people", "adherents": "people",
+    "particulier": "people", "particuliers": "people",
+    "professionnel": "people", "professionnels": "people",
     "enregistrement": "records", "enregistrements": "records",
     "ligne": "records", "lignes": "records",
     "dossier": "files", "dossiers": "files",
@@ -920,10 +923,11 @@ _CO_THIRD_PARTY_RE = tuple(re.compile(pattern, re.I) for pattern in (
 _CO_THREAT_ACTOR_RE = tuple(re.compile(pattern, re.I) for pattern in (
     r"\b(?:le\s+)?groupe\s+([A-Za-z0-9][\w.&'’+-]{1,40})\s+a\s+revendiqu[ée]",
     r"revendiqu[ée]e?\s+par\s+(?:le\s+groupe\s+)?([A-Za-z0-9][\w.&'’+-]{1,40})",
-    # Les articles emploient aussi activement le pseudonyme de l'auteur
-    # ("ZeroBytes revendique", "0xSec affirme").  Le capture reste un seul
-    # identifiant et passe par _valid_actor : aucun répertoire d'acteurs.
-    r"\b([A-Za-z0-9][\w.&'’+-]{1,40})\s+(?:revendique|affirme|d[ée]clare|indique)\b",
+    # « X indique » désigne très souvent la victime qui communique sur son
+    # propre incident (cas réels Euskal Moneta et L Commerce) et est donc
+    # exclu. Les verbes actifs de revendication restent acceptés, puis passent
+    # par `_valid_actor` et le résolveur de victime secondaire.
+    r"\b([A-Za-z0-9][\w.&'’+-]{1,40})\s+(?:revendique|affirme|d[ée]clare)\b",
 ))
 _CO_INITIAL_ACCESS_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
     # Catégorie factuelle, sans inférer le prestataire ni le mode technique.

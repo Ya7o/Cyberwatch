@@ -451,21 +451,20 @@ def test_beauty_success_conserve_les_trois_concepts_distincts():
     assert resolved["display_summary"] == ""
 
 
-def test_claim_numerique_deja_type_n_est_pas_duplique_dans_affected():
-    """Cas réel constaté sur Solimut : un claim déjà typé `affected_count`
-    (avec sa propre unité) réapparaissait une seconde fois dans "Volume
-    documenté", cette fois sans `raw` formaté (affiché "1000000" au lieu de
-    "1 000 000 personnes"). La boucle de réparation de `_rich_count_records()`
-    est réservée aux claims qui ont réellement perdu leur `type` ; un claim
-    déjà typé ne doit ni être répété, ni voir sa valeur brute non formatée
-    promue en `raw`."""
+def test_claim_numerique_type_sans_projection_est_recupere_une_seule_fois():
+    """Un affected_count typé mais absent de la collection dédiée ne doit
+    plus être perdu. Il est réparé une seule fois et sans `raw` numérique qui
+    court-circuiterait le formatage du frontend."""
     resolved = fr.resolve_incident_facts([fact("FRENCHBREACHES", rich_facts={
         "claims": [{
             "type": "affected_count", "status": "reported", "value": "1000000",
             "evidence": "plus d'un million d'assurés apparaîtraient dans les données.",
         }],
     })])
-    assert resolved["affected"] == []
+    assert len(resolved["affected"]) == 1
+    assert resolved["affected"][0]["value"] == 1_000_000
+    assert resolved["affected"][0]["unit"] == "people"
+    assert resolved["affected"][0].get("raw", "") == ""
 
 
 def test_claim_sans_type_reste_repare_en_volume():
@@ -672,3 +671,161 @@ def test_resultat_est_deterministe_independamment_de_l_ordre_entree():
         ]}),
     ]
     assert fr.resolve_incident_facts(facts) == fr.resolve_incident_facts(list(reversed(facts)))
+
+
+def test_societe_operatrice_de_la_victime_n_est_pas_un_attaquant():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        threat_actor="Commerce",
+        rich_facts={"claims": [{
+            "type": "actor",
+            "value": "L Commerce",
+            "status": "reported",
+            "evidence": (
+                "L Commerce, la société derrière Allo E.Leclerc, informe ses "
+                "clients qu'un prestataire a été victime d'un incident."
+            ),
+        }]},
+    )], organisation="Allo E.Leclerc")
+
+    assert "threat_actor" not in resolved["fields"]
+
+
+def test_negation_rich_ne_laisse_pas_survivre_le_meme_type_legacy():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        data_types=["numéros de téléphone", "identifiants", "mots de passe"],
+        rich_facts={"data_types": [
+            {
+                "value": "informations bancaires, identifiants de connexion et mots de passe",
+                "status": "negated",
+                "evidence": (
+                    "Les informations bancaires, identifiants de connexion et "
+                    "mots de passe ne sont pas concernés par cette fuite."
+                ),
+            },
+            {
+                "value": "numéros de téléphone",
+                "status": "reported",
+                "evidence": "Les attaquants ont pu accéder aux numéros de téléphone.",
+            },
+        ]},
+    )])
+
+    assert [entry["value"] for entry in resolved["data_types"]] == ["numéros de téléphone"]
+
+
+def test_population_generale_n_est_pas_un_volume_affecte():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        affected_count=4_600,
+        affected_unit="users",
+        rich_facts={
+            "affected_counts": [{
+                "value": 4_600,
+                "unit": "users",
+                "status": "unknown",
+                "evidence": (
+                    "Plus de 5 millions d'euskos sont en circulation, avec "
+                    "environ 4 600 utilisateurs particuliers dans son réseau."
+                ),
+            }],
+            "claims": [{
+                "type": "affected_count",
+                "value": "6000",
+                "status": "reported",
+                "evidence": "Environ 6 000 particuliers ont été informés de l'incident.",
+            }],
+        },
+    )])
+
+    assert [(entry["value"], entry["unit"]) for entry in resolved["affected"]] == [(6000, "people")]
+
+
+def test_vulnerabilite_hypothetique_ou_remediation_n_est_pas_dite_exploitee():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "claims": [
+            {
+                "type": "vulnerability",
+                "value": "une faiblesse dans une API",
+                "status": "hypothesis",
+                "evidence": "Une faiblesse potentielle permettrait de modifier un crédit.",
+            },
+            {
+                "type": "vulnerability",
+                "value": "corrected",
+                "status": "confirmed",
+                "evidence": "Le groupe indique avoir corrigé la vulnérabilité.",
+            },
+        ],
+    })])
+
+    assert resolved["vulnerabilities"] == []
+
+
+def test_systeme_explicitement_non_concerne_et_impact_data_only_sont_ecartes():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        impact="Des données personnelles ont été compromises.",
+        rich_facts={"claims": [{
+            "type": "system",
+            "value": "systèmes d’Allo E.Leclerc",
+            "status": "reported",
+            "evidence": "L'incident ne concerne donc pas directement les systèmes d’Allo E.Leclerc.",
+        }]},
+    )])
+
+    assert resolved["systems"] == []
+    assert "impact" not in resolved["fields"]
+
+
+def test_formulations_nominales_d_exposition_ne_sont_pas_un_impact():
+    for impact in (
+        "accès non autorisé à plusieurs données personnelles",
+        "consultation ou la copie de données personnelles",
+    ):
+        resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", impact=impact)])
+        assert "impact" not in resolved["fields"]
+
+
+def test_perimetre_de_donnees_compose_reste_distinct_des_types_atomiques():
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "affected_datasets": [
+            {"value": "adresse e-mail", "status": "reported"},
+            {
+                "value": "données de livraison et de facturation de Journaux.fr",
+                "status": "claimed",
+            },
+        ],
+    })])
+
+    assert [entry["value"] for entry in resolved["datasets"]] == [
+        "données de livraison et de facturation de Journaux.fr",
+    ]
+
+
+def test_meme_volume_meme_preuve_conserve_le_qualificatif_sans_doublon():
+    evidence = "Alduin affirme avoir récupéré environ 270 000 enregistrements."
+    resolved = fr.resolve_incident_facts([fact("CYBERATTAQUE_ORG", rich_facts={
+        "affected_counts": [
+            {
+                "value": 270_000,
+                "unit": "records",
+                "scope": "livraison",
+                "status": "claimed",
+                "evidence": "Le hacker " + evidence,
+            },
+            {
+                "value": 270_000,
+                "unit": "records",
+                "scope": "données de livraison",
+                "status": "unknown",
+                "raw": "environ 270 000 enregistrements",
+                "evidence": evidence,
+            },
+        ],
+    })])
+
+    assert len(resolved["affected"]) == 1
+    assert resolved["affected"][0]["raw"] == "environ 270 000 enregistrements"
+    assert resolved["affected"][0]["status"] == "claimed"

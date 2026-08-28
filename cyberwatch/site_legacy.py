@@ -94,8 +94,11 @@ def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
     result: dict[str, object] = {}
     status_value = str(value.get("status") or "unknown").strip().lower()
     result["status"] = status_value if status_value in _RICH_STATUSES else "unknown"
+    placeholders = {"null", "none", "unknown", "inconnu", "n/a", "na"}
     for key in ("type", "kind", "scope", "date", "actor", "subject", "relation", "object", "event", "evidence", "raw"):
         text = str(value.get(key) or "").strip()
+        if text.casefold() in placeholders:
+            continue
         if key == "type" and text not in _RICH_CLAIM_TYPES:
             continue
         if text:
@@ -111,6 +114,8 @@ def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
         result["unit"] = unit
     else:
         text_value = str(value.get("value") or "").strip()
+        if text_value.casefold() in placeholders:
+            text_value = ""
         if text_value:
             result["value"] = text_value[:160]
         numeric = value.get("value")

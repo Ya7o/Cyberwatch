@@ -85,17 +85,21 @@ FIELD_VERSIONS = {
     "initial_access": "initial-access-v2",
     "attack_flow": "attack-flow-v2",
     "impact": "impact-v3",
-    "threat_actor": "threat-actor-v1",
+    # V2 invalide les sujets déclaratifs captés comme attaquants (ex. « L
+    # Commerce indique », « Euskal Moneta affirme »). Un acteur doit être
+    # explicitement responsable ou revendicateur, jamais seulement l'entité
+    # qui informe les personnes concernées.
+    "threat_actor": "threat-actor-v2",
     "third_party": "third-party-v1",
     # V4 invalide les valeurs LLM/déterministes dont la « preuve » n'était qu'un mot
     # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
-    "data_types": "data-types-v4",
+    "data_types": "data-types-v5",
     "fine_location": "fine-location-v1",
     "attack_date": "attack-date-v1",
     "discovered_date": "discovered-date-v1",
     "evolution": "evolution-v1",
-    "vulnerabilities": "vulnerabilities-v1",
-    "affected_counts": "affected-counts-v1",
+    "vulnerabilities": "vulnerabilities-v2",
+    "affected_counts": "affected-counts-v2",
     "data_volumes": "data-volumes-v1",
     "file_counts": "file-counts-v1",
     "affected_systems": "affected-systems-v1",
@@ -125,7 +129,9 @@ Une hypothèse, un scénario possible, un risque futur, une recommandation ou un
 Si le vecteur initial est déclaré inconnu, non établi ou non communiqué, initial_access doit rester vide même si l'article cite ensuite des vecteurs possibles.
 attack_flow contient uniquement des actions de l'attaquant explicitement documentées ; n'ajoute aucune étape intermédiaire et n'inclus jamais confinement, isolation, restauration, investigation, notification ou remédiation de la victime.
 Si une information est ambiguë ou absente, renvoie une valeur vide ou une liste vide.
-data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées.
+data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées. Exclue toute catégorie explicitement dite non concernée et toute simple donnée présente dans les systèmes sans preuve d'accès, de copie ou d'exposition.
+affected_counts contient uniquement un nombre de personnes, comptes, clients, utilisateurs, enregistrements ou fichiers explicitement touchés, exposés, revendiqués ou informés de l'incident. N'utilise jamais la taille générale de la clientèle, du réseau, de l'organisation ou de sa communauté comme nombre affecté.
+vulnerabilities contient uniquement une vulnérabilité présentée comme exploitée ou liée à l'accès initial de cet incident. Une faille seulement potentielle, distincte de l'incident, ou la seule mention qu'une vulnérabilité a été corrigée ne suffit pas.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
 activity_description décrit en quelques mots l'activité de la victime seulement lorsque l'article la présente explicitement. Sa preuve doit désigner sans ambiguïté la victime et son activité ; ne rien déduire du nom, de l'attaque ou des données.
 activity_sector_match reprend l'activité que tu viens de décrire dans activity_description et choisis, parmi le secteur de la liste fournie, celui qui s'en rapproche le plus, quelle que soit la formulation exacte de l'article (ex. « développe des applications métiers », « plateforme No-Code », « éditeur de logiciels » désignent tous Numérique / Technologie). N'utilise jamais le type de données volées, les victimes de la fuite ou le type d'incident pour choisir un secteur. Même une activité associative, caritative, syndicale, politique ou cultuelle (banque alimentaire, association loi 1901, ONG, parti politique, syndicat professionnel, culte) doit recevoir le secteur professionnel le plus proche de la liste plutôt que Inconnu : choisis toujours la meilleure approximation disponible. Ne renvoie Inconnu que si activity_description est lui-même vide (rien à rapprocher).
