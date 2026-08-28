@@ -759,7 +759,7 @@ class TestDailyDedupNet:
         assert store.load_incident_dedup_registry() == []
         assert store.load_dedup_ai_daily_usage() == []
 
-    def test_final_incident_verdict_is_persisted_and_replayed(
+    def test_llm_different_cannot_split_a_native_duplicate(
         self, tmp_path, monkeypatch, make_item,
     ):
         from cyberwatch import dedup_ai, store
@@ -794,12 +794,11 @@ class TestDailyDedupNet:
         )
 
         assert problems == []
-        assert state.incident_decision_rows_applied == 1
+        assert state.incident_decision_rows_applied == 0
         rows = store.load_incident_dedup_registry()
-        assert len(rows) == 1
-        assert rows[0]["Decision"] == dedup_ai.DIFFERENT
+        assert rows == []
         incidents, _ = build_incidents_with_registry([left, right], [], rows)
-        assert len(incidents) == 2
+        assert len(incidents) == 1
 
     def test_replay_uses_registry_without_llm(self, tmp_path, monkeypatch, make_item):
         """Invariant absolu (§Lot 10) : REPLAY ne doit jamais appeler le LLM,

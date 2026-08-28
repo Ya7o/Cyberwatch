@@ -77,13 +77,61 @@ def _latest_source_rows(run_sources: list[dict[str, str]], run_id: str) -> list[
     return [row for row in run_sources if row.get("Run_ID") == latest]
 
 
-def _latest_usage(rows: list[dict[str, str]], run_id: str) -> dict[str, str]:
-    """Return usage for the audited run, never a stale previous run."""
+def _run_usage(rows: list[dict[str, str]], run_id: str) -> list[dict[str, str]]:
+    """Return every pass for the audited run, never a stale previous run."""
     if run_id:
-        matched = [row for row in rows if row.get("Run_ID") == run_id]
-        if matched:
-            return matched[-1]
-    return {}
+        return [row for row in rows if row.get("Run_ID") == run_id]
+    return []
+
+
+def _aggregate_qualification_usage(rows: list[dict[str, str]]) -> dict[str, Any]:
+    if not rows:
+        return {"status": "MISSING"}
+    statuses = [row.get("Status", "") for row in rows]
+    succeeded = sum(_int(row.get("Calls_Succeeded")) for row in rows)
+    failed = sum(_int(row.get("Calls_Failed")) for row in rows)
+    if failed:
+        status = "DEGRADED"
+    elif succeeded or "OK" in statuses:
+        status = "OK"
+    else:
+        status = statuses[-1] or "MISSING"
+    return {
+        "status": status,
+        "passes": len(rows),
+        "calls_attempted": sum(_int(row.get("Calls_Attempted")) for row in rows),
+        "calls_succeeded": succeeded,
+        "calls_failed": failed,
+        # Ces valeurs décrivent l'état final du corpus et non une consommation.
+        "still_unknown": _int(rows[-1].get("Still_Unknown")),
+        "sector_remaining_unknown": _int(rows[-1].get("Sector_Remaining_Unknown")),
+    }
+
+
+def _aggregate_dedup_usage(rows: list[dict[str, str]]) -> dict[str, Any]:
+    if not rows:
+        return {"status": "MISSING"}
+    succeeded = sum(_int(row.get("LLM_Calls_Succeeded")) for row in rows)
+    failed = sum(_int(row.get("LLM_Calls_Failed")) for row in rows)
+    statuses = [row.get("Status", "") for row in rows]
+    if failed:
+        status = "DEGRADED"
+    elif succeeded or "OK" in statuses or "NO_CANDIDATES" in statuses:
+        status = "OK"
+    else:
+        status = statuses[-1] or "MISSING"
+    return {
+        "status": status,
+        "passes": len(rows),
+        # Plusieurs passes inspectent le même corpus : max évite de compter
+        # plusieurs fois les mêmes candidats, les appels restent additifs.
+        "candidates_generated": max((_int(row.get("Candidates_Generated")) for row in rows), default=0),
+        "candidates_selected": max((_int(row.get("Candidates_Selected")) for row in rows), default=0),
+        "llm_calls": sum(_int(row.get("LLM_Calls")) for row in rows),
+        "llm_calls_succeeded": succeeded,
+        "llm_calls_failed": failed,
+        "review_required": max((_int(row.get("Review_Required")) for row in rows), default=0),
+    }
 
 
 def _facts_quality(data_dir: Path, incident_count: int) -> dict[str, Any]:
@@ -149,8 +197,12 @@ def build_baseline(data_dir: Path = DEFAULT_DATA) -> dict[str, Any]:
     latest = _latest_run(run_log)
     latest_run_id = latest.get("Run_ID", "")
     source_rows = _latest_source_rows(run_sources, latest_run_id)
-    qualification_usage = _latest_usage(_rows(data_dir / "ai_usage.csv"), latest_run_id)
-    dedup_usage = _latest_usage(_rows(data_dir / "dedup_ai_daily_usage.csv"), latest_run_id)
+    qualification_usage = _aggregate_qualification_usage(
+        _run_usage(_rows(data_dir / "ai_usage.csv"), latest_run_id)
+    )
+    dedup_usage = _aggregate_dedup_usage(
+        _run_usage(_rows(data_dir / "dedup_ai_daily_usage.csv"), latest_run_id)
+    )
 
     item_sources = Counter(row.get("Source_ID", "") for row in items if row.get("Source_ID"))
     sources: dict[str, Any] = {}
@@ -203,18 +255,10 @@ def build_baseline(data_dir: Path = DEFAULT_DATA) -> dict[str, Any]:
         },
         "sources": sources,
         "qualification_ai": {
-            "status": qualification_usage.get("Status", "MISSING"),
-            "calls_attempted": _int(qualification_usage.get("Calls_Attempted")),
-            "calls_succeeded": _int(qualification_usage.get("Calls_Succeeded")),
-            "still_unknown": _int(qualification_usage.get("Still_Unknown")),
-            "sector_remaining_unknown": _int(qualification_usage.get("Sector_Remaining_Unknown")),
+            **qualification_usage,
         },
         "dedup_ai": {
-            "status": dedup_usage.get("Status", "MISSING"),
-            "candidates_generated": _int(dedup_usage.get("Candidates_Generated")),
-            "candidates_selected": _int(dedup_usage.get("Candidates_Selected")),
-            "llm_calls": _int(dedup_usage.get("LLM_Calls")),
-            "review_required": _int(dedup_usage.get("Review_Required")),
+            **dedup_usage,
         },
         "facts_quality": _facts_quality(data_dir, incident_count),
         "llm": _llm_usage(data_dir),
@@ -265,14 +309,18 @@ def audit(
                 )
 
         qualification = after.get("qualification_ai") or {}
-        if _int(qualification.get("sector_remaining_unknown")) and qualification.get("status") != "OK":
+        if _int(qualification.get("sector_remaining_unknown")) and not _int(
+            qualification.get("calls_succeeded")
+        ):
             blockers.append(
                 "arbitrage LLM qualification non exécuté malgré des secteurs non résolus "
                 f"(status={qualification.get('status') or 'MISSING'})"
             )
 
         dedup = after.get("dedup_ai") or {}
-        if _int(dedup.get("candidates_generated")) and dedup.get("status") != "OK":
+        if _int(dedup.get("candidates_generated")) and not _int(
+            dedup.get("llm_calls_succeeded")
+        ):
             blockers.append(
                 "arbitrage LLM déduplication non exécuté malgré des candidats "
                 f"(status={dedup.get('status') or 'MISSING'})"

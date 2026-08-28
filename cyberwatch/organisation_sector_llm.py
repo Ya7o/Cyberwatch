@@ -39,7 +39,7 @@ from . import config, llm_runtime, org_identity, organisation_sector as osec, st
 from .model import Item
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-26.5"
+PROMPT_VERSION = "2026-08-28.6"
 #: Audit 2026-08-26 (run réel 32968633926) : 11 organisations très
 #: différentes traitées en un seul appel n'ont produit que 75 tokens de
 #: sortie au total (~7/organisation) — famine de tokens qui expliquait des
@@ -81,6 +81,10 @@ BASIS_VALUES = (
     "explicit_activity", "structured_metadata", "naf_support", "name_semantics",
     "organisation_knowledge", "multiple_signals", "insufficient",
 )
+ACTIONABLE_BASIS_VALUES = {
+    "explicit_activity", "structured_metadata", "naf_support", "multiple_signals",
+}
+MIN_ACTIONABLE_CONFIDENCE = 0.70
 
 SYSTEM_PROMPT = (
     "Tu es un classificateur strict pour un observatoire d'incidents cyber.\n"
@@ -103,12 +107,11 @@ SYSTEM_PROMPT = (
     "victimes de la fuite ; le type d'incident cyber.\n"
     "Exemples : présence de RIB != Finance ; données médicales != forcément "
     "Santé ; données de livraison != Transport.\n"
-    "Choisis toujours le secteur de la liste le plus proche de l'activité de "
-    "l'organisation, même approximatif (association, culte, syndicat, parti "
-    "politique compris : choisis le secteur professionnel le plus proche "
-    "plutôt que Inconnu). Ne réponds Inconnu (basis=insufficient) que si le "
-    "contexte fourni ne contient réellement aucun indice exploitable (ni "
-    "nom, ni activité, ni secteur source, ni connaissance interne).\n"
+    "Ne tranche que si une activité explicite, une métadonnée structurée, un "
+    "appui NAF ou plusieurs signaux indépendants étayent le secteur. Le nom "
+    "seul, une intuition ou une connaissance interne non corroborée ne sont "
+    "pas des preuves publiables : réponds alors Inconnu avec "
+    "basis=insufficient.\n"
     "'organisation_knowledge' signifie uniquement que tu utilises tes "
     "connaissances internes préexistantes sur cette organisation : cela ne "
     "signifie jamais une recherche web, une preuve officielle ou une preuve "
@@ -432,6 +435,13 @@ def _validate_candidate(entry: object, requested_keys: set[str]) -> LlmOrganisat
     if basis not in BASIS_VALUES:
         return None
     if not isinstance(confidence, (int, float)) or not (0.0 <= float(confidence) <= 1.0):
+        return None
+    # Le LLM tranche à la fin du faisceau de preuves, mais ne peut fabriquer
+    # une preuve à partir du seul nom ou de sa mémoire. Ces réponses restent
+    # des abstentions et ne sont jamais injectées dans le registre publié.
+    if sector == config.SECTOR_UNKNOWN or basis not in ACTIONABLE_BASIS_VALUES:
+        return None
+    if float(confidence) < MIN_ACTIONABLE_CONFIDENCE:
         return None
     return LlmOrganisationCandidate(key, sector, float(confidence), basis, reason)
 

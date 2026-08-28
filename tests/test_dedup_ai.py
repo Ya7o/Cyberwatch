@@ -464,7 +464,7 @@ def test_validate_rejects_different_and_unknown(make_item):
         assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is None
 
 
-def test_validate_incident_decision_persists_final_verdict(make_item):
+def test_validate_incident_different_cannot_break_native_merge(make_item):
     left = make_item(source="A", org="Globex", published="2026-08-01", url="https://a")
     right = make_item(source="B", org="Globex", published="2026-08-01", url="https://b")
     candidate = find_daily_llm_candidates([left], [left, right])[0]
@@ -480,10 +480,7 @@ def test_validate_incident_decision_persists_final_verdict(make_item):
 
     proposal = dedup_ai.validate_ai_incident_decision(candidate, decision, now="2026-08-28")
 
-    assert proposal is not None
-    assert proposal["Decision"] == dedup_ai.DIFFERENT
-    assert json.loads(proposal["Matched_Facts_JSON"]) == ["même victime"]
-    assert json.loads(proposal["Conflicting_Facts_JSON"]) == ["acteurs différents"]
+    assert proposal is None
 
 
 def test_validate_incident_same_cannot_override_strong_veto(make_item):

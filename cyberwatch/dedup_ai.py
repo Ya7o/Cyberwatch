@@ -18,7 +18,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from . import ai, incident_dedup, llm_runtime
-from .dedup import RECURRENCE_MARKERS, STRONG_KEEP_REASON_CODES, decide_merge
+from .dedup import MERGE, RECURRENCE_MARKERS, STRONG_KEEP_REASON_CODES, decide_merge
 from .duplicate_audit import (
     DedupAuditCandidate,
     RISK_FALSE_MERGE,
@@ -1037,8 +1037,10 @@ def validate_ai_incident_decision(
     """Produit une décision d'incident persistante, ou s'abstient.
 
     Seuls ``SAME`` et ``DIFFERENT`` à confiance forte sont actionnables. Un
-    verdict ``SAME`` ne peut pas contourner un veto déterministe fort ; un
-    verdict ``DIFFERENT`` devient au contraire un veto fort rejouable.
+    verdict ``SAME`` ne peut pas contourner un veto déterministe fort. Un
+    verdict ``DIFFERENT`` ne peut pas davantage casser une fusion déjà
+    certaine pour le moteur déterministe ; il n'est persistant que lorsque
+    le moteur s'abstient ou conserve déjà les deux événements séparés.
     """
     if decision.status not in {STATUS_OK, STATUS_CACHE_HIT}:
         return None
@@ -1048,11 +1050,10 @@ def validate_ai_incident_decision(
         return None
     if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
         return None
-    if (
-        decision.same_incident == SAME
-        and decide_merge(candidate.left, candidate.right).reason_code
-        in STRONG_KEEP_REASON_CODES
-    ):
+    native = decide_merge(candidate.left, candidate.right)
+    if decision.same_incident == SAME and native.reason_code in STRONG_KEEP_REASON_CODES:
+        return None
+    if decision.same_incident == DIFFERENT and native.action == MERGE:
         return None
 
     left_id, right_id = sorted((candidate.left.Item_ID, candidate.right.Item_ID))

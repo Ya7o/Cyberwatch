@@ -288,8 +288,8 @@ def test_cache_miss_triggers_a_call_and_persists_result(make_item, monkeypatch):
                 "organisation_key": item.Organisation_Key,
                 "sector": config.SECTOR_TECH,
                 "confidence": 0.8,
-                "basis": "name_semantics",
-                "reason": "Nom evocateur d'un acteur technologique.",
+                "basis": "explicit_activity",
+                "reason": "L'activité éditoriale décrit un acteur technologique.",
             }],
         }
         return _Response(payload=_payload(payload))
@@ -336,13 +336,13 @@ def test_response_parsing_is_resilient_to_bad_entries(monkeypatch):
     def fake_post(url, *, json, headers, timeout):
         payload = {
             "organisations": [
-                {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.9, "basis": "explicit_activity", "reason": "r"},
                 # Organisation inconnue dans la réponse : ignorée.
-                {"organisation_key": "unknown-org", "sector": config.SECTOR_TECH, "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                {"organisation_key": "unknown-org", "sector": config.SECTOR_TECH, "confidence": 0.9, "basis": "explicit_activity", "reason": "r"},
                 # Duplicat : la seconde entrée pour "acme" est ignorée.
-                {"organisation_key": "acme", "sector": config.SECTOR_HEALTH, "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                {"organisation_key": "acme", "sector": config.SECTOR_HEALTH, "confidence": 0.9, "basis": "explicit_activity", "reason": "r"},
                 # Secteur hors taxonomie.
-                {"organisation_key": "orgb", "sector": "Secteur Invalide", "confidence": 0.9, "basis": "name_semantics", "reason": "r"},
+                {"organisation_key": "orgb", "sector": "Secteur Invalide", "confidence": 0.9, "basis": "explicit_activity", "reason": "r"},
             ],
         }
         return _Response(payload=_payload(payload))
@@ -361,6 +361,19 @@ def test_invalid_confidence_and_basis_are_rejected(monkeypatch):
             {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 1.5, "basis": "name_semantics", "reason": "r"},
         ]}
         return _Response(payload=_payload(payload))
+
+    _enable_llm(monkeypatch, fake_post)
+    assert osl.call_llm_batch(batch) == {}
+
+
+def test_name_semantics_and_low_confidence_are_not_publishable(monkeypatch):
+    batch = [("acme", _context("acme", "Acme")), ("orgb", _context("orgb", "Orga B"))]
+
+    def fake_post(url, *, json, headers, timeout):
+        return _Response(payload=_payload({"organisations": [
+            {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.95, "basis": "name_semantics", "reason": "nom seul"},
+            {"organisation_key": "orgb", "sector": config.SECTOR_HEALTH, "confidence": 0.60, "basis": "explicit_activity", "reason": "confiance faible"},
+        ]}))
 
     _enable_llm(monkeypatch, fake_post)
     assert osl.call_llm_batch(batch) == {}
