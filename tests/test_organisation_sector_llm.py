@@ -365,6 +365,15 @@ def test_invalid_confidence_and_basis_are_rejected(monkeypatch):
     _enable_llm(monkeypatch, fake_post)
     assert osl.call_llm_batch(batch) == {}
 
+    def fake_post_bad_basis(url, *, json, headers, timeout):
+        payload = {"organisations": [
+            {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.5, "basis": "made_up", "reason": "r"},
+        ]}
+        return _Response(payload=_payload(payload))
+
+    monkeypatch.setattr(llm_runtime.requests, "post", fake_post_bad_basis)
+    assert osl.call_llm_batch(batch) == {}
+
 
 def test_name_semantics_and_low_confidence_are_not_publishable(monkeypatch):
     batch = [("acme", _context("acme", "Acme")), ("orgb", _context("orgb", "Orga B"))]
@@ -378,14 +387,25 @@ def test_name_semantics_and_low_confidence_are_not_publishable(monkeypatch):
     _enable_llm(monkeypatch, fake_post)
     assert osl.call_llm_batch(batch) == {}
 
-    def fake_post_bad_basis(url, *, json, headers, timeout):
-        payload = {"organisations": [
-            {"organisation_key": "acme", "sector": config.SECTOR_TECH, "confidence": 0.5, "basis": "made_up", "reason": "r"},
-        ]}
-        return _Response(payload=_payload(payload))
 
-    monkeypatch.setattr(llm_runtime.requests, "post", fake_post_bad_basis)
-    assert osl.call_llm_batch(batch) == {}
+def test_charitable_activity_is_not_forced_into_business_or_agriculture(monkeypatch):
+    context = osl.OrganisationContext(
+        organisation_key="banque-alimentaire",
+        organisation="Banque Alimentaire de Strasbourg",
+        evidence_details=({"text": "association fournissant de l'aide alimentaire"},),
+    )
+
+    def fake_post(url, *, json, headers, timeout):
+        return _Response(payload=_payload({"organisations": [{
+            "organisation_key": "banque-alimentaire",
+            "sector": osec.SECTOR_AGRICULTURE,
+            "confidence": 0.90,
+            "basis": "multiple_signals",
+            "reason": "denrées alimentaires",
+        }]}))
+
+    _enable_llm(monkeypatch, fake_post)
+    assert osl.call_llm_batch([("banque-alimentaire", context)]) == {}
 
 
 def test_insufficient_basis_and_unknown_sector_are_treated_as_abstention(monkeypatch):

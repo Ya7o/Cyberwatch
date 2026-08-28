@@ -37,9 +37,10 @@ from urllib.parse import urlparse
 
 from . import config, llm_runtime, org_identity, organisation_sector as osec, store
 from .model import Item
+from .normalize import searchable
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-28.7"
+PROMPT_VERSION = "2026-08-28.8"
 #: Audit 2026-08-26 (run réel 32968633926) : 11 organisations très
 #: différentes traitées en un seul appel n'ont produit que 75 tokens de
 #: sortie au total (~7/organisation) — famine de tokens qui expliquait des
@@ -452,6 +453,33 @@ def _validate_candidate(entry: object, requested_keys: set[str]) -> LlmOrganisat
     return LlmOrganisationCandidate(key, sector, float(confidence), basis, reason)
 
 
+def _taxonomy_supports_candidate(
+    context: OrganisationContext,
+    candidate: LlmOrganisationCandidate,
+) -> bool:
+    """Refuse un rapprochement connu comme hors taxonomie.
+
+    ``Services aux entreprises`` est B2B et ``Agriculture`` décrit une
+    activité de production/agroalimentaire. Une structure d'aide alimentaire
+    ou caritative ne relève d'aucune de ces catégories : la valeur honnête est
+    donc ``Inconnu`` jusqu'à extension explicite de la taxonomie.
+    """
+    text = searchable(" ".join([
+        context.organisation,
+        *context.activity_descriptions,
+        *(str(evidence.get("text") or "") for evidence in context.evidence_details),
+    ]))
+    social_markers = (
+        "aide alimentaire", "banque alimentaire", "association caritative",
+        "organisme caritatif", "aide humanitaire",
+    )
+    if any(marker in text for marker in social_markers) and candidate.sector in {
+        config.SECTOR_SERVICES, osec.SECTOR_AGRICULTURE,
+    }:
+        return False
+    return True
+
+
 def call_llm_batch(
     batch: list[tuple[str, OrganisationContext]],
     *,
@@ -486,9 +514,12 @@ def call_llm_batch(
         return {}
 
     resolved: dict[str, LlmOrganisationCandidate] = {}
+    contexts = dict(batch)
     for entry in raw:
         candidate = _validate_candidate(entry, requested_keys)
         if candidate is None:
+            continue
+        if not _taxonomy_supports_candidate(contexts[candidate.organisation_key], candidate):
             continue
         if candidate.organisation_key in resolved:
             # Duplicat d'organisation dans la réponse : on garde le premier,
