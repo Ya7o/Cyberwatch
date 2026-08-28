@@ -115,7 +115,7 @@ def test_usage_aggregates_all_passes_without_hiding_success_or_capacity(tmp_path
         ["Run_ID", "Status", "Calls_Attempted", "Calls_Succeeded", "Calls_Failed", "Still_Unknown", "Sector_Remaining_Unknown"],
         [
             {"Run_ID": "RUN1", "Status": "DEGRADED", "Calls_Attempted": 2, "Calls_Succeeded": 1, "Calls_Failed": 1, "Still_Unknown": 1, "Sector_Remaining_Unknown": 1},
-            {"Run_ID": "RUN1", "Status": "DISABLED", "Calls_Attempted": 0, "Calls_Succeeded": 0, "Calls_Failed": 0, "Still_Unknown": 0, "Sector_Remaining_Unknown": 0},
+            {"Run_ID": "RUN1-2", "Status": "DISABLED", "Calls_Attempted": 0, "Calls_Succeeded": 0, "Calls_Failed": 0, "Still_Unknown": 0, "Sector_Remaining_Unknown": 0},
         ],
     )
     _write_csv(
@@ -123,7 +123,7 @@ def test_usage_aggregates_all_passes_without_hiding_success_or_capacity(tmp_path
         ["Run_ID", "Status", "Candidates_Generated", "Candidates_Selected", "LLM_Calls", "LLM_Calls_Succeeded", "LLM_Calls_Failed", "Review_Required"],
         [
             {"Run_ID": "RUN1", "Status": "OK", "Candidates_Generated": 50, "Candidates_Selected": 20, "LLM_Calls": 1, "LLM_Calls_Succeeded": 1, "LLM_Calls_Failed": 0, "Review_Required": 30},
-            {"Run_ID": "RUN1", "Status": "LLM_DISABLED", "Candidates_Generated": 12, "Candidates_Selected": 0, "LLM_Calls": 0, "LLM_Calls_Succeeded": 0, "LLM_Calls_Failed": 0, "Review_Required": 0},
+            {"Run_ID": "RUN1-2", "Status": "LLM_DISABLED", "Candidates_Generated": 12, "Candidates_Selected": 0, "LLM_Calls": 0, "LLM_Calls_Succeeded": 0, "LLM_Calls_Failed": 0, "Review_Required": 0},
         ],
     )
 

@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -78,9 +79,16 @@ def _latest_source_rows(run_sources: list[dict[str, str]], run_id: str) -> list[
 
 
 def _run_usage(rows: list[dict[str, str]], run_id: str) -> list[dict[str, str]]:
-    """Return every pass for the audited run, never a stale previous run."""
+    """Return every pass in the audited run family, never a stale run.
+
+    Each successive pipeline pass appends ``-2``, ``-3`` … to the original
+    run id.  The final run log therefore points at the last suffix while the
+    successful LLM pass can be an earlier sibling.
+    """
     if run_id:
-        return [row for row in rows if row.get("Run_ID") == run_id]
+        root = re.sub(r"-\d+$", "", run_id)
+        family = re.compile(rf"^{re.escape(root)}(?:-\d+)?$")
+        return [row for row in rows if family.fullmatch(row.get("Run_ID", ""))]
     return []
 
 

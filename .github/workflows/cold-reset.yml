@@ -238,6 +238,13 @@ jobs:
           # pour un lot largement identique. Borné à un seul appel réseau
           # au plus par passe (§Lot 4), quelle que soit la taille du lot.
           DEDUP_AI_DAILY_ENABLED: "1"
+          # Panel 2026-08-22 mesuré : 50 candidats, dont seulement 20 tenaient
+          # dans l'ancien contexte de 40k caractères. Un NOGO de capacité ne
+          # doit pas subsister alors que le lot complet tient largement dans
+          # le contexte du modèle et dans le plafond de coût de $0.10.
+          DEDUP_AI_DAILY_MAX_CANDIDATES: "60"
+          DEDUP_AI_MAX_CONTEXT_CHARS: "120000"
+          DEDUP_AI_MAX_OUTPUT_TOKENS: "12000"
         run: |
           python -m cyberwatch create --start "$RESET_START" --as-of "$RESET_AS_OF" --layers all
           # Coût/appels du filet dedup (§Lot 18) : persistés par le run

@@ -39,7 +39,7 @@ from . import config, llm_runtime, org_identity, organisation_sector as osec, st
 from .model import Item
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-28.6"
+PROMPT_VERSION = "2026-08-28.7"
 #: Audit 2026-08-26 (run réel 32968633926) : 11 organisations très
 #: différentes traitées en un seul appel n'ont produit que 75 tokens de
 #: sortie au total (~7/organisation) — famine de tokens qui expliquait des
@@ -112,6 +112,12 @@ SYSTEM_PROMPT = (
     "seul, une intuition ou une connaissance interne non corroborée ne sont "
     "pas des preuves publiables : réponds alors Inconnu avec "
     "basis=insufficient.\n"
+    "La taxonomie n'est pas exhaustive : n'oblige jamais une activité sociale, "
+    "caritative ou associative à entrer dans 'Services aux entreprises', qui "
+    "désigne exclusivement des prestations B2B. Exemple : une banque alimentaire "
+    "qui fournit de l'aide alimentaire reste Inconnu dans cette taxonomie. "
+    "Vérifie le sens du texte de preuve indépendamment du secteur candidat qui "
+    "l'accompagne ; un candidat mal mappé ne doit pas être recopié.\n"
     "'organisation_knowledge' signifie uniquement que tu utilises tes "
     "connaissances internes préexistantes sur cette organisation : cela ne "
     "signifie jamais une recherche web, une preuve officielle ou une preuve "
