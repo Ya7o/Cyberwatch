@@ -1,5 +1,6 @@
 from cyberwatch import config
 from cyberwatch.dedup import KEEP_SEPARATE, build_incidents, decide_merge, group_components
+from cyberwatch.incident_dedup import DIFFERENT, SAME, pair_key
 
 
 def _component_signature(items):
@@ -179,3 +180,42 @@ def test_component_never_contains_conflicting_native_ids_for_same_source(make_it
                 continue
             ids_by_source.setdefault(item.Source_ID, set()).add(item.Source_Item_ID)
         assert all(len(source_ids) <= 1 for source_ids in ids_by_source.values())
+
+
+def test_llm_different_is_a_persistent_strong_veto(make_item):
+    left = make_item(source="A", org="Globex", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Globex", published="2026-08-01", url="https://b")
+    decisions = {pair_key(left.Item_ID, right.Item_ID): DIFFERENT}
+
+    decision = decide_merge(left, right, decisions)
+
+    assert decision.action == KEEP_SEPARATE
+    assert decision.reason_code == "INCIDENT_KEEP_LLM_DIFFERENT"
+    assert len(group_components([left, right], decisions)) == 2
+
+
+def test_llm_same_can_confirm_a_cross_source_long_gap(make_item):
+    left = make_item(source="A", org="Globex", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Globex", published="2026-08-10", url="https://b")
+    decisions = {pair_key(left.Item_ID, right.Item_ID): SAME}
+
+    decision = decide_merge(left, right, decisions)
+
+    assert decision.action == "MERGE"
+    assert decision.reason_code == "INCIDENT_MERGE_LLM_CONFIRMED"
+    assert len(group_components([left, right], decisions)) == 1
+
+
+def test_llm_same_never_overrides_conflicting_native_ids(make_item):
+    left = make_item(
+        source="A", source_item_id="one", org="Globex",
+        published="2026-08-01", url="https://a",
+    )
+    right = make_item(
+        source="A", source_item_id="two", org="Globex",
+        published="2026-08-01", url="https://b",
+    )
+    decisions = {pair_key(left.Item_ID, right.Item_ID): SAME}
+
+    assert decide_merge(left, right, decisions).reason_code == "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID"
+    assert len(group_components([left, right], decisions)) == 2

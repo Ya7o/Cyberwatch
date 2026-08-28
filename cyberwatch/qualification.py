@@ -374,7 +374,9 @@ def qualify(
     decisions = qualification_policy.reconcile(ordered, decisions)
     provenance = [decision.to_row() for decision in decisions]
     incidents, incident_id_registry = build_incidents_with_registry(
-        ordered, store.load_incident_id_registry()
+        ordered,
+        store.load_incident_id_registry(),
+        store.load_incident_dedup_registry(),
     )
     queue_rows = sector_registry.build_enrichment_queue(
         ordered,

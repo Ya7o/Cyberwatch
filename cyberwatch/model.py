@@ -359,6 +359,7 @@ DEDUP_AI_DAILY_USAGE_COLUMNS = [
     "LLM_Different",
     "LLM_Unknown",
     "Org_Aliases_Applied",
+    "Incident_Decisions_Applied",
     "Review_Required",
     "LLM_Input_Tokens",
     "LLM_Output_Tokens",

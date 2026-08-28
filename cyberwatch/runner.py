@@ -18,7 +18,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field, replace
 
-from . import ai, config, dedup_ai, domain_page_sector, domain_page_sector_llm, duplicate_audit, enrichment, identity, incident_identity, org_enrichment, org_identity, organisation_sector, organisation_sector_llm, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, validation_corpus, watchlists
+from . import ai, config, dedup_ai, domain_page_sector, domain_page_sector_llm, duplicate_audit, enrichment, identity, incident_dedup, incident_identity, org_enrichment, org_identity, organisation_sector, organisation_sector_llm, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, validation_corpus, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -838,11 +838,10 @@ def run_daily_dedup_net(
     Ne modifie jamais directement ``ITEMS``/``INCIDENTS`` : ce point d'entrée
     ne fait que proposer, challenger puis éventuellement persister des
     équivalences d'identité organisationnelle validées dans le registre
-    (`org_identity`). Le moteur déterministe (`dedup.group_components`, via
-    `qualify` appelé juste après par `execute`) reste seul responsable de la
-    reconstruction des incidents — y compris de la décision de fusionner ou
-    non deux items dont l'identité vient d'être unifiée : `same_incident` du
-    LLM n'est jamais appliqué directement, uniquement mesuré (§Lot 5).
+    (`org_identity`) et des verdicts d'identité d'incident dans un registre
+    séparé (`incident_dedup`). Le moteur de regroupement relit ensuite ces
+    verdicts, tout en conservant la priorité des preuves et veto déterministes
+    forts (§Lot 5).
 
     Ne lève jamais d'exception : une panne du filet LLM ne doit jamais
     bloquer une collecte réelle (§Lot 15). ``new_or_updated_items`` vide
@@ -874,35 +873,69 @@ def run_daily_dedup_net(
 
             candidates_by_id = {dedup_ai.candidate_id(c): c for c in candidates}
             registry_proposals = []
+            incident_proposals = []
             for pair_key, decision in decisions.items():
                 candidate = candidates_by_id.get(pair_key)
                 if candidate is None:
                     continue
+                cached_row = state.rows_by_pair.get(pair_key, {})
                 proposal = dedup_ai.validate_ai_dedup_decision(
                     candidate, decision, model=state.model,
+                    input_hash=cached_row.get("Input_Hash", ""),
                 )
                 if proposal is not None:
                     registry_proposals.append(proposal)
+                incident_proposal = dedup_ai.validate_ai_incident_decision(
+                    candidate,
+                    decision,
+                    model=state.model,
+                    input_hash=cached_row.get("Input_Hash", ""),
+                )
+                if incident_proposal is not None:
+                    incident_proposals.append(incident_proposal)
 
-            if registry_proposals:
-                existing_rows = store.load_organisation_identity_registry_rows()
+            existing_rows = store.load_organisation_identity_registry_rows()
+            merged_rows, merge_problems = org_identity.merge_organisation_identity_rows(
+                existing_rows, registry_proposals,
+            )
+            problems.extend(merge_problems)
+
+            existing_incident_rows = store.load_incident_dedup_registry()
+            merged_incident_rows, incident_problems = incident_dedup.merge_rows(
+                existing_incident_rows,
+                incident_proposals,
+                current_item_ids={item.Item_ID for item in items if item.Item_ID},
+            )
+            problems.extend(incident_problems)
+            previous_incident_by_pair = {
+                row.get("Pair_Key", ""): row for row in existing_incident_rows
+            }
+            if persist and not merge_problems and not incident_problems:
+                # Le verdict d'incident est écrit en premier : si la seconde
+                # écriture échoue, un veto `DIFFERENT` peut rester sans alias
+                # (donc sans effet), mais jamais l'inverse avec risque de faux
+                # merge. Un verdict `SAME` sans alias reste lui aussi inactif
+                # puisque le regroupement est d'abord partitionné par victime.
                 existing_aliases = {
                     row.get("Alias_Key", "") for row in existing_rows
                     if row.get("Decision") == org_identity.DECISION_SAME
                 }
-                merged_rows, merge_problems = org_identity.merge_organisation_identity_rows(
-                    existing_rows, registry_proposals,
+                merged_aliases = {
+                    row.get("Alias_Key", "") for row in merged_rows
+                    if row.get("Decision") == org_identity.DECISION_SAME
+                }
+                state.organisation_identity_rows_applied = len(
+                    merged_aliases - existing_aliases
                 )
-                problems.extend(merge_problems)
-                merged_aliases = {row.get("Alias_Key", "") for row in merged_rows}
-                state.organisation_identity_rows_applied = len(merged_aliases - existing_aliases)
-                if persist:
-                    # Un run transitoire (`--transient`) prévisualise coût et
-                    # décisions sans jamais réécrire de donnée canonique : le
-                    # registre d'identité en fait partie au même titre que
-                    # ITEMS/INCIDENTS, déférés à `_persist` par `execute`.
-                    store.save_organisation_identity_registry_rows(merged_rows)
-                    org_identity.reload_organisation_identity_registry()
+                state.incident_decision_rows_applied = sum(
+                    previous_incident_by_pair.get(row["Pair_Key"]) != row
+                    for row in merged_incident_rows
+                )
+                # Un run transitoire (`--transient`) prévisualise les
+                # décisions sans réécrire de donnée canonique.
+                store.save_incident_dedup_registry(merged_incident_rows)
+                store.save_organisation_identity_registry_rows(merged_rows)
+                org_identity.reload_organisation_identity_registry()
 
             # Le cache LLM n'est jamais une donnée publiée : il ne fait
             # qu'éviter une dépense redondante lors d'un run réel ultérieur,
@@ -1044,10 +1077,9 @@ def execute(
             # d'exécution en CREATE). Reste borné à un seul appel réseau au
             # plus par run (§Lot 4), quelle que soit la taille du lot.
             # `run_daily_dedup_net` ne modifie jamais ITEMS/INCIDENTS
-            # directement ; elle peut seulement mettre à jour le registre
-            # d'identité organisationnelle consulté juste après par
-            # `qualify` -> `build_incidents_with_registry`, afin que la
-            # reconstruction déterministe du même run en tienne déjà compte.
+            # directement ; elle met à jour les deux registres de décision
+            # consultés juste après par `qualify` ->
+            # `build_incidents_with_registry`.
             daily_scope = list({item.Item_ID: item for item in collected if item.Item_ID}.values())
             dedup_state, dedup_ai_problems = run_daily_dedup_net(
                 report.items, daily_scope, report.source_facts,
@@ -1067,6 +1099,7 @@ def execute(
                 f"cache={summary['dedup_llm_cache_hits']} "
                 f"same_org={summary['dedup_llm_same_org']} "
                 f"aliases_appliqués={summary['dedup_org_aliases_applied']} "
+                f"verdicts_incident={summary['dedup_incident_decisions_applied']} "
                 f"coût=${summary['dedup_llm_cost_usd']:.4f}"
             )
             for problem in dedup_ai_problems:
@@ -1126,6 +1159,10 @@ def execute(
         report.problems.extend(context.validation_corpus.audit(report.items, report.incidents))
     report.problems.extend(incident_identity.validate_registry(
         report.incident_id_registry, report.items, report.incidents
+    ))
+    report.problems.extend(incident_dedup.validate_registry(
+        store.load_incident_dedup_registry(),
+        {item.Item_ID for item in report.items if item.Item_ID},
     ))
     if offline:
         report.problems = [p for p in report.problems if "RUN_SOURCES" not in p]

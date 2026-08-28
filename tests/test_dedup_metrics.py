@@ -1,6 +1,7 @@
 import csv
 import json
 
+from cyberwatch import incident_dedup
 from cyberwatch.dedup_metrics import (
     append_run_history,
     candidate_pair_count,
@@ -41,6 +42,40 @@ def test_summary_counts_conflicting_event_date_veto(make_item):
     summary = summarize_dedup(items)
     assert summary["incidents"] == 2
     assert summary["strong_veto_reasons"] == {"INCIDENT_KEEP_CONFLICTING_EVENT_DATE": 1}
+
+
+def test_summary_includes_persisted_incident_verdict(make_item):
+    items = [
+        make_item(source="A", org="Globex", published="2026-08-01", url="https://a"),
+        make_item(source="B", org="Globex", published="2026-08-02", url="https://b"),
+    ]
+    decisions = {
+        incident_dedup.pair_key(items[0].Item_ID, items[1].Item_ID): "DIFFERENT",
+    }
+
+    summary = summarize_dedup(items, decisions)
+
+    assert summary["incidents"] == 2
+    assert summary["merged_items"] == 0
+    assert summary["strong_veto_reasons"] == {"INCIDENT_KEEP_LLM_DIFFERENT": 1}
+    assert summary["decision_reasons"] == {"INCIDENT_KEEP_LLM_DIFFERENT": 1}
+    assert weak_merge_rows(items, decisions) == []
+
+
+def test_summary_counts_component_extension_merge(make_item):
+    """Une extension via un membre doit compter comme une fusion appliquée."""
+    items = [
+        make_item(source="A", org="Globex", published="2026-08-01", url="https://a"),
+        make_item(source="B", org="Globex", published="2026-08-03", url="https://b"),
+        make_item(source="C", org="Globex", published="2026-08-04", url="https://c"),
+        make_item(source="D", org="Globex", published="2026-08-05", url="https://d"),
+    ]
+
+    summary = summarize_dedup(items)
+
+    assert summary["incidents"] == 1
+    assert summary["merged_items"] == 3
+    assert sum(summary["merge_reasons"].values()) == 3
 
 
 def test_weak_merge_export_contains_event_context(make_item):

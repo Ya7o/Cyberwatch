@@ -1,8 +1,10 @@
 """Challenger LLM optionnel pour les candidats de déduplication.
 
-Cette couche est strictement d'audit : elle ne modifie ni les items, ni les
-incidents, ni les règles de fusion. Le modèle reçoit uniquement les données
-déjà présentes dans Cyberwatch ; aucun outil, Search ou agent n'est exposé.
+Cette couche arbitre les candidats ambigus sans modifier les items. Les
+verdicts validés sont appliqués indirectement via deux registres persistants :
+identité d'organisation et identité d'incident. Le modèle reçoit uniquement
+les données déjà présentes dans Cyberwatch ; aucun outil, Search ou agent
+n'est exposé.
 """
 
 from __future__ import annotations
@@ -15,7 +17,7 @@ import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-from . import ai, llm_runtime
+from . import ai, incident_dedup, llm_runtime
 from .dedup import RECURRENCE_MARKERS, STRONG_KEEP_REASON_CODES, decide_merge
 from .duplicate_audit import (
     DedupAuditCandidate,
@@ -50,13 +52,11 @@ SCHEMA_VERSION = "1"
 #: batch n'invalide jamais silencieusement le cache pair-à-pair existant, et
 #: réciproquement.
 DAILY_BATCH_SCHEMA_NAME = "cyberwatch_dedup_batch_audit"
-DAILY_BATCH_PROMPT_VERSION = "2026-08-25.1"
-DAILY_BATCH_SCHEMA_VERSION = "1"
+DAILY_BATCH_PROMPT_VERSION = "2026-08-28.1"
+DAILY_BATCH_SCHEMA_VERSION = "2"
 
-#: Seuil de confiance requis pour qu'une décision LLM ``same_organisation``
-#: puisse être proposée au registre d'identité (§Lot 5). ``same_incident``
-#: n'a pas de seuil équivalent : il ne pilote jamais d'écriture, la fusion
-#: d'incident restant exclusivement déterministe (`dedup.group_components`).
+#: Seuil de confiance requis pour qu'une décision LLM soit proposée aux
+#: registres d'identité organisationnelle ou d'incident (§Lot 5).
 #:
 #: Abaissé de 0.95 à 0.85 sur cas réel mesuré (reset 2026-08-25) : la paire
 #: "Banque Alimentaire de la Croix-Rouge à Strasbourg" / "Banque Alimentaire
@@ -170,6 +170,7 @@ class DedupAiRunState:
     different_count: int = 0
     unknown_count: int = 0
     organisation_identity_rows_applied: int = 0
+    incident_decision_rows_applied: int = 0
     cache_by_hash: dict[str, dict[str, str]] = field(default_factory=dict)
     rows_by_pair: dict[str, dict[str, str]] = field(default_factory=dict)
 
@@ -287,13 +288,7 @@ def worth_challenging(candidate: DedupAuditCandidate) -> bool:
     """Filtre de coût : le LLM ne voit que les paires réellement ambiguës."""
     if candidate.risk_type == RISK_MISSED_DUPLICATE:
         return True
-    if candidate.risk_type != RISK_FALSE_MERGE:
-        return False
-    if candidate.left.Source_ID == candidate.right.Source_ID:
-        return True
-    if candidate.days_apart > 0:
-        return True
-    return _has_recurrence(candidate)
+    return candidate.risk_type == RISK_FALSE_MERGE
 
 
 def candidate_priority(candidate: DedupAuditCandidate) -> tuple:
@@ -624,6 +619,13 @@ BATCH_SYSTEM_PROMPT = (
     "utilisant UNIQUEMENT les donnees fournies pour cette paire precise, sans "
     "melanger les informations d'une paire avec celles d'une autre. N'utilise "
     "aucune connaissance externe et ne suppose rien sur une organisation. "
+    "Pour chaque paire, examine successivement et independamment : (1) "
+    "l'identite de la victime, (2) les dates d'evenement et de publication, "
+    "(3) la menace et l'acteur, (4) les impacts, volumes et donnees affectees, "
+    "puis (5) les contradictions ou indices de recurrence. Les signaux de nom "
+    "et fuzzy proposent la paire mais ne prouvent jamais a eux seuls le meme "
+    "incident. Renseigne matched_facts et conflicting_facts a partir de ces "
+    "axes, puis tranche seulement a la fin. "
     "same_organisation=SAME signifie que les deux libelles designent la meme "
     "entite victime. same_incident=SAME exige en plus des indices concrets "
     "qu'il s'agit du meme evenement, pas seulement de la meme victime a des "
@@ -761,10 +763,13 @@ def _batch_priority(candidate: DedupAuditCandidate) -> tuple:
     étayées plutôt que les premières trouvées par ordre d'Item_ID.
     """
     if candidate.signals is not None:
-        return (0,) + signal_rank(candidate.signals) + (
+        return (
+            0 if candidate.risk_type == RISK_FALSE_MERGE else 1,
+        ) + signal_rank(candidate.signals) + (
+            abs(candidate.days_apart),
             candidate.left.Item_ID, candidate.right.Item_ID,
         )
-    return (1,) + candidate_priority(candidate)
+    return (2,) + candidate_priority(candidate)
 
 
 def challenge_candidates_batch(
@@ -981,24 +986,16 @@ def validate_ai_dedup_decision(
       (`OK`/`CACHE_HIT`) ;
     - ``same_organisation == SAME`` ;
     - ``confidence >= ORG_IDENTITY_CONFIDENCE_THRESHOLD`` ;
-    - `dedup.decide_merge(left, right)` ne renvoie aucun des motifs de veto
-      fort (`STRONG_KEEP_REASON_CODES`) — ces vetos restent prioritaires et ne
-      peuvent jamais être contournés par une décision LLM.
-
-    ``same_incident`` n'intervient jamais ici : la fusion d'incident reste
-    exclusivement décidée par le moteur déterministe une fois l'identité
-    organisationnelle éventuellement mise à jour (`dedup.group_components`).
-    Une sortie ``UNKNOWN`` ou ``DIFFERENT`` ne modifie jamais rien.
+    Les veto d'incident ne bloquent pas l'identité organisationnelle : deux
+    attaques distinctes ou deux identifiants source différents peuvent viser
+    exactement la même organisation. ``same_incident`` est persisté séparément
+    par :func:`validate_ai_incident_decision`.
     """
     if decision.status not in {STATUS_OK, STATUS_CACHE_HIT}:
         return None
     if decision.same_organisation != SAME:
         return None
     if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
-        return None
-
-    veto = decide_merge(candidate.left, candidate.right)
-    if veto.reason_code in STRONG_KEEP_REASON_CODES:
         return None
 
     left_key = organisation_key(candidate.left.Organisation_Raw) or candidate.left.Organisation_Key
@@ -1021,6 +1018,57 @@ def validate_ai_dedup_decision(
         "Origin": "LLM_CONFIRMED",
         "Confidence": f"{decision.confidence:.4f}",
         "Evidence": decision.evidence,
+        "First_Seen": stamp,
+        "Last_Validated": stamp,
+        "Model": model,
+        "Prompt_Version": DAILY_BATCH_PROMPT_VERSION,
+        "Input_Hash": input_hash,
+    }
+
+
+def validate_ai_incident_decision(
+    candidate: DedupAuditCandidate,
+    decision: DedupAiDecision,
+    *,
+    model: str = "",
+    input_hash: str = "",
+    now: str = "",
+) -> dict[str, str] | None:
+    """Produit une décision d'incident persistante, ou s'abstient.
+
+    Seuls ``SAME`` et ``DIFFERENT`` à confiance forte sont actionnables. Un
+    verdict ``SAME`` ne peut pas contourner un veto déterministe fort ; un
+    verdict ``DIFFERENT`` devient au contraire un veto fort rejouable.
+    """
+    if decision.status not in {STATUS_OK, STATUS_CACHE_HIT}:
+        return None
+    if decision.same_organisation != SAME:
+        return None
+    if decision.same_incident not in {SAME, DIFFERENT}:
+        return None
+    if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
+        return None
+    if (
+        decision.same_incident == SAME
+        and decide_merge(candidate.left, candidate.right).reason_code
+        in STRONG_KEEP_REASON_CODES
+    ):
+        return None
+
+    left_id, right_id = sorted((candidate.left.Item_ID, candidate.right.Item_ID))
+    if not left_id or not right_id or left_id == right_id:
+        return None
+    stamp = now or dt.datetime.now(dt.timezone.utc).isoformat()
+    return {
+        "Pair_Key": incident_dedup.pair_key(left_id, right_id),
+        "Left_Item_ID": left_id,
+        "Right_Item_ID": right_id,
+        "Decision": decision.same_incident,
+        "Confidence": f"{decision.confidence:.4f}",
+        "Evidence": decision.evidence,
+        "Reason": decision.reason,
+        "Matched_Facts_JSON": json.dumps(list(decision.matched_facts), ensure_ascii=False),
+        "Conflicting_Facts_JSON": json.dumps(list(decision.conflicting_facts), ensure_ascii=False),
         "First_Seen": stamp,
         "Last_Validated": stamp,
         "Model": model,
@@ -1078,7 +1126,8 @@ def daily_summary(state: DedupAiRunState) -> dict[str, object]:
         "dedup_llm_different": state.different_count,
         "dedup_llm_unknown": state.unknown_count,
         "dedup_org_aliases_applied": state.organisation_identity_rows_applied,
-        "dedup_incident_merges_enabled": False,
+        "dedup_incident_decisions_applied": state.incident_decision_rows_applied,
+        "dedup_incident_merges_enabled": True,
         "dedup_review_required": state.candidates_not_reviewed_capacity,
         "dedup_llm_input_tokens": state.batch_input_tokens,
         "dedup_llm_output_tokens": state.batch_output_tokens,
@@ -1111,6 +1160,7 @@ def daily_usage_row(
         "LLM_Different": str(summary["dedup_llm_different"]),
         "LLM_Unknown": str(summary["dedup_llm_unknown"]),
         "Org_Aliases_Applied": str(summary["dedup_org_aliases_applied"]),
+        "Incident_Decisions_Applied": str(summary["dedup_incident_decisions_applied"]),
         "Review_Required": str(summary["dedup_review_required"]),
         "LLM_Input_Tokens": str(summary["dedup_llm_input_tokens"]),
         "LLM_Output_Tokens": str(summary["dedup_llm_output_tokens"]),

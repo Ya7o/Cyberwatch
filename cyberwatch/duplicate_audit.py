@@ -16,6 +16,7 @@ from . import config
 from .dedup import MERGE, NO_DECISION, decide_merge
 from .model import Item
 from .normalize import date_or_empty, organisation_acronym, organisation_key
+from .org_identity import effective_organisation_key
 
 
 DUPLICATE_CANDIDATE_NAME_CONTAINMENT = "DUPLICATE_CANDIDATE_NAME_CONTAINMENT"
@@ -155,7 +156,7 @@ def _same_permutation(a_key: str, b_key: str) -> bool:
 
 def _effective_key(item: Item) -> str:
     """Clé d'organisation actuelle, aliases compris, sans réécrire l'item."""
-    return organisation_key(item.Organisation_Raw) or item.Organisation_Key
+    return effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
 
 
 def _ordered_pair(left: Item, right: Item) -> tuple[Item, Item]:
@@ -460,6 +461,14 @@ def signal_rank(signals: CandidateSignals) -> tuple:
     return (-signals.strong_signal_count, -signals.fuzzy_score)
 
 
+def _weak_merge_review_reason(reason_code: str) -> str:
+    if reason_code == "INCIDENT_MERGE_ALIAS":
+        return MERGE_REVIEW_WEAK_ALIAS
+    if reason_code == "INCIDENT_MERGE_RANSOMWARE_CORROBORATION":
+        return MERGE_REVIEW_RANSOMWARE_CORROBORATION
+    return MERGE_REVIEW_WEAK_CANONICAL_NAME
+
+
 def find_daily_llm_candidates(
     new_or_updated_items: list[Item],
     historical_items: list[Item],
@@ -505,26 +514,45 @@ def find_daily_llm_candidates(
             if pair_key in seen_pairs:
                 continue
             left, right = _ordered_pair(scope_item, other)
-            if _effective_key(left) == _effective_key(right):
-                # Déjà la même identité pour le moteur déterministe : rien à
-                # challenger, la déduplication d'incident suit son cours normal.
+            same_identity = _effective_key(left) == _effective_key(right)
+            deterministic = decide_merge(left, right)
+            if same_identity and (
+                deterministic.action != MERGE
+                or deterministic.reason_code not in {
+                    "INCIDENT_MERGE_CANONICAL_NAME",
+                    "INCIDENT_MERGE_ALIAS",
+                    "INCIDENT_MERGE_RANSOMWARE_CORROBORATION",
+                }
+            ):
+                # Les preuves fortes (identifiant source identique, Event_Date
+                # identique) n'ont pas besoin d'un arbitrage coûteux ; les veto
+                # forts restent eux aussi purement déterministes.
                 continue
             signals = compute_candidate_signals(
                 left, right, company_ids=company_ids, victim_websites=victim_websites,
             )
-            if not signals.any_signal:
+            if not signals.any_signal and not same_identity:
                 continue
             days = _days_apart(left, right)
             candidate = DedupAuditCandidate(
-                RISK_MISSED_DUPLICATE,
+                RISK_FALSE_MERGE if same_identity else RISK_MISSED_DUPLICATE,
                 left,
                 right,
                 days if days is not None else -1,
-                DUPLICATE_CANDIDATE_DAILY_LLM,
+                (
+                    _weak_merge_review_reason(deterministic.reason_code)
+                    if same_identity
+                    else DUPLICATE_CANDIDATE_DAILY_LLM
+                ),
                 company_ids.get(left.Organisation_Key, "") or company_ids.get(right.Organisation_Key, ""),
                 signals,
             )
-            ranked.append((signal_rank(signals) + (left.Item_ID, right.Item_ID), candidate))
+            ranked.append((
+                (0 if same_identity else 1,)
+                + signal_rank(signals)
+                + (abs(candidate.days_apart), left.Item_ID, right.Item_ID),
+                candidate,
+            ))
 
         ranked.sort(key=lambda pair: pair[0])
         for _, candidate in ranked[:max_candidates_per_item]:

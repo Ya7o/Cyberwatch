@@ -243,7 +243,12 @@ def _source_fact_payload(row: dict) -> dict | None:
 
 
 def _components_with_stable_incident_ids(items: list[Item]) -> list[tuple[list[Item], str]]:
-    components = group_components(items)
+    from .incident_dedup import decision_map
+
+    components = group_components(
+        items,
+        decision_map(store.load_incident_dedup_registry()),
+    )
     assigned, _ = incident_identity.assign_incident_ids(
         components, store.load_incident_id_registry()
     )

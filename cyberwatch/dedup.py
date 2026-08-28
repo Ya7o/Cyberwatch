@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 from . import config
 from .identity import incident_id, sort_incidents, sort_items
 from .incident_identity import assign_incident_ids, component_identity_key
+from .incident_dedup import DIFFERENT as INCIDENT_DIFFERENT
+from .incident_dedup import SAME as INCIDENT_SAME
+from .incident_dedup import decision_map as incident_decision_map
+from .incident_dedup import pair_key as incident_pair_key
 from .model import Incident, Item
 from .normalize import _base_organisation_key, date_or_empty, searchable
 from .org_identity import effective_organisation_key
@@ -22,6 +27,7 @@ STRONG_KEEP_REASON_CODES = frozenset({
     "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID",
     "INCIDENT_KEEP_CONFLICTING_EVENT_DATE",
     "INCIDENT_KEEP_RECURRENCE_MARKER",
+    "INCIDENT_KEEP_LLM_DIFFERENT",
 })
 
 UNIQUE_ITEM_URL_SOURCES = frozenset({
@@ -100,7 +106,11 @@ def _ransomware_corroboration(left: Item, right: Item, days: int) -> bool:
     )
 
 
-def decide_merge(left: Item, right: Item) -> DedupDecision:
+def decide_merge(
+    left: Item,
+    right: Item,
+    incident_decisions: Mapping[str, str] | None = None,
+) -> DedupDecision:
     """Décide une fusion paire à paire, sans similarité probabiliste."""
     if left.Source_ID == right.Source_ID and left.Source_Item_ID and right.Source_Item_ID:
         if left.Source_Item_ID == right.Source_Item_ID:
@@ -119,6 +129,22 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
             KEEP_SEPARATE,
             "INCIDENT_KEEP_CONFLICTING_EVENT_DATE",
             (f"left={left.Event_Date}", f"right={right.Event_Date}"),
+        )
+
+    llm_decision = (incident_decisions or {}).get(
+        incident_pair_key(left.Item_ID, right.Item_ID), ""
+    )
+    if llm_decision == INCIDENT_DIFFERENT:
+        return DedupDecision(
+            KEEP_SEPARATE,
+            "INCIDENT_KEEP_LLM_DIFFERENT",
+            ("llm_same_incident=DIFFERENT",),
+        )
+    if llm_decision == INCIDENT_SAME:
+        return DedupDecision(
+            MERGE,
+            "INCIDENT_MERGE_LLM_CONFIRMED",
+            ("llm_same_incident=SAME",),
         )
 
     left_date, right_date = date_or_empty(left.best_date), date_or_empty(right.best_date)
@@ -155,9 +181,13 @@ def decide_merge(left: Item, right: Item) -> DedupDecision:
     return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_TIME_GAP", (f"days={days}",))
 
 
-def _has_strong_component_veto(current: list[Item], incoming: Item) -> bool:
+def _has_strong_component_veto(
+    current: list[Item],
+    incoming: Item,
+    incident_decisions: Mapping[str, str] | None = None,
+) -> bool:
     for member in current:
-        decision = decide_merge(member, incoming)
+        decision = decide_merge(member, incoming, incident_decisions)
         if (
             decision.action == KEEP_SEPARATE
             and decision.reason_code in STRONG_KEEP_REASON_CODES
@@ -166,7 +196,11 @@ def _has_strong_component_veto(current: list[Item], incoming: Item) -> bool:
     return False
 
 
-def _can_extend_component(current: list[Item], incoming: Item) -> bool:
+def _can_extend_component(
+    current: list[Item],
+    incoming: Item,
+    incident_decisions: Mapping[str, str] | None = None,
+) -> bool:
     """Autorise une corroboration cross-source J+1 sans chaînage ouvert.
 
     L'ancre reste la règle principale. Cette extension ne sert que lorsqu'une
@@ -189,12 +223,15 @@ def _can_extend_component(current: list[Item], incoming: Item) -> bool:
             continue
         if abs((incoming_date - member_date).days) > 1:
             continue
-        if decide_merge(member, incoming).action == MERGE:
+        if decide_merge(member, incoming, incident_decisions).action == MERGE:
             return True
     return False
 
 
-def group_components(items: list[Item]) -> list[list[Item]]:
+def group_components(
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> list[list[Item]]:
     """Construit des composantes ancrées avec extension cross-source bornée."""
     by_org: dict[str, list[Item]] = defaultdict(list)
     for item in items:
@@ -214,9 +251,12 @@ def group_components(items: list[Item]) -> list[list[Item]]:
             if not current:
                 current, anchor = [item], item
                 continue
-            decision = decide_merge(anchor, item)
-            veto = _has_strong_component_veto(current, item)
-            if not veto and (decision.action == MERGE or _can_extend_component(current, item)):
+            decision = decide_merge(anchor, item, incident_decisions)
+            veto = _has_strong_component_veto(current, item, incident_decisions)
+            if not veto and (
+                decision.action == MERGE
+                or _can_extend_component(current, item, incident_decisions)
+            ):
                 current.append(item)
             else:
                 components.append(current)
@@ -254,7 +294,7 @@ def group_components(items: list[Item]) -> list[list[Item]]:
                     for a in left for b in components[other]
                     if date_or_empty(a.best_date) and date_or_empty(b.best_date)
                 ) and not any(
-                    decide_merge(a, b).reason_code in STRONG_KEEP_REASON_CODES
+                    decide_merge(a, b, incident_decisions).reason_code in STRONG_KEEP_REASON_CODES
                     for a in left for b in components[other]
                 )
             ), None)
@@ -377,9 +417,12 @@ def _incident_from_component(component: list[Item], stable_id: str = "") -> Inci
 
 
 def build_incidents_with_registry(
-    items: list[Item], registry_rows: list[dict] | None = None,
+    items: list[Item],
+    registry_rows: list[dict] | None = None,
+    incident_decision_rows: list[dict] | None = None,
 ) -> tuple[list[Incident], list[dict[str, str]]]:
-    components = group_components(items)
+    decisions = incident_decision_map(incident_decision_rows or [])
+    components = group_components(items, decisions)
     assigned, updated_registry = assign_incident_ids(components, registry_rows)
     incidents = [
         _incident_from_component(component, stable_id)

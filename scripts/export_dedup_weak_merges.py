@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from cyberwatch import incident_dedup
 from cyberwatch.dedup_metrics import weak_merge_rows
 from cyberwatch.model import Item
 
@@ -44,8 +45,15 @@ def _load_items(path: Path) -> list[Item]:
         return [Item.from_row(row) for row in csv.DictReader(handle)]
 
 
-def export(items_path: Path, output_path: Path) -> int:
-    rows = weak_merge_rows(_load_items(items_path))
+def export(items_path: Path, output_path: Path, incident_registry_path: Path) -> int:
+    incident_rows = []
+    if incident_registry_path.exists():
+        with incident_registry_path.open(encoding="utf-8", newline="") as handle:
+            incident_rows = list(csv.DictReader(handle))
+    rows = weak_merge_rows(
+        _load_items(items_path),
+        incident_dedup.decision_map(incident_rows),
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=COLUMNS)
@@ -61,8 +69,16 @@ def main() -> None:
         "--output",
         default=str(ROOT / "data" / "dedup_weak_merges.csv"),
     )
+    parser.add_argument(
+        "--incident-registry",
+        default=str(ROOT / "data" / "incident_dedup_registry.csv"),
+    )
     args = parser.parse_args()
-    total = export(Path(args.items), Path(args.output))
+    total = export(
+        Path(args.items),
+        Path(args.output),
+        Path(args.incident_registry),
+    )
     print(f"dedup_weak_merges={total}")
     print(f"dedup_weak_merges_output={args.output}")
 

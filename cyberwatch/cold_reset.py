@@ -34,6 +34,8 @@ BOOTSTRAP_REFERENCE_FILES = (
 #: résultat attendu, pas une anomalie.
 IDENTITY_STATE_FILES = (
     "incident_id_registry.csv",
+    "incident_dedup_registry.csv",
+    "organisation_identity_registry.csv",
     "organisation_sector_registry.csv",
     "quality_baseline.json",
 )

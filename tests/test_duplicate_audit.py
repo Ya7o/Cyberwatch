@@ -143,6 +143,35 @@ def test_candidate_generation_typographic(make_item):
     assert candidate.signals.fuzzy_score == 1.0
 
 
+def test_candidate_generation_includes_weak_merge_same_identity(make_item):
+    """Une fusion automatique faible doit recevoir le verdict final du LLM."""
+    new_item = make_item(
+        source="A", org="Globex", published="2026-08-01", url="https://a"
+    )
+    historical = make_item(
+        source="B", org="Globex", published="2026-08-01", url="https://b"
+    )
+
+    candidates = find_daily_llm_candidates([new_item], [new_item, historical])
+
+    assert len(candidates) == 1
+    assert candidates[0].risk_type == RISK_FALSE_MERGE
+    assert candidates[0].reason_code == "MERGE_REVIEW_WEAK_CANONICAL_NAME"
+
+
+def test_candidate_generation_skips_strong_native_id_merge(make_item):
+    left = make_item(
+        source="A", source_item_id="native-1", org="Globex",
+        published="2026-08-01", url="https://a",
+    )
+    right = make_item(
+        source="A", source_item_id="native-1", org="Globex",
+        published="2026-08-02", url="https://b",
+    )
+
+    assert find_daily_llm_candidates([left], [left, right]) == []
+
+
 def test_candidate_generation_acronym(make_item):
     """« FFT » / « Fédération Française de Test » : acronyme exact déterministe
     (les mots-outils « de » ne comptent pas), non couvert par un alias."""

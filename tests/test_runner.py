@@ -756,7 +756,50 @@ class TestDailyDedupNet:
             run_id="RUN-3", as_of="2026-08-20T00:00:00+04:00", mode="MAJ", persist=False,
         )
         assert store.load_organisation_identity_registry_rows() == []
+        assert store.load_incident_dedup_registry() == []
         assert store.load_dedup_ai_daily_usage() == []
+
+    def test_final_incident_verdict_is_persisted_and_replayed(
+        self, tmp_path, monkeypatch, make_item,
+    ):
+        from cyberwatch import dedup_ai, store
+        from cyberwatch.dedup import build_incidents_with_registry
+
+        self._isolate(tmp_path, monkeypatch)
+        left = make_item(
+            source="A", org="Globex", published="2026-08-20", url="https://a"
+        )
+        right = make_item(
+            source="B", org="Globex", published="2026-08-20", url="https://b"
+        )
+
+        def fake_batch(candidates, facts_by_item, state, company_ids):
+            return {
+                dedup_ai.candidate_id(candidate): dedup_ai.DedupAiDecision(
+                    status=dedup_ai.STATUS_OK,
+                    same_organisation=dedup_ai.SAME,
+                    same_incident=dedup_ai.DIFFERENT,
+                    confidence=0.99,
+                    evidence="Même victime, événements distincts.",
+                )
+                for candidate in candidates
+            }
+
+        monkeypatch.setattr(dedup_ai, "challenge_candidates_batch", fake_batch)
+
+        state, problems = runner.run_daily_dedup_net(
+            [left, right], [left], [],
+            run_id="RUN-DEDUP", as_of="2026-08-20T00:00:00+04:00",
+            mode="MAJ", persist=True,
+        )
+
+        assert problems == []
+        assert state.incident_decision_rows_applied == 1
+        rows = store.load_incident_dedup_registry()
+        assert len(rows) == 1
+        assert rows[0]["Decision"] == dedup_ai.DIFFERENT
+        incidents, _ = build_incidents_with_registry([left, right], [], rows)
+        assert len(incidents) == 2
 
     def test_replay_uses_registry_without_llm(self, tmp_path, monkeypatch, make_item):
         """Invariant absolu (§Lot 10) : REPLAY ne doit jamais appeler le LLM,

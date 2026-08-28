@@ -113,18 +113,16 @@ le même événement ? » (identité **d'incident**). Une même organisation peu
 porter plusieurs incidents distincts et non concomitants.
 
 Le moteur déterministe (`normalize.organisation_key`, `organisation_aliases.csv`,
-`org_identity.effective_organisation_key`) reste la première ligne et l'autorité pour
-les deux. Un filet LLM optionnel (`cyberwatch/dedup_ai.py`) challenge, lors d'une MAJ
-réelle, un petit nombre de candidats plausibles issus des items nouveaux ou rafraîchis
-du jour contre le corpus historique — jamais toute la base contre elle-même, jamais plus
-d'un appel LLM par MAJ. Il ne répond jamais qu'à la question organisationnelle de façon
-actionnable : `same_organisation=SAME` avec confiance ≥ 0.95 et sans conflit avec un veto
-déterministe fort peut proposer une équivalence, persistée dans
-`data/organisation_identity_registry.csv` (registre dynamique, distinct de
-`organisation_aliases.csv` qui reste le référentiel statique curé à la main). La question
-d'incident (`same_incident`) est mesurée mais n'est **jamais** appliquée directement : la
-fusion d'incident reste exclusivement décidée par `dedup.group_components`, y compris une
-fois l'identité organisationnelle unifiée. Détails complets : `METHODOLOGY.md` §14.5.
+`org_identity.effective_organisation_key`) traite d'abord les preuves et veto forts. Un
+filet LLM (`cyberwatch/dedup_ai.py`) challenge ensuite les identités plausibles non
+résolues **et les fusions automatiques faibles** touchant les items nouveaux ou rafraîchis,
+en un seul batch par run. Avec une confiance ≥ 0.85, ses deux verdicts sont persistés
+séparément : l'identité de victime dans `data/organisation_identity_registry.csv`, puis
+l'identité d'événement (`SAME`/`DIFFERENT`) dans
+`data/incident_dedup_registry.csv`. `REPLAY` relit ces registres sans rappeler le LLM ; un
+verdict `DIFFERENT` est un veto fort, tandis que `SAME` peut confirmer une fusion ambiguë
+sans jamais contourner un identifiant source conflictuel, une récurrence explicite ou des
+dates d'événement incompatibles. Détails : `METHODOLOGY.md` §14.5.
 
 ## 6. Données
 
@@ -141,6 +139,7 @@ Données canoniques principales :
 - `data/organisation_sector_evidence.csv`, `data/organisation_sector_decisions.csv` : preuves par étape et décision finale Sector ;
 - `data/qualification_provenance.csv` : décisions de qualification ;
 - `data/organisation_identity_registry.csv` : équivalences d'identité organisationnelle validées (LLM ou manuelles), consultées par `effective_organisation_key` (§5) ;
+- `data/incident_dedup_registry.csv` : verdicts persistants `SAME`/`DIFFERENT` sur les paires d'items ambiguës ;
 - `data/dedup_ai_daily_usage.csv` : télémétrie du filet LLM de déduplication (candidats, décisions, coût, durée).
 
 `assets/data/` est généré depuis les données canoniques pour le dashboard et ne doit pas être édité à la main.

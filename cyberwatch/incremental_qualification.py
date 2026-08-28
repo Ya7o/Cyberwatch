@@ -13,7 +13,7 @@ import hashlib
 import json
 from typing import Iterable
 
-from . import identity
+from . import identity, store
 from .dedup import build_incidents_with_registry
 from .model import Incident, Item
 from .qualification import QualificationReport, qualify
@@ -70,6 +70,7 @@ def qualify_delta(
     incidents, incident_id_registry = build_incidents_with_registry(
         ordered_items,
         previous_incident_id_registry,
+        store.load_incident_dedup_registry(),
     )
     ordered_incidents = identity.sort_incidents(incidents)
     report = QualificationReport(

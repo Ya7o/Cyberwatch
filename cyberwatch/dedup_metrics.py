@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import json
 from collections import Counter, defaultdict
+from collections.abc import Mapping
 from itertools import combinations
 from pathlib import Path
 
@@ -71,16 +72,35 @@ def _by_org(items: list[Item]) -> dict[str, list[Item]]:
     return grouped
 
 
-def applied_merge_decisions(items: list[Item]) -> list[tuple[Item, Item, DedupDecision]]:
+def applied_merge_decisions(
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> list[tuple[Item, Item, DedupDecision]]:
+    """Retourne un arbre de fusion explicatif pour chaque composante.
+
+    Comparer seulement chaque membre à l'ancre sous-comptait les extensions
+    valides via un membre intermédiaire. Un arbre couvrant rapporte exactement
+    ``taille - 1`` fusions pour toute composante construite.
+    """
     rows: list[tuple[Item, Item, DedupDecision]] = []
-    for component in group_components(items):
+    for component in group_components(items, incident_decisions):
         if len(component) < 2:
             continue
-        anchor = component[0]
-        for member in component[1:]:
-            decision = decide_merge(anchor, member)
-            if decision.action == MERGE:
-                rows.append((anchor, member, decision))
+        connected = [component[0]]
+        remaining = list(component[1:])
+        while remaining:
+            candidates = []
+            for left in connected:
+                for right in remaining:
+                    decision = decide_merge(left, right, incident_decisions)
+                    if decision.action == MERGE:
+                        candidates.append((left.Item_ID, right.Item_ID, left, right, decision))
+            if not candidates:
+                break
+            _, _, left, right, decision = min(candidates, key=lambda row: row[:2])
+            rows.append((left, right, decision))
+            connected.append(right)
+            remaining.remove(right)
     return rows
 
 
@@ -89,37 +109,46 @@ def candidate_pair_count(items: list[Item]) -> int:
     return sum(len(group) * (len(group) - 1) // 2 for group in _by_org(items).values())
 
 
-def decision_reason_counts(items: list[Item]) -> Counter[str]:
+def decision_reason_counts(
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> Counter[str]:
     """Distribution exhaustive des décisions paire à paire intra-organisation."""
     counts: Counter[str] = Counter()
     for group in _by_org(items).values():
         for left, right in combinations(group, 2):
-            counts[_bucket_reason(decide_merge(left, right))] += 1
+            counts[_bucket_reason(decide_merge(left, right, incident_decisions))] += 1
     return counts
 
 
-def strong_veto_counts(items: list[Item]) -> Counter[str]:
+def strong_veto_counts(
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> Counter[str]:
     counts: Counter[str] = Counter()
     for group in _by_org(items).values():
         for left, right in combinations(group, 2):
-            decision = decide_merge(left, right)
+            decision = decide_merge(left, right, incident_decisions)
             if decision.action == KEEP_SEPARATE and decision.reason_code in STRONG_KEEP_REASON_CODES:
                 counts[decision.reason_code] += 1
     return counts
 
 
-def summarize_dedup(items: list[Item]) -> dict:
-    components = group_components(items)
-    merges = applied_merge_decisions(items)
+def summarize_dedup(
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> dict:
+    components = group_components(items, incident_decisions)
+    merges = applied_merge_decisions(items, incident_decisions)
     merge_reasons = Counter(_bucket_reason(decision) for _, _, decision in merges)
-    vetoes = strong_veto_counts(items)
-    decisions = decision_reason_counts(items)
+    vetoes = strong_veto_counts(items, incident_decisions)
+    decisions = decision_reason_counts(items, incident_decisions)
     incident_items = sum(len(component) for component in components)
     return {
         "items": len(items),
         "incident_items": incident_items,
         "incidents": len(components),
-        "merged_items": len(merges),
+        "merged_items": incident_items - len(components),
         "candidate_pairs": candidate_pair_count(items),
         "merge_reasons": dict(sorted(merge_reasons.items())),
         "strong_veto_reasons": dict(sorted(vetoes.items())),
@@ -127,9 +156,12 @@ def summarize_dedup(items: list[Item]) -> dict:
     }
 
 
-def weak_merge_rows(items: list[Item]) -> list[dict[str, str]]:
+def weak_merge_rows(
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
-    for left, right, decision in applied_merge_decisions(items):
+    for left, right, decision in applied_merge_decisions(items, incident_decisions):
         if decision.reason_code not in WEAK_MERGE_REASONS:
             continue
         rows.append({
@@ -157,8 +189,12 @@ def weak_merge_rows(items: list[Item]) -> list[dict[str, str]]:
     ))
 
 
-def write_weak_merges_csv(path: Path, items: list[Item]) -> int:
-    rows = weak_merge_rows(items)
+def write_weak_merges_csv(
+    path: Path,
+    items: list[Item],
+    incident_decisions: Mapping[str, str] | None = None,
+) -> int:
+    rows = weak_merge_rows(items, incident_decisions)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=WEAK_MERGE_COLUMNS)

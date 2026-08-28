@@ -159,7 +159,11 @@ def cmd_repair_identities(args) -> int:
     if len(ids) != len(set(ids)):
         print("Réparation annulée : collision d'Item_ID détectée.")
         return 1
-    incidents, registry = build_incidents_with_registry(items, store.load_incident_id_registry())
+    incidents, registry = build_incidents_with_registry(
+        items,
+        store.load_incident_id_registry(),
+        store.load_incident_dedup_registry(),
+    )
     store.save_items(identity.sort_items(items))
     store.save_incidents(incidents)
     store.save_incident_id_registry(registry)
@@ -174,7 +178,11 @@ def cmd_repair_identities(args) -> int:
 def cmd_repair_integrity(args) -> int:
     """Migration locale déterministe des identités et clés naturelles."""
     items, report = repair_item_integrity(store.load_items())
-    incidents, registry = build_incidents_with_registry(items, store.load_incident_id_registry())
+    incidents, registry = build_incidents_with_registry(
+        items,
+        store.load_incident_id_registry(),
+        store.load_incident_dedup_registry(),
+    )
     problems = pre_export_checks(items, incidents, [])
     problems.extend(incident_identity.validate_registry(registry, items, incidents))
     problems = [p for p in problems if "RUN_SOURCES" not in p]
@@ -331,13 +339,14 @@ def cmd_test_repeat(args) -> int:
         return 0
 
     registry = store.load_incident_id_registry()
-    build_a, registry_a = build_incidents_with_registry(items, registry)
+    incident_decisions = store.load_incident_dedup_registry()
+    build_a, registry_a = build_incidents_with_registry(items, registry, incident_decisions)
     hash_items_a = identity.items_hash(items)
     hash_incidents_a = identity.incidents_hash(build_a)
 
     shuffled = list(items)
     random.Random(20260812).shuffle(shuffled)
-    build_b, registry_b = build_incidents_with_registry(shuffled, registry)
+    build_b, registry_b = build_incidents_with_registry(shuffled, registry, incident_decisions)
     hash_items_b = identity.items_hash(shuffled)
     hash_incidents_b = identity.incidents_hash(build_b)
 
@@ -779,6 +788,10 @@ def cmd_report(args) -> int:
             f"UNKNOWN {dedup_ai_usage.get('LLM_Unknown', 0)}"
         )
         print(f"- Alias d'identité appliqués : **{dedup_ai_usage.get('Org_Aliases_Applied', 0)}**")
+        print(
+            "- Verdicts d'incident persistés : "
+            f"**{dedup_ai_usage.get('Incident_Decisions_Applied', 0)}**"
+        )
         print(
             f"- Coût estimé : **${dedup_ai_usage.get('LLM_Cost_USD', 0)}** "
             f"en {dedup_ai_usage.get('LLM_Duration_Seconds', 0)}s "

@@ -28,6 +28,7 @@ from .model import (
     Item,
 )
 from .incident_identity import REGISTRY_COLUMNS
+from .incident_dedup import REGISTRY_COLUMNS as INCIDENT_DEDUP_REGISTRY_COLUMNS
 from .org_identity import ORGANISATION_IDENTITY_REGISTRY_COLUMNS
 
 QUALIFICATION_PROVENANCE_COLUMNS = [
@@ -62,6 +63,7 @@ AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
 AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
 ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
 INCIDENT_ID_REGISTRY_CSV = DATA_DIR / "incident_id_registry.csv"
+INCIDENT_DEDUP_REGISTRY_CSV = DATA_DIR / "incident_dedup_registry.csv"
 ORGANISATION_IDENTITY_REGISTRY_CSV = DATA_DIR / "organisation_identity_registry.csv"
 DEDUP_AI_DAILY_USAGE_CSV = DATA_DIR / "dedup_ai_daily_usage.csv"
 #: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
@@ -175,6 +177,25 @@ def load_incident_id_registry(path: Path | None = None) -> list[dict]:
 def save_incident_id_registry(rows: list[dict], path: Path | None = None) -> None:
     ordered = sorted(rows, key=lambda row: (row.get('Incident_ID', ''), row.get('Anchor_Item_ID', '')))
     write_csv(_incident_registry_path(path), REGISTRY_COLUMNS, ordered)
+
+
+def _incident_dedup_registry_path(path: Path | None = None) -> Path:
+    if path is not None:
+        return path
+    return ITEMS_CSV.parent / INCIDENT_DEDUP_REGISTRY_CSV.name
+
+
+def load_incident_dedup_registry(path: Path | None = None) -> list[dict]:
+    return read_csv(_incident_dedup_registry_path(path))
+
+
+def save_incident_dedup_registry(rows: list[dict], path: Path | None = None) -> None:
+    ordered = sorted(rows, key=lambda row: row.get("Pair_Key", ""))
+    write_csv(
+        _incident_dedup_registry_path(path),
+        INCIDENT_DEDUP_REGISTRY_COLUMNS,
+        ordered,
+    )
 
 
 def _organisation_identity_registry_path(path: Path | None = None) -> Path:

@@ -36,13 +36,13 @@ def _candidate(make_item, risk_type=RISK_MISSED_DUPLICATE, *, days=1, same_sourc
     )
 
 
-def test_same_day_cross_source_false_merge_is_not_sent_to_llm(make_item):
+def test_same_day_cross_source_weak_merge_is_sent_to_llm(make_item):
     candidate = _candidate(
         make_item,
         risk_type=RISK_FALSE_MERGE,
         days=0,
     )
-    assert dedup_ai.worth_challenging(candidate) is False
+    assert dedup_ai.worth_challenging(candidate) is True
 
 
 def test_same_source_false_merge_is_sent_to_llm(make_item):
@@ -464,10 +464,61 @@ def test_validate_rejects_different_and_unknown(make_item):
         assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is None
 
 
-def test_llm_cannot_override_recurrence_veto(make_item):
-    """Un veto fort déterministe (marqueur de récurrence) reste prioritaire :
-    même une décision LLM très confiante ne doit jamais produire d'équivalence
-    d'identité pour cette paire (§Lot 5, invariant central)."""
+def test_validate_incident_decision_persists_final_verdict(make_item):
+    left = make_item(source="A", org="Globex", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Globex", published="2026-08-01", url="https://b")
+    candidate = find_daily_llm_candidates([left], [left, right])[0]
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK,
+        same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.DIFFERENT,
+        confidence=0.93,
+        evidence="Impacts distincts.",
+        matched_facts=("même victime",),
+        conflicting_facts=("acteurs différents",),
+    )
+
+    proposal = dedup_ai.validate_ai_incident_decision(candidate, decision, now="2026-08-28")
+
+    assert proposal is not None
+    assert proposal["Decision"] == dedup_ai.DIFFERENT
+    assert json.loads(proposal["Matched_Facts_JSON"]) == ["même victime"]
+    assert json.loads(proposal["Conflicting_Facts_JSON"]) == ["acteurs différents"]
+
+
+def test_validate_incident_same_cannot_override_strong_veto(make_item):
+    left = make_item(
+        source="A", source_item_id="one", org="Globex",
+        published="2026-08-01", url="https://a",
+    )
+    right = make_item(
+        source="A", source_item_id="two", org="Globex",
+        published="2026-08-01", url="https://b",
+    )
+    candidate = DedupAuditCandidate(
+        risk_type=RISK_FALSE_MERGE,
+        left=left,
+        right=right,
+        days_apart=0,
+        reason_code=MERGE_REVIEW_WEAK_CANONICAL_NAME,
+    )
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK,
+        same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.SAME,
+        confidence=0.99,
+        evidence="e",
+    )
+
+    assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
+
+
+def test_recurrence_veto_does_not_block_organisation_identity(make_item):
+    """Deux événements distincts peuvent viser la même organisation.
+
+    Le veto de récurrence protège la fusion d'incident, pas l'identité de la
+    victime ; les deux décisions ne doivent plus être confondues.
+    """
     left = make_item(
         source="A", org="Zorglub6 Consulting", published="2026-08-01",
         url="https://a", title="Zorglub6 Consulting revendiqué",
@@ -488,7 +539,10 @@ def test_llm_cannot_override_recurrence_veto(make_item):
         status=dedup_ai.STATUS_OK, same_organisation=dedup_ai.SAME,
         same_incident=dedup_ai.DIFFERENT, confidence=0.99, evidence="e",
     )
-    assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is None
+    assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is not None
+    incident = dedup_ai.validate_ai_incident_decision(candidate, decision)
+    assert incident is not None
+    assert incident["Decision"] == dedup_ai.DIFFERENT
 
 
 def test_llm_cannot_override_conflicting_event_date(make_item, monkeypatch):

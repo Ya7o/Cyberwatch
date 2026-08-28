@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import identity, store
-from cyberwatch.dedup import build_incidents
+from cyberwatch import identity, incident_dedup, store
+from cyberwatch.dedup import build_incidents_with_registry
 from cyberwatch.dedup_metrics import (
     append_run_history,
     summarize_dedup,
@@ -87,15 +87,32 @@ def main() -> int:
         rebuilt_items.append(chosen)
 
     items = identity.sort_items(rebuilt_items)
-    incidents = build_incidents(items)
+    incident_rows, incident_registry_problems = incident_dedup.merge_rows(
+        store.load_incident_dedup_registry(),
+        (),
+        current_item_ids={item.Item_ID for item in items if item.Item_ID},
+    )
+    if incident_registry_problems:
+        print("REBUILD_DEDUP_ABORT invalid incident dedup registry")
+        for problem in incident_registry_problems:
+            print("REGISTRY_PROBLEM " + problem)
+        return 1
+    incident_decisions = incident_dedup.decision_map(incident_rows)
+    incidents, incident_id_rows = build_incidents_with_registry(
+        items,
+        store.load_incident_id_registry(),
+        incident_rows,
+    )
     after_hash = identity.incidents_hash(incidents)
-    dedup_summary = summarize_dedup(items)
+    dedup_summary = summarize_dedup(items, incident_decisions)
 
     audit_dir = store.DATA_DIR / "audit"
     weak_merge_path = audit_dir / "dedup_weak_merges.csv"
     review_queue_path = audit_dir / "dedup_review_queue.csv"
     run_history_path = audit_dir / "dedup_runs.csv"
-    weak_merge_count = write_weak_merges_csv(weak_merge_path, items)
+    weak_merge_count = write_weak_merges_csv(
+        weak_merge_path, items, incident_decisions,
+    )
     review_queue_count = write_review_queue_csv(review_queue_path, items)
     with review_queue_path.open(encoding="utf-8", newline="") as handle:
         review_rows = list(csv.DictReader(handle))
@@ -104,6 +121,8 @@ def main() -> int:
 
     store.save_items(items)
     store.save_incidents(incidents)
+    store.save_incident_id_registry(incident_id_rows)
+    store.save_incident_dedup_registry(incident_rows)
     store.write_json(store.SITE_DATA_DIR / "incidents.json", incidents_payload(incidents))
 
     runtime_seconds = perf_counter() - started

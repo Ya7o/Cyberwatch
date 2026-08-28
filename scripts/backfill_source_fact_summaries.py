@@ -134,7 +134,11 @@ def select_latest_incident_candidates(
     pour les sources d'un même incident tant qu'un autre incident est éligible.
     """
     choices: list[tuple[str, str, Item, str]] = []
-    for component in group_components(items):
+    from cyberwatch.incident_dedup import decision_map
+
+    for component in group_components(
+        items, decision_map(store.load_incident_dedup_registry())
+    ):
         eligible = [item for item in component if item.Source_ID in TARGET_SOURCES]
         if not eligible:
             continue

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Backfill volontaire du registre d'identité organisationnelle (§Lot 12).
+"""Backfill volontaire des registres de déduplication (§Lot 12).
 
 Le filet quotidien (`runner.run_daily_dedup_net`) est borné à un seul appel
 LLM par MAJ réelle et ne compare que le périmètre collecté aujourd'hui à la
@@ -7,14 +7,13 @@ base complète : il ne rattrape pas les doublons résiduels déjà présents dan
 tout l'historique. Ce script est l'outil manuel équivalent pour un
 rattrapage initial ou ponctuel : il peut challenger tout l'historique en
 plusieurs appels, respecte le budget et le cache LLM existants, et ne
-persiste jamais que les équivalences organisationnelles validées.
+persiste uniquement les verdicts organisationnels et d'incident validés.
 
 Comme le filet quotidien, ce script ne modifie jamais ITEMS ni INCIDENTS
-directement : il propose des lignes de registre d'identité
-(`data/organisation_identity_registry.csv`), que le moteur déterministe
-(`dedup.build_incidents_with_registry`) consomme ensuite via
-`effective_organisation_key`. Un rapport avant/après compare le nombre et le
-hash des incidents reconstruits pour objectiver l'effet du backfill.
+directement : il propose des lignes pour les deux registres
+(`data/organisation_identity_registry.csv` et
+`data/incident_dedup_registry.csv`). Un rapport avant/après compare le nombre
+et le hash des incidents reconstruits pour objectiver l'effet du backfill.
 
 Usage :
 
@@ -36,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from cyberwatch import dedup_ai, duplicate_audit, org_identity, store  # noqa: E402
+from cyberwatch import dedup_ai, duplicate_audit, incident_dedup, org_identity, store  # noqa: E402
 from cyberwatch.dedup import build_incidents_with_registry  # noqa: E402
 from cyberwatch.identity import incidents_hash  # noqa: E402
 
@@ -71,6 +70,7 @@ def run_backfill(
     source_facts_path: Path,
     org_cache_path: Path,
     registry_path: Path,
+    incident_registry_path: Path,
     cache_path: Path,
     max_candidates_per_item: int,
     apply: bool,
@@ -129,40 +129,82 @@ def run_backfill(
 
     candidates_by_id = {dedup_ai.candidate_id(c): c for c in candidates}
     registry_proposals = []
+    incident_proposals = []
     for cid, decision in all_decisions.items():
         candidate = candidates_by_id.get(cid)
         if candidate is None:
             continue
-        proposal = dedup_ai.validate_ai_dedup_decision(candidate, decision, model=state.model)
+        cached_row = state.rows_by_pair.get(cid, {})
+        proposal = dedup_ai.validate_ai_dedup_decision(
+            candidate, decision, model=state.model,
+            input_hash=cached_row.get("Input_Hash", ""),
+        )
         if proposal is not None:
             registry_proposals.append(proposal)
+        incident_proposal = dedup_ai.validate_ai_incident_decision(
+            candidate, decision, model=state.model,
+            input_hash=cached_row.get("Input_Hash", ""),
+        )
+        if incident_proposal is not None:
+            incident_proposals.append(incident_proposal)
 
     print(f"  Décisions obtenues : {len(all_decisions)}")
     print(f"  Équivalences organisationnelles validées : {len(registry_proposals)}")
+    print(f"  Verdicts d'incident validés : {len(incident_proposals)}")
     print(f"  Coût estimé : ${state.estimated_cost_usd:.4f} en {state.batch_calls_attempted} appel(s)")
 
     existing_rows = store.read_csv(registry_path)
     merged_rows, problems = org_identity.merge_organisation_identity_rows(
         existing_rows, registry_proposals,
     )
+    existing_incident_rows = store.read_csv(incident_registry_path)
+    merged_incident_rows, incident_problems = incident_dedup.merge_rows(
+        existing_incident_rows,
+        incident_proposals,
+        current_item_ids={item.Item_ID for item in items if item.Item_ID},
+    )
+    problems.extend(incident_problems)
     for problem in problems:
         print(f"  ! {problem}")
 
-    before_incidents, _ = build_incidents_with_registry(items, store.load_incident_id_registry())
+    before_incidents, _ = build_incidents_with_registry(
+        items,
+        store.load_incident_id_registry(),
+        existing_incident_rows,
+    )
     before_count, before_hash = len(before_incidents), incidents_hash(before_incidents)
     new_aliases = len(merged_rows) - len(existing_rows)
 
     if not apply:
         print("  Dry-run (sans --apply) : rien persisté.")
         print(f"  {new_aliases} ligne(s) de registre seraient ajoutée(s)/mises à jour.")
+        print(
+            "  "
+            f"{len(merged_incident_rows) - len(existing_incident_rows)} "
+            "verdict(s) d'incident net(s) seraient ajoutés."
+        )
         dedup_ai.save_cache(state)  # le cache LLM n'est jamais une donnée canonique publiée
         return 0
 
+    if problems:
+        print("  Application annulée : les deux registres restent inchangés.")
+        dedup_ai.save_cache(state)
+        return 1
+
+    store.write_csv(
+        incident_registry_path,
+        incident_dedup.REGISTRY_COLUMNS,
+        merged_incident_rows,
+    )
     store.write_csv(registry_path, org_identity.ORGANISATION_IDENTITY_REGISTRY_COLUMNS, merged_rows)
     org_identity.reload_organisation_identity_registry(registry_path)
     dedup_ai.save_cache(state)
 
-    after_incidents, _ = build_incidents_with_registry(items, store.load_incident_id_registry())
+    after_incidents, _ = build_incidents_with_registry(
+        items,
+        store.load_incident_id_registry(),
+        merged_incident_rows,
+    )
     after_count, after_hash = len(after_incidents), incidents_hash(after_incidents)
 
     print(f"  Registre persisté : {registry_path} ({new_aliases} ligne(s) nouvelle(s))")
@@ -179,6 +221,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--source-facts", type=Path, default=store.SOURCE_FACTS_CSV)
     parser.add_argument("--org-cache", type=Path, default=store.ORG_ENRICHMENT_CACHE_CSV)
     parser.add_argument("--registry", type=Path, default=store.ORGANISATION_IDENTITY_REGISTRY_CSV)
+    parser.add_argument(
+        "--incident-registry",
+        type=Path,
+        default=store.INCIDENT_DEDUP_REGISTRY_CSV,
+    )
     parser.add_argument("--cache", type=Path, default=store.DATA_DIR / "dedup_ai_daily_cache.csv")
     parser.add_argument(
         "--max-candidates-per-item", type=int,
@@ -194,6 +241,7 @@ def main(argv: list[str] | None = None) -> int:
         source_facts_path=args.source_facts,
         org_cache_path=args.org_cache,
         registry_path=args.registry,
+        incident_registry_path=args.incident_registry,
         cache_path=args.cache,
         max_candidates_per_item=args.max_candidates_per_item,
         apply=args.apply,
