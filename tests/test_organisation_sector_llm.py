@@ -212,6 +212,9 @@ def test_cache_miss_triggers_a_call_and_persists_result(make_item, monkeypatch):
     items = [item]
 
     def fake_post(url, *, json, headers, timeout):
+        # Régression du run réel 33139189464 : 4 000 tokens ont été presque
+        # entièrement consommés par le raisonnement, sans aucun JSON visible.
+        assert json["max_output_tokens"] >= 25_000
         organisations = json["input"][1]["content"]
         payload = {
             "organisations": [{

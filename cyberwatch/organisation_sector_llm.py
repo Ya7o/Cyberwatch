@@ -48,7 +48,14 @@ PROMPT_VERSION = "2026-08-26.5"
 #: Réduit fortement pour que chaque organisation reçoive une part
 #: significative de l'attention du modèle.
 DEFAULT_BATCH_SIZE = 6
-MAX_OUTPUT_TOKENS = 4000
+# Run réel 33139189464 (2026-08-28) : avec un lot de 4 organisations et
+# ``reasoning_effort="medium"``, gpt-5-nano a consommé 3 968 des 4 000 tokens
+# autorisés en raisonnement puis a rendu une réponse ``incomplete`` sans le
+# moindre JSON visible. La limite Responses englobe raisonnement + sortie ;
+# 25 000 est la réserve initiale recommandée par la documentation OpenAI pour
+# éviter précisément ce cas. Le batch reste borné à 6 organisations et le
+# plafond de coût du runtime continue de s'appliquer avant chaque appel.
+MAX_OUTPUT_TOKENS = 25_000
 #: Bornes de compacité du contexte transmis (§13 du plan) : reproductible et
 #: hashable, jamais le corpus complet des incidents.
 MAX_ALIASES = 5
