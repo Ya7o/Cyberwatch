@@ -87,10 +87,18 @@ def test_veille_llm_admission_not_score_controls_publication(tmp_path, monkeypat
     assert candidate["organisation"] not in entry_orgs
 
 
-def test_veille_llm_stale_snapshot_is_visible_but_non_blocking():
+def test_veille_llm_stale_snapshot_is_visible_but_non_blocking(tmp_path, monkeypatch):
     spec = sources.by_id("VEILLE_LLM")
+    with open(spec.params["path"], encoding="utf-8") as handle:
+        raw = json.load(handle)
+    raw["metadata"]["generated_at"] = "2026-08-25T08:15:40+04:00"
+    path = tmp_path / "snapshot.json"
+    path.write_text(json.dumps(raw), encoding="utf-8")
+    monkeypatch.setattr(store, "ROOT", tmp_path)
+    local_spec = replace(spec, params={**spec.params, "path": "snapshot.json"})
+
     result = get_collector(spec.collector).collect(
-        None, spec, Window("2026-08-27", "2026-08-28")
+        None, local_spec, Window("2026-08-27", "2026-08-28")
     )
     assert result.resolve() == (status.PARTIAL, 99)
     assert "freshness_days=3" in result.comment
