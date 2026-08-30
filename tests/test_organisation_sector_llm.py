@@ -248,6 +248,115 @@ def test_cache_hit_avoids_any_llm_call(make_item, monkeypatch, tmp_path):
     assert report.calls == 0
 
 
+def _legacy_cache_row(osl, context, *, sector, basis="explicit_activity", confidence="0.90"):
+    prompt = "2026-08-28.8"
+    model = "gpt-5-nano"
+    return {
+        "Organisation_Key": context.organisation_key,
+        "Organisation": context.organisation,
+        "Input_Hash": osl._legacy_compatible_input_hash(context, model=model, prompt_version=prompt),
+        "Sector": sector,
+        "Confidence": confidence,
+        "Basis": basis,
+        "Reason": "décision historique corroborée",
+        "Model": model,
+        "Prompt_Version": prompt,
+        "Created_At": "2026-08-30T11:03:45+00:00",
+    }
+
+
+def test_legacy_positive_cache_is_migrated_when_business_context_is_identical(make_item):
+    item = make_item(org="Easypara", sector=config.SECTOR_UNKNOWN)
+    facts = [{
+        "Item_ID": item.Item_ID,
+        "Activity_Description": "vente en ligne de produits",
+        "Activity_Sector_Match": config.SECTOR_RETAIL,
+    }]
+    evidence = osec.collect_organisation_evidence(
+        [item], reference={}, source_fact_rows=facts, org_cache_rows=[],
+        domain_page_rows=[], llm_cache_rows=[],
+    )
+    context = osl.build_organisation_context(
+        item.Organisation_Key, [item], source_fact_rows=facts, org_cache_rows=[],
+        evidence=evidence[item.Organisation_Key],
+    )
+    legacy = _legacy_cache_row(osl, context, sector=config.SECTOR_RETAIL)
+
+    report = osl.enrich_unknown_organisation_sectors(
+        [item], reference={}, source_fact_rows=facts, org_cache_rows=[],
+        domain_page_rows=[], cache_rows=[legacy], no_llm=True, persist=False,
+    )
+
+    assert report.cache_hits == 1
+    assert report.compatible_cache_hits == 1
+    assert report.cache_misses == 0
+    assert report.outcomes[item.Organisation_Key] == "PRODUCED"
+    row = report.cache_rows[0]
+    assert row["Sector"] == config.SECTOR_RETAIL
+    assert row["Prompt_Version"] == osl.PROMPT_VERSION
+    assert row["Decision_Status"] == "PRODUCED"
+    assert row["Execution_Status"] == "CACHE_COMPATIBLE_REUSE"
+    assert row["Input_Hash"] == osl.compute_input_hash(
+        context, model="gpt-5-nano", prompt_version=osl.PROMPT_VERSION,
+    )
+
+
+def test_legacy_cache_is_not_migrated_when_context_changed(make_item):
+    item = make_item(org="Easypara", sector=config.SECTOR_UNKNOWN)
+    old_facts = [{
+        "Item_ID": item.Item_ID,
+        "Activity_Description": "vente en ligne de produits",
+        "Activity_Sector_Match": config.SECTOR_RETAIL,
+    }]
+    old_evidence = osec.collect_organisation_evidence(
+        [item], reference={}, source_fact_rows=old_facts, org_cache_rows=[],
+        domain_page_rows=[], llm_cache_rows=[],
+    )
+    old_context = osl.build_organisation_context(
+        item.Organisation_Key, [item], source_fact_rows=old_facts, org_cache_rows=[],
+        evidence=old_evidence[item.Organisation_Key],
+    )
+    legacy = _legacy_cache_row(osl, old_context, sector=config.SECTOR_RETAIL)
+    new_facts = [{
+        "Item_ID": item.Item_ID,
+        "Activity_Description": "service de télémédecine",
+        "Activity_Sector_Match": config.SECTOR_HEALTH,
+    }]
+
+    report = osl.enrich_unknown_organisation_sectors(
+        [item], reference={}, source_fact_rows=new_facts, org_cache_rows=[],
+        domain_page_rows=[], cache_rows=[legacy], no_llm=True, persist=False,
+    )
+    assert report.compatible_cache_hits == 0
+    assert report.cache_misses == 1
+    assert report.cache_rows == []
+
+
+def test_legacy_services_cache_for_social_context_requires_fresh_decision(make_item):
+    item = make_item(org="Association Exemple", sector=config.SECTOR_UNKNOWN)
+    facts = [{
+        "Item_ID": item.Item_ID,
+        "Activity_Description": "association caritative d'aide alimentaire",
+        "Activity_Sector_Match": config.SECTOR_SERVICES,
+    }]
+    evidence = osec.collect_organisation_evidence(
+        [item], reference={}, source_fact_rows=facts, org_cache_rows=[],
+        domain_page_rows=[], llm_cache_rows=[],
+    )
+    context = osl.build_organisation_context(
+        item.Organisation_Key, [item], source_fact_rows=facts, org_cache_rows=[],
+        evidence=evidence[item.Organisation_Key],
+    )
+    legacy = _legacy_cache_row(osl, context, sector=config.SECTOR_SERVICES)
+    report = osl.enrich_unknown_organisation_sectors(
+        [item], reference={}, source_fact_rows=facts, org_cache_rows=[],
+        domain_page_rows=[], cache_rows=[legacy], no_llm=True, persist=False,
+    )
+    assert report.compatible_cache_hits == 0
+    assert report.cache_misses == 1
+    assert report.cache_rows == []
+
+
 def test_stale_cache_is_a_miss_and_is_not_reinjected(make_item):
     item = make_item(org="Acme", sector=config.SECTOR_UNKNOWN)
     stale = [{

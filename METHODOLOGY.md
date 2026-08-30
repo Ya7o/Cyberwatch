@@ -964,3 +964,8 @@ La qualification `Sector` dispose d'un canal `organisation_family` versionné da
 La préséance est : override manuel → famille organisationnelle déterministe → NAF officiel précis → décision LLM finale. Une correspondance de famille est `HIGH`, auditée avec sa provenance et ne consomme aucun appel LLM. Les sigles ne sont jamais cherchés comme de simples sous-chaînes : leur mode de correspondance et les contre-exemples commerciaux sont testés.
 
 SourceFacts applique désormais le même contrat de rattachement de l'activité à la victime au moment de l'acceptation et au moment de la promotion. Un statut sémantique `accepted` ne peut donc plus masquer une valeur vide publiée. Les abstentions de secteur LLM sont persistées avec `Decision_Status=ABSTAINED` et `Execution_Status=EXECUTED`, afin qu'un replay sans budget conserve `NO_MATCH` au lieu de réécrire l'histoire en `BUDGET_BLOCKED`.
+
+
+#### Compatibilité du cache Sector
+
+Une évolution de prompt ou de taxonomie n'autorise jamais la réinjection aveugle d'un cache LLM. Pour le contrat 2026-08-28.8, Cyberwatch sait recalculer l'ancien Input_Hash en retirant uniquement les dimensions ajoutées par la migration (catégorie Association / Syndicat et outcome organisation_family). Une décision positive n'est réutilisée que si ce hash historique correspond exactement au contexte courant, si sa base est encore présente et si la nouvelle politique de taxonomie ne l'invalide pas. La ligne est alors migrée vers le hash courant avec Execution_Status=CACHE_COMPATIBLE_REUSE ; sinon elle reste un cache miss et doit être rejouée.

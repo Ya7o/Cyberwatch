@@ -14,6 +14,7 @@ from cyberwatch import config, organisation_family
     ("CHU de Lille", "FR_CHU", config.SECTOR_HEALTH),
     ("CROUS de Lyon", "FR_CROUS", config.SECTOR_EDUCATION),
     ("Préfecture de la Moselle", "FR_PREFECTURE", config.SECTOR_ADMIN),
+    ("La Ville de Tarnos", "FR_LOCAL_AUTHORITY", config.SECTOR_ADMIN),
     ("Communauté d'agglomération du Grand Annecy", "FR_INTERCOMMUNALITY", config.SECTOR_ADMIN),
     ("CGT Éduc’Action Créteil", "FR_TRADE_UNION", config.SECTOR_ASSOCIATION),
     ("CFDT Santé Sociaux", "FR_TRADE_UNION", config.SECTOR_ASSOCIATION),
