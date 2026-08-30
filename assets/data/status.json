@@ -1,45 +1,49 @@
 {
  "analytics": {
-  "as_of": "2026-08-27",
+  "as_of": "2026-08-30",
   "briefing": [
-   "France métropolitaine apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance moyenne).",
-   "Fuite de données apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance moyenne)."
+   "France métropolitaine apparaît sur 30 jours avec 18 incidents, contre aucun sur la période précédente (confiance élevée).",
+   "Fuite de données apparaît sur 30 jours avec 16 incidents, contre aucun sur la période précédente (confiance élevée).",
+   "Commerce / Distribution apparaît sur 30 jours avec 4 incidents, contre aucun sur la période précédente (confiance moyenne).",
+   "Administration / Collectivité apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance faible).",
+   "Ransomware apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance faible)."
   ],
   "coverage": {
    "location": {
-    "known": 3,
-    "known_pct": 75.0,
-    "unknown": 1
+    "known": 18,
+    "known_pct": 85.7,
+    "unknown": 3
    },
    "sector": {
-    "known": 4,
-    "known_pct": 100.0,
-    "unknown": 0
+    "known": 13,
+    "known_pct": 61.9,
+    "unknown": 8
    },
    "threat": {
-    "known": 4,
+    "known": 21,
     "known_pct": 100.0,
     "unknown": 0
    }
   },
-  "dated_incidents": 4,
+  "dated_incidents": 21,
   "diversity_90d": {
    "location": 0.0,
-   "sector": 0.946,
-   "threat": 0.811
+   "sector": 0.914,
+   "threat": 0.645
   },
   "exposure": {
-   "documented": 2,
-   "documented_pct": 50.0,
+   "documented": 7,
+   "documented_pct": 33.3,
    "evidence": {
-    "claimed": 1,
-    "unknown": 1
+    "claimed": 2,
+    "hypothesis": 2,
+    "unknown": 3
    },
-   "max": 270000,
-   "median": 270000,
+   "max": 149000000,
+   "median": 3700,
    "note": "Volumes majoritairement revendiqués et non vérifiés ; aucun total n'est publié.",
-   "p90": 270000,
-   "total": 4
+   "p90": 149000000,
+   "total": 21
   },
   "focus": {
    "by_location": {
@@ -48,35 +52,45 @@
    },
    "comparison": {
     "by_source": {
-     "CYBERATTAQUE_ORG": 4,
-     "FRENCHBREACHES": 3
+     "BONJOURLAFUITE": 2,
+     "CYBERATTAQUE_ORG": 11,
+     "FRENCHBREACHES": 16,
+     "RANSOMWARE_LIVE": 1
     },
-    "dominant_source_pct": 100.0,
-    "incidents": 4,
-    "ransomware_pct": 0.0,
+    "dominant_source_pct": 76.2,
+    "incidents": 21,
+    "ransomware_pct": 14.3,
     "sectors": [
      {
-      "count": 2,
+      "count": 4,
       "label": "Commerce / Distribution"
      },
      {
-      "count": 1,
-      "label": "Finance / Assurance"
+      "count": 3,
+      "label": "Administration / Collectivité"
+     },
+     {
+      "count": 2,
+      "label": "Numérique / Technologie"
      },
      {
       "count": 1,
-      "label": "Services aux entreprises"
+      "label": "Agriculture / Agroalimentaire"
      }
     ],
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 3,
+      "count": 16,
       "label": "Fuite de données"
      },
      {
-      "count": 1,
-      "label": "Phishing / fraude"
+      "count": 3,
+      "label": "Ransomware"
+     },
+     {
+      "count": 2,
+      "label": "Intrusion"
      }
     ]
    },
@@ -102,7 +116,7 @@
    "share_pct": 0.0,
    "silence_is_unusual": false
   },
-  "incident_count": 4,
+  "incident_count": 21,
   "method": {
    "base_rate": "a signal must exceed the window's overall growth by 25 points; a category holding more than 60% of the window is excluded. Normalisation applies only when the previous window holds at least 10 incidents.",
    "confidence": "55% sample size + 25% multi-source corroboration + 20% field completeness",
@@ -121,35 +135,45 @@
    },
    "comparison": {
     "by_source": {
-     "CYBERATTAQUE_ORG": 4,
-     "FRENCHBREACHES": 3
+     "BONJOURLAFUITE": 2,
+     "CYBERATTAQUE_ORG": 11,
+     "FRENCHBREACHES": 16,
+     "RANSOMWARE_LIVE": 1
     },
-    "dominant_source_pct": 100.0,
-    "incidents": 4,
-    "ransomware_pct": 0.0,
+    "dominant_source_pct": 76.2,
+    "incidents": 21,
+    "ransomware_pct": 14.3,
     "sectors": [
      {
-      "count": 2,
+      "count": 4,
       "label": "Commerce / Distribution"
      },
      {
-      "count": 1,
-      "label": "Finance / Assurance"
+      "count": 3,
+      "label": "Administration / Collectivité"
+     },
+     {
+      "count": 2,
+      "label": "Numérique / Technologie"
      },
      {
       "count": 1,
-      "label": "Services aux entreprises"
+      "label": "Agriculture / Agroalimentaire"
      }
     ],
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 3,
+      "count": 16,
       "label": "Fuite de données"
      },
      {
-      "count": 1,
-      "label": "Phishing / fraude"
+      "count": 3,
+      "label": "Ransomware"
+     },
+     {
+      "count": 2,
+      "label": "Intrusion"
      }
     ]
    },
@@ -180,21 +204,21 @@
    "silence_is_unusual": false
   },
   "quality": {
-   "corroborated_pct": 75.0,
-   "first_date": "2026-08-27",
+   "corroborated_pct": 38.1,
+   "first_date": "2026-08-28",
    "history_months": 1,
-   "incidents": 4,
-   "last_date": "2026-08-27",
-   "mono_source": 1,
-   "mono_source_pct": 25.0,
-   "organisations": 4,
-   "sources": 2,
+   "incidents": 21,
+   "last_date": "2026-08-30",
+   "mono_source": 13,
+   "mono_source_pct": 61.9,
+   "organisations": 21,
+   "sources": 4,
    "unknown_pct": {
-    "location": 25.0,
-    "sector": 0.0,
+    "location": 14.3,
+    "sector": 38.1,
     "threat": 0.0
    },
-   "with_summary_pct": 100.0
+   "with_summary_pct": 90.5
   },
   "recurring_organisations_90d": [],
   "schema": "cyberwatch-analytics-v1",
@@ -204,29 +228,41 @@
     "2026-08"
    ],
    "sector": {
+    "Administration / Collectivité": [
+     3
+    ],
+    "Agriculture / Agroalimentaire": [
+     1
+    ],
     "Commerce / Distribution": [
-     2
+     4
     ],
     "Finance / Assurance": [
      1
     ],
-    "Services aux entreprises": [
+    "Industrie / Manufacture": [
      1
+    ],
+    "Numérique / Technologie": [
+     2
     ]
    },
    "sources_observed": [
-    2
+    4
    ],
    "threat": {
     "Fuite de données": [
-     3
+     16
     ],
-    "Phishing / fraude": [
-     1
+    "Intrusion": [
+     2
+    ],
+    "Ransomware": [
+     3
     ]
    },
    "total": [
-    4
+    21
    ]
   },
   "signals": [
@@ -234,25 +270,94 @@
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 3,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 3,
-     "score": 59
+     "incidents": 18,
+     "known_ratio": 0.87,
+     "level": "high",
+     "multi_source_incidents": 8,
+     "score": 84
     },
-    "current": 3,
-    "delta": 3,
+    "current": 18,
+    "delta": 18,
     "dimension": "location",
     "excess_points": null,
     "incident_ids": [
-     "INC-39FEFF5E9810",
-     "INC-3C7D00DC15F3",
-     "INC-BAD0A56226CC"
+     "INC-195F06B69C3A",
+     "INC-3C5B9E546782",
+     "INC-4A2F32292A93",
+     "INC-6816C47EC89B",
+     "INC-68BCE0C36286",
+     "INC-70B5B8B5751D",
+     "INC-7EA20E0EEBB7",
+     "INC-8B71255FD2C5",
+     "INC-92B98E38166E",
+     "INC-A3C6A92F895D",
+     "INC-BD3012E03337",
+     "INC-C6401641511B"
     ],
     "kind": "emerging",
     "label": "France métropolitaine",
     "previous": 0,
-    "share_pct": 75.0,
+    "share_pct": 85.7,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 16,
+     "known_ratio": 0.854,
+     "level": "high",
+     "multi_source_incidents": 7,
+     "score": 83
+    },
+    "current": 16,
+    "delta": 16,
+    "dimension": "threat",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-195F06B69C3A",
+     "INC-3C5B9E546782",
+     "INC-4A2F32292A93",
+     "INC-6816C47EC89B",
+     "INC-68BCE0C36286",
+     "INC-70B5B8B5751D",
+     "INC-7EA20E0EEBB7",
+     "INC-8B71255FD2C5",
+     "INC-92B98E38166E",
+     "INC-BD3012E03337",
+     "INC-C6401641511B",
+     "INC-C7D194A6BFDF"
+    ],
+    "kind": "emerging",
+    "label": "Fuite de données",
+    "previous": 0,
+    "share_pct": 76.2,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 4,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 2,
+     "score": 51
+    },
+    "current": 4,
+    "delta": 4,
+    "dimension": "sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-92B98E38166E",
+     "INC-A3C6A92F895D",
+     "INC-D9A0C6DBD358",
+     "INC-EB3AC8CB9892"
+    ],
+    "kind": "emerging",
+    "label": "Commerce / Distribution",
+    "previous": 0,
+    "share_pct": 19.0,
     "window_days": 30
    },
    {
@@ -260,42 +365,83 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 3,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 3,
-     "score": 59
+     "known_ratio": 0.889,
+     "level": "low",
+     "multi_source_incidents": 1,
+     "score": 40
+    },
+    "current": 3,
+    "delta": 3,
+    "dimension": "sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-39643434BF76",
+     "INC-68BCE0C36286",
+     "INC-C7D194A6BFDF"
+    ],
+    "kind": "emerging",
+    "label": "Administration / Collectivité",
+    "previous": 0,
+    "share_pct": 14.3,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 3,
+     "known_ratio": 0.889,
+     "level": "low",
+     "multi_source_incidents": 1,
+     "score": 40
     },
     "current": 3,
     "delta": 3,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
-     "INC-39FEFF5E9810",
-     "INC-3C7D00DC15F3",
-     "INC-BAD0A56226CC"
+     "INC-39643434BF76",
+     "INC-A3C6A92F895D",
+     "INC-EB3AC8CB9892"
     ],
     "kind": "emerging",
-    "label": "Fuite de données",
+    "label": "Ransomware",
     "previous": 0,
-    "share_pct": 75.0,
+    "share_pct": 14.3,
     "window_days": 30
    }
   ],
   "top_90d": {
    "location": [
     {
-     "count": 3,
+     "count": 18,
      "label": "France métropolitaine"
     },
     {
-     "count": 1,
+     "count": 3,
      "label": "Inconnu"
     }
    ],
    "sector": [
     {
-     "count": 2,
+     "count": 8,
+     "label": "Inconnu"
+    },
+    {
+     "count": 4,
      "label": "Commerce / Distribution"
+    },
+    {
+     "count": 3,
+     "label": "Administration / Collectivité"
+    },
+    {
+     "count": 2,
+     "label": "Numérique / Technologie"
+    },
+    {
+     "count": 1,
+     "label": "Agriculture / Agroalimentaire"
     },
     {
      "count": 1,
@@ -303,51 +449,59 @@
     },
     {
      "count": 1,
-     "label": "Services aux entreprises"
+     "label": "Industrie / Manufacture"
+    },
+    {
+     "count": 1,
+     "label": "Santé"
     }
    ],
    "threat": [
     {
-     "count": 3,
+     "count": 16,
      "label": "Fuite de données"
     },
     {
-     "count": 1,
-     "label": "Phishing / fraude"
+     "count": 3,
+     "label": "Ransomware"
+    },
+    {
+     "count": 2,
+     "label": "Intrusion"
     }
    ]
   },
   "windows": {
    "30": {
     "change_pct": 100.0,
-    "current": 4,
-    "delta": 4,
-    "multi_source": 3,
-    "multi_source_pct": 75.0,
+    "current": 21,
+    "delta": 21,
+    "multi_source": 8,
+    "multi_source_pct": 38.1,
     "previous": 0
    },
    "365": {
     "change_pct": 100.0,
-    "current": 4,
-    "delta": 4,
-    "multi_source": 3,
-    "multi_source_pct": 75.0,
+    "current": 21,
+    "delta": 21,
+    "multi_source": 8,
+    "multi_source_pct": 38.1,
     "previous": 0
    },
    "7": {
     "change_pct": 100.0,
-    "current": 4,
-    "delta": 4,
-    "multi_source": 3,
-    "multi_source_pct": 75.0,
+    "current": 21,
+    "delta": 21,
+    "multi_source": 8,
+    "multi_source_pct": 38.1,
     "previous": 0
    },
    "90": {
     "change_pct": 100.0,
-    "current": 4,
-    "delta": 4,
-    "multi_source": 3,
-    "multi_source_pct": 75.0,
+    "current": 21,
+    "delta": 21,
+    "multi_source": 8,
+    "multi_source_pct": 38.1,
     "previous": 0
    }
   }
@@ -1578,64 +1732,64 @@
  ],
  "history": [
   {
-   "as_of": "2026-08-28T08:01:49+04:00",
-   "incidents": 5,
-   "items": 7,
+   "as_of": "2026-08-30T14:53:42+04:00",
+   "incidents": 21,
+   "items": 30,
    "mode": "CREATE",
-   "new_incidents": 5,
-   "new_items": 7,
+   "new_incidents": 21,
+   "new_items": 30,
    "overall": "OK",
-   "run_id": "RUN-20260828T080149"
+   "run_id": "RUN-20260830T145342"
   },
   {
-   "as_of": "2026-08-28T08:01:49+04:00",
-   "incidents": 5,
-   "items": 7,
+   "as_of": "2026-08-30T14:53:42+04:00",
+   "incidents": 21,
+   "items": 30,
    "mode": "CREATE",
    "new_incidents": 0,
-   "new_items": 7,
+   "new_items": 30,
    "overall": "OK",
-   "run_id": "RUN-20260828T080149-2"
+   "run_id": "RUN-20260830T145342-2"
   },
   {
-   "as_of": "2026-08-28T08:01:49+04:00",
-   "incidents": 5,
-   "items": 7,
+   "as_of": "2026-08-30T14:53:42+04:00",
+   "incidents": 21,
+   "items": 30,
    "mode": "CREATE",
    "new_incidents": 0,
-   "new_items": 7,
+   "new_items": 30,
    "overall": "OK",
-   "run_id": "RUN-20260828T080149-3"
+   "run_id": "RUN-20260830T145342-3"
   },
   {
-   "as_of": "2026-08-28T08:01:49+04:00",
-   "incidents": 5,
-   "items": 7,
+   "as_of": "2026-08-30T14:53:42+04:00",
+   "incidents": 21,
+   "items": 30,
    "mode": "CREATE",
    "new_incidents": 0,
-   "new_items": 7,
+   "new_items": 30,
    "overall": "OK",
-   "run_id": "RUN-20260828T080149-4"
+   "run_id": "RUN-20260830T145342-4"
   },
   {
-   "as_of": "2026-08-28T08:01:49+04:00",
-   "incidents": 4,
-   "items": 7,
+   "as_of": "2026-08-30T14:53:42+04:00",
+   "incidents": 21,
+   "items": 30,
    "mode": "CREATE",
    "new_incidents": 0,
-   "new_items": 7,
+   "new_items": 30,
    "overall": "OK",
-   "run_id": "RUN-20260828T080149-5"
+   "run_id": "RUN-20260830T145342-5"
   },
   {
-   "as_of": "2026-08-28T08:01:49+04:00",
-   "incidents": 4,
-   "items": 7,
+   "as_of": "2026-08-30T14:53:42+04:00",
+   "incidents": 21,
+   "items": 30,
    "mode": "CREATE",
    "new_incidents": 0,
-   "new_items": 7,
+   "new_items": 30,
    "overall": "OK",
-   "run_id": "RUN-20260828T080149-6"
+   "run_id": "RUN-20260830T145342-6"
   }
  ],
  "initialized": true,
@@ -1675,42 +1829,42 @@
    "SKIPPED": "Hors périmètre de ce run"
   }
  },
- "method_id": "OBS-FR-OI-SIMPLE-SOURCING-8",
+ "method_id": "OBS-FR-OI-SIMPLE-SOURCING-10",
  "run": {
-  "as_of": "2026-08-28T08:01:49+04:00",
-  "duration": "97.9",
-  "id": "RUN-20260828T080149-6",
-  "incidents": 4,
-  "incidents_hash": "a7a9c1e81e32a1903dc9516f6768811fd3783e1eecd3b2e5ae9144fdd1c8a77b",
-  "items": 7,
-  "items_hash": "17ce14cd3ae0a45b51d73f3979f7b65a50f611bdab2c0e5a985050fcfc8facd6",
+  "as_of": "2026-08-30T14:53:42+04:00",
+  "duration": "42.7",
+  "id": "RUN-20260830T145342-6",
+  "incidents": 21,
+  "incidents_hash": "fb7dde4f6e74b7389f2dff645c88a2553475f5f023333b50cef6b22fbd9b4e33",
+  "items": 30,
+  "items_hash": "f71c507158aa18f583d4dbd3e222f9df3102694bea62ec19f7be5234b78ff439",
   "layers": "CORE_DIRECT,LOCAL_MEDIA_DIRECT,ENTITY_WATCH,REGIONAL_WATCH",
   "mode": "CREATE",
   "new_incidents": 0,
-  "new_items": 7,
+  "new_items": 30,
   "notes": "",
   "overall": "OK",
-  "requests": 19,
-  "target_end": "2026-08-28",
-  "target_start": "2026-08-27"
+  "requests": 29,
+  "target_end": "2026-08-30",
+  "target_start": "2026-08-28"
  },
  "sources": [
   {
    "access_method": "bonjourlafuite-html-v0",
    "calls": 1,
    "candidate_status": "",
-   "comment": "items_in_window=0",
+   "comment": "items_in_window=2",
    "coverage": 100,
-   "duration": "2.0",
+   "duration": "1.9",
    "history_status": "UNKNOWN",
    "id": "BONJOURLAFUITE",
-   "items": 0,
-   "items_collected": 0,
-   "items_in_window": 0,
-   "items_seen": 536,
-   "last_run": "2026-08-28T08:01:49+04:00",
-   "latest_item": "",
-   "latest_item_org": "",
+   "items": 2,
+   "items_collected": 2,
+   "items_in_window": 2,
+   "items_seen": 542,
+   "last_run": "2026-08-30T14:53:42+04:00",
+   "latest_item": "2026-08-29",
+   "latest_item_org": "LCommerce",
    "layer": "CORE_DIRECT",
    "notes": "Chaque bloc de la chronologie est nommé d'après l'organisation touchée : le titre de l'entrée est l'organisation. Localisation par défaut France métropolitaine sauf indication contraire. Page de contrôle de volume : https://bonjourlafuite.eu.org/stats.html",
    "oldest_available_date": "",
@@ -1720,25 +1874,25 @@
    "units_done": 1,
    "units_expected": 1,
    "url": "https://bonjourlafuite.eu.org/",
-   "zero_is_trusted": true,
+   "zero_is_trusted": false,
    "zone": "France métropolitaine"
   },
   {
    "access_method": "wordpress",
    "calls": 3,
    "candidate_status": "",
-   "comment": "articles_seen=100; articles_in_window=4; victims_identified=4; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
+   "comment": "articles_seen=100; articles_in_window=12; victims_identified=11; articles_rejected_no_victim=1; articles_rejected_negated=0; articles_rejected_multi=0",
    "coverage": 100,
-   "duration": "5.0",
+   "duration": "6.1",
    "history_status": "UNKNOWN",
    "id": "CYBERATTAQUE_ORG",
-   "items": 4,
-   "items_collected": 4,
-   "items_in_window": 4,
+   "items": 11,
+   "items_collected": 11,
+   "items_in_window": 12,
    "items_seen": 100,
-   "last_run": "2026-08-28T08:01:49+04:00",
-   "latest_item": "2026-08-27",
-   "latest_item_org": "Mistertemp’ group",
+   "last_run": "2026-08-30T14:53:42+04:00",
+   "latest_item": "2026-08-30",
+   "latest_item_org": "CGT Éduc’Action Créteil",
    "layer": "CORE_DIRECT",
    "notes": "La catégorie « attaque » du site ne publie que des incidents : son périmètre fait foi, le garde-fou de vocabulaire ne s'y applique pas. Victime extraite seulement depuis une relation explicite ou un préfixe de titre non rédactionnel.",
    "oldest_available_date": "",
@@ -1753,23 +1907,23 @@
   },
   {
    "access_method": "feed:https://frenchbreaches.com/feed.xml",
-   "calls": 5,
+   "calls": 18,
    "candidate_status": "",
-   "comment": "details_hydrates=3/3; rich_facts=3/3",
+   "comment": "details_hydrates=16/16; rich_facts=16/16",
    "coverage": 100,
-   "duration": "5.4",
+   "duration": "25.8",
    "history_status": "COMPLETE",
    "id": "FRENCHBREACHES",
-   "items": 3,
-   "items_collected": 3,
-   "items_in_window": 3,
+   "items": 16,
+   "items_collected": 16,
+   "items_in_window": 16,
    "items_seen": 100,
-   "last_run": "2026-08-28T08:01:49+04:00",
-   "latest_item": "2026-08-27",
-   "latest_item_org": "Mistertemp' group",
+   "last_run": "2026-08-30T14:53:42+04:00",
+   "latest_item": "2026-08-30",
+   "latest_item_org": "SDIS du Bas-Rhin",
    "layer": "CORE_DIRECT",
    "notes": "Chaque entrée est nommée d'après l'organisation touchée : le titre de l'entrée est l'organisation. Localisation par défaut France métropolitaine sauf indication contraire.",
-   "oldest_available_date": "2026-08-03",
+   "oldest_available_date": "2026-08-08",
    "reason": "Protocole complet, test de succès satisfait.",
    "reason_code": "OK",
    "status": "OK",
@@ -1781,20 +1935,20 @@
   },
   {
    "access_method": "https://api.ransomware.live/v2/countryvictims/",
-   "calls": 10,
+   "calls": 7,
    "candidate_status": "",
-   "comment": "items_seen=688; items_in_window=0; rate_limit_retries=1",
+   "comment": "items_seen=690; items_in_window=1",
    "coverage": 100,
-   "duration": "85.4",
+   "duration": "8.3",
    "history_status": "UNKNOWN",
    "id": "RANSOMWARE_LIVE",
-   "items": 0,
-   "items_collected": 0,
-   "items_in_window": 0,
-   "items_seen": 688,
-   "last_run": "2026-08-28T08:01:49+04:00",
-   "latest_item": "",
-   "latest_item_org": "",
+   "items": 1,
+   "items_collected": 1,
+   "items_in_window": 1,
+   "items_seen": 690,
+   "last_run": "2026-08-30T14:53:42+04:00",
+   "latest_item": "2026-08-29",
+   "latest_item_org": "La Maison Des Travaux",
    "layer": "CORE_DIRECT",
    "notes": "Activée par rapport à la méthode d'origine : source prioritaire (§21), les sources françaises étant fortement orientées fuite de données.",
    "oldest_available_date": "",
@@ -1804,33 +1958,33 @@
    "units_done": 7,
    "units_expected": 7,
    "url": "https://api.ransomware.live/",
-   "zero_is_trusted": true,
+   "zero_is_trusted": false,
    "zone": "Multi"
   },
   {
    "access_method": "repository_json",
    "calls": 0,
    "candidate_status": "",
-   "comment": "snapshot_records=16; accepted=16; future=0; requested_window_hits=0",
+   "comment": "snapshot_records=28; admitted=7; candidates=21; materialized=7; future=0; requested_window_hits=0; generated_at=2026-08-30T08:17:24+04:00; freshness_days=0; max_age_days=2",
    "coverage": 100,
    "duration": "0.0",
    "history_status": "UNKNOWN",
    "id": "VEILLE_LLM",
-   "items": 16,
-   "items_collected": 16,
+   "items": 7,
+   "items_collected": 7,
    "items_in_window": 0,
-   "items_seen": 16,
-   "last_run": "2026-08-28T08:01:49+04:00",
-   "latest_item": "2026-08-19",
-   "latest_item_org": "SRR / SFR",
+   "items_seen": 7,
+   "last_run": "2026-08-30T14:53:42+04:00",
+   "latest_item": "2026-07-25",
+   "latest_item_org": "Ministère de l’Éducation nationale / Académie de La Réunion",
    "layer": "REGIONAL_WATCH",
    "notes": "Source locale analytique issue de Veille LLM pour La Réunion et Mayotte. L'admission dépend de preuves cyber explicites, jamais du score seul. Snapshot remplacé à chaque run ; elle ne compte pas comme corroboration éditoriale supplémentaire lorsqu'une source directe couvre déjà le même incident.",
    "oldest_available_date": "",
    "reason": "Protocole complet, test de succès satisfait.",
    "reason_code": "OK",
    "status": "OK",
-   "units_done": 16,
-   "units_expected": 16,
+   "units_done": 28,
+   "units_expected": 28,
    "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
    "zero_is_trusted": false,
    "zone": "La Réunion / Mayotte"

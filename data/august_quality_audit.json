@@ -1,13 +1,85 @@
 {
   "schema": "cyberwatch-august-quality-audit-v2",
-  "start": "2026-08-27",
-  "end": "2026-08-28",
-  "items": 7,
-  "incidents": 4,
+  "start": "2026-08-28",
+  "end": "2026-08-30",
+  "items": 30,
+  "incidents": 21,
   "blockers": [],
   "anomalies": [
     {
-      "id": "INC-A98BE35D4960",
+      "id": "INC-82F1B88B7CC2",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-82F1B88B7CC2",
+      "severity": "low",
+      "issue": "localisation_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-4A2F32292A93",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-FC866DCD1981",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-BD3012E03337",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-8B71255FD2C5",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-7EA20E0EEBB7",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-C6401641511B",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-D910AD541B6B",
+      "severity": "low",
+      "issue": "secteur_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-EB3AC8CB9892",
+      "severity": "medium",
+      "issue": "summary_absent",
+      "recommendation": "conserver le statut SourceFacts et reprendre si contenu hydratable"
+    },
+    {
+      "id": "INC-92B98E38166E",
+      "severity": "medium",
+      "issue": "summary_absent",
+      "recommendation": "conserver le statut SourceFacts et reprendre si contenu hydratable"
+    },
+    {
+      "id": "INC-39643434BF76",
+      "severity": "low",
+      "issue": "localisation_unknown",
+      "recommendation": "preuve insuffisante documentée; conserver Inconnu"
+    },
+    {
+      "id": "INC-E39645DF5E4E",
       "severity": "low",
       "issue": "localisation_unknown",
       "recommendation": "preuve insuffisante documentée; conserver Inconnu"
@@ -15,17 +87,17 @@
   ],
   "incident_reports": [
     {
-      "id": "INC-A98BE35D4960",
-      "organisation": "Allo E.Leclerc",
-      "date": "2026-08-27",
+      "id": "INC-82F1B88B7CC2",
+      "organisation": "CGT Éduc’Action Créteil",
+      "date": "2026-08-30",
       "date_basis": "PUBLICATION",
       "sources": [
         {
           "source": "CYBERATTAQUE_ORG",
-          "url": "https://www.cyberattaque.org/allo-e-leclerc-un-prestataire-pirate-des-donnees-clients-exposees/"
+          "url": "https://www.cyberattaque.org/cgt-educaction-creteil-deux-sites-pirates-avant-la-rentree/"
         }
       ],
-      "summary": "Allo E.Leclerc informe d'une exposition de données clients suite à un piratage d'un prestataire logistique.",
+      "summary": "CGT Éduc’Action Créteil victime d'une cyberattaque ayant provoqué l'indisponibilité de ses sites pendant plusieurs jours.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -33,29 +105,323 @@
         }
       ],
       "summary_reasons": [],
-      "sector": "Commerce / Distribution",
-      "sector_status": "confirmed",
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
       "sector_tentative": "",
-      "threat": "Phishing / fraude",
+      "threat": "Intrusion",
       "location": "Inconnu",
-      "sensitive_data_exposed": true
+      "sensitive_data_exposed": false
     },
     {
-      "id": "INC-BAD0A56226CC",
-      "organisation": "Euskal Moneta",
-      "date": "2026-08-27",
+      "id": "INC-C7D194A6BFDF",
+      "organisation": "La Ville de Tarnos",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd"
+        }
+      ],
+      "summary": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Administration / Collectivité",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-4A2F32292A93",
+      "organisation": "SDIS de la Moselle",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-de-la-moselle-mtezsxcrwb76ft4xd69"
+        }
+      ],
+      "summary": "Cyberattaque revendiquée contre le SDIS de la Moselle impliquant la fuite de données de 6 434 personnes.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-FC866DCD1981",
+      "organisation": "SDIS de la Somme",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-de-la-somme-mtezxlwpehjyx3v67q7"
+        }
+      ],
+      "summary": "Compromission des accès administrateur du SDIS de la Somme revendiquée sur un forum cybercriminel.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-BD3012E03337",
+      "organisation": "SDIS de l’Essonne",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-de-l-essonne-mtezzdc6zwkkibexpe8"
+        }
+      ],
+      "summary": "Une cyberattaque a été revendiquée contre le SDIS de l’Essonne avec une compromission d'accès administrateur.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-8B71255FD2C5",
+      "organisation": "SDIS des Bouches-du-Rhône",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-des-bouches-du-rh-ne-mtez1nua8138brrfb7i"
+        }
+      ],
+      "summary": "Fuite de données revendiquée contre le SDIS des Bouches-du-Rhône, affectant potentiellement près de 3 700 personnes.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-7EA20E0EEBB7",
+      "organisation": "SDIS des Vosges",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-des-vosges-mtezvi2a2rg01mrtvrp"
+        }
+      ],
+      "summary": "Cyberattaque revendiquée contre le SDIS des Vosges avec une fuite de données touchant 3 067 personnes.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-C6401641511B",
+      "organisation": "SDIS du Bas-Rhin",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-du-bas-rhin-mtezqd7tc7tk1exr3is"
+        }
+      ],
+      "summary": "Fuite de données au SDIS du Bas-Rhin avec 3 584 personnes potentiellement concernées.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-D910AD541B6B",
+      "organisation": "SDIS du Gard",
+      "date": "2026-08-30",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/sdis-du-gard-mteyy43opeesk6j4mr"
+        }
+      ],
+      "summary": "Cyberattaque revendiquée contre le SDIS du Gard, touchant plus de 3 100 personnes.",
+      "summary_statuses": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Inconnu",
+      "sector_status": "unknown_no_evidence",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-D9A0C6DBD358",
+      "organisation": "Easypara",
+      "date": "2026-08-29",
       "date_basis": "PUBLICATION",
       "sources": [
         {
           "source": "CYBERATTAQUE_ORG",
-          "url": "https://www.cyberattaque.org/eusko-euskal-moneta-6-000-adherents-alertes-apres-une-cyberattaque/"
+          "url": "https://www.cyberattaque.org/easypara-une-faille-metabase-chez-son-prestataire-expose-les-coordonnees-de-certains-clients/"
         },
         {
           "source": "FRENCHBREACHES",
-          "url": "https://frenchbreaches.com/alertes/euskal-moneta-eusko-mtbr7on3s5riduqxif"
+          "url": "https://frenchbreaches.com/alertes/easypara-mtejoktuc67v6di63t4"
         }
       ],
-      "summary": "Euskal Moneta a détecté une cyberattaque le 17 août 2026, potentiellement impliquant l'accès à des données personnelles d'adhérents.",
+      "summary": "Une faille Metabase chez le prestataire Shipp expose les coordonnées de certains clients d'Easypara.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Commerce / Distribution",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-EB3AC8CB9892",
+      "organisation": "La Maison Des Travaux",
+      "date": "2026-08-29",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "RANSOMWARE_LIVE",
+          "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb"
+        }
+      ],
+      "summary": "",
+      "summary_statuses": [
+        {
+          "source": "RANSOMWARE_LIVE",
+          "status": "missing_content"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Commerce / Distribution",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Ransomware",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-92B98E38166E",
+      "organisation": "LCommerce",
+      "date": "2026-08-29",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "BONJOURLAFUITE",
+          "url": "https://bonjourlafuite.eu.org/img/lcommerce.png"
+        }
+      ],
+      "summary": "",
+      "summary_statuses": [
+        {
+          "source": "BONJOURLAFUITE",
+          "status": "missing_content"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Commerce / Distribution",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-3C5B9E546782",
+      "organisation": "Marie Blachère",
+      "date": "2026-08-29",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf"
+        }
+      ],
+      "summary": "Marie Blachère : les données RH d’employés revendiqués dans une fuite",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -72,24 +438,160 @@
       "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "France métropolitaine",
-      "sensitive_data_exposed": true
+      "sensitive_data_exposed": false
     },
     {
-      "id": "INC-3C7D00DC15F3",
-      "organisation": "Journaux.fr",
-      "date": "2026-08-27",
+      "id": "INC-39643434BF76",
+      "organisation": "Tarnos",
+      "date": "2026-08-29",
       "date_basis": "PUBLICATION",
       "sources": [
         {
           "source": "CYBERATTAQUE_ORG",
-          "url": "https://www.cyberattaque.org/journaux-fr-270-000-donnees-de-facturation-et-de-livraison-revendiquees-apres-une-fuite/"
+          "url": "https://www.cyberattaque.org/mairie-tarnos-rancon-cyberattaque/"
+        }
+      ],
+      "summary": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon et possible vol de données personnelles.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Administration / Collectivité",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Ransomware",
+      "location": "Inconnu",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-68BCE0C36286",
+      "organisation": "Zéro Logement Vacant",
+      "date": "2026-08-29",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
         },
         {
           "source": "FRENCHBREACHES",
-          "url": "https://frenchbreaches.com/alertes/journaux-fr-mtbj5s58u9984dymo3"
+          "url": "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw"
         }
       ],
-      "summary": "270 000 données de livraison de Journaux.fr divulguées après une cyberattaque revendiquée par le hacker Alduin.",
+      "summary": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Administration / Collectivité",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    },
+    {
+      "id": "INC-195F06B69C3A",
+      "organisation": "Actis Location",
+      "date": "2026-08-28",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/actis-location-factures-devis-et-rib-de-clients-exposes-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/actis-location-blgcloud-mtck051io55urdgqnxe"
+        }
+      ],
+      "summary": "Actis Location subit une fuite de 666 155 fichiers, représentant 464 Go de données, après une cyberattaque.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Industrie / Manufacture",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    },
+    {
+      "id": "INC-70B5B8B5751D",
+      "organisation": "Frères Toque",
+      "date": "2026-08-28",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "BONJOURLAFUITE",
+          "url": "https://bonjourlafuite.eu.org/img/freres-toque.png"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/freres-toque-donnees-clients-et-historiques-de-commandes-exposes-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/fr-res-toque-mtejkm4gb9g1viudmhf"
+        }
+      ],
+      "summary": "Frères Toque victime d'un incident de sécurité compromettant des données personnelles de clients.",
+      "summary_statuses": [
+        {
+          "source": "BONJOURLAFUITE",
+          "status": "missing_content"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Numérique / Technologie",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Fuite de données",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-A3C6A92F895D",
+      "organisation": "Lingor",
+      "date": "2026-08-28",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/lingor-des-donnees-sensibles-de-clients-potentiellement-exposees-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/lingor-mtcnn1mg1ipiqk7j53o"
+        }
+      ],
+      "summary": "Lingor a subi une cyberattaque ayant potentiellement exposé des données sensibles de ses clients.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -104,26 +606,86 @@
       "sector": "Commerce / Distribution",
       "sector_status": "confirmed",
       "sector_tentative": "",
+      "threat": "Ransomware",
+      "location": "France métropolitaine",
+      "sensitive_data_exposed": true
+    },
+    {
+      "id": "INC-6816C47EC89B",
+      "organisation": "Minea",
+      "date": "2026-08-28",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/minea-533-000-profils-et-816-millions-dactivites-exposes-dans-une-fuite-massive/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/minea-mtdex0abbtr1kt0c8gd"
+        }
+      ],
+      "summary": "Minea a subi une fuite massive de 533 162 profils et 81,6 millions d'activités.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Numérique / Technologie",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
       "threat": "Fuite de données",
       "location": "France métropolitaine",
       "sensitive_data_exposed": true
     },
     {
-      "id": "INC-39FEFF5E9810",
-      "organisation": "Mistertemp' group",
-      "date": "2026-08-27",
+      "id": "INC-E39645DF5E4E",
+      "organisation": "Qare",
+      "date": "2026-08-28",
       "date_basis": "PUBLICATION",
       "sources": [
         {
           "source": "CYBERATTAQUE_ORG",
-          "url": "https://www.cyberattaque.org/mistertemp-group-pirate-une-fuite-de-donnees-touche-le-groupe-derriere-aquila-rh-lynx-rh-et-vitalis-medical/"
+          "url": "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+        }
+      ],
+      "summary": "Intrusion dans Qare, plateforme de téléconsultation, entraînant l'exposition de photos d'enfants.",
+      "summary_statuses": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "accepted"
+        }
+      ],
+      "summary_reasons": [],
+      "sector": "Santé",
+      "sector_status": "confirmed",
+      "sector_tentative": "",
+      "threat": "Intrusion",
+      "location": "Inconnu",
+      "sensitive_data_exposed": false
+    },
+    {
+      "id": "INC-F6E4FEDC0FE9",
+      "organisation": "Ultra Premium Direct",
+      "date": "2026-08-28",
+      "date_basis": "PUBLICATION",
+      "sources": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/ultra-premium-direct-les-donnees-clients-extraites-apres-le-piratage-dun-prestataire/"
         },
         {
           "source": "FRENCHBREACHES",
-          "url": "https://frenchbreaches.com/alertes/mistertemp-group-mtbjjqahg9jzou0akq4"
+          "url": "https://frenchbreaches.com/alertes/ultra-premium-direct-mtckovbzd1f2t3n126h"
         }
       ],
-      "summary": "Mistertemp’ group piraté : une fuite de données touche le groupe derrière Aquila RH, Lynx RH et Vitalis Médical",
+      "summary": "Ultra Premium Direct victime d'une fuite de données suite à une attaque d'un prestataire, Klark.ai.",
       "summary_statuses": [
         {
           "source": "CYBERATTAQUE_ORG",
@@ -140,7 +702,7 @@
           "reason": "empty"
         }
       ],
-      "sector": "Services aux entreprises",
+      "sector": "Agriculture / Agroalimentaire",
       "sector_status": "confirmed",
       "sector_tentative": "",
       "threat": "Fuite de données",
