@@ -40,27 +40,3 @@ jobs:
           assert all(isinstance(detail, dict) and detail.get('version') == 3 for detail in payload.values())
           assert all(not isinstance(detail, list) for detail in payload.values())
           PY
-
-  dispatch_reset_once:
-    if: github.event_name == 'push' && github.event.head_commit.message == 'ops: retrigger zero reset from 2026-08-28'
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: read
-    steps:
-      - name: Déclencher RESET TOTAL canonique
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          gh workflow run cold-reset.yml \
-            --repo "$GH_REPO" \
-            --ref main \
-            -f reset_mode=zero \
-            -f confirm_zero=RESET \
-            -f start=2026-08-28 \
-            -f semantic_passes=1 \
-            -f source_facts_passes=1 \
-            -f max_llm_cost_usd_per_pass=0.50 \
-            -f publish=true
