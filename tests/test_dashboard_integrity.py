@@ -50,7 +50,7 @@ def test_garde_integrite_ne_promeut_jamais_un_candidate_en_incident():
     js = _read("assets/dashboard-integrity.js")
     assert '=== "ACCEPTED"' in js
     assert '=== "CANDIDATE"' in js
-    assert "Aucun incident cyber confirmé" in js
+    assert "Aucun incident cyber retenu" in js
     assert "signal non confirmé" in js
     assert "incident-card" in js
     assert "Le corpus principal publié couvre" in js
