@@ -30,9 +30,11 @@ jobs:
       - name: Stabiliser le script de migration
         run: python scripts/dev_fix_org_ref_apply.py
       - name: Appliquer le chantier
-        run: python scripts/dev_apply_organisation_reference.py
+        run: |
+          python scripts/dev_apply_organisation_reference.py
+          python scripts/dev_post_org_ref_apply.py
       - name: Retirer les outils de migration temporaires
-        run: rm -f scripts/dev_apply_organisation_reference.py scripts/dev_fix_org_ref_apply.py .github/workflows/dev-organisation-reference-apply.yml
+        run: rm -f scripts/dev_apply_organisation_reference.py scripts/dev_fix_org_ref_apply.py scripts/dev_post_org_ref_apply.py .github/workflows/dev-organisation-reference-apply.yml
       - name: Tests ciblés
         run: |
           python -m pytest tests/test_organisation_family.py tests/test_source_facts_promotion_contract.py tests/test_organisation_sector_llm_outcomes.py -q
