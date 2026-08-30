@@ -2,8 +2,7 @@
  *
  * Ce module ne transforme jamais un signal CANDIDATE en incident. Il rend
  * visibles deux écarts qui seraient sinon trompeurs pour le lecteur :
- * - un corpus principal dont la fenêtre réellement collectée est plus courte
- *   que les libellés « 30 jours » ;
+ * - un corpus principal dont la couverture cumulée est inférieure à 30 jours ;
  * - une veille régionale plus fraîche que le corpus canonique publié.
  */
 (() => {
@@ -11,7 +10,7 @@
 
   const DAY = 864e5;
   const WINDOW_DAYS = 30;
-  const STATUS_PATH = "assets/data/status.json";
+  const RUN_LOG_PATH = "data/run_log.csv";
   const REGIONAL_PATH = "sources/veillellm/cyberattaques_reunion_mayotte_2026.json";
   const FOCUS = new Set(["La Réunion", "Mayotte"]);
 
@@ -19,6 +18,12 @@
     const response = await fetch(path, { cache: "no-store" });
     if (!response.ok) throw new Error(`${path}: ${response.status}`);
     return response.json();
+  }
+
+  async function loadText(path) {
+    const response = await fetch(path, { cache: "no-store" });
+    if (!response.ok) throw new Error(`${path}: ${response.status}`);
+    return response.text();
   }
 
   function isoDay(value) {
@@ -42,20 +47,73 @@
       : new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(date);
   }
 
-  function coverage(status) {
-    const run = status?.run || {};
-    const start = isoDay(run.target_start);
-    const end = isoDay(run.target_end || run.as_of);
-    if (!start || !end || end < start) return null;
-    return {
-      start,
-      end,
-      days: Math.floor((end - start) / DAY) + 1,
-    };
+  function parseCsv(text) {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let quoted = false;
+    for (let i = 0; i < text.length; i += 1) {
+      const char = text[i];
+      if (quoted) {
+        if (char === '"' && text[i + 1] === '"') {
+          field += '"';
+          i += 1;
+        } else if (char === '"') {
+          quoted = false;
+        } else {
+          field += char;
+        }
+      } else if (char === '"') {
+        quoted = true;
+      } else if (char === ",") {
+        row.push(field);
+        field = "";
+      } else if (char === "\n") {
+        row.push(field.replace(/\r$/, ""));
+        if (row.some((value) => value !== "")) rows.push(row);
+        row = [];
+        field = "";
+      } else {
+        field += char;
+      }
+    }
+    if (field || row.length) {
+      row.push(field.replace(/\r$/, ""));
+      if (row.some((value) => value !== "")) rows.push(row);
+    }
+    if (!rows.length) return [];
+    const headers = rows[0];
+    return rows.slice(1).map((values) => Object.fromEntries(headers.map((key, index) => [key, values[index] || ""])));
   }
 
-  function showPartialCoverage(status) {
-    const span = coverage(status);
+  function cumulativeCoverage(runLogText) {
+    const rows = parseCsv(runLogText);
+    let lastCreate = -1;
+    rows.forEach((row, index) => {
+      if (String(row.Mode || "").toUpperCase() === "CREATE" && String(row.Overall_Status || "").toUpperCase() === "OK") {
+        lastCreate = index;
+      }
+    });
+    if (lastCreate < 0) return null;
+
+    const starts = [];
+    const ends = [];
+    rows.slice(lastCreate).forEach((row) => {
+      const mode = String(row.Mode || "").toUpperCase();
+      if (!new Set(["CREATE", "MAJ"]).has(mode) || String(row.Overall_Status || "").toUpperCase() !== "OK") return;
+      const start = isoDay(row.Target_Start);
+      const end = isoDay(row.Target_End || row.As_Of);
+      if (!start || !end || end < start) return;
+      starts.push(start);
+      ends.push(end);
+    });
+    if (!starts.length || !ends.length) return null;
+    const start = new Date(Math.min(...starts.map((date) => date.getTime())));
+    const end = new Date(Math.max(...ends.map((date) => date.getTime())));
+    return { start, end, days: Math.floor((end - start) / DAY) + 1 };
+  }
+
+  function showPartialCoverage(span) {
     if (!span || span.days >= WINDOW_DAYS) return;
 
     const alert = document.querySelector("#data-alert");
@@ -65,7 +123,7 @@
       const strong = alert.querySelector("strong");
       if (strong) strong.textContent = "Couverture partielle.";
       if (detail) {
-        detail.textContent = `Le corpus principal publié couvre ${formatDay(span.start)} au ${formatDay(span.end)} (${span.days} jour${span.days > 1 ? "s" : ""}), pas 30 jours complets.`;
+        detail.textContent = `La couverture cumulée du corpus principal commence au ${formatDay(span.start)} et va jusqu’au ${formatDay(span.end)} (${span.days} jour${span.days > 1 ? "s" : ""}), pas 30 jours complets.`;
       }
       alert.hidden = false;
     }
@@ -133,12 +191,12 @@
   }
 
   async function init() {
-    const [statusResult, regionalResult] = await Promise.allSettled([
-      loadJson(STATUS_PATH),
+    const [runLogResult, regionalResult] = await Promise.allSettled([
+      loadText(RUN_LOG_PATH),
       loadJson(REGIONAL_PATH),
     ]);
 
-    if (statusResult.status === "fulfilled") showPartialCoverage(statusResult.value);
+    if (runLogResult.status === "fulfilled") showPartialCoverage(cumulativeCoverage(runLogResult.value));
     if (regionalResult.status === "fulfilled") {
       waitAndApplyRegional(regionalSummary(regionalResult.value));
     }
