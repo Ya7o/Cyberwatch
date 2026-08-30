@@ -119,11 +119,11 @@
     if (summary.accepted > 0) {
       bubble.classList.remove("status-bubble--quiet");
       bubble.classList.add("status-bubble--active");
-      bubble.textContent = `${plural(summary.accepted, "incident cyber accepté")} par la veille locale sur les 30 derniers jours, mais pas encore synchronisé${summary.accepted > 1 ? "s" : ""} dans le corpus principal.${summary.candidates ? ` ${plural(summary.candidates, "signal non confirmé")} en veille.` : ""}${stamp}`;
+      bubble.textContent = `${plural(summary.accepted, "incident cyber retenu", "incidents cyber retenus")} par la veille locale sur les 30 derniers jours, mais pas encore synchronisé${summary.accepted > 1 ? "s" : ""} dans le corpus principal.${summary.candidates ? ` ${plural(summary.candidates, "signal non confirmé")} en veille.` : ""}${stamp}`;
       return true;
     }
 
-    bubble.textContent = `Aucun incident cyber confirmé à La Réunion / Mayotte sur les 30 derniers jours.${summary.candidates ? ` ${plural(summary.candidates, "signal non confirmé")} en veille.` : ""}${stamp}`;
+    bubble.textContent = `Aucun incident cyber retenu à La Réunion / Mayotte sur les 30 derniers jours.${summary.candidates ? ` ${plural(summary.candidates, "signal non confirmé")} en veille.` : ""}${stamp}`;
     return true;
   }
 
