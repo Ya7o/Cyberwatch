@@ -529,18 +529,42 @@ def _taxonomy_supports_candidate(
 def _legacy_candidate_has_current_support(
     context: OrganisationContext, candidate: LlmOrganisationCandidate,
 ) -> bool:
-    """Ne migre une ancienne décision que si sa base existe encore."""
-    evidence_types = set(context.evidence_types)
+    """Ne migre une ancienne décision que si sa base sectorielle reste cohérente.
+
+    Un simple maintien du nombre de preuves est insuffisant : le prompt courant
+    peut légitimement s'abstenir lorsque deux preuves pointent vers des secteurs
+    différents. La migration exige donc que les preuves pertinentes encore
+    présentes soutiennent le secteur historique sans contradiction.
+    """
+    def sectors_for(*evidence_types: str) -> list[str]:
+        allowed = set(evidence_types)
+        return [
+            str(evidence.get("sector") or "").strip()
+            for evidence in context.evidence_details
+            if str(evidence.get("type") or "").strip() in allowed
+            and str(evidence.get("sector") or "").strip() in config.SECTORS
+            and str(evidence.get("sector") or "").strip() != config.SECTOR_UNKNOWN
+        ]
+
     if candidate.basis == "explicit_activity":
-        return bool(context.activity_descriptions) or bool(
-            evidence_types & {"source_activity", "official_subject_activity"}
+        sectors = sectors_for("source_activity", "official_subject_activity")
+        return bool(sectors) and candidate.sector in sectors and all(
+            sector == candidate.sector for sector in sectors
         )
     if candidate.basis == "structured_metadata":
-        return "structured_source" in evidence_types
+        sectors = sectors_for("structured_source")
+        return bool(sectors) and candidate.sector in sectors and all(
+            sector == candidate.sector for sector in sectors
+        )
     if candidate.basis == "naf_support":
-        return bool(context.activity_code or context.activity_label)
+        sectors = sectors_for(osec.EVIDENCE_NAF_PRECISE)
+        return bool(sectors) and candidate.sector in sectors and all(
+            sector == candidate.sector for sector in sectors
+        )
     if candidate.basis == "multiple_signals":
-        return len(context.evidence_details) >= 2
+        sectors = sectors_for(*osec.AUDITED_EVIDENCE_TYPES)
+        supporting = [sector for sector in sectors if sector == candidate.sector]
+        return len(supporting) >= 2 and len(set(sectors)) == 1
     return False
 
 

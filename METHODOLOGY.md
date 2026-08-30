@@ -969,3 +969,6 @@ SourceFacts applique désormais le même contrat de rattachement de l'activité 
 #### Compatibilité du cache Sector
 
 Une évolution de prompt ou de taxonomie n'autorise jamais la réinjection aveugle d'un cache LLM. Pour le contrat 2026-08-28.8, Cyberwatch sait recalculer l'ancien Input_Hash en retirant uniquement les dimensions ajoutées par la migration (catégorie Association / Syndicat et outcome organisation_family). Une décision positive n'est réutilisée que si ce hash historique correspond exactement au contexte courant, si sa base est encore présente et si la nouvelle politique de taxonomie ne l'invalide pas. La ligne est alors migrée vers le hash courant avec Execution_Status=CACHE_COMPATIBLE_REUSE ; sinon elle reste un cache miss et doit être rejouée.
+
+
+Une migration de cache positive exige en outre une cohérence sectorielle des preuves actuelles. Pour `multiple_signals`, au moins deux preuves doivent soutenir le secteur historique et aucune preuve sectorielle auditée ne doit pointer vers un autre secteur. Pour `explicit_activity` et `structured_metadata`, les preuves pertinentes présentes ne doivent pas se contredire. Un cas tel que `service public` + `service numérique de l'État` reste donc abstentionnel tant qu'une autorité plus forte ne tranche pas.

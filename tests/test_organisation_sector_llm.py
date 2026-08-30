@@ -332,6 +332,52 @@ def test_legacy_cache_is_not_migrated_when_context_changed(make_item):
     assert report.cache_rows == []
 
 
+def test_legacy_multiple_signals_requires_consistent_sector_support():
+    conflicting = osl.OrganisationContext(
+        organisation_key="zero logement vacant",
+        organisation="Zéro Logement Vacant",
+        evidence_types=("source_activity",),
+        evidence_details=(
+            {"type": "source_activity", "sector": config.SECTOR_ADMIN, "text": "service public"},
+            {"type": "source_activity", "sector": config.SECTOR_TECH, "text": "service numérique de l'État"},
+        ),
+    )
+    candidate = osl.LlmOrganisationCandidate(
+        "zero logement vacant", config.SECTOR_ADMIN, 0.78, "multiple_signals", "historique",
+    )
+    assert not osl._legacy_candidate_has_current_support(conflicting, candidate)
+
+    aligned = osl.OrganisationContext(
+        organisation_key="ultra premium direct",
+        organisation="Ultra Premium Direct",
+        evidence_types=("source_activity",),
+        evidence_details=(
+            {"type": "source_activity", "sector": osec.SECTOR_AGRICULTURE, "text": "alimentation pour chiens et chats"},
+            {"type": "source_activity", "sector": osec.SECTOR_AGRICULTURE, "text": "spécialiste français de l'alimentation animale"},
+        ),
+    )
+    aligned_candidate = osl.LlmOrganisationCandidate(
+        "ultra premium direct", osec.SECTOR_AGRICULTURE, 0.92, "multiple_signals", "historique",
+    )
+    assert osl._legacy_candidate_has_current_support(aligned, aligned_candidate)
+
+
+def test_legacy_explicit_activity_rejects_conflicting_sector_evidence():
+    context = osl.OrganisationContext(
+        organisation_key="example",
+        organisation="Example",
+        evidence_types=("source_activity",),
+        evidence_details=(
+            {"type": "source_activity", "sector": config.SECTOR_RETAIL, "text": "vente en ligne"},
+            {"type": "source_activity", "sector": config.SECTOR_TECH, "text": "plateforme logicielle"},
+        ),
+    )
+    candidate = osl.LlmOrganisationCandidate(
+        "example", config.SECTOR_RETAIL, 0.80, "explicit_activity", "historique",
+    )
+    assert not osl._legacy_candidate_has_current_support(context, candidate)
+
+
 def test_legacy_services_cache_for_social_context_requires_fresh_decision(make_item):
     item = make_item(org="Association Exemple", sector=config.SECTOR_UNKNOWN)
     facts = [{
