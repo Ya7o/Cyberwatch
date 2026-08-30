@@ -318,18 +318,50 @@ def build_organisation_context(
     )
 
 
-def compute_input_hash(context: OrganisationContext, *, model: str, prompt_version: str) -> str:
-    """Hash déterministe : organisation + contexte transmis + taxonomie +
-    modèle + version de prompt (§18 du plan). Un cache hit n'appelle jamais
-    le LLM à nouveau."""
+def _compute_input_hash_payload(
+    context_payload: dict, *, taxonomy: list[str], model: str, prompt_version: str,
+) -> str:
     payload = {
-        "context": context.to_payload(),
-        "taxonomy": list(config.SECTORS),
+        "context": context_payload,
+        "taxonomy": list(taxonomy),
         "model": model,
         "prompt_version": prompt_version,
     }
     blob = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def compute_input_hash(context: OrganisationContext, *, model: str, prompt_version: str) -> str:
+    """Hash déterministe du contrat LLM courant."""
+    return _compute_input_hash_payload(
+        context.to_payload(), taxonomy=list(config.SECTORS), model=model,
+        prompt_version=prompt_version,
+    )
+
+
+# Contrat de migration explicitement borné. Le passage 2026-08-28.8 ->
+# 2026-08-30.9 a ajouté Association / Syndicat à la taxonomie et
+# organisation_family aux outcomes de contexte. Il ne doit pas effacer une
+# décision positive si le contexte métier sous-jacent est strictement le même.
+LEGACY_COMPATIBLE_PROMPT_VERSIONS = frozenset({"2026-08-28.8"})
+
+
+def _legacy_compatible_input_hash(
+    context: OrganisationContext, *, model: str, prompt_version: str,
+) -> str:
+    if prompt_version not in LEGACY_COMPATIBLE_PROMPT_VERSIONS:
+        return ""
+    payload = context.to_payload()
+    payload["evidence_stage_outcomes"] = [
+        value for value in payload.get("evidence_stage_outcomes", [])
+        if value.get("type") != osec.EVIDENCE_ORGANISATION_FAMILY
+    ]
+    legacy_taxonomy = [
+        sector for sector in config.SECTORS if sector != config.SECTOR_ASSOCIATION
+    ]
+    return _compute_input_hash_payload(
+        payload, taxonomy=legacy_taxonomy, model=model, prompt_version=prompt_version,
+    )
 
 
 # --------------------------------------------------------------------------
@@ -494,6 +526,94 @@ def _taxonomy_supports_candidate(
     return True
 
 
+def _legacy_candidate_has_current_support(
+    context: OrganisationContext, candidate: LlmOrganisationCandidate,
+) -> bool:
+    """Ne migre une ancienne décision que si sa base existe encore."""
+    evidence_types = set(context.evidence_types)
+    if candidate.basis == "explicit_activity":
+        return bool(context.activity_descriptions) or bool(
+            evidence_types & {"source_activity", "official_subject_activity"}
+        )
+    if candidate.basis == "structured_metadata":
+        return "structured_source" in evidence_types
+    if candidate.basis == "naf_support":
+        return bool(context.activity_code or context.activity_label)
+    if candidate.basis == "multiple_signals":
+        return len(context.evidence_details) >= 2
+    return False
+
+
+def _migrate_legacy_positive_cache(
+    cached: dict, context: OrganisationContext, *, current_input_hash: str,
+    effective_model: str, current_prompt_version: str,
+) -> dict | None:
+    """Migration sûre du cache positif 2026-08-28.8.
+
+    Le vieux hash est recalculé avec l'ancien contrat exact. Un hit prouve que
+    le contexte métier n'a pas changé ; seuls la taxonomie, le prompt et la
+    nouvelle étape organisation_family expliquent alors l'invalidation.
+    """
+    if current_prompt_version != PROMPT_VERSION:
+        return None
+    legacy_prompt = str(cached.get("Prompt_Version") or "").strip()
+    cached_model = str(cached.get("Model") or "").strip()
+    if legacy_prompt not in LEGACY_COMPATIBLE_PROMPT_VERSIONS or cached_model != effective_model:
+        return None
+    if _cached_decision_outcome(cached) != "PRODUCED":
+        return None
+    if cached.get("Input_Hash") != _legacy_compatible_input_hash(
+        context, model=cached_model, prompt_version=legacy_prompt,
+    ):
+        return None
+
+    sector = str(cached.get("Sector") or "").strip()
+    basis = str(cached.get("Basis") or "").strip()
+    try:
+        confidence = float(cached.get("Confidence") or 0.0)
+    except (TypeError, ValueError):
+        return None
+    if (
+        sector not in config.SECTORS or sector == config.SECTOR_UNKNOWN
+        or basis not in ACTIONABLE_BASIS_VALUES
+        or confidence < MIN_ACTIONABLE_CONFIDENCE
+    ):
+        return None
+
+    candidate = LlmOrganisationCandidate(
+        context.organisation_key, sector, confidence, basis,
+        str(cached.get("Reason") or "").strip(),
+    )
+    if not _legacy_candidate_has_current_support(context, candidate):
+        return None
+    if not _taxonomy_supports_candidate(context, candidate):
+        return None
+
+    # Le nouveau prompt corrige précisément les associations/syndicats forcés
+    # auparavant vers Services aux entreprises : ces cas doivent être rejoués,
+    # jamais migrés automatiquement.
+    social_text = searchable(" ".join([
+        context.organisation, *context.activity_descriptions,
+        *(str(value.get("text") or "") for value in context.evidence_details),
+    ]))
+    social_markers = (
+        "association", "syndicat", "syndicale", "confederation syndicale",
+        "federation syndicale", "union syndicale", "caritative",
+    )
+    if sector == config.SECTOR_SERVICES and any(marker in social_text for marker in social_markers):
+        return None
+
+    migrated = dict(cached)
+    migrated.update({
+        "Input_Hash": current_input_hash,
+        "Model": effective_model,
+        "Prompt_Version": current_prompt_version,
+        "Decision_Status": "PRODUCED",
+        "Execution_Status": "CACHE_COMPATIBLE_REUSE",
+    })
+    return migrated
+
+
 def call_llm_batch(
     batch: list[tuple[str, OrganisationContext]],
     *,
@@ -554,6 +674,7 @@ def call_llm_batch(
 class EnrichmentReport:
     organisations_selected: int = 0
     cache_hits: int = 0
+    compatible_cache_hits: int = 0
     cache_misses: int = 0
     calls: int = 0
     candidates: int = 0
@@ -664,6 +785,17 @@ def enrich_unknown_organisation_sectors(
             if cached_outcome == "NO_MATCH":
                 report.abstentions += 1
             continue
+        if not force and cached is not None:
+            migrated = _migrate_legacy_positive_cache(
+                cached, context, current_input_hash=input_hash,
+                effective_model=effective_model, current_prompt_version=prompt_version,
+            )
+            if migrated is not None:
+                updated_rows[key] = migrated
+                report.cache_hits += 1
+                report.compatible_cache_hits += 1
+                report.outcomes[key] = "PRODUCED"
+                continue
         # Une entrée périmée ne doit pas être réinjectée si le nouvel appel
         # échoue, si le budget est épuisé ou si le LLM est désactivé.
         updated_rows.pop(key, None)
