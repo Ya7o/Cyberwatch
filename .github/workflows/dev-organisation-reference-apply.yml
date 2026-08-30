@@ -42,8 +42,11 @@ jobs:
       - name: Suite complète et contrôles
         run: |
           python -m pytest tests/ -q
-          node --check assets/app.js
+          node --check assets/dashboard-v2.js
+          node --check assets/dashboard-integrity.js
           python -m cyberwatch check --allow-uninitialized
+          python -m cyberwatch build-site
+          python -m cyberwatch check
       - name: Publier la branche
         run: |
           git config user.name "cyberwatch-bot"
