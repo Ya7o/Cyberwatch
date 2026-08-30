@@ -956,3 +956,11 @@ la qualification canonique et les collecteurs directs les remplacent.
 
 `VEILLE_LLM` désigne désormais exclusivement la veille complémentaire
 Réunion/Mayotte et suit le contrat d'admission décrit plus haut.
+
+### Référentiel déterministe des familles d’organisations
+
+La qualification `Sector` dispose d'un canal `organisation_family` versionné dans `reference/organisation_families.csv`. Il couvre les familles institutionnelles et organisationnelles dont le nom complet ou le sigle constitue une preuve auto-descriptive : SDIS, préfectures, ministères, collectivités, CCAS/CIAS, organismes sociaux, ARS, établissements hospitaliers, CROUS/rectorats, juridictions, opérateurs publics et organisations syndicales connues.
+
+La préséance est : override manuel → famille organisationnelle déterministe → NAF officiel précis → décision LLM finale. Une correspondance de famille est `HIGH`, auditée avec sa provenance et ne consomme aucun appel LLM. Les sigles ne sont jamais cherchés comme de simples sous-chaînes : leur mode de correspondance et les contre-exemples commerciaux sont testés.
+
+SourceFacts applique désormais le même contrat de rattachement de l'activité à la victime au moment de l'acceptation et au moment de la promotion. Un statut sémantique `accepted` ne peut donc plus masquer une valeur vide publiée. Les abstentions de secteur LLM sont persistées avec `Decision_Status=ABSTAINED` et `Execution_Status=EXECUTED`, afin qu'un replay sans budget conserve `NO_MATCH` au lieu de réécrire l'histoire en `BUDGET_BLOCKED`.

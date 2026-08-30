@@ -40,7 +40,7 @@ from .model import Item
 from .normalize import searchable
 
 TASK = "organisation_sector"
-PROMPT_VERSION = "2026-08-28.8"
+PROMPT_VERSION = "2026-08-30.9"
 #: Audit 2026-08-26 (run réel 32968633926) : 11 organisations très
 #: différentes traitées en un seul appel n'ont produit que 75 tokens de
 #: sortie au total (~7/organisation) — famine de tokens qui expliquait des
@@ -76,6 +76,7 @@ CACHE_CSV = osec.LLM_CACHE_CSV
 CACHE_COLUMNS = [
     "Organisation_Key", "Organisation", "Input_Hash", "Sector", "Confidence",
     "Basis", "Reason", "Model", "Prompt_Version", "Created_At",
+    "Decision_Status", "Execution_Status",
 ]
 
 BASIS_VALUES = (
@@ -113,10 +114,8 @@ SYSTEM_PROMPT = (
     "seul, une intuition ou une connaissance interne non corroborée ne sont "
     "pas des preuves publiables : réponds alors Inconnu avec "
     "basis=insufficient.\n"
-    "La taxonomie n'est pas exhaustive : n'oblige jamais une activité sociale, "
-    "caritative ou associative à entrer dans 'Services aux entreprises', qui "
-    "désigne exclusivement des prestations B2B. Exemple : une banque alimentaire "
-    "qui fournit de l'aide alimentaire reste Inconnu dans cette taxonomie. "
+    "La taxonomie contient désormais Association / Syndicat pour une nature syndicale ou professionnelle explicitement établie. "
+    "N'utilise jamais Services aux entreprises comme catégorie par défaut pour une association, un syndicat ou une structure caritative ; ce secteur désigne exclusivement des prestations B2B. "
     "Vérifie le sens du texte de preuve indépendamment du secteur candidat qui "
     "l'accompagne ; un candidat mal mappé ne doit pas être recopié.\n"
     "'organisation_knowledge' signifie uniquement que tu utilises tes "
@@ -363,6 +362,21 @@ def _cache_by_key(rows: list[dict]) -> dict[str, dict]:
         canonical["Organisation_Key"] = key
         indexed[key] = canonical
     return indexed
+
+
+def _cached_decision_outcome(row: dict) -> str:
+    """Restaure la décision métier indépendamment de l'état du runtime."""
+    status = str(row.get("Decision_Status") or "").strip().upper()
+    if status == "ABSTAINED":
+        return "NO_MATCH"
+    if status == "PRODUCED":
+        return "PRODUCED"
+    # Compatibilité avec les caches historiques qui ne stockaient que les
+    # décisions positives et ne possédaient pas encore Decision_Status.
+    sector = str(row.get("Sector") or "").strip()
+    if sector in config.SECTORS and sector != config.SECTOR_UNKNOWN:
+        return "PRODUCED"
+    return ""
 
 
 # --------------------------------------------------------------------------
@@ -643,9 +657,12 @@ def enrich_unknown_organisation_sectors(
         )
         input_hash = compute_input_hash(context, model=effective_model, prompt_version=prompt_version)
         cached = cache_by_key.get(key)
-        if not force and cached is not None and cached.get("Input_Hash") == input_hash:
+        cached_outcome = _cached_decision_outcome(cached or {})
+        if not force and cached is not None and cached.get("Input_Hash") == input_hash and cached_outcome:
             report.cache_hits += 1
-            report.outcomes[key] = "PRODUCED"
+            report.outcomes[key] = cached_outcome
+            if cached_outcome == "NO_MATCH":
+                report.abstentions += 1
             continue
         # Une entrée périmée ne doit pas être réinjectée si le nouvel appel
         # échoue, si le budget est épuisé ou si le LLM est désactivé.
@@ -674,6 +691,21 @@ def enrich_unknown_organisation_sectors(
                 if candidate is None:
                     report.abstentions += 1
                     report.outcomes[key] = "NO_MATCH"
+                    context = next(context for pending_key, context, _hash in pending if pending_key == key)
+                    updated_rows[key] = {
+                        "Organisation_Key": key,
+                        "Organisation": context.organisation,
+                        "Input_Hash": hash_by_key.get(key, ""),
+                        "Sector": "",
+                        "Confidence": "",
+                        "Basis": "insufficient",
+                        "Reason": "Abstention LLM : aucune décision sectorielle publiable pour ce contexte.",
+                        "Model": effective_model,
+                        "Prompt_Version": prompt_version,
+                        "Created_At": now,
+                        "Decision_Status": "ABSTAINED",
+                        "Execution_Status": "EXECUTED",
+                    }
                     continue
                 report.candidates += 1
                 report.outcomes[key] = "PRODUCED"
@@ -689,6 +721,8 @@ def enrich_unknown_organisation_sectors(
                     "Model": effective_model,
                     "Prompt_Version": prompt_version,
                     "Created_At": now,
+                    "Decision_Status": "PRODUCED",
+                    "Execution_Status": "EXECUTED",
                 }
 
     if dry_run or no_llm:
