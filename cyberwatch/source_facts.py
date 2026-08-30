@@ -11,7 +11,7 @@ import json
 import logging
 import re
 
-from . import config, source_facts_ai
+from . import config, organisation_family, source_facts_ai
 from .headline import is_organisation_name_only, is_publishable_headline, rejection_reason
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
@@ -247,9 +247,31 @@ def _activity_evidence_matches_organisation(organisation: str, evidence: str) ->
         return True
     stop = {"de", "du", "des", "la", "le", "les", "l", "d", "et", "the", "of"}
     tokens = [token for token in org.split() if token not in stop and len(token) >= 3]
-    hits = {token for token in tokens if token in proof.split()}
-    if any(len(token) <= 5 and token.isalpha() and token.upper() == token for token in organisation.split()):
-        return bool(hits)
+    proof_tokens = set(proof.split())
+    hits = {token for token in tokens if token in proof_tokens}
+    acronyms = {
+        searchable(token)
+        for token in organisation.split()
+        if len(token) <= 5 and token.isalpha() and token.upper() == token
+    }
+    if acronyms:
+        if acronyms & proof_tokens:
+            return True
+        # Une forme développée peut légitimement remplacer le sigle, mais elle
+        # doit aussi conserver un élément distinctif du nom (par ex. Moselle),
+        # sans quoi une mention générique du type d'organisme serait acceptée.
+        family = organisation_family.match_organisation_family(organisation)
+        if family is None:
+            return False
+        rule = next(
+            (value for value in organisation_family.load_rules() if value.family_id == family.family_id),
+            None,
+        )
+        expanded = bool(rule) and any(
+            prefix in proof
+            for prefix in (*rule.full_name_prefixes, *rule.aliases)
+        )
+        return expanded and bool(hits - acronyms)
     return len(hits) >= min(2, len(set(tokens))) if tokens else False
 
 

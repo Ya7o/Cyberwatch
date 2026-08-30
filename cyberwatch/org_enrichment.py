@@ -115,9 +115,9 @@ def _env_bool(name: str, default: bool) -> bool:
 ORG_ENRICHMENT_TIMEOUT_SECONDS = _env_int("ORG_ENRICHMENT_TIMEOUT_SECONDS", 10)
 ORG_ENRICHMENT_MAX_RETRIES = _env_int("ORG_ENRICHMENT_MAX_RETRIES", 1)
 
-# Version 4 : invalidation ciblée des anciens matches d'acronymes et remise à
-# zéro des validations calculées avec les anciens mappings NAF.
-ORG_ENRICHMENT_CACHE_VERSION = "4"
+# Version 5 : les entités explicitement fermées par le registre ne peuvent
+# plus confirmer une identité homonyme actuelle (cas réel Marie Blachère).
+ORG_ENRICHMENT_CACHE_VERSION = "5"
 
 MATCHED = "MATCHED"
 AMBIGUOUS = "AMBIGUOUS"
@@ -298,7 +298,13 @@ def _candidate_names(candidate: dict) -> list[str]:
 
 
 def _match(query_name: str, payload: dict) -> tuple[str, dict]:
-    """Match exact raison sociale/nom commercial, avec SIREN unique."""
+    """Match exact d'une entité active, avec SIREN unique.
+
+    Un nom identique ne suffit pas lorsque le registre indique explicitement
+    que l'entité a cessé son activité. Sans ce filtre, une enseigne actuelle
+    peut hériter du NAF d'un homonyme historique et transformer cette erreur
+    d'identité en preuve sectorielle ``HIGH``.
+    """
     query_key = organisation_key(query_name)
     if not query_key:
         return NOT_FOUND, {}
@@ -310,6 +316,10 @@ def _match(query_name: str, payload: dict) -> tuple[str, dict]:
     exact = []
     for candidate in results:
         if not isinstance(candidate, dict):
+            continue
+        administrative_status = str(candidate.get("etat_administratif") or "").strip().upper()
+        closure_date = str(candidate.get("date_fermeture") or "").strip()
+        if administrative_status == "C" or closure_date:
             continue
         if any(organisation_key(name) == query_key for name in _candidate_names(candidate)):
             exact.append(candidate)

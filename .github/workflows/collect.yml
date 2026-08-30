@@ -2,11 +2,8 @@ name: COLLECT
 
 on:
   schedule:
-    # Passage nominal : 11:00 à La Réunion (UTC+4).
+    # Collecte quotidienne : 11:00 à La Réunion (UTC+4).
     - cron: "0 7 * * *"
-    # Filet de rattrapage : 13:00 à La Réunion. Il ne recollecte que si
-    # aucun CREATE/MAJ réussi n'a déjà été enregistré aujourd'hui.
-    - cron: "0 9 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -66,35 +63,10 @@ jobs:
             echo "start=${{ inputs.start }}" >> "$GITHUB_OUTPUT"
             echo "as_of=${{ inputs.as_of }}" >> "$GITHUB_OUTPUT"
             echo "backfill=0" >> "$GITHUB_OUTPUT"
-            echo "skip=0" >> "$GITHUB_OUTPUT"
           else
             echo "mode=maj" >> "$GITHUB_OUTPUT"
             echo "layers=all" >> "$GITHUB_OUTPUT"
             echo "as_of=" >> "$GITHUB_OUTPUT"
-
-            # Le second cron est un filet, pas une seconde collecte normale.
-            if [ "${{ github.event.schedule }}" = "0 9 * * *" ]; then
-              HAS_TODAY_OK="$(python - <<'PY'
-          import datetime as dt
-          from cyberwatch import store
-
-          today = dt.datetime.now(dt.timezone(dt.timedelta(hours=4))).date().isoformat()
-          ok = any(
-              str(row.get("As_Of") or "")[:10] == today
-              and str(row.get("Mode") or "").upper() in {"CREATE", "MAJ"}
-              and str(row.get("Overall_Status") or "").upper() == "OK"
-              for row in store.load_run_log()
-          )
-          print("1" if ok else "0")
-          PY
-          )"
-              if [ "$HAS_TODAY_OK" = "1" ]; then
-                echo "start=" >> "$GITHUB_OUTPUT"
-                echo "backfill=0" >> "$GITHUB_OUTPUT"
-                echo "skip=1" >> "$GITHUB_OUTPUT"
-                exit 0
-              fi
-            fi
 
             NEEDS_BACKFILL="$(python - <<'PY'
           import os
@@ -111,13 +83,8 @@ jobs:
               echo "start=" >> "$GITHUB_OUTPUT"
               echo "backfill=0" >> "$GITHUB_OUTPUT"
             fi
-            echo "skip=0" >> "$GITHUB_OUTPUT"
           fi
-      - name: Backup déjà couvert
-        if: steps.scope.outputs.skip == '1'
-        run: echo "Une collecte CREATE/MAJ réussie existe déjà aujourd'hui ; le filet de 13:00 ne recollecte pas."
       - name: Collecter
-        if: steps.scope.outputs.skip != '1'
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
@@ -160,13 +127,13 @@ jobs:
             python -m cyberwatch replay
           fi
       - name: Dev checks et dashboard
-        if: steps.scope.outputs.skip != '1' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
           python -m cyberwatch check
           python -m cyberwatch build-site
           python -m cyberwatch check
       - name: Résumé du run
-        if: steps.scope.outputs.skip != '1' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         shell: bash
         run: |
           echo "## Cyberwatch — ${{ steps.scope.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
@@ -180,7 +147,7 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           python -m cyberwatch.source_portfolio --markdown >> "$GITHUB_STEP_SUMMARY"
       - name: Publier les données
-        if: steps.scope.outputs.skip != '1' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -190,7 +157,7 @@ jobs:
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
       - name: Promouvoir les données en prod
-        if: github.ref_name == 'main' && steps.scope.outputs.skip != '1' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+        if: github.ref_name == 'main' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         run: |
           set -euo pipefail
           git fetch origin prod

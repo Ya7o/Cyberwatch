@@ -18,6 +18,7 @@ from cyberwatch import config, organisation_family
     ("Communauté d'agglomération du Grand Annecy", "FR_INTERCOMMUNALITY", config.SECTOR_ADMIN),
     ("CGT Éduc’Action Créteil", "FR_TRADE_UNION", config.SECTOR_ASSOCIATION),
     ("CFDT Santé Sociaux", "FR_TRADE_UNION", config.SECTOR_ASSOCIATION),
+    ("FO Métaux", "FR_TRADE_UNION", config.SECTOR_ASSOCIATION),
     ("Force ouvrière", "FR_TRADE_UNION", config.SECTOR_ASSOCIATION),
     ("Syndicat professionnel des métiers du numérique", "FR_PROFESSIONAL_UNION", config.SECTOR_ASSOCIATION),
     ("France Travail", "FR_FRANCE_TRAVAIL", config.SECTOR_ADMIN),

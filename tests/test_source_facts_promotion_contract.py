@@ -13,6 +13,14 @@ def test_activity_evidence_accepts_editorial_variant_of_victim_name():
         "SDIS de la Moselle",
         "Le SDIS 57 est le service départemental d’incendie et de secours de la Moselle.",
     )
+    assert sf._activity_evidence_matches_organisation(
+        "SDIS de la Moselle",
+        "Le service départemental d’incendie et de secours de la Moselle intervient.",
+    )
+    assert not sf._activity_evidence_matches_organisation(
+        "SDIS de la Moselle",
+        "Le département de la Moselle accompagne ses services publics.",
+    )
     assert not sf._activity_evidence_matches_organisation(
         "SDIS de la Moselle",
         "Une entreprise spécialisée dans les services informatiques.",

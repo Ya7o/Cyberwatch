@@ -15,9 +15,9 @@
     "unknown": 16
    },
    "sector": {
-    "known": 56,
-    "known_pct": 42.1,
-    "unknown": 77
+    "known": 55,
+    "known_pct": 41.3,
+    "unknown": 78
    },
    "threat": {
     "known": 133,
@@ -28,7 +28,7 @@
   "dated_incidents": 133,
   "diversity_90d": {
    "location": 0.071,
-   "sector": 0.871,
+   "sector": 0.864,
    "threat": 0.385
   },
   "exposure": {
@@ -238,7 +238,7 @@
    "sources": 4,
    "unknown_pct": {
     "location": 12.0,
-    "sector": 57.9,
+    "sector": 58.7,
     "threat": 0.0
    },
    "with_summary_pct": 75.2
@@ -322,7 +322,7 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 116,
-     "known_ratio": 0.81,
+     "known_ratio": 0.807,
      "level": "high",
      "multi_source_incidents": 78,
      "score": 88
@@ -356,7 +356,7 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 112,
-     "known_ratio": 0.759,
+     "known_ratio": 0.756,
      "level": "high",
      "multi_source_incidents": 71,
      "score": 86
@@ -669,31 +669,6 @@
     },
     "current": 3,
     "delta": 3,
-    "dimension": "sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-3C5B9E546782",
-     "INC-D5BEF3A49E4D",
-     "INC-F599B89D9F21"
-    ],
-    "kind": "emerging",
-    "label": "Finance / Assurance",
-    "previous": 0,
-    "share_pct": 2.3,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 3,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 2,
-     "score": 50
-    },
-    "current": 3,
-    "delta": 3,
     "dimension": "threat_sector",
     "excess_points": null,
     "incident_ids": [
@@ -801,7 +776,7 @@
    ],
    "sector": [
     {
-     "count": 77,
+     "count": 78,
      "label": "Inconnu"
     },
     {
@@ -829,8 +804,8 @@
      "label": "Association / Syndicat"
     },
     {
-     "count": 3,
-     "label": "Finance / Assurance"
+     "count": 2,
+     "label": "Agriculture / Agroalimentaire"
     }
    ],
    "threat": [

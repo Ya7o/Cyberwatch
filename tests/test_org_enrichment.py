@@ -146,6 +146,48 @@ class TestMatching:
 
         assert record.Match_Status == "NOT_FOUND"
 
+    def test_homonyme_ferme_ne_confirme_pas_une_identite_actuelle(self, monkeypatch):
+        closed = {
+            **_result("Marie Blachère", "068700327", code="64.46", section="K"),
+            "etat_administratif": "C",
+            "date_fermeture": "1989-11-08",
+        }
+        monkeypatch.setattr(
+            org_enrichment.requests, "get",
+            lambda *a, **k: _FakeResponse(200, {"results": [closed]}),
+        )
+        state = enabled_state(official_site_max_calls=0)
+
+        record = org_enrichment.resolve(
+            "marie blachere", "Marie Blachère", "2026-08-30", state,
+        )
+
+        # Le négatif reste éphémère lorsque le fallback officiel est hors
+        # budget : surtout, aucun NAF Finance n'est publié comme preuve forte.
+        assert record is None
+        assert state.calls_matched == 0
+        assert "marie blachere" not in state.cache
+
+    def test_un_homonyme_ferme_n_ecarte_pas_le_match_actif(self, monkeypatch):
+        closed = {
+            **_result("Acme Industrie", "111111111"),
+            "etat_administratif": "C",
+            "date_fermeture": "2020-01-01",
+        }
+        active = {**_result("Acme Industrie", "222222222"), "etat_administratif": "A"}
+        monkeypatch.setattr(
+            org_enrichment.requests, "get",
+            lambda *a, **k: _FakeResponse(200, {"results": [closed, active]}),
+        )
+        state = enabled_state()
+
+        record = org_enrichment.resolve(
+            "acme industrie", "Acme Industrie", "2026-08-30", state,
+        )
+
+        assert record.Match_Status == "MATCHED"
+        assert record.Company_ID == "222222222"
+
 
 class TestCache:
     def test_cache_hit_zero_appel_http(self, monkeypatch):

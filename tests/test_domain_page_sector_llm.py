@@ -5,8 +5,14 @@ import json
 
 import pytest
 
-from cyberwatch import config, domain_page_sector as dps, llm_runtime
+from cyberwatch import config, domain_page_sector as dps, llm_runtime, store
 from cyberwatch import domain_page_sector_llm as dpl
+
+
+@pytest.fixture(autouse=True)
+def _isolate_domain_page_cache(monkeypatch, tmp_path):
+    """Les appels simulés peuvent persister leur cache sans toucher data/."""
+    monkeypatch.setattr(store, "ITEMS_CSV", tmp_path / "items.csv")
 
 
 class _Response:

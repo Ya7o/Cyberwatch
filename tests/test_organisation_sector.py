@@ -46,7 +46,7 @@ def test_propagation_from_naf_precise(make_item):
         "Query_Name": "Acme Sante",
         "Match_Status": "MATCHED",
         "Company_ID": "123456789",
-        "Cache_Version": "4",
+        "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
         "Activity_Code": "86.10Z",
     }]
     decisions = osec.resolve_all_organisation_sectors(
@@ -321,7 +321,7 @@ def test_multiple_identical_strong_evidences_confirm(make_item):
         "Query_Name": "Acme",
         "Match_Status": "MATCHED",
         "Company_ID": "123456789",
-        "Cache_Version": "4",
+        "Cache_Version": org_enrichment.ORG_ENRICHMENT_CACHE_VERSION,
         "Activity_Code": "70.22Z",
     }]
     decisions = osec.resolve_all_organisation_sectors(
