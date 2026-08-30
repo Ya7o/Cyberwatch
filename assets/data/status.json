@@ -4,8 +4,8 @@
   "briefing": [
    "France métropolitaine apparaît sur 30 jours avec 18 incidents, contre aucun sur la période précédente (confiance élevée).",
    "Fuite de données apparaît sur 30 jours avec 16 incidents, contre aucun sur la période précédente (confiance élevée).",
-   "Commerce / Distribution apparaît sur 30 jours avec 4 incidents, contre aucun sur la période précédente (confiance moyenne).",
-   "Administration / Collectivité apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance faible).",
+   "Administration / Collectivité apparaît sur 30 jours avec 7 incidents, contre aucun sur la période précédente (confiance moyenne).",
+   "Nouveau couple observé Fuite de données × Administration / Collectivité : 7 incidents sur 30 jours (confiance moyenne).",
    "Ransomware apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance faible)."
   ],
   "coverage": {
@@ -15,9 +15,9 @@
     "unknown": 3
    },
    "sector": {
-    "known": 13,
-    "known_pct": 61.9,
-    "unknown": 8
+    "known": 11,
+    "known_pct": 52.4,
+    "unknown": 10
    },
    "threat": {
     "known": 21,
@@ -28,7 +28,7 @@
   "dated_incidents": 21,
   "diversity_90d": {
    "location": 0.0,
-   "sector": 0.914,
+   "sector": 0.72,
    "threat": 0.645
   },
   "exposure": {
@@ -62,20 +62,20 @@
     "ransomware_pct": 14.3,
     "sectors": [
      {
-      "count": 4,
-      "label": "Commerce / Distribution"
-     },
-     {
-      "count": 3,
+      "count": 7,
       "label": "Administration / Collectivité"
      },
      {
-      "count": 2,
-      "label": "Numérique / Technologie"
+      "count": 1,
+      "label": "Association / Syndicat"
      },
      {
       "count": 1,
-      "label": "Agriculture / Agroalimentaire"
+      "label": "Commerce / Distribution"
+     },
+     {
+      "count": 1,
+      "label": "Finance / Assurance"
      }
     ],
     "threat_profile_reliable": false,
@@ -145,20 +145,20 @@
     "ransomware_pct": 14.3,
     "sectors": [
      {
-      "count": 4,
-      "label": "Commerce / Distribution"
-     },
-     {
-      "count": 3,
+      "count": 7,
       "label": "Administration / Collectivité"
      },
      {
-      "count": 2,
-      "label": "Numérique / Technologie"
+      "count": 1,
+      "label": "Association / Syndicat"
      },
      {
       "count": 1,
-      "label": "Agriculture / Agroalimentaire"
+      "label": "Commerce / Distribution"
+     },
+     {
+      "count": 1,
+      "label": "Finance / Assurance"
      }
     ],
     "threat_profile_reliable": false,
@@ -215,7 +215,7 @@
    "sources": 4,
    "unknown_pct": {
     "location": 14.3,
-    "sector": 38.1,
+    "sector": 47.6,
     "threat": 0.0
    },
    "with_summary_pct": 90.5
@@ -229,22 +229,19 @@
    ],
    "sector": {
     "Administration / Collectivité": [
-     3
+     7
     ],
-    "Agriculture / Agroalimentaire": [
+    "Association / Syndicat": [
      1
     ],
     "Commerce / Distribution": [
-     4
+     1
     ],
     "Finance / Assurance": [
      1
     ],
-    "Industrie / Manufacture": [
-     1
-    ],
     "Numérique / Technologie": [
-     2
+     1
     ]
    },
    "sources_observed": [
@@ -271,10 +268,10 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 18,
-     "known_ratio": 0.87,
+     "known_ratio": 0.852,
      "level": "high",
      "multi_source_incidents": 8,
-     "score": 84
+     "score": 83
     },
     "current": 18,
     "delta": 18,
@@ -305,7 +302,7 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 16,
-     "known_ratio": 0.854,
+     "known_ratio": 0.875,
      "level": "high",
      "multi_source_incidents": 7,
      "score": 83
@@ -338,51 +335,58 @@
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 4,
+     "incidents": 7,
      "known_ratio": 1.0,
      "level": "medium",
-     "multi_source_incidents": 2,
-     "score": 51
+     "multi_source_incidents": 0,
+     "score": 52
     },
-    "current": 4,
-    "delta": 4,
+    "current": 7,
+    "delta": 7,
     "dimension": "sector",
     "excess_points": null,
     "incident_ids": [
-     "INC-92B98E38166E",
-     "INC-A3C6A92F895D",
-     "INC-D9A0C6DBD358",
-     "INC-EB3AC8CB9892"
-    ],
-    "kind": "emerging",
-    "label": "Commerce / Distribution",
-    "previous": 0,
-    "share_pct": 19.0,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 3,
-     "known_ratio": 0.889,
-     "level": "low",
-     "multi_source_incidents": 1,
-     "score": 40
-    },
-    "current": 3,
-    "delta": 3,
-    "dimension": "sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-39643434BF76",
-     "INC-68BCE0C36286",
-     "INC-C7D194A6BFDF"
+     "INC-4A2F32292A93",
+     "INC-7EA20E0EEBB7",
+     "INC-8B71255FD2C5",
+     "INC-BD3012E03337",
+     "INC-C6401641511B",
+     "INC-D910AD541B6B",
+     "INC-FC866DCD1981"
     ],
     "kind": "emerging",
     "label": "Administration / Collectivité",
     "previous": 0,
-    "share_pct": 14.3,
+    "share_pct": 33.3,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 7,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 0,
+     "score": 52
+    },
+    "current": 7,
+    "delta": 7,
+    "dimension": "threat_sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-4A2F32292A93",
+     "INC-7EA20E0EEBB7",
+     "INC-8B71255FD2C5",
+     "INC-BD3012E03337",
+     "INC-C6401641511B",
+     "INC-D910AD541B6B",
+     "INC-FC866DCD1981"
+    ],
+    "kind": "new_pair",
+    "label": "Fuite de données × Administration / Collectivité",
+    "previous": 0,
+    "share_pct": 33.3,
     "window_days": 30
    },
    {
@@ -390,10 +394,10 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 3,
-     "known_ratio": 0.889,
+     "known_ratio": 0.556,
      "level": "low",
      "multi_source_incidents": 1,
-     "score": 40
+     "score": 33
     },
     "current": 3,
     "delta": 3,
@@ -424,24 +428,20 @@
    ],
    "sector": [
     {
-     "count": 8,
+     "count": 10,
      "label": "Inconnu"
     },
     {
-     "count": 4,
-     "label": "Commerce / Distribution"
-    },
-    {
-     "count": 3,
+     "count": 7,
      "label": "Administration / Collectivité"
     },
     {
-     "count": 2,
-     "label": "Numérique / Technologie"
+     "count": 1,
+     "label": "Association / Syndicat"
     },
     {
      "count": 1,
-     "label": "Agriculture / Agroalimentaire"
+     "label": "Commerce / Distribution"
     },
     {
      "count": 1,
@@ -449,11 +449,7 @@
     },
     {
      "count": 1,
-     "label": "Industrie / Manufacture"
-    },
-    {
-     "count": 1,
-     "label": "Santé"
+     "label": "Numérique / Technologie"
     }
    ],
    "threat": [
