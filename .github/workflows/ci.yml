@@ -26,6 +26,7 @@ jobs:
       - name: Syntaxe dashboard
         run: |
           node --check assets/dashboard-v2.js
+          node --check assets/dashboard-integrity.js
       - name: Contrats structurels légers
         run: python -m cyberwatch check --allow-uninitialized
       - name: Construire le dashboard et valider facts v3
