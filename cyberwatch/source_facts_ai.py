@@ -29,7 +29,7 @@ from .headline import MAX_HEADLINE_CHARS, is_organisation_name_only, is_publisha
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-08-26.source-facts.14"
+PROMPT_VERSION = "2026-08-30.source-facts.15"
 SCHEMA_VERSION = "9"
 LEGACY_PROMPT_VERSION = "2026-08-16.source-facts.5"
 LEGACY_SCHEMA_VERSION = "5"
@@ -104,14 +104,14 @@ FIELD_VERSIONS = {
     "file_counts": "file-counts-v1",
     "affected_systems": "affected-systems-v1",
     "affected_datasets": "affected-datasets-v1",
-    "activity_description": "activity-description-v1",
+    "activity_description": "activity-description-v2",
     # V4 (audit 2026-08-26, cas réel Dipeeo/FRENCHBREACHES) : un
     # activity_sector_match ne survit plus jamais si l'activity_description
     # du même appel LLM a échoué sa propre preuve (cf.
     # source_facts.py::_from_frenchbreaches/_from_cyberattaque_org) — un
     # secteur ne peut plus être orphelin d'une description. Invalide
     # uniquement ce champ, activity_description est inchangé.
-    "activity_sector_match": "activity-sector-match-v4",
+    "activity_sector_match": "activity-sector-match-v5",
     "threat_candidate": "threat-candidate-v1",
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
@@ -134,7 +134,7 @@ affected_counts contient uniquement un nombre de personnes, comptes, clients, ut
 vulnerabilities contient uniquement une vulnérabilité présentée comme exploitée ou liée à l'accès initial de cet incident. Une faille seulement potentielle, distincte de l'incident, ou la seule mention qu'une vulnérabilité a été corrigée ne suffit pas.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
 activity_description décrit en quelques mots l'activité de la victime seulement lorsque l'article la présente explicitement. Sa preuve doit désigner sans ambiguïté la victime et son activité ; ne rien déduire du nom, de l'attaque ou des données.
-activity_sector_match reprend l'activité que tu viens de décrire dans activity_description et choisis, parmi le secteur de la liste fournie, celui qui s'en rapproche le plus, quelle que soit la formulation exacte de l'article (ex. « développe des applications métiers », « plateforme No-Code », « éditeur de logiciels » désignent tous Numérique / Technologie). N'utilise jamais le type de données volées, les victimes de la fuite ou le type d'incident pour choisir un secteur. Même une activité associative, caritative, syndicale, politique ou cultuelle (banque alimentaire, association loi 1901, ONG, parti politique, syndicat professionnel, culte) doit recevoir le secteur professionnel le plus proche de la liste plutôt que Inconnu : choisis toujours la meilleure approximation disponible. Ne renvoie Inconnu que si activity_description est lui-même vide (rien à rapprocher).
+activity_sector_match reprend l'activité que tu viens de décrire dans activity_description et choisis, parmi le secteur de la liste fournie, celui qui s'en rapproche le plus, quelle que soit la formulation exacte de l'article (ex. « développe des applications métiers », « plateforme No-Code », « éditeur de logiciels » désignent tous Numérique / Technologie). N'utilise jamais le type de données volées, les victimes de la fuite ou le type d'incident pour choisir un secteur. Lorsqu'une activité explicitement décrite est syndicale ou relève d'une organisation professionnelle sans activité commerciale propre, utilise Association / Syndicat. Pour les autres activités associatives, choisis le secteur correspondant à l'activité réellement décrite ; ne force jamais Services aux entreprises par défaut. Ne renvoie Inconnu que si activity_description est lui-même vide (rien à rapprocher).
 threat_candidate désigne la menace seulement si l'article l'énonce explicitement ; ne l'infère jamais depuis l'acteur, les données ou une hypothèse.
 threat_actor doit être une entité distincte de la victime, explicitement identifiée comme responsable de l'attaque (pseudonyme, groupe nommé, société tierce) : jamais un pronom ("qui", "il", "elle"...) ni le nom de la victime elle-même, même si ce mot précède directement un verbe déclaratif comme "indique" ou "affirme". En cas de doute sur la nature du sujet, laisse threat_actor vide.
 impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident, jamais un risque possible, une conséquence potentielle ou une mise en garde ("risque de", "expose à", "pourrait entraîner" sont interdits). impact ne doit jamais se limiter à reformuler les catégories de données ou jeux de données déjà couverts par data_types/affected_datasets ; s'il n'y a pas de conséquence distincte explicitement rapportée (risque, réaction, coût, mesure prise), impact doit rester vide.
@@ -910,7 +910,9 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
     if "activity_description" in fields:
         fact = _normalize_fact(raw.get("activity_description"), context)
         if fact:
-            result["activity_description"] = fact
+            from . import source_facts as sf
+            if not organisation or sf._activity_evidence_matches_organisation(organisation, fact["evidence"]):
+                result["activity_description"] = fact
     if "activity_sector_match" in fields:
         fact = _normalize_fact(raw.get("activity_sector_match"), context)
         if fact and fact["value"] in config.SECTORS and fact["value"] != config.SECTOR_UNKNOWN:

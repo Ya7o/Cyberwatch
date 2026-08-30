@@ -71,6 +71,7 @@ from . import (
     context_sector,
     org_identity,
     org_enrichment,
+    organisation_family,
     sector as sector_policy,
     sector_registry,
     store,
@@ -112,6 +113,7 @@ LLM_CACHE_CSV = store.DATA_DIR / "organisation_sector_llm.csv"
 DOMAIN_PAGE_CACHE_CSV = store.DATA_DIR / "organisation_domain_page.csv"
 
 EVIDENCE_MANUAL_REFERENCE = "manual_reference"
+EVIDENCE_ORGANISATION_FAMILY = "organisation_family"
 EVIDENCE_STRUCTURED_SOURCE = "structured_source"
 EVIDENCE_WATCHLIST_HINT = "watchlist_hint"
 EVIDENCE_SAFE_NAME = "safe_name"
@@ -141,6 +143,7 @@ EVIDENCE_OFFICIAL_SITE = "official_site"
 #: LLM final (cf. PRECEDENCE plus bas, qui ne les liste plus).
 STRONG_EVIDENCE_TYPES = frozenset({
     EVIDENCE_MANUAL_REFERENCE,
+    EVIDENCE_ORGANISATION_FAMILY,
     EVIDENCE_NAF_PRECISE,
 })
 
@@ -248,6 +251,7 @@ class OrganisationSectorEvidence:
 
 AUDITED_EVIDENCE_TYPES: tuple[str, ...] = (
     EVIDENCE_MANUAL_REFERENCE,
+    EVIDENCE_ORGANISATION_FAMILY,
     EVIDENCE_NAF_PRECISE,
     EVIDENCE_STRUCTURED_SOURCE,
     EVIDENCE_WATCHLIST_HINT,
@@ -389,6 +393,26 @@ def _watchlist_evidence(items: list[Item]):
             EVIDENCE_WATCHLIST_HINT, "MEDIUM",
             source="watchlists.ALL_ENTITIES", evidence_text=canonical_name,
             item_id=item.Item_ID,
+        )
+
+
+
+def _organisation_family_evidence(items: list[Item]):
+    """Famille institutionnelle/syndicale versionnée, sans réseau ni LLM."""
+    seen: set[tuple[str, str]] = set()
+    for item in items:
+        match = organisation_family.match_organisation_family(item.Organisation_Raw)
+        if match is None:
+            continue
+        marker = (item.Organisation_Key, match.family_id)
+        if marker in seen:
+            continue
+        seen.add(marker)
+        yield OrganisationSectorEvidence(
+            item.Organisation_Key, item.Organisation_Raw, match.sector,
+            EVIDENCE_ORGANISATION_FAMILY, match.confidence or "HIGH",
+            source=match.source, evidence_text=match.evidence_text,
+            evidence_url=match.source_url, item_id=item.Item_ID,
         )
 
 
@@ -675,6 +699,7 @@ def collect_organisation_evidence(
 
     collectors = (
         _manual_reference_evidence(reference, reference_keys),
+        _organisation_family_evidence(items),
         _structured_source_evidence(items, source_fact_rows, policy),
         _watchlist_evidence(items),
         _safe_name_evidence(items),
@@ -721,6 +746,7 @@ def collect_organisation_evidence(
 #: préséance déclarée ici, jamais de l'ordre d'arrivée des preuves).
 PRECEDENCE: tuple[str, ...] = (
     EVIDENCE_MANUAL_REFERENCE,
+    EVIDENCE_ORGANISATION_FAMILY,
     EVIDENCE_NAF_PRECISE,
     EVIDENCE_LLM_ORGANISATION,
 )
@@ -983,6 +1009,7 @@ def evidence_audit_rows(
             for evidence in values:
                 authority = (
                     "MANUAL" if evidence.evidence_type == EVIDENCE_MANUAL_REFERENCE
+                    else "REFERENCE" if evidence.evidence_type == EVIDENCE_ORGANISATION_FAMILY
                     else "NAF" if evidence.evidence_type == EVIDENCE_NAF_PRECISE
                     else ""
                 )

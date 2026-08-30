@@ -219,6 +219,7 @@ SECTOR_ENERGY = "Énergie / Utilities"
 SECTOR_INDUSTRY = "Industrie / Manufacture"
 SECTOR_CONSTRUCTION = "Construction / BTP"
 SECTOR_SERVICES = "Services aux entreprises"
+SECTOR_ASSOCIATION = "Association / Syndicat"
 SECTOR_UNKNOWN = "Inconnu"
 
 SECTORS = [
@@ -234,6 +235,7 @@ SECTORS = [
     SECTOR_INDUSTRY,
     SECTOR_CONSTRUCTION,
     SECTOR_SERVICES,
+    SECTOR_ASSOCIATION,
     SECTOR_UNKNOWN,
 ]
 
@@ -258,6 +260,11 @@ ACTIVITY_TO_SECTOR = {
     "law firms": SECTOR_SERVICES,
     "accounting": SECTOR_SERVICES,
     "staffing recruiting": SECTOR_SERVICES,
+    "trade union": SECTOR_ASSOCIATION,
+    "labor union": SECTOR_ASSOCIATION,
+    "professional association": SECTOR_ASSOCIATION,
+    "nonprofit organization": SECTOR_ASSOCIATION,
+    "non profit organization": SECTOR_ASSOCIATION,
     "healthcare": SECTOR_HEALTH,
     "hospital health care": SECTOR_HEALTH,
     "pharmaceuticals": SECTOR_HEALTH,
@@ -300,6 +307,11 @@ SECTOR_NAME_RULES: list[tuple[str, list[str]]] = [
         "departement de", "police nationale", "police municipale",
         "gendarmerie nationale", "sapeurs pompiers",
         "service departemental d incendie",
+    ]),
+    (SECTOR_ASSOCIATION, [
+        "organisation syndicale", "syndicat professionnel", "union syndicale",
+        "confederation syndicale", "federation syndicale", "trade union",
+        "labor union", "organisation a but non lucratif",
     ]),
     (SECTOR_HEALTH, [
         "centre hospitalier", "hopital de", "clinique de", "clinique du",

@@ -230,13 +230,36 @@ def _extract_victim_activity(organisation: str, *texts: str) -> str:
     return ""
 
 
+def _activity_evidence_matches_organisation(organisation: str, evidence: str) -> bool:
+    """Même contrat pour la validation IA et la promotion SourceFacts.
+
+    L'ancien contrôle exigeait le libellé normalisé complet dans la citation ;
+    un cache pouvait donc être `accepted` puis rejeté ici pour une variante
+    éditoriale du nom. On accepte soit le nom complet, soit un faisceau de
+    jetons distinctifs de la victime (sigle inclus), jamais une citation sans
+    rattachement identifiable.
+    """
+    org = searchable(organisation)
+    proof = searchable(evidence)
+    if not org or not proof:
+        return False
+    if org in proof:
+        return True
+    stop = {"de", "du", "des", "la", "le", "les", "l", "d", "et", "the", "of"}
+    tokens = [token for token in org.split() if token not in stop and len(token) >= 3]
+    hits = {token for token in tokens if token in proof.split()}
+    if any(len(token) <= 5 and token.isalpha() and token.upper() == token for token in organisation.split()):
+        return bool(hits)
+    return len(hits) >= min(2, len(set(tokens))) if tokens else False
+
+
 def _ai_activity(ai_result: dict, organisation: str) -> tuple[str, str]:
     candidate = ai_result.get("activity_description") if isinstance(ai_result, dict) else None
     if not isinstance(candidate, dict):
         return "", ""
     value = str(candidate.get("value") or "").strip()
     evidence = str(candidate.get("evidence") or "").strip()
-    if not value or not evidence or searchable(organisation) not in searchable(evidence):
+    if not value or not evidence or not _activity_evidence_matches_organisation(organisation, evidence):
         return "", ""
     return value, evidence
 
@@ -649,6 +672,7 @@ def semantic_promotion_gaps(
         "vulnerabilities": "Vulnerabilities_JSON",
         "data_types": "Data_Types_JSON",
         "activity_description": "Activity_Description",
+        "activity_sector_match": "Activity_Sector_Match",
     }
     rich_fields = {
         "affected_counts",
@@ -1164,7 +1188,7 @@ def extract_source_fact(
 
 
 def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]:
-    refreshable = {"Summary", "Initial_Access", "Attack_Flow_JSON", "Impact"}
+    refreshable = {"Summary", "Initial_Access", "Attack_Flow_JSON", "Impact", "Activity_Description", "Activity_Sector_Match"}
     base = {"Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version", "Source_Metadata_JSON"}
 
     ai_field_for_column = {
@@ -1172,6 +1196,8 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
         "Initial_Access": "initial_access",
         "Attack_Flow_JSON": "attack_flow",
         "Impact": "impact",
+        "Activity_Description": "activity_description",
+        "Activity_Sector_Match": "activity_sector_match",
     }
 
     def merge_row(old: dict, new: dict) -> dict:
