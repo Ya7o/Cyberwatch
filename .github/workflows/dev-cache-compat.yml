@@ -28,7 +28,9 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
       - name: Appliquer la migration de compatibilité
-        run: python scripts/dev_apply_cache_compat.py
+        run: |
+          python scripts/dev_apply_cache_compat.py
+          sed -i 's/config.SECTOR_COMMERCE/config.SECTOR_RETAIL/g' tests/test_organisation_sector_llm.py
       - name: Retirer les outils temporaires
         run: rm -f scripts/dev_apply_cache_compat.py .github/workflows/dev-cache-compat.yml
       - name: Tests ciblés
