@@ -189,3 +189,21 @@ jobs:
           git commit -m "data: collecte"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
+      - name: Promouvoir les données en prod
+        if: github.ref_name == 'main' && steps.scope.outputs.skip != '1' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+        run: |
+          set -euo pipefail
+          git fetch origin prod
+          rm -rf /tmp/cyberwatch-prod
+          git worktree add --detach /tmp/cyberwatch-prod origin/prod
+          rsync -a --delete data/ /tmp/cyberwatch-prod/data/
+          rsync -a --delete assets/data/ /tmp/cyberwatch-prod/assets/data/
+          cd /tmp/cyberwatch-prod
+          git config user.name "cyberwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data assets/data
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "data: collecte prod"
+          git fetch origin prod
+          git rebase origin/prod
+          git push origin "HEAD:prod"
