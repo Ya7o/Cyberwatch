@@ -8,7 +8,7 @@ canonique résolue par :mod:`cyberwatch.fact_resolution`.
 """
 from __future__ import annotations
 
-from . import config, fact_resolution, site_legacy as _legacy, store
+from . import config, fact_resolution, site_legacy as _legacy, site_window, store
 from .normalize import organisation_key
 
 _SENSITIVE = ("mot de passe", "identifiant", "token", "secret", "iban", "bancair", "paiement", "santé", "medical", "nir", "passeport", "pièce d'identité", "biométr")
@@ -95,9 +95,17 @@ def build() -> tuple[int, int]:
     )
 
     slim = [_legacy._without_facts(row) for row in payload]
+    latest = site_window.latest_rows(
+        payload,
+        state.get("run", {}).get("as_of", ""),
+        window_days=getattr(_legacy, "LATEST_WINDOW_DAYS", 30),
+    )
 
     store.write_json(store.SITE_DATA_DIR / "incidents.json", slim)
-    store.write_json(store.SITE_DATA_DIR / "latest.json", _legacy._latest_payload(payload))
+    store.write_json(
+        store.SITE_DATA_DIR / "latest.json",
+        [_legacy._without_facts(row) for row in latest],
+    )
     store.write_json(store.SITE_DATA_DIR / "facts.json", resolved)
     store.write_json(store.SITE_DATA_DIR / "status.json", state)
     (store.SITE_DATA_DIR / "reunion-mayotte.xml").write_text(
