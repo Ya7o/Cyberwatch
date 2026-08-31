@@ -10,23 +10,7 @@ on:
         description: "Commande"
         type: choice
         default: maj
-        options: [maj, create, diagnose, replay, probe, probe-media]
-      layers:
-        description: "Couches"
-        type: string
-        default: all
-      start:
-        description: "Début AAAA-MM-JJ (optionnel)"
-        type: string
-        default: ""
-      as_of:
-        description: "Cutoff ISO 8601 (optionnel)"
-        type: string
-        default: ""
-      source:
-        description: "Source_ID/domaines pour probe"
-        type: string
-        default: ""
+        options: [maj, create]
 
 permissions:
   contents: write
@@ -36,8 +20,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Époque volontaire de la nouvelle base après purge totale du 30 août 2026.
-  # Aucun auto-rattrapage planifié ne doit réintroduire de données antérieures.
+  # Le corpus de production commence ici. Aucune collecte ne réintroduit
+  # d'incident antérieur.
   COLLECTION_EPOCH: "2026-08-28"
 
 jobs:
@@ -52,125 +36,43 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-      - name: Déterminer le run
+      - name: Déterminer le mode
         id: scope
         shell: bash
         run: |
-          set -euo pipefail
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
-            echo "layers=${{ inputs.layers }}" >> "$GITHUB_OUTPUT"
-            echo "start=${{ inputs.start }}" >> "$GITHUB_OUTPUT"
-            echo "as_of=${{ inputs.as_of }}" >> "$GITHUB_OUTPUT"
-            echo "backfill=0" >> "$GITHUB_OUTPUT"
           else
             echo "mode=maj" >> "$GITHUB_OUTPUT"
-            echo "layers=all" >> "$GITHUB_OUTPUT"
-            echo "as_of=" >> "$GITHUB_OUTPUT"
-
-            NEEDS_BACKFILL="$(python - <<'PY'
-          import os
-          from cyberwatch import corpus_coverage, store
-          print("1" if corpus_coverage.needs_backfill(store.load_run_log(), os.environ["COLLECTION_EPOCH"]) else "0")
-          PY
-          )"
-            if [ "$NEEDS_BACKFILL" = "1" ]; then
-              # Auto-réparation non destructive : MAJ conserve le corpus et
-              # recollecte uniquement depuis l'époque officielle de la base.
-              echo "start=$COLLECTION_EPOCH" >> "$GITHUB_OUTPUT"
-              echo "backfill=1" >> "$GITHUB_OUTPUT"
-            else
-              echo "start=" >> "$GITHUB_OUTPUT"
-              echo "backfill=0" >> "$GITHUB_OUTPUT"
-            fi
           fi
       - name: Collecter
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
+          LLM_MAX_CALLS_PER_RUN: "30"
+          LLM_MAX_COST_USD_PER_RUN: "0.10"
           CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
-          # Filet LLM post-déterministe de déduplication (§Lot 18) : un seul
-          # batch au plus par run réel (MAJ ou CREATE). Jamais activé pour
-          # replay/diagnose/probe/probe-media — voir runner.run_daily_dedup_net,
-          # qui ne se déclenche de toute façon que pour MODE_MAJ/MODE_CREATE
-          # non hors-ligne.
-          DEDUP_AI_DAILY_ENABLED: ${{ (steps.scope.outputs.mode == 'maj' || steps.scope.outputs.mode == 'create') && '1' || '0' }}
-        shell: bash
-        run: |
-          ARGS=""
-          [ -n "${{ steps.scope.outputs.start }}" ] && ARGS="$ARGS --start ${{ steps.scope.outputs.start }}"
-          [ -n "${{ steps.scope.outputs.as_of }}" ] && ARGS="$ARGS --as-of ${{ steps.scope.outputs.as_of }}"
-          MODE="${{ steps.scope.outputs.mode }}"
-          if [ "$MODE" = replay ]; then
-            python -m cyberwatch replay $ARGS
-          elif [ "$MODE" = probe ]; then
-            for SRC in $(echo "${{ inputs.source }}" | tr ',' ' '); do python -m cyberwatch probe "$SRC" $ARGS; done
-          elif [ "$MODE" = probe-media ]; then
-            ONLY=""; [ -n "${{ inputs.source }}" ] && ONLY="--only ${{ inputs.source }}"
-            python -m cyberwatch probe-media $ONLY $ARGS
-          elif [ "$MODE" = diagnose ]; then
-            python -m cyberwatch diagnose --layers "${{ steps.scope.outputs.layers }}" $ARGS
-          else
-            python -m cyberwatch "$MODE" --layers "${{ steps.scope.outputs.layers }}" $ARGS
-          fi
-          if [ "$MODE" = maj ] || [ "$MODE" = create ]; then
-            # Après la collecte, les descriptions d'activité éventuellement
-            # extraites par SourceFacts depuis l'article complet sont
-            # disponibles. Le LLM organisationnel les mappe vers la
-            # taxonomie, sans jamais renseigner le secteur canonique : il
-            # alimente seulement le badge « supposé, non confirmé ».
-            LLM_MAX_CALLS_PER_RUN=30 LLM_MAX_COST_USD_PER_RUN=0.10 \
-              LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN=30 \
-              LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN=0.10 \
-              python -m cyberwatch sector-llm
-            # Le cache P1 est relu hors ligne afin de publier la proposition.
-            python -m cyberwatch replay
-          fi
-      - name: Dev checks et dashboard
-        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+          DEDUP_AI_DAILY_ENABLED: "1"
+        run: >-
+          python -m cyberwatch "${{ steps.scope.outputs.mode }}"
+          --layers all
+          --start "$COLLECTION_EPOCH"
+      - name: Valider et construire
         run: |
           python -m cyberwatch check
           python -m cyberwatch build-site
           python -m cyberwatch check
       - name: Résumé du run
-        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
         shell: bash
         run: |
           echo "## Cyberwatch — ${{ steps.scope.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
-          if [ "${{ steps.scope.outputs.backfill }}" = "1" ]; then
-            echo "Rattrapage automatique de couverture depuis ${{ steps.scope.outputs.start }}." >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-          fi
           python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          python -m cyberwatch.source_scorecard --markdown >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          python -m cyberwatch.source_portfolio --markdown >> "$GITHUB_STEP_SUMMARY"
-      - name: Publier les données
-        if: steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
+      - name: Publier les données sur main
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data assets/data
           if git diff --staged --quiet; then exit 0; fi
           git commit -m "data: collecte"
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push origin "HEAD:$GITHUB_REF_NAME"
-      - name: Promouvoir les données en prod
-        if: github.ref_name == 'main' && steps.scope.outputs.mode != 'diagnose' && steps.scope.outputs.mode != 'probe' && steps.scope.outputs.mode != 'probe-media'
-        run: |
-          set -euo pipefail
-          git fetch origin prod
-          rm -rf /tmp/cyberwatch-prod
-          git worktree add --detach /tmp/cyberwatch-prod origin/prod
-          rsync -a --delete data/ /tmp/cyberwatch-prod/data/
-          rsync -a --delete assets/data/ /tmp/cyberwatch-prod/assets/data/
-          cd /tmp/cyberwatch-prod
-          git config user.name "cyberwatch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data assets/data
-          if git diff --staged --quiet; then exit 0; fi
-          git commit -m "data: collecte prod"
-          git fetch origin prod
-          git rebase origin/prod
-          git push origin "HEAD:prod"
+          git pull --rebase origin main
+          git push origin HEAD:main

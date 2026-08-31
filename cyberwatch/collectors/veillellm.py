@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 
 from .. import config, status, store
-from ..normalize import date_or_empty, organisation_key
+from ..normalize import date_or_empty, organisation_key, searchable
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window
 
 
@@ -71,7 +71,7 @@ class VeilleLlmCollector(Collector):
         future = 0
         requested_window_hits = 0
         admission_counts = {value: 0 for value in ADMISSIONS}
-        seen_records: set[tuple[str, str, str]] = set()
+        seen_records: set[tuple[str, str, str, str]] = set()
 
         for index, record in enumerate(records, start=1):
             if not isinstance(record, dict):
@@ -80,6 +80,7 @@ class VeilleLlmCollector(Collector):
             date = str(record.get("date") or "").strip()
             organisation = str(record.get("organisation") or "").strip()
             territory = str(record.get("territoire") or "").strip()
+            localisation = str(record.get("localisation") or "").strip()
             threat = str(record.get("type_menace") or "").strip()
             sector = str(record.get("secteur") or "").strip()
             admission = str(record.get("admission") or "").strip().upper()
@@ -102,7 +103,14 @@ class VeilleLlmCollector(Collector):
                 )
             admission_counts[admission] += 1
 
-            record_key = (date, organisation_key(organisation), territory)
+            # Une organisation peut subir plusieurs incidents le même jour
+            # sur des sites distincts : la localité fait partie de l'identité.
+            record_key = (
+                date,
+                organisation_key(organisation),
+                territory,
+                searchable(localisation),
+            )
             if record_key in seen_records:
                 raise ValueError(f"record dupliqué incident #{index}: {record_key!r}")
             seen_records.add(record_key)
@@ -154,7 +162,7 @@ class VeilleLlmCollector(Collector):
             source_metadata = {
                 "admission": admission,
                 "admission_reason": admission_reason,
-                "localisation": str(record.get("localisation") or "").strip(),
+                "localisation": localisation,
                 "acteur": actor,
                 "statut": str(record.get("statut") or "").strip(),
                 "score_cyberattaque": score,

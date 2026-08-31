@@ -1,141 +1,40 @@
 # Cyberwatch — garde-fous de développement
 
-Cyberwatch est un observatoire déterministe d'incidents cyber publiquement documentés :
+La chaîne canonique est unique :
 
 ```text
-collecte -> normalisation -> qualification -> déduplication -> contrôles -> snapshot -> dashboard
+collecte -> enrichissement -> déduplication -> publication sur main
 ```
 
-`METHODOLOGY.md` est la référence normative. `ARCHITECTURE_STATUS.md` définit les domaines actifs et gelés.
+## Invariants
 
-## Principes non négociables
+- Le corpus publié commence le `2026-08-28`.
+- `data/` est canonique et `assets/data/` est généré.
+- Une absence de preuve reste `Inconnu`.
+- Une panne de source est journalisée et n'est pas masquée.
+- `Item_ID`, `Organisation_Key` et `Incident_ID` sont reproductibles.
+- Le LLM ne contourne pas les règles déterministes d'identité ou de fusion.
+- `replay`, `diagnose` et `probe` ne doivent engager aucun coût LLM.
 
-- **Déterminisme** : mêmes entrées -> mêmes `Item_ID`, `Organisation_Key`, `Incident_ID` et hashes.
-- **Transparence** : une source en échec ou partielle ne doit jamais être transformée en faux succès.
-- **Pas de donnée inventée** : absence de preuve, panne réseau, budget ou clé manquante -> `Inconnu` ou statut explicite.
-  - **Exception documentée (Sector)** : à la différence des autres champs, lorsque l'activité de l'organisation victime est connue mais qu'aucun secteur de la taxonomie ne lui correspond exactement (association, culte, syndicat, parti politique...), le moteur choisit le secteur le plus proche plutôt que `Inconnu` (décision explicite du 2026-08-26). Elle ne s'applique qu'à `Sector` : `Threat`, `Location`, l'identité et la déduplication restent strictement soumis au principe général ci-dessus.
-  - **Architecture Sector (refonte 2026-08-26, "preuves partout, décision unique à la fin")** : seules deux autorités court-circuitent tout le reste sans jamais appeler de LLM — une validation humaine (`data/enrichment_reference.csv`) ou un code NAF officiel rattaché à une identité légale `MATCHED`, dotée d'un identifiant entreprise et d'une version de cache courante (jamais un texte de site officiel scrappé). Tout le reste (mots-clés déterministes, texte d'article, site officiel scrappé, secteur structuré d'une source...) n'est plus jamais appliqué directement à `Item.Sector` — chaque mécanisme ne fait plus que déposer une preuve, consommée par `organisation_sector.py` et auditée dans `data/organisation_sector_evidence.csv`. Pour toute organisation qu'aucune des deux autorités n'a résolue, `organisation_sector_llm.py` devient une étape **obligatoire** de `qualify()` (plus une commande manuelle à part) : un appel LLM automatique par organisation à chaque `create`/`maj`, qui voit l'ensemble des preuves faibles du run courant et rend la décision finale. `replay` reste strictement hors ligne. Non bloquant (budget épuisé ou erreur API -> `Inconnu`, jamais un échec de run), mais un coût LLM désormais systématique pour toute organisation sans NAF/référence — à surveiller via le canal `organisation_sector` du rapport budget de `cold-reset.yml`.
-- **Isolation des sources** : une source défaillante ne doit pas faire tomber silencieusement les autres.
-- **Identité hors LLM** : aucun LLM ne décide l'identité d'un item, d'une organisation ou d'un incident.
-- **Données canoniques** : `data/` est canonique ; `assets/data/` est dérivé et doit être régénéré.
+## Surface opérationnelle
 
-## Gouvernance anti-complexité
+- `.github/workflows/ci.yml` : tests ;
+- `.github/workflows/collect.yml` : collecte quotidienne ou manuelle et
+  publication directe sur `main`.
 
-Le moteur est considéré mature pour les enjeux actuels. Les domaines Qualification, Identity, Dedup, LLM runtime, Incremental, Quality framework et Cold Reset sont **FROZEN**.
+Ne pas ajouter de branche `prod`, de workflow de promotion, de reset parallèle
+ou de nouvelle couche sans problème réel et mesuré.
 
-Un domaine gelé ne doit être rouvert que pour :
-
-- bug reproductible ;
-- régression mesurée ;
-- perte de déterminisme, de traçabilité ou de sécurité ;
-- coût opérationnel significatif constaté ;
-- changement externe imposé ;
-- fonctionnalité produit prioritaire réellement bloquée.
-
-Une amélioration de propreté, d'élégance, de généricité, de préparation future ou d'observabilité ne suffit plus.
-
-Avant d'ajouter un module transversal, une `policy`, un `runtime`, un `contract`, une `baseline`, un nouveau cache ou une couche d'observabilité, vérifier :
-
-1. quel problème réel et observé est résolu ;
-2. quelle métrique, panne, régression ou fonctionnalité le démontre ;
-3. pourquoi le mécanisme existant ne peut pas absorber le changement ;
-4. quel coût de maintenance supplémentaire est créé.
-
-**Faire évoluer les mécanismes existants avant d'ajouter une couche parallèle.**
-
-## Surface GitHub Actions
-
-La surface canonique est volontairement limitée à trois workflows :
-
-- `.github/workflows/ci.yml` : développement ;
-- `.github/workflows/collect.yml` : collecte et opérations courantes ;
-- `.github/workflows/cold-reset.yml` : reset total exceptionnel.
-
-`collect.yml` est le seul workflow planifié de données. `cold-reset.yml` est exclusivement manuel.
-
-Ne pas créer un quatrième workflow sans besoin opérationnel distinct impossible à couvrir par ces trois chemins.
-
-## Collecte et LLM
-
-`create` et `maj` peuvent accéder au réseau, modifier les données canoniques et engager des appels LLM si une clé est disponible.
-
-**Ne jamais déclencher une collecte réelle avec coût LLM simplement pour tester ou investiguer.**
-
-Pour le diagnostic utiliser en priorité :
-
-- `python -m cyberwatch diagnose` ;
-- `python -m cyberwatch probe SOURCE_ID` ;
-- `python -m cyberwatch probe-media` ;
-- `python -m cyberwatch replay` pour une reconstruction offline.
-
-`replay`, `diagnose`, `probe` et `probe-media` ne doivent pas appeler le filet LLM de collecte.
-
-Le LLM complète uniquement les champs métier autorisés restant inconnus. Il ne doit pas écraser arbitrairement une preuve plus forte ni participer au calcul d'identité.
-
-Les budgets et erreurs LLM doivent rester bornés et traçables ; une erreur LLM ne doit pas faire échouer toute la collecte.
-
-## Qualification
-
-La qualification est conservatrice. `Inconnu`, `REVIEW` ou `CONFLICT` sont des résultats valides lorsqu'une preuve suffisante n'existe pas.
-
-Les changements de qualification doivent préserver :
-
-- la précédence explicite des preuves ;
-- l'arbitrage déterministe ;
-- la provenance ;
-- l'indépendance vis-à-vis de l'ordre des candidats ;
-- la parité entre chemin canonique et chemin incrémental lorsqu'il est utilisé.
-
-Ne pas rouvrir le chantier Qualification pour une simple hausse marginale de couverture ou une nouvelle abstraction.
-
-## Déduplication et identité
-
-La déduplication reste prudente. Une fusion incertaine vaut moins qu'un doublon à examiner.
-
-Toute modification touchant l'identité ou la déduplication doit démontrer un cas métier réel ou une régression et doit exécuter les tests dédiés, notamment le contrôle de répétabilité lorsque pertinent.
-
-## Données
-
-Principaux fichiers canoniques :
-
-- `data/items.csv` ;
-- `data/incidents.csv` ;
-- `data/sources.csv` ;
-- `data/run_sources.csv` ;
-- `data/run_log.csv` ;
-- `data/snapshot.json` ;
-- `data/source_facts.csv` ;
-- `data/ai_qualifications.csv` / `data/ai_usage.csv` ;
-- `data/organisation_sector_registry.csv` ;
-- `data/organisation_sector_evidence.csv` ;
-- `data/qualification_provenance.csv`.
-
-Ne jamais éditer manuellement `assets/data/` pour corriger une donnée : corriger la source canonique ou le générateur puis exécuter `python -m cyberwatch build-site`.
-
-## Validation de développement
-
-Validation générique :
+## Validation
 
 ```bash
 python -m pytest tests/ -q
-node --check assets/app.js
+node --check assets/dashboard-v2.js
+node --check assets/dashboard-integrity.js
 python -m cyberwatch check --allow-uninitialized
 ```
 
-Les audits spécialisés restent manuels et ne doivent être lancés que lorsqu'un changement touche réellement leur domaine.
+Une collecte réelle n'est pas un test générique : elle accède au réseau,
+modifie les données et peut appeler l'API si une clé est disponible.
 
-`python -m cyberwatch test-repeat` est requis lorsqu'une modification peut affecter identité, déduplication ou déterminisme.
-
-Ne pas lancer `create` ou `maj` comme test générique.
-
-## Priorités de développement
-
-Ordre par défaut :
-
-1. fiabilité et couverture des sources ;
-2. qualité réelle des données ;
-3. valeur et lisibilité du dashboard ;
-4. analyses utiles ;
-5. maintenance corrective du moteur.
-
-La sophistication interne n'est plus une finalité de développement.
+La méthode métier détaillée reste définie dans `METHODOLOGY.md`.

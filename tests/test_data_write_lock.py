@@ -3,7 +3,6 @@ from pathlib import Path
 
 WORKFLOWS = (
     ".github/workflows/collect.yml",
-    ".github/workflows/cold-reset.yml",
 )
 
 

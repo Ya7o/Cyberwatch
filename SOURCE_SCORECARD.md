@@ -47,4 +47,4 @@ Le scorecard est ajouté automatiquement au résumé GitHub Actions des runs `cr
 
 ## Décisions de portefeuille
 
-`python -m cyberwatch.source_portfolio --markdown` transforme ensuite ces mesures en décisions `KEEP`, `WATCH`, `REVIEW` ou `DEACTIVATION_CANDIDATE`, et classe les sources inactives à reprober selon les angles morts réellement observés. Cette seconde étape reste non mutante : voir `P1_SOURCE_PORTFOLIO.md`.
+`python -m cyberwatch.source_portfolio --markdown` transforme ensuite ces mesures en décisions `KEEP`, `WATCH`, `REVIEW` ou `DEACTIVATION_CANDIDATE`, et classe les sources inactives à reprober selon les angles morts réellement observés. Cette seconde étape reste non mutante.

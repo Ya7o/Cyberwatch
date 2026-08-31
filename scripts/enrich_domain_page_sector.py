@@ -4,8 +4,8 @@
 Cible volontairement étroite (cf. `cyberwatch/domain_page_sector.py`) : les
 organisations encore en Secteur Inconnu dont le nom collecté est déjà une
 forme de domaine (`Klark.ai`, `iMapper.tech`). Il n'y a donc aucun site à
-deviner, contrairement au balayage général mesuré le 2026-08-23
-(`audit/SECTOR_QUALIFICATION_AUDIT.md`, 60 testées / 0 correspondance).
+deviner, contrairement à l'ancien balayage général, qui n'avait produit
+aucune correspondance sur 60 organisations.
 
 Le worker ne publie aucun secteur : il enrichit le cache
 `data/organisation_domain_page.csv`, relu ensuite hors-ligne par

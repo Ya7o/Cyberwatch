@@ -4,11 +4,8 @@ Déclencheur volontairement étroit : uniquement les organisations dont le nom
 collecté est lui-même une forme de domaine (``Klark.ai``, ``iMapper.tech``,
 ``Lebonmateriel.fr``). Dans ce cas seulement, le site officiel n'a pas à être
 deviné ni cherché — il est déjà nommé par la source. C'est ce qui distingue ce
-canal du balayage général déjà mesuré le 2026-08-23
-(``audit/SECTOR_QUALIFICATION_AUDIT.md`` : 60 organisations testées via
-``scripts/enrich_sector_queue.py``, 0 correspondance) : là, il fallait
-découvrir un site plausible pour des noms quelconques ; ici, il n'y a rien à
-découvrir.
+canal de l'ancien balayage général, qui devait découvrir un site plausible
+pour des noms quelconques et n'avait produit aucune correspondance.
 
 Comme :mod:`cyberwatch.organisation_sector_llm`, ce module est un worker : il
 fait les accès réseau et persiste un cache, que

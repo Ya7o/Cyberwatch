@@ -110,12 +110,12 @@ def test_garde_integrite_utilise_la_couverture_cumulee_et_separe_les_candidates(
     assert "Target_Start" in js and "Target_End" in js
 
 
-def test_collecte_planifiee_est_active_et_auto_repare_une_couverture_partielle():
+def test_collecte_planifiee_est_active_et_bornee_par_l_epoque():
     workflow = _read(".github/workflows/collect.yml")
     assert 'cron: "0 7 * * *"' in workflow
-    assert 'cron: "0 9 * * *"' in workflow
+    assert workflow.count("cron:") == 1
     assert "if: github.event_name == 'workflow_dispatch'" not in workflow
-    assert "corpus_coverage.needs_backfill" in workflow
+    assert "corpus_coverage.needs_backfill" not in workflow
     assert 'COLLECTION_EPOCH: "2026-08-28"' in workflow
-    assert 'echo "start=$COLLECTION_EPOCH"' in workflow
+    assert '--start "$COLLECTION_EPOCH"' in workflow
     assert 'echo "mode=maj"' in workflow
