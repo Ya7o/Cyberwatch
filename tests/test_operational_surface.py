@@ -29,3 +29,16 @@ def test_collect_publishes_directly_on_main_without_prod_branch():
 def test_collect_exposes_only_normal_and_rebuild_modes():
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
     assert "options: [maj, create]" in content
+
+
+def test_collect_has_an_explicit_ten_cent_total_ai_budget():
+    content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
+    expected = {
+        "AI_MAX_ESTIMATED_COST_USD_PER_RUN": "0.02",
+        "SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN": "0.05",
+        "LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN": "0.02",
+        "LLM_DEDUP_MAX_COST_USD_PER_RUN": "0.01",
+    }
+    for variable, value in expected.items():
+        assert f'{variable}: "{value}"' in content
+    assert round(sum(float(value) for value in expected.values()), 2) == 0.10

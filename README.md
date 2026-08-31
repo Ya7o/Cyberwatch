@@ -73,7 +73,8 @@ Deux workflows seulement :
   directement les données sur `main`.
 
 Le lancement manuel de `collect.yml` propose uniquement `maj` ou `create`.
-Le budget LLM est plafonné par run ; les usages sont consignés dans
+Les plafonds logiciels répartissent au plus 0,10 $ par run entre qualification,
+faits structurés, secteur et déduplication ; les usages sont consignés dans
 `data/ai_usage.csv` et `data/dedup_ai_daily_usage.csv`.
 
 ## Validation locale

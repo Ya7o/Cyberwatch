@@ -49,8 +49,20 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           ORG_ENRICHMENT_ENABLED: "0"
-          LLM_MAX_CALLS_PER_RUN: "30"
-          LLM_MAX_COST_USD_PER_RUN: "0.10"
+          # Budget logiciel total : qualification $0.02 + faits $0.05
+          # + secteur $0.02 + déduplication $0.01 = $0.10 maximum.
+          AI_MAX_CALLS_PER_RUN: "30"
+          AI_MAX_ESTIMATED_COST_USD_PER_RUN: "0.02"
+          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "30"
+          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.05"
+          LLM_MAX_CALLS_PER_RUN: "31"
+          LLM_MAX_COST_USD_PER_RUN: "0.03"
+          LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN: "30"
+          LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN: "0.02"
+          DEDUP_AI_MAX_CALLS: "1"
+          DEDUP_AI_MAX_COST_USD: "0.01"
+          LLM_DEDUP_MAX_CALLS_PER_RUN: "1"
+          LLM_DEDUP_MAX_COST_USD_PER_RUN: "0.01"
           CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
           DEDUP_AI_DAILY_ENABLED: "1"
         run: >-
