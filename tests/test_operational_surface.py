@@ -26,19 +26,13 @@ def test_collect_publishes_directly_on_main_without_prod_branch():
     assert "git worktree" not in content
 
 
-def test_collect_exposes_only_normal_and_rebuild_modes():
+def test_collect_exposes_only_daily_update():
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
-    assert "options: [maj, create]" in content
+    assert "python -m cyberwatch maj" in content
+    assert "create" not in content
 
 
-def test_collect_has_an_explicit_ten_cent_total_ai_budget():
+def test_collect_has_one_explicit_global_ai_budget():
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
-    expected = {
-        "AI_MAX_ESTIMATED_COST_USD_PER_RUN": "0.02",
-        "SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN": "0.05",
-        "LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN": "0.02",
-        "LLM_DEDUP_MAX_COST_USD_PER_RUN": "0.01",
-    }
-    for variable, value in expected.items():
-        assert f'{variable}: "{value}"' in content
-    assert round(sum(float(value) for value in expected.values()), 2) == 0.10
+    assert 'LLM_MAX_COST_USD_PER_RUN: "0.03"' in content
+    assert content.count("MAX_COST_USD_PER_RUN") == 1

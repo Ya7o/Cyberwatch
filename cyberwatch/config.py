@@ -220,6 +220,9 @@ SECTOR_INDUSTRY = "Industrie / Manufacture"
 SECTOR_CONSTRUCTION = "Construction / BTP"
 SECTOR_SERVICES = "Services aux entreprises"
 SECTOR_ASSOCIATION = "Association / Syndicat"
+SECTOR_HOSPITALITY = "Hébergement / Tourisme / Restauration"
+SECTOR_CULTURE = "Culture / Médias / Loisirs"
+SECTOR_AGRICULTURE = "Agriculture / Agroalimentaire"
 SECTOR_UNKNOWN = "Inconnu"
 
 SECTORS = [
@@ -236,6 +239,9 @@ SECTORS = [
     SECTOR_CONSTRUCTION,
     SECTOR_SERVICES,
     SECTOR_ASSOCIATION,
+    SECTOR_HOSPITALITY,
+    SECTOR_CULTURE,
+    SECTOR_AGRICULTURE,
     SECTOR_UNKNOWN,
 ]
 
@@ -295,6 +301,17 @@ ACTIVITY_TO_SECTOR = {
     "utilities": SECTOR_ENERGY,
     "oil gas": SECTOR_ENERGY,
     "sports": SECTOR_SPORT,
+    "hebergement": SECTOR_HOSPITALITY,
+    "hebergement restauration": SECTOR_HOSPITALITY,
+    "hotellerie": SECTOR_HOSPITALITY,
+    "restauration": SECTOR_HOSPITALITY,
+    "tourisme": SECTOR_HOSPITALITY,
+    "culture": SECTOR_CULTURE,
+    "culture medias loisirs": SECTOR_CULTURE,
+    "media": SECTOR_CULTURE,
+    "medias": SECTOR_CULTURE,
+    "loisirs": SECTOR_CULTURE,
+    "agriculture and food production": SECTOR_AGRICULTURE,
 }
 
 #: Motifs autorisés sur le nom de l'organisation uniquement. Ils doivent être
@@ -331,6 +348,14 @@ SECTOR_NAME_RULES: list[tuple[str, list[str]]] = [
 # Motifs testés sur limites de mots, texte désaccentué et en minuscules. Cette
 # table est réservée à une description d'activité explicite, jamais au nom seul.
 SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
+    (SECTOR_HOSPITALITY, [
+        "hotel", "hotellerie", "hebergement", "restaurant", "restauration",
+        "tourisme", "touristique", "camping", "village vacances",
+    ]),
+    (SECTOR_CULTURE, [
+        "cinema", "theatre", "spectacle", "musee", "bibliotheque",
+        "mediatheque", "presse", "media", "audiovisuel", "loisirs",
+    ]),
     (SECTOR_ADMIN, [
         "mairie", "ville de", "commune", "communaute d agglomeration",
         "departement", "region", "ministere", "prefecture", "prefet",
@@ -422,9 +447,6 @@ INCIDENT_GAP_DAYS = 14
 # Une MAJ ne cherche que les publications des dernières 24 heures. Les sources
 # ne donnant qu'une date (sans heure), cela correspond à aujourd'hui + hier.
 MAJ_LOOKBACK_DAYS = 1
-
-# Début immuable du corpus public lors d'un CREATE.
-PRODUCTION_EPOCH = "2026-08-28"
 
 DATE_BASIS_EVENT = "EVENT"
 DATE_BASIS_PUBLICATION = "PUBLICATION"

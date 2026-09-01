@@ -142,11 +142,10 @@ class TestStatusV0:
 class TestRunnerMetrics:
     def test_items_seen_et_items_in_window_restent_distincts(self):
         client = FakeClient(html=HTML_TWO_ITEMS)
-        context = runner.make_run_context(
-            runner.MODE_CREATE,
-            as_of="2026-08-13T12:00:00+04:00",
-            target_start="2026-08-10",
-            layers=[config.LAYER_CORE],
+        context = runner.RunContext(
+            run_id="RUN-TEST-1", as_of="2026-08-13T12:00:00+04:00",
+            target_start="2026-08-10", target_end="2026-08-13",
+            mode=runner.MODE_MAJ, layers=[config.LAYER_CORE],
         )
         outcome, items, _ = runner.run_source(client, SPEC, context, {}, {}, {})
 
@@ -159,11 +158,10 @@ class TestRunnerMetrics:
 
     def test_item_reconnu_mais_non_collecte_reste_ok(self, monkeypatch):
         client = FakeClient(html=HTML_TWO_ITEMS)
-        context = runner.make_run_context(
-            runner.MODE_CREATE,
-            as_of="2026-08-13T12:00:00+04:00",
-            target_start="2026-08-01",
-            layers=[config.LAYER_CORE],
+        context = runner.RunContext(
+            run_id="RUN-TEST-2", as_of="2026-08-13T12:00:00+04:00",
+            target_start="2026-08-01", target_end="2026-08-13",
+            mode=runner.MODE_MAJ, layers=[config.LAYER_CORE],
         )
         monkeypatch.setattr(runner, "entry_to_item", lambda *args, **kwargs: None)
 

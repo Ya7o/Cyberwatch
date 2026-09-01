@@ -172,25 +172,9 @@ class SourceOutcome:
     oldest_available_date: str = ""
     collect_duration_seconds: float = 0.0
     processing_duration_seconds: float = 0.0
-    org_registry_duration_seconds: float = 0.0
-    org_registry_calls: int = 0
-    org_official_site_duration_seconds: float = 0.0
-    org_official_site_calls: int = 0
-    qualification_llm_duration_seconds: float = 0.0
-    qualification_llm_calls: int = 0
-    qualification_llm_cost_usd: float = 0.0
     source_facts_llm_duration_seconds: float = 0.0
     source_facts_llm_calls: int = 0
     source_facts_llm_cost_usd: float = 0.0
-    source_facts_accepted_cache_hits: int = 0
-    source_facts_abstained_cache_hits: int = 0
-    source_facts_legacy_null_migrations: int = 0
-    source_facts_legacy_null_skips: int = 0
-    source_facts_semantic_first_misses: int = 0
-    source_facts_semantic_retries: int = 0
-    source_facts_recovered_on_retry: int = 0
-    source_facts_new_abstentions: int = 0
-    other_processing_duration_seconds: float = 0.0
 
     @property
     def reason(self) -> str:

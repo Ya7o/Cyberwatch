@@ -305,46 +305,6 @@ def _source_facts_by_incident(items: list[Item], fact_rows: list[dict]) -> dict[
     return payload
 
 
-_TENTATIVE_SECTOR_DECISIONS = frozenset({
-    "REJECTED_IDENTITY_EVIDENCE",
-    "REJECTED_NO_STRONG_EVIDENCE",
-    "REJECTED_NO_ACTIVITY_EVIDENCE",
-})
-
-
-def _qualification_provenance_by_incident(
-    items: list[Item], provenance_rows: list[dict]
-) -> dict[str, str]:
-    """Secteur suggéré (rejeté faute de preuve suffisante), par incident.
-
-    Liste blanche de raisons de rejet plutôt que liste noire : une raison
-    inconnue reste par défaut non affichée. `REJECTED_SECTOR_CONFLICT` est
-    délibérément exclu — ce n'est pas une preuve insuffisante mais une
-    contradiction interne entre l'activité trouvée et le secteur déclaré par
-    la même source. Un incident agrège plusieurs items ; si leurs candidats
-    ne sont pas tous identiques, aucun secteur suggéré n'est retenu — jamais
-    de désaccord affiché comme une suggestion unique.
-    """
-    candidates_by_item: dict[str, set[str]] = defaultdict(set)
-    for row in provenance_rows:
-        if row.get("Field") != "Sector" or row.get("Decision") not in _TENTATIVE_SECTOR_DECISIONS:
-            continue
-        candidate = str(row.get("Candidate_Value") or "").strip()
-        item_id = str(row.get("Item_ID") or "").strip()
-        if candidate and item_id:
-            candidates_by_item[item_id].add(candidate)
-    # Un item dont les propres candidats se contredisent ne contribue rien :
-    # le désaccord n'est jamais réduit à une valeur choisie arbitrairement.
-    by_item = {item_id: next(iter(values)) for item_id, values in candidates_by_item.items() if len(values) == 1}
-
-    payload: dict[str, str] = {}
-    for component, incident_id in _components_with_stable_incident_ids(items):
-        candidates = {by_item[item.Item_ID] for item in component if item.Item_ID in by_item}
-        if len(candidates) == 1:
-            payload[incident_id] = next(iter(candidates))
-    return payload
-
-
 def _best_source_summary(facts: list[dict]) -> str:
     """Choisit sans LLM la synthèse de la source la mieux documentée.
 

@@ -96,7 +96,7 @@ def test_site_build_on_uninitialized_base_is_explicit(tmp_path, monkeypatch):
 
 def test_report_uses_status_and_not_a_score(tmp_path, monkeypatch, capsys):
     isolate_store(tmp_path, monkeypatch)
-    store.append_run_log({"Run_ID": "RUN-TEST", "Mode": "CREATE", "Overall_Status": "OK", "Sources_OK": 5, "Sources_FAIL": 0})
+    store.append_run_log({"Run_ID": "RUN-TEST", "Mode": "MAJ", "Overall_Status": "OK", "Sources_OK": 5, "Sources_FAIL": 0})
     assert cli.cmd_report(SimpleNamespace()) == 0
     output = capsys.readouterr().out
     assert "Sources : **5 OK / 0 FAIL**" in output
@@ -129,9 +129,8 @@ def test_collect_workflow_has_one_daily_cron():
     assert 'cron: "0 3 * * 1"' not in workflow
 
 
-def test_collect_workflow_publishes_create_without_requiring_baseline():
+def test_collect_workflow_checks_before_publication():
     workflow = (store.ROOT / ".github" / "workflows" / "collect.yml").read_text(encoding="utf-8")
-    assert "CREATE non publiable sans baseline" not in workflow
     assert workflow.index("cyberwatch check") < workflow.index("Publier les données")
 
 

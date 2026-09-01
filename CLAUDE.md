@@ -3,27 +3,27 @@
 La chaîne canonique est unique :
 
 ```text
-collecte -> enrichissement -> déduplication -> publication sur main
+collecte -> identité -> enrichissement -> déduplication -> publication
 ```
 
 ## Invariants
 
-- Le corpus publié commence le `2026-08-28`.
+- Une MAJ lit seulement aujourd'hui et hier et conserve le corpus existant.
 - `data/` est canonique et `assets/data/` est généré.
 - Une absence de preuve reste `Inconnu`.
 - Une panne de source est journalisée et n'est pas masquée.
 - `Item_ID`, `Organisation_Key` et `Incident_ID` sont reproductibles.
 - Le LLM ne contourne pas les règles déterministes d'identité ou de fusion.
-- `replay`, `diagnose` et `probe` ne doivent engager aucun coût LLM.
+- Une réponse LLM invalide conserve le résultat déterministe.
 
 ## Surface opérationnelle
 
-- `.github/workflows/ci.yml` : tests ;
+- `.github/workflows/ci.yml` : smoke tests ;
 - `.github/workflows/collect.yml` : collecte quotidienne ou manuelle et
   publication directe sur `main`.
 
-Ne pas ajouter de branche `prod`, de workflow de promotion, de reset parallèle
-ou de nouvelle couche sans problème réel et mesuré.
+Ne pas ajouter de branche `prod`, golden, campagne de qualification, workflow
+de promotion, reset parallèle ou nouvelle couche sans besoin produit réel.
 
 ## Validation
 

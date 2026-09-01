@@ -1,9 +1,9 @@
-"""Régressions bloquantes de stabilisation de la qualification Threat."""
+"""Régressions de stabilisation de l'enrichissement Threat."""
 
 from cyberwatch import config
 from cyberwatch.dedup import build_incidents
 from cyberwatch.normalize import classify_threat
-from cyberwatch.qualification import stabilize_threats
+from cyberwatch.enrichment import stabilize_threats
 
 
 def test_specific_leak_beats_generic_cyberattack():

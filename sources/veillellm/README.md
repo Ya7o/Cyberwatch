@@ -3,7 +3,7 @@
 Ce dossier ne contient qu'une source de production : la veille complémentaire
 La Réunion / Mayotte. FrenchBreaches et Cyberattaque.org sont collectés par
 leurs collecteurs directs ; une routine ChatGPT ne doit pas recréer leurs
-tables ni les réinjecter dans la qualification.
+tables ni les réinjecter dans l'enrichissement.
 
 ## Sortie canonique
 

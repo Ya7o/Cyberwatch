@@ -6,7 +6,7 @@ import argparse
 import sys
 
 from . import config, site, status, store
-from .runner import MODE_CREATE, MODE_MAJ, execute, make_run_context
+from .runner import MODE_MAJ, execute, make_run_context
 
 
 def _layers(value: str) -> list[str]:
@@ -32,15 +32,14 @@ def _summary(report) -> None:
 _print_summary = _summary
 
 
-def _run(mode: str, args) -> int:
-    if mode == MODE_MAJ and store.snapshot_state()[0] != store.BASE_VALID:
-        print("ERREUR : Aucun snapshot Cyberwatch valide n'existe. Lancez create.")
+def _run(args) -> int:
+    if store.snapshot_state()[0] != store.BASE_VALID:
+        print("ERREUR : Aucun snapshot Cyberwatch valide n'existe.")
         return 1
 
     context = make_run_context(
-        mode,
+        MODE_MAJ,
         getattr(args, "as_of", None),
-        getattr(args, "start", None) if mode == MODE_CREATE else None,
         _layers(getattr(args, "layers", "all")),
     )
     transient = bool(getattr(args, "transient", False))
@@ -51,12 +50,8 @@ def _run(mode: str, args) -> int:
     return 1 if report.overall == status.BROKEN else 0
 
 
-def cmd_create(args) -> int:
-    return _run(MODE_CREATE, args)
-
-
 def cmd_maj(args) -> int:
-    return _run(MODE_MAJ, args)
+    return _run(args)
 
 
 def cmd_build_site(_args) -> int:
@@ -101,10 +96,8 @@ def cmd_check(args) -> int:
     return 0
 
 
-def _common(parser: argparse.ArgumentParser, *, allow_start: bool) -> None:
+def _common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--as-of", dest="as_of")
-    if allow_start:
-        parser.add_argument("--start")
     parser.add_argument("--layers", default="all")
     parser.add_argument("--transient", action="store_true")
 
@@ -113,12 +106,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="cyberwatch", description="Veille cyber quotidienne.")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    create = commands.add_parser("create", help="Reconstruire depuis le 28 août.")
-    _common(create, allow_start=True)
-    create.set_defaults(func=cmd_create)
-
     maj = commands.add_parser("maj", help="Collecter aujourd'hui et hier.")
-    _common(maj, allow_start=False)
+    _common(maj)
     maj.set_defaults(func=cmd_maj)
 
     build = commands.add_parser("build-site", help="Régénérer le dashboard.")

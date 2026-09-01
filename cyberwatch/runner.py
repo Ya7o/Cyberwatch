@@ -1,13 +1,4 @@
-"""Orchestration d'un run : collecte, normalisation, reconstruction, journaux.
-
-Le runner applique les algorithmes `CREATE` (§24), `MAJ` (§25) et `REPLAY` (§26),
-et produit les journaux `RUN_SOURCES` et `RUN_LOG` ainsi que l'état de veille
-`ENTITY_WATCH`.
-
-Principe de robustesse : **aucune source ne peut faire échouer un run**. Toute
-exception est convertie en statut `FAIL` documenté, et les données déjà
-collectées sont conservées.
-"""
+"""Pipeline quotidien : collecte, identité, enrichissement, dédup, publication."""
 
 from __future__ import annotations
 
@@ -18,8 +9,7 @@ import os
 import subprocess
 from dataclasses import dataclass, field
 
-from . import ai, config, dedup_ai, domain_page_sector, domain_page_sector_llm, duplicate_audit, enrichment, identity, incident_dedup, incident_identity, org_enrichment, org_identity, organisation_sector, organisation_sector_llm, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
-from .qualification import qualify
+from . import config, dedup_ai, duplicate_audit, enrichment, identity, incident_dedup, incident_identity, org_identity, sector as sector_policy, source_facts, source_facts_ai, sources, status, store, watchlists
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
     is_negated_incident,
@@ -42,10 +32,8 @@ from .normalize import (
     organisation_key,
 )
 
-MODE_CREATE = "CREATE"
 MODE_MAJ = "MAJ"
 MODE_REPLAY = "REPLAY"
-MODE_DIAGNOSE = "DIAGNOSE"
 
 
 def _extract_source_fact_for_entry(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
@@ -175,7 +163,6 @@ class RunContext:
 def make_run_context(
     mode: str,
     as_of: str | None = None,
-    target_start: str | None = None,
     layers: list[str] | None = None,
 ) -> RunContext:
     now = (
@@ -186,14 +173,7 @@ def make_run_context(
     as_of_iso = now.isoformat()
     end = now.date().isoformat()
 
-    if target_start:
-        start = target_start
-    elif mode == MODE_MAJ:
-        start = (now.date() - dt.timedelta(days=config.MAJ_LOOKBACK_DAYS)).isoformat()
-    elif mode == MODE_CREATE:
-        start = config.PRODUCTION_EPOCH
-    else:
-        start = dt.date(now.year, 1, 1).isoformat()
+    start = (now.date() - dt.timedelta(days=config.MAJ_LOOKBACK_DAYS)).isoformat()
 
     base_run_id = now.strftime("RUN-%Y%m%dT%H%M%S")
     existing_run_ids = {row.get("Run_ID", "") for row in store.load_run_log()}
@@ -220,7 +200,6 @@ def entry_to_item(
     entity_index: dict,
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
-    sector_stats: dict | None = None,
 ) -> Item | None:
     """Convertit une entrée brute en item normalisé, ou `None` si hors périmètre."""
     territories = territories or {}
@@ -272,53 +251,22 @@ def entry_to_item(
     sector = config.SECTOR_UNKNOWN
     location = classify_location(given=entry.location)
 
-    if sector_stats is not None and native_sector != config.SECTOR_UNKNOWN:
-        sector_stats["resolved_native"] = sector_stats.get("resolved_native", 0) + 1
-    sector_was_unknown = True
-    if sector_stats is not None and sector_was_unknown:
-        sector_stats["initial_unknown"] = sector_stats.get("initial_unknown", 0) + 1
-
     reference_sector, location = enrichment.enrich_unknowns(
         organisation, sector, location, reference or {}
     )
-    resolved_by_reference = reference_sector != config.SECTOR_UNKNOWN
-
-    if sector_stats is not None and resolved_by_reference:
-        sector_stats["resolved_reference"] = sector_stats.get("resolved_reference", 0) + 1
-
-    # Deux preuves déterministes distinctes, jamais mélangées : hint
-    # structuré (liste d'entités surveillées déjà validée), puis nom
-    # d'organisation avec vocabulaire nominatif strict. Le récit cyber
-    # complet n'est jamais passé aux règles Sector.
-    #
-    # Un 3e étage existait ici (classify_sector_activity sur une description
-    # d'activité extraite du texte brut) : un classificateur généraliste et
-    # permissif, jamais vérifié ensuite — Item.Sector devenant non-Inconnu
-    # dès l'ingestion, il bloquait silencieusement tout le dispositif conçu
-    # pour arbitrer correctement (organisation_sector.py, ses garde-fous de
-    # conflit, et l'enrichissement LLM), qui ne s'applique que si Sector est
-    # encore Inconnu. Cas réel constaté (§audit 2026-08-25) : Groupe Bernard
-    # publié "Commerce / Distribution" confirmé sans jamais avoir été
-    # vérifié ; Emil Frey France publié "Commerce / Distribution" alors que
-    # organisation_sector.py calculait un vrai CONFLICT face à un NAF
-    # officiel "Finance / Assurance", jamais surfacé. Le même signal
-    # (Activity_Description) est déjà collecté correctement, avec un
-    # classificateur volontairement plus strict, par
-    # organisation_sector.py::_source_activity_evidence — supprimé ici pour
-    # que ce mécanisme existant fasse réellement l'arbitrage.
+    # Priorité volontairement courte : référence, catégorie structurée de la
+    # source, puis règle sûre sur le nom. Sinon le secteur reste Inconnu.
     deterministic_candidate = config.SECTOR_UNKNOWN
     if sector_hint:
         deterministic_candidate = sector_policy.classify_source_sector(sector_hint)
     if deterministic_candidate == config.SECTOR_UNKNOWN:
         deterministic_candidate = sector_policy.classify_sector_name(organisation)
-    if (
-        sector_stats is not None
-        and sector_was_unknown
-        and not resolved_by_reference
-        and deterministic_candidate != config.SECTOR_UNKNOWN
-    ):
-        sector_stats["resolved_deterministic"] = sector_stats.get("resolved_deterministic", 0) + 1
-
+    if reference_sector != config.SECTOR_UNKNOWN:
+        sector = reference_sector
+    elif native_sector != config.SECTOR_UNKNOWN:
+        sector = native_sector
+    elif deterministic_candidate != config.SECTOR_UNKNOWN:
+        sector = deterministic_candidate
     if location == config.LOC_INCONNU:
         # Stabilisation Location v0.7.32 : le défaut source reste différé pour
         # laisser un match entreprise exact fournir 974/976 en priorité.
@@ -354,50 +302,6 @@ def entry_to_item(
 
 
 
-def _verify_native_ransomware_sector(
-    item: Item,
-    entry: RawEntry,
-    spec: SourceSpec,
-    ai_state: ai.AiRunState,
-) -> None:
-    """Compatibilité : enrichit le cache sans modifier le secteur natif.
-
-    Le résolveur organisationnel arbitre ensuite secteur source et NAF ; cette
-    fonction historique ne possède plus aucun droit d'écriture final.
-    """
-    if spec.source_id != "RANSOMWARE_LIVE":
-        return
-    if not entry.sector or item.Sector == config.SECTOR_UNKNOWN:
-        return
-    if not ai_state.org_enrichment.enabled:
-        return
-
-    native_sector = sector_policy.classify_source_sector(entry.sector)
-    if native_sector == config.SECTOR_UNKNOWN or item.Sector != native_sector:
-        return
-
-    record = org_enrichment.resolve(
-        item.Organisation_Key,
-        item.Organisation_Raw,
-        item.Collected_As_Of,
-        ai_state.org_enrichment,
-    )
-    if record is None or record.Match_Status != org_enrichment.MATCHED:
-        return
-
-    # Seul le candidat est calculé pour les consommateurs historiques ; il
-    # reste une preuve et n'est jamais appliqué ici.
-    if record.Validated_Sector and record.Validated_Via == "deterministic":
-        candidate = record.Validated_Sector
-    elif not record.Validated_Via and record.Activity_Label:
-        candidate = org_enrichment.sector_for_activity_label(record.Activity_Label)
-    else:
-        candidate = config.SECTOR_UNKNOWN
-    # Le candidat reste dans le cache entreprise et sera collecté par
-    # organisation_sector. Cette fonction historique ne décide plus Sector.
-    del candidate
-
-
 def _resolve_history_status(result: CollectResult, source_status: str, window: Window) -> tuple[str, str]:
     """Couverture historique réelle (§stabilisation pré-release), orthogonale
     à `Status`/`Coverage` : générique, ne dépend d'aucun `source_id` — ne
@@ -422,8 +326,6 @@ def run_source(
     entity_index: dict,
     territories: dict[str, str] | None = None,
     reference: dict[str, enrichment.Enrichment] | None = None,
-    ai_state: ai.AiRunState | None = None,
-    sector_stats: dict | None = None,
     fact_rows: list[dict] | None = None,
 ) -> tuple[status.SourceOutcome, list[Item], list[dict]]:
     outcome = status.SourceOutcome(source_id=spec.source_id, layer=spec.layer)
@@ -457,23 +359,6 @@ def run_source(
 
     outcome.collect_duration_seconds = round(time.monotonic() - collect_started, 3)
     processing_started = time.monotonic()
-    if ai_state is not None:
-        org_state = ai_state.org_enrichment
-        perf_before = {
-            "org_registry_duration": org_state.duration_seconds,
-            "org_registry_calls": org_state.calls_attempted,
-            "official_duration": org_state.official_site_duration_seconds,
-            "official_calls": org_state.official_site_attempted,
-            "qual_llm_duration": ai_state.llm_duration_seconds,
-            "qual_llm_calls": ai_state.calls_attempted,
-            "qual_llm_cost": ai_state.estimated_cost_usd,
-        }
-    else:
-        perf_before = {
-            "org_registry_duration": 0.0, "org_registry_calls": 0,
-            "official_duration": 0.0, "official_calls": 0,
-            "qual_llm_duration": 0.0, "qual_llm_calls": 0, "qual_llm_cost": 0.0,
-        }
     source_facts_before = source_facts_ai.runtime_stats()
 
     items: list[Item] = []
@@ -494,12 +379,9 @@ def run_source(
             continue
         item = entry_to_item(
             entry, spec, context.as_of, known_orgs, entity_index, territories, reference,
-            sector_stats,
         )
         if item is not None:
             items.append(item)
-            if ai_state is not None:
-                ai.qualify_item(item, entry, spec, ai_state)
             # Stabilisation Location v0.7.32 : hors pipeline IA, le défaut de
             # source reste le dernier recours après l'enrichissement potentiel.
             if (
@@ -518,23 +400,6 @@ def run_source(
             cyberattaque_rejected_no_victim += 1
 
     outcome.processing_duration_seconds = round(time.monotonic() - processing_started, 3)
-    if ai_state is not None:
-        org_state = ai_state.org_enrichment
-        outcome.org_registry_duration_seconds = round(
-            max(0.0, org_state.duration_seconds - perf_before["org_registry_duration"]), 3
-        )
-        outcome.org_registry_calls = max(0, org_state.calls_attempted - perf_before["org_registry_calls"])
-        outcome.org_official_site_duration_seconds = round(
-            max(0.0, org_state.official_site_duration_seconds - perf_before["official_duration"]), 3
-        )
-        outcome.org_official_site_calls = max(0, org_state.official_site_attempted - perf_before["official_calls"])
-        outcome.qualification_llm_duration_seconds = round(
-            max(0.0, ai_state.llm_duration_seconds - perf_before["qual_llm_duration"]), 3
-        )
-        outcome.qualification_llm_calls = max(0, ai_state.calls_attempted - perf_before["qual_llm_calls"])
-        outcome.qualification_llm_cost_usd = round(
-            max(0.0, ai_state.estimated_cost_usd - perf_before["qual_llm_cost"]), 6
-        )
     source_facts_after = source_facts_ai.runtime_stats()
     outcome.source_facts_llm_duration_seconds = round(max(
         0.0,
@@ -551,30 +416,6 @@ def run_source(
         float(source_facts_after.get("estimated_cost_usd", 0.0))
         - float(source_facts_before.get("estimated_cost_usd", 0.0)),
     ), 6)
-
-    def sf_delta(key: str) -> int:
-        return max(
-            0,
-            int(source_facts_after.get(key, 0)) - int(source_facts_before.get(key, 0)),
-        )
-
-    outcome.source_facts_accepted_cache_hits = sf_delta("accepted_field_cache_hits")
-    outcome.source_facts_abstained_cache_hits = sf_delta("abstained_field_cache_hits")
-    outcome.source_facts_legacy_null_migrations = sf_delta("legacy_null_migrations")
-    outcome.source_facts_legacy_null_skips = sf_delta("legacy_null_skips")
-    outcome.source_facts_semantic_first_misses = sf_delta("semantic_first_misses")
-    outcome.source_facts_semantic_retries = sf_delta("semantic_retries")
-    outcome.source_facts_recovered_on_retry = sf_delta("semantic_recovered_on_retry")
-    outcome.source_facts_new_abstentions = sf_delta("semantic_new_abstentions")
-    measured_external = (
-        outcome.org_registry_duration_seconds
-        + outcome.org_official_site_duration_seconds
-        + outcome.qualification_llm_duration_seconds
-        + outcome.source_facts_llm_duration_seconds
-    )
-    outcome.other_processing_duration_seconds = round(
-        max(0.0, outcome.processing_duration_seconds - measured_external), 3
-    )
 
     source_status, coverage = result.resolve()
     outcome.status = source_status
@@ -749,16 +590,8 @@ class RunReport:
     problems: list[str] = field(default_factory=list)
     duration: float = 0.0
     requests: int = 0
-    ai_usage: dict = field(default_factory=dict)
     source_facts: list[dict] = field(default_factory=list)
-    qualification_provenance: list[dict] = field(default_factory=list)
     incident_id_registry: list[dict] = field(default_factory=list)
-    sector_registry_rows: list[dict] = field(default_factory=list)
-    sector_queue_rows: list[dict] = field(default_factory=list)
-    organisation_sector_decisions: dict = field(default_factory=dict)
-    organisation_sector_evidence: list[dict] = field(default_factory=list)
-    organisation_sector_llm_cache: list[dict] = field(default_factory=list)
-    organisation_domain_pages: list[dict] = field(default_factory=list)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
     organisation_identity_rows: list[dict] = field(default_factory=list)
@@ -772,16 +605,6 @@ def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> 
         outcome.status == status.PARTIAL
         and spec.params.get("publication_contract") == "live_watch"
     )
-
-
-def _company_ids_from_cache(rows: list[dict]) -> dict[str, str]:
-    ids: dict[str, str] = {}
-    for row in rows:
-        key = (row.get("Organisation_Key") or "").strip()
-        company_id = (row.get("Company_ID") or "").strip()
-        if key and company_id and row.get("Match_Status") == org_enrichment.MATCHED:
-            ids[key] = company_id
-    return ids
 
 
 def run_daily_dedup_net(
@@ -809,7 +632,7 @@ def run_daily_dedup_net(
     state.incident_dedup_rows = store.load_incident_dedup_registry()
     if new_or_updated_items:
         try:
-            company_ids = _company_ids_from_cache(store.load_org_enrichment_cache())
+            company_ids: dict[str, str] = {}
             facts_by_item: dict[str, dict] = {}
             victim_websites: dict[str, str] = {}
             for row in source_fact_rows:
@@ -887,10 +710,8 @@ def run_daily_dedup_net(
                 state.organisation_identity_rows = merged_rows
                 state.incident_dedup_rows = merged_incident_rows
 
-            # Le cache LLM n'est jamais une donnée publiée : il ne fait
-            # qu'éviter une dépense redondante lors d'un run réel ultérieur,
-            # y compris si ce run-ci était transitoire.
-            dedup_ai.save_cache(state)
+            if persist:
+                dedup_ai.save_cache(state)
         except Exception as exc:  # noqa: BLE001 — filet non bloquant (§Lot 15)
             problems.append(
                 f"Filet LLM dedup quotidien en échec, ignoré : {type(exc).__name__}: {exc}"[:300]
@@ -917,10 +738,9 @@ def execute(
     previous_ids = {i.Incident_ID for i in previous_incidents}
 
     snapshot_items = store.load_items()
-    existing_items = [] if context.mode == MODE_CREATE else snapshot_items
+    existing_items = snapshot_items
     existing_item_ids = {item.Item_ID for item in existing_items}
 
-    ai_state: ai.AiRunState | None = None
     if offline:
         report.items = existing_items
     else:
@@ -930,9 +750,6 @@ def execute(
         entity_index = watchlists.entity_index()
         territories = watchlists.entity_territories()
         reference = enrichment.load_reference()
-        ai_state = ai.start_run()
-        sector_stats = {"initial_unknown": 0, "resolved_reference": 0, "resolved_deterministic": 0}
-
         collected: list[Item] = []
         watch_rows: list[dict] = []
         new_fact_rows: list[dict] = []
@@ -940,8 +757,8 @@ def execute(
         active_specs = sources.active_sources(context.layers)
         for spec in active_specs:
             outcome, items, rows = run_source(
-                client, spec, context, known_orgs, entity_index, territories, reference, ai_state,
-                sector_stats, new_fact_rows,
+                client, spec, context, known_orgs, entity_index, territories, reference,
+                new_fact_rows,
             )
             report.outcomes.append(outcome)
             collected.extend(items)
@@ -951,31 +768,14 @@ def execute(
                 f"{outcome.coverage:3}%  items={outcome.items_collected:4} "
                 f"calls={outcome.calls:4}  {outcome.reason_code}"
             )
-            print(
-                "    perf "
-                f"collect={outcome.collect_duration_seconds:.1f}s "
-                f"process={outcome.processing_duration_seconds:.1f}s "
-                f"registry={outcome.org_registry_duration_seconds:.1f}s/{outcome.org_registry_calls} "
-                f"official={outcome.org_official_site_duration_seconds:.1f}s/{outcome.org_official_site_calls} "
-                f"q-llm={outcome.qualification_llm_duration_seconds:.1f}s/{outcome.qualification_llm_calls} "
-                f"sf-llm={outcome.source_facts_llm_duration_seconds:.1f}s/{outcome.source_facts_llm_calls} "
-                f"sf-cache=accepted:{outcome.source_facts_accepted_cache_hits}/"
-                f"abstained:{outcome.source_facts_abstained_cache_hits}/"
-                f"legacy-null-skip:{outcome.source_facts_legacy_null_skips} "
-                f"sf-retry={outcome.source_facts_semantic_retries}/"
-                f"recovered:{outcome.source_facts_recovered_on_retry}/"
-                f"new-abstain:{outcome.source_facts_new_abstentions} "
-                f"other={outcome.other_processing_duration_seconds:.1f}s"
-            )
 
         replacement_source_ids = {
             spec.source_id for spec in active_specs
             if spec.params.get("replace_snapshot")
         }
         # Le collecteur Veille LLM peut exposer un historique complet. La
-        # fenêtre du run reste néanmoins l'autorité finale, y compris lors
-        # d'un reset zéro : rien hors période ne peut atteindre ITEMS, FACTS
-        # ni la déduplication.
+        # fenêtre quotidienne reste l'autorité finale : rien hors période ne
+        # peut atteindre les items, les faits ou la déduplication.
         collected_ids = {
             item.Item_ID for item in collected
             if context.window.contains(item.Published_Date)
@@ -1003,58 +803,20 @@ def execute(
         report.items = merged
         report.new_items = new_count
 
-        existing_facts = [] if context.mode == MODE_CREATE else store.load_source_facts()
+        existing_facts = store.load_source_facts()
         facts_base = [row for row in existing_facts if row.get("Source_ID") not in replacement_source_ids]
         report.source_facts = source_facts.merge_source_facts(facts_base, new_fact_rows)
         report.requests = run_budget.requests_made
-        report.ai_usage = ai.finish_run(
-            ai_state, context.run_id, context.as_of, context.mode, sector_stats,
-            persist=persist,
-        )
-
-    qualification_source_facts = (
-        store.load_source_facts() if offline else report.source_facts
-    )
-    qualification_org_cache = (
-        sorted(ai_state.org_enrichment.cache.values(), key=lambda row: row.get("Organisation_Key", ""))
-        if ai_state is not None
-        else store.load_org_enrichment_cache()
-    )
-    domain_rows = domain_page_sector.enrich_domain_pages(
-        report.items,
-        cache_rows=domain_page_sector.load_cache(),
-        allow_network=not offline and context.mode in (MODE_CREATE, MODE_MAJ),
-    )
-    if not offline and context.mode in (MODE_CREATE, MODE_MAJ):
-        domain_llm_report = domain_page_sector_llm.enrich_domain_page_sectors(
-            cache_rows=domain_rows,
-            persist=False,
-        )
-        domain_rows = domain_llm_report.cache_rows
-    report.organisation_domain_pages = domain_rows
-    qualified = qualify(
-        report.items,
-        source_fact_rows=qualification_source_facts,
-        org_cache_rows=qualification_org_cache,
-        domain_page_rows=domain_rows,
-        allow_llm=not offline and context.mode in (MODE_CREATE, MODE_MAJ),
-        persist_llm_cache=False,
-    )
-    report.items = qualified.items
-    report.incidents = qualified.incidents
-    report.qualification_provenance = qualified.provenance
-    report.incident_id_registry = qualified.incident_id_registry
-    report.sector_registry_rows = qualified.registry_rows
-    report.sector_queue_rows = qualified.queue_rows
-    report.organisation_sector_decisions = qualified.organisation_sector_decisions
-    report.organisation_sector_evidence = qualified.organisation_sector_evidence
-    report.organisation_sector_llm_cache = qualified.organisation_sector_llm_cache
+    enriched = enrichment.finalize_snapshot(report.items)
+    report.items = enriched.items
+    report.incidents = enriched.incidents
+    report.incident_id_registry = enriched.incident_id_registry
 
     # Dernière étape métier : le déterministe a déjà produit ses incidents.
     # Le LLM ne voit que les items du jour et les compare à toute la base pour
     # rattraper les variantes simples de nom laissées séparées. Un seul batch
     # suffit ; en cas d'échec, le résultat déterministe reste publiable.
-    if not offline and context.mode in (MODE_MAJ, MODE_CREATE):
+    if not offline:
         daily_ids = {item.Item_ID for item in collected if item.Item_ID}
         daily_scope = [item for item in report.items if item.Item_ID in daily_ids]
         dedup_state, dedup_ai_problems = run_daily_dedup_net(
@@ -1165,25 +927,9 @@ def _persist(
                 "Oldest_Available_Date": o.oldest_available_date,
                 "Collect_Duration_s": o.collect_duration_seconds,
                 "Processing_Duration_s": o.processing_duration_seconds,
-                "Org_Registry_Duration_s": o.org_registry_duration_seconds,
-                "Org_Registry_Calls": o.org_registry_calls,
-                "Org_Official_Site_Duration_s": o.org_official_site_duration_seconds,
-                "Org_Official_Site_Calls": o.org_official_site_calls,
-                "Qualification_LLM_Duration_s": o.qualification_llm_duration_seconds,
-                "Qualification_LLM_Calls": o.qualification_llm_calls,
-                "Qualification_LLM_Cost_USD": o.qualification_llm_cost_usd,
                 "SourceFacts_LLM_Duration_s": o.source_facts_llm_duration_seconds,
                 "SourceFacts_LLM_Calls": o.source_facts_llm_calls,
                 "SourceFacts_LLM_Cost_USD": o.source_facts_llm_cost_usd,
-                "SourceFacts_Accepted_Cache_Hits": o.source_facts_accepted_cache_hits,
-                "SourceFacts_Abstained_Cache_Hits": o.source_facts_abstained_cache_hits,
-                "SourceFacts_Legacy_Null_Migrations": o.source_facts_legacy_null_migrations,
-                "SourceFacts_Legacy_Null_Skips": o.source_facts_legacy_null_skips,
-                "SourceFacts_Semantic_First_Misses": o.source_facts_semantic_first_misses,
-                "SourceFacts_Semantic_Retries": o.source_facts_semantic_retries,
-                "SourceFacts_Recovered_On_Retry": o.source_facts_recovered_on_retry,
-                "SourceFacts_New_Abstentions": o.source_facts_new_abstentions,
-                "Other_Processing_Duration_s": o.other_processing_duration_seconds,
             }
             for o in report.outcomes
         ])
@@ -1198,14 +944,6 @@ def _persist(
             store.save_items(report.items)
             store.save_incidents(report.incidents)
             store.save_incident_id_registry(report.incident_id_registry)
-            store.save_qualification_provenance(report.qualification_provenance)
-            sector_registry.write_outputs(report.sector_registry_rows, report.sector_queue_rows)
-            organisation_sector.write_decisions_csv(
-                report.organisation_sector_decisions, updated_at=context.as_of
-            )
-            organisation_sector.write_evidence_csv(report.organisation_sector_evidence)
-            organisation_sector_llm.save_cache(report.organisation_sector_llm_cache)
-            domain_page_sector.save_cache(report.organisation_domain_pages)
             save_snapshot_provenance(
                 store.load_items(), store.load_incidents(), operation="REPLAY",
                 run_id=context.run_id, mode=context.mode, as_of=context.as_of,
@@ -1240,21 +978,11 @@ def _persist(
         "Requests": report.requests,
         "Notes": " ; ".join(report.problems),
     })
-    if report.ai_usage:
-        store.append_ai_usage(report.ai_usage)
     if persist_snapshot:
         store.save_items(report.items)
         store.save_incidents(report.incidents)
         store.save_incident_id_registry(report.incident_id_registry)
         store.save_source_facts(report.source_facts)
-        store.save_qualification_provenance(report.qualification_provenance)
-        sector_registry.write_outputs(report.sector_registry_rows, report.sector_queue_rows)
-        organisation_sector.write_decisions_csv(
-            report.organisation_sector_decisions, updated_at=context.as_of
-        )
-        organisation_sector.write_evidence_csv(report.organisation_sector_evidence)
-        organisation_sector_llm.save_cache(report.organisation_sector_llm_cache)
-        domain_page_sector.save_cache(report.organisation_domain_pages)
         # Les décisions du filet LLM deviennent canoniques uniquement avec le
         # snapshot final. Un run cassé ne peut donc plus polluer la MAJ suivante.
         store.save_incident_dedup_registry(report.incident_dedup_rows)

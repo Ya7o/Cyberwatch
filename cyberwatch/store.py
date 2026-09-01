@@ -13,13 +13,10 @@ import tempfile
 from pathlib import Path
 
 from .model import (
-    AI_QUALIFICATIONS_COLUMNS,
-    AI_USAGE_COLUMNS,
     DEDUP_AI_DAILY_USAGE_COLUMNS,
     ENTITY_WATCH_COLUMNS,
     INCIDENT_COLUMNS,
     ITEM_COLUMNS,
-    ORG_ENRICHMENT_CACHE_COLUMNS,
     RUN_LOG_COLUMNS,
     RUN_SOURCE_COLUMNS,
     SOURCE_COLUMNS,
@@ -30,20 +27,6 @@ from .model import (
 from .incident_identity import REGISTRY_COLUMNS
 from .incident_dedup import REGISTRY_COLUMNS as INCIDENT_DEDUP_REGISTRY_COLUMNS
 from .org_identity import ORGANISATION_IDENTITY_REGISTRY_COLUMNS
-
-QUALIFICATION_PROVENANCE_COLUMNS = [
-    "Item_ID",
-    "Source_ID",
-    "Field",
-    "Previous_Value",
-    "Candidate_Value",
-    "Final_Value",
-    "Origin",
-    "Confidence",
-    "Evidence",
-    "Match_Strategy",
-    "Decision",
-]
 
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent
@@ -59,9 +42,6 @@ RUN_SOURCES_CSV = DATA_DIR / "run_sources.csv"
 RUN_LOG_CSV = DATA_DIR / "run_log.csv"
 ENTITY_WATCH_CSV = DATA_DIR / "entity_watch.csv"
 ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
-AI_QUALIFICATIONS_CSV = DATA_DIR / "ai_qualifications.csv"
-AI_USAGE_CSV = DATA_DIR / "ai_usage.csv"
-ORG_ENRICHMENT_CACHE_CSV = DATA_DIR / "org_enrichment_cache.csv"
 INCIDENT_ID_REGISTRY_CSV = DATA_DIR / "incident_id_registry.csv"
 INCIDENT_DEDUP_REGISTRY_CSV = DATA_DIR / "incident_dedup_registry.csv"
 ORGANISATION_IDENTITY_REGISTRY_CSV = DATA_DIR / "organisation_identity_registry.csv"
@@ -69,7 +49,6 @@ DEDUP_AI_DAILY_USAGE_CSV = DATA_DIR / "dedup_ai_daily_usage.csv"
 #: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
 #: inclus dans Items_Hash/Incidents_Hash.
 SOURCE_FACTS_CSV = DATA_DIR / "source_facts.csv"
-QUALIFICATION_PROVENANCE_CSV = DATA_DIR / "qualification_provenance.csv"
 SNAPSHOT_JSON = DATA_DIR / "snapshot.json"
 BASELINE_JSON = DATA_DIR / "baseline.json"
 
@@ -258,28 +237,6 @@ def load_run_sources(path: Path | None = None) -> list[dict]:
     return read_csv(path or RUN_SOURCES_CSV)
 
 
-def load_ai_qualifications(path: Path | None = None) -> list[dict]:
-    return read_csv(path or AI_QUALIFICATIONS_CSV)
-
-
-def save_ai_qualifications(rows: list[dict], path: Path | None = None) -> None:
-    write_csv(path or AI_QUALIFICATIONS_CSV, AI_QUALIFICATIONS_COLUMNS, rows)
-
-
-def append_ai_usage(row: dict, path: Path | None = None) -> None:
-    """Ajoute la synthèse d'usage IA du run courant à l'historique `AI_USAGE`."""
-    target = path or AI_USAGE_CSV
-    write_csv(target, AI_USAGE_COLUMNS, read_csv(target) + [row])
-
-
-def load_org_enrichment_cache(path: Path | None = None) -> list[dict]:
-    return read_csv(path or ORG_ENRICHMENT_CACHE_CSV)
-
-
-def save_org_enrichment_cache(rows: list[dict], path: Path | None = None) -> None:
-    write_csv(path or ORG_ENRICHMENT_CACHE_CSV, ORG_ENRICHMENT_CACHE_COLUMNS, rows)
-
-
 def load_run_log(path: Path | None = None) -> list[dict]:
     return read_csv(path or RUN_LOG_CSV)
 
@@ -290,14 +247,6 @@ def load_source_facts(path: Path | None = None) -> list[dict]:
 
 def save_source_facts(rows: list[dict], path: Path | None = None) -> None:
     write_csv(path or SOURCE_FACTS_CSV, SOURCE_FACT_COLUMNS, rows)
-
-
-def load_qualification_provenance(path: Path | None = None) -> list[dict]:
-    return read_csv(path or QUALIFICATION_PROVENANCE_CSV)
-
-
-def save_qualification_provenance(rows: list[dict], path: Path | None = None) -> None:
-    write_csv(path or QUALIFICATION_PROVENANCE_CSV, QUALIFICATION_PROVENANCE_COLUMNS, rows)
 
 
 def load_snapshot(path: Path | None = None) -> dict:

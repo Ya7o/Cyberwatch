@@ -138,7 +138,7 @@ class TestIncidentFields:
         assert incident.Date_Basis == config.DATE_BASIS_PUBLICATION
 
     def test_menace_la_plus_prioritaire_gagne(self, make_item):
-        """Deux sources, deux qualifications : la priorité du §8 tranche."""
+        """Deux sources, deux valeurs enrichies : la priorité métier tranche."""
         items = [
             make_item(published="2026-03-01", url="https://a/1", threat="Fuite de données"),
             make_item(published="2026-03-05", url="https://a/2", threat="Ransomware"),

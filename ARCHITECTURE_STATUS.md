@@ -1,6 +1,6 @@
 # Statut d'architecture Cyberwatch
 
-Date de simplification : 2026-08-31
+Date de simplification : 2026-09-01
 
 ## Architecture de production
 
@@ -8,9 +8,9 @@ Date de simplification : 2026-08-31
 sources -> collecte -> identité -> enrichissement -> déduplication -> publication
 ```
 
-Une seule branche de production : `main`. Le corpus commence le 28 août 2026,
-puis chaque MAJ ne collecte qu'aujourd'hui et hier. Deux workflows : `ci.yml`
-et `collect.yml`.
+Une seule branche de production : `main`. Chaque MAJ ne collecte qu'aujourd'hui
+et hier, sans reconstruction historique. Deux workflows : `ci.yml` et
+`collect.yml`.
 
 ## Règles
 
@@ -22,5 +22,5 @@ et `collect.yml`.
   produit démontré ;
 - la priorité est la rapidité et la lisibilité du prototype.
 
-Les anciens golden sets, benchmarks de certification et promotions ne font pas
-partie du projet.
+Il n'existe plus de golden set, benchmark, campagne de qualification, script de
+backfill ou registre de revue secteur dans le projet.

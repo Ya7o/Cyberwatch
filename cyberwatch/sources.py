@@ -66,7 +66,7 @@ CORE_SOURCES = [
             # pas de JSON-LD. Le flux plafonne à 100 entrées ; sa plus
             # ancienne recule avec le temps (2026-01-01 atteint le 08-14,
             # seulement le 2026-07-18 le 08-15). Exiger la borne bloquerait
-            # tout CREATE dès que la fenêtre demandée dépasse ce que le site
+            # toute collecte historique dès que la fenêtre demandée dépasse ce que le site
             # expose, sans qu'aucune requête ne puisse jamais y remédier.
             "feed_has_no_pagination": True,
         },
@@ -317,10 +317,6 @@ REGIONAL_WATCH_SOURCES = [
             # source devient PARTIAL (visible) mais reste non bloquante.
             "max_snapshot_age_days": 2,
             "publication_contract": "live_watch",
-            # Déjà issue d'une analyse LLM structurée (territoire, secteur,
-            # menace, synthèse, score) : ne pas faire interpréter la sortie
-            # d'un LLM par un second LLM.
-            "skip_ai_qualification": True,
         },
         protocol=(
             "Lire le snapshot JSON versionné complet à chaque run ; valider le schéma, "

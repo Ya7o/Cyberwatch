@@ -9,7 +9,6 @@ canonique résolue par :mod:`cyberwatch.fact_resolution`.
 from __future__ import annotations
 
 from . import config, fact_resolution, site_legacy as _legacy, site_window, store
-from .normalize import organisation_key
 
 _SENSITIVE = ("mot de passe", "identifiant", "token", "secret", "iban", "bancair", "paiement", "santé", "medical", "nir", "passeport", "pièce d'identité", "biométr")
 
@@ -17,19 +16,11 @@ def _sensitive_types(detail: dict) -> list[str]:
     return [str(x.get("value")) for x in detail.get("data_types", []) if any(marker in str(x.get("value") or "").casefold() for marker in _SENSITIVE)]
 
 
-def _sector_status(row: dict, queues: dict[str, dict]) -> dict:
-    """Rend l'absence de secteur explicable dans le JSON public."""
+def _sector_status(row: dict) -> dict:
+    """Rend l'absence de secteur explicable sans file de revue."""
     if row.get("sector") != config.SECTOR_UNKNOWN:
         return {"status": "confirmed"}
-    if row.get("sector_tentative"):
-        return {"status": "tentative", "candidate": str(row["sector_tentative"])}
-    queue = queues.get(organisation_key(str(row.get("org") or "")))
-    if queue:
-        return {
-            "status": "unknown",
-            "reason": str(queue.get("Category") or "NO_EVIDENCE"),
-        }
-    return {"status": "identity_unmapped", "reason": "missing_sector_queue"}
+    return {"status": "unknown", "reason": "NO_EVIDENCE"}
 
 # Compatibilité stricte : les tests et outils internes utilisent plusieurs
 # helpers privés de site.py. On les réexporte sans dupliquer leur code.
@@ -43,22 +34,14 @@ def build() -> tuple[int, int]:
     incidents = store.load_incidents()
     items = store.load_items()
     raw_facts = _legacy._source_facts_by_incident(items, store.load_source_facts())
-    tentative_sectors = _legacy._qualification_provenance_by_incident(
-        items, store.load_qualification_provenance()
-    )
     payload = _legacy.incidents_payload(
         incidents,
         _legacy._local_analysis_by_incident(items),
         raw_facts,
-        tentative_sectors,
+        {},
     )
-    sector_queue = {
-        str(row.get("Organisation_Key") or ""): row
-        for row in store.read_csv(store.DATA_DIR / "sector_enrichment_queue.csv")
-        if row.get("Organisation_Key")
-    }
     for row in payload:
-        row["sector_status"] = _sector_status(row, sector_queue)
+        row["sector_status"] = _sector_status(row)
 
     # Le résolveur utilise comme fallback la synthèse historique sélectionnée
     # de façon déterministe. Dès que des faits structurés suffisent, une

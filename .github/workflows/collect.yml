@@ -5,12 +5,6 @@ on:
     # Collecte quotidienne : 11:00 à La Réunion (UTC+4).
     - cron: "0 7 * * *"
   workflow_dispatch:
-    inputs:
-      mode:
-        description: "Commande"
-        type: choice
-        default: maj
-        options: [maj, create]
 
 permissions:
   contents: write
@@ -18,11 +12,6 @@ permissions:
 concurrency:
   group: cyberwatch-data-write
   cancel-in-progress: false
-
-env:
-  # Le corpus de production commence ici. Aucune collecte ne réintroduit
-  # d'incident antérieur.
-  COLLECTION_EPOCH: "2026-08-28"
 
 jobs:
   collect:
@@ -36,50 +25,19 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-      - name: Déterminer le mode
-        id: scope
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "mode=maj" >> "$GITHUB_OUTPUT"
-          fi
       - name: Collecter
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
-          ORG_ENRICHMENT_ENABLED: "0"
-          # Budget logiciel total : qualification $0.02 + faits $0.05
-          # + secteur $0.02 + déduplication $0.01 = $0.10 maximum.
-          AI_MAX_CALLS_PER_RUN: "30"
-          AI_MAX_ESTIMATED_COST_USD_PER_RUN: "0.02"
-          SOURCE_FACTS_AI_MAX_CALLS_PER_RUN: "30"
-          SOURCE_FACTS_AI_MAX_COST_USD_PER_RUN: "0.05"
-          LLM_MAX_CALLS_PER_RUN: "31"
+          # Plafond partagé par l'enrichissement et la déduplication.
           LLM_MAX_COST_USD_PER_RUN: "0.03"
-          LLM_ORGANISATION_SECTOR_MAX_CALLS_PER_RUN: "30"
-          LLM_ORGANISATION_SECTOR_MAX_COST_USD_PER_RUN: "0.02"
-          DEDUP_AI_MAX_CALLS: "1"
-          DEDUP_AI_MAX_COST_USD: "0.01"
-          LLM_DEDUP_MAX_CALLS_PER_RUN: "1"
-          LLM_DEDUP_MAX_COST_USD_PER_RUN: "0.01"
-          CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
           DEDUP_AI_DAILY_ENABLED: "1"
-        shell: bash
-        run: |
-          args=(--layers all)
-          if [ "${{ steps.scope.outputs.mode }}" = "create" ]; then
-            args+=(--start "$COLLECTION_EPOCH")
-          fi
-          python -m cyberwatch "${{ steps.scope.outputs.mode }}" "${args[@]}"
-      - name: Valider et construire
-        run: |
-          python -m cyberwatch check
-          python -m cyberwatch build-site
+        run: python -m cyberwatch maj
+      - name: Valider
+        run: python -m cyberwatch check
       - name: Résumé du run
         shell: bash
         run: |
-          echo "## Cyberwatch — ${{ steps.scope.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Cyberwatch — MAJ quotidienne" >> "$GITHUB_STEP_SUMMARY"
           python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
       - name: Publier les données sur main
         run: |

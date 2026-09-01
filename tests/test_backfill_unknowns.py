@@ -1,11 +1,4 @@
-import pytest
-
-from cyberwatch import config, enrichment, store
-
-
-@pytest.fixture(autouse=True)
-def _isolate_org_cache(tmp_path, monkeypatch):
-    monkeypatch.setattr(store, "ORG_ENRICHMENT_CACHE_CSV", tmp_path / "org_enrichment_cache.csv")
+from cyberwatch import config, enrichment
 
 
 def test_backfill_threat_from_explicit_leak_phrases(make_item):

@@ -13,7 +13,7 @@ son ancre historique conserve l'ancien identifiant.
 Le registre suit le corpus publié courant : une ancre qui n'existe plus dans
 ITEMS est retirée avant attribution. Si une ancienne redirection pointait vers
 une ancre retirée mais que sa propre ancre existe encore, elle redevient active
-(ou suit la chaîne vers une cible encore présente). Cela permet à un CREATE ou
+(ou suit la chaîne vers une cible encore présente). Cela permet à une mise à jour ou
 à une reconstruction après retrait de source de rester valide sans réutiliser
 une identité dont l'ancre a disparu.
 """

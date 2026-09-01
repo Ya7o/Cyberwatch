@@ -21,7 +21,7 @@ from .org_identity import effective_organisation_key
 MERGE = "MERGE"
 KEEP_SEPARATE = "KEEP_SEPARATE"
 NO_DECISION = "NO_DECISION"
-PREFERRED_QUALIFICATION_SOURCE = "VEILLE_LLM"
+PREFERRED_ENRICHMENT_SOURCE = "VEILLE_LLM"
 
 STRONG_KEEP_REASON_CODES = frozenset({
     "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID",
@@ -337,11 +337,11 @@ def _strict_majority(values: list[str], fallback: str) -> str:
     return winners[0] if len(winners) == 1 else fallback
 
 
-def _preferred_qualification(ordered: list[Item], field_name: str, fallback: str) -> str:
+def _preferred_enrichment(ordered: list[Item], field_name: str, fallback: str) -> str:
     preferred = [
         getattr(item, field_name)
         for item in ordered
-        if item.Source_ID == PREFERRED_QUALIFICATION_SOURCE
+        if item.Source_ID == PREFERRED_ENRICHMENT_SOURCE
         and getattr(item, field_name)
         and getattr(item, field_name) != fallback
     ]
@@ -399,9 +399,9 @@ def _incident_from_component(component: list[Item], stable_id: str = "") -> Inci
             [item.Organisation_Raw for item in ordered],
             ordered[0].Organisation_Raw or "",
         ),
-        Secteur=_preferred_qualification(ordered, "Sector", config.SECTOR_UNKNOWN),
+        Secteur=_preferred_enrichment(ordered, "Sector", config.SECTOR_UNKNOWN),
         Menace=_priority_threat([item.Threat for item in ordered]),
-        Localisation=_preferred_qualification(ordered, "Location", config.LOC_INCONNU),
+        Localisation=_preferred_enrichment(ordered, "Location", config.LOC_INCONNU),
         Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),
         Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),
         Items_Count=len(ordered),

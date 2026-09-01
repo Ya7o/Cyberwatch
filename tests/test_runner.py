@@ -8,7 +8,6 @@ from cyberwatch import config, identity, runner, status, watchlists
 from cyberwatch.collectors.base import CollectResult, RawEntry, SourceSpec, Window
 from cyberwatch.dedup import build_incidents
 from cyberwatch.runner import (
-    MODE_CREATE,
     RunContext,
     build_entity_watch,
     entry_to_item,
@@ -40,7 +39,7 @@ class TestEntryToItem:
         assert item.Organisation_Raw == "Mairie de Saint-Leu"
         assert item.Organisation_Key == "mairie de saint leu"
         assert item.Threat == config.THREAT_LEAK
-        assert item.Sector == config.SECTOR_UNKNOWN
+        assert item.Sector == config.SECTOR_ADMIN
         # `entry_to_item` conserve désormais le défaut source pour l'étape
         # suivante du pipeline afin que l'enrichissement entreprise reste prioritaire.
         assert item.Location == config.LOC_INCONNU
@@ -172,7 +171,7 @@ class TestEntryToItem:
             organisation="Air Austral",
         )
         item = entry_to_item(entry, SPEC, AS_OF, {}, index)
-        assert item.Sector == config.SECTOR_UNKNOWN
+        assert item.Sector == config.SECTOR_TRANSPORT
 
 
 class TestHistoryStatus:
@@ -219,24 +218,12 @@ class TestHistoryStatus:
 
 
 class TestRunContext:
-    def test_create_demarre_a_l_epoch_de_production(self):
-        context = make_run_context(MODE_CREATE, as_of="2026-08-12T10:00:00+04:00")
-        assert context.target_start == config.PRODUCTION_EPOCH
-        assert context.target_end == "2026-08-12"
-        assert context.mode == MODE_CREATE
-
-    def test_debut_explicite_respecte(self):
-        context = make_run_context(
-            MODE_CREATE, as_of="2026-08-12T10:00:00+04:00", target_start="2025-06-01"
-        )
-        assert context.target_start == "2025-06-01"
-
     def test_maj_ne_collecte_que_les_dernieres_24_heures(self):
         context = make_run_context(runner.MODE_MAJ, as_of="2026-09-01T10:00:00+04:00")
         assert context.target_start == "2026-08-31"
 
     def test_couches_par_defaut(self):
-        context = make_run_context(MODE_CREATE, as_of="2026-08-12T10:00:00+04:00")
+        context = make_run_context(runner.MODE_MAJ, as_of="2026-08-12T10:00:00+04:00")
         assert config.LAYER_CORE in context.layers
 
 
@@ -328,34 +315,13 @@ class TestRepairItemIntegrity:
         assert repaired[0].Item_ID != "ITM-obsolete"
 
 
-class TestCreateRepartDeZero:
-    """§24 — `CREATE` construit la base depuis zéro, `MAJ` cumule (§25)."""
-
-    def test_create_ignore_le_snapshot_precedent(self, tmp_path, monkeypatch, make_item):
-        """Une évolution des règles change les Item_ID : sans repartir de zéro,
-        chaque item cohabiterait avec sa version périmée."""
-        from cyberwatch import runner, store
-
-        for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
-                     "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
-                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV"):
-            monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
-
-        store.save_items([make_item(url="https://ancien/1")])
-        store.save_snapshot({"As_Of": "2026-08-10T10:00:00+04:00"})
-        context = runner.make_run_context(
-            runner.MODE_CREATE, as_of="2026-08-12T10:00:00+04:00"
-        )
-        report = runner.execute(context, offline=True)
-        assert report.items == []
-        assert report.overall == status.OK
-
+class TestMajConserveLeCorpus:
     def test_maj_conserve_le_stock(self, tmp_path, monkeypatch, make_item):
         from cyberwatch import runner, store
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
                      "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
-                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV"):
+                     "SOURCE_FACTS_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
 
         store.save_items([make_item(url="https://ancien/1")])
@@ -369,8 +335,7 @@ class TestCreateRepartDeZero:
 
 
 class TestSourceFactsPersistence:
-    """§13 METHODOLOGY.md : CREATE peuple `source_facts.csv`, MAJ fusionne
-    par `Item_ID` sans doublon, REPLAY ne le touche jamais.
+    """REPLAY ne modifie jamais les faits déjà publiés.
 
     VEILLE_LLM est la seule source active de `LAYER_REGIONAL_WATCH` et son
     collecteur lit un snapshot JSON local (aucun accès réseau) : ces tests
@@ -380,58 +345,16 @@ class TestSourceFactsPersistence:
     def _isolate(self, tmp_path, monkeypatch):
         from cyberwatch import store
 
-        # Le mode non `offline` traverse aussi `ai.py`/`org_enrichment.py`
-        # (même sans clé API : Status=DISABLED est tout de même journalisé) et,
-        # en MAJ, `runner.run_daily_dedup_net` (§Lot 2/9 : même sans candidat
+        # En MAJ, `runner.run_daily_dedup_net` (§Lot 2/9 : même sans candidat
         # ni clé API, la télémétrie NO_CANDIDATES/LLM_DISABLED est journalisée
         # dans DEDUP_AI_DAILY_USAGE_CSV) : isoler ces CSV est requis pour ne
         # jamais écrire dans data/ réel.
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
                      "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
-                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV", "AI_QUALIFICATIONS_CSV", "AI_USAGE_CSV",
-                     "ORG_ENRICHMENT_CACHE_CSV", "DEDUP_AI_DAILY_USAGE_CSV"):
+                     "SOURCE_FACTS_CSV",
+                     "DEDUP_AI_DAILY_USAGE_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
         monkeypatch.setattr(store, "DATA_DIR", tmp_path)
-
-    def test_create_peuple_source_facts(self, tmp_path, monkeypatch):
-        from cyberwatch import runner, store
-
-        self._isolate(tmp_path, monkeypatch)
-        context = runner.make_run_context(
-            runner.MODE_CREATE, as_of="2026-08-15T10:00:00+04:00",
-            target_start="2000-01-01", layers=[config.LAYER_REGIONAL_WATCH],
-        )
-        report = runner.execute(context, offline=False)
-
-        assert report.overall == status.OK
-        facts = store.load_source_facts()
-        assert facts
-        assert all(row["Source_ID"] == "VEILLE_LLM" for row in facts)
-        veille_item_ids = {i.Item_ID for i in report.items if i.Source_ID == "VEILLE_LLM"}
-        assert {row["Item_ID"] for row in facts} <= veille_item_ids
-        assert all(row["Fine_Location"] or row["Threat_Actor"] for row in facts)
-
-    def test_maj_fusionne_sans_doublon(self, tmp_path, monkeypatch):
-        from cyberwatch import runner, store
-
-        self._isolate(tmp_path, monkeypatch)
-        first_context = runner.make_run_context(
-            runner.MODE_CREATE, as_of="2026-08-15T10:00:00+04:00",
-            target_start="2000-01-01", layers=[config.LAYER_REGIONAL_WATCH],
-        )
-        runner.execute(first_context, offline=False)
-        first_facts = store.load_source_facts()
-
-        second_context = runner.make_run_context(
-            runner.MODE_MAJ, as_of="2026-08-16T10:00:00+04:00",
-            target_start="2000-01-01", layers=[config.LAYER_REGIONAL_WATCH],
-        )
-        runner.execute(second_context, offline=False)
-        second_facts = store.load_source_facts()
-
-        item_ids = [row["Item_ID"] for row in second_facts]
-        assert len(item_ids) == len(set(item_ids))
-        assert len(second_facts) == len(first_facts)
 
     def test_replay_n_ecrit_jamais_source_facts(self, tmp_path, monkeypatch, make_item):
         from cyberwatch import runner, store
@@ -557,7 +480,7 @@ class TestTerritoireDeLEntite:
         )
         assert item.Organisation_Raw == "Air Austral"
         assert item.Location == config.LOC_REUNION
-        assert item.Sector == config.SECTOR_UNKNOWN
+        assert item.Sector == config.SECTOR_TRANSPORT
 
     def test_organisation_inconnue_ne_recoit_pas_un_defaut_france(self):
         from cyberwatch import sources, watchlists
@@ -617,7 +540,7 @@ class TestLatestItemGeneralized:
     )
     CONTEXT = RunContext(
         run_id="RUN-TEST", as_of=AS_OF, target_start="2026-01-01",
-        target_end="2026-08-15", mode=MODE_CREATE, layers=[config.LAYER_CORE],
+        target_end="2026-08-15", mode=runner.MODE_MAJ, layers=[config.LAYER_CORE],
     )
 
     def _run(self, entries, spec=None, monkeypatch=None):
@@ -693,8 +616,8 @@ class TestDailyDedupNet:
 
         for name in ("ITEMS_CSV", "INCIDENTS_CSV", "SOURCES_CSV",
                      "RUN_SOURCES_CSV", "RUN_LOG_CSV", "ENTITY_WATCH_CSV", "SNAPSHOT_JSON",
-                     "SOURCE_FACTS_CSV", "QUALIFICATION_PROVENANCE_CSV", "AI_QUALIFICATIONS_CSV",
-                     "AI_USAGE_CSV", "ORG_ENRICHMENT_CACHE_CSV", "DEDUP_AI_DAILY_USAGE_CSV"):
+                     "SOURCE_FACTS_CSV",
+                     "DEDUP_AI_DAILY_USAGE_CSV"):
             monkeypatch.setattr(store, name, tmp_path / f"{name.lower()}.csv")
         monkeypatch.setattr(store, "DATA_DIR", tmp_path)
 
@@ -754,6 +677,11 @@ class TestDailyDedupNet:
             }
 
         monkeypatch.setattr(dedup_ai, "challenge_candidates_batch", fake_batch)
+        monkeypatch.setattr(
+            dedup_ai,
+            "save_cache",
+            lambda _state: (_ for _ in ()).throw(AssertionError("cache écrit")),
+        )
 
         runner.run_daily_dedup_net(
             [new_item, historical], [new_item], [],
@@ -820,7 +748,6 @@ class TestDailyDedupNet:
             raise AssertionError("REPLAY ne doit jamais appeler le LLM")
 
         monkeypatch.setattr(llm_runtime.LlmRuntime, "call_json", _forbidden)
-        monkeypatch.setattr(dedup_ai.ai, "_post_openai", _forbidden)
 
         left = make_item(source="A", org="Zorglub Consulting", published="2026-08-01", url="https://a")
         right = make_item(source="B", org="ZorglubConsulting", published="2026-08-02", url="https://b")
@@ -854,29 +781,6 @@ class TestDailyDedupNet:
             assert len(matching) == 1
         finally:
             org_identity.reload_organisation_identity_registry()
-
-    def test_create_declenche_aussi_le_filet(self, tmp_path, monkeypatch):
-        """Cas réel constaté (audit post-reset 2026-08-25) : un reset total
-        (CREATE) publiait "Banque Alimentaire de la Croix-Rouge à
-        Strasbourg" et "Banque Alimentaire de Strasbourg" comme deux
-        incidents distincts sans jamais soumettre la paire au filet LLM,
-        celui-ci étant gelé sur MODE_MAJ. `execute()` doit désormais
-        invoquer `run_daily_dedup_net` pour CREATE aussi bien que pour MAJ.
-        VEILLE_LLM (seule source de LAYER_REGIONAL_WATCH) lit un snapshot
-        JSON local : ce test exerce `execute(offline=False)` sans la moindre
-        collecte réseau, comme `TestSourceFactsPersistence`."""
-        self._isolate(tmp_path, monkeypatch)
-        context = runner.make_run_context(
-            runner.MODE_CREATE, as_of="2026-08-25T10:00:00+04:00",
-            layers=[config.LAYER_REGIONAL_WATCH],
-        )
-        report = runner.execute(context, offline=False)
-
-        assert report.overall == status.OK
-        assert report.dedup_ai_summary != {}
-        assert report.dedup_ai_summary["dedup_candidates_generated"] >= 0
-        assert report.dedup_ai_problems == []
-
 
 class TestOrganisationIdentityRegistryDoesNotAffectItemId:
     """§Lot 8 : le registre n'agit que sur `effective_organisation_key`, la

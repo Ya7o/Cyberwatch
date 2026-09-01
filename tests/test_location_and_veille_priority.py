@@ -1,45 +1,7 @@
-"""Règles métier : défaut France et priorité de qualification VEILLE_LLM."""
+"""Règles métier : défaut France et priorité d'enrichissement VEILLE_LLM."""
 
-import pytest
-
-from cyberwatch import ai, config, org_enrichment, sources
-from cyberwatch.collectors.base import RawEntry
+from cyberwatch import config
 from cyberwatch.dedup import build_incidents
-from cyberwatch.runner import entry_to_item
-
-
-@pytest.mark.parametrize("source_id", ["FRENCHBREACHES", "BONJOURLAFUITE"])
-def test_french_leak_sources_default_to_france(source_id):
-    spec = sources.by_id(source_id)
-    assert spec is not None
-    assert spec.location_rule == config.LOC_FRANCE
-
-    entry = RawEntry(
-        title="Organisation Exemple",
-        published="2026-08-15",
-        summary="Fuite de données confirmée.",
-        url=f"https://example.test/{source_id.lower()}",
-    )
-    item = entry_to_item(
-        entry,
-        spec,
-        "2026-08-15T16:30:00+04:00",
-        known_orgs={},
-        entity_index={},
-        territories={},
-        reference={},
-    )
-
-    assert item is not None
-    # Le défaut source est volontairement différé pour laisser une chance à
-    # l'enrichissement entreprise de fournir 974/976 en priorité.
-    assert item.Location == config.LOC_INCONNU
-    state = ai.AiRunState(
-        enabled=False,
-        org_enrichment=org_enrichment.OrgEnrichmentState(enabled=False),
-    )
-    ai.qualify_item(item, entry, spec, state)
-    assert item.Location == config.LOC_FRANCE
 
 
 def test_veille_llm_wins_sector_and_location_on_dedup(make_item):
@@ -64,7 +26,7 @@ def test_veille_llm_wins_sector_and_location_on_dedup(make_item):
 
     assert incident.Secteur == config.SECTOR_ADMIN
     assert incident.Localisation == config.LOC_REUNION
-    # VEILLE_LLM reste analytique : priorité de qualification oui, mais pas
+    # VEILLE_LLM reste analytique : priorité d'enrichissement oui, mais pas
     # corroboration éditoriale supplémentaire quand une source directe existe.
     assert incident.Sources == "FRENCHBREACHES"
     assert incident.Source_URLs == "https://direct.example/incident"

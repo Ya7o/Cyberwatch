@@ -8,9 +8,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, org_enrichment, store, watchlists
+from . import config, store, watchlists
+from .dedup import build_incidents_with_registry
 from .identity import sort_items
-from .model import Item
+from .model import Incident, Item
 from .normalize import classify_location, classify_threat, organisation_key, searchable
 
 
@@ -114,26 +115,8 @@ def _backfill_unknown_threat(item: Item) -> str:
     return config.THREAT_UNKNOWN
 
 
-def _cached_api_locations() -> dict[str, str]:
-    """Localisations exploitables déjà présentes dans le cache entreprise.
-
-    Lecture locale uniquement : REPLAY ne déclenche jamais de réseau.
-    """
-    result: dict[str, str] = {}
-    for row in store.load_org_enrichment_cache():
-        if row.get("Match_Status") != org_enrichment.MATCHED:
-            continue
-        location = org_enrichment.location_for_headquarters_department(
-            row.get("Headquarters_Department", "")
-        )
-        key = row.get("Organisation_Key", "")
-        if key and location != config.LOC_INCONNU:
-            result[key] = location
-    return result
-
-
 def _source_location_default(source_id: str) -> str:
-    # Import local pour garder ce module de qualification indépendant de
+    # Import local pour garder l'enrichissement indépendant de
     # l'inventaire des collecteurs à l'import.
     from . import sources
 
@@ -146,19 +129,16 @@ def _source_location_default(source_id: str) -> str:
 def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
     """Complète menace/localisation inconnues avec la même logique hors-ligne.
 
-    Pour Location : référentiel/watchlist -> indice territorial sûr -> cache de
-    l'API entreprise déjà alimenté -> défaut de la source. Aucun appel réseau
-    et aucune propagation aveugle d'une localisation d'un item vers un autre.
+    Pour Location : référentiel/watchlist -> indice territorial sûr -> défaut
+    de la source. Aucun appel réseau ni propagation entre organisations.
     """
     report = {
         "threat": 0,
         "location_rule": 0,
-        "location_api": 0,
         "location_default": 0,
         "location_reused": 0,
     }
     ordered = sort_items(items)
-    api_locations = _cached_api_locations()
     territories = watchlists.entity_territories()
 
     for item in ordered:
@@ -185,11 +165,6 @@ def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> di
                 report["location_rule"] += 1
 
         if location == config.LOC_INCONNU:
-            location = api_locations.get(item.Organisation_Key, config.LOC_INCONNU)
-            if location != config.LOC_INCONNU:
-                report["location_api"] += 1
-
-        if location == config.LOC_INCONNU:
             default = _source_location_default(item.Source_ID)
             if default:
                 location = default
@@ -199,3 +174,75 @@ def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> di
             item.Location = location
 
     return report
+
+
+@dataclass(frozen=True)
+class EnrichmentReport:
+    items: list[Item]
+    incidents: list[Incident]
+    incident_id_registry: list[dict[str, str]]
+
+
+_AUTHORITATIVE_NATIVE_THREAT_SOURCES = frozenset({"VEILLE_LLM"})
+_AUTHORITATIVE_DEFAULT_THREATS = {"RANSOMWARE_LIVE": config.THREAT_RANSOMWARE}
+_SOURCE_SCOPE_THREATS = {
+    "FRENCHBREACHES": config.THREAT_LEAK,
+    "BONJOURLAFUITE": config.THREAT_LEAK,
+}
+_STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
+    config.THREAT_RANSOMWARE, config.THREAT_DDOS, config.THREAT_MALWARE,
+    config.THREAT_LEAK, config.THREAT_PHISHING, config.THREAT_THIRD_PARTY,
+})
+
+
+def stabilize_threats(items: list[Item]) -> int:
+    """Applique les quelques contrats de menace propres aux sources."""
+    changed = 0
+    for item in items:
+        before = item.Threat
+        explicit = classify_threat(item.Title, item.Threat_Raw)
+        leak_words = (
+            "fuite", "exposition de donnees", "donnees publiees",
+            "donnees volees", "donnees exfiltrees",
+        )
+        if explicit == config.THREAT_LEAK or any(
+            word in searchable(f"{item.Title} {item.Threat_Raw}")
+            for word in leak_words
+        ):
+            item.Threat = config.THREAT_LEAK
+            changed += item.Threat != before
+            continue
+        if item.Threat == config.THREAT_ACCOUNT:
+            item.Threat = (
+                config.THREAT_LEAK
+                if item.Source_ID in _SOURCE_SCOPE_THREATS
+                else config.THREAT_INTRUSION
+            )
+        elif item.Source_ID in _AUTHORITATIVE_NATIVE_THREAT_SOURCES:
+            native = (item.Threat_Raw or "").strip()
+            if native == config.THREAT_ACCOUNT:
+                item.Threat = config.THREAT_INTRUSION
+            elif native in config.THREATS:
+                item.Threat = native
+        elif item.Source_ID in _AUTHORITATIVE_DEFAULT_THREATS:
+            item.Threat = _AUTHORITATIVE_DEFAULT_THREATS[item.Source_ID]
+        elif item.Source_ID in _SOURCE_SCOPE_THREATS:
+            if item.Threat not in _STRONG_SOURCE_SCOPE_OVERRIDES:
+                item.Threat = _SOURCE_SCOPE_THREATS[item.Source_ID]
+        changed += item.Threat != before
+    return changed
+
+
+def finalize_snapshot(items: list[Item]) -> EnrichmentReport:
+    """Enrichit puis déduplique un snapshot sans appel externe."""
+    ordered = sort_items(items)
+    reference = load_reference()
+    enrich_items(ordered, reference, include_sector=True)
+    backfill_unknowns(ordered, reference)
+    stabilize_threats(ordered)
+    incidents, registry = build_incidents_with_registry(
+        ordered,
+        store.load_incident_id_registry(),
+        store.load_incident_dedup_registry(),
+    )
+    return EnrichmentReport(ordered, incidents, registry)

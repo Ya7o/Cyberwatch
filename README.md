@@ -5,8 +5,9 @@ les déduplique puis publie un dashboard statique.
 
 **Production : https://ya7o.github.io/Cyberwatch/**
 
-Le corpus initial commence le **28 août 2026**. Ensuite, chaque mise à jour ne
-cherche que les publications d'aujourd'hui et d'hier.
+Chaque mise à jour cherche seulement les publications d'aujourd'hui et d'hier.
+Le corpus déjà publié est conservé tel quel et n'est jamais reconstruit par le
+workflow quotidien.
 
 ## Chaîne unique
 
@@ -19,8 +20,7 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 - `assets/data/` est généré pour le dashboard ;
 - `main` contient le code, les données et la production GitHub Pages.
 
-Il n'existe ni branche `prod`, ni promotion entre environnements, ni workflow
-de reset parallèle.
+Il n'existe ni branche `prod`, ni promotion, ni workflow de reset parallèle.
 
 ## Sources actives
 
@@ -45,19 +45,15 @@ pip install -r requirements.txt
 # quotidien : aujourd'hui + hier uniquement
 python -m cyberwatch maj
 
-# reconstruction exceptionnelle du corpus initial
-python -m cyberwatch create
-
 # contrôles et dashboard
 python -m cyberwatch check
 python -m cyberwatch build-site
 python -m cyberwatch report
 ```
 
-`create` remplace la base depuis le 28 août ; `maj` ajoute les dernières
-24 heures calendaires. Les deux peuvent accéder au
+`maj` ajoute les dernières publications calendaires. Elle peut accéder au
 réseau et utiliser l'API OpenAI si `OPENAI_API_KEY` est présente. Sans clé, la
-collecte continue et les valeurs insuffisamment prouvées restent `Inconnu`.
+collecte continue et les valeurs non résolues restent `Inconnu`.
 
 ## GitHub Actions
 
@@ -67,10 +63,9 @@ Deux workflows seulement :
 - `collect.yml` lance une collecte quotidienne à 11 h à La Réunion et publie
   directement les données sur `main`.
 
-Le lancement manuel de `collect.yml` propose uniquement `maj` ou `create`.
-Les plafonds logiciels visent environ 0,10 $ par run entre qualification,
-faits structurés, secteur et déduplication ; les usages sont consignés dans
-`data/ai_usage.csv` et `data/dedup_ai_daily_usage.csv`.
+Le lancement manuel de `collect.yml` exécute la même `maj`. Un plafond global
+de 0,03 $ couvre l'extraction de faits et le filet final de déduplication. Les
+usages détaillés sont consignés dans `data/llm_usage.json`.
 
 ## Vérification rapide
 

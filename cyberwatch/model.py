@@ -165,29 +165,11 @@ RUN_SOURCE_COLUMNS = [
     # anciennes lignes sans ces colonnes via row.get(col, "")).
     "History_Status",
     "Oldest_Available_Date",
-    # Profil de performance par source. Les temps externes sont inclus dans
-    # Processing_Duration_s mais ventilés ici pour expliquer le coût réel.
     "Collect_Duration_s",
     "Processing_Duration_s",
-    "Org_Registry_Duration_s",
-    "Org_Registry_Calls",
-    "Org_Official_Site_Duration_s",
-    "Org_Official_Site_Calls",
-    "Qualification_LLM_Duration_s",
-    "Qualification_LLM_Calls",
-    "Qualification_LLM_Cost_USD",
     "SourceFacts_LLM_Duration_s",
     "SourceFacts_LLM_Calls",
     "SourceFacts_LLM_Cost_USD",
-    "SourceFacts_Accepted_Cache_Hits",
-    "SourceFacts_Abstained_Cache_Hits",
-    "SourceFacts_Legacy_Null_Migrations",
-    "SourceFacts_Legacy_Null_Skips",
-    "SourceFacts_Semantic_First_Misses",
-    "SourceFacts_Semantic_Retries",
-    "SourceFacts_Recovered_On_Retry",
-    "SourceFacts_New_Abstentions",
-    "Other_Processing_Duration_s",
 ]
 
 # --------------------------------------------------------------------------
@@ -251,93 +233,9 @@ class WatchedEntity:
 
 
 # --------------------------------------------------------------------------
-# AI_QUALIFICATIONS — cache/provenance du filet de rattrapage LLM
-# --------------------------------------------------------------------------
-
-AI_QUALIFICATIONS_COLUMNS = [
-    "Item_ID",
-    "Source_ID",
-    "Input_Hash",
-    "Model",
-    "Prompt_Version",
-    "Threat",
-    "Threat_Confidence",
-    "Threat_Evidence",
-    "Sector",
-    "Sector_Confidence",
-    "Sector_Evidence",
-    "Location",
-    "Location_Confidence",
-    "Location_Evidence",
-    "Input_Tokens",
-    "Cached_Input_Tokens",
-    "Output_Tokens",
-    "Total_Tokens",
-    "Estimated_Cost_USD",
-]
-
-# --------------------------------------------------------------------------
-# AI_USAGE — une ligne de synthèse par run concernant l'usage LLM
-# --------------------------------------------------------------------------
-
-AI_USAGE_COLUMNS = [
-    "Run_ID",
-    "As_Of",
-    "Mode",
-    "Model",
-    "Prompt_Version",
-    "Candidates",
-    "Cache_Hits",
-    "Calls_Attempted",
-    "Calls_Succeeded",
-    "Calls_Failed",
-    "Calls_Budget_Blocked",
-    "Threat_Unknown_Before",
-    "Threat_Qualified",
-    "Sector_Unknown_Before",
-    "Sector_Qualified",
-    "Location_Unknown_Before",
-    "Location_Qualified",
-    "Still_Unknown",
-    "Input_Tokens",
-    "Cached_Input_Tokens",
-    "Output_Tokens",
-    "Reasoning_Tokens",
-    "Total_Tokens",
-    "Estimated_Cost_USD",
-    "Duration_s",
-    "Status",
-    # Pipeline Secteur (§12 METHODOLOGY.md) : additives, en fin de liste pour
-    # rester rétro-compatibles avec les anciennes lignes (store.read_csv
-    # tolère les colonnes absentes via row.get(col, "")).
-    "Sector_Initial_Unknown",
-    "Sector_Resolved_Reference",
-    "Sector_Resolved_Deterministic",
-    "Sector_Resolved_Source_LLM",
-    "Sector_Evidence_Rejected",
-    "Sector_Enrichment_Cache_Hit",
-    "Sector_Enrichment_Http_Attempted",
-    "Sector_Enrichment_Http_Matched",
-    "Sector_Enrichment_Http_Ambiguous",
-    "Sector_Enrichment_Http_Not_Found",
-    "Sector_Enrichment_Http_Error",
-    "Sector_Resolved_Enriched_Deterministic",
-    "Sector_Resolved_Enriched_LLM",
-    "Sector_Remaining_Unknown",
-    "Org_Enrichment_Calls",
-    "Org_Enrichment_Duration_s",
-    "Org_Enrichment_Cache_Hit_Rate",
-    # §Sector (fiabilité) : additives, mêmes garanties de rétrocompatibilité
-    # que le bloc ci-dessus.
-    "Sector_Resolved_Native",
-    "Sector_LLM_Skipped_No_Evidence",
-]
-
-# --------------------------------------------------------------------------
 # DEDUP_AI_DAILY_USAGE — une ligne de synthèse par run du filet quotidien de
 # déduplication (§Lot 14). Colonnes définies ici (et non dans dedup_ai.py)
-# pour éviter un cycle d'import : dedup_ai -> ai -> store, donc store ne peut
-# pas importer dedup_ai directement.
+# pour garder le format CSV indépendant de l'implémentation du filet.
 # --------------------------------------------------------------------------
 
 DEDUP_AI_DAILY_USAGE_COLUMNS = [
@@ -368,31 +266,6 @@ DEDUP_AI_DAILY_USAGE_COLUMNS = [
 ]
 
 # --------------------------------------------------------------------------
-# ORG_ENRICHMENT_CACHE — cache d'enrichissement gratuit d'entreprise (Sector)
-# --------------------------------------------------------------------------
-
-ORG_ENRICHMENT_CACHE_COLUMNS = [
-    "Organisation_Key",
-    "Query_Name",
-    "Matched_Name",
-    "Company_ID",
-    "Activity_Code",
-    "Activity_Label",
-    "Headquarters_Department",
-    "Evidence_Source",
-    "Evidence_URL",
-    "Match_Status",
-    "Fetched_At",
-    "Validated_Sector",
-    "Validated_Via",
-    # §Sector (fiabilité) : version de la logique de matching/mapping ayant
-    # produit cette ligne — permet d'invalider ciblément un résultat négatif
-    # ancien (org_enrichment.ORG_ENRICHMENT_CACHE_VERSION) sans TTL ni infra
-    # supplémentaire. Additive, rétrocompatible (row.get(col, "")).
-    "Cache_Version",
-]
-
-# --------------------------------------------------------------------------
 # SOURCE_FACTS — faits supplémentaires publiés par une source pour un item.
 # Jeu auxiliaire : décrit ce qu'une source publie, jamais une connaissance
 # canonique sur l'organisation (Threat/Sector/Location n'en dépendent pas).
@@ -408,14 +281,8 @@ SOURCE_FACT_COLUMNS = [
     "Fine_Location",
     "Source_Sector_Raw",
     "Activity_Description",
-    # Cas réel (audit 2026-08-26) : le classificateur déterministe qui
-    # relisait Activity_Description (context_sector.classify_explicit_activity)
-    # perdait le match à chaque reformulation d'un run à l'autre (ex. "Distribution
-    # de véhicules" -> "Distribution automobile"). Le LLM d'extraction, qui lit
-    # déjà l'article complet et rédige Activity_Description, fait ici le
-    # rapprochement avec la taxonomie Secteur dans le même appel — jamais un
-    # canal LLM supplémentaire. Reste une preuve faible parmi d'autres pour
-    # organisation_sector.py, jamais une décision Sector en soi.
+    # Proposition issue de la même extraction de faits ; elle ne remplace pas
+    # le secteur déterministe de l'incident.
     "Activity_Sector_Match",
     "Affected_Count",
     "Affected_Unit",

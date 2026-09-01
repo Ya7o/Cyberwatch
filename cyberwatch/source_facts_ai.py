@@ -1225,7 +1225,7 @@ def _read_field_cache(
             else:
                 if not runtime.retry_legacy_nulls:
                     # Les caches historiques sans statut utilisaient value:null
-                    # pour signifier qu'aucun fait n'avait été extrait. Un CREATE
+                    # pour signifier qu'aucun fait n'avait été extrait. Une reconstruction
                     # normal respecte cet état sans repayer un LLM. Le backfill
                     # historique peut explicitement demander sa migration.
                     satisfied.add(field)

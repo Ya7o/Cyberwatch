@@ -49,7 +49,7 @@ def test_model_routing_defaults_and_legacy_default(monkeypatch):
     monkeypatch.delenv("OPENAI_MODEL", raising=False)
     monkeypatch.delenv("SOURCE_FACTS_MODEL", raising=False)
     monkeypatch.delenv("CYBERATTAQUE_SEMANTIC_MODEL", raising=False)
-    assert llm_runtime.model_for_task("qualification") == "gpt-5-nano"
+    assert llm_runtime.model_for_task("identity") == "gpt-5-nano"
     assert llm_runtime.model_for_task("source_facts") == "gpt-4o-mini"
     assert llm_runtime.model_for_task("cyberattaque_semantic") == "gpt-4o-mini"
     assert llm_runtime.model_for_task("dedup") == "gpt-4o-mini"
@@ -61,7 +61,14 @@ def test_model_routing_task_override_wins(monkeypatch):
     monkeypatch.setenv("OPENAI_MODEL", "gpt-4o")
     monkeypatch.setenv("SOURCE_FACTS_MODEL", "gpt-5-nano")
     assert llm_runtime.model_for_task("source_facts") == "gpt-5-nano"
-    assert llm_runtime.model_for_task("qualification") == "gpt-4o"
+    assert llm_runtime.model_for_task("identity") == "gpt-4o"
+
+
+def test_runtime_does_not_retry_by_default(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.delenv("LLM_MAX_RETRIES", raising=False)
+    runtime = llm_runtime.LlmRuntime()
+    assert runtime.max_retries == 0
 
 
 def test_runtime_uses_strict_structured_outputs(monkeypatch):

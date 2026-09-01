@@ -1,4 +1,4 @@
-"""Contrats de la collecte planifiée après le reset du 28 août 2026."""
+"""Contrats de la collecte quotidienne du prototype."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,9 +14,10 @@ def test_collecte_planifiee_a_un_seul_passage_quotidien():
     assert workflow.count("cron:") == 1
 
 
-def test_collecte_planifiee_utilise_toujours_l_epoque_du_corpus():
+def test_collecte_planifiee_ne_reconstruit_plus_l_historique():
     workflow = _workflow()
     assert "if: github.event_name == 'workflow_dispatch'" not in workflow
-    assert 'COLLECTION_EPOCH: "2026-08-28"' in workflow
-    assert '--start "$COLLECTION_EPOCH"' in workflow
+    assert "COLLECTION_EPOCH" not in workflow
+    assert "python -m cyberwatch maj" in workflow
+    assert "create" not in workflow
     assert "corpus_coverage.needs_backfill" not in workflow
