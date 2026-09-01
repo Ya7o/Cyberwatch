@@ -1,6 +1,43 @@
 [
  {
   "basis": "PUBLICATION",
+  "date": "2026-09-01",
+  "first_seen": "2026-09-01T16:10:00.061034+04:00",
+  "id": "INC-72FE2288A677",
+  "items": 1,
+  "last_seen": "2026-09-01T16:10:00.061034+04:00",
+  "location": "France métropolitaine",
+  "org": "Bio en Hauts-de-France",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque contre Bio en Hauts-de-France entraînant le vol de données personnelles et professionnelles.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
   "date": "2026-08-31",
   "first_seen": "2026-08-31T23:59:59+04:00",
   "id": "INC-D4EC64DBBA06",
@@ -8,9 +45,10 @@
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "Timetonic",
-  "sector": "Numérique / Technologie",
+  "sector": "Inconnu",
   "sector_status": {
-   "status": "confirmed"
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -29,7 +67,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de données chez Timetonic suite à une vulnérabilité critique de Metabase.",
+  "summary": "Fuite de données chez TimeTonic impliquant l'exploitation d'une vulnérabilité de Metabase.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
@@ -68,7 +106,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "20 Go de données clients volés à La financière d’Orion suite à une cyberattaque sur un conseiller partenaire.",
+  "summary": "La financière d’Orion : 20 Go de données clients volés après le piratage d’un partenaire",
   "threat": "Phishing / fraude",
   "urls": [
    "https://www.cyberattaque.org/la-financiere-dorion-20-go-de-donnees-clients-voles-apres-le-piratage-dun-partenaire/"
@@ -83,9 +121,10 @@
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "Herbiolys",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sector_status": {
-   "status": "confirmed"
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
   },
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
@@ -116,7 +155,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Herbiolys victime d'une fuite de données, 1,3 million de lignes et 1 500 IBAN compromis.",
+  "summary": "Herbiolys a subi une fuite de données massive, impliquant 1,3 million de lignes et 1 500 IBAN.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/herbiolys-mthbl4mtoe9zgl49kjj",
@@ -132,9 +171,10 @@
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "LebonSiege",
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sector_status": {
-   "status": "confirmed"
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -162,7 +202,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Près de 1 000 clients du site Le Bon Siège ont été exposés lors d'une attaque revendiquée par le hacker Sophia.",
+  "summary": "Fuite de données revendiquée chez LebonSiege, affectant potentiellement plus de 1 000 clients.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp",
