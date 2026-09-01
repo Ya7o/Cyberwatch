@@ -65,15 +65,17 @@ jobs:
           LLM_DEDUP_MAX_COST_USD_PER_RUN: "0.01"
           CYBERWATCH_INCREMENTAL_QUALIFICATION: ${{ steps.scope.outputs.mode == 'maj' && '1' || '0' }}
           DEDUP_AI_DAILY_ENABLED: "1"
-        run: >-
-          python -m cyberwatch "${{ steps.scope.outputs.mode }}"
-          --layers all
-          --start "$COLLECTION_EPOCH"
+        shell: bash
+        run: |
+          args=(--layers all)
+          if [ "${{ steps.scope.outputs.mode }}" = "create" ]; then
+            args+=(--start "$COLLECTION_EPOCH")
+          fi
+          python -m cyberwatch "${{ steps.scope.outputs.mode }}" "${args[@]}"
       - name: Valider et construire
         run: |
           python -m cyberwatch check
           python -m cyberwatch build-site
-          python -m cyberwatch check
       - name: Résumé du run
         shell: bash
         run: |

@@ -419,11 +419,12 @@ SECTOR_RULES = SECTOR_ACTIVITY_RULES
 # pour qu'ils appartiennent au même incident.
 INCIDENT_GAP_DAYS = 14
 
-# Chevauchement rejoué à chaque MAJ (§6).
-# Une MAJ quotidienne reprend trois semaines : assez pour les publications
-# tardives/corrigées, tout en restant couvert par le flux FrenchBreaches
-# (qui expose publiquement environ 28 jours d'historique).
-MAJ_OVERLAP_DAYS = 21
+# Une MAJ ne cherche que les publications des dernières 24 heures. Les sources
+# ne donnant qu'une date (sans heure), cela correspond à aujourd'hui + hier.
+MAJ_LOOKBACK_DAYS = 1
+
+# Début immuable du corpus public lors d'un CREATE.
+PRODUCTION_EPOCH = "2026-08-28"
 
 DATE_BASIS_EVENT = "EVENT"
 DATE_BASIS_PUBLICATION = "PUBLICATION"

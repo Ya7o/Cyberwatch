@@ -5,13 +5,13 @@ les déduplique puis publie un dashboard statique.
 
 **Production : https://ya7o.github.io/Cyberwatch/**
 
-Le corpus de production commence le **28 août 2026**. Un événement antérieur
-n'est pas conservé, même s'il est découvert plus tard.
+Le corpus initial commence le **28 août 2026**. Ensuite, chaque mise à jour ne
+cherche que les publications d'aujourd'hui et d'hier.
 
 ## Chaîne unique
 
 ```text
-collecte -> enrichissement -> déduplication -> publication
+collecte -> identité -> enrichissement -> déduplication -> publication
 ```
 
 - `data/items.csv` contient les observations issues des sources ;
@@ -42,9 +42,11 @@ localisation diffère.
 ```bash
 pip install -r requirements.txt
 
-# mise à jour ou reconstruction, toujours depuis le 28 août
-python -m cyberwatch maj --layers all --start 2026-08-28
-python -m cyberwatch create --layers all --start 2026-08-28
+# quotidien : aujourd'hui + hier uniquement
+python -m cyberwatch maj
+
+# reconstruction exceptionnelle du corpus initial
+python -m cyberwatch create
 
 # contrôles et dashboard
 python -m cyberwatch check
@@ -52,40 +54,28 @@ python -m cyberwatch build-site
 python -m cyberwatch report
 ```
 
-`create` remplace la base ; `maj` la met à jour. Les deux peuvent accéder au
+`create` remplace la base depuis le 28 août ; `maj` ajoute les dernières
+24 heures calendaires. Les deux peuvent accéder au
 réseau et utiliser l'API OpenAI si `OPENAI_API_KEY` est présente. Sans clé, la
 collecte continue et les valeurs insuffisamment prouvées restent `Inconnu`.
-
-Pour un diagnostic sans publication :
-
-```bash
-python -m cyberwatch diagnose
-python -m cyberwatch probe SOURCE_ID
-python -m cyberwatch replay
-```
 
 ## GitHub Actions
 
 Deux workflows seulement :
 
-- `ci.yml` teste le code sur `main` et les pull requests ;
+- `ci.yml` exécute seulement quelques smoke tests et la syntaxe JavaScript ;
 - `collect.yml` lance une collecte quotidienne à 11 h à La Réunion et publie
   directement les données sur `main`.
 
 Le lancement manuel de `collect.yml` propose uniquement `maj` ou `create`.
-Les plafonds logiciels répartissent au plus 0,10 $ par run entre qualification,
+Les plafonds logiciels visent environ 0,10 $ par run entre qualification,
 faits structurés, secteur et déduplication ; les usages sont consignés dans
 `data/ai_usage.csv` et `data/dedup_ai_daily_usage.csv`.
 
-## Validation locale
+## Vérification rapide
 
 ```bash
-python -m pytest tests/ -q
+python -m pytest -q tests/test_normalize.py tests/test_collector_registry.py tests/test_dedup.py tests/test_site.py
 node --check assets/dashboard-v2.js
 node --check assets/dashboard-integrity.js
-python -m cyberwatch check --allow-uninitialized
 ```
-
-Les règles détaillées de qualification et de déduplication restent décrites
-dans `METHODOLOGY.md`. Les changements doivent corriger un problème observé ;
-ils ne doivent pas ajouter une seconde chaîne parallèle.

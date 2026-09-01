@@ -171,6 +171,8 @@ class DedupAiRunState:
     unknown_count: int = 0
     organisation_identity_rows_applied: int = 0
     incident_decision_rows_applied: int = 0
+    organisation_identity_rows: list[dict[str, str]] = field(default_factory=list)
+    incident_dedup_rows: list[dict[str, str]] = field(default_factory=list)
     cache_by_hash: dict[str, dict[str, str]] = field(default_factory=dict)
     rows_by_pair: dict[str, dict[str, str]] = field(default_factory=dict)
 

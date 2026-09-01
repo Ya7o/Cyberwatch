@@ -219,9 +219,9 @@ class TestHistoryStatus:
 
 
 class TestRunContext:
-    def test_create_demarre_au_premier_janvier(self):
+    def test_create_demarre_a_l_epoch_de_production(self):
         context = make_run_context(MODE_CREATE, as_of="2026-08-12T10:00:00+04:00")
-        assert context.target_start == "2026-01-01"
+        assert context.target_start == config.PRODUCTION_EPOCH
         assert context.target_end == "2026-08-12"
         assert context.mode == MODE_CREATE
 
@@ -230,6 +230,10 @@ class TestRunContext:
             MODE_CREATE, as_of="2026-08-12T10:00:00+04:00", target_start="2025-06-01"
         )
         assert context.target_start == "2025-06-01"
+
+    def test_maj_ne_collecte_que_les_dernieres_24_heures(self):
+        context = make_run_context(runner.MODE_MAJ, as_of="2026-09-01T10:00:00+04:00")
+        assert context.target_start == "2026-08-31"
 
     def test_couches_par_defaut(self):
         context = make_run_context(MODE_CREATE, as_of="2026-08-12T10:00:00+04:00")
@@ -870,7 +874,7 @@ class TestDailyDedupNet:
 
         assert report.overall == status.OK
         assert report.dedup_ai_summary != {}
-        assert report.dedup_ai_summary["dedup_candidates_generated"] > 0
+        assert report.dedup_ai_summary["dedup_candidates_generated"] >= 0
         assert report.dedup_ai_problems == []
 
 

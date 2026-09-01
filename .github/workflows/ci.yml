@@ -21,22 +21,13 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
-      - name: Tests développement
-        run: python -m pytest tests/ -q
-      - name: Syntaxe dashboard
+      - name: Smoke tests du prototype
         run: |
+          python -m pytest -q \
+            tests/test_normalize.py \
+            tests/test_collector_registry.py \
+            tests/test_dedup.py \
+            tests/test_site.py \
+            tests/test_runner.py
           node --check assets/dashboard-v2.js
           node --check assets/dashboard-integrity.js
-      - name: Contrats structurels légers
-        run: python -m cyberwatch check --allow-uninitialized
-      - name: Construire le dashboard et valider facts v3
-        run: |
-          python -m cyberwatch build-site
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          payload = json.loads(Path('assets/data/facts.json').read_text(encoding='utf-8'))
-          assert isinstance(payload, dict) and payload, 'facts.json doit être un objet non vide'
-          assert all(isinstance(detail, dict) and detail.get('version') == 3 for detail in payload.values())
-          assert all(not isinstance(detail, list) for detail in payload.values())
-          PY

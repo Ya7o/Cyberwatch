@@ -17,8 +17,8 @@ def _seed(root: Path) -> None:
     (data / "items.csv").write_text("Item_ID\na\n", encoding="utf-8")
     (data / "incident_id_registry.csv").write_text("Incident_ID\ni\n", encoding="utf-8")
     (data / "llm_usage.json").write_text("{}", encoding="utf-8")
-    (data / "golden").mkdir()
-    (data / "golden" / "dedup.json").write_text("{}", encoding="utf-8")
+    (data / "temporary").mkdir()
+    (data / "temporary" / "cache.json").write_text("{}", encoding="utf-8")
     for name in PRESERVED_DATA_PATHS:
         (data / name).write_text("static", encoding="utf-8")
     (site / "incidents.json").write_text("[]", encoding="utf-8")
@@ -35,13 +35,13 @@ def test_archive_contains_state_before_purge(tmp_path):
     assert len(result["archive_sha256"]) == 64
 
 
-def test_zero_reset_removes_runtime_identity_cache_golden_and_site_data(tmp_path):
+def test_zero_reset_removes_runtime_identity_cache_and_site_data(tmp_path):
     _seed(tmp_path)
     report = purge(tmp_path)
     assert "data/items.csv" in report.removed
     assert "data/incident_id_registry.csv" in report.removed
     assert "data/llm_usage.json" in report.removed
-    assert "data/golden/dedup.json" in report.removed
+    assert "data/temporary/cache.json" in report.removed
     assert "assets/data/incidents.json" in report.removed
     assert "assets/data/status.json" in report.removed
     assert not report.unexpected_preserved

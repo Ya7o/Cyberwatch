@@ -46,7 +46,7 @@ def test_targeted_taxonomy_stays_canonical():
     assert sector.classify_source_sector("agriculture") == config.SECTOR_UNKNOWN
 
 
-def test_six_golden_business_patterns_are_general_not_name_exceptions():
+def test_six_business_patterns_are_general_not_name_exceptions():
     # Planity: logiciel/SaaS vertical, pas commerce beauté.
     assert _strong_activity_sector(
         "éditeur d'une solution SaaS et plateforme de prise de rendez-vous pour les professionnels de la beauté"

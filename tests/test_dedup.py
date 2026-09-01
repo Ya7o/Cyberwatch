@@ -55,6 +55,28 @@ class TestComponents:
         right = make_item(source="FRENCHBREACHES", org="Solimut Mutuelle de France", published="2026-08-23", url="https://b")
         assert len(build_incidents([left, right])) == 1
 
+    def test_aliases_observes_depuis_le_28_aout_sont_fusionnes(self, make_item):
+        pairs = [
+            ("CarteDePeche.fr", "Carte De Pêche"),
+            ("LebonSiege", "Le Bon Siège"),
+            ("Tarnos", "La Ville de Tarnos"),
+            ("CGT Éduc’Action Créteil", "CGT Éduc’Action"),
+        ]
+        for index, (left_org, right_org) in enumerate(pairs):
+            left = make_item(
+                source="CYBERATTAQUE_ORG",
+                org=left_org,
+                published="2026-08-31",
+                url=f"https://a/{index}",
+            )
+            right = make_item(
+                source="FRENCHBREACHES",
+                org=right_org,
+                published="2026-09-01",
+                url=f"https://b/{index}",
+            )
+            assert len(build_incidents([left, right])) == 1
+
     def test_item_sans_organisation_ecarte(self, make_item):
         """Pas d'organisation nommée, pas d'incident."""
         items = [make_item(org="", url="https://a/1")]

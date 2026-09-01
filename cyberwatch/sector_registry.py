@@ -40,17 +40,15 @@ QUEUE_COLUMNS = [
 
 DEFAULT_POLICY = {
     "schema_version": 1,
-    "minimum_precision_pct": 95.0,
-    "minimum_cases": 10,
     "channels": {
-        "manual_reference": {"enabled": True, "requires_golden": False},
-        "structured_source": {"enabled": True, "requires_golden": False},
-        "consensus_multi_source": {"enabled": False, "requires_golden": True},
-        "official_subject_activity": {"enabled": False, "requires_golden": True},
-        "registry_exact_naf": {"enabled": False, "requires_golden": True},
-        "registry_llm": {"enabled": False, "requires_golden": True},
-        "legacy_official_site": {"enabled": False, "requires_golden": True},
-        "known_item_single": {"enabled": False, "requires_golden": True},
+        "manual_reference": {"enabled": True},
+        "structured_source": {"enabled": True},
+        "consensus_multi_source": {"enabled": False},
+        "official_subject_activity": {"enabled": False},
+        "registry_exact_naf": {"enabled": False},
+        "registry_llm": {"enabled": False},
+        "legacy_official_site": {"enabled": False},
+        "known_item_single": {"enabled": False},
     },
 }
 

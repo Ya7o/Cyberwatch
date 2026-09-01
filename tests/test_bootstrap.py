@@ -103,37 +103,24 @@ def test_report_uses_status_and_not_a_score(tmp_path, monkeypatch, capsys):
     assert "Score de couverture" not in output
 
 
-def test_baseline_accepts_valid_snapshot_without_live_repeat(tmp_path, monkeypatch, make_item):
-    isolate_store(tmp_path, monkeypatch)
-    valid_snapshot(make_item)
-    assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 0
-    baseline = store.load_baseline()
-    assert baseline["Baseline"] is True
-    assert "Live_Repeat_Validated" not in baseline
-    assert baseline["Items_Hash"] == store.load_snapshot()["Items_Hash"]
-
-
-def test_baseline_refuses_when_test_repeat_fails(tmp_path, monkeypatch, make_item):
-    isolate_store(tmp_path, monkeypatch)
-    valid_snapshot(make_item)
-    monkeypatch.setattr(cli, "cmd_test_repeat", lambda args: 1)
-    assert cli.cmd_baseline(SimpleNamespace(as_of=None)) == 1
-    assert not store.BASELINE_JSON.exists()
-
-
-def test_maj_uses_snapshot_as_of_when_run_log_is_absent(tmp_path, monkeypatch, make_item):
+def test_maj_collects_only_the_last_24_hours(tmp_path, monkeypatch, make_item):
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item, as_of="2026-08-10T08:00:00+04:00")
     context = make_run_context(MODE_MAJ, as_of="2026-08-14T08:00:00+04:00")
-    assert context.target_start == "2026-07-20"
+    assert context.target_start == "2026-08-13"
 
 
-def test_maj_refuses_snapshot_without_usable_as_of(tmp_path, monkeypatch, make_item, capsys):
+def test_maj_does_not_depend_on_historical_as_of(tmp_path, monkeypatch, make_item, capsys):
     isolate_store(tmp_path, monkeypatch)
     valid_snapshot(make_item, as_of="")
     args = SimpleNamespace(as_of="2026-08-14T08:00:00+04:00", start=None, layers="all")
-    assert cli.cmd_maj(args) == 1
-    assert "As_Of exploitable absent" in capsys.readouterr().out
+    monkeypatch.setattr(cli, "execute", lambda context: type("R", (), {
+        "context": context, "outcomes": [], "items": [], "incidents": [],
+        "new_items": 0, "new_incidents": 0, "overall": "OK", "items_hash": "",
+        "incidents_hash": "", "duration": 0, "requests": 0, "problems": [],
+    })())
+    monkeypatch.setattr(cli.site, "build", lambda: (0, 0))
+    assert cli.cmd_maj(args) == 0
 
 
 def test_collect_workflow_has_one_daily_cron():

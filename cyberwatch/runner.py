@@ -16,9 +16,9 @@ import time
 from collections import defaultdict
 import os
 import subprocess
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 
-from . import ai, config, dedup_ai, domain_page_sector, domain_page_sector_llm, duplicate_audit, enrichment, identity, incident_dedup, incident_identity, org_enrichment, org_identity, organisation_sector, organisation_sector_llm, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, validation_corpus, watchlists
+from . import ai, config, dedup_ai, domain_page_sector, domain_page_sector_llm, duplicate_audit, enrichment, identity, incident_dedup, incident_identity, org_enrichment, org_identity, organisation_sector, organisation_sector_llm, sector as sector_policy, sector_registry, source_facts, source_facts_ai, sources, status, store, watchlists
 from .qualification import qualify
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
@@ -27,7 +27,7 @@ from .collectors.cyberattaque_org import (
     organisation_from_cyberattaque_entry,
 )
 from .collectors.base import CollectResult, RawEntry, SourceSpec, Window
-from .dedup import build_incidents, merge_items
+from .dedup import build_incidents, build_incidents_with_registry, merge_items
 from .http import Budget, HttpClient
 from .model import Incident, Item
 from .normalize import (
@@ -166,7 +166,6 @@ class RunContext:
     mode: str
     layers: list[str]
     method_id: str = config.METHOD_ID
-    validation_corpus: validation_corpus.ValidationCorpus | None = None
 
     @property
     def window(self) -> Window:
@@ -178,7 +177,6 @@ def make_run_context(
     as_of: str | None = None,
     target_start: str | None = None,
     layers: list[str] | None = None,
-    validation_corpus_path: str | None = None,
 ) -> RunContext:
     now = (
         dt.datetime.fromisoformat(as_of)
@@ -191,12 +189,9 @@ def make_run_context(
     if target_start:
         start = target_start
     elif mode == MODE_MAJ:
-        anchor = _last_run_as_of() or _snapshot_as_of()
-        if anchor is None:
-            raise ValueError(
-                "Snapshot valide mais As_Of exploitable absent : MAJ impossible."
-            )
-        start = (anchor - dt.timedelta(days=config.MAJ_OVERLAP_DAYS)).isoformat()
+        start = (now.date() - dt.timedelta(days=config.MAJ_LOOKBACK_DAYS)).isoformat()
+    elif mode == MODE_CREATE:
+        start = config.PRODUCTION_EPOCH
     else:
         start = dt.date(now.year, 1, 1).isoformat()
 
@@ -214,34 +209,7 @@ def make_run_context(
         target_end=end,
         mode=mode,
         layers=layers or config.LAYER_GROUPS["all"],
-        validation_corpus=(
-            validation_corpus.ValidationCorpus.load(validation_corpus_path)
-            if validation_corpus_path else None
-        ),
     )
-
-
-def _last_run_as_of() -> dt.date | None:
-    rows = store.load_run_log()
-    if not rows:
-        return None
-    stamps = sorted(row.get("As_Of", "") for row in rows if row.get("As_Of"))
-    if not stamps:
-        return None
-    try:
-        return dt.datetime.fromisoformat(stamps[-1]).date()
-    except ValueError:
-        return None
-
-
-def _snapshot_as_of() -> dt.date | None:
-    value = store.load_snapshot().get("As_Of", "")
-    if not value:
-        return None
-    try:
-        return dt.datetime.fromisoformat(value).date()
-    except ValueError:
-        return None
 
 
 def entry_to_item(
@@ -515,13 +483,7 @@ def run_source(
     cyberattaque_rejected_negated = 0
     cyberattaque_rejected_multi = 0
     cyberattaque_rejected_no_victim = 0
-    validation_excluded = 0
     for entry in result.entries:
-        if context.validation_corpus and not context.validation_corpus.accepts(
-            spec.source_id, entry.url
-        ):
-            validation_excluded += 1
-            continue
         if requires_victim and looks_cyber(entry.title, entry.summary, entry.content):
             articles_cyber += 1
         if spec.source_id == "CYBERATTAQUE_ORG" and is_negated_incident(entry.title, entry.summary, entry.content):
@@ -640,9 +602,6 @@ def run_source(
             f"victims_identified={len(items)}; articles_rejected_no_victim={cyberattaque_rejected_no_victim}; "
             f"articles_rejected_negated={cyberattaque_rejected_negated}; articles_rejected_multi={cyberattaque_rejected_multi}"
         )
-        outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
-    if context.validation_corpus:
-        extra = f"validation_corpus={context.validation_corpus.name}; entries_excluded={validation_excluded}"
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)
     if items:
@@ -802,6 +761,8 @@ class RunReport:
     organisation_domain_pages: list[dict] = field(default_factory=list)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
+    organisation_identity_rows: list[dict] = field(default_factory=list)
+    incident_dedup_rows: list[dict] = field(default_factory=list)
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -835,13 +796,8 @@ def run_daily_dedup_net(
 ) -> tuple[dedup_ai.DedupAiRunState, list[str]]:
     """Filet LLM post-déterministe quotidien (§Lot 2/3/9).
 
-    Ne modifie jamais directement ``ITEMS``/``INCIDENTS`` : ce point d'entrée
-    ne fait que proposer, challenger puis éventuellement persister des
-    équivalences d'identité organisationnelle validées dans le registre
-    (`org_identity`) et des verdicts d'identité d'incident dans un registre
-    séparé (`incident_dedup`). Le moteur de regroupement relit ensuite ces
-    verdicts, tout en conservant la priorité des preuves et veto déterministes
-    forts (§Lot 5).
+    Ne modifie aucune donnée canonique. Les décisions sont renvoyées dans
+    ``state`` et ne sont persistées qu'avec un snapshot final validé.
 
     Ne lève jamais d'exception : une panne du filet LLM ne doit jamais
     bloquer une collecte réelle (§Lot 15). ``new_or_updated_items`` vide
@@ -849,6 +805,8 @@ def run_daily_dedup_net(
     """
     state = dedup_ai.start_run(store.DATA_DIR / "dedup_ai_daily_cache.csv")
     problems: list[str] = []
+    state.organisation_identity_rows = store.load_organisation_identity_registry_rows()
+    state.incident_dedup_rows = store.load_incident_dedup_registry()
     if new_or_updated_items:
         try:
             company_ids = _company_ids_from_cache(store.load_org_enrichment_cache())
@@ -894,13 +852,13 @@ def run_daily_dedup_net(
                 if incident_proposal is not None:
                     incident_proposals.append(incident_proposal)
 
-            existing_rows = store.load_organisation_identity_registry_rows()
+            existing_rows = state.organisation_identity_rows
             merged_rows, merge_problems = org_identity.merge_organisation_identity_rows(
                 existing_rows, registry_proposals,
             )
             problems.extend(merge_problems)
 
-            existing_incident_rows = store.load_incident_dedup_registry()
+            existing_incident_rows = state.incident_dedup_rows
             merged_incident_rows, incident_problems = incident_dedup.merge_rows(
                 existing_incident_rows,
                 incident_proposals,
@@ -910,12 +868,7 @@ def run_daily_dedup_net(
             previous_incident_by_pair = {
                 row.get("Pair_Key", ""): row for row in existing_incident_rows
             }
-            if persist and not merge_problems and not incident_problems:
-                # Le verdict d'incident est écrit en premier : si la seconde
-                # écriture échoue, un veto `DIFFERENT` peut rester sans alias
-                # (donc sans effet), mais jamais l'inverse avec risque de faux
-                # merge. Un verdict `SAME` sans alias reste lui aussi inactif
-                # puisque le regroupement est d'abord partitionné par victime.
+            if not merge_problems and not incident_problems:
                 existing_aliases = {
                     row.get("Alias_Key", "") for row in existing_rows
                     if row.get("Decision") == org_identity.DECISION_SAME
@@ -931,11 +884,8 @@ def run_daily_dedup_net(
                     previous_incident_by_pair.get(row["Pair_Key"]) != row
                     for row in merged_incident_rows
                 )
-                # Un run transitoire (`--transient`) prévisualise les
-                # décisions sans réécrire de donnée canonique.
-                store.save_incident_dedup_registry(merged_incident_rows)
-                store.save_organisation_identity_registry_rows(merged_rows)
-                org_identity.reload_organisation_identity_registry()
+                state.organisation_identity_rows = merged_rows
+                state.incident_dedup_rows = merged_incident_rows
 
             # Le cache LLM n'est jamais une donnée publiée : il ne fait
             # qu'éviter une dépense redondante lors d'un run réel ultérieur,
@@ -960,6 +910,8 @@ def execute(
 ) -> RunReport:
     started = time.monotonic()
     report = RunReport(context=context)
+    report.organisation_identity_rows = store.load_organisation_identity_registry_rows()
+    report.incident_dedup_rows = store.load_incident_dedup_registry()
 
     previous_incidents = store.load_incidents()
     previous_ids = {i.Incident_ID for i in previous_incidents}
@@ -986,18 +938,6 @@ def execute(
         new_fact_rows: list[dict] = []
 
         active_specs = sources.active_sources(context.layers)
-        if context.validation_corpus:
-            active_specs = [
-                replace(
-                    spec,
-                    params={
-                        **spec.params,
-                        "validation_allowed_urls": context.validation_corpus.urls_for_source(spec.source_id),
-                    },
-                )
-                for spec in active_specs
-                if spec.source_id in context.validation_corpus.source_ids
-            ]
         for spec in active_specs:
             outcome, items, rows = run_source(
                 client, spec, context, known_orgs, entity_index, territories, reference, ai_state,
@@ -1048,10 +988,18 @@ def execute(
         merged, _ = merge_items(merge_base, collected)
         new_count = sum(item.Item_ID not in existing_item_ids for item in collected)
         for outcome in report.outcomes:
+            published = [item for item in collected if item.Source_ID == outcome.source_id]
+            outcome.items_collected = len(published)
             outcome.new_items = sum(
-                item.Source_ID == outcome.source_id and item.Item_ID not in existing_item_ids
-                for item in collected
+                item.Item_ID not in existing_item_ids for item in published
             )
+            if published:
+                latest = max(published, key=lambda item: (item.Published_Date, item.Item_ID))
+                outcome.latest_item_date = latest.Published_Date
+                outcome.latest_item_org = latest.Organisation_Raw
+            else:
+                outcome.latest_item_date = ""
+                outcome.latest_item_org = ""
         report.items = merged
         report.new_items = new_count
 
@@ -1063,47 +1011,6 @@ def execute(
             ai_state, context.run_id, context.as_of, context.mode, sector_stats,
             persist=persist,
         )
-
-        if context.mode in (MODE_MAJ, MODE_CREATE):
-            # Filet LLM post-déterministe (§Lot 2/9) : en MAJ, uniquement le
-            # périmètre collecté aujourd'hui contre la base complète, jamais
-            # toute la base contre elle-même. En CREATE, `existing_items` est
-            # vide (reconstruction depuis zéro, cf. plus haut) : la base
-            # complète EST le périmètre collecté, donc le filet compare de
-            # fait le lot construit à lui-même — cas réel qui motive cette
-            # extension (audit post-reset 2026-08-25, doublon "Banque
-            # Alimentaire de la Croix-Rouge à Strasbourg" / "Banque
-            # Alimentaire de Strasbourg" jamais soumis à révision faute
-            # d'exécution en CREATE). Reste borné à un seul appel réseau au
-            # plus par run (§Lot 4), quelle que soit la taille du lot.
-            # `run_daily_dedup_net` ne modifie jamais ITEMS/INCIDENTS
-            # directement ; elle met à jour les deux registres de décision
-            # consultés juste après par `qualify` ->
-            # `build_incidents_with_registry`.
-            daily_scope = list({item.Item_ID: item for item in collected if item.Item_ID}.values())
-            dedup_state, dedup_ai_problems = run_daily_dedup_net(
-                report.items, daily_scope, report.source_facts,
-                run_id=context.run_id, as_of=context.as_of, mode=context.mode,
-                persist=persist,
-            )
-            report.dedup_ai_summary = dedup_ai.daily_summary(dedup_state)
-            report.dedup_ai_problems = dedup_ai_problems
-            summary = report.dedup_ai_summary
-            print(
-                "  Filet dedup LLM (§quotidien) : "
-                f"statut={dedup_ai.daily_status(dedup_state)} "
-                f"candidats={summary['dedup_candidates_generated']} "
-                f"(sélectionnés={summary['dedup_candidates_selected']}, "
-                f"non-revus/capacité={summary['dedup_candidates_not_reviewed_capacity']}) "
-                f"appels={summary['dedup_llm_calls']} "
-                f"cache={summary['dedup_llm_cache_hits']} "
-                f"same_org={summary['dedup_llm_same_org']} "
-                f"aliases_appliqués={summary['dedup_org_aliases_applied']} "
-                f"verdicts_incident={summary['dedup_incident_decisions_applied']} "
-                f"coût=${summary['dedup_llm_cost_usd']:.4f}"
-            )
-            for problem in dedup_ai_problems:
-                print(f"    ! {problem}")
 
     qualification_source_facts = (
         store.load_source_facts() if offline else report.source_facts
@@ -1142,9 +1049,55 @@ def execute(
     report.organisation_sector_decisions = qualified.organisation_sector_decisions
     report.organisation_sector_evidence = qualified.organisation_sector_evidence
     report.organisation_sector_llm_cache = qualified.organisation_sector_llm_cache
+
+    # Dernière étape métier : le déterministe a déjà produit ses incidents.
+    # Le LLM ne voit que les items du jour et les compare à toute la base pour
+    # rattraper les variantes simples de nom laissées séparées. Un seul batch
+    # suffit ; en cas d'échec, le résultat déterministe reste publiable.
+    if not offline and context.mode in (MODE_MAJ, MODE_CREATE):
+        daily_ids = {item.Item_ID for item in collected if item.Item_ID}
+        daily_scope = [item for item in report.items if item.Item_ID in daily_ids]
+        dedup_state, dedup_ai_problems = run_daily_dedup_net(
+            report.items,
+            daily_scope,
+            report.source_facts,
+            run_id=context.run_id,
+            as_of=context.as_of,
+            mode=context.mode,
+            persist=persist,
+        )
+        report.dedup_ai_summary = dedup_ai.daily_summary(dedup_state)
+        report.dedup_ai_problems = dedup_ai_problems
+        report.organisation_identity_rows = dedup_state.organisation_identity_rows
+        report.incident_dedup_rows = dedup_state.incident_dedup_rows
+
+        if not dedup_ai_problems:
+            previous_identity_registry = org_identity.ORGANISATION_IDENTITY_REGISTRY
+            org_identity.ORGANISATION_IDENTITY_REGISTRY = {
+                row["Alias_Key"]: row["Canonical_Key"]
+                for row in report.organisation_identity_rows
+                if row.get("Decision") == org_identity.DECISION_SAME
+            }
+            try:
+                report.incidents, report.incident_id_registry = build_incidents_with_registry(
+                    report.items,
+                    store.load_incident_id_registry(),
+                    report.incident_dedup_rows,
+                )
+            finally:
+                org_identity.ORGANISATION_IDENTITY_REGISTRY = previous_identity_registry
+
+        summary = report.dedup_ai_summary
+        print(
+            "  Vérification LLM finale : "
+            f"candidats={summary['dedup_candidates_generated']} "
+            f"appels={summary['dedup_llm_calls']} "
+            f"rapprochements={summary['dedup_org_aliases_applied']} "
+            f"coût=${summary['dedup_llm_cost_usd']:.4f}"
+        )
     report.new_incidents = len([i for i in report.incidents if i.Incident_ID not in previous_ids])
-    report.items_hash = qualified.items_hash
-    report.incidents_hash = qualified.incidents_hash
+    report.items_hash = identity.items_hash(report.items)
+    report.incidents_hash = identity.incidents_hash(report.incidents)
     report.overall = status.OK if offline else (
         status.OK if report.outcomes and not any(
             outcome_blocks_snapshot(outcome, sources.by_id(outcome.source_id))
@@ -1152,16 +1105,12 @@ def execute(
         ) else status.BROKEN
     )
     selected_source_ids = {spec.source_id for spec in sources.active_sources(context.layers)}
-    if context.validation_corpus:
-        selected_source_ids &= set(context.validation_corpus.source_ids)
     report.problems = pre_export_checks(report.items, report.incidents, report.outcomes, selected_source_ids)
-    if context.validation_corpus:
-        report.problems.extend(context.validation_corpus.audit(report.items, report.incidents))
     report.problems.extend(incident_identity.validate_registry(
         report.incident_id_registry, report.items, report.incidents
     ))
     report.problems.extend(incident_dedup.validate_registry(
-        store.load_incident_dedup_registry(),
+        report.incident_dedup_rows,
         {item.Item_ID for item in report.items if item.Item_ID},
     ))
     if offline:
@@ -1306,6 +1255,10 @@ def _persist(
         organisation_sector.write_evidence_csv(report.organisation_sector_evidence)
         organisation_sector_llm.save_cache(report.organisation_sector_llm_cache)
         domain_page_sector.save_cache(report.organisation_domain_pages)
+        # Les décisions du filet LLM deviennent canoniques uniquement avec le
+        # snapshot final. Un run cassé ne peut donc plus polluer la MAJ suivante.
+        store.save_incident_dedup_registry(report.incident_dedup_rows)
+        store.save_organisation_identity_registry_rows(report.organisation_identity_rows)
         save_snapshot_provenance(
             store.load_items(), store.load_incidents(), operation=context.mode,
             run_id=context.run_id, mode=context.mode, as_of=context.as_of,

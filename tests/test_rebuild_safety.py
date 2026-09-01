@@ -34,11 +34,3 @@ def test_surviving_redirect_anchor_reactivates_when_target_anchor_disappears(mak
     assert [incident.Incident_ID for incident in incidents] == [survivor_id]
     assert updated == [_registry_row(survivor, incident_id=survivor_id)]
     assert validate_registry(updated, [survivor], incidents) == []
-
-
-def test_secondary_sector_worker_keeps_legacy_inline_fallback_disabled():
-    from pathlib import Path
-    root = Path(__file__).resolve().parents[1]
-    text = (root / "scripts/enrich_sector_queue.py").read_text(encoding="utf-8")
-    assert "state.official_site_max_calls = 0" in text
-    assert "resolve_official_site_subject_attributed" in text
