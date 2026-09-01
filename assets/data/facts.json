@@ -387,6 +387,19 @@
     "status": "claimed",
     "unit": "accounts",
     "value": 1000
+   },
+   {
+    "evidence": "près de 1 000 clients exposés avec adresses et téléphones",
+    "raw": "près de 1 000 clients",
+    "scope": "LeBonSiège.fr",
+    "semantic": "lebonsiege fr",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "clients",
+    "value": 1000
    }
   ],
   "claims": [
@@ -516,6 +529,72 @@
     "type": "data_type",
     "unit": "",
     "value": "informations de commandes"
+   },
+   {
+    "actor": "Sophia",
+    "date": "",
+    "evidence": "près de 1 000 clients exposés avec adresses et téléphones",
+    "scope": "LeBonSiège.fr",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "clients",
+    "value": "1000"
+   },
+   {
+    "actor": "Sophia",
+    "date": "",
+    "evidence": "Les extraits montrent des identités, adresses postales, numéros de téléphone, e-mails et valeurs de mots de passe hachés",
+    "scope": "LeBonSiège.fr",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms, adresses postales, numéros de téléphone, e-mails, valeurs de mots de passe hachés"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une partie importante des informations semble toutefois ancienne, avec des enregistrements remontant à plusieurs années.",
+    "scope": "LeBonSiège.fr",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "évidences anciennes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "mais aucune date d’intrusion ni preuve d’un accès récent au système actuel n’est fournie",
+    "scope": "LeBonSiège.fr",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "absence de preuve d'accès récent"
+   },
+   {
+    "evidence": "LeBonSiège.fr fait l’objet d’une nouvelle publication de données attribuée à le hacker Sophia",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "Sophia"
    }
   ],
   "data_types": [
@@ -532,7 +611,7 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "unknown",
+    "status": "claimed",
     "value": "adresses e-mail"
    },
    {
@@ -585,10 +664,38 @@
    }
   ],
   "datasets": [],
-  "display_summary": "",
-  "fields": {},
+  "display_summary": "Près de 1 000 clients du site Le Bon Siège ont été exposés lors d'une attaque revendiquée par le hacker Sophia.",
+  "fields": {
+   "impact": {
+    "evidence": "Près de 1 000 clients dans les données",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Exposition des données personnelles de près de 1 000 clients."
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Sophia"
+   }
+  },
   "systems": [],
   "timeline": [
+   {
+    "date": "2026",
+    "event": "nouvelle intrusion",
+    "evidence": "Une nouvelle intrusion en 2026 reste à démontrer",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis"
+   },
    {
     "date": "2026-08-31",
     "event": "Une fuite de données visant LebonSiege.fr a été revendiquée le 31 août 2026 sur un forum cybercriminel.",
@@ -2270,6 +2377,19 @@
     "value": 1300000
    },
    {
+    "evidence": "environ 1,3 million de lignes.",
+    "raw": "environ 1,3 million de lignes",
+    "scope": "enregistrements",
+    "semantic": "enregistrements",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 1300000
+   },
+   {
     "evidence": "À ce stade, les  1,3 million de lignes , les  1 500 IBAN uniques  et l’extraction de l’intégralité de la base restent des volumes revendiqués par la hackeuse.",
     "raw": "1 500 IBAN uniques",
     "semantic": "unspecified",
@@ -2466,6 +2586,58 @@
     "type": "dataset",
     "unit": "",
     "value": "données clients"
+   },
+   {
+    "actor": "Sophia",
+    "date": "",
+    "evidence": "La revendication porte sur environ 1,3 million de lignes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "1300000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données diffusées font notamment apparaître des pharmacies, magasins bio, naturopathes, professionnels de santé et autres revendeurs.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "clients, pharmacies, revendeurs"
+   },
+   {
+    "actor": "Sophia",
+    "date": "",
+    "evidence": "Sophia affirme avoir récupéré la base complète de Herbiolys.",
+    "scope": "site",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "system",
+    "unit": "",
+    "value": "Herbiolys"
+   },
+   {
+    "evidence": "Sophia affirme avoir compromis le site",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "Sophia"
    }
   ],
   "data_types": [
@@ -2549,6 +2721,14 @@
     ],
     "status": "unknown",
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "clients, pharmacies, revendeurs"
    }
   ],
   "datasets": [
@@ -2559,10 +2739,27 @@
     ],
     "status": "unknown",
     "value": "données clients"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
    }
   ],
-  "display_summary": "Herbiolys piraté : 1,3 million de lignes et 1 500 IBAN dans une fuite massive",
+  "display_summary": "Herbiolys victime d'une fuite de données, 1,3 million de lignes et 1 500 IBAN compromis.",
   "fields": {
+   "impact": {
+    "evidence": "Les échantillons montrent néanmoins une fuite particulièrement large mêlant données clients, coordonnées, commandes, paiements, informations de revendeurs et données bancaires.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "fuite de données clients, coordonnées, commandes, paiements, informations de revendeurs et données bancaires"
+   },
    "threat_actor": {
     "evidence": "Sophia affirme",
     "source": "CYBERATTAQUE_ORG",
@@ -2573,15 +2770,32 @@
     "value": "Sophia"
    }
   },
-  "systems": [],
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Herbiolys"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Herbiolys"
+   }
+  ],
   "timeline": [
    {
-    "date": "2026-08-31",
-    "event": "Dans une publication datée du 31 août 2026, un acteur utilisant le pseudonyme Sophia affirme avoir compromis le site herbiolys.fr au cours du mois d'août 2026 et avoir récupéré l'intégralité de sa base de données.",
-    "evidence": "Dans une publication datée du 31 août 2026, un acteur utilisant le pseudonyme Sophia affirme avoir compromis le site herbiolys.fr au cours du mois d'août 2026 et avoir récupéré l'intégralité de sa base de données.",
-    "source": "FRENCHBREACHES",
+    "date": "2026-08",
+    "event": "compromission du site",
+    "evidence": "Sophia selon laquelle le site aurait été compromis durant le mois d’août 2026",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
     "status": "claimed"
    }
@@ -2935,6 +3149,20 @@
     "value": "données clients"
    },
    {
+    "actor": "groupe Orion",
+    "date": "",
+    "evidence": "vol d’environ 20 Go de données",
+    "scope": "données clients",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "",
+    "value": "20"
+   },
+   {
     "evidence": "Le groupe  Nova  revendique l’opération.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -2965,7 +3193,7 @@
     "value": "données clients"
    }
   ],
-  "display_summary": "La financière d’Orion : 20 Go de données clients volés après le piratage d’un partenaire",
+  "display_summary": "20 Go de données clients volés à La financière d’Orion suite à une cyberattaque sur un conseiller partenaire.",
   "fields": {
    "data_volume": {
     "evidence": "La financière d’Orion : 20 Go de données clients volés après le piratage d’un partenaire",
@@ -2975,6 +3203,15 @@
     ],
     "status": "unknown",
     "value": "20 Go"
+   },
+   "impact": {
+    "evidence": "la compromission d’un seul poste peut suffire à exposer des données financières et patrimoniales accessibles à son utilisateur.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "exposition des données financières et patrimoniales des clients."
    },
    "threat_actor": {
     "evidence": "Nova  revendique",
@@ -2987,7 +3224,28 @@
    }
   },
   "systems": [],
-  "timeline": [],
+  "timeline": [
+   {
+    "date": "non précisé",
+    "event": "attaque revendiquée par le groupe Nova",
+    "evidence": "Le groupe Nova revendique l’opération",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "non précisé",
+    "event": "intrusion dans les infrastructures d'Orion",
+    "evidence": "Aucune intrusion directe dans ses propres infrastructures n’aurait été constatée",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "denied"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -3126,8 +3384,17 @@
   ],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Fuite de données chez Timetonic suite à une vulnérabilité critique de Metabase.",
   "fields": {
+   "impact": {
+    "evidence": "Des données ont été extraites puis publiées sur un forum spécialisé.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "Des données extraites publiées sur un forum."
+   },
    "initial_access": {
     "evidence": "> TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
     "source": "FRENCHBREACHES",

@@ -6,7 +6,7 @@
    "Fuite de données apparaît sur 30 jours avec 22 incidents, contre aucun sur la période précédente (confiance élevée).",
    "Administration / Collectivité apparaît sur 30 jours avec 8 incidents, contre aucun sur la période précédente (confiance moyenne).",
    "Nouveau couple observé Fuite de données × Administration / Collectivité : 7 incidents sur 30 jours (confiance moyenne).",
-   "Ransomware apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance faible)."
+   "Commerce / Distribution apparaît sur 30 jours avec 3 incidents, contre aucun sur la période précédente (confiance moyenne)."
   ],
   "coverage": {
    "location": {
@@ -15,9 +15,9 @@
     "unknown": 3
    },
    "sector": {
-    "known": 12,
-    "known_pct": 44.4,
-    "unknown": 15
+    "known": 16,
+    "known_pct": 59.3,
+    "unknown": 11
    },
    "threat": {
     "known": 27,
@@ -28,7 +28,7 @@
   "dated_incidents": 27,
   "diversity_90d": {
    "location": 0.0,
-   "sector": 0.709,
+   "sector": 0.841,
    "threat": 0.473
   },
   "exposure": {
@@ -66,15 +66,15 @@
       "label": "Administration / Collectivité"
      },
      {
-      "count": 2,
+      "count": 3,
       "label": "Commerce / Distribution"
      },
      {
-      "count": 1,
+      "count": 2,
       "label": "Association / Syndicat"
      },
      {
-      "count": 1,
+      "count": 2,
       "label": "Numérique / Technologie"
      }
     ],
@@ -153,15 +153,15 @@
       "label": "Administration / Collectivité"
      },
      {
-      "count": 2,
+      "count": 3,
       "label": "Commerce / Distribution"
      },
      {
-      "count": 1,
+      "count": 2,
       "label": "Association / Syndicat"
      },
      {
-      "count": 1,
+      "count": 2,
       "label": "Numérique / Technologie"
      }
     ],
@@ -223,10 +223,10 @@
    "sources": 4,
    "unknown_pct": {
     "location": 11.1,
-    "sector": 55.6,
+    "sector": 40.7,
     "threat": 0.0
    },
-   "with_summary_pct": 85.2
+   "with_summary_pct": 92.6
   },
   "recurring_organisations_90d": [],
   "schema": "cyberwatch-analytics-v1",
@@ -239,14 +239,17 @@
     "Administration / Collectivité": [
      8
     ],
-    "Association / Syndicat": [
+    "Agriculture / Agroalimentaire": [
      1
     ],
-    "Commerce / Distribution": [
+    "Association / Syndicat": [
      2
     ],
+    "Commerce / Distribution": [
+     3
+    ],
     "Numérique / Technologie": [
-     1
+     2
     ]
    },
    "sources_observed": [
@@ -276,10 +279,10 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 24,
-     "known_ratio": 0.833,
+     "known_ratio": 0.889,
      "level": "high",
      "multi_source_incidents": 14,
-     "score": 86
+     "score": 87
     },
     "current": 24,
     "delta": 24,
@@ -310,10 +313,10 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 22,
-     "known_ratio": 0.803,
+     "known_ratio": 0.864,
      "level": "high",
      "multi_source_incidents": 12,
-     "score": 85
+     "score": 86
     },
     "current": 22,
     "delta": 22,
@@ -403,6 +406,31 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 3,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 2,
+     "score": 50
+    },
+    "current": 3,
+    "delta": 3,
+    "dimension": "sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-26E2A421AD48",
+     "INC-B0E6BDE8801F",
+     "INC-EB3AC8CB9892"
+    ],
+    "kind": "emerging",
+    "label": "Commerce / Distribution",
+    "previous": 0,
+    "share_pct": 11.1,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 3,
      "known_ratio": 0.889,
      "level": "low",
      "multi_source_incidents": 2,
@@ -437,7 +465,7 @@
    ],
    "sector": [
     {
-     "count": 15,
+     "count": 11,
      "label": "Inconnu"
     },
     {
@@ -445,16 +473,20 @@
      "label": "Administration / Collectivité"
     },
     {
-     "count": 2,
+     "count": 3,
      "label": "Commerce / Distribution"
     },
     {
-     "count": 1,
+     "count": 2,
      "label": "Association / Syndicat"
     },
     {
-     "count": 1,
+     "count": 2,
      "label": "Numérique / Technologie"
+    },
+    {
+     "count": 1,
+     "label": "Agriculture / Agroalimentaire"
     }
    ],
    "threat": [
@@ -1745,6 +1777,16 @@
    "new_items": 42,
    "overall": "OK",
    "run_id": "RUN-20260831T235959"
+  },
+  {
+   "as_of": "2026-09-01T07:53:17.737754+04:00",
+   "incidents": 27,
+   "items": 42,
+   "mode": "MAJ",
+   "new_incidents": 0,
+   "new_items": 0,
+   "overall": "OK",
+   "run_id": "RUN-20260901T075317"
   }
  ],
  "initialized": true,
@@ -1786,40 +1828,40 @@
  },
  "method_id": "OBS-FR-OI-SIMPLE-SOURCING-10",
  "run": {
-  "as_of": "2026-08-31T23:59:59+04:00",
-  "duration": "43.8",
-  "id": "RUN-20260831T235959",
+  "as_of": "2026-09-01T07:53:17.737754+04:00",
+  "duration": "139.1",
+  "id": "RUN-20260901T075317",
   "incidents": 27,
-  "incidents_hash": "5f94016204afc248fb66f60ce61bc42c21af939405f1ad9bfd7fe6b0f1f29908",
+  "incidents_hash": "3f45c9e6b6c68d9910c2f412b280a731c7a37b6720e51bf8e5d89618344468f2",
   "items": 42,
-  "items_hash": "ad02df09ff61aaeb031837c8b4d8939c588f22ab5678d15de41f811031cd2f95",
+  "items_hash": "4c48db34cab27897676499329d74c0dd9e24f6635b330bb5b803cade587a6366",
   "layers": "CORE_DIRECT,LOCAL_MEDIA_DIRECT,ENTITY_WATCH,REGIONAL_WATCH",
-  "mode": "CREATE",
-  "new_incidents": 27,
-  "new_items": 42,
+  "mode": "MAJ",
+  "new_incidents": 0,
+  "new_items": 0,
   "notes": "",
   "overall": "OK",
-  "requests": 35,
-  "target_end": "2026-08-31",
-  "target_start": "2026-08-28"
+  "requests": 17,
+  "target_end": "2026-09-01",
+  "target_start": "2026-08-31"
  },
  "sources": [
   {
    "access_method": "bonjourlafuite-html-v0",
    "calls": 1,
    "candidate_status": "",
-   "comment": "items_in_window=2",
+   "comment": "items_in_window=0",
    "coverage": 100,
-   "duration": "4.4",
+   "duration": "1.7",
    "history_status": "UNKNOWN",
    "id": "BONJOURLAFUITE",
-   "items": 2,
-   "items_collected": 2,
-   "items_in_window": 2,
+   "items": 0,
+   "items_collected": 0,
+   "items_in_window": 0,
    "items_seen": 542,
-   "last_run": "2026-08-31T23:59:59+04:00",
-   "latest_item": "2026-08-29",
-   "latest_item_org": "LCommerce",
+   "last_run": "2026-09-01T07:53:17.737754+04:00",
+   "latest_item": "",
+   "latest_item_org": "",
    "layer": "CORE_DIRECT",
    "notes": "Chaque bloc de la chronologie est nommé d'après l'organisation touchée : le titre de l'entrée est l'organisation. Localisation par défaut France métropolitaine sauf indication contraire. Page de contrôle de volume : https://bonjourlafuite.eu.org/stats.html",
    "oldest_available_date": "",
@@ -1829,23 +1871,23 @@
    "units_done": 1,
    "units_expected": 1,
    "url": "https://bonjourlafuite.eu.org/",
-   "zero_is_trusted": false,
+   "zero_is_trusted": true,
    "zone": "France métropolitaine"
   },
   {
    "access_method": "wordpress",
    "calls": 3,
    "candidate_status": "",
-   "comment": "articles_seen=100; articles_in_window=18; victims_identified=17; articles_rejected_no_victim=1; articles_rejected_negated=0; articles_rejected_multi=0",
+   "comment": "articles_seen=100; articles_in_window=3; victims_identified=3; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
    "coverage": 100,
-   "duration": "4.8",
+   "duration": "37.4",
    "history_status": "UNKNOWN",
    "id": "CYBERATTAQUE_ORG",
-   "items": 17,
-   "items_collected": 17,
-   "items_in_window": 18,
+   "items": 3,
+   "items_collected": 3,
+   "items_in_window": 3,
    "items_seen": 100,
-   "last_run": "2026-08-31T23:59:59+04:00",
+   "last_run": "2026-09-01T07:53:17.737754+04:00",
    "latest_item": "2026-08-31",
    "latest_item_org": "Le Bon Siège",
    "layer": "CORE_DIRECT",
@@ -1862,18 +1904,18 @@
   },
   {
    "access_method": "feed:https://frenchbreaches.com/feed.xml",
-   "calls": 24,
+   "calls": 6,
    "candidate_status": "",
-   "comment": "details_hydrates=22/22; rich_facts=22/22",
+   "comment": "details_hydrates=4/4; rich_facts=4/4",
    "coverage": 100,
-   "duration": "23.9",
+   "duration": "22.7",
    "history_status": "COMPLETE",
    "id": "FRENCHBREACHES",
-   "items": 22,
-   "items_collected": 22,
-   "items_in_window": 22,
+   "items": 4,
+   "items_collected": 4,
+   "items_in_window": 4,
    "items_seen": 100,
-   "last_run": "2026-08-31T23:59:59+04:00",
+   "last_run": "2026-09-01T07:53:17.737754+04:00",
    "latest_item": "2026-08-31",
    "latest_item_org": "CGT Éduc’Action",
    "layer": "CORE_DIRECT",
@@ -1892,18 +1934,18 @@
    "access_method": "https://api.ransomware.live/v2/countryvictims/",
    "calls": 7,
    "candidate_status": "",
-   "comment": "items_seen=690; items_in_window=1",
+   "comment": "items_seen=690; items_in_window=0",
    "coverage": 100,
-   "duration": "8.9",
+   "duration": "9.1",
    "history_status": "UNKNOWN",
    "id": "RANSOMWARE_LIVE",
-   "items": 1,
-   "items_collected": 1,
-   "items_in_window": 1,
+   "items": 0,
+   "items_collected": 0,
+   "items_in_window": 0,
    "items_seen": 690,
-   "last_run": "2026-08-31T23:59:59+04:00",
-   "latest_item": "2026-08-29",
-   "latest_item_org": "La Maison Des Travaux",
+   "last_run": "2026-09-01T07:53:17.737754+04:00",
+   "latest_item": "",
+   "latest_item_org": "",
    "layer": "CORE_DIRECT",
    "notes": "Activée par rapport à la méthode d'origine : source prioritaire (§21), les sources françaises étant fortement orientées fuite de données.",
    "oldest_available_date": "",
@@ -1913,14 +1955,14 @@
    "units_done": 7,
    "units_expected": 7,
    "url": "https://api.ransomware.live/",
-   "zero_is_trusted": false,
+   "zero_is_trusted": true,
    "zone": "Multi"
   },
   {
    "access_method": "repository_json",
    "calls": 0,
    "candidate_status": "",
-   "comment": "snapshot_records=31; admitted=7; candidates=24; materialized=7; future=0; requested_window_hits=0; generated_at=2026-08-31T08:01:38+04:00; freshness_days=0; max_age_days=2",
+   "comment": "snapshot_records=31; admitted=7; candidates=24; materialized=7; future=0; requested_window_hits=0; generated_at=2026-08-31T08:01:38+04:00; freshness_days=1; max_age_days=2",
    "coverage": 100,
    "duration": "0.0",
    "history_status": "UNKNOWN",
@@ -1929,7 +1971,7 @@
    "items_collected": 0,
    "items_in_window": 0,
    "items_seen": 7,
-   "last_run": "2026-08-31T23:59:59+04:00",
+   "last_run": "2026-09-01T07:53:17.737754+04:00",
    "latest_item": "",
    "latest_item_org": "",
    "layer": "REGIONAL_WATCH",
