@@ -467,7 +467,13 @@ def test_validate_rejects_different_and_unknown(make_item):
 def test_validate_incident_different_cannot_break_native_merge(make_item):
     left = make_item(source="A", org="Globex", published="2026-08-01", url="https://a")
     right = make_item(source="B", org="Globex", published="2026-08-01", url="https://b")
-    candidate = find_daily_llm_candidates([left], [left, right])[0]
+    candidate = DedupAuditCandidate(
+        risk_type=RISK_FALSE_MERGE,
+        left=left,
+        right=right,
+        days_apart=0,
+        reason_code=MERGE_REVIEW_WEAK_CANONICAL_NAME,
+    )
     decision = dedup_ai.DedupAiDecision(
         status=dedup_ai.STATUS_OK,
         same_organisation=dedup_ai.SAME,

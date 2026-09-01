@@ -461,14 +461,6 @@ def signal_rank(signals: CandidateSignals) -> tuple:
     return (-signals.strong_signal_count, -signals.fuzzy_score)
 
 
-def _weak_merge_review_reason(reason_code: str) -> str:
-    if reason_code == "INCIDENT_MERGE_ALIAS":
-        return MERGE_REVIEW_WEAK_ALIAS
-    if reason_code == "INCIDENT_MERGE_RANSOMWARE_CORROBORATION":
-        return MERGE_REVIEW_RANSOMWARE_CORROBORATION
-    return MERGE_REVIEW_WEAK_CANONICAL_NAME
-
-
 def find_daily_llm_candidates(
     new_or_updated_items: list[Item],
     historical_items: list[Item],
@@ -479,13 +471,12 @@ def find_daily_llm_candidates(
 ) -> list[DedupAuditCandidate]:
     """Périmètre quotidien restreint (§Lot 2) : nouveaux/rafraîchis × historique.
 
-    Contrairement à ``find_audit_candidates`` (qui audite les décisions déjà
-    prises par le moteur déterministe), cette fonction sélectionne des paires
-    *avant* toute décision, pour un seul batch LLM quotidien. Elle ne compare
-    jamais toute la base à elle-même : uniquement le petit ensemble d'items
-    nouveaux ou rafraîchis dans la fenêtre MAJ contre le corpus existant (et
-    entre eux). Le classement est entièrement déterministe et borné à
-    ``max_candidates_per_item`` candidats par nouvel item.
+    Le LLM intervient uniquement après le déterministe, sur les paires que ce
+    dernier a laissées séparées. Il ne recontrôle donc pas les fusions déjà
+    faites. La fonction ne compare jamais toute la base à elle-même : seulement
+    le petit ensemble d'items nouveaux ou rafraîchis dans la fenêtre MAJ contre
+    le corpus existant (et entre eux). Le classement est déterministe et borné
+    à ``max_candidates_per_item`` candidats par nouvel item.
     """
     company_ids = company_ids or {}
     victim_websites = victim_websites or {}
@@ -514,42 +505,28 @@ def find_daily_llm_candidates(
             if pair_key in seen_pairs:
                 continue
             left, right = _ordered_pair(scope_item, other)
-            same_identity = _effective_key(left) == _effective_key(right)
             deterministic = decide_merge(left, right)
-            if same_identity and (
-                deterministic.action != MERGE
-                or deterministic.reason_code not in {
-                    "INCIDENT_MERGE_CANONICAL_NAME",
-                    "INCIDENT_MERGE_ALIAS",
-                    "INCIDENT_MERGE_RANSOMWARE_CORROBORATION",
-                }
-            ):
-                # Les preuves fortes (identifiant source identique, Event_Date
-                # identique) n'ont pas besoin d'un arbitrage coûteux ; les veto
-                # forts restent eux aussi purement déterministes.
+            if deterministic.action != NO_DECISION:
+                # Une fusion ou un veto déjà tranché reste déterministe. Le LLM
+                # sert seulement de filet pour les doublons non détectés.
                 continue
             signals = compute_candidate_signals(
                 left, right, company_ids=company_ids, victim_websites=victim_websites,
             )
-            if not signals.any_signal and not same_identity:
+            if not signals.any_signal:
                 continue
             days = _days_apart(left, right)
             candidate = DedupAuditCandidate(
-                RISK_FALSE_MERGE if same_identity else RISK_MISSED_DUPLICATE,
+                RISK_MISSED_DUPLICATE,
                 left,
                 right,
                 days if days is not None else -1,
-                (
-                    _weak_merge_review_reason(deterministic.reason_code)
-                    if same_identity
-                    else DUPLICATE_CANDIDATE_DAILY_LLM
-                ),
+                DUPLICATE_CANDIDATE_DAILY_LLM,
                 company_ids.get(left.Organisation_Key, "") or company_ids.get(right.Organisation_Key, ""),
                 signals,
             )
             ranked.append((
-                (0 if same_identity else 1,)
-                + signal_rank(signals)
+                signal_rank(signals)
                 + (abs(candidate.days_apart), left.Item_ID, right.Item_ID),
                 candidate,
             ))

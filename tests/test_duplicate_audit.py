@@ -143,8 +143,8 @@ def test_candidate_generation_typographic(make_item):
     assert candidate.signals.fuzzy_score == 1.0
 
 
-def test_candidate_generation_includes_weak_merge_same_identity(make_item):
-    """Une fusion automatique faible doit recevoir le verdict final du LLM."""
+def test_candidate_generation_skips_deterministic_merge(make_item):
+    """Le filet LLM ne recontrôle pas une fusion déjà faite."""
     new_item = make_item(
         source="A", org="Globex", published="2026-08-01", url="https://a"
     )
@@ -152,11 +152,7 @@ def test_candidate_generation_includes_weak_merge_same_identity(make_item):
         source="B", org="Globex", published="2026-08-01", url="https://b"
     )
 
-    candidates = find_daily_llm_candidates([new_item], [new_item, historical])
-
-    assert len(candidates) == 1
-    assert candidates[0].risk_type == RISK_FALSE_MERGE
-    assert candidates[0].reason_code == "MERGE_REVIEW_WEAK_CANONICAL_NAME"
+    assert find_daily_llm_candidates([new_item], [new_item, historical]) == []
 
 
 def test_candidate_generation_skips_strong_native_id_merge(make_item):
