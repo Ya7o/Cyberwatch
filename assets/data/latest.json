@@ -10,7 +10,7 @@
   "org": "Timetonic",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": false,
@@ -129,78 +129,8 @@
   "basis": "PUBLICATION",
   "date": "2026-08-31",
   "first_seen": "2026-08-31T23:59:59+04:00",
-  "id": "INC-9D2FC2E18864",
-  "items": 1,
-  "last_seen": "2026-08-31T23:59:59+04:00",
-  "location": "France métropolitaine",
-  "org": "CGT Éduc’Action",
-  "sector": "Association / Syndicat",
-  "sector_status": {
-   "status": "confirmed"
-  },
-  "source_link_status": [
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-31",
-  "first_seen": "2026-08-31T23:59:59+04:00",
-  "id": "INC-32D21971E55B",
-  "items": 1,
-  "last_seen": "2026-08-31T23:59:59+04:00",
-  "location": "Inconnu",
-  "org": "Le Bon Siège",
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
-  },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "urls": [
-   "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-31",
-  "first_seen": "2026-08-31T23:59:59+04:00",
   "id": "INC-26E2A421AD48",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "LebonSiege",
@@ -213,60 +143,33 @@
   "sensitive_data_types": [],
   "source_link_status": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
     "source": "FRENCHBREACHES",
     "status": "direct"
    }
   ],
   "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
+   },
    {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "",
   "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-30",
-  "first_seen": "2026-08-31T23:59:59+04:00",
-  "id": "INC-FF24FF9C8B7A",
-  "items": 1,
-  "last_seen": "2026-08-31T23:59:59+04:00",
-  "location": "Inconnu",
-  "org": "CarteDePeche.fr",
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_EVIDENCE",
-   "status": "unknown"
-  },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cartedepeche-fr-les-donnees-dadherents-dont-des-mineurs-diffusees/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "CarteDePeche.fr : les données d’adhérents, dont des mineurs diffusées",
-  "threat": "Phishing / fraude",
-  "urls": [
-   "https://www.cyberattaque.org/cartedepeche-fr-les-donnees-dadherents-dont-des-mineurs-diffusees/"
+   "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp",
+   "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
   ]
  },
  {
@@ -432,42 +335,6 @@
   "basis": "PUBLICATION",
   "date": "2026-08-30",
   "first_seen": "2026-08-31T23:59:59+04:00",
-  "id": "INC-C7D194A6BFDF",
-  "items": 1,
-  "last_seen": "2026-08-31T23:59:59+04:00",
-  "location": "France métropolitaine",
-  "org": "La Ville de Tarnos",
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "status": "confirmed"
-  },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon.",
-  "threat": "Fuite de données",
-  "urls": [
-   "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd"
-  ]
- },
- {
-  "basis": "PUBLICATION",
-  "date": "2026-08-30",
-  "first_seen": "2026-08-31T23:59:59+04:00",
   "id": "INC-C6401641511B",
   "items": 1,
   "last_seen": "2026-08-31T23:59:59+04:00",
@@ -505,17 +372,22 @@
   "date": "2026-08-30",
   "first_seen": "2026-08-31T23:59:59+04:00",
   "id": "INC-C25397468C49",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "Carte De Pêche",
-  "sector": "Association / Syndicat",
+  "sector": "Inconnu",
   "sector_status": {
-   "status": "confirmed"
+   "reason": "JSON_CHALLENGER",
+   "status": "unknown"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
   "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
    {
     "source": "FRENCHBREACHES",
     "status": "direct"
@@ -523,17 +395,23 @@
   ],
   "source_links": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cartedepeche-fr-les-donnees-dadherents-dont-des-mineurs-diffusees/"
+   },
+   {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/carte-de-p-che-mtfr2p7gwirp63lb8q"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Une fuite de données ciblant CarteDePeche.fr a été revendiquée par un acteur sur un forum cybercriminel.",
+  "summary": "CarteDePeche.fr : les données d’adhérents, dont des mineurs diffusées",
   "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/carte-de-p-che-mtfr2p7gwirp63lb8q"
+   "https://frenchbreaches.com/alertes/carte-de-p-che-mtfr2p7gwirp63lb8q",
+   "https://www.cyberattaque.org/cartedepeche-fr-les-donnees-dadherents-dont-des-mineurs-diffusees/"
   ]
  },
  {
@@ -613,10 +491,10 @@
   "date": "2026-08-30",
   "first_seen": "2026-08-31T23:59:59+04:00",
   "id": "INC-82F1B88B7CC2",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-31T23:59:59+04:00",
-  "location": "Inconnu",
-  "org": "CGT Éduc’Action Créteil",
+  "location": "France métropolitaine",
+  "org": "CGT Éduc’Action",
   "sector": "Association / Syndicat",
   "sector_status": {
    "status": "confirmed"
@@ -627,20 +505,30 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
    }
   ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cgt-educaction-creteil-deux-sites-pirates-avant-la-rentree/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "CGT Éduc’Action Créteil victime d'une cyberattaque ayant provoqué l'indisponibilité de ses sites pendant plusieurs jours.",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "urls": [
+   "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh",
    "https://www.cyberattaque.org/cgt-educaction-creteil-deux-sites-pirates-avant-la-rentree/"
   ]
  },
@@ -763,7 +651,7 @@
   "org": "Easypara",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": false,
@@ -808,10 +696,9 @@
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "LCommerce",
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
-   "status": "unknown"
+   "status": "confirmed"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -937,14 +824,13 @@
   "date": "2026-08-29",
   "first_seen": "2026-08-31T23:59:59+04:00",
   "id": "INC-39643434BF76",
-  "items": 1,
+  "items": 2,
   "last_seen": "2026-08-31T23:59:59+04:00",
-  "location": "Inconnu",
-  "org": "Tarnos",
-  "sector": "Inconnu",
+  "location": "France métropolitaine",
+  "org": "La Ville de Tarnos",
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
-   "status": "unknown"
+   "status": "confirmed"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -952,20 +838,30 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
    }
   ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/mairie-tarnos-rancon-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon et possible vol de données personnelles.",
   "threat": "Ransomware",
   "urls": [
+   "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd",
    "https://www.cyberattaque.org/mairie-tarnos-rancon-cyberattaque/"
   ]
  },
@@ -980,7 +876,7 @@
   "org": "Ultra Premium Direct",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": false,
@@ -1027,7 +923,7 @@
   "org": "Qare",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": false,
@@ -1064,7 +960,7 @@
   "org": "Lingor",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": true,
@@ -1111,10 +1007,9 @@
   "last_seen": "2026-08-31T23:59:59+04:00",
   "location": "France métropolitaine",
   "org": "Frères Toque",
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
-   "status": "unknown"
+   "status": "confirmed"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -1170,7 +1065,7 @@
   "org": "Minea",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": true,
@@ -1219,7 +1114,7 @@
   "org": "Actis Location",
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "JSON_CHALLENGER",
+   "reason": "NO_EVIDENCE",
    "status": "unknown"
   },
   "sensitive_data_exposed": true,

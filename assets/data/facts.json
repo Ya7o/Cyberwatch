@@ -363,44 +363,6 @@
   "vulnerabilities": []
  },
  "INC-26E2A421AD48": {
-  "affected": [],
-  "claims": [
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "# Fuite de données revendiquée chez LebonSiege.fr : plus de 1 000 clients potentiellement concernés",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "hypothesis",
-    "type": "affected_count",
-    "unit": "clients",
-    "value": "1000"
-   }
-  ],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {},
-  "systems": [],
-  "timeline": [
-   {
-    "date": "2026-08-31",
-    "event": "Une fuite de données visant LebonSiege.fr a été revendiquée le 31 août 2026 sur un forum cybercriminel.",
-    "evidence": "Une fuite de données visant LebonSiege.fr a été revendiquée le 31 août 2026 sur un forum cybercriminel.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed"
-   }
-  ],
-  "version": 3,
-  "vulnerabilities": []
- },
- "INC-32D21971E55B": {
   "affected": [
    {
     "evidence": "Celle-ci affirme avoir compromis le site et diffuse gratuitement une base contenant les informations de  près de 1 000 clients , mais également des données relatives à plusieurs comptes employés.",
@@ -435,7 +397,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "type": "affected_count",
@@ -625,7 +588,18 @@
   "display_summary": "",
   "fields": {},
   "systems": [],
-  "timeline": [],
+  "timeline": [
+   {
+    "date": "2026-08-31",
+    "event": "Une fuite de données visant LebonSiege.fr a été revendiquée le 31 août 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant LebonSiege.fr a été revendiquée le 31 août 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -694,10 +668,20 @@
     "evidence": "La Ville de Tarnos, dans les Landes, confirme avoir été victime d’une cyberattaque.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "confirmed",
     "value": "Tarnos, Landes"
+   },
+   "impact": {
+    "evidence": "l'attaque informatique s'est accompagnée d'une demande de rançon",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "demande de rançon"
    }
   },
   "systems": [
@@ -710,7 +694,18 @@
     "value": "serveur de messagerie"
    }
   ],
-  "timeline": [],
+  "timeline": [
+   {
+    "date": "2026-08-28",
+    "event": "La Ville de Tarnos, dans les Landes, a annoncé avoir été victime d’une cyberattaque ayant visé son serveur de messagerie le vendredi 28 août 2026.",
+    "evidence": "La Ville de Tarnos, dans les Landes, a annoncé avoir été victime d’une cyberattaque ayant visé son serveur de messagerie le vendredi 28 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -2618,9 +2613,169 @@
   "vulnerabilities": []
  },
  "INC-C25397468C49": {
-  "affected": [],
-  "claims": [],
+  "affected": [
+   {
+    "evidence": "Le hacker  Alduin  affirme avoir aspiré des informations concernant à la fois des  adhérents  et des  dépositaires  du réseau, environ 500 personnes.",
+    "raw": "500 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 500
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  Alduin  affirme avoir aspiré des informations concernant à la fois des  adhérents  et des  dépositaires  du réseau, environ 500 personnes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "500"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les échantillons diffusés contiennent des informations personnelles détaillées, avec notamment des  identités, dates de naissance, adresses, coordonnées et numéros d’adhérent .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses postales et codes postaux ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données observées comprennent les coordonnées des responsables, adresses, téléphones, e-mails, SIRET lorsqu’il est renseigné, ainsi que la localisation géographique des points de vente.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "SIREN / SIRET"
+   }
+  ],
   "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "SIREN / SIRET"
+   },
    {
     "source": "FRENCHBREACHES",
     "sources": [
@@ -2631,8 +2786,18 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Une fuite de données ciblant CarteDePeche.fr a été revendiquée par un acteur sur un forum cybercriminel.",
-  "fields": {},
+  "display_summary": "CarteDePeche.fr : les données d’adhérents, dont des mineurs diffusées",
+  "fields": {
+   "threat_actor": {
+    "evidence": "Alduin  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Alduin"
+   }
+  },
   "systems": [],
   "timeline": [
    {
@@ -2823,48 +2988,6 @@
   },
   "systems": [],
   "timeline": [],
-  "version": 3,
-  "vulnerabilities": []
- },
- "INC-C7D194A6BFDF": {
-  "affected": [],
-  "claims": [],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon.",
-  "fields": {
-   "fine_location": {
-    "evidence": "La Ville de Tarnos, dans les Landes, a annoncé avoir été victime d’une cyberattaque.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "Tarnos, Landes"
-   },
-   "impact": {
-    "evidence": "l'attaque informatique s'est accompagnée d'une demande de rançon",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "demande de rançon"
-   }
-  },
-  "systems": [],
-  "timeline": [
-   {
-    "date": "2026-08-28",
-    "event": "La Ville de Tarnos, dans les Landes, a annoncé avoir été victime d’une cyberattaque ayant visé son serveur de messagerie le vendredi 28 août 2026.",
-    "evidence": "La Ville de Tarnos, dans les Landes, a annoncé avoir été victime d’une cyberattaque ayant visé son serveur de messagerie le vendredi 28 août 2026.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown"
-   }
-  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -3909,189 +4032,6 @@
     "status": "claimed"
    }
   ],
-  "version": 3,
-  "vulnerabilities": []
- },
- "INC-FF24FF9C8B7A": {
-  "affected": [
-   {
-    "evidence": "Le hacker  Alduin  affirme avoir aspiré des informations concernant à la fois des  adhérents  et des  dépositaires  du réseau, environ 500 personnes.",
-    "raw": "500 personnes",
-    "semantic": "unspecified",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "unit": "people",
-    "value": 500
-   }
-  ],
-  "claims": [
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Le hacker  Alduin  affirme avoir aspiré des informations concernant à la fois des  adhérents  et des  dépositaires  du réseau, environ 500 personnes.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "500"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Les échantillons diffusés contiennent des informations personnelles détaillées, avec notamment des  identités, dates de naissance, adresses, coordonnées et numéros d’adhérent .",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "dates de naissance"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "noms et prénoms  ;",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "noms et prénoms"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "adresses postales et codes postaux ;",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "adresses postales"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "adresses e-mail et numéros de téléphone ;",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "adresses e-mail"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "adresses e-mail et numéros de téléphone ;",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "numéros de téléphone"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Les données observées comprennent les coordonnées des responsables, adresses, téléphones, e-mails, SIRET lorsqu’il est renseigné, ainsi que la localisation géographique des points de vente.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "SIREN / SIRET"
-   }
-  ],
-  "data_types": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "dates de naissance"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "noms et prénoms"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "adresses postales"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "adresses e-mail"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "numéros de téléphone"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "SIREN / SIRET"
-   }
-  ],
-  "datasets": [],
-  "display_summary": "CarteDePeche.fr : les données d’adhérents, dont des mineurs diffusées",
-  "fields": {
-   "threat_actor": {
-    "evidence": "Alduin  affirme",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "Alduin"
-   }
-  },
-  "systems": [],
-  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  }
