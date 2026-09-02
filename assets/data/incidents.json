@@ -1,11 +1,148 @@
 [
  {
   "basis": "PUBLICATION",
+  "date": "2026-09-02",
+  "first_seen": "2026-09-02T15:47:42.371674+04:00",
+  "id": "INC-6BD2DE3819F9",
+  "items": 1,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "Inconnu",
+  "org": "Dropbox",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Environ 5 000 comptes Dropbox compromis entre le 4 et le 21 août 2026 par l'exploitation d'une ancienne intégration avec Lenovo.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-02",
+  "first_seen": "2026-09-02T15:47:42.371674+04:00",
+  "id": "INC-C4996B1885D9",
+  "items": 2,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "France métropolitaine",
+  "org": "Géofoncier",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Géofoncier revendique une cyberattaque ayant exposé plus de 4 millions de dossiers fonciers.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h",
+   "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-02",
+  "first_seen": "2026-09-02T15:47:42.371674+04:00",
+  "id": "INC-CFB60E563EB4",
+  "items": 2,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "France métropolitaine",
+  "org": "LiveTrail",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "LiveTrail a subi une cyberattaque ayant exposé les coordonnées des utilisateurs.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9",
+   "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
   "date": "2026-09-01",
   "first_seen": "2026-09-01T16:10:00.061034+04:00",
   "id": "INC-72FE2288A677",
-  "items": 1,
-  "last_seen": "2026-09-01T16:10:00.061034+04:00",
+  "items": 2,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
   "location": "France métropolitaine",
   "org": "Bio en Hauts-de-France",
   "sector": "Inconnu",
@@ -17,23 +154,33 @@
   "sensitive_data_types": [],
   "source_link_status": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
     "source": "FRENCHBREACHES",
     "status": "direct"
    }
   ],
   "source_links": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/"
+   },
+   {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Cyberattaque contre Bio en Hauts-de-France entraînant le vol de données personnelles et professionnelles.",
   "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug"
+   "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug",
+   "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/"
   ]
  },
  {

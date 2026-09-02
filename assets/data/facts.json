@@ -1710,6 +1710,146 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-6BD2DE3819F9": {
+  "affected": [
+   {
+    "evidence": "Dropbox confirme qu’environ 5 000 comptes utilisateurs ont été compromis au cours du mois d’août 2026.",
+    "raw": "5 000 comptes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "unit": "accounts",
+    "value": 5000
+   },
+   {
+    "evidence": "environ 5 000 comptes utilisateurs ont été compromis",
+    "raw": "environ 5 000 comptes",
+    "scope": "utilisateurs",
+    "semantic": "utilisateurs",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "accounts",
+    "value": 5000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Dropbox confirme qu’environ 5 000 comptes utilisateurs ont été compromis au cours du mois d’août 2026.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "5000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon les informations disponibles, il était possible de créer un  Lenovo ID associé à l’adresse e-mail d’une victime  sans vérifier correctement que cette personne contrôlait réellement l’adresse.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Désormais, le mot de passe Dropbox doit être saisi avant qu’un identifiant Lenovo puisse permettre d’accéder à un compte.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Désormais, le mot de passe Dropbox doit être saisi avant qu’un identifiant Lenovo puisse permettre d’accéder à un compte.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "comptes utilisateurs Dropbox"
+   }
+  ],
+  "display_summary": "Environ 5 000 comptes Dropbox compromis entre le 4 et le 21 août 2026 par l'exploitation d'une ancienne intégration avec Lenovo.",
+  "fields": {
+   "initial_access": {
+    "evidence": "tiers des comptes compromis",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "third_party"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Dropbox"
+   }
+  ],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-70B5B8B5751D": {
   "affected": [],
   "claims": [
@@ -1925,11 +2065,145 @@
  },
  "INC-72FE2288A677": {
   "affected": [],
-  "claims": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom, prénom, civilité et date de naissance  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom, prénom, civilité et date de naissance  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse postale, adresse e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse postale, adresse e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse postale, adresse e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "fonction, structure, SIREN/SIRET et numéro PACAGE  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "SIREN / SIRET"
+   }
+  ],
   "data_types": [
    {
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "SIREN / SIRET"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "status": "unknown",
@@ -1939,6 +2213,15 @@
   "datasets": [],
   "display_summary": "Cyberattaque contre Bio en Hauts-de-France entraînant le vol de données personnelles et professionnelles.",
   "fields": {
+   "fine_location": {
+    "evidence": "L’organisation dispose notamment d’un site à Amiens.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Amiens"
+   },
    "impact": {
     "evidence": "L'organisation confirme que des données personnelles, professionnelles et relatives aux exploitations agricoles ont été dérobées.",
     "source": "FRENCHBREACHES",
@@ -3074,6 +3357,346 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-C4996B1885D9": {
+  "affected": [
+   {
+    "evidence": "Le hacker  ZeroBytes  affirme avoir récupéré puis diffusé gratuitement une base représentant  plus de 4,2 millions de lignes .",
+    "raw": "4,2 millions de lignes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 4200000
+   },
+   {
+    "evidence": "Géofoncier : plus de 4 millions de dossiers fonciers exposés dans une fuite massive",
+    "raw": "4 millions de dossiers",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 4000000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ZeroBytes  affirme avoir récupéré puis diffusé gratuitement une base représentant  plus de 4,2 millions de lignes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "4200000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Géofoncier : plus de 4 millions de dossiers fonciers exposés dans une fuite massive",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "4000000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker affirme avoir découvert  un compte Géofoncier déjà authentifié disposant d’un accès à l’API  alors qu’il recherchait initialement d’autres identifiants.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’analyse menée par Cyberattaque.org sur les fichiers diffusés  montre principalement des données liées à l’activité professionnelle des géomètres-experts et à la cartographie des opérations foncières : noms et prénoms, coordonnées professionnelles, adresse et téléphone des cabinets, numéro d’ordre, structures d’exercice ainsi que des  métadonnées de dossiers de bornage géolocalisés .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’analyse menée par Cyberattaque.org sur les fichiers diffusés  montre principalement des données liées à l’activité professionnelle des géomètres-experts et à la cartographie des opérations foncières : noms et prénoms, coordonnées professionnelles, adresse et téléphone des cabinets, numéro d’ordre, structures d’exercice ainsi que des  métadonnées de dossiers de bornage géolocalisés .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’analyse menée par Cyberattaque.org sur les fichiers diffusés  montre principalement des données liées à l’activité professionnelle des géomètres-experts et à la cartographie des opérations foncières : noms et prénoms, coordonnées professionnelles, adresse et téléphone des cabinets, numéro d’ordre, structures d’exercice ainsi que des  métadonnées de dossiers de bornage géolocalisés .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "métadonnées techniques"
+   },
+   {
+    "actor": "ZeroBytes",
+    "date": "",
+    "evidence": "ZeroBytes affirme avoir récupéré puis diffusé gratuitement une base représentant plus de 4,2 millions de lignes.",
+    "scope": "Géofoncier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "4200000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données annoncées regroupent notamment près de 7 000 géomètres-experts.",
+    "scope": "Géofoncier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "",
+    "value": "7000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "environ  6 500 structures.",
+    "scope": "Géofoncier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "",
+    "value": "6500"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "plus de  2 000 implantations de cabinets.",
+    "scope": "Géofoncier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "",
+    "value": "2000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "plus de  4 millions d’enregistrements liés à des dossiers ou actes fonciers.",
+    "scope": "Géofoncier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "enregistrements liés à des dossiers ou actes fonciers"
+   },
+   {
+    "actor": "ZeroBytes",
+    "date": "",
+    "evidence": "Un compte authentifié aurait permis d’accéder à l’API.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "compte authentifié"
+   },
+   {
+    "actor": "ZeroBytes",
+    "date": "",
+    "evidence": "le hacker affirme avoir découvert un compte Géofoncier déjà authentifié.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "initial_access",
+    "unit": "",
+    "value": "compte authentifié"
+   },
+   {
+    "actor": "ZeroBytes",
+    "date": "",
+    "evidence": "ZeroBytes reconnaît lui-même ne pas avoir vérifié si les données récupérées étaient déjà publiques.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "données potentiellement publiques"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "la centralisation de millions d’informations dans des fichiers directement exploitables peut faciliter la cartographie de professionnels, le démarchage abusif ou des campagnes de phishing ciblées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de centralisation de données"
+   },
+   {
+    "actor": "",
+    "date": "30 août 2026",
+    "evidence": "les éléments disponibles permettent surtout d’établir une extraction massive via un compte authentifié.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "extraction massive via un compte authentifié"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "métadonnées techniques"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "enregistrements liés à des dossiers ou actes fonciers"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "extraction massive via un compte authentifié"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "Géofoncier revendique une cyberattaque ayant exposé plus de 4 millions de dossiers fonciers.",
+  "fields": {
+   "impact": {
+    "evidence": "la centralisation de millions d’informations dans des fichiers directement exploitables peut faciliter la cartographie de professionnels, le démarchage abusif ou des campagnes de phishing ciblées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "facilite la cartographie de professionnels et le démarchage abusif"
+   },
+   "threat_actor": {
+    "evidence": "ZeroBytes  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "ZeroBytes"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "compte authentifié"
+   }
+  ]
+ },
  "INC-C6401641511B": {
   "affected": [
    {
@@ -3423,6 +4046,99 @@
     "status": "claimed"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-CFB60E563EB4": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Adresses e-mail et mots de passe hachés concernés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Adresses e-mail et mots de passe hachés concernés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "D’après LiveTrail, les données personnelles concernées sont  l’identifiant de connexion, correspondant à l’adresse e-mail, ainsi que le mot de passe stocké sous forme hachée .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "comptes utilisateurs"
+   }
+  ],
+  "display_summary": "LiveTrail a subi une cyberattaque ayant exposé les coordonnées des utilisateurs.",
+  "fields": {},
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
