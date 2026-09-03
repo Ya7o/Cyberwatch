@@ -1,4 +1,16 @@
 {
+ "INC-15A9F3AC6AC8": {
+  "affected": [],
+  "claims": [],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "Le ministère de la Transition écologique a subi une cyberattaque, entraînant la revendication des données de milliers d'utilisateurs.",
+  "fields": {},
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-195F06B69C3A": {
   "affected": [
    {
@@ -1055,6 +1067,827 @@
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-52ED884732BC": {
+  "affected": [
+   {
+    "evidence": "D’après les informations affichées dans la publication, le fichier contiendrait **2 863 lignes**,...",
+    "raw": "2 863 lignes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 2863
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "À ce stade, les 2 863 enregistrements correspondent au nombre annoncé dans le fichier et ne permettent pas d’établir l’existence d’une compromission plus large de l’ensemble du système d’information de Charbonneaux-Brabant.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "negated",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "2863"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le fichier publié représente environ  660 Ko de données au format JSON .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "660.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et fonctions professionnelles dans les fichiers",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les enregistrements observés contiennent notamment des  noms, prénoms, pseudonymes ou identifiants, adresses e-mail, fonctions professionnelles, langue du compte, profils utilisateurs et sites de rattachement .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les enregistrements observés contiennent notamment des  noms, prénoms, pseudonymes ou identifiants, adresses e-mail, fonctions professionnelles, langue du compte, profils utilisateurs et sites de rattachement .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La structure de la base comprend également un champ destiné au  mot de passe .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "Le fichier publié représente environ  660 Ko de données au format JSON.",
+    "scope": "Charbonneaux-Brabant",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "660"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les enregistrements observés contiennent notamment des  noms, prénoms, pseudonymes ou identifiants, adresses e-mail, fonctions professionnelles.",
+    "scope": "Charbonneaux-Brabant",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms, e-mails, fonctions professionnelles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le principal risque vient du croisement entre  identité, adresse e-mail, fonction et activité professionnelle.",
+    "scope": "Charbonneaux-Brabant",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de phishing ciblé"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données revendiquée chez Charbonneaux-Brabant : plus de 2 800 personnes potentiellement concernées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "2800"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base contenant des profils"
+   }
+  ],
+  "display_summary": "2 863 profils professionnels exposés dans une fuite de données chez Charbonneaux-Brabant.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le fichier publié représente environ  660 Ko de données au format JSON .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "660 Ko"
+   },
+   "fine_location": {
+    "evidence": "Une entreprise industrielle historique basée à Reims",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Reims"
+   },
+   "impact": {
+    "evidence": "affirme avoir récupéré puis publié une base de données attribuée au site.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Publication d'une base de données contenant des informations personnelles."
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant Charbonneaux-Brabant a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant Charbonneaux-Brabant a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-582E355E2705": {
+  "affected": [
+   {
+    "evidence": "L’infrastructure concernée héberge près de  400 000 fichiers .",
+    "raw": "400 000 fichiers",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 400000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’infrastructure concernée héberge près de  400 000 fichiers .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "400000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon l’organisation, les attaquants auraient introduit  progressivement plusieurs morceaux de code malveillant  dans l’hébergement.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de séjour"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "sauvegardes quotidiennes"
+   }
+  ],
+  "display_summary": "Le Stade Montois Omnisports a subi une cyberattaque importante affectant plusieurs de ses sites et applications internes.",
+  "fields": {
+   "fine_location": {
+    "evidence": "Le Stade Montois est un club omnisports historique de Mont-de-Marsan.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Mont-de-Marsan"
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-619638DA1C52": {
+  "affected": [
+   {
+    "evidence": "Les 1 029 lignes correspondent à autant de personnes.",
+    "raw": "1 029 lignes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 1029
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les 1 029 lignes correspondent à autant de personnes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "1029"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le fichier publié représente environ  60 Ko au format CSV .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "60.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et départements dans les fichiers",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les enregistrements observés contiennent notamment des  noms et prénoms, adresses e-mail professionnelles, département de rattachement  ainsi que différents champs techniques associés aux profils.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Fuite de données touchant CMA Occitanie avec 1 029 profils exposés par le hacker ChimeraZ.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le fichier publié représente environ  60 Ko au format CSV .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "60 Ko"
+   },
+   "impact": {
+    "evidence": "la publication permet en revanche de constater l’exposition d’un fichier structuré contenant plus d’un millier de profils professionnels.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Exposition de 1 029 profils professionnels."
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-64FE6B5DDB80": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "facturation.fnim.fr  : défacé ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "facturation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ce type d’accès permet d’exécuter des commandes directement sur une machine compromise et peut, selon les privilèges obtenus, donner accès aux applications, fichiers de configuration et bases de données auxquels le serveur peut lui-même accéder.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "yiranet, Snufkxn, misere",
+    "date": "",
+    "evidence": "La Fédération Nationale Indépendante des Mutuelles (FNIM) est touchée par une cyberattaque revendiquée par les hackers yiranet, Snufkxn et misere.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "yiranet, Snufkxn, misere"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les attaquants affirment avoir compromis un serveur utilisé par plusieurs services de l’organisation, obtenu une exécution de code à distance et récupéré les bases de données présentes sur l’infrastructure.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "bases de données compromises"
+   },
+   {
+    "actor": "yiranet, Snufkxn, misere",
+    "date": "",
+    "evidence": "Les attaquants affirment avoir obtenu une RCE, pour Remote Code Execution, sur l’un des serveurs.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "exécution de code à distance"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les hackers ont publié plusieurs archives contenant les bases SQL récupérées.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "bases SQL"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "elles ont été diffusées publiquement.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "publication",
+    "unit": "",
+    "value": "diffusées publiquement"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "ce qui transforme l’incident en véritable fuite de données et augmente fortement le risque de réutilisation des informations qu’elles contiennent.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de réutilisation des informations"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une compromission initiale peut devenir beaucoup plus grave lorsque plusieurs applications, bases ou sites partagent la même infrastructure.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "system",
+    "unit": "",
+    "value": "infrastructure mutualisée"
+   },
+   {
+    "actor": "FNIM",
+    "date": "",
+    "evidence": "La FNIM n’a pas encore détaillé publiquement le périmètre de l’incident.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "statement",
+    "unit": "",
+    "value": "détails sur le périmètre de l’incident"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "plusieurs sites ont été défacés.",
+    "scope": "FNIM",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "défacement de sites"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "> L’analyse des données compromises révèle la présence de **données personnelles et professionnelles (noms, coordonnées, e-mails, téléphones), d’identifiants et données d’authentification, ainsi que de données de facturation, de paiement et bancaires (IBAN, BIC et opérations financières)**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "> L’analyse des données compromises révèle la présence de **données personnelles et professionnelles (noms, coordonnées, e-mails, téléphones), d’identifiants et données d’authentification, ainsi que de données de facturation, de paiement et bancaires (IBAN, BIC et opérations financières)**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "> L’analyse des données compromises révèle la présence de **données personnelles et professionnelles (noms, coordonnées, e-mails, téléphones), d’identifiants et données d’authentification, ainsi que de données de facturation, de paiement et bancaires (IBAN, BIC et opérations financières)**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "> L’analyse des données compromises révèle la présence de **données personnelles et professionnelles (noms, coordonnées, e-mails, téléphones), d’identifiants et données d’authentification, ainsi que de données de facturation, de paiement et bancaires (IBAN, BIC et opérations financières)**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "> L’analyse des données compromises révèle la présence de **données personnelles et professionnelles (noms, coordonnées, e-mails, téléphones), d’identifiants et données d’authentification, ainsi que de données de facturation, de paiement et bancaires (IBAN, BIC et opérations financières)**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "BIC / SWIFT"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "facturation"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "bases SQL"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données bancaires"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "BIC / SWIFT"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "La FNIM a subi un piratage avec des données sensibles compromises et des accès bancaires revendiqués.",
+  "fields": {
+   "impact": {
+    "evidence": "La publication ouverte des bases constitue désormais le principal risque.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "diffusion publique de données sensibles entraînant un risque accru de réutilisation"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "infrastructure mutualisée"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "non précisée",
+    "event": "cyberattaque revendiquée",
+    "evidence": "La Fédération Nationale Indépendante des Mutuelles (FNIM) est touchée par une cyberattaque revendiquée par les hackers yiranet, Snufkxn et misere.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "non précisée",
+    "event": "bases SQL publiées",
+    "evidence": "Les hackers ont publié plusieurs archives contenant les bases SQL récupérées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "non précisée",
+    "event": "bases SMS diffusées",
+    "evidence": "elles ont été diffusées publiquement.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "date": "non précisée",
+    "event": "exécution de code à distance",
+    "evidence": "Les attaquants affirment avoir obtenu une RCE, pour Remote Code Execution, sur l’un des serveurs.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
     ],
     "status": "claimed"
    }
@@ -2361,6 +3194,276 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-83BA7D2DCBF4": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Celui-ci affirme avoir récupéré une partie de la base de données du service ainsi que plusieurs documents, pour un ensemble d’environ  12 Mo au format JSON et PDF .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "12.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "BCTI : cartes d’identité et des dossiers immobiliers en fuite",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "pièces d'identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données observées proviennent de l’environnement professionnel de  BCTI  et montrent la gestion de missions de diagnostic immobilier : devis, rendez-vous, diagnostiqueurs associés, biens concernés et éléments de facturation.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "facturation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms de clients ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "identifiants de missions  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "montants facturés, frais et éventuels remboursements ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "montants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un ensemble d’environ 12 Mo au format JSON et PDF.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "12"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un dossier contient 21 cartes nationales d’identité françaises.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "cartes nationales d’identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données diffusées comprennent également des informations détaillées sur des missions et rendez-vous liés à des biens immobiliers.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations sur des biens immobiliers"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La présence annoncée de pièces d’identité augmente encore le risque d’usurpation d’identité et de fraude documentaire.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "usurpation d’identité et fraude documentaire"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "facturation"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "montants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "cartes nationales d’identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "informations sur des biens immobiliers"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base de données du service BCTI"
+   }
+  ],
+  "display_summary": "Fuite de données chez BCTI, comprenant des cartes d'identité et des dossiers immobiliers.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Celui-ci affirme avoir récupéré une partie de la base de données du service ainsi que plusieurs documents, pour un ensemble d’environ  12 Mo au format JSON et PDF .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "12 Mo"
+   },
+   "evolution": {
+    "evidence": "Le hacker présente lui-même le contenu publié comme une base partielle.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "base partielle"
+   },
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "usurpation d’identité et fraude documentaire"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "partenaires.bcti.fr"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant BCTI (Bureau de Conformité Technique & Innovation) a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant BCTI (Bureau de Conformité Technique & Innovation) a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-8B71255FD2C5": {
   "affected": [
    {
@@ -2435,6 +3538,323 @@
   ],
   "version": 3,
   "vulnerabilities": []
+ },
+ "INC-90A8D0197E17": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les notifications adressées aux personnes concernées montrent que des tiers non autorisés ont pu accéder à certaines données clients utilisées pour le suivi des commandes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le service peut notamment recevoir les informations provenant des boutiques en ligne et des transporteurs afin d’envoyer des  e-mails et SMS de suivi , proposer des pages de tracking personnalisées ou détecter certains incidents de livraison.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les personnes concernées avaient été averties que leur  nom, prénom, adresse e-mail et éventuellement numéro de téléphone  avaient pu être consultés par des tiers.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les personnes concernées avaient été averties que leur  nom, prénom, adresse e-mail et éventuellement numéro de téléphone  avaient pu être consultés par des tiers.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les mots de passe et informations bancaires ne seraient pas concernés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Shipup touché par la faille Metabase : plusieurs grandes enseignes concernées",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "system",
+    "unit": "",
+    "value": "Metabase"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les notifications adressées aux personnes concernées montrent que des tiers non autorisés ont pu accéder à certaines données clients utilisées pour le suivi des commandes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   },
+   {
+    "actor": "Easypara, Micromania",
+    "date": "",
+    "evidence": "Les personnes concernées avaient été averties que leur nom, prénom, adresse e-mail et éventuellement numéro de téléphone avaient pu être consultés par des tiers.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "nom, prénom, adresse e-mail, numéro de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Parmi elles figure la CVE-2026-72898, une vulnérabilité critique ayant fait l’objet d’exploitations actives alors qu’elle était encore inconnue du public.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "CVE-2026-72898"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "la vulnérabilité CVE-2026-72898, notée 10/10, permet à un attaquant distant non authentifié de réaliser une injection SQL.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "injection SQL"
+   },
+   {
+    "actor": "CERT-FR",
+    "date": "",
+    "evidence": "Le CERT-FR indique que les failles découvertes dans Metabase peuvent notamment entraîner une atteinte à la confidentialité des données.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "atteinte à la confidentialité des données"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "indiquait que l’accès avait été rendu possible par une vulnérabilité jusqu’alors inconnue affectant Metabase.",
+    "scope": "Metabase",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "initial_access",
+    "unit": "",
+    "value": "exploitation d'une vulnérabilité"
+   },
+   {
+    "actor": "",
+    "date": "fin août 2026",
+    "evidence": "Un premier indice concret de la compromission de Shipup était apparu avec Easypara.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "publication",
+    "unit": "",
+    "value": "alertes Notificatons clients"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données clients"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "informations clients utilisées pour le suivi des commandes"
+   }
+  ],
+  "display_summary": "Shipup a subi une cyberattaque entraînant l'exposition de données clients via une vulnérabilité dans Metabase.",
+  "fields": {
+   "impact": {
+    "evidence": "Les notifications adressées aux personnes concernées montrent que des tiers non autorisés ont pu accéder à certaines données clients.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "des tiers non autorisés ont pu accéder à certaines données clients"
+   },
+   "initial_access": {
+    "evidence": "Shipup , plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce, a été touchée par la vague de cyberattaques ayant exploité une vulnérabilité critique dans Metabase .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "vulnerability_exploitation"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "Metabase"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-08-17",
+    "event": "Accès non autorisés à des données clients",
+    "evidence": "des accès auraient été possibles entre le 31 juillet et le 17 août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Publication des premiers correctifs pour des vulnérabilités dans Metabase",
+    "evidence": "Les premiers correctifs liés à cette série de vulnérabilités ont été publiés le 6 août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "date": "2026-08-26",
+    "event": "Alerte sur des instances Metabase vulnérables",
+    "evidence": "Dès le 26 août 2026, Thomas Lazzaroni alertait sur LinkedIn sur le maintien en ligne d’instances Metabase vulnérables.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "CVE-2026-72898"
+   }
+  ]
  },
  "INC-92B98E38166E": {
   "affected": [],
@@ -3129,6 +4549,667 @@
   },
   "systems": [],
   "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-B18279AA1F95": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La Boutique du Volet : une cyberattaque expose les données et l’historique de commandes de clients",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "2026-09-02",
+    "evidence": "L’incident a été révélé par  Fuites Infos , qui a obtenu un e-mail envoyé par La Boutique du Volet à ses clients le  2 septembre 2026 .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Adresses, téléphones et historique des commandes concernés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom et prénom  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses de livraison et de facturation ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "facturation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les cartes bancaires et RIB ne seraient donc pas concernés par cette cyberattaque.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les mots de passe des comptes vont être réinitialisés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "La Boutique du Volet",
+    "date": "",
+    "evidence": "l’entreprise confirme notamment l’exposition potentielle de coordonnées personnelles",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "coordonnées personnelles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’entreprise ne détaille pas le point d’entrée utilisé par l’attaquant",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "point d’entrée"
+   },
+   {
+    "actor": "La Boutique du Volet",
+    "date": "",
+    "evidence": "les informations susceptibles d’avoir été consultées comprennent : nom et prénom ; adresses de livraison et de facturation ; adresse e-mail ; numéro de téléphone ; historique des commandes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses, téléphones et historique des commandes"
+   },
+   {
+    "actor": "La Boutique du Volet",
+    "date": "",
+    "evidence": "l’entreprise annonce une réinitialisation des mots de passe des comptes clients.",
+    "scope": "comptes clients",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "remediation",
+    "unit": "",
+    "value": "réinitialisation des mots de passe"
+   },
+   {
+    "actor": "La Boutique du Volet",
+    "date": "",
+    "evidence": "La combinaison entre coordonnées personnelles et historique de commandes peut favoriser des campagnes de phishing particulièrement crédibles.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de faux suivis de colis"
+   },
+   {
+    "actor": "La Boutique du Volet",
+    "date": "",
+    "evidence": "La Boutique du Volet indique avoir fermé l’accès à l’origine de l’incident et sécurisé son environnement.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "system",
+    "unit": "",
+    "value": "environnement sécurisé"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Cyberattaque contre La Boutique du Volet : des données clients compromises",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "facturation"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "coordonnées personnelles et historique des commandes"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données clients"
+   }
+  ],
+  "display_summary": "Une cyberattaque expose les données et l’historique des commandes de clients de La Boutique du Volet.",
+  "fields": {},
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "environnement sécurisé"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-09-02",
+    "event": "révélation d'un incident de sécurité",
+    "evidence": "révélé par Fuites Infos, qui a obtenu un e-mail envoyé par La Boutique du Volet à ses clients",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "point d’entrée"
+   }
+  ]
+ },
+ "INC-B56C65C3FDAC": {
+  "affected": [
+   {
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base de  1,22 Go  contenant 13 446 enregistrements et concernant, selon son décompte,  2 877 personnes .",
+    "raw": "13 446 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 13446
+   },
+   {
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base de  1,22 Go  contenant 13 446 enregistrements et concernant, selon son décompte,  2 877 personnes .",
+    "raw": "2 877 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 2877
+   },
+   {
+    "evidence": "Un autre fichier contient environ  10 000 enregistrements liés à des paniers et campagnes de commandes internes .",
+    "raw": "10 000 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 10000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base de  1,22 Go  contenant 13 446 enregistrements et concernant, selon son décompte,  2 877 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "13446"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base de  1,22 Go  contenant 13 446 enregistrements et concernant, selon son décompte,  2 877 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "2877"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un autre fichier contient environ  10 000 enregistrements liés à des paniers et campagnes de commandes internes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "10000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Tisséo : près de 3 000 personnes exposées après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "3000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base de  1,22 Go  contenant 13 446 enregistrements et concernant, selon son décompte,  2 877 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "1.22"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom et prénom ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse e-mail Tisséo ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "numéros de téléphone lorsqu’ils sont renseignés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les fichiers observés documentent avant tout des  données RH et organisationnelles .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données RH"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des données de commandes et de fournisseurs également diffusées",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données revendiquée chez Tisséo : près de 2 900 personnes potentiellement concernées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "2900"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "données RH"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "Près de 3 000 personnes exposées après une cyberattaque ciblant Tisséo.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base de  1,22 Go  contenant 13 446 enregistrements et concernant, selon son décompte,  2 877 personnes .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "1,22 Go"
+   },
+   "fine_location": {
+    "evidence": "le réseau de transports en commun de l’agglomération toulousaine",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "Toulouse"
+   },
+   "impact": {
+    "evidence": "la fuite permet néanmoins d’établir l’exposition d’un ensemble conséquent de données internes concernant les agents, l’organisation et certains processus d’achat de Tisséo.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Fuite de données internes concernant des agents et l'organisation de Tisséo."
+   },
+   "threat_actor": {
+    "evidence": "ChimeraZ  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "ChimeraZ a publié les données le  3 septembre 2026 , mais ne précise pas le point d’entrée utilisé pour les obtenir.",
+    "evidence": "ChimeraZ a publié les données le  3 septembre 2026 , mais ne précise pas le point d’entrée utilisé pour les obtenir.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated"
+   },
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant Tisseo, le réseau de transports en commun de Toulouse, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant Tisseo, le réseau de transports en commun de Toulouse, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-B7DBF665E661": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données revendiquée à la Chambre de Métiers et de l’Artisanat d’Occitanie : plus de 1 000 personnes potentiellement concernées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "1000"
+   }
+  ],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {},
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant le domaine crma-occitanie.fr, associé à la Chambre de Métiers et de l’Artisanat en Occitanie, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant le domaine crma-occitanie.fr, associé à la Chambre de Métiers et de l’Artisanat en Occitanie, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -3961,6 +6042,381 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-CE9040DC18AB": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les éléments recueillis par Cyberattaque.org permettent d’identifier ce prestataire comme étant  Shipup , société spécialisée dans l’expérience post-achat et le suivi des commandes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, adresses e-mail et numéros de téléphone concernés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, adresses e-mail et numéros de téléphone concernés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "le  prénom  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une nouvelle conséquence de la faille critique de Metabase",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "system",
+    "unit": "",
+    "value": "Metabase"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Micromania : ses données clients exposées après une cyberattaque chez Shipup",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "une partie de leurs données personnelles a pu être consultée lors d’une cyberattaque.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "données personnelles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "des accès non autorisés auraient été possibles entre le 31 juillet et le 17 août 2026 , à la suite de l’exploitation d’une faille de sécurité affectant un logiciel tiers.",
+    "scope": "entre le 31 juillet et le 17 août 2026",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "initial_access",
+    "unit": "",
+    "value": "faille de sécurité affectant un logiciel tiers"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "D’après Micromania, les informations susceptibles d’avoir été accessibles sont directement liées au suivi des commandes. Elles comprennent notamment : le nom ; le prénom ; l’adresse e-mail ; le numéro de téléphone.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms, adresses e-mail, numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’enseigne précise qu’aucun mot de passe ni aucune donnée bancaire ou de paiement ne sont concernés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "data_type",
+    "unit": "",
+    "value": "mot de passe, données bancaires ou de paiement"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "dont la CVE-2026-72898.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "CVE-2026-72898"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Cette plateforme open source d’analyse et de visualisation de données a été affectée par plusieurs vulnérabilités critiques, dont la CVE-2026-72898.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "attack_action",
+    "unit": "",
+    "value": "exploitation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les versions vulnérables peuvent notamment permettre une atteinte à la confidentialité des données.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "atteinte à la confidentialité des données"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les éléments recueillis par Cyberattaque.org permettent d’identifier ce prestataire comme étant Shipup.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "actor",
+    "unit": "",
+    "value": "Shipup"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Micromania appelle principalement ses clients à se méfier des tentatives de phishing par e-mail ou SMS.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de tentatives de phishing"
+   },
+   {
+    "evidence": "Les éléments recueillis par Cyberattaque.org permettent d’identifier ce prestataire comme étant  Shipup , société spécialisée dans l’expérience post-achat et le suivi des commandes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "third_party",
+    "value": "prestataire"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "données clients"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Micromania confirme une fuite de données personnelles de ses clients via son prestataire Shipup.",
+  "fields": {
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "atteinte à la confidentialité des données"
+   },
+   "initial_access": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "faille de sécurité affectant un logiciel tiers"
+   },
+   "third_party": {
+    "evidence": "les éléments recueillis par Cyberattaque.org permettent d’identifier ce prestataire comme étant Shipup.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "Shipup"
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Shipup"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Metabase"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-08-17",
+    "event": "fin accès non autorisés",
+    "evidence": "des accès non autorisés auraient été possibles entre le 31 juillet et le 17 août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "publication de correctifs par Metabase",
+    "evidence": "Les premiers correctifs ont été publiés par Metabase à partir du 6 août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-07-31",
+    "event": "début accès non autorisés",
+    "evidence": "des accès non autorisés auraient été possibles entre le 31 juillet et le 17 août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "CVE-2026-72898"
+   }
+  ]
+ },
  "INC-CFAAEC3E334A": {
   "affected": [],
   "claims": [
@@ -4725,6 +7181,221 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "hypothesis"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-DF5C519783E8": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ville de Libercourt : 817 Go de données revendiqués après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "817.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Pièces d’identité, procès-verbaux et bulletins de paie",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "pièces d'identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La présence de pièces d’identité et de documents RH augmente fortement les risques associés à cette attaque.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données RH"
+   },
+   {
+    "actor": "Kairos",
+    "date": "",
+    "evidence": "La Ville de Libercourt, dans le Pas-de-Calais, est la nouvelle victime revendiquée du groupe de ransomware Kairos.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "Kairos"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les cybercriminels affirment avoir exfiltré 817 Go de données appartenant à la commune.",
+    "scope": "données",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "817"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une telle combinaison peut faciliter des tentatives d’usurpation d’identité, de phishing ciblé ou de fraude.",
+    "scope": "risques associés",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "usurpation d’identité, phishing ciblé ou fraude"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La présence de pièces d’identité et de documents RH augmente fortement les risques associés à cette attaque.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "documents sensibles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’étendue réelle de l’exfiltration et le nombre de personnes concernées devront être précisés à mesure que de nouveaux éléments seront disponibles.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "attack_action",
+    "unit": "",
+    "value": "exfiltration"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "données RH"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "documents sensibles"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "La Ville de Libercourt victime d'une cyberattaque revendiquée par le groupe Kairos, avec 817 Go de données menacées de publication.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Ville de Libercourt : 817 Go de données revendiqués après une cyberattaque",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "817 Go"
+   },
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-09-02"
+   },
+   "fine_location": {
+    "evidence": "Libercourt est une commune du Pas-de-Calais.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Libercourt, Pas-de-Calais"
+   },
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "usurpation d’identité, phishing ciblé ou fraude"
+   },
+   "initial_access": {
+    "evidence": "Une telle combinaison peut faciliter des tentatives d’ usurpation d’identité, de phishing ciblé ou de fraude , notamment en permettant aux attaquants de construire des messages particulièrement crédibles en se faisant passer pour un élu, un agent municipal ou un service administratif.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "phishing"
+   },
+   "threat_actor": {
+    "evidence": "kairos",
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE",
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "kairos"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-02",
+    "event": "La collectivité a été ajoutée le  2 septembre 2026  au site de fuite du groupe, avec un compte à rebours de plusieurs jours avant une potentielle diffusion plus large des données.",
+    "evidence": "La collectivité a été ajoutée le  2 septembre 2026  au site de fuite du groupe, avec un compte à rebours de plusieurs jours avant une potentielle diffusion plus large des données.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
    }
   ],
   "version": 3,
