@@ -1,6 +1,282 @@
 [
  {
   "basis": "PUBLICATION",
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-F8485FB8B618",
+  "items": 1,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Collège Saint-Michel",
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données au Collège Saint-Michel révélant des informations sur 1 836 personnes.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-45561E350283",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Clinique de Vontes",
+  "sector": "Santé",
+  "sector_status": {
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données affectant 4 111 personnes revendiquer par le hacker ChimeraZ au sein du groupe INICEA.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4",
+   "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-3E1B5FCCAEDF",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Préférence Formations",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données de plus de 5 200 personnes touchées chez Préférence Formations.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse",
+   "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-2C5CEAE9E3AC",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Association des maires de France",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de 114 000 lignes de données personnelles de l'Association des maires de France après une cyberattaque.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p",
+   "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-F8CDDC2DD3B7",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "ZeroGaspi",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base de 80 000 clients de ZeroGaspi est en vente après une cyberattaque revendiquée par le hacker ksye.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4",
+   "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-E39201703225",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Reso",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Réso victime d'une fuite massive de données, 675 Go et 530 000 fichiers récupérés par le hacker caustic.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q",
+   "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
   "date": "2026-09-03",
   "first_seen": "2026-09-03T15:47:31.532902+04:00",
   "id": "INC-B7DBF665E661",
@@ -135,6 +411,55 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-693ABEB9BF8A",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Delicity",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Delicity a confirmé une fuite de données personnelles survenue entre le 9 et le 24 août 2026.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu",
+   "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-03",
   "first_seen": "2026-09-03T15:47:31.532902+04:00",
   "id": "INC-619638DA1C52",
   "items": 1,
@@ -216,6 +541,55 @@
   "urls": [
    "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7",
    "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-47CD44FA27B9",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "ColisExpat",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ColisExpat a subi une cyberattaque exposant des pièces d'identité et des données de compte de ses clients.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd",
+   "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
   ]
  },
  {

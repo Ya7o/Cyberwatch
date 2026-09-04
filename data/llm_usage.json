@@ -2,20 +2,20 @@
   "by_task": {
     "cyberattaque_semantic": {
       "cached_input_tokens": 0,
-      "calls_attempted": 9,
+      "calls_attempted": 8,
       "calls_budget_blocked": 0,
-      "calls_failed": 1,
+      "calls_failed": 0,
       "calls_succeeded": 8,
-      "duration_seconds": 106.30558394899995,
-      "estimated_cost_usd": 0.0055435499999999995,
-      "input_tokens": 10933,
+      "duration_seconds": 42.84425889599993,
+      "estimated_cost_usd": 0.004636199999999999,
+      "input_tokens": 10728,
       "last_model": "gpt-4o-mini",
       "max_calls": 250,
       "max_cost_usd": 0.75,
-      "output_tokens": 6506,
+      "output_tokens": 5045,
       "reasoning_tokens": 0,
       "retries": 0,
-      "total_tokens": 17439
+      "total_tokens": 15773
     },
     "dedup": {
       "cached_input_tokens": 0,
@@ -23,16 +23,16 @@
       "calls_budget_blocked": 0,
       "calls_failed": 0,
       "calls_succeeded": 1,
-      "duration_seconds": 12.424561008000012,
-      "estimated_cost_usd": 0.00231375,
-      "input_tokens": 8461,
+      "duration_seconds": 8.88681365299999,
+      "estimated_cost_usd": 0.00189975,
+      "input_tokens": 7273,
       "last_model": "gpt-4o-mini",
       "max_calls": 200,
       "max_cost_usd": 0.5,
-      "output_tokens": 1741,
+      "output_tokens": 1348,
       "reasoning_tokens": 0,
       "retries": 0,
-      "total_tokens": 10202
+      "total_tokens": 8621
     },
     "source_facts": {
       "cached_input_tokens": 0,
@@ -40,31 +40,31 @@
       "calls_budget_blocked": 0,
       "calls_failed": 0,
       "calls_succeeded": 30,
-      "duration_seconds": 122.55785498799997,
-      "estimated_cost_usd": 0.014643749999999999,
-      "input_tokens": 64781,
+      "duration_seconds": 79.67147267499996,
+      "estimated_cost_usd": 0.013646549999999997,
+      "input_tokens": 62045,
       "last_model": "gpt-4o-mini",
       "max_calls": 250,
       "max_cost_usd": 0.75,
-      "output_tokens": 8211,
+      "output_tokens": 7233,
       "reasoning_tokens": 0,
       "retries": 0,
-      "total_tokens": 72992
+      "total_tokens": 69278
     }
   },
   "cached_input_tokens": 0,
-  "calls_attempted": 40,
+  "calls_attempted": 39,
   "calls_budget_blocked": 0,
-  "calls_failed": 1,
+  "calls_failed": 0,
   "calls_succeeded": 39,
-  "duration_seconds": 241.28799994499994,
-  "estimated_cost_usd": 0.022501050000000005,
+  "duration_seconds": 131.40254522399988,
+  "estimated_cost_usd": 0.020182499999999992,
   "http_429": 0,
   "http_5xx": 0,
-  "input_tokens": 84175,
+  "input_tokens": 80046,
   "max_calls": 3000,
   "max_cost_usd": 0.03,
-  "output_tokens": 16458,
+  "output_tokens": 13626,
   "reasoning_tokens": 0,
   "retries": 0,
   "routing": {
@@ -77,6 +77,6 @@
       "dedup"
     ]
   },
-  "timeouts": 1,
-  "total_tokens": 100633
+  "timeouts": 0,
+  "total_tokens": 93672
 }

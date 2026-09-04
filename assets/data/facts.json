@@ -786,6 +786,335 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-2C5CEAE9E3AC": {
+  "affected": [
+   {
+    "evidence": "Association des maires de France : 114 000 lignes en fuite après une cyberattaque",
+    "raw": "114 000 lignes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 114000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "114 000 entrées ne signifient pas nécessairement 114 000 victimes uniques",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "114000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Plus préoccupant encore :  une des tables contient des identifiants associés à des mots de passe enregistrés en clair .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Plus préoccupant encore :  une des tables contient des identifiants associés à des mots de passe enregistrés en clair .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail professionnelles ou personnelles ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "Alduin",
+    "date": "2026-09-04",
+    "evidence": "Alduin affirme avoir exploité une injection SQL sur le site amf.asso.fr",
+    "scope": "site amf.asso.fr",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "injection SQL"
+   },
+   {
+    "actor": "Alduin",
+    "date": "2026-09-04",
+    "evidence": "la publication est annoncée sous le chiffre de 114 000 entrées",
+    "scope": "fuite de données",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "114000"
+   },
+   {
+    "actor": "Alduin",
+    "date": "2026-09-04",
+    "evidence": "une des tables contient des identifiants associés à des mots de passe enregistrés en clair",
+    "scope": "une table",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe en clair"
+   },
+   {
+    "actor": "Alduin",
+    "date": "2026-09-04",
+    "evidence": "cette base offre un contexte particulièrement favorable aux attaques ciblées.",
+    "scope": "données exposées",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risque d'attaque ciblée"
+   },
+   {
+    "actor": "Alduin",
+    "date": "2026-09-04",
+    "evidence": "La fuite a été rendue publique dans la matinée du 4 septembre 2026.",
+    "scope": "AMF",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "publication",
+    "unit": "",
+    "value": "fuite publiée"
+   },
+   {
+    "actor": "AMF",
+    "date": "2026-09-04",
+    "evidence": "À ce stade, l’AMF n’a pas encore communiqué publiquement sur cette revendication.",
+    "scope": "AMF",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "statement",
+    "unit": "",
+    "value": "absence de confirmation officielle"
+   },
+   {
+    "evidence": "Alduin affirme avoir exploité une injection SQL sur le site amf.asso.fr.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "Alduin"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "profils des maires, élus, directeurs généraux des services"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "identifiants associés à des mots de passe enregistrés en clair"
+   }
+  ],
+  "display_summary": "Fuite de 114 000 lignes de données personnelles de l'Association des maires de France après une cyberattaque.",
+  "fields": {
+   "fine_location": {
+    "evidence": "sur le site amf.asso.fr.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "amf.asso.fr"
+   },
+   "impact": {
+    "evidence": "une des tables contient des identifiants associés à des mots de passe enregistrés en clair.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "exposition de mots de passe en clair"
+   },
+   "initial_access": {
+    "evidence": "Le hacker Alduin affirme avoir exploité une injection SQL sur le site amf.asso.fr avant d’extraire plusieurs tables qu’il jugeait intéressantes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "vulnerability_exploitation"
+   },
+   "threat_actor": {
+    "evidence": "Alduin  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Alduin"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-04",
+    "event": "Nous vous révélons en exclusivité que l’ Association des maires de France et des présidents d’intercommunalité (AMF)  est visée par une importante fuite de données publiée ce  4 septembre 2026 .",
+    "evidence": "Nous vous révélons en exclusivité que l’ Association des maires de France et des présidents d’intercommunalité (AMF)  est visée par une importante fuite de données publiée ce  4 septembre 2026 .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-04",
+    "event": "fuite de données",
+    "evidence": "La fuite a été rendue publique dans la matinée du 4 septembre 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-09-04",
+    "event": "exploit d'une injection SQL",
+    "evidence": "Alduin affirme avoir exploité une injection SQL sur le site amf.asso.fr.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-04",
+    "event": "confirmation de données exposées",
+    "evidence": "les fichiers diffusés permettent néanmoins de constater la présence de nombreuses données professionnelles.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-09-04",
+    "event": "Une importante fuite de données visant l’Association des maires de France et des présidents d’intercommunalité (AMF) a été revendiquée le 4 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une importante fuite de données visant l’Association des maires de France et des présidents d’intercommunalité (AMF) a été revendiquée le 4 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-39643434BF76": {
   "affected": [],
   "claims": [
@@ -996,6 +1325,885 @@
   },
   "systems": [],
   "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-3E1B5FCCAEDF": {
+  "affected": [
+   {
+    "evidence": "5 381 lignes correspondant à environ 5 265 personnes.",
+    "raw": "5 381 lignes",
+    "scope": "Préférence Formations",
+    "semantic": "preference formations",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 5381
+   },
+   {
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une base contenant  5 381 lignes  correspondant à environ  5 265 personnes .",
+    "raw": "5 265 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 5265
+   },
+   {
+    "evidence": "Préférence Formations : les données de plus de 5 200 personnes diffusées après une cyberattaque",
+    "raw": "5 200 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 5200
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une base contenant  5 381 lignes  correspondant à environ  5 265 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "5381"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une base contenant  5 381 lignes  correspondant à environ  5 265 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "5265"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Préférence Formations : les données de plus de 5 200 personnes diffusées après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "5200"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le fichier publié représente environ  375 Ko au format CSV .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "375.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et localisation dans les fichiers",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "identifiant interne.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "...revendiquée par le hacker ChimeraZ.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "ChimeraZ"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "5 381 lignes pour 5 265 personnes annoncées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "5381"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "...peut être utilisée pour préparer des campagnes de phishing crédibles.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de phishing ciblé"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les enregistrements observés contiennent notamment : noms et prénoms ; adresses e-mail ; ville ; pays ; fuseau horaire associé au profil ; identifiant interne.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms, e-mails, localisation"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "Fuite de données de plus de 5 200 personnes touchées chez Préférence Formations.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le fichier publié représente environ  375 Ko au format CSV .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "375 Ko"
+   },
+   "impact": {
+    "evidence": "l'exposition d'un ensemble structuré de plus de 5 200 profils , désormais accessibles à des tiers.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Les données de plus de 5 200 personnes sont désormais accessibles à des tiers."
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant Préférence Formations, plateforme française dédiée à la formation professionnelle, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant Préférence Formations, plateforme française dédiée à la formation professionnelle, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-45561E350283": {
+  "affected": [
+   {
+    "evidence": "Clinique de Vontes (INICEA) : 4 111 personnes exposées dans une fuite de données",
+    "raw": "4 111 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 4111
+   },
+   {
+    "evidence": "Le fichier publié contient 4 111 enregistrements.",
+    "raw": "4 111 enregistrements",
+    "scope": "base de données",
+    "semantic": "base de donnees",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 4111
+   },
+   {
+    "evidence": "Clinique de Vontes : les données de plus de 4 100 personnes publiées...",
+    "raw": "4 100 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 4100
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Clinique de Vontes (INICEA) : 4 111 personnes exposées dans une fuite de données",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "4111"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le fichier publié contient  4 111 enregistrements  et représente environ  2,53 Mo au format JSON .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "2.53"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom, prénom ou libellé du compte ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse e-mail professionnelle  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "numéros de téléphone lorsqu’ils sont renseignés ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "Les éléments observés correspondent avant tout à des profils utilisateurs et à des informations d’organisation interne",
+    "scope": "fichier publié",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "profils utilisateurs et informations d’organisation interne"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "l’établissement a pu servir de point d’entrée à l’attaquant vers un outil ou une application interne au groupe",
+    "scope": "Clinique de Vontes",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "initial_access",
+    "unit": "",
+    "value": "point d’entrée à l’attaquant"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Clinique de Vontes : les données de plus de 4 100 personnes publiées...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "4100"
+   },
+   {
+    "evidence": "Le groupe INICEA est concerné par une fuite de données revendiquée par le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "INICEA"
+   },
+   {
+    "evidence": "revendiquée par le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "ChimeraZ"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "profils utilisateurs et informations d’organisation interne"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Fuite de données affectant 4 111 personnes revendiquer par le hacker ChimeraZ au sein du groupe INICEA.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le fichier publié contient  4 111 enregistrements  et représente environ  2,53 Mo au format JSON .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "2,53 Mo"
+   },
+   "fine_location": {
+    "evidence": "la Clinique de Vontes, située à Esvres-sur-Indre",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Esvres-sur-Indre"
+   },
+   "impact": {
+    "evidence": "La publication établit néanmoins l’exposition d’un ensemble structuré de plus de 4 000 profils et informations organisationnelles internes à INICEA.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Exposition de profils utilisateurs et informations d'organisation interne."
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base interne du groupe INICEA"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "date non spécifiée",
+    "event": "Fuite de données revendiquée par ChimeraZ",
+    "evidence": "groupe INICEA est concerné par une fuite de données revendiquée par le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "date non spécifiée",
+    "event": "Accès aux données",
+    "evidence": "la fuite dépasse le seul périmètre de la Clinique de Vontes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant la Clinique de Vontes, établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant la Clinique de Vontes, établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-47CD44FA27B9": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "ColisExpat : une cyberattaque expose les pièces d’identité et données de compte",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "pièces d'identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom et prénom  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse e-mail ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse postale ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "mot de passe  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un nouvel environnement sécurisé avec de nouveaux identifiants a été préparé.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "Landmark Global France",
+    "date": "3 septembre 2026",
+    "evidence": "Landmark Global France explique que certaines données personnelles conservées sur ColisExpat ont probablement été consultées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "actor",
+    "unit": "",
+    "value": "Landmark Global France"
+   },
+   {
+    "actor": "",
+    "date": "3 septembre 2026",
+    "evidence": "Les données de compte potentiellement concernées peuvent également comprendre : nom d’utilisateur, nom et prénom, adresse e-mail, adresse postale, mot de passe.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "données de compte"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La présence potentielle de copies de documents d’identité fait partie des principaux points d’inquiétude.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "impact",
+    "unit": "",
+    "value": "usurpation d'identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Landmark Global France alerte également sur les risques de phishing et d’ingénierie sociale.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "risques de phishing et d'ingénierie sociale"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Landmark Global France confirme l'accès non autorisé à l'environnement ColisExpat.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "initial_access",
+    "unit": "",
+    "value": "accès non autorisé"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La société annonce également une enquête interne et externe.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "statement",
+    "unit": "",
+    "value": "enquête interne et externe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Tous les clients ColisExpat devront réinitialiser leur mot de passe lors de leur première connexion.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "remediation",
+    "unit": "",
+    "value": "changement de mot de passe"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "données de compte"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "ColisExpat a subi une cyberattaque exposant des pièces d'identité et des données de compte de ses clients.",
+  "fields": {
+   "impact": {
+    "evidence": "L’environnement compromis a été mis hors ligne",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "L’environnement compromis a été mis hors ligne"
+   },
+   "initial_access": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "accès non autorisé"
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Landmark Global France"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "notification aux clients",
+    "evidence": "Dans une notification datée du 3 septembre 2026, Landmark Global France explique que certaines données personnelles conservées sur ColisExpat ont probablement été consultées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-08-24",
+    "event": "découverte de l'accès non autorisé",
+    "evidence": "L’entreprise indique avoir découvert le 24 août 2026 qu’un tiers non autorisé avait obtenu un accès à l’environnement de la plateforme.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -1467,6 +2675,48 @@
     "type": "data_type",
     "unit": "",
     "value": "noms et prénoms"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "Le fichier publié représente environ 60 Ko au format CSV.",
+    "scope": "CMA Occitanie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "60"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "Les enregistrements observés contiennent notamment des noms et prénoms, adresses e-mail professionnelles, département de rattachement ainsi que différents champs techniques associés aux profils.",
+    "scope": "CMA Occitanie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms, e-mails, départements"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "la combinaison entre identité, adresse professionnelle et implantation géographique peut permettre de préparer des campagnes de phishing ciblées.",
+    "scope": "CMA Occitanie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "phishing ciblé"
    }
   ],
   "data_types": [
@@ -1475,7 +2725,7 @@
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "unknown",
+    "status": "claimed",
     "value": "adresses e-mail"
    },
    {
@@ -2542,6 +3792,420 @@
   ],
   "version": 3,
   "vulnerabilities": []
+ },
+ "INC-693ABEB9BF8A": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants, confirme une fuite de données personnelles survenue…",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Coordonnées, commandes et mots de passe hachés exposés",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "nom et prénom  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse e-mail et numéro de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresse e-mail et numéro de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Après la découverte de l’intrusion, Delicity indique avoir appliqué le correctif Metabase, supprimé les accès créés par l’attaquant,  fait tourner ses identifiants et clés d’accès  et neutralisé les liens permettant d’accéder à certains documents exposés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’incident trouve son origine dans la vulnérabilité critique  CVE-2026-72898  affectant Metabase.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "system",
+    "unit": "",
+    "value": "Metabase"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants, confirme une fuite de données personnelles survenue…",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "type": "dataset",
+    "unit": "",
+    "value": "réservations"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "La plateforme revendique aujourd’hui plusieurs milliers de restaurants partenaires.",
+    "scope": "Delicity",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "affected_count",
+    "unit": "",
+    "value": "plusieurs milliers"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "plusieurs dizaines de milliers de livreurs dans son réseau.",
+    "scope": "Delicity",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "affected_count",
+    "unit": "",
+    "value": "plusieurs dizaines de milliers"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "Coordonnées, commandes et mots de passe hachés exposés.",
+    "scope": "fuite de données",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "coordonnées, commandes et mots de passe hachés"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants, confirme une fuite de données personnelles survenue...",
+    "scope": "Delicity",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "impact",
+    "unit": "",
+    "value": "fuite de données personnelles"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "L’incident trouve son origine dans la vulnérabilité critique CVE-2026-72898 affectant Metabase.",
+    "scope": "intrusion",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "CVE-2026-72898"
+   },
+   {
+    "actor": "un tiers non autorisé",
+    "date": "2026-08",
+    "evidence": "un tiers non autorisé a pu accéder à certaines informations détenues par l’entreprise.",
+    "scope": "intrusion",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "accès non autorisé"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "L’entreprise a également réinitialisé tous les mots de passe et invalidé les sessions actives.",
+    "scope": "Delicity",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "remediation",
+    "unit": "",
+    "value": "réinitialisation de tous les mots de passe"
+   },
+   {
+    "actor": "attaquant",
+    "date": "2026-08",
+    "evidence": "Delicity indique que l’accès a débuté le 9 août.",
+    "scope": "accès",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "initial_access",
+    "unit": "",
+    "value": "09 août 2026"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "Delicity indique avoir notifié la CNIL.",
+    "scope": "Delicity",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "publication",
+    "unit": "",
+    "value": "notification à la CNIL"
+   },
+   {
+    "actor": "Delicity",
+    "date": "2026-08",
+    "evidence": "Delicity précise qu’aucun mot de passe en clair, aucun numéro complet de carte bancaire et aucun cryptogramme ne sont concernés.",
+    "scope": "fuite de données",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "data_type",
+    "unit": "",
+    "value": "aucun mot de passe en clair, numéro complet de carte bancaire et cryptogramme"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "réservations"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Données des clients, restaurateurs et livreurs"
+   }
+  ],
+  "display_summary": "Delicity a confirmé une fuite de données personnelles survenue entre le 9 et le 24 août 2026.",
+  "fields": {
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "fuite de données personnelles"
+   },
+   "threat_actor": {
+    "evidence": "plateforme revendique",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "plateforme"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Metabase"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-08-09",
+    "event": "début de l'accès non autorisé",
+    "evidence": "Delicity indique que l’accès a débuté le 9 août.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "date": "2026-08-24",
+    "event": "action de sécurisation",
+    "evidence": "Une première action de sécurisation aurait été engagée deux minutes plus tard.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "date": "2026-08-24",
+    "event": "**Delicity, plateforme française de commande, réservation et livraison de repas mettant en relation consommateurs, restaurants et livreurs, confirme avoir subi une cyberattaque ayant permis à un tiers non autorisé d’accéder à des données pe",
+    "evidence": "**Delicity, plateforme française de commande, réservation et livraison de repas mettant en relation consommateurs, restaurants et livreurs, confirme avoir subi une cyberattaque ayant permis à un tiers non autorisé d’accéder à des données personnelles entre le 9 et le 24 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "value": "CVE-2026-72898"
+   }
+  ]
  },
  "INC-6BD2DE3819F9": {
   "affected": [
@@ -7401,6 +9065,347 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-E39201703225": {
+  "affected": [
+   {
+    "evidence": "Le volume annoncé représenterait près de  43 000 dossiers et 530 000 fichiers .",
+    "raw": "43 000 dossiers",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 43000
+   },
+   {
+    "evidence": "Le volume annoncé représenterait près de  43 000 dossiers et 530 000 fichiers .",
+    "raw": "530 000 fichiers",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 530000
+   },
+   {
+    "evidence": "Réso : plus de 500 000 fichiers internes dans une fuite massive après une cyberattaque",
+    "raw": "500 000 fichiers",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 500000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le volume annoncé représenterait près de  43 000 dossiers et 530 000 fichiers .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "530000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Réso : plus de 500 000 fichiers internes dans une fuite massive après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "500000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le volume annoncé représenterait près de  43 000 dossiers et 530 000 fichiers .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "43000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  caustic  affirme avoir pénétré son réseau et récupéré environ  675 Go de données internes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "675.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les fichiers observés confirment la présence de nombreux éléments directement liés à l’activité de Réso :  dossiers clients, dossiers fournisseurs, devis au format PDF, commandes clients, informations techniques, tarifs et plans de projets .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Caustic affirme par ailleurs disposer de factures, dossiers clients, échanges privés et éléments liés à la stratégie commerciale.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "factures"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Fraude au fournisseur et faux changements de RIB parmi les risques",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   },
+   {
+    "actor": "caustic",
+    "date": "",
+    "evidence": "Le hacker caustic affirme avoir pénétré son réseau et récupéré environ 675 Go de données internes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "caustic"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker caustic affirme avoir pénétré son réseau et récupéré environ 675 Go de données internes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "675"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "l’analyse montre également une organisation par clients ou sociétés, avec de nombreux répertoires portant le nom d’entreprises et de professionnels du bâtiment.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "données commerciales et techniques"
+   },
+   {
+    "actor": "caustic",
+    "date": "",
+    "evidence": "Caustic affirme avoir gardé l’intrusion discrète avant de la rendre publique ce 3 septembre 2026.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "publication",
+    "unit": "",
+    "value": "3 septembre 2026"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une telle arborescence peut fournir énormément de contexte pour préparer des attaques ciblées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "fraude au fournisseur"
+   },
+   {
+    "evidence": "Le hacker caustic affirme avoir pénétré son réseau.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "hack"
+   },
+   {
+    "evidence": "Fraude au fournisseur et faux changements de RIB parmi les risques",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "third_party",
+    "value": "fournisseur"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "factures"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "données commerciales et techniques"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Réso victime d'une fuite massive de données, 675 Go et 530 000 fichiers récupérés par le hacker caustic.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le hacker  caustic  affirme avoir pénétré son réseau et récupéré environ  675 Go de données internes .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "675 Go"
+   },
+   "impact": {
+    "evidence": "caustic affirme avoir pénétré le réseau de l’entreprise et exfiltré environ 675 Go de données internes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Exfiltration de 675 Go de données internes et 530 000 fichiers revendiqués."
+   },
+   "third_party": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "fournisseur"
+   },
+   "threat_actor": {
+    "evidence": "caustic  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "caustic"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Rendez publique de l'intrusion par Caustic",
+    "evidence": "Caustic affirme avoir gardé l’intrusion discrète avant de la rendre publique ce 3 septembre 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données massive visant Réso, entreprise française spécialisée dans les solutions d’aménagement et de second œuvre du bâtiment, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données massive visant Réso, entreprise française spécialisée dans les solutions d’aménagement et de second œuvre du bâtiment, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-E39645DF5E4E": {
   "affected": [],
   "claims": [
@@ -7711,6 +9716,416 @@
     "date": "2026-08-26",
     "event": "Dans le cas d’Ultra Premium Direct, l’entreprise indique avoir  coupé l’accès du prestataire dès le 24 août , puis notifié la violation à la  CNIL le 26 août 2026 .",
     "evidence": "Dans le cas d’Ultra Premium Direct, l’entreprise indique avoir  coupé l’accès du prestataire dès le 24 août , puis notifié la violation à la  CNIL le 26 août 2026 .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-F8485FB8B618": {
+  "affected": [
+   {
+    "evidence": "L’acteur, utilisant le pseudonyme **ChimeraZ**, revendique **1 836 personnes** pour un total de **1 838 lignes**.",
+    "raw": "1 838 lignes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 1838
+   },
+   {
+    "evidence": "L’acteur, utilisant le pseudonyme **ChimeraZ**, revendique **1 836 personnes** pour un total de **1 838 lignes**.",
+    "raw": "1 836 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 1836
+   },
+   {
+    "evidence": "# Fuite de données au Collège Saint-Michel : les informations de plus de 1 800 personnes publiées",
+    "raw": "1 800 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 1800
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’acteur, utilisant le pseudonyme **ChimeraZ**, revendique **1 836 personnes** pour un total de **1 838 lignes**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "1838"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’acteur, utilisant le pseudonyme **ChimeraZ**, revendique **1 836 personnes** pour un total de **1 838 lignes**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "1836"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données au Collège Saint-Michel : les informations de plus de 1 800 personnes publiées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "1800"
+   }
+  ],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "Fuite de données au Collège Saint-Michel révélant des informations sur 1 836 personnes.",
+  "fields": {
+   "impact": {
+    "evidence": "L’acteur, utilisant le pseudonyme ChimeraZ, revendique 1 836 personnes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Les informations de 1 836 personnes ont été publiées."
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant la plateforme Moodle du Collège Saint-Michel en Belgique a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant la plateforme Moodle du Collège Saint-Michel en Belgique a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-F8CDDC2DD3B7": {
+  "affected": [
+   {
+    "evidence": "ZeroGaspi : une base de 80 000 clients en vente après une cyberattaque",
+    "raw": "80 000 clients",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "clients",
+    "value": 80000
+   },
+   {
+    "evidence": "L’auteur évoque environ  80 000 enregistrements .",
+    "raw": "80 000 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 80000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ce chiffre reste une revendication et ne permet pas d’établir à ce stade qu’il correspond à 80 000 personnes uniques.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "negated",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "80000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données présentées comme provenant de sa clientèle concernent aussi bien des particuliers que des commandes associées à des commerces ou professionnels.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Adresses complètes, téléphones et montants de commandes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Adresses complètes, téléphones et montants de commandes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "montants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses postales complètes ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "2026-09-01",
+    "evidence": "le hacker ksye affirme avoir récupéré le  1er septembre 2026  une partie de la base clients du site",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "ksye"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’auteur évoque environ  80 000 enregistrements. Ce chiffre reste une revendication",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "80000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données observées comprennent notamment : noms et prénoms  ; adresses e-mail ; numéros de téléphone mobile  ; adresses postales complètes ; noms de commerces ou de destinataires lorsqu’ils sont renseignés ; montants associés aux commandes.",
+    "scope": "échantillons diffusés avec la mise en vente",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms, adresses e-mail, numéros de téléphone mobile, adresses postales complètes, noms de commerces ou de destinataires, montants associés aux command"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La combinaison entre  identité, adresse, téléphone et montant de commande  peut permettre de construire des campagnes de phishing particulièrement crédibles.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "campagnes de phishing"
+   },
+   {
+    "actor": "ZeroGaspi",
+    "date": "",
+    "evidence": "À ce stade, ZeroGaspi n’a pas confirmé publiquement cette revendication.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "statement",
+    "unit": "",
+    "value": "ZeroGaspi n’a pas confirmé publiquement cette revendication"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "montants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "Une base de 80 000 clients de ZeroGaspi est en vente après une cyberattaque revendiquée par le hacker ksye.",
+  "fields": {
+   "impact": {
+    "evidence": "Un pirate affirme vendre une **base contenant les informations de 80 000 clients**.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Des informations de 80 000 clients mises en vente."
+   },
+   "threat_actor": {
+    "evidence": "ksye affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "ksye"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-01",
+    "event": "Récupération de la base clients",
+    "evidence": "le hacker ksye affirme avoir récupéré le  1er septembre 2026  une partie de la base clients du site",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-01",
+    "event": "Proposition de vente des données",
+    "evidence": "La base étant actuellement  proposée à la vente.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
