@@ -1,6 +1,45 @@
 [
  {
   "basis": "PUBLICATION",
+  "date": "2026-09-05",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "id": "INC-B44C794AB35B",
+  "items": 1,
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
+  "location": "Inconnu",
+  "org": "Répar’stores",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Répar’stores : les données clients exposées après une cyberattaque",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
   "date": "2026-09-04",
   "first_seen": "2026-09-04T15:48:57.184028+04:00",
   "id": "INC-F8485FB8B618",
@@ -39,9 +78,45 @@
   "basis": "PUBLICATION",
   "date": "2026-09-04",
   "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "id": "INC-A43B17CE9F7C",
+  "items": 1,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Clinique de Vontes",
+  "sector": "Santé",
+  "sector_status": {
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
   "id": "INC-45561E350283",
   "items": 2,
-  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
   "location": "France métropolitaine",
   "org": "Clinique de Vontes",
   "sector": "Santé",
@@ -67,7 +142,7 @@
    },
    {
     "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4"
+    "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-inicea-mtm6ww9opvv422tgg4"
    }
   ],
   "sources": [
@@ -77,7 +152,7 @@
   "summary": "Fuite de données affectant 4 111 personnes revendiquer par le hacker ChimeraZ au sein du groupe INICEA.",
   "threat": "Fuite de données",
   "urls": [
-   "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4",
+   "https://frenchbreaches.com/alertes/clinique-de-vontes-inicea-mtm6ww9opvv422tgg4",
    "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
   ]
  },
@@ -133,6 +208,55 @@
  {
   "basis": "PUBLICATION",
   "date": "2026-09-04",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "id": "INC-3AC6333A7A42",
+  "items": 2,
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
+  "location": "France métropolitaine",
+  "org": "Accent Rouge",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/accent-rouge-cyberattaque-odoo/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/accent-rouge-mtnfwe0yz31800vbok"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Accent Rouge subit une fuite massive de données avec 32 000 fiches clients divulguées.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/accent-rouge-mtnfwe0yz31800vbok",
+   "https://www.cyberattaque.org/accent-rouge-cyberattaque-odoo/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-04",
   "first_seen": "2026-09-04T15:48:57.184028+04:00",
   "id": "INC-2C5CEAE9E3AC",
   "items": 2,
@@ -172,11 +296,61 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de 114 000 lignes de données personnelles de l'Association des maires de France après une cyberattaque.",
+  "summary": "L'Association des maires de France a subi une fuite de 114 000 enregistrements après une cyberattaque.",
   "threat": "Fuite de données",
   "urls": [
    "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p",
    "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+  ]
+ },
+ {
+  "basis": "PUBLICATION",
+  "date": "2026-09-04",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "id": "INC-2690C398C621",
+  "items": 2,
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
+  "location": "France métropolitaine",
+  "org": "Storia Mundi",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "identifiants",
+   "informations de paiement"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/storia-mundi-pirate-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/storia-mundi-mtnbhl7gn987owivuep"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Storia Mundi a subi une fuite de données impliquant 17 850 profils d'utilisateurs.",
+  "threat": "Fuite de données",
+  "urls": [
+   "https://frenchbreaches.com/alertes/storia-mundi-mtnbhl7gn987owivuep",
+   "https://www.cyberattaque.org/storia-mundi-pirate-cyberattaque/"
   ]
  },
  {
