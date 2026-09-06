@@ -1536,6 +1536,368 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-36A1CF778488": {
+  "affected": [
+   {
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
+    "raw": "92 178 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 92178
+   },
+   {
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
+    "raw": "18 861 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 18861
+   },
+   {
+    "evidence": "environ 18 861 personnes.",
+    "raw": "environ 18 861 personnes",
+    "scope": "Pass Pass",
+    "semantic": "pass pass",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 18861
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "92178"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "18861"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "214.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Pass Pass : près de 19 000 usagers exposés, commandes et factures diffusées après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Pass Pass : près de 19 000 usagers exposés, commandes et factures diffusées après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "factures"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail et numéros de téléphone lorsqu’ils sont renseignés ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail et numéros de téléphone lorsqu’ils sont renseignés ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses de facturation et de livraison  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "facturation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "montants et statut des paiements ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "montants"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "base partielle de 214 Mo représentant 92 178 enregistrements.",
+    "scope": "base partielle",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "214"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les fichiers contiennent notamment des commandes, factures et coordonnées de clients.",
+    "scope": "fichiers",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "commandes, factures et coordonnées de clients"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données observées comprennent notamment : noms et prénoms ; adresses e-mail et numéros de téléphone lorsqu’ils sont renseignés ; adresses de facturation et de livraison ; références et dates de commandes;",
+    "scope": "fichiers",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "identités, adresses et historique de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un risque important de phishing autour des transports.",
+    "scope": "phishing autour des transports",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "risque de phishing"
+   },
+   {
+    "evidence": "fuite de données revendiquée par le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "ChimeraZ"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "factures"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "facturation"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "montants"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "Pass Pass expose près de 19 000 usagers après une cyberattaque revendiquée par le hacker ChimeraZ.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "214 Mo"
+   },
+   "threat_actor": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "",
+    "event": "fuite de données",
+    "evidence": "Pass Pass, le service régional de mobilité des Hauts-de-France, est visé par une importante fuite de données revendiquée par le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "",
+    "event": "exposition de données",
+    "evidence": "Les fichiers contiennent notamment des commandes, factures et coordonnées de clients.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-39643434BF76": {
   "affected": [],
   "claims": [
@@ -2040,13 +2402,13 @@
     "value": "1,6 Go"
    },
    "impact": {
-    "evidence": "Accent Rouge victime d’une fuite de données : 32 000 clients concernés.",
-    "source": "FRENCHBREACHES",
+    "evidence": "Accent Rouge : 32 000 fiches clients diffusées après un piratage de son compte Odoo",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
-    "value": "32 000 clients concernés par la fuite."
+    "status": "unknown",
+    "value": "Plus de 32 000 fiches clients et 79 000 adresses diffusées, ainsi que des informations sensibles sur les paiements."
    },
    "threat_actor": {
     "evidence": "DaOnlySpark affirme",
@@ -2468,6 +2830,124 @@
     "date": "2026-09-03",
     "event": "Une fuite de données visant Préférence Formations, plateforme française dédiée à la formation professionnelle, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
     "evidence": "Une fuite de données visant Préférence Formations, plateforme française dédiée à la formation professionnelle, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-44385EDB45C1": {
+  "affected": [
+   {
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une partie de la base de données de la plateforme, comprenant 7 880 enregistrements.",
+    "raw": "7 880 enregistrements",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 7880
+   },
+   {
+    "evidence": "# Fuite de données YouFid : les données de 7 880 personnes publiées sur un forum",
+    "raw": "7 880 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 7880
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une partie de la base de données de la plateforme, comprenant 7 880 enregistrements.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "7880"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’échantillon publié contient notamment des noms, adresses e-mail et numéros de téléphone....",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’échantillon publié contient notamment des noms, adresses e-mail et numéros de téléphone....",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "Fuite de données chez YouFid avec 7 880 enregistrements publiés sur un forum cybercriminel.",
+  "fields": {
+   "impact": {
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une partie de la base de données de la plateforme, comprenant 7 880 enregistrements.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Publication des données de 7 880 personnes sur un forum."
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "Une fuite de données visant YouFid, plateforme française de gestion de programmes de fidélité, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant YouFid, plateforme française de gestion de programmes de fidélité, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -3157,6 +3637,132 @@
     "status": "claimed"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-4E7F086AB308": {
+  "affected": [
+   {
+    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
+    "raw": "86 073 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 86073
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "86073"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données Les Curistes : plus de 86 000 personnes concernées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "86000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les informations exposées comprennent notamment des noms, adresses e-mail, numéros de téléphone, adresses IP et le contenu de messages envoyés par les utili...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les informations exposées comprennent notamment des noms, adresses e-mail, numéros de téléphone, adresses IP et le contenu de messages envoyés par les utili...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses IP"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "Fuite de données affectant Les Curistes avec plus de 86 000 personnes impliquées.",
+  "fields": {
+   "impact": {
+    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Des informations personnelles de 86 073 personnes exposées."
+   },
+   "threat_actor": {
+    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -8215,6 +8821,197 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-BD43CD916C2C": {
+  "affected": [
+   {
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
+    "raw": "92 178 enregistrements",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 92178
+   },
+   {
+    "evidence": "# Fuite de données Pass Pass : 18 861 personnes et des milliers de factures revendiquées",
+    "raw": "18 861 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 18861
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "92178"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données Pass Pass : 18 861 personnes et des milliers de factures revendiquées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "18861"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Fuite de données Pass Pass : près de 19 000 personnes concernées (avant )",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "19000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "214.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données Pass Pass : 18 861 personnes et des milliers de factures revendiquées",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "factures"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les fichiers analysés contiennent notamment des noms, adresses e-mail, adresses postales,...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les fichiers analysés contiennent notamment des noms, adresses e-mail, adresses postales,...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "factures"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "data_volume": {
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "214 Mo"
+   },
+   "threat_actor": {
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier...",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "**Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "**Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-C25397468C49": {
   "affected": [
    {
@@ -8756,6 +9553,187 @@
     "value": "compte authentifié"
    }
   ]
+ },
+ "INC-C59598DB9453": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La base publiée représente environ  275 Ko au format CSV .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "275.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les lignes observées associent un identifiant interne à une  civilité ainsi qu’au nom d’un ou plusieurs occupants , notamment lorsque le logement est enregistré au nom d’un couple.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "...un fichier contenant environ 8 000 noms de locataires.",
+    "scope": "locataires",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "",
+    "value": "8000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "...la base publiée représente environ 275 Ko au format CSV.",
+    "scope": "fichier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "275"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "...le fichier contient uniquement des noms.",
+    "scope": "fichier",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "...présenté comme provenant de l’environnement lmpt-coop.fr.",
+    "scope": "source",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "publication",
+    "unit": "",
+    "value": "lmpt-coop.fr"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "...la sensibilité de cette base est donc moindre que celle d’un fichier contenant des coordonnées complètes.",
+    "scope": "sensibilité",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "moindre"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "...visée par une fuite de données revendiquée par le hacker ChimeraZ.",
+    "scope": "fuite",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "diffusion"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "noms"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "fichier des locataires"
+   }
+  ],
+  "display_summary": "Fuite de données de La Maison Pour Tous avec les noms de 8 000 locataires diffusés par le hacker ChimeraZ.",
+  "fields": {
+   "data_volume": {
+    "evidence": "La base publiée représente environ  275 Ko au format CSV .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "275 Ko"
+   },
+   "impact": {
+    "evidence": "La fuite actuellement diffusée porte avant tout sur plusieurs milliers de noms associés à des locataires.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Révélation des noms de locataires associés à La Maison Pour Tous."
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "**Une fuite de données attribuée à La Maison Pour Tous (LMPT), coopérative immobilière française, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "**Une fuite de données attribuée à La Maison Pour Tous (LMPT), coopérative immobilière française, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
  },
  "INC-C6401641511B": {
   "affected": [
@@ -9577,6 +10555,309 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-D2432B2095FD": {
+  "affected": [
+   {
+    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "raw": "328 649 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 328649
+   },
+   {
+    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "raw": "86 073 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 86073
+   },
+   {
+    "evidence": "86 000 personnes pour plus de 328 000 enregistrements",
+    "raw": "328 000 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 328000
+   },
+   {
+    "evidence": "C’est un peu moins après notre décompte mais plus de 80 000 personnes sont concernées par cette fuite.",
+    "raw": "80 000 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 80000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "328649"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "86 000 personnes pour plus de 328 000 enregistrements",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "328000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "86073"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "LesCuristes.fr : une cyberattaque expose les messages et coordonnées de 86 000 personnes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "86000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "C’est un peu moins après notre décompte mais plus de 80 000 personnes sont concernées par cette fuite.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "80000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "95.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les messages peuvent contenir des informations supplémentaires saisies librement par les internautes, par exemple des  dates de séjour souhaitées, le nombre de personnes concernées ou des demandes adressées à un interlocuteur .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de séjour"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La combinaison entre identité, téléphone, e-mail et contenu d’un échange peut également faciliter des campagnes de  phishing particulièrement personnalisées , par exemple autour d’une réservation, d’un hébergement ou d’un prétendu remboursement.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "dataset",
+    "unit": "",
+    "value": "réservations"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de séjour"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "réservations"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
+   }
+  ],
+  "display_summary": "LesCuristes.fr exposé par une cyberattaque touchant 86 073 personnes.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "95 Mo"
+   },
+   "impact": {
+    "evidence": "La diffusion effective des fichiers permet en revanche d’établir que des centaines de milliers de messages associés aux coordonnées de dizaines de milliers de personnes sont aujourd’hui exposés.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Exposition des messages et coordonnées de 86 073 personnes."
+   },
+   "third_party": {
+    "evidence": "Le hacker ChimeraZ a diffusé une base de 95 Mo contenant 328 649 enregistrements.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "LesCuristes.fr"
+   }
+  ],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-D4EC64DBBA06": {
   "affected": [
    {
@@ -10162,6 +11443,92 @@
     "status": "hypothesis"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-DC0BCFD579B8": {
+  "affected": [
+   {
+    "evidence": "Selon les informations dont nous disposons, l’auteur présumé affirme avoir constitué une première compilation comprenant environ 1,8 million de clients, 1,8 million de factures et 2,4 millions...",
+    "raw": "1,8 million de clients",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "clients",
+    "value": 1800000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon les informations dont nous disposons, l’auteur présumé affirme avoir constitué une première compilation comprenant environ 1,8 million de clients, 1,8 million de factures et 2,4 millions...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "clients",
+    "value": "1800000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon les informations dont nous disposons, l’auteur présumé affirme avoir constitué une première compilation comprenant environ 1,8 million de clients, 1,8 million de factures et 2,4 millions...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "factures"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données Répar’stores : cyberattaque et données clients compromises",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "factures"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données clients"
+   }
+  ],
+  "display_summary": "Répar'Store a subi un incident de sécurité ayant compromis des données clients.",
+  "fields": {},
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -10828,6 +12195,392 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-EEC788C594CA": {
+  "affected": [
+   {
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base contenant  23 381 enregistrements concernant 20 316 personnes , accompagnée de près de  1 500 documents PDF .",
+    "raw": "23 381 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 23381
+   },
+   {
+    "evidence": "Le hacker annonce 20 316 personnes pour 23 381 lignes.",
+    "raw": "20 316 personnes",
+    "scope": "profils",
+    "semantic": "profils",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 20316
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base contenant  23 381 enregistrements concernant 20 316 personnes , accompagnée de près de  1 500 documents PDF .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "23381"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le hacker  ChimeraZ  affirme avoir récupéré puis diffusé une base contenant  23 381 enregistrements concernant 20 316 personnes , accompagnée de près de  1 500 documents PDF .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "20316"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’ensemble représente environ  465 Mo de données .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "465.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La partie la plus sensible concerne un répertoire comprenant  1 499 documents PDF pour environ 451 Mo .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "451.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "informations de profil et identifiants internes.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ces documents peuvent contenir des informations beaucoup plus détaillées que la base utilisateurs :  adresse e-mail, téléphone, date de naissance, ville de résidence, permis de conduire, formations, diplômes, compétences et historique professionnel .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "L’ensemble représente environ 465 Mo de données.",
+    "scope": "fichiers de la fuite",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "465"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "La partie la plus sensible concerne un répertoire comprenant 1 499 documents PDF.",
+    "scope": "documents PDF",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "1499"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "Ces documents peuvent contenir des informations beaucoup plus détaillées que la base utilisateurs.",
+    "scope": "documents PDF",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "CV"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "ChimeraZ a mis les données à disposition au téléchargement.",
+    "scope": "fichiers de la fuite",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "publication",
+    "unit": "",
+    "value": "fichiers diffusés"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les dates de naissance et autres éléments biographiques présents dans certains documents augmentent également les risques d’usurpation d’identité et d’ingénierie sociale.",
+    "scope": "risques liés aux CV",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "attack_action",
+    "unit": "",
+    "value": "usurpation d'identité et d'ingénierie sociale"
+   },
+   {
+    "actor": "ChimeraZ",
+    "date": "",
+    "evidence": "Le hacker ne précise toutefois pas la méthode utilisée pour obtenir ces informations.",
+    "scope": "écosystème Aveyron",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "initial_access",
+    "unit": "",
+    "value": "méthode d'accès non précisée"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Fuite de données en Aveyron : plus de 20 000 personnes et près de 1 500 documents concernés",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "20000"
+   },
+   {
+    "evidence": "Le hacker ChimeraZ affirme avoir récupéré puis diffusé une base.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "ChimeraZ"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "CV"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base utilisateurs"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "CV"
+   }
+  ],
+  "display_summary": "Fuite de données de 23 381 enregistrements d'utilisateurs et 1 500 CV sur une plateforme d'emploi en Aveyron.",
+  "fields": {
+   "data_volume": {
+    "evidence": "L’ensemble représente environ  465 Mo de données .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "465 Mo"
+   },
+   "fine_location": {
+    "evidence": "Fuite de données en Aveyron",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "Aveyron"
+   },
+   "impact": {
+    "evidence": "les données de plus de 20 000 personnes exposées.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "exposition des données personnelles de plus de 20 000 personnes"
+   },
+   "threat_actor": {
+    "evidence": "ChimeraZ affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "ChimeraZ"
+   }
+  },
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "OnRecrute.EnAveyron.fr"
+   }
+  ],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-F6E4FEDC0FE9": {
   "affected": [],
   "claims": [
@@ -11149,6 +12902,169 @@
      "FRENCHBREACHES"
     ],
     "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-F87083F98EA4": {
+  "affected": [
+   {
+    "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+    "raw": "157 victimes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 157
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "157"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il est donc impossible de déterminer si des  données clients, salariés, fournisseurs ou documents de chantier  font effectivement partie des éléments éventuellement exfiltrés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   },
+   {
+    "actor": "Qilin",
+    "date": "2026-09-05",
+    "evidence": "Qilin revendique l’entreprise sur son site de fuite.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "Qilin"
+   },
+   {
+    "actor": "Qilin",
+    "date": "2026-09-05",
+    "evidence": "La présence de Jouvet SAS sur cette plateforme doit donc être prise au sérieux.",
+    "scope": "Jouvet SAS",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "site de fuite"
+   },
+   {
+    "actor": "Qilin",
+    "date": "2026-09-05",
+    "evidence": "compte tenu de l’activité de Jouvet SAS, une éventuelle compromission pourrait concerner des informations commerciales, administratives ou liées aux chantiers.",
+    "scope": "Jouvet SAS",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "compromission possible"
+   }
+  ],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "Le groupe de ransomware Qilin revendique une cyberattaque contre Jouvet SAS.",
+  "fields": {
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-09-05"
+   },
+   "fine_location": {
+    "evidence": "Basée à Allonnes, dans la Sarthe, Jouvet SAS.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Allonnes, Sarthe"
+   },
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "site de fuite"
+   },
+   "threat_actor": {
+    "evidence": "qilin",
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE",
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "qilin"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "Revendication de la cyberattaque par Qilin",
+    "evidence": "Qilin revendique l’entreprise sur son site de fuite.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-05",
+    "event": "Jouvet SAS ajoutée au site d’extorsion",
+    "evidence": "L’entreprise a été ajoutée ce 5 septembre 2026 au site d’extorsion utilisé par les cybercriminels.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-08-24",
+    "event": "Cyberattaque majeure contre la CCQ",
+    "evidence": "Quelques jours avant la revendication visant Jouvet SAS, Qilin s’est notamment retrouvé au cœur d’une cyberattaque majeure au Québec contre la Commission de la construction du Québec.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
    }
   ],
   "version": 3,
