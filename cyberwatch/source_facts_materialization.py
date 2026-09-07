@@ -132,12 +132,17 @@ def materialize_cached_llm_fields(
         materialized: list[str] = []
         stale: list[str] = []
         for field, record in fields.items():
-            if not isinstance(record, dict) or str(record.get("status") or "").lower() != "accepted":
+            if not isinstance(record, dict):
                 continue
             expected = source_facts_ai.FIELD_VERSIONS.get(field)
             if expected and str(record.get("version") or "") != expected:
                 if _missing(field, fact, metadata, rich) and str(statuses.get(field) or "").lower() == "accepted":
                     statuses[field] = "stale_contract"
+                    stale.append(field)
+                continue
+            if str(record.get("status") or "").lower() != "accepted":
+                if _missing(field, fact, metadata, rich) and statuses.get(field) == "accepted":
+                    statuses[field] = "cache_not_accepted"
                     stale.append(field)
                 continue
             value = record.get("value")

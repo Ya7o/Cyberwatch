@@ -19,6 +19,14 @@ paires.
 
 ## Publication
 
+La collecte planifiée utilise la branche par défaut GitHub, `main`. Après
+fusion d'un moteur corrigé, lancer un nouveau `workflow_dispatch` sur `main`
+pour le vérifier ; relancer un ancien run conserve son ancien commit.
+Comparer `data/snapshot.json:Code_Commit` au SHA du workflow exécuté.
+Avant qualification, le moteur reprend aussi les faits historiques depuis le
+cache compatible (même item et même hash), afin que la migration ne dépende
+pas du retour d'un article dans la fenêtre quotidienne.
+
 `collect.yml` mémorise le SHA de `main` au démarrage. Juste avant le commit, il
 récupère `origin/main` et annule la publication si ce SHA a changé. Le push
 normal, sans rebase automatique, protège la dernière fenêtre entre ce contrôle
