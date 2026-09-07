@@ -12,10 +12,11 @@ import logging
 import re
 
 from . import config, organisation_family, source_facts_ai
-from .headline import is_organisation_name_only, is_publishable_headline, rejection_reason
+from .headline import is_organisation_name_only, is_publishable_for_organisation, is_publishable_headline, rejection_reason
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import (
+    classify_threat,
     clean_organisation,
     extract_activity_description,
     organisation_key,
@@ -23,10 +24,14 @@ from .normalize import (
     searchable,
     strip_accents,
 )
+from .source_facts_materialization import (
+    materialize_cached_llm_fields,
+    semantic_materialization_gaps,
+)
 
 logger = logging.getLogger(__name__)
 
-SOURCE_FACTS_VERSION = "5"
+SOURCE_FACTS_VERSION = "6"
 
 _BASE_COLUMNS = {
     "Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version",
@@ -175,6 +180,8 @@ _ACTOR_SENTINELS = {
     "ransomware", "rancongiciel", "cybercriminel", "cybercriminels", "pirate", "pirates",
     "article", "publication", "source", "entreprise", "l entreprise", "l'entreprise",
     "societe", "la societe", "organisation", "l organisation", "l'organisation", "victime",
+    "syndicat", "le syndicat", "association", "l association", "l'association",
+    "celui ci", "celle ci", "celui la", "celle la", "ce dernier", "cette derniere",
 }
 
 
@@ -467,16 +474,16 @@ def _finalize(fact: dict, item: Item, entry: RawEntry, evidence: dict) -> dict |
         # RawEntry. L'item a déjà été résolu de manière canonique : c'est lui
         # qui fait autorité pour rejeter un nom seul, y compris au reset zéro.
         organisation = item.Organisation_Raw or entry.organisation or ""
-        if not is_publishable_headline(summary) or is_organisation_name_only(summary, organisation):
+        if not is_publishable_for_organisation(summary, organisation):
             # Certains adaptateurs d'hydratation ne réinjectent que le corps
             # dans RawEntry. Le titre canonique est néanmoins conservé sur
             # Item : l'utiliser évite qu'une indisponibilité LLM transforme un
             # article éditorial correctement collecté en synthèse vide.
             title = " ".join(str(entry.title or item.Title or "").split()).strip()
-            if is_publishable_headline(title) and not is_organisation_name_only(title, organisation):
+            if is_publishable_for_organisation(title, organisation):
                 fact["Summary"] = summary = title
                 evidence["Summary"] = title
-        if is_publishable_headline(summary) and not is_organisation_name_only(summary, organisation):
+        if is_publishable_for_organisation(summary, organisation):
             metadata["_source_facts_summary_status"] = "accepted"
         else:
             # Une absence éditoriale est explicite : aucun champ structuré ne
@@ -716,6 +723,58 @@ def semantic_promotion_gaps(
     return sorted(set(gaps))
 
 
+def sanitize_source_facts(facts: list[dict]) -> tuple[list[dict], list[str]]:
+    """Retire des colonnes publiques les faits contredits par leur preuve.
+
+    Le fait brut reste traçable dans les métadonnées riches ; seules les
+    projections susceptibles d'être présentées comme certaines sont vidées.
+    Cette passe répare aussi les snapshots antérieurs sans nouvel appel LLM.
+    """
+    changed: list[str] = []
+    for fact in facts:
+        evidence = _loads_json(str(fact.get("Evidence_JSON") or ""))
+        evidence = evidence if isinstance(evidence, dict) else {}
+        metadata = _loads_json(str(fact.get("Source_Metadata_JSON") or ""))
+        metadata = metadata if isinstance(metadata, dict) else {}
+        semantic_statuses = metadata.get("_source_facts_semantic_status")
+        semantic_statuses = dict(semantic_statuses) if isinstance(semantic_statuses, dict) else {}
+        touched = False
+
+        actor = str(fact.get("Threat_Actor") or "").strip()
+        if actor and not _valid_actor(actor):
+            fact["Threat_Actor"] = ""
+            evidence.pop("Threat_Actor", None)
+            semantic_statuses["threat_actor"] = "rejected_quality"
+            touched = True
+
+        access_proof = " ".join(_evidence_values(evidence.get("Initial_Access")))
+        if str(fact.get("Initial_Access") or "").strip() and (
+            source_facts_ai._INITIAL_ACCESS_UNKNOWN_RE.search(access_proof)
+            or source_facts_ai._INITIAL_ACCESS_UNCERTAIN_RE.search(access_proof)
+        ):
+            fact["Initial_Access"] = ""
+            evidence.pop("Initial_Access", None)
+            semantic_statuses["initial_access"] = "rejected_quality"
+            touched = True
+
+        tentative = metadata.get("threat_tentative")
+        if isinstance(tentative, dict):
+            value = str(tentative.get("value") or "").strip()
+            proof = str(tentative.get("evidence") or "").strip()
+            if value and classify_threat(proof) != value:
+                metadata.pop("threat_tentative", None)
+                semantic_statuses["threat_candidate"] = "rejected_quality"
+                touched = True
+
+        if touched:
+            if semantic_statuses:
+                metadata["_source_facts_semantic_status"] = semantic_statuses
+            fact["Evidence_JSON"] = _dumps_json(evidence)
+            fact["Source_Metadata_JSON"] = _dumps_json(metadata)
+            changed.append(str(fact.get("Item_ID") or ""))
+    return facts, sorted({item_id for item_id in changed if item_id})
+
+
 _INITIAL_ACCESS_LABELS = {
     "phishing": "un hameçonnage",
     "compromised_credentials": "des identifiants compromis",
@@ -841,463 +900,16 @@ def _derive_summary(fact: dict, evidence: dict) -> None:
         evidence["Summary"] = " | ".join(dict.fromkeys(proofs))[:source_facts_ai.MAX_EVIDENCE_CHARS]
 
 
-def _from_frenchbreaches(
-    item: Item,
-    entry: RawEntry,
-    spec: SourceSpec,
-    *,
-    semantic: source_facts_ai.SemanticExtraction | None = None,
-) -> dict | None:
-    fact = _blank_fact(item, spec)
-    evidence: dict = {}
-    text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
-    organisation = entry.organisation or item.Organisation_Raw
-    semantic = semantic or source_facts_ai.extract_semantic(item, entry)
-    ai_result = semantic.fields
-    fact["_Semantic_Refresh_Status"] = semantic.statuses
-    candidate = _ai_threat_candidate(ai_result)
-    if candidate and item.Threat == config.THREAT_UNKNOWN:
-        fact["_Threat_Tentative"] = candidate
-
-    canonical, raw = _claim_status(text)
-    if raw:
-        fact["Claim_Status"] = canonical
-        fact["Claim_Status_Raw"] = raw
-        evidence["Claim_Status"] = raw
-    else:
-        ai_status, ai_status_evidence = _ai_text(ai_result, "claim_status")
-        if ai_status in {"confirmed", "claimed", "unconfirmed", "denied"}:
-            fact["Claim_Status"] = ai_status
-            evidence["Claim_Status"] = ai_status_evidence
-
-    sector_raw = _native_frenchbreaches_sector(entry.content)
-    if sector_raw:
-        fact["Source_Sector_Raw"] = sector_raw
-        evidence["Source_Sector_Raw"] = sector_raw
-
-    native_count = _parse_count_phrase(entry.content)
-    if native_count[0]:
-        count, unit, raw_count = native_count
-        evidence["Affected_Count_Raw"] = raw_count
-    else:
-        count, unit, raw_count, count_status = _ai_count(ai_result)
-        if count:
-            evidence["Affected_Count_Raw"] = {"text": raw_count, "status": count_status}
-        else:
-            count, unit, raw_count = _parse_count_phrase(text)
-            if count:
-                evidence["Affected_Count_Raw"] = raw_count
-    if count:
-        fact["Affected_Count"] = count
-        fact["Affected_Unit"] = unit
-        fact["Affected_Count_Raw"] = raw_count
-
-    volume, volume_evidence = _ai_volume(ai_result)
-    if not volume:
-        volume = _extract_volume(text)
-    if volume:
-        fact["Data_Volume_Raw"] = volume
-        if volume_evidence:
-            evidence["Data_Volume_Raw"] = volume_evidence
-
-    file_count, file_evidence = _ai_file_count(ai_result)
-    if not file_count:
-        file_count = _extract_file_count(text)
-    if file_count:
-        fact["File_Count"] = file_count
-        if file_evidence:
-            evidence["File_Count"] = file_evidence
-
-    actor, actor_evidence = _ai_text(ai_result, "threat_actor")
-    actor = _valid_actor(actor, organisation)
-    if not actor:
-        actor, actor_evidence = _first_valid_match(_ACTOR_PATTERNS, text, _valid_actor, organisation)
-    if actor:
-        fact["Threat_Actor"] = actor
-        evidence["Threat_Actor"] = actor_evidence
-
-    third_party, third_party_evidence = _ai_text(ai_result, "third_party")
-    third_party = _valid_third_party(third_party, organisation)
-    if not third_party:
-        third_party, third_party_evidence = _first_valid_match(
-            _THIRD_PARTY_PATTERNS, text, _valid_third_party, organisation
-        )
-    if third_party:
-        fact["Third_Party"] = third_party
-        evidence["Third_Party"] = third_party_evidence
-
-    data_types, data_evidence = _ai_data_types(ai_result)
-    if data_types:
-        fact["Data_Types_JSON"] = _dumps_json(data_types)
-        evidence["Data_Types_JSON"] = data_evidence
-
-    _apply_semantic_enrichment(fact, evidence, ai_result)
-    _derive_summary(fact, evidence)
-
-    cves = sorted(set(_extract_cves(text)) | set(_loads_json(fact.get("Vulnerabilities_JSON", "")) or []))
-    if cves:
-        fact["Vulnerabilities_JSON"] = _dumps_json(cves)
-        evidence["Vulnerabilities_JSON"] = ", ".join(cves)
-    cvss = _extract_cvss(text)
-    if cvss:
-        fact["CVSS_Raw"] = cvss
-
-    # Audit 2026-08-26 (run réel, cas Dipeeo/FRENCHBREACHES) : le fallback
-    # déterministe ci-dessous peut fournir `activity` même quand la propre
-    # activity_description du LLM a échoué sa preuve — mais
-    # activity_sector_match n'a de sens que rattaché à la description que ce
-    # MÊME appel LLM vient de produire (jamais au fallback déterministe, ni
-    # à rien d'autre). Sans ce garde-fou, un secteur pouvait survivre alors
-    # que sa propre description avait été rejetée.
-    llm_activity, activity_evidence = _ai_activity(ai_result, organisation)
-    activity = llm_activity or _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
-    if activity:
-        fact["Activity_Description"] = activity
-        if activity_evidence:
-            evidence["Activity_Description"] = activity_evidence
-    sector_match, sector_match_evidence = _ai_sector_match(ai_result) if llm_activity else ("", "")
-    if sector_match:
-        fact["Activity_Sector_Match"] = sector_match
-        evidence["Activity_Sector_Match"] = sector_match_evidence
-    return _finalize(fact, item, entry, evidence)
-
-
-_CO_THIRD_PARTY_RE = tuple(re.compile(pattern, re.I) for pattern in (
-    r"\b(?:le\s+)?prestataire\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)\s+(?:a\s+[ée]t[ée]\s+)?compromis",
-    r"\bh[ée]berg[ée]e?\s+(?:par|chez)\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)(?:,|\.|;| qui| également|$)",
-    r"\bla\s+plateforme\s+tierce\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)\s+(?:est\s+)?[àa]\s+l['’]origine",
-    r"\bfournisseur\s+([A-Za-z0-9][\w.&'’ -]{1,40}?)\s+explicitement\s+impliqu[ée]",
-))
-_CO_THREAT_ACTOR_RE = tuple(re.compile(pattern, re.I) for pattern in (
-    r"\b(?:le\s+)?groupe\s+([A-Za-z0-9][\w.&'’+-]{1,40})\s+a\s+revendiqu[ée]",
-    r"revendiqu[ée]e?\s+par\s+(?:le\s+groupe\s+)?([A-Za-z0-9][\w.&'’+-]{1,40})",
-    # « X indique » désigne très souvent la victime qui communique sur son
-    # propre incident (cas réels Euskal Moneta et L Commerce) et est donc
-    # exclu. Les verbes actifs de revendication restent acceptés, puis passent
-    # par `_valid_actor` et le résolveur de victime secondaire.
-    r"\b([A-Za-z0-9][\w.&'’+-]{1,40})\s+(?:revendique|affirme|d[ée]clare)\b",
-))
-_CO_INITIAL_ACCESS_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
-    # Catégorie factuelle, sans inférer le prestataire ni le mode technique.
-    r"(\b(?:cyberattaque|compromission|incident)\b.{0,80}\b(?:chez\s+(?:un|une)|d['’]un)\s+(?:prestataire|tiers)\b)",
-    r"(\b(?:prestataire|tiers)\b.{0,40}\bcompromis\b)",
-))
-_WEBSITE_RE = re.compile(
-    r"\bsite\s+(?:officiel\s+|web\s+)?(?:de\s+la\s+victime\s+)?[:\s]+"
-    r"((?:https?://)?(?:www\.)?[\w-]+\.[a-z]{2,6}(?:/\S*)?)",
-    re.I,
+from .source_facts_handlers import (
+    _CO_INITIAL_ACCESS_PATTERNS,
+    _CO_THIRD_PARTY_RE,
+    _CO_THREAT_ACTOR_RE,
+    _EXTRACTORS,
+    _WEBSITE_RE,
+    _from_cyberattaque_org,
+    _from_frenchbreaches,
+    _from_ransomware_live,
+    _from_veillellm,
+    extract_source_fact,
+    merge_source_facts,
 )
-
-
-def _from_cyberattaque_org(
-    item: Item,
-    entry: RawEntry,
-    spec: SourceSpec,
-    *,
-    semantic: source_facts_ai.SemanticExtraction | None = None,
-) -> dict | None:
-    fact = _blank_fact(item, spec)
-    evidence: dict = {}
-    text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
-    organisation = entry.organisation or item.Organisation_Raw
-    semantic = semantic or source_facts_ai.extract_semantic(item, entry)
-    ai_result = semantic.fields
-    fact["_Semantic_Refresh_Status"] = semantic.statuses
-    candidate = _ai_threat_candidate(ai_result)
-    if candidate and item.Threat == config.THREAT_UNKNOWN:
-        fact["_Threat_Tentative"] = candidate
-
-    actor, actor_evidence = _ai_text(ai_result, "threat_actor")
-    actor = _valid_actor(actor, organisation)
-    if not actor:
-        actor, actor_evidence = _first_valid_match(_CO_THREAT_ACTOR_RE, text, _valid_actor, organisation)
-    if actor:
-        fact["Threat_Actor"] = actor
-        evidence["Threat_Actor"] = actor_evidence
-
-    third_party, third_party_evidence = _ai_text(ai_result, "third_party")
-    third_party = _valid_third_party(third_party, organisation)
-    if not third_party:
-        third_party, third_party_evidence = _first_valid_match(
-            _CO_THIRD_PARTY_RE, text, _valid_third_party, organisation
-        )
-    if third_party:
-        fact["Third_Party"] = third_party
-        evidence["Third_Party"] = third_party_evidence
-
-    # Le LLM, s'il a une preuve, reste prioritaire ; ce repli ne classe que
-    # la compromission explicitement attribuée à un tiers dans le texte.
-    if not fact.get("Initial_Access"):
-        initial_access, initial_evidence = _first_valid_match(
-            _CO_INITIAL_ACCESS_PATTERNS, text, lambda value, _organisation: value, organisation
-        )
-        if initial_access:
-            fact["Initial_Access"] = "third_party"
-            evidence["Initial_Access"] = initial_evidence
-
-    ai_status, ai_status_evidence = _ai_text(ai_result, "claim_status")
-    if ai_status in {"confirmed", "claimed", "unconfirmed", "denied"}:
-        fact["Claim_Status"] = ai_status
-        evidence["Claim_Status"] = ai_status_evidence
-    else:
-        canonical, raw = _claim_status(text)
-        if raw:
-            fact["Claim_Status"] = canonical
-            fact["Claim_Status_Raw"] = raw
-
-    count, unit, raw_count, count_status = _ai_count(ai_result)
-    if not count:
-        count, unit, raw_count = _parse_count_phrase(text)
-    if count:
-        fact["Affected_Count"] = count
-        fact["Affected_Unit"] = unit
-        fact["Affected_Count_Raw"] = raw_count
-        evidence["Affected_Count_Raw"] = (
-            {"text": raw_count, "status": count_status} if count_status else raw_count
-        )
-
-    volume, volume_evidence = _ai_volume(ai_result)
-    if not volume:
-        volume = _extract_volume(text)
-    if volume:
-        fact["Data_Volume_Raw"] = volume
-        if volume_evidence:
-            evidence["Data_Volume_Raw"] = volume_evidence
-
-    file_count, file_evidence = _ai_file_count(ai_result)
-    if not file_count:
-        file_count = _extract_file_count(text)
-    if file_count:
-        fact["File_Count"] = file_count
-        if file_evidence:
-            evidence["File_Count"] = file_evidence
-
-    data_types, data_evidence = _ai_data_types(ai_result)
-    if data_types:
-        fact["Data_Types_JSON"] = _dumps_json(data_types)
-        evidence["Data_Types_JSON"] = data_evidence
-
-    _apply_semantic_enrichment(fact, evidence, ai_result)
-    _derive_summary(fact, evidence)
-
-    cves = sorted(set(_extract_cves(text)) | set(_loads_json(fact.get("Vulnerabilities_JSON", "")) or []))
-    if cves:
-        fact["Vulnerabilities_JSON"] = _dumps_json(cves)
-        evidence["Vulnerabilities_JSON"] = ", ".join(cves)
-    cvss = _extract_cvss(text)
-    if cvss:
-        fact["CVSS_Raw"] = cvss
-
-    website_match = _WEBSITE_RE.search(text)
-    if website_match:
-        website = _normalise_url(website_match.group(1))
-        if website:
-            fact["Victim_Website"] = website
-            evidence["Victim_Website"] = website_match.group(0).strip()
-
-    # Audit 2026-08-26 (run réel, cas Dipeeo/FRENCHBREACHES) : le fallback
-    # déterministe ci-dessous peut fournir `activity` même quand la propre
-    # activity_description du LLM a échoué sa preuve — mais
-    # activity_sector_match n'a de sens que rattaché à la description que ce
-    # MÊME appel LLM vient de produire (jamais au fallback déterministe, ni
-    # à rien d'autre). Sans ce garde-fou, un secteur pouvait survivre alors
-    # que sa propre description avait été rejetée.
-    llm_activity, activity_evidence = _ai_activity(ai_result, organisation)
-    activity = llm_activity or _extract_victim_activity(organisation, entry.title, entry.summary, entry.content)
-    if activity:
-        fact["Activity_Description"] = activity
-        if activity_evidence:
-            evidence["Activity_Description"] = activity_evidence
-    sector_match, sector_match_evidence = _ai_sector_match(ai_result) if llm_activity else ("", "")
-    if sector_match:
-        fact["Activity_Sector_Match"] = sector_match
-        evidence["Activity_Sector_Match"] = sector_match_evidence
-    return _finalize(fact, item, entry, evidence)
-
-
-def _from_ransomware_live(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
-    fact = _blank_fact(item, spec)
-    evidence: dict = {}
-    meta = entry.source_metadata or {}
-
-    group = _valid_actor(meta.get("group", ""), entry.organisation or item.Organisation_Raw)
-    if group:
-        fact["Threat_Actor"] = group
-        evidence["Threat_Actor"] = meta.get("group", "")
-    sector_raw = meta.get("sector_raw", "")
-    if sector_raw:
-        fact["Source_Sector_Raw"] = sector_raw
-    discovered = parse_date(meta.get("discovered", ""))
-    if discovered:
-        fact["Discovered_Date"] = discovered
-    attackdate = parse_date(meta.get("attackdate", ""))
-    if attackdate:
-        fact["Attack_Date"] = attackdate
-    website = _normalise_url(meta.get("website", ""))
-    if website:
-        fact["Victim_Website"] = website
-    claim_url = _normalise_url(meta.get("claim_url", ""))
-    if claim_url:
-        fact["Evidence_URLs_JSON"] = _dumps_json([claim_url])
-    return _finalize(fact, item, entry, evidence)
-
-
-def _from_veillellm(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
-    fact = _blank_fact(item, spec)
-    meta = entry.source_metadata or {}
-    if not meta:
-        return None
-    if meta.get("localisation", ""):
-        fact["Fine_Location"] = meta["localisation"]
-    actor = _valid_actor(meta.get("acteur", ""), entry.organisation or item.Organisation_Raw)
-    if actor:
-        fact["Threat_Actor"] = actor
-    if meta.get("statut", ""):
-        fact["Claim_Status_Raw"] = meta["statut"]
-    score = meta.get("score_cyberattaque")
-    if score is not None and str(score) != "":
-        fact["Cyberattack_Score"] = str(score)
-    if meta.get("impact_connu", ""):
-        fact["Impact"] = meta["impact_connu"]
-    if meta.get("synthese", ""):
-        fact["Summary"] = meta["synthese"]
-    if meta.get("evolution", ""):
-        fact["Evolution"] = meta["evolution"]
-    if meta.get("secteur", ""):
-        fact["Source_Sector_Raw"] = meta["secteur"]
-    if meta.get("sources"):
-        fact["Evidence_URLs_JSON"] = _dumps_json(meta["sources"])
-    return _finalize(fact, item, entry, {})
-
-
-_EXTRACTORS = {
-    "BONJOURLAFUITE": _from_bonjourlafuite,
-    "FRENCHBREACHES": _from_frenchbreaches,
-    "CYBERATTAQUE_ORG": _from_cyberattaque_org,
-    "RANSOMWARE_LIVE": _from_ransomware_live,
-    "VEILLE_LLM": _from_veillellm,
-}
-
-
-def extract_source_fact(
-    item: Item,
-    entry: RawEntry,
-    spec: SourceSpec,
-    *,
-    semantic: source_facts_ai.SemanticExtraction | None = None,
-) -> dict | None:
-    """Retourne un fait source ou None. Une erreur auxiliaire ne bloque jamais la collecte."""
-    extractor = _EXTRACTORS.get(spec.source_id)
-    if extractor is None:
-        return None
-    try:
-        if item.Source_ID in source_facts_ai.TARGET_SOURCES:
-            if semantic and (
-                semantic.item_id != item.Item_ID
-                or semantic.content_hash != source_facts_ai.content_hash(entry)
-            ):
-                raise ValueError("semantic_extraction_mismatch")
-            return extractor(item, entry, spec, semantic=semantic)
-        return extractor(item, entry, spec)
-    except Exception as exc:
-        logger.warning(
-            "source_fact_extraction_failed source=%s item=%s error=%s",
-            spec.source_id,
-            item.Item_ID,
-            exc,
-        )
-        return None
-
-
-def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]:
-    refreshable = {"Summary", "Initial_Access", "Attack_Flow_JSON", "Impact", "Activity_Description", "Activity_Sector_Match"}
-    base = {"Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version", "Source_Metadata_JSON"}
-
-    ai_field_for_column = {
-        "Summary": "summary",
-        "Initial_Access": "initial_access",
-        "Attack_Flow_JSON": "attack_flow",
-        "Impact": "impact",
-        "Activity_Description": "activity_description",
-        "Activity_Sector_Match": "activity_sector_match",
-    }
-
-    def merge_row(old: dict, new: dict) -> dict:
-        merged = dict(old)
-        old_evidence = _loads_json(str(old.get("Evidence_JSON") or ""))
-        new_evidence = _loads_json(str(new.get("Evidence_JSON") or ""))
-        evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
-        old_meta = _loads_json(str(old.get("Source_Metadata_JSON") or ""))
-        new_meta = _loads_json(str(new.get("Source_Metadata_JSON") or ""))
-        new_meta = new_meta if isinstance(new_meta, dict) else {}
-        # Une réhydratation peut ne produire que le hash de contenu. Conserver
-        # alors les faits riches déjà extraits plutôt que de les effacer à la
-        # faveur du rafraîchissement d'un champ SourceFacts.
-        if isinstance(old_meta, dict) and isinstance(new_meta, dict):
-            merged_meta = dict(old_meta)
-            merged_meta.update(new_meta)
-            new = dict(new)
-            new["Source_Metadata_JSON"] = _dumps_json(merged_meta)
-        old_hash = str(old_meta.get("_source_facts_content_hash") or "") if isinstance(old_meta, dict) else ""
-        new_hash = str(new_meta.get("_source_facts_content_hash") or "") if isinstance(new_meta, dict) else ""
-        content_changed = bool(old_hash and new_hash and old_hash != new_hash)
-        refresh_status = (
-            new_meta.get("_source_facts_semantic_status")
-            if isinstance(new_meta, dict) else {}
-        )
-        refresh_status = refresh_status if isinstance(refresh_status, dict) else {}
-
-        def should_clear(column: str) -> bool:
-            # Un premier miss peut être une abstention sémantique transitoire ;
-            # une panne technique ne modifie pas le cache. On ne retire donc un
-            # ancien fait qu'après deux abstentions sémantiques sur un contenu
-            # effectivement différent.
-            field = ai_field_for_column.get(column, "")
-            if column == "Summary" and new_meta.get("_source_facts_summary_status") in {"rejected_quality", "abstained", "technical_failure"}:
-                return True
-            return (
-                content_changed
-                and field
-                and refresh_status.get(field) == "abstained"
-                and new.get(column, "") in (None, "")
-            )
-
-        if isinstance(new_evidence, dict):
-            for field, proof in new_evidence.items():
-                if field in refreshable and new.get(field, "") in (None, ""):
-                    if should_clear(field):
-                        evidence.pop(field, None)
-                    continue
-                if field in refreshable:
-                    evidence.pop(field, None)
-                evidence[field] = proof
-        for column in SOURCE_FACT_COLUMNS:
-            if column == "Evidence_JSON":
-                continue
-            value = new.get(column, "")
-            if column in refreshable:
-                if value not in (None, ""):
-                    merged[column] = value
-                elif should_clear(column):
-                    merged[column] = ""
-                    evidence.pop(column, None)
-            elif column in base:
-                if value not in (None, ""):
-                    merged[column] = value
-            elif value not in (None, ""):
-                merged[column] = value
-        merged["Evidence_JSON"] = _dumps_json(evidence)
-        return merged
-
-    by_id: dict[str, dict] = {}
-    for row in existing:
-        item_id = row.get("Item_ID")
-        if item_id:
-            by_id[item_id] = dict(row)
-    for row in incoming:
-        item_id = row.get("Item_ID")
-        if not item_id:
-            continue
-        previous = by_id.get(item_id)
-        by_id[item_id] = merge_row(previous or {}, row)
-    return [by_id[key] for key in sorted(by_id)]

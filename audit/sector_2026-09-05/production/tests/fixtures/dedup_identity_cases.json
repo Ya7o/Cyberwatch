@@ -1,0 +1,197 @@
+{
+  "description": "Corpus de régression pour le filet LLM de déduplication (organisations et incidents). Chaque cas oppose deux libellés d'organisation, indépendamment de toute base de données réelle : il sert à qualifier la génération de candidats, la politique de validation des décisions LLM et à mesurer known_duplicate_recall / known_nonduplicate_false_merge_count. `same_incident` vaut `null` quand la question n'a pas de sens au niveau du nom seul (paire purement organisationnelle).",
+  "cases": [
+    {
+      "case_id": "DGFIP_ACRONYM",
+      "left": "DGFiP",
+      "right": "Direction générale des Finances publiques",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Acronyme exact de l'organisation, sans ambiguïté."
+    },
+    {
+      "case_id": "INSERM_ACRONYM",
+      "left": "INSERM",
+      "right": "Institut national de la santé et de la recherche médicale",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Acronyme exact de l'organisation, sans ambiguïté."
+    },
+    {
+      "case_id": "FRANCE_CASSE_SPACING",
+      "left": "France-Casse",
+      "right": "France Casse",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Variante typographique : trait d'union vs espace, mêmes mots."
+    },
+    {
+      "case_id": "MYPISCINE_SPACING",
+      "left": "MyPiscine",
+      "right": "My Piscine",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Concaténation vs forme espacée du même nom."
+    },
+    {
+      "case_id": "MADE_IN_DESIGN_SPACING",
+      "left": "Made in Design",
+      "right": "Madeindesign",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Nom commercial espacé vs domaine concaténé."
+    },
+    {
+      "case_id": "MAGESTIONLOCATIVE_SPACING",
+      "left": "MaGestionLocative",
+      "right": "Ma Gestion Locative",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Concaténation vs forme espacée du même nom."
+    },
+    {
+      "case_id": "OR_EN_CASH_CASE",
+      "left": "Or en Cash",
+      "right": "Or en cash",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Différence de casse uniquement, mêmes mots."
+    },
+    {
+      "case_id": "FF_BASKETBALL_HYPHEN",
+      "left": "Fédération Française de Basketball",
+      "right": "Fédération Française de Basket-ball",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Variante orthographique du même sport (basketball / basket-ball)."
+    },
+    {
+      "case_id": "FFMOTO_ACRONYM",
+      "left": "FFMOTO",
+      "right": "Fédération Française de Motocyclisme",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Acronyme exact de l'organisation, sans ambiguïté."
+    },
+    {
+      "case_id": "FF_VOILE_VS_VOLLEY",
+      "left": "Fédération Française de Voile",
+      "right": "Fédération Française de Volley",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Deux fédérations sportives distinctes malgré un préfixe commun massif."
+    },
+    {
+      "case_id": "CITY_PRO_SUBENTITY",
+      "left": "City Pro",
+      "right": "City Pro Marionneau",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Sous-entité potentielle non démontrée juridiquement distincte : l'identité n'est pas prouvée par simple inclusion de nom."
+    },
+    {
+      "case_id": "GENERIC_CONSEIL_DEPARTEMENTAL",
+      "left": "Conseil départemental de la Gironde",
+      "right": "Conseil départemental de la Dordogne",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Deux collectivités territoriales juridiquement distinctes malgré un nom générique partagé."
+    },
+    {
+      "case_id": "GROUPE_VS_FILIALE",
+      "left": "Groupe Atlantic",
+      "right": "Atlantic Industrie",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Groupe et filiale potentielle : identité juridique non démontrée par le nom seul, doit rester REVIEW/DIFFERENT tant qu'aucune preuve forte n'existe."
+    },
+    {
+      "case_id": "SFR_TWO_DISTINCT_INCIDENTS",
+      "left": "SFR — incident janvier 2024",
+      "right": "SFR — incident octobre 2024",
+      "same_organisation": true,
+      "same_incident": false,
+      "reason": "Même opérateur mais deux compromissions distinctes séparées de plusieurs mois : l'identité organisationnelle ne doit jamais entraîner une fusion d'incident automatique."
+    },
+    {
+      "case_id": "SFR_RECURRENCE_MARKER",
+      "left": "SFR",
+      "right": "SFR (nouvelle attaque revendiquée)",
+      "same_organisation": true,
+      "same_incident": false,
+      "reason": "Marqueur de récurrence explicite : deuxième attaque revendiquée sur la même victime, veto fort INCIDENT_KEEP_RECURRENCE_MARKER à préserver."
+    },
+    {
+      "case_id": "ADMINISTRATION_TWO_DISTINCT_INCIDENTS",
+      "left": "Département de la Réunion — fuite de données 2023",
+      "right": "Département de la Réunion — rançongiciel 2025",
+      "same_organisation": true,
+      "same_incident": false,
+      "reason": "Même administration territoriale, deux événements cyber distincts et non concomitants."
+    },
+    {
+      "case_id": "EXACT_SAME_ORG_SAME_DATE",
+      "left": "CHU de La Réunion",
+      "right": "CHU de La Réunion",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Libellé strictement identique, cas trivial de contrôle positif fort."
+    },
+    {
+      "case_id": "LEGAL_FORM_NOISE",
+      "left": "Cravero Motoculture SAS",
+      "right": "Cravero Motoculture",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Forme juridique isolée sans valeur d'identité, déjà couvert par la normalisation déterministe."
+    },
+    {
+      "case_id": "PARTIAL_COMMON_NAME_DISTINCT_LEGAL_ENTITIES",
+      "left": "Boulangerie Martin Paris",
+      "right": "Boulangerie Martin Lyon",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Nom commercial partiellement commun mais établissements géographiquement et juridiquement distincts."
+    },
+    {
+      "case_id": "DOMAIN_VS_BRAND",
+      "left": "Booking",
+      "right": "Booking.com",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Marque et domaine public de la même entité, suffixe de domaine uniquement."
+    },
+    {
+      "case_id": "AMBIGUOUS_SHORT_ACRONYM_COLLISION",
+      "left": "CNC",
+      "right": "Conseil National de la Consommation",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Acronyme court potentiellement ambigu (Centre National du Cinéma vs Conseil National de la Consommation) : ne doit pas être validé sans preuve contextuelle forte."
+    },
+    {
+      "case_id": "MUNICIPALITY_HOMONYM",
+      "left": "Mairie de Saint-Denis (La Réunion)",
+      "right": "Mairie de Saint-Denis (Seine-Saint-Denis)",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Homonymie de commune sur deux territoires distincts : jamais la même entité malgré un nom identique."
+    },
+    {
+      "case_id": "TOKEN_PERMUTATION",
+      "left": "Cravero Motoculture",
+      "right": "Motoculture Cravero",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Permutation exacte des mêmes mots, sans mot ajouté ni retiré."
+    },
+    {
+      "case_id": "FEDERATION_SAME_SPORT_DIFFERENT_LEVEL",
+      "left": "Fédération Française de Basketball",
+      "right": "Ligue Régionale de Basketball",
+      "same_organisation": false,
+      "same_incident": null,
+      "reason": "Fédération nationale et ligue régionale sont des personnes morales distinctes malgré le sport commun."
+    }
+  ]
+}

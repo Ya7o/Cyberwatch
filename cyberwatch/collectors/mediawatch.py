@@ -51,6 +51,77 @@ def mentions(text_blob: str, labels: list[str]) -> str:
     return ""
 
 
+def _labels_by_entity(entities) -> dict[str, list[str]]:
+    result: dict[str, list[str]] = {}
+    for entity in entities:
+        name = entity["name"] if isinstance(entity, dict) else entity
+        aliases = entity.get("aliases", []) if isinstance(entity, dict) else []
+        result[name] = [name, *aliases]
+    return result
+
+
+def _append_matching_entries(
+    entries: list[RawEntry], window: Window, labels_by_entity: dict[str, list[str]],
+    require_entity: bool, seen_urls: set[str], found_by_entity: dict[str, list[RawEntry]],
+    result: CollectResult,
+) -> None:
+    all_labels = [label for labels in labels_by_entity.values() for label in labels]
+    for entry in entries:
+        if not window.contains(entry.published) or entry.url in seen_urls:
+            continue
+        blob = searchable(f"{entry.title} {entry.summary}")
+        matched = mentions(blob, all_labels)
+        entity_name = next(
+            (name for name, labels in labels_by_entity.items() if matched in labels),
+            "",
+        ) if matched else ""
+        if not looks_cyber(f"{entry.title} {entry.summary}"):
+            continue
+        if require_entity and not entity_name:
+            continue
+        seen_urls.add(entry.url)
+        if entity_name:
+            entry.entity = entity_name
+            entry.organisation = entry.organisation or entity_name
+            found_by_entity[entity_name].append(entry)
+        result.entries.append(entry)
+
+
+def _append_watch_rows(
+    result: CollectResult, labels_by_entity: dict[str, list[str]],
+    domains: list, working_domains: list[str], found_by_entity: dict[str, list[RawEntry]],
+) -> None:
+    for name in labels_by_entity:
+        result.watch_rows.append({
+            "entity": name,
+            "queries_expected": len(domains),
+            "queries_done": len(working_domains),
+            "status": status.OK if len(working_domains) == len(domains) else status.PARTIAL,
+            "items_found": len(found_by_entity[name]),
+            "latest_date": max((entry.published for entry in found_by_entity[name]), default=""),
+        })
+
+
+def _coverage_comment(
+    domains: list, working_domains: list[str], by_api: list[str],
+    shallow: list[tuple[str, str]], failures: dict[str, int], window: Window,
+) -> str:
+    parts = [f"{len(working_domains)}/{len(domains)} médias interrogés"]
+    if by_api:
+        parts.append(f"{len(by_api)} par API sur toute la fenêtre (depuis {window.start})")
+    if shallow:
+        detail = ", ".join(
+            f"{name} au {depth or 'date illisible'}" for name, depth in sorted(shallow)
+        )
+        parts.append(f"{len(shallow)} par flux, ne remontant qu'au {detail}")
+    if failures:
+        refusals = ", ".join(
+            f"{code} x{count}" for code, count in sorted(failures.items(), key=lambda item: -item[1])
+        )
+        parts.append(f"refus : {refusals}")
+    return " ; ".join(parts)
+
+
 class MediaWatchCollector(Collector):
     """Lit les flux d'une liste de médias et en extrait ce qui concerne le
     territoire surveillé.
@@ -77,12 +148,7 @@ class MediaWatchCollector(Collector):
             result.reason_code = status.REASON_NO_FEED
             return result
 
-        # Index des libellés par entité, pour la reconnaissance nominative.
-        labels_by_entity: dict[str, list[str]] = {}
-        for entity in entities:
-            name = entity["name"] if isinstance(entity, dict) else entity
-            aliases = entity.get("aliases", []) if isinstance(entity, dict) else []
-            labels_by_entity[name] = [name, *aliases]
+        labels_by_entity = _labels_by_entity(entities)
 
         found_by_entity: dict[str, list[RawEntry]] = {n: [] for n in labels_by_entity}
         seen_urls: set[str] = set()
@@ -118,58 +184,14 @@ class MediaWatchCollector(Collector):
                 shallow.append((domain, depth))
             result.units_done += 1
 
-            for entry in entries:
-                if not window.contains(entry.published):
-                    continue
-                if entry.url in seen_urls:
-                    continue
-
-                blob = searchable(f"{entry.title} {entry.summary}")
-                matched = mentions(blob, [
-                    label for labels in labels_by_entity.values() for label in labels
-                ])
-
-                entity_name = ""
-                if matched:
-                    for name, labels in labels_by_entity.items():
-                        if matched in labels:
-                            entity_name = name
-                            break
-
-                # Un article n'entre dans la base que s'il relève du cyber.
-                # La reconnaissance d'une entité ne suffit pas : la commune peut
-                # être citée pour de tout autres raisons.
-                if not looks_cyber(f"{entry.title} {entry.summary}"):
-                    continue
-                if require_entity and not entity_name:
-                    continue
-
-                seen_urls.add(entry.url)
-                if entity_name:
-                    entry.entity = entity_name
-                    entry.organisation = entry.organisation or entity_name
-                    found_by_entity[entity_name].append(entry)
-                result.entries.append(entry)
+            _append_matching_entries(
+                entries, window, labels_by_entity, require_entity,
+                seen_urls, found_by_entity, result,
+            )
 
         # État de veille : une ligne par entité, avec le nombre de médias
         # effectivement interrogés — la couverture est donc nominative.
-        for name in labels_by_entity:
-            result.watch_rows.append(
-                {
-                    "entity": name,
-                    "queries_expected": len(domains),
-                    "queries_done": len(working_domains),
-                    "status": (
-                        status.OK
-                        if len(working_domains) == len(domains)
-                        else status.PARTIAL
-                    ),
-                    "items_found": len(found_by_entity[name]),
-                    "latest_date": max(
-                        (e.published for e in found_by_entity[name]), default=""
-                    ),
-                }
-            )
+        _append_watch_rows(result, labels_by_entity, domains, working_domains, found_by_entity)
 
         if not working_domains:
             result.reason_code = (
@@ -201,25 +223,9 @@ class MediaWatchCollector(Collector):
             # et la borne non atteinte interdit de toute façon un OK.
             result.units_done = len(working_domains)
             result.units_expected = len(domains)
-            parts = [f"{len(working_domains)}/{len(domains)} médias interrogés"]
-            if by_api:
-                parts.append(
-                    f"{len(by_api)} par API sur toute la fenêtre "
-                    f"(depuis {window.start})"
-                )
-            if shallow:
-                detail = ", ".join(
-                    f"{name} au {depth or 'date illisible'}"
-                    for name, depth in sorted(shallow)
-                )
-                parts.append(f"{len(shallow)} par flux, ne remontant qu'au {detail}")
-            if failures:
-                parts.append(
-                    "refus : "
-                    + ", ".join(f"{c} x{n}" for c, n in sorted(
-                        failures.items(), key=lambda kv: -kv[1]))
-                )
-            result.comment = " ; ".join(parts)
+            result.comment = _coverage_comment(
+                domains, working_domains, by_api, shallow, failures, window
+            )
 
         result.calls = budget.requests_made
         return result

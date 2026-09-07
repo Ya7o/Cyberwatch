@@ -19,15 +19,24 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - name: Installer les dépendances
-        run: pip install -r requirements.txt
-      - name: Smoke tests du prototype
+      - name: Installer les dépendances de validation
+        run: pip install -r requirements-dev.txt
+      - name: Auditer les dépendances
+        run: python -m pip_audit -r requirements-dev.txt
+      - name: Lint et typage progressif
         run: |
-          python -m pytest -q \
-            tests/test_normalize.py \
-            tests/test_collector_registry.py \
-            tests/test_dedup.py \
-            tests/test_site.py \
-            tests/test_runner.py
+          python -m ruff check cyberwatch scripts tests
+          python -m ruff check --select E4,E7,E9,F,I,UP cyberwatch/production.py cyberwatch/runner_dedup.py cyberwatch/runner_ingestion.py cyberwatch/runner_support.py cyberwatch/site_status.py cyberwatch/site_window.py cyberwatch/sector_resolution.py scripts/code_health.py scripts/git_governance_audit.py scripts/audit_sectors.py
+          python -m mypy
+          python scripts/code_health.py --module-budget 0 --function-budget 0
+          python scripts/audit_sectors.py
+          python scripts/materialize_llm_cache.py
+      - name: Suite complète et contrats du site
+        run: |
+          python -m pytest tests/ -q
           node --check assets/dashboard-v2.js
           node --check assets/dashboard-integrity.js
+          python -m cyberwatch validate-business
+          python -m cyberwatch check
+          python -m cyberwatch build-site
+          git diff --exit-code -- assets/data

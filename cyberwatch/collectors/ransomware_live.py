@@ -41,6 +41,9 @@ FIELD_ALIASES = {
     "country": ["country", "country_code", "victim_country"],
     "sector": ["activity", "sector", "industry"],
     "url": ["post_url", "url", "link", "website", "claim_url"],
+    # L'API expose selon les versions un identifiant de post, de claim ou un
+    # UUID. Ces clés natives sont préférées au fallback textuel.
+    "source_item_id": ["post_id", "claim_id", "uuid", "post_uuid", "id", "slug"],
 }
 
 
@@ -69,6 +72,22 @@ def _normalise_url(value: str) -> str:
     return value
 
 
+def _finish_result(result, budget, recognized: int, rate_limit_retries: int) -> CollectResult:
+    result.reached_boundary = (
+        result.units_done >= result.units_expected
+        and result.reason_code == status.REASON_OK
+    )
+    result.calls = budget.requests_made
+    result.items_seen = recognized
+    result.items_in_window = len(result.entries)
+    result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
+    base_comment = f"items_seen={recognized}; items_in_window={result.items_in_window}"
+    result.comment = f"{result.comment}; {base_comment}" if result.comment else base_comment
+    if rate_limit_retries:
+        result.comment += f"; rate_limit_retries={rate_limit_retries}"
+    return result
+
+
 class RansomwareLiveCollector(Collector):
     name = "ransomware_live"
 
@@ -80,7 +99,7 @@ class RansomwareLiveCollector(Collector):
         result.units_expected = len(countries)
 
         working_template = None
-        seen: set[tuple[str, str]] = set()
+        seen: set[tuple[str, ...]] = set()
         recognized = 0
         rate_limit_retries = 0
 
@@ -128,7 +147,19 @@ class RansomwareLiveCollector(Collector):
                     entry = _entry_from_record(record, spec, country)
                     if entry is None:
                         continue
-                    signature = (entry.organisation.lower(), entry.published)
+                    if entry.source_item_id:
+                        signature = ("native", entry.source_item_id)
+                    else:
+                        # Sans clé native, ne supprimer une ligne que si les
+                        # champs structurés concordent réellement. Deux
+                        # groupes distincts le même jour restent distincts.
+                        signature = (
+                            "fallback",
+                            entry.organisation.casefold(),
+                            entry.published,
+                            str(entry.source_metadata.get("group") or "").casefold(),
+                            entry.url,
+                        )
                     if signature in seen:
                         continue
                     seen.add(signature)
@@ -151,19 +182,7 @@ class RansomwareLiveCollector(Collector):
                 result.units_done = result.units_expected
                 break
 
-        result.reached_boundary = (
-            result.units_done >= result.units_expected
-            and result.reason_code == status.REASON_OK
-        )
-        result.calls = budget.requests_made
-        result.items_seen = recognized
-        result.items_in_window = len(result.entries)
-        result.status_override = status.OK if result.units_done == result.units_expected else status.FAIL
-        base_comment = f"items_seen={recognized}; items_in_window={result.items_in_window}"
-        result.comment = f"{result.comment}; {base_comment}" if result.comment else base_comment
-        if rate_limit_retries:
-            result.comment += f"; rate_limit_retries={rate_limit_retries}"
-        return result
+        return _finish_result(result, budget, recognized, rate_limit_retries)
 
 
 def _records_from(payload):
@@ -188,6 +207,7 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
         return None
 
     group = _first_field(record, FIELD_ALIASES["group"])
+    source_item_id = _first_field(record, FIELD_ALIASES["source_item_id"])
     record_country = (_first_field(record, FIELD_ALIASES["country"]) or country).upper()[:2]
     location = COUNTRY_TO_LOCATION.get(record_country, spec.location_rule)
     title = f"{organisation} revendiqué par {group}" if group else organisation
@@ -199,6 +219,7 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
         "website": _first_field(record, ["website"]),
         "claim_url": _first_field(record, ["post_url", "claim_url"]),
         "sector_raw": _first_field(record, FIELD_ALIASES["sector"]),
+        "source_item_id": source_item_id,
     }
 
     return RawEntry(
@@ -210,5 +231,6 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
         sector=_first_field(record, FIELD_ALIASES["sector"]),
         location=location,
         threat=config.THREAT_RANSOMWARE,
+        source_item_id=source_item_id,
         source_metadata=source_metadata,
     )

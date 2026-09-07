@@ -348,9 +348,20 @@ SECTOR_NAME_RULES: list[tuple[str, list[str]]] = [
 # Motifs testés sur limites de mots, texte désaccentué et en minuscules. Cette
 # table est réservée à une description d'activité explicite, jamais au nom seul.
 SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
+    # Expressions d'activité suffisamment spécifiques pour départager les
+    # cas qui arrivaient historiquement sans secteur (téléconsultation, tir,
+    # production végétale, livraison de repas, etc.). Ces motifs ne sont
+    # jamais appliqués au nom seul : ils exigent une description métier.
+    (SECTOR_AGRICULTURE, [
+        "agriculture", "exploitation agricole", "production agricole",
+        "agricole", "horticulture", "pepiniere", "agroalimentaire",
+        "produits a base de plantes", "alimentation pour chiens et chats",
+        "elevage", "viticulture",
+    ]),
     (SECTOR_HOSPITALITY, [
         "hotel", "hotellerie", "hebergement", "restaurant", "restauration",
         "tourisme", "touristique", "camping", "village vacances",
+        "livraison de repas", "plateforme de livraison de repas",
     ]),
     (SECTOR_CULTURE, [
         "cinema", "theatre", "spectacle", "musee", "bibliotheque",
@@ -371,7 +382,9 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_HEALTH, [
         "chu", "chr", "hopital", "hospitalier", "clinique", "sante",
         "laboratoire", "ehpad", "medical", "medecine", "pharmacie",
-        "hospital", "health", "ars",
+        "hospital", "health", "ars", "teleconsultation", "teleconsultations",
+        "telemedecine",
+        "consultation medicale a distance",
     ]),
     (SECTOR_EDUCATION, [
         "universite", "university", "ecole", "college", "lycee",
@@ -381,7 +394,8 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_FINANCE, [
         "banque", "bank", "assurance", "insurance", "mutuelle", "courtage",
         "finance", "financier", "credit", "tresor", "impots", "fiscal",
-        "douane", "revenue authority", "microfinance",
+        "douane", "revenue authority", "microfinance", "gestion de patrimoine",
+        "conseil patrimonial", "metaux precieux",
     ]),
     (SECTOR_TRANSPORT, [
         "compagnie aerienne", "airlines", "airways", "aeroport", "air austral",
@@ -392,6 +406,8 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_SPORT, [
         "federation francaise de", "federation francaise d ", "club sportif",
         "federation sportive", "sport", "fitness", "olympique", "football",
+        "tir sportif", "federation de tir", "chronometrage sportif",
+        "course de trail", "trail running",
     ]),
     (SECTOR_RETAIL, [
         "cci", "chambre de commerce", "commerce", "commerces", "distribution",
@@ -399,7 +415,8 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
         "hypermarches", "magasin", "magasins", "retail", "boutique",
         "boutiques", "e commerce", "chambre de metiers", "concession",
         "concessionnaire", "automobiles", "garage", "grande surface",
-        "centre commercial", "negoce", "grossiste",
+        "centre commercial", "negoce", "grossiste", "parapharmacie",
+        "vente de sneakers", "vente en ligne de chaussures",
     ]),
     (SECTOR_TECH, [
         "technologies", "technology", "reseaux", "editeur de logiciels", "esn",
@@ -417,7 +434,8 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
         "batiment", "btp", "travaux publics", "construction", "immobilier",
         "immobiliers", "immobiliere", "immobilieres", "agence immobiliere",
         "maconnerie", "charpente", "promoteur immobilier", "immo", "habitat",
-        "logement", "hlm", "bailleur social", "foncier",
+        "logement", "hlm", "bailleur social", "foncier", "gestion fonciere",
+        "donnees foncieres", "observatoire du logement",
     ]),
     (SECTOR_INDUSTRY, [
         "industrie", "industriel", "manufacture", "usine", "fonderie",

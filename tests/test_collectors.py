@@ -510,6 +510,21 @@ class TestRansomwareLive:
         assert entry.location == config.LOC_FRANCE
         assert "lockbit" in entry.title
 
+    def test_identifiant_natif_et_groupes_distincts_le_meme_jour(self):
+        payload = json.dumps([
+            {"id": "post-1", "victim": "Entreprise Alpha", "discovered": "2026-08-10", "group": "lockbit", "country": "FR"},
+            {"id": "post-2", "victim": "Entreprise Alpha", "discovered": "2026-08-10", "group": "akira", "country": "FR"},
+            {"id": "post-1", "victim": "Entreprise Alpha", "discovered": "2026-08-10", "group": "lockbit", "country": "FR"},
+        ])
+        client = FakeClient({"ransomware.live": ok(payload)})
+        spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi",
+                          collector="ransomware_live", params={"countries": ["FR"]})
+
+        result = RansomwareLiveCollector().collect(client, spec, WINDOW)
+
+        assert len(result.entries) == 2
+        assert {entry.source_item_id for entry in result.entries} == {"post-1", "post-2"}
+
     def test_api_injoignable_donne_fail(self):
         client = FakeClient({})
         spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi",

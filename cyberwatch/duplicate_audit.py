@@ -173,9 +173,14 @@ def _ordered_pair(left: Item, right: Item) -> tuple[Item, Item]:
 
 
 def _days_apart(left: Item, right: Item) -> int | None:
-    left_date = date_or_empty(left.best_date)
-    right_date = date_or_empty(right.best_date)
-    if not left_date or not right_date:
+    left_event = date_or_empty(left.Event_Date)
+    right_event = date_or_empty(right.Event_Date)
+    if left_event and right_event:
+        left_date, right_date = left_event, right_event
+    else:
+        left_date = date_or_empty(left.Published_Date)
+        right_date = date_or_empty(right.Published_Date)
+    if left_date is None or right_date is None:
         return None
     return abs((left_date - right_date).days)
 
@@ -216,7 +221,7 @@ def find_duplicate_candidates(
     )
 
     for index, left in enumerate(ordered):
-        left_date = date_or_empty(left.best_date)
+        left_date = date_or_empty(left.Published_Date)
         if not left.Organisation_Key or not left_date:
             continue
 
@@ -224,11 +229,13 @@ def find_duplicate_candidates(
             if left.Source_ID == right.Source_ID:
                 continue
 
-            right_date = date_or_empty(right.best_date)
+            right_date = date_or_empty(right.Published_Date)
             if not right.Organisation_Key or not right_date:
                 continue
 
-            days_apart = abs((left_date - right_date).days)
+            days_apart = _days_apart(left, right)
+            if days_apart is None:
+                continue
             if days_apart > max_days:
                 continue
 
@@ -263,50 +270,32 @@ def find_duplicate_candidates(
     )
 
 
-def find_audit_candidates(
-    items: list[Item],
-    company_ids: dict[str, str] | None = None,
-    max_days: int = config.INCIDENT_GAP_DAYS,
-) -> list[DedupAuditCandidate]:
-    """Retourne uniquement les décisions de déduplication qui méritent revue.
+def _add_audit_candidate(
+    candidates: dict[tuple[str, str, str], DedupAuditCandidate],
+    candidate: DedupAuditCandidate,
+) -> None:
+    left, right = _ordered_pair(candidate.left, candidate.right)
+    normalized = DedupAuditCandidate(
+        candidate.risk_type, left, right, candidate.days_apart,
+        candidate.reason_code, candidate.company_id,
+    )
+    key = (normalized.risk_type, left.Item_ID, right.Item_ID)
+    existing = candidates.get(key)
+    if existing and existing.reason_code == DUPLICATE_CANDIDATE_SHARED_COMPANY_ID:
+        return
+    candidates[key] = normalized
 
-    Deux risques sont exposés sans jamais changer la production :
-    - ``POSSIBLE_MISSED_DUPLICATE`` : le moteur reste en ``NO_DECISION`` mais
-      un signal de nom ou un Company_ID commun suggère la même victime ;
-    - ``POSSIBLE_FALSE_MERGE`` : le moteur fusionne sur une règle faible sans
-      identifiant natif ni date d'événement égale.
 
-    ``Company_ID`` est seulement un signal d'identité d'organisation : il ne
-    suffit jamais à affirmer qu'il s'agit du même incident.
-    """
-    company_ids = company_ids or {}
-    candidates: dict[tuple[str, str, str], DedupAuditCandidate] = {}
-
-    def add(candidate: DedupAuditCandidate) -> None:
-        left, right = _ordered_pair(candidate.left, candidate.right)
-        normalized = DedupAuditCandidate(
-            candidate.risk_type,
-            left,
-            right,
-            candidate.days_apart,
-            candidate.reason_code,
-            candidate.company_id,
-        )
-        key = (normalized.risk_type, left.Item_ID, right.Item_ID)
-        existing = candidates.get(key)
-        if (
-            existing
-            and existing.reason_code == DUPLICATE_CANDIDATE_SHARED_COMPANY_ID
-        ):
-            return
-        candidates[key] = normalized
-
+def _add_lexical_audit_candidates(
+    candidates: dict[tuple[str, str, str], DedupAuditCandidate],
+    items: list[Item], max_days: int,
+) -> None:
     for lexical in find_duplicate_candidates(items, max_days=max_days):
         if _effective_key(lexical.short) == _effective_key(lexical.long):
             continue
         if decide_merge(lexical.short, lexical.long).action != NO_DECISION:
             continue
-        add(DedupAuditCandidate(
+        _add_audit_candidate(candidates, DedupAuditCandidate(
             RISK_MISSED_DUPLICATE,
             lexical.short,
             lexical.long,
@@ -314,6 +303,19 @@ def find_audit_candidates(
             lexical.reason_code,
         ))
 
+
+def _weak_merge_reason(reason_code: str) -> str:
+    return {
+        "INCIDENT_MERGE_CANONICAL_NAME": MERGE_REVIEW_WEAK_CANONICAL_NAME,
+        "INCIDENT_MERGE_ALIAS": MERGE_REVIEW_WEAK_ALIAS,
+        "INCIDENT_MERGE_RANSOMWARE_CORROBORATION": MERGE_REVIEW_RANSOMWARE_CORROBORATION,
+    }.get(reason_code, "")
+
+
+def _add_pair_audit_candidates(
+    candidates: dict[tuple[str, str, str], DedupAuditCandidate],
+    items: list[Item], company_ids: dict[str, str], max_days: int,
+) -> None:
     ordered = sorted(
         items,
         key=lambda item: (
@@ -337,7 +339,7 @@ def find_audit_candidates(
                 left_company = _company_id(left, company_ids)
                 right_company = _company_id(right, company_ids)
                 if left_company and left_company == right_company:
-                    add(DedupAuditCandidate(
+                    _add_audit_candidate(candidates, DedupAuditCandidate(
                         RISK_MISSED_DUPLICATE,
                         left,
                         right,
@@ -351,21 +353,32 @@ def find_audit_candidates(
                 continue
             if left.Source_ID == right.Source_ID and left.URL and left.URL == right.URL:
                 continue
-            if decision.reason_code == "INCIDENT_MERGE_CANONICAL_NAME":
-                reason_code = MERGE_REVIEW_WEAK_CANONICAL_NAME
-            elif decision.reason_code == "INCIDENT_MERGE_ALIAS":
-                reason_code = MERGE_REVIEW_WEAK_ALIAS
-            elif decision.reason_code == "INCIDENT_MERGE_RANSOMWARE_CORROBORATION":
-                reason_code = MERGE_REVIEW_RANSOMWARE_CORROBORATION
-            else:
+            reason_code = _weak_merge_reason(decision.reason_code)
+            if not reason_code:
                 continue
-            add(DedupAuditCandidate(
+            _add_audit_candidate(candidates, DedupAuditCandidate(
                 RISK_FALSE_MERGE,
                 left,
                 right,
                 days_apart,
                 reason_code,
             ))
+
+
+def find_audit_candidates(
+    items: list[Item],
+    company_ids: dict[str, str] | None = None,
+    max_days: int = config.INCIDENT_GAP_DAYS,
+) -> list[DedupAuditCandidate]:
+    """Retourne les risques de doublon manqué ou de fusion faible à revoir.
+
+    ``Company_ID`` reste un signal d'identité d'organisation : il ne suffit
+    jamais à affirmer que deux observations décrivent le même incident.
+    """
+    candidates: dict[tuple[str, str, str], DedupAuditCandidate] = {}
+    company_ids = company_ids or {}
+    _add_lexical_audit_candidates(candidates, items, max_days)
+    _add_pair_audit_candidates(candidates, items, company_ids, max_days)
 
     return sorted(
         candidates.values(),
@@ -468,6 +481,7 @@ def find_daily_llm_candidates(
     company_ids: dict[str, str] | None = None,
     victim_websites: dict[str, str] | None = None,
     max_candidates_per_item: int = DAILY_LLM_MAX_CANDIDATES_PER_ITEM,
+    deferred: list[DedupAuditCandidate] | None = None,
 ) -> list[DedupAuditCandidate]:
     """Périmètre quotidien restreint (§Lot 2) : nouveaux/rafraîchis × historique.
 
@@ -506,7 +520,7 @@ def find_daily_llm_candidates(
                 continue
             left, right = _ordered_pair(scope_item, other)
             deterministic = decide_merge(left, right)
-            if deterministic.action != NO_DECISION:
+            if deterministic.action != NO_DECISION and deterministic.reason_code != "INCIDENT_KEEP_TIME_GAP":
                 # Une fusion ou un veto déjà tranché reste déterministe. Le LLM
                 # sert seulement de filet pour les doublons non détectés.
                 continue
@@ -516,6 +530,9 @@ def find_daily_llm_candidates(
             if not signals.any_signal:
                 continue
             days = _days_apart(left, right)
+            if (deterministic.reason_code == "INCIDENT_KEEP_TIME_GAP"
+                    and days is not None and days > config.INCIDENT_GAP_DAYS):
+                continue
             candidate = DedupAuditCandidate(
                 RISK_MISSED_DUPLICATE,
                 left,
@@ -532,6 +549,8 @@ def find_daily_llm_candidates(
             ))
 
         ranked.sort(key=lambda pair: pair[0])
+        if deferred is not None:
+            deferred.extend(candidate for _, candidate in ranked[max_candidates_per_item:])
         for _, candidate in ranked[:max_candidates_per_item]:
             pair_key = tuple(sorted((candidate.left.Item_ID, candidate.right.Item_ID)))
             if pair_key in seen_pairs:
@@ -587,6 +606,10 @@ def dedup_identity_benchmark(cases: list[dict]) -> dict:
             false_merges.append(case_id)
 
     return {
+        "candidate_coverage_hits": recall_hits,
+        "candidate_coverage_total": recall_total,
+        "candidate_coverage_pct": round(100.0 * recall_hits / recall_total, 2) if recall_total else 100.0,
+        "metric_scope": "candidate_generation_only_not_completed_merges",
         "known_duplicate_recall_hits": recall_hits,
         "known_duplicate_recall_total": recall_total,
         "known_duplicate_recall_pct": (

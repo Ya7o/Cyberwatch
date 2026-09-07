@@ -1,0 +1,152 @@
+{
+  "description": "Corpus métier versionné. Les cas couvrent l'admission dans le périmètre cyber, la menace, la localisation et le secteur. Ils sont synthétiques, explicites et sans donnée personnelle ; leur évaluation ne fait aucun appel réseau.",
+  "version": "2026-09-07.1",
+  "cases": [
+    {
+      "case_id": "SCOPE_RANSOMWARE",
+      "kind": "scope",
+      "text": "Une entreprise victime d'une attaque ransomware LockBit",
+      "expected_in_scope": true,
+      "expected_threat": "Ransomware"
+    },
+    {
+      "case_id": "SCOPE_DATA_LEAK",
+      "kind": "scope",
+      "text": "90 000 données volées après une cyberattaque",
+      "expected_in_scope": true,
+      "expected_threat": "Fuite de données"
+    },
+    {
+      "case_id": "SCOPE_SYSTEM_INTRUSION",
+      "kind": "scope",
+      "text": "Intrusion dans le système d'information de la mairie",
+      "expected_in_scope": true,
+      "expected_threat": "Intrusion"
+    },
+    {
+      "case_id": "SCOPE_PHISHING",
+      "kind": "scope",
+      "text": "Campagne de phishing visant les agents de la collectivité",
+      "expected_in_scope": true,
+      "expected_threat": "Phishing / fraude"
+    },
+    {
+      "case_id": "SCOPE_DDOS",
+      "kind": "scope",
+      "text": "Le portail subit une attaque DDoS",
+      "expected_in_scope": true,
+      "expected_threat": "DDoS"
+    },
+    {
+      "case_id": "SCOPE_MALWARE",
+      "kind": "scope",
+      "text": "Un malware a infecté plusieurs postes informatiques",
+      "expected_in_scope": true,
+      "expected_threat": "Malware"
+    },
+    {
+      "case_id": "SCOPE_PHYSICAL_INTRUSION",
+      "kind": "scope",
+      "text": "Intrusion nocturne chez un commerçant après une effraction",
+      "expected_in_scope": false
+    },
+    {
+      "case_id": "SCOPE_BURGLARY",
+      "kind": "scope",
+      "text": "Matériel disparu après un cambriolage à Kaweni",
+      "expected_in_scope": false
+    },
+    {
+      "case_id": "SCOPE_SPORT_RESULTS",
+      "kind": "scope",
+      "text": "Résultats sportifs et classement du week-end",
+      "expected_in_scope": false
+    },
+    {
+      "case_id": "SCOPE_PLANNED_MAINTENANCE",
+      "kind": "scope",
+      "text": "Maintenance planifiée du site internet dimanche matin",
+      "expected_in_scope": false
+    },
+    {
+      "case_id": "LOCATION_MAYOTTE_TEXT",
+      "kind": "location",
+      "text": "Cyberattaque contre une mairie à Mayotte",
+      "expected": "Mayotte"
+    },
+    {
+      "case_id": "LOCATION_REUNION_PROPER_NAME",
+      "kind": "location",
+      "text": "Incident déclaré à La Réunion",
+      "expected": "La Réunion"
+    },
+    {
+      "case_id": "LOCATION_SOURCE_DEFAULT",
+      "kind": "location",
+      "text": "Incident sans indice territorial",
+      "default": "France métropolitaine",
+      "expected": "France métropolitaine"
+    },
+    {
+      "case_id": "LOCATION_AMBIGUOUS_MEETING",
+      "kind": "location",
+      "text": "Réunion de travail sur la sécurité",
+      "expected": "Inconnu"
+    },
+    {
+      "case_id": "THREAT_NEGATED_LEAK",
+      "kind": "scope",
+      "text": "Intrusion dans la messagerie, aucune fuite de données identifiée",
+      "expected_in_scope": true,
+      "expected_threat": "Intrusion"
+    },
+    {
+      "case_id": "THREAT_NEGATED_RANSOMWARE",
+      "kind": "scope",
+      "text": "Intrusion confirmée, aucun ransomware détecté",
+      "expected_in_scope": true,
+      "expected_threat": "Intrusion"
+    },
+    {
+      "case_id": "LOCATION_BARE_AFFECTED_COUNT",
+      "kind": "location",
+      "text": "Fuite de 97400 comptes clients",
+      "expected": "Inconnu"
+    },
+    {
+      "case_id": "LOCATION_THIRD_PARTY_TERRITORY",
+      "kind": "location",
+      "text": "Acme est victime en France métropolitaine ; son prestataire est à La Réunion.",
+      "expected": "France métropolitaine"
+    },
+    {
+      "case_id": "SECTOR_HEALTH",
+      "kind": "sector",
+      "organisation": "Centre hospitalier universitaire",
+      "text": "",
+      "expected": "Santé"
+    },
+    {
+      "case_id": "SECTOR_SPORT",
+      "kind": "sector",
+      "organisation": "Fédération Française de Squash",
+      "text": "fuite de données",
+      "expected": "Sport"
+    },
+    {
+      "case_id": "SECTOR_NATIVE_MANUFACTURING",
+      "kind": "sector",
+      "organisation": "",
+      "text": "",
+      "given": "Manufacturing",
+      "expected": "Industrie / Manufacture"
+    },
+    {
+      "case_id": "SECTOR_UNKNOWN_VICTIM_PRECEDENCE",
+      "kind": "sector",
+      "organisation": "Trescal",
+      "text": "Fuite touchant plusieurs fédérations françaises",
+      "expected": "Inconnu"
+    }
+  ]
+}

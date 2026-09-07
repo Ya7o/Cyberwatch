@@ -10,6 +10,11 @@ import tempfile
 # laisse un override explicite de l'opérateur prendre le dessus.
 _TELEMETRY_DIR = tempfile.mkdtemp(prefix="cyberwatch-tests-")
 os.environ.setdefault("LLM_USAGE_PATH", os.path.join(_TELEMETRY_DIR, "llm_usage.json"))
+os.environ.setdefault("SOURCE_FACTS_AI_STATS_PATH", os.path.join(_TELEMETRY_DIR, "source_facts_ai_usage.json"))
+os.environ.setdefault("SOURCE_FACTS_AI_CACHE_PATH", os.path.join(_TELEMETRY_DIR, "source_facts_ai_cache.json"))
+os.environ.setdefault(
+    "SOURCE_FACTS_RETRY_QUEUE_PATH", os.path.join(_TELEMETRY_DIR, "source_facts_retry_queue.json")
+)
 os.environ.setdefault(
     "CYBERWATCH_PERFORMANCE_LOG_PATH", os.path.join(_TELEMETRY_DIR, "performance_runs.json")
 )

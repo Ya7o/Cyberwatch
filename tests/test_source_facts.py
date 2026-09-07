@@ -28,6 +28,46 @@ def test_json_canonique_et_round_trip():
     assert sf._loads_json("{invalide") is None
 
 
+def test_sanitize_retire_acteur_generique_et_vecteur_explicitement_indetermine():
+    rows = [{
+        "Item_ID": "ITM-cgt",
+        "Threat_Actor": "syndicat",
+        "Initial_Access": "compromised_credentials",
+        "Evidence_JSON": sf._dumps_json({
+            "Threat_Actor": "Le syndicat affirme avoir découvert le piratage.",
+            "Initial_Access": (
+                "Il est impossible de déterminer si l’attaque provient d’un compte "
+                "administrateur compromis ou d’une vulnérabilité."
+            ),
+        }),
+    }]
+    sanitized, changed = sf.sanitize_source_facts(rows)
+    assert changed == ["ITM-cgt"]
+    assert sanitized[0]["Threat_Actor"] == ""
+    assert sanitized[0]["Initial_Access"] == ""
+    assert sf._loads_json(sanitized[0]["Evidence_JSON"]) is None
+    assert sf._loads_json(sanitized[0]["Source_Metadata_JSON"])[
+        "_source_facts_semantic_status"
+    ] == {"initial_access": "rejected_quality", "threat_actor": "rejected_quality"}
+
+
+def test_sanitize_retire_candidat_malware_non_prouve():
+    rows = [{
+        "Item_ID": "ITM-lebonsiege",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "threat_tentative": {
+                "value": "Malware",
+                "evidence": "Sophia affirme avoir piraté le site.",
+            }
+        }),
+    }]
+    sanitized, changed = sf.sanitize_source_facts(rows)
+    assert changed == ["ITM-lebonsiege"]
+    metadata = sf._loads_json(sanitized[0]["Source_Metadata_JSON"])
+    assert "threat_tentative" not in metadata
+    assert metadata["_source_facts_semantic_status"]["threat_candidate"] == "rejected_quality"
+
+
 def test_merge_source_facts_idempotent_et_trie():
     existing = [{"Item_ID": "B", "Threat_Actor": "ancien"}, {"Item_ID": "A"}]
     incoming = [{"Item_ID": "B", "Threat_Actor": "nouveau"}, {"Item_ID": "C"}]
@@ -56,14 +96,14 @@ def test_merge_source_facts_conserve_les_metadonnees_riches_absentes_du_refresh(
     assert metadata["rich_facts"]["claims"][0]["value"] == "fait documenté"
 
 
-def test_dispatch_et_schema_et_version_v4():
+def test_dispatch_et_schema_et_version_v6():
     unknown = spec("AUTRE_SOURCE")
     assert sf.extract_source_fact(make_item("AUTRE_SOURCE"), RawEntry(title="X"), unknown) is None
     entry = RawEntry(title="Exemple", summary="Revendiquée par le groupe X, CVE-2026-11111 exploitée.")
     fact = sf.extract_source_fact(make_item(), entry, spec("FRENCHBREACHES"))
     assert set(fact) == set(SOURCE_FACT_COLUMNS)
-    assert fact["Extraction_Version"] == "5"
-    assert sf.SOURCE_FACTS_VERSION == "5"
+    assert fact["Extraction_Version"] == "6"
+    assert sf.SOURCE_FACTS_VERSION == "6"
     assert "Initial_Access" in SOURCE_FACT_COLUMNS
     assert "Attack_Flow_JSON" in SOURCE_FACT_COLUMNS
 

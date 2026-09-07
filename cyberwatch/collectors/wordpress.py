@@ -74,6 +74,37 @@ class WordPressCollector(Collector):
 
     name = "wordpress"
 
+    @staticmethod
+    def _query(spec: SourceSpec) -> dict[str, str]:
+        fields = "id,date,link,title,excerpt,categories"
+        if spec.params.get("include_content"):
+            fields = "id,date,link,title,excerpt,content,categories"
+        return {"per_page": "100", "orderby": "date", "order": "desc", "_fields": fields}
+
+    @staticmethod
+    def _searches(spec: SourceSpec) -> list[str]:
+        terms = spec.params.get("search_terms") or []
+        if isinstance(terms, str):
+            terms = [terms]
+        if spec.params.get("search"):
+            terms = [spec.params["search"]]
+        return list(terms) or [""]
+
+    @staticmethod
+    def _apply_taxonomies(client, spec, endpoint, budget, query, result) -> bool:
+        for taxonomy, key in (("categories", "categories"), ("tags", "tags")):
+            slug = spec.params.get(key)
+            if not slug:
+                continue
+            term_id = resolve_taxonomy_term(client, endpoint, taxonomy, slug, budget)
+            if term_id is None:
+                result.reason_code = status.REASON_NO_FEED
+                result.comment = f"Taxonomie {taxonomy}={slug} introuvable"
+                result.calls = budget.requests_made
+                return False
+            query[taxonomy] = str(term_id)
+        return True
+
     def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
         budget = client.source_budget()
         result = CollectResult(access_method="wordpress")
@@ -86,39 +117,16 @@ class WordPressCollector(Collector):
             result.reason_code = status.REASON_NO_FEED
             return result
 
-        query: dict[str, str] = {
-            "per_page": "100",
-            "orderby": "date",
-            "order": "desc",
-            "_fields": "id,date,link,title,excerpt,categories",
-        }
-        if spec.params.get("include_content"):
-            query["_fields"] = "id,date,link,title,excerpt,content,categories"
+        query = self._query(spec)
 
-        for taxonomy, key in (("categories", "categories"), ("tags", "tags")):
-            slug = spec.params.get(key)
-            if not slug:
-                continue
-            term_id = resolve_taxonomy_term(client, endpoint, taxonomy, slug, budget)
-            if term_id is None:
-                # La taxonomie demandée n'existe pas : mieux vaut le dire que
-                # collecter silencieusement tout le site.
-                result.reason_code = status.REASON_NO_FEED
-                result.comment = f"Taxonomie {taxonomy}={slug} introuvable"
-                result.calls = budget.requests_made
-                return result
-            query[taxonomy] = str(term_id)
+        if not self._apply_taxonomies(client, spec, endpoint, budget, query, result):
+            return result
 
-        search_terms = spec.params.get("search_terms") or []
-        if isinstance(search_terms, str):
-            search_terms = [search_terms]
-        if spec.params.get("search"):
-            search_terms = [spec.params["search"]]
         # Une recherche par terme conserve une borne d'archive contrôlable sans
         # télécharger le journal entier. Les doublons entre termes sont retirés
         # sur l'identifiant WordPress natif, donc cette variation reste purement
         # déclarative et ne change jamais la provenance éditoriale.
-        searches = list(search_terms) or [""]
+        searches = self._searches(spec)
 
         page = 1
         total_pages = None

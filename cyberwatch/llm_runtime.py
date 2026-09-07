@@ -147,6 +147,7 @@ class LlmRuntime:
         self.timeout_seconds = _env_int("LLM_TIMEOUT_SECONDS", DEFAULT_TIMEOUT_SECONDS)
         self.max_retries = _env_int("LLM_MAX_RETRIES", DEFAULT_MAX_RETRIES)
         self.stats = LlmRuntimeStats()
+        self.run_id = ""
         self._lock = threading.Lock()
 
     @property
@@ -405,12 +406,15 @@ def _stats_path() -> Path:
 
 def _write_stats() -> None:
     runtime_ = _RUNTIME
-    if runtime_.stats.calls_attempted == 0 and runtime_.stats.calls_budget_blocked == 0:
+    if not runtime_.run_id and runtime_.stats.calls_attempted == 0 and runtime_.stats.calls_budget_blocked == 0:
         return
     path = _stats_path()
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         payload = asdict(runtime_.stats)
+        payload["run_id"] = runtime_.run_id
+        payload["enabled"] = runtime_.enabled
+        payload["disabled_reason"] = "" if runtime_.enabled else "API_KEY_MISSING"
         payload["routing"] = {
             "default_model": DEFAULT_MODEL,
             "rich_model": RICH_MODEL,
@@ -424,6 +428,10 @@ def _write_stats() -> None:
             encoding="utf-8",
         )
         tmp.replace(path)
+        if runtime_.run_id:
+            history = path.parent / "llm_runs" / "".join(c for c in runtime_.run_id if c.isalnum() or c in "-_")
+            history.mkdir(parents=True, exist_ok=True)
+            (history / path.name).write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except OSError:
         pass
 
@@ -434,6 +442,13 @@ atexit.register(_write_stats)
 
 def runtime() -> LlmRuntime:
     return _RUNTIME
+
+
+def begin_run(run_id: str) -> None:
+    """Reset counters at the actual run boundary, never on a read-only import."""
+    if _RUNTIME.run_id != run_id:
+        _RUNTIME.stats = LlmRuntimeStats()
+    _RUNTIME.run_id = run_id
 
 
 def reset_runtime_for_tests() -> None:

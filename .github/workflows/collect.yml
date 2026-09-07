@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: cyberwatch-data-write
@@ -17,6 +18,9 @@ jobs:
   collect:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      CYBERWATCH_RUN_TRIGGER: ${{ github.event_name }}
+      CYBERWATCH_BASE_COMMIT: ${{ github.sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
@@ -33,7 +37,12 @@ jobs:
           DEDUP_AI_DAILY_ENABLED: "1"
         run: python -m cyberwatch maj
       - name: Valider
-        run: python -m cyberwatch check
+        run: |
+          python -m cyberwatch check
+          python -m cyberwatch validate-business
+      - name: Suivre la production
+        id: production_health
+        run: python -m cyberwatch production-status --markdown --github-output | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Résumé du run
         shell: bash
         run: |
@@ -43,8 +52,20 @@ jobs:
         run: |
           git config user.name "cyberwatch-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          if [ "$(git rev-parse origin/main)" != "$CYBERWATCH_BASE_COMMIT" ]; then
+            echo "::error::main a changé pendant la collecte ; publication annulée."
+            exit 1
+          fi
           git add data assets/data
           if git diff --staged --quiet; then exit 0; fi
           git commit -m "data: collecte"
-          git pull --rebase origin main
           git push origin HEAD:main
+      - name: Notifier l'état de production
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          HEALTH_ALERT: ${{ steps.production_health.outputs.alert }}
+          HEALTH_REASONS: ${{ steps.production_health.outputs.alert_reasons }}
+        run: bash .github/scripts/manage-production-alert.sh

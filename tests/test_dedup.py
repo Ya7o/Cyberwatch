@@ -145,14 +145,13 @@ class TestIncidentFields:
         ]
         assert build_incidents(items)[0].Menace == config.THREAT_RANSOMWARE
 
-    def test_fuite_domine_intrusion_generique(self, make_item):
-        """§stabilisation pré-release : une menace spécifique (Fuite) gagne
-        toujours sur le palier générique (Intrusion), quel que soit l'ordre."""
+    def test_conflit_fuite_intrusion_sans_preuve_provoque_abstention(self, make_item):
+        """Une priorité statique ne doit plus transformer un désaccord en fait."""
         items = [
             make_item(source="A", published="2026-03-01", url="https://a/1", threat=config.THREAT_LEAK),
             make_item(source="B", published="2026-03-03", url="https://a/2", threat=config.THREAT_INTRUSION),
         ]
-        assert build_incidents(items)[0].Menace == config.THREAT_LEAK
+        assert build_incidents(items)[0].Menace == config.THREAT_UNKNOWN
 
     def test_compromission_historique_ne_devient_plus_une_menace(self, make_item):
         items = [
@@ -160,6 +159,40 @@ class TestIncidentFields:
             make_item(source="B", published="2026-03-03", url="https://a/2", threat=config.THREAT_INTRUSION),
         ]
         assert build_incidents(items)[0].Menace == config.THREAT_INTRUSION
+
+    def test_orion_fuite_prouvee_bat_un_phishing_legacy(self, make_item):
+        item = make_item(
+            source="CYBERATTAQUE_ORG",
+            published="2026-08-31",
+            threat=config.THREAT_PHISHING,
+            title="Orion : 20 Go de données clients volés après le piratage d’un partenaire",
+        )
+        incident = build_incidents([item], [{
+            "Item_ID": item.Item_ID,
+            "Source_ID": item.Source_ID,
+            "Claim_Status": "claimed",
+            "Summary": "20 Go de données clients volés à Orion.",
+        }])[0]
+        assert incident.Menace == config.THREAT_LEAK
+
+    def test_cgt_intrusion_prouvee_bat_defaut_fuite_de_source(self, make_item):
+        intrusion = make_item(
+            source="CYBERATTAQUE_ORG", published="2026-08-30", url="https://a/1",
+            threat=config.THREAT_INTRUSION,
+            title="CGT Éduc’Action : deux sites piratés avant la rentrée",
+        )
+        leak_default = make_item(
+            source="FRENCHBREACHES", published="2026-08-30", url="https://a/2",
+            threat=config.THREAT_LEAK, title="CGT Éduc’Action",
+        )
+        facts = [{
+            "Item_ID": intrusion.Item_ID,
+            "Source_ID": intrusion.Source_ID,
+            "Claim_Status": "confirmed",
+            "Summary": "Les sites ont été piratés et rendus indisponibles plusieurs jours.",
+            "Impact": "Indisponibilité et modification de contenus.",
+        }]
+        assert build_incidents([intrusion, leak_default], facts)[0].Menace == config.THREAT_INTRUSION
 
     def test_son_video_recidive_separe_avril_et_consolide_aout(self, make_item):
         """La récidive ouvre l'épisode d'août par rapport à avril, sans

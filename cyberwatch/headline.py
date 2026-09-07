@@ -61,5 +61,23 @@ def is_organisation_name_only(value: object, organisation: object) -> bool:
     return bool(text and org and text == org)
 
 
+def victim_claims_incident(value: object, organisation: object) -> bool:
+    """Détecte l'inversion de rôle « la victime revendique l'attaque »."""
+    text = " ".join(str(value or "").split()).strip().casefold()
+    org = " ".join(str(organisation or "").split()).strip().casefold()
+    if not text or not org:
+        return False
+    # Un titre passif (« Foo : attaque revendiquée par X ») reste valide.
+    return bool(re.match(rf"^{re.escape(org)}\s+(?:affirme\s+)?revendiqu\w*\b", text))
+
+
+def is_publishable_for_organisation(value: object, organisation: object) -> bool:
+    return bool(
+        is_publishable_headline(value)
+        and not is_organisation_name_only(value, organisation)
+        and not victim_claims_incident(value, organisation)
+    )
+
+
 def is_publishable_headline(value: object) -> bool:
     return not rejection_reason(value)

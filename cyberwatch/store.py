@@ -17,8 +17,10 @@ from .model import (
     ENTITY_WATCH_COLUMNS,
     INCIDENT_COLUMNS,
     ITEM_COLUMNS,
+    PRODUCTION_METRIC_COLUMNS,
     RUN_LOG_COLUMNS,
     RUN_SOURCE_COLUMNS,
+    SECTOR_RESOLUTION_COLUMNS,
     SOURCE_COLUMNS,
     SOURCE_FACT_COLUMNS,
     Incident,
@@ -46,6 +48,8 @@ INCIDENT_ID_REGISTRY_CSV = DATA_DIR / "incident_id_registry.csv"
 INCIDENT_DEDUP_REGISTRY_CSV = DATA_DIR / "incident_dedup_registry.csv"
 ORGANISATION_IDENTITY_REGISTRY_CSV = DATA_DIR / "organisation_identity_registry.csv"
 DEDUP_AI_DAILY_USAGE_CSV = DATA_DIR / "dedup_ai_daily_usage.csv"
+PRODUCTION_METRICS_CSV = DATA_DIR / "production_metrics.csv"
+SECTOR_RESOLUTION_CSV = DATA_DIR / "sector_resolution.csv"
 #: Jeu auxiliaire (§13 METHODOLOGY.md) : jamais lu ni écrit par REPLAY, jamais
 #: inclus dans Items_Hash/Incidents_Hash.
 SOURCE_FACTS_CSV = DATA_DIR / "source_facts.csv"
@@ -203,6 +207,39 @@ def append_dedup_ai_daily_usage(row: dict, path: Path | None = None) -> None:
 
 def load_dedup_ai_daily_usage(path: Path | None = None) -> list[dict]:
     return read_csv(path or DEDUP_AI_DAILY_USAGE_CSV)
+
+
+def _production_metrics_path(path: Path | None = None) -> Path:
+    if path is not None:
+        return path
+    # Suit ITEMS_CSV pour que les tests qui isolent le snapshot n'écrivent
+    # jamais dans data/ réel.
+    return ITEMS_CSV.parent / PRODUCTION_METRICS_CSV.name
+
+
+def upsert_production_metric(row: dict, path: Path | None = None) -> None:
+    """Écrit une seule ligne par Run_ID, même après une relance idempotente."""
+    target = _production_metrics_path(path)
+    run_id = row.get("Run_ID", "")
+    rows = [existing for existing in read_csv(target) if existing.get("Run_ID") != run_id]
+    rows.append(row)
+    write_csv(target, PRODUCTION_METRIC_COLUMNS, rows)
+
+
+def load_production_metrics(path: Path | None = None) -> list[dict]:
+    return read_csv(_production_metrics_path(path))
+
+
+def _sector_resolution_path(path: Path | None = None) -> Path:
+    return path or ITEMS_CSV.parent / SECTOR_RESOLUTION_CSV.name
+
+
+def save_sector_resolution(rows: list[dict], path: Path | None = None) -> None:
+    write_csv(_sector_resolution_path(path), SECTOR_RESOLUTION_COLUMNS, rows)
+
+
+def load_sector_resolution(path: Path | None = None) -> list[dict]:
+    return read_csv(_sector_resolution_path(path))
 
 
 def save_sources(rows: list[dict], path: Path | None = None) -> None:

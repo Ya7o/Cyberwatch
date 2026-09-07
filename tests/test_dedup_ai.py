@@ -439,6 +439,27 @@ def test_validate_incident_same_cannot_override_strong_veto(make_item):
     assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
 
 
+def test_validate_incident_same_rejette_un_ecart_superieur_a_la_borne(make_item):
+    left = make_item(source="A", org="Globex", published="2026-08-01", url="https://a")
+    right = make_item(source="B", org="Globex", published="2026-08-16", url="https://b")
+    candidate = DedupAuditCandidate(
+        risk_type=RISK_FALSE_MERGE,
+        left=left,
+        right=right,
+        days_apart=15,
+        reason_code=MERGE_REVIEW_WEAK_CANONICAL_NAME,
+    )
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK,
+        same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.SAME,
+        confidence=0.99,
+        evidence="Même organisation.",
+    )
+
+    assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
+
+
 def test_recurrence_veto_does_not_block_organisation_identity(make_item):
     """Deux événements distincts peuvent viser la même organisation.
 

@@ -200,7 +200,63 @@ RUN_LOG_COLUMNS = [
     "Overall_Status",
     "Duration_s",
     "Requests",
+    "Trigger",
+    "GitHub_Run_ID",
+    "Base_Commit",
+    "LLM_Calls",
+    "LLM_Cost_USD",
     "Notes",
+]
+
+# --------------------------------------------------------------------------
+# PRODUCTION_METRICS — une ligne par collecte, pour piloter la fiabilité et
+# la qualité sans recalculer l'historique depuis le snapshot courant.
+# --------------------------------------------------------------------------
+
+PRODUCTION_METRIC_COLUMNS = [
+    "Run_ID",
+    "As_Of",
+    "Trigger",
+    "Overall_Status",
+    "Published",
+    "Items_Count",
+    "Incidents_Count",
+    "Sector_Unknown_Count",
+    "Sector_Unknown_Pct",
+    "Location_Unknown_Count",
+    "Location_Unknown_Pct",
+    "New_Items_Count",
+    "New_Sector_Unknown_Count",
+    "New_Sector_Unknown_Pct",
+    "New_Threat_Unknown_Count",
+    "New_Threat_Unknown_Pct",
+    "New_Location_Unknown_Count",
+    "New_Location_Unknown_Pct",
+    "SourceFacts_Retry_Queued_Before",
+    "SourceFacts_Retry_Attempted",
+    "SourceFacts_Retry_Queued_After",
+    "Potential_Duplicate_Pairs",
+    "Potential_Duplicate_Rate_Pct",
+    "Missed_Duplicate_Candidate_Pairs",
+    "Weak_Merge_Review_Pairs",
+    "Validated_Same_Not_Grouped_Pairs",
+    "Pending_Review_Pairs",
+    "Corpus_Cases",
+    "Corpus_False_Positives",
+    "Corpus_False_Positive_Rate_Pct",
+    "Corpus_False_Negatives",
+    "Corpus_Classification_Errors",
+    "Dedup_Known_False_Merges",
+    "Duration_s",
+    "Requests",
+    "LLM_Calls",
+    "LLM_Cost_USD",
+]
+
+SECTOR_RESOLUTION_COLUMNS = [
+    "Run_ID", "As_Of", "Item_ID", "Source_ID", "Organisation_Key",
+    "Organisation", "Previous_Sector", "Resolved_Sector", "Status",
+    "Reason", "Confidence", "Evidence", "Evidence_URL", "Policy_Version",
 ]
 
 # --------------------------------------------------------------------------
@@ -243,11 +299,17 @@ DEDUP_AI_DAILY_USAGE_COLUMNS = [
     "As_Of",
     "Mode",
     "Status",
+    "Enabled",
+    "Disabled_Reason",
     "Model",
+    "Requested_Model",
+    "Effective_Model",
     "Prompt_Version",
     "Candidates_Generated",
     "Candidates_Selected",
     "Candidates_Not_Reviewed_Capacity",
+    "Pairs_Reviewed",
+    "Incident_Pairs_Resolved",
     "LLM_Calls",
     "LLM_Calls_Succeeded",
     "LLM_Calls_Failed",

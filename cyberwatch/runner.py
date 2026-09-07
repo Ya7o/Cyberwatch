@@ -4,12 +4,16 @@ from __future__ import annotations
 
 import datetime as dt
 import time
-from collections import defaultdict
 import os
-import subprocess
+from collections import defaultdict
 from dataclasses import dataclass, field
 
-from . import config, dedup_ai, duplicate_audit, enrichment, identity, incident_dedup, incident_identity, org_identity, sector as sector_policy, source_facts, source_facts_ai, sources, status, store, watchlists
+from . import config, dedup_ai, dedup_review, enrichment, identity, incident_dedup, incident_identity, llm_runtime, org_identity, production, runner_dedup, runner_ingestion, runner_source_facts, sector as sector_policy, sector_resolution, source_facts, source_facts_ai, source_facts_retry, sources, status, store, watchlists
+from .runner_support import (
+    code_commit,
+    repair_item_integrity,
+    save_snapshot_provenance,
+)
 from .collectors import get_collector
 from .collectors.cyberattaque_org import (
     is_negated_incident,
@@ -36,6 +40,12 @@ MODE_MAJ = "MAJ"
 MODE_REPLAY = "REPLAY"
 
 
+def _llm_totals() -> tuple[int, float]:
+    """Expose le total partagé tout en gardant la frontière testable."""
+    stats = llm_runtime.runtime().stats
+    return stats.calls_attempted, round(stats.estimated_cost_usd, 6)
+
+
 def _extract_source_fact_for_entry(item: Item, entry: RawEntry, spec: SourceSpec) -> dict | None:
     """Extract a source fact from one immutable semantic snapshot.
 
@@ -44,10 +54,7 @@ def _extract_source_fact_for_entry(item: Item, entry: RawEntry, spec: SourceSpec
     validated semantic field after a schema/prompt evolution.  The semantic
     cache itself still prevents a paid request for unchanged content.
     """
-    semantic = None
-    if item.Source_ID in source_facts_ai.TARGET_SOURCES:
-        semantic = source_facts_ai.extract_semantic(item, entry)
-    return source_facts.extract_source_fact(item, entry, spec, semantic=semantic)
+    return runner_source_facts.extract(item, entry, spec)
 
 
 def _local_title_names_a_victim(entry: RawEntry, organisation: str) -> bool:
@@ -78,71 +85,6 @@ def _local_title_names_a_victim(entry: RawEntry, organisation: str) -> bool:
         "piratage", "rancongiciel", "ransomware", "victime",
     ))
     return incident and not (warning and "victime" not in title)
-
-
-def code_commit() -> str:
-    if os.getenv("GITHUB_SHA"):
-        return os.environ["GITHUB_SHA"]
-    try:
-        return subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=store.ROOT, text=True
-        ).strip()
-    except Exception:
-        return ""
-
-
-def save_snapshot_provenance(
-    items: list[Item], incidents: list[Incident], *, operation: str,
-    run_id: str = "", mode: str = "", as_of: str = "",
-    target_start: str = "", target_end: str = "",
-) -> dict:
-    """Enregistre la provenance du snapshot déjà écrit sur disque."""
-    payload = {
-        "As_Of": as_of,
-        "Operation": operation,
-        "Run_ID": run_id,
-        "Mode": mode,
-        "Target_Start": target_start,
-        "Target_End": target_end,
-        "Items_Count": len(items),
-        "Incidents_Count": len(incidents),
-        "Items_Hash": identity.items_hash(items),
-        "Incidents_Hash": identity.incidents_hash(incidents),
-        "Code_Commit": code_commit(),
-        "Sources_Active": sorted(spec.source_id for spec in sources.ALL_SOURCES if spec.active),
-        "Baseline": False,
-    }
-    store.save_snapshot(payload)
-    return payload
-
-
-def repair_item_integrity(items: list[Item]) -> tuple[list[Item], dict[str, int]]:
-    """Répare les IDs et élimine seulement les doublons de clé exacte."""
-    groups: dict[tuple[str, str, str, str], list[Item]] = defaultdict(list)
-    for item in items:
-        groups[(item.Source_ID, item.Published_Date, item.Organisation_Key, item.URL)].append(item)
-
-    repaired: list[Item] = []
-    dropped = 0
-    changed = 0
-    for key in sorted(groups):
-        candidates = groups[key]
-        if len(candidates) > 1:
-            dropped += len(candidates) - 1
-        def quality(item: Item) -> tuple:
-            values = item.to_row()
-            populated = sum(bool(value) for name, value in values.items() if name != "Item_ID")
-            return (-populated, tuple(values[name] for name in sorted(values)))
-        item = sorted(candidates, key=quality)[0]
-        expected = identity.item_id(
-            item.Source_ID, item.Published_Date, item.Organisation_Key,
-            item.URL, item.Source_Item_ID,
-        )
-        if item.Item_ID != expected:
-            changed += 1
-            item.Item_ID = expected
-        repaired.append(item)
-    return identity.sort_items(repaired), {"ids_repaired": changed, "duplicates_removed": dropped}
 
 
 @dataclass
@@ -192,6 +134,26 @@ def make_run_context(
     )
 
 
+def _organisation_for_entry(
+    entry: RawEntry, spec: SourceSpec, known_orgs: dict[str, str]
+) -> str:
+    if spec.source_id == "CYBERATTAQUE_ORG":
+        organisation = clean_organisation(entry.organisation)
+        organisation = organisation or organisation_from_cyberattaque_entry(
+            entry, known_orgs
+        )
+    else:
+        organisation = clean_organisation(entry.organisation)
+        organisation = organisation or organisation_from_title(entry.title)
+    if not organisation and spec.params.get("title_is_organisation"):
+        organisation = organisation_from_entry_title(entry.title)
+    if not organisation and spec.source_id != "CYBERATTAQUE_ORG":
+        organisation = find_known_entity(
+            f"{entry.title} {entry.summary}", known_orgs
+        )
+    return organisation
+
+
 def entry_to_item(
     entry: RawEntry,
     spec: SourceSpec,
@@ -220,15 +182,7 @@ def entry_to_item(
             return None
         if is_obvious_multi(entry.title, entry.summary, entry.content):
             return None
-        organisation = clean_organisation(entry.organisation) or organisation_from_cyberattaque_entry(entry, known_orgs)
-    else:
-        organisation = clean_organisation(entry.organisation) or organisation_from_title(entry.title)
-
-    if not organisation and spec.params.get("title_is_organisation"):
-        organisation = organisation_from_entry_title(entry.title)
-
-    if not organisation and spec.source_id != "CYBERATTAQUE_ORG":
-        organisation = find_known_entity(text, known_orgs)
+    organisation = _organisation_for_entry(entry, spec, known_orgs)
 
     if (spec.source_id == "CYBERATTAQUE_ORG" or spec.params.get("require_victim")) and not organisation:
         return None
@@ -318,6 +272,33 @@ def _resolve_history_status(result: CollectResult, source_status: str, window: W
     return status.HISTORY_COMPLETE, result.oldest_available_date
 
 
+def _record_source_fact_usage(
+    outcome: status.SourceOutcome, before: dict[str, object]
+) -> None:
+    after = source_facts_ai.runtime_stats()
+    outcome.source_facts_llm_duration_seconds = round(
+        max(
+            0.0,
+            float(after.get("total_duration_seconds", 0.0))
+            - float(before.get("total_duration_seconds", 0.0)),
+        ),
+        3,
+    )
+    outcome.source_facts_llm_calls = max(
+        0,
+        int(after.get("calls_attempted", 0))
+        - int(before.get("calls_attempted", 0)),
+    )
+    outcome.source_facts_llm_cost_usd = round(
+        max(
+            0.0,
+            float(after.get("estimated_cost_usd", 0.0))
+            - float(before.get("estimated_cost_usd", 0.0)),
+        ),
+        6,
+    )
+
+
 def run_source(
     client: HttpClient,
     spec: SourceSpec,
@@ -361,61 +342,21 @@ def run_source(
     processing_started = time.monotonic()
     source_facts_before = source_facts_ai.runtime_stats()
 
-    items: list[Item] = []
-    requires_victim = bool(spec.params.get("require_victim"))
-    articles_cyber = 0
-    articles_rejected_no_victim = 0
-    cyberattaque_rejected_negated = 0
-    cyberattaque_rejected_multi = 0
-    cyberattaque_rejected_no_victim = 0
-    for entry in result.entries:
-        if requires_victim and looks_cyber(entry.title, entry.summary, entry.content):
-            articles_cyber += 1
-        if spec.source_id == "CYBERATTAQUE_ORG" and is_negated_incident(entry.title, entry.summary, entry.content):
-            cyberattaque_rejected_negated += 1
-            continue
-        if spec.source_id == "CYBERATTAQUE_ORG" and is_obvious_multi(entry.title, entry.summary, entry.content):
-            cyberattaque_rejected_multi += 1
-            continue
-        item = entry_to_item(
-            entry, spec, context.as_of, known_orgs, entity_index, territories, reference,
-        )
-        if item is not None:
-            items.append(item)
-            # Stabilisation Location v0.7.32 : hors pipeline IA, le défaut de
-            # source reste le dernier recours après l'enrichissement potentiel.
-            if (
-                item.Location == config.LOC_INCONNU
-                and spec.location_rule in config.LOCATIONS
-                and spec.location_rule != config.LOC_INCONNU
-            ):
-                item.Location = spec.location_rule
-            if fact_rows is not None:
-                fact = _extract_source_fact_for_entry(item, entry, spec)
-                if fact is not None:
-                    fact_rows.append(fact)
-        elif requires_victim:
-            articles_rejected_no_victim += 1
-        elif spec.source_id == "CYBERATTAQUE_ORG":
-            cyberattaque_rejected_no_victim += 1
+    items, metrics = runner_ingestion.process_entries(
+        result,
+        spec,
+        context.as_of,
+        known_orgs,
+        entity_index,
+        territories,
+        reference,
+        fact_rows,
+        convert=entry_to_item,
+        extract_fact=_extract_source_fact_for_entry,
+    )
 
     outcome.processing_duration_seconds = round(time.monotonic() - processing_started, 3)
-    source_facts_after = source_facts_ai.runtime_stats()
-    outcome.source_facts_llm_duration_seconds = round(max(
-        0.0,
-        float(source_facts_after.get("total_duration_seconds", 0.0))
-        - float(source_facts_before.get("total_duration_seconds", 0.0)),
-    ), 3)
-    outcome.source_facts_llm_calls = max(
-        0,
-        int(source_facts_after.get("calls_attempted", 0))
-        - int(source_facts_before.get("calls_attempted", 0)),
-    )
-    outcome.source_facts_llm_cost_usd = round(max(
-        0.0,
-        float(source_facts_after.get("estimated_cost_usd", 0.0))
-        - float(source_facts_before.get("estimated_cost_usd", 0.0)),
-    ), 6)
+    _record_source_fact_usage(outcome, source_facts_before)
 
     source_status, coverage = result.resolve()
     outcome.status = source_status
@@ -434,14 +375,17 @@ def run_source(
     outcome.comment = result.comment
     if spec.params.get("local_media_metrics"):
         extra = (
-            f"articles_cyber={articles_cyber}; victims_identified={len(items)}; "
-            f"items_created={len(items)}; articles_rejected_no_victim={articles_rejected_no_victim}"
+            f"articles_cyber={metrics['articles_cyber']}; victims_identified={len(items)}; "
+            f"items_created={len(items)}; articles_rejected_no_victim="
+            f"{metrics['articles_rejected_no_victim']}"
         )
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     if spec.source_id == "CYBERATTAQUE_ORG":
         extra = (
-            f"victims_identified={len(items)}; articles_rejected_no_victim={cyberattaque_rejected_no_victim}; "
-            f"articles_rejected_negated={cyberattaque_rejected_negated}; articles_rejected_multi={cyberattaque_rejected_multi}"
+            f"victims_identified={len(items)}; articles_rejected_no_victim="
+            f"{metrics['cyberattaque_rejected_no_victim']}; articles_rejected_negated="
+            f"{metrics['cyberattaque_rejected_negated']}; articles_rejected_multi="
+            f"{metrics['cyberattaque_rejected_multi']}"
         )
         outcome.comment = f"{outcome.comment}; {extra}" if outcome.comment else extra
     outcome.duration_seconds = round(time.monotonic() - started, 1)
@@ -453,11 +397,7 @@ def run_source(
         outcome.latest_item_date = ""
         outcome.latest_item_org = ""
 
-    watch_rows = []
-    for row in result.watch_rows:
-        row["source_id"] = spec.source_id
-        watch_rows.append(row)
-
+    watch_rows = [dict(row, source_id=spec.source_id) for row in result.watch_rows]
     return outcome, items, watch_rows
 
 
@@ -520,6 +460,7 @@ def pre_export_checks(
     incidents: list[Incident],
     outcomes: list[status.SourceOutcome],
     expected_source_ids: set[str] | None = None,
+    source_facts_rows: list[dict] | None = None,
 ) -> list[str]:
     problems: list[str] = []
 
@@ -573,6 +514,20 @@ def pre_export_checks(
         if outcome.status == status.OK and outcome.coverage < 100:
             problems.append(f"Statut OK sans couverture complète : {outcome.source_id}")
 
+    if source_facts_rows is not None:
+        sector_gaps = sector_resolution.fact_transport_gaps(
+            items, source_facts_rows, enrichment.load_reference()
+        )
+        if sector_gaps:
+            problems.append("Preuves sectorielles non transmises : " + ", ".join(sector_gaps))
+        gaps = source_facts.semantic_materialization_gaps(source_facts_rows)
+        if gaps:
+            problems.append(
+                "Réponses LLM accepted non matérialisées dans SourceFacts : "
+                + ", ".join(gaps[:20])
+                + (" ..." if len(gaps) > 20 else "")
+            )
+
     return problems
 
 
@@ -583,6 +538,7 @@ class RunReport:
     items: list[Item] = field(default_factory=list)
     incidents: list[Incident] = field(default_factory=list)
     new_items: int = 0
+    new_item_ids: set[str] = field(default_factory=set)
     new_incidents: int = 0
     items_hash: str = ""
     incidents_hash: str = ""
@@ -590,12 +546,17 @@ class RunReport:
     problems: list[str] = field(default_factory=list)
     duration: float = 0.0
     requests: int = 0
+    llm_calls: int = 0
+    llm_cost_usd: float = 0.0
     source_facts: list[dict] = field(default_factory=list)
+    source_facts_retry_summary: dict = field(default_factory=dict)
+    sector_resolution_rows: list[dict] = field(default_factory=list)
     incident_id_registry: list[dict] = field(default_factory=list)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
     organisation_identity_rows: list[dict] = field(default_factory=list)
     incident_dedup_rows: list[dict] = field(default_factory=list)
+    dedup_ai_state: dedup_ai.DedupAiRunState | None = None
 
 
 def outcome_blocks_snapshot(outcome: status.SourceOutcome, spec: SourceSpec) -> bool:
@@ -627,89 +588,21 @@ def run_daily_dedup_net(
     (rien de neuf aujourd'hui) coûte structurellement zéro appel LLM.
     """
     state = dedup_ai.start_run(store.DATA_DIR / "dedup_ai_daily_cache.csv")
+    state.run_id = run_id
     problems: list[str] = []
     state.organisation_identity_rows = store.load_organisation_identity_registry_rows()
     state.incident_dedup_rows = store.load_incident_dedup_registry()
-    if new_or_updated_items:
+    try:
+        state.pending_rows = dedup_review.load(store.DATA_DIR / "dedup_review_queue.json")
+    except (ValueError, OSError) as exc:
+        problems.append(f"File de revue dédup illisible : {type(exc).__name__}")
+    if new_or_updated_items or state.pending_rows:
         try:
-            company_ids: dict[str, str] = {}
-            facts_by_item: dict[str, dict] = {}
-            victim_websites: dict[str, str] = {}
-            for row in source_fact_rows:
-                item_id = (row.get("Item_ID") or "").strip()
-                if not item_id:
-                    continue
-                facts_by_item[item_id] = row
-                website = (row.get("Victim_Website") or "").strip()
-                if website:
-                    victim_websites[item_id] = website
-
-            candidates = duplicate_audit.find_daily_llm_candidates(
-                new_or_updated_items, items,
-                company_ids=company_ids, victim_websites=victim_websites,
-            )
-            decisions = dedup_ai.challenge_candidates_batch(
-                candidates, facts_by_item, state, company_ids,
-            )
-
-            candidates_by_id = {dedup_ai.candidate_id(c): c for c in candidates}
-            registry_proposals = []
-            incident_proposals = []
-            for pair_key, decision in decisions.items():
-                candidate = candidates_by_id.get(pair_key)
-                if candidate is None:
-                    continue
-                cached_row = state.rows_by_pair.get(pair_key, {})
-                proposal = dedup_ai.validate_ai_dedup_decision(
-                    candidate, decision, model=state.model,
-                    input_hash=cached_row.get("Input_Hash", ""),
+            problems.extend(
+                runner_dedup.apply_daily_decisions(
+                    state, items, new_or_updated_items, source_fact_rows
                 )
-                if proposal is not None:
-                    registry_proposals.append(proposal)
-                incident_proposal = dedup_ai.validate_ai_incident_decision(
-                    candidate,
-                    decision,
-                    model=state.model,
-                    input_hash=cached_row.get("Input_Hash", ""),
-                )
-                if incident_proposal is not None:
-                    incident_proposals.append(incident_proposal)
-
-            existing_rows = state.organisation_identity_rows
-            merged_rows, merge_problems = org_identity.merge_organisation_identity_rows(
-                existing_rows, registry_proposals,
             )
-            problems.extend(merge_problems)
-
-            existing_incident_rows = state.incident_dedup_rows
-            merged_incident_rows, incident_problems = incident_dedup.merge_rows(
-                existing_incident_rows,
-                incident_proposals,
-                current_item_ids={item.Item_ID for item in items if item.Item_ID},
-            )
-            problems.extend(incident_problems)
-            previous_incident_by_pair = {
-                row.get("Pair_Key", ""): row for row in existing_incident_rows
-            }
-            if not merge_problems and not incident_problems:
-                existing_aliases = {
-                    row.get("Alias_Key", "") for row in existing_rows
-                    if row.get("Decision") == org_identity.DECISION_SAME
-                }
-                merged_aliases = {
-                    row.get("Alias_Key", "") for row in merged_rows
-                    if row.get("Decision") == org_identity.DECISION_SAME
-                }
-                state.organisation_identity_rows_applied = len(
-                    merged_aliases - existing_aliases
-                )
-                state.incident_decision_rows_applied = sum(
-                    previous_incident_by_pair.get(row["Pair_Key"]) != row
-                    for row in merged_incident_rows
-                )
-                state.organisation_identity_rows = merged_rows
-                state.incident_dedup_rows = merged_incident_rows
-
             if persist:
                 dedup_ai.save_cache(state)
         except Exception as exc:  # noqa: BLE001 — filet non bloquant (§Lot 15)
@@ -724,12 +617,155 @@ def run_daily_dedup_net(
     return state, problems
 
 
+def _collect_for_run(
+    report: RunReport,
+    context: RunContext,
+    existing_items: list[Item],
+    existing_item_ids: set[str],
+) -> tuple[list[Item], list[dict]]:
+    run_budget = Budget(config.MAX_REQUESTS_PER_RUN, config.MAX_SECONDS_PER_RUN, "run")
+    client = HttpClient(run_budget=run_budget)
+    known_orgs = watchlists.known_organisations()
+    entity_index = watchlists.entity_index()
+    territories = watchlists.entity_territories()
+    reference = enrichment.load_reference()
+    collected: list[Item] = []
+    watch_rows: list[dict] = []
+    new_fact_rows: list[dict] = []
+    queued_at_start = source_facts_retry.load()
+
+    active_specs = sources.active_sources(context.layers)
+    for spec in active_specs:
+        outcome, items, rows = run_source(
+            client,
+            spec,
+            context,
+            known_orgs,
+            entity_index,
+            territories,
+            reference,
+            new_fact_rows,
+        )
+        report.outcomes.append(outcome)
+        collected.extend(items)
+        watch_rows.extend(rows)
+        print(
+            f"  {outcome.source_id:28} {outcome.status:8} "
+            f"{outcome.coverage:3}%  items={outcome.items_collected:4} "
+            f"calls={outcome.calls:4}  {outcome.reason_code}"
+        )
+
+    replacement_source_ids = {
+        spec.source_id for spec in active_specs if spec.params.get("replace_snapshot")
+    }
+    collected_ids = {
+        item.Item_ID
+        for item in collected
+        if context.window.contains(item.Published_Date)
+    }
+    collected = [item for item in collected if item.Item_ID in collected_ids]
+    new_fact_rows = [
+        row for row in new_fact_rows if row.get("Item_ID") in collected_ids
+    ]
+    merge_base = [
+        item for item in existing_items if item.Source_ID not in replacement_source_ids
+    ]
+    report.items, _ = merge_items(merge_base, collected)
+    report.new_items = sum(
+        item.Item_ID not in existing_item_ids for item in collected
+    )
+    report.new_item_ids = {
+        item.Item_ID for item in collected if item.Item_ID not in existing_item_ids
+    }
+    for outcome in report.outcomes:
+        published = [
+            item for item in collected if item.Source_ID == outcome.source_id
+        ]
+        outcome.items_collected = len(published)
+        outcome.new_items = sum(
+            item.Item_ID not in existing_item_ids for item in published
+        )
+        if published:
+            latest = max(published, key=lambda item: (item.Published_Date, item.Item_ID))
+            outcome.latest_item_date = latest.Published_Date
+            outcome.latest_item_org = latest.Organisation_Raw
+        else:
+            outcome.latest_item_date = ""
+            outcome.latest_item_org = ""
+
+    facts_base = [
+        row
+        for row in store.load_source_facts()
+        if row.get("Source_ID") not in replacement_source_ids
+    ]
+    retry_rows, report.source_facts_retry_summary = runner_source_facts.retry_pending(
+        queued_at_start
+    )
+    report.source_facts = source_facts.merge_source_facts(
+        facts_base, new_fact_rows + retry_rows
+    )
+    report.requests = run_budget.requests_made
+    return collected, watch_rows
+def _apply_daily_dedup(
+    report: RunReport,
+    context: RunContext,
+    collected: list[Item],
+    *,
+    persist: bool,
+) -> None:
+    daily_ids = {item.Item_ID for item in collected if item.Item_ID}
+    daily_scope = [item for item in report.items if item.Item_ID in daily_ids]
+    dedup_state, problems = run_daily_dedup_net(
+        report.items,
+        daily_scope,
+        report.source_facts,
+        run_id=context.run_id,
+        as_of=context.as_of,
+        mode=context.mode,
+        persist=persist,
+    )
+    report.dedup_ai_summary = dedup_ai.daily_summary(dedup_state)
+    report.dedup_ai_state = dedup_state
+    report.dedup_ai_problems = problems
+    report.organisation_identity_rows = dedup_state.organisation_identity_rows
+    report.incident_dedup_rows = dedup_state.incident_dedup_rows
+
+    if not problems:
+        previous_registry = org_identity.ORGANISATION_IDENTITY_REGISTRY
+        org_identity.ORGANISATION_IDENTITY_REGISTRY = {
+            row["Alias_Key"]: row["Canonical_Key"]
+            for row in report.organisation_identity_rows
+            if row.get("Decision") == org_identity.DECISION_SAME
+        }
+        try:
+            report.incidents, report.incident_id_registry = build_incidents_with_registry(
+                report.items,
+                store.load_incident_id_registry(),
+                report.incident_dedup_rows,
+                report.source_facts,
+            )
+        finally:
+            org_identity.ORGANISATION_IDENTITY_REGISTRY = previous_registry
+
+    summary = report.dedup_ai_summary
+    print(
+        "  Vérification LLM finale : "
+        f"statut={summary['dedup_status']} "
+        f"candidats={summary['dedup_candidates_generated']} "
+        f"appels={summary['dedup_llm_calls']} "
+        f"paires_fusionnées={summary['dedup_incident_pairs_resolved']} "
+        f"coût=${summary['dedup_llm_cost_usd']:.4f}"
+    )
+
+
 def execute(
     context: RunContext,
     offline: bool = False,
     persist: bool = True,
 ) -> RunReport:
     started = time.monotonic()
+    llm_runtime.begin_run(context.run_id)
+    source_facts_ai._runtime().run_id = context.run_id
     report = RunReport(context=context)
     report.organisation_identity_rows = store.load_organisation_identity_registry_rows()
     report.incident_dedup_rows = store.load_incident_dedup_registry()
@@ -741,73 +777,22 @@ def execute(
     existing_items = snapshot_items
     existing_item_ids = {item.Item_ID for item in existing_items}
 
+    collected: list[Item] = []
+    watch_rows: list[dict] = []
     if offline:
         report.items = existing_items
+        report.source_facts = store.load_source_facts()
     else:
-        run_budget = Budget(config.MAX_REQUESTS_PER_RUN, config.MAX_SECONDS_PER_RUN, "run")
-        client = HttpClient(run_budget=run_budget)
-        known_orgs = watchlists.known_organisations()
-        entity_index = watchlists.entity_index()
-        territories = watchlists.entity_territories()
-        reference = enrichment.load_reference()
-        collected: list[Item] = []
-        watch_rows: list[dict] = []
-        new_fact_rows: list[dict] = []
-
-        active_specs = sources.active_sources(context.layers)
-        for spec in active_specs:
-            outcome, items, rows = run_source(
-                client, spec, context, known_orgs, entity_index, territories, reference,
-                new_fact_rows,
-            )
-            report.outcomes.append(outcome)
-            collected.extend(items)
-            watch_rows.extend(rows)
-            print(
-                f"  {outcome.source_id:28} {outcome.status:8} "
-                f"{outcome.coverage:3}%  items={outcome.items_collected:4} "
-                f"calls={outcome.calls:4}  {outcome.reason_code}"
-            )
-
-        replacement_source_ids = {
-            spec.source_id for spec in active_specs
-            if spec.params.get("replace_snapshot")
-        }
-        # Le collecteur Veille LLM peut exposer un historique complet. La
-        # fenêtre quotidienne reste l'autorité finale : rien hors période ne
-        # peut atteindre les items, les faits ou la déduplication.
-        collected_ids = {
-            item.Item_ID for item in collected
-            if context.window.contains(item.Published_Date)
-        }
-        collected = [item for item in collected if item.Item_ID in collected_ids]
-        new_fact_rows = [
-            row for row in new_fact_rows if row.get("Item_ID") in collected_ids
-        ]
-        merge_base = [item for item in existing_items if item.Source_ID not in replacement_source_ids]
-        merged, _ = merge_items(merge_base, collected)
-        new_count = sum(item.Item_ID not in existing_item_ids for item in collected)
-        for outcome in report.outcomes:
-            published = [item for item in collected if item.Source_ID == outcome.source_id]
-            outcome.items_collected = len(published)
-            outcome.new_items = sum(
-                item.Item_ID not in existing_item_ids for item in published
-            )
-            if published:
-                latest = max(published, key=lambda item: (item.Published_Date, item.Item_ID))
-                outcome.latest_item_date = latest.Published_Date
-                outcome.latest_item_org = latest.Organisation_Raw
-            else:
-                outcome.latest_item_date = ""
-                outcome.latest_item_org = ""
-        report.items = merged
-        report.new_items = new_count
-
-        existing_facts = store.load_source_facts()
-        facts_base = [row for row in existing_facts if row.get("Source_ID") not in replacement_source_ids]
-        report.source_facts = source_facts.merge_source_facts(facts_base, new_fact_rows)
-        report.requests = run_budget.requests_made
-    enriched = enrichment.finalize_snapshot(report.items)
+        collected, watch_rows = _collect_for_run(
+            report, context, existing_items, existing_item_ids
+        )
+    report.source_facts, _sanitized_fact_ids = source_facts.sanitize_source_facts(
+        report.source_facts
+    )
+    enriched = enrichment.finalize_snapshot(
+        report.items, report.source_facts, run_id=context.run_id, as_of=context.as_of,
+    )
+    report.sector_resolution_rows = enriched.sector_resolution_rows
     report.items = enriched.items
     report.incidents = enriched.incidents
     report.incident_id_registry = enriched.incident_id_registry
@@ -817,46 +802,7 @@ def execute(
     # rattraper les variantes simples de nom laissées séparées. Un seul batch
     # suffit ; en cas d'échec, le résultat déterministe reste publiable.
     if not offline:
-        daily_ids = {item.Item_ID for item in collected if item.Item_ID}
-        daily_scope = [item for item in report.items if item.Item_ID in daily_ids]
-        dedup_state, dedup_ai_problems = run_daily_dedup_net(
-            report.items,
-            daily_scope,
-            report.source_facts,
-            run_id=context.run_id,
-            as_of=context.as_of,
-            mode=context.mode,
-            persist=persist,
-        )
-        report.dedup_ai_summary = dedup_ai.daily_summary(dedup_state)
-        report.dedup_ai_problems = dedup_ai_problems
-        report.organisation_identity_rows = dedup_state.organisation_identity_rows
-        report.incident_dedup_rows = dedup_state.incident_dedup_rows
-
-        if not dedup_ai_problems:
-            previous_identity_registry = org_identity.ORGANISATION_IDENTITY_REGISTRY
-            org_identity.ORGANISATION_IDENTITY_REGISTRY = {
-                row["Alias_Key"]: row["Canonical_Key"]
-                for row in report.organisation_identity_rows
-                if row.get("Decision") == org_identity.DECISION_SAME
-            }
-            try:
-                report.incidents, report.incident_id_registry = build_incidents_with_registry(
-                    report.items,
-                    store.load_incident_id_registry(),
-                    report.incident_dedup_rows,
-                )
-            finally:
-                org_identity.ORGANISATION_IDENTITY_REGISTRY = previous_identity_registry
-
-        summary = report.dedup_ai_summary
-        print(
-            "  Vérification LLM finale : "
-            f"candidats={summary['dedup_candidates_generated']} "
-            f"appels={summary['dedup_llm_calls']} "
-            f"rapprochements={summary['dedup_org_aliases_applied']} "
-            f"coût=${summary['dedup_llm_cost_usd']:.4f}"
-        )
+        _apply_daily_dedup(report, context, collected, persist=persist)
     report.new_incidents = len([i for i in report.incidents if i.Incident_ID not in previous_ids])
     report.items_hash = identity.items_hash(report.items)
     report.incidents_hash = identity.incidents_hash(report.incidents)
@@ -867,7 +813,16 @@ def execute(
         ) else status.BROKEN
     )
     selected_source_ids = {spec.source_id for spec in sources.active_sources(context.layers)}
-    report.problems = pre_export_checks(report.items, report.incidents, report.outcomes, selected_source_ids)
+    report.problems = pre_export_checks(
+        report.items,
+        report.incidents,
+        report.outcomes,
+        selected_source_ids,
+        report.source_facts,
+    )
+    sector_gaps = sector_resolution.transport_gaps(report.items, report.sector_resolution_rows)
+    if sector_gaps:
+        report.problems.append("Décisions sectorielles perdues : " + ", ".join(sector_gaps))
     report.problems.extend(incident_identity.validate_registry(
         report.incident_id_registry, report.items, report.incidents
     ))
@@ -880,14 +835,56 @@ def execute(
     if report.problems:
         report.overall = status.BROKEN
     report.duration = round(time.monotonic() - started, 1)
+    # source_facts_ai passe lui aussi par ce runtime partagé. Ses compteurs par
+    # source servent au diagnostic détaillé mais ne doivent pas être ajoutés
+    # une seconde fois au total global.
+    report.llm_calls, report.llm_cost_usd = _llm_totals()
 
     if persist:
+        source_facts_ai._runtime().checkpoint(force=True)
+        llm_runtime._write_stats()
         _persist(
             report,
             watch_rows if not offline else [],
             persist_snapshot=offline or (report.overall == status.OK and not report.problems),
         )
     return report
+
+
+def _run_source_rows(report: RunReport) -> list[dict]:
+    context = report.context
+    return [
+        {
+            "Run_ID": context.run_id,
+            "As_Of": context.as_of,
+            "Source_ID": outcome.source_id,
+            "Layer": outcome.layer,
+            "Status": outcome.status,
+            "Coverage": outcome.coverage,
+            "Reason_Code": outcome.reason_code,
+            "Reason": outcome.reason,
+            "Calls": outcome.calls,
+            "Units_Done": outcome.units_done,
+            "Units_Expected": outcome.units_expected,
+            "Items_seen": outcome.items_seen,
+            "Items_in_window": outcome.items_in_window,
+            "Items_collected": outcome.items_collected,
+            "New_items": outcome.new_items,
+            "Latest_item_date": outcome.latest_item_date,
+            "Latest_Item_Org": outcome.latest_item_org,
+            "Access_Method": outcome.access_method,
+            "Duration_s": outcome.duration_seconds,
+            "Comment": outcome.comment,
+            "History_Status": outcome.history_status,
+            "Oldest_Available_Date": outcome.oldest_available_date,
+            "Collect_Duration_s": outcome.collect_duration_seconds,
+            "Processing_Duration_s": outcome.processing_duration_seconds,
+            "SourceFacts_LLM_Duration_s": outcome.source_facts_llm_duration_seconds,
+            "SourceFacts_LLM_Calls": outcome.source_facts_llm_calls,
+            "SourceFacts_LLM_Cost_USD": outcome.source_facts_llm_cost_usd,
+        }
+        for outcome in report.outcomes
+    ]
 
 
 def _persist(
@@ -901,38 +898,7 @@ def _persist(
     store.save_sources(sources.to_rows())
 
     if report.outcomes:
-        store.append_run_sources([
-            {
-                "Run_ID": context.run_id,
-                "As_Of": context.as_of,
-                "Source_ID": o.source_id,
-                "Layer": o.layer,
-                "Status": o.status,
-                "Coverage": o.coverage,
-                "Reason_Code": o.reason_code,
-                "Reason": o.reason,
-                "Calls": o.calls,
-                "Units_Done": o.units_done,
-                "Units_Expected": o.units_expected,
-                "Items_seen": o.items_seen,
-                "Items_in_window": o.items_in_window,
-                "Items_collected": o.items_collected,
-                "New_items": o.new_items,
-                "Latest_item_date": o.latest_item_date,
-                "Latest_Item_Org": o.latest_item_org,
-                "Access_Method": o.access_method,
-                "Duration_s": o.duration_seconds,
-                "Comment": o.comment,
-                "History_Status": o.history_status,
-                "Oldest_Available_Date": o.oldest_available_date,
-                "Collect_Duration_s": o.collect_duration_seconds,
-                "Processing_Duration_s": o.processing_duration_seconds,
-                "SourceFacts_LLM_Duration_s": o.source_facts_llm_duration_seconds,
-                "SourceFacts_LLM_Calls": o.source_facts_llm_calls,
-                "SourceFacts_LLM_Cost_USD": o.source_facts_llm_cost_usd,
-            }
-            for o in report.outcomes
-        ])
+        store.append_run_sources(_run_source_rows(report))
 
         if persist_snapshot:
             store.save_entity_watch(
@@ -943,6 +909,7 @@ def _persist(
         if persist_snapshot:
             store.save_items(report.items)
             store.save_incidents(report.incidents)
+            store.save_sector_resolution(report.sector_resolution_rows)
             store.save_incident_id_registry(report.incident_id_registry)
             save_snapshot_provenance(
                 store.load_items(), store.load_incidents(), operation="REPLAY",
@@ -976,17 +943,45 @@ def _persist(
         "Overall_Status": report.overall,
         "Duration_s": report.duration,
         "Requests": report.requests,
+        "Trigger": os.getenv("CYBERWATCH_RUN_TRIGGER", "local"),
+        "GitHub_Run_ID": os.getenv("GITHUB_RUN_ID", ""),
+        "Base_Commit": os.getenv("CYBERWATCH_BASE_COMMIT", "") or code_commit(),
+        "LLM_Calls": report.llm_calls,
+        "LLM_Cost_USD": f"{report.llm_cost_usd:.6f}",
         "Notes": " ; ".join(report.problems),
     })
+    store.upsert_production_metric(production.metric_row(
+        run_id=context.run_id,
+        as_of=context.as_of,
+        trigger=os.getenv("CYBERWATCH_RUN_TRIGGER", "local"),
+        overall_status=report.overall,
+        published=persist_snapshot,
+        items=report.items,
+        incidents=report.incidents,
+        duration_seconds=report.duration,
+        requests=report.requests,
+        llm_calls=report.llm_calls,
+        llm_cost_usd=report.llm_cost_usd,
+        new_items=[item for item in report.items if item.Item_ID in report.new_item_ids],
+        source_facts_retry_summary=report.source_facts_retry_summary,
+        dedup_review_rows=(
+            report.dedup_ai_state.pending_rows if report.dedup_ai_state is not None else None
+        ),
+        incident_decision_rows=report.incident_dedup_rows,
+        organisation_identity_rows=report.organisation_identity_rows,
+    ))
     if persist_snapshot:
         store.save_items(report.items)
         store.save_incidents(report.incidents)
+        store.save_sector_resolution(report.sector_resolution_rows)
         store.save_incident_id_registry(report.incident_id_registry)
         store.save_source_facts(report.source_facts)
         # Les décisions du filet LLM deviennent canoniques uniquement avec le
         # snapshot final. Un run cassé ne peut donc plus polluer la MAJ suivante.
         store.save_incident_dedup_registry(report.incident_dedup_rows)
         store.save_organisation_identity_registry_rows(report.organisation_identity_rows)
+        if report.dedup_ai_state is not None:
+            dedup_review.save(report.dedup_ai_state)
         save_snapshot_provenance(
             store.load_items(), store.load_incidents(), operation=context.mode,
             run_id=context.run_id, mode=context.mode, as_of=context.as_of,

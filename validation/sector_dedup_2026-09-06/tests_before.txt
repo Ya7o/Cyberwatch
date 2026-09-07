@@ -1,0 +1,229 @@
+FFFFFFFFFF...FFF                                                         [100%]
+=================================== FAILURES ===================================
+_______________ test_html_comment_cannot_consume_editorial_body ________________
+
+    def test_html_comment_cannot_consume_editorial_body():
+        html = ('<!-- override des <style> embarqués -->'
+                '<main><article><p>Les Curistes est spécialisée dans les cures thermales.</p>'
+                '</article></main><script>safe()</script>')
+        text = feed.stable_frenchbreaches_detail_text(html)
+>       assert 'cures thermales' in text
+E       AssertionError: assert 'cures thermales' in '<!-- override des'
+
+tests/test_editorial_repair.py:18: AssertionError
+___________ test_body_excludes_related_articles_and_keeps_paragraphs ___________
+
+    def test_body_excludes_related_articles_and_keeps_paragraphs():
+        html = ('<main><header>Navigation</header><article class="article-content">'
+                '<h2>Qui est la victime ?</h2><p>Acme vend du mobilier.</p>'
+                '<div><p>Deuxième paragraphe.</p></div></article>'
+                '<article class="related-reading-card">Une autre victime</article></main>')
+        text = feed.stable_frenchbreaches_detail_text(html)
+>       assert 'Acme vend du mobilier.' in text and '\n' in text
+E       AssertionError: assert ('Acme vend du mobilier.' in 'Qui est la victime ? Acme vend du mobilier. Deuxième paragraphe.' and '\n' in 'Qui est la victime ? Acme vend du mobilier. Deuxième paragraphe.')
+
+tests/test_editorial_repair.py:28: AssertionError
+________________ test_title_only_is_not_a_successful_hydration _________________
+
+    def test_title_only_is_not_a_successful_hydration():
+        entry = RawEntry(title='Acme', url='https://example.org/acme', published='2026-09-06')
+        client = SimpleNamespace(fetch=lambda *_: SimpleNamespace(ok=True, text='<h1>Acme</h1>'))
+>       assert feed._hydrate_frenchbreaches_details(client, [entry], SimpleNamespace(exhausted=False)) == (1, 0)
+E       assert (1, 1) == (1, 0)
+E         
+E         At index 1 diff: 1 != 0
+E         Use -v to get more diff
+
+tests/test_editorial_repair.py:35: AssertionError
+_ test_proven_activity_is_extracted_and_classified[Accent Rouge-Accent Rouge commercialise du mobilier, des luminaires et des portes.-Commerce / Distribution] _
+
+org = 'Accent Rouge'
+text = 'Accent Rouge commercialise du mobilier, des luminaires et des portes.'
+expected = 'Commerce / Distribution'
+
+    @pytest.mark.parametrize('org,text,expected', [
+        ('Accent Rouge', 'Accent Rouge commercialise du mobilier, des luminaires et des portes.', config.SECTOR_RETAIL),
+        ('Jouvet SAS', 'Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.', config.SECTOR_CONSTRUCTION),
+        ('Répar’stores', 'Répar’stores est spécialisé dans la réparation et la modernisation de volets roulants.', config.SECTOR_CONSTRUCTION),
+        ('PassPass', 'Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée.', config.SECTOR_TRANSPORT),
+        ('YouFid', 'YouFid est une plateforme de gestion de programmes de fidélité.', config.SECTOR_TECH),
+    ])
+    def test_proven_activity_is_extracted_and_classified(org, text, expected):
+        activity, proof = sector_activity.activity_from_text(org, text)
+        assert activity and proof
+>       assert sector.classify_sector_activity(activity) == expected
+E       AssertionError: assert 'Inconnu' == 'Commerce / Distribution'
+E         
+E         - Commerce / Distribution
+E         + Inconnu
+
+tests/test_editorial_repair.py:49: AssertionError
+_ test_proven_activity_is_extracted_and_classified[Jouvet SAS-Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.-Construction / BTP] _
+
+org = 'Jouvet SAS'
+text = 'Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.'
+expected = 'Construction / BTP'
+
+    @pytest.mark.parametrize('org,text,expected', [
+        ('Accent Rouge', 'Accent Rouge commercialise du mobilier, des luminaires et des portes.', config.SECTOR_RETAIL),
+        ('Jouvet SAS', 'Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.', config.SECTOR_CONSTRUCTION),
+        ('Répar’stores', 'Répar’stores est spécialisé dans la réparation et la modernisation de volets roulants.', config.SECTOR_CONSTRUCTION),
+        ('PassPass', 'Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée.', config.SECTOR_TRANSPORT),
+        ('YouFid', 'YouFid est une plateforme de gestion de programmes de fidélité.', config.SECTOR_TECH),
+    ])
+    def test_proven_activity_is_extracted_and_classified(org, text, expected):
+        activity, proof = sector_activity.activity_from_text(org, text)
+>       assert activity and proof
+E       AssertionError: assert ('')
+
+tests/test_editorial_repair.py:48: AssertionError
+_ test_proven_activity_is_extracted_and_classified[R\xe9par\u2019stores-R\xe9par\u2019stores est sp\xe9cialis\xe9 dans la r\xe9paration et la modernisation de volets roulants.-Construction / BTP] _
+
+org = 'Répar’stores'
+text = 'Répar’stores est spécialisé dans la réparation et la modernisation de volets roulants.'
+expected = 'Construction / BTP'
+
+    @pytest.mark.parametrize('org,text,expected', [
+        ('Accent Rouge', 'Accent Rouge commercialise du mobilier, des luminaires et des portes.', config.SECTOR_RETAIL),
+        ('Jouvet SAS', 'Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.', config.SECTOR_CONSTRUCTION),
+        ('Répar’stores', 'Répar’stores est spécialisé dans la réparation et la modernisation de volets roulants.', config.SECTOR_CONSTRUCTION),
+        ('PassPass', 'Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée.', config.SECTOR_TRANSPORT),
+        ('YouFid', 'YouFid est une plateforme de gestion de programmes de fidélité.', config.SECTOR_TECH),
+    ])
+    def test_proven_activity_is_extracted_and_classified(org, text, expected):
+        activity, proof = sector_activity.activity_from_text(org, text)
+        assert activity and proof
+>       assert sector.classify_sector_activity(activity) == expected
+E       AssertionError: assert 'Inconnu' == 'Construction / BTP'
+E         
+E         - Construction / BTP
+E         + Inconnu
+
+tests/test_editorial_repair.py:49: AssertionError
+_ test_proven_activity_is_extracted_and_classified[PassPass-Une fuite de donn\xe9es attribu\xe9e \xe0 Pass Pass, service de mobilit\xe9 des Hauts-de-France, est revendiqu\xe9e.-Transport / Logistique] _
+
+org = 'PassPass'
+text = 'Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée.'
+expected = 'Transport / Logistique'
+
+    @pytest.mark.parametrize('org,text,expected', [
+        ('Accent Rouge', 'Accent Rouge commercialise du mobilier, des luminaires et des portes.', config.SECTOR_RETAIL),
+        ('Jouvet SAS', 'Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.', config.SECTOR_CONSTRUCTION),
+        ('Répar’stores', 'Répar’stores est spécialisé dans la réparation et la modernisation de volets roulants.', config.SECTOR_CONSTRUCTION),
+        ('PassPass', 'Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée.', config.SECTOR_TRANSPORT),
+        ('YouFid', 'YouFid est une plateforme de gestion de programmes de fidélité.', config.SECTOR_TECH),
+    ])
+    def test_proven_activity_is_extracted_and_classified(org, text, expected):
+        activity, proof = sector_activity.activity_from_text(org, text)
+>       assert activity and proof
+E       AssertionError: assert ('')
+
+tests/test_editorial_repair.py:48: AssertionError
+_ test_proven_activity_is_extracted_and_classified[YouFid-YouFid est une plateforme de gestion de programmes de fid\xe9lit\xe9.-Num\xe9rique / Technologie] _
+
+org = 'YouFid'
+text = 'YouFid est une plateforme de gestion de programmes de fidélité.'
+expected = 'Numérique / Technologie'
+
+    @pytest.mark.parametrize('org,text,expected', [
+        ('Accent Rouge', 'Accent Rouge commercialise du mobilier, des luminaires et des portes.', config.SECTOR_RETAIL),
+        ('Jouvet SAS', 'Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.', config.SECTOR_CONSTRUCTION),
+        ('Répar’stores', 'Répar’stores est spécialisé dans la réparation et la modernisation de volets roulants.', config.SECTOR_CONSTRUCTION),
+        ('PassPass', 'Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée.', config.SECTOR_TRANSPORT),
+        ('YouFid', 'YouFid est une plateforme de gestion de programmes de fidélité.', config.SECTOR_TECH),
+    ])
+    def test_proven_activity_is_extracted_and_classified(org, text, expected):
+        activity, proof = sector_activity.activity_from_text(org, text)
+        assert activity and proof
+>       assert sector.classify_sector_activity(activity) == expected
+E       AssertionError: assert 'Inconnu' == 'Numérique / Technologie'
+E         
+E         - Numérique / Technologie
+E         + Inconnu
+
+tests/test_editorial_repair.py:49: AssertionError
+_____________ test_nonstandard_incident_prefix_still_binds_victim ______________
+
+    def test_nonstandard_incident_prefix_still_binds_victim():
+        text = 'Une importante fuite de données attribuée à Les Curistes, plateforme spécialisée dans les cures thermales, est revendiquée.'
+>       assert sector_activity.activity_from_text('Les Curistes', text)[0]
+E       AssertionError: assert ''
+
+tests/test_editorial_repair.py:54: AssertionError
+_________________ test_specific_body_activity_wins_over_teaser _________________
+
+    def test_specific_body_activity_wins_over_teaser():
+        teaser = 'Accent Rouge, entreprise spécialisée dans l’aménagement intérieur haut de gamme, est touchée.'
+        body = 'Accent Rouge commercialise du mobilier et des luminaires.'
+>       assert sector_activity.activity_from_text('Accent Rouge', teaser, body)[0] == body
+E       AssertionError: assert 'Accent Rouge... est touchée.' == 'Accent Rouge...s luminaires.'
+E         
+E         - Accent Rouge commercialise du mobilier et des luminaires.
+E         + Accent Rouge, entreprise spécialisée dans l’aménagement intérieur haut de gamme, est touchée.
+
+tests/test_editorial_repair.py:60: AssertionError
+_ test_third_party_and_homonym_do_not_supply_activity[Acme Sud commercialise du mobilier.] _
+
+text = 'Acme Sud commercialise du mobilier.'
+
+    @pytest.mark.parametrize('text', [
+        'Le prestataire de Acme est spécialisé dans le chauffage.',
+        'Acme utilise le logiciel de son fournisseur spécialisé dans le chauffage.',
+        'Acme est client de Beta, une entreprise de plomberie.',
+        'Acme Sud commercialise du mobilier.',
+    ])
+    def test_third_party_and_homonym_do_not_supply_activity(text):
+>       assert sector_activity.activity_from_text('Acme', text) == ('', '')
+E       AssertionError: assert ('Acme Sud co...du mobilier.') == ('', '')
+E         
+E         At index 0 diff: 'Acme Sud commercialise du mobilier.' != ''
+E         Use -v to get more diff
+
+tests/test_editorial_repair.py:70: AssertionError
+___________ test_raw_sector_is_arbitrated_against_business_activity ____________
+
+make_item = <function make_item.<locals>._make at 0x7b2ae19e8b40>
+
+    def test_raw_sector_is_arbitrated_against_business_activity(make_item):
+        item = make_item(org='Jouvet SAS', sector=config.SECTOR_UNKNOWN)
+        proof = 'Jouvet SAS intervient dans la plomberie et le chauffage.'
+        fact = {'Source_Sector_Raw': 'Manufacturing', 'Activity_Description': proof,
+                'Evidence_JSON': json.dumps({'Activity_Description': proof})}
+        result = sector_resolution.resolve_item(item, fact, {})
+>       assert result.sector == config.SECTOR_CONSTRUCTION
+E       AssertionError: assert 'Industrie / Manufacture' == 'Construction / BTP'
+E         
+E         - Construction / BTP
+E         + Industrie / Manufacture
+
+tests/test_editorial_repair.py:79: AssertionError
+______ test_soft_time_gap_can_be_reviewed_but_not_merged_without_evidence ______
+
+make_item = <function make_item.<locals>._make at 0x7b2ae19d7060>
+
+    def test_soft_time_gap_can_be_reviewed_but_not_merged_without_evidence(make_item):
+        a = make_item(org='Acme', source='CYBERATTAQUE_ORG', published='2026-09-01')
+        b = make_item(org='Acme', source='FRENCHBREACHES', published='2026-09-05')
+        assert dedup.decide_merge(a, b).action == dedup.KEEP_SEPARATE
+>       assert len(duplicate_audit.find_daily_llm_candidates([b], [a, b])) == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = <function find_daily_llm_candidates at 0x7b2ae242eb90>([Item(Item_ID='ITM-5e0ed8279339650d', Source_ID='FRENCHBREACHES', Source_Item_ID='', Published_Date='2026-09-05', Even...anté', Location='La Réunion', Title='Titre', URL='https://example.org/a', Collected_As_Of='2026-08-12T00:00:00+04:00')], [Item(Item_ID='ITM-b755080a08c6c79a', Source_ID='CYBERATTAQUE_ORG', Source_Item_ID='', Published_Date='2026-09-01', Ev...anté', Location='La Réunion', Title='Titre', URL='https://example.org/a', Collected_As_Of='2026-08-12T00:00:00+04:00')])
+E        +      where <function find_daily_llm_candidates at 0x7b2ae242eb90> = duplicate_audit.find_daily_llm_candidates
+
+tests/test_editorial_repair.py:88: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_editorial_repair.py::test_html_comment_cannot_consume_editorial_body
+FAILED tests/test_editorial_repair.py::test_body_excludes_related_articles_and_keeps_paragraphs
+FAILED tests/test_editorial_repair.py::test_title_only_is_not_a_successful_hydration
+FAILED tests/test_editorial_repair.py::test_proven_activity_is_extracted_and_classified[Accent Rouge-Accent Rouge commercialise du mobilier, des luminaires et des portes.-Commerce / Distribution]
+FAILED tests/test_editorial_repair.py::test_proven_activity_is_extracted_and_classified[Jouvet SAS-Jouvet SAS intervient dans la plomberie, le chauffage et la climatisation.-Construction / BTP]
+FAILED tests/test_editorial_repair.py::test_proven_activity_is_extracted_and_classified[R\xe9par\u2019stores-R\xe9par\u2019stores est sp\xe9cialis\xe9 dans la r\xe9paration et la modernisation de volets roulants.-Construction / BTP]
+FAILED tests/test_editorial_repair.py::test_proven_activity_is_extracted_and_classified[PassPass-Une fuite de donn\xe9es attribu\xe9e \xe0 Pass Pass, service de mobilit\xe9 des Hauts-de-France, est revendiqu\xe9e.-Transport / Logistique]
+FAILED tests/test_editorial_repair.py::test_proven_activity_is_extracted_and_classified[YouFid-YouFid est une plateforme de gestion de programmes de fid\xe9lit\xe9.-Num\xe9rique / Technologie]
+FAILED tests/test_editorial_repair.py::test_nonstandard_incident_prefix_still_binds_victim
+FAILED tests/test_editorial_repair.py::test_specific_body_activity_wins_over_teaser
+FAILED tests/test_editorial_repair.py::test_third_party_and_homonym_do_not_supply_activity[Acme Sud commercialise du mobilier.]
+FAILED tests/test_editorial_repair.py::test_raw_sector_is_arbitrated_against_business_activity
+FAILED tests/test_editorial_repair.py::test_soft_time_gap_can_be_reviewed_but_not_merged_without_evidence
+13 failed, 3 passed in 0.51s

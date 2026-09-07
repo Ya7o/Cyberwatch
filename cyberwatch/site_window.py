@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 
+COVERAGE_WINDOW_DAYS = 30
+TREND_REQUIRED_DAYS = 2 * COVERAGE_WINDOW_DAYS
+
 
 def iso_day(value: object) -> date | None:
     """Retourne le jour ISO d'une date ou d'un timestamp, sinon ``None``."""
@@ -46,3 +49,66 @@ def latest_rows(payload: list[dict], as_of: object, *, window_days: int = 30) ->
         reverse=True,
     )
     return recent
+
+
+def coverage_status(run_log: list[dict]) -> dict:
+    """Décrit la couverture continue du corpus depuis le dernier ``CREATE``.
+
+    Les tendances comparent 30 jours aux 30 jours précédents : elles ne sont
+    publiables qu'après 60 jours continus. Un simple minimum/maximum masquerait
+    les trous de collecte ; les intervalles sont donc fusionnés et seul le
+    segment continu qui se termine sur le run le plus récent est retenu.
+    """
+    last_create = -1
+    for index, row in enumerate(run_log):
+        if (
+            str(row.get("Mode") or "").upper() == "CREATE"
+            and str(row.get("Overall_Status") or "").upper() == "OK"
+        ):
+            last_create = index
+
+    empty = {
+        "known": False,
+        "start": "",
+        "end": "",
+        "days": 0,
+        "window_days": COVERAGE_WINDOW_DAYS,
+        "trend_required_days": TREND_REQUIRED_DAYS,
+        "trend_ready": False,
+    }
+    if last_create < 0:
+        return empty
+
+    intervals: list[tuple[date, date]] = []
+    for row in run_log[last_create:]:
+        mode = str(row.get("Mode") or "").upper()
+        if mode not in {"CREATE", "MAJ"}:
+            continue
+        if str(row.get("Overall_Status") or "").upper() != "OK":
+            continue
+        start = iso_day(row.get("Target_Start"))
+        end = iso_day(row.get("Target_End") or row.get("As_Of"))
+        if start is not None and end is not None and start <= end:
+            intervals.append((start, end))
+
+    if not intervals:
+        return empty
+
+    merged: list[list[date]] = []
+    for start, end in sorted(intervals):
+        if not merged or start > merged[-1][1] + timedelta(days=1):
+            merged.append([start, end])
+        else:
+            merged[-1][1] = max(merged[-1][1], end)
+
+    start, end = max(merged, key=lambda interval: interval[1])
+    days = (end - start).days + 1
+    return {
+        "known": True,
+        "start": start.isoformat(),
+        "end": end.isoformat(),
+        "days": days,
+        "window_days": COVERAGE_WINDOW_DAYS,
+        "trend_required_days": TREND_REQUIRED_DAYS,
+        "trend_ready": days >= TREND_REQUIRED_DAYS,
+    }

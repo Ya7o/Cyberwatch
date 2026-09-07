@@ -119,6 +119,9 @@ def _safe_institutional_name_sector(organisation: str) -> str:
     if not blob:
         return config.SECTOR_UNKNOWN
 
+    if blob.startswith(("chambre de metiers", "chambre de commerce et d industrie")):
+        return config.SECTOR_ADMIN
+
     health_sector = _health_institution_sector(organisation)
     if health_sector != config.SECTOR_UNKNOWN:
         return health_sector
@@ -199,6 +202,35 @@ def classify_sector_name(organisation: str) -> str:
 
 def classify_sector_activity(activity_description: str) -> str:
     """Classe une description d'activité explicitement extraite de la source."""
+    blob = searchable(activity_description)
+    # Principal business, not the software used, client industry or a brand.
+    if re.search(r"\b(?:commercialis\w*|vend\w*)\b", blob) and any(
+        term in blob for term in ("mobilier", "luminaires", "equipements", "produits", "chaussures")
+    ):
+        return config.SECTOR_RETAIL
+    if any(term in blob for term in ("plomberie", "installation de chauffage", "chauffage et la climatisation",
+                                    "reparation et la modernisation de stores", "reparation et la modernisation de volets",
+                                    "reparation de volets", "reparation de stores")):
+        return config.SECTOR_CONSTRUCTION
+    if any(term in blob for term in ("service de mobilite", "service regional de mobilite", "titres de transport")):
+        return config.SECTOR_TRANSPORT
+    if ("plateforme" in blob or "logiciel" in blob or "solution" in blob) and any(
+        term in blob for term in ("programmes de fidelite", "fidelisation", "gestion de la relation client")
+    ):
+        return config.SECTOR_TECH
+    if any(term in blob for term in ("cures thermales", "stations thermales", "sejours thermaux")):
+        return config.SECTOR_HOSPITALITY
+    if ("dispositif du departement" in blob or "service du departement" in blob or
+            "plateforme dediee a l emploi du departement" in blob):
+        return config.SECTOR_ADMIN
+    if any(term in blob for term in ("chambre de metiers", "chambre de commerce et d industrie")):
+        return config.SECTOR_ADMIN
+    if any(term in blob for term in ("commercialise en ligne", "vente en ligne", "negoce")):
+        return config.SECTOR_RETAIL
+    if any(term in blob for term in ("reexpedition de colis", "plateforme d expedition")):
+        return config.SECTOR_TRANSPORT
+    if "specialisee dans la chimie" in blob or "specialise dans la chimie" in blob:
+        return config.SECTOR_INDUSTRY
     health_sector = _health_institution_sector(activity_description)
     if health_sector != config.SECTOR_UNKNOWN:
         return health_sector

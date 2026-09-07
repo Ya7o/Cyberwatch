@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
 <link rel="alternate" type="application/atom+xml" title="Cyberwatch — La Réunion / Mayotte" href="assets/data/reunion-mayotte.xml">
 <link rel="stylesheet" href="assets/style.css?v=20260822-3">
-<link rel="stylesheet" href="assets/dashboard-v2.css?v=20260825-1">
+<link rel="stylesheet" href="assets/dashboard-v2.css?v=20260901-2">
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -70,13 +70,18 @@
   <section id="view-analyse" class="view" hidden aria-label="Analyse">
     <div id="analysis-content">
       <p class="reading-line" id="reading-line"></p>
+      <p class="analysis-coverage-note" id="analysis-coverage-note" hidden></p>
       <section class="card" aria-labelledby="evolution-title"><div class="card-head"><h2 id="evolution-title">Évolution mensuelle</h2></div><div class="chart" id="chart-evolution"></div><p id="evolution-note" hidden></p></section>
       <section class="analysis-grid">
-        <section class="card"><div class="card-head"><h2>Menaces — 90 derniers jours</h2></div><div class="chart" id="chart-threat"></div></section>
-        <section class="card"><div class="card-head"><h2>Secteurs — 90 derniers jours</h2></div><div class="chart" id="chart-sector"></div></section>
+        <section class="card"><div class="card-head"><h2 id="threat-title">Menaces — 90 derniers jours</h2></div><div class="chart" id="chart-threat"></div></section>
+        <section class="card"><div class="card-head"><h2 id="sector-title">Secteurs — 90 derniers jours</h2></div><div class="chart" id="chart-sector"></div></section>
       </section>
       <section class="card" aria-labelledby="signals-title"><div class="card-head"><h2 id="signals-title">Ce qui change</h2></div><div id="signals-list" class="signal-list"></div></section>
       <section class="card" aria-labelledby="ocean-title"><div class="card-head"><h2 id="ocean-title">Océan Indien</h2></div><div class="ocean-compare"><div id="ocean-focus"></div><div id="ocean-ensemble"></div></div></section>
+      <section class="card" aria-labelledby="production-title">
+        <div class="card-head"><h2 id="production-title">Fiabilité de production</h2></div>
+        <div class="production-metrics" id="production-metrics"></div>
+      </section>
       <section class="card reliability" id="sources" aria-labelledby="sources-title">
         <div class="card-head"><h2 id="sources-title">État des sources</h2></div>
         <div id="sources-leds" class="source-leds"></div>
@@ -86,11 +91,20 @@
   </section>
 </main>
 
+<footer class="footer wrap" role="contentinfo">
+  <p><strong>Avertissement éditorial.</strong> Cyberwatch recense des publications publiques : une fiche n’est ni une attribution, ni une confirmation globale, et l’absence de fiche ne prouve pas l’absence d’incident.</p>
+  <details class="proof-levels">
+    <summary>Comprendre les niveaux de preuve</summary>
+    <p><strong>Confirmé</strong> : établi par une source directe ou étayé. <strong>Rapporté</strong> : relaté par une source. <strong>Revendiqué</strong> : déclaré par un acteur. <strong>Hypothèse</strong> : incertain. <strong>Démenti</strong> : contesté. <strong>Inconnu</strong> : preuve insuffisante.</p>
+  </details>
+  <p class="footer-meta"><a href="METHODOLOGY.md">Méthode</a> · <a href="docs/EDITORIAL_POLICY.md">Politique éditoriale et contact</a> · <a href="https://github.com/Ya7o/Cyberwatch/issues">Signaler une correction</a> · <a href="LICENSE">Licence MIT</a></p>
+</footer>
+
 <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-dialog-title">
   <div id="detail-dialog-content"></div>
   <form method="dialog"><button class="btn">Fermer</button></form>
 </dialog>
-<script src="assets/dashboard-v2.js?v=20260828-1"></script>
-<script src="assets/dashboard-integrity.js?v=20260830-1"></script>
+<script src="assets/dashboard-v2.js?v=20260901-3"></script>
+<script src="assets/dashboard-integrity.js?v=20260901-2"></script>
 </body>
 </html>

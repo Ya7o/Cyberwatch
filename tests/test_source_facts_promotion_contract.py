@@ -61,3 +61,88 @@ def test_merge_can_clear_stale_activity_after_semantic_abstention():
     merged = sf.merge_source_facts(old, new)[0]
     assert merged["Activity_Description"] == ""
     assert merged["Activity_Sector_Match"] == ""
+
+
+def test_materialization_gap_detecte_une_valeur_accepted_perdue_dans_le_csv():
+    fact = {
+        "Item_ID": "ITM-qare",
+        "Activity_Description": "",
+        "Activity_Sector_Match": "",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_semantic_status": {
+                "activity_description": "accepted",
+                "activity_sector_match": "accepted",
+                "attack_date": "abstained",
+            }
+        }),
+    }
+    assert sf.semantic_materialization_gaps([fact]) == [
+        "ITM-qare:activity_description",
+        "ITM-qare:activity_sector_match",
+    ]
+
+
+def test_materialise_cache_borne_par_item_et_hash():
+    fact = {
+        "Item_ID": "ITM-qare",
+        "Activity_Description": "",
+        "Activity_Sector_Match": "",
+        "Evidence_JSON": "{}",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_content_hash": "hash-qare",
+            "_source_facts_semantic_status": {
+                "activity_description": "accepted",
+                "activity_sector_match": "accepted",
+            },
+        }),
+    }
+    hydrated, changed = sf.materialize_cached_llm_fields([fact], [{
+        "item_id": "ITM-qare",
+        "content_hash": "hash-qare",
+        "fields": {
+            "activity_description": {
+                "status": "accepted",
+                "version": sfa.FIELD_VERSIONS["activity_description"],
+                "value": {"value": "téléconsultation", "evidence": "plateforme de téléconsultation"},
+            },
+            "activity_sector_match": {
+                "status": "accepted",
+                "version": sfa.FIELD_VERSIONS["activity_sector_match"],
+                "value": {"value": "Santé", "evidence": "plateforme de téléconsultation médicale"},
+            },
+        },
+    }])
+    assert changed == ["ITM-qare"]
+    assert hydrated[0]["Activity_Description"] == "téléconsultation"
+    assert hydrated[0]["Activity_Sector_Match"] == "Santé"
+    assert sf.semantic_materialization_gaps(hydrated) == []
+
+
+def test_materialise_cache_ignore_un_contrat_llm_obsolete():
+    fact = {
+        "Item_ID": "ITM-old",
+        "Evidence_JSON": "{}",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_content_hash": "hash-old",
+            "_source_facts_semantic_status": {"threat_candidate": "accepted"},
+        }),
+    }
+    hydrated, changed = sf.materialize_cached_llm_fields([fact], [{
+        "item_id": "ITM-old",
+        "content_hash": "hash-old",
+        "fields": {
+            "threat_candidate": {
+                "status": "accepted",
+                "version": "threat-candidate-v1",
+                "value": {
+                    "value": "Malware",
+                    "evidence": "La victime indique avoir subi un piratage.",
+                },
+            },
+        },
+    }])
+    metadata = sf._loads_json(hydrated[0]["Source_Metadata_JSON"])
+    assert changed == ["ITM-old"]
+    assert "threat_tentative" not in metadata
+    assert metadata["_source_facts_semantic_status"]["threat_candidate"] == "stale_contract"
+    assert metadata["_source_facts_stale_contracts"] == ["threat_candidate"]

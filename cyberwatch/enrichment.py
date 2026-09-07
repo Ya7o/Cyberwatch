@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, store, watchlists
+from . import config, location_resolution, sector_resolution, store, watchlists
 from .dedup import build_incidents_with_registry
 from .identity import sort_items
 from .model import Incident, Item
@@ -181,6 +181,7 @@ class EnrichmentReport:
     items: list[Item]
     incidents: list[Incident]
     incident_id_registry: list[dict[str, str]]
+    sector_resolution_rows: list[dict]
 
 
 _AUTHORITATIVE_NATIVE_THREAT_SOURCES = frozenset({"VEILLE_LLM"})
@@ -193,6 +194,18 @@ _STRONG_SOURCE_SCOPE_OVERRIDES = frozenset({
     config.THREAT_RANSOMWARE, config.THREAT_DDOS, config.THREAT_MALWARE,
     config.THREAT_LEAK, config.THREAT_PHISHING, config.THREAT_THIRD_PARTY,
 })
+_THREAT_SPECIFICITY = {
+    config.THREAT_RANSOMWARE: 6,
+    config.THREAT_DDOS: 5,
+    config.THREAT_MALWARE: 5,
+    config.THREAT_LEAK: 4,
+    config.THREAT_PHISHING: 3,
+    config.THREAT_THIRD_PARTY: 2,
+    config.THREAT_INTRUSION: 1,
+    config.THREAT_OTHER: 0,
+    config.THREAT_UNKNOWN: -1,
+    "": -1,
+}
 
 
 def stabilize_threats(items: list[Item]) -> int:
@@ -200,18 +213,12 @@ def stabilize_threats(items: list[Item]) -> int:
     changed = 0
     for item in items:
         before = item.Threat
-        explicit = classify_threat(item.Title, item.Threat_Raw)
-        leak_words = (
-            "fuite", "exposition de donnees", "donnees publiees",
-            "donnees volees", "donnees exfiltrees",
-        )
-        if explicit == config.THREAT_LEAK or any(
-            word in searchable(f"{item.Title} {item.Threat_Raw}")
-            for word in leak_words
-        ):
-            item.Threat = config.THREAT_LEAK
-            changed += item.Threat != before
-            continue
+        # Threat_Raw contient souvent le défaut du flux, pas une preuve. Le
+        # relire avec le titre écrasait notamment un ransomware explicite par
+        # le défaut « Fuite de données » de FrenchBreaches.
+        explicit = classify_threat(item.Title)
+        if _THREAT_SPECIFICITY.get(explicit, -1) > _THREAT_SPECIFICITY.get(item.Threat, -1):
+            item.Threat = explicit
         if item.Threat == config.THREAT_ACCOUNT:
             item.Threat = (
                 config.THREAT_LEAK
@@ -233,16 +240,27 @@ def stabilize_threats(items: list[Item]) -> int:
     return changed
 
 
-def finalize_snapshot(items: list[Item]) -> EnrichmentReport:
+def finalize_snapshot(
+    items: list[Item], source_facts_rows: list[dict] | None = None,
+    *, run_id: str = "", as_of: str = "",
+    previous_sector_rows: list[dict] | None = None,
+) -> EnrichmentReport:
     """Enrichit puis déduplique un snapshot sans appel externe."""
     ordered = sort_items(items)
     reference = load_reference()
-    enrich_items(ordered, reference, include_sector=True)
+    decisions = sector_resolution.resolve_items(
+        ordered, source_facts_rows if source_facts_rows is not None else store.load_source_facts(),
+        reference, run_id=run_id, as_of=as_of,
+        previous_rows=previous_sector_rows if previous_sector_rows is not None else store.load_sector_resolution(),
+    )
+    enrich_items(ordered, reference, include_sector=False)
+    location_resolution.apply_fine_locations(ordered, source_facts_rows)
     backfill_unknowns(ordered, reference)
     stabilize_threats(ordered)
     incidents, registry = build_incidents_with_registry(
         ordered,
         store.load_incident_id_registry(),
         store.load_incident_dedup_registry(),
+        source_facts_rows,
     )
-    return EnrichmentReport(ordered, incidents, registry)
+    return EnrichmentReport(ordered, incidents, registry, decisions)

@@ -24,7 +24,7 @@ def test_veille_llm_wins_sector_and_location_on_dedup(make_item):
 
     incident = build_incidents([direct, veille])[0]
 
-    assert incident.Secteur == config.SECTOR_ADMIN
+    assert incident.Secteur == config.SECTOR_UNKNOWN  # Désaccord visible, sans priorité silencieuse.
     assert incident.Localisation == config.LOC_REUNION
     # VEILLE_LLM reste analytique : priorité d'enrichissement oui, mais pas
     # corroboration éditoriale supplémentaire quand une source directe existe.

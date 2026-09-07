@@ -1,0 +1,4855 @@
+{
+  "production_sha": "c80821f66d747ba4866a48e39b7d05b55cc07b56",
+  "published_equals_repository": true,
+  "counts": {
+    "items": 84,
+    "unknown_items": 61,
+    "incidents": 51,
+    "unknown_incidents": 34,
+    "recent_incidents": 13,
+    "recent_unknown_incidents": 11,
+    "unknown_items_with_materialized_activity_and_sector": 27,
+    "replayed_materialized_activity_still_unknown": 27
+  },
+  "recent_incidents": [
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-04",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-2C5CEAE9E3AC",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Association des maires de France",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de 114 000 lignes de données personnelles de l'Association des maires de France après une cyberattaque.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p",
+        "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-04",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-45561E350283",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Clinique de Vontes",
+      "sector": "Santé",
+      "sector_status": {
+        "status": "confirmed"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données affectant 4 111 personnes revendiquer par le hacker ChimeraZ au sein du groupe INICEA.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4",
+        "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-04",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-F8485FB8B618",
+      "items": 1,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Collège Saint-Michel",
+      "sector": "Éducation / Formation",
+      "sector_status": {
+        "status": "confirmed"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e"
+        }
+      ],
+      "sources": [
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données au Collège Saint-Michel révélant des informations sur 1 836 personnes.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-04",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-3E1B5FCCAEDF",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Préférence Formations",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données de plus de 5 200 personnes touchées chez Préférence Formations.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse",
+        "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-83BA7D2DCBF4",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "BCTI",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données chez BCTI, comprenant des cartes d'identité et des dossiers immobiliers.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp",
+        "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-B7DBF665E661",
+      "items": 1,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq"
+        }
+      ],
+      "sources": [
+        "FRENCHBREACHES"
+      ],
+      "summary": "",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-52ED884732BC",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Charbonneaux-Brabant",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "2 863 profils professionnels exposés dans une fuite de données chez Charbonneaux-Brabant.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7",
+        "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-619638DA1C52",
+      "items": 1,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "Inconnu",
+      "org": "CMA Occitanie",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "Fuite de données touchant CMA Occitanie avec 1 029 profils exposés par le hacker ChimeraZ.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-47CD44FA27B9",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "ColisExpat",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "ColisExpat a subi une cyberattaque exposant des pièces d'identité et des données de compte de ses clients.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd",
+        "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-693ABEB9BF8A",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Delicity",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Delicity a confirmé une fuite de données personnelles survenue entre le 9 et le 24 août 2026.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu",
+        "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-E39201703225",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Reso",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "données bancaires"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Réso victime d'une fuite massive de données, 675 Go et 530 000 fichiers récupérés par le hacker caustic.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q",
+        "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-B56C65C3FDAC",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Tisséo",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Près de 3 000 personnes exposées après une cyberattaque ciblant Tisséo.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8",
+        "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-F8CDDC2DD3B7",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "ZeroGaspi",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Une base de 80 000 clients de ZeroGaspi est en vente après une cyberattaque revendiquée par le hacker ksye.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4",
+        "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+      ]
+    }
+  ],
+  "unknown_incidents": [
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-04",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-2C5CEAE9E3AC",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Association des maires de France",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de 114 000 lignes de données personnelles de l'Association des maires de France après une cyberattaque.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p",
+        "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-04",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-3E1B5FCCAEDF",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Préférence Formations",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données de plus de 5 200 personnes touchées chez Préférence Formations.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse",
+        "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-83BA7D2DCBF4",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "BCTI",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données chez BCTI, comprenant des cartes d'identité et des dossiers immobiliers.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp",
+        "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-B7DBF665E661",
+      "items": 1,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq"
+        }
+      ],
+      "sources": [
+        "FRENCHBREACHES"
+      ],
+      "summary": "",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-52ED884732BC",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Charbonneaux-Brabant",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "2 863 profils professionnels exposés dans une fuite de données chez Charbonneaux-Brabant.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7",
+        "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-619638DA1C52",
+      "items": 1,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "Inconnu",
+      "org": "CMA Occitanie",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "Fuite de données touchant CMA Occitanie avec 1 029 profils exposés par le hacker ChimeraZ.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-47CD44FA27B9",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "ColisExpat",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "ColisExpat a subi une cyberattaque exposant des pièces d'identité et des données de compte de ses clients.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd",
+        "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-693ABEB9BF8A",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Delicity",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Delicity a confirmé une fuite de données personnelles survenue entre le 9 et le 24 août 2026.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu",
+        "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-E39201703225",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "Reso",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "données bancaires"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Réso victime d'une fuite massive de données, 675 Go et 530 000 fichiers récupérés par le hacker caustic.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q",
+        "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-B56C65C3FDAC",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Tisséo",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Près de 3 000 personnes exposées après une cyberattaque ciblant Tisséo.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8",
+        "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-03",
+      "first_seen": "2026-09-04T15:48:57.184028+04:00",
+      "id": "INC-F8CDDC2DD3B7",
+      "items": 2,
+      "last_seen": "2026-09-04T15:48:57.184028+04:00",
+      "location": "France métropolitaine",
+      "org": "ZeroGaspi",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Une base de 80 000 clients de ZeroGaspi est en vente après une cyberattaque revendiquée par le hacker ksye.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4",
+        "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-02T15:47:42.371674+04:00",
+      "id": "INC-6BD2DE3819F9",
+      "items": 1,
+      "last_seen": "2026-09-02T15:47:42.371674+04:00",
+      "location": "Inconnu",
+      "org": "Dropbox",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "Environ 5 000 comptes Dropbox compromis entre le 4 et le 21 août 2026 par l'exploitation d'une ancienne intégration avec Lenovo.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-64FE6B5DDB80",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "FNIM",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants",
+        "données bancaires"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/fnim-des-bases-de-donnees-completes-diffusees-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/fnim-mtjy1oawv9ayhxk3qr"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "La FNIM a subi un piratage avec des données sensibles compromises et des accès bancaires revendiqués.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/fnim-mtjy1oawv9ayhxk3qr",
+        "https://www.cyberattaque.org/fnim-des-bases-de-donnees-completes-diffusees-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-02T15:47:42.371674+04:00",
+      "id": "INC-C4996B1885D9",
+      "items": 2,
+      "last_seen": "2026-09-02T15:47:42.371674+04:00",
+      "location": "France métropolitaine",
+      "org": "Géofoncier",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Géofoncier revendique une cyberattaque ayant exposé plus de 4 millions de dossiers fonciers.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h",
+        "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-B18279AA1F95",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "La Boutique du Volet",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/la-boutique-du-volet-une-cyberattaque-expose-les-donnees-et-lhistorique-de-commandes-de-clients/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/la-boutique-du-volet-mtkld2kqnn3iulc7t78"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Une cyberattaque expose les données et l’historique des commandes de clients de La Boutique du Volet.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/la-boutique-du-volet-mtkld2kqnn3iulc7t78",
+        "https://www.cyberattaque.org/la-boutique-du-volet-une-cyberattaque-expose-les-donnees-et-lhistorique-de-commandes-de-clients/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-02T15:47:42.371674+04:00",
+      "id": "INC-CFB60E563EB4",
+      "items": 2,
+      "last_seen": "2026-09-02T15:47:42.371674+04:00",
+      "location": "France métropolitaine",
+      "org": "LiveTrail",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "LiveTrail a subi une cyberattaque ayant exposé les coordonnées des utilisateurs.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9",
+        "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-CE9040DC18AB",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Micromania",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/micromania-ses-donnees-clients-exposees-apres-une-cyberattaque-chez-shipup/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/micromania-mtkqt98z0l4chcj41qpe"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Micromania confirme une fuite de données personnelles de ses clients via son prestataire Shipup.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/micromania-mtkqt98z0l4chcj41qpe",
+        "https://www.cyberattaque.org/micromania-ses-donnees-clients-exposees-apres-une-cyberattaque-chez-shipup/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-90A8D0197E17",
+      "items": 2,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "France métropolitaine",
+      "org": "Shipup",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/cyberattaque-shipup/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/shipup-mtkrgifdha9tj8813fl"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Shipup a subi une cyberattaque entraînant l'exposition de données clients via une vulnérabilité dans Metabase.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/shipup-mtkrgifdha9tj8813fl",
+        "https://www.cyberattaque.org/cyberattaque-shipup/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-02",
+      "first_seen": "2026-09-03T15:47:31.532902+04:00",
+      "id": "INC-582E355E2705",
+      "items": 1,
+      "last_seen": "2026-09-03T15:47:31.532902+04:00",
+      "location": "Inconnu",
+      "org": "Stade Montois Omnisports",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/stade-montois-une-cyberattaque-met-plusieurs-sites-hors-service/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "Le Stade Montois Omnisports a subi une cyberattaque importante affectant plusieurs de ses sites et applications internes.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://www.cyberattaque.org/stade-montois-une-cyberattaque-met-plusieurs-sites-hors-service/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-09-01",
+      "first_seen": "2026-09-01T16:10:00.061034+04:00",
+      "id": "INC-72FE2288A677",
+      "items": 2,
+      "last_seen": "2026-09-02T15:47:42.371674+04:00",
+      "location": "France métropolitaine",
+      "org": "Bio en Hauts-de-France",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Cyberattaque contre Bio en Hauts-de-France entraînant le vol de données personnelles et professionnelles.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug",
+        "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-31",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-B0E6BDE8801F",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Herbiolys",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "données bancaires",
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/herbiolys-cyberattaque-million-de-lignes-et-1-500-iban-dans-une-fuite-massive/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/herbiolys-mthbl4mtoe9zgl49kjj"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Herbiolys a subi une fuite de données massive, impliquant 1,3 million de lignes et 1 500 IBAN.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/herbiolys-mthbl4mtoe9zgl49kjj",
+        "https://www.cyberattaque.org/herbiolys-cyberattaque-million-de-lignes-et-1-500-iban-dans-une-fuite-massive/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-31",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-C64E07B15B3F",
+      "items": 1,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "Inconnu",
+      "org": "La financière d’Orion",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/la-financiere-dorion-20-go-de-donnees-clients-voles-apres-le-piratage-dun-partenaire/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "La financière d’Orion : 20 Go de données clients volés après le piratage d’un partenaire",
+      "threat": "Phishing / fraude",
+      "urls": [
+        "https://www.cyberattaque.org/la-financiere-dorion-20-go-de-donnees-clients-voles-apres-le-piratage-dun-partenaire/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-31",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-26E2A421AD48",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "LebonSiege",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données revendiquée chez LebonSiege, affectant potentiellement plus de 1 000 clients.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp",
+        "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-31",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-D4EC64DBBA06",
+      "items": 1,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Timetonic",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
+        }
+      ],
+      "sources": [
+        "FRENCHBREACHES"
+      ],
+      "summary": "Fuite de données chez TimeTonic impliquant l'exploitation d'une vulnérabilité de Metabase.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-30",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-CFAAEC3E334A",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Courir",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/courir-une-compromission-massive-de-linfrastructure-interne-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/courir-mtg0ctb51irigfs0gts"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Courir : une compromission massive de l’infrastructure interne après une cyberattaque",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/courir-mtg0ctb51irigfs0gts",
+        "https://www.cyberattaque.org/courir-une-compromission-massive-de-linfrastructure-interne-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-30",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-D63CEE9E9005",
+      "items": 1,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "Inconnu",
+      "org": "FFTir",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants",
+        "données bancaires"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/fftir-les-donnees-de-300-000-licencies-mis-en-vente-par-un-hacker/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "FFTir : les données de 300 000 licenciés mis en vente par un hacker",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://www.cyberattaque.org/fftir-les-donnees-de-300-000-licencies-mis-en-vente-par-un-hacker/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-29",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-D9A0C6DBD358",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Easypara",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/easypara-une-faille-metabase-chez-son-prestataire-expose-les-coordonnees-de-certains-clients/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/easypara-mtejoktuc67v6di63t4"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Une faille Metabase chez le prestataire Shipp expose les coordonnées de certains clients d'Easypara.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/easypara-mtejoktuc67v6di63t4",
+        "https://www.cyberattaque.org/easypara-une-faille-metabase-chez-son-prestataire-expose-les-coordonnees-de-certains-clients/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-29",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-92B98E38166E",
+      "items": 1,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "LCommerce",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "BONJOURLAFUITE",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "BONJOURLAFUITE",
+          "url": "https://bonjourlafuite.eu.org/img/lcommerce.png"
+        }
+      ],
+      "sources": [
+        "BONJOURLAFUITE"
+      ],
+      "summary": "",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://bonjourlafuite.eu.org/img/lcommerce.png"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-29",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-3C5B9E546782",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Marie Blachère",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Une base de données de Marie Blachère contenant des données sensibles de salariés a été mise en vente sur un forum cybercriminel.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf",
+        "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-29",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-68BCE0C36286",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Zéro Logement Vacant",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw",
+        "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-28",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-195F06B69C3A",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Actis Location",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "données bancaires",
+        "identifiants"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/actis-location-factures-devis-et-rib-de-clients-exposes-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/actis-location-blgcloud-mtck051io55urdgqnxe"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Actis Location subit une fuite de 666 155 fichiers, représentant 464 Go de données, après une cyberattaque.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://frenchbreaches.com/alertes/actis-location-blgcloud-mtck051io55urdgqnxe",
+        "https://www.cyberattaque.org/actis-location-factures-devis-et-rib-de-clients-exposes-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-28",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-70B5B8B5751D",
+      "items": 3,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Frères Toque",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "BONJOURLAFUITE",
+          "status": "direct"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "BONJOURLAFUITE",
+          "url": "https://bonjourlafuite.eu.org/img/freres-toque.png"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/freres-toque-donnees-clients-et-historiques-de-commandes-exposes-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/fr-res-toque-mtejkm4gb9g1viudmhf"
+        }
+      ],
+      "sources": [
+        "BONJOURLAFUITE",
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Frères Toque victime d'un incident de sécurité compromettant des données personnelles de clients.",
+      "threat": "Fuite de données",
+      "urls": [
+        "https://bonjourlafuite.eu.org/img/freres-toque.png",
+        "https://frenchbreaches.com/alertes/fr-res-toque-mtejkm4gb9g1viudmhf",
+        "https://www.cyberattaque.org/freres-toque-donnees-clients-et-historiques-de-commandes-exposes-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-28",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-A3C6A92F895D",
+      "items": 2,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "France métropolitaine",
+      "org": "Lingor",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [
+        "données bancaires"
+      ],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/lingor-des-donnees-sensibles-de-clients-potentiellement-exposees-apres-une-cyberattaque/"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "url": "https://frenchbreaches.com/alertes/lingor-mtcnn1mg1ipiqk7j53o"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG",
+        "FRENCHBREACHES"
+      ],
+      "summary": "Lingor a subi une cyberattaque ayant potentiellement exposé des données sensibles de ses clients.",
+      "threat": "Ransomware",
+      "urls": [
+        "https://frenchbreaches.com/alertes/lingor-mtcnn1mg1ipiqk7j53o",
+        "https://www.cyberattaque.org/lingor-des-donnees-sensibles-de-clients-potentiellement-exposees-apres-une-cyberattaque/"
+      ]
+    },
+    {
+      "basis": "PUBLICATION",
+      "date": "2026-08-28",
+      "first_seen": "2026-08-31T23:59:59+04:00",
+      "id": "INC-E39645DF5E4E",
+      "items": 1,
+      "last_seen": "2026-08-31T23:59:59+04:00",
+      "location": "Inconnu",
+      "org": "Qare",
+      "sector": "Inconnu",
+      "sector_status": {
+        "reason": "NO_EVIDENCE",
+        "status": "unknown"
+      },
+      "sensitive_data_exposed": false,
+      "sensitive_data_types": [],
+      "source_link_status": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "status": "direct"
+        }
+      ],
+      "source_links": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "url": "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+        }
+      ],
+      "sources": [
+        "CYBERATTAQUE_ORG"
+      ],
+      "summary": "Intrusion dans Qare, plateforme de téléconsultation, entraînant l'exposition de photos d'enfants.",
+      "threat": "Intrusion",
+      "urls": [
+        "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+      ]
+    }
+  ],
+  "unknown_item_traces": [
+    {
+      "item_id": "ITM-041e36c542f6c37f",
+      "organisation": "Frères Toque",
+      "published_date": "2026-08-28",
+      "source": "BONJOURLAFUITE",
+      "url": "https://bonjourlafuite.eu.org/img/freres-toque.png",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {},
+      "cache": []
+    },
+    {
+      "item_id": "ITM-e91886c964872bf8",
+      "organisation": "LCommerce",
+      "published_date": "2026-08-29",
+      "source": "BONJOURLAFUITE",
+      "url": "https://bonjourlafuite.eu.org/img/lcommerce.png",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {},
+      "cache": []
+    },
+    {
+      "item_id": "ITM-4cc8816fbf2bf2c7",
+      "organisation": "Actis Location",
+      "published_date": "2026-08-28",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/actis-location-factures-devis-et-rib-de-clients-exposes-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "28afd09d89400c018185e69253fb57abacf1a808a707722c5407a349ec63882d",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "d7cc533c37f529e81426ca6d4bb13957320192de1479dcb0db9a86ae84203c52",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Actis Location est un réseau spécialisé dans la location de matériels professionnels, notamment pour la manutention, l’élévation et les travaux.",
+                "value": "réseau spécialisé dans la location de matériels professionnels"
+              },
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Actis Location est un réseau spécialisé dans la location de matériels professionnels...",
+                "value": "Industrie / Manufacture"
+              },
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-050f3ab72fc2e7e3",
+      "organisation": "Lingor",
+      "published_date": "2026-08-28",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/lingor-des-donnees-sensibles-de-clients-potentiellement-exposees-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "dd9fdcef246e52228da96a70ecd73062208923e501e312babfc32f57b6b7823d",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "311c685fe82fa5152206e80b215930fde21e7981d23ecad8713d9cce954fdc01",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Lingor précise qu’aucune fuite de document d’identité n’a été constatée pour les commandes réalisées sur lingor.fr.",
+                "value": "plateforme de e-commerce"
+              },
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Lingor précise qu’aucune fuite de document d’identité n’a été constatée pour les commandes réalisées sur lingor.fr.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-dbaa1b5710c8ec69",
+      "organisation": "Qare",
+      "published_date": "2026-08-28",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "4ebe070db99e79b82c64444666e8fb96db3a7171ed96dcf081d4d6c802a6520c",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "960dd04fd2af79b93c7061c0cb3a42bd893bb8ec3d62a5547259733f026c6c19",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Qare, plateforme française de téléconsultation.",
+                "value": "Qare permet aux patients de consulter des professionnels de santé à distance."
+              },
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Qare, plateforme française de téléconsultation médicale.",
+                "value": "Santé"
+              },
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-c4c6d095612ff2f2",
+      "organisation": "Easypara",
+      "published_date": "2026-08-29",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/easypara-une-faille-metabase-chez-son-prestataire-expose-les-coordonnees-de-certains-clients/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "053836a8e3b65ac46efa176657a984ea207d6cd5ae014d26468dc2717bb07d3b",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "dfa0cdb219e4b1b6d98d1500c5a0ef70078841a06ef866d303a54789320fec2f",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Shipp intervient dans l’envoi des communications liées au suivi de livraison des commandes Easypara.",
+                "value": "suivi des commandes"
+              },
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "suivi de livraison des commandes Easypara.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ec6ad7ad1bc83e4d",
+      "organisation": "Frères Toque",
+      "published_date": "2026-08-29",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/freres-toque-donnees-clients-et-historiques-de-commandes-exposes-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "de17c396d129645e17d1425cd7a11001827c8e9d9891ac7b269651321600d51f",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "9f23d185413054347fe05abaca872e178eeae0c85e74776e1da81ae5a7d3117c",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-bcdc630a43bb7e0a",
+      "organisation": "Marie Blachère",
+      "published_date": "2026-08-29",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "9e9c19717fe5cb302fb275bb1ef6e70f55df0d946e635599680d84381b50fcbb",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "5aa191e4b11b326d890c9c06f92a0d498dbdca8efb80abd70a602032ed257b1f",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Marie Blachère, l’une des principales enseignes françaises de boulangerie.",
+                "value": "Enseigne de boulangerie."
+              },
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Marie Blachère, l’une des principales enseignes françaises de boulangerie.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ac5aea25b29b9175",
+      "organisation": "Zéro Logement Vacant",
+      "published_date": "2026-08-29",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "d96e9eeb63ddef77afc86dd74c04818f9c0e5a09f952807a135fb64ba8ee3ad5",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "040b006703ac62acb10abec268dcaa3ce75b47bd41d9151e7f86464e38a4bd0f",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Zéro Logement Vacant, service numérique de l’État destiné à accompagner les collectivités.",
+                "value": "service numérique de l’État"
+              },
+              "version": "activity-description-v1"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Zéro Logement Vacant, service numérique de l’État destiné à accompagner les collectivités.",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-73fbb34e125a5084",
+      "organisation": "Courir",
+      "published_date": "2026-08-30",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/courir-une-compromission-massive-de-linfrastructure-interne-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {},
+      "cache": []
+    },
+    {
+      "item_id": "ITM-0867a5b8ab130b38",
+      "organisation": "FFTir",
+      "published_date": "2026-08-30",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/fftir-les-donnees-de-300-000-licencies-mis-en-vente-par-un-hacker/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {},
+      "cache": []
+    },
+    {
+      "item_id": "ITM-03fb3005e50cb68f",
+      "organisation": "Herbiolys",
+      "published_date": "2026-08-31",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/herbiolys-cyberattaque-million-de-lignes-et-1-500-iban-dans-une-fuite-massive/",
+      "sector": "Inconnu",
+      "activity": "Herbiolys commercialise des produits à base de plantes.",
+      "activity_sector": "Commerce / Distribution",
+      "evidence": {
+        "Activity_Description": "Herbiolys commercialise des produits à base de plantes et travaille aussi bien avec des particuliers qu’avec un réseau professionnel.",
+        "Activity_Sector_Match": "Herbiolys commercialise des produits à base de plantes."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "ee53b011c4afce2c90440f2bbd3c135ae1a8c9013ae53456b489e083e7cb814f",
+          "model_label": "gpt-5-nano",
+          "content_hash": "652e71e6db8284bf564dfa5ffce31476321765c6b5118e5e4a7996bc10ea8ae6",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Herbiolys commercialise des produits à base de plantes et travaille aussi bien avec des particuliers qu’avec un réseau professionnel.",
+                "value": "Herbiolys commercialise des produits à base de plantes."
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Herbiolys commercialise des produits à base de plantes.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        },
+        {
+          "cache_key": "f991e5207f0a8028fce18cf156752c0455d853d758cdce5de0055035756a0c27",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "652e71e6db8284bf564dfa5ffce31476321765c6b5118e5e4a7996bc10ea8ae6",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Herbiolys commercialise des produits à base de plantes.",
+                "value": "Herbiolys commercialise des produits à base de plantes"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Herbiolys commercialise des produits à base de plantes.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-853bff3331f5dba9",
+      "organisation": "La financière d’Orion",
+      "published_date": "2026-08-31",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/la-financiere-dorion-20-go-de-donnees-clients-voles-apres-le-piratage-dun-partenaire/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "297f7b78b6cb1fe4d044ea65d734e9601803c4f0c09ad67d3165aaebf669ae6c",
+          "model_label": "gpt-5-nano",
+          "content_hash": "e204643d2fff2176b5efb178593b326122ec2fc3e065365020bea1fe792280e8",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Orion, acteur français de la gestion de patrimoine.",
+                "value": "Finance / Assurance"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        },
+        {
+          "cache_key": "b8a248901a2a2793cd8c44a8bf0128a863204930a9b5780412d2e39a254266ab",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "e204643d2fff2176b5efb178593b326122ec2fc3e065365020bea1fe792280e8",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "acteur français de la gestion de patrimoine",
+                "value": "Finance / Assurance"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ad6e9de3e09cb125",
+      "organisation": "Le Bon Siège",
+      "published_date": "2026-08-31",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/",
+      "sector": "Inconnu",
+      "activity": "site français de vente en ligne",
+      "activity_sector": "",
+      "evidence": {
+        "Activity_Description": "\"Le Bon Siège, un site français de vente en ligne\""
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "c93633593674902b7b6110d7d84fd55fe60f885fe7303bbd7dec53230350047b",
+          "model_label": "gpt-5-nano",
+          "content_hash": "d94f7ff43f50f171b59dd825ec8c9d7013c3692604f6f3ebca7dfa891bfe4fee",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "\"Le Bon Siège, un site français de vente en ligne\"",
+                "value": "site français de vente en ligne"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-b748ef8a5951e965",
+      "organisation": "Bio en Hauts-de-France",
+      "published_date": "2026-09-01",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "intervient dans l’écosystème régional de l’agriculture biologique",
+      "activity_sector": "Agriculture / Agroalimentaire",
+      "evidence": {
+        "Activity_Description": "Bio en Hauts-de-France intervient dans l’écosystème régional de l’agriculture biologique.",
+        "Activity_Sector_Match": "Bio en Hauts-de-France intervient dans l’écosystème régional de l’agriculture biologique."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "4d85d830f4b5a038d3b20e566be036a6c58813a020c358836a21235a9b7a2216",
+          "model_label": "gpt-5-nano",
+          "content_hash": "8a88a9833d66b756b318225665058aa336fb742abcddac783d26b33d7bc888e5",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Bio en Hauts-de-France intervient dans l’écosystème régional de l’agriculture biologique.",
+                "value": "intervient dans l’écosystème régional de l’agriculture biologique"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Bio en Hauts-de-France intervient dans l’écosystème régional de l’agriculture biologique.",
+                "value": "Agriculture / Agroalimentaire"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-0c5790b0a532025c",
+      "organisation": "Dropbox",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/",
+      "sector": "Inconnu",
+      "activity": "stockage, synchronisation et partage de fichiers en ligne",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "Dropbox permet aux particuliers comme aux entreprises de stocker, synchroniser et partager leurs fichiers en ligne.",
+        "Activity_Sector_Match": "Dropbox permet aux particuliers comme aux entreprises de stocker, synchroniser et partager leurs fichiers en ligne."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "5738ffbfbf41ce809513a46787635a61a2bfdc4120e831900c9744063849c8b2",
+          "model_label": "gpt-5-nano",
+          "content_hash": "1a33b52ceb267010aedecca9061315a899b034d8eeb998c28bb82ed171d060ce",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Dropbox permet aux particuliers comme aux entreprises de stocker, synchroniser et partager leurs fichiers en ligne.",
+                "value": "stockage, synchronisation et partage de fichiers en ligne"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Dropbox permet aux particuliers comme aux entreprises de stocker, synchroniser et partager leurs fichiers en ligne.",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-68e84c61b64115aa",
+      "organisation": "FNIM",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/fnim-des-bases-de-donnees-completes-diffusees-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "156cfd327ebf339a96cbf7f98ff7e66893afbba8cfff6c52c4a688d88f294a27",
+          "model_label": "gpt-5-nano",
+          "content_hash": "b27a7d86e543a127303d7f4c9c4a395beb1134decde4abb7485211788769afc7",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-48e2bee9b75f6d4b",
+      "organisation": "Géofoncier",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/",
+      "sector": "Inconnu",
+      "activity": "plateforme de référence de l’Ordre des géomètres-experts",
+      "activity_sector": "",
+      "evidence": {
+        "Activity_Description": "Géofoncier, la plateforme de référence de l’Ordre des géomètres-experts."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "5861ee5758f61dbba08f6c8076f86832a6b988a9b9b584562a9423554aa29e7c",
+          "model_label": "gpt-5-nano",
+          "content_hash": "f8619553ab1886b18a304777aeb3c3fb1b5de915b59a8f12bf0129c4e5faaae2",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Géofoncier, la plateforme de référence de l’Ordre des géomètres-experts.",
+                "value": "plateforme de référence de l’Ordre des géomètres-experts"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-3ea1b0fde3ccb797",
+      "organisation": "La Boutique du Volet",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/la-boutique-du-volet-une-cyberattaque-expose-les-donnees-et-lhistorique-de-commandes-de-clients/",
+      "sector": "Inconnu",
+      "activity": "commerce de volets",
+      "activity_sector": "Commerce / Distribution",
+      "evidence": {
+        "Activity_Description": "La Boutique du Volet informe ses clients d’un incident de sécurité.",
+        "Activity_Sector_Match": "La Boutique du Volet informe ses clients d’un incident."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "d8546349533e9b691f69a3e84c461b3c2ceb1eda6a75fa53ff292e3cf651bc16",
+          "model_label": "gpt-5-nano",
+          "content_hash": "0d606ad096820e8273dc3792d384d25e530836e85efa42c6c29c5cf007cabf11",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.7,
+                "evidence": "La Boutique du Volet informe ses clients d’un incident de sécurité.",
+                "value": "commerce de volets"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "La Boutique du Volet informe ses clients d’un incident.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-7cc16874b28f6592",
+      "organisation": "LiveTrail",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/",
+      "sector": "Inconnu",
+      "activity": "plateforme de suivi de courses de trail",
+      "activity_sector": "Sport",
+      "evidence": {
+        "Activity_Description": "LiveTrail, plateforme bien connue dans l'univers du trail et du suivi de courses",
+        "Activity_Sector_Match": "plateforme bien connue dans l'univers du trail et du suivi de courses"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "21e7afa5812b63bb97146c3c1224544bed6967519c8b9b49069fb2dc5138a8d8",
+          "model_label": "gpt-5-nano",
+          "content_hash": "faa465e3b237543c40dbfd5e363a9703530fa7c490bfad32bb03506cfa4de2fb",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "LiveTrail, plateforme bien connue dans l'univers du trail et du suivi de courses",
+                "value": "plateforme de suivi de courses de trail"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "plateforme bien connue dans l'univers du trail et du suivi de courses",
+                "value": "Sport"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-2eed670173f2bfd2",
+      "organisation": "Micromania",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/micromania-ses-donnees-clients-exposees-apres-une-cyberattaque-chez-shipup/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "1999ff38c913c46eb3a9acab951b3fdf9bbe78230294c3cb343dc878226fb867",
+          "model_label": "gpt-5-nano",
+          "content_hash": "4b4681d2d343145f0ea5e6479200e7f120affe7208e8713a6d8c5d71b50d6ca2",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ec7dface31b72e5c",
+      "organisation": "Shipup",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/cyberattaque-shipup/",
+      "sector": "Inconnu",
+      "activity": "plateforme spécialisée dans le suivi des livraisons et l'expérience post-achat des sites e-commerce",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce.",
+        "Activity_Sector_Match": "plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "af18ddf460751fe8945f9e0d2f2a5e8f1f9986936b68b88f3c6f4923b0714f2f",
+          "model_label": "gpt-5-nano",
+          "content_hash": "8b9c9e05ee487f8cf0bf64db7dfd749f32c7f8fe8c1d8739b116219bdf614e7d",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce.",
+                "value": "plateforme spécialisée dans le suivi des livraisons et l'expérience post-achat des sites e-commerce"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce.",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-9efba1fc59a55884",
+      "organisation": "Stade Montois Omnisports",
+      "published_date": "2026-09-02",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/stade-montois-une-cyberattaque-met-plusieurs-sites-hors-service/",
+      "sector": "Inconnu",
+      "activity": "club omnisports",
+      "activity_sector": "Sport",
+      "evidence": {
+        "Activity_Description": "Le Stade Montois est un club omnisports historique de Mont-de-Marsan.",
+        "Activity_Sector_Match": "Le Stade Montois est un club omnisports historique de Mont-de-Marsan."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "656c06e72eb1d3da10f0b24d6a528b2ee287218fb17dc171cfad230b32d0c306",
+          "model_label": "gpt-5-nano",
+          "content_hash": "039a0fd84f5500cb52defe079f1990656248465bdeb58d0a78367b758dafb6b2",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Le Stade Montois est un club omnisports historique de Mont-de-Marsan.",
+                "value": "club omnisports"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Le Stade Montois est un club omnisports historique de Mont-de-Marsan.",
+                "value": "Sport"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-e96eac1931369ebd",
+      "organisation": "BCTI",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "18615a2094a73820fa34057f1fc2b8404ecc131f415e1d3dc03c59c10fda4138",
+          "model_label": "gpt-5-nano",
+          "content_hash": "117139d7c418656fc897f4e6b0a73d330f28e0f95c30e25d6053b4f4b0252848",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-5be9f3b0cc9efd93",
+      "organisation": "Charbonneaux-Brabant",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/",
+      "sector": "Inconnu",
+      "activity": "Charbonneaux-Brabant est spécialisée dans la chimie, le conditionnement et la distribution de matières premières.",
+      "activity_sector": "Industrie / Manufacture",
+      "evidence": {
+        "Activity_Description": "Charbonneaux-Brabant, entreprise française spécialisée dans la chimie, le conditionnement et la distribution de matières premières",
+        "Activity_Sector_Match": "Charbonneaux-Brabant, entreprise française spécialisée dans la chimie, le conditionnement et la distribution de matières premières."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "bf1bce0774dbe77198fd7fb5ab09dc96060ed99736de4e3534a30bcd1910e515",
+          "model_label": "gpt-5-nano",
+          "content_hash": "31fad09d219515588e0f5fe8ef5a053aaa20ee5492c4adf4ffa6ec8f5cb1037f",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Charbonneaux-Brabant, entreprise française spécialisée dans la chimie, le conditionnement et la distribution de matières premières",
+                "value": "Charbonneaux-Brabant est spécialisée dans la chimie, le conditionnement et la distribution de matières premières."
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Charbonneaux-Brabant, entreprise française spécialisée dans la chimie, le conditionnement et la distribution de matières premières.",
+                "value": "Industrie / Manufacture"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-1a7a19bfd19ae7f2",
+      "organisation": "CMA Occitanie",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "74e7661aaf2186c163b6b9ddb9d435ca3a85f768ca4eec093fa1f986e883c6d0",
+          "model_label": "gpt-5-nano",
+          "content_hash": "841ce7531b623900c08b3f75053c8adaff9c1ef9c164155c25ca185de3e1e3ad",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "qui accompagne les entreprises artisanales et les professionnels dans les différents départements de la région.",
+                "value": "Services aux entreprises"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ba3837c2af95dd26",
+      "organisation": "ColisExpat",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/",
+      "sector": "Inconnu",
+      "activity": "service de réexpédition de colis",
+      "activity_sector": "Transport / Logistique",
+      "evidence": {
+        "Activity_Description": "ColisExpat permet notamment aux internautes de disposer d’une adresse de livraison intermédiaire avant de faire réexpédier leurs achats vers leur destination finale.",
+        "Activity_Sector_Match": "ColisExpat permet notamment aux internautes de disposer d’une adresse de livraison intermédiaire avant de faire réexpédier leurs achats."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "ae236698799745b39ebfc84f4206084847640c05d3211e9a518e6f821d969a77",
+          "model_label": "gpt-5-nano",
+          "content_hash": "e39d62ecf5f8d825b099b426a11742609b37953f406942181860f2879318ae6a",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "ColisExpat permet notamment aux internautes de disposer d’une adresse de livraison intermédiaire avant de faire réexpédier leurs achats vers leur destination finale.",
+                "value": "service de réexpédition de colis"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "ColisExpat permet notamment aux internautes de disposer d’une adresse de livraison intermédiaire avant de faire réexpédier leurs achats.",
+                "value": "Transport / Logistique"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-87d241b7fe2c7429",
+      "organisation": "Delicity",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/",
+      "sector": "Inconnu",
+      "activity": "plateforme de commande, livraison et réservation pour les restaurants",
+      "activity_sector": "Hébergement / Tourisme / Restauration",
+      "evidence": {
+        "Activity_Description": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants.",
+        "Activity_Sector_Match": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "c7d49ab177a4b70487c96a47f54500911ccdf83cb11409a299f1df87363db080",
+          "model_label": "gpt-5-nano",
+          "content_hash": "b79b7622b3d20396e76412327d693181ecd2c1ce3a555c84367652bef80c6588",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants.",
+                "value": "plateforme de commande, livraison et réservation pour les restaurants"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Delicity, plateforme française de commande, livraison et réservation pour les restaurants.",
+                "value": "Hébergement / Tourisme / Restauration"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-bce6453cf2314d49",
+      "organisation": "Réso",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "entreprise spécialisée dans les solutions pour l’aménagement et le second œuvre du bâtiment",
+      "activity_sector": "Construction / BTP",
+      "evidence": {
+        "Activity_Description": "Réso, entreprise française spécialisée dans les solutions pour l’aménagement et le second œuvre du bâtiment.",
+        "Activity_Sector_Match": "Réso, entreprise française spécialisée dans les solutions pour l’aménagement et le second œuvre du bâtiment."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "05d19f1305e96d57b7e9cb550b37877d90b35024ddf64cc0fdcc7424708d8221",
+          "model_label": "gpt-5-nano",
+          "content_hash": "b0a7254a7af1d038a3b17ee0fe50476e64bf3df83d68e97264c0053c7644d02f",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Réso, entreprise française spécialisée dans les solutions pour l’aménagement et le second œuvre du bâtiment.",
+                "value": "entreprise spécialisée dans les solutions pour l’aménagement et le second œuvre du bâtiment"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Réso, entreprise française spécialisée dans les solutions pour l’aménagement et le second œuvre du bâtiment.",
+                "value": "Construction / BTP"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-c8cdccbe86f725ef",
+      "organisation": "Tisséo",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/",
+      "sector": "Inconnu",
+      "activity": "réseau de transports en commun",
+      "activity_sector": "Transport / Logistique",
+      "evidence": {
+        "Activity_Description": "Tisséo, le réseau de transports en commun de l’agglomération toulousaine",
+        "Activity_Sector_Match": "Tisséo, le réseau de transports en commun de l’agglomération toulousaine"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "adb952ad8c586044755187415c0ce6d3d0929860dbf849809f9537839b0dc82a",
+          "model_label": "gpt-5-nano",
+          "content_hash": "c834fb96a01b41d50986c25c76c81da25a3d03d835dcf0dbf59929ec6034dc81",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Tisséo, le réseau de transports en commun de l’agglomération toulousaine",
+                "value": "réseau de transports en commun"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Tisséo, le réseau de transports en commun de l’agglomération toulousaine",
+                "value": "Transport / Logistique"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-0f0716ce4755d459",
+      "organisation": "ZeroGaspi",
+      "published_date": "2026-09-03",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "f35dd26781e553aa3334224fbfbef61f127adbed5b3088df4092691e6069062a",
+          "model_label": "gpt-5-nano",
+          "content_hash": "db9e4ed46c51bcf3b8bec1187c531a5157047dad0f166ae4e35161d9bc7cd8bb",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "ZeroGaspi commercialise en ligne des produits destinés notamment à réduire le gaspillage et les déchets.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-af552eefe974f150",
+      "organisation": "Association des maires de France",
+      "published_date": "2026-09-04",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "6115ea2b9699e5aea0119dbb0236a4b09ad8979d795798f563f737a0506a05a5",
+          "model_label": "gpt-5-nano",
+          "content_hash": "0177051ad57136f5d77352550c01d90e48f8dfa193c17404cfdc9a1d95b200a2",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "l’AMF représente les maires et présidents d’intercommunalité auprès des pouvoirs publics.",
+                "value": "Association / Syndicat"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-b1fecc30a0a3fc09",
+      "organisation": "Préférence Formations",
+      "published_date": "2026-09-04",
+      "source": "CYBERATTAQUE_ORG",
+      "url": "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/",
+      "sector": "Inconnu",
+      "activity": "Préférence Formations est un organisme spécialisé dans la formation professionnelle.",
+      "activity_sector": "Éducation / Formation",
+      "evidence": {
+        "Activity_Description": "Préférence Formations, organisme français spécialisé dans la formation professionnelle",
+        "Activity_Sector_Match": "organisme français spécialisé dans la formation professionnelle"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "0cd0213b6d3adbdb9b2720d8a9b0aa9b72da218aad61e8eb663d28016dc04622",
+          "model_label": "gpt-5-nano",
+          "content_hash": "5a564b971f212cad431683ecd0c9217cfa3d4f9ee6c9c3aaee4657003eeb6ad7",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Préférence Formations, organisme français spécialisé dans la formation professionnelle",
+                "value": "Préférence Formations est un organisme spécialisé dans la formation professionnelle."
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "organisme français spécialisé dans la formation professionnelle",
+                "value": "Éducation / Formation"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-df47b6d6c045ee30",
+      "organisation": "Actis Location",
+      "published_date": "2026-08-28",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/actis-location-blgcloud-mtck051io55urdgqnxe",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "miss",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "6112b38b39b2edf6bd6d62ca655797bce63601c57446ddd4c498085828e650a1",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "e4080a431b7d152a5b1d960e7b4127e3215eb442d53884260094a16971d6177a",
+          "fields": {
+            "activity_description": {
+              "misses": 1,
+              "status": "miss",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "spécialisée dans la location de matériels pour le bâtiment, l'industrie, l'agriculture et l'environnement",
+                "value": "Industrie / Manufacture"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ed7e34492c1a1059",
+      "organisation": "Lingor",
+      "published_date": "2026-08-28",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/lingor-mtcnn1mg1ipiqk7j53o",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "miss",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "facea23c470e57e80675082cbd92d27d66aaeb2624bb9b9dd07defb977c90175",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "7a3cf99a9fe05ba1f11379846e14fa5d469d2448cbb4c2ad957b733ff04b2f8e",
+          "fields": {
+            "activity_description": {
+              "misses": 1,
+              "status": "miss",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "entreprise française spécialisée dans l’achat, la vente et l’investissement dans l’or et les métaux précieux",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-fdbdd6afa926ce98",
+      "organisation": "Easypara",
+      "published_date": "2026-08-29",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/easypara-mtejoktuc67v6di63t4",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "miss",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "e3cb7adbb3f7c7a0886b9eadc502c11d65077071d75e3af9f7d7fd9f0bfaa071",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "fc6d555356effe1adf3650dd0b2aceacb10b60bb6e4f359bcde89208b1233991",
+          "fields": {
+            "activity_description": {
+              "misses": 1,
+              "status": "miss",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "clients d’Easypara",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-776a3c8116ba0604",
+      "organisation": "Frères Toque",
+      "published_date": "2026-08-29",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/fr-res-toque-mtejkm4gb9g1viudmhf",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "0219ff0137a862ed6cf814f94da7060613f46276fb7e725d7b7c7eda6d105a53",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "65e0e72db3c0f6e6f944e2ffc8c757c931ae8a17b270572d2229675de9144bb1",
+          "fields": {
+            "activity_description": {
+              "misses": 3,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "analyse de données",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-014806ad25b64a9f",
+      "organisation": "Marie Blachère",
+      "published_date": "2026-08-29",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "miss",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "f8fae1108c79ef8632f18144038341cb053383923aa4c399d8256ede1beadd16",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "268abaa2cfa0398b2be0c1187f7e72d9209a49db6c5c499ae03b130fd88270b2",
+          "fields": {
+            "activity_description": {
+              "misses": 1,
+              "status": "miss",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "provenant de l’enseigne française de boulangeries",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-a51172ec15657a8a",
+      "organisation": "Zéro Logement Vacant",
+      "published_date": "2026-08-29",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "miss",
+        "activity_sector_match": "miss"
+      },
+      "cache": [
+        {
+          "cache_key": "12448444ac7ceb0e9a03398762c13d30e9ad843e864a95e4b0a30385912d822b",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "1edc7247f9a74befa65ec701386fe10b1bef665b5c58b34c857c5cfd9684d8e6",
+          "fields": {
+            "activity_description": {
+              "misses": 1,
+              "status": "miss",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 1,
+              "status": "miss",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-74e3745e686a64b5",
+      "organisation": "Courir",
+      "published_date": "2026-08-30",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/courir-mtg0ctb51irigfs0gts",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {},
+      "cache": []
+    },
+    {
+      "item_id": "ITM-ae43ef50305a9615",
+      "organisation": "CGT Éduc’Action",
+      "published_date": "2026-08-31",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh",
+      "sector": "Inconnu",
+      "activity": "activité syndicale dans le secteur éducatif",
+      "activity_sector": "Association / Syndicat",
+      "evidence": {
+        "Activity_Description": "CGT Éduc’Action",
+        "Activity_Sector_Match": "CGT Éduc’Action"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "2da268fa0a9c2e911d02fff3625e59eed483c60029642126c87c61e92fbb3aba",
+          "model_label": "gpt-5-nano",
+          "content_hash": "70b2ad28af53423e64086dc71970be63290eb8a89d1a8be111b11e84efe7a034",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "CGT Éduc’Action",
+                "value": "activité syndicale dans le secteur éducatif"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        },
+        {
+          "cache_key": "f2a12865a3342509f54e284ead87fcedc64db5b4499370687d7bad44a3206031",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "70b2ad28af53423e64086dc71970be63290eb8a89d1a8be111b11e84efe7a034",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "CGT Éduc’Action",
+                "value": "Syndicat d'enseignants"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "CGT Éduc’Action",
+                "value": "Association / Syndicat"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-408c12a81073fa4d",
+      "organisation": "Herbiolys",
+      "published_date": "2026-08-31",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/herbiolys-mthbl4mtoe9zgl49kjj",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "19caa5ab2974df0d1f635af1695ff667afd496ed4569184cc59f82d87579d319",
+          "model_label": "gpt-5-nano",
+          "content_hash": "bfb4c554eba56769ee0d76671a36c5babc36dcad5e3c38ebcf7a26e4d1859867",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Herbiolys, entreprise française spécialisée dans les produits de phytothérapie",
+                "value": "Santé"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        },
+        {
+          "cache_key": "d8d0ae9cd5ecbd3c783118bef1369101dd5084a9cb4272c36a8ee86b9e8db9b9",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "bfb4c554eba56769ee0d76671a36c5babc36dcad5e3c38ebcf7a26e4d1859867",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Herbiolys, entreprise française spécialisée dans les produits de phytothérapie.",
+                "value": "Industrie / Manufacture"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-37b09b9c01f3697d",
+      "organisation": "LebonSiege",
+      "published_date": "2026-08-31",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp",
+      "sector": "Inconnu",
+      "activity": "site français de vente en ligne",
+      "activity_sector": "",
+      "evidence": {
+        "Activity_Description": "LebonSiege.fr"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "6d54b394f7fc8f6302961f1faafe818708d9a7d4cd07bc2236c30e2687630949",
+          "model_label": "gpt-5-nano",
+          "content_hash": "99fcf6a4a898bb59e150823517a2b98da2fee5b6ae7feb499dd1e3802d459da3",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "LebonSiege.fr",
+                "value": "site français de vente en ligne"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        },
+        {
+          "cache_key": "aee42f79d0730f3edc1504ef5100e3432f11b1e2f52e1c047aaa010f9b54a593",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "99fcf6a4a898bb59e150823517a2b98da2fee5b6ae7feb499dd1e3802d459da3",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-9d9815a5f2d59dfb",
+      "organisation": "Timetonic",
+      "published_date": "2026-08-31",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va",
+      "sector": "Inconnu",
+      "activity": "éditeur de logiciels",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "TimeTonic informe ses utilisateurs d’une fuite de données.",
+        "Activity_Sector_Match": "TimeTonic informe ses utilisateurs d’une fuite de données."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "16cc50dfef0df0b5eeac4fdc212b41c98cfd59a1641f082255b12622f1e278a8",
+          "model_label": "gpt-5-nano",
+          "content_hash": "2110be89cbe533b3c0146fa44efbf63723665d1214c9e07dfa4ee39c5a4a1f97",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.85,
+                "evidence": "TimeTonic informe ses utilisateurs d’une fuite de données.",
+                "value": "éditeur de logiciels"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        },
+        {
+          "cache_key": "e4a8014fbcba08ccc9587fb5e5afaab141d627bcd55e1e31bc046d6b1e113bdd",
+          "model_label": "gpt-4o-mini",
+          "content_hash": "2110be89cbe533b3c0146fa44efbf63723665d1214c9e07dfa4ee39c5a4a1f97",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "TimeTonic informe ses utilisateurs d’une fuite de données.",
+                "value": "service de gestion et de collaboration de données"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "TimeTonic informe ses utilisateurs d’une fuite de données.",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-7597af39837701fa",
+      "organisation": "Bio en Hauts-de-France",
+      "published_date": "2026-09-01",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "058fc353208ca9d562ed1a267ff5b14bd58d423d6e00da4a44b689859c699ad1",
+          "model_label": "gpt-5-nano",
+          "content_hash": "c81a3b7c62387f217a1162d7f094e81d68475fc58322f700b294f78b02eacc25",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-47853f7a53762222",
+      "organisation": "FNIM",
+      "published_date": "2026-09-02",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/fnim-mtjy1oawv9ayhxk3qr",
+      "sector": "Inconnu",
+      "activity": "Fédération nationale intervenant dans le secteur médical.",
+      "activity_sector": "",
+      "evidence": {
+        "Activity_Description": "FNIM."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "abstained"
+      },
+      "cache": [
+        {
+          "cache_key": "e77f01781d2b01f13525f89162f54c098a661a601d1564c877848087fd8bffda",
+          "model_label": "gpt-5-nano",
+          "content_hash": "e3591c2f8fb89f27518e5a1e9a42993321b5deba401400c27932a93ea7c3a67c",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.7,
+                "evidence": "FNIM.",
+                "value": "Fédération nationale intervenant dans le secteur médical."
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-ab8836dc2f58e58e",
+      "organisation": "Géofoncier",
+      "published_date": "2026-09-02",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h",
+      "sector": "Inconnu",
+      "activity": "la plateforme française spécialisée dans l’information foncière et les données des géomètres-experts",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "Géofoncier.fr, une plateforme française spécialisée dans l’information foncière et les données des géomètres-experts",
+        "Activity_Sector_Match": "plateforme française spécialisée dans l’information foncière et les données des géomètres-experts"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "ed3759dc8e6d21e5c9d4ff87dfc49e49814b5a8106cd50017fbb731623f61052",
+          "model_label": "gpt-5-nano",
+          "content_hash": "b89f73716b7a758f383a00a8bcc19a8fe11ea3d4d3c871bfb4abcbbd5506ccf2",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Géofoncier.fr, une plateforme française spécialisée dans l’information foncière et les données des géomètres-experts",
+                "value": "la plateforme française spécialisée dans l’information foncière et les données des géomètres-experts"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "plateforme française spécialisée dans l’information foncière et les données des géomètres-experts",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-dc819e8df8308283",
+      "organisation": "La Boutique du Volet",
+      "published_date": "2026-09-02",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/la-boutique-du-volet-mtkld2kqnn3iulc7t78",
+      "sector": "Inconnu",
+      "activity": "Vente de volets",
+      "activity_sector": "Commerce / Distribution",
+      "evidence": {
+        "Activity_Description": "La Boutique du Volet",
+        "Activity_Sector_Match": "La Boutique du Volet"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "502dba74a511fdde77313a892808cf62318d2979760215863c03e3d6e726ef5d",
+          "model_label": "gpt-5-nano",
+          "content_hash": "249a37f006225f8f0c75767d79e6ba12245add30faa45f516228f9c5595cb90b",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.7,
+                "evidence": "La Boutique du Volet",
+                "value": "Vente de volets"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.7,
+                "evidence": "La Boutique du Volet",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-3a41569a8967db5a",
+      "organisation": "LiveTrail",
+      "published_date": "2026-09-02",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9",
+      "sector": "Inconnu",
+      "activity": "plateforme de suivi des courses",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "Cyberattaque chez LiveTrail, plateforme de suivi des courses : des...",
+        "Activity_Sector_Match": "plateforme de suivi des courses"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "5b4ba7afb0c11819dd8a0e9a0d65c63b550dd310ca6fdb08811051c52822e637",
+          "model_label": "gpt-5-nano",
+          "content_hash": "1701c34bb819058f8c930ba6573d2a07b826d96eb6933bd463f92b31b61cae04",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "Cyberattaque chez LiveTrail, plateforme de suivi des courses : des...",
+                "value": "plateforme de suivi des courses"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "plateforme de suivi des courses",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-49326d4ea5028690",
+      "organisation": "BCTI",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp",
+      "sector": "Inconnu",
+      "activity": "Bureau de Conformité Technique & Innovation",
+      "activity_sector": "Services aux entreprises",
+      "evidence": {
+        "Activity_Description": "BCTI (Bureau de Conformité Technique & Innovation)",
+        "Activity_Sector_Match": "Bureau de Conformité Technique & Innovation"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "53f7672fda7cf9736a25a194f23c435a1804e5a276c5f4ff5ccee11c93d707e8",
+          "model_label": "gpt-5-nano",
+          "content_hash": "be625528f263fa865e420d1c80be024b154beb801f1d7e7943e44f27952707be",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "BCTI (Bureau de Conformité Technique & Innovation)",
+                "value": "Bureau de Conformité Technique & Innovation"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "Bureau de Conformité Technique & Innovation",
+                "value": "Services aux entreprises"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-9c16af75e968a0f8",
+      "organisation": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq",
+      "sector": "Inconnu",
+      "activity": "Chambre de Métiers et de l’Artisanat.",
+      "activity_sector": "Association / Syndicat",
+      "evidence": {
+        "Activity_Description": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+        "Activity_Sector_Match": "Chambre de Métiers et de l’Artisanat d’Occitanie"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "f8edc669c5b87158044dbf9626ff680f99ab7cae40c85e2d675a64dbcee18b06",
+          "model_label": "gpt-5-nano",
+          "content_hash": "7c2a3dabd87e9c08e5371f6114e2ad8949f384c545ceff82b609bb1fcdd3105b",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+                "value": "Chambre de Métiers et de l’Artisanat."
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+                "value": "Association / Syndicat"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-9be0e51d6fc67e1c",
+      "organisation": "Charbonneaux-Brabant",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "416161b83623a682bcc71616e830a358ba304599d92ef431c5c8bfed4c91fc16",
+          "model_label": "gpt-5-nano",
+          "content_hash": "b91550585f079274704685b05f84e7fd438d809808be0bb490cf8bc5db3b56b3",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.7,
+                "evidence": "base de données attribuée au site charbonneauxbrabant.com",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-e67866257a323b8b",
+      "organisation": "ColisExpat",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd",
+      "sector": "Inconnu",
+      "activity": "plateforme d'expédition pour les expatriés.",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "ColisExpat, plateforme exploitée par Landmark Global France.",
+        "Activity_Sector_Match": "ColisExpat, plateforme exploitée par Landmark Global France."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "78010d9af092ed6606c013ea9f4bca4bd67004bc8e0b6f74f31b1f93d4f06b52",
+          "model_label": "gpt-5-nano",
+          "content_hash": "43daffa30286d8a6f74175a138afc91e09e7a4f1aae08a97bab7deec373f2996",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "ColisExpat, plateforme exploitée par Landmark Global France.",
+                "value": "plateforme d'expédition pour les expatriés."
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "ColisExpat, plateforme exploitée par Landmark Global France.",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-5b67e9e70df54ce7",
+      "organisation": "Delicity",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu",
+      "sector": "Inconnu",
+      "activity": "plateforme de commande, réservation et livraison de repas",
+      "activity_sector": "Commerce / Distribution",
+      "evidence": {
+        "Activity_Description": "Delicity, plateforme française de commande, réservation et livraison de repas",
+        "Activity_Sector_Match": "plateforme française de commande, réservation et livraison de repas"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "b5296fe1841d783699a4521f68003e015f6fd28a1a244b01e3fa05f68584f551",
+          "model_label": "gpt-5-nano",
+          "content_hash": "e9b7e5a4eb60841e510cf123d5ed47c8420b01a89c3cc22c2809251361a7b13d",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Delicity, plateforme française de commande, réservation et livraison de repas",
+                "value": "plateforme de commande, réservation et livraison de repas"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "plateforme française de commande, réservation et livraison de repas",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-cdce24fe660aba3c",
+      "organisation": "Micromania",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/micromania-mtkqt98z0l4chcj41qpe",
+      "sector": "Inconnu",
+      "activity": "vente de jeux vidéo",
+      "activity_sector": "Commerce / Distribution",
+      "evidence": {
+        "Activity_Description": "Micromania.",
+        "Activity_Sector_Match": "Micromania."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "2850b2ac3986a15b84415aa79e0873c4415e2573fb1b44194f24b1d49146d41f",
+          "model_label": "gpt-5-nano",
+          "content_hash": "7d7549a4ad264e0357f173428e44005826032fb3d185fc850dc34fcf19ef8eff",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Micromania.",
+                "value": "vente de jeux vidéo"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "Micromania.",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-64af20d611a38d0d",
+      "organisation": "Reso",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "b9d9382a0c464ebde2d897e216acdc4afcabaaf3d1aa5a186402f17bfb4c410e",
+          "model_label": "gpt-5-nano",
+          "content_hash": "a07552f586b6a37e5a22c7557c9e8d17cf8cd8d1fb3c1dab7045e1b74f8e6417",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "entreprise française spécialisée dans les solutions d’aménagement et de second œuvre du bâtiment",
+                "value": "Construction / BTP"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-0889c66115507f6c",
+      "organisation": "Shipup",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/shipup-mtkrgifdha9tj8813fl",
+      "sector": "Inconnu",
+      "activity": "plateforme spécialisée dans le suivi des livraisons",
+      "activity_sector": "Numérique / Technologie",
+      "evidence": {
+        "Activity_Description": "Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat",
+        "Activity_Sector_Match": "plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "835ca193f9686723d7d054e438d8a57e974c207d717b237a4775223d57f020c3",
+          "model_label": "gpt-5-nano",
+          "content_hash": "19cf6a1729c89fb4bdfac6462cceb62b393e1f97ba56655e2dd28f269cf46c72",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat",
+                "value": "plateforme spécialisée dans le suivi des livraisons"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce",
+                "value": "Numérique / Technologie"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-38afbfb13ebade24",
+      "organisation": "Tisséo",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8",
+      "sector": "Inconnu",
+      "activity": "réseau de transports en commun",
+      "activity_sector": "Transport / Logistique",
+      "evidence": {
+        "Activity_Description": "Tisséo, le réseau de transports en commun de Toulouse",
+        "Activity_Sector_Match": "réseau de transports en commun"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "1fd8807a99067e3bc13e67269bc8c8d4ab92bb35056d36fac91276f939488c67",
+          "model_label": "gpt-5-nano",
+          "content_hash": "9b1dd35af44087fec5c96e9f33252859b123c03c1b3f3e254483db2f3444483e",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "Tisséo, le réseau de transports en commun de Toulouse",
+                "value": "réseau de transports en commun"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "réseau de transports en commun",
+                "value": "Transport / Logistique"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-4db2ae12f71a1693",
+      "organisation": "ZeroGaspi",
+      "published_date": "2026-09-03",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4",
+      "sector": "Inconnu",
+      "activity": "",
+      "activity_sector": "",
+      "evidence": {},
+      "semantic_status": {
+        "activity_description": "abstained",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "3a33d336232f814efe44c1efba99dfc3df4220b3694a24509c664ad3c978e4a4",
+          "model_label": "gpt-5-nano",
+          "content_hash": "e0243f57bdd34ad225b06558d2fffe27add54043309ff3db5fe0564b5ab5f20a",
+          "fields": {
+            "activity_description": {
+              "misses": 2,
+              "status": "abstained",
+              "value": null,
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.8,
+                "evidence": "entreprise française spécialisée dans la vente de produits anti-gaspillage",
+                "value": "Commerce / Distribution"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-fef84eaa6ff9af51",
+      "organisation": "Association des maires de France",
+      "published_date": "2026-09-04",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p",
+      "sector": "Inconnu",
+      "activity": "Association des maires de France",
+      "activity_sector": "Association / Syndicat",
+      "evidence": {
+        "Activity_Description": "Association des maires de France.",
+        "Activity_Sector_Match": "l’Association des maires de France."
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "c04a26acf679bcaf9be2949207a9fa4d76bf72e9ff1b0274a60a81ff7ec53cd7",
+          "model_label": "gpt-5-nano",
+          "content_hash": "ebe821dfae9da0a78e0199a5384c858e769736865a215b3fdb528d0c1308ab75",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "Association des maires de France.",
+                "value": "Association des maires de France"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 0.9,
+                "evidence": "l’Association des maires de France.",
+                "value": "Association / Syndicat"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": "ITM-cb101b53adea60f5",
+      "organisation": "Préférence Formations",
+      "published_date": "2026-09-04",
+      "source": "FRENCHBREACHES",
+      "url": "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse",
+      "sector": "Inconnu",
+      "activity": "plateforme française dédiée à la formation professionnelle",
+      "activity_sector": "Éducation / Formation",
+      "evidence": {
+        "Activity_Description": "Préférence Formations, plateforme française dédiée à la formation professionnelle",
+        "Activity_Sector_Match": "plateforme française dédiée à la formation professionnelle"
+      },
+      "semantic_status": {
+        "activity_description": "accepted",
+        "activity_sector_match": "accepted"
+      },
+      "cache": [
+        {
+          "cache_key": "d73923448c0fcce1894a126d5fa916aab65b2077abbae08b9deac78d84502e17",
+          "model_label": "gpt-5-nano",
+          "content_hash": "f111c0492312527dea1046bc264dcb1833e4fb5c80642f28af3db5ab9c5c92a9",
+          "fields": {
+            "activity_description": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "Préférence Formations, plateforme française dédiée à la formation professionnelle",
+                "value": "plateforme française dédiée à la formation professionnelle"
+              },
+              "version": "activity-description-v2"
+            },
+            "activity_sector_match": {
+              "misses": 0,
+              "status": "accepted",
+              "value": {
+                "confidence": 1.0,
+                "evidence": "plateforme française dédiée à la formation professionnelle",
+                "value": "Éducation / Formation"
+              },
+              "version": "activity-sector-match-v5"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "reproductions": {
+    "fixture_partial_evidence_normalized": {
+      "activity_sector_match": {
+        "value": "Commerce / Distribution",
+        "confidence": 0.9,
+        "evidence": "ZeroGaspi commercialise en ligne des produits destinés notamment à réduire le gaspillage et les déchets."
+      }
+    },
+    "fixture_full_evidence_normalized": {
+      "activity_description": {
+        "value": "vente en ligne de produits anti-gaspillage",
+        "confidence": 0.9,
+        "evidence": "ZeroGaspi commercialise en ligne des produits destinés notamment à réduire le gaspillage et les déchets."
+      },
+      "activity_sector_match": {
+        "value": "Commerce / Distribution",
+        "confidence": 0.9,
+        "evidence": "ZeroGaspi commercialise en ligne des produits destinés notamment à réduire le gaspillage et les déchets."
+      }
+    },
+    "fixture_after_one_store": {
+      "fields": {
+        "activity_sector_match": {
+          "version": "activity-sector-match-v5",
+          "status": "accepted",
+          "misses": 0,
+          "value": {
+            "value": "Commerce / Distribution",
+            "confidence": 0.9,
+            "evidence": "ZeroGaspi commercialise en ligne des produits destinés notamment à réduire le gaspillage et les déchets."
+          }
+        },
+        "activity_description": {
+          "version": "activity-description-v2",
+          "status": "abstained",
+          "misses": 2,
+          "value": null
+        }
+      }
+    },
+    "deterministic_activity_zerogaspi": "",
+    "deterministic_sector_full_sentence_zerogaspi": "Inconnu",
+    "deterministic_cma_name": "Inconnu",
+    "deterministic_cma_activity": "Commerce / Distribution",
+    "effective_source_facts_model_default_routing": "gpt-4o-mini"
+  }
+}

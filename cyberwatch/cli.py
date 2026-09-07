@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import sys
+from pathlib import Path
 
-from . import config, site, status, store
+from . import config, enrichment, production, sector_resolution, site, status, store
 from .runner import MODE_MAJ, execute, make_run_context
 
 
@@ -71,6 +74,33 @@ def cmd_report(_args) -> int:
     print(f"- Items : **{row.get('Items_Count', 0)}** (+{row.get('New_Items', 0)} nouveaux)")
     print(f"- Incidents : **{row.get('Incidents_Count', 0)}** (+{row.get('New_Incidents', 0)} nouveaux)")
     print(f"- Sources : **{row.get('Sources_OK', 0)} OK / {row.get('Sources_FAIL', 0)} FAIL**")
+    print(f"- Coût LLM : **${float(row.get('LLM_Cost_USD') or 0):.6f}** ({row.get('LLM_Calls', 0)} appels)")
+    return 0
+
+
+def cmd_validate_business(_args) -> int:
+    business = production.evaluate_business_corpus()
+    dedup = production.evaluate_dedup_corpus()
+    print(json.dumps({"business": business, "dedup": dedup}, ensure_ascii=False, indent=2))
+    return 0 if business["passed"] and dedup["known_nonduplicate_false_merge_count"] == 0 else 1
+
+
+def cmd_production_status(args) -> int:
+    payload = production.health_payload()
+    rendered = production.markdown_report(payload) if args.markdown else json.dumps(
+        payload, ensure_ascii=False, indent=2, sort_keys=True
+    )
+    print(rendered)
+    if args.github_output:
+        output_path = os.getenv("GITHUB_OUTPUT", "")
+        if not output_path:
+            print("ERREUR : GITHUB_OUTPUT est absent.", file=sys.stderr)
+            return 2
+        with Path(output_path).open("a", encoding="utf-8") as handle:
+            handle.write(f"alert={'true' if payload['alert'] else 'false'}\n")
+            handle.write("alert_reasons<<CYBERWATCH_EOF\n")
+            handle.write(" ; ".join(payload["alert_reasons"]) + "\n")
+            handle.write("CYBERWATCH_EOF\n")
     return 0
 
 
@@ -87,6 +117,11 @@ def cmd_check(args) -> int:
 
     items = store.load_items()
     incidents = store.load_incidents()
+    gaps = sector_resolution.fact_transport_gaps(items, store.load_source_facts(), enrichment.load_reference())
+    gaps.extend(sector_resolution.transport_gaps(items, store.load_sector_resolution()))
+    if gaps:
+        print("BASE INCOHÉRENTE : preuves sectorielles non transmises : " + ", ".join(sorted(set(gaps))))
+        return 1
     item_ids = [row.Item_ID for row in items]
     incident_ids = [row.Incident_ID for row in incidents]
     if len(item_ids) != len(set(item_ids)) or len(incident_ids) != len(set(incident_ids)):
@@ -115,6 +150,18 @@ def build_parser() -> argparse.ArgumentParser:
 
     report = commands.add_parser("report", help="Afficher le dernier run.")
     report.set_defaults(func=cmd_report)
+
+    validate_business = commands.add_parser(
+        "validate-business", help="Exécuter le corpus de validation métier."
+    )
+    validate_business.set_defaults(func=cmd_validate_business)
+
+    production_status = commands.add_parser(
+        "production-status", help="Afficher fraîcheur, fiabilité, qualité et coût."
+    )
+    production_status.add_argument("--markdown", action="store_true")
+    production_status.add_argument("--github-output", action="store_true")
+    production_status.set_defaults(func=cmd_production_status)
 
     check = commands.add_parser("check", help="Vérifier que les fichiers sont lisibles.")
     check.add_argument("--allow-uninitialized", action="store_true")

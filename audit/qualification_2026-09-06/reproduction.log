@@ -1,0 +1,387 @@
+{
+  "snapshot": {
+    "items": 54,
+    "incidents": 35,
+    "source_facts": 54,
+    "dates": {
+      "first": "2026-08-28",
+      "last": "2026-09-06"
+    },
+    "items_by_source": {
+      "BONJOURLAFUITE": 2,
+      "CYBERATTAQUE_ORG": 22,
+      "FRENCHBREACHES": 28,
+      "RANSOMWARE_LIVE": 2
+    },
+    "sector_incidents": {
+      "Hébergement / Tourisme / Restauration": 2,
+      "Administration / Collectivité": 10,
+      "Commerce / Distribution": 7,
+      "Construction / BTP": 3,
+      "Transport / Logistique": 1,
+      "Numérique / Technologie": 3,
+      "Industrie / Manufacture": 1,
+      "Finance / Assurance": 2,
+      "Association / Syndicat": 2,
+      "Sport": 1,
+      "Services aux entreprises": 1,
+      "Santé": 1,
+      "Agriculture / Agroalimentaire": 1
+    },
+    "threat_incidents": {
+      "Fuite de données": 22,
+      "Intrusion": 9,
+      "Ransomware": 4
+    },
+    "location_incidents": {
+      "France métropolitaine": 34,
+      "Inconnu": 1
+    },
+    "sector_decision_reasons": {
+      "ACTIVITY_RULE": 12,
+      "REFERENCE_EXACT": 24,
+      "EXISTING_SECTOR": 13,
+      "SOURCE_SECTOR_RAW": 2,
+      "NO_ACTIVITY_EVIDENCE": 2,
+      "ORGANISATION_NAME_RULE": 1
+    },
+    "sector_decision_statuses": {
+      "inferred": 13,
+      "referenced": 24,
+      "confirmed": 13,
+      "reported": 2,
+      "unknown": 2
+    },
+    "sector_without_reference_or_legacy_item_values": {
+      "note": "Ablation des références exactes et des anciens secteurs ; watchlists et règles nominatives conservées. Ce n'est pas une prévision.",
+      "reasons": {
+        "ACTIVITY_RULE": 14,
+        "SEMANTIC_ACTIVITY_MATCH": 2,
+        "NO_ACTIVITY_EVIDENCE": 35,
+        "SOURCE_SECTOR_RAW": 2,
+        "ORGANISATION_NAME_RULE": 1
+      },
+      "unknown_items": 35,
+      "incidents": 35,
+      "unknown_incidents": 21
+    },
+    "fine_locations": [
+      {
+        "item_id": "ITM-2d8408666ad4a2ab",
+        "location": "Tarnos, Landes"
+      },
+      {
+        "item_id": "ITM-6e2c2cd9e5c3ed70",
+        "location": "Tarnos, Landes"
+      },
+      {
+        "item_id": "ITM-790d2923d5ed5cfa",
+        "location": "Créteil"
+      },
+      {
+        "item_id": "ITM-7a51bf1a54f771d3",
+        "location": "Vosges"
+      },
+      {
+        "item_id": "ITM-ac58cd9639615c55",
+        "location": "Moselle"
+      },
+      {
+        "item_id": "ITM-d776be6f7bde12f9",
+        "location": "Bas-Rhin"
+      }
+    ],
+    "sector_transport_gaps": [],
+    "business_corpus": {
+      "cases": 18,
+      "false_positives": 0,
+      "false_positive_rate_pct": 0.0,
+      "false_negatives": 0,
+      "classification_errors": 0,
+      "failed_cases": [],
+      "passed": true
+    },
+    "active_sources": [
+      {
+        "id": "FRENCHBREACHES",
+        "threat_default": "Fuite de données",
+        "location_default": "France métropolitaine"
+      },
+      {
+        "id": "BONJOURLAFUITE",
+        "threat_default": "Fuite de données",
+        "location_default": "France métropolitaine"
+      },
+      {
+        "id": "CYBERATTAQUE_ORG",
+        "threat_default": "",
+        "location_default": "Inconnu"
+      },
+      {
+        "id": "RANSOMWARE_LIVE",
+        "threat_default": "Ransomware",
+        "location_default": ""
+      },
+      {
+        "id": "VEILLE_LLM",
+        "threat_default": "",
+        "location_default": "Inconnu"
+      }
+    ]
+  },
+  "probes": [
+    {
+      "case": "T1_NEGATED_LEAK_REINTRODUCED",
+      "expected": "Intrusion",
+      "observed": "Fuite de données",
+      "meets_expectation": false,
+      "detail": {
+        "title": "Acme : intrusion dans la messagerie, aucune fuite de données identifiée",
+        "initial": "Intrusion",
+        "stabilized": "Fuite de données"
+      }
+    },
+    {
+      "case": "T2_NEGATED_RANSOMWARE",
+      "expected": "Intrusion",
+      "observed": "Ransomware",
+      "meets_expectation": false,
+      "detail": "Acme : intrusion confirmée, aucun ransomware détecté"
+    },
+    {
+      "case": "T3_RANSOMWARE_IN_SUMMARY_LOST",
+      "expected": "Ransomware",
+      "observed": "Fuite de données",
+      "meets_expectation": false,
+      "detail": {
+        "entry": {
+          "title": "Acme",
+          "url": "https://example.test/acme",
+          "source_item_id": "",
+          "published": "2026-09-06",
+          "summary": "Acme est victime d'un ransomware avec exfiltration de données.",
+          "content": "",
+          "event_date": "",
+          "organisation": "Acme",
+          "sector": "",
+          "location": "",
+          "threat": "Fuite de données",
+          "entity": "",
+          "source_metadata": {}
+        },
+        "initial": "Ransomware",
+        "stabilized": "Fuite de données"
+      }
+    },
+    {
+      "case": "T4_LEAK_BEATS_DOWNSTREAM_PHISHING",
+      "expected": "Fuite de données",
+      "observed": "Fuite de données",
+      "meets_expectation": true,
+      "detail": null
+    },
+    {
+      "case": "L1_SUPPLIER_TERRITORY",
+      "expected": "France métropolitaine",
+      "observed": "La Réunion",
+      "meets_expectation": false,
+      "detail": "Acme : intrusion confirmée en France métropolitaine ; son prestataire est à La Réunion."
+    },
+    {
+      "case": "L2_COUNT_AS_POSTAL_CODE",
+      "expected": "Inconnu",
+      "observed": "La Réunion",
+      "meets_expectation": false,
+      "detail": "Acme : fuite de 97400 comptes clients"
+    },
+    {
+      "case": "L3_FINE_LOCATION_NOT_PROPAGATED",
+      "expected": "La Réunion",
+      "observed": "France métropolitaine",
+      "meets_expectation": false,
+      "detail": {
+        "Item_ID": "audit",
+        "Fine_Location": "Saint-Denis de La Réunion",
+        "Evidence_JSON": "{\"Fine_Location\": \"L'incident Acme touche exclusivement le site de Saint-Denis de La R\\u00e9union.\"}"
+      }
+    },
+    {
+      "case": "L4_CONFLICT_LOCATION_LEXICAL_TIE",
+      "expected": "Inconnu",
+      "observed": "France métropolitaine",
+      "meets_expectation": false,
+      "detail": {
+        "incidents": 1,
+        "items_in_incident": 2,
+        "values": [
+          "France métropolitaine",
+          "Mayotte"
+        ]
+      }
+    },
+    {
+      "case": "S1_QUOTE_DOES_NOT_SUPPORT_ACTIVITY",
+      "expected": "Commerce / Distribution",
+      "observed": "Numérique / Technologie",
+      "meets_expectation": false,
+      "detail": {
+        "raw": {
+          "activity_description": {
+            "value": "éditeur de logiciels",
+            "confidence": 0.95,
+            "evidence": "Acme commercialise en ligne des chaussures."
+          },
+          "activity_sector_match": {
+            "value": "Numérique / Technologie",
+            "confidence": 0.95,
+            "evidence": "Acme commercialise en ligne des chaussures."
+          }
+        },
+        "normalized": {
+          "activity_description": {
+            "value": "éditeur de logiciels",
+            "confidence": 0.95,
+            "evidence": "Acme commercialise en ligne des chaussures."
+          },
+          "activity_sector_match": {
+            "value": "Numérique / Technologie",
+            "confidence": 0.95,
+            "evidence": "Acme commercialise en ligne des chaussures."
+          }
+        },
+        "rejections": {}
+      }
+    },
+    {
+      "case": "S2_BAD_ACTIVITY_SUPPRESSES_NATIVE_SECTOR",
+      "expected": "Industrie / Manufacture",
+      "observed": "Inconnu",
+      "meets_expectation": false,
+      "detail": [
+        {
+          "Run_ID": "",
+          "As_Of": "",
+          "Item_ID": "audit",
+          "Source_ID": "CYBERATTAQUE_ORG",
+          "Organisation_Key": "acme",
+          "Organisation": "Acme",
+          "Previous_Sector": "Industrie / Manufacture",
+          "Resolved_Sector": "Inconnu",
+          "Status": "unknown",
+          "Reason": "ACTIVITY_EVIDENCE_REJECTED",
+          "Confidence": "0.00",
+          "Evidence": "Le fournisseur AcmeSoft édite des logiciels.",
+          "Evidence_URL": "",
+          "Policy_Version": "2026-09-06.sector.3"
+        }
+      ]
+    },
+    {
+      "case": "S3_VALID_ACTIVITY_TRANSPORT",
+      "expected": "Commerce / Distribution",
+      "observed": "Commerce / Distribution",
+      "meets_expectation": true,
+      "detail": null
+    },
+    {
+      "case": "R1_EXISTING_ITEMS_ARE_REQUALIFIED",
+      "expected": true,
+      "observed": true,
+      "meets_expectation": true,
+      "detail": {
+        "before": "Intrusion",
+        "after": "Fuite de données"
+      }
+    },
+    {
+      "case": "R2_STALE_ACTIVITY_AFTER_SECOND_MISS",
+      "expected": "",
+      "observed": "vente en ligne de chaussures",
+      "meets_expectation": false,
+      "detail": {
+        "first": [
+          {
+            "Item_ID": "audit",
+            "Activity_Description": "vente en ligne de chaussures",
+            "Activity_Sector_Match": "Commerce / Distribution",
+            "Evidence_JSON": "{\"Activity_Description\":\"Acme commercialise en ligne des chaussures.\"}",
+            "Source_Metadata_JSON": "{\"_source_facts_content_hash\":\"B\",\"_source_facts_semantic_status\":{\"activity_description\":\"miss\",\"activity_sector_match\":\"miss\"}}"
+          }
+        ],
+        "second": [
+          {
+            "Item_ID": "audit",
+            "Activity_Description": "vente en ligne de chaussures",
+            "Activity_Sector_Match": "Commerce / Distribution",
+            "Evidence_JSON": "{\"Activity_Description\":\"Acme commercialise en ligne des chaussures.\"}",
+            "Source_Metadata_JSON": "{\"_source_facts_content_hash\":\"B\",\"_source_facts_semantic_status\":{\"activity_description\":\"abstained\",\"activity_sector_match\":\"abstained\"}}"
+          }
+        ],
+        "final_sector": "Commerce / Distribution"
+      }
+    }
+  ],
+  "public": {
+    "main_incidents": 62,
+    "main_sectors": {
+      "Inconnu": 43,
+      "Industrie / Manufacture": 1,
+      "Santé": 2,
+      "Éducation / Formation": 1,
+      "Administration / Collectivité": 10,
+      "Association / Syndicat": 2,
+      "Commerce / Distribution": 1,
+      "Numérique / Technologie": 1,
+      "Agriculture / Agroalimentaire": 1
+    },
+    "main_threats": {
+      "Fuite de données": 55,
+      "Ransomware": 5,
+      "Phishing / fraude": 1,
+      "Intrusion": 1
+    },
+    "main_locations": {
+      "France métropolitaine": 55,
+      "Inconnu": 7
+    },
+    "pages_type": "list",
+    "pages_keys": [],
+    "pages_count": 62,
+    "pages_sectors": {
+      "Inconnu": 43,
+      "Industrie / Manufacture": 1,
+      "Santé": 2,
+      "Éducation / Formation": 1,
+      "Administration / Collectivité": 10,
+      "Association / Syndicat": 2,
+      "Commerce / Distribution": 1,
+      "Numérique / Technologie": 1,
+      "Agriculture / Agroalimentaire": 1
+    },
+    "identical_function_asts_local_and_remote": {
+      "enrichment.py:stabilize_threats": true,
+      "normalize.py:classify_location": true,
+      "normalize.py:_location_from_text": true
+    },
+    "status": {
+      "as_of": "2026-09-06",
+      "coverage": {
+        "location": {
+          "known": 55,
+          "known_pct": 88.7,
+          "unknown": 7
+        },
+        "sector": {
+          "known": 19,
+          "known_pct": 30.6,
+          "unknown": 43
+        },
+        "threat": {
+          "known": 62,
+          "known_pct": 100.0,
+          "unknown": 0
+        }
+      }
+    }
+  }
+}

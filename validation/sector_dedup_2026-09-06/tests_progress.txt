@@ -1,0 +1,277 @@
+..................................FF...FFFFFFFF......................... [ 40%]
+........................................................................ [ 80%]
+....................................                                     [100%]
+=================================== FAILURES ===================================
+____________________________ test_batch_single_call ____________________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70c96bfbdba0>
+tmp_path = PosixPath('/tmp/pytest-of-kali/pytest-128/test_batch_single_call0')
+make_item = <function make_item.<locals>._make at 0x70c96a8490c0>
+
+    def test_batch_single_call(monkeypatch, tmp_path, make_item):
+>       candidates = [_daily_candidate(make_item, i) for i in range(3)]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dedup_ai.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+make_item = <function make_item.<locals>._make at 0x70c96a8490c0>, index = 0
+days_apart = '2026-01-01'
+
+    def _daily_candidate(make_item, index=0, *, days_apart="2026-01-01"):
+        """Un candidat plausible et unique (§Lot 1 : concaténation exacte),
+        jamais déjà résolu par un alias statique grâce au suffixe numérique."""
+        left = make_item(
+            source="A", org=f"Zorglub{index} Consulting",
+            published="2026-08-01", url=f"https://new/{index}",
+        )
+        right = make_item(
+            source="B", org=f"Zorglub{index}Consulting",
+            published=days_apart, url=f"https://hist/{index}",
+        )
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       assert len(candidates) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_dedup_ai.py:82: AssertionError
+__________________________ test_batch_capacity_limit ___________________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70c96a943650>
+tmp_path = PosixPath('/tmp/pytest-of-kali/pytest-128/test_batch_capacity_limit0')
+make_item = <function make_item.<locals>._make at 0x70c96a848880>
+
+    def test_batch_capacity_limit(monkeypatch, tmp_path, make_item):
+        """5 candidats mais une capacité de 2 : un seul appel, 3 candidats
+        explicitement marqués NOT_REVIEWED_CAPACITY (jamais silencieusement
+        ignorés, jamais un second appel, §Lot 4/15)."""
+>       candidates = [_daily_candidate(make_item, i) for i in range(5)]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dedup_ai.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+make_item = <function make_item.<locals>._make at 0x70c96a848880>, index = 0
+days_apart = '2026-01-01'
+
+    def _daily_candidate(make_item, index=0, *, days_apart="2026-01-01"):
+        """Un candidat plausible et unique (§Lot 1 : concaténation exacte),
+        jamais déjà résolu par un alias statique grâce au suffixe numérique."""
+        left = make_item(
+            source="A", org=f"Zorglub{index} Consulting",
+            published="2026-08-01", url=f"https://new/{index}",
+        )
+        right = make_item(
+            source="B", org=f"Zorglub{index}Consulting",
+            published=days_apart, url=f"https://hist/{index}",
+        )
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       assert len(candidates) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_dedup_ai.py:82: AssertionError
+_________________________ test_batch_schema_validation _________________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70c96a85d040>
+tmp_path = PosixPath('/tmp/pytest-of-kali/pytest-128/test_batch_schema_validation0')
+make_item = <function make_item.<locals>._make at 0x70c96a8866c0>
+
+    def test_batch_schema_validation(monkeypatch, tmp_path, make_item):
+        """Une valeur hors énumération invalide uniquement la décision concernée,
+        sans faire planter le batch entier."""
+>       good = _daily_candidate(make_item, 0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dedup_ai.py:228: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+make_item = <function make_item.<locals>._make at 0x70c96a8866c0>, index = 0
+days_apart = '2026-01-01'
+
+    def _daily_candidate(make_item, index=0, *, days_apart="2026-01-01"):
+        """Un candidat plausible et unique (§Lot 1 : concaténation exacte),
+        jamais déjà résolu par un alias statique grâce au suffixe numérique."""
+        left = make_item(
+            source="A", org=f"Zorglub{index} Consulting",
+            published="2026-08-01", url=f"https://new/{index}",
+        )
+        right = make_item(
+            source="B", org=f"Zorglub{index}Consulting",
+            published=days_apart, url=f"https://hist/{index}",
+        )
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       assert len(candidates) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_dedup_ai.py:82: AssertionError
+________________ test_same_incident_requires_same_org_in_batch _________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70c96a8a3850>
+tmp_path = PosixPath('/tmp/pytest-of-kali/pytest-128/test_same_incident_requires_sa0')
+make_item = <function make_item.<locals>._make at 0x70c96a886c40>
+
+    def test_same_incident_requires_same_org_in_batch(monkeypatch, tmp_path, make_item):
+>       candidate = _daily_candidate(make_item, 0)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dedup_ai.py:251: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+make_item = <function make_item.<locals>._make at 0x70c96a886c40>, index = 0
+days_apart = '2026-01-01'
+
+    def _daily_candidate(make_item, index=0, *, days_apart="2026-01-01"):
+        """Un candidat plausible et unique (§Lot 1 : concaténation exacte),
+        jamais déjà résolu par un alias statique grâce au suffixe numérique."""
+        left = make_item(
+            source="A", org=f"Zorglub{index} Consulting",
+            published="2026-08-01", url=f"https://new/{index}",
+        )
+        right = make_item(
+            source="B", org=f"Zorglub{index}Consulting",
+            published=days_apart, url=f"https://hist/{index}",
+        )
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       assert len(candidates) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_dedup_ai.py:82: AssertionError
+__________ test_batch_missing_decision_for_a_candidate_id_is_an_error __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70c96a8f8050>
+tmp_path = PosixPath('/tmp/pytest-of-kali/pytest-128/test_batch_missing_decision_fo0')
+make_item = <function make_item.<locals>._make at 0x70c96a886ae0>
+
+    def test_batch_missing_decision_for_a_candidate_id_is_an_error(monkeypatch, tmp_path, make_item):
+>       good = _daily_candidate(make_item, 0)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dedup_ai.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+make_item = <function make_item.<locals>._make at 0x70c96a886ae0>, index = 0
+days_apart = '2026-01-01'
+
+    def _daily_candidate(make_item, index=0, *, days_apart="2026-01-01"):
+        """Un candidat plausible et unique (§Lot 1 : concaténation exacte),
+        jamais déjà résolu par un alias statique grâce au suffixe numérique."""
+        left = make_item(
+            source="A", org=f"Zorglub{index} Consulting",
+            published="2026-08-01", url=f"https://new/{index}",
+        )
+        right = make_item(
+            source="B", org=f"Zorglub{index}Consulting",
+            published=days_apart, url=f"https://hist/{index}",
+        )
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       assert len(candidates) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_dedup_ai.py:82: AssertionError
+____________________ test_batch_cache_hit_skips_second_call ____________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x70c96a9c7d40>
+tmp_path = PosixPath('/tmp/pytest-of-kali/pytest-128/test_batch_cache_hit_skips_sec0')
+make_item = <function make_item.<locals>._make at 0x70c96a887060>
+
+    def test_batch_cache_hit_skips_second_call(monkeypatch, tmp_path, make_item):
+        """§Lot 13 : une décision déjà en cache pour la paire exacte (payload,
+        signaux, modèle, prompt/schema version) n'est jamais renvoyée au modèle,
+        y compris depuis un nouveau `DedupAiRunState` (persistance réelle entre
+        deux runs)."""
+>       candidate = _daily_candidate(make_item, 0)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dedup_ai.py:293: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+make_item = <function make_item.<locals>._make at 0x70c96a887060>, index = 0
+days_apart = '2026-01-01'
+
+    def _daily_candidate(make_item, index=0, *, days_apart="2026-01-01"):
+        """Un candidat plausible et unique (§Lot 1 : concaténation exacte),
+        jamais déjà résolu par un alias statique grâce au suffixe numérique."""
+        left = make_item(
+            source="A", org=f"Zorglub{index} Consulting",
+            published="2026-08-01", url=f"https://new/{index}",
+        )
+        right = make_item(
+            source="B", org=f"Zorglub{index}Consulting",
+            published=days_apart, url=f"https://hist/{index}",
+        )
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       assert len(candidates) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_dedup_ai.py:82: AssertionError
+___________ test_validate_applies_high_confidence_same_organisation ____________
+
+make_item = <function make_item.<locals>._make at 0x70c96a84a090>
+
+    def test_validate_applies_high_confidence_same_organisation(make_item):
+        left = make_item(source="A", org="Zorglub9 Consulting", published="2026-08-01", url="https://a")
+        right = make_item(source="B", org="Zorglub9Consulting", published="2026-01-01", url="https://b")
+        candidates = find_daily_llm_candidates([left], [left, right])
+>       candidate = candidates[0]
+                    ^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/test_dedup_ai.py:335: IndexError
+__________ test_validate_applies_confidence_juste_au_dessus_du_seuil ___________
+
+make_item = <function make_item.<locals>._make at 0x70c96a848d50>
+
+    def test_validate_applies_confidence_juste_au_dessus_du_seuil(make_item):
+        """Cas réel constaté (reset 2026-08-25, "Banque Alimentaire de la
+        Croix-Rouge à Strasbourg" / "Banque Alimentaire de Strasbourg") : le
+        filet a jugé SAME/SAME avec 5 faits concordants mais seulement 0.90 de
+        confiance. L'ancien seuil de 0.95 rejetait cette décision correcte, le
+        registre d'identité n'était jamais écrit, et le doublon était publié."""
+        left = make_item(source="A", org="Zorglub6 Consulting", published="2026-08-01", url="https://a")
+        right = make_item(source="B", org="Zorglub6Consulting", published="2026-01-01", url="https://b")
+>       candidate = find_daily_llm_candidates([left], [left, right])[0]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/test_dedup_ai.py:357: IndexError
+_____________________ test_validate_rejects_low_confidence _____________________
+
+make_item = <function make_item.<locals>._make at 0x70c96a8480f0>
+
+    def test_validate_rejects_low_confidence(make_item):
+        left = make_item(source="A", org="Zorglub8 Consulting", published="2026-08-01", url="https://a")
+        right = make_item(source="B", org="Zorglub8Consulting", published="2026-01-01", url="https://b")
+>       candidate = find_daily_llm_candidates([left], [left, right])[0]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/test_dedup_ai.py:370: IndexError
+_________________ test_validate_rejects_different_and_unknown __________________
+
+make_item = <function make_item.<locals>._make at 0x70c96a823ab0>
+
+    def test_validate_rejects_different_and_unknown(make_item):
+        left = make_item(source="A", org="Zorglub7 Consulting", published="2026-08-01", url="https://a")
+        right = make_item(source="B", org="Zorglub7Consulting", published="2026-01-01", url="https://b")
+>       candidate = find_daily_llm_candidates([left], [left, right])[0]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+tests/test_dedup_ai.py:381: IndexError
+=========================== short test summary info ============================
+FAILED tests/test_dedup_ai.py::test_batch_single_call - assert 0 == 1
+FAILED tests/test_dedup_ai.py::test_batch_capacity_limit - assert 0 == 1
+FAILED tests/test_dedup_ai.py::test_batch_schema_validation - assert 0 == 1
+FAILED tests/test_dedup_ai.py::test_same_incident_requires_same_org_in_batch
+FAILED tests/test_dedup_ai.py::test_batch_missing_decision_for_a_candidate_id_is_an_error
+FAILED tests/test_dedup_ai.py::test_batch_cache_hit_skips_second_call - asser...
+FAILED tests/test_dedup_ai.py::test_validate_applies_high_confidence_same_organisation
+FAILED tests/test_dedup_ai.py::test_validate_applies_confidence_juste_au_dessus_du_seuil
+FAILED tests/test_dedup_ai.py::test_validate_rejects_low_confidence - IndexEr...
+FAILED tests/test_dedup_ai.py::test_validate_rejects_different_and_unknown - ...
+10 failed, 170 passed in 0.98s

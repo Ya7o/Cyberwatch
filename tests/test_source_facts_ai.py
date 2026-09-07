@@ -39,7 +39,36 @@ def _configure(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
     monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
     monkeypatch.setenv("SOURCE_FACTS_AI_STATS_PATH", str(tmp_path / "stats.json"))
+    monkeypatch.setenv("SOURCE_FACTS_RETRY_QUEUE_PATH", str(tmp_path / "retry.json"))
     sfa.reset_runtime_for_tests()
+
+
+def test_activity_trace_preserves_response_rejections_and_effective_model(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    monkeypatch.setenv("OPENAI_API_KEY", "trace-secret-test")
+    runtime = sfa._runtime()
+    runtime.run_id = "sector-test-run"
+    payload = _payload({
+        "activity_description": {"value": "", "confidence": 0, "evidence": ""},
+        "activity_sector_match": {"value": "", "confidence": 0, "evidence": ""},
+    })
+    payload["model"] = "gpt-4o-mini"
+    monkeypatch.setattr(sfa, "_post_openai", lambda *_: payload)
+    fields = {"activity_description", "activity_sector_match"}
+    normalized, succeeded = sfa._perform_request(
+        _item(), RawEntry(title="Exemple SA", content="Incident"),
+        "Exemple SA a subi un incident.", fields, runtime, "trace-test",
+    )
+    assert succeeded and normalized == {}
+    runtime.checkpoint(force=True)
+    trace = json.loads((tmp_path / "source_facts_ai_trace.json").read_text())[-1]
+    assert trace["response"] == payload
+    assert trace["run_id"] == "sector-test-run"
+    assert trace["effective_model"] == "gpt-4o-mini"
+    assert trace["requested_model"] == runtime.model
+    assert trace["rejections"] == {field: "EMPTY_MODEL_VALUE" for field in fields}
+    assert runtime.cost == sfa._usage_cost(payload, "gpt-4o-mini")
+    assert "trace-secret-test" not in json.dumps(trace)
 
 
 def test_pas_de_cle_pas_dappel(monkeypatch, tmp_path):
@@ -88,6 +117,26 @@ def test_headline_technique_ou_generique_est_rejetee():
     assert sfa._normalize_summary(technical, context) is None
 
 
+def test_vecteur_indetermine_avec_attaque_provenant_d_un_compte_est_rejete():
+    context = (
+        "Il est impossible de déterminer si l’attaque provient d’un compte "
+        "administrateur compromis, d’une vulnérabilité ou d’un autre accès technique."
+    )
+    assert sfa._deterministic_initial_access(context) is None
+
+
+def test_malware_non_prouve_par_un_simple_piratage_est_rejete():
+    context = "Sophia présente la publication comme provenant d'un piratage du site."
+    result = sfa._normalize({
+        "threat_candidate": {
+            "value": "Malware",
+            "confidence": 0.9,
+            "evidence": context,
+        }
+    }, context, fields={"threat_candidate"})
+    assert "threat_candidate" not in result
+
+
 def test_activity_description_llm_is_grounded_and_becomes_a_provisional_signal():
     context = (
         "Exemple SA, éditeur de logiciels de comptabilité pour les PME, "
@@ -99,7 +148,7 @@ def test_activity_description_llm_is_grounded_and_becomes_a_provisional_signal()
             "confidence": 0.92,
             "evidence": "Exemple SA, éditeur de logiciels de comptabilité pour les PME",
         },
-    }, context, {"activity_description"})
+    }, context, {"activity_description"}, organisation="Exemple SA")
     assert result["activity_description"]["value"] == "éditeur de logiciels de comptabilité pour les PME"
 
     # Une activité sans citation de l'article n'est jamais conservée.
@@ -399,7 +448,8 @@ def test_invalidation_dun_champ_ne_recalcule_pas_les_autres(monkeypatch, tmp_pat
     monkeypatch.setitem(sfa.FIELD_VERSIONS, "initial_access", "initial-access-v2-test")
     sfa.enrich(_item(), entry)
     assert len(calls) == 2
-    assert calls[1] == {"initial_access"}
+    # Les abstentions d'activité ont désormais droit à un deuxième essai réel.
+    assert calls[1] == {"initial_access", "activity_description", "activity_sector_match"}
     assert sfa.runtime_stats()["fields_invalidated"] >= 1
 
 
@@ -447,6 +497,46 @@ def test_budget_appels_est_respecte(monkeypatch, tmp_path):
     sfa.enrich(item2, RawEntry(title="B", content="L'attaque a été attribuée à Qilin."))
     assert len(calls) == 1
     assert sfa.runtime_stats()["calls_budget_blocked"] == 1
+    from cyberwatch import source_facts_retry
+    queued = source_facts_retry.load()
+    assert any(row["item"]["Item_ID"] == "ITM-ai-2" for row in queued)
+
+
+def test_valeur_rejetee_est_reessayee_puis_devient_abstention(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    item = _item()
+    entry = RawEntry(
+        title="Exemple SA",
+        content=(
+            "Exemple SA confirme un incident affectant durablement ses services internes. "
+            "L'organisation poursuit son analyse technique et informera ses partenaires."
+        ),
+    )
+
+    def fake_post(body, _runtime):
+        return _payload(_output_for(
+            body,
+            fine_location={
+                "value": "Saint-Denis de La Réunion",
+                "confidence": 0.95,
+                "evidence": "citation absente du texte",
+            },
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    sfa.enrich(item, entry)
+    assert sfa.field_statuses(item, entry)["fine_location"] == "miss"
+
+    from cyberwatch import source_facts_retry
+    assert any(
+        "fine_location" in row["pending_fields"] for row in source_facts_retry.load()
+    )
+
+    sfa.enrich(item, entry)
+    assert sfa.field_statuses(item, entry)["fine_location"] == "abstained"
+    assert not any(
+        "fine_location" in row["pending_fields"] for row in source_facts_retry.load()
+    )
 
 
 def test_autres_sources_jamais_envoyees_au_llm(monkeypatch, tmp_path):

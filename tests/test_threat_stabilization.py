@@ -86,7 +86,7 @@ def test_frenchbreaches_explicit_ransomware_is_kept(make_item):
     assert item.Threat == config.THREAT_RANSOMWARE
 
 
-def test_incident_leak_beats_generic_intrusion(make_item):
+def test_incident_conflicting_defaults_abstain_without_evidence(make_item):
     items = [
         make_item(source="FRENCHBREACHES", threat=config.THREAT_LEAK, url="https://a/1"),
         make_item(
@@ -96,7 +96,7 @@ def test_incident_leak_beats_generic_intrusion(make_item):
             url="https://a/2",
         ),
     ]
-    assert build_incidents(items)[0].Menace == config.THREAT_LEAK
+    assert build_incidents(items)[0].Menace == config.THREAT_UNKNOWN
 
 
 def test_incident_account_compromise_legacy_value_is_not_published(make_item):

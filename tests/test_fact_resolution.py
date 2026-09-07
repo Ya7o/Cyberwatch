@@ -28,6 +28,60 @@ def test_nom_organisation_n_est_jamais_une_synthese_publiable():
     ], organisation="Exemple SA") == "Exemple SA subit une fuite de données clients."
 
 
+def test_victime_ne_peut_pas_revendiquer_sa_propre_attaque():
+    assert not fr.is_publishable_summary(
+        "Géofoncier revendique une cyberattaque visant ses données.",
+        organisation="Géofoncier",
+    )
+    assert fr.is_publishable_summary(
+        "Géofoncier : une fuite revendiquée par Nova.",
+        organisation="Géofoncier",
+    )
+
+
+def test_cgt_acteur_generique_et_vecteur_indetermine_sont_rejetes():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        threat_actor="syndicat",
+        threat_actor_evidence="Le syndicat affirme avoir découvert le piratage.",
+        initial_access="compromised_credentials",
+        initial_access_evidence=(
+            "Il est impossible de déterminer si l’attaque provient d’un compte "
+            "administrateur compromis, d’une vulnérabilité ou d’un autre accès."
+        ),
+    )], organisation="CGT Éduc’Action")
+    assert "threat_actor" not in resolved["fields"]
+    assert "initial_access" not in resolved["fields"]
+
+
+def test_deroule_attaquant_est_propage_avec_preuve_et_statut():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        claim_status="claimed",
+        attack_flow=[{
+            "action": "extraction de la base clients",
+            "evidence": "L'acteur affirme avoir extrait la base clients.",
+        }],
+    )])
+    assert resolved["attack_flow"] == [{
+        "action": "extraction de la base clients",
+        "evidence": "L'acteur affirme avoir extrait la base clients.",
+        "status": "claimed",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": ["CYBERATTAQUE_ORG"],
+    }]
+    assert resolved["quality_alerts"] == []
+
+
+def test_resume_ou_la_victime_revendique_declenche_une_alerte_qualite():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", summary="Géofoncier revendique une cyberattaque."),
+    ], organisation="Géofoncier")
+    assert {alert["code"] for alert in resolved["quality_alerts"]} == {
+        "SUMMARY_FACT_CONTRADICTION"
+    }
+
+
 def test_valeur_identique_agrege_les_sources():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", third_party="Prestataire X"),

@@ -104,6 +104,27 @@ class TestLatestItemOrgGeneralized:
 class TestHistoryStatusPayload:
     """§stabilisation pré-release — propagation vers `assets/data/status.json`."""
 
+    def test_couverture_continue_exposee_dans_le_payload(self, tmp_path, monkeypatch):
+        _isolate_store(tmp_path, monkeypatch)
+        store.append_run_log({
+            "Run_ID": "RUN-CREATE", "As_Of": "2026-08-15T00:00:00+04:00",
+            "Mode": "CREATE", "Target_Start": "2026-08-01", "Target_End": "2026-08-15",
+            "Overall_Status": "OK", "Sources_OK": 0, "Sources_PARTIAL": 0,
+            "Sources_FAIL": 0, "Sources_SKIPPED": 0,
+        })
+
+        integrity = site.status_payload()["integrity"]
+
+        assert integrity == {
+            "known": True,
+            "start": "2026-08-01",
+            "end": "2026-08-15",
+            "days": 15,
+            "window_days": 30,
+            "trend_required_days": 60,
+            "trend_ready": False,
+        }
+
     def test_history_status_et_oldest_available_date_propages(self, tmp_path, monkeypatch):
         _seed_run(monkeypatch, tmp_path, [
             {

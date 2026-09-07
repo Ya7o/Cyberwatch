@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from collections.abc import Mapping
 from dataclasses import dataclass
+import datetime as dt
 
 from . import config
 from .identity import incident_id, sort_incidents, sort_items
@@ -14,8 +15,10 @@ from .incident_dedup import SAME as INCIDENT_SAME
 from .incident_dedup import decision_map as incident_decision_map
 from .incident_dedup import pair_key as incident_pair_key
 from .model import Incident, Item
+from .sector_resolution import component_sector
 from .normalize import _base_organisation_key, date_or_empty, searchable
 from .org_identity import effective_organisation_key
+from . import threat_resolution
 
 
 MERGE = "MERGE"
@@ -28,6 +31,7 @@ STRONG_KEEP_REASON_CODES = frozenset({
     "INCIDENT_KEEP_CONFLICTING_EVENT_DATE",
     "INCIDENT_KEEP_RECURRENCE_MARKER",
     "INCIDENT_KEEP_LLM_DIFFERENT",
+    "INCIDENT_KEEP_LLM_TIME_GAP",
 })
 
 UNIQUE_ITEM_URL_SOURCES = frozenset({
@@ -39,6 +43,12 @@ UNIQUE_ITEM_URL_SOURCES = frozenset({
 RANSOMWARE_CORROBORATION_SOURCES = frozenset({
     "RANSOMWARE_LIVE",
     "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES",
+})
+RANSOMWARE_CORROBORATION_SOURCE_PAIRS = frozenset({
+    frozenset({"RANSOMWARE_LIVE", "CYBERATTAQUE_ORG"}),
+    frozenset({"RANSOMWARE_LIVE", "FRENCHBREACHES"}),
+    frozenset({"CYBERATTAQUE_ORG", "FRENCHBREACHES"}),
 })
 RANSOMWARE_CORROBORATION_DAYS = 14
 
@@ -68,10 +78,30 @@ def _recurrence(item: Item) -> bool:
     return any(marker in blob for marker in RECURRENCE_MARKERS)
 
 
+def _temporal_pair(left: Item, right: Item) -> tuple[dt.date, dt.date, str] | None:
+    """Retourne deux dates comparables et leur base sémantique.
+
+    Deux dates d'événement sont comparées entre elles. Si l'une manque, on
+    compare les dates de publication des deux items : une date d'événement ne
+    doit jamais être comparée directement à une date de publication.
+    """
+    left_event = date_or_empty(left.Event_Date)
+    right_event = date_or_empty(right.Event_Date)
+    if left_event and right_event:
+        return left_event, right_event, "event"
+    left_published = date_or_empty(left.Published_Date)
+    right_published = date_or_empty(right.Published_Date)
+    if left_published and right_published:
+        return left_published, right_published, "publication"
+    return None
+
+
 def _recurrence_boundary(left: Item, right: Item) -> bool:
-    left_date = date_or_empty(left.best_date)
-    right_date = date_or_empty(right.best_date)
-    if not left_date or not right_date or left_date == right_date:
+    temporal = _temporal_pair(left, right)
+    if temporal is None:
+        return False
+    left_date, right_date, _ = temporal
+    if left_date == right_date:
         return False
     later = right if right_date > left_date else left
     return _recurrence(later)
@@ -89,21 +119,20 @@ def _same_unique_url(left: Item, right: Item) -> bool:
 def _ransomware_corroboration(left: Item, right: Item, days: int) -> bool:
     if days > RANSOMWARE_CORROBORATION_DAYS:
         return False
-    sources = {left.Source_ID, right.Source_ID}
-    if "RANSOMWARE_LIVE" not in sources and sources != {"CYBERATTAQUE_ORG", "FRENCHBREACHES"}:
+    sources = frozenset({left.Source_ID, right.Source_ID})
+    if (
+        not sources <= RANSOMWARE_CORROBORATION_SOURCES
+        or sources not in RANSOMWARE_CORROBORATION_SOURCE_PAIRS
+    ):
         return False
     if left.Threat != config.THREAT_RANSOMWARE or right.Threat != config.THREAT_RANSOMWARE:
         return False
 
-    claim = left if left.Source_ID == "RANSOMWARE_LIVE" else right
-    report = right if claim is left else left
-    claim_date = date_or_empty(claim.best_date)
-    report_date = date_or_empty(report.best_date)
-    return bool(
-        claim_date
-        and report_date
-        and abs((report_date - claim_date).days) <= RANSOMWARE_CORROBORATION_DAYS
-    )
+    temporal = _temporal_pair(left, right)
+    if temporal is None:
+        return False
+    left_date, right_date, _ = temporal
+    return abs((right_date - left_date).days) <= RANSOMWARE_CORROBORATION_DAYS
 
 
 def decide_merge(
@@ -141,18 +170,33 @@ def decide_merge(
             ("llm_same_incident=DIFFERENT",),
         )
     if llm_decision == INCIDENT_SAME:
+        temporal = _temporal_pair(left, right)
+        if temporal is not None:
+            left_date, right_date, basis = temporal
+            days = abs((left_date - right_date).days)
+            if days > config.INCIDENT_GAP_DAYS:
+                return DedupDecision(
+                    KEEP_SEPARATE,
+                    "INCIDENT_KEEP_LLM_TIME_GAP",
+                    (f"days={days}", f"basis={basis}"),
+                )
         return DedupDecision(
             MERGE,
             "INCIDENT_MERGE_LLM_CONFIRMED",
             ("llm_same_incident=SAME",),
         )
 
-    left_date, right_date = date_or_empty(left.best_date), date_or_empty(right.best_date)
-    if not left_date or not right_date:
+    temporal = _temporal_pair(left, right)
+    if temporal is None:
         return DedupDecision(NO_DECISION, "INCIDENT_NO_DECISION")
+    left_date, right_date, _ = temporal
 
     days = abs((left_date - right_date).days)
-    if left.Event_Date and left.Event_Date == right.Event_Date and left.Source_ID != right.Source_ID:
+    if (
+        left.Event_Date and right.Event_Date
+        and left.Event_Date == right.Event_Date
+        and left.Source_ID != right.Source_ID
+    ):
         return DedupDecision(MERGE, "INCIDENT_MERGE_EVENT_DATE", ("event_date",))
 
     if days <= 3:
@@ -169,10 +213,12 @@ def decide_merge(
         )
 
     if _ransomware_corroboration(left, right, days):
+        claim_source = left.Source_ID if left.Source_ID == "RANSOMWARE_LIVE" else right.Source_ID
+        report_source = right.Source_ID if claim_source == left.Source_ID else left.Source_ID
         return DedupDecision(
             MERGE,
             "INCIDENT_MERGE_RANSOMWARE_CORROBORATION",
-            (f"days={days}", "claim=RANSOMWARE_LIVE", "report=CYBERATTAQUE_ORG"),
+            (f"days={days}", f"claim={claim_source}", f"report={report_source}"),
         )
 
     if days <= config.INCIDENT_GAP_DAYS and _same_unique_url(left, right):
@@ -181,129 +227,157 @@ def decide_merge(
     return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_TIME_GAP", (f"days={days}",))
 
 
-def _has_strong_component_veto(
-    current: list[Item],
-    incoming: Item,
-    incident_decisions: Mapping[str, str] | None = None,
-) -> bool:
-    for member in current:
-        decision = decide_merge(member, incoming, incident_decisions)
-        if (
-            decision.action == KEEP_SEPARATE
-            and decision.reason_code in STRONG_KEEP_REASON_CODES
-        ):
-            return True
-    return False
+def _pair_cache_key(left: Item, right: Item) -> tuple[str, str]:
+    return tuple(sorted((left.Item_ID, right.Item_ID)))
 
 
-def _can_extend_component(
-    current: list[Item],
-    incoming: Item,
-    incident_decisions: Mapping[str, str] | None = None,
-) -> bool:
-    """Autorise une corroboration cross-source J+1 sans chaînage ouvert.
+def _cached_decision(
+    left: Item,
+    right: Item,
+    incident_decisions: Mapping[str, str] | None,
+    cache: dict[tuple[str, str], DedupDecision],
+) -> DedupDecision:
+    key = _pair_cache_key(left, right)
+    if key not in cache:
+        cache[key] = decide_merge(left, right, incident_decisions)
+    return cache[key]
 
-    L'ancre reste la règle principale. Cette extension ne sert que lorsqu'une
-    source différente corrobore à J+1 un membre déjà admis. La composante reste
-    bornée par INCIDENT_GAP_DAYS et tous les veto forts sont contrôlés avant
-    l'appel par `group_components`.
-    """
-    incoming_date = date_or_empty(incoming.best_date)
-    if not incoming_date or not current:
-        return False
-    dated = [member for member in current if date_or_empty(member.best_date)]
-    if not dated:
-        return False
-    earliest = min(date_or_empty(member.best_date) for member in dated)
-    if abs((incoming_date - earliest).days) > config.INCIDENT_GAP_DAYS:
-        return False
-    for member in reversed(dated):
-        member_date = date_or_empty(member.best_date)
-        if member.Source_ID == incoming.Source_ID:
-            continue
-        if abs((incoming_date - member_date).days) > 1:
-            continue
-        if decide_merge(member, incoming, incident_decisions).action == MERGE:
-            return True
-    return False
+
+def _component_block_reason(
+    left: list[Item],
+    right: list[Item],
+    incident_decisions: Mapping[str, str] | None,
+    cache: dict[tuple[str, str], DedupDecision],
+) -> str:
+    """Retourne le premier invariant qui interdit la réunion de deux groupes."""
+    for first in left:
+        for second in right:
+            decision = _cached_decision(first, second, incident_decisions, cache)
+            if (
+                decision.action == KEEP_SEPARATE
+                and decision.reason_code in STRONG_KEEP_REASON_CODES
+            ):
+                return decision.reason_code
+            temporal = _temporal_pair(first, second)
+            if temporal is None:
+                return "INCIDENT_KEEP_INCOMPARABLE_DATES"
+            if abs((temporal[0] - temporal[1]).days) > config.INCIDENT_GAP_DAYS:
+                return "INCIDENT_KEEP_COMPONENT_TIME_SPAN"
+    return ""
 
 
 def group_components(
     items: list[Item],
     incident_decisions: Mapping[str, str] | None = None,
 ) -> list[list[Item]]:
-    """Construit des composantes ancrées avec extension cross-source bornée."""
+    """Réunit des composantes compatibles, dans un ordre déterministe.
+
+    Les liens d'identité native sont appliqués d'abord, puis les verdicts SAME
+    persistés, puis les règles déterministes ordinaires. Toute réunion autre
+    qu'une identité native exacte est contrôlée contre chaque paire des deux
+    composantes : aucun veto fort ni dépassement de la fenêtre de 14 jours ne
+    peut ainsi être contourné par transitivité.
+    """
+    eligible = [item for item in items if _effective_key(item)]
+    ordered = sorted(
+        eligible,
+        key=lambda item: (
+            _effective_key(item), item.best_date, item.Source_ID, item.URL, item.Item_ID
+        ),
+    )
     by_org: dict[str, list[Item]] = defaultdict(list)
-    for item in items:
+    by_native: dict[tuple[str, str], list[Item]] = defaultdict(list)
+    for item in eligible:
         key = _effective_key(item)
         if key:
             by_org[key].append(item)
+        if item.Source_ID and item.Source_Item_ID:
+            by_native[(item.Source_ID, item.Source_Item_ID)].append(item)
 
-    components: list[list[Item]] = []
+    local = {item.Item_ID: [item] for item in ordered}
+    owner = {item.Item_ID: item.Item_ID for item in ordered}
+    decision_cache: dict[tuple[str, str], DedupDecision] = {}
+    edges_by_pair: dict[tuple[str, str], tuple[int, int, str, str]] = {}
+
+    for native_group in by_native.values():
+        native_ordered = sorted(native_group, key=lambda item: item.Item_ID)
+        for right in native_ordered[1:]:
+            pair = _pair_cache_key(native_ordered[0], right)
+            edges_by_pair[pair] = (0, 0, pair[0], pair[1])
+
     for org_key in sorted(by_org):
         group = sorted(
             by_org[org_key],
             key=lambda item: (item.best_date, item.Source_ID, item.URL, item.Item_ID),
         )
-        current: list[Item] = []
-        anchor: Item | None = None
-        for item in group:
-            if not current:
-                current, anchor = [item], item
-                continue
-            decision = decide_merge(anchor, item, incident_decisions)
-            veto = _has_strong_component_veto(current, item, incident_decisions)
-            if not veto and (
-                decision.action == MERGE
-                or _can_extend_component(current, item, incident_decisions)
-            ):
-                current.append(item)
-            else:
-                components.append(current)
-                current, anchor = [item], item
-        if current:
-            components.append(current)
-
-    # Une publication éditoriale peut précéder de plusieurs jours la fiche
-    # ransomware qui la corrobore. La construction ancrée ci-dessus ne voit
-    # pas toujours cette paire si une troisième source a créé entre-temps une
-    # composante distincte ; réunir alors seulement les composantes dont une
-    # paire satisfait déjà la règle de corroboration stricte.
-    #
-    # `_ransomware_corroboration` ne vérifie que la fenêtre de jours et la
-    # combinaison de sources : sans le contrôle `_effective_key` ci-dessous,
-    # une chaîne d'articles ransomware sur des victimes distinctes mais
-    # publiés à moins de 14 jours d'écart se recolle transitivement en un
-    # seul incident (cas réel constaté : 11 organisations distinctes
-    # fusionnées sous "ALIZE"). La paire qui déclenche la réunion doit donc
-    # être la même organisation, exactement comme le cas visé par le
-    # commentaire ci-dessus (un article et une revendication sur la même
-    # victime, coupés en deux composantes par la construction ancrée).
-    merged = True
-    while merged:
-        merged = False
-        for index, left in enumerate(components):
-            match = next((
-                other for other in range(index + 1, len(components))
-                if any(
-                    _effective_key(a) == _effective_key(b)
-                    and _ransomware_corroboration(
-                        a, b,
-                        abs((date_or_empty(a.best_date) - date_or_empty(b.best_date)).days),
-                    )
-                    for a in left for b in components[other]
-                    if date_or_empty(a.best_date) and date_or_empty(b.best_date)
-                ) and not any(
-                    decide_merge(a, b, incident_decisions).reason_code in STRONG_KEEP_REASON_CODES
-                    for a in left for b in components[other]
+        for index, left in enumerate(group):
+            for right in group[index + 1:]:
+                decision = _cached_decision(left, right, incident_decisions, decision_cache)
+                if decision.action != MERGE:
+                    continue
+                priority = (
+                    0 if decision.reason_code == "INCIDENT_MERGE_SOURCE_ITEM_ID"
+                    else 1 if decision.reason_code == "INCIDENT_MERGE_LLM_CONFIRMED"
+                    else 2
                 )
-            ), None)
-            if match is None:
-                continue
-            components[index] = left + components.pop(match)
-            merged = True
-            break
-    return components
+                pair = _pair_cache_key(left, right)
+                temporal = _temporal_pair(left, right)
+                distance = (
+                    abs((temporal[0] - temporal[1]).days)
+                    if temporal is not None else config.INCIDENT_GAP_DAYS + 1
+                )
+                edge = (priority, distance, pair[0], pair[1])
+                if pair not in edges_by_pair or edge < edges_by_pair[pair]:
+                    edges_by_pair[pair] = edge
+
+    for priority, _distance, left_id, right_id in sorted(edges_by_pair.values()):
+        left_owner, right_owner = owner[left_id], owner[right_id]
+        if left_owner == right_owner:
+            continue
+        left_component, right_component = local[left_owner], local[right_owner]
+        if priority != 0 and _component_block_reason(
+            left_component, right_component, incident_decisions, decision_cache
+        ):
+            continue
+        survivor, absorbed = sorted((left_owner, right_owner))
+        local[survivor] = sorted(
+            local[survivor] + local[absorbed],
+            key=lambda item: (item.best_date, item.Source_ID, item.URL, item.Item_ID),
+        )
+        for item in local[absorbed]:
+            owner[item.Item_ID] = survivor
+        del local[absorbed]
+
+    return sorted(
+        local.values(),
+        key=lambda component: (
+            _effective_key(component[0]),
+            component[0].best_date,
+            component[0].Source_ID,
+            component[0].URL,
+            component[0].Item_ID,
+        ),
+    )
+
+
+def separation_reason(
+    items: list[Item],
+    left_item_id: str,
+    right_item_id: str,
+    incident_decisions: Mapping[str, str] | None = None,
+) -> str:
+    """Explique pourquoi une paire validée reste dans deux composantes."""
+    components = group_components(items, incident_decisions)
+    left_component = next((c for c in components if any(i.Item_ID == left_item_id for i in c)), [])
+    right_component = next((c for c in components if any(i.Item_ID == right_item_id for i in c)), [])
+    if not left_component or not right_component:
+        return "INCIDENT_KEEP_ITEM_MISSING"
+    if left_component is right_component:
+        return ""
+    cache: dict[tuple[str, str], DedupDecision] = {}
+    return _component_block_reason(
+        left_component, right_component, incident_decisions, cache
+    ) or "INCIDENT_KEEP_NO_COMPATIBLE_COMPONENT"
 
 
 def _component_dates(component: list[Item]) -> tuple[str, str]:
@@ -348,31 +422,9 @@ def _preferred_enrichment(ordered: list[Item], field_name: str, fallback: str) -
     if preferred:
         return _majority(preferred, fallback)
     values = [getattr(item, field_name) for item in ordered]
-    if field_name == "Sector":
+    if field_name in {"Sector", "Location"}:
         return _strict_majority(values, fallback)
     return _majority(values, fallback)
-
-
-_INCIDENT_THREAT_PRIORITY = (
-    config.THREAT_RANSOMWARE,
-    config.THREAT_DDOS,
-    config.THREAT_MALWARE,
-    config.THREAT_ACCOUNT,
-    config.THREAT_LEAK,
-    config.THREAT_PHISHING,
-    config.THREAT_THIRD_PARTY,
-    config.THREAT_INTRUSION,
-    config.THREAT_OTHER,
-    config.THREAT_UNKNOWN,
-)
-
-
-def _priority_threat(values: list[str]) -> str:
-    known = {value for value in values if value and value in config.THREATS}
-    for threat in _INCIDENT_THREAT_PRIORITY:
-        if threat in known:
-            return threat
-    return config.THREAT_UNKNOWN
 
 
 def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
@@ -386,7 +438,11 @@ def _incident_evidence_items(ordered: list[Item]) -> list[Item]:
     return evidence or ordered
 
 
-def _incident_from_component(component: list[Item], stable_id: str = "") -> Incident:
+def _incident_from_component(
+    component: list[Item],
+    stable_id: str = "",
+    facts_by_item: Mapping[str, list[dict]] | None = None,
+) -> Incident:
     ordered = sort_items(component)
     evidence = _incident_evidence_items(ordered)
     date, basis = _component_dates(ordered)
@@ -399,8 +455,8 @@ def _incident_from_component(component: list[Item], stable_id: str = "") -> Inci
             [item.Organisation_Raw for item in ordered],
             ordered[0].Organisation_Raw or "",
         ),
-        Secteur=_preferred_enrichment(ordered, "Sector", config.SECTOR_UNKNOWN),
-        Menace=_priority_threat([item.Threat for item in ordered]),
+        Secteur=component_sector(ordered),
+        Menace=threat_resolution.resolve_component(ordered, facts_by_item).value,
         Localisation=_preferred_enrichment(ordered, "Location", config.LOC_INCONNU),
         Sources=" | ".join(sorted({item.Source_ID for item in evidence if item.Source_ID})),
         Source_URLs=" | ".join(sorted({item.URL for item in evidence if item.URL})),
@@ -420,20 +476,23 @@ def build_incidents_with_registry(
     items: list[Item],
     registry_rows: list[dict] | None = None,
     incident_decision_rows: list[dict] | None = None,
+    source_facts_rows: list[dict] | None = None,
 ) -> tuple[list[Incident], list[dict[str, str]]]:
     decisions = incident_decision_map(incident_decision_rows or [])
     components = group_components(items, decisions)
     assigned, updated_registry = assign_incident_ids(components, registry_rows)
+    facts_by_item = threat_resolution.index_source_facts(source_facts_rows)
     incidents = [
-        _incident_from_component(component, stable_id)
+        _incident_from_component(component, stable_id, facts_by_item)
         for component, stable_id in zip(components, assigned)
     ]
     return sort_incidents(incidents), updated_registry
 
 
-def build_incidents(items: list[Item]) -> list[Incident]:
+def build_incidents(items: list[Item], source_facts_rows: list[dict] | None = None) -> list[Incident]:
+    facts_by_item = threat_resolution.index_source_facts(source_facts_rows)
     return sort_incidents([
-        _incident_from_component(component)
+        _incident_from_component(component, facts_by_item=facts_by_item)
         for component in group_components(items)
     ])
 

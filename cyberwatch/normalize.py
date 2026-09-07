@@ -271,7 +271,18 @@ _THREAT_EXTRA_PATTERNS = {
 # candidats ; une autre mention positive située ailleurs dans le texte reste
 # donc exploitable.
 _THREAT_NEGATION_PATTERNS = (
-    re.compile(r"\b(?:aucune|aucun|pas de|sans)\s+fuite(?: de donnees)?\b"),
+    re.compile(
+        r"\b(?:aucune|aucun|pas de|sans)\s+"
+        r"(?:attaque\s+(?:par\s+)?)?"
+        r"(?:fuite(?: de donnees)?|ransomware|rancongiciel|phishing|hameconnage|"
+        r"malware|logiciel malveillant|ddos|deni de service|intrusion|compromission)\b"
+    ),
+    re.compile(
+        r"\b(?:fuite(?: de donnees)?|ransomware|rancongiciel|phishing|hameconnage|"
+        r"malware|logiciel malveillant|ddos|deni de service|intrusion|compromission)"
+        r"(?: [a-z]+){0,3}\s+(?:non|pas)\s+"
+        r"(?:detecte[es]?|identifie[es]?|confirme[es]?|constate[es]?|demontre[es]?)\b"
+    ),
     re.compile(r"\baucune\s+donnee(?:s)?(?: [a-z]+){0,4}\s+exposee(?:s)?\b"),
     re.compile(r"\b(?:aucune|aucun|pas de|sans)\s+compromission\b"),
     re.compile(r"\bcyberattaque\s+non\s+(?:demontree|demontre)\b"),
@@ -279,6 +290,12 @@ _THREAT_NEGATION_PATTERNS = (
     re.compile(
         r"\baucun\s+element(?: [a-z]+){0,4}\s+"
         r"(?:ne\s+)?(?:demontre|demontrant)\s+une\s+cyberattaque\b"
+    ),
+)
+_DOWNSTREAM_THREAT_PATTERNS = (
+    re.compile(
+        r"\b(?:risque|risques|facilite|facilitant|favorise|favorisant|pourrait faciliter)"
+        r"(?: [a-z]+){0,5}\s+(?:phishing|hameconnage|fraude|malware|rancongiciel)\b"
     ),
 )
 
@@ -289,9 +306,15 @@ def _has_threat_negation(blob: str) -> bool:
 
 def _without_negated_threat_claims(blob: str) -> str:
     cleaned = blob
-    for pattern in _THREAT_NEGATION_PATTERNS:
+    for pattern in (*_THREAT_NEGATION_PATTERNS, *_DOWNSTREAM_THREAT_PATTERNS):
         cleaned = pattern.sub(" ", cleaned)
     return _SPACES_RE.sub(" ", cleaned).strip()
+
+
+def threat_evidence_text(*texts: str) -> str:
+    """Normalise un texte en retirant les affirmations de menace négatives."""
+    blob = searchable(" ".join(text for text in texts if text))
+    return _without_negated_threat_claims(blob)
 
 
 def _matched_threats(blob: str) -> set[str]:
@@ -475,28 +498,53 @@ LOCATION_HINTS: list[tuple[str, list[str]]] = [
 #: Le nom propre garde une majuscule à « Réunion », contrairement à la réunion
 #: de travail. Le test reste sensible à la casse pour éviter ce faux positif.
 _REUNION_PROPER_NAME_RE = re.compile(r"\b(?:La R[ée]union|LA R[ÉE]UNION)\b")
-_REUNION_POSTAL_RE = re.compile(r"\b974\d{2}\b")
-_MAYOTTE_POSTAL_RE = re.compile(r"\b976\d{2}\b")
+_REUNION_POSTAL_RE = re.compile(
+    r"\b(?:adresse|code postal|cp|situe[es]?|base[es]?|localise[es]?|a)\s+(?:au\s+)?974\d{2}\b"
+    r"|\b974\d{2}\s+(?:saint|sainte|st |ste |le |la |les |bras |etang |trois bassins)"
+)
+_MAYOTTE_POSTAL_RE = re.compile(
+    r"\b(?:adresse|code postal|cp|situe[es]?|base[es]?|localise[es]?|a)\s+(?:au\s+)?976\d{2}\b"
+    r"|\b976\d{2}\s+(?:mamoudzou|dzaoudzi|pamandzi|koungou|bandraboua|chirongui)"
+)
 _REUNION_DEPARTMENT_RE = re.compile(r"\bdepartement\s+(?:de\s+)?974\b")
 _MAYOTTE_DEPARTMENT_RE = re.compile(r"\bdepartement\s+(?:de\s+)?976\b")
+_LOCATION_THIRD_PARTY_RE = re.compile(
+    r"\b(?:prestataire|fournisseur|partenaire|client|filiale|sous traitant|tiers)\b",
+    re.I,
+)
+
+
+def _location_subject_text(*texts: str) -> str:
+    """Écarte les propositions qui localisent explicitement un tiers."""
+    parts: list[str] = []
+    for text in texts:
+        for clause in re.split(r"(?<=[.!?;])\s+|\s*;\s*|\n+", text or ""):
+            if clause.strip() and not _LOCATION_THIRD_PARTY_RE.search(clause):
+                parts.append(clause.strip())
+    return " ".join(parts)
+
+
+def _locations_from_text(*texts: str) -> set[str]:
+    raw = _location_subject_text(*texts)
+    if not raw:
+        return set()
+    result: set[str] = set()
+    if _REUNION_PROPER_NAME_RE.search(raw):
+        result.add(config.LOC_REUNION)
+    blob = searchable(raw)
+    if _REUNION_POSTAL_RE.search(blob) or _REUNION_DEPARTMENT_RE.search(blob):
+        result.add(config.LOC_REUNION)
+    if _MAYOTTE_POSTAL_RE.search(blob) or _MAYOTTE_DEPARTMENT_RE.search(blob):
+        result.add(config.LOC_MAYOTTE)
+    for location, hints in LOCATION_HINTS:
+        if any(_contains(blob, hint) for hint in hints):
+            result.add(location)
+    return result
 
 
 def _location_from_text(*texts: str) -> str:
-    raw = " ".join(t for t in texts if t)
-    if not raw:
-        return config.LOC_INCONNU
-    if _REUNION_PROPER_NAME_RE.search(raw):
-        return config.LOC_REUNION
-    blob = searchable(raw)
-    if _REUNION_POSTAL_RE.search(blob) or _REUNION_DEPARTMENT_RE.search(blob):
-        return config.LOC_REUNION
-    if _MAYOTTE_POSTAL_RE.search(blob) or _MAYOTTE_DEPARTMENT_RE.search(blob):
-        return config.LOC_MAYOTTE
-    for location, hints in LOCATION_HINTS:
-        for hint in hints:
-            if _contains(blob, hint):
-                return location
-    return config.LOC_INCONNU
+    locations = _locations_from_text(*texts)
+    return next(iter(locations)) if len(locations) == 1 else config.LOC_INCONNU
 
 
 def classify_location(

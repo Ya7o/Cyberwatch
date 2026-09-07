@@ -1,0 +1,36 @@
+name: PRODUCTION MONITOR
+
+on:
+  schedule:
+    # Une vérification toutes les six heures détecte une rupture de la cible
+    # de fraîcheur < 36 h même si la collecte planifiée ne démarre pas.
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Installer les dépendances d'exécution
+        run: pip install -r requirements.txt
+      - name: Mesurer la santé de production
+        id: production_health
+        run: python -m cyberwatch production-status --markdown --github-output | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Notifier ou clore l'alerte
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          HEALTH_ALERT: ${{ steps.production_health.outputs.alert }}
+          HEALTH_REASONS: ${{ steps.production_health.outputs.alert_reasons }}
+        run: bash .github/scripts/manage-production-alert.sh

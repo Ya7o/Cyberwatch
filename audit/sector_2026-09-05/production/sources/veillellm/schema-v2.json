@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ya7o.github.io/Cyberwatch/sources/veillellm/schema-v2.json",
+  "title": "Cyberwatch Veille LLM Réunion-Mayotte v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["metadata", "records"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "scope",
+        "year",
+        "generated_at",
+        "record_count",
+        "accepted_count",
+        "candidate_count",
+        "schema",
+        "watch_result",
+        "coverage",
+        "score_definition",
+        "normalisation"
+      ],
+      "properties": {
+        "scope": {
+          "type": "array",
+          "items": {"enum": ["La Réunion", "Mayotte"]},
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "year": {"type": "integer", "minimum": 2026},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "record_count": {"type": "integer", "minimum": 0},
+        "accepted_count": {"type": "integer", "minimum": 0},
+        "candidate_count": {"type": "integer", "minimum": 0},
+        "schema": {"const": "cyberwatch-veille-v2"},
+        "watch_result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["new_incidents", "enriched_incidents", "corrected_incidents", "note"],
+          "properties": {
+            "new_incidents": {"type": "integer", "minimum": 0},
+            "enriched_incidents": {"type": "integer", "minimum": 0},
+            "corrected_incidents": {"type": "integer", "minimum": 0},
+            "note": {"type": "string"}
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "limitations", "excluded_candidates", "unresolved_social_signals"],
+          "properties": {
+            "method": {"type": "string", "minLength": 1},
+            "limitations": {"type": "string"},
+            "excluded_candidates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["organisation", "reason"],
+                "properties": {
+                  "organisation": {"type": "string", "minLength": 1},
+                  "reason": {"type": "string", "minLength": 1}
+                }
+              }
+            },
+            "unresolved_social_signals": {
+              "type": "array",
+              "items": {"type": "string", "format": "uri"},
+              "uniqueItems": true
+            }
+          }
+        },
+        "score_definition": {"type": "string", "minLength": 1},
+        "normalisation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type_menace_obligatoire",
+            "secteur_obligatoire",
+            "territoire_obligatoire",
+            "admission_explicite"
+          ],
+          "properties": {
+            "type_menace_obligatoire": {"const": true},
+            "secteur_obligatoire": {"const": true},
+            "territoire_obligatoire": {"const": true},
+            "admission_explicite": {"const": true}
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "organisation",
+        "admission",
+        "admission_reason",
+        "territoire",
+        "localisation",
+        "secteur",
+        "type_menace",
+        "acteur",
+        "statut",
+        "score_cyberattaque",
+        "impact_connu",
+        "sources",
+        "synthese",
+        "evolution"
+      ],
+      "properties": {
+        "date": {"type": "string", "format": "date"},
+        "organisation": {"type": "string", "minLength": 1},
+        "admission": {"enum": ["ACCEPTED", "CANDIDATE"]},
+        "admission_reason": {"type": "string", "minLength": 1},
+        "territoire": {"enum": ["La Réunion", "Mayotte"]},
+        "localisation": {"type": "string"},
+        "secteur": {
+          "enum": [
+            "Administration / Collectivité",
+            "Santé",
+            "Éducation / Formation",
+            "Finance / Assurance",
+            "Transport / Logistique",
+            "Sport",
+            "Commerce / Distribution",
+            "Numérique / Technologie",
+            "Énergie / Utilities",
+            "Industrie / Manufacture",
+            "Construction / BTP",
+            "Services aux entreprises",
+            "Inconnu"
+          ]
+        },
+        "type_menace": {
+          "enum": [
+            "Ransomware",
+            "DDoS",
+            "Malware",
+            "Compromission de compte / messagerie",
+            "Intrusion",
+            "Fuite de données",
+            "Phishing / fraude",
+            "Incident tiers",
+            "Autre cyber",
+            "Inconnu"
+          ]
+        },
+        "acteur": {"type": "string"},
+        "statut": {"type": "string"},
+        "score_cyberattaque": {"type": "integer", "minimum": 0, "maximum": 100},
+        "impact_connu": {"type": "string"},
+        "sources": {
+          "type": "array",
+          "items": {"type": "string", "format": "uri", "pattern": "^https?://"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "synthese": {"type": "string"},
+        "evolution": {"type": "string"}
+      }
+    }
+  }
+}

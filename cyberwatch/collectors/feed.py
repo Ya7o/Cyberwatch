@@ -14,6 +14,7 @@ import feedparser
 
 from .. import status
 from ..normalize import parse_date
+from .editorial_html import EXTRACTOR_VERSION, editorial_text, usable_detail
 from .base import CollectResult, Collector, RawEntry, SourceSpec, Window, coverage_from_days
 from .wordpress import origin_of, strip_html
 
@@ -39,15 +40,28 @@ _FRENCHBREACHES_SUFFIX_MARKERS = (
     "← Retour aux alertes",
 )
 
+_EXPLICIT_VICTIM_RE = re.compile(
+    r"\b(?:fuite(?:\s+de\s+données)?|cyberattaque|attaque)\s+"
+    r"(?:touche|touchant|visant|attribuée?\s+à|contre)\s+"
+    r"(?P<victim>[^,\n]{2,100})(?=,\s+(?:la|le|un|une|service|réseau|plateforme)\b)",
+    flags=re.IGNORECASE,
+)
+
+
+def explicit_frenchbreaches_victim(text: str) -> str:
+    """Return the victim explicitly bound to the incident in the article lead."""
+    match = _EXPLICIT_VICTIM_RE.search(text or "")
+    if not match:
+        return ""
+    victim = strip_html(match.group("victim")).strip(" .:;–—-")
+    if len(victim) < 2 or len(victim.split()) > 12:
+        return ""
+    return victim
+
 
 def stable_frenchbreaches_detail_text(html_text: str) -> str:
     """Texte éditorial stable d'une fiche, sans blocs dynamiques hors article."""
-    cleaned_html = _DYNAMIC_BLOCK_RE.sub(" ", html_text or "")
-    cleaned_html = _NON_EDITORIAL_RE.sub(" ", cleaned_html)
-    root = _ARTICLE_ROOT_RE.search(cleaned_html)
-    if root:
-        cleaned_html = root.group(1)
-    text = " ".join(strip_html(cleaned_html).split())
+    text = editorial_text(html_text)
     # Certains thèmes injectent une note de performance dans le contenu rendu.
     # Elle ne constitue jamais une preuve d'incident.
     text = _TECHNICAL_FRAGMENT_RE.sub("", text).strip()
@@ -112,16 +126,31 @@ def _hydrate_frenchbreaches_details(client, entries: list[RawEntry], budget) -> 
     attempted = 0
     hydrated = 0
     for entry in entries:
+        metadata = dict(entry.source_metadata or {})
+        detail = {"status": "BUDGET_BLOCKED" if budget.exhausted else "NO_URL",
+                  "extractor_version": EXTRACTOR_VERSION, "fallback": "RSS"}
+        metadata["detail_hydration"] = detail
+        entry.source_metadata = metadata
         if budget.exhausted or not entry.url:
-            break
+            continue
         attempted += 1
         response = client.fetch(entry.url, budget)
         if not response.ok:
+            detail["status"] = "HTTP_ERROR"
             continue
         text = stable_frenchbreaches_detail_text(response.text)
-        if not text:
+        detail["chars"] = len(text)
+        if not usable_detail(text, entry.title):
+            detail["status"] = "CONTENT_INCOMPLETE"
             continue
         entry.content = text[:40000]
+        # Some feed titles name a territory (for example "Aveyron") while the
+        # article lead names the affected service. Keep the source's explicit
+        # grammatical subject so sector resolution and dedup use the victim.
+        explicit_victim = explicit_frenchbreaches_victim(entry.content)
+        if explicit_victim:
+            entry.organisation = explicit_victim
+        detail.update(status="HYDRATED", fallback="", truncated=len(text) > 40000)
         hydrated += 1
     return attempted, hydrated
 
@@ -200,6 +229,8 @@ class FeedCollector(Collector):
                 attempted, hydrated = _hydrate_frenchbreaches_details(client, in_window, budget)
                 enriched = _enrich_frenchbreaches_rich_facts(in_window)
                 detail = f"details_hydrates={hydrated}/{attempted}; rich_facts={enriched}/{len(in_window)}"
+                degraded = sum(e.source_metadata.get("detail_hydration", {}).get("status") != "HYDRATED" for e in in_window)
+                detail += f"; details_degrades={degraded}"
                 result.comment = f"{result.comment}; {detail}" if result.comment else detail
 
             result.calls = budget.requests_made

@@ -3,6 +3,8 @@
   "use strict";
 
   const DAY = 864e5;
+  const FRESHNESS_WARNING_HOURS = 30;
+  const FRESHNESS_STALE_HOURS = 36;
   const PAGE_SIZE = 30;
   const UNKNOWN = "Inconnu";
   const OCEAN_LOCATIONS = ["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"];
@@ -35,6 +37,21 @@
     const date = value ? new Date(value) : null;
     return date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(date) : "—";
   };
+  const integrity = () => state.status?.integrity || {};
+  const trendsReady = () => integrity().known === true && integrity().trend_ready === true;
+  const freshness = (value) => {
+    const date = value ? new Date(value) : null;
+    if (!date || Number.isNaN(date.getTime())) return { status: "unknown", hours: null };
+    const hours = Math.max(0, (Date.now() - date.getTime()) / 36e5);
+    if (hours >= FRESHNESS_STALE_HOURS) return { status: "stale", hours };
+    if (hours >= FRESHNESS_WARNING_HOURS) return { status: "warning", hours };
+    return { status: "fresh", hours };
+  };
+  const trendNoticeHtml = () => {
+    const meta = integrity();
+    const available = meta.known ? `${formatNumber(meta.days)} jour${Number(meta.days) > 1 ? "s" : ""} continu${Number(meta.days) > 1 ? "s" : ""}` : "une couverture encore indéterminée";
+    return `<p class="integrity-notice"><strong>Tendances temporairement neutralisées.</strong> ${esc(available)} disponible${Number(meta.days) > 1 ? "s" : ""} ; ${formatNumber(meta.trend_required_days || 60)} jours sont requis pour comparer deux périodes complètes de 30 jours.</p>`;
+  };
   const safeUrl = (value) => {
     try { const url = new URL(value); return ["http:", "https:"].includes(url.protocol) ? url.href : ""; }
     catch (_) { return ""; }
@@ -57,6 +74,7 @@
     sort: "date-desc",
     page: 1, pageSize: Number(sessionStorage.getItem("cw-page-size")) || PAGE_SIZE,
   };
+  let incidentsPromise = null;
 
   async function loadJson(path, fallback) {
     try {
@@ -67,6 +85,15 @@
       console.error(`Cyberwatch: échec de chargement ${path}`, error);
       return fallback;
     }
+  }
+
+  async function ensureIncidents() {
+    if (state.incidentsLoaded) return state.incidents;
+    if (!incidentsPromise) incidentsPromise = loadJson("assets/data/incidents.json", []);
+    const incidents = await incidentsPromise;
+    state.incidents = Array.isArray(incidents) ? incidents : [];
+    state.incidentsLoaded = true;
+    return state.incidents;
   }
 
   function readUrl() {
@@ -109,7 +136,16 @@
   }
 
   function sectorTentativeChip(incident) {
-    if (known(incident.sector)) return "";
+    if (known(incident.sector)) {
+      const status = incident.sector_status?.status || "confirmed";
+      if (status === "confirmed") return "";
+      const confidence = Number(incident.sector_status?.confidence);
+      const level = status === "referenced" ? "référencé" : status === "reported" ? "déclaré" : "estimé";
+      const title = [incident.sector_status?.reason, incident.sector_status?.evidence]
+        .filter(known).join(" — ");
+      const confidenceText = Number.isFinite(confidence) ? ` · ${Math.round(confidence * 100)} %` : "";
+      return `<span class="chip" data-status="PARTIAL"${title ? ` title="${esc(title)}"` : ""}>${esc(incident.sector)} (${level}${confidenceText})</span>`;
+    }
     // Le point coloré du chip (`.chip[data-status]::before`) porte déjà
     // visuellement l'information "non confirmé" : répéter la précision en
     // toutes lettres ne faisait qu'étirer la pastille en bulle démesurée
@@ -133,7 +169,15 @@
   }
 
   function incidentCardHtml(incident) {
-    const tags = [incident.threat, incident.sector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + threatTentativeChip(incident) + (incident.sensitive_data_exposed ? `<span data-status="PARTIAL">Données sensibles signalées</span>` : "") + sectorTentativeChip(incident);
+    const confirmedSector = incident.sector_status?.status === "confirmed" ? incident.sector : "";
+    const exposureTag = incident.credentials_or_secrets_exposed
+      ? `<span data-status="PARTIAL">Identifiants ou secrets exposés</span>`
+      : incident.high_sensitivity_data_exposed
+        ? `<span data-status="PARTIAL">Données très sensibles signalées</span>`
+        : incident.personal_data_exposed
+          ? `<span data-status="PARTIAL">Données personnelles signalées</span>`
+          : "";
+    const tags = [incident.threat, confirmedSector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + threatTentativeChip(incident) + exposureTag + sectorTentativeChip(incident);
     const summary = cleanSummary(incident.summary);
     return `<article class="incident-card" data-id="${esc(incident.id)}">
       <div class="incident-main">
@@ -186,13 +230,43 @@
     const total = sources.length || [counts.ok, counts.partial, counts.fail, counts.skipped].reduce((sum, value) => sum + Number(value || 0), 0);
     const ok = Number(counts.ok || 0);
     const run = state.status?.run || {};
-    $("#run-pill-text").textContent = total ? `${ok}/${total} sources · ${formatDateTime(run.as_of)}` : "État des sources indisponible";
-    $("#run-pill").dataset.status = total && ok === total ? "ok" : "degraded";
+    const age = freshness(run.as_of);
+    const stamp = formatDateTime(run.as_of);
+    const freshnessLabel = age.status === "stale" ? `données périmées · ${stamp}` : age.status === "warning" ? `mise à jour en retard · ${stamp}` : age.status === "fresh" ? `à jour · ${stamp}` : "date indisponible";
+    $("#run-pill-text").textContent = total ? `${ok}/${total} sources · ${freshnessLabel}` : "État des sources indisponible";
+    $("#run-pill").dataset.status = age.status === "stale" ? "stale" : total && ok === total && age.status === "fresh" ? "ok" : "degraded";
+    $("#run-pill").title = age.hours === null ? "Date du dernier run indisponible" : `Dernier run publié il y a ${Math.floor(age.hours)} h`;
+  }
+
+  function renderIntegrityAlert() {
+    const alert = $("#data-alert");
+    const detail = $("#data-alert-detail");
+    const strong = alert.querySelector("strong");
+    const meta = integrity();
+    const age = freshness(state.status?.run?.as_of);
+    const messages = [];
+
+    if (meta.known && Number(meta.days) < Number(meta.window_days || 30)) {
+      messages.push(`Le corpus couvre ${meta.days} jour${Number(meta.days) > 1 ? "s" : ""} continu${Number(meta.days) > 1 ? "s" : ""}, du ${formatDate(meta.start)} au ${formatDate(meta.end)}, pas encore ${meta.window_days || 30} jours complets.`);
+    }
+    if (age.status === "warning" || age.status === "stale") {
+      messages.push(`Le dernier snapshot a été publié il y a ${Math.floor(age.hours)} h.`);
+    }
+    if (age.status === "unknown") {
+      messages.push("La date du dernier snapshot est indisponible.");
+    }
+
+    alert.hidden = messages.length === 0;
+    if (!messages.length) return;
+    const alertStatus = age.status === "stale" ? "stale" : ["warning", "unknown"].includes(age.status) ? "warning" : "coverage";
+    alert.dataset.status = alertStatus;
+    strong.textContent = alertStatus === "stale" ? "Données périmées." : alertStatus === "warning" ? "Mise à jour en retard." : "Couverture partielle.";
+    detail.textContent = messages.join(" ");
   }
 
   function renderVeille() {
-    const signal = state.status?.analytics?.signals?.[0];
-    $("#veille-signal").innerHTML = signal ? signalHtml(signal, true) : "";
+    const signal = trendsReady() ? state.status?.analytics?.signals?.[0] : null;
+    $("#veille-signal").innerHTML = signal ? signalHtml(signal, true) : trendsReady() ? "" : trendNoticeHtml();
     const local = state.latest.filter((row) => focusLocations().includes(row.location));
     $("#focus-body").innerHTML = local.length
       ? `<p class="status-bubble status-bubble--active"><strong>${local.length}</strong> incident${local.length > 1 ? "s" : ""} à La Réunion / Mayotte sur les 30 derniers jours.</p><div class="focus-list">${local.map(incidentCardHtml).join("")}</div>`
@@ -312,11 +386,44 @@
     $("#sources-detail-body").innerHTML = (state.status?.sources || []).map((source) => `<tr><td>${esc(sourceLabel(source.id))}</td><td>${esc(source.status || "—")}</td><td>${esc(formatDateTime(source.last_run))}</td><td>${esc(source.duration ? `${source.duration} s` : "—")}</td><td>${esc(formatNumber(source.items_collected || source.items || 0))}</td><td>${esc(source.reason || source.comment || "—")}</td></tr>`).join("");
   }
 
-  function applySearchPatch(patch) {
+  function productionMetric(label, value, detail, ok) {
+    const status = ok === null ? "pending" : ok ? "ok" : "alert";
+    return `<div class="production-metric" data-status="${status}"><small>${esc(label)}</small><strong>${esc(value)}</strong><span>${esc(detail)}</span></div>`;
+  }
+
+  function renderProduction() {
+    const p = state.status?.production || {};
+    const reliability = p.scheduled_reliability || {};
+    const quality = p.quality || {};
+    const targets = p.targets || {};
+    const performance = p.performance || {};
+    const observed = Number(reliability.observed || 0);
+    const sector = Number(quality.sector_unknown_pct);
+    const location = Number(quality.location_unknown_pct);
+    const sectorKnown = sector >= 0;
+    const locationKnown = location >= 0;
+    const dedupValue = (key) => quality[key] === null || quality[key] === undefined
+      ? "n.d."
+      : formatNumber(quality[key]);
+    $("#production-metrics").innerHTML = [
+      productionMetric("Série planifiée", `${reliability.consecutive_successes || 0}/${reliability.required_consecutive_successes || 7}`, observed ? `${Number(reliability.success_rate_pct).toFixed(2)} % de succès observés` : "preuve en acquisition", observed ? Boolean(reliability.seven_run_proof_ready) : null),
+      productionMetric("Secteur inconnu", sectorKnown ? `${sector.toFixed(2)} %` : "n.d.", `cible < ${targets.sector_unknown_pct || 20} %`, sectorKnown ? sector < Number(targets.sector_unknown_pct || 20) : null),
+      productionMetric("Localisation inconnue", locationKnown ? `${location.toFixed(2)} %` : "n.d.", `cible < ${targets.location_unknown_pct || 5} %`, locationKnown ? location < Number(targets.location_unknown_pct || 5) : null),
+      productionMetric("Doublons potentiellement manqués", dedupValue("missed_duplicate_candidate_pairs"), "paires encore séparées", null),
+      productionMetric("Fusions faibles à vérifier", dedupValue("weak_merge_review_pairs"), "paires déjà regroupées", null),
+      productionMetric("SAME non regroupés", dedupValue("validated_same_not_grouped_pairs"), "décisions validées", null),
+      productionMetric("Paires en attente", dedupValue("pending_review_pairs"), "file de reprise", null),
+      productionMetric("Corpus métier", `${Number(quality.corpus_false_positive_rate_pct || 0).toFixed(2)} % FP`, `${quality.corpus_false_negatives || 0} faux négatif · ${quality.dedup_known_false_merges || 0} faux merge`, Number(quality.corpus_false_positive_rate_pct || 0) === 0 && Number(quality.corpus_false_negatives || 0) === 0 && Number(quality.corpus_classification_errors || 0) === 0 && Number(quality.dedup_known_false_merges || 0) === 0),
+      productionMetric("Dernier run", `${Number(performance.duration_seconds || 0).toFixed(1)} s`, `${performance.requests || 0} requêtes · ${performance.llm_calls || 0} appels LLM · $${Number(performance.llm_cost_usd || 0).toFixed(6)}`, null),
+    ].join("");
+  }
+
+  async function applySearchPatch(patch) {
     state.filters = { q: "", threat: "", sector: "", locations: [], source: "", period: "all", ...state.filters, ...patch };
     state.page = 1;
     state.view = "recherche";
     syncUrl(true);
+    await ensureIncidents();
     render();
   }
 
@@ -324,18 +431,25 @@
     const a = state.status?.analytics;
     if (!a) { $("#analysis-content").innerHTML = '<p class="empty-state">Analyse indisponible.</p>'; return; }
     const q = a.quality || {};
+    const meta = integrity();
+    const availableDays = meta.known ? Math.max(1, Math.min(90, Number(meta.days) || 1)) : 0;
     $("#reading-line").innerHTML = `<strong>${formatNumber(q.incidents || a.dated_incidents || 0)}</strong> incidents · <strong>${formatNumber(q.organisations || 0)}</strong> organisations · ${esc(formatDate(q.first_date))} → ${esc(formatDate(q.last_date))}`;
+    $("#analysis-coverage-note").hidden = !meta.known || Number(meta.days) >= 90;
+    $("#analysis-coverage-note").textContent = meta.known && Number(meta.days) < 90 ? `Analyses descriptives calculées sur ${meta.days} jour${Number(meta.days) > 1 ? "s" : ""} disponible${Number(meta.days) > 1 ? "s" : ""}. Les tendances comparatives restent neutralisées jusqu’à ${meta.trend_required_days || 60} jours continus.` : "";
+    $("#threat-title").textContent = availableDays && availableDays < 90 ? `Menaces — ${availableDays} jours disponibles` : "Menaces — 90 derniers jours";
+    $("#sector-title").textContent = availableDays && availableDays < 90 ? `Secteurs — ${availableDays} jours disponibles` : "Secteurs — 90 derniers jours";
     renderMonthly(a.series);
     simpleBars($("#chart-threat"), a.top_90d?.threat || [], (label) => applySearchPatch({ threat: label, period: "90" }));
     const sectorRows = (a.top_90d?.sector || []).filter((row) => row.label !== UNKNOWN);
     const sectorUnknown = (a.top_90d?.sector || []).find((row) => row.label === UNKNOWN)?.count || 0;
     simpleBars($("#chart-sector"), sectorRows, (label) => applySearchPatch({ sector: label, period: "90" }));
     $("#chart-sector").insertAdjacentHTML("beforeend", `<p class="hint">Secteur non renseigné : ${formatNumber(sectorUnknown)} incident${sectorUnknown > 1 ? "s" : ""}</p>`);
-    $("#signals-list").innerHTML = (a.signals || []).slice(0, 12).map((signal) => signalHtml(signal)).join("") || '<p class="empty-state">Aucun signal notable sur la période.</p>';
+    $("#signals-list").innerHTML = trendsReady() ? ((a.signals || []).slice(0, 12).map((signal) => signalHtml(signal)).join("") || '<p class="empty-state">Aucun signal notable sur la période.</p>') : trendNoticeHtml();
     $("#ocean-focus").innerHTML = oceanProfileHtml(a.focus?.profile, "La Réunion / Mayotte");
     $("#ocean-ensemble").innerHTML = oceanProfileHtml(a.ocean?.profile, "Ensemble Océan Indien");
     $("#ocean-focus").onclick = () => applySearchPatch({ locations: focusLocations().slice() });
     $("#ocean-ensemble").onclick = () => applySearchPatch({ locations: OCEAN_LOCATIONS.slice() });
+    renderProduction();
     renderSources();
   }
 
@@ -353,7 +467,7 @@
   const INITIAL_ACCESS_LABELS = { phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" };
   const initialAccessLabel = (value) => INITIAL_ACCESS_LABELS[value] || value || "";
 
-  function detailField(label, content, status) {
+  function detailField(label, content, status, evidence = "") {
     const empty = !content || (Array.isArray(content) && !content.length);
     const rendered = empty
       ? '<span class="detail-empty">—</span>'
@@ -363,7 +477,8 @@
     // petite colonne de droite. Les champs courts restent, eux, compacts.
     const needsFullWidth = Array.isArray(content) || String(content || "").trim().length > 26;
     const layout = needsFullWidth ? " resolved-field--wide" : "";
-    return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd>${rendered}${badge}</dd></div>`;
+    const proof = evidence ? ` title="${esc(evidence)}"` : "";
+    return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd${proof}>${rendered}${badge}</dd></div>`;
   }
 
   // Regroupement par famille et code couleur de sensibilité des données
@@ -421,30 +536,30 @@
   }
 
   function dataTypesHtml(entries) {
-    const values = (entries || []).map((entry) => entry.value).filter(known);
+    const values = (entries || []).filter((entry) => known(entry?.value));
     if (!values.length) return detailField("Données concernées", []);
     const groups = new Map(DATA_TYPE_FAMILY_ORDER.map((label) => [label, []]));
     const seen = new Set();
-    values.forEach((value) => {
-      const cleaned = String(value).trim();
+    values.forEach((entry) => {
+      const cleaned = String(entry.value).trim();
       if (!cleaned || seen.has(cleaned)) return;
       const family = dataTypeFamily(cleaned);
       if (!family) return;
       seen.add(cleaned);
-      groups.get(family).push(cleaned);
+      groups.get(family).push({ ...entry, value: cleaned });
     });
     const rendered = DATA_TYPE_FAMILY_ORDER.map((label) => {
       const items = groups.get(label) || [];
       if (!items.length) return "";
-      const chips = items.map((value) => {
-        const tier = dataTypeSensitivity(value);
+      const chips = items.map((entry) => {
+        const tier = dataTypeSensitivity(entry.value);
         const tierClass = tier ? ` incident-data-value--sensitivity-${tier}` : "";
-        return `<span class="incident-data-value${tierClass}">${esc(value)}</span>`;
+        return `<span class="incident-data-value${tierClass}">${esc(entry.value)}</span>${statusBadge(entry.status)}`;
       }).join("");
       // Un groupe contenant du sensible (mot de passe, IBAN, santé…) mérite
       // d'être visible sans clic supplémentaire, contrairement à un groupe
       // anodin (ex. coordonnées) qui reste replié par défaut.
-      const hasSensitive = items.some((value) => ["critical", "high"].includes(dataTypeSensitivity(value)));
+      const hasSensitive = items.some((entry) => ["critical", "high"].includes(dataTypeSensitivity(entry.value)));
       return `<details class="incident-data-group"${hasSensitive ? " open" : ""}><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${chips}</div></details>`;
     }).filter(Boolean).join("");
     return `<div class="incident-data-types"><div class="incident-data-types-title">Données concernées :</div>${rendered}</div>`;
@@ -469,9 +584,7 @@
       if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
       return value;
     };
-    const chip = (record) => `<span class="detail-chip">${esc(chipText(record))}</span>`;
-    // Le badge de statut ne vit que sur le champ Acteur (retour utilisateur) :
-    // ces puces restent volontairement neutres, sans badge par entrée.
+    const chip = (record) => `<span class="detail-chip">${esc(chipText(record))}</span>${statusBadge(record.status)}`;
     // Une dizaine de chiffres proches est illisible d'un coup d'œil : seuls
     // les plus significatifs restent visibles, le reste se déplie.
     const sorted = [...records].sort((a, b) => (Number(b.value) || 0) - (Number(a.value) || 0));
@@ -494,8 +607,33 @@
       const date = known(row.date) ? formatDate(row.date) : "Date non précisée";
       const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
       const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(date)}</dt><dd${proof}>${esc(row.event)}</dd></div>`;
+      return `<div class="resolved-field claim-field${wide}"><dt>${esc(date)}</dt><dd${proof}>${esc(row.event)}${statusBadge(row.status)}</dd></div>`;
     }).join("");
+  }
+
+  function evidenceEntriesHtml(label, entries, valueKey = "value") {
+    const rows = (entries || []).filter((entry) => known(entry?.[valueKey]));
+    if (!rows.length) return detailField(label, []);
+    return `<div class="resolved-field resolved-field--wide"><dt>${esc(label)}</dt><dd>${rows.map((entry) => {
+      const proof = entry.evidence ? ` title="${esc(entry.evidence)}"` : "";
+      return `<span class="detail-chip"${proof}>${esc(entry[valueKey])}</span>${statusBadge(entry.status)}`;
+    }).join("")}</dd></div>`;
+  }
+
+  const QUALITY_LABELS = {
+    THREAT_CONFLICT: "Conflit de menace non résolu",
+    THREAT_CONFLICT_RESOLVED: "Conflit de menace arbitré par les preuves",
+    SOURCE_FACTS_NOT_PROPAGATED: "Fait source non propagé",
+    SUMMARY_FACT_CONTRADICTION: "Résumé contradictoire avec le rôle de la victime",
+    DATA_TYPES_EMPTY_WITH_PERSONAL_DATA_EVIDENCE: "Catégories de données à vérifier",
+    SENSITIVE_FLAG_INCONSISTENT: "Indicateur de sensibilité incohérent",
+    PERSONAL_DATA_FLAG_INCONSISTENT: "Indicateur de données personnelles incohérent",
+  };
+
+  function qualityAlertsHtml(alerts) {
+    const rows = (alerts || []).filter((alert) => alert?.code);
+    if (!rows.length) return "";
+    return `<section class="incident-quality-alerts"><h3>Contrôles qualité</h3><ul>${rows.map((alert) => `<li data-severity="${esc(alert.severity || "warning")}">${esc(QUALITY_LABELS[alert.code] || alert.code)}${alert.field ? ` · ${esc(alert.field)}` : ""}</li>`).join("")}</ul></section>`;
   }
 
   function detailSection(title, fields, { collapsible = false } = {}) {
@@ -524,23 +662,31 @@
       : [];
     const timelineRows = validDetail ? timelineHtml(detail.timeline || []) : "";
     const values = validDetail ? [
+      detailSection("Qualification", [
+        detailField("Menace principale", incident.threat, incident.threat_status?.status, incident.threat_status?.evidence),
+        detailField("Secteur", incident.sector, incident.sector_status?.status, incident.sector_status?.evidence),
+      ]),
       detailSection("Acteur & vecteur", [
         detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status),
-        detailField("Tiers impliqué", fields.third_party?.value),
-        detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : ""),
-        detailField("Vulnérabilités exploitées", (detail.vulnerabilities || []).map((entry) => entry.value).filter(known)),
-        detailField("CVSS", fields.cvss?.value),
+        detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status),
+        detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : "", fields.initial_access?.status),
+        evidenceEntriesHtml("Déroulé documenté", detail.attack_flow || [], "action"),
+        evidenceEntriesHtml("Vulnérabilités exploitées", detail.vulnerabilities || []),
+        detailField("CVSS", fields.cvss?.value, fields.cvss?.status),
       ]),
       detailSection("Chronologie", [
-        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : ""),
-        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : ""),
+        known(fields.fine_location?.value) ? detailField("Localisation précise", fields.fine_location.value, fields.fine_location.status) : "",
+        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : "", fields.attack_date?.status),
+        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : "", fields.discovered_date?.status),
         timelineRows,
       ], { collapsible: true }),
       detailSection("Impact & données documentées", [
         affectedHtml(detail.affected || []),
+        known(fields.data_volume?.value) ? detailField("Volume de données", fields.data_volume.value, fields.data_volume.status) : "",
         dataTypesHtml(detail.data_types || []),
         detailField("Systèmes & périmètres concernés", systemsAndPerimeters),
-        detailField("Impact", fields.impact?.value),
+        detailField("Impact", fields.impact?.value, fields.impact?.status),
+        known(fields.evolution?.value) ? detailField("Évolution / remédiation", fields.evolution.value, fields.evolution.status) : "",
       ]),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
@@ -548,6 +694,7 @@
     $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}${tentativeChip ? `<p>${tentativeChip}</p>` : ""}</div>
       ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
       <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
+      ${qualityAlertsHtml(incident.quality_alerts)}
       <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div></div>`;
     // Réouvrir la fiche d'un autre incident doit repartir du haut : un
     // <dialog> natif ne réinitialise pas toujours son scroll interne.
@@ -557,12 +704,13 @@
   }
 
   function bindGlobal() {
-    $(".views").addEventListener("click", (event) => {
+    $(".views").addEventListener("click", async (event) => {
       const button = event.target.closest("[data-view]");
       if (!button) return;
       state.view = button.dataset.view;
       state.page = 1;
       syncUrl(true);
+      if (state.view === "recherche") await ensureIncidents();
       render();
     });
     document.addEventListener("click", (event) => {
@@ -571,7 +719,11 @@
       const signal = event.target.closest("[data-signal]");
       if (signal) { event.preventDefault(); try { applySearchPatch(JSON.parse(signal.dataset.signal)); } catch (_) {} }
     });
-    window.addEventListener("popstate", () => { readUrl(); render(); });
+    window.addEventListener("popstate", async () => {
+      readUrl();
+      if (state.view === "recherche") await ensureIncidents();
+      render();
+    });
     $("#theme-toggle").addEventListener("click", () => {
       const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
       document.documentElement.dataset.theme = next;
@@ -628,17 +780,17 @@
     readUrl();
     bindGlobal();
     bindSearch();
-    const [latest, status, incidents] = await Promise.all([
+    const [latest, status] = await Promise.all([
       loadJson("assets/data/latest.json", []),
       loadJson("assets/data/status.json", null),
-      loadJson("assets/data/incidents.json", []),
     ]);
     state.latest = Array.isArray(latest) ? latest : [];
     state.status = status;
-    state.incidents = Array.isArray(incidents) ? incidents : [];
-    state.incidentsLoaded = true;
+    if (state.view === "recherche") await ensureIncidents();
     renderHeader();
+    renderIntegrityAlert();
     render();
+    window.setInterval(() => { renderHeader(); renderIntegrityAlert(); }, 5 * 60 * 1000);
   }
 
   init();

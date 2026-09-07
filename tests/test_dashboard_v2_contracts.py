@@ -24,7 +24,10 @@ def test_header_regroupe_sante_sources_et_date_collecte():
     js = _read("assets/dashboard-v2.js")
     html = _read("index.html")
     assert 'id="run-pill-text"' in html
-    assert "`${ok}/${total} sources · ${formatDateTime(run.as_of)}`" in js
+    assert "`${ok}/${total} sources · ${freshnessLabel}`" in js
+    assert "`à jour · ${stamp}`" in js
+    assert "données périmées" in js
+    assert "mise à jour en retard" in js
     assert 'id="freshness"' not in html
 
 
@@ -82,11 +85,23 @@ def test_actions_et_blocs_inutiles_sont_supprimes():
         assert removed not in html
 
 
+def test_cadre_editorial_contact_methode_et_preuve_sont_publics():
+    html = _read("index.html")
+    assert "Avertissement éditorial" in html
+    assert "Comprendre les niveaux de preuve" in html
+    assert 'href="METHODOLOGY.md"' in html
+    assert 'href="docs/EDITORIAL_POLICY.md"' in html
+    assert "github.com/Ya7o/Cyberwatch/issues" in html
+    assert 'href="LICENSE"' in html
+    assert (ROOT / "LICENSE").exists()
+
+
 def test_cartes_ne_rendent_pas_la_provenance_redondante_ni_inconnu():
     js = _read("assets/dashboard-v2.js")
     assert "provenanceLabel" not in js
     assert "2 sources · corroboré" not in js
-    assert "[incident.threat, incident.sector].filter(known)" in js
+    assert "const confirmedSector = incident.sector_status?.status === \"confirmed\"" in js
+    assert "sectorTentativeChip(incident)" in js
 
 
 def test_secteur_suppose_utilise_un_chip_distinct_du_secteur_confirme():
@@ -149,20 +164,17 @@ def test_volume_documente_porte_un_badge_de_statut_par_entree():
     assert "CLAIM_STATUS_LABELS[status]" in js
 
 
-def test_le_badge_de_statut_n_apparait_qu_au_niveau_de_l_acteur():
-    """Retour utilisateur round 2 : les bulles "Revendiqué" apparaissaient
-    encore sur Tiers/Impact, chaque puce de Volume documenté et chaque ligne
-    de chronologie — pas seulement une fois. Le badge ne doit plus vivre que
-    sur "Acteur revendicateur"."""
+def test_statut_de_preuve_est_conserve_sur_les_faits_affiches():
+    """Le contre-audit impose de ne plus perdre confirmé/revendiqué/hypothèse
+    entre facts.json et la fiche."""
     js = _read("assets/dashboard-v2.js")
     assert "function documentedClaimsHtml" not in js
     assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status)' in js
-    assert 'detailField("Tiers impliqué", fields.third_party?.value)' in js
-    assert 'detailField("Impact", fields.impact?.value)' in js
-    # statusBadge() n'est plus appelé que dans sa propre définition et dans
-    # detailField() (qui ne le déclenche que si un status lui est passé —
-    # seul l'appel Acteur ci-dessus lui en passe un).
-    assert js.count("statusBadge(") == 2
+    assert 'detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status)' in js
+    assert 'detailField("Impact", fields.impact?.value, fields.impact?.status)' in js
+    assert "statusBadge(record.status)" in js
+    assert "statusBadge(row.status)" in js
+    assert "statusBadge(entry.status)" in js
 
 
 def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
@@ -172,7 +184,8 @@ def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
     `_claim_list_entries`)."""
     js = _read("assets/dashboard-v2.js")
     assert 'detailField("Vecteur d’entrée"' in js
-    assert 'detailField("Vulnérabilités exploitées"' in js
+    assert 'evidenceEntriesHtml("Vulnérabilités exploitées"' in js
+    assert 'evidenceEntriesHtml("Déroulé documenté"' in js
     assert 'detailField("Date de l’attaque"' in js
     assert 'detailField("Date de découverte"' in js
     assert 'detailField("CVSS"' in js
@@ -182,14 +195,13 @@ def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
     assert "window.CW" not in js
 
 
-def test_localisation_precise_et_evolution_sont_retirees_de_la_fiche():
-    """Retour utilisateur round 2 : ces deux champs sont vides sur les 5
-    incidents de l'échantillon et n'apportent rien à l'usage réel — retrait
-    ciblé, pas un retour en arrière sur "toujours afficher les champs
-    retenus" (les autres champs vides continuent d'afficher un "—")."""
+def test_champs_rares_sont_affiches_uniquement_lorsqu_ils_sont_documentes():
+    """Les faits ne sont plus perdus, sans réintroduire des lignes vides sur
+    tous les incidents."""
     js = _read("assets/dashboard-v2.js")
-    assert 'detailField("Localisation précise"' not in js
-    assert 'detailField("Évolution / suite donnée"' not in js
+    assert 'known(fields.fine_location?.value) ? detailField("Localisation précise"' in js
+    assert 'known(fields.data_volume?.value) ? detailField("Volume de données"' in js
+    assert 'known(fields.evolution?.value) ? detailField("Évolution / remédiation"' in js
 
 
 def test_detail_rend_la_chronologie_dedupliquee():
@@ -244,7 +256,7 @@ def test_groupe_de_donnees_sensibles_est_deplie_par_defaut():
     passe ou une donnée de santé mérite d'être visible sans clic
     supplémentaire, contrairement à un groupe anodin (coordonnées…)."""
     js = _read("assets/dashboard-v2.js")
-    assert 'const hasSensitive = items.some((value) => ["critical", "high"].includes(dataTypeSensitivity(value)));' in js
+    assert 'const hasSensitive = items.some((entry) => ["critical", "high"].includes(dataTypeSensitivity(entry.value)));' in js
     assert '<details class="incident-data-group"${hasSensitive ? " open" : ""}>' in js
 
 
@@ -288,7 +300,8 @@ def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():
 def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
     site = _read("cyberwatch/site.py")
     assert "raw_facts = _legacy._source_facts_by_incident" in site
-    assert "resolved = fact_resolution.resolve_all(raw_facts" in site
+    assert "resolved = _resolved_details(payload, raw_facts)" in site
+    assert "return fact_resolution.resolve_all(raw_facts" in site
     assert 'store.write_json(store.SITE_DATA_DIR / "facts.json", resolved)' in site
     assert "analytics.build_analytics(\n        payload" in site
     assert 'row["summary"] = str(detail.get("display_summary") or "")' in site
@@ -350,8 +363,34 @@ def test_autres_elements_documentes_est_retire_de_la_fiche():
 def test_boucle_de_reparation_des_claims_numeriques_evite_les_doublons():
     """Un affected_count typé peut être réparé s'il manque dans la collection
     dédiée, mais jamais dupliqué ni promu avec sa valeur brute non formatée."""
-    backend = _read("cyberwatch/fact_resolution.py")
+    backend = _read("cyberwatch/fact_resolution.py") + _read(
+        "cyberwatch/fact_resolution_counts.py"
+    )
     assert 'if value in represented_values:' in backend
     assert 'claim_type and claim_type != "affected count"' in backend
     assert '"raw": _text(claim.get("raw"))})' in backend
     assert '"raw": _text(claim.get("raw")) or value})' not in backend
+
+
+def test_analyse_affiche_le_pilotage_de_production():
+    html = _read("index.html")
+    js = _read("assets/dashboard-v2.js")
+
+    assert 'id="production-metrics"' in html
+    assert "function renderProduction()" in js
+    assert "scheduled_reliability" in js
+    assert "missed_duplicate_candidate_pairs" in js
+    assert "weak_merge_review_pairs" in js
+    assert "validated_same_not_grouped_pairs" in js
+    assert "pending_review_pairs" in js
+    assert "llm_cost_usd" in js
+
+
+def test_incidents_complets_ne_sont_charges_qu_a_l_ouverture_de_recherche():
+    js = _read("assets/dashboard-v2.js")
+    init = js[js.index("async function init()") : js.index("\n  init();")]
+
+    assert 'loadJson("assets/data/incidents.json", [])' in js
+    assert "async function ensureIncidents()" in js
+    assert 'if (state.view === "recherche") await ensureIncidents();' in js
+    assert "assets/data/incidents.json" not in init

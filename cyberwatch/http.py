@@ -172,13 +172,7 @@ class HttpClient:
         source_budget: Budget | None = None,
         headers: dict | None = None,
     ) -> FetchResult:
-        """Récupère une URL en respectant tous les plafonds.
-
-        Ne lève jamais d'exception réseau : chaque échec devient un
-        `FetchResult` porteur d'un code de raison exploitable par le modèle de
-        statuts. Le temps consommé par les budgets correspond uniquement à cet
-        appel (attente polie et retries compris), pas à l'âge global du run.
-        """
+        """Récupère une URL sans lever d'exception réseau et sous budgets."""
         if self.run_budget.exhausted:
             return FetchResult(False, url, reason_code=status.REASON_BUDGET_RUN)
         if source_budget is not None and source_budget.exhausted:

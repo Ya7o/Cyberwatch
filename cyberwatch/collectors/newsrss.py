@@ -124,18 +124,11 @@ class NewsRssCollector(Collector):
 
     name = "newsrss"
 
-    def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
-        budget = client.source_budget()
-        result = CollectResult(access_method="google-news-rss")
-        lang = spec.params.get("lang", "fr")
-        when_days = window.days if window.days <= 45 else None
-
-        entities = spec.params.get("entities") or []
-        plain_queries = spec.params.get("queries") or []
-
+    @staticmethod
+    def _tasks(spec: SourceSpec, lang: str) -> list[tuple[str, list[str], list[str]]]:
         default_context = spec.params.get("context", "")
         tasks: list[tuple[str, list[str], list[str]]] = []
-        for entity in entities:
+        for entity in spec.params.get("entities") or []:
             if isinstance(entity, dict):
                 name = entity["name"]
                 aliases = entity.get("aliases", [])
@@ -143,8 +136,16 @@ class NewsRssCollector(Collector):
             else:
                 name, aliases, context = entity, [], default_context
             tasks.append((name, aliases, entity_queries(name, lang, context)))
-        for query in plain_queries:
-            tasks.append(("", [], [query]))
+        tasks.extend(("", [], [query]) for query in spec.params.get("queries") or [])
+        return tasks
+
+    def collect(self, client, spec: SourceSpec, window: Window) -> CollectResult:
+        budget = client.source_budget()
+        result = CollectResult(access_method="google-news-rss")
+        lang = spec.params.get("lang", "fr")
+        when_days = window.days if window.days <= 45 else None
+
+        tasks = self._tasks(spec, lang)
 
         result.units_expected = sum(len(queries) for _n, _a, queries in tasks)
         seen_urls: set[str] = set()

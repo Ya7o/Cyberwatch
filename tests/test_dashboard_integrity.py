@@ -1,7 +1,7 @@
 """Régressions sur l'intégrité temporelle et la veille régionale publiée."""
 from pathlib import Path
 
-from cyberwatch.site_window import latest_rows
+from cyberwatch.site_window import coverage_status, latest_rows
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -46,17 +46,70 @@ def test_garde_integrite_est_charge_apres_le_runtime_principal():
     assert html.index(main) < html.index(guard)
 
 
-def test_garde_integrite_utilise_la_couverture_cumulee_et_separe_les_candidates():
-    js = _read("assets/dashboard-integrity.js")
-    assert '=== "ACCEPTED"' in js
-    assert '=== "CANDIDATE"' in js
-    assert "Aucun incident cyber retenu" in js
-    assert "signal non confirmé" in js
-    assert "incident-card" in js
-    assert "data/run_log.csv" in js
-    assert "lastCreate" in js
-    assert "La couverture cumulée du corpus principal" in js
-    assert "Target_Start" in js and "Target_End" in js
+def test_couverture_et_fraicheur_sont_portees_par_le_contrat_principal():
+    regional = _read("assets/dashboard-integrity.js")
+    dashboard = _read("assets/dashboard-v2.js")
+    assert '=== "ACCEPTED"' in regional
+    assert '=== "CANDIDATE"' in regional
+    assert "Aucun incident cyber retenu" in regional
+    assert "signal non confirmé" in regional
+    assert "data/run_log.csv" not in regional
+    assert "FRESHNESS_WARNING_HOURS = 30" in dashboard
+    assert "FRESHNESS_STALE_HOURS = 36" in dashboard
+    assert "Tendances temporairement neutralisées" in dashboard
+    assert "trendsReady()" in dashboard
+
+
+def _run(mode, start, end, *, status="OK"):
+    return {
+        "Mode": mode,
+        "Overall_Status": status,
+        "Target_Start": start,
+        "Target_End": end,
+    }
+
+
+def test_tendances_exigent_soixante_jours_continus():
+    short = coverage_status([_run("CREATE", "2026-01-01", "2026-01-30")])
+    assert short == {
+        "known": True,
+        "start": "2026-01-01",
+        "end": "2026-01-30",
+        "days": 30,
+        "window_days": 30,
+        "trend_required_days": 60,
+        "trend_ready": False,
+    }
+
+    ready = coverage_status([
+        _run("CREATE", "2026-01-01", "2026-01-30"),
+        _run("MAJ", "2026-01-30", "2026-03-01"),
+    ])
+    assert ready["days"] == 60
+    assert ready["trend_ready"] is True
+
+
+def test_un_trou_de_collecte_ne_devient_jamais_une_fausse_couverture():
+    payload = coverage_status([
+        _run("CREATE", "2026-01-01", "2026-01-10"),
+        _run("MAJ", "2026-01-20", "2026-01-21"),
+        _run("MAJ", "2026-01-22", "2026-01-23"),
+    ])
+    assert payload["start"] == "2026-01-20"
+    assert payload["end"] == "2026-01-23"
+    assert payload["days"] == 4
+    assert payload["trend_ready"] is False
+
+
+def test_un_nouveau_create_reinitialise_la_couverture():
+    payload = coverage_status([
+        _run("CREATE", "2026-01-01", "2026-01-31"),
+        _run("MAJ", "2026-02-01", "2026-02-28"),
+        _run("CREATE", "2026-03-10", "2026-03-12"),
+    ])
+    assert payload["start"] == "2026-03-10"
+    assert payload["end"] == "2026-03-12"
+    assert payload["days"] == 3
 
 
 def test_collecte_planifiee_est_active_et_quotidienne():

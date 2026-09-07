@@ -8,19 +8,63 @@ canonique résolue par :mod:`cyberwatch.fact_resolution`.
 """
 from __future__ import annotations
 
-from . import config, fact_resolution, site_legacy as _legacy, site_window, store
-
-_SENSITIVE = ("mot de passe", "identifiant", "token", "secret", "iban", "bancair", "paiement", "santé", "medical", "nir", "passeport", "pièce d'identité", "biométr")
+from . import (
+    analytics,
+    config,
+    data_sensitivity,
+    fact_resolution,
+    sector_resolution,
+    site_legacy as _legacy,
+    site_window,
+    store,
+    threat_resolution,
+)
+from .normalize import organisation_key
 
 def _sensitive_types(detail: dict) -> list[str]:
-    return [str(x.get("value")) for x in detail.get("data_types", []) if any(marker in str(x.get("value") or "").casefold() for marker in _SENSITIVE)]
+    return list(data_sensitivity.classify(detail)["sensitive_data_types"])
 
 
-def _sector_status(row: dict) -> dict:
-    """Rend l'absence de secteur explicable sans file de revue."""
+def _sector_status(row: dict, decisions: dict[str, list[dict]] | None = None) -> dict:
+    """Expose la preuve ou le niveau d'inférence du secteur publié."""
+    candidates = (decisions or {}).get(str(row.get("id") or ""),
+                 (decisions or {}).get(organisation_key(row.get("org", "")), []))
     if row.get("sector") != config.SECTOR_UNKNOWN:
-        return {"status": "confirmed"}
-    return {"status": "unknown", "reason": "NO_EVIDENCE"}
+        matching = [
+            decision for decision in candidates
+            if decision.get("Resolved_Sector") == row.get("sector")
+        ]
+        if matching:
+            priority = {"confirmed": 4, "reported": 3, "referenced": 2, "inferred": 1, "inferred_low": 0}
+            decision = max(
+                matching,
+                key=lambda value: (
+                    priority.get(str(value.get("Status") or ""), -1),
+                    float(value.get("Confidence") or 0),
+                ),
+            )
+            result = {
+                "status": decision.get("Status") or "inferred",
+                "reason": decision.get("Reason") or "",
+                "confidence": float(decision.get("Confidence") or 0),
+                "evidence": decision.get("Evidence") or "",
+            }
+            if decision.get("Evidence_URL"):
+                result["evidence_url"] = decision["Evidence_URL"]
+            discarded = sorted({d.get("Resolved_Sector") for d in candidates
+                                if d.get("Resolved_Sector") not in (None, "", config.SECTOR_UNKNOWN, row.get("sector"))})
+            if discarded:
+                result["reason"] = "ACTIVITY_OVERRIDES_SOURCE_LABEL"
+                result["discarded_source_labels"] = discarded
+            return result
+        return {"status": "reported", "reason": "LEGACY_KNOWN_SECTOR"}
+    sectors = {d.get("Resolved_Sector") for d in candidates
+               if d.get("Resolved_Sector") not in (None, "", config.SECTOR_UNKNOWN)}
+    if len(sectors) > 1:
+        return {"status": "unknown", "reason": "SOURCE_SECTOR_CONFLICT",
+                "evidence": " | ".join(sorted(sectors))}
+    reasons = sorted({str(d.get("Reason")) for d in candidates if d.get("Reason")})
+    return {"status": "unknown", "reason": " | ".join(reasons) or "NO_ACTIVITY_EVIDENCE"}
 
 # Compatibilité stricte : les tests et outils internes utilisent plusieurs
 # helpers privés de site.py. On les réexporte sans dupliquer leur code.
@@ -29,23 +73,30 @@ for _name in dir(_legacy):
         globals()[_name] = getattr(_legacy, _name)
 
 
-def build() -> tuple[int, int]:
-    """Écrit le site avec faits bruts pour analytics et faits résolus pour l'UI."""
-    incidents = store.load_incidents()
-    items = store.load_items()
-    raw_facts = _legacy._source_facts_by_incident(items, store.load_source_facts())
-    payload = _legacy.incidents_payload(
-        incidents,
-        _legacy._local_analysis_by_incident(items),
-        raw_facts,
-        {},
-    )
-    for row in payload:
-        row["sector_status"] = _sector_status(row)
+def _sector_decisions_by_organisation() -> dict[str, list[dict]]:
+    decisions: dict[str, list[dict]] = {}
+    for sector_decision in store.load_sector_resolution():
+        decisions.setdefault(
+            str(sector_decision.get("Organisation_Key") or ""), []
+        ).append(sector_decision)
+    return decisions
 
-    # Le résolveur utilise comme fallback la synthèse historique sélectionnée
-    # de façon déterministe. Dès que des faits structurés suffisent, une
-    # display_summary compacte et canonique la remplace.
+
+def _sector_decisions_by_incident(items: list) -> dict[str, list[dict]]:
+    rows = {row.get("Item_ID"): row for row in store.load_sector_resolution()}
+    return {incident_id: [rows[item.Item_ID] for item in component if item.Item_ID in rows]
+            for component, incident_id in _legacy._components_with_stable_incident_ids(items)}
+
+
+def _threat_decisions_by_incident(items: list, source_fact_rows: list[dict]) -> dict:
+    facts_by_item = threat_resolution.index_source_facts(source_fact_rows)
+    return {
+        incident_id: threat_resolution.resolve_component(component, facts_by_item)
+        for component, incident_id in _legacy._components_with_stable_incident_ids(items)
+    }
+
+
+def _resolved_details(payload: list[dict], raw_facts: dict[str, list[dict]]) -> dict:
     organisations = {
         str(row.get("id") or ""): str(row.get("org") or "")
         for row in payload
@@ -56,15 +107,74 @@ def build() -> tuple[int, int]:
         )
         for incident_id, facts in raw_facts.items()
     }
-    resolved = fact_resolution.resolve_all(raw_facts, fallback_summaries, organisations)
+    return fact_resolution.resolve_all(raw_facts, fallback_summaries, organisations)
+
+
+def _decorate_payload(
+    payload: list[dict], resolved: dict, threat_decisions: dict,
+    sectors: dict | None = None,
+) -> None:
+    sectors = sectors if sectors is not None else {}
     for row in payload:
+        row["sector_status"] = _sector_status(row, sectors)
+        threat_decision = threat_decisions.get(str(row.get("id") or ""))
+        if threat_decision:
+            row["threat_status"] = threat_decision.to_payload()
         detail = resolved.get(str(row.get("id") or ""))
-        # Le résolveur est l'unique contrat de carte : une abstention qualité
-        # doit retirer une ancienne fiche structurée, jamais la laisser fuir.
-        if detail is not None:
-            row["summary"] = str(detail.get("display_summary") or "")
-            row["sensitive_data_types"] = _sensitive_types(detail)
-            row["sensitive_data_exposed"] = bool(row["sensitive_data_types"])
+        if detail is None:
+            continue
+        row["summary"] = str(detail.get("display_summary") or "")
+        exposure = data_sensitivity.classify(detail)
+        row.update({
+            key: exposure[key]
+            for key in (
+                "personal_data_exposed",
+                "high_sensitivity_data_exposed",
+                "credentials_or_secrets_exposed",
+                "vulnerable_people_data_exposed",
+                "sensitive_data_exposed",
+                "sensitive_data_types",
+            )
+        })
+        row["data_exposure"] = exposure
+        quality_alerts = list(detail.get("quality_alerts") or [])
+        quality_alerts.extend(data_sensitivity.consistency_alerts(exposure))
+        if threat_decision and threat_decision.conflict:
+            unresolved = threat_decision.value == config.THREAT_UNKNOWN
+            quality_alerts.append({
+                "code": "THREAT_CONFLICT" if unresolved else "THREAT_CONFLICT_RESOLVED",
+                "field": "threat",
+                "severity": "error" if unresolved else "info",
+            })
+        row["quality_alerts"] = quality_alerts
+
+
+def build() -> tuple[int, int]:
+    """Écrit le site avec faits bruts pour analytics et faits résolus pour l'UI."""
+    incidents = store.load_incidents()
+    items = store.load_items()
+    source_fact_rows = store.load_source_facts()
+    from . import enrichment
+    gaps = sector_resolution.fact_transport_gaps(items, source_fact_rows, enrichment.load_reference())
+    gaps.extend(sector_resolution.transport_gaps(items, store.load_sector_resolution()))
+    if gaps:
+        raise ValueError("sector_publication_transport_gap: " + ", ".join(sorted(set(gaps))))
+    raw_facts = _legacy._source_facts_by_incident(items, source_fact_rows)
+    payload = _legacy.incidents_payload(
+        incidents,
+        _legacy._local_analysis_by_incident(items),
+        raw_facts,
+        {},
+    )
+    threat_decisions = _threat_decisions_by_incident(items, source_fact_rows)
+    resolved = _resolved_details(payload, raw_facts)
+    sectors = _sector_decisions_by_incident(items)
+    for row in payload:
+        decisions = sectors.get(str(row.get("id") or ""), [])
+        expected = sector_resolution.component_sector_rows(decisions)
+        if decisions and row.get("sector") != expected:
+            raise ValueError("sector_incident_projection_gap: " + str(row.get("id")))
+    _decorate_payload(payload, resolved, threat_decisions, sectors)
 
     state = _legacy.status_payload()
 

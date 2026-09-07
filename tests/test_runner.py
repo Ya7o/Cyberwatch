@@ -416,6 +416,38 @@ def test_runner_passes_one_semantic_snapshot_to_source_facts(monkeypatch, make_i
     assert captured["semantic"] is snapshot
 
 
+def test_runner_retries_queued_fact_outside_collection_window(monkeypatch, make_item):
+    """Une entrée archivée dans la file n'a pas besoin de réapparaître dans le flux."""
+    from types import SimpleNamespace
+    from cyberwatch import runner
+    from cyberwatch.collectors.base import RawEntry
+
+    item = make_item(source="CYBERATTAQUE_ORG", published="2026-01-01")
+    entry = RawEntry(
+        title=item.Title,
+        organisation=item.Organisation_Raw,
+        published=item.Published_Date,
+        content="Une preuve ancienne à reprendre.",
+    )
+    pending = {"key": "old:key", "item": item.to_row(), "entry": entry.__dict__}
+    monkeypatch.setenv("SOURCE_FACTS_RETRY_MAX_PER_RUN", "5")
+    monkeypatch.setattr(
+        runner.source_facts_ai,
+        "_runtime",
+        lambda: SimpleNamespace(enabled=True, record_event=lambda **_kwargs: None),
+    )
+    monkeypatch.setattr(runner.source_facts_retry, "load", lambda: [pending])
+    monkeypatch.setattr(runner.source_facts_retry, "mark_attempt", lambda _key: None)
+    monkeypatch.setattr(runner.runner_source_facts, "extract", lambda restored, _entry, _spec: {
+        "Item_ID": restored.Item_ID, "Summary": "repris"
+    })
+    facts, summary = runner.runner_source_facts.retry_pending([pending])
+
+    assert facts == [{"Item_ID": item.Item_ID, "Summary": "repris"}]
+    assert summary["attempted"] == 1
+    assert summary["facts_refreshed"] == 1
+
+
 class TestFauxPositifFourriere:
     """Régression sur le cas réel qui a pollué la base.
 
@@ -828,3 +860,15 @@ class TestOrganisationIdentityRegistryDoesNotAffectItemId:
         # Les Item_ID ne changent jamais, seul le regroupement en incidents change.
         assert left.Item_ID == left_id_before
         assert right.Item_ID == right_id_before
+
+
+def test_total_llm_utilise_le_runtime_partage_sans_doubler_les_compteurs_source(monkeypatch):
+    from types import SimpleNamespace
+
+    shared = SimpleNamespace(stats=SimpleNamespace(
+        calls_attempted=20,
+        estimated_cost_usd=0.01174595,
+    ))
+    monkeypatch.setattr(runner.llm_runtime, "runtime", lambda: shared)
+
+    assert runner._llm_totals() == (20, 0.011746)
