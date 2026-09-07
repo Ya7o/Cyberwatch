@@ -33,11 +33,24 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "unit": "files",
     "value": 84
+   },
+   {
+    "evidence": "l’archive contiendrait 84 fichiers et 3 dossiers ;",
+    "raw": "3 dossiers",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 3
    },
    {
     "evidence": "Footsider : une cyberattaque expose les données de 153 000 comptes",
@@ -45,7 +58,8 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "unit": "accounts",
@@ -88,7 +102,26 @@
     "value": 100000
    }
   ],
-  "attack_flow": [],
+  "attack_flow": [
+   {
+    "action": "extraction des données",
+    "evidence": "avant d’en extraire l’intégralité.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   },
+   {
+    "action": "publication des données",
+    "evidence": "Environ 2,89 Go de données réparties dans 84 fichiers sont désormais proposés au téléchargement.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -111,7 +144,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -125,7 +159,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -181,7 +216,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -195,7 +231,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_volume",
@@ -209,7 +246,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -223,7 +261,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -237,7 +276,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -251,7 +291,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -265,7 +306,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -401,6 +443,20 @@
    {
     "actor": "",
     "date": "",
+    "evidence": "l’archive contiendrait 84 fichiers et 3 dossiers ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "3"
+   },
+   {
+    "actor": "",
+    "date": "",
     "evidence": "Un pirate affirme avoir récupéré près de 2,9 Go de données comprenant notamment les informations de plus de 150 000 comptes utilisateurs.**",
     "scope": "",
     "source": "FRENCHBREACHES",
@@ -427,7 +483,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "photographies"
@@ -435,7 +492,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "noms et prénoms"
@@ -443,7 +501,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "adresses e-mail"
@@ -451,7 +510,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "numéros de téléphone"
@@ -459,7 +519,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "dates de naissance"
@@ -537,7 +598,8 @@
     "evidence": "Environ  2,89 Go de données réparties dans 84 fichiers  sont désormais proposés au téléchargement.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "2,89 Go"
@@ -561,7 +623,13 @@
     "value": "DaOnlySpark"
    }
   },
-  "quality_alerts": [],
+  "quality_alerts": [
+   {
+    "code": "SUMMARY_FACT_CONTRADICTION",
+    "field": "summary",
+    "severity": "error"
+   }
+  ],
   "rejected_fields": [],
   "systems": [],
   "timeline": [
@@ -604,6 +672,16 @@
      "FRENCHBREACHES"
     ],
     "status": "unknown"
+   },
+   {
+    "date": "2026-09-06",
+    "event": "La date du 6 septembre 2026 correspond à la publication de la revendication et ne permet pas nécessairement de connaître la date exacte à laquelle les données auraient été récupérées.",
+    "evidence": "La date du 6 septembre 2026 correspond à la publication de la revendication et ne permet pas nécessairement de connaître la date exacte à laquelle les données auraient été récupérées.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis"
    }
   ],
   "version": 3,
@@ -1780,12 +1858,19 @@
     ],
     "status": "claimed",
     "value": "Les données exposées peuvent être utilisées pour des campagnes de phishing."
+   },
+   "threat_actor": {
+    "evidence": "un acteur utilisant le pseudonyme **Sophia** affirme avoir récupéré puis publié gratuitement une base de données.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Sophia"
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -2677,9 +2762,10 @@
     "value": "214 Mo"
    },
    "threat_actor": {
-    "source": "CYBERATTAQUE_ORG",
+    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier...",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "value": "ChimeraZ"
@@ -3403,12 +3489,19 @@
     ],
     "status": "confirmed",
     "value": "Risque élevé d'usurpation d'identité et de fraude."
+   },
+   "threat_actor": {
+    "evidence": "L’auteur de la publication affirme avoir récupéré des informations.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "l’auteur de la publication"
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -4744,7 +4837,7 @@
     "value": "base contenant des profils"
    }
   ],
-  "display_summary": "2 863 profils professionnels exposés dans une fuite de données chez Charbonneaux-Brabant.",
+  "display_summary": "Fuite de données revendiquée chez Charbonneaux-Brabant affectant 2 863 personnes.",
   "fields": {
    "data_volume": {
     "evidence": "Le fichier publié représente environ  660 Ko de données au format JSON .",
@@ -4772,12 +4865,19 @@
     ],
     "status": "claimed",
     "value": "Publication d'une base de données contenant des informations personnelles."
+   },
+   "threat_actor": {
+    "evidence": "Un acteur utilisant le pseudonyme ChimeraZ affirme avoir récupéré...",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -5045,9 +5145,7 @@
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -6672,15 +6770,6 @@
     ],
     "status": "confirmed",
     "value": "third_party"
-   },
-   "threat_actor": {
-    "evidence": "les pirates ont accédé aux fichiers de moins d’un tiers d’entre eux.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "pirates"
    }
   },
   "quality_alerts": [],
@@ -7210,10 +7299,7 @@
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "initial_access",
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -7476,9 +7562,7 @@
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -7572,7 +7656,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -7630,12 +7715,27 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
     "unit": "",
     "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La publication, intitulée « [FR] BUMFOT.FR | 1.3K », annonce un fichier au format JSON d’environ 481 Ko.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "481.0"
    }
   ],
   "data_types": [
@@ -7651,7 +7751,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "mots de passe"
@@ -7685,7 +7786,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "identifiants"
@@ -7701,8 +7803,17 @@
     "value": "base utilisateurs"
    }
   ],
-  "display_summary": "BumFot victime d'une fuite de données touchant environ 1 300 utilisateurs.",
+  "display_summary": "Une fuite de données revendiquée concerne environ 1 300 utilisateurs de BumFot, incluant des noms et adresses e-mail.",
   "fields": {
+   "data_volume": {
+    "evidence": "La publication, intitulée « [FR] BUMFOT.FR | 1.3K », annonce un fichier au format JSON d’environ 481 Ko.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "481 Ko"
+   },
    "impact": {
     "evidence": "Un pirate affirme disposer de données concernant environ 1 300 utilisateurs",
     "source": "FRENCHBREACHES",
@@ -7715,8 +7826,38 @@
   },
   "quality_alerts": [],
   "rejected_fields": [],
-  "systems": [],
-  "timeline": [],
+  "systems": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "BumFot.fr"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-09-07",
+    "event": "Le 7 septembre 2026, un utilisateur d’un forum cybercriminel a publié des données qu’il présente comme provenant de BumFot.fr.",
+    "evidence": "Le 7 septembre 2026, un utilisateur d’un forum cybercriminel a publié des données qu’il présente comme provenant de BumFot.fr.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-07",
+    "event": "La date du 7 septembre 2026 correspond à la publication de la revendication et ne permet pas nécessairement de connaître la date exacte à laquelle les données auraient été récupérées.",
+    "evidence": "La date du 7 septembre 2026 correspond à la publication de la revendication et ne permet pas nécessairement de connaître la date exacte à laquelle les données auraient été récupérées.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -8168,6 +8309,312 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-A11BA9A22689": {
+  "affected": [
+   {
+    "evidence": "L’ensemble revendiqué représente environ 465 Mo, avec 23 381 enregistrements concernant 20 316 personnes.",
+    "raw": "23 381 enregistrements",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 23381
+   },
+   {
+    "evidence": "Le pirate ChimeraZ revendique les données de 20 316 personnes ainsi que près de 1 500 documents PDF, dont des CV contenant de nombreuses informations personnelles et professionnelles.",
+    "raw": "20 316 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 20316
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "exploitation d'une faille IDOR",
+    "evidence": "combinée à une faille IDOR donnant accès à une base de données Odoo mal configurée.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’ensemble revendiqué représente environ 465 Mo, avec 23 381 enregistrements concernant 20 316 personnes.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "23381"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le pirate ChimeraZ revendique les données de 20 316 personnes ainsi que près de 1 500 documents PDF, dont des CV contenant de nombreuses informations personnelles et professionnelles.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "20316"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La fuite de données touchant OnRecrute.enAveyron.fr expose potentiellement les informations de plus de 20 000 personnes et près de 1 500 documents, dont des CV particulièrement détaillés.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "20000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’ensemble revendiqué représente environ 465 Mo, avec 23 381 enregistrements concernant 20 316 personnes.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "465.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les échantillons que nous avons analysés contiennent des données personnelles issues de profils et de candidatures, tandis que 1 499 documents PDF, représentant environ 451 Mo, sont également annoncés.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "451.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les noms et prénoms ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les adresses e-mail ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les numéros de téléphone ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "des identifiants internes ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "date de naissance ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base de données des candidatures et profils"
+   }
+  ],
+  "display_summary": "Fuite de données ayant exposé plus de 20 000 personnes et près de 1 500 documents sur OnRecrute.enAveyron.fr.",
+  "fields": {
+   "data_volume": {
+    "evidence": "L’ensemble revendiqué représente environ 465 Mo, avec 23 381 enregistrements concernant 20 316 personnes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "465 Mo"
+   },
+   "fine_location": {
+    "evidence": "Fuite de données en Aveyron : plus de 20 000 personnes",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "Aveyron"
+   },
+   "impact": {
+    "evidence": "les données de plus de 20 000 personnes exposées.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "exposition des données personnelles de plus de 20 000 personnes"
+   },
+   "threat_actor": {
+    "evidence": "Le pirate ChimeraZ revendique les données de 20 316 personnes ainsi que près de 1 500 documents PDF.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "ChimeraZ"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "OnRecrute.enAveyron.fr"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "Le 5 septembre 2026, ChimeraZ publie sur un forum cybercriminel des données qu’il attribue à cette plateforme.",
+    "evidence": "Le 5 septembre 2026, ChimeraZ publie sur un forum cybercriminel des données qu’il attribue à cette plateforme.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-A3C6A92F895D": {
   "affected": [],
   "attack_flow": [
@@ -8460,6 +8907,18 @@
     "status": "unknown",
     "unit": "people",
     "value": 3500
+   },
+   {
+    "evidence": "En complément des données structurées, la publication annonce une archive issue d’un espace de stockage Firebase comprenant 2 626 fichiers.",
+    "raw": "2 626 fichiers",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 2626
    }
   ],
   "attack_flow": [
@@ -8490,7 +8949,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "hypothesis",
     "type": "affected_count",
@@ -8547,7 +9007,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -8561,7 +9022,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -8575,7 +9037,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -8589,7 +9052,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -8683,6 +9147,34 @@
    {
     "actor": "",
     "date": "",
+    "evidence": "plus de 883 000 lignes seraient présentes dans les données exportées ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "883000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "En complément des données structurées, la publication annonce une archive issue d’un espace de stockage Firebase comprenant 2 626 fichiers.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "2626"
+   },
+   {
+    "actor": "",
+    "date": "",
     "evidence": "3,7 Go de données médicales et personnelles revendiqués",
     "scope": "",
     "source": "FRENCHBREACHES",
@@ -8693,6 +9185,48 @@
     "type": "data_volume",
     "unit": "",
     "value": "3.7"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses postales ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des contenus provenant d’un espace communautaire seraient également présents, notamment des publications, commentaires, réponses et réactions.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "commentaires"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il n’est donc pas possible de déterminer si les informations proviennent d’une vulnérabilité de l’application, d’identifiants compromis, d’une mauvaise configuration, d’un accès non autorisé à l’infrastructure ou d’une autre méthode.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
    }
   ],
   "data_types": [
@@ -8702,13 +9236,14 @@
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
-    "status": "reported",
+    "status": "confirmed",
     "value": "données de santé"
    },
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "adresses e-mail"
@@ -8716,7 +9251,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "numéros de téléphone"
@@ -8724,7 +9260,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "noms et prénoms"
@@ -8732,7 +9269,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "dates de naissance"
@@ -8752,6 +9290,22 @@
     ],
     "status": "unknown",
     "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
    }
   ],
   "datasets": [
@@ -8762,6 +9316,14 @@
     ],
     "status": "confirmed",
     "value": "base de données de patients"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base clients"
    }
   ],
   "display_summary": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
@@ -8805,7 +9367,28 @@
   "quality_alerts": [],
   "rejected_fields": [],
   "systems": [],
-  "timeline": [],
+  "timeline": [
+   {
+    "date": "2026-09-07",
+    "event": "Le 7 septembre 2026, un utilisateur d’un forum cybercriminel a publié une base de données qu’il affirme provenir de Jinko.care.",
+    "evidence": "Le 7 septembre 2026, un utilisateur d’un forum cybercriminel a publié une base de données qu’il affirme provenir de Jinko.care.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-07",
+    "event": "La date du 7 septembre 2026 correspond à la publication de la revendication et ne permet pas nécessairement de déterminer quand les données auraient été récupérées.",
+    "evidence": "La date du 7 septembre 2026 correspond à la publication de la revendication et ne permet pas nécessairement de déterminer quand les données auraient été récupérées.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -11169,9 +11752,7 @@
    }
   },
   "quality_alerts": [],
-  "rejected_fields": [
-   "threat_actor"
-  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -11561,9 +12142,28 @@
     "value": "données personnelles"
    }
   ],
-  "datasets": [],
-  "display_summary": "SNEXI a subi une cyberattaque entraînant une violation de données personnelles.",
-  "fields": {},
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "données personnelles de propriétaires et locataires"
+   }
+  ],
+  "display_summary": "SNEXI a subi une cyberattaque le 2 septembre 2026 entraînant une violation de données personnelles.",
+  "fields": {
+   "impact": {
+    "evidence": "l’attaque a entraîné une violation de données personnelles.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "Violation des données personnelles de plusieurs propriétaires et locataires."
+   }
+  },
   "quality_alerts": [],
   "rejected_fields": [],
   "systems": [],
@@ -11577,6 +12177,36 @@
      "FRENCHBREACHES"
     ],
     "status": "reported"
+   },
+   {
+    "date": "2026-09-02",
+    "event": "Une cyberattaque survenue le 2 septembre 2026",
+    "evidence": "Une cyberattaque survenue le 2 septembre 2026",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-02",
+    "event": "snexi.fr a subi une cyberattaque le mercredi 2 septembre 2026 ;",
+    "evidence": "snexi.fr a subi une cyberattaque le mercredi 2 septembre 2026 ;",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-02",
+    "event": "SNEXI confirme désormais qu’une cyberattaque a touché snexi.fr le 2 septembre 2026 et entraîné une violation de données personnelles.",
+    "evidence": "SNEXI confirme désormais qu’une cyberattaque a touché snexi.fr le 2 septembre 2026 et entraîné une violation de données personnelles.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
    }
   ],
   "version": 3,
@@ -12165,20 +12795,22 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "unit": "records",
     "value": 328649
    },
    {
-    "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
+    "evidence": "Le pirate revendique les données de 86 073 personnes.",
     "raw": "86 073 personnes",
-    "semantic": "unspecified",
-    "source": "CYBERATTAQUE_ORG",
+    "scope": "global",
+    "semantic": "global",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
+     "FRENCHBREACHES",
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
     "unit": "people",
@@ -12190,7 +12822,8 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "unit": "records",
@@ -12237,7 +12870,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -12251,7 +12885,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -12309,7 +12944,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_volume",
@@ -12367,7 +13003,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -12381,12 +13018,55 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "dataset",
     "unit": "",
     "value": "réservations"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un identifiant interne ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il serait donc incorrect d'affirmer que l'ensemble des échanges contient le même niveau d'information ou concerne directement la situation personnelle des utilisateurs.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "situation personnelle"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des données de santé sont-elles concernées ?",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données de santé"
    }
   ],
   "data_types": [
@@ -12419,10 +13099,27 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "informations de séjour"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données de santé"
    },
    {
     "source": "FRENCHBREACHES",
@@ -12449,15 +13146,24 @@
     ],
     "status": "confirmed",
     "value": "base clients"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "messages envoyés par les utilisateurs"
    }
   ],
-  "display_summary": "Fuite de données affectant Les Curistes avec plus de 86 000 personnes impliquées.",
+  "display_summary": "Fuite de données chez Les Curistes concernant plus de 86 000 personnes, avec des informations exposées tels que noms et messages privés.",
   "fields": {
    "data_volume": {
     "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "95 Mo"
@@ -12481,7 +13187,7 @@
     "value": "ChimeraZ"
    },
    "threat_actor": {
-    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages.",
+    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -12502,7 +13208,28 @@
     "value": "LesCuristes.fr"
    }
   ],
-  "timeline": [],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "Le 5 septembre 2026, l'utilisateur ChimeraZ publie sur un forum cybercriminel des données qu'il attribue à la plateforme Les Curistes.",
+    "evidence": "Le 5 septembre 2026, l'utilisateur ChimeraZ publie sur un forum cybercriminel des données qu'il attribue à la plateforme Les Curistes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-05",
+    "event": "Le 5 septembre 2026 correspond à leur divulgation par ChimeraZ et non nécessairement à la date d'une éventuelle intrusion.",
+    "evidence": "Le 5 septembre 2026 correspond à leur divulgation par ChimeraZ et non nécessairement à la date d'une éventuelle intrusion.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -13903,8 +14630,7 @@
     "semantic": "profils",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
     "unit": "people",
@@ -13918,15 +14644,6 @@
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown"
-   },
-   {
-    "action": "exploitation d'une faille IDOR",
-    "evidence": "combinée à une faille IDOR donnant accès à une base de données Odoo mal configurée.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
     ],
     "status": "unknown"
    }
@@ -14143,20 +14860,6 @@
     "value": "méthode d'accès non précisée"
    },
    {
-    "actor": "",
-    "date": "",
-    "evidence": "# Fuite de données en Aveyron : plus de 20 000 personnes et près de 1 500 documents concernés",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "20000"
-   },
-   {
     "evidence": "Le hacker ChimeraZ affirme avoir récupéré puis diffusé une base.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -14245,15 +14948,6 @@
     ],
     "status": "unknown",
     "value": "465 Mo"
-   },
-   "fine_location": {
-    "evidence": "Fuite de données en Aveyron",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "Aveyron"
    },
    "impact": {
     "evidence": "Un CV concentre suffisamment d’informations pour construire une attaque extrêmement crédible.",
