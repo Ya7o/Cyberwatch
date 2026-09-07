@@ -88,6 +88,7 @@
     "value": 100000
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -560,6 +561,8 @@
     "value": "DaOnlySpark"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -608,11 +611,14 @@
  },
  "INC-15A9F3AC6AC8": {
   "affected": [],
+  "attack_flow": [],
   "claims": [],
   "data_types": [],
   "datasets": [],
   "display_summary": "Le ministère de la Transition écologique a subi une cyberattaque, entraînant la revendication des données de milliers d'utilisateurs.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -635,6 +641,7 @@
     "value": 666155
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -965,6 +972,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -1023,6 +1032,7 @@
     "value": 9600
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -1376,6 +1386,8 @@
     "value": "DaOnlySpark"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -1455,6 +1467,7 @@
     "value": 1000
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -1769,6 +1782,10 @@
     "value": "Les données exposées peuvent être utilisées pour des campagnes de phishing."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -1814,6 +1831,117 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-2C5CD2459F83": {
+  "affected": [
+   {
+    "evidence": "L’acteur utilisant le pseudonyme **ChimeraZ** affirme avoir récupéré puis publié une base contenant **4 111 enregistrements associés à 4 111 personnes**.",
+    "raw": "4 111 enregistrements",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 4111
+   },
+   {
+    "evidence": "L’acteur utilisant le pseudonyme **ChimeraZ** affirme avoir récupéré puis publié une base contenant **4 111 enregistrements associés à 4 111 personnes**.",
+    "raw": "4 111 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "people",
+    "value": 4111
+   },
+   {
+    "evidence": "Clinique de Vontes : les données de plus de 4 100 personnes publiées...",
+    "raw": "4 100 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 4100
+   }
+  ],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’acteur utilisant le pseudonyme **ChimeraZ** affirme avoir récupéré puis publié une base contenant **4 111 enregistrements associés à 4 111 personnes**.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "4111"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Clinique de Vontes : les données de plus de 4 100 personnes publiées...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "4100"
+   }
+  ],
+  "data_types": [],
+  "datasets": [],
+  "display_summary": "Fuite de données à la Clinique de Vontes concernant 4 111 profils de patients.",
+  "fields": {
+   "fine_location": {
+    "evidence": "établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Esvres-sur-Indre, en Indre-et-Loire"
+   },
+   "impact": {
+    "evidence": "ChimeraZ affirme avoir récupéré puis publié une base contenant 4 111 enregistrements associés à 4 111 personnes.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Publication des données de 4 111 personnes."
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-03",
+    "event": "Une fuite de données visant la Clinique de Vontes, établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "Une fuite de données visant la Clinique de Vontes, établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-2C5CEAE9E3AC": {
   "affected": [
    {
@@ -1839,6 +1967,35 @@
     "status": "confirmed",
     "unit": "records",
     "value": 100000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "exploité une injection SQL",
+    "evidence": "Alduin affirme avoir découvert une injection SQL de type UNION sur le site de l’AMF.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "action": "extrait plusieurs tables de sa base de données",
+    "evidence": "Le hacker affirme avoir utilisé cette faiblesse pour sélectionner et extraire plusieurs tables de la base.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "action": "exploitation de vulnérabilité par injection SQL",
+    "evidence": "affirme avoir exploité une injection SQL de type UNION sur le site amf.asso.fr.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
    }
   ],
   "claims": [
@@ -2088,6 +2245,8 @@
     "value": "Alduin"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -2185,6 +2344,7 @@
     "value": 18861
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -2525,6 +2685,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -2563,6 +2725,7 @@
  },
  "INC-39643434BF76": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -2642,6 +2805,8 @@
     "value": "demande de rançon"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -2717,6 +2882,17 @@
     "status": "unknown",
     "unit": "clients",
     "value": 32000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "Publication de la base de données en libre téléchargement par le hacker DaOnlySpark.",
+    "evidence": "Le hacker DaOnlySpark a publié une base d’environ 1,6 Go, désormais accessible en téléchargement libre.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
    }
   ],
   "claims": [
@@ -3083,6 +3259,8 @@
     "value": "DaOnlySpark"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -3126,6 +3304,7 @@
  },
  "INC-3C5B9E546782": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -3226,6 +3405,10 @@
     "value": "Risque élevé d'usurpation d'identité et de fraude."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -3273,6 +3456,7 @@
     "value": 5200
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -3487,6 +3671,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -3530,6 +3716,7 @@
     "value": 7880
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -3605,6 +3792,8 @@
     "value": "Publication des données de 7 880 personnes sur un forum."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -3661,6 +3850,35 @@
     "status": "unknown",
     "unit": "people",
     "value": 4100
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "revendiqué par le hacker ChimeraZ",
+    "evidence": "le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "action": "fuite de données",
+    "evidence": "fuite de données revendiquée par le hacker ChimeraZ.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "action": "publication de données exposées",
+    "evidence": "Les données visibles permettent de cartographier une partie de l’organisation.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
    }
   ],
   "claims": [
@@ -3880,6 +4098,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -3927,6 +4147,17 @@
  },
  "INC-47CD44FA27B9": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "accès non autorisé à l'environnement de la plateforme",
+    "evidence": "un tiers non autorisé avait obtenu un accès à l’environnement de la plateforme.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -4202,6 +4433,8 @@
     "value": "Landmark Global France"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -4243,6 +4476,7 @@
     "value": 6434
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -4287,6 +4521,8 @@
     "value": "Moselle"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -4316,6 +4552,17 @@
     "status": "unknown",
     "unit": "records",
     "value": 2863
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "publication d'une base de données",
+    "evidence": "Un acteur utilisant le pseudonyme ChimeraZ affirme avoir récupéré puis publié une base de données attribuée au site charbonneauxbrabant.com.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
    }
   ],
   "claims": [
@@ -4527,6 +4774,10 @@
     "value": "Publication d'une base de données contenant des informations personnelles."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
   "systems": [],
   "timeline": [
    {
@@ -4558,6 +4809,7 @@
     "value": 400000
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -4620,6 +4872,8 @@
     "value": "Mont-de-Marsan"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -4640,6 +4894,7 @@
     "value": 1029
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -4789,6 +5044,10 @@
     "value": "Exposition de 1 029 profils professionnels."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -4796,6 +5055,26 @@
  },
  "INC-64FE6B5DDB80": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "publication de bases SQL récupérées",
+    "evidence": "Les hackers ont publié plusieurs archives contenant les bases SQL récupérées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "action": "défacement de plusieurs sites",
+    "evidence": "Plusieurs sites liés à la FNIM ont également été défacés pendant l’intrusion.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -5111,6 +5390,8 @@
     "value": "diffusion publique de données sensibles entraînant un risque accru de réutilisation"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -5205,6 +5486,7 @@
     "value": 533162
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -5365,6 +5647,8 @@
     "value": "BoneT4p2ndAcc"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -5453,6 +5737,26 @@
     "status": "unknown",
     "unit": "records",
     "value": 82000000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "extraction de données",
+    "evidence": "le hacker ZeroBytes affirme avoir extrait 148 929 194 lignes brutes depuis l’environnement de la plateforme.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "action": "accès à la configuration des bases connectées",
+    "evidence": "depuis cette interface, l’attaquant dit avoir accédé à la configuration des bases connectées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
    }
   ],
   "claims": [
@@ -5779,6 +6083,8 @@
     "value": "ZeroBytes"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -5816,6 +6122,7 @@
  },
  "INC-693ABEB9BF8A": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -6175,6 +6482,8 @@
     "value": "plateforme"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -6254,6 +6563,17 @@
     "status": "unknown",
     "unit": "accounts",
     "value": 5000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "compromission de comptes utilisateurs",
+    "evidence": "Dropbox confirme qu’environ 5 000 comptes utilisateurs ont été compromis au cours du mois d’août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
    }
   ],
   "claims": [
@@ -6352,8 +6672,21 @@
     ],
     "status": "confirmed",
     "value": "third_party"
+   },
+   "threat_actor": {
+    "evidence": "les pirates ont accédé aux fichiers de moins d’un tiers d’entre eux.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "pirates"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "impact"
+  ],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -6370,6 +6703,7 @@
  },
  "INC-70B5B8B5751D": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -6576,6 +6910,8 @@
     "value": "compromission de données personnelles de clients"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -6583,6 +6919,17 @@
  },
  "INC-72FE2288A677": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "violation et vol de données",
+    "evidence": "Bio en Hauts-de-France annonce avoir été victime d'une cyberattaque ayant entraîné une violation et un vol de données.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -6750,6 +7097,8 @@
     "value": "Violation de données personnelles et professionnelles."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -6770,6 +7119,7 @@
     "value": 3067
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -6814,6 +7164,8 @@
     "value": "Vosges"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -6832,6 +7184,7 @@
  },
  "INC-82F1B88B7CC2": {
   "affected": [],
+  "attack_flow": [],
   "claims": [],
   "data_types": [],
   "datasets": [],
@@ -6854,26 +7207,13 @@
     ],
     "status": "confirmed",
     "value": "Le piratage a entraîné une indisponibilité de plusieurs jours et la modification de contenus déjà publiés."
-   },
-   "initial_access": {
-    "evidence": "Il est donc impossible de déterminer pour le moment si l’attaque provient d’un compte administrateur compromis, d’une vulnérabilité du site ou d’un autre accès technique.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "compromised_credentials"
-   },
-   "threat_actor": {
-    "evidence": "syndicat affirme",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "value": "syndicat"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "initial_access",
+   "threat_actor"
+  ],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -6881,6 +7221,17 @@
  },
  "INC-83BA7D2DCBF4": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "publication de données sensibles",
+    "evidence": "Les données diffusées comprennent également des informations détaillées sur des missions et rendez-vous liés à des biens immobiliers.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -7124,6 +7475,10 @@
     "value": "usurpation d’identité et fraude documentaire"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -7178,6 +7533,7 @@
     "value": 1300
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -7357,6 +7713,8 @@
     "value": "Environ 1 300 utilisateurs touchés par la fuite de données."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -7377,6 +7735,7 @@
     "value": 3699
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -7421,6 +7780,8 @@
     "value": "Une base de données a été récupérée et diffusée."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -7439,6 +7800,17 @@
  },
  "INC-90A8D0197E17": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "exploitation de la vulnérabilité CVE-2026-72898 dans Metabase",
+    "evidence": "CVE-2026-72898 , notée 10/10 , permet à un attaquant distant non authentifié de réaliser une injection SQL via un point de terminaison de Metabase.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -7700,6 +8072,8 @@
     "value": "vulnerability_exploitation"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -7756,6 +8130,7 @@
  },
  "INC-92B98E38166E": {
   "affected": [],
+  "attack_flow": [],
   "claims": [],
   "data_types": [
    {
@@ -7786,6 +8161,8 @@
   "datasets": [],
   "display_summary": "",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -7793,6 +8170,17 @@
  },
  "INC-A3C6A92F895D": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "intrusion dans les systèmes informatiques",
+    "evidence": "Lingor confirme avoir subi une intrusion dans ses systèmes informatiques accompagnée d’une demande de rançon.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -8018,6 +8406,8 @@
   ],
   "display_summary": "Lingor a subi une cyberattaque ayant potentiellement exposé des données sensibles de ses clients.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -8070,6 +8460,26 @@
     "status": "unknown",
     "unit": "people",
     "value": 3500
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "accès à l'environnement de Jinko",
+    "evidence": "le hacker DaOnlySpark affirme avoir accédé à son environnement",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   },
+   {
+    "action": "extraction de la base de données",
+    "evidence": "avant d’en extraire la base de données.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
    }
   ],
   "claims": [
@@ -8392,116 +8802,10 @@
     "value": "DaOnlySpark"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
-  "version": 3,
-  "vulnerabilities": []
- },
- "INC-A43B17CE9F7C": {
-  "affected": [
-   {
-    "evidence": "L’acteur utilisant le pseudonyme **ChimeraZ** affirme avoir récupéré puis publié une base contenant **4 111 enregistrements associés à 4 111 personnes**.",
-    "raw": "4 111 enregistrements",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "unit": "records",
-    "value": 4111
-   },
-   {
-    "evidence": "L’acteur utilisant le pseudonyme **ChimeraZ** affirme avoir récupéré puis publié une base contenant **4 111 enregistrements associés à 4 111 personnes**.",
-    "raw": "4 111 personnes",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "unit": "people",
-    "value": 4111
-   },
-   {
-    "evidence": "Clinique de Vontes : les données de plus de 4 100 personnes publiées...",
-    "raw": "4 100 personnes",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "unit": "people",
-    "value": 4100
-   }
-  ],
-  "claims": [
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "L’acteur utilisant le pseudonyme **ChimeraZ** affirme avoir récupéré puis publié une base contenant **4 111 enregistrements associés à 4 111 personnes**.",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "affected_count",
-    "unit": "records",
-    "value": "4111"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Clinique de Vontes : les données de plus de 4 100 personnes publiées...",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "4100"
-   }
-  ],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "",
-  "fields": {
-   "fine_location": {
-    "evidence": "établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "value": "Esvres-sur-Indre, en Indre-et-Loire"
-   },
-   "impact": {
-    "evidence": "L’acteur utilisant le pseudonyme ChimeraZ affirme avoir récupéré puis publié une base contenant 4 111 enregistrements associés à 4 111 personnes.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "value": "Données de plus de 4 100 personnes publiées."
-   }
-  },
-  "systems": [],
-  "timeline": [
-   {
-    "date": "2026-09-03",
-    "event": "Une fuite de données visant la Clinique de Vontes, établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
-    "evidence": "Une fuite de données visant la Clinique de Vontes, établissement privé de santé mentale situé à Esvres-sur-Indre, en Indre-et-Loire, a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed"
-   }
-  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -8544,6 +8848,26 @@
     "status": "claimed",
     "unit": "données bancaires",
     "value": 1500
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "extraction de l'intégralité de sa base de données",
+    "evidence": "extrait l’intégralité de sa base de données.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "action": "publication des données proposées à la vente",
+    "evidence": "base désormais proposée à la vente.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
    }
   ],
   "claims": [
@@ -8906,6 +9230,8 @@
     "value": "Sophia"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -8913,6 +9239,17 @@
  },
  "INC-B18279AA1F95": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "accès non autorisé à un environnement informatique",
+    "evidence": "un accès non autorisé à l’un de ses environnements informatiques a été détecté.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -9191,6 +9528,10 @@
   ],
   "display_summary": "Une cyberattaque expose les données et l’historique des commandes de clients de La Boutique du Volet.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [
+   "impact"
+  ],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -9227,6 +9568,17 @@
  },
  "INC-B44C794AB35B": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "accès non autorisé à certaines données clients",
+    "evidence": "un incident a touché « l’un de ses environnements informatiques » et qu’il a permis un accès non autorisé à certaines données clients.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -9528,6 +9880,8 @@
     "value": "phishing ciblé"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -9594,6 +9948,7 @@
     "value": 10000
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -9837,6 +10192,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -9865,6 +10222,7 @@
  },
  "INC-B7DBF665E661": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -9885,6 +10243,8 @@
   "datasets": [],
   "display_summary": "",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -9903,11 +10263,14 @@
  },
  "INC-BD3012E03337": {
   "affected": [],
+  "attack_flow": [],
   "claims": [],
   "data_types": [],
   "datasets": [],
   "display_summary": "Une cyberattaque a été revendiquée contre le SDIS de l’Essonne avec une compromission d'accès administrateur.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -9926,6 +10289,7 @@
  },
  "INC-C0C26C209432": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -10039,6 +10403,8 @@
     "value": "SPA du Pays de Montbéliard : une cyberattaque met son site hors ligne"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -10087,6 +10453,7 @@
     "value": 500
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -10258,6 +10625,8 @@
     "value": "Alduin"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -10299,6 +10668,17 @@
     "status": "unknown",
     "unit": "files",
     "value": 4000000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "le hacker affirme avoir récupéré puis diffusé gratuitement une base",
+    "evidence": "le hacker ZeroBytes affirme avoir récupéré puis diffusé gratuitement une base représentant plus de 4,2 millions de lignes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
    }
   ],
   "claims": [
@@ -10578,7 +10958,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "Géofoncier revendique une cyberattaque ayant exposé plus de 4 millions de dossiers fonciers.",
+  "display_summary": "Le hacker ZeroBytes revendique le piratage de la plateforme Géofoncier.fr spécialisée dans l'information foncière.",
   "fields": {
    "impact": {
     "evidence": "la centralisation de millions d’informations dans des fichiers directement exploitables peut faciliter la cartographie de professionnels, le démarchage abusif ou des campagnes de phishing ciblées.",
@@ -10600,6 +10980,14 @@
     "value": "ZeroBytes"
    }
   },
+  "quality_alerts": [
+   {
+    "code": "SUMMARY_FACT_CONTRADICTION",
+    "field": "summary",
+    "severity": "error"
+   }
+  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -10616,6 +11004,7 @@
  },
  "INC-C59598DB9453": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -10779,6 +11168,10 @@
     "value": "Révélation des noms de locataires associés à La Maison Pour Tous."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
   "systems": [],
   "timeline": [
    {
@@ -10810,6 +11203,7 @@
     "value": 3584
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -10854,6 +11248,8 @@
     "value": "Bas-Rhin"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -10872,6 +11268,7 @@
  },
  "INC-C64E07B15B3F": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -11054,6 +11451,8 @@
     "value": "Nova"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -11061,6 +11460,7 @@
  },
  "INC-CE20778A3019": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -11164,6 +11564,8 @@
   "datasets": [],
   "display_summary": "SNEXI a subi une cyberattaque entraînant une violation de données personnelles.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -11182,6 +11584,7 @@
  },
  "INC-CE9040DC18AB": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -11502,6 +11905,8 @@
     "value": "Shipup"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -11557,6 +11962,7 @@
  },
  "INC-CFAAEC3E334A": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -11627,6 +12033,8 @@
     "value": "LAPSUS"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -11645,6 +12053,17 @@
  },
  "INC-CFB60E563EB4": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "accès non autorisé à une partie d'un serveur",
+    "evidence": "LiveTrail explique avoir détecté un accès non autorisé affectant uniquement une partie de l'un de ses serveurs",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -11731,6 +12150,8 @@
   ],
   "display_summary": "LiveTrail a subi une cyberattaque ayant exposé les coordonnées des utilisateurs.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -11786,6 +12207,26 @@
     "status": "unknown",
     "unit": "people",
     "value": 80000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "diffusion des fichiers contenant des données personnelles",
+    "evidence": "Le hacker ChimeraZ a diffusé une base de 95 Mo contenant 328 649 enregistrements et concernant, selon son décompte, 86 073 personnes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   },
+   {
+    "action": "exposition des messages et coordonnées",
+    "evidence": "La fuite concerne principalement des messages laissés par les utilisateurs, associés à leurs coordonnées et à différentes informations techniques.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
    }
   ],
   "claims": [
@@ -12049,6 +12490,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -12078,6 +12521,7 @@
     "value": 67
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -12131,6 +12575,8 @@
     "value": "vulnerability_exploitation"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "FRENCHBREACHES",
@@ -12147,6 +12593,7 @@
  },
  "INC-D63CEE9E9005": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -12385,6 +12832,8 @@
     "value": "Vagrantly"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -12392,6 +12841,7 @@
  },
  "INC-D910AD541B6B": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -12426,6 +12876,8 @@
   "datasets": [],
   "display_summary": "Cyberattaque revendiquée contre le SDIS du Gard, touchant plus de 3 100 personnes.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -12444,6 +12896,7 @@
  },
  "INC-D9A0C6DBD358": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -12616,6 +13069,10 @@
     "value": "Shipp"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "impact"
+  ],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -12666,6 +13123,7 @@
     "value": 1800000
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -12732,6 +13190,8 @@
   ],
   "display_summary": "Répar'Store a subi un incident de sécurité ayant compromis des données clients.",
   "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -12739,6 +13199,7 @@
  },
  "INC-DF5C519783E8": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -12936,6 +13397,8 @@
     "value": "kairos"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -12990,6 +13453,17 @@
     "status": "unknown",
     "unit": "files",
     "value": 500000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "extraction de données",
+    "evidence": "avant d’en extraire plusieurs centaines de gigaoctets.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
    }
   ],
   "claims": [
@@ -13267,6 +13741,8 @@
     "value": "caustic"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -13295,6 +13771,7 @@
  },
  "INC-E39645DF5E4E": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -13365,6 +13842,8 @@
     "value": "Exposition de données sensibles, y compris des photos d'enfants."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -13372,6 +13851,7 @@
  },
  "INC-EB3AC8CB9892": {
   "affected": [],
+  "attack_flow": [],
   "claims": [],
   "data_types": [],
   "datasets": [],
@@ -13395,6 +13875,8 @@
     "value": "qilin"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [],
   "version": 3,
@@ -13427,6 +13909,26 @@
     "status": "unknown",
     "unit": "people",
     "value": 20316
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "diffusé une base contenant 23 381 enregistrements concernant 20 316 personnes",
+    "evidence": "Le hacker ChimeraZ affirme avoir récupéré puis diffusé une base contenant 23 381 enregistrements concernant 20 316 personnes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   },
+   {
+    "action": "exploitation d'une faille IDOR",
+    "evidence": "combinée à une faille IDOR donnant accès à une base de données Odoo mal configurée.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
    }
   ],
   "claims": [
@@ -13772,6 +14274,8 @@
     "value": "ChimeraZ"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -13788,6 +14292,17 @@
  },
  "INC-F6E4FEDC0FE9": {
   "affected": [],
+  "attack_flow": [
+   {
+    "action": "extraction de données",
+    "evidence": "Cette compromission a permis l’extraction de données hébergées dans l’environnement utilisé pour les échanges avec le service client.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -13974,6 +14489,8 @@
     "value": "Klark.ai"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -14038,6 +14555,26 @@
     "value": 1800
    }
   ],
+  "attack_flow": [
+   {
+    "action": "Revendication de la fuite de données sur un forum cybercriminel.",
+    "evidence": "a été revendiquée le 3 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   },
+   {
+    "action": "Récupération des données de la plateforme Moodle.",
+    "evidence": "Un pirate affirme avoir récupéré puis publié une base attribuée à moodlestmichel.be.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -14096,6 +14633,8 @@
     "value": "Les informations de 1 836 personnes ont été publiées."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -14127,6 +14666,7 @@
     "value": 157
    }
   ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -14239,6 +14779,14 @@
     "value": "qilin"
    }
   },
+  "quality_alerts": [
+   {
+    "code": "DATA_TYPES_EMPTY_WITH_PERSONAL_DATA_EVIDENCE",
+    "field": "data_types",
+    "severity": "warning"
+   }
+  ],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -14301,6 +14849,26 @@
     "status": "unknown",
     "unit": "records",
     "value": 80000
+   }
+  ],
+  "attack_flow": [
+   {
+    "action": "Récupération des données",
+    "evidence": "Le hacker ksye affirme avoir récupéré le 1er septembre 2026 une partie de la base clients.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "action": "Mise en vente des données",
+    "evidence": "...et propose désormais les données à la vente pour 70 dollars.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
    }
   ],
   "claims": [
@@ -14546,6 +15114,8 @@
     "value": "ksye"
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {
@@ -14574,6 +15144,7 @@
  },
  "INC-FC866DCD1981": {
   "affected": [],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -14613,6 +15184,8 @@
     "value": "Les accès administrateur ont été compromis."
    }
   },
+  "quality_alerts": [],
+  "rejected_fields": [],
   "systems": [],
   "timeline": [
    {

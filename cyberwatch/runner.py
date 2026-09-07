@@ -786,6 +786,11 @@ def execute(
         collected, watch_rows = _collect_for_run(
             report, context, existing_items, existing_item_ids
         )
+    # Upgrade historical rows too: the daily collection only refreshes its
+    # publication window, while export checks cover the entire snapshot.
+    report.source_facts, _ = source_facts.materialize_cached_llm_fields(
+        report.source_facts, list(source_facts_ai._runtime().cache.values())
+    )
     report.source_facts, _sanitized_fact_ids = source_facts.sanitize_source_facts(
         report.source_facts
     )

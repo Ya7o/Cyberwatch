@@ -146,3 +146,26 @@ def test_materialise_cache_ignore_un_contrat_llm_obsolete():
     assert "threat_tentative" not in metadata
     assert metadata["_source_facts_semantic_status"]["threat_candidate"] == "stale_contract"
     assert metadata["_source_facts_stale_contracts"] == ["threat_candidate"]
+
+
+def test_historical_accepted_marker_follows_rejected_cache_contract():
+    fact = {
+        "Item_ID": "ITM-history",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_content_hash": "same-content",
+            "_source_facts_semantic_status": {"threat_candidate": "accepted"},
+        }),
+    }
+    hydrated, changed = sf.materialize_cached_llm_fields([fact], [{
+        "item_id": "ITM-history", "content_hash": "same-content",
+        "fields": {"threat_candidate": {
+            "status": "rejected_validation",
+            "version": sfa.FIELD_VERSIONS["threat_candidate"],
+            "value": None,
+        }},
+    }])
+    metadata = sf._loads_json(hydrated[0]["Source_Metadata_JSON"])
+    assert changed == ["ITM-history"]
+    assert metadata["_source_facts_semantic_status"]["threat_candidate"] == "cache_not_accepted"
+    assert not metadata.get("threat_tentative")
+    assert sf.semantic_materialization_gaps(hydrated) == []
