@@ -1,0 +1,2449 @@
+{
+  "scope": "local checkout, offline; examples are not a statistical accuracy benchmark",
+  "incidents": 35,
+  "facts": 35,
+  "source_rows": 54,
+  "metrics": {
+    "field:data_volume": 6,
+    "scalar_total": 49,
+    "scalar_with_evidence": 47,
+    "scalar_status:unknown": 19,
+    "field:impact": 15,
+    "scalar_status:confirmed": 11,
+    "field:initial_access": 5,
+    "field:threat_actor": 13,
+    "scalar_status:claimed": 19,
+    "incidents_with:affected": 18,
+    "entries:affected": 33,
+    "no_status:affected": 16,
+    "with_evidence:affected": 33,
+    "negative:affected": 0,
+    "incidents_with:data_types": 23,
+    "entries:data_types": 128,
+    "no_status:data_types": 113,
+    "with_evidence:data_types": 0,
+    "negative:data_types": 0,
+    "incidents_with:systems": 7,
+    "entries:systems": 8,
+    "no_status:systems": 3,
+    "with_evidence:systems": 0,
+    "negative:systems": 0,
+    "incidents_with:datasets": 11,
+    "entries:datasets": 17,
+    "no_status:datasets": 7,
+    "with_evidence:datasets": 0,
+    "negative:datasets": 0,
+    "incidents_with:claims": 31,
+    "entries:claims": 196,
+    "no_status:claims": 141,
+    "with_evidence:claims": 196,
+    "negative:claims": 16,
+    "incidents_with:attack_flow": 4,
+    "entries:attack_flow": 6,
+    "no_status:attack_flow": 0,
+    "with_evidence:attack_flow": 6,
+    "negative:attack_flow": 0,
+    "incidents_with:timeline": 23,
+    "entries:timeline": 29,
+    "no_status:timeline": 4,
+    "with_evidence:timeline": 29,
+    "negative:timeline": 4,
+    "incidents_with:vulnerabilities": 0,
+    "entries:vulnerabilities": 0,
+    "no_status:vulnerabilities": 0,
+    "with_evidence:vulnerabilities": 0,
+    "negative:vulnerabilities": 0,
+    "field:fine_location": 5,
+    "field:evolution": 1,
+    "field:third_party": 2,
+    "field:discovered_date": 2
+  },
+  "sector_statuses": {
+    "inferred": 9,
+    "referenced": 14,
+    "confirmed": 11,
+    "reported": 1
+  },
+  "recomputed_detail_differences": [],
+  "quality_alerts": {
+    "THREAT_CONFLICT_RESOLVED": 8
+  },
+  "cases": {
+    "scalar_status_inheritance": {
+      "version": 3,
+      "fields": {
+        "threat_actor": {
+          "value": "BlackCat",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "confirmed",
+          "evidence": "L'attribution à BlackCat reste une hypothèse non confirmée."
+        }
+      },
+      "data_types": [],
+      "vulnerabilities": [],
+      "affected": [],
+      "systems": [],
+      "datasets": [],
+      "claims": [
+        {
+          "value": "BlackCat",
+          "type": "actor",
+          "status": "hypothesis",
+          "evidence": "L'attribution à BlackCat reste une hypothèse non confirmée.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "timeline": [],
+      "attack_flow": [],
+      "display_summary": "",
+      "quality_alerts": [],
+      "rejected_fields": []
+    },
+    "attack_flow_status_inheritance": {
+      "version": 3,
+      "fields": {},
+      "data_types": [],
+      "vulnerabilities": [],
+      "affected": [],
+      "systems": [],
+      "datasets": [],
+      "claims": [],
+      "timeline": [],
+      "attack_flow": [
+        {
+          "action": "exfiltration de fichiers",
+          "evidence": "Aucune exfiltration de fichiers n'a été constatée.",
+          "status": "confirmed",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "display_summary": "",
+      "quality_alerts": [],
+      "rejected_fields": []
+    },
+    "conflicting_scalar": {
+      "version": 3,
+      "fields": {
+        "attack_date": {
+          "value": "2026-09-01",
+          "source": "RANSOMWARE_LIVE",
+          "sources": [
+            "RANSOMWARE_LIVE"
+          ],
+          "status": "claimed",
+          "evidence": "Le groupe revendique une attaque le 1 septembre."
+        }
+      },
+      "data_types": [],
+      "vulnerabilities": [],
+      "affected": [],
+      "systems": [],
+      "datasets": [],
+      "claims": [],
+      "timeline": [],
+      "attack_flow": [],
+      "display_summary": "",
+      "quality_alerts": [],
+      "rejected_fields": []
+    },
+    "denial_only": {
+      "version": 3,
+      "fields": {},
+      "data_types": [],
+      "vulnerabilities": [],
+      "affected": [],
+      "systems": [],
+      "datasets": [],
+      "claims": [
+        {
+          "value": "mots de passe",
+          "type": "data_type",
+          "status": "denied",
+          "evidence": "Acme confirme qu'aucun mot de passe n'a été exposé.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "timeline": [],
+      "attack_flow": [],
+      "display_summary": "",
+      "quality_alerts": [],
+      "rejected_fields": []
+    },
+    "negative_vulnerable_exposure": {
+      "personal_data_exposed": true,
+      "high_sensitivity_data_exposed": true,
+      "credentials_or_secrets_exposed": false,
+      "vulnerable_people_data_exposed": true,
+      "sensitive_data_exposed": true,
+      "sensitive_data_types": [],
+      "personal_data_types": []
+    },
+    "real_vector_negation": {
+      "version": 3,
+      "fields": {
+        "threat_actor": {
+          "value": "ZeroBytes",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "claimed",
+          "evidence": "ZeroBytes  affirme"
+        },
+        "initial_access": {
+          "value": "vulnerability_exploitation",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "claimed",
+          "evidence": "Contrairement à plusieurs attaques récentes contre Metabase, il ne revendique pas ici l’exploitation d’une vulnérabilité précise : il affirme avoir disposé d’une session superutilisateur valide ."
+        },
+        "impact": {
+          "value": "exposition de données sensibles, facilitant des actions de phishing, d’usurpation ou de fraude.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "confirmed",
+          "evidence": "le rapprochement entre identité, date de naissance, adresse, propriété immobilière, coordonnées de contact et données de comptes professionnels peut faciliter des campagnes de phishing, d’usurpation ou de fraude extrêmement ciblées."
+        }
+      },
+      "data_types": [
+        {
+          "value": "identifiants",
+          "status": "unknown",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "dates de naissance",
+          "status": "confirmed",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "adresses postales",
+          "status": "unknown",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "adresses e-mail",
+          "status": "unknown",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "numéros de téléphone",
+          "status": "unknown",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "mots de passe",
+          "status": "unknown",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "SIREN / SIRET",
+          "status": "unknown",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "vulnerabilities": [],
+      "affected": [
+        {
+          "status": "claimed",
+          "evidence": "Le hacker  ZeroBytes  affirme avoir extrait  148 929 194 lignes brutes  depuis l’environnement de la plateforme.",
+          "raw": "148 929 194 lignes",
+          "value": 148929194,
+          "unit": "records",
+          "semantic": "unspecified",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ]
+        },
+        {
+          "status": "unknown",
+          "evidence": "Sur les 500 lignes de cet échantillon, 453 disposent d’un numéro de téléphone, 274 d’une adresse e-mail et 423 d’une date de naissance.",
+          "raw": "500 lignes",
+          "value": 500,
+          "unit": "records",
+          "semantic": "unspecified",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "status": "unknown",
+          "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+          "raw": "66,9 millions de lignes",
+          "value": 66900000,
+          "unit": "records",
+          "semantic": "unspecified",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "status": "claimed",
+          "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+          "raw": "47,9 millions de personnes",
+          "value": 47900000,
+          "unit": "people",
+          "semantic": "unspecified",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "status": "unknown",
+          "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+          "raw": "82 millions de lignes",
+          "value": 82000000,
+          "unit": "records",
+          "semantic": "unspecified",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "systems": [
+        {
+          "value": "Metabase",
+          "status": "claimed",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "datasets": [
+        {
+          "value": "fichiers DGFiP et DataFoncier",
+          "status": "confirmed",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "value": "148929194",
+          "type": "affected_count",
+          "status": "claimed",
+          "evidence": "Le hacker  ZeroBytes  affirme avoir extrait  148 929 194 lignes brutes  depuis l’environnement de la plateforme.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "records",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "148900000",
+          "type": "affected_count",
+          "status": "claimed",
+          "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "records",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "47900000",
+          "type": "affected_count",
+          "status": "claimed",
+          "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "people",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "82000000",
+          "type": "affected_count",
+          "status": "unknown",
+          "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "records",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "66900000",
+          "type": "affected_count",
+          "status": "unknown",
+          "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "records",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "48000000",
+          "type": "affected_count",
+          "status": "unknown",
+          "evidence": "Zéro Logement Vacant : 48 millions de personnes exposées dans une fuite massive",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "people",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "500",
+          "type": "affected_count",
+          "status": "unknown",
+          "evidence": "Sur les 500 lignes de cet échantillon, 453 disposent d’un numéro de téléphone, 274 d’une adresse e-mail et 423 d’une date de naissance.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "records",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "identifiants",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "Il estime à  47 948 974 le nombre de personnes distinctes  après déduplication par identifiant.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "dates de naissance",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "L’attaquant annonce  47,9 millions d’individus distincts par identifiant de personne , tandis qu’une autre méthode basée sur le nom et la date de naissance aboutit à plus de 71 millions.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "adresses postales",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "Nous avons pu confirmer la présence de données concernant directement des propriétaires :  identités, dates de naissance, adresses postales, informations liées aux droits de propriété et identifiants issus des fichiers fonciers .",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "adresses e-mail",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "numéros de téléphone",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "mots de passe",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "hachages de mots de passe , majoritairement au format bcrypt ;",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "SIREN / SIRET",
+          "type": "data_type",
+          "status": "unknown",
+          "evidence": "collectivité ou établissement de rattachement et numéro SIREN ;",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "Metabase",
+          "type": "system",
+          "status": "hypothesis",
+          "evidence": "Metabase aurait ouvert la voie vers la base de production",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "149000000",
+          "type": "affected_count",
+          "status": "claimed",
+          "evidence": "# Piratage de Zéro Logement Vacant : ZeroBytes revendique l’accès à près de 149 millions d’enregistrements",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "records",
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ]
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-08-25",
+          "event": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion.",
+          "status": "claimed",
+          "evidence": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "date": "2026-08-26",
+          "event": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes.",
+          "status": "unknown",
+          "evidence": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "attack_flow": [
+        {
+          "action": "extraction de données",
+          "evidence": "le hacker ZeroBytes affirme avoir extrait 148 929 194 lignes brutes depuis l’environnement de la plateforme.",
+          "status": "confirmed",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "action": "accès à la configuration des bases connectées",
+          "evidence": "depuis cette interface, l’attaquant dit avoir accédé à la configuration des bases connectées.",
+          "status": "confirmed",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "display_summary": "",
+      "quality_alerts": [],
+      "rejected_fields": []
+    },
+    "real_group_monthly_count": {
+      "version": 3,
+      "fields": {
+        "threat_actor": {
+          "value": "qilin",
+          "source": "RANSOMWARE_LIVE",
+          "sources": [
+            "RANSOMWARE_LIVE",
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "unknown",
+          "evidence": "qilin"
+        },
+        "discovered_date": {
+          "value": "2026-09-05",
+          "source": "RANSOMWARE_LIVE",
+          "sources": [
+            "RANSOMWARE_LIVE"
+          ],
+          "status": "unknown"
+        }
+      },
+      "data_types": [],
+      "vulnerabilities": [],
+      "affected": [
+        {
+          "status": "claimed",
+          "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+          "raw": "157 victimes",
+          "value": 157,
+          "unit": "people",
+          "semantic": "unspecified",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "systems": [],
+      "datasets": [],
+      "claims": [
+        {
+          "value": "157",
+          "type": "affected_count",
+          "status": "claimed",
+          "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "people",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        },
+        {
+          "value": "données clients",
+          "type": "dataset",
+          "status": "negated",
+          "evidence": "Il est donc impossible de déterminer si des  données clients, salariés, fournisseurs ou documents de chantier  font effectivement partie des éléments éventuellement exfiltrés.",
+          "actor": "",
+          "date": "",
+          "scope": "",
+          "unit": "",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ]
+        }
+      ],
+      "timeline": [],
+      "attack_flow": [],
+      "display_summary": "",
+      "quality_alerts": [],
+      "rejected_fields": []
+    }
+  },
+  "scalar_disagreements": [
+    {
+      "org": "Actis Location",
+      "field": "impact",
+      "values": [
+        "Exposition de données personnelles et commerciales sensibles",
+        "fuite de données"
+      ],
+      "selected": {
+        "evidence": "un tiers non autorisé avait pu accéder à certaines données personnelles ainsi qu’à des documents et courriels liés à la relation contractuelle.",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "confirmed",
+        "value": "Exposition de données personnelles et commerciales sensibles"
+      }
+    },
+    {
+      "org": "Easypara",
+      "field": "impact",
+      "values": [
+        "Accès non autorisé à des données personnelles de clients entre le 31 juillet et le 17 août 2026.",
+        "des données personnelles de clients exposées"
+      ],
+      "selected": null
+    },
+    {
+      "org": "Herbiolys",
+      "field": "impact",
+      "values": [
+        "1,3 million de lignes et 1 500 IBAN exposés.",
+        "fuite de données clients, coordonnées, commandes, paiements, informations de revendeurs et données bancaires"
+      ],
+      "selected": {
+        "evidence": "Les échantillons montrent néanmoins une fuite particulièrement large mêlant données clients, coordonnées, commandes, paiements, informations de revendeurs et données bancaires.",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "claimed",
+        "value": "fuite de données clients, coordonnées, commandes, paiements, informations de revendeurs et données bancaires"
+      }
+    },
+    {
+      "org": "Jouvet SAS",
+      "field": "threat_actor",
+      "values": [
+        "Qilin",
+        "qilin"
+      ],
+      "selected": {
+        "evidence": "qilin",
+        "source": "RANSOMWARE_LIVE",
+        "sources": [
+          "RANSOMWARE_LIVE",
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "unknown",
+        "value": "qilin"
+      }
+    },
+    {
+      "org": "LebonSiege",
+      "field": "impact",
+      "values": [
+        "Base de données publiée gratuitement sur un forum.",
+        "Exposition des données personnelles de près de 1 000 clients."
+      ],
+      "selected": {
+        "evidence": "Près de 1 000 clients dans les données",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "claimed",
+        "value": "Exposition des données personnelles de près de 1 000 clients."
+      }
+    },
+    {
+      "org": "Marie Blachère",
+      "field": "impact",
+      "values": [
+        "Des données sensibles de salariés mises en vente.",
+        "Risque élevé d'usurpation d'identité et de fraude."
+      ],
+      "selected": {
+        "evidence": "Un risque élevé d’usurpation et de fraude.",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "confirmed",
+        "value": "Risque élevé d'usurpation d'identité et de fraude."
+      }
+    },
+    {
+      "org": "Zéro Logement Vacant",
+      "field": "impact",
+      "values": [
+        "> Le service a été mis hors ligne depuis la revendication du piratage.",
+        "exposition de données sensibles, facilitant des actions de phishing, d’usurpation ou de fraude."
+      ],
+      "selected": {
+        "evidence": "le rapprochement entre identité, date de naissance, adresse, propriété immobilière, coordonnées de contact et données de comptes professionnels peut faciliter des campagnes de phishing, d’usurpation ou de fraude extrêmement ciblées.",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "confirmed",
+        "value": "exposition de données sensibles, facilitant des actions de phishing, d’usurpation ou de fraude."
+      }
+    }
+  ],
+  "examples": {
+    "Zéro Logement Vacant": {
+      "incident": {
+        "basis": "PUBLICATION",
+        "credentials_or_secrets_exposed": true,
+        "data_exposure": {
+          "credentials_or_secrets_exposed": true,
+          "high_sensitivity_data_exposed": false,
+          "personal_data_exposed": true,
+          "personal_data_types": [
+            "identifiants",
+            "dates de naissance",
+            "adresses postales",
+            "adresses e-mail",
+            "numéros de téléphone"
+          ],
+          "sensitive_data_exposed": true,
+          "sensitive_data_types": [
+            "mots de passe"
+          ],
+          "vulnerable_people_data_exposed": false
+        },
+        "date": "2026-08-29",
+        "first_seen": "2026-08-31T23:59:59+04:00",
+        "high_sensitivity_data_exposed": false,
+        "id": "INC-68BCE0C36286",
+        "items": 2,
+        "last_seen": "2026-08-31T23:59:59+04:00",
+        "location": "France métropolitaine",
+        "org": "Zéro Logement Vacant",
+        "personal_data_exposed": true,
+        "quality_alerts": [],
+        "sector": "Administration / Collectivité",
+        "sector_status": {
+          "confidence": 0.9,
+          "evidence": "Service public numérique destiné aux collectivités et services de l’État",
+          "evidence_url": "https://zerologementvacant.beta.gouv.fr/zero-logement-vacant/la-plateforme/",
+          "reason": "REFERENCE_EXACT",
+          "status": "referenced"
+        },
+        "sensitive_data_exposed": true,
+        "sensitive_data_types": [
+          "mots de passe"
+        ],
+        "source_link_status": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "status": "direct"
+          },
+          {
+            "source": "FRENCHBREACHES",
+            "status": "direct"
+          }
+        ],
+        "source_links": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "url": "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
+          },
+          {
+            "source": "FRENCHBREACHES",
+            "url": "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw"
+          }
+        ],
+        "sources": [
+          "CYBERATTAQUE_ORG",
+          "FRENCHBREACHES"
+        ],
+        "summary": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+        "threat": "Fuite de données",
+        "threat_status": {
+          "conflict": false,
+          "evidence": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+          "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "confirmed"
+        },
+        "urls": [
+          "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw",
+          "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
+        ],
+        "vulnerable_people_data_exposed": false
+      },
+      "resolved": {
+        "affected": [
+          {
+            "evidence": "Le hacker  ZeroBytes  affirme avoir extrait  148 929 194 lignes brutes  depuis l’environnement de la plateforme.",
+            "raw": "148 929 194 lignes",
+            "semantic": "unspecified",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG",
+              "FRENCHBREACHES"
+            ],
+            "status": "claimed",
+            "unit": "records",
+            "value": 148929194
+          },
+          {
+            "evidence": "Sur les 500 lignes de cet échantillon, 453 disposent d’un numéro de téléphone, 274 d’une adresse e-mail et 423 d’une date de naissance.",
+            "raw": "500 lignes",
+            "semantic": "unspecified",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "unit": "records",
+            "value": 500
+          },
+          {
+            "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+            "raw": "66,9 millions de lignes",
+            "semantic": "unspecified",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "unit": "records",
+            "value": 66900000
+          },
+          {
+            "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+            "raw": "47,9 millions de personnes",
+            "semantic": "unspecified",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "unit": "people",
+            "value": 47900000
+          },
+          {
+            "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+            "raw": "82 millions de lignes",
+            "semantic": "unspecified",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "unit": "records",
+            "value": 82000000
+          }
+        ],
+        "attack_flow": [
+          {
+            "action": "extraction de données",
+            "evidence": "le hacker ZeroBytes affirme avoir extrait 148 929 194 lignes brutes depuis l’environnement de la plateforme.",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "confirmed"
+          },
+          {
+            "action": "accès à la configuration des bases connectées",
+            "evidence": "depuis cette interface, l’attaquant dit avoir accédé à la configuration des bases connectées.",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "confirmed"
+          }
+        ],
+        "claims": [
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Le hacker  ZeroBytes  affirme avoir extrait  148 929 194 lignes brutes  depuis l’environnement de la plateforme.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "type": "affected_count",
+            "unit": "records",
+            "value": "148929194"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "type": "affected_count",
+            "unit": "records",
+            "value": "148900000"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "type": "affected_count",
+            "unit": "people",
+            "value": "47900000"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "affected_count",
+            "unit": "records",
+            "value": "82000000"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "affected_count",
+            "unit": "records",
+            "value": "66900000"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Zéro Logement Vacant : 48 millions de personnes exposées dans une fuite massive",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "affected_count",
+            "unit": "people",
+            "value": "48000000"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Sur les 500 lignes de cet échantillon, 453 disposent d’un numéro de téléphone, 274 d’une adresse e-mail et 423 d’une date de naissance.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "affected_count",
+            "unit": "records",
+            "value": "500"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Il estime à  47 948 974 le nombre de personnes distinctes  après déduplication par identifiant.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "identifiants"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "L’attaquant annonce  47,9 millions d’individus distincts par identifiant de personne , tandis qu’une autre méthode basée sur le nom et la date de naissance aboutit à plus de 71 millions.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "dates de naissance"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Nous avons pu confirmer la présence de données concernant directement des propriétaires :  identités, dates de naissance, adresses postales, informations liées aux droits de propriété et identifiants issus des fichiers fonciers .",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "adresses postales"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "adresses e-mail"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "numéros de téléphone"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "hachages de mots de passe , majoritairement au format bcrypt ;",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "mots de passe"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "collectivité ou établissement de rattachement et numéro SIREN ;",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "SIREN / SIRET"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Metabase aurait ouvert la voie vers la base de production",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "hypothesis",
+            "type": "system",
+            "unit": "",
+            "value": "Metabase"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "# Piratage de Zéro Logement Vacant : ZeroBytes revendique l’accès à près de 149 millions d’enregistrements",
+            "scope": "",
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "claimed",
+            "type": "affected_count",
+            "unit": "records",
+            "value": "149000000"
+          }
+        ],
+        "data_types": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "identifiants"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "confirmed",
+            "value": "dates de naissance"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "adresses postales"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "adresses e-mail"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "numéros de téléphone"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "mots de passe"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "SIREN / SIRET"
+          }
+        ],
+        "datasets": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "confirmed",
+            "value": "fichiers DGFiP et DataFoncier"
+          }
+        ],
+        "display_summary": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+        "fields": {
+          "impact": {
+            "evidence": "le rapprochement entre identité, date de naissance, adresse, propriété immobilière, coordonnées de contact et données de comptes professionnels peut faciliter des campagnes de phishing, d’usurpation ou de fraude extrêmement ciblées.",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "confirmed",
+            "value": "exposition de données sensibles, facilitant des actions de phishing, d’usurpation ou de fraude."
+          },
+          "initial_access": {
+            "evidence": "Contrairement à plusieurs attaques récentes contre Metabase, il ne revendique pas ici l’exploitation d’une vulnérabilité précise : il affirme avoir disposé d’une session superutilisateur valide .",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "value": "vulnerability_exploitation"
+          },
+          "threat_actor": {
+            "evidence": "ZeroBytes  affirme",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "value": "ZeroBytes"
+          }
+        },
+        "quality_alerts": [],
+        "rejected_fields": [],
+        "systems": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "value": "Metabase"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-08-25",
+            "event": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion.",
+            "evidence": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion.",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed"
+          },
+          {
+            "date": "2026-08-26",
+            "event": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes.",
+            "evidence": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes.",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown"
+          }
+        ],
+        "version": 3,
+        "vulnerabilities": []
+      },
+      "raw": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "item_id": "ITM-ac5aea25b29b9175",
+          "claim_status": "confirmed",
+          "threat_actor": "ZeroBytes",
+          "affected_unit": "people",
+          "affected_count_raw": "48 millions de personnes",
+          "initial_access": "vulnerability_exploitation",
+          "impact": "exposition de données sensibles, facilitant des actions de phishing, d’usurpation ou de fraude.",
+          "summary": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+          "affected_count": 48000000,
+          "data_types": [
+            "adresses e-mail",
+            "numéros de téléphone",
+            "dates de naissance"
+          ],
+          "threat_actor_evidence": "ZeroBytes  affirme",
+          "affected_count_raw_evidence": "48 millions de personnes",
+          "initial_access_evidence": "Contrairement à plusieurs attaques récentes contre Metabase, il ne revendique pas ici l’exploitation d’une vulnérabilité précise : il affirme avoir disposé d’une session superutilisateur valide .",
+          "impact_evidence": "le rapprochement entre identité, date de naissance, adresse, propriété immobilière, coordonnées de contact et données de comptes professionnels peut faciliter des campagnes de phishing, d’usurpation ou de fraude extrêmement ciblées.",
+          "summary_evidence": "Zéro Logement Vacant : 48 millions de personnes exposées dans une fuite massive.",
+          "attack_flow": [
+            {
+              "action": "extraction de données",
+              "evidence": "le hacker ZeroBytes affirme avoir extrait 148 929 194 lignes brutes depuis l’environnement de la plateforme."
+            },
+            {
+              "action": "accès à la configuration des bases connectées",
+              "evidence": "depuis cette interface, l’attaquant dit avoir accédé à la configuration des bases connectées."
+            }
+          ],
+          "rich_facts": {
+            "version": "2",
+            "affected_counts": [
+              {
+                "status": "claimed",
+                "evidence": "Le hacker  ZeroBytes  affirme avoir extrait  148 929 194 lignes brutes  depuis l’environnement de la plateforme.",
+                "raw": "148 929 194 lignes",
+                "value": 148929194,
+                "unit": "records"
+              },
+              {
+                "status": "claimed",
+                "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+                "raw": "148,9 millions de lignes",
+                "value": 148900000,
+                "unit": "records"
+              },
+              {
+                "status": "claimed",
+                "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+                "raw": "47,9 millions de personnes",
+                "value": 47900000,
+                "unit": "people"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+                "raw": "82 millions de lignes",
+                "value": 82000000,
+                "unit": "records"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+                "raw": "66,9 millions de lignes",
+                "value": 66900000,
+                "unit": "records"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Zéro Logement Vacant : 48 millions de personnes exposées dans une fuite massive",
+                "raw": "48 millions de personnes",
+                "value": 48000000,
+                "unit": "people"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Sur les 500 lignes de cet échantillon, 453 disposent d’un numéro de téléphone, 274 d’une adresse e-mail et 423 d’une date de naissance.",
+                "raw": "500 lignes",
+                "value": 500,
+                "unit": "records"
+              }
+            ],
+            "claims": [
+              {
+                "status": "claimed",
+                "type": "affected_count",
+                "evidence": "Le hacker  ZeroBytes  affirme avoir extrait  148 929 194 lignes brutes  depuis l’environnement de la plateforme.",
+                "value": "148929194",
+                "unit": "records"
+              },
+              {
+                "status": "claimed",
+                "type": "affected_count",
+                "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+                "value": "148900000",
+                "unit": "records"
+              },
+              {
+                "status": "claimed",
+                "type": "affected_count",
+                "evidence": "Si les  148,9 millions de lignes et les 47,9 millions de personnes dédupliquées  restent des volumes revendiqués par l’attaquant, les échantillons examinés confirment déjà la présence de données foncières, personnelles et de comptes utilisateurs particulièrement sensibles.",
+                "value": "47900000",
+                "unit": "people"
+              },
+              {
+                "status": "unknown",
+                "type": "affected_count",
+                "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+                "value": "82000000",
+                "unit": "records"
+              },
+              {
+                "status": "unknown",
+                "type": "affected_count",
+                "evidence": "Selon ZeroBytes, deux ensembles représentent à eux seuls presque toute l’extraction : environ  82 millions de lignes de propriétaires  dans une première table et  66,9 millions de lignes  provenant d’un fichier national foncier de 2024.",
+                "value": "66900000",
+                "unit": "records"
+              },
+              {
+                "status": "unknown",
+                "type": "affected_count",
+                "evidence": "Zéro Logement Vacant : 48 millions de personnes exposées dans une fuite massive",
+                "value": "48000000",
+                "unit": "people"
+              },
+              {
+                "status": "unknown",
+                "type": "affected_count",
+                "evidence": "Sur les 500 lignes de cet échantillon, 453 disposent d’un numéro de téléphone, 274 d’une adresse e-mail et 423 d’une date de naissance.",
+                "value": "500",
+                "unit": "records"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "Il estime à  47 948 974 le nombre de personnes distinctes  après déduplication par identifiant.",
+                "value": "identifiants"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "L’attaquant annonce  47,9 millions d’individus distincts par identifiant de personne , tandis qu’une autre méthode basée sur le nom et la date de naissance aboutit à plus de 71 millions.",
+                "value": "dates de naissance"
+              },
+              {
+                "status": "confirmed",
+                "type": "data_type",
+                "evidence": "Noms, dates de naissance et adresses confirmés dans les fichiers",
+                "value": "dates de naissance"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "Nous avons pu confirmer la présence de données concernant directement des propriétaires :  identités, dates de naissance, adresses postales, informations liées aux droits de propriété et identifiants issus des fichiers fonciers .",
+                "value": "adresses postales"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+                "value": "adresses e-mail"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+                "value": "numéros de téléphone"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "hachages de mots de passe , majoritairement au format bcrypt ;",
+                "value": "mots de passe"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "collectivité ou établissement de rattachement et numéro SIREN ;",
+                "value": "SIREN / SIRET"
+              },
+              {
+                "status": "hypothesis",
+                "type": "system",
+                "evidence": "Metabase aurait ouvert la voie vers la base de production",
+                "value": "Metabase"
+              },
+              {
+                "status": "claimed",
+                "type": "system",
+                "evidence": "ZeroBytes affirme être initialement entré par  l’instance Metabase utilisée pour les statistiques de Zéro Logement Vacant .",
+                "value": "Metabase"
+              },
+              {
+                "status": "negated",
+                "type": "system",
+                "evidence": "Contrairement à plusieurs attaques récentes contre Metabase, il ne revendique pas ici l’exploitation d’une vulnérabilité précise : il affirme avoir disposé d’une  session superutilisateur valide .",
+                "value": "Metabase"
+              },
+              {
+                "status": "claimed",
+                "kind": "statement",
+                "scope": "Chronologie",
+                "date": "2026-08-25",
+                "evidence": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion.",
+                "value": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion."
+              },
+              {
+                "status": "unknown",
+                "kind": "statement",
+                "scope": "Chronologie",
+                "date": "2026-08-26",
+                "evidence": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes.",
+                "value": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit "
+              }
+            ],
+            "affected_systems": [
+              {
+                "status": "hypothesis",
+                "evidence": "Metabase aurait ouvert la voie vers la base de production",
+                "value": "Metabase"
+              },
+              {
+                "status": "claimed",
+                "evidence": "ZeroBytes affirme être initialement entré par  l’instance Metabase utilisée pour les statistiques de Zéro Logement Vacant .",
+                "value": "Metabase"
+              },
+              {
+                "status": "negated",
+                "evidence": "Contrairement à plusieurs attaques récentes contre Metabase, il ne revendique pas ici l’exploitation d’une vulnérabilité précise : il affirme avoir disposé d’une  session superutilisateur valide .",
+                "value": "Metabase"
+              }
+            ],
+            "affected_datasets": [
+              {
+                "status": "confirmed",
+                "evidence": "données provenant de fichiers DGFiP / DataFoncier.",
+                "value": "fichiers DGFiP et DataFoncier"
+              }
+            ],
+            "data_types": [
+              {
+                "status": "unknown",
+                "evidence": "Il estime à  47 948 974 le nombre de personnes distinctes  après déduplication par identifiant.",
+                "value": "identifiants"
+              },
+              {
+                "status": "unknown",
+                "evidence": "L’attaquant annonce  47,9 millions d’individus distincts par identifiant de personne , tandis qu’une autre méthode basée sur le nom et la date de naissance aboutit à plus de 71 millions.",
+                "value": "dates de naissance"
+              },
+              {
+                "status": "confirmed",
+                "evidence": "Noms, dates de naissance et adresses confirmés dans les fichiers",
+                "value": "dates de naissance"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Nous avons pu confirmer la présence de données concernant directement des propriétaires :  identités, dates de naissance, adresses postales, informations liées aux droits de propriété et identifiants issus des fichiers fonciers .",
+                "value": "adresses postales"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+                "value": "adresses e-mail"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Un second extrait consacré aux propriétaires contient également des  adresses e-mail et numéros de téléphone .",
+                "value": "numéros de téléphone"
+              },
+              {
+                "status": "unknown",
+                "evidence": "hachages de mots de passe , majoritairement au format bcrypt ;",
+                "value": "mots de passe"
+              },
+              {
+                "status": "unknown",
+                "evidence": "collectivité ou établissement de rattachement et numéro SIREN ;",
+                "value": "SIREN / SIRET"
+              }
+            ],
+            "timeline": [
+              {
+                "status": "claimed",
+                "date": "2026-08-25",
+                "event": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion.",
+                "evidence": "Des comptes présentent des authentifications allant jusqu’au  25 août 2026 , date revendiquée pour l’intrusion."
+              },
+              {
+                "status": "unknown",
+                "date": "2026-08-26",
+                "event": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes.",
+                "evidence": "Un élément attire particulièrement l’attention : dans l’échantillon consacré aux prospects,  une demande de création de compte est datée du 26 août 2026 , soit le lendemain de la date d’intrusion annoncée par ZeroBytes."
+              }
+            ]
+          }
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "item_id": "ITM-a51172ec15657a8a",
+          "claim_status": "claimed",
+          "affected_unit": "records",
+          "affected_count_raw": "près de 149 millions d’enregistrements",
+          "impact": "> Le service a été mis hors ligne depuis la revendication du piratage.",
+          "summary": "Le groupe ZeroBytes a revendiqué l'accès à près de 149 millions d'enregistrements de Zéro Logement Vacant.",
+          "affected_count": 149000000,
+          "claim_status_evidence": "revendique",
+          "affected_count_raw_evidence": "près de 149 millions d’enregistrements",
+          "impact_evidence": "> Le service a été mis hors ligne depuis la revendication du piratage.",
+          "summary_evidence": "Le groupe **ZeroBytes** revendique une nouvelle cyberattaque visant un service public français.",
+          "rich_facts": {
+            "version": "2",
+            "affected_counts": [
+              {
+                "status": "claimed",
+                "evidence": "# Piratage de Zéro Logement Vacant : ZeroBytes revendique l’accès à près de 149 millions d’enregistrements",
+                "raw": "149 millions d’enregistrements",
+                "value": 149000000,
+                "unit": "records"
+              }
+            ],
+            "claims": [
+              {
+                "status": "claimed",
+                "type": "affected_count",
+                "evidence": "# Piratage de Zéro Logement Vacant : ZeroBytes revendique l’accès à près de 149 millions d’enregistrements",
+                "value": "149000000",
+                "unit": "records"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Timetonic": {
+      "incident": {
+        "basis": "PUBLICATION",
+        "credentials_or_secrets_exposed": false,
+        "data_exposure": {
+          "credentials_or_secrets_exposed": false,
+          "high_sensitivity_data_exposed": false,
+          "personal_data_exposed": false,
+          "personal_data_types": [],
+          "sensitive_data_exposed": false,
+          "sensitive_data_types": [],
+          "vulnerable_people_data_exposed": false
+        },
+        "date": "2026-08-31",
+        "first_seen": "2026-08-31T23:59:59+04:00",
+        "high_sensitivity_data_exposed": false,
+        "id": "INC-D4EC64DBBA06",
+        "items": 1,
+        "last_seen": "2026-08-31T23:59:59+04:00",
+        "location": "France métropolitaine",
+        "org": "Timetonic",
+        "personal_data_exposed": false,
+        "quality_alerts": [],
+        "sector": "Numérique / Technologie",
+        "sector_status": {
+          "confidence": 0.9,
+          "evidence": "Audit 2026-09-05 : Éditeur d'une plateforme cloud NoCode pour construire des applications de gestion collaborative.",
+          "evidence_url": "https://fr.home.timetonic.com/",
+          "reason": "REFERENCE_EXACT",
+          "status": "referenced"
+        },
+        "sensitive_data_exposed": false,
+        "sensitive_data_types": [],
+        "source_link_status": [
+          {
+            "source": "FRENCHBREACHES",
+            "status": "direct"
+          }
+        ],
+        "source_links": [
+          {
+            "source": "FRENCHBREACHES",
+            "url": "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
+          }
+        ],
+        "sources": [
+          "FRENCHBREACHES"
+        ],
+        "summary": "Fuite de données chez Timetonic suite à une vulnérabilité critique de Metabase.",
+        "threat": "Fuite de données",
+        "threat_status": {
+          "conflict": false,
+          "evidence": "Fuite de données chez Timetonic suite à une vulnérabilité critique de Metabase.",
+          "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported"
+        },
+        "urls": [
+          "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
+        ],
+        "vulnerable_people_data_exposed": false
+      },
+      "resolved": {
+        "affected": [
+          {
+            "evidence": "# Fuite de données TimeTonic : trois bases de données et 67 fichiers revendiqués",
+            "raw": "67 fichiers",
+            "semantic": "unspecified",
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "claimed",
+            "unit": "files",
+            "value": 67
+          }
+        ],
+        "attack_flow": [],
+        "claims": [
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "# Fuite de données TimeTonic : trois bases de données et 67 fichiers revendiqués",
+            "scope": "",
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "claimed",
+            "type": "affected_count",
+            "unit": "files",
+            "value": "67"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "> TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
+            "scope": "",
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "unknown",
+            "type": "system",
+            "unit": "",
+            "value": "Metabase"
+          }
+        ],
+        "data_types": [],
+        "datasets": [],
+        "display_summary": "Fuite de données chez Timetonic suite à une vulnérabilité critique de Metabase.",
+        "fields": {
+          "impact": {
+            "evidence": "Des données ont été extraites puis publiées sur un forum spécialisé.",
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "unknown",
+            "value": "Des données extraites publiées sur un forum."
+          },
+          "initial_access": {
+            "evidence": "> TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "unknown",
+            "value": "vulnerability_exploitation"
+          }
+        },
+        "quality_alerts": [],
+        "rejected_fields": [],
+        "systems": [
+          {
+            "source": "FRENCHBREACHES",
+            "sources": [
+              "FRENCHBREACHES"
+            ],
+            "status": "unknown",
+            "value": "Metabase"
+          }
+        ],
+        "timeline": [],
+        "version": 3,
+        "vulnerabilities": []
+      },
+      "raw": [
+        {
+          "source": "FRENCHBREACHES",
+          "item_id": "ITM-9d9815a5f2d59dfb",
+          "affected_unit": "files",
+          "affected_count_raw": "67 fichiers",
+          "initial_access": "vulnerability_exploitation",
+          "impact": "Des données extraites publiées sur un forum.",
+          "summary": "Fuite de données chez Timetonic suite à une vulnérabilité critique de Metabase.",
+          "affected_count": 67,
+          "file_count": 67,
+          "affected_count_raw_evidence": "67 fichiers",
+          "initial_access_evidence": "> TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
+          "impact_evidence": "Des données ont été extraites puis publiées sur un forum spécialisé.",
+          "summary_evidence": "TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
+          "rich_facts": {
+            "version": "2",
+            "affected_counts": [
+              {
+                "status": "claimed",
+                "evidence": "# Fuite de données TimeTonic : trois bases de données et 67 fichiers revendiqués",
+                "raw": "67 fichiers",
+                "value": 67,
+                "unit": "files"
+              }
+            ],
+            "claims": [
+              {
+                "status": "claimed",
+                "type": "affected_count",
+                "evidence": "# Fuite de données TimeTonic : trois bases de données et 67 fichiers revendiqués",
+                "value": "67",
+                "unit": "files"
+              },
+              {
+                "status": "unknown",
+                "type": "system",
+                "evidence": "> TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
+                "value": "Metabase"
+              }
+            ],
+            "affected_systems": [
+              {
+                "status": "unknown",
+                "evidence": "> TimeTonic informe ses utilisateurs d’une fuite de données liée à l’exploitation d’une vulnérabilité critique de Metabase.",
+                "value": "Metabase"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Qare": {
+      "incident": {
+        "basis": "PUBLICATION",
+        "credentials_or_secrets_exposed": false,
+        "data_exposure": {
+          "credentials_or_secrets_exposed": false,
+          "high_sensitivity_data_exposed": true,
+          "personal_data_exposed": true,
+          "personal_data_types": [
+            "photographies",
+            "noms et prénoms"
+          ],
+          "sensitive_data_exposed": true,
+          "sensitive_data_types": [],
+          "vulnerable_people_data_exposed": true
+        },
+        "date": "2026-08-28",
+        "first_seen": "2026-08-31T23:59:59+04:00",
+        "high_sensitivity_data_exposed": true,
+        "id": "INC-E39645DF5E4E",
+        "items": 1,
+        "last_seen": "2026-08-31T23:59:59+04:00",
+        "location": "France métropolitaine",
+        "org": "Qare",
+        "personal_data_exposed": true,
+        "quality_alerts": [],
+        "sector": "Santé",
+        "sector_status": {
+          "confidence": 0.9,
+          "evidence": "Société de téléconsultation médicale agréée",
+          "evidence_url": "https://consultation.qare.fr/rdv-medecin-app/",
+          "reason": "REFERENCE_EXACT",
+          "status": "referenced"
+        },
+        "sensitive_data_exposed": true,
+        "sensitive_data_types": [],
+        "source_link_status": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "status": "direct"
+          }
+        ],
+        "source_links": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "url": "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+          }
+        ],
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "summary": "Intrusion dans Qare, plateforme de téléconsultation, entraînant l'exposition de photos d'enfants.",
+        "threat": "Intrusion",
+        "threat_status": {
+          "conflict": false,
+          "evidence": "Qare : une intrusion inquiétante signalée par un hacker, des photos d’enfants exposées",
+          "reason": "THREAT_EVIDENCE_INTRUSION",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "reported"
+        },
+        "urls": [
+          "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+        ],
+        "vulnerable_people_data_exposed": true
+      },
+      "resolved": {
+        "affected": [],
+        "attack_flow": [],
+        "claims": [
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Qare : une intrusion inquiétante signalée par un hacker, des photos d’enfants exposées",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "photographies"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Une autre capture montre des données structurées contenant notamment des champs correspondant à des  noms, prénoms, civilités, villes et codes postaux .",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "type": "data_type",
+            "unit": "",
+            "value": "noms et prénoms"
+          }
+        ],
+        "data_types": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "value": "photographies"
+          },
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "noms et prénoms"
+          }
+        ],
+        "datasets": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "confirmed",
+            "value": "données structurées"
+          }
+        ],
+        "display_summary": "Intrusion dans Qare, plateforme de téléconsultation, entraînant l'exposition de photos d'enfants.",
+        "fields": {
+          "impact": {
+            "evidence": "L’une d’elles montre un répertoire contenant de nombreux fichiers JPEG et leurs miniatures.",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "Exposition de données sensibles, y compris des photos d'enfants."
+          }
+        },
+        "quality_alerts": [],
+        "rejected_fields": [],
+        "systems": [],
+        "timeline": [],
+        "version": 3,
+        "vulnerabilities": []
+      },
+      "raw": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "item_id": "ITM-dbaa1b5710c8ec69",
+          "impact": "Exposition de données sensibles, y compris des photos d'enfants.",
+          "summary": "Intrusion dans Qare, plateforme de téléconsultation, entraînant l'exposition de photos d'enfants.",
+          "impact_evidence": "L’une d’elles montre un répertoire contenant de nombreux fichiers JPEG et leurs miniatures.",
+          "summary_evidence": "Qare, plateforme française de téléconsultation médicale, fait l’objet d’un signalement publié par LunarisSec.",
+          "rich_facts": {
+            "version": "2",
+            "claims": [
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "Qare : une intrusion inquiétante signalée par un hacker, des photos d’enfants exposées",
+                "value": "photographies"
+              },
+              {
+                "status": "claimed",
+                "type": "data_type",
+                "evidence": "Le hacker affirme avoir identifié un accès à des données provenant de Qare.fr, parmi lesquelles figureraient  des photographies d’utilisateurs, dont des images d’enfants .",
+                "value": "photographies"
+              },
+              {
+                "status": "unknown",
+                "type": "data_type",
+                "evidence": "Une autre capture montre des données structurées contenant notamment des champs correspondant à des  noms, prénoms, civilités, villes et codes postaux .",
+                "value": "noms et prénoms"
+              }
+            ],
+            "affected_datasets": [
+              {
+                "status": "confirmed",
+                "evidence": "des photographies d’utilisateurs, dont des images d’enfants.",
+                "value": "photographies d'utilisateurs"
+              },
+              {
+                "status": "confirmed",
+                "evidence": "données structurées contenant notamment des champs correspondant à des noms, prénoms, civilités, villes et codes postaux.",
+                "value": "données structurées"
+              }
+            ],
+            "data_types": [
+              {
+                "status": "unknown",
+                "evidence": "Qare : une intrusion inquiétante signalée par un hacker, des photos d’enfants exposées",
+                "value": "photographies"
+              },
+              {
+                "status": "claimed",
+                "evidence": "Le hacker affirme avoir identifié un accès à des données provenant de Qare.fr, parmi lesquelles figureraient  des photographies d’utilisateurs, dont des images d’enfants .",
+                "value": "photographies"
+              },
+              {
+                "status": "unknown",
+                "evidence": "Une autre capture montre des données structurées contenant notamment des champs correspondant à des  noms, prénoms, civilités, villes et codes postaux .",
+                "value": "noms et prénoms"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "La Maison Des Travaux": {
+      "incident": {
+        "basis": "PUBLICATION",
+        "credentials_or_secrets_exposed": false,
+        "data_exposure": {
+          "credentials_or_secrets_exposed": false,
+          "high_sensitivity_data_exposed": false,
+          "personal_data_exposed": false,
+          "personal_data_types": [],
+          "sensitive_data_exposed": false,
+          "sensitive_data_types": [],
+          "vulnerable_people_data_exposed": false
+        },
+        "date": "2026-08-29",
+        "first_seen": "2026-08-31T23:59:59+04:00",
+        "high_sensitivity_data_exposed": false,
+        "id": "INC-EB3AC8CB9892",
+        "items": 1,
+        "last_seen": "2026-08-31T23:59:59+04:00",
+        "location": "France métropolitaine",
+        "org": "La Maison Des Travaux",
+        "personal_data_exposed": false,
+        "quality_alerts": [],
+        "sector": "Commerce / Distribution",
+        "sector_status": {
+          "confidence": 0.7,
+          "evidence": "Retail & E-Commerce",
+          "evidence_url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb",
+          "reason": "SOURCE_SECTOR_RAW",
+          "status": "reported"
+        },
+        "sensitive_data_exposed": false,
+        "sensitive_data_types": [],
+        "source_link_status": [
+          {
+            "source": "RANSOMWARE_LIVE",
+            "status": "direct"
+          }
+        ],
+        "source_links": [
+          {
+            "source": "RANSOMWARE_LIVE",
+            "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb"
+          }
+        ],
+        "sources": [
+          "RANSOMWARE_LIVE"
+        ],
+        "summary": "",
+        "threat": "Ransomware",
+        "threat_status": {
+          "conflict": false,
+          "evidence": "La Maison Des Travaux revendiqué par qilin",
+          "reason": "THREAT_EVIDENCE_RANSOMWARE",
+          "sources": [
+            "RANSOMWARE_LIVE"
+          ],
+          "status": "reported"
+        },
+        "urls": [
+          "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb"
+        ],
+        "vulnerable_people_data_exposed": false
+      },
+      "resolved": {
+        "affected": [],
+        "attack_flow": [],
+        "claims": [],
+        "data_types": [],
+        "datasets": [],
+        "display_summary": "",
+        "fields": {
+          "discovered_date": {
+            "source": "RANSOMWARE_LIVE",
+            "sources": [
+              "RANSOMWARE_LIVE"
+            ],
+            "status": "unknown",
+            "value": "2026-08-29"
+          },
+          "threat_actor": {
+            "evidence": "qilin",
+            "source": "RANSOMWARE_LIVE",
+            "sources": [
+              "RANSOMWARE_LIVE"
+            ],
+            "status": "unknown",
+            "value": "qilin"
+          }
+        },
+        "quality_alerts": [],
+        "rejected_fields": [],
+        "systems": [],
+        "timeline": [],
+        "version": 3,
+        "vulnerabilities": []
+      },
+      "raw": [
+        {
+          "source": "RANSOMWARE_LIVE",
+          "item_id": "ITM-ecf737579abef294",
+          "threat_actor": "qilin",
+          "discovered_date": "2026-08-29",
+          "victim_website": "https://www.lamaisondestravaux.com",
+          "evidence_urls": [
+            "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb"
+          ],
+          "threat_actor_evidence": "qilin"
+        }
+      ]
+    },
+    "Jouvet SAS": {
+      "incident": {
+        "basis": "PUBLICATION",
+        "credentials_or_secrets_exposed": false,
+        "data_exposure": {
+          "credentials_or_secrets_exposed": false,
+          "high_sensitivity_data_exposed": false,
+          "personal_data_exposed": false,
+          "personal_data_types": [],
+          "sensitive_data_exposed": false,
+          "sensitive_data_types": [],
+          "vulnerable_people_data_exposed": false
+        },
+        "date": "2026-09-05",
+        "first_seen": "2026-09-06T08:58:24.537034+04:00",
+        "high_sensitivity_data_exposed": false,
+        "id": "INC-F87083F98EA4",
+        "items": 2,
+        "last_seen": "2026-09-06T08:58:24.537034+04:00",
+        "location": "France métropolitaine",
+        "org": "Jouvet SAS",
+        "personal_data_exposed": false,
+        "quality_alerts": [],
+        "sector": "Construction / BTP",
+        "sector_status": {
+          "confidence": 0.8,
+          "discarded_source_labels": [
+            "Industrie / Manufacture"
+          ],
+          "evidence": "Jouvet SAS, entreprise française spécialisée dans la plomberie, le chauffage et la climatisation, est désormais revendiquée comme victime…",
+          "evidence_url": "https://www.cyberattaque.org/jouvet-sas-qilin-revendique-une-cyberattaque-contre-lentreprise-sarthoise/",
+          "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+          "status": "inferred"
+        },
+        "sensitive_data_exposed": false,
+        "sensitive_data_types": [],
+        "source_link_status": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "status": "direct"
+          },
+          {
+            "source": "RANSOMWARE_LIVE",
+            "status": "direct"
+          }
+        ],
+        "source_links": [
+          {
+            "source": "CYBERATTAQUE_ORG",
+            "url": "https://www.cyberattaque.org/jouvet-sas-qilin-revendique-une-cyberattaque-contre-lentreprise-sarthoise/"
+          },
+          {
+            "source": "RANSOMWARE_LIVE",
+            "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ee0464c8-913c-4fec-bf54-04737c76b065"
+          }
+        ],
+        "sources": [
+          "CYBERATTAQUE_ORG",
+          "RANSOMWARE_LIVE"
+        ],
+        "summary": "Jouvet SAS : Qilin revendique une cyberattaque contre l’entreprise sarthoise",
+        "threat": "Ransomware",
+        "threat_status": {
+          "conflict": false,
+          "evidence": "Jouvet SAS revendiqué par qilin",
+          "reason": "THREAT_EVIDENCE_RANSOMWARE",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "RANSOMWARE_LIVE"
+          ],
+          "status": "reported"
+        },
+        "urls": [
+          "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ee0464c8-913c-4fec-bf54-04737c76b065",
+          "https://www.cyberattaque.org/jouvet-sas-qilin-revendique-une-cyberattaque-contre-lentreprise-sarthoise/"
+        ],
+        "vulnerable_people_data_exposed": false
+      },
+      "resolved": {
+        "affected": [
+          {
+            "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+            "raw": "157 victimes",
+            "semantic": "unspecified",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "unit": "people",
+            "value": 157
+          }
+        ],
+        "attack_flow": [],
+        "claims": [
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "claimed",
+            "type": "affected_count",
+            "unit": "people",
+            "value": "157"
+          },
+          {
+            "actor": "",
+            "date": "",
+            "evidence": "Il est donc impossible de déterminer si des  données clients, salariés, fournisseurs ou documents de chantier  font effectivement partie des éléments éventuellement exfiltrés.",
+            "scope": "",
+            "source": "CYBERATTAQUE_ORG",
+            "sources": [
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "negated",
+            "type": "dataset",
+            "unit": "",
+            "value": "données clients"
+          }
+        ],
+        "data_types": [],
+        "datasets": [],
+        "display_summary": "Jouvet SAS : Qilin revendique une cyberattaque contre l’entreprise sarthoise",
+        "fields": {
+          "discovered_date": {
+            "source": "RANSOMWARE_LIVE",
+            "sources": [
+              "RANSOMWARE_LIVE"
+            ],
+            "status": "unknown",
+            "value": "2026-09-05"
+          },
+          "threat_actor": {
+            "evidence": "qilin",
+            "source": "RANSOMWARE_LIVE",
+            "sources": [
+              "RANSOMWARE_LIVE",
+              "CYBERATTAQUE_ORG"
+            ],
+            "status": "unknown",
+            "value": "qilin"
+          }
+        },
+        "quality_alerts": [],
+        "rejected_fields": [],
+        "systems": [],
+        "timeline": [],
+        "version": 3,
+        "vulnerabilities": []
+      },
+      "raw": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "item_id": "ITM-9278dd653363ee24",
+          "claim_status": "claimed",
+          "threat_actor": "Qilin",
+          "affected_unit": "people",
+          "affected_count_raw": "157 victimes",
+          "summary": "Jouvet SAS : Qilin revendique une cyberattaque contre l’entreprise sarthoise",
+          "affected_count": 157,
+          "threat_actor_evidence": "Qilin revendique",
+          "affected_count_raw_evidence": "157 victimes",
+          "summary_evidence": "Jouvet SAS : Qilin revendique une cyberattaque contre l’entreprise sarthoise",
+          "rich_facts": {
+            "version": "2",
+            "affected_counts": [
+              {
+                "status": "claimed",
+                "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+                "raw": "157 victimes",
+                "value": 157,
+                "unit": "people"
+              }
+            ],
+            "claims": [
+              {
+                "status": "claimed",
+                "type": "affected_count",
+                "evidence": "Qilin a revendiqué 157 victimes rien qu’en août 2026 , ce qui en faisait le groupe de ransomware le plus actif du mois.",
+                "value": "157",
+                "unit": "people"
+              },
+              {
+                "status": "negated",
+                "type": "dataset",
+                "evidence": "Il est donc impossible de déterminer si des  données clients, salariés, fournisseurs ou documents de chantier  font effectivement partie des éléments éventuellement exfiltrés.",
+                "value": "données clients"
+              }
+            ],
+            "affected_datasets": [
+              {
+                "status": "negated",
+                "evidence": "Il est donc impossible de déterminer si des  données clients, salariés, fournisseurs ou documents de chantier  font effectivement partie des éléments éventuellement exfiltrés.",
+                "value": "données clients"
+              }
+            ]
+          }
+        },
+        {
+          "source": "RANSOMWARE_LIVE",
+          "item_id": "ITM-7069a14f66132856",
+          "threat_actor": "qilin",
+          "discovered_date": "2026-09-05",
+          "victim_website": "https://www.jouvet-sas.fr",
+          "evidence_urls": [
+            "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ee0464c8-913c-4fec-bf54-04737c76b065"
+          ],
+          "threat_actor_evidence": "qilin"
+        }
+      ]
+    }
+  },
+  "hashes": {
+    "assets/dashboard-v2.js": "384703a8781098b8b467a119c7512f80d206152350569d687f9536088147a014",
+    "assets/data/facts.json": "f50d098915937ac6da9e760acb1bacf561b4ed9fcd3bf3bb009536113b47225a",
+    "assets/data/incidents.json": "e0ca287b69df4fe510f45655155410bb0eb7cd4f145330ecf45582bf9f68abc1",
+    "cyberwatch/fact_resolution.py": "a09c8df98b7f8624514346fc4600907265e036306700dfd2324226546ee6aaee",
+    "cyberwatch/fact_resolution_counts.py": "0618f96491c9c4d7a7e3eb03c4b5579abf19c3ba257680d5894572928e2b79fb"
+  }
+}
