@@ -1,4 +1,611 @@
 {
+ "INC-0042AA05B202": {
+  "affected": [
+   {
+    "evidence": "153 667 comptes utilisateurs",
+    "raw": "153 667 comptes",
+    "scope": "utilisateurs",
+    "semantic": "utilisateurs",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "accounts",
+    "value": 153667
+   },
+   {
+    "evidence": "L’inventaire publié fait état de  153 667 comptes utilisateurs  et de 144 567 enregistrements de contact contenant notamment des e-mails, téléphones et jetons techniques liés aux notifications de l’application.",
+    "raw": "144 567 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 144567
+   },
+   {
+    "evidence": "Environ  2,89 Go de données réparties dans 84 fichiers  sont désormais proposés au téléchargement.",
+    "raw": "84 fichiers",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "files",
+    "value": 84
+   },
+   {
+    "evidence": "Footsider : une cyberattaque expose les données de 153 000 comptes",
+    "raw": "153 000 comptes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "accounts",
+    "value": 153000
+   },
+   {
+    "evidence": "La publication mentionne par ailleurs environ 20 000 enregistrements associés à l’authentification Apple.",
+    "raw": "20 000 enregistrements",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 20000
+   },
+   {
+    "evidence": "L’attaquant annonce notamment  plus de 6,6 millions d’événements d’utilisation , près d’un million de durées de sessions et plus de 1,5 million de lignes retraçant différentes étapes du parcours d’inscription des utilisateurs.",
+    "raw": "1,5 million de lignes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "records",
+    "value": 1500000
+   },
+   {
+    "evidence": "L’application revendiquait déjà plus de 100 000 utilisateurs peu après son lancement et s’adresse aussi bien aux clubs amateurs que professionnels.",
+    "raw": "100 000 utilisateurs",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "users",
+    "value": 100000
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’attaquant annonce notamment  plus de 6,6 millions d’événements d’utilisation , près d’un million de durées de sessions et plus de 1,5 million de lignes retraçant différentes étapes du parcours d’inscription des utilisateurs.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "1500000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’inventaire publié fait état de  153 667 comptes utilisateurs  et de 144 567 enregistrements de contact contenant notamment des e-mails, téléphones et jetons techniques liés aux notifications de l’application.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "153667"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Footsider : une cyberattaque expose les données de 153 000 comptes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "153000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’inventaire publié fait état de  153 667 comptes utilisateurs  et de 144 567 enregistrements de contact contenant notamment des e-mails, téléphones et jetons techniques liés aux notifications de l’application.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "144567"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’application revendiquait déjà plus de 100 000 utilisateurs peu après son lancement et s’adresse aussi bien aux clubs amateurs que professionnels.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "users",
+    "value": "100000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La publication mentionne par ailleurs environ 20 000 enregistrements associés à l’authentification Apple.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "20000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Environ  2,89 Go de données réparties dans 84 fichiers  sont désormais proposés au téléchargement.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "84"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Environ  2,89 Go de données réparties dans 84 fichiers  sont désormais proposés au téléchargement.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "2.89"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le contenu publié dépasse largement un simple fichier de comptes utilisateurs : profils de joueurs, coordonnées privées, géolocalisation, clubs, opportunités de recrutement, conversations, photos, transactions et données statistiques figurent parmi les ensembles annoncés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "photographies"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms, prénoms et pseudonymes  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "adresses e-mail et numéros de téléphone ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "dates de naissance et âge  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des transactions et identifiants techniques dans la fuite",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Leur nature exacte et leur validité ne peuvent toutefois pas être déterminées à partir du seul inventaire : il serait donc abusif de les présenter comme des mots de passe Apple compromis.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "DaOnlySpark",
+    "date": "2026-09-05",
+    "evidence": "Environ 2,89 Go de données réparties dans 84 fichiers sont désormais proposés au téléchargement.",
+    "scope": "Footsider",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "289"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le contenu publié dépasse largement un simple fichier de comptes utilisateurs : profils de joueurs, coordonnées privées, géolocalisation, clubs, opportunités de recrutement, conversations, photos, transactions et données statistiques figurent parmi les ensembles annoncés.",
+    "scope": "Footsider",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "profils de joueurs, coordonnées privées, géolocalisation, clubs, opportunités de recrutement, conversations, photos, transactions, données statistiques"
+   },
+   {
+    "actor": "DaOnlySpark",
+    "date": "",
+    "evidence": "Le hacker DaOnlySpark affirme avoir compromis la base de l’application le 5 septembre 2026.",
+    "scope": "Footsider",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "initial_access",
+    "unit": "",
+    "value": "2026-09-05"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La fuite touche également le fonctionnement social de l’application. L’ensemble annoncé comprend 7 369 messages directs répartis dans près de 1 500 conversations, plus de 23 000 demandes de contact, ainsi que des informations liées aux candidatures et au suivi des opportunités de recrutement.",
+    "scope": "Footsider",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "dataset",
+    "unit": "",
+    "value": "messages privés, contacts avec les clubs et opportunités de recrutement"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les informations disponibles permettent de connaître le profil sportif d’un joueur, son identité, ses coordonnées et parfois ses interactions avec des clubs. Elles peuvent être exploitées pour de faux recrutements, de fausses propositions d’essai, du phishing ciblé ou des tentatives d’usurpation d’identité.",
+    "scope": "Footsider",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "faux recrutements, fausses propositions d’essai, phishing ciblé, tentatives d’usurpation d’identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Plus de 7 000 transactions réalisées dans l’application sont également annoncées.",
+    "scope": "Footsider",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "7000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données de plus de 150 000 comptes revendiquées par un hacker",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "150000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un pirate affirme avoir récupéré près de 2,9 Go de données comprenant notamment les informations de plus de 150 000 comptes utilisateurs.**",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "2.9"
+   },
+   {
+    "evidence": "Le hacker DaOnlySpark affirme avoir compromis la base de l’application.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "DaOnlySpark"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "photographies"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "messages privés, contacts avec les clubs et opportunités de recrutement"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "profils de joueurs"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "messages privés"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "profils des clubs"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "données analytiques"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "identifiants techniques liés aux notifications"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "messages privés, contacts avec les clubs et opportunités de recrutement"
+   }
+  ],
+  "display_summary": "Footsider a subi une cyberattaque exposant les données de 153 000 comptes utilisateurs.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Environ  2,89 Go de données réparties dans 84 fichiers  sont désormais proposés au téléchargement.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "2,89 Go"
+   },
+   "impact": {
+    "evidence": "La présence simultanée d’une date de naissance, d’informations sportives, de photos et parfois d’une localisation précise augmente fortement la sensibilité des profils concernés.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "exposition de données personnelles sensibles"
+   },
+   "threat_actor": {
+    "evidence": "DaOnlySpark  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "DaOnlySpark"
+   }
+  },
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-05",
+    "event": "Compromise of the database",
+    "evidence": "Le hacker DaOnlySpark affirme avoir compromis la base de l’application le 5 septembre 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-05",
+    "event": "Data leak",
+    "evidence": "La fuite contient aussi d’importants volumes de données analytiques.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-09-05",
+    "event": "Data available for cybercriminals",
+    "evidence": "La mise à disposition de la base signifie surtout que les données ne sont plus uniquement entre les mains de l’auteur de l’attaque.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-09-06",
+    "event": "Le 6 septembre 2026, un utilisateur d’un forum cybercriminel a publi�...",
+    "evidence": "Le 6 septembre 2026, un utilisateur d’un forum cybercriminel a publi�...",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-15A9F3AC6AC8": {
   "affected": [],
   "claims": [],
@@ -1544,7 +2151,8 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "unit": "records",
@@ -1556,7 +2164,8 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "unit": "people",
@@ -1584,7 +2193,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "type": "affected_count",
@@ -1598,7 +2208,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "type": "affected_count",
@@ -1612,7 +2223,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "type": "data_volume",
@@ -1640,7 +2252,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -1668,7 +2281,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -1774,6 +2388,34 @@
     "value": "risque de phishing"
    },
    {
+    "actor": "",
+    "date": "",
+    "evidence": "Fuite de données Pass Pass : près de 19 000 personnes concernées (avant )",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "19000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les fichiers analysés contiennent notamment des noms, adresses e-mail, adresses postales,...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
     "evidence": "fuite de données revendiquée par le hacker ChimeraZ.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -1796,9 +2438,10 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "claimed",
     "value": "factures"
    },
    {
@@ -1812,7 +2455,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "adresses e-mail"
@@ -1840,6 +2484,14 @@
     ],
     "status": "unknown",
     "value": "montants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
    }
   ],
   "datasets": [
@@ -1858,7 +2510,8 @@
     "evidence": "Celui-ci affirme avoir récupéré puis diffusé une  base partielle de 214 Mo  représentant 92 178 enregistrements et concernant environ  18 861 personnes .",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "value": "214 Mo"
@@ -1893,6 +2546,16 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "reported"
+   },
+   {
+    "date": "2026-09-05",
+    "event": "**Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "evidence": "**Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
    }
   ],
   "version": 3,
@@ -3637,132 +4300,6 @@
     "status": "claimed"
    }
   ],
-  "version": 3,
-  "vulnerabilities": []
- },
- "INC-4E7F086AB308": {
-  "affected": [
-   {
-    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
-    "raw": "86 073 personnes",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "unit": "people",
-    "value": 86073
-   }
-  ],
-  "claims": [
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "86073"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "# Fuite de données Les Curistes : plus de 86 000 personnes concernées",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "86000"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Les informations exposées comprennent notamment des noms, adresses e-mail, numéros de téléphone, adresses IP et le contenu de messages envoyés par les utili...",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "adresses e-mail"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Les informations exposées comprennent notamment des noms, adresses e-mail, numéros de téléphone, adresses IP et le contenu de messages envoyés par les utili...",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "type": "data_type",
-    "unit": "",
-    "value": "numéros de téléphone"
-   }
-  ],
-  "data_types": [
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "adresses e-mail"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "numéros de téléphone"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "adresses IP"
-   }
-  ],
-  "datasets": [],
-  "display_summary": "Fuite de données affectant Les Curistes avec plus de 86 000 personnes impliquées.",
-  "fields": {
-   "impact": {
-    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages associés à 86 073 personnes.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "value": "Des informations personnelles de 86 073 personnes exposées."
-   },
-   "threat_actor": {
-    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "value": "ChimeraZ"
-   }
-  },
-  "systems": [],
-  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -6612,6 +7149,219 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-8A100D3C8D40": {
+  "affected": [
+   {
+    "evidence": "BumFot : une cyberattaque expose les données d’environ 1 300 utilisateurs",
+    "raw": "1 300 utilisateurs",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "users",
+    "value": 1300
+   },
+   {
+    "evidence": "environ 1 300 utilisateurs",
+    "raw": "environ 1 300 utilisateurs",
+    "scope": "BumFot",
+    "semantic": "bumfot",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "users",
+    "value": 1300
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La diffusion de la base confirme en revanche que les données de plusieurs centaines, potentiellement  environ 1 300 comptes , circulent désormais en dehors de la plateforme.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "1300"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "BumFot, plateforme française permettant de créer et partager des albums photos privés à l’aide de QR codes, est…",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "photographies"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le service met notamment en avant des  albums privés , une protection optionnelle par mot de passe et des outils permettant de contrôler les personnes autorisées à consulter les contenus.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et téléphones dans la base",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et téléphones dans la base",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms et prénoms  ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "identifiants uniques de comptes ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "photographies"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base utilisateurs"
+   }
+  ],
+  "display_summary": "BumFot victime d'une fuite de données touchant environ 1 300 utilisateurs.",
+  "fields": {
+   "impact": {
+    "evidence": "Un pirate affirme disposer de données concernant environ 1 300 utilisateurs",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Environ 1 300 utilisateurs touchés par la fuite de données."
+   }
+  },
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-8B71255FD2C5": {
   "affected": [
    {
@@ -7291,6 +8041,359 @@
     "status": "reported"
    }
   ],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-A3D0A851E662": {
+  "affected": [
+   {
+    "evidence": "3 552 comptes actuels",
+    "raw": "3 552 comptes",
+    "scope": "actuels",
+    "semantic": "actuels",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "accounts",
+    "value": 3552
+   },
+   {
+    "evidence": "Jinko : une cyberattaque expose les données de santé de plus de 3 500 personnes",
+    "raw": "3 500 personnes",
+    "semantic": "unspecified",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 3500
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un espace de stockage contenant  plus de 2 600 fichiers  aurait également été extrait : images, PDF, fichiers audio et vidéos.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "files",
+    "value": "2600"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’ensemble comprend  3 552 comptes actuels , mais également plusieurs centaines de milliers d’enregistrements historiques et techniques.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "3552"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Jinko : une cyberattaque expose les données de santé de plus de 3 500 personnes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "3500"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Jinko : une cyberattaque expose les données de santé de plus de 3 500 personnes",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données de santé"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms, prénoms, e-mails, téléphones et adresses ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms, prénoms, e-mails, téléphones et adresses ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "noms, prénoms, e-mails, téléphones et adresses ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "dates de naissance  et informations de profil ;",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Jinko présente justement son dispositif comme conforme au  RGPD et aux exigences d’hébergement des données de santé .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de séjour"
+   },
+   {
+    "actor": "DaOnlySpark",
+    "date": "2026-09-05",
+    "evidence": "Le hacker  DaOnlySpark  affirme avoir accédé à son environnement le  5 septembre 2026.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "DaOnlySpark"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’inventaire comprend également  plus de 20 000 messages répartis dans environ 1 200 conversations.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "20000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un espace de stockage contenant  plus de 2 600 fichiers  aurait également été extrait.",
+    "scope": "espace de stockage",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "2600"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ces données peuvent être utilisées pour du chantage, de l’ingénierie sociale ou des campagnes de phishing extrêmement personnalisées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "chantage, ingénierie sociale, campagnes de phishing"
+   },
+   {
+    "actor": "Jinko",
+    "date": "",
+    "evidence": "Jinko présente justement son dispositif comme conforme au  RGPD et aux exigences d’hébergement des données de santé.",
+    "scope": "Jinko",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "statement",
+    "unit": "",
+    "value": "conforme au RGPD"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "3,7 Go de données médicales et personnelles revendiqués",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "3.7"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "données de santé"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations de séjour"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base de données de patients"
+   }
+  ],
+  "display_summary": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
+  "fields": {
+   "data_volume": {
+    "evidence": "3,7 Go de données médicales et personnelles revendiqués",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "3,7 Go"
+   },
+   "impact": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "chantage, ingénierie sociale, campagnes de phishing"
+   },
+   "initial_access": {
+    "evidence": "Leur présence ne permet pas, à elle seule, de déterminer si l’accès résulte d’une mauvaise configuration, d’identifiants compromis ou d’une autre faille.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "compromised_credentials"
+   },
+   "threat_actor": {
+    "evidence": "DaOnlySpark  affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "DaOnlySpark"
+   }
+  },
+  "systems": [],
+  "timeline": [],
   "version": 3,
   "vulnerabilities": []
  },
@@ -8821,192 +9924,149 @@
   "version": 3,
   "vulnerabilities": []
  },
- "INC-BD43CD916C2C": {
-  "affected": [
-   {
-    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
-    "raw": "92 178 enregistrements",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "unit": "records",
-    "value": 92178
-   },
-   {
-    "evidence": "# Fuite de données Pass Pass : 18 861 personnes et des milliers de factures revendiquées",
-    "raw": "18 861 personnes",
-    "semantic": "unspecified",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "unit": "people",
-    "value": 18861
-   }
-  ],
+ "INC-C0C26C209432": {
+  "affected": [],
   "claims": [
    {
     "actor": "",
     "date": "",
-    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
+    "evidence": "Sur un site WordPress, une compromission peut notamment provenir d’une  extension vulnérable, d’un thème, du cœur du CMS ou encore d’identifiants administrateur compromis .",
     "scope": "",
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "affected_count",
-    "unit": "records",
-    "value": "92178"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "# Fuite de données Pass Pass : 18 861 personnes et des milliers de factures revendiquées",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "18861"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Fuite de données Pass Pass : près de 19 000 personnes concernées (avant )",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "type": "affected_count",
-    "unit": "people",
-    "value": "19000"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "data_volume",
-    "unit": "",
-    "value": "214.0"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "# Fuite de données Pass Pass : 18 861 personnes et des milliers de factures revendiquées",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "type": "data_type",
-    "unit": "",
-    "value": "factures"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Les fichiers analysés contiennent notamment des noms, adresses e-mail, adresses postales,...",
-    "scope": "",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
     "type": "data_type",
     "unit": "",
-    "value": "adresses e-mail"
+    "value": "identifiants"
    },
    {
     "actor": "",
     "date": "",
-    "evidence": "Les fichiers analysés contiennent notamment des noms, adresses e-mail, adresses postales,...",
+    "evidence": "Un site construit avec WordPress",
     "scope": "",
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
-    "type": "data_type",
+    "type": "system",
     "unit": "",
-    "value": "adresses postales"
+    "value": "WordPress"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "ayant rendu son site Internet inaccessible.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "site Internet inaccessible"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "spa-montbeliard.fr fonctionne sous WordPress.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "system",
+    "unit": "",
+    "value": "spa-montbeliard.fr"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "déterminer si l’incident s’est limité à une indisponibilité.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "impact",
+    "unit": "",
+    "value": "indisponibilité"
    }
   ],
   "data_types": [
    {
-    "source": "FRENCHBREACHES",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "value": "factures"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
-    "value": "adresses e-mail"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "adresses postales"
+    "value": "identifiants"
    }
   ],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "La SPA du Pays de Montbéliard a subi une cyberattaque rendant son site Internet inaccessible.",
   "fields": {
-   "data_volume": {
-    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier une base partielle de 214 Mo comprenant 92 178 enregistrements et concernant 18 861 personnes.",
-    "source": "FRENCHBREACHES",
+   "evolution": {
+    "evidence": "La SPA indiquait dans son message que son site était inaccessible et que ses équipes travaillaient à son rétablissement.",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
-    "value": "214 Mo"
+    "status": "confirmed",
+    "value": "Le site semble de nouveau accessible."
    },
-   "threat_actor": {
-    "evidence": "Un utilisateur sous le pseudonyme ChimeraZ affirme publier...",
-    "source": "FRENCHBREACHES",
+   "fine_location": {
+    "evidence": "Installée à Allondans, dans le Doubs.",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
-    "value": "ChimeraZ"
+    "status": "confirmed",
+    "value": "Allondans, Doubs"
+   },
+   "impact": {
+    "evidence": "SPA du Pays de Montbéliard : une cyberattaque met son site hors ligne",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "SPA du Pays de Montbéliard : une cyberattaque met son site hors ligne"
    }
   },
-  "systems": [],
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "WordPress"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "spa-montbeliard.fr"
+   }
+  ],
   "timeline": [
    {
-    "date": "2026-09-05",
-    "event": "**Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
-    "evidence": "**Une fuite de données attribuée à Pass Pass, service de mobilité des Hauts-de-France, est revendiquée ce samedi 5 septembre 2026 sur un forum cybercriminel.",
-    "source": "FRENCHBREACHES",
+    "date": "6 septembre",
+    "event": "site de nouveau accessible",
+    "evidence": "le site spa-montbeliard.fr répondait de nouveau et ses principales pages étaient de nouveau accessibles.",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed"
+    "status": "reported"
    }
   ],
   "version": 3,
@@ -9999,6 +11059,127 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-CE20778A3019": {
+  "affected": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des noms, prénoms, adresses e-mail, adresses postales et numéros de téléphone peuvent notamment être concernés.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des noms, prénoms, adresses e-mail, adresses postales et numéros de téléphone peuvent notamment être concernés.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des noms, prénoms, adresses e-mail, adresses postales et numéros de téléphone peuvent notamment être concernés.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des noms, prénoms, adresses e-mail, adresses postales et numéros de téléphone peuvent notamment être concernés.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "SNEXI a subi une cyberattaque entraînant une violation de données personnelles.",
+  "fields": {},
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-02",
+    "event": "La cyberattaque a touché snexi.fr le mercredi 2 septembre 2026, selon les informations...",
+    "evidence": "La cyberattaque a touché snexi.fr le mercredi 2 septembre 2026, selon les informations...",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-CE9040DC18AB": {
   "affected": [],
   "claims": [
@@ -10575,7 +11756,8 @@
     "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "unit": "people",
@@ -10642,7 +11824,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -10656,7 +11839,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "affected_count",
@@ -10712,7 +11896,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -10726,7 +11911,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -10774,7 +11960,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "adresses e-mail"
@@ -10782,7 +11969,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "numéros de téléphone"
@@ -10794,6 +11982,14 @@
     ],
     "status": "unknown",
     "value": "informations de séjour"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses IP"
    }
   ],
   "datasets": [
@@ -10814,7 +12010,7 @@
     "value": "base clients"
    }
   ],
-  "display_summary": "LesCuristes.fr exposé par une cyberattaque touchant 86 073 personnes.",
+  "display_summary": "Fuite de données affectant Les Curistes avec plus de 86 000 personnes impliquées.",
   "fields": {
    "data_volume": {
     "evidence": "Le hacker  ChimeraZ  a diffusé une base de  95 Mo  contenant 328 649 enregistrements et concernant, selon son décompte,  86 073 personnes .",
@@ -10841,6 +12037,15 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
+    "value": "ChimeraZ"
+   },
+   "threat_actor": {
+    "evidence": "Le pirate ChimeraZ affirme détenir 328 649 messages.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
     "value": "ChimeraZ"
    }
   },
@@ -12549,13 +13754,13 @@
     "value": "Aveyron"
    },
    "impact": {
-    "evidence": "les données de plus de 20 000 personnes exposées.",
-    "source": "FRENCHBREACHES",
+    "evidence": "Un CV concentre suffisamment d’informations pour construire une attaque extrêmement crédible.",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
     "status": "unknown",
-    "value": "exposition des données personnelles de plus de 20 000 personnes"
+    "value": "exposition de données personnelles détaillées de candidats à l'emploi"
    },
    "threat_actor": {
     "evidence": "ChimeraZ affirme",
