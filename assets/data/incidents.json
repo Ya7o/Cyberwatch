@@ -1,6 +1,223 @@
 [
  {
   "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "Genre",
+    "adresses e-mail"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DD17DC78C96C",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Association des Maires de France",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Association représentative des maires et présidents d'intercommunalité ; distincte d'une administration et de l'Autorité des marchés financiers.",
+   "evidence_url": "https://www.amf.asso.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "BONJOURLAFUITE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/amf.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/amf.png"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5D2D1691FC39",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Medikwestindies",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/medikwestindies-mtsio3ufjvj81y6m5ai"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/medikwestindies-mtsio3ufjvj81y6m5ai"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données de santé",
+    "pièces d'identité",
+    "données bancaires"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données de santé",
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-61993D19E8E2",
+  "items": 2,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "SAD'S Interim",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données de santé",
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "SAD’S Interim victime d'une cyberattaque exposant données sensibles, revendiquée par le groupe Rhysida.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "SAD'S Interim revendiqué par rhysida",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": true,
   "data_exposure": {
    "credentials_or_secrets_exposed": true,
@@ -65,7 +282,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Une fuite de données revendiquée concerne environ 1 300 utilisateurs de BumFot, incluant des noms et adresses e-mail.",
+  "summary": "BumFot a subi une cyberattaque exposant les données d'environ 1 300 utilisateurs.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
@@ -79,6 +296,66 @@
   "urls": [
    "https://frenchbreaches.com/alertes/bumfot-mtr6jurecstsgtv0ig5",
    "https://www.cyberattaque.org/bumfot-une-cyberattaque-expose-les-donnees-denviron-1-300-utilisateurs/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-995C9F7252C1",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "Inconnu",
+  "org": "CC Yvetot Normandie",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cc-yvetot-normandie-les-documents-administratifs-en-fuite-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/cc-yvetot-normandie-les-documents-administratifs-en-fuite-apres-une-cyberattaque/"
   ],
   "vulnerable_people_data_exposed": false
  },
@@ -170,6 +447,77 @@
  },
  {
   "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants",
+    "adresses postales",
+    "dates de naissance"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EE0E8F96C169",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Service national universel",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/service-national-universel-snu-mtrfy9tvk9n0jcgh2yk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque contre le Service national universel, environ 275 000 comptes compromis.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Cyberattaque contre le Service national universel, environ 275 000 comptes compromis.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/service-national-universel-snu-mtrfy9tvk9n0jcgh2yk"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
   "data_exposure": {
    "credentials_or_secrets_exposed": false,
@@ -199,7 +547,7 @@
   "sector": "Construction / BTP",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "SNEXI, entreprise spécialisée dans les diagnostics immobiliers, a confirmé avoir été victime d’une cyberattaque.",
+   "evidence": "SNEXI, entreprise spécialisée dans les diagnostics immobiliers, a confirmé avoir été victime d’une cyberattaque...",
    "evidence_url": "https://frenchbreaches.com/alertes/snexi-mtndjyfm1p926jbh30z",
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
@@ -927,9 +1275,9 @@
   "first_seen": "2026-09-05T14:58:36.371393+04:00",
   "high_sensitivity_data_exposed": true,
   "id": "INC-B44C794AB35B",
-  "items": 1,
-  "last_seen": "2026-09-05T14:58:36.371393+04:00",
-  "location": "Inconnu",
+  "items": 2,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
   "org": "Répar’stores",
   "personal_data_exposed": true,
   "quality_alerts": [],
@@ -947,17 +1295,26 @@
   ],
   "source_link_status": [
    {
+    "source": "BONJOURLAFUITE",
+    "status": "direct"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
    }
   ],
   "source_links": [
    {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/reparstores.png"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Répar’stores : les données clients exposées après une cyberattaque",
@@ -972,6 +1329,7 @@
    "status": "confirmed"
   },
   "urls": [
+   "https://bonjourlafuite.eu.org/img/reparstores.png",
    "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/"
   ],
   "vulnerable_people_data_exposed": false

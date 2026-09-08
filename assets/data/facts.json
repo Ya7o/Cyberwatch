@@ -4979,6 +4979,232 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-5D2D1691FC39": {
+  "affected": [
+   {
+    "evidence": "La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés...",
+    "raw": "89 180 enregistrements",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 89180
+   }
+  ],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "89180"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Medikwestiindies : près de 89 000 enregistrements revendiqués dans une fuite de données",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "records",
+    "value": "89000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés...",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un prénom ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un identifiant de session.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "mots de passe"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {
+   "impact": {
+    "evidence": "La combinaison de plusieurs informations personnelles peut favoriser différentes formes de fraude.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "Risque accru de phishing et usurpation d'identité en raison de la combinaison d'informations personnelles."
+   },
+   "threat_actor": {
+    "evidence": "revendiqué par l'auteur",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "l'auteur"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2017-06-03",
+    "event": "La publication visible sur la capture est datée du 3 juin 2017.",
+    "evidence": "La publication visible sur la capture est datée du 3 juin 2017.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2017-06-03",
+    "event": "La date du 3 juin 2017 correspond à la date visible sur la publication et ne constitue donc pas nécessairement la date à laquelle les données auraient été extraites.",
+    "evidence": "La date du 3 juin 2017 correspond à la date visible sur la publication et ne constitue donc pas nécessairement la date à laquelle les données auraient été extraites.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis"
+   },
+   {
+    "date": "2017-06-03",
+    "event": "la publication est datée du 3 juin 2017 ;",
+    "evidence": "la publication est datée du 3 juin 2017 ;",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-619638DA1C52": {
   "affected": [
    {
@@ -5148,6 +5374,293 @@
   "rejected_fields": [],
   "systems": [],
   "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-61993D19E8E2": {
+  "affected": [],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Fin août 2026, Rhysida a revendiqué le vol de  5,79 To de données  provenant du réseau de l’État de Berlin et les a mises aux enchères.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "5.79"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "SAD’S Interim : une cyberattaque expose passeports, NIR et données de santé",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données de santé"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "SAD’S Interim : une cyberattaque expose passeports, NIR et données de santé",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "pièces d'identité"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le groupe affirme détenir des données financières, des sauvegardes de l’ERP utilisé pour la paie des intérimaires ainsi que de nombreux documents concernant les salariés et intérimaires :  bulletins de salaire, contrats de travail, passeports, RIB, cartes Vitale, NIR et documents liés au handicap .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le groupe affirme détenir des données financières, des sauvegardes de l’ERP utilisé pour la paie des intérimaires ainsi que de nombreux documents concernant les salariés et intérimaires :  bulletins de salaire, contrats de travail, passeports, RIB, cartes Vitale, NIR et documents liés au handicap .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "contrats"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Rhysida affirme également disposer de  relevés bancaires, informations relatives à des virements SEPA, factures, encours clients et justificatifs de paiement .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "factures"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le groupe affirme détenir des données financières, des sauvegardes de l’ERP utilisé pour la paie des intérimaires ainsi que de nombreux documents concernant les salariés et intérimaires :  bulletins de salaire, contrats de travail, passeports, RIB, cartes Vitale, NIR et documents liés au handicap .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "system",
+    "unit": "",
+    "value": "ERP"
+   },
+   {
+    "actor": "Rhysida",
+    "date": "",
+    "evidence": "SAD’S Interim, important réseau français d’agences d’emploi, est la nouvelle victime revendiquée par le groupe de ransomware Rhysida.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "unit": "",
+    "value": "Rhysida"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les cybercriminels ont publié des échantillons de données particulièrement sensibles et donnent actuellement sept jours avant la suite de leur opération d’extorsion.",
+    "scope": "SAD’S Interim",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "attack_action",
+    "unit": "",
+    "value": "extorsion"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "le groupe évoque pour ces dernières plusieurs dizaines de fichiers représentant plusieurs centaines de gigaoctets.",
+    "scope": "sauvegardes SQL de l’ERP BRANIPP",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "plusieurs centaines de gigaoctets"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le croisement de pièces d’identité, NIR, coordonnées bancaires et documents professionnels représente un risque important d’usurpation d’identité et de fraude.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "impact",
+    "unit": "",
+    "value": "risque majeur d’usurpation et de fraude"
+   },
+   {
+    "evidence": "Le groupe affirme détenir des données financières, des sauvegardes de l’ERP utilisé pour la paie des intérimaires ainsi que de nombreux documents concernant les salariés et intérimaires :  bulletins de salaire, contrats de travail, passeports, RIB, cartes Vitale, NIR et documents liés au handicap .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "affirme"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "données de santé"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "pièces d'identité"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "données bancaires"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "contrats"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "factures"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "SAD’S Interim victime d'une cyberattaque exposant données sensibles, revendiquée par le groupe Rhysida.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Fin août 2026, Rhysida a revendiqué le vol de  5,79 To de données  provenant du réseau de l’État de Berlin et les a mises aux enchères.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "5,79 To"
+   },
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-09-08"
+   },
+   "impact": {
+    "evidence": "Un risque majeur d’usurpation et de fraude.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Risque important d'usurpation d'identité et de fraude lié aux données sensibles exposées."
+   },
+   "threat_actor": {
+    "evidence": "rhysida",
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "rhysida"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "ERP"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2023",
+    "event": "Rhysida actif en tant que groupe de ransomware",
+    "evidence": "Rhysida est un groupe de ransomware actif depuis 2023.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "fin août 2026",
+    "event": "cyberattaque contre l’administration de Berlin",
+    "evidence": "Fin août 2026, Rhysida a revendiqué le vol de 5,79 To de données provenant du réseau de l’État de Berlin.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   }
+  ],
   "version": 3,
   "vulnerabilities": []
  },
@@ -7803,7 +8316,7 @@
     "value": "base utilisateurs"
    }
   ],
-  "display_summary": "Une fuite de données revendiquée concerne environ 1 300 utilisateurs de BumFot, incluant des noms et adresses e-mail.",
+  "display_summary": "BumFot a subi une cyberattaque exposant les données d'environ 1 300 utilisateurs.",
   "fields": {
    "data_volume": {
     "evidence": "La publication, intitulée « [FR] BUMFOT.FR | 1.3K », annonce un fichier au format JSON d’environ 481 Ko.",
@@ -7813,15 +8326,6 @@
     ],
     "status": "unknown",
     "value": "481 Ko"
-   },
-   "impact": {
-    "evidence": "Un pirate affirme disposer de données concernant environ 1 300 utilisateurs",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "claimed",
-    "value": "Environ 1 300 utilisateurs touchés par la fuite de données."
    }
   },
   "quality_alerts": [],
@@ -8309,6 +8813,218 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-995C9F7252C1": {
+  "affected": [],
+  "attack_flow": [
+   {
+    "action": "Publication de liens pour télécharger une archive contenant des documents",
+    "evidence": "Un hacker se présentant sous le pseudonyme lazymean10 a publié ce 7 septembre 2026 plusieurs liens permettant de télécharger une archive.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "CC Yvetot Normandie : près de 250 documents administratifs en fuite",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations administratives"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Certains documents internes peuvent devenir communicables une fois achevés ou après la décision à laquelle ils se rapportent.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "documents internes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il affirme également avoir modifié les métadonnées des documents afin d’éviter leur traçage.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "métadonnées techniques"
+   },
+   {
+    "actor": "lazymean10",
+    "date": "2026-09-07",
+    "evidence": "Un hacker se présentant sous le pseudonyme lazymean10 a publié ce 7 septembre 2026 plusieurs liens permettant de télécharger une archive qu’il présente comme provenant de la collectivité.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "publication",
+    "unit": "",
+    "value": "7 septembre 2026"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "près de 250 documents administratifs en fuite.",
+    "scope": "documents administratifs",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "250"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "l’archive contient à la fois des documents administratifs classiques et des éléments plus internes, notamment des comptes rendus détaillant les discussions de commissions et des dossiers préparatoires.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "data_type",
+    "unit": "",
+    "value": "documents internes et administratifs"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Cyberattaque.org peut donc confirmer la diffusion publique d’un ensemble de documents attribués à Yvetot Normandie.",
+    "scope": "documents attribués à Yvetot Normandie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "impact",
+    "unit": "",
+    "value": "diffusion publique"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il affirme également avoir modifié les métadonnées des documents afin d’éviter leur traçage.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "dataset",
+    "unit": "",
+    "value": "archive"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "informations administratives"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "documents internes"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "métadonnées techniques"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "archive"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "documents de travail internes"
+   }
+  ],
+  "display_summary": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+  "fields": {
+   "fine_location": {
+    "evidence": "La Communauté de communes Yvetot Normandie, située en Seine-Maritime.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Seine-Maritime"
+   },
+   "impact": {
+    "evidence": "Les fichiers que nous avons pu vérifier montrent que l’archive contient à la fois des documents administratifs classiques et des éléments plus internes.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "Diffusion de documents administratifs internes, comprenant des détails sur les travaux de commissions."
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [
+   "threat_actor"
+  ],
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-07",
+    "event": "Publication de l'archive de documents",
+    "evidence": "Un hacker se présentant sous le pseudonyme lazymean10 a publié ce 7 septembre 2026 plusieurs liens permettant de télécharger une archive qu’il présente comme provenant de la collectivité.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-A11BA9A22689": {
   "affected": [
    {
@@ -8336,17 +9052,7 @@
     "value": 20316
    }
   ],
-  "attack_flow": [
-   {
-    "action": "exploitation d'une faille IDOR",
-    "evidence": "combinée à une faille IDOR donnant accès à une base de données Odoo mal configurée.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "confirmed"
-   }
-  ],
+  "attack_flow": [],
   "claims": [
    {
     "actor": "",
@@ -8568,15 +9274,6 @@
     ],
     "status": "confirmed",
     "value": "Aveyron"
-   },
-   "impact": {
-    "evidence": "les données de plus de 20 000 personnes exposées.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "confirmed",
-    "value": "exposition des données personnelles de plus de 20 000 personnes"
    },
    "threat_actor": {
     "evidence": "Le pirate ChimeraZ revendique les données de 20 316 personnes ainsi que près de 1 500 documents PDF.",
@@ -8939,6 +9636,15 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "unknown"
+   },
+   {
+    "action": "publication de données revendiquées",
+    "evidence": "Le 7 septembre 2026, un utilisateur d’un forum cybercriminel a publié une base de données qu’il affirme provenir de Jinko.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
    }
   ],
   "claims": [
@@ -9338,12 +10044,13 @@
     "value": "3,7 Go"
    },
    "impact": {
-    "source": "CYBERATTAQUE_ORG",
+    "evidence": "la fuite revendiquée contre Jinko.care apparaît particulièrement sensible en raison de la nature des informations qui seraient concernées.",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "FRENCHBREACHES"
     ],
-    "status": "reported",
-    "value": "chantage, ingénierie sociale, campagnes de phishing"
+    "status": "claimed",
+    "value": "exposition de données médicales et personnelles sensibles"
    },
    "initial_access": {
     "evidence": "Leur présence ne permet pas, à elle seule, de déterminer si l’accès résulte d’une mauvaise configuration, d’identifiants compromis ou d’une autre faille.",
@@ -10364,7 +11071,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "status": "reported",
     "value": "commentaires"
@@ -10372,7 +11080,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "status": "reported",
     "value": "factures"
@@ -10380,7 +11089,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "status": "unknown",
     "value": "noms et prénoms"
@@ -10396,7 +11106,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "status": "unknown",
     "value": "numéros de téléphone"
@@ -10404,7 +11115,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "BONJOURLAFUITE"
     ],
     "status": "unknown",
     "value": "adresses postales"
@@ -10432,6 +11144,14 @@
     ],
     "status": "unknown",
     "value": "facturation"
+   },
+   {
+    "source": "BONJOURLAFUITE",
+    "sources": [
+     "BONJOURLAFUITE"
+    ],
+    "status": "unknown",
+    "value": "Historique des devis"
    }
   ],
   "datasets": [
@@ -13924,6 +14644,54 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-DD17DC78C96C": {
+  "affected": [],
+  "attack_flow": [],
+  "claims": [],
+  "data_types": [
+   {
+    "source": "BONJOURLAFUITE",
+    "sources": [
+     "BONJOURLAFUITE"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "BONJOURLAFUITE",
+    "sources": [
+     "BONJOURLAFUITE"
+    ],
+    "status": "unknown",
+    "value": "Genre"
+   },
+   {
+    "source": "BONJOURLAFUITE",
+    "sources": [
+     "BONJOURLAFUITE"
+    ],
+    "status": "unknown",
+    "value": "Fonction"
+   },
+   {
+    "source": "BONJOURLAFUITE",
+    "sources": [
+     "BONJOURLAFUITE"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "",
+  "fields": {},
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-DF5C519783E8": {
   "affected": [],
   "attack_flow": [],
@@ -14600,6 +15368,284 @@
     ],
     "status": "unknown",
     "value": "qilin"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-EE0E8F96C169": {
+  "affected": [
+   {
+    "evidence": "Selon les informations et les échantillons obtenus par FrenchBreaches, la fuite représenterait environ 270 000 comptes liés à la plateforme, auxquels s’ajouteraient près de 5 000 comptes de responsables de structures contenant des informations plus détaillées.",
+    "raw": "5 000 comptes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "unit": "accounts",
+    "value": 5000
+   },
+   {
+    "evidence": "Selon les informations et les échantillons obtenus par FrenchBreaches, la fuite représenterait environ 270 000 comptes liés à la plateforme, auxquels s’ajouteraient près de 5 000 comptes de responsables de structures contenant des informations plus détaillées.",
+    "raw": "270 000 comptes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "unit": "accounts",
+    "value": 270000
+   },
+   {
+    "evidence": "L’incident avait touché 62 500 jeunes volontaires et 87 000 parents, soit près de 150 000 personnes.",
+    "raw": "150 000 personnes",
+    "semantic": "unspecified",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "unit": "people",
+    "value": 150000
+   }
+  ],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon les informations et les échantillons obtenus par FrenchBreaches, la fuite représenterait environ 270 000 comptes liés à la plateforme, auxquels s’ajouteraient près de 5 000 comptes de responsables de structures contenant des informations plus détaillées.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "270000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon les informations et les échantillons obtenus par FrenchBreaches, la fuite représenterait environ 270 000 comptes liés à la plateforme, auxquels s’ajouteraient près de 5 000 comptes de responsables de structures contenant des informations plus détaillées.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "5000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Cyberattaque contre le Service national universel : environ 275 000 comptes auraient été compromis",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "affected_count",
+    "unit": "accounts",
+    "value": "275000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’incident avait touché 62 500 jeunes volontaires et 87 000 parents, soit près de 150 000 personnes.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "affected_count",
+    "unit": "people",
+    "value": "150000"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et numéros de téléphone concernés",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Noms, e-mails et numéros de téléphone concernés",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "prénom ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "identifiants de cohortes ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Pour les jeunes concernés, les données dérobées comprenaient notamment les noms, prénoms, dates de naissance, adresses postales et adresses e-mail.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Pour les jeunes concernés, les données dérobées comprenaient notamment les noms, prénoms, dates de naissance, adresses postales et adresses e-mail.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "dates de naissance"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "dates de naissance"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "plateforme SNU"
+   }
+  ],
+  "display_summary": "Cyberattaque contre le Service national universel, environ 275 000 comptes compromis.",
+  "fields": {
+   "initial_access": {
+    "evidence": "Il revendique l’exploitation d’une vulnérabilité de type IDOR.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "vulnerability_exploitation"
+   },
+   "threat_actor": {
+    "evidence": "revendiquée par LunarisSec",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "LunarisSec"
    }
   },
   "quality_alerts": [],
