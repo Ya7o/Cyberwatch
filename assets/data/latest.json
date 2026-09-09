@@ -4,6 +4,69 @@
   "credentials_or_secrets_exposed": false,
   "data_exposure": {
    "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "numéros de téléphone",
+    "adresses postales",
+    "noms et prénoms",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-09T07:52:06.515693+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-72E15EC21567",
+  "items": 1,
+  "last_seen": "2026-09-09T07:52:06.515693+04:00",
+  "location": "France métropolitaine",
+  "org": "Proshop FFT",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/proshop-fft-mtt46t1ddrdidq2nzgd"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT, plate-forme de la Fédération Française de Tennis.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/proshop-fft-mtt46t1ddrdidq2nzgd"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
    "high_sensitivity_data_exposed": true,
    "personal_data_exposed": true,
    "personal_data_types": [
@@ -148,6 +211,241 @@
   },
   "urls": [
    "https://frenchbreaches.com/alertes/medikwestindies-mtsio3ufjvj81y6m5ai"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants",
+    "données bancaires",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires",
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-09T07:52:06.515693+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-2AF4C7544CC3",
+  "items": 2,
+  "last_seen": "2026-09-09T07:52:06.515693+04:00",
+  "location": "France métropolitaine",
+  "org": "Aroma-Zone",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires",
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/aroma-zone-une-cyberattaque-chez-shipup-expose-les-donnees-de-clients/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/aroma-zone-shipup-mtt6j96rnh5ec06x7w"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Aroma-Zone est affectée par la cyberattaque contre son prestataire Shipup, exposant des données clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Aroma-Zone est affectée par la cyberattaque contre son prestataire Shipup, exposant des données clients.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/aroma-zone-shipup-mtt6j96rnh5ec06x7w",
+   "https://www.cyberattaque.org/aroma-zone-une-cyberattaque-chez-shipup-expose-les-donnees-de-clients/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-09T07:52:06.515693+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-09D2AFD7707B",
+  "items": 2,
+  "last_seen": "2026-09-09T07:52:06.515693+04:00",
+  "location": "France métropolitaine",
+  "org": "Financière d'Uzès",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Financial Services",
+   "evidence_url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/financière-d-uzès",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/financiere-duzes-70-go-de-donnees-volees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/financière-d-uzès"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "La Financière d’Uzès a déclaré avoir subi une cyberattaque avec vol potentiel de 70 Go de données.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Financière d'Uzès revendiqué par Panzer",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/financière-d-uzès",
+   "https://www.cyberattaque.org/financiere-duzes-70-go-de-donnees-volees-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "noms et prénoms",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-09T07:52:06.515693+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-06870EC77814",
+  "items": 2,
+  "last_seen": "2026-09-09T07:52:06.515693+04:00",
+  "location": "France métropolitaine",
+  "org": "Vision2i",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/vision2i-une-cyberattaque-expose-une-base-de-contacts-de-son-site-wordpress/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/vision2i-mtt59zu9f60dfx10m5g"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une cyberattaque sur Vision2i expose une base de contacts de son site WordPress.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Vision2i.fr revendique une fuite de données de contacts sur WordPress par une hackeuse nommée Sophia.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/vision2i-mtt59zu9f60dfx10m5g",
+   "https://www.cyberattaque.org/vision2i-une-cyberattaque-expose-une-base-de-contacts-de-son-site-wordpress/"
   ],
   "vulnerable_people_data_exposed": false
  },

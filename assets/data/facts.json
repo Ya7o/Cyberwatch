@@ -661,6 +661,503 @@
   "version": 3,
   "vulnerabilities": []
  },
+ "INC-06870EC77814": {
+  "affected": [],
+  "attack_flow": [
+   {
+    "action": "revendiquer l'attaque",
+    "evidence": "revendiquée ce 8 septembre 2026 par le hacker Sophia.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un extrait de base de données attribué au site vision2i.fr a été diffusé, avec notamment des  adresses e-mail et des informations liées à des contacts enregistrés sur le site WordPress .",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les champs présents dans la base correspondent à ceux utilisés par  Email Subscribers & Newsletters  pour enregistrer ses contacts : identifiant WordPress, prénom, nom, e-mail, source, formulaire d’origine, statut, désinscription, date de création ou encore différents indicateurs de validation de l’adresse.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les champs présents dans la base correspondent à ceux utilisés par  Email Subscribers & Newsletters  pour enregistrer ses contacts : identifiant WordPress, prénom, nom, e-mail, source, formulaire d’origine, statut, désinscription, date de création ou encore différents indicateurs de validation de l’adresse.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Vision2i : une cyberattaque expose une base de contacts de son site WordPress",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "system",
+    "unit": "",
+    "value": "WordPress"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Un extrait de base de données attribué au site vision2i.fr a été diffusé, avec notamment des adresses e-mail et des informations liées à des contacts enregistrés sur le site WordPress.",
+    "scope": "base de données",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail et informations liées à des contacts"
+   },
+   {
+    "actor": "",
+    "date": "2026-09-07",
+    "evidence": "Le 7 septembre 2026, soit seulement un jour avant la publication visant Vision2i, la vulnérabilité CVE-2026-12757 a été rendue publique dans ce même plugin.",
+    "scope": "plugin Icegram Express",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "vulnerability",
+    "unit": "",
+    "value": "CVE-2026-12757"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les données publiées semblent directement provenir de la table de contacts du plugin Icegram Express.",
+    "scope": "table de contacts",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "inconnue"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "En revanche, rien ne permet encore d’affirmer que cette CVE est à l’origine de la cyberattaque.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "hypothesis",
+    "type": "impact",
+    "unit": "",
+    "value": "compromission via CVE-2026-12757"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une injection SQL référencée  CVE-2026-1651  affectait les versions jusqu’à la 5.9.16, mais nécessitait un compte administrateur et apparaît donc moins crédible comme point d’entrée initial.",
+    "scope": "Vulnérabilité",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "CVE-2026-1651"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Une autre faille publiée fin août,  CVE-2026-81290 , permettait une injection de script sans authentification dans les versions jusqu’à la 5.9.33.",
+    "scope": "Vulnérabilité",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "CVE-2026-81290"
+   },
+   {
+    "evidence": "Vision2i est visé par une cyberattaque revendiquée ce 8 septembre 2026 par le hacker Sophia.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "Sophia"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "base de contacts"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base de contacts associée à Icegram Express"
+   }
+  ],
+  "display_summary": "Une cyberattaque sur Vision2i expose une base de contacts de son site WordPress.",
+  "fields": {
+   "cvss": {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "CVSS de  6,5/10"
+   },
+   "threat_actor": {
+    "evidence": "revendiquée ce 8 septembre 2026 par le hacker Sophia.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "Sophia"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "WordPress"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-09-08",
+    "event": "cyberattaque revendiquée par Sophia",
+    "evidence": "Vision2i est visé par une cyberattaque revendiquée ce 8 septembre 2026 par le hacker Sophia.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-09-07",
+    "event": "Publication de CVE-2026-12757",
+    "evidence": "Le 7 septembre 2026, soit seulement un jour avant la publication visant Vision2i, la vulnérabilité CVE-2026-12757 a été rendue publique dans ce même plugin.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed"
+   },
+   {
+    "date": "2026-09-08",
+    "event": "Un échantillon publié le 8 septembre 2026 contient notamment des adresses e-mail et différentes informations associées à des contacts enregistrés sur le site WordPress.**",
+    "evidence": "Un échantillon publié le 8 septembre 2026 contient notamment des adresses e-mail et différentes informations associées à des contacts enregistrés sur le site WordPress.**",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-08",
+    "event": "Le 8 septembre 2026, une utilisatrice d’un forum cybercriminel utilisant le pseudonyme Sophia a publié des données qu’elle présente comme provenant de Vision2i.fr.",
+    "evidence": "Le 8 septembre 2026, une utilisatrice d’un forum cybercriminel utilisant le pseudonyme Sophia a publié des données qu’elle présente comme provenant de Vision2i.fr.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-07",
+    "event": "Le 7 septembre 2026, soit la veille de la revendication visant Vision2i, une vulnérabilité référencée CVE-2026-12757 a été rendue publique concernant le plugin Icegram Express.",
+    "evidence": "Le 7 septembre 2026, soit la veille de la revendication visant Vision2i, une vulnérabilité référencée CVE-2026-12757 a été rendue publique concernant le plugin Icegram Express.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-08",
+    "event": "la publication est datée du 8 septembre 2026 ;",
+    "evidence": "la publication est datée du 8 septembre 2026 ;",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-09-08",
+    "event": "Une hackeuse utilisant le pseudonyme Sophia revendique le 8 septembre 2026 une fuite de données concernant Vision2i.fr et publie un échantillon contenant des informations associées à des contacts du site WordPress.",
+    "evidence": "Une hackeuse utilisant le pseudonyme Sophia revendique le 8 septembre 2026 une fuite de données concernant Vision2i.fr et publie un échantillon contenant des informations associées à des contacts du site WordPress.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "CVE-2026-12757"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "CVE-2026-1651"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "value": "CVE-2026-81290"
+   }
+  ]
+ },
+ "INC-09D2AFD7707B": {
+  "affected": [],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Financière d’Uzès : 70 Go de données volées après une cyberattaque",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_volume",
+    "unit": "",
+    "value": "70.0"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "L’enjeu sera désormais de déterminer si les  70 Go revendiqués  contiennent effectivement des données clients et si la Financière d’Uzès confirme l’incident.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   },
+   {
+    "actor": "groupe Panzer",
+    "date": "2026-09-08",
+    "evidence": "Les cybercriminels affirment avoir récupéré environ 70 Go de données.",
+    "scope": "data volée",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "affected_count",
+    "unit": "",
+    "value": "70"
+   },
+   {
+    "actor": "groupe Panzer",
+    "date": "2026-09-08",
+    "evidence": "Le volume de 70 Go reste donc une revendication du groupe.",
+    "scope": "données volées",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "data_volume",
+    "unit": "",
+    "value": "70"
+   }
+  ],
+  "data_types": [],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "données clients"
+   }
+  ],
+  "display_summary": "La Financière d’Uzès a déclaré avoir subi une cyberattaque avec vol potentiel de 70 Go de données.",
+  "fields": {
+   "data_volume": {
+    "evidence": "Financière d’Uzès : 70 Go de données volées après une cyberattaque",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "70 Go"
+   },
+   "discovered_date": {
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "2026-09-08"
+   },
+   "fine_location": {
+    "evidence": "La société dispose de bureaux à Paris, Lyon, Lille, Cannes, Annecy-le-Vieux et Saint-Étienne.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Paris"
+   },
+   "threat_actor": {
+    "evidence": "Panzer",
+    "source": "RANSOMWARE_LIVE",
+    "sources": [
+     "RANSOMWARE_LIVE"
+    ],
+    "status": "unknown",
+    "value": "Panzer"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [],
+  "timeline": [
+   {
+    "date": "2026-09-08",
+    "event": "La Financière d’Uzès , maison française spécialisée dans la gestion de patrimoine et les services d’investissement, apparaît ce  8 septembre 2026  parmi les victimes revendiquées par le groupe de ransomware  Panzer .",
+    "evidence": "La Financière d’Uzès , maison française spécialisée dans la gestion de patrimoine et les services d’investissement, apparaît ce  8 septembre 2026  parmi les victimes revendiquées par le groupe de ransomware  Panzer .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed"
+   },
+   {
+    "date": "2026-08-01",
+    "event": "debuts des revendications de Panzer",
+    "evidence": "Les premières revendications suivies publiquement remontent à août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": []
+ },
  "INC-15A9F3AC6AC8": {
   "affected": [],
   "attack_flow": [],
@@ -1880,6 +2377,426 @@
   ],
   "version": 3,
   "vulnerabilities": []
+ },
+ "INC-2AF4C7544CC3": {
+  "affected": [],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des  noms, prénoms, adresses e-mail et numéros de téléphone  ont pu être consultés par des personnes non autorisées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses e-mail"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des  noms, prénoms, adresses e-mail et numéros de téléphone  ont pu être consultés par des personnes non autorisées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des  noms, prénoms, adresses e-mail et numéros de téléphone  ont pu être consultés par des personnes non autorisées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Selon Aroma-Zone, Shipup indique avoir  corrigé la vulnérabilité exploitée , révoqué les accès compromis et renouvelé les identifiants ainsi que les clés d’accès concernés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms, prénoms, adresses e-mail, numéros de téléphone"
+   },
+   {
+    "actor": "Aroma-Zone",
+    "date": "",
+    "evidence": "Aroma-Zone confirme que ses propres systèmes n’ont pas été piratés.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "impact",
+    "unit": "",
+    "value": "exposition de données personnelles"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Le principal risque est désormais celui du phishing, du smishing et des appels frauduleux.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "risque de phishing"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "la cyberattaque ne vise pas directement l’infrastructure d’Aroma-Zone.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "negated",
+    "type": "system",
+    "unit": "",
+    "value": "systèmes d'information d'Aroma-Zone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "--- Shipup touché par la campagne contre Metabase Créée en 2016, Shipup fournit aux sites e-commerce une plateforme permettant de gérer le suivi des colis et les communications envoyées aux consommateurs après une commande.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ces messages peuvent chercher à récupérer des identifiants, mots de passe ou informations bancaires.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les données bancaires ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Cyberattaque chez Shipup : des données clients de Micromania et Easypara exposées via la faille Metabase Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce, a été touchée par la campagne de cyberattaques ayant exploité une vulnérabilité critique dans Metabase.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "system",
+    "unit": "",
+    "value": "Metabase"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Cyberattaque chez Shipup : des données clients de Micromania et Easypara exposées via la faille Metabase Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce, a été touchée par la campagne de cyberattaques ayant exploité une vulnérabilité critique dans Metabase.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "dataset",
+    "unit": "",
+    "value": "données clients"
+   },
+   {
+    "evidence": "Cette notification confirme qu’Aroma-Zone fait bien partie des entreprises dont certains clients ont été affectés par la cyberattaque contre Shipup.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "actor",
+    "value": "Shipup"
+   },
+   {
+    "evidence": "Aroma-Zone informe certains de ses clients qu’ils sont concernés par la cyberattaque ayant touché son prestataire Shipup.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "type": "third_party",
+    "value": "prestataire"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "adresses e-mail"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "identifiants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données bancaires"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
+   }
+  ],
+  "datasets": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "informations de contact telles que noms, prénoms, adresses e-mail, numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données clients"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "Données personnelles des clients"
+   }
+  ],
+  "display_summary": "Aroma-Zone est affectée par la cyberattaque contre son prestataire Shipup, exposant des données clients.",
+  "fields": {
+   "evolution": {
+    "evidence": "Shipup dit avoir corrigé la vulnérabilité exploitée.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "La vulnérabilité exploitée a été corrigée par Shipup."
+   },
+   "impact": {
+    "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "Des données de contact de clients ont été exposées."
+   },
+   "initial_access": {
+    "evidence": "incident illustre une nouvelle fois l’effet domino que peut provoquer la compromission d’un prestataire",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "confirmed",
+    "value": "third_party"
+   },
+   "third_party": {
+    "evidence": "Aroma-Zone informe certains de ses clients qu’un incident de sécurité ayant touché Shipup...",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "Shipup"
+   },
+   "threat_actor": {
+    "evidence": "prestataire affirme",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "prestataire"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "Metabase"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-07-31",
+    "event": "accès frauduleux",
+    "evidence": "Les accès frauduleux se seraient produits entre le 31 juillet et le 17 août 2026.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-08-17",
+    "event": "fin des accès non autorisés",
+    "evidence": "Les accès non autorisés ont été bloqués.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Les premiers correctifs ont été publiés le 6 août 2026.",
+    "evidence": "Les premiers correctifs ont été publiés le 6 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité.",
+    "evidence": "Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   }
+  ],
+  "version": 3,
+  "vulnerabilities": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "value": "CVE-2026-72898"
+   }
+  ]
  },
  "INC-2C5CEAE9E3AC": {
   "affected": [
@@ -7292,6 +8209,243 @@
     ],
     "status": "unknown",
     "value": "compromission de données personnelles de clients"
+   }
+  },
+  "quality_alerts": [],
+  "rejected_fields": [],
+  "systems": [],
+  "timeline": [],
+  "version": 3,
+  "vulnerabilities": []
+ },
+ "INC-72E15EC21567": {
+  "affected": [],
+  "attack_flow": [],
+  "claims": [
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "# Proshop FFT : LunarisSec revendique la fuite de 118 000 commandes de la Fédération Française de Tennis",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "data_type",
+    "unit": "",
+    "value": "informations de commandes"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Leur examen montre la présence de données commerciales et transactionnelles, mais également de noms et prénoms, adresses postales et numéros de téléphone.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "numéros de téléphone"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Leur examen montre la présence de données commerciales et transactionnelles, mais également de noms et prénoms, adresses postales et numéros de téléphone.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "adresses postales"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Leur examen montre la présence de données commerciales et transactionnelles, mais également de noms et prénoms, adresses postales et numéros de téléphone.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "noms et prénoms"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un identifiant de commande ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "références de réservation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les informations de facturation ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "facturation"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "les montants de la commande ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "montants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il ne serait donc pas justifié, à partir de ces seuls échantillons, d’affirmer que des données bancaires ou des identifiants de connexion figurent dans la fuite.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Il ne serait donc pas justifié, à partir de ces seuls échantillons, d’affirmer que des données bancaires ou des identifiants de connexion figurent dans la fuite.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "hypothesis",
+    "type": "data_type",
+    "unit": "",
+    "value": "données bancaires"
+   },
+   {
+    "evidence": "Le groupe cybercriminel LunarisSec revendique une fuite de données concernant Proshop FFT, la place de marché de la Fédération Française de Tennis.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "cybercriminel"
+   },
+   {
+    "evidence": "Le groupe LunarisSec revendique une compromission de Proshop FFT, la plateforme de commerce en ligne exploitée par la Fédération Française de Tennis.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "type": "actor",
+    "value": "LunarisSec"
+   }
+  ],
+  "data_types": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "informations de commandes"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "numéros de téléphone"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "adresses postales"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "références de réservation"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "facturation"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "montants"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "identifiants"
+   }
+  ],
+  "datasets": [],
+  "display_summary": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT, plate-forme de la Fédération Française de Tennis.",
+  "fields": {
+   "threat_actor": {
+    "evidence": "revendiqué par LunarisSec.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "value": "LunarisSec"
    }
   },
   "quality_alerts": [],
