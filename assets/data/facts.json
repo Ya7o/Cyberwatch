@@ -712,6 +712,20 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "identifiants techniques"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les champs présents dans la base correspondent à ceux utilisés par  Email Subscribers & Newsletters  pour enregistrer ses contacts : identifiant WordPress, prénom, nom, e-mail, source, formulaire d’origine, statut, désinscription, date de création ou encore différents indicateurs de validation de l’adresse.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
@@ -879,6 +893,15 @@
   ],
   "display_summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i.",
   "fields": {
+   "impact": {
+    "evidence": "Des adresses e-mail et données de contacts exposées.",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "value": "Des adresses e-mail et données de contacts exposées."
+   },
    "threat_actor": {
     "evidence": "revendiquée ce 8 septembre 2026 par le hacker Sophia.",
     "source": "CYBERATTAQUE_ORG",
@@ -2314,7 +2337,17 @@
  },
  "INC-2AF4C7544CC3": {
   "affected": [],
-  "attack_flow": [],
+  "attack_flow": [
+   {
+    "action": "accès non autorisé aux données personnelles",
+    "evidence": "un tiers non autorisé a pu accéder à certaines données... les accès se seraient produits entre le 31 juillet et le 17 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed"
+   }
+  ],
   "claims": [
    {
     "actor": "",
@@ -2568,7 +2601,7 @@
     "value": "Données personnelles des clients"
    }
   ],
-  "display_summary": "Aroma-Zone est affectée par la cyberattaque contre son prestataire Shipup, exposant des données clients.",
+  "display_summary": "Aroma-Zone informe que des données de clients ont été exposées lors d'une cyberattaque sur son prestataire Shipup.",
   "fields": {
    "evolution": {
     "evidence": "Shipup dit avoir corrigé la vulnérabilité exploitée.",
@@ -5755,7 +5788,16 @@
     "value": "données personnelles"
    }
   ],
-  "datasets": [],
+  "datasets": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "base associée à Medikwestindies.fr"
+   }
+  ],
   "display_summary": "Revendication publiée en 2026 à partir d’une capture datée du 3 juin 2017 concernant Medikwestindies.",
   "fields": {
    "threat_actor": {
@@ -6201,7 +6243,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "SAD’S Interim victime d'une cyberattaque exposant données sensibles, revendiquée par le groupe Rhysida.",
+  "display_summary": "La cyberattaque de SAD’S Interim expose des données sensibles, y compris des passeports et des informations de paie, revendiquées par le groupe Rhysida.",
   "fields": {
    "discovered_date": {
     "source": "RANSOMWARE_LIVE",
@@ -8184,6 +8226,20 @@
     "status": "unknown",
     "type": "data_type",
     "unit": "",
+    "value": "références de commande"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "un identifiant de commande ;",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
     "value": "références de réservation"
    },
    {
@@ -8322,7 +8378,7 @@
    }
   ],
   "datasets": [],
-  "display_summary": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT, plate-forme de la Fédération Française de Tennis.",
+  "display_summary": "LunarisSec revendique une fuite de 118 000 commandes de Proshop FFT, place de marché de la Fédération Française de Tennis.",
   "fields": {
    "threat_actor": {
     "evidence": "revendiqué par LunarisSec.",
@@ -9822,7 +9878,7 @@
     "value": "documents de travail internes"
    }
   ],
-  "display_summary": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+  "display_summary": "Des documents administratifs de la Communauté de communes Yvetot Normandie ont été diffusés sur le darkweb.",
   "fields": {
    "fine_location": {
     "evidence": "La Communauté de communes Yvetot Normandie, située en Seine-Maritime.",
@@ -10587,10 +10643,9 @@
  "INC-A3D0A851E662": {
   "affected": [
    {
-    "evidence": "3 552 comptes actuels",
+    "evidence": "L’ensemble comprend  3 552 comptes actuels , mais également plusieurs centaines de milliers d’enregistrements historiques et techniques.",
     "raw": "3 552 comptes",
-    "scope": "actuels",
-    "semantic": "actuels",
+    "semantic": "unspecified",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -10638,17 +10693,8 @@
   ],
   "attack_flow": [
    {
-    "action": "accès à l'environnement de Jinko",
-    "evidence": "le hacker DaOnlySpark affirme avoir accédé à son environnement",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown"
-   },
-   {
-    "action": "extraction de la base de données",
-    "evidence": "avant d’en extraire la base de données.",
+    "action": "accéder à l'environnement",
+    "evidence": "Le hacker DaOnlySpark affirme avoir accédé à son environnement le 5 septembre 2026.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -10799,8 +10845,22 @@
     "value": "informations de séjour"
    },
    {
-    "actor": "DaOnlySpark",
-    "date": "2026-09-05",
+    "actor": "",
+    "date": "",
+    "evidence": "L’inventaire comprend également  plus de 20 000 messages répartis dans environ 1 200 conversations.",
+    "scope": "Jinko",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "data_volume",
+    "unit": "",
+    "value": "20000"
+   },
+   {
+    "actor": "",
+    "date": "5 septembre 2026",
     "evidence": "Le hacker  DaOnlySpark  affirme avoir accédé à son environnement le  5 septembre 2026.",
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
@@ -10813,52 +10873,10 @@
     "value": "DaOnlySpark"
    },
    {
-    "actor": "",
+    "actor": "DaOnlySpark",
     "date": "",
-    "evidence": "L’inventaire comprend également  plus de 20 000 messages répartis dans environ 1 200 conversations.",
+    "evidence": "DaOnlySpark affirme avoir  copié les données puis supprimé le contenu accessible  dans l’environnement compromis.",
     "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_volume",
-    "unit": "",
-    "value": "20000"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Un espace de stockage contenant  plus de 2 600 fichiers  aurait également été extrait.",
-    "scope": "espace de stockage",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "data_volume",
-    "unit": "",
-    "value": "2600"
-   },
-   {
-    "actor": "",
-    "date": "",
-    "evidence": "Ces données peuvent être utilisées pour du chantage, de l’ingénierie sociale ou des campagnes de phishing extrêmement personnalisées.",
-    "scope": "",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported",
-    "type": "impact",
-    "unit": "",
-    "value": "chantage, ingénierie sociale, campagnes de phishing"
-   },
-   {
-    "actor": "Jinko",
-    "date": "",
-    "evidence": "Jinko présente justement son dispositif comme conforme au  RGPD et aux exigences d’hébergement des données de santé.",
-    "scope": "Jinko",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -10866,7 +10884,21 @@
     "status": "claimed",
     "type": "statement",
     "unit": "",
-    "value": "conforme au RGPD"
+    "value": "données supprimées"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Les éléments diffusés font toutefois apparaître des données provenant notamment de  Firestore et Firebase Storage.",
+    "scope": "",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "system",
+    "unit": "",
+    "value": "Firestore et Firebase Storage"
    },
    {
     "actor": "",
@@ -11039,7 +11071,7 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed",
-    "value": "base de données de patients"
+    "value": "base de données utilisateurs"
    },
    {
     "source": "FRENCHBREACHES",
@@ -11050,7 +11082,7 @@
     "value": "base clients"
    }
   ],
-  "display_summary": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
+  "display_summary": "Jinko victime d'une cyberattaque exposant les données de santé de plus de 3 500 personnes.",
   "fields": {
    "data_volume": {
     "evidence": "3,7 Go de données médicales et personnelles revendiqués",
@@ -11062,13 +11094,13 @@
     "value": "3,7 Go"
    },
    "impact": {
-    "evidence": "la fuite revendiquée contre Jinko.care apparaît particulièrement sensible en raison de la nature des informations qui seraient concernées.",
-    "source": "FRENCHBREACHES",
+    "evidence": "La diffusion publique de cette base constitue donc un incident particulièrement sensible.",
+    "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "FRENCHBREACHES"
+     "CYBERATTAQUE_ORG"
     ],
-    "status": "claimed",
-    "value": "exposition de données médicales et personnelles sensibles"
+    "status": "unknown",
+    "value": "exposition de données médicales sensibles"
    },
    "threat_actor": {
     "evidence": "DaOnlySpark  affirme",
@@ -11082,7 +11114,16 @@
   },
   "quality_alerts": [],
   "rejected_fields": [],
-  "systems": [],
+  "systems": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "value": "Firestore et Firebase Storage"
+   }
+  ],
   "timeline": [
    {
     "date": "2026-09-07",

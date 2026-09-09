@@ -59,7 +59,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Aroma-Zone est affectée par la cyberattaque contre son prestataire Shipup, exposant des données clients.",
+  "summary": "Aroma-Zone informe que des données de clients ont été exposées lors d'une cyberattaque sur son prestataire Shipup.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
@@ -269,7 +269,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT, plate-forme de la Fédération Française de Tennis.",
+  "summary": "LunarisSec revendique une fuite de 118 000 commandes de Proshop FFT, place de marché de la Fédération Française de Tennis.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
@@ -351,7 +351,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "SAD’S Interim victime d'une cyberattaque exposant données sensibles, revendiquée par le groupe Rhysida.",
+  "summary": "La cyberattaque de SAD’S Interim expose des données sensibles, y compris des passeports et des informations de paie, revendiquées par le groupe Rhysida.",
   "threat": "Ransomware",
   "threat_status": {
    "conflict": false,
@@ -577,11 +577,11 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+  "summary": "Des documents administratifs de la Communauté de communes Yvetot Normandie ont été diffusés sur le darkweb.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+   "evidence": "Des documents administratifs de la Communauté de communes Yvetot Normandie ont été diffusés sur le darkweb.",
    "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
    "sources": [
     "CYBERATTAQUE_ORG"
@@ -629,7 +629,7 @@
   "sector": "Santé",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "Jinko, plateforme française spécialisée dans l’accompagnement des personnes atteintes de cancer.",
+   "evidence": "Jinko, plateforme française spécialisée dans l’accompagnement des personnes atteintes de cancer, est touchée par une fuite de données particulièrement sensible.",
    "evidence_url": "https://www.cyberattaque.org/jinko-une-cyberattaque-expose-les-donnees-de-sante-de-plus-de-3-500-personnes/",
    "reason": "SEMANTIC_ACTIVITY_MATCH",
    "status": "inferred"
@@ -662,12 +662,12 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
-  "threat": "Fuite de données",
+  "summary": "Jinko victime d'une cyberattaque exposant les données de santé de plus de 3 500 personnes.",
+  "threat": "Intrusion",
   "threat_status": {
    "conflict": false,
-   "evidence": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
-   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "evidence": "Jinko : une cyberattaque expose les données de santé de plus de 3 500 personnes",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
    "sources": [
     "CYBERATTAQUE_ORG"
    ],
