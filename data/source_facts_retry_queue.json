@@ -1,4 +1,367 @@
 {
- "entries": [],
+ "entries": [
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Printemps  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  lors d’une cyberattaque ayant touché un prestataire chargé du suivi des commandes et des livraisons. Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone . \n\n\n\n Les éléments communiqués par l’enseigne correspondent directement à la  cyberattaque ayant touché Shipup , déjà documentée par Cyberattaque.org. Printemps figurait justement parmi les clients de la plateforme que nous avions identifiés dans notre précédent article consacré à   la cyberattaque contre Shipup et la faille Metabase  . \n\n\n\n   \n\n\n\n Des données ont bien été téléchargées \n\n\n\n La notification envoyée par Printemps apporte surtout une confirmation importante sur la réalité de l’exfiltration. Selon le prestataire, une  vulnérabilité affectant son outil d’analyse  a été exploitée par un tiers non autorisé. Des requêtes ont ensuite été exécutées sur ses bases de données et  certaines informations ont été téléchargées . \n\n\n\n Cette description correspond à l’incident touchant  Shipup et son environnement Metabase . Cyberattaque.org avait déjà documenté cette compromission, qui a également eu des conséquences chez d’autres grandes enseignes utilisant le prestataire. \n\n\n\n Printemps informé le 20 août \n\n\n\n Printemps indique avoir été informé de l’incident le  20 août 2026 . Le prestataire affirme avoir désactivé les accès vulnérables, révoqué les sessions actives, renouvelé les clés et identifiants concernés et renforcé ses contrôles d’accès. \n\n\n\n L’enseigne a ensuite  notifié la violation de données à la CNIL le 25 août . Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le  4 septembre 2026 . \n\n\n\n Noms, e-mails et téléphones exposés \n\n\n\n Les données concernées sont relativement limitées mais suffisantes pour permettre des attaques ciblées : \n\n\n\n \n  prénom  ; \n\n\n\n  nom  ; \n\n\n\n adresse e-mail ; \n\n\n\n numéro de téléphone. \n \n\n\n\n Printemps ne mentionne dans sa notification  aucun mot de passe, donnée bancaire ou information de paiement  parmi les données affectées. \n\n\n\n Un nouveau client de Shipup officiellement touché \n\n\n\n Le cas Printemps s’ajoute à ceux déjà identifiés autour de Shipup. Cyberattaque.org avait notamment documenté les conséquences de la même compromission chez  Easypara, Micromania et Aroma-Zone . \n\n\n\n Le scénario illustre une nouvelle fois l’ effet domino provoqué par la compromission d’un prestataire commun  : les systèmes propres des enseignes peuvent rester intacts tandis que des données de leurs clients sont exposées depuis un service tiers utilisé pour gérer une partie de leurs opérations. \n\n\n\n Attention aux faux messages liés aux commandes \n\n\n\n Printemps estime que le principal risque concerne les  e-mails, SMS et appels frauduleux . Les données exposées peuvent permettre à un attaquant de se faire passer pour une enseigne connue et de réclamer un paiement, un code de validation ou des coordonnées bancaires. \n\n\n\n Le contexte de la fuite rend notamment crédibles de faux messages relatifs à une  commande, une livraison ou un colis . Printemps indique ne connaître à ce jour aucune utilisation frauduleuse des données concernées.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-09",
+    "sector": "",
+    "source_item_id": "3054",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [
+       {
+        "date": "",
+        "evidence": "Printemps : les données clients dérobées après une cyberattaque chez Shipup",
+        "status": "unknown",
+        "value": "données clients"
+       }
+      ],
+      "affected_systems": [
+       {
+        "date": "",
+        "evidence": "Printemps figurait justement parmi les clients de la plateforme que nous avions identifiés dans notre précédent article consacré à   la cyberattaque contre Shipup et la faille Metabase  .",
+        "status": "unknown",
+        "value": "Metabase"
+       }
+      ],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Printemps  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  lors d’une cyberattaque ayant touché un prestataire chargé du suivi des commandes et des livraisons.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Le prestataire affirme avoir désactivé les accès vulnérables, révoqué les sessions actives, renouvelé les clés et identifiants concernés et renforcé ses contrôles d’accès.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les données exposées peuvent permettre à un attaquant de se faire passer pour une enseigne connue et de réclamer un paiement, un code de validation ou des coordonnées bancaires.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "Printemps figurait justement parmi les clients de la plateforme que nous avions identifiés dans notre précédent article consacré à   la cyberattaque contre Shipup et la faille Metabase  .",
+        "status": "unknown",
+        "type": "system",
+        "value": "Metabase"
+       },
+       {
+        "date": "",
+        "evidence": "Printemps : les données clients dérobées après une cyberattaque chez Shipup",
+        "status": "unknown",
+        "type": "dataset",
+        "value": "données clients"
+       },
+       {
+        "date": "2026-09-04",
+        "evidence": "Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le  4 septembre 2026 .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le  4 septembre 2026 ."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Printemps  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  lors d’une cyberattaque ayant touché un prestataire chargé du suivi des commandes et des livraisons.",
+        "status": "unknown",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone .",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone .",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations concernées comprennent les  noms, prénoms, adresses e-mail et numéros de téléphone .",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Le prestataire affirme avoir désactivé les accès vulnérables, révoqué les sessions actives, renouvelé les clés et identifiants concernés et renforcé ses contrôles d’accès.",
+        "status": "claimed",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les données exposées peuvent permettre à un attaquant de se faire passer pour une enseigne connue et de réclamer un paiement, un code de validation ou des coordonnées bancaires.",
+        "status": "unknown",
+        "value": "données bancaires"
+       }
+      ],
+      "data_volumes": [],
+      "profile": {
+       "chars": 3466,
+       "claims": 8,
+       "dates": 2,
+       "hypotheses": 0,
+       "numbers": 0,
+       "sentences": 33
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-09-04",
+        "event": "Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le  4 septembre 2026 .",
+        "evidence": "Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le  4 septembre 2026 .",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Printemps informe certains de ses clients qu’une partie de leurs données personnelles a été consultée et extraite sans…",
+    "threat": "",
+    "title": "Printemps : les données clients dérobées après une cyberattaque chez Shipup",
+    "url": "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
+   },
+   "first_queued_at": "2026-09-09T12:00:20.218525+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-09T15:59:59.832315+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-5d429a6cb36dada4",
+    "Location": "Inconnu",
+    "Organisation_Key": "printemps",
+    "Organisation_Raw": "Printemps",
+    "Published_Date": "2026-09-09",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "3054",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Printemps : les données clients dérobées après une cyberattaque chez Shipup",
+    "URL": "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
+   },
+   "key": "ITM-5d429a6cb36dada4:c32a1914d7e39f7cf8c30310f1235ddbf608af81bea232420b113fe197a6cad7",
+   "last_queued_at": "2026-09-09T12:00:27.219016+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match",
+    "attack_date",
+    "discovered_date",
+    "initial_access",
+    "vulnerabilities"
+   ],
+   "reason": "SEMANTIC_MISS"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Citadium  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  à la suite d’une cyberattaque ayant touché son prestataire chargé du suivi des commandes et des livraisons. L’incident concerne  Shipup , dont Cyberattaque.org avait déjà détaillé la compromission dans   un précédent article consacré à la cyberattaque contre Shipup  . \n\n\n\n Citadium indique avoir été informé de l’incident le  20 août 2026 . L’enseigne confirme que des requêtes ont été exécutées sur les bases de données du prestataire et que  certaines informations ont effectivement été téléchargées . \n\n\n\n   \n\n\n\n Une vulnérabilité exploitée sur l’outil d’analyse du prestataire \n\n\n\n Selon la notification envoyée aux clients, une  vulnérabilité affectant l’outil d’analyse de Shipup  a été exploitée par un tiers non autorisé. Cette compromission a permis l’accès à certaines bases contenant notamment des informations transmises par Citadium pour assurer le suivi de ses commandes. \n\n\n\n Shipup indique avoir depuis  désactivé les accès vulnérables, révoqué les sessions actives, renouvelé les clés et identifiants concernés  et renforcé ses contrôles d’accès. L’incident est présenté comme désormais résolu. \n\n\n\n Noms, e-mails et téléphones exposés \n\n\n\n Les informations potentiellement compromises sont : \n\n\n\n \n  prénom  ; \n\n\n\n  nom  ; \n\n\n\n adresse e-mail ; \n\n\n\n numéro de téléphone. \n \n\n\n\n La notification ne mentionne aucun mot de passe, numéro de carte bancaire ou autre donnée de paiement parmi les informations concernées. \n\n\n\n La CNIL notifiée le 25 août \n\n\n\n Citadium indique avoir engagé les démarches nécessaires auprès de la  CNIL  et avoir officiellement notifié la violation de données le  25 août 2026 . Le message d’information aux personnes concernées a été envoyé le 8 septembre. \n\n\n\n Le risque de faux messages de livraison \n\n\n\n Le principal risque concerne désormais les  campagnes de phishing, SMS frauduleux et appels malveillants . Le contexte de Shipup permet notamment à un attaquant de construire des messages crédibles autour d’une commande, d’un colis ou d’une livraison. \n\n\n\n Citadium précise ne connaître à ce jour  aucune utilisation frauduleuse des données exposées . Cette nouvelle notification confirme néanmoins une nouvelle enseigne touchée par l’incident Shipup, après plusieurs autres marques dont les données clients transitaient également par le prestataire.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-09",
+    "sector": "",
+    "source_item_id": "3052",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [
+       {
+        "date": "",
+        "evidence": "Cette nouvelle notification confirme néanmoins une nouvelle enseigne touchée par l’incident Shipup, après plusieurs autres marques dont les données clients transitaient également par le prestataire.",
+        "status": "confirmed",
+        "value": "données clients"
+       }
+      ],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Citadium  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  à la suite d’une cyberattaque ayant touché son prestataire chargé du suivi des commandes et des livraisons.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Shipup indique avoir depuis  désactivé les accès vulnérables, révoqué les sessions actives, renouvelé les clés et identifiants concernés  et renforcé ses contrôles d’accès.",
+        "status": "reported",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Noms, e-mails et téléphones exposés",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Noms, e-mails et téléphones exposés",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "prénom  ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Cette nouvelle notification confirme néanmoins une nouvelle enseigne touchée par l’incident Shipup, après plusieurs autres marques dont les données clients transitaient également par le prestataire.",
+        "status": "confirmed",
+        "type": "dataset",
+        "value": "données clients"
+       },
+       {
+        "date": "2026-08-25",
+        "evidence": "Citadium indique avoir engagé les démarches nécessaires auprès de la  CNIL  et avoir officiellement notifié la violation de données le  25 août 2026 .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "confirmed",
+        "value": "Citadium indique avoir engagé les démarches nécessaires auprès de la  CNIL  et avoir officiellement notifié la violation de données le  25 août 2026 ."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Citadium  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  à la suite d’une cyberattaque ayant touché son prestataire chargé du suivi des commandes et des livraisons.",
+        "status": "unknown",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Shipup indique avoir depuis  désactivé les accès vulnérables, révoqué les sessions actives, renouvelé les clés et identifiants concernés  et renforcé ses contrôles d’accès.",
+        "status": "reported",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Noms, e-mails et téléphones exposés",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Noms, e-mails et téléphones exposés",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "prénom  ;",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       }
+      ],
+      "data_volumes": [],
+      "profile": {
+       "chars": 2640,
+       "claims": 6,
+       "dates": 2,
+       "hypotheses": 0,
+       "numbers": 0,
+       "sentences": 26
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-08-25",
+        "event": "Citadium indique avoir engagé les démarches nécessaires auprès de la  CNIL  et avoir officiellement notifié la violation de données le  25 août 2026 .",
+        "evidence": "Citadium indique avoir engagé les démarches nécessaires auprès de la  CNIL  et avoir officiellement notifié la violation de données le  25 août 2026 .",
+        "status": "confirmed"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Citadium informe certains de ses clients qu’une partie de leurs données personnelles a été consultée et extraite sans…",
+    "threat": "",
+    "title": "Citadium : des informations clients récupérées lors de la cyberattaque contre Shipup",
+    "url": "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
+   },
+   "first_queued_at": "2026-09-09T12:00:33.019829+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-09T15:59:59.832315+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-297a7e21d0f7da49",
+    "Location": "Inconnu",
+    "Organisation_Key": "citadium",
+    "Organisation_Raw": "Citadium",
+    "Published_Date": "2026-09-09",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "3052",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Citadium : des informations clients récupérées lors de la cyberattaque contre Shipup",
+    "URL": "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
+   },
+   "key": "ITM-297a7e21d0f7da49:12b1f2a880d6d166e8badf808e4a707e2c1202de40eaac6b4dba43adccda4ca5",
+   "last_queued_at": "2026-09-09T12:00:35.005239+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match",
+    "affected_counts",
+    "attack_date",
+    "attack_flow",
+    "discovered_date",
+    "initial_access",
+    "threat_candidate",
+    "vulnerabilities"
+   ],
+   "reason": "SEMANTIC_MISS"
+  }
+ ],
  "version": 1
 }

@@ -7,6 +7,142 @@
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
+    "identifiants",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-09",
+  "first_seen": "2026-09-09T15:59:59.832315+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F7B381806AEC",
+  "items": 1,
+  "last_seen": "2026-09-09T15:59:59.832315+04:00",
+  "location": "Inconnu",
+  "org": "Citadium",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Citadium a informé des clients que leurs données personnelles ont été extraites lors d'une cyberattaque contre Shipup.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Citadium a informé des clients que leurs données personnelles ont été extraites lors d'une cyberattaque contre Shipup.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants",
+    "données bancaires",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-09",
+  "first_seen": "2026-09-09T15:59:59.832315+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-AFF157A4627F",
+  "items": 1,
+  "last_seen": "2026-09-09T15:59:59.832315+04:00",
+  "location": "Inconnu",
+  "org": "Printemps",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Printemps informe d'une fuite de données clients due à une cyberattaque sur le prestataire Shipup.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Printemps : les données clients dérobées après une cyberattaque chez Shipup",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
     "noms et prénoms",
     "adresses postales",
     "numéros de téléphone"
