@@ -846,7 +846,7 @@
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "reported",
     "value": "noms et prénoms"
    },
    {
@@ -855,17 +855,8 @@
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
-    "value": "identifiants"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "mots de passe"
+    "status": "reported",
+    "value": "identifiants techniques"
    }
   ],
   "datasets": [
@@ -886,16 +877,8 @@
     "value": "base de contacts associée à Icegram Express"
    }
   ],
-  "display_summary": "Une cyberattaque sur Vision2i expose une base de contacts de son site WordPress.",
+  "display_summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i.",
   "fields": {
-   "cvss": {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "value": "CVSS de  6,5/10"
-   },
    "threat_actor": {
     "evidence": "revendiquée ce 8 septembre 2026 par le hacker Sophia.",
     "source": "CYBERATTAQUE_ORG",
@@ -923,70 +906,11 @@
   "timeline": [
    {
     "date": "2026-09-08",
-    "event": "cyberattaque revendiquée par Sophia",
-    "evidence": "Vision2i est visé par une cyberattaque revendiquée ce 8 septembre 2026 par le hacker Sophia.",
+    "event": "Sophia revendique une fuite de données concernant Vision2i",
+    "evidence": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed"
-   },
-   {
-    "date": "2026-09-07",
-    "event": "Publication de CVE-2026-12757",
-    "evidence": "Le 7 septembre 2026, soit seulement un jour avant la publication visant Vision2i, la vulnérabilité CVE-2026-12757 a été rendue publique dans ce même plugin.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed"
-   },
-   {
-    "date": "2026-09-08",
-    "event": "Un échantillon publié le 8 septembre 2026 contient notamment des adresses e-mail et différentes informations associées à des contacts enregistrés sur le site WordPress.**",
-    "evidence": "Un échantillon publié le 8 septembre 2026 contient notamment des adresses e-mail et différentes informations associées à des contacts enregistrés sur le site WordPress.**",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown"
-   },
-   {
-    "date": "2026-09-08",
-    "event": "Le 8 septembre 2026, une utilisatrice d’un forum cybercriminel utilisant le pseudonyme Sophia a publié des données qu’elle présente comme provenant de Vision2i.fr.",
-    "evidence": "Le 8 septembre 2026, une utilisatrice d’un forum cybercriminel utilisant le pseudonyme Sophia a publié des données qu’elle présente comme provenant de Vision2i.fr.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown"
-   },
-   {
-    "date": "2026-09-07",
-    "event": "Le 7 septembre 2026, soit la veille de la revendication visant Vision2i, une vulnérabilité référencée CVE-2026-12757 a été rendue publique concernant le plugin Icegram Express.",
-    "evidence": "Le 7 septembre 2026, soit la veille de la revendication visant Vision2i, une vulnérabilité référencée CVE-2026-12757 a été rendue publique concernant le plugin Icegram Express.",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown"
-   },
-   {
-    "date": "2026-09-08",
-    "event": "la publication est datée du 8 septembre 2026 ;",
-    "evidence": "la publication est datée du 8 septembre 2026 ;",
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown"
-   },
-   {
-    "date": "2026-09-08",
-    "event": "Une hackeuse utilisant le pseudonyme Sophia revendique le 8 septembre 2026 une fuite de données concernant Vision2i.fr et publie un échantillon contenant des informations associées à des contacts du site WordPress.",
-    "evidence": "Une hackeuse utilisant le pseudonyme Sophia revendique le 8 septembre 2026 une fuite de données concernant Vision2i.fr et publie un échantillon contenant des informations associées à des contacts du site WordPress.",
-    "source": "FRENCHBREACHES",
-    "sources": [
+     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "status": "claimed"
@@ -995,27 +919,36 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "La CVE-2026-12757 affectant Icegram Express a été publiée la veille, sans preuve de lien avec l’incident.",
+    "relationship": "candidate",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
+    "status": "reported",
     "value": "CVE-2026-12757"
    },
    {
+    "evidence": "La CVE-2026-1651 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+    "relationship": "mentioned",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
+    "status": "reported",
     "value": "CVE-2026-1651"
    },
    {
+    "evidence": "La CVE-2026-81290 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+    "relationship": "mentioned",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
+    "status": "reported",
     "value": "CVE-2026-81290"
    }
   ]
@@ -1079,28 +1012,47 @@
     "type": "data_volume",
     "unit": "",
     "value": "70"
+   },
+   {
+    "actor": "",
+    "date": "2026-09-08",
+    "evidence": "La Financière d’Uzès , maison française spécialisée dans la gestion de patrimoine et les services d’investissement, apparaît ce  8 septembre 2026  parmi les victimes revendiquées par le groupe de ransomware  Panzer .",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "claimed",
+    "type": "statement",
+    "unit": "",
+    "value": "La Financière d’Uzès , maison française spécialisée dans la gestion de patrimoine et les services d’investissement, apparaît ce  8 septembre 2026  parmi les vic"
+   },
+   {
+    "actor": "",
+    "date": "2026-08-01",
+    "evidence": "Les premières revendications suivies publiquement remontent à août 2026.",
+    "scope": "Chronologie",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "reported",
+    "type": "statement",
+    "unit": "",
+    "value": "debuts des revendications de Panzer"
    }
   ],
   "data_types": [],
-  "datasets": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "données clients"
-   }
-  ],
-  "display_summary": "La Financière d’Uzès a déclaré avoir subi une cyberattaque avec vol potentiel de 70 Go de données.",
+  "datasets": [],
+  "display_summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données.",
   "fields": {
    "data_volume": {
-    "evidence": "Financière d’Uzès : 70 Go de données volées après une cyberattaque",
+    "evidence": "Les cybercriminels affirment avoir récupéré environ 70 Go de données.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
-    "status": "unknown",
+    "status": "claimed",
     "value": "70 Go"
    },
    "discovered_date": {
@@ -1108,25 +1060,17 @@
     "sources": [
      "RANSOMWARE_LIVE"
     ],
-    "status": "unknown",
-    "value": "2026-09-08"
-   },
-   "fine_location": {
-    "evidence": "La société dispose de bureaux à Paris, Lyon, Lille, Cannes, Annecy-le-Vieux et Saint-Étienne.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
     "status": "claimed",
-    "value": "Paris"
+    "value": "2026-09-08"
    },
    "threat_actor": {
     "evidence": "Panzer",
     "source": "RANSOMWARE_LIVE",
     "sources": [
-     "RANSOMWARE_LIVE"
+     "RANSOMWARE_LIVE",
+     "CYBERATTAQUE_ORG"
     ],
-    "status": "unknown",
+    "status": "claimed",
     "value": "Panzer"
    }
   },
@@ -1136,23 +1080,13 @@
   "timeline": [
    {
     "date": "2026-09-08",
-    "event": "La Financière d’Uzès , maison française spécialisée dans la gestion de patrimoine et les services d’investissement, apparaît ce  8 septembre 2026  parmi les victimes revendiquées par le groupe de ransomware  Panzer .",
-    "evidence": "La Financière d’Uzès , maison française spécialisée dans la gestion de patrimoine et les services d’investissement, apparaît ce  8 septembre 2026  parmi les victimes revendiquées par le groupe de ransomware  Panzer .",
+    "event": "Revendication de Panzer contre la Financière d’Uzès",
+    "evidence": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
     "status": "claimed"
-   },
-   {
-    "date": "2026-08-01",
-    "event": "debuts des revendications de Panzer",
-    "evidence": "Les premières revendications suivies publiquement remontent à août 2026.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "reported"
    }
   ],
   "version": 3,
@@ -2569,16 +2503,6 @@
     "value": "données clients"
    },
    {
-    "evidence": "Cette notification confirme qu’Aroma-Zone fait bien partie des entreprises dont certains clients ont été affectés par la cyberattaque contre Shipup.",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "type": "actor",
-    "value": "Shipup"
-   },
-   {
     "evidence": "Aroma-Zone informe certains de ses clients qu’ils sont concernés par la cyberattaque ayant touché son prestataire Shipup.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -2596,7 +2520,7 @@
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
-    "status": "reported",
+    "status": "confirmed",
     "value": "adresses e-mail"
    },
    {
@@ -2605,7 +2529,7 @@
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "confirmed",
     "value": "numéros de téléphone"
    },
    {
@@ -2614,49 +2538,8 @@
      "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "confirmed",
     "value": "noms et prénoms"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG",
-     "FRENCHBREACHES"
-    ],
-    "status": "reported",
-    "value": "identifiants"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "informations de commandes"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "mots de passe"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "données bancaires"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "données personnelles"
    }
   ],
   "datasets": [
@@ -2722,15 +2605,6 @@
     ],
     "status": "confirmed",
     "value": "Shipup"
-   },
-   "threat_actor": {
-    "evidence": "prestataire affirme",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "value": "prestataire"
    }
   },
   "quality_alerts": [],
@@ -2790,10 +2664,13 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale.",
+    "relationship": "mentioned",
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
+    "status": "reported",
     "value": "CVE-2026-72898"
    }
   ]
@@ -3623,14 +3500,6 @@
    }
   ],
   "data_types": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown",
-    "value": "adresses e-mail"
-   },
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
@@ -5558,6 +5427,14 @@
     ],
     "status": "unknown",
     "value": "identifiants"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown",
+    "value": "mots de passe"
    }
   ],
   "datasets": [
@@ -7839,10 +7716,13 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "L’incident trouve son origine dans la vulnérabilité critique  CVE-2026-72898  affectant Metabase.",
+    "relationship": "mentioned",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
+    "status": "reported",
     "value": "CVE-2026-72898"
    }
   ]
@@ -8219,7 +8099,21 @@
   "vulnerabilities": []
  },
  "INC-72E15EC21567": {
-  "affected": [],
+  "affected": [
+   {
+    "evidence": "Selon les pirates, environ 118 000 commandes de 2020 à 2025 auraient été récupérées.",
+    "raw": "environ 118 000 commandes",
+    "scope": "commandes 2020-2025",
+    "semantic": "commandes 2020 2025",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "claimed",
+    "unit": "records",
+    "value": 118000
+   }
+  ],
   "attack_flow": [],
   "claims": [
    {
@@ -8383,39 +8277,15 @@
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
-    "value": "numéros de téléphone"
+    "status": "reported",
+    "value": "références de commande"
    },
    {
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
-    "value": "adresses postales"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "noms et prénoms"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
-    "value": "références de réservation"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "sources": [
-     "FRENCHBREACHES"
-    ],
-    "status": "unknown",
+    "status": "reported",
     "value": "facturation"
    },
    {
@@ -8423,7 +8293,7 @@
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "reported",
     "value": "montants"
    },
    {
@@ -8431,8 +8301,24 @@
     "sources": [
      "FRENCHBREACHES"
     ],
-    "status": "unknown",
-    "value": "identifiants"
+    "status": "reported",
+    "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "adresses postales"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "numéros de téléphone"
    }
   ],
   "datasets": [],
@@ -9701,10 +9587,13 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "Parmi elles figure la  CVE-2026-72898 , une vulnérabilité critique ayant fait l’objet d’exploitations actives alors qu’elle était encore inconnue du public.",
+    "relationship": "exploited",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
+    "status": "reported",
     "value": "CVE-2026-72898"
    }
   ]
@@ -10318,21 +10207,12 @@
     "value": "identifiants"
    },
    {
-    "source": "CYBERATTAQUE_ORG",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "dates de naissance"
-   },
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "claimed",
-    "value": "CV"
    },
    {
     "source": "FRENCHBREACHES",
@@ -11929,14 +11809,6 @@
   ],
   "datasets": [
    {
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "confirmed",
-    "value": "coordonnées personnelles et historique des commandes"
-   },
-   {
     "source": "FRENCHBREACHES",
     "sources": [
      "FRENCHBREACHES"
@@ -11976,6 +11848,8 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "L’entreprise ne détaille pas le point d’entrée utilisé par l’attaquant",
+    "relationship": "mentioned",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -13393,6 +13267,8 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "Un compte authentifié aurait permis d’accéder à l’API.",
+    "relationship": "mentioned",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
@@ -14393,10 +14269,13 @@
   "version": 3,
   "vulnerabilities": [
    {
+    "evidence": "Cette plateforme open source d’analyse et de visualisation de données a été affectée par plusieurs vulnérabilités critiques, dont la  CVE-2026-72898 .",
+    "relationship": "mentioned",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
      "CYBERATTAQUE_ORG"
     ],
+    "status": "reported",
     "value": "CVE-2026-72898"
    }
   ]
@@ -14908,13 +14787,12 @@
     "value": "numéros de téléphone"
    },
    {
-    "source": "CYBERATTAQUE_ORG",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG",
      "FRENCHBREACHES"
     ],
     "status": "unknown",
-    "value": "informations de séjour"
+    "value": "identifiants"
    },
    {
     "source": "FRENCHBREACHES",
@@ -14922,7 +14800,7 @@
      "FRENCHBREACHES"
     ],
     "status": "unknown",
-    "value": "identifiants"
+    "value": "informations de séjour"
    },
    {
     "source": "FRENCHBREACHES",

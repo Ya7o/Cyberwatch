@@ -294,7 +294,11 @@ _NEGATED_EVIDENCE_RE = re.compile(
 )
 _HYPOTHETICAL_EVIDENCE_RE = re.compile(
     r"\b(?:pourrait|pourraient|permettrait|potentielle?|peut par exemple|"
-    r"si .{0,80}(?:[ée]t[ée]|avait)|risque(?:nt)? de|ne signifie toutefois pas)\b",
+    r"risque(?:nt)? de|ne signifie toutefois pas)\b|"
+    r"\b(?:peut|peuvent)\b.{0,100}\b(?:chercher|tenter|r[ée]cup[ée]r|obtenir|contenir|confirmer)|"
+    r"\b(?:d[ée]terminer|savoir|v[ée]rifier)\s+si\b|"
+    r"\bsi\b.{0,100}\b(?:[ée]t[ée]|avait|confirme|contient|concerne|comprend|inclut)|"
+    r"\bil ne serait (?:donc )?pas justifi[ée]\b",
     re.I,
 )
 _INCIDENT_COUNT_CONTEXT_RE = re.compile(

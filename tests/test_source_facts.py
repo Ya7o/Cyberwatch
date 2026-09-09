@@ -41,6 +41,20 @@ def test_statut_ne_confirme_pas_un_titre_interrogatif_seul():
     assert sf._claim_status("Le piratage est-il confirmé ?") == ("", "")
 
 
+def test_statut_ignore_une_confirmation_conditionnelle():
+    text = (
+        "L’enjeu sera de déterminer si les 70 Go contiennent des données clients "
+        "et si la victime confirme l’incident."
+    )
+    assert sf._claim_status(text) == ("", "")
+
+
+def test_commandes_sont_transportees_comme_enregistrements():
+    assert sf._parse_count_phrase("environ 118 000 commandes récupérées")[:2] == (
+        "118000", "records"
+    )
+
+
 def test_sanitize_retire_acteur_generique_et_vecteur_explicitement_indetermine():
     rows = [{
         "Item_ID": "ITM-cgt",

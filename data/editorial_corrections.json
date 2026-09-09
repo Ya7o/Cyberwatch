@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-09.1",
+  "version": "2026-09-09.2",
   "items": {
     "ITM-21712d3c95aeb085": {"set": {"Location": "Guadeloupe"}},
     "ITM-eafcb7b7a88e0222": {"set": {"Threat": "Fuite de données", "Sector": "Administration / Collectivité"}},
@@ -18,7 +18,10 @@
     "ITM-7cc16874b28f6592": {"set": {"Threat": "Fuite de données"}},
     "ITM-3a41569a8967db5a": {"set": {"Threat": "Fuite de données"}},
     "ITM-ec7dface31b72e5c": {"set": {"Threat": "Fuite de données"}},
-    "ITM-0889c66115507f6c": {"set": {"Threat": "Fuite de données"}}
+    "ITM-0889c66115507f6c": {"set": {"Threat": "Fuite de données"}},
+    "ITM-fc5feeb5ddf1ff43": {"set":{"Threat":"Fuite de données"}},
+    "ITM-9f99ff6be672b738": {"set":{"Threat":"Fuite de données"}},
+    "ITM-a27286500e1e2431": {"set":{"Threat":"Fuite de données"}}
   },
   "source_facts": {
     "ITM-ec4d0cdfab6fa8df": {
@@ -219,6 +222,383 @@
     "ITM-7a623d24b9173dd1": {
       "audit": "LAST_TWO_COLLECTIONS_2026-09-08", "reason": "Le site SPA semble accessible ; le rétablissement n'est pas confirmé.",
       "set": {"Claim_Status": "reported"}
+    },
+    "ITM-fc5feeb5ddf1ff43": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le prestataire Shipup est un tiers et seules les données de contact sont confirmées.",
+      "clear": [
+        "Threat_Actor"
+      ],
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          }
+        ],
+        "relations": []
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "Des données de contact de clients Aroma-Zone ont été consultées par des personnes non autorisées."
+        }
+      },
+      "rich_remove_values": {
+        "claims": [
+          "Shipup"
+        ]
+      }
+    },
+    "ITM-e24b48e0b9e1e799": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Exclut les données niées ou citées comme risque futur ; la CVE relève du contexte de campagne.",
+      "set": {
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]"
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+          "numéros de téléphone": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+          "noms et prénoms": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+        }
+      },
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-72898",
+            "status": "reported",
+            "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale.",
+            "relationship": "mentioned"
+          }
+        ],
+        "relations": []
+      },
+      "rich_remove_values": {
+        "claims": [
+          "Shipup"
+        ]
+      }
+    },
+    "ITM-f5b94936735b27a5": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "La victime ne confirme pas l’incident ; Paris est un bureau et les données clients sont hypothétiques.",
+      "clear": [
+        "Fine_Location"
+      ],
+      "set": {
+        "Threat_Actor": "Panzer",
+        "Claim_Status": "claimed",
+        "Summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données.",
+        "Data_Volume_Raw": "70 Go"
+      },
+      "evidence_set": {
+        "Threat_Actor": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer.",
+        "Summary": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer.",
+        "Data_Volume_Raw": "Les cybercriminels affirment avoir récupéré environ 70 Go de données."
+      },
+      "rich_set": {
+        "affected_counts": [],
+        "affected_datasets": [],
+        "data_volumes": [
+          {
+            "value": 70,
+            "status": "claimed",
+            "evidence": "Les cybercriminels affirment avoir récupéré environ 70 Go de données.",
+            "unit": "Go",
+            "raw": "environ 70 Go",
+            "scope": "données volées"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-08",
+            "event": "Revendication de Panzer contre la Financière d’Uzès",
+            "status": "claimed",
+            "evidence": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Ransomware",
+          "status": "claimed",
+          "evidence": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès."
+        }
+      }
+    },
+    "ITM-33f6c49a4ee154fc": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "L’entrée provient du site de revendication Panzer.",
+      "set": {
+        "Claim_Status": "claimed"
+      },
+      "evidence_set": {
+        "Claim_Status": "Revendication publiée par Panzer."
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Ransomware",
+          "status": "claimed",
+          "evidence": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès."
+        }
+      }
+    },
+    "ITM-42866ee66e14ca48": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Transporte les 118 000 commandes et distingue leurs références des identifiants de connexion explicitement non établis.",
+      "set": {
+        "Affected_Count": "118000",
+        "Affected_Unit": "records",
+        "Affected_Count_Raw": "environ 118 000 commandes",
+        "Data_Types_JSON": "[\"informations de commandes\",\"références de commande\",\"facturation\",\"montants\",\"noms et prénoms\",\"adresses postales\",\"numéros de téléphone\"]"
+      },
+      "evidence_set": {
+        "Affected_Count_Raw": {
+          "text": "Selon les pirates, environ 118 000 commandes de 2020 à 2025 auraient été récupérées.",
+          "status": "claimed"
+        },
+        "Data_Types_JSON": {
+          "informations de commandes": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT.",
+          "références de commande": "Les échantillons contiennent un identifiant de commande.",
+          "facturation": "Les échantillons contiennent des informations de facturation.",
+          "montants": "Les échantillons contiennent les montants des commandes.",
+          "noms et prénoms": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone.",
+          "adresses postales": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone.",
+          "numéros de téléphone": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "affected_counts": [
+          {
+            "value": 118000,
+            "status": "claimed",
+            "evidence": "Selon les pirates, environ 118 000 commandes de 2020 à 2025 auraient été récupérées.",
+            "unit": "records",
+            "raw": "environ 118 000 commandes",
+            "scope": "commandes 2020-2025"
+          }
+        ],
+        "data_types": [
+          {
+            "value": "informations de commandes",
+            "status": "claimed",
+            "evidence": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT."
+          },
+          {
+            "value": "références de commande",
+            "status": "reported",
+            "evidence": "Les échantillons contiennent un identifiant de commande."
+          },
+          {
+            "value": "facturation",
+            "status": "reported",
+            "evidence": "Les échantillons contiennent des informations de facturation."
+          },
+          {
+            "value": "montants",
+            "status": "reported",
+            "evidence": "Les échantillons contiennent les montants des commandes."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "reported",
+            "evidence": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+          },
+          {
+            "value": "adresses postales",
+            "status": "reported",
+            "evidence": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "reported",
+            "evidence": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "LunarisSec revendique une fuite de données concernant Proshop FFT."
+        }
+      }
+    },
+    "ITM-9f99ff6be672b738": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le champ WordPress est technique, aucun mot de passe ni vecteur CVE n’est établi.",
+      "clear": [
+        "CVSS_Raw"
+      ],
+      "set": {
+        "Data_Types_JSON": "[\"adresses e-mail\",\"noms et prénoms\",\"identifiants techniques\"]",
+        "Summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i."
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress.",
+          "noms et prénoms": "Les champs de la base comprennent prénom et nom.",
+          "identifiants techniques": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+        },
+        "Summary": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+      },
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "reported",
+            "evidence": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent prénom et nom."
+          },
+          {
+            "value": "identifiants techniques",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-12757",
+            "status": "reported",
+            "evidence": "La CVE-2026-12757 affectant Icegram Express a été publiée la veille, sans preuve de lien avec l’incident.",
+            "relationship": "candidate"
+          },
+          {
+            "value": "CVE-2026-1651",
+            "status": "reported",
+            "evidence": "La CVE-2026-1651 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          },
+          {
+            "value": "CVE-2026-81290",
+            "status": "reported",
+            "evidence": "La CVE-2026-81290 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-08",
+            "event": "Sophia revendique une fuite de données concernant Vision2i",
+            "status": "claimed",
+            "evidence": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "Sophia revendique la publication de données attribuées à Vision2i."
+        }
+      }
+    },
+    "ITM-a27286500e1e2431": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le champ WordPress est technique, aucun mot de passe ni vecteur CVE n’est établi.",
+      "clear": [
+        "CVSS_Raw"
+      ],
+      "set": {
+        "Data_Types_JSON": "[\"adresses e-mail\",\"noms et prénoms\",\"identifiants techniques\"]",
+        "Summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i."
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress.",
+          "noms et prénoms": "Les champs de la base comprennent prénom et nom.",
+          "identifiants techniques": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+        },
+        "Summary": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+      },
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "reported",
+            "evidence": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent prénom et nom."
+          },
+          {
+            "value": "identifiants techniques",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-12757",
+            "status": "reported",
+            "evidence": "La CVE-2026-12757 affectant Icegram Express a été publiée la veille, sans preuve de lien avec l’incident.",
+            "relationship": "candidate"
+          },
+          {
+            "value": "CVE-2026-1651",
+            "status": "reported",
+            "evidence": "La CVE-2026-1651 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          },
+          {
+            "value": "CVE-2026-81290",
+            "status": "reported",
+            "evidence": "La CVE-2026-81290 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-08",
+            "event": "Sophia revendique une fuite de données concernant Vision2i",
+            "status": "claimed",
+            "evidence": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "Sophia revendique la publication de données attribuées à Vision2i."
+        }
+      }
     }
   }
 }

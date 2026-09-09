@@ -117,6 +117,19 @@ def test_headline_technique_ou_generique_est_rejetee():
     assert sfa._normalize_summary(technical, context) is None
 
 
+def test_headline_n_attribue_pas_une_declaration_absente_a_la_victime():
+    context = (
+        "La Financière d’Uzès apparaît parmi les victimes revendiquées par Panzer. "
+        "Aucune confirmation publique de la Financière d’Uzès n’a été identifiée."
+    )
+    raw = {
+        "value": "La Financière d’Uzès a déclaré avoir subi une cyberattaque.",
+        "confidence": .9,
+        "evidence": "La Financière d’Uzès apparaît parmi les victimes revendiquées par Panzer.",
+    }
+    assert sfa._normalize_summary(raw, context, "La Financière d’Uzès") is None
+
+
 def test_vecteur_indetermine_avec_attaque_provenant_d_un_compte_est_rejete():
     context = (
         "Il est impossible de déterminer si l’attaque provient d’un compte "

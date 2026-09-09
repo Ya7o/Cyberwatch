@@ -95,7 +95,10 @@ def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
     status_value = str(value.get("status") or "unknown").strip().lower()
     result["status"] = status_value if status_value in _RICH_STATUSES else "unknown"
     placeholders = {"null", "none", "unknown", "inconnu", "n/a", "na"}
-    for key in ("type", "kind", "scope", "date", "actor", "subject", "relation", "object", "event", "evidence", "raw"):
+    for key in (
+        "type", "kind", "scope", "date", "actor", "subject", "relation",
+        "relationship", "object", "event", "evidence", "raw",
+    ):
         text = str(value.get(key) or "").strip()
         if text.casefold() in placeholders:
             continue

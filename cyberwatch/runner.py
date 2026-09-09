@@ -969,6 +969,7 @@ def _persist(
         llm_cost_usd=report.llm_cost_usd,
         new_items=[item for item in report.items if item.Item_ID in report.new_item_ids],
         source_facts_retry_summary=report.source_facts_retry_summary,
+        source_facts_rows=report.source_facts,
         dedup_review_rows=(
             report.dedup_ai_state.pending_rows if report.dedup_ai_state is not None else None
         ),

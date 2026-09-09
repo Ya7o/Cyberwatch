@@ -660,6 +660,12 @@
       ? [...(detail.systems || []), ...(detail.datasets || [])]
       : [];
     const timelineRows = validDetail ? timelineHtml(detail.timeline || []) : "";
+    const exploitedVulnerabilities = validDetail
+      ? (detail.vulnerabilities || []).filter((entry) => !entry.relationship || entry.relationship === "exploited")
+      : [];
+    const contextualVulnerabilities = validDetail
+      ? (detail.vulnerabilities || []).filter((entry) => ["candidate", "mentioned"].includes(entry.relationship))
+      : [];
     const values = validDetail ? [
       detailSection("Qualification", [
         detailField("Menace principale", incident.threat, incident.threat_status?.status, incident.threat_status?.evidence),
@@ -670,7 +676,8 @@
         detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status, fields.third_party?.evidence),
         detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : "", fields.initial_access?.status, fields.initial_access?.evidence),
         evidenceEntriesHtml("Déroulé documenté", detail.attack_flow || [], "action"),
-        evidenceEntriesHtml("Vulnérabilités exploitées", detail.vulnerabilities || []),
+        evidenceEntriesHtml("Vulnérabilités exploitées", exploitedVulnerabilities),
+        evidenceEntriesHtml("Vulnérabilités candidates ou mentionnées", contextualVulnerabilities),
         detailField("CVSS", fields.cvss?.value, fields.cvss?.status, fields.cvss?.evidence),
       ]),
       detailSection("Chronologie", [

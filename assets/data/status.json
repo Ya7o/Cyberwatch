@@ -4,9 +4,9 @@
   "briefing": [
    "France métropolitaine apparaît sur 30 jours avec 68 incidents, contre aucun sur la période précédente (confiance élevée).",
    "Fuite de données apparaît sur 30 jours avec 55 incidents, contre aucun sur la période précédente (confiance élevée).",
+   "Commerce / Distribution apparaît sur 30 jours avec 11 incidents, contre aucun sur la période précédente (confiance élevée).",
    "Administration / Collectivité apparaît sur 30 jours avec 15 incidents, contre aucun sur la période précédente (confiance élevée).",
-   "Commerce / Distribution apparaît sur 30 jours avec 9 incidents, contre aucun sur la période précédente (confiance élevée).",
-   "Nouveau couple observé Fuite de données × Commerce / Distribution : 7 incidents sur 30 jours (confiance moyenne)."
+   "Nouveau couple observé Fuite de données × Commerce / Distribution : 9 incidents sur 30 jours (confiance élevée)."
   ],
   "coverage": {
    "location": {
@@ -15,9 +15,9 @@
     "unknown": 3
    },
    "sector": {
-    "known": 62,
-    "known_pct": 86.1,
-    "unknown": 10
+    "known": 65,
+    "known_pct": 90.3,
+    "unknown": 7
    },
    "threat": {
     "known": 72,
@@ -28,21 +28,21 @@
   "dated_incidents": 72,
   "diversity_90d": {
    "location": 0.109,
-   "sector": 0.891,
+   "sector": 0.887,
    "threat": 0.542
   },
   "exposure": {
-   "documented": 33,
-   "documented_pct": 45.8,
+   "documented": 34,
+   "documented_pct": 47.2,
    "evidence": {
-    "claimed": 15,
+    "claimed": 16,
     "confirmed": 1,
     "hypothesis": 6,
     "negated": 4,
     "unknown": 7
    },
    "max": 149000000,
-   "median": 18000,
+   "median": 23381,
    "note": "Volumes majoritairement revendiqués et non vérifiés ; aucun total n'est publié.",
    "p90": 1800000,
    "total": 72
@@ -68,7 +68,7 @@
       "label": "Administration / Collectivité"
      },
      {
-      "count": 9,
+      "count": 11,
       "label": "Commerce / Distribution"
      },
      {
@@ -155,7 +155,7 @@
       "label": "Administration / Collectivité"
      },
      {
-      "count": 9,
+      "count": 11,
       "label": "Commerce / Distribution"
      },
      {
@@ -225,7 +225,7 @@
    "sources": 4,
    "unknown_pct": {
     "location": 4.2,
-    "sector": 13.9,
+    "sector": 9.7,
     "threat": 0.0
    },
    "with_summary_pct": 97.2
@@ -249,19 +249,19 @@
     ],
     "Commerce / Distribution": [
      5,
-     4
+     6
     ],
     "Construction / BTP": [
      0,
      5
     ],
-    "Finance / Assurance": [
-     2,
-     1
-    ],
     "Numérique / Technologie": [
      2,
      5
+    ],
+    "Services aux entreprises": [
+     1,
+     3
     ]
    },
    "sources_observed": [
@@ -297,7 +297,7 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 68,
-     "known_ratio": 0.961,
+     "known_ratio": 0.975,
      "level": "high",
      "multi_source_incidents": 48,
      "score": 92
@@ -331,7 +331,7 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 55,
-     "known_ratio": 0.945,
+     "known_ratio": 0.964,
      "level": "high",
      "multi_source_incidents": 40,
      "score": 92
@@ -358,6 +358,39 @@
     "label": "Fuite de données",
     "previous": 0,
     "share_pct": 76.4,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 11,
+     "known_ratio": 1.0,
+     "level": "high",
+     "multi_source_incidents": 8,
+     "score": 89
+    },
+    "current": 11,
+    "delta": 11,
+    "dimension": "sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-2AF4C7544CC3",
+     "INC-3C5B9E546782",
+     "INC-72E15EC21567",
+     "INC-92B98E38166E",
+     "INC-B18279AA1F95",
+     "INC-CE9040DC18AB",
+     "INC-CFAAEC3E334A",
+     "INC-D9A0C6DBD358",
+     "INC-E39201703225",
+     "INC-EB3AC8CB9892",
+     "INC-F8CDDC2DD3B7"
+    ],
+    "kind": "emerging",
+    "label": "Commerce / Distribution",
+    "previous": 0,
+    "share_pct": 15.3,
     "window_days": 30
    },
    {
@@ -406,41 +439,12 @@
     },
     "current": 9,
     "delta": 9,
-    "dimension": "sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-3C5B9E546782",
-     "INC-92B98E38166E",
-     "INC-B18279AA1F95",
-     "INC-CE9040DC18AB",
-     "INC-CFAAEC3E334A",
-     "INC-D9A0C6DBD358",
-     "INC-E39201703225",
-     "INC-EB3AC8CB9892",
-     "INC-F8CDDC2DD3B7"
-    ],
-    "kind": "emerging",
-    "label": "Commerce / Distribution",
-    "previous": 0,
-    "share_pct": 12.5,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 7,
-     "known_ratio": 1.0,
-     "level": "medium",
-     "multi_source_incidents": 6,
-     "score": 74
-    },
-    "current": 7,
-    "delta": 7,
     "dimension": "threat_sector",
     "excess_points": null,
     "incident_ids": [
+     "INC-2AF4C7544CC3",
      "INC-3C5B9E546782",
+     "INC-72E15EC21567",
      "INC-92B98E38166E",
      "INC-B18279AA1F95",
      "INC-CE9040DC18AB",
@@ -451,7 +455,7 @@
     "kind": "new_pair",
     "label": "Fuite de données × Commerce / Distribution",
     "previous": 0,
-    "share_pct": 9.7,
+    "share_pct": 12.5,
     "window_days": 30
    },
    {
@@ -710,6 +714,32 @@
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
+     "incidents": 4,
+     "known_ratio": 1.0,
+     "level": "medium",
+     "multi_source_incidents": 3,
+     "score": 57
+    },
+    "current": 4,
+    "delta": 4,
+    "dimension": "sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-06870EC77814",
+     "INC-195F06B69C3A",
+     "INC-44385EDB45C1",
+     "INC-61993D19E8E2"
+    ],
+    "kind": "emerging",
+    "label": "Services aux entreprises",
+    "previous": 0,
+    "share_pct": 5.6,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
      "incidents": 3,
      "known_ratio": 1.0,
      "level": "medium",
@@ -743,15 +773,15 @@
     },
     "current": 3,
     "delta": 3,
-    "dimension": "sector",
+    "dimension": "threat_sector",
     "excess_points": null,
     "incident_ids": [
-     "INC-45561E350283",
-     "INC-A3D0A851E662",
-     "INC-E39645DF5E4E"
+     "INC-06870EC77814",
+     "INC-195F06B69C3A",
+     "INC-44385EDB45C1"
     ],
-    "kind": "emerging",
-    "label": "Santé",
+    "kind": "new_pair",
+    "label": "Fuite de données × Services aux entreprises",
     "previous": 0,
     "share_pct": 4.2,
     "window_days": 30
@@ -771,12 +801,12 @@
     "dimension": "sector",
     "excess_points": null,
     "incident_ids": [
-     "INC-195F06B69C3A",
-     "INC-44385EDB45C1",
-     "INC-61993D19E8E2"
+     "INC-45561E350283",
+     "INC-A3D0A851E662",
+     "INC-E39645DF5E4E"
     ],
     "kind": "emerging",
-    "label": "Services aux entreprises",
+    "label": "Santé",
     "previous": 0,
     "share_pct": 4.2,
     "window_days": 30
@@ -854,12 +884,12 @@
      "label": "Administration / Collectivité"
     },
     {
-     "count": 10,
-     "label": "Inconnu"
+     "count": 11,
+     "label": "Commerce / Distribution"
     },
     {
-     "count": 9,
-     "label": "Commerce / Distribution"
+     "count": 7,
+     "label": "Inconnu"
     },
     {
      "count": 7,
@@ -874,12 +904,12 @@
      "label": "Association / Syndicat"
     },
     {
-     "count": 3,
-     "label": "Finance / Assurance"
+     "count": 4,
+     "label": "Services aux entreprises"
     },
     {
      "count": 3,
-     "label": "Santé"
+     "label": "Finance / Assurance"
     }
    ],
    "threat": [
@@ -2355,7 +2385,7 @@
    "pending_review_pairs": 19,
    "potential_duplicate_pairs": 53,
    "potential_duplicate_rate_pct": 73.61,
-   "sector_unknown_pct": 13.89,
+   "sector_unknown_pct": 9.72,
    "validated_same_not_grouped_pairs": 0,
    "weak_merge_review_pairs": 47
   },

@@ -197,6 +197,7 @@ def metric_row(
     llm_cost_usd: float,
     new_items: list[Item] | None = None,
     source_facts_retry_summary: dict | None = None,
+    source_facts_rows: list[dict] | None = None,
     dedup_review_rows: list[dict] | None = None,
     incident_decision_rows: list[dict] | None = None,
     organisation_identity_rows: list[dict] | None = None,
@@ -218,6 +219,7 @@ def metric_row(
     )
     corpus = evaluate_business_corpus()
     dedup = evaluate_dedup_corpus()
+    fact_quality = source_fact_quality_counts(source_facts_rows or [])
     return {
         "Run_ID": run_id,
         "As_Of": as_of,
@@ -240,6 +242,9 @@ def metric_row(
         "SourceFacts_Retry_Queued_Before": int(retry.get("queued_before", 0)),
         "SourceFacts_Retry_Attempted": int(retry.get("attempted", 0)),
         "SourceFacts_Retry_Queued_After": int(retry.get("queued_after", 0)),
+        "SourceFacts_Nonassertive_Suppressed_Count": fact_quality["nonassertive"],
+        "SourceFacts_Contextual_Vulnerability_Count": fact_quality["contextual_vulnerabilities"],
+        "SourceFacts_Unsupported_Affected_Unit_Count": fact_quality["unsupported_units"],
         "Potential_Duplicate_Pairs": duplicate_pairs,
         "Potential_Duplicate_Rate_Pct": f"{_pct(duplicate_pairs, incident_count):.2f}",
         "Missed_Duplicate_Candidate_Pairs": dedup_quality["missed_duplicate_candidate_pairs"],
@@ -256,6 +261,55 @@ def metric_row(
         "Requests": requests,
         "LLM_Calls": llm_calls,
         "LLM_Cost_USD": f"{llm_cost_usd:.6f}",
+    }
+
+
+def source_fact_quality_counts(rows: list[dict]) -> dict[str, int]:
+    """Compte les faits conservés pour audit mais exclus des affirmations publiques."""
+    from .fact_resolution import _VULNERABILITY_INCIDENT_LINK_RE
+    from .fact_resolution_counts import _HYPOTHETICAL_EVIDENCE_RE, _NEGATED_EVIDENCE_RE
+
+    nonassertive = 0
+    contextual_vulnerabilities = 0
+    unsupported_units = 0
+    supported_units = {"people", "accounts", "users", "clients", "records", "files"}
+    for row in rows:
+        try:
+            metadata = json.loads(str(row.get("Source_Metadata_JSON") or "{}"))
+        except (TypeError, ValueError):
+            continue
+        rich = metadata.get("rich_facts") if isinstance(metadata, dict) else {}
+        if not isinstance(rich, dict):
+            continue
+        for collection in ("data_types", "affected_datasets"):
+            for fact in rich.get(collection, []) if isinstance(rich.get(collection), list) else []:
+                if not isinstance(fact, dict):
+                    continue
+                status = str(fact.get("status") or "").casefold()
+                evidence = str(fact.get("evidence") or "")
+                if status in {"negated", "denied", "hypothesis"} or (
+                    _NEGATED_EVIDENCE_RE.search(evidence)
+                    or _HYPOTHETICAL_EVIDENCE_RE.search(evidence)
+                ):
+                    nonassertive += 1
+        for fact in rich.get("vulnerabilities", []) if isinstance(rich.get("vulnerabilities"), list) else []:
+            if not isinstance(fact, dict):
+                continue
+            relationship = str(fact.get("relationship") or "").casefold()
+            evidence = str(fact.get("evidence") or "")
+            if relationship in {"candidate", "mentioned"} or (
+                not relationship and not _VULNERABILITY_INCIDENT_LINK_RE.search(evidence)
+            ):
+                contextual_vulnerabilities += 1
+        for fact in rich.get("affected_counts", []) if isinstance(rich.get("affected_counts"), list) else []:
+            if isinstance(fact, dict):
+                unit = str(fact.get("unit") or "").strip().casefold()
+                if unit and unit not in supported_units:
+                    unsupported_units += 1
+    return {
+        "nonassertive": nonassertive,
+        "contextual_vulnerabilities": contextual_vulnerabilities,
+        "unsupported_units": unsupported_units,
     }
 
 

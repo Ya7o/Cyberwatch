@@ -103,6 +103,25 @@ def test_upsert_metrique_est_idempotent(tmp_path):
     }]
 
 
+def test_compteurs_faits_non_assertifs_et_non_transportes():
+    rows = [{"Source_Metadata_JSON": json.dumps({"rich_facts": {
+        "data_types": [{
+            "value": "mots de passe", "status": "unknown",
+            "evidence": "Ces messages peuvent chercher à récupérer des mots de passe.",
+        }],
+        "vulnerabilities": [{
+            "value": "CVE-2026-1", "status": "reported",
+            "relationship": "mentioned", "evidence": "CVE citée dans le contexte.",
+        }],
+        "affected_counts": [{"value": 12, "unit": "commandes"}],
+    }})}]
+    assert production.source_fact_quality_counts(rows) == {
+        "nonassertive": 1,
+        "contextual_vulnerabilities": 1,
+        "unsupported_units": 1,
+    }
+
+
 def test_payload_dashboard_reste_deterministe_et_lie_au_run(monkeypatch):
     monkeypatch.setattr(store, "load_production_metrics", lambda: [
         {"Run_ID": "OLD", "Published": "true", "Sector_Unknown_Pct": "1"},

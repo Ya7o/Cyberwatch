@@ -118,6 +118,74 @@ def test_type_de_donnee_mentionne_apres_pas_de_n_est_pas_publie():
     assert resolved["data_types"] == []
 
 
+def test_risque_futur_ne_reintroduit_pas_un_type_legacy():
+    resolved = fr.resolve_incident_facts([fact(
+        "FRENCHBREACHES",
+        data_types=["mots de passe"],
+        rich_facts={"data_types": [{
+            "value": "mots de passe",
+            "status": "unknown",
+            "evidence": "Ces messages peuvent chercher à récupérer des mots de passe.",
+        }]},
+    )])
+    assert resolved["data_types"] == []
+
+
+def test_dataset_conditionnel_n_est_pas_publie():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        rich_facts={"affected_datasets": [{
+            "value": "données clients",
+            "status": "confirmed",
+            "evidence": "Il reste à déterminer si les 70 Go contiennent des données clients.",
+        }]},
+    )])
+    assert resolved["datasets"] == []
+
+
+def test_vulnerabilite_contextuelle_n_est_pas_affichee_comme_exploitee():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        vulnerabilities=["CVE-2026-12757"],
+        cvss="6,5/10",
+        rich_facts={"vulnerabilities": [{
+            "value": "CVE-2026-12757",
+            "status": "reported",
+            "evidence": "La vulnérabilité CVE-2026-12757 a été rendue publique la veille.",
+        }]},
+    )])
+    assert resolved["vulnerabilities"][0]["relationship"] == "mentioned"
+    assert "cvss" not in resolved["fields"]
+
+
+def test_vulnerabilite_liee_au_vecteur_reste_exploitee():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        initial_access="vulnerability_exploitation",
+        initial_access_evidence="L'accès initial a exploité CVE-2026-12345.",
+        vulnerabilities=["CVE-2026-12345"],
+        rich_facts={"vulnerabilities": [{
+            "value": "CVE-2026-12345",
+            "status": "confirmed",
+            "evidence": "L'accès initial a exploité CVE-2026-12345.",
+        }]},
+    )])
+    assert resolved["vulnerabilities"][0]["relationship"] == "exploited"
+
+
+def test_publication_cve_hors_incident_est_retiree_de_la_chronologie():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        rich_facts={"timeline": [{
+            "date": "2026-09-07",
+            "event": "Publication de CVE-2026-12757",
+            "status": "reported",
+            "evidence": "CVE-2026-12757 a été rendue publique le 7 septembre.",
+        }]},
+    )])
+    assert resolved["timeline"] == []
+
+
 def test_records_total_et_uniques_ne_sont_pas_ecrases():
     resolved = fr.resolve_incident_facts([
         fact("RANSOMWARE_LIVE", rich_facts={"affected_counts": [

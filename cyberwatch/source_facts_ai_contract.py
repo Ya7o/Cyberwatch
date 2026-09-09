@@ -78,7 +78,9 @@ INITIAL_ACCESS_VALUES = {
 FIELD_VERSIONS = {
     # V5 invalide uniquement les anciennes headlines acceptées avant le
     # contrat centralisé ; identités et faits structurés restent inchangés.
-    "summary": "summary-v5",
+    # V6 rejette une déclaration ou confirmation attribuée à la victime si
+    # la citation ne conserve pas ce même rôle grammatical.
+    "summary": "summary-v6",
     # V2 interdit les faux positifs du type « impossible de déterminer si
     # l'accès provient d'identifiants compromis ». La version fait invalider
     # uniquement ce champ dans les caches existants.

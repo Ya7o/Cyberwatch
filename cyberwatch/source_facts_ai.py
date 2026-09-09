@@ -24,7 +24,12 @@ from . import config, llm_runtime, source_facts_ai_retry
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import classify_threat, searchable
-from .headline import MAX_HEADLINE_CHARS, is_organisation_name_only, is_publishable_headline
+from .headline import (
+    MAX_HEADLINE_CHARS,
+    is_organisation_name_only,
+    is_publishable_headline,
+    summary_role_is_supported,
+)
 
 from .source_facts_ai_contract import (
     CACHE_FORMAT,
@@ -296,7 +301,11 @@ def _normalize_summary(raw, context: str, organisation: str = "") -> dict | None
     if not fact:
         return None
     value = fact["value"]
-    if not is_publishable_headline(value) or is_organisation_name_only(value, organisation):
+    if (
+        not is_publishable_headline(value)
+        or is_organisation_name_only(value, organisation)
+        or not summary_role_is_supported(value, fact["evidence"], organisation)
+    ):
         return None
     return fact
 

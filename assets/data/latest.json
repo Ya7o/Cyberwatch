@@ -7,10 +7,9 @@
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
-    "numéros de téléphone",
-    "adresses postales",
     "noms et prénoms",
-    "identifiants"
+    "adresses postales",
+    "numéros de téléphone"
    ],
    "sensitive_data_exposed": false,
    "sensitive_data_types": [],
@@ -26,10 +25,13 @@
   "org": "Proshop FFT",
   "personal_data_exposed": true,
   "quality_alerts": [],
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-09 : place de marché de la Fédération Française de Tennis vendant du matériel sportif.",
+   "evidence_url": "https://proshop.fft.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -52,10 +54,12 @@
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "",
-   "reason": "THREAT_SINGLE_LEGACY_VALUE",
-   "sources": [],
-   "status": "unknown"
+   "evidence": "LunarisSec revendique une fuite de données concernant Proshop FFT.",
+   "reason": "THREAT_EDITORIAL_CORRECTION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
   },
   "urls": [
    "https://frenchbreaches.com/alertes/proshop-fft-mtt46t1ddrdidq2nzgd"
@@ -216,29 +220,23 @@
  },
  {
   "basis": "PUBLICATION",
-  "credentials_or_secrets_exposed": true,
+  "credentials_or_secrets_exposed": false,
   "data_exposure": {
-   "credentials_or_secrets_exposed": true,
-   "high_sensitivity_data_exposed": true,
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
     "adresses e-mail",
     "numéros de téléphone",
-    "noms et prénoms",
-    "identifiants",
-    "données bancaires",
-    "données personnelles"
+    "noms et prénoms"
    ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "données bancaires",
-    "mots de passe"
-   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
    "vulnerable_people_data_exposed": false
   },
   "date": "2026-09-08",
   "first_seen": "2026-09-09T07:52:06.515693+04:00",
-  "high_sensitivity_data_exposed": true,
+  "high_sensitivity_data_exposed": false,
   "id": "INC-2AF4C7544CC3",
   "items": 2,
   "last_seen": "2026-09-09T07:52:06.515693+04:00",
@@ -246,16 +244,16 @@
   "org": "Aroma-Zone",
   "personal_data_exposed": true,
   "quality_alerts": [],
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-09 : marque française vendant directement des produits de beauté, bien-être et maison.",
+   "evidence_url": "https://www.aroma-zone.com/info/qui-sommes-nous",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "données bancaires",
-   "mots de passe"
-  ],
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
   "source_link_status": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -284,8 +282,8 @@
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "Aroma-Zone est affectée par la cyberattaque contre son prestataire Shipup, exposant des données clients.",
-   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "evidence": "Des données de contact de clients Aroma-Zone ont été consultées par des personnes non autorisées.",
+   "reason": "THREAT_EDITORIAL_CORRECTION",
    "sources": [
     "CYBERATTAQUE_ORG"
    ],
@@ -353,17 +351,17 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "La Financière d’Uzès a déclaré avoir subi une cyberattaque avec vol potentiel de 70 Go de données.",
+  "summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données.",
   "threat": "Ransomware",
   "threat_status": {
    "conflict": false,
-   "evidence": "Financière d'Uzès revendiqué par Panzer",
-   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "evidence": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès.",
+   "reason": "THREAT_EDITORIAL_CORRECTION",
    "sources": [
     "CYBERATTAQUE_ORG",
     "RANSOMWARE_LIVE"
    ],
-   "status": "reported"
+   "status": "claimed"
   },
   "urls": [
    "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/financière-d-uzès",
@@ -373,20 +371,18 @@
  },
  {
   "basis": "PUBLICATION",
-  "credentials_or_secrets_exposed": true,
+  "credentials_or_secrets_exposed": false,
   "data_exposure": {
-   "credentials_or_secrets_exposed": true,
+   "credentials_or_secrets_exposed": false,
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
     "adresses e-mail",
     "noms et prénoms",
-    "identifiants"
+    "identifiants techniques"
    ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "mots de passe"
-   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
    "vulnerable_people_data_exposed": false
   },
   "date": "2026-09-08",
@@ -399,15 +395,16 @@
   "org": "Vision2i",
   "personal_data_exposed": true,
   "quality_alerts": [],
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-09 : agence de communication et de conseil située à Orvault.",
+   "evidence_url": "https://vision2i.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "mots de passe"
-  ],
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
   "source_link_status": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -432,13 +429,14 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Une cyberattaque sur Vision2i expose une base de contacts de son site WordPress.",
+  "summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "Vision2i.fr revendique une fuite de données de contacts sur WordPress par une hackeuse nommée Sophia.",
-   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "evidence": "Sophia revendique la publication de données attribuées à Vision2i.",
+   "reason": "THREAT_EDITORIAL_CORRECTION",
    "sources": [
+    "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
    ],
    "status": "claimed"
@@ -2478,9 +2476,9 @@
  },
  {
   "basis": "PUBLICATION",
-  "credentials_or_secrets_exposed": false,
+  "credentials_or_secrets_exposed": true,
   "data_exposure": {
-   "credentials_or_secrets_exposed": false,
+   "credentials_or_secrets_exposed": true,
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
@@ -2488,8 +2486,10 @@
     "noms et prénoms",
     "identifiants"
    ],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
    "vulnerable_people_data_exposed": false
   },
   "date": "2026-09-03",
@@ -2510,8 +2510,10 @@
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
   "source_link_status": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -4908,7 +4910,6 @@
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
-    "adresses e-mail",
     "numéros de téléphone",
     "données personnelles"
    ],

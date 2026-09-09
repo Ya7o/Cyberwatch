@@ -119,6 +119,8 @@ _UNIT_MAP = {
     "professionnel": "people", "professionnels": "people",
     "enregistrement": "records", "enregistrements": "records",
     "ligne": "records", "lignes": "records",
+    "commande": "records", "commandes": "records",
+    "transaction": "records", "transactions": "records",
     "dossier": "files", "dossiers": "files",
     "fichier": "files", "fichiers": "files",
 }
@@ -474,7 +476,12 @@ def _finalize(fact: dict, item: Item, entry: RawEntry, evidence: dict) -> dict |
         # RawEntry. L'item a déjà été résolu de manière canonique : c'est lui
         # qui fait autorité pour rejeter un nom seul, y compris au reset zéro.
         organisation = item.Organisation_Raw or entry.organisation or ""
-        if not is_publishable_for_organisation(summary, organisation):
+        from .headline import summary_role_is_supported
+        summary_proof = evidence.get("Summary", "")
+        if not (
+            is_publishable_for_organisation(summary, organisation)
+            and summary_role_is_supported(summary, summary_proof, organisation)
+        ):
             # Certains adaptateurs d'hydratation ne réinjectent que le corps
             # dans RawEntry. Le titre canonique est néanmoins conservé sur
             # Item : l'utiliser évite qu'une indisponibilité LLM transforme un
@@ -603,7 +610,16 @@ def _claim_status(text: str) -> tuple[str, str]:
         re.I,
     )
     sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", text or "") if part.strip()]
-    current = [sentence for sentence in sentences if "?" not in sentence and not historical.search(sentence)]
+    conditional = re.compile(
+        r"\b(?:d[ée]terminer|savoir|v[ée]rifier)\s+si\b|"
+        r"\bsi\b.{0,100}\b(?:confirme|contient|concern|comprend|inclut)\w*\b|"
+        r"\b(?:pourrait|pourraient|peut|peuvent)\b.{0,80}\b(?:confirmer|contenir|concern|r[ée]cup[ée]r)",
+        re.I,
+    )
+    current = [
+        sentence for sentence in sentences
+        if "?" not in sentence and not historical.search(sentence) and not conditional.search(sentence)
+    ]
     for sentence in current:
         for pattern, canonical in _CLAIM_STATUS_MAP:
             match = pattern.search(sentence)

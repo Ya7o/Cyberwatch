@@ -131,7 +131,10 @@ def _resolve_rich_entities(facts: Iterable[dict], key: str) -> list[dict]:
             evidence = _text(raw_record.get("evidence"))
             if status in {"negated", "denied", "hypothesis"}:
                 continue
-            if evidence and _NEGATED_EVIDENCE_RE.search(evidence):
+            if evidence and (
+                _NEGATED_EVIDENCE_RE.search(evidence)
+                or _HYPOTHETICAL_EVIDENCE_RE.search(evidence)
+            ):
                 continue
             if key == "affected_systems" and any(marker in _norm(value) for marker in ("prestataire", "fournisseur", "sous traitant", "tiers")):
                 # Un tiers est un contexte de compromission, pas un système de
@@ -190,7 +193,7 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         source: str,
         status: str = "",
         evidence: str = "",
-        negated_texts: tuple[str, ...] = (),
+        blocked_values: tuple[str, ...] = (),
     ) -> None:
         # A type mentioned only to say it was *not* exposed is useful in the
         # source-level audit trail, but must never become a public "Données
@@ -216,6 +219,8 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
                 normalized_status = "claimed"
         if normalized_status in {"negated", "denied", "hypothesis"}:
             return
+        if evidence and _NEGATED_EVIDENCE_RE.search(evidence):
+            return
         if evidence and _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
             return
         if not value or _norm(value) in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
@@ -225,7 +230,7 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         # libellé canonique avant déduplication évite un doublon visuel.
         value = canonical_data_type(value)
         key = _norm(value)
-        if key and any(key in negated or negated in key for negated in negated_texts):
+        if key and any(key == blocked or key in blocked for blocked in blocked_values):
             return
         entry = selected.get(key)
         if entry is None:
@@ -244,14 +249,18 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         source = _text(fact.get("source"))
         rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
         rich_values = rich.get("data_types") if isinstance(rich, dict) else None
-        negated_texts = tuple(
+        blocked_values = tuple({
             _norm(" ".join((
                 _text(record.get("value")),
                 _text(record.get("evidence")),
             )))
             for record in (rich_values if isinstance(rich_values, list) else [])
-            if isinstance(record, dict) and _status(record) in {"negated", "denied"}
-        )
+            if isinstance(record, dict) and (
+                _status(record) in {"negated", "denied", "hypothesis"}
+                or _NEGATED_EVIDENCE_RE.search(_text(record.get("evidence")))
+                or _HYPOTHETICAL_EVIDENCE_RE.search(_text(record.get("evidence")))
+            )
+        })
         if isinstance(rich_values, list):
             for raw_record in rich_values:
                 if isinstance(raw_record, dict):
@@ -259,7 +268,7 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
                         _text(raw_record.get("value")), source,
                         _text(raw_record.get("status")),
                         _text(raw_record.get("evidence")),
-                        negated_texts,
+                        (),
                     )
         legacy = fact.get("data_types")
         if isinstance(legacy, list):
@@ -268,7 +277,7 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
                 # statut précis vient des faits riches lorsqu'ils existent ;
                 # un reliquat legacy reste inconnu plutôt que d'être promu
                 # artificiellement « confirmé ».
-                add(_text(raw), source, "unknown", negated_texts=negated_texts)
+                add(_text(raw), source, "unknown", blocked_values=blocked_values)
     return list(selected.values())
 
 
@@ -585,6 +594,89 @@ def _merge_list_entries(*lists: list[dict]) -> list[dict]:
     return list(selected.values())
 
 
+_VULNERABILITY_UNCERTAIN_RE = re.compile(
+    r"\b(?:rien|aucun [ée]l[ée]ment)\b.{0,100}\b(?:affirmer|[ée]tablir|relier)|"
+    r"\b(?:moins cr[ée]dible|hypoth[èe]se|potentielle?|candidate?)\b",
+    re.I,
+)
+_VULNERABILITY_INCIDENT_LINK_RE = re.compile(
+    r"\b(?:attaque|incident|intrusion|acc[èe]s initial|point d['’]entr[ée]e)\b.{0,120}"
+    r"\b(?:exploit[ée]e?|utilis[ée]e?)\b.{0,80}\bCVE-\d{4}-\d+\b|"
+    r"\bCVE-\d{4}-\d+\b.{0,120}\b(?:[àa] l['’]origine|vecteur|"
+    r"point d['’]entr[ée]e|exploit[ée]e? (?:pour|lors de|dans))\b",
+    re.I,
+)
+
+
+def _vulnerability_entries(facts: Iterable[dict], claims: Iterable[dict]) -> list[dict]:
+    """Conserve la relation entre une CVE et l'incident jusqu'au renderer."""
+    selected: dict[str, dict] = {}
+    relationship_rank = {"mentioned": 0, "candidate": 1, "exploited": 2}
+
+    def add(raw: dict, source: str, initial_access: str = "") -> None:
+        value = _text(raw.get("value"))
+        if not value:
+            return
+        value_norm = _norm(value)
+        is_cve = bool(re.fullmatch(r"CVE-\d{4}-\d+", value, re.I))
+        if value_norm in {
+            "corrected", "corrige", "corrigee", "correction",
+            "vulnerability", "vulnerabilite", "faille",
+        }:
+            return
+        evidence = _text(raw.get("evidence"))
+        status = _status(raw)
+        if status in {"negated", "denied"} or (status == "hypothesis" and not is_cve):
+            return
+        relationship = _norm(raw.get("relationship"))
+        if relationship not in relationship_rank:
+            if _norm(initial_access) == "vulnerability exploitation":
+                relationship = "exploited"
+            elif status == "hypothesis" or _VULNERABILITY_UNCERTAIN_RE.search(evidence):
+                relationship = "candidate"
+            elif _VULNERABILITY_INCIDENT_LINK_RE.search(evidence):
+                relationship = "exploited"
+            else:
+                relationship = "mentioned"
+        key = _norm(value)
+        entry = {
+            "value": value.upper() if is_cve else value,
+            "relationship": relationship,
+            "status": status,
+            "source": source,
+            "sources": [source] if source else [],
+        }
+        if evidence:
+            entry["evidence"] = evidence
+        existing = selected.get(key)
+        if existing is None:
+            selected[key] = entry
+            return
+        if relationship_rank[relationship] > relationship_rank[existing["relationship"]]:
+            entry["sources"] = list(dict.fromkeys(existing.get("sources", []) + entry["sources"]))
+            selected[key] = entry
+        elif source and source not in existing["sources"]:
+            existing["sources"].append(source)
+
+    for fact in _ordered_facts(facts):
+        source = _text(fact.get("source"))
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        for raw in rich.get("vulnerabilities", []) if isinstance(rich, dict) else []:
+            if isinstance(raw, dict):
+                add(raw, source, _text(fact.get("initial_access")))
+        rich_values = {
+            _norm(raw.get("value")) for raw in rich.get("vulnerabilities", [])
+            if isinstance(raw, dict)
+        }
+        for value in fact.get("vulnerabilities", []) if isinstance(fact.get("vulnerabilities"), list) else []:
+            if _norm(value) not in rich_values:
+                add({"value": value, "status": fact.get("claim_status")}, source, _text(fact.get("initial_access")))
+    for claim in claims:
+        if isinstance(claim, dict) and claim.get("type") == "vulnerability":
+            add(claim, _text(claim.get("source")))
+    return list(selected.values())
+
+
 def _attack_flow_entries(facts: Iterable[dict]) -> list[dict]:
     selected: dict[str, dict] = {}
     for fact in _ordered_facts(facts):
@@ -699,6 +791,10 @@ def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
             event = _strip_markdown_emphasis(_text(row.get("event")))
             evidence = _strip_markdown_emphasis(_text(row.get("evidence")))
             if not event or not evidence:
+                continue
+            if re.search(r"\bCVE-\d{4}-\d+\b", event, re.I) and re.search(
+                r"\b(?:publication|publi[ée]e?|rendue? publique|divulgu[ée]e?)\b", event, re.I
+            ):
                 continue
             key = (_norm(date), _norm(event), _norm(evidence))
             if key not in selected:
@@ -939,11 +1035,17 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     )
     timeline = _timeline_entries(ordered)
     claims = _drop_claims_duplicating_timeline(claims, timeline)
+    vulnerabilities = _vulnerability_entries(ordered, claims)
+    if "cvss" in fields and not any(
+        row.get("relationship") == "exploited" for row in vulnerabilities
+    ):
+        del fields["cvss"]
+        rejected_fields.add("cvss")
     resolved = {
         "version": 3,
         "fields": {field: value for field, value in fields.items() if value},
         "data_types": _data_types_entries(ordered),
-        "vulnerabilities": _merge_list_entries(_list_entries(ordered, "vulnerabilities"), _claim_list_entries(claims, "vulnerability")),
+        "vulnerabilities": vulnerabilities,
         "affected": _merge_affected(resolve_affected_counts(ordered), _evidence_unique_value_counts(ordered)),
         "systems": _resolve_rich_entities(ordered, "affected_systems"),
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),

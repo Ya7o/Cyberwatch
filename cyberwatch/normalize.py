@@ -42,6 +42,8 @@ DATA_TYPE_CANONICAL_PATTERNS = (
     ("adresses postales", re.compile(r"\badresses?\s+(?:postales?|physiques?)\b", re.I)),
     ("noms et prénoms", re.compile(r"\bnoms?\b.{0,30}\bpr[ée]noms?\b|\bpr[ée]noms?\b", re.I)),
     ("dates de naissance", re.compile(r"\bdates?\s+de\s+naissance\b", re.I)),
+    ("références de commande", re.compile(r"\b(?:identifiants?|r[ée]f[ée]rences?)\s+de\s+commandes?\b", re.I)),
+    ("identifiants techniques", re.compile(r"\bidentifiants?\s+(?:wordpress|techniques?|internes?)\b", re.I)),
     ("identifiants", re.compile(r"\bidentifiants?(?:\s+de\s+connexion)?\b", re.I)),
     ("mots de passe", re.compile(r"\bmots?\s+de\s+passe|passwords?\b", re.I)),
     ("données bancaires", re.compile(r"\b(?:donn[ée]es?|coordonn[ée]es?)\s+bancaires?|\bIBAN\b|\bRIB\b", re.I)),

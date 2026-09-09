@@ -24,7 +24,7 @@ def main() -> int:
     report = enrichment.finalize_snapshot(
         items,
         facts,
-        run_id="EDITORIAL-CORRECTION-20260909",
+        run_id=str(snapshot.get("Run_ID") or "EDITORIAL-CORRECTION"),
         as_of=str(snapshot.get("As_Of") or snapshot.get("as_of") or "2026-09-09"),
     )
     summary = {

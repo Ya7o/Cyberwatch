@@ -195,6 +195,7 @@ def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
     js = _read("assets/dashboard-v2.js")
     assert 'detailField("Vecteur d’entrée"' in js
     assert 'evidenceEntriesHtml("Vulnérabilités exploitées"' in js
+    assert 'evidenceEntriesHtml("Vulnérabilités candidates ou mentionnées"' in js
     assert 'evidenceEntriesHtml("Déroulé documenté"' in js
     assert 'detailField("Date de l’attaque"' in js
     assert 'detailField("Date de découverte"' in js

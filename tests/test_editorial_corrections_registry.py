@@ -55,3 +55,25 @@ def test_metadata_override_est_persiste():
         "metadata_set": {"threat_override": {"value": config.THREAT_LEAK}},
     }}})
     assert json.loads(rows[0]["Source_Metadata_JSON"])["threat_override"]["value"] == config.THREAT_LEAK
+
+
+def test_collection_riche_peut_etre_remplacee_par_une_correction_sourcee():
+    rows = [{
+        "Item_ID": "ITM-x",
+        "Source_Metadata_JSON": json.dumps({"rich_facts": {"data_types": [{"value": "faux"}]}}),
+    }]
+    editorial_corrections.apply_source_facts(rows, {"source_facts": {"ITM-x": {
+        "audit": "test",
+        "reason": "preuve relue",
+        "rich_set": {"data_types": [{
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "des adresses e-mail ont été exposées",
+        }]},
+    }}})
+    rich = json.loads(rows[0]["Source_Metadata_JSON"])["rich_facts"]
+    assert rich["data_types"] == [{
+        "value": "adresses e-mail",
+        "status": "confirmed",
+        "evidence": "des adresses e-mail ont été exposées",
+    }]

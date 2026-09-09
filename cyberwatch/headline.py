@@ -71,6 +71,27 @@ def victim_claims_incident(value: object, organisation: object) -> bool:
     return bool(re.match(rf"^{re.escape(org)}\s+(?:affirme\s+)?revendiqu\w*\b", text))
 
 
+def victim_self_reports_incident(value: object, organisation: object) -> bool:
+    """Détecte une confirmation attribuée grammaticalement à la victime."""
+    text = " ".join(str(value or "").split()).strip().casefold()
+    org = " ".join(str(organisation or "").split()).strip().casefold()
+    if not text or not org or not text.startswith(org):
+        return False
+    tail = text[len(org):]
+    return bool(re.search(
+        r"^.{0,60}\b(?:a\s+)?(?:déclaré|confirmé|annoncé|indiqué)\b.{0,50}"
+        r"\b(?:subi|victime|fait l['’]objet)\b",
+        tail,
+    ))
+
+
+def summary_role_is_supported(value: object, evidence: object, organisation: object) -> bool:
+    """Une déclaration de victime doit apparaître avec le même rôle dans la preuve."""
+    if not victim_self_reports_incident(value, organisation):
+        return True
+    return victim_self_reports_incident(evidence, organisation)
+
+
 def is_publishable_for_organisation(value: object, organisation: object) -> bool:
     return bool(
         is_publishable_headline(value)

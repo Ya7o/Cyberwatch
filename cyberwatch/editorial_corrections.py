@@ -99,6 +99,10 @@ def apply_source_facts(rows: list[dict], corrections: dict | None = None) -> lis
         for field, value in rule.get("metadata_set", {}).items():
             metadata[field] = value
 
+        for collection, values in rule.get("rich_set", {}).items():
+            if isinstance(values, list):
+                rich[collection] = values
+
         rejected_terms = [_norm(term) for term in rule.get("rich_remove_evidence_contains", [])]
         remove_values = {
             collection: {_norm(value) for value in values}
