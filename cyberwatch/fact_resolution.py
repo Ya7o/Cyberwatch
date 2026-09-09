@@ -21,6 +21,7 @@ from .normalize import (
     is_recognized_data_type,
     parse_date,
 )
+from .fact_resolution_vulnerabilities import resolve_vulnerabilities
 
 SOURCE_PRIORITY = (
     "RANSOMWARE_LIVE",
@@ -87,7 +88,6 @@ from .fact_resolution_counts import (
     _is_actor_value_valid,
     _known,
     _legacy_affected_record,
-    _list_entries,
     _looks_like_atomic_data_type,
     _merge_record,
     _norm,
@@ -539,144 +539,6 @@ def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
     }
 
 
-def _claim_list_entries(claims: Iterable[dict], claim_type: str) -> list[dict]:
-    """Projette les claims d'un type donné (ex. `vulnerability`) vers une liste
-    publique, avec la même déduplication par valeur que les autres listes."""
-    selected: dict[str, dict] = {}
-    for claim in claims:
-        if claim.get("type") != claim_type or not _known(claim.get("value")):
-            continue
-        status = _status(claim)
-        evidence = _text(claim.get("evidence"))
-        if status in {"negated", "denied", "hypothesis"}:
-            continue
-        if claim_type == "vulnerability":
-            value_norm = _norm(claim.get("value"))
-            # « corrected » décrit la remédiation, pas la faille exploitée.
-            # Une faiblesse seulement potentielle reste dans la trace source,
-            # mais pas sous le libellé affirmatif « vulnérabilité exploitée ».
-            if value_norm in {
-                "corrected", "corrige", "corrigee", "correction",
-                "vulnerability", "vulnerabilite", "faille",
-            } or _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
-                continue
-        key = _norm(claim.get("value"))
-        sources = claim.get("sources") or ([claim["source"]] if claim.get("source") else [])
-        entry = selected.get(key)
-        if entry is None:
-            selected[key] = {
-                "value": claim["value"],
-                "status": status,
-                "source": claim.get("source", ""),
-                "sources": list(sources),
-            }
-        else:
-            for source in sources:
-                if source and source not in entry["sources"]:
-                    entry["sources"].append(source)
-    return list(selected.values())
-
-
-def _merge_list_entries(*lists: list[dict]) -> list[dict]:
-    selected: dict[str, dict] = {}
-    for entries in lists:
-        for entry in entries:
-            key = _norm(entry.get("value"))
-            if not key:
-                continue
-            existing = selected.get(key)
-            if existing is None:
-                selected[key] = dict(entry)
-            else:
-                for source in entry.get("sources", []) or []:
-                    if source and source not in existing.setdefault("sources", []):
-                        existing["sources"].append(source)
-    return list(selected.values())
-
-
-_VULNERABILITY_UNCERTAIN_RE = re.compile(
-    r"\b(?:rien|aucun [ée]l[ée]ment)\b.{0,100}\b(?:affirmer|[ée]tablir|relier)|"
-    r"\b(?:moins cr[ée]dible|hypoth[èe]se|potentielle?|candidate?)\b",
-    re.I,
-)
-_VULNERABILITY_INCIDENT_LINK_RE = re.compile(
-    r"\b(?:attaque|incident|intrusion|acc[èe]s initial|point d['’]entr[ée]e)\b.{0,120}"
-    r"\b(?:exploit[ée]e?|utilis[ée]e?)\b.{0,80}\bCVE-\d{4}-\d+\b|"
-    r"\bCVE-\d{4}-\d+\b.{0,120}\b(?:[àa] l['’]origine|vecteur|"
-    r"point d['’]entr[ée]e|exploit[ée]e? (?:pour|lors de|dans))\b",
-    re.I,
-)
-
-
-def _vulnerability_entries(facts: Iterable[dict], claims: Iterable[dict]) -> list[dict]:
-    """Conserve la relation entre une CVE et l'incident jusqu'au renderer."""
-    selected: dict[str, dict] = {}
-    relationship_rank = {"mentioned": 0, "candidate": 1, "exploited": 2}
-
-    def add(raw: dict, source: str, initial_access: str = "") -> None:
-        value = _text(raw.get("value"))
-        if not value:
-            return
-        value_norm = _norm(value)
-        is_cve = bool(re.fullmatch(r"CVE-\d{4}-\d+", value, re.I))
-        if value_norm in {
-            "corrected", "corrige", "corrigee", "correction",
-            "vulnerability", "vulnerabilite", "faille",
-        }:
-            return
-        evidence = _text(raw.get("evidence"))
-        status = _status(raw)
-        if status in {"negated", "denied"} or (status == "hypothesis" and not is_cve):
-            return
-        relationship = _norm(raw.get("relationship"))
-        if relationship not in relationship_rank:
-            if _norm(initial_access) == "vulnerability exploitation":
-                relationship = "exploited"
-            elif status == "hypothesis" or _VULNERABILITY_UNCERTAIN_RE.search(evidence):
-                relationship = "candidate"
-            elif _VULNERABILITY_INCIDENT_LINK_RE.search(evidence):
-                relationship = "exploited"
-            else:
-                relationship = "mentioned"
-        key = _norm(value)
-        entry = {
-            "value": value.upper() if is_cve else value,
-            "relationship": relationship,
-            "status": status,
-            "source": source,
-            "sources": [source] if source else [],
-        }
-        if evidence:
-            entry["evidence"] = evidence
-        existing = selected.get(key)
-        if existing is None:
-            selected[key] = entry
-            return
-        if relationship_rank[relationship] > relationship_rank[existing["relationship"]]:
-            entry["sources"] = list(dict.fromkeys(existing.get("sources", []) + entry["sources"]))
-            selected[key] = entry
-        elif source and source not in existing["sources"]:
-            existing["sources"].append(source)
-
-    for fact in _ordered_facts(facts):
-        source = _text(fact.get("source"))
-        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
-        for raw in rich.get("vulnerabilities", []) if isinstance(rich, dict) else []:
-            if isinstance(raw, dict):
-                add(raw, source, _text(fact.get("initial_access")))
-        rich_values = {
-            _norm(raw.get("value")) for raw in rich.get("vulnerabilities", [])
-            if isinstance(raw, dict)
-        }
-        for value in fact.get("vulnerabilities", []) if isinstance(fact.get("vulnerabilities"), list) else []:
-            if _norm(value) not in rich_values:
-                add({"value": value, "status": fact.get("claim_status")}, source, _text(fact.get("initial_access")))
-    for claim in claims:
-        if isinstance(claim, dict) and claim.get("type") == "vulnerability":
-            add(claim, _text(claim.get("source")))
-    return list(selected.values())
-
-
 def _attack_flow_entries(facts: Iterable[dict]) -> list[dict]:
     selected: dict[str, dict] = {}
     for fact in _ordered_facts(facts):
@@ -1035,7 +897,7 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     )
     timeline = _timeline_entries(ordered)
     claims = _drop_claims_duplicating_timeline(claims, timeline)
-    vulnerabilities = _vulnerability_entries(ordered, claims)
+    vulnerabilities = resolve_vulnerabilities(ordered, claims)
     if "cvss" in fields and not any(
         row.get("relationship") == "exploited" for row in vulnerabilities
     ):

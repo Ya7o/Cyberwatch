@@ -24,12 +24,8 @@ from . import config, llm_runtime, source_facts_ai_retry
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import classify_threat, searchable
-from .headline import (
-    MAX_HEADLINE_CHARS,
-    is_organisation_name_only,
-    is_publishable_headline,
-    summary_role_is_supported,
-)
+from .headline import (MAX_HEADLINE_CHARS, is_organisation_name_only,
+                       is_publishable_headline, summary_role_is_supported)
 
 from .source_facts_ai_contract import (
     CACHE_FORMAT,

@@ -89,6 +89,34 @@ def _best_signal(signals: list[tuple[str, str, str]]) -> tuple[str, tuple[str, .
     return status or "unknown", sources, evidence
 
 
+def _legacy_threat_decision(ordered: list[Item], item_threats: set[str]) -> ThreatDecision:
+    if len(item_threats) == 1:
+        value = next(iter(item_threats))
+        return ThreatDecision(value, "unknown", "THREAT_SINGLE_LEGACY_VALUE", conflict=False)
+    if item_threats:
+        counts = Counter(item.Threat for item in ordered if item.Threat in item_threats)
+        top = max(counts.values())
+        winners = sorted(value for value, count in counts.items() if count == top)
+        if len(winners) == 1:
+            return ThreatDecision(winners[0], "unknown", "THREAT_SOURCE_MAJORITY", conflict=True)
+        return ThreatDecision(config.THREAT_UNKNOWN, "unknown", "THREAT_CONFLICT", conflict=True)
+    return ThreatDecision(config.THREAT_UNKNOWN, "unknown", "THREAT_NO_EVIDENCE")
+
+
+def _editorial_threat_decision(
+    overrides: list[tuple[str, str, str, str]], conflict: bool,
+) -> ThreatDecision | None:
+    values = {entry[0] for entry in overrides}
+    if len(values) != 1:
+        return None
+    status, sources, evidence = _best_signal([
+        (entry[1], entry[2], entry[3]) for entry in overrides
+    ])
+    return ThreatDecision(
+        next(iter(values)), status, "THREAT_EDITORIAL_CORRECTION", sources, evidence, conflict,
+    )
+
+
 def resolve_component(
     items: Iterable[Item],
     facts_by_item: Mapping[str, list[dict]] | None = None,
@@ -169,24 +197,14 @@ def resolve_component(
                 signals[config.THREAT_THIRD_PARTY].append((status, source, evidence))
 
     if editorial_overrides:
-        values = {entry[0] for entry in editorial_overrides}
-        if len(values) == 1:
-            value = next(iter(values))
-            status, sources, evidence = _best_signal([
-                (entry[1], entry[2], entry[3]) for entry in editorial_overrides
-            ])
-            return ThreatDecision(
-                value, status, "THREAT_EDITORIAL_CORRECTION", sources, evidence, conflict,
-            )
+        decision = _editorial_threat_decision(editorial_overrides, conflict)
+        if decision:
+            return decision
 
     # Catégories techniques univoques, puis conséquence de fuite prouvée.
     for threat in (
-        config.THREAT_RANSOMWARE,
-        config.THREAT_DDOS,
-        config.THREAT_MALWARE,
-        config.THREAT_LEAK,
-        config.THREAT_PHISHING,
-        config.THREAT_INTRUSION,
+        config.THREAT_RANSOMWARE, config.THREAT_DDOS, config.THREAT_MALWARE,
+        config.THREAT_LEAK, config.THREAT_PHISHING, config.THREAT_INTRUSION,
         config.THREAT_THIRD_PARTY,
     ):
         if signals.get(threat):
@@ -196,14 +214,4 @@ def resolve_component(
                 sources, evidence, conflict,
             )
 
-    if len(item_threats) == 1:
-        value = next(iter(item_threats))
-        return ThreatDecision(value, "unknown", "THREAT_SINGLE_LEGACY_VALUE", conflict=False)
-    if item_threats:
-        counts = Counter(item.Threat for item in ordered if item.Threat in item_threats)
-        top = max(counts.values())
-        winners = sorted(value for value, count in counts.items() if count == top)
-        if len(winners) == 1:
-            return ThreatDecision(winners[0], "unknown", "THREAT_SOURCE_MAJORITY", conflict=True)
-        return ThreatDecision(config.THREAT_UNKNOWN, "unknown", "THREAT_CONFLICT", conflict=True)
-    return ThreatDecision(config.THREAT_UNKNOWN, "unknown", "THREAT_NO_EVIDENCE")
+    return _legacy_threat_decision(ordered, item_threats)

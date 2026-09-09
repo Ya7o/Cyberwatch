@@ -266,8 +266,8 @@ def metric_row(
 
 def source_fact_quality_counts(rows: list[dict]) -> dict[str, int]:
     """Compte les faits conservés pour audit mais exclus des affirmations publiques."""
-    from .fact_resolution import _VULNERABILITY_INCIDENT_LINK_RE
     from .fact_resolution_counts import _HYPOTHETICAL_EVIDENCE_RE, _NEGATED_EVIDENCE_RE
+    from .fact_resolution_vulnerabilities import VULNERABILITY_INCIDENT_LINK_RE
 
     nonassertive = 0
     contextual_vulnerabilities = 0
@@ -298,7 +298,7 @@ def source_fact_quality_counts(rows: list[dict]) -> dict[str, int]:
             relationship = str(fact.get("relationship") or "").casefold()
             evidence = str(fact.get("evidence") or "")
             if relationship in {"candidate", "mentioned"} or (
-                not relationship and not _VULNERABILITY_INCIDENT_LINK_RE.search(evidence)
+                not relationship and not VULNERABILITY_INCIDENT_LINK_RE.search(evidence)
             ):
                 contextual_vulnerabilities += 1
         for fact in rich.get("affected_counts", []) if isinstance(rich.get("affected_counts"), list) else []:

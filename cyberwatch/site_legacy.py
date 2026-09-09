@@ -168,6 +168,21 @@ def _rich_facts_from_metadata(row: dict) -> dict | None:
     return payload if len(payload) > 1 else None
 
 
+def _tentative_threat_from_metadata(row: dict) -> dict | None:
+    try:
+        metadata = json.loads(str(row.get("Source_Metadata_JSON") or "{}"))
+    except (TypeError, ValueError):
+        return None
+    tentative = metadata.get("threat_tentative") if isinstance(metadata, dict) else None
+    if not isinstance(tentative, dict) or not str(tentative.get("value") or "").strip():
+        return None
+    return {
+        "value": str(tentative["value"]).strip(),
+        "evidence": str(tentative.get("evidence") or "").strip()[:300],
+        "confidence": tentative.get("confidence", ""),
+    }
+
+
 def _source_fact_payload(row: dict) -> dict | None:
     """Réduit une ligne technique `source_facts.csv` à sa partie publiable.
 
@@ -258,17 +273,9 @@ def _source_fact_payload(row: dict) -> dict | None:
     rich_facts = _rich_facts_from_metadata(row)
     if rich_facts:
         payload["rich_facts"] = rich_facts
-    try:
-        metadata = json.loads(str(row.get("Source_Metadata_JSON") or "{}"))
-    except (TypeError, ValueError):
-        metadata = {}
-    tentative = metadata.get("threat_tentative") if isinstance(metadata, dict) else None
-    if isinstance(tentative, dict) and str(tentative.get("value") or "").strip():
-        payload["threat_tentative"] = {
-            "value": str(tentative["value"]).strip(),
-            "evidence": str(tentative.get("evidence") or "").strip()[:300],
-            "confidence": tentative.get("confidence", ""),
-        }
+    tentative = _tentative_threat_from_metadata(row)
+    if tentative:
+        payload["threat_tentative"] = tentative
 
     return payload if len(payload) > 2 else None
 
