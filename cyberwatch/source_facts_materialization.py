@@ -48,9 +48,15 @@ def semantic_materialization_gaps(facts: list[dict]) -> list[str]:
         statuses = metadata.get("_source_facts_semantic_status")
         if not isinstance(statuses, dict):
             continue
+        correction = metadata.get("editorial_correction")
+        suppressed = {
+            str(field) for field in correction.get("suppressed_semantic_fields", [])
+        } if isinstance(correction, dict) else set()
         rich = metadata.get("rich_facts") if isinstance(metadata.get("rich_facts"), dict) else {}
         for field, state in statuses.items():
             if str(state or "").strip().lower() != "accepted":
+                continue
+            if field in suppressed:
                 continue
             column = PUBLIC_COLUMNS.get(field)
             if column and not str(fact.get(column) or "").strip():

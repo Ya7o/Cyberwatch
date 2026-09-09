@@ -82,6 +82,22 @@ def test_materialization_gap_detecte_une_valeur_accepted_perdue_dans_le_csv():
     ]
 
 
+def test_materialization_gap_ignore_une_suppression_editoriale_tracee():
+    fact = {
+        "Item_ID": "ITM-audit",
+        "Impact": "",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_semantic_status": {"impact": "accepted"},
+            "editorial_correction": {
+                "audit": "AUDIT-X",
+                "reason": "Le texte décrit seulement un risque futur.",
+                "suppressed_semantic_fields": ["impact"],
+            },
+        }),
+    }
+    assert sf.semantic_materialization_gaps([fact]) == []
+
+
 def test_materialise_cache_borne_par_item_et_hash():
     fact = {
         "Item_ID": "ITM-qare",

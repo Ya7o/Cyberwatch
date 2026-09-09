@@ -22,8 +22,21 @@ def test_source_fact_correction_retires_un_fait_d_une_autre_victime():
     changed = editorial_corrections.apply_source_facts(rows, corrections)
     assert changed == ["ITM-x"]
     assert rows[0]["Data_Volume_Raw"] == ""
-    rich = json.loads(rows[0]["Source_Metadata_JSON"])["rich_facts"]
+    metadata = json.loads(rows[0]["Source_Metadata_JSON"])
+    rich = metadata["rich_facts"]
     assert [entry["value"] for entry in rich["data_volumes"]] == [200]
+    assert metadata["editorial_correction"]["suppressed_semantic_fields"] == []
+
+
+def test_suppression_scalaire_enregistre_le_champ_semantique():
+    rows = [{"Item_ID": "ITM-x", "Impact": "risque futur", "Source_Metadata_JSON": ""}]
+    editorial_corrections.apply_source_facts(rows, {"source_facts": {"ITM-x": {
+        "audit": "test",
+        "reason": "pas un impact constaté",
+        "clear": ["Impact"],
+    }}})
+    metadata = json.loads(rows[0]["Source_Metadata_JSON"])
+    assert metadata["editorial_correction"]["suppressed_semantic_fields"] == ["impact"]
 
 
 def test_item_correction_est_appliquee_apres_les_fallbacks(make_item):
