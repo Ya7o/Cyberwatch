@@ -10,7 +10,8 @@
     "identifiants",
     "adresses e-mail",
     "numéros de téléphone",
-    "noms et prénoms"
+    "noms et prénoms",
+    "données personnelles"
    ],
    "sensitive_data_exposed": false,
    "sensitive_data_types": [],
@@ -20,9 +21,9 @@
   "first_seen": "2026-09-09T15:59:59.832315+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-F7B381806AEC",
-  "items": 1,
-  "last_seen": "2026-09-09T15:59:59.832315+04:00",
-  "location": "Inconnu",
+  "items": 2,
+  "last_seen": "2026-09-09T17:15:43.314608+04:00",
+  "location": "France métropolitaine",
   "org": "Citadium",
   "personal_data_exposed": true,
   "quality_alerts": [],
@@ -37,29 +38,40 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
    }
   ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/citadium-shipup-mtu3vt912q1i17on3ex"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Citadium a informé des clients que leurs données personnelles ont été extraites lors d'une cyberattaque contre Shipup.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "Citadium a informé des clients que leurs données personnelles ont été extraites lors d'une cyberattaque contre Shipup.",
+   "evidence": "Citadium concerné par une cyberattaque visant Shipup, exposant des données personnelles de clients.",
    "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
    "sources": [
-    "CYBERATTAQUE_ORG"
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
    ],
    "status": "confirmed"
   },
   "urls": [
+   "https://frenchbreaches.com/alertes/citadium-shipup-mtu3vt912q1i17on3ex",
    "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
   ],
   "vulnerable_people_data_exposed": false
@@ -225,10 +237,10 @@
   "first_seen": "2026-09-08T15:48:40.951089+04:00",
   "high_sensitivity_data_exposed": true,
   "id": "INC-61993D19E8E2",
-  "items": 2,
-  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "items": 3,
+  "last_seen": "2026-09-09T17:15:43.314608+04:00",
   "location": "France métropolitaine",
-  "org": "SAD'S Interim",
+  "org": "Printemps",
   "personal_data_exposed": true,
   "quality_alerts": [],
   "sector": "Services aux entreprises",
@@ -250,6 +262,10 @@
     "status": "direct"
    },
    {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   },
+   {
     "source": "RANSOMWARE_LIVE",
     "status": "direct"
    }
@@ -260,12 +276,17 @@
     "url": "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
    },
    {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5"
+   },
+   {
     "source": "RANSOMWARE_LIVE",
     "url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268"
    }
   ],
   "sources": [
    "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
   "summary": "La cyberattaque de SAD’S Interim expose des données sensibles, y compris des passeports et des informations de paie, revendiquées par le groupe Rhysida.",
@@ -282,6 +303,7 @@
   },
   "urls": [
    "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5",
    "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
   ],
   "vulnerable_people_data_exposed": false

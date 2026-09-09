@@ -11170,7 +11170,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -11184,7 +11185,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -11198,7 +11200,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -11212,7 +11215,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -11226,7 +11230,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "claimed",
     "type": "data_type",
@@ -11240,7 +11245,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -11254,7 +11260,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "system",
@@ -11268,12 +11275,27 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "dataset",
     "unit": "",
     "value": "données clients"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Ces messages peuvent chercher à récupérer des identifiants, mots de passe ou informations bancaires.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
    },
    {
     "evidence": "Printemps  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  lors d’une cyberattaque ayant touché un prestataire chargé du suivi des commandes et des livraisons.",
@@ -11290,15 +11312,17 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
-    "status": "unknown",
+    "status": "confirmed",
     "value": "informations de commandes"
    },
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "adresses e-mail"
@@ -11306,7 +11330,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "numéros de téléphone"
@@ -11314,7 +11339,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "noms et prénoms"
@@ -11330,7 +11356,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "données bancaires"
@@ -11338,7 +11365,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "données personnelles"
@@ -11348,7 +11376,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "données clients"
@@ -11360,6 +11389,14 @@
     ],
     "status": "confirmed",
     "value": "base clients"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "données personnelles de clients"
    }
   ],
   "display_summary": "Printemps informe d'une fuite de données clients due à une cyberattaque sur le prestataire Shipup.",
@@ -11383,12 +11420,13 @@
     "value": "third_party"
    },
    "third_party": {
-    "source": "CYBERATTAQUE_ORG",
+    "evidence": "selon nos informations, cet incident est lié à la cyberattaque ayant touché Shipup.",
+    "source": "FRENCHBREACHES",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "FRENCHBREACHES"
     ],
-    "status": "unknown",
-    "value": "prestataire"
+    "status": "confirmed",
+    "value": "Shipup"
    },
    "threat_actor": {
     "evidence": "prestataire affirme",
@@ -11406,7 +11444,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "Metabase"
@@ -11422,10 +11461,61 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "unknown"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Les premiers correctifs ont été publiés le 6 août 2026.",
+    "evidence": "Les premiers correctifs ont été publiés le 6 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité.",
+    "evidence": "Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-08-25",
+    "event": "L'enseigne indique avoir notifié l’incident à la CNIL le 25 août 2026.",
+    "evidence": "L'enseigne indique avoir notifié l’incident à la CNIL le 25 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported"
+   },
+   {
+    "date": "2026-08-20",
+    "event": "Printemps indique avoir été informé de l’incident le 20 août 2026 et avoir effectué une notification auprès de la CNIL le 25 août 2026.",
+    "evidence": "Printemps indique avoir été informé de l’incident le 20 août 2026 et avoir effectué une notification auprès de la CNIL le 25 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported"
    }
   ],
   "version": 3,
-  "vulnerabilities": []
+  "vulnerabilities": [
+   {
+    "evidence": "Parmi les failles corrigées figure la CVE-2026-72898, une vulnérabilité critique notée 10/10 et activement exploitée.",
+    "relationship": "mentioned",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "CVE-2026-72898"
+   }
+  ]
  },
  "INC-B0E6BDE8801F": {
   "affected": [
@@ -16938,7 +17028,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -16952,7 +17043,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "reported",
     "type": "data_type",
@@ -16966,7 +17058,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -16980,7 +17073,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -16994,7 +17088,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "data_type",
@@ -17008,7 +17103,8 @@
     "scope": "",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "confirmed",
     "type": "dataset",
@@ -17016,10 +17112,39 @@
     "value": "données clients"
    },
    {
+    "actor": "",
+    "date": "",
+    "evidence": "Ces messages peuvent chercher à récupérer des identifiants, mots de passe ou informations bancaires.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "data_type",
+    "unit": "",
+    "value": "mots de passe"
+   },
+   {
+    "actor": "",
+    "date": "",
+    "evidence": "Cyberattaque chez Shipup : des données clients de Micromania et Easypara exposées via la faille Metabase Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce, a été touchée par la campagne de cyberattaques ayant exploité une vulnérabilité critique dans Metabase.",
+    "scope": "",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "type": "system",
+    "unit": "",
+    "value": "Metabase"
+   },
+   {
     "evidence": "Citadium  informe certains de ses clients qu’une partie de leurs données personnelles a été  consultée et extraite sans autorisation  à la suite d’une cyberattaque ayant touché son prestataire chargé du suivi des commandes et des livraisons.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "type": "third_party",
@@ -17030,7 +17155,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "informations de commandes"
@@ -17046,7 +17172,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "adresses e-mail"
@@ -17054,7 +17181,8 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "numéros de téléphone"
@@ -17062,17 +17190,27 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "unknown",
     "value": "noms et prénoms"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "données personnelles"
    }
   ],
   "datasets": [
    {
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "confirmed",
     "value": "données clients"
@@ -17084,6 +17222,14 @@
     ],
     "status": "confirmed",
     "value": "bases de données du prestataire Shipup"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "confirmed",
+    "value": "données personnelles des clients"
    }
   ],
   "display_summary": "Citadium a informé des clients que leurs données personnelles ont été extraites lors d'une cyberattaque contre Shipup.",
@@ -17101,7 +17247,8 @@
     "evidence": "l’outil d’analyse de Shipup a été exploitée par un tiers non autorisé.",
     "source": "CYBERATTAQUE_ORG",
     "sources": [
-     "CYBERATTAQUE_ORG"
+     "CYBERATTAQUE_ORG",
+     "FRENCHBREACHES"
     ],
     "status": "confirmed",
     "value": "Shipup"
@@ -17111,7 +17258,16 @@
   "rejected_fields": [
    "impact"
   ],
-  "systems": [],
+  "systems": [
+   {
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown",
+    "value": "Metabase"
+   }
+  ],
   "timeline": [
    {
     "date": "2026-08-25",
@@ -17122,10 +17278,51 @@
      "CYBERATTAQUE_ORG"
     ],
     "status": "confirmed"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Les premiers correctifs ont été publiés le 6 août 2026.",
+    "evidence": "Les premiers correctifs ont été publiés le 6 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-08-06",
+    "event": "Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité.",
+    "evidence": "Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "unknown"
+   },
+   {
+    "date": "2026-08-20",
+    "event": "Printemps indique notamment avoir été informé de l’incident le 20 août 2026 et avoir notifié la violation de données à la CNIL le 25 août 2026.",
+    "evidence": "Printemps indique notamment avoir été informé de l’incident le 20 août 2026 et avoir notifié la violation de données à la CNIL le 25 août 2026.",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported"
    }
   ],
   "version": 3,
-  "vulnerabilities": []
+  "vulnerabilities": [
+   {
+    "evidence": "Parmi les failles corrigées figure la CVE-2026-72898, une vulnérabilité critique notée 10/10 et activement exploitée.",
+    "relationship": "mentioned",
+    "source": "FRENCHBREACHES",
+    "sources": [
+     "FRENCHBREACHES"
+    ],
+    "status": "reported",
+    "value": "CVE-2026-72898"
+   }
+  ]
  },
  "INC-F8485FB8B618": {
   "affected": [
