@@ -593,10 +593,22 @@ _THIRD_PARTY_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
 
 
 def _claim_status(text: str) -> tuple[str, str]:
-    for pattern, canonical in _CLAIM_STATUS_MAP:
-        match = pattern.search(text or "")
-        if match:
-            return canonical, match.group(0)
+    # Le statut doit qualifier l'événement décrit par la phrase, pas un titre
+    # interrogatif ni un rappel historique présent ailleurs dans l'article.
+    # Les sources éditoriales mêlent fréquemment « incident 2023 confirmé » et
+    # « nouvelle fuite 2026 revendiquée » dans le même contexte.
+    historical = re.compile(
+        r"\b(?:ancien(?:ne)?|pr[ée]c[ée]dent(?:e)?|rappel|historique|"
+        r"[ée]poque|en\s+20(?:1\d|2[0-5]))\b",
+        re.I,
+    )
+    sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", text or "") if part.strip()]
+    current = [sentence for sentence in sentences if "?" not in sentence and not historical.search(sentence)]
+    for sentence in current:
+        for pattern, canonical in _CLAIM_STATUS_MAP:
+            match = pattern.search(sentence)
+            if match:
+                return canonical, match.group(0)
     return "", ""
 
 
@@ -730,7 +742,9 @@ def sanitize_source_facts(facts: list[dict]) -> tuple[list[dict], list[str]]:
     projections susceptibles d'être présentées comme certaines sont vidées.
     Cette passe répare aussi les snapshots antérieurs sans nouvel appel LLM.
     """
-    changed: list[str] = []
+    from . import editorial_corrections
+
+    changed: list[str] = editorial_corrections.apply_source_facts(facts)
     for fact in facts:
         evidence = _loads_json(str(fact.get("Evidence_JSON") or ""))
         evidence = evidence if isinstance(evidence, dict) else {}

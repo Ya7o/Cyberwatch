@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+import json
 import re
 from typing import Iterable, Mapping
 
@@ -110,6 +111,7 @@ def resolve_component(
     }
     conflict = len(item_threats) > 1
     signals: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+    editorial_overrides: list[tuple[str, str, str, str]] = []
 
     for item in ordered:
         # Threat_Raw peut être un défaut de flux (FrenchBreaches = fuite) et
@@ -131,6 +133,18 @@ def resolve_component(
             signals[config.THREAT_INTRUSION].append(("reported", source, item.Title))
 
         for row in facts_by_item.get(item.Item_ID, []):
+            try:
+                metadata = json.loads(str(row.get("Source_Metadata_JSON") or "{}"))
+            except (TypeError, ValueError):
+                metadata = {}
+            override = metadata.get("threat_override") if isinstance(metadata, dict) else None
+            if isinstance(override, dict) and override.get("value") in config.THREATS:
+                editorial_overrides.append((
+                    str(override["value"]),
+                    str(override.get("status") or "reported"),
+                    source,
+                    str(override.get("evidence") or ""),
+                ))
             status = str(row.get("Claim_Status") or "reported").strip().lower()
             if status in {"denied", "negated", "hypothesis", "unconfirmed"}:
                 continue
@@ -153,6 +167,17 @@ def resolve_component(
             initial_access = str(row.get("Initial_Access") or "").strip()
             if initial_access == "third_party" or str(row.get("Third_Party") or "").strip():
                 signals[config.THREAT_THIRD_PARTY].append((status, source, evidence))
+
+    if editorial_overrides:
+        values = {entry[0] for entry in editorial_overrides}
+        if len(values) == 1:
+            value = next(iter(values))
+            status, sources, evidence = _best_signal([
+                (entry[1], entry[2], entry[3]) for entry in editorial_overrides
+            ])
+            return ThreatDecision(
+                value, status, "THREAT_EDITORIAL_CORRECTION", sources, evidence, conflict,
+            )
 
     # Catégories techniques univoques, puis conséquence de fuite prouvée.
     for threat in (

@@ -369,6 +369,30 @@ def _legacy_affected_record(fact: dict) -> dict | None:
     }
 
 
+def _legacy_file_record(fact: dict) -> dict | None:
+    value = fact.get("file_count")
+    if value is None:
+        return None
+    try:
+        numeric = int(value)
+    except (TypeError, ValueError):
+        return None
+    if numeric <= 0:
+        return None
+    source = _text(fact.get("source"))
+    evidence = _text(fact.get("file_count_evidence"))
+    return {
+        "value": numeric,
+        "raw": "",
+        "unit": "files",
+        "semantic": "total",
+        "status": _status({"status": fact.get("claim_status")}),
+        "source": source,
+        "sources": [source] if source else [],
+        "evidence": evidence,
+    }
+
+
 def _rich_count_records(fact: dict) -> list[dict]:
     source = _text(fact.get("source"))
     rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
@@ -702,6 +726,14 @@ def resolve_affected_counts(facts: Iterable[dict]) -> list[dict]:
                 selected[key] = record
             else:
                 _merge_record(selected[key], record, source)
+
+        file_record = _legacy_file_record(fact)
+        if file_record and _incident_count_is_publishable(file_record):
+            key = (file_record["unit"], file_record["semantic"], _norm(_record_value(file_record)))
+            if key not in selected:
+                selected[key] = file_record
+            else:
+                _merge_record(selected[key], file_record, source)
 
         legacy = _legacy_affected_record(fact)
         if not legacy or legacy.get("status") in {"negated", "denied"}:

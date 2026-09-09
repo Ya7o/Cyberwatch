@@ -1,0 +1,112 @@
+Medikwestindies
+
+# Medikwestiindies : près de 89 000 enregistrements revendiqués dans une fuite de données
+
+Une base de données attribuée au site Medikwestindies.fr, présenté comme un site destiné aux étudiants en médecine en Guadeloupe, apparaît dans une publication attribuée au groupe ANKA Team. La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés...
+
+SL
+Par Seblatombe, rédacteur FrenchBreaches
+Publié le 08/09/2026
+Medikwestiindies : près de 89 000 enregistrements revendiqués dans une fuite de données
+Une base de données attribuée au site Medikwestindies.fr, présenté comme un site destiné aux étudiants en médecine en Guadeloupe, apparaît dans une publication attribuée au groupe ANKA Team. La capture diffusée revendique 89 180 enregistrements et montre plusieurs catégories de données personnelles, dont des noms, adresses e-mail, numéros de téléphone ainsi que des mots de passe stockés sous forme de hash.
+La publication visible sur la capture est datée du 3 juin 2017.
+Le message accompagnant la fuite affirme, en turc, que la base de données du site Medikwestindies.fr aurait été divulguée par l'auteur de la publication.
+Près de 89 000 enregistrements revendiqués
+L'auteur de la publication affirme disposer de 89 180 enregistrements issus d'une base associée à medikwestiindies.fr.
+La capture montre directement un extrait sous forme de tableau.
+Plusieurs colonnes sont visibles :
+un indicateur admin ;
+une adresse e-mail ;
+un champ name ;
+un nom de famille ;
+un prénom ;
+un champ password ;
+un numéro de téléphone ;
+un identifiant de session.
+Des noms, e-mails et numéros de téléphone exposés
+L'échantillon présenté dans la publication contient plusieurs catégories de données personnelles.
+On peut notamment observer :
+des noms et prénoms ;
+des adresses e-mail personnelles ;
+des numéros de téléphone ;
+des informations liées au statut administrateur de certains comptes ;
+des valeurs correspondant aux mots de passe stockés sous forme de hash ;
+des identifiants de session pour certaines entrées.
+La présence simultanée de coordonnées, d'informations de compte et de données d'authentification augmente la sensibilité potentielle de la fuite.
+Des mots de passe apparaissent dans la base
+Une colonne intitulée password est directement visible dans l'échantillon.
+Cette structure est compatible avec des hashes bcrypt.
+Cela signifie que la capture ne montre pas directement les mots de passe utilisés par les personnes concernées.
+La présence de hashes de mots de passe reste néanmoins sensible, notamment si certains utilisateurs réutilisaient les mêmes identifiants sur plusieurs services.
+Des identifiants de session sont également visibles
+Une colonne session_id apparaît dans la base.
+Certaines lignes contiennent une valeur tandis que d'autres affichent NULL.
+La capture seule ne permet pas de déterminer :
+à quoi correspondent exactement ces identifiants ;
+s'ils étaient encore valides au moment de la fuite ;
+s'ils pouvaient être utilisés pour accéder à des comptes ;
+ni comment ils étaient générés ou protégés par l'application.
+Il serait donc incorrect de conclure, uniquement à partir de cette image, qu'ils permettaient une prise de contrôle de compte.
+Qui est Medikwestindies?
+La publication décrit Medikwestindies.fr comme un site destiné aux étudiants en médecine de Guadeloupe.
+La capture ne fournit cependant pas suffisamment d'informations pour déterminer précisément :
+l'organisme qui exploitait le site ;
+le nombre réel d'utilisateurs inscrits ;
+la période couverte par la base ;
+ni si les 89 180 lignes correspondent à autant de personnes distinctes.
+Comment les données ont-elles été récupérées ?
+La publication ne fournit pas d'explication technique suffisamment détaillée pour identifier le vecteur initial de compromission.
+Aucun élément visible ne permet de déterminer si les données proviennent :
+d'une vulnérabilité du site ;
+d'un accès non autorisé à la base de données ;
+d'identifiants administrateur compromis ;
+d'une mauvaise configuration ;
+d'un serveur exposé ;
+d'un prestataire tiers ;
+ou d'une fuite plus ancienne ensuite republiée.
+La date du 3 juin 2017 correspond à la date visible sur la publication et ne constitue donc pas nécessairement la date à laquelle les données auraient été extraites.
+Le piratage de Medikwestindies.fr est-il confirmé ?
+La capture montre qu'un acteur se présentant comme ANKA Team revendique la divulgation d'une base attribuée à Medikwestindies.fr.
+L'échantillon affiché présente une structure cohérente avec une table de comptes utilisateurs et contient effectivement plusieurs catégories de données personnelles.
+Ces éléments donnent de la consistance à la revendication.
+Ils ne permettent toutefois pas de vérifier indépendamment :
+l'origine exacte de la base ;
+l'authenticité des 89 180 enregistrements annoncés ;
+le système réellement compromis ;
+la méthode employée ;
+ni si l'intégralité des données provenait directement du site mentionné.
+En l'absence d'éléments complémentaires ou de confirmation officielle, le volume doit donc rester présenté comme revendiqué par l'auteur de la publication.
+Quels risques pour les personnes concernées ?
+La combinaison de plusieurs informations personnelles peut favoriser différentes formes de fraude.
+La présence simultanée d'un nom, d'une adresse e-mail et d'un numéro de téléphone peut notamment faciliter des campagnes de :
+phishing ciblé ;
+smishing par SMS ;
+ingénierie sociale ;
+usurpation d'identité ;
+tentatives de réutilisation d'identifiants sur d'autres services.
+La présence de hashes de mots de passe rend également particulièrement important le changement des mots de passe lorsqu'un même secret a été utilisé sur plusieurs plateformes.
+Les personnes potentiellement concernées devraient être vigilantes face à des messages faisant référence à leur ancien compte, à leur activité universitaire ou à des services liés à la médecine en Guadeloupe.
+Ce que l'on sait à partir de la capture
+Les éléments visibles permettent d'établir plusieurs points :
+le domaine Medikwestindies.fr est explicitement cité ;
+89 180 enregistrements sont revendiqués ;
+la publication est datée du 3 juin 2017 ;
+des adresses e-mail apparaissent dans l'échantillon ;
+des noms et prénoms sont visibles ;
+des numéros de téléphone figurent également dans la table ;
+une colonne contient des hashes de mots de passe ;
+des identifiants de session apparaissent pour certains comptes ;
+un indicateur admin est présent.
+La capture ne permet en revanche pas de déterminer avec certitude le nombre de personnes uniques, l'origine technique de la fuite ou la méthode utilisée pour récupérer les données.
+Conclusion
+Une publication attribuée à ANKA Team revendique la fuite d'une base associée à Medikwestindies.fr contenant 89 180 enregistrements.
+L'échantillon visible comprend des noms, prénoms, adresses e-mail, numéros de téléphone, hashes de mots de passe et identifiants de session.
+La présence de plusieurs catégories de données liées à un même compte peut augmenter les risques de phishing ciblé, d'ingénierie sociale et de réutilisation frauduleuse d'identifiants.
+La capture donne de la consistance à la revendication, mais elle ne permet pas à elle seule de confirmer l'origine complète des données, le nombre exact de personnes concernées ou le vecteur de compromission.
+Ces différents éléments doivent donc rester présentés comme issus d'une revendication accompagnée d'un échantillon, et non comme une compromission techniquement confirmée.
+Ressources utiles :
+Annuaire fuite de données
+|
+Que faire après une fuite de données
+|
+Blog fuite de données

@@ -1,0 +1,5487 @@
+[
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "Genre",
+    "adresses e-mail"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DD17DC78C96C",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Association des Maires de France",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Association représentative des maires et présidents d'intercommunalité ; distincte d'une administration et de l'Autorité des marchés financiers.",
+   "evidence_url": "https://www.amf.asso.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "BONJOURLAFUITE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/amf.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/amf.png"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données de santé",
+    "pièces d'identité",
+    "données bancaires"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données de santé",
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-61993D19E8E2",
+  "items": 2,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "SAD'S Interim",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données de santé",
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "SAD’S Interim victime d'une cyberattaque exposant données sensibles, revendiquée par le groupe Rhysida.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "SAD'S Interim revendiqué par rhysida",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5D2D1691FC39",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Medikwestindies",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/medikwestindies-mtsio3ufjvj81y6m5ai"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/medikwestindies-mtsio3ufjvj81y6m5ai"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants",
+    "adresses postales",
+    "dates de naissance"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EE0E8F96C169",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Service national universel",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/service-national-universel-snu-mtrfy9tvk9n0jcgh2yk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque contre le Service national universel, environ 275 000 comptes compromis.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Cyberattaque contre le Service national universel, environ 275 000 comptes compromis.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/service-national-universel-snu-mtrfy9tvk9n0jcgh2yk"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "adresses postales",
+    "noms et prénoms",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-07T17:05:04.798941+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CE20778A3019",
+  "items": 1,
+  "last_seen": "2026-09-07T17:05:04.798941+04:00",
+  "location": "France métropolitaine",
+  "org": "Snexi",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "SNEXI, entreprise spécialisée dans les diagnostics immobiliers, a confirmé avoir été victime d’une cyberattaque...",
+   "evidence_url": "https://frenchbreaches.com/alertes/snexi-mtndjyfm1p926jbh30z",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/snexi-mtndjyfm1p926jbh30z"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "SNEXI a subi une cyberattaque le 2 septembre 2026 entraînant une violation de données personnelles.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "SNEXI a subi une cyberattaque le 2 septembre 2026 entraînant une violation de données personnelles.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/snexi-mtndjyfm1p926jbh30z"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données de santé",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "dates de naissance",
+    "identifiants",
+    "adresses postales",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données de santé"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-07T17:05:04.798941+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-A3D0A851E662",
+  "items": 2,
+  "last_seen": "2026-09-07T17:05:04.798941+04:00",
+  "location": "France métropolitaine",
+  "org": "Jinko",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Jinko, plateforme française spécialisée dans l’accompagnement des personnes atteintes de cancer.",
+   "evidence_url": "https://www.cyberattaque.org/jinko-une-cyberattaque-expose-les-donnees-de-sante-de-plus-de-3-500-personnes/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données de santé"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/jinko-une-cyberattaque-expose-les-donnees-de-sante-de-plus-de-3-500-personnes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/jinko-mtr8ebuvqi0us4ljpbi"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Jinko subit une fuite de données de santé affectant plus de 3 500 personnes.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/jinko-mtr8ebuvqi0us4ljpbi",
+   "https://www.cyberattaque.org/jinko-une-cyberattaque-expose-les-donnees-de-sante-de-plus-de-3-500-personnes/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-995C9F7252C1",
+  "items": 1,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "Inconnu",
+  "org": "CC Yvetot Normandie",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cc-yvetot-normandie-les-documents-administratifs-en-fuite-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "CC Yvetot Normandie a subi une fuite de près de 250 documents administratifs diffusés sur le darkweb.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/cc-yvetot-normandie-les-documents-administratifs-en-fuite-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "photographies",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-07",
+  "first_seen": "2026-09-07T17:05:04.798941+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8A100D3C8D40",
+  "items": 2,
+  "last_seen": "2026-09-07T17:05:04.798941+04:00",
+  "location": "France métropolitaine",
+  "org": "BumFot",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "BumFot est présenté comme un service permettant de partager des photos et des vidéos à l’aide de QR codes ou de liens privés, notamment pour créer des albums collaboratifs sans imposer aux invités la création d’un compte ou le téléchargement d’une application.",
+   "evidence_url": "https://frenchbreaches.com/alertes/bumfot-mtr6jurecstsgtv0ig5",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bumfot-une-cyberattaque-expose-les-donnees-denviron-1-300-utilisateurs/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bumfot-mtr6jurecstsgtv0ig5"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "BumFot a subi une cyberattaque exposant les données d'environ 1 300 utilisateurs.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Une fuite de données revendiquée concerne environ 1 300 utilisateurs de BumFot, incluant des noms et adresses e-mail.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/bumfot-mtr6jurecstsgtv0ig5",
+   "https://www.cyberattaque.org/bumfot-une-cyberattaque-expose-les-donnees-denviron-1-300-utilisateurs/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "identifiants",
+    "dates de naissance"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-06",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EEC788C594CA",
+  "items": 1,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "Inconnu",
+  "org": "Aveyron",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/aveyron-cyberattaque-emplois/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Fuite de données de 23 381 enregistrements d'utilisateurs et 1 500 CV sur une plateforme d'emploi en Aveyron.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données de 23 381 enregistrements d'utilisateurs et 1 500 CV sur une plateforme d'emploi en Aveyron.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/aveyron-cyberattaque-emplois/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "identifiants",
+    "données de santé",
+    "adresses IP"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données de santé"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-06",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-D2432B2095FD",
+  "items": 2,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "Les Curistes",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Hébergement / Tourisme / Restauration | Santé",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données de santé"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lescuristes-fr-une-cyberattaque-expose-les-messages-et-coordonnees-de-86-000-personnes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/les-curistes-mtp0o5mfdnfk170tt2f"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données chez Les Curistes concernant plus de 86 000 personnes, avec des informations exposées tels que noms et messages privés.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez Les Curistes concernant plus de 86 000 personnes, avec des informations exposées tels que noms et messages privés.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/les-curistes-mtp0o5mfdnfk170tt2f",
+   "https://www.cyberattaque.org/lescuristes-fr-une-cyberattaque-expose-les-messages-et-coordonnees-de-86-000-personnes/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-06",
+  "first_seen": "2026-09-07T17:05:04.798941+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C0C26C209432",
+  "items": 1,
+  "last_seen": "2026-09-07T17:05:04.798941+04:00",
+  "location": "Inconnu",
+  "org": "SPA du Pays de Montbéliard",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/spa-du-pays-de-montbeliard-une-cyberattaque-met-son-site-hors-ligne/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La SPA du Pays de Montbéliard a subi une cyberattaque rendant son site Internet inaccessible.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "La SPA du Pays de Montbéliard a subi une cyberattaque rendant son site Internet inaccessible.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/spa-du-pays-de-montbeliard-une-cyberattaque-met-son-site-hors-ligne/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "identifiants",
+    "dates de naissance",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-06",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A11BA9A22689",
+  "items": 1,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "OnRecrute.enAveyron.fr",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Une importante fuite de données touche OnRecrute.enAveyron.fr, la plateforme dédiée à l’emploi du Département de l’Aveyron.",
+   "evidence_url": "https://frenchbreaches.com/alertes/aveyron-mtp0hyfwss6ietkec1q",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/aveyron-mtp0hyfwss6ietkec1q"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données ayant exposé plus de 20 000 personnes et près de 1 500 documents sur OnRecrute.enAveyron.fr.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données ayant exposé plus de 20 000 personnes et près de 1 500 documents sur OnRecrute.enAveyron.fr.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/aveyron-mtp0hyfwss6ietkec1q"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "photographies",
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "dates de naissance",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-06",
+  "first_seen": "2026-09-07T17:05:04.798941+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0042AA05B202",
+  "items": 2,
+  "last_seen": "2026-09-07T17:05:04.798941+04:00",
+  "location": "France métropolitaine",
+  "org": "Footsider",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "SUMMARY_FACT_CONTRADICTION",
+    "field": "summary",
+    "severity": "error"
+   },
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Footsider est une plateforme destinée à faciliter les rencontres entre joueurs de football, clubs, recruteurs et autres acteurs du milieu.",
+   "evidence_url": "https://frenchbreaches.com/alertes/footsider-mtpvjd93ygng6mx0ul",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/footsider-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/footsider-mtpvjd93ygng6mx0ul"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Footsider a subi une cyberattaque exposant les données de 153 000 comptes utilisateurs.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Footsider : une cyberattaque expose les données de 153 000 comptes",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/footsider-mtpvjd93ygng6mx0ul",
+   "https://www.cyberattaque.org/footsider-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-05",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F87083F98EA4",
+  "items": 2,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "Jouvet SAS",
+  "personal_data_exposed": false,
+  "quality_alerts": [
+   {
+    "code": "DATA_TYPES_EMPTY_WITH_PERSONAL_DATA_EVIDENCE",
+    "field": "data_types",
+    "severity": "warning"
+   }
+  ],
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Industrie / Manufacture"
+   ],
+   "evidence": "Jouvet SAS, entreprise française spécialisée dans la plomberie, le chauffage et la climatisation.",
+   "evidence_url": "https://www.cyberattaque.org/jouvet-sas-qilin-revendique-une-cyberattaque-contre-lentreprise-sarthoise/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/jouvet-sas-qilin-revendique-une-cyberattaque-contre-lentreprise-sarthoise/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ee0464c8-913c-4fec-bf54-04737c76b065"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Le groupe de ransomware Qilin revendique une cyberattaque contre Jouvet SAS.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Jouvet SAS revendiqué par qilin",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ee0464c8-913c-4fec-bf54-04737c76b065",
+   "https://www.cyberattaque.org/jouvet-sas-qilin-revendique-une-cyberattaque-contre-lentreprise-sarthoise/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-05",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DC0BCFD579B8",
+  "items": 1,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "Répar'Store",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-par-store-mtoa0qd4rlpkduc13t"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Répar'Store a subi un incident de sécurité ayant compromis des données clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/r-par-store-mtoa0qd4rlpkduc13t"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants",
+    "noms"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-05",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C59598DB9453",
+  "items": 2,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "La Maison Pour Tous",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "La Maison Pour Tous, coopérative française spécialisée dans le logement social.",
+   "evidence_url": "https://www.cyberattaque.org/la-maison-pour-tous-les-noms-de-8-000-locataires-diffuses-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-maison-pour-tous-les-noms-de-8-000-locataires-diffuses-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-maison-pour-tous-mtokh76jop9gf5sg6qb"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données de La Maison Pour Tous avec les noms de 8 000 locataires diffusés par le hacker ChimeraZ.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données de La Maison Pour Tous avec les noms de 8 000 locataires diffusés par le hacker ChimeraZ.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/la-maison-pour-tous-mtokh76jop9gf5sg6qb",
+   "https://www.cyberattaque.org/la-maison-pour-tous-les-noms-de-8-000-locataires-diffuses-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "adresses postales",
+    "données bancaires"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-05",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B44C794AB35B",
+  "items": 2,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "Répar’stores",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Répar’stores, réseau français spécialisé dans la réparation et la modernisation de stores et volets roulants.",
+   "evidence_url": "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "BONJOURLAFUITE",
+    "status": "direct"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/reparstores.png"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Répar’stores : les données clients exposées après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Répar’stores : les données clients exposées après une cyberattaque",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/reparstores.png",
+   "https://www.cyberattaque.org/reparstores-les-donnees-clients-exposees-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-05",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-44385EDB45C1",
+  "items": 1,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "YouFid",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "YouFid, plateforme française de gestion de programmes de fidélité.",
+   "evidence_url": "https://frenchbreaches.com/alertes/youfid-mtokeunf3fh8e0zgapu",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/youfid-mtokeunf3fh8e0zgapu"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données chez YouFid avec 7 880 enregistrements publiés sur un forum cybercriminel.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez YouFid avec 7 880 enregistrements publiés sur un forum cybercriminel.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/youfid-mtokeunf3fh8e0zgapu"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "adresses postales"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-05",
+  "first_seen": "2026-09-06T15:24:13.607281+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-36A1CF778488",
+  "items": 2,
+  "last_seen": "2026-09-06T15:24:13.607281+04:00",
+  "location": "France métropolitaine",
+  "org": "PassPass",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Pass Pass, le service régional de mobilité des Hauts-de-France.",
+   "evidence_url": "https://www.cyberattaque.org/pass-pass-pres-de-19-000-usagers-exposes-commandes-et-factures-diffusees-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pass-pass-pres-de-19-000-usagers-exposes-commandes-et-factures-diffusees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/passpass-mtokkaq53s0e7hlda1i"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Pass Pass expose près de 19 000 usagers après une cyberattaque revendiquée par le hacker ChimeraZ.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Pass Pass : près de 19 000 usagers exposés, commandes et factures diffusées après une cyberattaque",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/passpass-mtokkaq53s0e7hlda1i",
+   "https://www.cyberattaque.org/pass-pass-pres-de-19-000-usagers-exposes-commandes-et-factures-diffusees-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F8485FB8B618",
+  "items": 1,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Collège Saint-Michel",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Collège Saint-Michel",
+   "evidence_url": "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données au Collège Saint-Michel révélant des informations sur 1 836 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données au Collège Saint-Michel révélant des informations sur 1 836 personnes.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/coll-ge-saint-michel-mtm6uc3fmrq1uwb2e"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "profils utilisateurs et informations d’organisation interne"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-45561E350283",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Clinique de Vontes",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Clinique de Vontes",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données affectant 4 111 personnes revendiquer par le hacker ChimeraZ au sein du groupe INICEA.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données affectant 4 111 personnes revendiquer par le hacker ChimeraZ au sein du groupe INICEA.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4",
+   "https://www.cyberattaque.org/cyberattaque-clinique-de-vontes/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "noms et prénoms",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3E1B5FCCAEDF",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Préférence Formations",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Préférence Formations, organisme français spécialisé dans la formation professionnelle",
+   "evidence_url": "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données de plus de 5 200 personnes touchées chez Préférence Formations.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Préférence Formations : les données de plus de 5 200 personnes diffusées après une cyberattaque",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/pr-f-rence-formations-mtm701xaas25ttqxse",
+   "https://www.cyberattaque.org/preference-formations-les-donnees-de-plus-de-5-200-personnes-diffusees-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "dates de naissance",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3AC6333A7A42",
+  "items": 2,
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
+  "location": "France métropolitaine",
+  "org": "Accent Rouge",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Commerce / Distribution | Culture / Médias / Loisirs",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/accent-rouge-cyberattaque-odoo/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/accent-rouge-mtnfwe0yz31800vbok"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Accent Rouge subit une fuite massive de données avec 32 000 fiches clients divulguées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Accent Rouge subit une fuite massive de données avec 32 000 fiches clients divulguées.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/accent-rouge-mtnfwe0yz31800vbok",
+   "https://www.cyberattaque.org/accent-rouge-cyberattaque-odoo/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants",
+    "noms et prénoms",
+    "adresses e-mail",
+    "données d’identité et de contact, des fonctions professionnelles, des références internes"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2C5CEAE9E3AC",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Association des maires de France",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Association représentative des maires et présidents d'intercommunalité ; distincte d'une administration et de l'Autorité des marchés financiers.",
+   "evidence_url": "https://www.amf.asso.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "L'Association des maires de France a subi une fuite de 114 000 enregistrements après une cyberattaque.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "L'Association des maires de France a subi une fuite de 114 000 enregistrements après une cyberattaque.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/association-des-maires-de-france-mtmsxq04rjndct88z4p",
+   "https://www.cyberattaque.org/association-des-maires-de-france-114-000-lignes-en-fuite-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2C5CD2459F83",
+  "items": 1,
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
+  "location": "France métropolitaine",
+  "org": "Clinique de Vontes",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Clinique de Vontes",
+   "evidence_url": "https://frenchbreaches.com/alertes/clinique-de-vontes-inicea-mtm6ww9opvv422tgg4",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clinique-de-vontes-inicea-mtm6ww9opvv422tgg4"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données à la Clinique de Vontes concernant 4 111 profils de patients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données à la Clinique de Vontes concernant 4 111 profils de patients.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/clinique-de-vontes-inicea-mtm6ww9opvv422tgg4"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "dates de naissance",
+    "noms et prénoms",
+    "adresses e-mail",
+    "adresses postales",
+    "numéros de téléphone",
+    "identifiants",
+    "informations de paiement"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "informations de paiement",
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-04",
+  "first_seen": "2026-09-05T14:58:36.371393+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-2690C398C621",
+  "items": 2,
+  "last_seen": "2026-09-05T14:58:36.371393+04:00",
+  "location": "France métropolitaine",
+  "org": "Storia Mundi",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Storia Mundi propose des conférences en ligne animées par des historiens et spécialistes, ainsi que des replays, articles et contenus pédagogiques.",
+   "evidence_url": "https://www.cyberattaque.org/storia-mundi-pirate-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "informations de paiement",
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/storia-mundi-pirate-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/storia-mundi-mtnbhl7gn987owivuep"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Storia Mundi a subi une fuite de données impliquant 17 850 profils d'utilisateurs.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez Storia Mundi revendiquant 18 000 comptes et des données de paiement.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/storia-mundi-mtnbhl7gn987owivuep",
+   "https://www.cyberattaque.org/storia-mundi-pirate-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "numéros de téléphone",
+    "noms et prénoms",
+    "adresses e-mail",
+    "adresses postales"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F8CDDC2DD3B7",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "ZeroGaspi",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "ZeroGaspi commercialise en ligne des produits destinés notamment à réduire le gaspillage et les déchets.",
+   "evidence_url": "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base de 80 000 clients de ZeroGaspi est en vente après une cyberattaque revendiquée par le hacker ksye.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez ZeroGaspi avec les informations de 80 000 clients mises en vente.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/zerogaspi-mtly357yaln2xfqzy4",
+   "https://www.cyberattaque.org/zerogaspi-une-base-de-80-000-clients-en-vente-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données bancaires"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E39201703225",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Reso",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Négoce spécialisé de produits du second œuvre ; classement par activité économique principale (audit 2026-09-05).",
+   "evidence_url": "https://www.reso.fr/qui-sommes-nous/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Réso victime d'une fuite massive de données, 675 Go et 530 000 fichiers récupérés par le hacker caustic.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Exfiltration de 675 Go de données internes et 530 000 fichiers revendiqués.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/reso-mtlxxb9d9050x5hmr8q",
+   "https://www.cyberattaque.org/reso-plus-de-500-000-fichiers-internes-dans-une-fuite-massive-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B7DBF665E661",
+  "items": 1,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Chambre de Métiers et de l’Artisanat d’Occitanie",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Chambre consulaire, établissement public ; priorité à la mission institutionnelle (audit 2026-09-05).",
+   "evidence_url": "https://lannuaire.service-public.gouv.fr/occitanie/haute-garonne/d8b3d986-d96a-4f1d-9ea8-1eba9e6aeea7",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/chambre-de-m-tiers-et-de-l-artisanat-d-occitanie-mtktlb1edwrd1ok63hq"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B56C65C3FDAC",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Tisséo",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Près de 3 000 personnes exposées après une cyberattaque ciblant Tisséo.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Près de 3 000 personnes exposées après une cyberattaque ciblant Tisséo.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/tiss-o-mtktrusw2xxeaxkehp8",
+   "https://www.cyberattaque.org/cyberattaque-tisseo-toulouse/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "pièces d'identité",
+    "noms et prénoms",
+    "identifiants",
+    "cartes nationales d’identité"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-83BA7D2DCBF4",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "BCTI",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Service de mise en relation avec des experts pour les diagnostics immobiliers et audits énergétiques ; classement dans les services immobiliers couverts par Construction / BTP.",
+   "evidence_url": "https://www.bcti.fr/diagnostics-immobiliers/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données chez BCTI, comprenant des cartes d'identité et des dossiers immobiliers.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez BCTI, comprenant des cartes d'identité et des dossiers immobiliers.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/bcti-mtktuv79ab8qfhxo7bp",
+   "https://www.cyberattaque.org/cyberattaque-bcti-cartes-didentite-et-des-dossiers-immobiliers-en-fuite/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "identifiants",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-693ABEB9BF8A",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "Delicity",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Plateforme et applications de commande et réservation pour les restaurateurs ; fournit des outils numériques, sans être un restaurant.",
+   "evidence_url": "https://pro.delicity.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Delicity a confirmé une fuite de données personnelles survenue entre le 9 et le 24 août 2026.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Delicity a confirmé une fuite de données personnelles survenue entre le 9 et le 24 août 2026.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/delicity-mtlhw5asykbr9p4rhu",
+   "https://www.cyberattaque.org/delicity-cyberattaque-faille-metabase-expose-les-donnees-de-clients-restaurateurs-et-livreurs/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "noms et prénoms"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-619638DA1C52",
+  "items": 1,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "Inconnu",
+  "org": "CMA Occitanie",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Chambre consulaire, établissement public ; priorité à la mission institutionnelle (audit 2026-09-05).",
+   "evidence_url": "https://lannuaire.service-public.gouv.fr/occitanie/haute-garonne/d8b3d986-d96a-4f1d-9ea8-1eba9e6aeea7",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Fuite de données touchant CMA Occitanie avec 1 029 profils exposés par le hacker ChimeraZ.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "CMA Occitanie : plus de 1 000 profils professionnels exposés dans une fuite de données",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/chambre-de-metiers-et-de-lartisanat-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "noms et prénoms",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-52ED884732BC",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Charbonneaux-Brabant",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Charbonneaux-Brabant, entreprise française spécialisée dans la chimie, le conditionnement et la distribution de matières premières",
+   "evidence_url": "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données revendiquée chez Charbonneaux-Brabant affectant 2 863 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Charbonneaux-Brabant : 2 863 profils professionnels exposés dans une fuite de données",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/charbonneaux-brabant-mtktomg03zpucc9qjk7",
+   "https://www.cyberattaque.org/charbonneaux-brabant-2-863-profils-professionnels-exposes-dans-une-fuite-de-donnees/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "pièces d'identité",
+    "noms et prénoms",
+    "adresses e-mail",
+    "adresses postales",
+    "identifiants",
+    "données de compte"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-03",
+  "first_seen": "2026-09-04T15:48:57.184028+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-47CD44FA27B9",
+  "items": 2,
+  "last_seen": "2026-09-04T15:48:57.184028+04:00",
+  "location": "France métropolitaine",
+  "org": "ColisExpat",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "ColisExpat permet notamment aux internautes de disposer d’une adresse de livraison intermédiaire avant de faire réexpédier leurs achats vers leur destination finale.",
+   "evidence_url": "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ColisExpat a subi une cyberattaque exposant des pièces d'identité et des données de compte de ses clients.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "ColisExpat a subi une cyberattaque exposant des pièces d'identité et des données de compte de ses clients.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/colisexpat-mtli3y3saqaoiaimmgd",
+   "https://www.cyberattaque.org/colisexpat-une-cyberattaque-expose-les-pieces-didentite-et-donnees-de-compte/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "pièces d'identité"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DF5C519783E8",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Ville de Libercourt",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ville de Libercourt",
+   "evidence_url": "https://www.cyberattaque.org/ville-de-libercourt-817-go-de-donnees-revendiquesapres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "no_direct_url"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ville-de-libercourt-817-go-de-donnees-revendiquesapres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "La Ville de Libercourt victime d'une cyberattaque revendiquée par le groupe Kairos, avec 817 Go de données menacées de publication.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Ville de Libercourt revendiqué par kairos",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/ville-de-libercourt-817-go-de-donnees-revendiquesapres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-02T15:47:42.371674+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CFB60E563EB4",
+  "items": 2,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "France métropolitaine",
+  "org": "LiveTrail",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Applications et solutions de suivi GPS, chronométrage et statistiques des courses ; fournisseur numérique, distinct des organisateurs sportifs utilisateurs.",
+   "evidence_url": "https://web.livetrail.net/en",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "LiveTrail a subi une cyberattaque ayant exposé les coordonnées des utilisateurs.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "LiveTrail a subi une cyberattaque ayant exposé les coordonnées des utilisateurs.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/livetrail-mtjxhuwerp3v2k4hem9",
+   "https://www.cyberattaque.org/livetrail-une-cyberattaque-expose-les-coordonnees-des-utilisateurs/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CE9040DC18AB",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Micromania",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Réseau de magasins et vente de jeux vidéo, consoles et produits dérivés.",
+   "evidence_url": "https://corporate.micromania.fr/projet.html",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/micromania-ses-donnees-clients-exposees-apres-une-cyberattaque-chez-shipup/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/micromania-mtkqt98z0l4chcj41qpe"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Micromania confirme une fuite de données personnelles de ses clients via son prestataire Shipup.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Micromania confirme une fuite de données personnelles de ses clients via son prestataire Shipup.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/micromania-mtkqt98z0l4chcj41qpe",
+   "https://www.cyberattaque.org/micromania-ses-donnees-clients-exposees-apres-une-cyberattaque-chez-shipup/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "extraction massive via un compte authentifié"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-02T15:47:42.371674+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C4996B1885D9",
+  "items": 2,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "France métropolitaine",
+  "org": "Géofoncier",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "SUMMARY_FACT_CONTRADICTION",
+    "field": "summary",
+    "severity": "error"
+   }
+  ],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le hacker ZeroBytes revendique le piratage de la plateforme Géofoncier.fr spécialisée dans l'information foncière.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Géofoncier revendique une cyberattaque ayant exposé plus de 4 millions de dossiers fonciers.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/g-ofoncier-mtj8t6co0pczd1uq3z1h",
+   "https://www.cyberattaque.org/geofoncier-plus-de-4-millions-de-dossiers-fonciers-exposes-dans-une-fuite-massive/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B18279AA1F95",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "La Boutique du Volet",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Vente en ligne de pièces détachées pour volets roulants et stores ; distributeur, distinct d'une entreprise de construction.",
+   "evidence_url": "https://www.laboutiqueduvolet.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-boutique-du-volet-une-cyberattaque-expose-les-donnees-et-lhistorique-de-commandes-de-clients/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-boutique-du-volet-mtkld2kqnn3iulc7t78"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une cyberattaque expose les données et l’historique des commandes de clients de La Boutique du Volet.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Une cyberattaque expose les données et l’historique des commandes de clients de La Boutique du Volet.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/la-boutique-du-volet-mtkld2kqnn3iulc7t78",
+   "https://www.cyberattaque.org/la-boutique-du-volet-une-cyberattaque-expose-les-donnees-et-lhistorique-de-commandes-de-clients/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-90A8D0197E17",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Shipup",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Plateforme logicielle de suivi des commandes, retours et incidents de livraison ; distincte du transport physique des colis.",
+   "evidence_url": "https://www.shipup.co/en",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-shipup/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/shipup-mtkrgifdha9tj8813fl"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Shipup a subi une cyberattaque entraînant l'exposition de données clients via une vulnérabilité dans Metabase.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Shipup a subi une cyberattaque entraînant l'exposition de données clients via une vulnérabilité dans Metabase.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/shipup-mtkrgifdha9tj8813fl",
+   "https://www.cyberattaque.org/cyberattaque-shipup/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-02T15:47:42.371674+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6BD2DE3819F9",
+  "items": 1,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "Inconnu",
+  "org": "Dropbox",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Services logiciels de stockage, partage et collaboration sur les fichiers.",
+   "evidence_url": "https://www.dropbox.com/about",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Environ 5 000 comptes Dropbox compromis entre le 4 et le 21 août 2026 par l'exploitation d'une ancienne intégration avec Lenovo.",
+  "threat": "Incident tiers",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Environ 5 000 comptes Dropbox compromis entre le 4 et le 21 août 2026 par l'exploitation d'une ancienne intégration avec Lenovo.",
+   "reason": "THREAT_EVIDENCE_INCIDENT_TIERS",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/dropbox-pirate-5-000-comptes-compromis-des-milliers-de-fichiers-en-fuite/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "identifiants",
+    "données bancaires",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-64FE6B5DDB80",
+  "items": 2,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "FNIM",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Fédération représentant et accompagnant les mutuelles indépendantes ; sa mission est fédérative, distincte de l'assurance exercée par ses adhérents.",
+   "evidence_url": "https://fnim.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fnim-des-bases-de-donnees-completes-diffusees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fnim-mtjy1oawv9ayhxk3qr"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La FNIM a subi un piratage avec des données sensibles compromises et des accès bancaires revendiqués.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "FNIM : des bases de données complètes diffusées après une cyberattaque",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/fnim-mtjy1oawv9ayhxk3qr",
+   "https://www.cyberattaque.org/fnim-des-bases-de-donnees-completes-diffusees-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-582E355E2705",
+  "items": 1,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "Inconnu",
+  "org": "Stade Montois Omnisports",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Club omnisports proposant plusieurs disciplines et sections ; classement par activité sportive.",
+   "evidence_url": "https://stade-montois.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/stade-montois-une-cyberattaque-met-plusieurs-sites-hors-service/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le Stade Montois Omnisports a subi une cyberattaque importante affectant plusieurs de ses sites et applications internes.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Le Stade Montois Omnisports a subi une cyberattaque importante affectant plusieurs de ses sites et applications internes.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/stade-montois-une-cyberattaque-met-plusieurs-sites-hors-service/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-02",
+  "first_seen": "2026-09-03T15:47:31.532902+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-15A9F3AC6AC8",
+  "items": 1,
+  "last_seen": "2026-09-03T15:47:31.532902+04:00",
+  "location": "France métropolitaine",
+  "org": "Ministère de la Transition écologique",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ministère de la Transition écologique",
+   "evidence_url": "https://frenchbreaches.com/alertes/minist-re-de-la-transition-cologique-mtk4bzvizh7z1fmgm7",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/minist-re-de-la-transition-cologique-mtk4bzvizh7z1fmgm7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le ministère de la Transition écologique a subi une cyberattaque, entraînant la revendication des données de milliers d'utilisateurs.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Le ministère de la Transition écologique a subi une cyberattaque, entraînant la revendication des données de milliers d'utilisateurs.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/minist-re-de-la-transition-cologique-mtk4bzvizh7z1fmgm7"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "dates de naissance",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "adresses postales",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-01",
+  "first_seen": "2026-09-01T16:10:00.061034+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-72FE2288A677",
+  "items": 2,
+  "last_seen": "2026-09-02T15:47:42.371674+04:00",
+  "location": "France métropolitaine",
+  "org": "Bio en Hauts-de-France",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Agriculture / Agroalimentaire",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Bio en Hauts-de-France intervient dans l’écosystème régional de l’agriculture biologique.",
+   "evidence_url": "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque contre Bio en Hauts-de-France entraînant le vol de données personnelles et professionnelles.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Cyberattaque contre Bio en Hauts-de-France entraînant le vol de données personnelles et professionnelles.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/bio-en-hauts-de-france-mtiikognot4hbi60ug",
+   "https://www.cyberattaque.org/bio-en-hauts-de-france-des-donnees-personnelles-compromises-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-31",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D4EC64DBBA06",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Timetonic",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Éditeur d'une plateforme cloud NoCode pour construire des applications de gestion collaborative.",
+   "evidence_url": "https://fr.home.timetonic.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données chez TimeTonic impliquant l'exploitation d'une vulnérabilité de Metabase.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez TimeTonic impliquant l'exploitation d'une vulnérabilité de Metabase.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/timetonic-mt922eg42yopbt0z9va"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-31",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C64E07B15B3F",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "La financière d’Orion",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Plateforme nationale de produits et services dédiée aux conseillers en gestion de patrimoine",
+   "evidence_url": "https://www.lafinancieredorion.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-financiere-dorion-20-go-de-donnees-clients-voles-apres-le-piratage-dun-partenaire/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La financière d’Orion : 20 Go de données clients volés après le piratage d’un partenaire",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "La financière d’Orion : 20 Go de données clients volés après le piratage d’un partenaire",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/la-financiere-dorion-20-go-de-donnees-clients-voles-apres-le-piratage-dun-partenaire/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données bancaires",
+    "noms et prénoms",
+    "dates de naissance",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "adresses postales",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires",
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-31",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B0E6BDE8801F",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Herbiolys",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Fabrication de préparations et produits à base de plantes ; activité de transformation, distincte de la seule revente ou de la culture agricole.",
+   "evidence_url": "https://www.herbiolys.fr/fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires",
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/herbiolys-cyberattaque-million-de-lignes-et-1-500-iban-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/herbiolys-mthbl4mtoe9zgl49kjj"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Herbiolys a subi une fuite de données massive, impliquant 1,3 million de lignes et 1 500 IBAN.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Herbiolys a subi une fuite de données massive, impliquant 1,3 million de lignes et 1 500 IBAN.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/herbiolys-mthbl4mtoe9zgl49kjj",
+   "https://www.cyberattaque.org/herbiolys-cyberattaque-million-de-lignes-et-1-500-iban-dans-une-fuite-massive/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "numéros de téléphone",
+    "adresses e-mail",
+    "adresses postales",
+    "noms et prénoms",
+    "dates de naissance",
+    "informations sur comptes employés"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-31",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-26E2A421AD48",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "LebonSiege",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_EVIDENCE_REJECTED | NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données revendiquée chez LebonSiege, affectant potentiellement plus de 1 000 clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données revendiquée chez LebonSiege, affectant potentiellement plus de 1 000 clients.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/lebonsiege-mth9to627fhnlxkuofp",
+   "https://www.cyberattaque.org/lebonsiege-pres-de-1-000-clients-exposes-avec-adresses-et-telephones/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FC866DCD1981",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS de la Somme",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-de-la-somme-mtezxlwpehjyx3v67q7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Compromission des accès administrateur du SDIS de la Somme revendiquée sur un forum cybercriminel.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Compromission des accès administrateur du SDIS de la Somme revendiquée sur un forum cybercriminel.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-de-la-somme-mtezxlwpehjyx3v67q7"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D910AD541B6B",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS du Gard",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-du-gard-mteyy43opeesk6j4mr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque revendiquée contre le SDIS du Gard, touchant plus de 3 100 personnes.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Cyberattaque revendiquée contre le SDIS du Gard, touchant plus de 3 100 personnes.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-du-gard-mteyy43opeesk6j4mr"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "dates de naissance",
+    "noms et prénoms",
+    "adresses e-mail",
+    "identifiants",
+    "numéros de téléphone",
+    "adresses postales",
+    "données bancaires"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires",
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-D63CEE9E9005",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "FFTir",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Fédération française organisant les disciplines de tir sportif",
+   "evidence_url": "https://www.fftir.org/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires",
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fftir-les-donnees-de-300-000-licencies-mis-en-vente-par-un-hacker/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "FFTir : les données de 300 000 licenciés mis en vente par un hacker",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "FFTir : les données de 300 000 licenciés mis en vente par un hacker",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/fftir-les-donnees-de-300-000-licencies-mis-en-vente-par-un-hacker/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": true
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-CFAAEC3E334A",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Courir",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Enseigne française de vente de sneakers en ligne et en magasin",
+   "evidence_url": "https://www.courir.com/fr/qui-sommes-nous/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/courir-une-compromission-massive-de-linfrastructure-interne-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/courir-mtg0ctb51irigfs0gts"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Courir : une compromission massive de l’infrastructure interne après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Courir : une compromission massive de l’infrastructure interne après une cyberattaque",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/courir-mtg0ctb51irigfs0gts",
+   "https://www.cyberattaque.org/courir-une-compromission-massive-de-linfrastructure-interne-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": true
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C6401641511B",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS du Bas-Rhin",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-du-bas-rhin-mtezqd7tc7tk1exr3is"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données au SDIS du Bas-Rhin avec 3 584 personnes potentiellement concernées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données au SDIS du Bas-Rhin avec 3 584 personnes potentiellement concernées.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-du-bas-rhin-mtezqd7tc7tk1exr3is"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "dates de naissance",
+    "noms et prénoms",
+    "adresses postales",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": true
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C25397468C49",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Carte De Pêche",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Association / Syndicat",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cartedepeche-fr-les-donnees-dadherents-dont-des-mineurs-diffusees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/carte-de-p-che-mtfr2p7gwirp63lb8q"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "CarteDePeche.fr : les données d’adhérents, dont des mineurs diffusées",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "CarteDePeche.fr : les données d’adhérents, dont des mineurs diffusées",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/carte-de-p-che-mtfr2p7gwirp63lb8q",
+   "https://www.cyberattaque.org/cartedepeche-fr-les-donnees-dadherents-dont-des-mineurs-diffusees/"
+  ],
+  "vulnerable_people_data_exposed": true
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BD3012E03337",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS de l’Essonne",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-de-l-essonne-mtezzdc6zwkkibexpe8"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une cyberattaque a été revendiquée contre le SDIS de l’Essonne avec une compromission d'accès administrateur.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Une cyberattaque a été revendiquée contre le SDIS de l’Essonne avec une compromission d'accès administrateur.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-de-l-essonne-mtezzdc6zwkkibexpe8"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8B71255FD2C5",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS des Bouches-du-Rhône",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-des-bouches-du-rh-ne-mtez1nua8138brrfb7i"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données revendiquée contre le SDIS des Bouches-du-Rhône, affectant potentiellement près de 3 700 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données revendiquée contre le SDIS des Bouches-du-Rhône, affectant potentiellement près de 3 700 personnes.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-des-bouches-du-rh-ne-mtez1nua8138brrfb7i"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-82F1B88B7CC2",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "CGT Éduc’Action",
+  "personal_data_exposed": false,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Association / Syndicat",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cgt-educaction-creteil-deux-sites-pirates-avant-la-rentree/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "CGT Éduc’Action Créteil victime d'une cyberattaque ayant provoqué l'indisponibilité de ses sites pendant plusieurs jours.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "CGT Éduc’Action Créteil victime d'une cyberattaque ayant provoqué l'indisponibilité de ses sites pendant plusieurs jours.",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/cgt-duc-action-mth3fyv8l1c6dt5aovh",
+   "https://www.cyberattaque.org/cgt-educaction-creteil-deux-sites-pirates-avant-la-rentree/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7EA20E0EEBB7",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS des Vosges",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-des-vosges-mtezvi2a2rg01mrtvrp"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque revendiquée contre le SDIS des Vosges avec une fuite de données touchant 3 067 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Cyberattaque revendiquée contre le SDIS des Vosges avec une fuite de données touchant 3 067 personnes.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-des-vosges-mtezvi2a2rg01mrtvrp"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-30",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-4A2F32292A93",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "SDIS de la Moselle",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-de-la-moselle-mtezsxcrwb76ft4xd69"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque revendiquée contre le SDIS de la Moselle impliquant la fuite de données de 6 434 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Cyberattaque revendiquée contre le SDIS de la Moselle impliquant la fuite de données de 6 434 personnes.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/sdis-de-la-moselle-mtezsxcrwb76ft4xd69"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": false,
+   "personal_data_types": [],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-29",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EB3AC8CB9892",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "La Maison Des Travaux",
+  "personal_data_exposed": false,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Retail & E-Commerce",
+   "evidence_url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "La Maison Des Travaux revendiqué par qilin",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=fcb05123-2685-418f-8dd5-4c29a26ce6cb"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-29",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D9A0C6DBD358",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Easypara",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Enseigne française de parapharmacie en ligne",
+   "evidence_url": "https://www.easypara.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/easypara-une-faille-metabase-chez-son-prestataire-expose-les-coordonnees-de-certains-clients/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/easypara-mtejoktuc67v6di63t4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une faille Metabase chez le prestataire Shipp expose les coordonnées de certains clients d'Easypara.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Easypara a subi une fuite de données personnelles de ses clients via un prestataire.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/easypara-mtejoktuc67v6di63t4",
+   "https://www.cyberattaque.org/easypara-une-faille-metabase-chez-son-prestataire-expose-les-coordonnees-de-certains-clients/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-29",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-92B98E38166E",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "LCommerce",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Entreprise exploitant une plateforme de vente en ligne sous enseigne E.Leclerc",
+   "evidence_url": "https://annuaire-entreprises.data.gouv.fr/entreprise/882736077",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "BONJOURLAFUITE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/lcommerce.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "",
+   "reason": "THREAT_SINGLE_LEGACY_VALUE",
+   "sources": [],
+   "status": "unknown"
+  },
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/lcommerce.png"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "identifiants",
+    "dates de naissance",
+    "adresses postales",
+    "adresses e-mail",
+    "numéros de téléphone"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-29",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-68BCE0C36286",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Zéro Logement Vacant",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Service public numérique destiné aux collectivités et services de l’État",
+   "evidence_url": "https://zerologementvacant.beta.gouv.fr/zero-logement-vacant/la-plateforme/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Zéro Logement Vacant a subi une fuite massive de données, exposant 48 millions de personnes.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/z-ro-logement-vacant-gouv-mtdj0b0p5ycvbr6ajlw",
+   "https://www.cyberattaque.org/zero-logement-vacant-48-millions-de-personnes-exposees-dans-une-fuite-massive/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "numéros de sécurité sociale"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "numéros de sécurité sociale"
+   ],
+   "vulnerable_people_data_exposed": true
+  },
+  "date": "2026-08-29",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-3C5B9E546782",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Marie Blachère",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Réseau de boulangeries et magasins alimentaires",
+   "evidence_url": "https://www.marieblachere.com/lentreprise/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "numéros de sécurité sociale"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base de données de Marie Blachère contenant des données sensibles de salariés a été mise en vente sur un forum cybercriminel.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Une base de données de Marie Blachère contenant des données sensibles de salariés a été mise en vente sur un forum cybercriminel.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf",
+   "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/"
+  ],
+  "vulnerable_people_data_exposed": true
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "numéros de téléphone",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-29",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-39643434BF76",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "La Ville de Tarnos",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 1.0,
+   "evidence": "Administration / Collectivité",
+   "reason": "EXISTING_SECTOR",
+   "status": "confirmed"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/mairie-tarnos-rancon-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon et possible vol de données personnelles.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "La Ville de Tarnos a été victime d'une cyberattaque avec demande de rançon et possible vol de données personnelles.",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/la-ville-de-tarnos-mtf0splyuy8ncg1qzd",
+   "https://www.cyberattaque.org/mairie-tarnos-rancon-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "numéros de téléphone",
+    "noms et prénoms",
+    "adresses e-mail",
+    "données personnelles"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-28",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F6E4FEDC0FE9",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Ultra Premium Direct",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Agriculture / Agroalimentaire",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ultra Premium Direct, spécialiste de l’alimentation animale.",
+   "evidence_url": "https://www.cyberattaque.org/ultra-premium-direct-les-donnees-clients-extraites-apres-le-piratage-dun-prestataire/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ultra-premium-direct-les-donnees-clients-extraites-apres-le-piratage-dun-prestataire/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ultra-premium-direct-mtckovbzd1f2t3n126h"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données personnelles chez Ultra Premium Direct suite à une cyberattaque sur un prestataire technique.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Fuite de données personnelles chez Ultra Premium Direct suite à une cyberattaque sur un prestataire technique.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/ultra-premium-direct-mtckovbzd1f2t3n126h",
+   "https://www.cyberattaque.org/ultra-premium-direct-les-donnees-clients-extraites-apres-le-piratage-dun-prestataire/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "photographies",
+    "noms et prénoms"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": true
+  },
+  "date": "2026-08-28",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E39645DF5E4E",
+  "items": 1,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Qare",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Société de téléconsultation médicale agréée",
+   "evidence_url": "https://consultation.qare.fr/rdv-medecin-app/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Intrusion dans Qare, plateforme de téléconsultation, entraînant l'exposition de photos d'enfants.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Qare : une intrusion inquiétante signalée par un hacker, des photos d’enfants exposées",
+   "reason": "THREAT_EVIDENCE_INTRUSION",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://www.cyberattaque.org/qare-une-intrusion-inquietante-signalee-par-un-hacker-des-photos-denfants-exposees/"
+  ],
+  "vulnerable_people_data_exposed": true
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données bancaires",
+    "pièces d'identité",
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-28",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-A3C6A92F895D",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Lingor",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Conseil et investissement en métaux précieux",
+   "evidence_url": "https://www.lingor.fr/la-societe-lingor/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lingor-des-donnees-sensibles-de-clients-potentiellement-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/lingor-mtcnn1mg1ipiqk7j53o"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Lingor a subi une cyberattaque ayant potentiellement exposé des données sensibles de ses clients.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Lingor a subi une intrusion informatique avec une demande de rançon, révélant des données clients potentiellement exposées.",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
+   ],
+   "status": "confirmed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/lingor-mtcnn1mg1ipiqk7j53o",
+   "https://www.cyberattaque.org/lingor-des-donnees-sensibles-de-clients-potentiellement-exposees-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "noms et prénoms",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "adresses postales",
+    "données personnelles",
+    "Adresse"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-28",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-70B5B8B5751D",
+  "items": 3,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Frères Toque",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Plateforme locale de commande et livraison de repas de restaurants",
+   "evidence_url": "https://apps.apple.com/fr/app/fr%C3%A8res-toque/id1429969498",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "BONJOURLAFUITE",
+    "status": "direct"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/freres-toque.png"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/freres-toque-donnees-clients-et-historiques-de-commandes-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fr-res-toque-mtejkm4gb9g1viudmhf"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Frères Toque victime d'un incident de sécurité compromettant des données personnelles de clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Frères Toque : données clients et historiques de commandes exposés après une cyberattaque",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "CYBERATTAQUE_ORG"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "https://bonjourlafuite.eu.org/img/freres-toque.png",
+   "https://frenchbreaches.com/alertes/fr-res-toque-mtejkm4gb9g1viudmhf",
+   "https://www.cyberattaque.org/freres-toque-donnees-clients-et-historiques-de-commandes-exposes-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": false,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "adresses e-mail",
+    "identifiants",
+    "adresses IP"
+   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-28",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6816C47EC89B",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Minea",
+  "personal_data_exposed": true,
+  "quality_alerts": [],
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-05 : Outil numérique d'analyse des publicités, boutiques et tendances pour les commerçants ; ne pas attribuer à l'éditeur le commerce de ses clients.",
+   "evidence_url": "https://www.minea.com/fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/minea-533-000-profils-et-816-millions-dactivites-exposes-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/minea-mtdex0abbtr1kt0c8gd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Minea a subi une fuite massive de 533 162 profils et 81,6 millions d'activités.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "Fuite de données chez Minea avec 533 162 profils et plus de 81 millions d'enregistrements d'activité exposés.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/minea-mtdex0abbtr1kt0c8gd",
+   "https://www.cyberattaque.org/minea-533-000-profils-et-816-millions-dactivites-exposes-dans-une-fuite-massive/"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": true,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": true,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données bancaires",
+    "adresses e-mail",
+    "numéros de téléphone",
+    "noms et prénoms",
+    "adresses postales",
+    "identifiants"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données bancaires",
+    "mots de passe"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-08-28",
+  "first_seen": "2026-08-31T23:59:59+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-195F06B69C3A",
+  "items": 2,
+  "last_seen": "2026-08-31T23:59:59+04:00",
+  "location": "France métropolitaine",
+  "org": "Actis Location",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "THREAT_CONFLICT_RESOLVED",
+    "field": "threat",
+    "severity": "info"
+   }
+  ],
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Location de matériels de manutention pour les professionnels",
+   "evidence_url": "https://www.actis-location.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données bancaires",
+   "mots de passe"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/actis-location-factures-devis-et-rib-de-clients-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/actis-location-blgcloud-mtck051io55urdgqnxe"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Actis Location subit une fuite de 666 155 fichiers, représentant 464 Go de données, après une cyberattaque.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "conflict": true,
+   "evidence": "Fuite de données chez Actis Location avec 464 Go et plus de 666 000 fichiers concernés.",
+   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "sources": [
+    "FRENCHBREACHES"
+   ],
+   "status": "claimed"
+  },
+  "urls": [
+   "https://frenchbreaches.com/alertes/actis-location-blgcloud-mtck051io55urdgqnxe",
+   "https://www.cyberattaque.org/actis-location-factures-devis-et-rib-de-clients-exposes-apres-une-cyberattaque/"
+  ],
+  "vulnerable_people_data_exposed": false
+ }
+]

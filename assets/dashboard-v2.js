@@ -484,7 +484,7 @@
   // Regroupement par famille et code couleur de sensibilité des données
   // compromises, calculés par règles déterministes côté client — jamais par
   // le LLM (§ Identité hors LLM, CLAUDE.md).
-  const DATA_TYPE_FAMILY_ORDER = ["Identité", "Coordonnées", "Financières", "Authentification", "Santé", "Professionnelles", "Administratives"];
+  const DATA_TYPE_FAMILY_ORDER = ["Identité", "Coordonnées", "Financières", "Authentification", "Santé", "Professionnelles", "Administratives", "Autres"];
   // Certains libellés canoniques sont au pluriel avec la marque du pluriel
   // sur le premier mot ("mots de passe", "cartes de paiement", "pièces
   // d'identité") : une simple sous-chaîne au singulier ne les retrouve pas
@@ -519,12 +519,9 @@
     for (const [label, keywords] of DATA_TYPE_FAMILY_RULES) {
       if (keywords.some((keyword) => startsAtWordBoundary(normalized, keyword))) return label;
     }
-    // Un fourre-tout "Autres" a longtemps affiché ici des valeurs de piètre
-    // qualité (phrases brutes non canonisées, parfois en anglais — retour
-    // utilisateur réel) sans rien apporter : une valeur non reconnue est
-    // désormais simplement absente de "Données exposées" plutôt qu'exposée
-    // telle quelle dans un panier générique.
-    return null;
+    // Le serveur a déjà validé ces catégories. Les supprimer ici rompait le
+    // contrat de publication et masquait notamment contrats, commandes et RH.
+    return "Autres";
   }
 
   function dataTypeSensitivity(value) {
@@ -570,7 +567,7 @@
   }
 
   function statusBadge(status) {
-    if (!status || status === "unknown") return "";
+    if (!status) return "";
     const label = CLAIM_STATUS_LABELS[status] || "Documenté";
     return ` <span class="claim-status claim-status--${esc(status)}">${esc(label)}</span>`;
   }
@@ -582,6 +579,8 @@
       const raw = record.raw || "";
       let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
       if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
+      const scope = String(record.scope || "").trim();
+      if (scope && !["total", "unspecified"].includes(scope) && !normalize(value).includes(normalize(scope))) value += ` · ${scope}`;
       return value;
     };
     const chip = (record) => `<span class="detail-chip">${esc(chipText(record))}</span>${statusBadge(record.status)}`;
@@ -646,7 +645,7 @@
     return `<details class="resolved-facts-section resolved-facts-section--collapsible"><summary>${esc(title)}</summary>${content}</details>`;
   }
 
-  const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", denied: "Démenti", negated: "Démenti" };
+  const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", unconfirmed: "Non confirmé", denied: "Démenti", negated: "Démenti", inferred: "Déduit", referenced: "Référencé" };
 
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
@@ -658,7 +657,7 @@
     const validDetail = detail && detail.version === 3;
     const fields = validDetail ? detail.fields || {} : {};
     const systemsAndPerimeters = validDetail
-      ? unique([...(detail.systems || []).map((entry) => entry.value), ...(detail.datasets || []).map((entry) => entry.value)])
+      ? [...(detail.systems || []), ...(detail.datasets || [])]
       : [];
     const timelineRows = validDetail ? timelineHtml(detail.timeline || []) : "";
     const values = validDetail ? [
@@ -667,26 +666,26 @@
         detailField("Secteur", incident.sector, incident.sector_status?.status, incident.sector_status?.evidence),
       ]),
       detailSection("Acteur & vecteur", [
-        detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status),
-        detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status),
-        detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : "", fields.initial_access?.status),
+        detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status, fields.threat_actor?.evidence),
+        detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status, fields.third_party?.evidence),
+        detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : "", fields.initial_access?.status, fields.initial_access?.evidence),
         evidenceEntriesHtml("Déroulé documenté", detail.attack_flow || [], "action"),
         evidenceEntriesHtml("Vulnérabilités exploitées", detail.vulnerabilities || []),
-        detailField("CVSS", fields.cvss?.value, fields.cvss?.status),
+        detailField("CVSS", fields.cvss?.value, fields.cvss?.status, fields.cvss?.evidence),
       ]),
       detailSection("Chronologie", [
-        known(fields.fine_location?.value) ? detailField("Localisation précise", fields.fine_location.value, fields.fine_location.status) : "",
-        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : "", fields.attack_date?.status),
-        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : "", fields.discovered_date?.status),
+        known(fields.fine_location?.value) ? detailField("Localisation précise", fields.fine_location.value, fields.fine_location.status, fields.fine_location.evidence) : "",
+        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : "", fields.attack_date?.status, fields.attack_date?.evidence),
+        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : "", fields.discovered_date?.status, fields.discovered_date?.evidence),
         timelineRows,
       ], { collapsible: true }),
       detailSection("Impact & données documentées", [
         affectedHtml(detail.affected || []),
-        known(fields.data_volume?.value) ? detailField("Volume de données", fields.data_volume.value, fields.data_volume.status) : "",
+        known(fields.data_volume?.value) ? detailField("Volume de données", fields.data_volume.value, fields.data_volume.status, fields.data_volume.evidence) : "",
         dataTypesHtml(detail.data_types || []),
-        detailField("Systèmes & périmètres concernés", systemsAndPerimeters),
-        detailField("Impact", fields.impact?.value, fields.impact?.status),
-        known(fields.evolution?.value) ? detailField("Évolution / remédiation", fields.evolution.value, fields.evolution.status) : "",
+        evidenceEntriesHtml("Systèmes & périmètres concernés", systemsAndPerimeters),
+        detailField("Impact", fields.impact?.value, fields.impact?.status, fields.impact?.evidence),
+        known(fields.evolution?.value) ? detailField("Évolution / remédiation", fields.evolution.value, fields.evolution.status, fields.evolution.evidence) : "",
       ]),
     ].filter(Boolean).join("") : "";
     const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);

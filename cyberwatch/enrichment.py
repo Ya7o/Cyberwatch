@@ -257,6 +257,10 @@ def finalize_snapshot(
     location_resolution.apply_fine_locations(ordered, source_facts_rows)
     backfill_unknowns(ordered, reference)
     stabilize_threats(ordered)
+    # Les décisions d'audit explicites s'appliquent en dernier : elles sont
+    # sourcées, versionnées et ne doivent pas être réécrasées par un fallback.
+    from . import editorial_corrections
+    editorial_corrections.apply_items(ordered)
     incidents, registry = build_incidents_with_registry(
         ordered,
         store.load_incident_id_registry(),

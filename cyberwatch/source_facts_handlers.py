@@ -56,7 +56,6 @@ def _apply_semantic_details(
     metadata["editorial_context"] = (entry.content or entry.summary)[:12000]
     fact["Source_Metadata_JSON"] = _dumps_json(metadata)
     volume, volume_evidence = _ai_volume(ai_result)
-    volume = volume or _extract_volume(text)
     if volume:
         fact["Data_Volume_Raw"] = volume
         if volume_evidence:

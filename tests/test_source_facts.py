@@ -28,6 +28,19 @@ def test_json_canonique_et_round_trip():
     assert sf._loads_json("{invalide") is None
 
 
+def test_statut_ignore_question_et_rappel_historique():
+    text = (
+        "Le piratage est-il confirmé ? "
+        "En 2023, un précédent incident avait été confirmé. "
+        "La nouvelle fuite est revendiquée par ZeroBytes."
+    )
+    assert sf._claim_status(text) == ("claimed", "revendiquée")
+
+
+def test_statut_ne_confirme_pas_un_titre_interrogatif_seul():
+    assert sf._claim_status("Le piratage est-il confirmé ?") == ("", "")
+
+
 def test_sanitize_retire_acteur_generique_et_vecteur_explicitement_indetermine():
     rows = [{
         "Item_ID": "ITM-cgt",

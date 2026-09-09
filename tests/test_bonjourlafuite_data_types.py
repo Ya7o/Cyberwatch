@@ -99,15 +99,13 @@ def test_payload_dashboard_transmet_la_liste_sans_transformation():
     assert payload["data_types"] == FRANCE_VAE_TYPES
 
 
-def test_dashboard_regroupe_les_types_sans_fallback_autres():
+def test_dashboard_regroupe_les_types_valides_avec_fallback_autres():
     """Cible `dashboard-v2.js` (`dataTypeFamily()`/`DATA_TYPE_FAMILY_RULES`),
     le runtime actif — `dashboard.js` (v1) qu'il a remplacé a été retiré.
 
-    Retour utilisateur réel (round 4) : le fourre-tout "Autres" affichait des
-    valeurs de piètre qualité (phrases brutes non canonisées, parfois en
-    anglais) sans rien apporter. Une valeur non reconnue par
-    `DATA_TYPE_FAMILY_RULES` est désormais simplement absente de "Données
-    exposées" plutôt que bucketée dans un panier générique."""
+    Les valeurs ont déjà franchi les validateurs du serveur. Le navigateur ne
+    doit donc plus supprimer contrats, commandes, commentaires ou données RH
+    simplement parce que sa taxonomie visuelle est plus courte."""
     dashboard = (Path(__file__).parents[1] / "assets" / "dashboard-v2.js").read_text(encoding="utf-8")
     for label in (
         "Santé",
@@ -125,5 +123,5 @@ def test_dashboard_regroupe_les_types_sans_fallback_autres():
     family_order_line = next(
         line for line in dashboard.splitlines() if "DATA_TYPE_FAMILY_ORDER = [" in line
     )
-    assert "Autres" not in family_order_line
-    assert "return null;" in dashboard
+    assert "Autres" in family_order_line
+    assert 'return "Autres";' in dashboard

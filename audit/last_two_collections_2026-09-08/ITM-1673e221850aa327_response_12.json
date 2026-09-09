@@ -1,0 +1,25 @@
+[
+  {
+    "vulnerabilities": [],
+    "affected_counts": [],
+    "data_volumes": [],
+    "file_counts": [
+      {
+        "value": 250,
+        "unit": "documents",
+        "scope": "archive",
+        "status": "leak",
+        "confidence": 0.9,
+        "evidence": "près de 250 documents administratifs en fuite"
+      }
+    ],
+    "affected_systems": [],
+    "affected_datasets": [
+      {
+        "value": "documents de travail internes",
+        "confidence": 0.9,
+        "evidence": "l’archive contient à la fois des documents administratifs classiques et des éléments plus internes, notamment des comptes rendus détaillant les discussions de commissions"
+      }
+    ]
+  }
+]

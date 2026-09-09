@@ -1,0 +1,76 @@
+Service national universel (SNU)
+
+# Cyberattaque contre le Service national universel : environ 275 000 comptes auraient été compromis
+
+Le Service national universel (SNU) fait l’objet d’une importante revendication de fuite de données. **Le hacker LunarisSec affirme avoir compromis l’un des portails du dispositif et récupéré les données d’environ 270 000 comptes liés à la plateforme, auxquelles s’ajouteraient près de 5 000 comptes de responsables de structures.** Il revendique l’exploitation d’une vulné...
+
+Cet article vous est proposé en relation avec cette fuite de donnée
+Nouvelle fuite de données au Service national universel : 275 000 comptes auraient été compromis
+Le Service national universel est visé par une nouvelle fuite de données : environ 275 000 comptes seraient concernés, trois ans après la cyberattaque de 2023.
+Lire l'article lié ➔
+SL
+Par Seblatombe, rédacteur FrenchBreaches
+Publié le 07/09/2026
+— Secteur public
+Cyberattaque contre le Service national universel : environ 275 000 comptes auraient été compromis
+Le Service national universel (SNU) fait l’objet d’une importante revendication de fuite de données. Le hacker LunarisSec affirme avoir compromis l’un des portails du dispositif et récupéré les données d’environ 270 000 comptes liés à la plateforme, auxquelles s’ajouteraient près de 5 000 comptes de responsables de structures. Il revendique l’exploitation d’une vulnérabilité de type IDOR.
+Le Service national universel (SNU) aurait ainsi été victime d’une importante fuite de données visant notamment son portail destiné aux structures partenaires. L’attaque est revendiquée par LunarisSec, qui affirme avoir pu extraire massivement des informations depuis la plateforme.
+Voir le tweet sur X
+La plateforme admin.snu.gouv.fr est notamment utilisée par les structures partenaires du SNU et leurs responsables pour gérer leur structure, proposer des missions d’intérêt général et traiter les candidatures.
+Selon les informations et les échantillons obtenus par FrenchBreaches, la fuite représenterait environ 270 000 comptes liés à la plateforme, auxquels s’ajouteraient près de 5 000 comptes de responsables de structures contenant des informations plus détaillées.
+Ces quelque 275 000 comptes ne doivent pas être présentés comme ceux de 275 000 jeunes ou mineurs. Les éléments analysés par FrenchBreaches concernent notamment des personnes rattachées aux structures partenaires ainsi que des comptes disposant de rôles de gestion sur la plateforme.
+Noms, e-mails et numéros de téléphone concernés
+Pour les quelque 270 000 comptes constituant la première catégorie de données revendiquée, les informations comprennent principalement :
+nom ;
+prénom ;
+adresse e-mail ;
+numéro de téléphone.
+Les échantillons obtenus par FrenchBreaches montrent que les personnes concernées peuvent être rattachées à de nombreuses structures publiques ou associatives.
+On retrouve notamment des coordonnées liées à des collectivités, mairies, services départementaux d’incendie et de secours, associations, structures de la Croix-Rouge, des Restos du Cœur ou encore des organismes liés à la gendarmerie.
+Près de 5 000 comptes de responsables plus détaillés
+Une seconde catégorie de données concerne près de 5 000 comptes disposant de rôles liés à la gestion ou à l'encadrement de structures.
+Ces comptes contiennent davantage d’informations que les autres comptes présents dans les échantillons. Les données analysées par FrenchBreaches comprennent notamment :
+nom et prénom ;
+adresse e-mail ;
+numéros de téléphone ;
+rôle et statut du compte ;
+région et département ;
+cohortes associées ;
+identifiants de cohortes ;
+identifiant de la structure ;
+date de création du compte ;
+date de dernière modification ;
+date de dernière activité ;
+acceptation des conditions générales ;
+différents identifiants techniques internes.
+Certains comptes disposent notamment du rôle « responsible » et sont directement associés à un identifiant de structure, ce qui correspond au fonctionnement des espaces destinés aux responsables de structures accueillant des volontaires du SNU.
+Des traces d’activité très récentes apparaissent également dans les échantillons, avec des comptes présentant une activité allant jusqu’aux 5 et 6 septembre 2026.
+Une faille IDOR revendiquée par LunarisSec
+LunarisSec affirme avoir obtenu les données en exploitant une vulnérabilité de type IDOR sur l’un des portails liés au SNU.
+Une faille IDOR (« Insecure Direct Object Reference ») correspond à un défaut de contrôle d’accès : une application ne vérifie pas correctement qu’un utilisateur est autorisé à consulter la ressource demandée.
+Dans le cas du SNU, le hacker affirme que cette faiblesse lui aurait permis d’accéder successivement à un grand nombre de fiches et d’en extraire les informations.
+À ce stade, FrenchBreaches n’a pas pu confirmer indépendamment que cette vulnérabilité constitue bien le vecteur de l’incident. Il s’agit de la méthode revendiquée par LunarisSec.
+Qui est concerné par cette fuite ?
+Les informations dont dispose FrenchBreaches font apparaître deux catégories principales de comptes potentiellement touchés.
+La première représente environ 270 000 comptes, pour lesquels des noms, prénoms, adresses e-mail et numéros de téléphone auraient été récupérés.
+La seconde concerne près de 5 000 responsables de structures, avec des informations supplémentaires liées à leurs comptes, leurs rôles, leurs structures et leur activité sur la plateforme.
+Il ne s’agit donc pas, selon les éléments actuellement analysés par FrenchBreaches, d’une base constituée de 275 000 mineurs participant au SNU.
+La présence de coordonnées personnelles associées à des structures précises pourrait notamment faciliter des campagnes de phishing ciblées, des tentatives d’usurpation d’identité ou des prises de contact frauduleuses se faisant passer pour des organismes connus des victimes.
+Le Service national universel avait déjà été piraté en 2023
+Ce n’est pas la première fois que le Service national universel est confronté à un vol massif de données.
+Fin 2023, le site Internet du SNU avait déjà été victime d’une cyberattaque confirmée par l’administration. L’incident avait touché 62 500 jeunes volontaires et 87 000 parents, soit près de 150 000 personnes.
+Pour les jeunes concernés, les données dérobées comprenaient notamment les noms, prénoms, dates de naissance, adresses postales et adresses e-mail. Pour les parents, des informations d’identité et de contact avaient également été compromises.
+L’administration avait par la suite confirmé que l’origine de cette cyberattaque avait été identifiée : un individu malveillant avait exploité une faille applicative du site du SNU. Celle-ci avait été corrigée après la découverte du vol de données.
+Le procureur de la République avait également été saisi et un signalement avait été effectué auprès de la Commission nationale de l'informatique et des libertés (CNIL). L’administration avait précisé que les identifiants et mots de passe permettant d’accéder aux plateformes ne faisaient pas partie des informations dérobées.
+La fuite revendiquée en septembre 2026 apparaît toutefois différente de celle de 2023. Les éléments obtenus cette fois par FrenchBreaches comprennent notamment des numéros de téléphone, mais aussi de nombreuses informations internes relatives aux comptes de responsables : rôles, statuts, régions, départements, cohortes, identifiants de structures et historique d’activité.
+Trois ans après la précédente cyberattaque, le SNU se retrouve donc confronté à une nouvelle revendication de fuite de données d’une ampleur potentiellement supérieure, même si ce nouvel incident n’est pas encore officiellement confirmé.
+Une fuite encore à confirmer officiellement
+Les échantillons obtenus et analysés par FrenchBreaches présentent une structure cohérente avec les données revendiquées et contiennent de nombreux champs directement liés au fonctionnement de la plateforme du SNU.
+Ils ne permettent toutefois pas, à eux seuls, de confirmer l’intégralité du volume annoncé ni la méthode exacte ayant permis l’extraction.
+À ce stade, FrenchBreaches présente donc l’incident comme une fuite de données revendiquée par LunarisSec et continuera de mettre à jour cet article en fonction des nouveaux éléments obtenus et d’une éventuelle réaction officielle du Service national universel.
+Ressources utiles :
+Annuaire fuite de données
+|
+Que faire après une fuite de données
+|
+Blog fuite de données

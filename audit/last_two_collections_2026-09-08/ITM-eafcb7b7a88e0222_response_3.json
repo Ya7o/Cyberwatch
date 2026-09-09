@@ -1,0 +1,31 @@
+[
+  {
+    "vulnerabilities": [
+      {
+        "value": "IDOR",
+        "confidence": 0.8,
+        "evidence": "LunarisSec affirme avoir obtenu les données en exploitant une vulnérabilité de type IDOR."
+      }
+    ],
+    "affected_counts": [
+      {
+        "value": 275000,
+        "unit": "comptes",
+        "scope": "total",
+        "status": "compromis",
+        "confidence": 0.8,
+        "evidence": "environ 275 000 comptes auraient été compromis"
+      }
+    ],
+    "data_volumes": [],
+    "file_counts": [],
+    "affected_systems": [],
+    "affected_datasets": [
+      {
+        "value": "plateforme SNU",
+        "confidence": 0.8,
+        "evidence": "La fuite représenterait environ 270 000 comptes liés à la plateforme."
+      }
+    ]
+  }
+]

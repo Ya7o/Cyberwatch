@@ -169,12 +169,22 @@ def test_statut_de_preuve_est_conserve_sur_les_faits_affiches():
     entre facts.json et la fiche."""
     js = _read("assets/dashboard-v2.js")
     assert "function documentedClaimsHtml" not in js
-    assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status)' in js
-    assert 'detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status)' in js
-    assert 'detailField("Impact", fields.impact?.value, fields.impact?.status)' in js
+    assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status, fields.threat_actor?.evidence)' in js
+    assert 'detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status, fields.third_party?.evidence)' in js
+    assert 'detailField("Impact", fields.impact?.value, fields.impact?.status, fields.impact?.evidence)' in js
     assert "statusBadge(record.status)" in js
     assert "statusBadge(row.status)" in js
     assert "statusBadge(entry.status)" in js
+    assert 'unknown: "Inconnu"' in js
+    assert 'inferred: "Déduit"' in js
+    assert "fields.impact?.evidence" in js
+    assert 'evidenceEntriesHtml("Systèmes & périmètres concernés"' in js
+
+
+def test_types_valides_non_classes_restent_visibles():
+    js = _read("assets/dashboard-v2.js")
+    assert '"Administratives", "Autres"' in js
+    assert 'return "Autres";' in js
 
 
 def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
@@ -276,7 +286,7 @@ def test_systemes_et_perimetres_sont_un_seul_champ_fusionne():
     """"Périmètres de données" redisait ce que "Systèmes concernés" exprimait
     déjà (retour utilisateur : champ perçu comme redondant)."""
     js = _read("assets/dashboard-v2.js")
-    assert 'detailField("Systèmes & périmètres concernés", systemsAndPerimeters)' in js
+    assert 'evidenceEntriesHtml("Systèmes & périmètres concernés", systemsAndPerimeters)' in js
     assert "detailField(\"Systèmes concernés\"" not in js
     assert "detailField(\"Périmètres de données\"" not in js
 

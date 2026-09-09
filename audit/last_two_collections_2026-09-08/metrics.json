@@ -1,0 +1,276 @@
+{
+  "run1": {
+    "incidents": 68,
+    "unknown_sectors": [
+      "Aveyron",
+      "Les Curistes",
+      "SPA du Pays de Montbéliard",
+      "Répar'Store",
+      "Accent Rouge",
+      "Tisséo",
+      "Géofoncier",
+      "LebonSiege"
+    ],
+    "unknown_locations": [
+      "Aveyron",
+      "SPA du Pays de Montbéliard",
+      "Répar’stores",
+      "CMA Occitanie",
+      "Dropbox",
+      "Stade Montois Omnisports"
+    ],
+    "traces": 18,
+    "traced_items": 12,
+    "traced_incidents": [
+      "BumFot",
+      "Jinko",
+      "Snexi",
+      "Aveyron",
+      "Footsider",
+      "Les Curistes",
+      "OnRecrute.enAveyron.fr",
+      "SPA du Pays de Montbéliard"
+    ],
+    "sector_reasons": {
+      "Aveyron": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Les Curistes": {
+        "evidence": "Hébergement / Tourisme / Restauration | Santé",
+        "reason": "SOURCE_SECTOR_CONFLICT",
+        "status": "unknown"
+      },
+      "SPA du Pays de Montbéliard": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Répar'Store": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Accent Rouge": {
+        "evidence": "Commerce / Distribution | Culture / Médias / Loisirs",
+        "reason": "SOURCE_SECTOR_CONFLICT",
+        "status": "unknown"
+      },
+      "Tisséo": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Géofoncier": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "LebonSiege": {
+        "reason": "ACTIVITY_EVIDENCE_REJECTED | NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      }
+    },
+    "types": 283,
+    "type_statuses": {
+      "claimed": 26,
+      "unknown": 231,
+      "confirmed": 8,
+      "reported": 18
+    },
+    "fields": 140,
+    "field_statuses": {
+      "unknown": 44,
+      "claimed": 59,
+      "reported": 4,
+      "confirmed": 33
+    },
+    "counts": 86,
+    "count_statuses": {
+      "unknown": 55,
+      "claimed": 28,
+      "confirmed": 2,
+      "reported": 1
+    },
+    "dropped_types": 60,
+    "incidents_with_dropped_types": 34,
+    "empty_summaries": [
+      "Chambre de Métiers et de l’Artisanat d’Occitanie",
+      "La Maison Des Travaux",
+      "LCommerce"
+    ],
+    "rejections": {
+      "impact:EMPTY_OR_REJECTED_BY_VALIDATOR": 6,
+      "threat_candidate:EMPTY_OR_REJECTED_BY_VALIDATOR": 8,
+      "threat_actor:EMPTY_OR_REJECTED_BY_VALIDATOR": 1,
+      "attack_flow:EMPTY_OR_REJECTED_BY_VALIDATOR": 8,
+      "attack_date:EMPTY_OR_REJECTED_BY_VALIDATOR": 6,
+      "activity_description:ACTIVITY_VICTIM_BINDING_REJECTED": 5,
+      "discovered_date:EMPTY_OR_REJECTED_BY_VALIDATOR": 6,
+      "initial_access:EMPTY_OR_REJECTED_BY_VALIDATOR": 12,
+      "fine_location:EMPTY_OR_REJECTED_BY_VALIDATOR": 5,
+      "activity_sector_match:NO_VALID_ACTIVITY_PAIR": 4,
+      "evolution:EMPTY_OR_REJECTED_BY_VALIDATOR": 6,
+      "affected_counts:EMPTY_OR_REJECTED_BY_VALIDATOR": 3,
+      "affected_systems:EMPTY_OR_REJECTED_BY_VALIDATOR": 4,
+      "vulnerabilities:EMPTY_OR_REJECTED_BY_VALIDATOR": 6,
+      "activity_sector_match:SECTOR_CONTRADICTS_ACTIVITY_EVIDENCE": 2,
+      "file_counts:EMPTY_OR_REJECTED_BY_VALIDATOR": 3,
+      "data_volumes:EMPTY_OR_REJECTED_BY_VALIDATOR": 1,
+      "affected_datasets:EMPTY_OR_REJECTED_BY_VALIDATOR": 2,
+      "activity_description:EVIDENCE_NOT_GROUNDED": 1,
+      "activity_sector_match:EVIDENCE_NOT_GROUNDED": 1,
+      "activity_sector_match:CONFIDENCE_REJECTED": 1
+    },
+    "quality_alerts": {
+      "SUMMARY_FACT_CONTRADICTION": 2,
+      "THREAT_CONFLICT_RESOLVED": 13,
+      "DATA_TYPES_EMPTY_WITH_PERSONAL_DATA_EVIDENCE": 1
+    }
+  },
+  "run2": {
+    "incidents": 73,
+    "unknown_sectors": [
+      "Medikwestindies",
+      "CC Yvetot Normandie",
+      "Service national universel",
+      "Aveyron",
+      "Les Curistes",
+      "SPA du Pays de Montbéliard",
+      "Répar'Store",
+      "Accent Rouge",
+      "Tisséo",
+      "Géofoncier",
+      "LebonSiege"
+    ],
+    "unknown_locations": [
+      "CC Yvetot Normandie",
+      "Aveyron",
+      "SPA du Pays de Montbéliard",
+      "CMA Occitanie",
+      "Dropbox",
+      "Stade Montois Omnisports"
+    ],
+    "traces": 22,
+    "traced_items": 12,
+    "traced_incidents": [
+      "Medikwestindies",
+      "SAD'S Interim",
+      "BumFot",
+      "CC Yvetot Normandie",
+      "Jinko",
+      "Service national universel",
+      "Snexi",
+      "Footsider",
+      "Les Curistes",
+      "OnRecrute.enAveyron.fr"
+    ],
+    "sector_reasons": {
+      "Medikwestindies": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "CC Yvetot Normandie": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Service national universel": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Aveyron": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Les Curistes": {
+        "evidence": "Hébergement / Tourisme / Restauration | Santé",
+        "reason": "SOURCE_SECTOR_CONFLICT",
+        "status": "unknown"
+      },
+      "SPA du Pays de Montbéliard": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Répar'Store": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Accent Rouge": {
+        "evidence": "Commerce / Distribution | Culture / Médias / Loisirs",
+        "reason": "SOURCE_SECTOR_CONFLICT",
+        "status": "unknown"
+      },
+      "Tisséo": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "Géofoncier": {
+        "reason": "NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      },
+      "LebonSiege": {
+        "reason": "ACTIVITY_EVIDENCE_REJECTED | NO_ACTIVITY_EVIDENCE",
+        "status": "unknown"
+      }
+    },
+    "types": 309,
+    "type_statuses": {
+      "unknown": 248,
+      "claimed": 32,
+      "confirmed": 11,
+      "reported": 18
+    },
+    "fields": 148,
+    "field_statuses": {
+      "confirmed": 34,
+      "claimed": 63,
+      "unknown": 48,
+      "reported": 3
+    },
+    "counts": 90,
+    "count_statuses": {
+      "claimed": 29,
+      "unknown": 56,
+      "reported": 3,
+      "confirmed": 2
+    },
+    "dropped_types": 67,
+    "incidents_with_dropped_types": 38,
+    "empty_summaries": [
+      "Association des Maires de France",
+      "Medikwestindies",
+      "Chambre de Métiers et de l’Artisanat d’Occitanie",
+      "La Maison Des Travaux",
+      "LCommerce"
+    ],
+    "rejections": {
+      "activity_description:ACTIVITY_VICTIM_BINDING_REJECTED": 7,
+      "summary:EMPTY_OR_REJECTED_BY_VALIDATOR": 1,
+      "evolution:EMPTY_OR_REJECTED_BY_VALIDATOR": 5,
+      "attack_flow:EMPTY_OR_REJECTED_BY_VALIDATOR": 8,
+      "activity_sector_match:NO_VALID_ACTIVITY_PAIR": 6,
+      "fine_location:EMPTY_OR_REJECTED_BY_VALIDATOR": 4,
+      "attack_date:EMPTY_OR_REJECTED_BY_VALIDATOR": 9,
+      "threat_candidate:EMPTY_OR_REJECTED_BY_VALIDATOR": 7,
+      "initial_access:EMPTY_OR_REJECTED_BY_VALIDATOR": 11,
+      "discovered_date:EMPTY_OR_REJECTED_BY_VALIDATOR": 8,
+      "vulnerabilities:EMPTY_OR_REJECTED_BY_VALIDATOR": 6,
+      "file_counts:EMPTY_OR_REJECTED_BY_VALIDATOR": 4,
+      "affected_datasets:EMPTY_OR_REJECTED_BY_VALIDATOR": 3,
+      "affected_counts:EMPTY_OR_REJECTED_BY_VALIDATOR": 5,
+      "data_volumes:EMPTY_OR_REJECTED_BY_VALIDATOR": 5,
+      "affected_systems:EMPTY_OR_REJECTED_BY_VALIDATOR": 5,
+      "impact:EMPTY_OR_REJECTED_BY_VALIDATOR": 4,
+      "threat_actor:EMPTY_OR_REJECTED_BY_VALIDATOR": 1,
+      "activity_description:CONFIDENCE_REJECTED": 1,
+      "activity_sector_match:CONFIDENCE_REJECTED": 2,
+      "activity_sector_match:SECTOR_CONTRADICTS_ACTIVITY_EVIDENCE": 2
+    },
+    "quality_alerts": {
+      "SUMMARY_FACT_CONTRADICTION": 2,
+      "THREAT_CONFLICT_RESOLVED": 13,
+      "DATA_TYPES_EMPTY_WITH_PERSONAL_DATA_EVIDENCE": 1
+    }
+  },
+  "public_matches_run2": {
+    "incidents": true,
+    "facts": true,
+    "status": true
+  }
+}

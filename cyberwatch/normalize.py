@@ -492,8 +492,14 @@ LOCATION_HINTS: list[tuple[str, list[str]]] = [
     (config.LOC_MADAGASCAR, ["madagascar", "malgache", "antananarivo", "tananarive"]),
     (config.LOC_SEYCHELLES, ["seychelles", "seychellois", "seychelloise", "victoria mahe"]),
     (config.LOC_COMORES, ["comores", "comorien", "comorienne", "moroni", "anjouan"]),
+    (config.LOC_GUADELOUPE, ["guadeloupe", "guadeloupeen", "guadeloupeenne", "basse terre", "pointe a pitre"]),
     (config.LOC_FRANCE, ["france metropolitaine"]),
 ]
+
+_METROPOLITAN_FINE_LOCATION_RE = re.compile(
+    r"\b(?:seine[- ]maritime|doubs|mont[- ]de[- ]marsan|aveyron)\b",
+    re.I,
+)
 
 #: Le nom propre garde une majuscule à « Réunion », contrairement à la réunion
 #: de travail. Le test reste sensible à la casse pour éviter ce faux positif.
@@ -572,6 +578,11 @@ def classify_location(
         location = _location_from_text(cleaned)
         if location != config.LOC_INCONNU:
             return location
+        # Ces libellés ne sont utilisés qu'ici, sur le champ structuré de lieu
+        # fin. Les reconnaître dans tout texte libre créerait des faux positifs
+        # lorsque le département fait partie du nom de la victime.
+        if _METROPOLITAN_FINE_LOCATION_RE.search(cleaned):
+            return config.LOC_FRANCE
 
     if entity and entity in config.LOCATIONS:
         return entity

@@ -70,6 +70,11 @@ DAILY_BATCH_SCHEMA_VERSION = "2"
 #: doute réel ; 0.95 exigeait une quasi-certitude que le modèle n'exprime
 #: quasiment jamais, rendant ce canal d'application inopérant en pratique.
 ORG_IDENTITY_CONFIDENCE_THRESHOLD = 0.85
+# Une décision négative devient un veto persistant. Elle demande donc une
+# certitude supérieure à une fusion, qui pourra encore être bloquée par les
+# garde-fous déterministes. Le seuil évite qu'un DIFFERENT à 0,85 fige un
+# doublon avéré comme Aveyron / OnRecrute.
+DIFFERENT_CONFIDENCE_THRESHOLD = 0.95
 
 CACHE_COLUMNS = [
     "Pair_Key",
@@ -728,8 +733,17 @@ def _store_batch_decisions(
         cid = _pair_key(candidate)
         try:
             decision = _decision_from_batch_value(by_candidate_id[cid])
-        except (KeyError, ValueError):
-            results[cid] = DedupAiDecision(status=STATUS_ERROR)
+        except KeyError:
+            results[cid] = DedupAiDecision(
+                status=STATUS_ERROR,
+                reason="MISSING_BATCH_DECISION",
+            )
+            continue
+        except ValueError as exc:
+            results[cid] = DedupAiDecision(
+                status=STATUS_ERROR,
+                reason=f"INVALID_BATCH_DECISION: {exc}",
+            )
             continue
         results[cid] = decision
         if decision.same_organisation == SAME:
@@ -852,7 +866,6 @@ def validate_ai_dedup_decision(
         return None
     if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
         return None
-
     left_key = organisation_key(candidate.left.Organisation_Raw) or candidate.left.Organisation_Key
     right_key = organisation_key(candidate.right.Organisation_Raw) or candidate.right.Organisation_Key
     if not left_key or not right_key or left_key == right_key:
@@ -904,6 +917,11 @@ def validate_ai_incident_decision(
     if decision.same_incident not in {SAME, DIFFERENT}:
         return None
     if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
+        return None
+    if (
+        decision.same_incident == DIFFERENT
+        and decision.confidence < DIFFERENT_CONFIDENCE_THRESHOLD
+    ):
         return None
     native = decide_merge(candidate.left, candidate.right)
     if decision.same_incident == SAME:

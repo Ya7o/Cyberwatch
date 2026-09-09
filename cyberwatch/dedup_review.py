@@ -93,7 +93,10 @@ def outcomes(
         if reviewed:
             if key not in accepted_by_id:
                 status = "UNKNOWN" if decision.same_incident == dedup_ai.UNKNOWN else "VALIDATION_REJECTED"
-                if decision.same_organisation == dedup_ai.DIFFERENT:
+                if (
+                    decision.same_organisation == dedup_ai.DIFFERENT
+                    and decision.confidence >= dedup_ai.DIFFERENT_CONFIDENCE_THRESHOLD
+                ):
                     status = "DIFFERENT"
             elif decision.same_incident == dedup_ai.DIFFERENT:
                 status = "DIFFERENT"

@@ -1,0 +1,176 @@
+{
+  "separations": [
+    {
+      "incidents": [
+        "INC-EEC788C594CA",
+        "INC-A11BA9A22689"
+      ],
+      "items": [
+        "ITM-495f418ca1fb8dad",
+        "ITM-7a872ed42e894347"
+      ],
+      "reason": "INCIDENT_KEEP_LLM_DIFFERENT"
+    },
+    {
+      "incidents": [
+        "INC-DC0BCFD579B8",
+        "INC-B44C794AB35B"
+      ],
+      "items": [
+        "ITM-c471c7f9bb97a447",
+        "ITM-827f9d9d0933d5cb"
+      ],
+      "reason": "INCIDENT_KEEP_NO_COMPATIBLE_COMPONENT"
+    },
+    {
+      "incidents": [
+        "INC-DC0BCFD579B8",
+        "INC-B44C794AB35B"
+      ],
+      "items": [
+        "ITM-c471c7f9bb97a447",
+        "ITM-3bd9994596a70cb0"
+      ],
+      "reason": "INCIDENT_KEEP_NO_COMPATIBLE_COMPONENT"
+    },
+    {
+      "incidents": [
+        "INC-2C5CD2459F83",
+        "INC-45561E350283"
+      ],
+      "items": [
+        "ITM-d289be7b54f1bf09",
+        "ITM-b37ec6399417fe07"
+      ],
+      "reason": "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID"
+    },
+    {
+      "incidents": [
+        "INC-2C5CD2459F83",
+        "INC-45561E350283"
+      ],
+      "items": [
+        "ITM-d289be7b54f1bf09",
+        "ITM-0849bd689cb5eb4f"
+      ],
+      "reason": "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID"
+    },
+    {
+      "incidents": [
+        "INC-B7DBF665E661",
+        "INC-619638DA1C52"
+      ],
+      "items": [
+        "ITM-9c16af75e968a0f8",
+        "ITM-1a7a19bfd19ae7f2"
+      ],
+      "reason": "INCIDENT_KEEP_NO_COMPATIBLE_COMPONENT"
+    },
+    {
+      "incidents": [
+        "INC-DD17DC78C96C",
+        "INC-2C5CEAE9E3AC"
+      ],
+      "items": [
+        "ITM-ea7abde0b5a364e2",
+        "ITM-af552eefe974f150"
+      ],
+      "reason": "INCIDENT_KEEP_NO_COMPATIBLE_COMPONENT"
+    },
+    {
+      "incidents": [
+        "INC-DD17DC78C96C",
+        "INC-2C5CEAE9E3AC"
+      ],
+      "items": [
+        "ITM-ea7abde0b5a364e2",
+        "ITM-fef84eaa6ff9af51"
+      ],
+      "reason": "INCIDENT_KEEP_NO_COMPATIBLE_COMPONENT"
+    }
+  ],
+  "location_probes": {
+    "Seine-Maritime": "Inconnu",
+    "Allondans, Doubs": "Inconnu",
+    "Mont-de-Marsan": "Inconnu",
+    "Guadeloupe": "Inconnu",
+    "Aveyron": "Inconnu"
+  },
+  "snapshot_deltas": {
+    "run1": {
+      "changed_detail_ids": [
+        "INC-8A100D3C8D40",
+        "INC-A3D0A851E662",
+        "INC-CE20778A3019",
+        "INC-EEC788C594CA",
+        "INC-0042AA05B202",
+        "INC-D2432B2095FD",
+        "INC-C59598DB9453",
+        "INC-36A1CF778488",
+        "INC-83BA7D2DCBF4",
+        "INC-52ED884732BC",
+        "INC-619638DA1C52",
+        "INC-6BD2DE3819F9",
+        "INC-26E2A421AD48",
+        "INC-82F1B88B7CC2",
+        "INC-3C5B9E546782"
+      ],
+      "changed_incident_ids": [
+        "INC-8A100D3C8D40",
+        "INC-A3D0A851E662",
+        "INC-CE20778A3019",
+        "INC-EEC788C594CA",
+        "INC-0042AA05B202",
+        "INC-D2432B2095FD",
+        "INC-36A1CF778488",
+        "INC-2C5CEAE9E3AC",
+        "INC-45561E350283",
+        "INC-52ED884732BC",
+        "INC-47CD44FA27B9",
+        "INC-6BD2DE3819F9",
+        "INC-C4996B1885D9",
+        "INC-CFB60E563EB4",
+        "INC-15A9F3AC6AC8",
+        "INC-90A8D0197E17",
+        "INC-582E355E2705",
+        "INC-C64E07B15B3F",
+        "INC-82F1B88B7CC2",
+        "INC-CFAAEC3E334A",
+        "INC-D63CEE9E9005",
+        "INC-FC866DCD1981",
+        "INC-BD3012E03337",
+        "INC-D910AD541B6B",
+        "INC-E39645DF5E4E"
+      ],
+      "added_ids": [
+        "INC-2C5CD2459F83",
+        "INC-A11BA9A22689"
+      ],
+      "removed_ids": [
+        "INC-A43B17CE9F7C"
+      ]
+    },
+    "run2": {
+      "changed_detail_ids": [
+        "INC-8A100D3C8D40",
+        "INC-A3D0A851E662",
+        "INC-A11BA9A22689",
+        "INC-B44C794AB35B"
+      ],
+      "changed_incident_ids": [
+        "INC-8A100D3C8D40",
+        "INC-CE20778A3019",
+        "INC-B44C794AB35B"
+      ],
+      "added_ids": [
+        "INC-5D2D1691FC39",
+        "INC-61993D19E8E2",
+        "INC-995C9F7252C1",
+        "INC-DD17DC78C96C",
+        "INC-EE0E8F96C169"
+      ],
+      "removed_ids": []
+    }
+  },
+  "renderer_matches_public": true
+}

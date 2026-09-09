@@ -1,6 +1,8 @@
 """Régressions de stabilisation de l'enrichissement Threat."""
 
-from cyberwatch import config
+import json
+
+from cyberwatch import config, threat_resolution
 from cyberwatch.dedup import build_incidents
 from cyberwatch.normalize import classify_threat
 from cyberwatch.enrichment import stabilize_threats
@@ -84,6 +86,21 @@ def test_frenchbreaches_explicit_ransomware_is_kept(make_item):
     item = make_item(source="FRENCHBREACHES", threat=config.THREAT_RANSOMWARE)
     stabilize_threats([item])
     assert item.Threat == config.THREAT_RANSOMWARE
+
+
+def test_correction_editoriale_de_menace_prime_sur_un_titre_generique(make_item):
+    item = make_item(threat=config.THREAT_INTRUSION, title="Cyberattaque contre Exemple")
+    facts = {item.Item_ID: [{
+        "Source_ID": item.Source_ID,
+        "Source_Metadata_JSON": json.dumps({"threat_override": {
+            "value": config.THREAT_LEAK,
+            "status": "confirmed",
+            "evidence": "Exfiltration confirmée.",
+        }}),
+    }]}
+    decision = threat_resolution.resolve_component([item], facts)
+    assert decision.value == config.THREAT_LEAK
+    assert decision.reason == "THREAT_EDITORIAL_CORRECTION"
 
 
 def test_incident_conflicting_defaults_abstain_without_evidence(make_item):

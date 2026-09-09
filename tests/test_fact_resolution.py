@@ -776,6 +776,24 @@ def test_legacy_sans_unite_est_ignore():
     assert resolved["affected"] == []
 
 
+def test_file_count_legacy_est_publie_comme_volume_de_fichiers():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        file_count=250,
+        claim_status="claimed",
+    )])
+    assert resolved["affected"] == [{
+        "value": 250,
+        "raw": "",
+        "unit": "files",
+        "semantic": "total",
+        "status": "claimed",
+        "source": "CYBERATTAQUE_ORG",
+        "sources": ["CYBERATTAQUE_ORG"],
+        "evidence": "",
+    }]
+
+
 def test_dinum_impact_narratif_prime_sur_metrique_seule():
     """Point 3 : un article riche ne doit pas se réduire à « X lignes (documenté). »
     quand un impact narratif validé est disponible."""

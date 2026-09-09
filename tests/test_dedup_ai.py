@@ -492,6 +492,26 @@ def test_recurrence_veto_does_not_block_organisation_identity(make_item):
     assert incident["Decision"] == dedup_ai.DIFFERENT
 
 
+def test_incident_different_requires_higher_confidence_than_merge(make_item):
+    left = make_item(source="A", org="OnRecrute.enAveyron.fr", published="2026-09-07", url="https://a")
+    right = make_item(source="B", org="Aveyron", published="2026-09-07", url="https://b")
+    candidate = DedupAuditCandidate(
+        risk_type=RISK_MISSED_DUPLICATE,
+        left=left,
+        right=right,
+        days_apart=0,
+        reason_code="DUPLICATE_CANDIDATE_DAILY_LLM",
+    )
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK,
+        same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.DIFFERENT,
+        confidence=0.85,
+        evidence="Même plateforme et mêmes volumes.",
+    )
+    assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
+
+
 def test_llm_cannot_override_conflicting_event_date(make_item, monkeypatch):
     """`INCIDENT_KEEP_CONFLICTING_EVENT_DATE` ne se déclenche, dans
     `decide_merge`, qu'une fois les deux items déjà de même identité

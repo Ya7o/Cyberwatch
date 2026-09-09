@@ -228,6 +228,11 @@ def _source_fact_payload(row: dict) -> dict | None:
             proof_text = str(proof or "").strip()
             if proof_text and key in payload:
                 payload[f"{key}_evidence"] = proof_text[:600]
+        file_proof = evidence_map.get("File_Count")
+        if isinstance(file_proof, list):
+            file_proof = " ".join(str(value) for value in file_proof if value)
+        if payload.get("file_count") and str(file_proof or "").strip():
+            payload["file_count_evidence"] = str(file_proof).strip()[:600]
 
     raw_flow = str(row.get("Attack_Flow_JSON") or "").strip()
     if raw_flow:

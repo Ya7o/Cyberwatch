@@ -14,6 +14,23 @@ class TestComponents:
         ]
         assert len(build_incidents(items)) == 1
 
+    def test_frenchbreaches_slug_renomme_garde_identifiant_alerte(self, make_item):
+        left = make_item(
+            source="FRENCHBREACHES",
+            source_item_id="https://frenchbreaches.test/alertes/clinique-de-vontes-inicea-mtm6ww9opvv422tgg4",
+            org="Clinique de Vontes",
+            url="https://frenchbreaches.test/a",
+        )
+        right = make_item(
+            source="FRENCHBREACHES",
+            source_item_id="https://frenchbreaches.test/alertes/clinique-de-vontes-mtm6ww9opvv422tgg4",
+            org="Clinique de Vontes",
+            url="https://frenchbreaches.test/b",
+        )
+        decision = decide_merge(left, right)
+        assert decision.action == MERGE
+        assert decision.reason_code == "INCIDENT_MERGE_SOURCE_ALERT_ID"
+
     def test_ecart_14_jours_sans_signal_fort_reste_separe(self, make_item):
         items = [
             make_item(published="2026-01-01", url="https://a/1"),

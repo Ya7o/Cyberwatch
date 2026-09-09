@@ -144,6 +144,14 @@ def decide_merge(
     if left.Source_ID == right.Source_ID and left.Source_Item_ID and right.Source_Item_ID:
         if left.Source_Item_ID == right.Source_Item_ID:
             return DedupDecision(MERGE, "INCIDENT_MERGE_SOURCE_ITEM_ID")
+        # FrenchBreaches peut republier la même alerte sous un slug légèrement
+        # différent tout en conservant son identifiant opaque final. Ce suffixe
+        # est plus stable que l'URL complète et évite le doublon Vontes/INICEA.
+        if left.Source_ID == "FRENCHBREACHES":
+            left_suffix = left.Source_Item_ID.rstrip("/").rsplit("-", 1)[-1]
+            right_suffix = right.Source_Item_ID.rstrip("/").rsplit("-", 1)[-1]
+            if len(left_suffix) >= 12 and left_suffix == right_suffix:
+                return DedupDecision(MERGE, "INCIDENT_MERGE_SOURCE_ALERT_ID")
         return DedupDecision(KEEP_SEPARATE, "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID")
 
     if _recurrence_boundary(left, right):

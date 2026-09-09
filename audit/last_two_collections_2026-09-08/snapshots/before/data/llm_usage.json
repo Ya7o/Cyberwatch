@@ -1,0 +1,82 @@
+{
+  "by_task": {
+    "cyberattaque_semantic": {
+      "cached_input_tokens": 0,
+      "calls_attempted": 5,
+      "calls_budget_blocked": 0,
+      "calls_failed": 0,
+      "calls_succeeded": 5,
+      "duration_seconds": 28.67871888100001,
+      "estimated_cost_usd": 0.00294525,
+      "input_tokens": 6987,
+      "last_model": "gpt-4o-mini",
+      "max_calls": 250,
+      "max_cost_usd": 0.75,
+      "output_tokens": 3162,
+      "reasoning_tokens": 0,
+      "retries": 0,
+      "total_tokens": 10149
+    },
+    "dedup": {
+      "cached_input_tokens": 0,
+      "calls_attempted": 1,
+      "calls_budget_blocked": 0,
+      "calls_failed": 0,
+      "calls_succeeded": 1,
+      "duration_seconds": 17.113612562999947,
+      "estimated_cost_usd": 0.00228795,
+      "input_tokens": 10089,
+      "last_model": "gpt-4o-mini",
+      "max_calls": 200,
+      "max_cost_usd": 0.5,
+      "output_tokens": 1291,
+      "reasoning_tokens": 0,
+      "retries": 0,
+      "total_tokens": 11380
+    },
+    "source_facts": {
+      "cached_input_tokens": 0,
+      "calls_attempted": 16,
+      "calls_budget_blocked": 0,
+      "calls_failed": 0,
+      "calls_succeeded": 16,
+      "duration_seconds": 54.399817399000085,
+      "estimated_cost_usd": 0.0073684499999999995,
+      "input_tokens": 33219,
+      "last_model": "gpt-4o-mini",
+      "max_calls": 250,
+      "max_cost_usd": 0.75,
+      "output_tokens": 3976,
+      "reasoning_tokens": 0,
+      "retries": 0,
+      "total_tokens": 37195
+    }
+  },
+  "cached_input_tokens": 0,
+  "calls_attempted": 22,
+  "calls_budget_blocked": 0,
+  "calls_failed": 0,
+  "calls_succeeded": 22,
+  "duration_seconds": 100.19214884300004,
+  "estimated_cost_usd": 0.012601649999999997,
+  "http_429": 0,
+  "http_5xx": 0,
+  "input_tokens": 50295,
+  "max_calls": 3000,
+  "max_cost_usd": 0.03,
+  "output_tokens": 8429,
+  "reasoning_tokens": 0,
+  "retries": 0,
+  "routing": {
+    "default_model": "gpt-5-nano",
+    "rich_model": "gpt-4o-mini",
+    "rich_task_markers": [
+      "semantic",
+      "source_facts",
+      "source-facts",
+      "dedup"
+    ]
+  },
+  "timeouts": 0,
+  "total_tokens": 58724
+}

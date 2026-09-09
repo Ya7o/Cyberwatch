@@ -88,6 +88,15 @@ class TestEnrichmentReference:
         assert enrich_items([item], reference) == {"sector": 1, "location": 1, "ocean_indian": 1, "france": 0}
 
 
+@pytest.mark.parametrize("fine_location", ["Seine-Maritime", "Allondans, Doubs", "Mont-de-Marsan", "Aveyron"])
+def test_lieu_fin_metropolitain_resout_le_territoire(fine_location):
+    assert classify_location(given=fine_location) == config.LOC_FRANCE
+
+
+def test_guadeloupe_ne_retombe_pas_sur_la_france_metropolitaine():
+    assert classify_location("site destiné aux étudiants en médecine de Guadeloupe", default=config.LOC_FRANCE) == config.LOC_GUADELOUPE
+
+
 class TestThreatTaxonomy:
     """§8 — l'ordre de priorité prime sur la position dans le texte."""
 

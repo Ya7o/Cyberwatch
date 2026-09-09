@@ -19,6 +19,7 @@ LOC_MAURICE = "Maurice"
 LOC_MADAGASCAR = "Madagascar"
 LOC_SEYCHELLES = "Seychelles"
 LOC_COMORES = "Comores"
+LOC_GUADELOUPE = "Guadeloupe"
 LOC_INCONNU = "Inconnu"
 
 LOCATIONS = [
@@ -29,6 +30,7 @@ LOCATIONS = [
     LOC_MADAGASCAR,
     LOC_SEYCHELLES,
     LOC_COMORES,
+    LOC_GUADELOUPE,
     LOC_INCONNU,
 ]
 
