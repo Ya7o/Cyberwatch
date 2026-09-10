@@ -1,0 +1,66 @@
+Citadium (Shipup)
+
+# Citadium : des clients concernés par la cyberattaque visant Shipup
+
+**Citadium, enseigne appartenant au groupe Printemps, est également concernée par l’incident de sécurité lié à Shipup, prestataire intervenant dans le suivi des commandes et des livraisons. Des données personnelles de certains clients ont pu être exposées.**
+
+L’incident s’inscrit dans le contexte plus large de la **cyberattaque ayant touché Shipup**, dont les services sont utilisés par plusieurs enseignes pou...
+
+Cet article vous est proposé en relation avec cette fuite de donnée
+Shipup
+Cyberattaque chez Shipup : des données clients de Micromania et Easypara exposées via la faille Metabase Shipup, plateforme spécialisée dans le suivi des livraisons et l’expérience post-achat des sites e-commerce, a été touchée par la campagne de cyberattaques ayant exploité une vulnérabilité critique dans Metabase. L’incident a entraîné l’accès non autorisé à des données de consommateurs appartenant à plusieurs enseignes utilisant ses services, dont Micromania et Easypara. Les accès non autorisés ont été possibles entre le 31 juillet et le 17 août 2026. Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone. L’étendue globale de la compromission reste inconnue. Shipup indique accompagner plus de 700 marques, sans que cela signifie que l’ensemble de ses clients a été affecté. --- Shipup touché par la campagne contre Metabase Créée en 2016, Shipup fournit aux sites e-commerce une plateforme permettant de gérer le suivi des colis et les communications envoyées aux consommateurs après une commande. Le service permet notamment d’envoyer des e-mails et SMS de suivi, de proposer des pages de tracking personnalisées et de détecter certains incidents de livraison. Son activité implique donc le traitement d’informations liées aux clients, commandes, livraisons et numéros de suivi. Shipup a été identifié parmi les organisations touchées par la campagne de cyberattaques visant Metabase, un logiciel utilisé par les entreprises pour explorer et visualiser leurs bases de données. --- Une vulnérabilité critique de Metabase exploitée La campagne a exploité une vulnérabilité jusque-là inconnue affectant Metabase. Parmi les failles corrigées figure la CVE-2026-72898, une vulnérabilité critique notée 10/10 et activement exploitée. Une exploitation réussie pouvait notamment permettre une injection SQL et donner accès à des informations présentes dans les bases de données connectées à une instance vulnérable. Metabase a commencé son investigation après le signalement, le 3 août 2026, d’un comportement anormal chez un client Cloud. Les premiers correctifs ont été publiés le 6 août 2026. Selon l’éditeur, moins de 3 % de ses clients Cloud ont été compromis avant la mise en place des mesures correctives. Des installations auto-hébergées exposées sur Internet ont également été touchées. --- Micromania et Easypara concernés Les conséquences de la compromission de Shipup sont notamment visibles à travers les incidents signalés par Micromania et Easypara. Dans les deux cas, la période d’exposition communiquée s’étend du 31 juillet au 17 août 2026. Les données concernées comprennent notamment : - les noms et prénoms ;
+- les adresses e-mail ;
+- les numéros de téléphone, lorsqu’ils étaient renseignés. Micromania Micromania a informé certains clients d’un incident chez son prestataire chargé du suivi des colis et des notifications de livraison. L’enseigne précise qu’aucun mot de passe ni aucune donnée bancaire ou de paiement n’est concerné. Ses propres systèmes, son site Internet et les comptes clients n’ont pas été compromis. Micromania ne nomme pas directement Shipup dans sa notification, mais la relation entre les deux entreprises est publiquement documentée : Shipup présente Micromania comme l’un de ses clients pour ses services de suivi et de notifications de livraison. Easypara Easypara a également signalé un incident touchant un prestataire utilisé pour les communications relatives aux livraisons. L’entreprise indique que l’incident résulte d’une vulnérabilité jusque-là inconnue de Metabase, exploitée dans le cadre d’une campagne mondiale. La période et les catégories de données concernées correspondent à celles communiquées dans le cas de Micromania. --- D’autres clients de Shipup pourraient-ils être concernés ? Shipup indique accompagner plus de 700 marques. Parmi ses références publiques figurent notamment Courir, L’Occitane en Provence, Veja, Withings, Specsavers, Printemps, Faguo, ba&sh, Sergent Major, Carrefour, Aroma-Zone, La Fourche, LALALAB et Chantelle. ⚠️ La présence d’une entreprise parmi les clients ou références de Shipup ne signifie pas qu’elle a été victime de cette fuite de données. Pour être concernées, leurs données devaient notamment être accessibles depuis l’environnement Metabase compromis au moment de l’intrusion. À ce stade, aucune exposition liée à cet incident n’est publiquement confirmée pour ces autres enseignes. --- Une ampleur encore inconnue Aucun chiffre global concernant la compromission de Shipup n’a été communiqué. Le nombre de consommateurs touchés, le nombre d’entreprises clientes concernées et le volume total de données consultées ou exfiltrées restent inconnus. Il reste également à déterminer si d’autres enseignes utilisant Shipup ont été affectées sans avoir encore communiqué publiquement. --- Un risque de phishing lié aux livraisons Les informations exposées peuvent être utilisées pour construire des campagnes de phishing ciblées, particulièrement crédibles lorsqu’elles font référence à une commande ou à une livraison. Les personnes concernées doivent notamment se méfier des faux SMS de livraison, des messages indiquant qu’un colis est bloqué, des demandes de confirmation d’adresse ou encore de prétendus frais de livraison ou de douane. Ces messages peuvent chercher à récupérer des identifiants, mots de passe ou informations bancaires. --- La faille corrigée Les informations communiquées aux personnes concernées indiquent que les accès non autorisés ont été bloqués et que des mesures de sécurité supplémentaires ont été mises en place. Metabase a publié ses premiers correctifs le 6 août 2026 et renforcé plusieurs mécanismes de sécurité. Le CERT-FR a également publié un avis concernant plusieurs vulnérabilités de Metabase, mentionnant notamment des risques d’atteinte à la confidentialité des données et d’injection SQL. --- Conclusion La compromission de Shipup illustre l’effet en cascade qu’une cyberattaque contre un prestataire commun peut provoquer. Pour l’instant, Micromania et Easypara figurent parmi les cas documentés. Shipup accompagnant plus de 700 marques, d’autres entreprises pourraient avoir été exposées, mais aucune compromission ne peut être déduite de leur seule utilisation du service. L’ampleur totale de l’incident reste inconnue.
+Lire l'alerte liée ➔
+SL
+Par Seblatombe, rédacteur FrenchBreaches
+Publié le 09/09/2026
+— Secteur Commerce
+Citadium : des clients concernés par la cyberattaque visant Shipup
+Citadium, enseigne appartenant au groupe Printemps, est également concernée par l’incident de sécurité lié à Shipup, prestataire intervenant dans le suivi des commandes et des livraisons. Des données personnelles de certains clients ont pu être exposées.
+L’incident s’inscrit dans le contexte plus large de la cyberattaque ayant touché Shipup, dont les services sont utilisés par plusieurs enseignes pour assurer le suivi post-achat et les notifications liées aux livraisons.
+Les informations potentiellement concernées comprennent notamment des données d’identification et de contact de clients. Le nombre exact de personnes touchées n’est pas connu à ce stade.
+Citadium également concerné par l’incident Shipup
+Citadium, enseigne du groupe Printemps, fait partie des marques concernées par l’incident de sécurité ayant touché le prestataire Shipup.
+Shipup intervient auprès de nombreuses enseignes de commerce en ligne pour assurer notamment le suivi des colis et les communications post-achat liées aux livraisons.
+L’incident trouve son origine dans l’environnement du prestataire et non, selon les éléments dont nous disposons, dans une compromission directe du site de Citadium.
+Une attaque contre un outil du prestataire
+L’incident Shipup est lié à l’exploitation par un tiers non autorisé d’une vulnérabilité affectant un outil utilisé par le prestataire.
+L’exploitation de cette faille aurait permis à l’attaquant d’effectuer des requêtes sur des bases de données et d’en extraire certaines informations.
+Ces bases pouvaient contenir des données transmises par les enseignes clientes de Shipup dans le cadre du suivi des commandes et des livraisons.
+Quelles données sont concernées ?
+Les informations exposées dans le cadre de l’incident Shipup peuvent notamment comprendre des données permettant d’identifier ou de contacter les clients.
+Selon les éléments dont nous disposons, les catégories de données potentiellement concernées comprennent notamment :
+les noms et prénoms ;
+les adresses e-mail ;
+les numéros de téléphone.
+Le nombre exact de clients Citadium concernés n’est pas connu à ce stade.
+Un risque de phishing ciblé
+L’exposition de données d’identité et de contact peut principalement être exploitée dans le cadre de campagnes de phishing, de smishing ou d’appels frauduleux.
+Le contexte de Shipup présente un risque particulier : le prestataire intervient dans le suivi des commandes et des livraisons.
+Des attaquants pourraient ainsi tenter de se faire passer pour Citadium, Shipup, un transporteur ou un service de livraison afin d'inciter les victimes à cliquer sur un lien frauduleux ou à communiquer des informations supplémentaires.
+Les clients doivent donc être particulièrement vigilants face aux messages inattendus évoquant un colis, une livraison, une commande ou un remboursement.
+Un incident qui touche plusieurs enseignes
+Citadium n’est pas la seule enseigne concernée par l’incident.
+Plusieurs entreprises utilisant les services de Shipup ont informé leurs clients d’un accès non autorisé à certaines données personnelles.
+Printemps, qui appartient au même groupe que Citadium, est également concerné.
+Printemps indique notamment avoir été informé de l’incident le 20 août 2026 et avoir notifié la violation de données à la CNIL le 25 août 2026.
+Ce qui reste à déterminer
+Plusieurs éléments restent encore à préciser concernant Citadium :
+le nombre exact de clients concernés ;
+la période exacte d’exposition des données Citadium ;
+le volume d’informations effectivement consultées ou téléchargées ;
+l’étendue exacte des catégories de données concernées ;
+l’identité de l’attaquant ou du groupe responsable.
+Conclusion
+Citadium est également concerné par l’incident de sécurité ayant touché Shipup, prestataire utilisé dans le cadre du suivi des commandes et des livraisons.
+L’incident pourrait avoir exposé des données d’identification et de contact de certains clients, notamment des noms, prénoms, adresses e-mail et numéros de téléphone.
+Citadium appartient au groupe Printemps, dont l’enseigne Printemps a également informé certains de ses clients d’une fuite de données liée à un prestataire intervenant dans le suivi des commandes et des livraisons.
+Le principal risque reste celui de tentatives de phishing ou de smishing personnalisées, notamment sous la forme de faux messages relatifs à une commande ou à une livraison.
+Le nombre exact de clients Citadium concernés reste à déterminer.
+Ressources utiles :
+Annuaire fuite de données
+|
+Que faire après une fuite de données
+|
+Blog fuite de données
