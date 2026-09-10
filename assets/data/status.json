@@ -1,75 +1,101 @@
 {
  "analytics": {
-  "as_of": "2026-09-10",
+  "as_of": "2026-09-09",
   "briefing": [
-   "Aucun signal suffisamment étayé n'est détecté sur 30 jours ; 0 incidents sont observés dans la fenêtre courante."
+   "Aucun signal suffisamment étayé n'est détecté sur 30 jours ; 3 incidents sont observés dans la fenêtre courante."
   ],
   "coverage": {
    "location": {
-    "known": 0,
-    "known_pct": 0.0,
+    "known": 3,
+    "known_pct": 100.0,
     "unknown": 0
    },
    "sector": {
-    "known": 0,
-    "known_pct": 0.0,
+    "known": 3,
+    "known_pct": 100.0,
     "unknown": 0
    },
    "threat": {
-    "known": 0,
-    "known_pct": 0.0,
-    "unknown": 0
+    "known": 2,
+    "known_pct": 66.7,
+    "unknown": 1
    }
   },
-  "dated_incidents": 0,
+  "dated_incidents": 3,
   "diversity_90d": {
-   "location": 0.0,
-   "sector": 0.0,
+   "location": 0.918,
+   "sector": 0.918,
    "threat": 0.0
   },
   "exposure": {
    "documented": 0,
    "documented_pct": 0.0,
    "evidence": {},
-   "total": 0
+   "total": 3
   },
   "focus": {
    "by_location": {
-    "La Réunion": 0,
+    "La Réunion": 1,
     "Mayotte": 0
    },
    "comparison": {
-    "by_source": {},
-    "dominant_source_pct": 0.0,
-    "incidents": 0,
+    "by_source": {
+     "CYBERATTAQUE_ORG": 2,
+     "FRENCHBREACHES": 2
+    },
+    "dominant_source_pct": 100.0,
+    "incidents": 2,
     "ransomware_pct": 0.0,
-    "sectors": [],
+    "sectors": [
+     {
+      "count": 2,
+      "label": "Commerce / Distribution"
+     }
+    ],
     "threat_profile_reliable": false,
-    "threats": []
+    "threats": [
+     {
+      "count": 2,
+      "label": "Fuite de données"
+     }
+    ]
    },
-   "days_since_last": null,
-   "incidents": 0,
-   "last_date": "",
+   "days_since_last": 0,
+   "incidents": 1,
+   "last_date": "2026-09-09",
    "locations": [
     "La Réunion",
     "Mayotte"
    ],
    "max_gap_days": null,
    "median_gap_days": null,
-   "multi_source": 0,
+   "multi_source": 1,
    "profile": {
-    "by_source": {},
-    "dominant_source_pct": 0.0,
-    "incidents": 0,
+    "by_source": {
+     "CYBERATTAQUE_ORG": 1,
+     "FRENCHBREACHES": 1
+    },
+    "dominant_source_pct": 100.0,
+    "incidents": 1,
     "ransomware_pct": 0.0,
-    "sectors": [],
+    "sectors": [
+     {
+      "count": 1,
+      "label": "Administration / Collectivité"
+     }
+    ],
     "threat_profile_reliable": false,
-    "threats": []
+    "threats": [
+     {
+      "count": 1,
+      "label": "Inconnu"
+     }
+    ]
    },
-   "share_pct": 0.0,
+   "share_pct": 33.3,
    "silence_is_unusual": false
   },
-  "incident_count": 0,
+  "incident_count": 3,
   "method": {
    "base_rate": "a signal must exceed the window's overall growth by 25 points; a category holding more than 60% of the window is excluded. Normalisation applies only when the previous window holds at least 10 incidents.",
    "confidence": "55% sample size + 25% multi-source corroboration + 20% field completeness",
@@ -80,24 +106,37 @@
   "ocean": {
    "by_location": {
     "Comores": 0,
-    "La Réunion": 0,
+    "La Réunion": 1,
     "Madagascar": 0,
     "Maurice": 0,
     "Mayotte": 0,
     "Seychelles": 0
    },
    "comparison": {
-    "by_source": {},
-    "dominant_source_pct": 0.0,
-    "incidents": 0,
+    "by_source": {
+     "CYBERATTAQUE_ORG": 2,
+     "FRENCHBREACHES": 2
+    },
+    "dominant_source_pct": 100.0,
+    "incidents": 2,
     "ransomware_pct": 0.0,
-    "sectors": [],
+    "sectors": [
+     {
+      "count": 2,
+      "label": "Commerce / Distribution"
+     }
+    ],
     "threat_profile_reliable": false,
-    "threats": []
+    "threats": [
+     {
+      "count": 2,
+      "label": "Fuite de données"
+     }
+    ]
    },
-   "days_since_last": null,
-   "incidents": 0,
-   "last_date": "",
+   "days_since_last": 0,
+   "incidents": 1,
+   "last_date": "2026-09-09",
    "locations": [
     "La Réunion",
     "Mayotte",
@@ -108,69 +147,140 @@
    ],
    "max_gap_days": null,
    "median_gap_days": null,
-   "multi_source": 0,
+   "multi_source": 1,
    "profile": {
-    "by_source": {},
-    "dominant_source_pct": 0.0,
-    "incidents": 0,
+    "by_source": {
+     "CYBERATTAQUE_ORG": 1,
+     "FRENCHBREACHES": 1
+    },
+    "dominant_source_pct": 100.0,
+    "incidents": 1,
     "ransomware_pct": 0.0,
-    "sectors": [],
+    "sectors": [
+     {
+      "count": 1,
+      "label": "Administration / Collectivité"
+     }
+    ],
     "threat_profile_reliable": false,
-    "threats": []
+    "threats": [
+     {
+      "count": 1,
+      "label": "Inconnu"
+     }
+    ]
    },
-   "share_pct": 0.0,
+   "share_pct": 33.3,
    "silence_is_unusual": false
   },
   "quality": {
-   "incidents": 0
+   "corroborated_pct": 100.0,
+   "first_date": "2026-09-09",
+   "history_months": 1,
+   "incidents": 3,
+   "last_date": "2026-09-09",
+   "mono_source": 0,
+   "mono_source_pct": 0.0,
+   "organisations": 3,
+   "sources": 2,
+   "unknown_pct": {
+    "location": 0.0,
+    "sector": 0.0,
+    "threat": 33.3
+   },
+   "with_summary_pct": 100.0
   },
   "recurring_organisations_90d": [],
   "schema": "cyberwatch-analytics-v1",
   "series": {
    "excluded_future": 0,
-   "months": [],
-   "sector": {},
-   "sources_observed": [],
-   "threat": {},
-   "total": []
+   "months": [
+    "2026-09"
+   ],
+   "sector": {
+    "Administration / Collectivité": [
+     1
+    ],
+    "Commerce / Distribution": [
+     2
+    ]
+   },
+   "sources_observed": [
+    2
+   ],
+   "threat": {
+    "Fuite de données": [
+     2
+    ]
+   },
+   "total": [
+    3
+   ]
   },
   "signals": [],
   "top_90d": {
-   "location": [],
-   "sector": [],
-   "threat": []
+   "location": [
+    {
+     "count": 2,
+     "label": "France métropolitaine"
+    },
+    {
+     "count": 1,
+     "label": "La Réunion"
+    }
+   ],
+   "sector": [
+    {
+     "count": 2,
+     "label": "Commerce / Distribution"
+    },
+    {
+     "count": 1,
+     "label": "Administration / Collectivité"
+    }
+   ],
+   "threat": [
+    {
+     "count": 2,
+     "label": "Fuite de données"
+    },
+    {
+     "count": 1,
+     "label": "Inconnu"
+    }
+   ]
   },
   "windows": {
    "30": {
-    "change_pct": null,
-    "current": 0,
-    "delta": 0,
-    "multi_source": 0,
-    "multi_source_pct": 0.0,
+    "change_pct": 100.0,
+    "current": 3,
+    "delta": 3,
+    "multi_source": 3,
+    "multi_source_pct": 100.0,
     "previous": 0
    },
    "365": {
-    "change_pct": null,
-    "current": 0,
-    "delta": 0,
-    "multi_source": 0,
-    "multi_source_pct": 0.0,
+    "change_pct": 100.0,
+    "current": 3,
+    "delta": 3,
+    "multi_source": 3,
+    "multi_source_pct": 100.0,
     "previous": 0
    },
    "7": {
-    "change_pct": null,
-    "current": 0,
-    "delta": 0,
-    "multi_source": 0,
-    "multi_source_pct": 0.0,
+    "change_pct": 100.0,
+    "current": 3,
+    "delta": 3,
+    "multi_source": 3,
+    "multi_source_pct": 100.0,
     "previous": 0
    },
    "90": {
-    "change_pct": null,
-    "current": 0,
-    "delta": 0,
-    "multi_source": 0,
-    "multi_source_pct": 0.0,
+    "change_pct": 100.0,
+    "current": 3,
+    "delta": 3,
+    "multi_source": 3,
+    "multi_source_pct": 100.0,
     "previous": 0
    }
   }
@@ -178,17 +288,1240 @@
  "blind_spots": [],
  "counts": {
   "fail": 0,
-  "ok": 0,
+  "ok": 5,
   "partial": 0,
   "skipped": 0
  },
- "entities": [],
+ "coverage_groups": {},
+ "entities": [
+  {
+   "entity": "ANADEN",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Aéroport de Moroni",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Banque Centrale des Comores",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Comores Telecom",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Gouvernement des Comores",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Port de Moroni",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Société Nationale d'Électricité des Comores",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Telma Comores",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Comores"
+  },
+  {
+   "entity": "Mairie de Bras-Panon",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Cilaos",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Entre-Deux",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de L'Étang-Salé",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de La Plaine-des-Palmistes",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de La Possession",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Le Port",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Le Tampon",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "2026-09-09",
+   "last_incident_id": "INC-F7E0A7E8A73F",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Les Avirons",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Les Trois-Bassins",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Petite-Île",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-André",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Benoît",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Denis",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Joseph",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Leu",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Louis",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Paul",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Philippe",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Saint-Pierre",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Sainte-Marie",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Sainte-Rose",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Sainte-Suzanne",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Mairie de Salazie",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Air Austral",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Aéroport de La Réunion Roland-Garros",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Aéroport de Pierrefonds",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "CAF de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "CCI Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Commerce / Distribution",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "CGSS Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "CHU de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Santé",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "CISE Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Chambre de Métiers et de l'Artisanat de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Commerce / Distribution",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Département de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "EDF Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Grand Port Maritime de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Orange Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Préfecture de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Rectorat de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Éducation / Formation",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Runéo",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Région Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "SFR Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Université de La Réunion",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Éducation / Formation",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Zeop",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "La Réunion"
+  },
+  {
+   "entity": "Airtel Madagascar",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Banky Foibe",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Douanes malgaches",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Gouvernement malgache",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "JIRAMA",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Madagascar Airlines",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Orange Madagascar",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Telma",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Madagascar"
+  },
+  {
+   "entity": "Air Mauritius",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Airports of Mauritius",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Bank of Mauritius",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Central Electricity Board",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Central Water Authority",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Emtel",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Government of Mauritius",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Mauritius Commercial Bank",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Mauritius Revenue Authority",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Mauritius Telecom",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "State Bank of Mauritius",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Maurice"
+  },
+  {
+   "entity": "Mairie de Acoua",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Bandraboua",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Bandrélé",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Bouéni",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Chiconi",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Chirongui",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Dembéni",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Dzaoudzi-Labattoir",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Kani-Kéli",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Koungou",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de M'Tsamboro",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de M'Tsangamouji",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Mamoudzou",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Ouangani",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Pamandzi",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Sada",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mairie de Tsingoni",
+   "items": 0,
+   "kind": "commune",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Aéroport de Dzaoudzi-Pamandzi",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "CCI Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Commerce / Distribution",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Caisse de Sécurité Sociale de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Centre Hospitalier de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Santé",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Centre universitaire de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Éducation / Formation",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Département de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Mayotte Telecom",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Orange Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Port de Longoni",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Préfecture de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Rectorat de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Éducation / Formation",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "SFR Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "SMAE Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Électricité de Mayotte",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Mayotte"
+  },
+  {
+   "entity": "Air Seychelles",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Airtel Seychelles",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Cable & Wireless Seychelles",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Numérique / Technologie",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Central Bank of Seychelles",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Government of Seychelles",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Administration / Collectivité",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Public Utilities Corporation",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Énergie / Utilities",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Seychelles Civil Aviation Authority",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Transport / Logistique",
+   "territory": "Seychelles"
+  },
+  {
+   "entity": "Seychelles Commercial Bank",
+   "items": 0,
+   "kind": "critique",
+   "last_incident": "",
+   "last_incident_id": "",
+   "last_queried": "",
+   "query_status": "SKIPPED",
+   "sector": "Finance / Assurance",
+   "territory": "Seychelles"
+  }
+ ],
  "focus_locations": [
   "La Réunion",
   "Mayotte"
  ],
- "history": [],
- "initialized": false,
+ "history": [
+  {
+   "as_of": "2026-09-10T17:17:07.438599+04:00",
+   "incidents": 3,
+   "items": 7,
+   "mode": "MAJ",
+   "new_incidents": 3,
+   "new_items": 7,
+   "overall": "OK",
+   "run_id": "RUN-20260910T171707"
+  }
+ ],
+ "initialized": true,
  "integrity": {
   "days": 0,
   "end": "",
@@ -234,13 +1567,13 @@
    "SKIPPED": "Hors périmètre de ce run"
   }
  },
- "message": "Base vidée. Lancez MAJ pour collecter les dernières publications.",
+ "method_id": "OBS-FR-OI-SIMPLE-SOURCING-10",
  "production": {
   "performance": {
-   "duration_seconds": 0.0,
-   "llm_calls": 0,
-   "llm_cost_usd": 0.0,
-   "requests": 0
+   "duration_seconds": 118.4,
+   "llm_calls": 14,
+   "llm_cost_usd": 0.024289,
+   "requests": 16
   },
   "quality": {
    "corpus_classification_errors": 0,
@@ -248,13 +1581,13 @@
    "corpus_false_positive_rate_pct": 0.0,
    "dedup_known_false_merges": 0,
    "location_unknown_pct": 0.0,
-   "missed_duplicate_candidate_pairs": null,
-   "pending_review_pairs": null,
-   "potential_duplicate_pairs": 0,
-   "potential_duplicate_rate_pct": 0.0,
+   "missed_duplicate_candidate_pairs": 0,
+   "pending_review_pairs": 0,
+   "potential_duplicate_pairs": 5,
+   "potential_duplicate_rate_pct": 166.67,
    "sector_unknown_pct": 0.0,
-   "validated_same_not_grouped_pairs": null,
-   "weak_merge_review_pairs": null
+   "validated_same_not_grouped_pairs": 0,
+   "weak_merge_review_pairs": 5
   },
   "scheduled_reliability": {
    "consecutive_successes": 0,
@@ -274,13 +1607,195 @@
   }
  },
  "qualification": {
-  "label": "",
-  "pending_fields": 0,
+  "label": "Qualification incomplète",
+  "pairs": {
+   "requested": 0
+  },
+  "pending_fields": 29,
+  "pending_fields_available": true,
   "pending_pairs": 0,
-  "reasons": [],
-  "run_id": "",
-  "state": "UNKNOWN"
+  "pending_required_fields": 29,
+  "reasons": [
+   "29 champ(s) d'extraction différé(s)"
+  ],
+  "run_id": "RUN-20260910T171707",
+  "sectors": {
+   "conflict_item_ids": [],
+   "items": 7,
+   "resolved": 7,
+   "resolved_item_ids": [
+    "ITM-0c085da888611a12",
+    "ITM-297a7e21d0f7da49",
+    "ITM-3a1f12b53d6e809e",
+    "ITM-56fe2e286f88ef44",
+    "ITM-5d429a6cb36dada4",
+    "ITM-5fea535fff602aa4",
+    "ITM-f2c9b54af4eae1da"
+   ],
+   "state": "COMPLETE",
+   "unknown_incidents": 0,
+   "unknown_item_ids": []
+  },
+  "state": "PARTIAL"
  },
- "run": {},
- "sources": []
+ "run": {
+  "as_of": "2026-09-10T17:17:07.438599+04:00",
+  "duration": "118.4",
+  "id": "RUN-20260910T171707",
+  "incidents": 3,
+  "incidents_hash": "401713bde004cb60528c3f68f74c4584fc7997a994b5704d064254e7272af6ce",
+  "items": 7,
+  "items_hash": "270c4ce5835ea3b286e13388727e3b37f0c15891d898147125a4bee70e36c42d",
+  "layers": "CORE_DIRECT,LOCAL_MEDIA_DIRECT,ENTITY_WATCH,REGIONAL_WATCH",
+  "mode": "MAJ",
+  "new_incidents": 3,
+  "new_items": 7,
+  "notes": "",
+  "overall": "OK",
+  "requests": 16,
+  "target_end": "2026-09-10",
+  "target_start": "2026-09-09"
+ },
+ "sources": [
+  {
+   "access_method": "bonjourlafuite-html-v0",
+   "calls": 1,
+   "candidate_status": "",
+   "comment": "items_in_window=0",
+   "coverage": 100,
+   "duration": "4.1",
+   "history_status": "UNKNOWN",
+   "id": "BONJOURLAFUITE",
+   "items": 0,
+   "items_collected": 0,
+   "items_in_window": 0,
+   "items_seen": 551,
+   "last_run": "2026-09-10T17:17:07.438599+04:00",
+   "latest_item": "",
+   "latest_item_org": "",
+   "layer": "CORE_DIRECT",
+   "notes": "Chaque bloc de la chronologie est nommé d'après l'organisation touchée : le titre de l'entrée est l'organisation. Localisation par défaut France métropolitaine sauf indication contraire. Page de contrôle de volume : https://bonjourlafuite.eu.org/stats.html",
+   "oldest_available_date": "",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "reason_code": "OK",
+   "status": "OK",
+   "units_done": 1,
+   "units_expected": 1,
+   "url": "https://bonjourlafuite.eu.org/",
+   "zero_is_trusted": true,
+   "zone": "France métropolitaine"
+  },
+  {
+   "access_method": "wordpress",
+   "calls": 3,
+   "candidate_status": "",
+   "comment": "articles_seen=100; articles_in_window=4; victims_identified=3; articles_rejected_no_victim=1; articles_rejected_negated=0; articles_rejected_multi=0",
+   "coverage": 100,
+   "duration": "67.1",
+   "history_status": "UNKNOWN",
+   "id": "CYBERATTAQUE_ORG",
+   "items": 3,
+   "items_collected": 3,
+   "items_in_window": 4,
+   "items_seen": 100,
+   "last_run": "2026-09-10T17:17:07.438599+04:00",
+   "latest_item": "2026-09-09",
+   "latest_item_org": "Le Tampon",
+   "layer": "CORE_DIRECT",
+   "notes": "La catégorie « attaque » du site ne publie que des incidents : son périmètre fait foi, le garde-fou de vocabulaire ne s'y applique pas. Victime extraite seulement depuis une relation explicite ou un préfixe de titre non rédactionnel.",
+   "oldest_available_date": "",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "reason_code": "OK",
+   "status": "OK",
+   "units_done": 1,
+   "units_expected": 1,
+   "url": "https://www.cyberattaque.org/type/attaque/",
+   "zero_is_trusted": false,
+   "zone": "France métropolitaine"
+  },
+  {
+   "access_method": "feed:https://frenchbreaches.com/feed.xml",
+   "calls": 5,
+   "candidate_status": "",
+   "comment": "details_hydrates=3/3; rich_facts=3/3; details_degrades=0",
+   "coverage": 100,
+   "duration": "38.7",
+   "history_status": "COMPLETE",
+   "id": "FRENCHBREACHES",
+   "items": 3,
+   "items_collected": 3,
+   "items_in_window": 3,
+   "items_seen": 100,
+   "last_run": "2026-09-10T17:17:07.438599+04:00",
+   "latest_item": "2026-09-09",
+   "latest_item_org": "Printemps",
+   "layer": "CORE_DIRECT",
+   "notes": "Chaque entrée est nommée d'après l'organisation touchée : le titre de l'entrée est l'organisation. Localisation par défaut France métropolitaine sauf indication contraire.",
+   "oldest_available_date": "2026-08-19",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "reason_code": "OK",
+   "status": "OK",
+   "units_done": 1,
+   "units_expected": 1,
+   "url": "https://frenchbreaches.com/feed.xml",
+   "zero_is_trusted": false,
+   "zone": "France métropolitaine"
+  },
+  {
+   "access_method": "https://api.ransomware.live/v2/countryvictims/",
+   "calls": 7,
+   "candidate_status": "",
+   "comment": "items_seen=695; items_in_window=0",
+   "coverage": 100,
+   "duration": "8.3",
+   "history_status": "UNKNOWN",
+   "id": "RANSOMWARE_LIVE",
+   "items": 0,
+   "items_collected": 0,
+   "items_in_window": 0,
+   "items_seen": 695,
+   "last_run": "2026-09-10T17:17:07.438599+04:00",
+   "latest_item": "",
+   "latest_item_org": "",
+   "layer": "CORE_DIRECT",
+   "notes": "Activée par rapport à la méthode d'origine : source prioritaire (§21), les sources françaises étant fortement orientées fuite de données.",
+   "oldest_available_date": "",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "reason_code": "OK",
+   "status": "OK",
+   "units_done": 7,
+   "units_expected": 7,
+   "url": "https://api.ransomware.live/",
+   "zero_is_trusted": true,
+   "zone": "Multi"
+  },
+  {
+   "access_method": "repository_json",
+   "calls": 0,
+   "candidate_status": "",
+   "comment": "snapshot_records=11; admitted=8; candidates=3; materialized=8; future=0; requested_window_hits=1; generated_at=2026-09-10T09:42:26+04:00; freshness_days=0; max_age_days=2",
+   "coverage": 100,
+   "duration": "0.0",
+   "history_status": "UNKNOWN",
+   "id": "VEILLE_LLM",
+   "items": 1,
+   "items_collected": 1,
+   "items_in_window": 1,
+   "items_seen": 8,
+   "last_run": "2026-09-10T17:17:07.438599+04:00",
+   "latest_item": "2026-09-09",
+   "latest_item_org": "Le Tampon",
+   "layer": "REGIONAL_WATCH",
+   "notes": "Source locale analytique issue de Veille LLM pour La Réunion et Mayotte. L'admission dépend de preuves cyber explicites, jamais du score seul. Snapshot remplacé à chaque run ; elle ne compte pas comme corroboration éditoriale supplémentaire lorsqu'une source directe couvre déjà le même incident.",
+   "oldest_available_date": "",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "reason_code": "OK",
+   "status": "OK",
+   "units_done": 11,
+   "units_expected": 11,
+   "url": "https://github.com/Ya7o/Cyberwatch/blob/main/sources/veillellm/cyberattaques_reunion_mayotte_2026.json",
+   "zero_is_trusted": false,
+   "zone": "La Réunion / Mayotte"
+  }
+ ]
 }
