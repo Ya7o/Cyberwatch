@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 
-from . import config, source_facts_ai
+from . import config, source_facts_ai, threat_reservation
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import parse_date
@@ -54,6 +54,15 @@ def _apply_semantic_details(
 ) -> None:
     metadata = _loads_json(fact.get("Source_Metadata_JSON", "")) or {}
     metadata["editorial_context"] = (entry.content or entry.summary)[:12000]
+    # La décision de menace voyage avec ses preuves dans les métadonnées
+    # existantes : c'est ce qui permet aux passes de reprise et de
+    # stabilisation de reconnaître un « Inconnu » explicitement établi au lieu
+    # de le réécraser par le défaut de flux de la source.
+    decision = threat_reservation.decision(entry.title, entry.summary, entry.content)
+    if decision:
+        metadata["threat_reservation"] = decision
+    else:
+        metadata.pop("threat_reservation", None)
     fact["Source_Metadata_JSON"] = _dumps_json(metadata)
     volume, volume_evidence = _ai_volume(ai_result)
     if volume:

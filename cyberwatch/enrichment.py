@@ -8,7 +8,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import config, location_resolution, sector_resolution, store, watchlists
+from . import (
+    config,
+    location_resolution,
+    sector_resolution,
+    store,
+    threat_reservation,
+    watchlists,
+)
 from .dedup import build_incidents_with_registry
 from .identity import sort_items
 from .model import Incident, Item
@@ -105,11 +112,15 @@ def enrich_items(
 _UNKNOWN_LEAK_MARKERS = ("fuite", "expos", "diffus", "revendiqu")
 
 
-def _backfill_unknown_threat(item: Item) -> str:
+def _backfill_unknown_threat(item: Item, reservation: dict | None = None) -> str:
     threat = classify_threat(item.Title, item.Threat_Raw)
     if threat != config.THREAT_UNKNOWN:
         return threat
     title = searchable(item.Title)
+    # Ce raccourci de titre n'a aucune gestion de négation : il ne doit donc
+    # pas rétablir une fuite que la source a explicitement écartée.
+    if threat_reservation.covers(reservation, config.THREAT_LEAK):
+        return config.THREAT_UNKNOWN
     if any(marker in title for marker in _UNKNOWN_LEAK_MARKERS):
         return config.THREAT_LEAK
     return config.THREAT_UNKNOWN
@@ -126,7 +137,11 @@ def _source_location_default(source_id: str) -> str:
     return ""
 
 
-def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> dict[str, int]:
+def backfill_unknowns(
+    items: list[Item],
+    reference: dict[str, Enrichment],
+    reservations: dict[str, dict] | None = None,
+) -> dict[str, int]:
     """Complète menace/localisation inconnues avec la même logique hors-ligne.
 
     Pour Location : référentiel/watchlist -> indice territorial sûr -> défaut
@@ -140,10 +155,11 @@ def backfill_unknowns(items: list[Item], reference: dict[str, Enrichment]) -> di
     }
     ordered = sort_items(items)
     territories = watchlists.entity_territories()
+    reservations = reservations or {}
 
     for item in ordered:
         if item.Threat == config.THREAT_UNKNOWN:
-            threat = _backfill_unknown_threat(item)
+            threat = _backfill_unknown_threat(item, reservations.get(item.Item_ID))
             if threat != config.THREAT_UNKNOWN:
                 item.Threat = threat
                 report["threat"] += 1
@@ -208,16 +224,27 @@ _THREAT_SPECIFICITY = {
 }
 
 
-def stabilize_threats(items: list[Item]) -> int:
-    """Applique les quelques contrats de menace propres aux sources."""
+def stabilize_threats(items: list[Item], reservations: dict[str, dict] | None = None) -> int:
+    """Applique les quelques contrats de menace propres aux sources.
+
+    ``reservations`` porte, par ``Item_ID``, la décision de menace établie à
+    l'extraction. Une menace explicitement réservée par la source n'est jamais
+    rétablie ici : c'est ce qui empêche le défaut de flux « Fuite de données »
+    de FrenchBreaches d'écraser un « Inconnu » sourcé.
+    """
+    reservations = reservations or {}
     changed = 0
     for item in items:
         before = item.Threat
+        reservation = reservations.get(item.Item_ID)
         # Threat_Raw contient souvent le défaut du flux, pas une preuve. Le
         # relire avec le titre écrasait notamment un ransomware explicite par
         # le défaut « Fuite de données » de FrenchBreaches.
         explicit = classify_threat(item.Title)
-        if _THREAT_SPECIFICITY.get(explicit, -1) > _THREAT_SPECIFICITY.get(item.Threat, -1):
+        if (
+            _THREAT_SPECIFICITY.get(explicit, -1) > _THREAT_SPECIFICITY.get(item.Threat, -1)
+            and not threat_reservation.covers(reservation, explicit)
+        ):
             item.Threat = explicit
         if item.Threat == config.THREAT_ACCOUNT:
             item.Threat = (
@@ -234,8 +261,12 @@ def stabilize_threats(items: list[Item]) -> int:
         elif item.Source_ID in _AUTHORITATIVE_DEFAULT_THREATS:
             item.Threat = _AUTHORITATIVE_DEFAULT_THREATS[item.Source_ID]
         elif item.Source_ID in _SOURCE_SCOPE_THREATS:
-            if item.Threat not in _STRONG_SOURCE_SCOPE_OVERRIDES:
-                item.Threat = _SOURCE_SCOPE_THREATS[item.Source_ID]
+            scope = _SOURCE_SCOPE_THREATS[item.Source_ID]
+            if (
+                item.Threat not in _STRONG_SOURCE_SCOPE_OVERRIDES
+                and not threat_reservation.covers(reservation, scope)
+            ):
+                item.Threat = scope
         changed += item.Threat != before
     return changed
 
@@ -255,8 +286,11 @@ def finalize_snapshot(
     )
     enrich_items(ordered, reference, include_sector=False)
     location_resolution.apply_fine_locations(ordered, source_facts_rows)
-    backfill_unknowns(ordered, reference)
-    stabilize_threats(ordered)
+    reservations = threat_reservation.index_source_facts(
+        source_facts_rows if source_facts_rows is not None else []
+    )
+    backfill_unknowns(ordered, reference, reservations)
+    stabilize_threats(ordered, reservations)
     # Les décisions d'audit explicites s'appliquent en dernier : elles sont
     # sourcées, versionnées et ne doivent pas être réécrasées par un fallback.
     from . import editorial_corrections

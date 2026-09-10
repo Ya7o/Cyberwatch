@@ -349,7 +349,16 @@ def classify_threat(*texts: str, default: str = "") -> str:
     d'intrusion. Un défaut de source reste le repli : un simple « piratage » ou
     « cyberattaque » ne peut donc plus transformer une source de fuites en
     Intrusion. Le défaut Ransomware est un contrat univoque et fait toujours foi.
+
+    Une menace explicitement réservée par la phrase qui la cite — « prématuré de
+    parler de ransomware », « aucun point d'entrée rendu public » — est retirée
+    des candidats, et ne peut pas non plus être réintroduite par le défaut de
+    source. Voir :mod:`cyberwatch.threat_reservation` pour la portée exacte.
     """
+    # Import local : threat_reservation dépend de ce module pour le découpage
+    # et la table de menaces.
+    from . import threat_reservation
+
     blob = searchable(" ".join(t for t in texts if t))
     if not blob:
         return default or config.THREAT_UNKNOWN
@@ -357,6 +366,8 @@ def classify_threat(*texts: str, default: str = "") -> str:
     had_negation = _has_threat_negation(blob)
     evidence = _without_negated_threat_claims(blob)
     matched = _matched_threats(evidence)
+    reserved = threat_reservation.net_reserved(*texts)
+    matched -= reserved
 
     # ransomware.live est la seule source utilisant ce défaut aujourd'hui ;
     # le contrat de la source est plus fort que le vocabulaire de sa description.
@@ -369,8 +380,9 @@ def classify_threat(*texts: str, default: str = "") -> str:
 
     # Un défaut de source (notamment Fuite de données) bat uniquement les
     # signaux génériques. Les preuves spécifiques ci-dessus peuvent toujours
-    # l'écraser.
-    if default:
+    # l'écraser, et une réserve explicite l'écarte : un article qui dit
+    # qu'aucune fuite n'est confirmée ne publie pas « Fuite de données ».
+    if default and default not in reserved:
         return default
 
     if config.THREAT_INTRUSION in matched:
