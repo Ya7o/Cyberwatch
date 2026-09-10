@@ -12,17 +12,29 @@ import json
 import re
 from typing import Iterable, Mapping
 
-from . import config
+from . import config, threat_reservation
 from .model import Item
 from .normalize import threat_evidence_text
 
 
+#: Sources dont le contrat natif *est* la revendication de rançongiciel.
+NATIVE_RANSOMWARE_SOURCES = frozenset({"RANSOMWARE_LIVE"})
+
+
+#: `_best_signal` élit le statut de rang maximal. Sans entrée explicite, un
+#: démenti tombait à 0 par défaut — mais aussi toute valeur inconnue du barème.
+#: Les statuts négatifs sont donc nommés, sous « » et « unknown ».
 _STATUS_RANK = {
     "confirmed": 5,
     "reported": 4,
     "claimed": 3,
     "unknown": 2,
     "": 1,
+    "unconfirmed": 1,
+    "hypothesis": 1,
+    "reserved": 1,
+    "denied": 0,
+    "negated": 0,
 }
 
 _LEAK_RE = re.compile(
@@ -89,7 +101,13 @@ def _best_signal(signals: list[tuple[str, str, str]]) -> tuple[str, tuple[str, .
     return status or "unknown", sources, evidence
 
 
-def _legacy_threat_decision(ordered: list[Item], item_threats: set[str]) -> ThreatDecision:
+def _legacy_threat_decision(
+    ordered: list[Item], item_threats: set[str], reserved: set[str] | None = None,
+) -> ThreatDecision:
+    # Un repli legacy ne peut pas ressusciter une menace que la source écarte
+    # explicitement : c'est par ce chemin que THREAT_SINGLE_LEGACY_VALUE
+    # republiait le défaut « Fuite de données » de FrenchBreaches.
+    item_threats = item_threats - (reserved or set())
     if len(item_threats) == 1:
         value = next(iter(item_threats))
         return ThreatDecision(value, "unknown", "THREAT_SINGLE_LEGACY_VALUE", conflict=False)
@@ -117,37 +135,35 @@ def _editorial_threat_decision(
     )
 
 
-def resolve_component(
-    items: Iterable[Item],
-    facts_by_item: Mapping[str, list[dict]] | None = None,
-) -> ThreatDecision:
-    """Choisit la menace principale à partir des preuves de la composante.
+def _collect_signals(
+    ordered: list[Item], facts_by_item: Mapping[str, list[dict]],
+) -> tuple[dict[str, list[tuple[str, str, str]]], list[tuple[str, str, str, str]]]:
+    """Relève les signaux de menace des titres puis des faits sourcés.
 
-    La fuite bat l'intrusion uniquement lorsqu'une exposition/extraction est
-    effectivement décrite.  Un simple défaut de source « fuite » ne suffit
-    plus.  Phishing n'est retenu que s'il s'agit de l'attaque ou du vecteur,
-    jamais d'un risque éditorial en aval.
+    Extrait de :func:`resolve_component` pour que la collecte des preuves
+    reste lisible séparément de leur arbitrage.
     """
-    ordered = list(items)
-    facts_by_item = facts_by_item or {}
-    # Compromission de compte et tiers compromis décrivent des vecteurs. Ils
-    # ne créent pas un conflit avec une menace événementielle documentée.
-    non_primary = {config.THREAT_ACCOUNT, config.THREAT_THIRD_PARTY}
-    item_threats = {
-        item.Threat for item in ordered
-        if item.Threat and item.Threat != config.THREAT_UNKNOWN and item.Threat not in non_primary
-    }
-    conflict = len(item_threats) > 1
     signals: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
     editorial_overrides: list[tuple[str, str, str, str]] = []
-
     for item in ordered:
         # Threat_Raw peut être un défaut de flux (FrenchBreaches = fuite) et
         # ne constitue donc pas une preuve textuelle. Seul le titre sourcé est
         # relu ici ; la valeur native reste disponible comme repli plus bas.
         item_blob = threat_evidence_text(item.Title)
         source = item.Source_ID
-        if item.Threat == config.THREAT_RANSOMWARE or _RANSOMWARE_RE.search(item_blob):
+        # `item.Threat` est déjà un produit de `classify_threat` puis de
+        # `stabilize_threats` : le relire comme une preuve rendait « reported »
+        # une valeur dérivée, avec pour justificatif un titre qui ne dit pas
+        # ransomware. Seul le contrat natif d'un leak site subsiste, et il
+        # s'annonce pour ce qu'il est : une revendication.
+        if source in NATIVE_RANSOMWARE_SOURCES:
+            # Le titre du leak site nomme la victime et le groupe
+            # (« SAD'S Interim revendiqué par rhysida ») ; `Threat_Raw` ne
+            # porte que le défaut littéral « Ransomware ».
+            signals[config.THREAT_RANSOMWARE].append(
+                ("claimed", source, item.Title or item.Threat_Raw)
+            )
+        if _RANSOMWARE_RE.search(item_blob):
             signals[config.THREAT_RANSOMWARE].append(("reported", source, item.Title))
         if _DDOS_RE.search(item_blob):
             signals[config.THREAT_DDOS].append(("reported", source, item.Title))
@@ -196,10 +212,51 @@ def resolve_component(
             if initial_access == "third_party" or str(row.get("Third_Party") or "").strip():
                 signals[config.THREAT_THIRD_PARTY].append((status, source, evidence))
 
+    return signals, editorial_overrides
+
+
+def resolve_component(
+    items: Iterable[Item],
+    facts_by_item: Mapping[str, list[dict]] | None = None,
+) -> ThreatDecision:
+    """Choisit la menace principale à partir des preuves de la composante.
+
+    La fuite bat l'intrusion uniquement lorsqu'une exposition/extraction est
+    effectivement décrite.  Un simple défaut de source « fuite » ne suffit
+    plus.  Phishing n'est retenu que s'il s'agit de l'attaque ou du vecteur,
+    jamais d'un risque éditorial en aval.
+    """
+    ordered = list(items)
+    facts_by_item = facts_by_item or {}
+    # Les réserves établies à l'extraction voyagent dans les métadonnées
+    # SourceFacts. Une menace explicitement écartée par la source ne peut
+    # devenir ni un signal, ni un repli legacy, ni la valeur publiée.
+    reserved: set[str] = set()
+    for rows in facts_by_item.values():
+        for payload in threat_reservation.index_source_facts(rows).values():
+            reserved.update(str(value) for value in payload.get("reserved") or ())
+    # Compromission de compte et tiers compromis décrivent des vecteurs. Ils
+    # ne créent pas un conflit avec une menace événementielle documentée.
+    non_primary = {config.THREAT_ACCOUNT, config.THREAT_THIRD_PARTY}
+    item_threats = {
+        item.Threat for item in ordered
+        if item.Threat and item.Threat != config.THREAT_UNKNOWN and item.Threat not in non_primary
+    }
+    conflict = len(item_threats) > 1
+    signals: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+    editorial_overrides: list[tuple[str, str, str, str]] = []
+
+    signals, editorial_overrides = _collect_signals(ordered, facts_by_item)
+
     if editorial_overrides:
         decision = _editorial_threat_decision(editorial_overrides, conflict)
         if decision:
             return decision
+
+    # Une menace réservée par la source ne peut plus être élue, quel que soit
+    # le statut de son signal.
+    for threat in reserved:
+        signals.pop(threat, None)
 
     # Catégories techniques univoques, puis conséquence de fuite prouvée.
     for threat in (
@@ -214,4 +271,4 @@ def resolve_component(
                 sources, evidence, conflict,
             )
 
-    return _legacy_threat_decision(ordered, item_threats)
+    return _legacy_threat_decision(ordered, item_threats, reserved)

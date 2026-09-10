@@ -196,6 +196,30 @@ def _supporting_sources(facts: Iterable[dict], getter: Callable[[dict], Any], ch
     return sources
 
 
+#: Champs qui décrivent l'incident lui-même : leur statut *est* celui que
+#: l'article déclare sur l'incident. Tous les autres qualifient un élément
+#: particulier et doivent porter leur propre preuve.
+_ARTICLE_SCOPED_FIELDS = frozenset({"impact", "evolution"})
+
+_FIELD_CONFIRMATION_RE = re.compile(r"\bconfirm[ée]?e?s?\b", re.I)
+
+
+def _capped_scalar_status(field: str, status: str, evidence: str) -> str:
+    """Empêche le statut global de l'incident de sacrer un champ non confirmé.
+
+    `Claim_Status` qualifie l'incident, pas chaque champ : une phrase telle que
+    « la collectivité confirme la cyberattaque » faisait publier un vecteur
+    d'accès déduit d'une phrase pédagogique comme « confirmé ». Le statut est
+    donc *plafonné*, jamais remplacé — un statut plus faible passe tel quel et
+    ne peut que rester faible, sans quoi un « claimed » serait promu.
+    """
+    if field in _ARTICLE_SCOPED_FIELDS or field == "data_volume":
+        return status
+    if status == "confirmed" and not _FIELD_CONFIRMATION_RE.search(evidence or ""):
+        return "reported"
+    return status
+
+
 def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
     ordered = _ordered_facts(facts)
     for fact in ordered:
@@ -223,6 +247,7 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
                 evidence = _text(volume_record.get("evidence")) or evidence
         if resolved_status == "confirmed" and re.search(r"\b(?:revendiqu|affirme)\w*\b", evidence, re.I):
             resolved_status = "claimed"
+        resolved_status = _capped_scalar_status(field, resolved_status, evidence)
         result = {
             "value": value,
             "source": source,

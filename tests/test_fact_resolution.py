@@ -523,8 +523,32 @@ def test_champ_scalaire_republie_le_statut_du_claim_gagnant():
     })])
     assert via_claim["fields"]["threat_actor"]["status"] == "claimed"
 
-    via_colonne = fr.resolve_incident_facts([fact("FRENCHBREACHES", threat_actor="misere", claim_status="confirmed")])
+    via_colonne = fr.resolve_incident_facts([fact(
+        "FRENCHBREACHES", threat_actor="misere", claim_status="confirmed",
+        threat_actor_evidence="Le groupe misere a été confirmé par la victime.",
+    )])
     assert via_colonne["fields"]["threat_actor"]["status"] == "confirmed"
+
+
+def test_le_statut_confirme_de_l_incident_ne_sacre_pas_un_champ_sans_preuve():
+    """`Claim_Status` qualifie l'incident, pas chaque champ.
+
+    Régression Le Tampon (2026-09-09) : « la collectivité confirme la
+    cyberattaque » suffisait à publier un vecteur d'accès déduit d'une phrase
+    pédagogique avec le badge « confirmé ». Le statut est désormais plafonné à
+    « reported » tant que la preuve propre du champ ne porte pas elle-même la
+    confirmation.
+    """
+    sans_preuve = fr.resolve_incident_facts([fact(
+        "FRENCHBREACHES", threat_actor="misere", claim_status="confirmed",
+    )])
+    assert sans_preuve["fields"]["threat_actor"]["status"] == "reported"
+
+    # Un statut plus faible n'est jamais promu par le plafonnement.
+    revendique = fr.resolve_incident_facts([fact(
+        "FRENCHBREACHES", threat_actor="misere", claim_status="claimed",
+    )])
+    assert revendique["fields"]["threat_actor"]["status"] == "claimed"
 
 
 def test_claim_vulnerability_alimente_la_liste_publique():
