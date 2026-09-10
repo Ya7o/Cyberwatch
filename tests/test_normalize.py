@@ -532,3 +532,19 @@ class TestExtractUniqueValueCounts:
 
     def test_libelle_sans_type_de_donnee_reconnu_est_ignore(self):
         assert extract_unique_value_counts("42 visiteurs uniques ce mois-ci") == []
+
+
+class TestCollectiviteVilleDu:
+    """Régression Le Tampon : « Ville du X » était traité autrement que
+    « Ville de X », ce qui laissait la commune sans secteur et empêchait la
+    fusion des deux fiches issues de sources distinctes."""
+
+    @pytest.mark.parametrize(
+        "organisation",
+        ["Ville du Tampon", "Ville de Saint-Denis", "Commune du Port"],
+    )
+    def test_la_collectivite_est_une_administration(self, organisation):
+        assert classify_sector(organisation) == config.SECTOR_ADMIN
+
+    def test_ville_du_tampon_et_le_tampon_sont_la_meme_organisation(self):
+        assert organisation_key("Ville du Tampon") == organisation_key("Le Tampon")

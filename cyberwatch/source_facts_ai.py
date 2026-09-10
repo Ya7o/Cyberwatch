@@ -470,6 +470,16 @@ _INITIAL_ACCESS_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
 )
 
 
+#: Phrase pédagogique décrivant ce qu'une attaque « peut » entraîner en général.
+#: Elle énumère des vecteurs sans en imputer aucun à la victime analysée, et ne
+#: constitue donc pas une preuve d'accès initial.
+_GENERIC_EXPLAINER_RE = re.compile(
+    r"\b(?:peut|peuvent)\s+(?:ainsi\s+|alors\s+|[ée]galement\s+)?"
+    r"(?:conduire|entra[îi]ner|permettre|amener|provoquer|aboutir|donner\s+lieu)\b",
+    re.I,
+)
+
+
 def _deterministic_initial_access(context: str) -> dict | None:
     if (
         not context
@@ -482,6 +492,7 @@ def _deterministic_initial_access(context: str) -> dict | None:
         if (
             not cleaned
             or _HYPOTHETICAL_RE.search(cleaned)
+            or _GENERIC_EXPLAINER_RE.search(cleaned)
             or re.search(
                 r"\b(?:le contexte actuel|indices? (?:qui )?orientent|"
                 r"r[ée]cemment corrig[ée]e?|hypoth[èe]se)\b",

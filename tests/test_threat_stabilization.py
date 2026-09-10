@@ -140,3 +140,21 @@ def test_incident_ransomware_beats_leak_even_when_leak_is_veille(make_item):
         ),
     ]
     assert build_incidents(items)[0].Menace == config.THREAT_RANSOMWARE
+
+
+def test_premature_de_parler_de_menace_nest_pas_une_affirmation():
+    """« Prématuré de parler de ransomware » ne qualifie pas l'incident.
+
+    Régression Le Tampon (2026-09-09) : la prudence du journaliste était lue
+    comme une preuve, et l'incident sortait en Ransomware.
+    """
+    assert classify_threat(
+        "Il serait donc prématuré de parler de ransomware ou de fuite de données."
+    ) == config.THREAT_UNKNOWN
+
+
+def test_premature_de_parler_nefface_pas_une_mention_positive_ailleurs():
+    assert classify_threat(
+        "Il est trop tôt pour parler de ransomware. "
+        "L'attaquant a chiffré les serveurs et réclame une rançon."
+    ) == config.THREAT_RANSOMWARE

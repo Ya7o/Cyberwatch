@@ -321,7 +321,8 @@ ACTIVITY_TO_SECTOR = {
 #: formation, finance, distribution...) n'est admis ici.
 SECTOR_NAME_RULES: list[tuple[str, list[str]]] = [
     (SECTOR_ADMIN, [
-        "mairie de", "ville de", "commune de", "ministere de", "ministere des",
+        "mairie de", "ville de", "ville du", "commune de", "commune du",
+        "ministere de", "ministere des",
         "prefecture de", "conseil departemental", "conseil regional",
         "departement de", "police nationale", "police municipale",
         "gendarmerie nationale", "sapeurs pompiers",
@@ -370,7 +371,7 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
         "mediatheque", "presse", "media", "audiovisuel", "loisirs",
     ]),
     (SECTOR_ADMIN, [
-        "mairie", "ville de", "commune", "communaute d agglomeration",
+        "mairie", "ville de", "ville du", "commune", "communaute d agglomeration",
         "departement", "region", "ministere", "prefecture", "prefet",
         "collectivite", "municipalite", "conseil departemental",
         "conseil regional", "gouvernement", "government", "administration",

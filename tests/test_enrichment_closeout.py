@@ -35,6 +35,21 @@ def test_initial_access_deterministe_strict():
     assert sfa._deterministic_initial_access("Le point d'entrée reste inconnu. Un phishing est possible.") is None
 
 
+def test_initial_access_ignore_la_phrase_pedagogique_generique():
+    """Régression Le Tampon : un article expliquant ce qu'une attaque « peut »
+    entraîner en général énumérait des vecteurs sans en imputer aucun à la
+    victime, et le vecteur en ressortait pourtant « confirmé »."""
+    generique = (
+        "La compromission d’un compte, l’exploitation d’une vulnérabilité ou "
+        "l’infection d’un serveur peut ainsi conduire les équipes à isoler "
+        "préventivement plusieurs systèmes afin d’empêcher l’attaque de se propager."
+    )
+    assert sfa._deterministic_initial_access(generique) is None
+    # Une preuve réellement imputée à la victime reste retenue.
+    impute = "L'attaquant a exploité une faille IDOR qui a permis l'accès aux dossiers."
+    assert sfa._deterministic_initial_access(impute)["value"] == "vulnerability_exploitation"
+
+
 def test_summary_derivee_depuis_faits_valides():
     fact = {
         "Summary": "",

@@ -268,6 +268,12 @@ _THREAT_EXTRA_PATTERNS = {
     ),
 }
 
+#: Menaces qu'une formulation négative peut retirer du texte avant l'analyse.
+_NEGATABLE_THREATS = (
+    r"fuite(?: de donnees)?|ransomware|rancongiciel|phishing|hameconnage|"
+    r"malware|logiciel malveillant|ddos|deni de service|intrusion|compromission"
+)
+
 # Négations conservatrices : uniquement des formulations explicites qui ont
 # produit des faux positifs réels. Elles sont masquées avant la recherche de
 # candidats ; une autre mention positive située ailleurs dans le texte reste
@@ -276,14 +282,20 @@ _THREAT_NEGATION_PATTERNS = (
     re.compile(
         r"\b(?:aucune|aucun|pas de|sans)\s+"
         r"(?:attaque\s+(?:par\s+)?)?"
-        r"(?:fuite(?: de donnees)?|ransomware|rancongiciel|phishing|hameconnage|"
-        r"malware|logiciel malveillant|ddos|deni de service|intrusion|compromission)\b"
+        rf"(?:{_NEGATABLE_THREATS})\b"
     ),
     re.compile(
-        r"\b(?:fuite(?: de donnees)?|ransomware|rancongiciel|phishing|hameconnage|"
-        r"malware|logiciel malveillant|ddos|deni de service|intrusion|compromission)"
+        rf"\b(?:{_NEGATABLE_THREATS})"
         r"(?: [a-z]+){0,3}\s+(?:non|pas)\s+"
         r"(?:detecte[es]?|identifie[es]?|confirme[es]?|constate[es]?|demontre[es]?)\b"
+    ),
+    # « Il serait prématuré de parler de ransomware ou de fuite de données » :
+    # l'énumération entière est masquée, sinon chaque menace citée serait lue
+    # comme une affirmation.
+    re.compile(
+        r"\b(?:premature|trop tot)\s+d(?:e\s+)?parler\s+d(?:e\s+)?"
+        rf"(?:{_NEGATABLE_THREATS})\b"
+        rf"(?:\s+(?:ou|et|ni)\s+d(?:e\s+)?(?:{_NEGATABLE_THREATS})\b)*"
     ),
     re.compile(r"\baucune\s+donnee(?:s)?(?: [a-z]+){0,4}\s+exposee(?:s)?\b"),
     re.compile(r"\b(?:aucune|aucun|pas de|sans)\s+compromission\b"),

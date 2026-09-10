@@ -138,7 +138,8 @@ def _safe_institutional_name_sector(organisation: str) -> str:
         return config.SECTOR_ADMIN
 
     admin_prefixes = (
-        "mairie ", "ville de ", "ville d ", "commune de ", "commune d ",
+        "mairie ", "ville de ", "ville d ", "ville du ",
+        "commune de ", "commune d ", "commune du ",
         "the commune of ", "ministere de ", "ministere des ", "ministry of ",
         "fr ministry of ", "prefecture de ", "metropole de ", "metropole ",
         "region ", "la region ", "departement de ", "conseil departemental ",
