@@ -417,6 +417,18 @@
     const qualificationOk = qualification.state === "UNKNOWN" || !qualification.state
       ? null
       : qualification.state !== "PARTIAL";
+    // La couverture sectorielle publiée (« Secteur inconnu ») et l'état
+    // d'extraction sont deux lectures distinctes : un secteur peut être
+    // classé par la référence alors que son couple activité/secteur reste
+    // refusé, et l'inverse est vrai aussi.
+    const pairs = qualification.pairs;
+    const pairTotal = (key) => Number(pairs?.[key]?.total || 0);
+    const pairsPending = pairs
+      ? pairTotal("rejected") + pairTotal("rejected_exhausted") + pairTotal("technical_failure")
+      : 0;
+    const pairsDetail = pairs
+      ? `${formatNumber(pairsPending)} en attente · ${formatNumber(pairTotal("abstained"))} abstention(s)`
+      : "non disponible pour ce run";
     $("#production-metrics").innerHTML = [
       productionMetric(
         "Qualification",
@@ -425,6 +437,12 @@
           ? `${formatNumber(qualification.pending_fields || 0)} champ(s) · ${formatNumber(qualification.pending_pairs || 0)} paire(s) en attente`
           : "traitements nécessaires terminés",
         qualificationOk,
+      ),
+      productionMetric(
+        "Couples activité/secteur",
+        pairs ? `${formatNumber(pairTotal("accepted"))}/${formatNumber(Number(pairs.requested || 0))}` : "n.d.",
+        pairsDetail,
+        pairs ? pairsPending === 0 : null,
       ),
       productionMetric("Série planifiée", `${reliability.consecutive_successes || 0}/${reliability.required_consecutive_successes || 7}`, observed ? `${Number(reliability.success_rate_pct).toFixed(2)} % de succès observés` : "preuve en acquisition", observed ? Boolean(reliability.seven_run_proof_ready) : null),
       productionMetric("Secteur inconnu", sectorKnown ? `${sector.toFixed(2)} %` : "n.d.", `cible < ${targets.sector_unknown_pct || 20} %`, sectorKnown ? sector < Number(targets.sector_unknown_pct || 20) : null),

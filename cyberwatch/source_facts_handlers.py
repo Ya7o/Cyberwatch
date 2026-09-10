@@ -408,7 +408,8 @@ def _pending_fact_clears(old_meta: dict, new_meta: dict, new: dict,
         state = str(statuses.get(field) or "").lower()
         if new.get(column, "") not in (None, ""):
             pending.pop(field, None)
-        elif content_changed and state in {"miss", "abstained"} and new_hash:
+        elif content_changed and state in {"miss", "abstained",
+                                          "rejected", "rejected_exhausted"} and new_hash:
             pending[field] = new_hash
     return pending, content_changed, new_hash, statuses
 

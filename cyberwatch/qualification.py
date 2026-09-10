@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import store
+from .sector_activity import ACTIVITY_FIELDS
 
 #: Tous les traitements nécessaires de ce run sont terminés.
 STATE_COMPLETE = "COMPLETE"
@@ -86,6 +87,10 @@ class QualificationRun:
     deferred: list = field(default_factory=list)
     pending_pairs: list = field(default_factory=list)
     documented: bool = False
+    #: Provenance de `deferred` : "archive" (figée à la fin de ce run),
+    #: "live" (file courante, ne décrit que le dernier run) ou "" (inconnue).
+    #: Le défaut vide préserve le chemin des runs construits à la main.
+    deferred_source: str = ""
 
     @property
     def pairs(self) -> list[dict]:
@@ -106,7 +111,18 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
     trace = _read_json(directory / "source_facts_ai_trace.json") if directory else None
     contexts = _read_json(directory / "source_facts_ai_contexts.json") if directory else None
     dedup = _read_json(directory / "dedup_review.json") if directory else None
-    deferred = [row for row in _deferred_entries() if isinstance(row, dict)]
+    archived = _read_json(directory / "source_facts_retry_queue.json") if directory else None
+    archived = archived.get("entries") if isinstance(archived, dict) else None
+    if isinstance(archived, list):
+        deferred = [row for row in archived if isinstance(row, dict)]
+        deferred_source = "archive"
+    elif run_id and run_id == latest_run_id(root):
+        deferred = [row for row in _deferred_entries() if isinstance(row, dict)]
+        deferred_source = "live"
+    else:
+        # La file est globale et sans identifiant de run : la prêter à un run
+        # ancien lui ferait décrire un état qui n'est pas le sien.
+        deferred, deferred_source = [], ""
     pending = _read_json(store.DATA_DIR / "dedup_review_queue.json")
     return QualificationRun(
         run_id=run_id,
@@ -117,6 +133,7 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
         deferred=deferred,
         pending_pairs=[row for row in pending if isinstance(row, dict)] if isinstance(pending, list) else [],
         documented=isinstance(extraction, dict) or isinstance(dedup, dict),
+        deferred_source=deferred_source,
     )
 
 
@@ -135,9 +152,18 @@ def run_from_snapshot(payload: dict) -> QualificationRun:
         extraction=payload.get("extraction_usage") or {},
         trace=payload.get("extraction_trace") or [],
         dedup=dedup if isinstance(dedup, dict) else {},
-        deferred=[e for e in (payload.get("deferred_entries") or []) if isinstance(e, dict)],
+        deferred=_snapshot_deferred(payload.get("deferred_entries")),
         documented=True,
+        # Un audit sans file figée ne sait pas ce qui restait en attente : le
+        # dire, plutôt que d'annoncer zéro.
+        deferred_source="archive" if payload.get("deferred_entries") is not None else "",
     )
+
+
+def _snapshot_deferred(payload) -> list[dict]:
+    """File figée par un audit, écrite tantôt à plat, tantôt sous `entries`."""
+    rows = payload.get("entries") if isinstance(payload, dict) else payload
+    return [row for row in rows if isinstance(row, dict)] if isinstance(rows, list) else []
 
 
 def _deferred_entries() -> list[dict]:
@@ -146,24 +172,82 @@ def _deferred_entries() -> list[dict]:
     return source_facts_retry.load()
 
 
-def _pending_field_count(run: QualificationRun) -> int:
-    """Champs restés sans réponse dans CE run.
+def _pending_field_count(run: QualificationRun) -> tuple[int, bool]:
+    """Champs restés sans réponse dans CE run, et si l'on peut le savoir.
 
-    La trace du run les nomme dès qu'elle existe. La file de reprise, elle, est
-    globale et sans identifiant de run : elle ne peut donc décrire que le
-    dernier run, jamais un run ancien dont les demandes ont pu depuis être
-    satisfaites ou remplacées.
+    L'archive de fin de run fait autorité : elle a été figée pour ce run. La
+    trace le dit ensuite. La file courante, globale et sans identifiant de run,
+    ne peut décrire que le dernier run. Au-delà, l'information est perdue et se
+    dit « non disponible » plutôt que zéro.
     """
+    if run.deferred_source == "archive":
+        return sum(len(row.get("pending_fields") or ()) for row in run.deferred), True
     if run.trace:
         return sum(
             len(event.get("requested_fields") or ())
             for event in run.trace
             if isinstance(event, dict)
             and event.get("status") in {"disabled", "budget_blocked", "failed"}
-        )
-    if run.run_id and run.run_id == latest_run_id():
-        return sum(len(row.get("pending_fields") or ()) for row in run.deferred)
-    return 0
+        ), True
+    if run.deferred_source == "live":
+        return sum(len(row.get("pending_fields") or ()) for row in run.deferred), True
+    return 0, False
+
+
+def _pair_counts(run: QualificationRun) -> dict | None:
+    """Décompte des couples activité/secteur ; None quand le run l'ignore."""
+    counts = run.extraction.get("activity_pairs")
+    if isinstance(counts, dict) and counts:
+        return counts
+    return _pair_counts_from_trace(run)
+
+
+def _pair_counts_from_trace(run: QualificationRun) -> dict | None:
+    """Reconstruction depuis la trace, un couple par (observation, contenu)."""
+    outcomes: dict[tuple[str, str], tuple[str, str]] = {}
+    for event in run.trace:
+        if not isinstance(event, dict):
+            continue
+        requested = set(event.get("requested_fields") or ())
+        if not ACTIVITY_FIELDS & requested:
+            continue
+        status = str(event.get("status") or "")
+        cached = event.get("fields") if isinstance(event.get("fields"), dict) else None
+        if status in {"disabled", "budget_blocked", "failed"}:
+            outcome = "technical_failure"
+        elif cached:
+            # Une relecture de cache porte les statuts eux-mêmes : les lire
+            # évite de compter un rejet mémorisé comme une abstention.
+            from .source_facts_ai_activity import pair_outcome
+            outcome = pair_outcome(cached)
+        else:
+            normalized = event.get("normalized") if isinstance(event.get("normalized"), dict) else {}
+            rejections = event.get("rejections") if isinstance(event.get("rejections"), dict) else {}
+            if ACTIVITY_FIELDS <= set(normalized):
+                outcome = "accepted"
+            elif ACTIVITY_FIELDS & set(rejections):
+                outcome = "rejected"
+            else:
+                outcome = "abstained"
+        key = (str(event.get("item_id") or ""), str(event.get("content_hash") or ""))
+        outcomes[key] = (outcome, "cache" if status == "cache_read" else
+                         "call" if status == "success" else "none")
+    if not outcomes:
+        return None
+    counts: dict = {"requested": len(outcomes)}
+    for outcome, origin in outcomes.values():
+        bucket = counts.setdefault(outcome, {"total": 0, "from_cache": 0, "from_call": 0})
+        bucket["total"] += 1
+        if origin == "cache":
+            bucket["from_cache"] += 1
+        elif origin == "call":
+            bucket["from_call"] += 1
+    return counts
+
+
+def _pair_total(counts: dict | None, outcome: str) -> int:
+    bucket = (counts or {}).get(outcome)
+    return int(bucket.get("total") or 0) if isinstance(bucket, dict) else 0
 
 
 def _blocked_pairs(run: QualificationRun) -> list[dict]:
@@ -178,7 +262,7 @@ def _blocked_pairs(run: QualificationRun) -> list[dict]:
 def evaluate(run: QualificationRun) -> dict:
     """État, motifs et décomptes de la qualification de ce run."""
     reasons: list[str] = []
-    pending_fields = _pending_field_count(run)
+    pending_fields, pending_known = _pending_field_count(run)
     blocked_pairs = _blocked_pairs(run)
 
     if not run.run_id or not run.documented:
@@ -187,6 +271,7 @@ def evaluate(run: QualificationRun) -> dict:
             "state": STATE_UNKNOWN,
             "reasons": ["run non documenté : aucun journal de qualification"],
             "pending_fields": pending_fields,
+            "pending_fields_available": pending_known,
             "pending_pairs": len(blocked_pairs),
             "extraction": _extraction_counts(run),
             "dedup": _dedup_counts(run),
@@ -215,6 +300,26 @@ def evaluate(run: QualificationRun) -> dict:
         statuses = sorted({str(row.get("status") or "") for row in blocked_pairs})
         reasons.append(f"{len(blocked_pairs)} paire(s) non tranchée(s) : {', '.join(statuses)}")
 
+    # Un couple activité/secteur refusé mais encore à traiter est un besoin non
+    # satisfait, y compris quand tous les appels du run ont réussi. Une
+    # abstention explicite, elle, n'entre dans aucune de ces conditions.
+    pairs = extraction["pairs"]
+    if _pair_total(pairs, "rejected"):
+        reasons.append(
+            f"{_pair_total(pairs, 'rejected')} couple(s) activité/secteur "
+            "rejeté(s) en attente de reprise"
+        )
+    if _pair_total(pairs, "rejected_exhausted"):
+        reasons.append(
+            f"{_pair_total(pairs, 'rejected_exhausted')} couple(s) activité/secteur "
+            "en rejet persistant (tentatives épuisées)"
+        )
+    if _pair_total(pairs, "technical_failure"):
+        reasons.append(
+            f"{_pair_total(pairs, 'technical_failure')} couple(s) activité/secteur "
+            "en échec technique"
+        )
+
     if reasons:
         state = STATE_PARTIAL
     elif extraction["needed"] or dedup["candidates_generated"]:
@@ -229,6 +334,7 @@ def evaluate(run: QualificationRun) -> dict:
         "state": state,
         "reasons": reasons,
         "pending_fields": pending_fields,
+        "pending_fields_available": pending_known,
         "pending_pairs": len(blocked_pairs),
         "extraction": extraction,
         "dedup": dedup,
@@ -245,6 +351,8 @@ def _extraction_counts(run: QualificationRun) -> dict:
         "accepted_from_cache": int(stats.get("accepted_field_cache_hits") or 0),
         "abstained_from_cache": int(stats.get("abstained_field_cache_hits") or 0),
         "fields_invalidated": int(stats.get("fields_invalidated") or 0),
+        "rejected_from_cache": int(stats.get("rejected_field_cache_hits") or 0),
+        "pairs": _pair_counts(run),
         "cache_read_events": sum(row.get("status") == "cache_read" for row in events),
         "disabled_events": sum(row.get("status") == "disabled" for row in events),
         "budget_blocked": sum(row.get("status") == "budget_blocked" for row in events),
@@ -279,7 +387,9 @@ def payload(run_id: str = "", root: Path | None = None) -> dict:
         "state": verdict["state"],
         "reasons": verdict["reasons"],
         "pending_fields": verdict["pending_fields"],
+        "pending_fields_available": verdict["pending_fields_available"],
         "pending_pairs": verdict["pending_pairs"],
+        "pairs": verdict["extraction"]["pairs"],
         "label": INCOMPLETE_LABEL if verdict["state"] == STATE_PARTIAL else "",
     }
 
@@ -336,18 +446,25 @@ def extraction_rows(run: QualificationRun) -> list[dict]:
             continue
         normalized = event.get("normalized") if isinstance(event.get("normalized"), dict) else {}
         rejections = event.get("rejections") if isinstance(event.get("rejections"), dict) else {}
+        kinds = event.get("rejection_kinds") if isinstance(event.get("rejection_kinds"), dict) else {}
+        proposals = event.get("proposals") if isinstance(event.get("proposals"), dict) else {}
         for name in sorted(event.get("requested_fields") or ()):
             value = normalized.get(name)
+            # Un champ rejeté n'a pas de valeur normalisée : sans la proposition
+            # brute, le tableau n'afficherait qu'un motif sans son objet.
+            shown = value if name in normalized else proposals.get(name)
+            reason = rejections.get(name, "") or str(event.get("reason") or "")
+            kind = str(kinds.get(name) or "")
             rows.append({
                 "item_id": item_id,
                 "field": name,
                 "origin": origin,
-                "value": _value_text(value),
-                "evidence": _evidence_text(value),
+                "value": _value_text(shown),
+                "evidence": _evidence_text(shown),
                 "validation": "accepted" if name in normalized else (
                     "rejected" if name in rejections else "deferred"
                 ),
-                "rejection": rejections.get(name, "") or str(event.get("reason") or ""),
+                "rejection": f"{reason} ({kind})" if reason and kind else reason,
                 "kept": _value_text(value) if name in normalized else "",
             })
     return rows
@@ -455,7 +572,9 @@ def markdown_report(run: QualificationRun) -> str:
         f"## Qualification — `{verdict['run_id'] or 'run inconnu'}`",
         f"- État : **{verdict['state']}**"
         + (f" — {INCOMPLETE_LABEL}" if verdict["state"] == STATE_PARTIAL else ""),
-        f"- Champs d'extraction en attente : **{verdict['pending_fields']}**",
+        "- Champs d'extraction en attente : "
+        + (f"**{verdict['pending_fields']}**" if verdict["pending_fields_available"]
+           else "_non disponible_"),
         f"- Paires en attente : **{verdict['pending_pairs']}**",
         f"- Modèle d'extraction demandé : `{extraction['requested_model'] or '—'}` ; "
         f"exécuté : `{extraction['effective_model'] or '—'}`",
@@ -477,5 +596,35 @@ def markdown_report(run: QualificationRun) -> str:
     ]
     for label, rows in groups.items():
         lines.append(f"| {label} | {len(rows)} |")
+    lines += ["", "### Couples activité/secteur", "", pair_table(verdict)]
     lines += ["", "### Déduplication par paire", "", dedup_table(run)]
+    return "\n".join(lines)
+
+
+_PAIR_LABELS = (
+    ("accepted", "Acceptés"),
+    ("abstained", "Abstentions"),
+    ("rejected", "Rejets en attente de reprise"),
+    ("rejected_exhausted", "Rejets persistants"),
+    ("technical_failure", "Échecs techniques"),
+)
+
+
+def pair_table(verdict: dict) -> str:
+    """Décompte des couples activité/secteur, cache et appel séparés."""
+    counts = verdict["extraction"]["pairs"]
+    lines = ["| Issue | Total | Cache | Appel |", "|---|---:|---:|---:|"]
+    if not counts:
+        # Distinguer « aucun couple » de « le run ne le dit pas » : un rapport
+        # historique ne doit pas afficher zéro pour une information perdue.
+        lines.append("| _non disponible pour ce run_ |  |  |  |")
+        return "\n".join(lines)
+    lines.append(f"| **Demandés** | **{int(counts.get('requested') or 0)}** |  |  |")
+    for key, label in _PAIR_LABELS:
+        bucket = counts.get(key)
+        bucket = bucket if isinstance(bucket, dict) else {}
+        lines.append(
+            f"| {label} | {int(bucket.get('total') or 0)} "
+            f"| {int(bucket.get('from_cache') or 0)} | {int(bucket.get('from_call') or 0)} |"
+        )
     return "\n".join(lines)

@@ -40,6 +40,10 @@ from .source_facts_ai_contract import (
     MAX_ATTACK_FLOW_STEPS,
     MAX_EVIDENCE_CHARS,
     MAX_FIELD_MISSES,
+    MAX_SEMANTIC_ATTEMPTS,
+    REJECTING_FIELDS,
+    CACHE_STATUS_REJECTED,
+    CACHE_STATUS_REJECTED_EXHAUSTED,
     MAX_LABEL_VALUE_CHARS,
     MAX_SUMMARY_CHARS,
     NEW_SEMANTIC_FIELDS,
@@ -138,9 +142,26 @@ def field_statuses(item: Item, entry: RawEntry) -> dict[str, str]:
         if field not in FIELD_VERSIONS or not isinstance(cached, dict):
             continue
         status = str(cached.get("status") or "").strip().lower()
-        if status in {"accepted", "miss", "abstained"}:
+        if status in {"accepted", "miss", "abstained",
+                      CACHE_STATUS_REJECTED, CACHE_STATUS_REJECTED_EXHAUSTED}:
             result[field] = status
     return result
+
+
+def field_rejections(item: Item, entry: RawEntry) -> dict[str, str]:
+    """Motif de refus mémorisé pour chaque champ de cette version du contenu."""
+    if item.Source_ID not in TARGET_SOURCES:
+        return {}
+    runtime = _runtime()
+    cache_entry = runtime.cache.get(_cache_item_key(item, entry, runtime))
+    fields = cache_entry.get("fields") if isinstance(cache_entry, dict) else None
+    if not isinstance(fields, dict):
+        return {}
+    return {
+        field: str(cached.get("rejection_reason") or "")
+        for field, cached in fields.items()
+        if isinstance(cached, dict) and cached.get("rejection_reason")
+    }
 
 
 def _record_cache_read(
@@ -321,6 +342,69 @@ def _cache_miss_count(cached: dict) -> int:
         return 0
 
 
+def _semantic_attempts(cached: dict | None, field: str) -> int:
+    """Tentatives sémantiques consommées pour la version courante du champ.
+
+    Le portage se fait par lecture, jamais par purge : un enregistrement écrit
+    sous une autre version rend 0, donc une évolution de contrat rouvre le
+    droit à deux tentatives sans réécrire aucun cache. Un enregistrement
+    antérieur au compteur mais resté sur la version courante retombe sur ses
+    `misses` : sans ce repli, tout le corpus historique gagnerait deux appels.
+    """
+    if not isinstance(cached, dict):
+        return 0
+    recorded = cached.get("attempts_version")
+    if recorded is None:
+        if cached.get("version") != FIELD_VERSIONS[field]:
+            return 0
+        if str(cached.get("status") or "").strip().lower() in {"miss", "abstained"}:
+            return min(_cache_miss_count(cached), MAX_SEMANTIC_ATTEMPTS)
+        return 0
+    if recorded != FIELD_VERSIONS[field]:
+        return 0
+    try:
+        return max(0, min(int(cached.get("semantic_attempts") or 0), MAX_SEMANTIC_ATTEMPTS))
+    except (TypeError, ValueError):
+        return 0
+
+
+def _align_cached_version(runtime: _Runtime, field: str, cached: dict, context: str) -> bool:
+    """Porte l'enregistrement sur la version courante ; False s'il faut redemander."""
+    current_version = FIELD_VERSIONS[field]
+    if cached.get("version") == current_version:
+        return True
+    previous = PREVIOUS_FIELD_VERSIONS.get(field)
+    if previous and cached.get("version") == previous:
+        revalidated = _revalidate_previous_cached_value(field, cached.get("value"), context)
+        if revalidated is None and _cache_value_present(cached.get("value")):
+            _invalidate_cached_field(
+                runtime, field, cached, current_version, "REVALIDATION_REJECTED"
+            )
+            return False
+        cached["value"] = revalidated
+        cached["version"] = current_version
+        return True
+    _invalidate_cached_field(runtime, field, cached, current_version, "CONTRACT_VERSION_CHANGED")
+    return False
+
+
+def _legacy_cache_status(runtime: _Runtime, field: str, cached: dict, value) -> str:
+    """Statut d'un enregistrement historique qui n'en portait pas.
+
+    Rend `""` quand l'absence de valeur doit être respectée telle quelle : les
+    caches historiques utilisaient `value: null` pour dire qu'aucun fait n'avait
+    été extrait, et une reconstruction normale ne repaie pas un LLM pour cela.
+    """
+    if _cache_value_present(value):
+        cached.update({"status": "accepted", "misses": 0})
+        return "accepted"
+    if not runtime.retry_legacy_nulls:
+        return ""
+    cached.update({"status": "miss", "misses": max(1, _cache_miss_count(cached))})
+    runtime.legacy_null_migrations += 1
+    return "miss"
+
+
 def _read_field_cache(
     runtime: _Runtime, key: str, fields: set[str], context: str = "", organisation: str = ""
 ) -> tuple[dict, set[str]]:
@@ -335,23 +419,8 @@ def _read_field_cache(
         cached = entry["fields"].get(field)
         if not isinstance(cached, dict):
             continue
-        current_version = FIELD_VERSIONS[field]
-        if cached.get("version") != current_version:
-            previous = PREVIOUS_FIELD_VERSIONS.get(field)
-            if previous and cached.get("version") == previous:
-                revalidated = _revalidate_previous_cached_value(field, cached.get("value"), context)
-                if revalidated is None and _cache_value_present(cached.get("value")):
-                    _invalidate_cached_field(
-                        runtime, field, cached, current_version, "REVALIDATION_REJECTED"
-                    )
-                    continue
-                cached["value"] = revalidated
-                cached["version"] = current_version
-            else:
-                _invalidate_cached_field(
-                    runtime, field, cached, current_version, "CONTRACT_VERSION_CHANGED"
-                )
-                continue
+        if not _align_cached_version(runtime, field, cached, context):
+            continue
 
         value = cached.get("value")
         # Les caches V5 peuvent contenir des noms seuls issus d'articles dont
@@ -364,29 +433,36 @@ def _read_field_cache(
             continue
         status = str(cached.get("status") or "").strip().lower()
         if not status:
-            if _cache_value_present(value):
-                status = "accepted"
-                cached["status"] = status
-                cached["misses"] = 0
-            else:
-                if not runtime.retry_legacy_nulls:
-                    # Les caches historiques sans statut utilisaient value:null
-                    # pour signifier qu'aucun fait n'avait été extrait. Une reconstruction
-                    # normal respecte cet état sans repayer un LLM. Le backfill
-                    # historique peut explicitement demander sa migration.
-                    satisfied.add(field)
-                    runtime.field_cache_hits += 1
-                    runtime.legacy_null_skips += 1
-                    continue
-                status = "miss"
-                cached["status"] = status
-                cached["misses"] = max(1, _cache_miss_count(cached))
-                runtime.legacy_null_migrations += 1
+            status = _legacy_cache_status(runtime, field, cached, value)
+            if not status:
+                satisfied.add(field)
+                runtime.field_cache_hits += 1
+                runtime.legacy_null_skips += 1
+                continue
 
         if status == CACHE_STATUS_INVALIDATED:
             # Terminal : le champ est redemandé, mais son statut n'est pas
             # réécrit en `miss`, sans quoi la raison du retrait disparaîtrait
             # du cache après deux passes.
+            continue
+
+        if status == CACHE_STATUS_REJECTED and _semantic_attempts(cached, field) >= MAX_SEMANTIC_ATTEMPTS:
+            # Rattrapage d'un cache écrit avant la borne : le statut terminal
+            # est posé à la lecture plutôt que de laisser filer un appel.
+            cached["status"] = status = CACHE_STATUS_REJECTED_EXHAUSTED
+
+        if status == CACHE_STATUS_REJECTED_EXHAUSTED:
+            # Terminal : plus aucun appel automatique. Le champ est déclaré
+            # satisfait pour ne pas être redemandé, mais il n'apporte aucune
+            # valeur et le dossier reste visible dans la file de reprise.
+            satisfied.add(field)
+            runtime.field_cache_hits += 1
+            runtime.rejected_field_cache_hits += 1
+            continue
+
+        if status == CACHE_STATUS_REJECTED:
+            # Rejouable : ni satisfait, ni réécrit en `miss`, sans quoi le
+            # compteur de tentatives et le motif disparaîtraient du cache.
             continue
 
         if status == "miss":
@@ -415,11 +491,52 @@ def _read_field_cache(
     return result, satisfied
 
 
-def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry, fields: set[str], normalized: dict) -> None:
+def _store_rejected_field(runtime: _Runtime, target: dict, field: str,
+                          previous: dict | None, candidate, reason: str) -> None:
+    """Issue d'un couple activité/secteur que le validateur a refusé.
+
+    Une absence explicite reste une abstention terminale : le modèle a répondu
+    ce qu'il devait, ce n'est pas un échec. Une valeur proposée puis refusée
+    consomme une tentative ; la seconde rend le rejet persistant — plus aucun
+    appel automatique, mais le dossier reste visible et l'alerte active.
+
+    N'est atteint que depuis le chemin succès de `perform_request` : une panne
+    HTTP n'écrit rien, donc ne consomme jamais de tentative.
+    """
+    from .source_facts_ai_activity import is_abstention, rejection_kind
+
+    has_candidate = bool(
+        (isinstance(candidate, dict) and candidate.get("value") not in (None, "", [], {}))
+        or (isinstance(candidate, list) and candidate)
+    )
+    record = {"version": FIELD_VERSIONS[field], "value": None,
+              "rejection_reason": reason, "rejection_kind": rejection_kind(reason)}
+    if not has_candidate or is_abstention(reason):
+        if str((previous or {}).get("status") or "").strip().lower() != "abstained":
+            runtime.semantic_new_abstentions += 1
+        target[field] = {**record, "status": "abstained", "misses": MAX_FIELD_MISSES}
+        return
+    attempts = _semantic_attempts(previous, field) + 1
+    if attempts == 1:
+        runtime.semantic_first_misses += 1
+    target[field] = {
+        **record,
+        "status": (CACHE_STATUS_REJECTED if attempts < MAX_SEMANTIC_ATTEMPTS
+                   else CACHE_STATUS_REJECTED_EXHAUSTED),
+        # `misses` reste renseigné pour les lecteurs qui ne connaissent que lui.
+        "misses": attempts,
+        "semantic_attempts": attempts,
+        "attempts_version": FIELD_VERSIONS[field],
+    }
+
+
+def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry,
+                       fields: set[str], normalized: dict, *,
+                       raw: dict | None = None, reasons: dict | None = None) -> None:
     target = _cache_entry(runtime, key, item, entry)["fields"]
     for field in fields:
         previous = target.get(field)
-        if (field in {"activity_description", "activity_sector_match"}
+        if (field in REJECTING_FIELDS
                 and isinstance(previous, dict) and previous.get("version") != FIELD_VERSIONS[field]):
             previous = None
         previous_status = (
@@ -427,7 +544,10 @@ def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry,
             if isinstance(previous, dict) else ""
         )
         previous_misses = _cache_miss_count(previous) if isinstance(previous, dict) else 0
-        is_retry = previous_status == "miss" and previous_misses > 0
+        # Un rejet sémantique est une tentative comme une autre : sans lui, la
+        # télémétrie de reprise ignorerait le couple activité/secteur.
+        is_retry = (previous_status in {"miss", CACHE_STATUS_REJECTED}
+                    and (previous_misses > 0 or previous_status == CACHE_STATUS_REJECTED))
         if is_retry:
             runtime.semantic_retries += 1
 
@@ -439,7 +559,15 @@ def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry,
                 "status": "accepted",
                 "misses": 0,
                 "value": normalized[field],
+                **({"semantic_attempts": 0, "attempts_version": FIELD_VERSIONS[field]}
+                   if field in REJECTING_FIELDS else {}),
             }
+            continue
+
+        if field in REJECTING_FIELDS:
+            _store_rejected_field(runtime, target, field, previous if isinstance(previous, dict) else None,
+                                  (raw or {}).get(field),
+                                  str((reasons or {}).get(field) or "EMPTY_OR_REJECTED_BY_VALIDATOR"))
             continue
 
         misses = previous_misses + 1 if isinstance(previous, dict) else 1
@@ -447,7 +575,7 @@ def _store_field_cache(runtime: _Runtime, key: str, item: Item, entry: RawEntry,
         # valeur fournie puis rejetée par le validateur est réouverte dans
         # source_facts_ai_execution afin de conserver une vraie seconde chance.
         if (field in NEW_SEMANTIC_FIELDS and not isinstance(previous, dict)
-                and field not in {"activity_description", "activity_sector_match"}):
+                and field not in REJECTING_FIELDS):
             misses = MAX_FIELD_MISSES
         next_status = "abstained" if misses >= MAX_FIELD_MISSES else "miss"
         if misses == 1:
@@ -538,6 +666,52 @@ def _perform_request(item, entry, context, fields, runtime, key):
     return perform_request(item, entry, context, fields, runtime, key, api)
 
 
+def _record_pair_from_cache(runtime: _Runtime, item: Item, entry: RawEntry, key: str,
+                            origin: str) -> None:
+    """Issue du couple activité/secteur telle que le cache la porte à cet instant."""
+    from .source_facts_ai_activity import pair_outcome, rejection_kind
+
+    fields = ((runtime.cache.get(key) or {}).get("fields") or {})
+    record = fields.get("activity_description") or fields.get("activity_sector_match") or {}
+    reason = str(record.get("rejection_reason") or "")
+    runtime.record_pair_outcome(
+        item.Item_ID, _content_hash(entry), pair_outcome(fields),
+        origin=origin, reason=reason, kind=rejection_kind(reason) if reason else "",
+    )
+
+
+def _record_pair_failure(runtime: _Runtime, item: Item, entry: RawEntry, reason: str) -> None:
+    """Le couple n'a pas pu être tranché : ni décision, ni tentative consommée."""
+    runtime.record_pair_outcome(
+        item.Item_ID, _content_hash(entry), "technical_failure", origin="none", reason=reason,
+    )
+
+
+def _blocked_pass(runtime: _Runtime, item: Item, entry: RawEntry, missing: set[str],
+                  context_meta: dict) -> str:
+    """Motif pour lequel aucun appel ne partira, ou `""` si la passe peut partir.
+
+    Le couple activité/secteur n'est alors ni accepté ni refusé : il est compté
+    comme échec technique, sans consommer de tentative sémantique.
+    """
+    if not runtime.enabled:
+        reason = getattr(runtime, "disabled_reason", "DISABLED")
+        status = "disabled"
+    elif runtime.calls >= runtime.max_calls or runtime.cost >= runtime.max_cost:
+        reason = "CALL_LIMIT" if runtime.calls >= runtime.max_calls else "COST_LIMIT"
+        status = "budget_blocked"
+        runtime.calls_budget_blocked += 1
+    else:
+        return ""
+    source_facts_ai_retry.defer(item, entry, missing, reason)
+    if REJECTING_FIELDS & missing:
+        _record_pair_failure(runtime, item, entry, reason)
+    runtime.record_event(item_id=item.Item_ID, url=item.URL, status=status,
+                         requested_fields=sorted(missing), content_hash=_content_hash(entry),
+                         context=context_meta, effective_model="", reason=reason)
+    return reason
+
+
 def enrich(item: Item, entry: RawEntry, *,
            requested_fields: set[str] | None = None) -> dict | None:
     if item.Source_ID not in TARGET_SOURCES:
@@ -582,13 +756,21 @@ def enrich(item: Item, entry: RawEntry, *,
             satisfied |= legacy_satisfied
 
     missing = fields - satisfied
-    if missing & {"activity_description", "activity_sector_match"}:
-        missing.update({"activity_description", "activity_sector_match"})
-        for field in ("activity_description", "activity_sector_match"):
+    if missing & REJECTING_FIELDS:
+        missing.update(REJECTING_FIELDS)
+        for field in REJECTING_FIELDS:
             cached.pop(field, None)
+    if REJECTING_FIELDS & fields and not (REJECTING_FIELDS & missing):
+        # Le couple est tranché sans appel. C'est ce qui maintient l'alerte sur
+        # un rejet persistant, run après run, sans jamais rappeler l'API.
+        _record_pair_from_cache(runtime, item, entry, key, "cache")
     if not missing:
-        statuses = {field: "accepted" for field in fields}
-        source_facts_ai_retry.settle(item, entry, fields, completed=True, statuses=statuses)
+        # Les vrais statuts, jamais « accepted » par défaut : une abstention ou
+        # un rejet persistant satisfait le besoin sans avoir produit de valeur.
+        source_facts_ai_retry.settle(
+            item, entry, fields, completed=True, statuses=field_statuses(item, entry),
+            reasons=field_rejections(item, entry),
+        )
         runtime.cache_hits += 1
         runtime.items_fully_cached += 1
         _record_cache_read(runtime, item, entry, fields, cached, satisfied, context_meta)
@@ -597,23 +779,7 @@ def enrich(item: Item, entry: RawEntry, *,
         runtime.items_partially_cached += 1
         _record_cache_read(runtime, item, entry, satisfied, cached, satisfied, context_meta)
     runtime.items_would_call += 1
-    if not runtime.enabled:
-        source_facts_ai_retry.defer(
-            item, entry, missing, getattr(runtime, "disabled_reason", "DISABLED")
-        )
-        runtime.record_event(item_id=item.Item_ID, url=item.URL, status="disabled",
-                             requested_fields=sorted(missing), content_hash=_content_hash(entry),
-                             context=context_meta, effective_model="",
-                             reason=getattr(runtime, "disabled_reason", "DISABLED"))
-        return {**seed, **cached} or None
-    if runtime.calls >= runtime.max_calls or runtime.cost >= runtime.max_cost:
-        reason = "CALL_LIMIT" if runtime.calls >= runtime.max_calls else "COST_LIMIT"
-        source_facts_ai_retry.defer(item, entry, missing, reason)
-        runtime.calls_budget_blocked += 1
-        runtime.record_event(item_id=item.Item_ID, url=item.URL, status="budget_blocked",
-                             requested_fields=sorted(missing), content_hash=_content_hash(entry),
-                             context=context_meta, effective_model="",
-                             reason="CALL_LIMIT" if runtime.calls >= runtime.max_calls else "COST_LIMIT")
+    if _blocked_pass(runtime, item, entry, missing, context_meta):
         return {**seed, **cached} or None
 
     context = _truncate_context(full_context, runtime.max_context_chars)
@@ -624,7 +790,10 @@ def enrich(item: Item, entry: RawEntry, *,
         context_meta = {**context_meta, "truncated": True, "submitted_chars": len(context)}
     normalized, completed = _perform_request(item, entry, context, missing, runtime, key)
     statuses = field_statuses(item, entry) if completed else None
-    source_facts_ai_retry.settle(item, entry, missing, completed=completed, statuses=statuses)
+    source_facts_ai_retry.settle(
+        item, entry, missing, completed=completed, statuses=statuses,
+        reasons=field_rejections(item, entry) if completed else None,
+    )
     completed_forced_refresh = bool(forced_fields) and completed
     # Une invalidation complète est monousage : le résultat de cette passe est
     # transmis tel quel à SourceFacts. La conserver rendrait le second
@@ -639,12 +808,30 @@ def enrich(item: Item, entry: RawEntry, *,
     return {**seed, **cached, **normalized} or None
 
 
-def extract_semantic(item: Item, entry: RawEntry) -> SemanticExtraction:
-    """Exécute les contrats éditorial et structuré, puis fige leur résultat."""
+def extract_semantic(item: Item, entry: RawEntry, *,
+                     only_fields: set[str] | None = None) -> SemanticExtraction:
+    """Exécute les contrats éditorial et structuré, puis fige leur résultat.
+
+    `only_fields` restreint la passe aux champs réellement demandés : une
+    reprise sectorielle ne recalcule pas les autres champs en attente du même
+    dossier, et ne les retire pas non plus de la file.
+    """
+    editorial = _EDITORIAL_FIELDS if only_fields is None else _EDITORIAL_FIELDS & only_fields
+    structured = _STRUCTURED_FIELDS if only_fields is None else _STRUCTURED_FIELDS & only_fields
+    if only_fields is not None and not editorial:
+        fields: dict = {}
+        if structured:
+            fields = enrich(item, entry, requested_fields=structured) or {}
+        return SemanticExtraction(
+            item_id=item.Item_ID,
+            content_hash=content_hash(entry),
+            fields=dict(fields),
+            statuses=dict(field_statuses(item, entry)),
+        )
     # Compatibilité avec les adaptateurs/tests qui remplacent encore `enrich`
     # par une fonction historique à deux arguments.
     try:
-        fields = enrich(item, entry, requested_fields=_EDITORIAL_FIELDS) or {}
+        fields = enrich(item, entry, requested_fields=editorial) or {}
     except TypeError as exc:
         if "requested_fields" not in str(exc):
             raise
@@ -659,10 +846,10 @@ def extract_semantic(item: Item, entry: RawEntry) -> SemanticExtraction:
     # Les articles courts ont rarement des jeux de données ou une chronologie
     # suffisamment explicites. Une seconde passe leur ferait seulement payer
     # des abstentions ; les articles riches reçoivent ce contrat spécialisé.
-    if len(context) >= 700 or _SEMANTIC_DATA_TYPES_TRIGGER.search(context):
+    if structured and (len(context) >= 700 or _SEMANTIC_DATA_TYPES_TRIGGER.search(context)):
         fields = {
             **fields,
-            **(enrich(item, entry, requested_fields=_STRUCTURED_FIELDS) or {}),
+            **(enrich(item, entry, requested_fields=structured) or {}),
         }
     return SemanticExtraction(
         item_id=item.Item_ID,

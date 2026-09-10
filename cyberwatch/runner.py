@@ -862,6 +862,9 @@ def execute(
 
     if persist:
         source_facts_ai._runtime().checkpoint(force=True)
+        # La file est globale et sans identifiant de run : sans cette copie,
+        # un rapport historique décrirait l'état courant, pas le sien.
+        source_facts_retry.archive(context.run_id)
         llm_runtime._write_stats()
         _persist(
             report,

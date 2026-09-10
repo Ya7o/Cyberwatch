@@ -80,6 +80,11 @@ class _Runtime:
         self.field_cache_hits = 0
         self.accepted_field_cache_hits = 0
         self.abstained_field_cache_hits = 0
+        self.rejected_field_cache_hits = 0
+        # Issue du couple activité/secteur, une entrée par (observation,
+        # contenu). Le run étant séquentiel, la dernière écriture est le
+        # dernier résultat : aucun dossier n'est compté deux fois.
+        self.pair_outcomes: dict[tuple[str, str], dict] = {}
         self.legacy_null_migrations = 0
         self.legacy_null_skips = 0
         self.semantic_first_misses = 0
@@ -199,6 +204,33 @@ class _Runtime:
         except OSError:
             return
 
+    def record_pair_outcome(self, item_id: str, content_hash: str, outcome: str, *,
+                            origin: str, reason: str = "", kind: str = "") -> None:
+        """Dernier résultat du couple activité/secteur pour ce contenu exact.
+
+        ``origin`` vaut ``cache`` (relu sans appel), ``call`` (tranché par une
+        réponse du modèle) ou ``none`` (extraction désactivée ou budget épuisé).
+        Un appel écrase la lecture de cache du même couple : c'est bien le
+        dernier résultat du run qui est compté.
+        """
+        self.pair_outcomes[(item_id, content_hash)] = {
+            "outcome": outcome, "origin": origin, "reason": reason, "kind": kind,
+        }
+
+    def pair_counts(self) -> dict:
+        """Couples demandés, et pour chaque issue le total, le cache et l'appel."""
+        counts: dict = {"requested": len(self.pair_outcomes)}
+        for record in self.pair_outcomes.values():
+            bucket = counts.setdefault(
+                str(record["outcome"]), {"total": 0, "from_cache": 0, "from_call": 0}
+            )
+            bucket["total"] += 1
+            if record["origin"] == "cache":
+                bucket["from_cache"] += 1
+            elif record["origin"] == "call":
+                bucket["from_call"] += 1
+        return counts
+
     def stats(self) -> dict:
         total = sum(self.durations)
         return {
@@ -220,6 +252,8 @@ class _Runtime:
             "field_cache_hits": self.field_cache_hits,
             "accepted_field_cache_hits": self.accepted_field_cache_hits,
             "abstained_field_cache_hits": self.abstained_field_cache_hits,
+            "rejected_field_cache_hits": self.rejected_field_cache_hits,
+            "activity_pairs": self.pair_counts(),
             "legacy_null_migrations": self.legacy_null_migrations,
             "legacy_null_skips": self.legacy_null_skips,
             "semantic_first_misses": self.semantic_first_misses,

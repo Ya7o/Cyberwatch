@@ -121,13 +121,39 @@ def test_a_brand_name_is_not_activity_evidence():
     assert normalize_activity(raw, 'Micromania.', 'Micromania')[0] == {}
 
 
-def test_first_activity_miss_is_one_real_attempt():
-    runtime = SimpleNamespace(cache={'key':{'fields':{}}}, semantic_retries=0,
-                              semantic_recovered_on_retry=0, semantic_first_misses=0,
-                              semantic_new_abstentions=0)
-    ai._store_field_cache(runtime, 'key', None, None, ACTIVITY_FIELDS, {})
-    assert runtime.cache['key']['fields']['activity_description']['misses'] == 1
-    assert runtime.cache['key']['fields']['activity_description']['status'] == 'miss'
+def _activity_runtime():
+    return SimpleNamespace(cache={'key':{'fields':{}}}, semantic_retries=0,
+                           semantic_recovered_on_retry=0, semantic_first_misses=0,
+                           semantic_new_abstentions=0)
+
+
+def test_explicit_activity_absence_is_a_terminal_abstention():
+    """Le modèle n'a rien proposé : décision terminale, pas une boucle de reprise."""
+    runtime = _activity_runtime()
+    ai._store_field_cache(runtime, 'key', None, None, ACTIVITY_FIELDS, {}, raw={}, reasons={})
+    record = runtime.cache['key']['fields']['activity_description']
+    assert record['status'] == 'abstained'
+    assert record.get('semantic_attempts') is None
+    assert runtime.semantic_new_abstentions == 2
+
+
+def test_rejected_activity_proposal_keeps_a_second_attempt():
+    """Une valeur proposée puis refusée consomme une tentative, pas les deux."""
+    runtime = _activity_runtime()
+    raw = {'activity_description': {'value': 'suivi des commandes', 'confidence': 0.9,
+                                    'evidence': 'chez l un de ses prestataires'}}
+    ai._store_field_cache(runtime, 'key', None, None, {'activity_description'}, {},
+                          raw=raw, reasons={'activity_description': 'ACTIVITY_THIRD_PARTY'})
+    record = runtime.cache['key']['fields']['activity_description']
+    assert record['status'] == ai.CACHE_STATUS_REJECTED
+    assert record['semantic_attempts'] == 1
+    assert record['rejection_kind'] == 'THIRD_PARTY_ACTIVITY'
+
+    ai._store_field_cache(runtime, 'key', None, None, {'activity_description'}, {},
+                          raw=raw, reasons={'activity_description': 'ACTIVITY_THIRD_PARTY'})
+    record = runtime.cache['key']['fields']['activity_description']
+    assert record['status'] == ai.CACHE_STATUS_REJECTED_EXHAUSTED
+    assert record['semantic_attempts'] == 2
 
 
 def test_status_is_scoped_to_incident_not_another_event_of_same_company(monkeypatch):

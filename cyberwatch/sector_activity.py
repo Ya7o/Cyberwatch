@@ -13,11 +13,35 @@ _ACTIVITY = re.compile(
     r"expedition|livraison|restauration|restaurants?|repas|hebergement|hotell\w*|"
     r"logiciels?|applications?|cloud|stockage|chimie|batiment|second oeuvre|"
     r"agric\w*|horticulture|syndica\w*|represente|accompagne|"
-    r"municipalite|organisme public|etablissement public|sante|foncier\w*|"
+    r"municipalite|organisme public|etablissement public|services? publics?|"
+    r"services? municipaux|sante|foncier\w*|"
     r"gestion|assurance|banque|conseil|sport\w*|football|mobilite|immobili\w*|"
     r"repar\w*|plomberie|chauffage|climatisation|fidelis\w*|emploi|tourisme)\b"
 )
-_THIRD_PARTY = re.compile(r"\b(?:prestataire|fournisseur|partenaire|client|filiale|sous traitant)\b")
+_THIRD_PARTY = re.compile(
+    r"\b(?:prestataires?|fournisseurs?|partenaires?|clients?|filiales?|sous traitants?)\b"
+)
+#: Désignations institutionnelles admises comme sujet à la place du nom de
+#: la victime. Volontairement limitée : « la mairie » et « la municipalité »
+#: sont les deux anaphores que la collecte RUN-20260910T125214 a fait
+#: apparaître, et chacune reste conditionnée à un rattachement explicite.
+_INSTITUTIONAL_SUBJECT = re.compile(
+    r"^(?:la |l )?(?:mairie|municipalite)(?:\s+d(?:e|u|es)?\s+\w+(?:-\w+)*)?\b"
+)
+#: Une collectivité *nommée* dans la fenêtre de rattachement. Un « la mairie »
+#: sans nom n'en est pas une : c'est précisément l'anaphore à résoudre.
+_NAMED_COLLECTIVITY = re.compile(
+    r"\b(?:[Mm]airie|[Mm]unicipalité|[Cc]ommune|[Vv]ille|[Cc]ommunauté\s+d['’]agglomération"
+    r"|[Cc]ommunauté\s+de\s+communes|[Mm]étropole|[Dd]épartement|[Rr]égion|[Pp]réfecture)"
+    r"\s+(?:de\s+|du\s+|des\s+|d['’])?"
+    r"([A-ZÉÈÀÂÎÔÛÇ][\w'’-]*(?:[- ][A-ZÉÈÀÂÎÔÛÇ][\w'’-]*)*)"
+)
+#: Articles et préfixes génériques retirés pour isoler le nom propre d'une
+#: collectivité : « Le Tampon » et « Ville du Tampon » désignent « tampon ».
+_ORG_PREFIXES = re.compile(
+    r"^(?:la |le |les |l |ville de |ville du |ville d |commune de |commune du |commune d |"
+    r"mairie de |mairie du |mairie d |municipalite de |municipalite du |municipalite d )+"
+)
 _PREFIX = re.compile(
     r"(?:(?:la |le |l |une |un )?(?:societe|entreprise|reseau|plateforme) ?|"
     r"(?:une |la )?(?:importante |nouvelle )?(?:fuite(?: de donnees)?|cyberattaque|attaque) "
@@ -107,3 +131,69 @@ def activity_from_text(organisation: str, *texts: str) -> tuple[str, str]:
         return "", ""
     proof = max(candidates, key=lambda pair: pair[0])[1]
     return proof, proof
+
+
+def names_third_party(evidence: str) -> bool:
+    """La citation attribue l'activité décrite à un prestataire ou un client."""
+    return bool(_THIRD_PARTY.search(searchable(evidence)))
+
+
+def victim_is_identifiable(organisation: str, evidence: str) -> bool:
+    """La citation désigne la victime, par son nom ou par le contrat d'acronymes."""
+    if organisation_span(organisation, evidence) is not None:
+        return True
+    from .source_facts import _activity_evidence_matches_organisation
+
+    return bool(_activity_evidence_matches_organisation(organisation, evidence))
+
+
+def organisation_core(organisation: str) -> str:
+    """Nom propre d'une collectivité, articles et préfixes génériques retirés."""
+    core = _ORG_PREFIXES.sub("", searchable(organisation)).strip()
+    return core if len(core) >= 4 else ""
+
+
+def _names_victim(organisation: str, text: str) -> bool:
+    if organisation_span(organisation, text) is not None:
+        return True
+    core = organisation_core(organisation)
+    return bool(core and re.search(rf"(?<!\w){re.escape(core)}s?(?!\w)", searchable(text)))
+
+
+def _competing_collectivity(organisation: str, window: str) -> bool:
+    """Une autre collectivité est nommée dans la fenêtre de rattachement."""
+    return any(
+        not _names_victim(organisation, match.group(1))
+        for match in _NAMED_COLLECTIVITY.finditer(window)
+    )
+
+
+def institutional_proof(organisation: str, evidence: str, context: str) -> str:
+    """Citation dont « la mairie » ou « la municipalité » désigne bien la victime.
+
+    Le rattachement doit être établi par la phrase elle-même ou par celle qui la
+    précède immédiatement, et la fenêtre ne doit nommer aucune autre
+    collectivité : deux communes citées côte à côte rendent l'anaphore
+    indécidable, et une activité mal attribuée vaut moins qu'une abstention.
+    """
+    needle = searchable(evidence)
+    if not needle or not searchable(organisation):
+        return ""
+    sentences = [part for part in re.split(r"(?<=[.!?;])\s+|\n+", context) if part.strip()]
+    for index, sentence in enumerate(sentences):
+        normalized = searchable(sentence)
+        if needle not in normalized or len(sentence) > 300:
+            continue
+        subject = _INSTITUTIONAL_SUBJECT.match(normalized)
+        if not subject:
+            continue
+        body = normalized[subject.end():].strip()
+        if not _SUBJECT.search(body) or not _ACTIVITY.search(body):
+            continue
+        window = " ".join(sentences[max(0, index - 1):index + 1])
+        if not _names_victim(organisation, window):
+            continue
+        if _competing_collectivity(organisation, window):
+            continue
+        return sentence.strip()
+    return ""

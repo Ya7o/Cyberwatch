@@ -8,9 +8,28 @@ from .collectors.base import RawEntry
 from .source_facts_ai_runtime import _Runtime, SourceFactsAiError
 from .source_facts_ai_contract import FIELD_VERSIONS
 
+def _proposals(raw: dict, fields: set[str]) -> dict:
+    """Valeur et preuve brutes proposées, champ par champ.
+
+    Sans elles, un champ rejeté n'a plus de valeur normalisée et le rapport
+    n'affiche qu'un motif : la proposition ne survivrait que dans la réponse
+    HTTP complète, inexploitable pour une revue.
+    """
+    out: dict = {}
+    for field in sorted(fields):
+        candidate = raw.get(field)
+        if isinstance(candidate, dict):
+            out[field] = {"value": candidate.get("value"),
+                          "evidence": candidate.get("evidence"),
+                          "confidence": candidate.get("confidence")}
+        elif isinstance(candidate, list) and candidate:
+            out[field] = {"value": candidate, "evidence": "", "confidence": None}
+    return out
+
+
 def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
                      runtime: _Runtime, key: str, api) -> tuple[dict, bool]:
-    from .source_facts_ai_activity import normalize_activity
+    from .source_facts_ai_activity import normalize_activity, rejection_kind
 
     body = api._request_body(item, context, fields, runtime)
     # Le contexte soumis est archivé une seule fois par empreinte ; l'événement
@@ -34,23 +53,33 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         raw = json.loads(api._extract_output_text(payload))
         if not isinstance(raw, dict):
             raise SourceFactsAiError("response_not_object")
-        normalized = api._normalize(raw, context, fields, item.Organisation_Raw or entry.organisation)
+        organisation = item.Organisation_Raw or entry.organisation
+        normalized = api._normalize(raw, context, fields, organisation)
+        # Les motifs sont calculés avant l'écriture : c'est ce qui permet à
+        # `_store_field_cache` de distinguer une absence explicite d'une valeur
+        # proposée puis refusée, au lieu de le corriger après coup.
+        _, reasons = normalize_activity(raw, context, organisation)
         previous_entry = runtime.cache.get(key, {})
         previous_fields = (
             dict(previous_entry.get("fields", {}))
             if isinstance(previous_entry, dict) and isinstance(previous_entry.get("fields"), dict)
             else {}
         )
-        api._store_field_cache(runtime, key, item, entry, fields, normalized)
+        api._store_field_cache(runtime, key, item, entry, fields, normalized,
+                               raw=raw, reasons=reasons)
         cache = runtime.cache[key]
         cache["effective_model"] = runtime.effective_model or payload.get("model", runtime.model)
         runtime.effective_model = cache["effective_model"]
-        _, reasons = normalize_activity(raw, context, item.Organisation_Raw or entry.organisation)
         rejected = {field: reasons.get(field, "EMPTY_OR_REJECTED_BY_VALIDATOR")
                     for field in fields if field not in normalized}
         for field, reason in rejected.items():
             record = cache["fields"][field]
-            record["rejection_reason"] = reason
+            record.setdefault("rejection_reason", reason)
+            if field in api.REJECTING_FIELDS:
+                # Le compteur de tentatives a déjà tranché : ne rien réécrire.
+                continue
+            # Hors du couple activité/secteur, une valeur proposée puis rejetée
+            # garde sa seconde chance historique.
             candidate = raw.get(field)
             has_candidate = bool(
                 (isinstance(candidate, dict) and candidate.get("value") not in (None, "", [], {}))
@@ -62,7 +91,12 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
                 and not isinstance(previous_fields.get(field), dict)
             ):
                 record.update(status="miss", misses=1)
-        runtime.record_event(**event, status="success", normalized=normalized, rejections=rejected)
+        if api.REJECTING_FIELDS & fields:
+            api._record_pair_from_cache(runtime, item, entry, key, "call")
+        runtime.record_event(**event, status="success", normalized=normalized,
+                             proposals=_proposals(raw, fields), rejections=rejected,
+                             rejection_kinds={field: rejection_kind(reason)
+                                              for field, reason in rejected.items()})
         input_tokens, output_tokens = api._usage(payload)
         runtime.input_tokens += input_tokens
         runtime.output_tokens += output_tokens
@@ -73,6 +107,10 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         runtime.calls_failed += 1
         reason = api._error_category(exc)
         runtime.error_reasons[reason] += 1
+        # Aucune écriture de cache sur ce chemin : une panne ne consomme jamais
+        # de tentative sémantique et ne rend rien terminal.
+        if api.REJECTING_FIELDS & fields:
+            api._record_pair_failure(runtime, item, entry, reason)
         runtime.record_event(**event, status="failed", reason=reason)
         return {}, False
     finally:

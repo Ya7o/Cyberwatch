@@ -461,8 +461,9 @@ def test_invalidation_dun_champ_ne_recalcule_pas_les_autres(monkeypatch, tmp_pat
     monkeypatch.setitem(sfa.FIELD_VERSIONS, "initial_access", "initial-access-v2-test")
     sfa.enrich(_item(), entry)
     assert len(calls) == 2
-    # Les abstentions d'activité ont désormais droit à un deuxième essai réel.
-    assert calls[1] == {"initial_access", "activity_description", "activity_sector_match"}
+    # Le modèle n'a rien proposé pour l'activité : abstention terminale, donc
+    # seul le champ dont la version a changé est redemandé.
+    assert calls[1] == {"initial_access"}
     assert sfa.runtime_stats()["fields_invalidated"] >= 1
 
 

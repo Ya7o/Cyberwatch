@@ -37,8 +37,13 @@ Les extractions de qualification bloquées par une panne, une clé absente ou un
 budget épuisé entrent dans une file persistante distincte. Elle conserve
 l'observation, le hash du contenu, les champs différés et le contexte public
 borné, puis reprend quelques articles par collecte même lorsqu'ils ont quitté
-la fenêtre aujourd'hui/hier. Une absence explicite devient une abstention ; une
-valeur fournie mais rejetée bénéficie d'un second examen.
+la fenêtre aujourd'hui/hier. Une absence explicite devient une abstention
+terminale, qui n'est pas un échec et n'ouvre aucune reprise ; une valeur fournie
+mais rejetée bénéficie d'un second examen. Pour le couple activité/secteur, ce
+second examen est le dernier : après deux rejets sur une même version de champ
+et un même contenu, le dossier passe en rejet persistant, aucun appel
+automatique ne repart, mais il reste visible et l'alerte de production reste
+active jusqu'à résolution ou changement de version.
 
 ## Fenêtre quotidienne
 
@@ -91,9 +96,17 @@ publiés dans [docs/EDITORIAL_POLICY.md](docs/EDITORIAL_POLICY.md).
 La résolution privilégie le référentiel exact sourcé et les identités
 institutionnelles explicites, puis les faits de la source : secteur structuré
 ou activité étayée permettant une inférence. La description et le secteur
-sémantique forment une paire validée, liée à l'organisation victime.
+sémantique forment une paire validée, liée à l'organisation victime. Le récit de
+la cyberattaque, l'activité d'un prestataire et la seule appartenance à un
+groupe ne sont jamais l'activité de la victime. Une désignation
+institutionnelle — « la mairie », « la municipalité » — n'est retenue que si la
+phrase citée ou celle qui la précède immédiatement la rattache explicitement à
+la victime, sans autre collectivité nommée dans cette fenêtre.
 Les contradictions restent inconnues et sont journalisées ; aucun repli
-générique n'est autorisé. Une inférence ne devient pas une confirmation
+générique n'est autorisé. Chaque refus porte son motif — absence explicite,
+activité non décrite, activité de tiers, identité ambiguë, citation introuvable
+ou contradiction sectorielle — et la couverture sectorielle publiée se lit
+séparément de l'état d'extraction. Une inférence ne devient pas une confirmation
 lors d'une reprise. Chaque décision conserve sa provenance dans
 `data/sector_resolution.csv`. Les contrôles de transmission bloquent la
 publication si un secteur étayé est perdu. Le seuil d'inconnus est une alerte.
