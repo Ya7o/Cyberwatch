@@ -25,6 +25,20 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 - `.github/workflows/collect.yml` : collecte quotidienne ou manuelle et
   publication directe sur `main`, avec choix manuel MAJ ou PURGE.
 
+GitHub est la base. `MAJ` et `PURGE` s'exécutent **à distance**, via
+`collect.yml`, jamais en local : la clé API vit dans le secret GitHub
+`CYBERWATCHAPI`, et seul le workflow publie `data/` et `assets/data/` sur
+`main`. Un run local n'a pas la clé, produit un corpus dégradé et un état qui
+diverge de `main`.
+
+```bash
+gh workflow run collect.yml --ref main -f operation=MAJ
+gh workflow run collect.yml --ref main -f operation=PURGE
+gh run watch <run-id> --exit-status   # puis git pull pour récupérer le corpus
+```
+
+Après une purge, enchaîner une MAJ : la purge ne collecte rien.
+
 Ne pas ajouter de branche `prod`, golden, campagne de qualification, workflow
 de promotion, reset parallèle ou nouvelle couche sans besoin produit réel.
 
