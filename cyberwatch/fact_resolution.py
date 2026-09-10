@@ -190,6 +190,72 @@ def _drop_aggregate_duplicates(entries: list[dict]) -> list[dict]:
     return kept
 
 
+def _accept_data_type(
+    selected: dict[str, dict],
+    value: str,
+    source: str,
+    status: str = "",
+    evidence: str = "",
+    blocked_values: tuple[str, ...] = (),
+) -> None:
+    """Retient une catégorie de données exposées si les preuves la soutiennent.
+
+    Hissée hors de :func:`_data_types_entries` : le seul état partagé est
+    ``selected``, désormais passé explicitement.
+    """
+    # A type mentioned only to say it was *not* exposed is useful in the
+    # source-level audit trail, but must never become a public "Données
+    # exposées" chip.  Otherwise a denial such as "aucun IBAN identifié"
+    # is presented as the exact opposite fact.
+    normalized_status = _status({"status": status})
+    evidence_norm = _norm(evidence)
+    value_norm = _norm(value)
+    value_pos = evidence_norm.find(value_norm) if value_norm else -1
+    if value_pos >= 0 and re.search(
+        r"\b(?:aucun|aucune|pas de|sans)\b.{0,100}$",
+        evidence_norm[max(0, value_pos - 120):value_pos],
+    ):
+        return
+    # Une phrase peut confirmer l'incident puis opposer les catégories
+    # uniquement revendiquées par l'attaquant (cas TeleCoop). Le statut
+    # suit le verbe déclaratif placé avant la catégorie, pas le statut
+    # global de l'article.
+    if normalized_status == "confirmed" and "revendiqu" in evidence_norm:
+        claim_pos = evidence_norm.rfind("revendiqu")
+        value_pos = evidence_norm.rfind(value_norm) if value_norm else -1
+        if value_pos >= claim_pos >= 0:
+            normalized_status = "claimed"
+    if normalized_status in {"negated", "denied", "hypothesis"}:
+        return
+    if evidence and _NEGATED_EVIDENCE_RE.search(evidence):
+        return
+    if evidence and _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
+        return
+    if evidence and _NON_EXPOSURE_DATA_CONTEXT_RE.search(evidence):
+        return
+    if not value or _norm(value) in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
+        return
+    # Deux sources peuvent décrire le même type sous deux formulations
+    # (ex. "adresses e-mail" vs "Adresse email") : les ramener à un même
+    # libellé canonique avant déduplication évite un doublon visuel.
+    value = canonical_data_type(value)
+    key = _norm(value)
+    if key and any(key == blocked or key in blocked for blocked in blocked_values):
+        return
+    entry = selected.get(key)
+    if entry is None:
+        selected[key] = {
+            "value": value,
+            "status": normalized_status,
+            "source": source,
+            "sources": [source] if source else [],
+        }
+    else:
+        if source and source not in entry["sources"]:
+            entry["sources"].append(source)
+        entry["status"] = _better_status(entry.get("status", ""), normalized_status)
+
+
 def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
     """Fusionne `data_types` legacy (liste plate) et rich (`rich_facts.data_types`).
 
@@ -198,66 +264,6 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
     plutôt que de privilégier arbitrairement l'un des deux formats en bloc.
     """
     selected: dict[str, dict] = {}
-
-    def add(
-        value: str,
-        source: str,
-        status: str = "",
-        evidence: str = "",
-        blocked_values: tuple[str, ...] = (),
-    ) -> None:
-        # A type mentioned only to say it was *not* exposed is useful in the
-        # source-level audit trail, but must never become a public "Données
-        # exposées" chip.  Otherwise a denial such as "aucun IBAN identifié"
-        # is presented as the exact opposite fact.
-        normalized_status = _status({"status": status})
-        evidence_norm = _norm(evidence)
-        value_norm = _norm(value)
-        value_pos = evidence_norm.find(value_norm) if value_norm else -1
-        if value_pos >= 0 and re.search(
-            r"\b(?:aucun|aucune|pas de|sans)\b.{0,100}$",
-            evidence_norm[max(0, value_pos - 120):value_pos],
-        ):
-            return
-        # Une phrase peut confirmer l'incident puis opposer les catégories
-        # uniquement revendiquées par l'attaquant (cas TeleCoop). Le statut
-        # suit le verbe déclaratif placé avant la catégorie, pas le statut
-        # global de l'article.
-        if normalized_status == "confirmed" and "revendiqu" in evidence_norm:
-            claim_pos = evidence_norm.rfind("revendiqu")
-            value_pos = evidence_norm.rfind(value_norm) if value_norm else -1
-            if value_pos >= claim_pos >= 0:
-                normalized_status = "claimed"
-        if normalized_status in {"negated", "denied", "hypothesis"}:
-            return
-        if evidence and _NEGATED_EVIDENCE_RE.search(evidence):
-            return
-        if evidence and _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
-            return
-        if evidence and _NON_EXPOSURE_DATA_CONTEXT_RE.search(evidence):
-            return
-        if not value or _norm(value) in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
-            return
-        # Deux sources peuvent décrire le même type sous deux formulations
-        # (ex. "adresses e-mail" vs "Adresse email") : les ramener à un même
-        # libellé canonique avant déduplication évite un doublon visuel.
-        value = canonical_data_type(value)
-        key = _norm(value)
-        if key and any(key == blocked or key in blocked for blocked in blocked_values):
-            return
-        entry = selected.get(key)
-        if entry is None:
-            selected[key] = {
-                "value": value,
-                "status": normalized_status,
-                "source": source,
-                "sources": [source] if source else [],
-            }
-        else:
-            if source and source not in entry["sources"]:
-                entry["sources"].append(source)
-            entry["status"] = _better_status(entry.get("status", ""), normalized_status)
-
     for fact in _ordered_facts(facts):
         source = _text(fact.get("source"))
         rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
@@ -277,7 +283,8 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         if isinstance(rich_values, list):
             for raw_record in rich_values:
                 if isinstance(raw_record, dict):
-                    add(
+                    _accept_data_type(
+                        selected,
                         _text(raw_record.get("value")), source,
                         _text(raw_record.get("status")),
                         _text(raw_record.get("evidence")),
@@ -290,7 +297,10 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
                 # statut précis vient des faits riches lorsqu'ils existent ;
                 # un reliquat legacy reste inconnu plutôt que d'être promu
                 # artificiellement « confirmé ».
-                add(_text(raw), source, "unknown", blocked_values=blocked_values)
+                _accept_data_type(
+                    selected, _text(raw), source, "unknown",
+                    blocked_values=blocked_values,
+                )
     return list(selected.values())
 
 

@@ -12,6 +12,8 @@ from . import config, dedup_ai, dedup_review, enrichment, identity, incident_ded
 from .runner_support import (
     code_commit,
     repair_item_integrity,
+    run_log_row,
+    save_canonical_snapshot,
     save_snapshot_provenance,
 )
 from .collectors import get_collector
@@ -912,49 +914,11 @@ def _persist(
 
     if not report.outcomes:
         if persist_snapshot:
-            store.save_items(report.items)
-            store.save_incidents(report.incidents)
-            store.save_sector_resolution(report.sector_resolution_rows)
-            store.save_incident_id_registry(report.incident_id_registry)
-            save_snapshot_provenance(
-                store.load_items(), store.load_incidents(), operation="REPLAY",
-                run_id=context.run_id, mode=context.mode, as_of=context.as_of,
-                target_start=context.target_start, target_end=context.target_end,
-            )
+            save_canonical_snapshot(report, operation="REPLAY", full=False)
         return
 
     counts = status.status_counts(report.outcomes)
-    store.append_run_log({
-        "Run_ID": context.run_id,
-        "As_Of": context.as_of,
-        "Mode": context.mode,
-        "Method_ID": context.method_id,
-        "Target_Start": context.target_start,
-        "Target_End": context.target_end,
-        "Layers": ",".join(context.layers),
-        "Items_Count": len(report.items),
-        "Incidents_Count": len(report.incidents),
-        "New_Items": report.new_items,
-        "New_Incidents": report.new_incidents,
-        "Source_Status": "OK" if report.overall == "OK" else status.FAIL,
-        "Items_seen": sum(o.items_seen for o in report.outcomes),
-        "Items_in_window": sum(o.items_in_window for o in report.outcomes),
-        "Sources_OK": counts.get(status.OK, 0),
-        "Sources_PARTIAL": counts.get(status.PARTIAL, 0),
-        "Sources_FAIL": counts.get(status.FAIL, 0),
-        "Sources_SKIPPED": counts.get(status.SKIPPED, 0),
-        "Items_Hash": report.items_hash,
-        "Incidents_Hash": report.incidents_hash,
-        "Overall_Status": report.overall,
-        "Duration_s": report.duration,
-        "Requests": report.requests,
-        "Trigger": os.getenv("CYBERWATCH_RUN_TRIGGER", "local"),
-        "GitHub_Run_ID": os.getenv("GITHUB_RUN_ID", ""),
-        "Base_Commit": os.getenv("CYBERWATCH_BASE_COMMIT", "") or code_commit(),
-        "LLM_Calls": report.llm_calls,
-        "LLM_Cost_USD": f"{report.llm_cost_usd:.6f}",
-        "Notes": " ; ".join(report.problems),
-    })
+    store.append_run_log(run_log_row(report, counts))
     store.upsert_production_metric(production.metric_row(
         run_id=context.run_id,
         as_of=context.as_of,
@@ -976,22 +940,4 @@ def _persist(
         organisation_identity_rows=report.organisation_identity_rows,
     ))
     if persist_snapshot:
-        store.save_items(report.items)
-        store.save_incidents(report.incidents)
-        store.save_sector_resolution(report.sector_resolution_rows)
-        store.save_incident_id_registry(report.incident_id_registry)
-        store.save_source_facts(report.source_facts)
-        # Les décisions du filet LLM deviennent canoniques uniquement avec le
-        # snapshot final. Un run cassé ne peut donc plus polluer la MAJ suivante.
-        store.save_incident_dedup_registry(report.incident_dedup_rows)
-        store.save_organisation_identity_registry_rows(report.organisation_identity_rows)
-        org_identity.reload_organisation_identity_registry(
-            store.ORGANISATION_IDENTITY_REGISTRY_CSV
-        )
-        if report.dedup_ai_state is not None:
-            dedup_review.save(report.dedup_ai_state)
-        save_snapshot_provenance(
-            store.load_items(), store.load_incidents(), operation=context.mode,
-            run_id=context.run_id, mode=context.mode, as_of=context.as_of,
-            target_start=context.target_start, target_end=context.target_end,
-        )
+        save_canonical_snapshot(report, operation=context.mode, full=True)

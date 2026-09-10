@@ -5,9 +5,13 @@ from __future__ import annotations
 import os
 import subprocess
 from collections import defaultdict
+from typing import TYPE_CHECKING
 
 from . import identity, sources, store
 from .model import Incident, Item
+
+if TYPE_CHECKING:  # pragma: no cover - typage seul
+    from .runner import RunReport
 
 
 def code_commit() -> str:
@@ -93,3 +97,77 @@ def repair_item_integrity(items: list[Item]) -> tuple[list[Item], dict[str, int]
         "ids_repaired": changed,
         "duplicates_removed": dropped,
     }
+
+
+def run_log_row(report: RunReport, counts: dict[str, int]) -> dict[str, object]:
+    """Ligne du journal de run, dérivée du rapport et du décompte de sources.
+
+    Isolée de :func:`cyberwatch.runner._persist` pour que la composition du
+    journal reste lisible indépendamment de l'ordre d'écriture des fichiers
+    canoniques.
+    """
+    from . import status
+
+    context = report.context
+    return {
+        "Run_ID": context.run_id,
+        "As_Of": context.as_of,
+        "Mode": context.mode,
+        "Method_ID": context.method_id,
+        "Target_Start": context.target_start,
+        "Target_End": context.target_end,
+        "Layers": ",".join(context.layers),
+        "Items_Count": len(report.items),
+        "Incidents_Count": len(report.incidents),
+        "New_Items": report.new_items,
+        "New_Incidents": report.new_incidents,
+        "Source_Status": "OK" if report.overall == "OK" else status.FAIL,
+        "Items_seen": sum(o.items_seen for o in report.outcomes),
+        "Items_in_window": sum(o.items_in_window for o in report.outcomes),
+        "Sources_OK": counts.get(status.OK, 0),
+        "Sources_PARTIAL": counts.get(status.PARTIAL, 0),
+        "Sources_FAIL": counts.get(status.FAIL, 0),
+        "Sources_SKIPPED": counts.get(status.SKIPPED, 0),
+        "Items_Hash": report.items_hash,
+        "Incidents_Hash": report.incidents_hash,
+        "Overall_Status": report.overall,
+        "Duration_s": report.duration,
+        "Requests": report.requests,
+        "Trigger": os.getenv("CYBERWATCH_RUN_TRIGGER", "local"),
+        "GitHub_Run_ID": os.getenv("GITHUB_RUN_ID", ""),
+        "Base_Commit": os.getenv("CYBERWATCH_BASE_COMMIT", "") or code_commit(),
+        "LLM_Calls": report.llm_calls,
+        "LLM_Cost_USD": f"{report.llm_cost_usd:.6f}",
+        "Notes": " ; ".join(report.problems),
+    }
+
+
+def save_canonical_snapshot(report: RunReport, *, operation: str, full: bool) -> None:
+    """Écrit les données canoniques puis la provenance du snapshot.
+
+    ``full=False`` correspond au rejeu sans collecte : ni SourceFacts, ni
+    registres de déduplication, car aucun n'a été recalculé par ce passage.
+    """
+    from . import dedup_review, org_identity
+
+    context = report.context
+    store.save_items(report.items)
+    store.save_incidents(report.incidents)
+    store.save_sector_resolution(report.sector_resolution_rows)
+    store.save_incident_id_registry(report.incident_id_registry)
+    if full:
+        store.save_source_facts(report.source_facts)
+        # Les décisions du filet LLM deviennent canoniques uniquement avec le
+        # snapshot final. Un run cassé ne peut donc plus polluer la MAJ suivante.
+        store.save_incident_dedup_registry(report.incident_dedup_rows)
+        store.save_organisation_identity_registry_rows(report.organisation_identity_rows)
+        org_identity.reload_organisation_identity_registry(
+            store.ORGANISATION_IDENTITY_REGISTRY_CSV
+        )
+        if report.dedup_ai_state is not None:
+            dedup_review.save(report.dedup_ai_state)
+    save_snapshot_provenance(
+        store.load_items(), store.load_incidents(), operation=operation,
+        run_id=context.run_id, mode=context.mode, as_of=context.as_of,
+        target_start=context.target_start, target_end=context.target_end,
+    )
