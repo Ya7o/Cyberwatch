@@ -92,9 +92,9 @@
   "date": "2026-09-09",
   "first_seen": "2026-09-10T12:10:30.914305+04:00",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-F7E0A7E8A73F",
-  "items": 2,
-  "last_seen": "2026-09-10T12:10:30.914305+04:00",
+  "id": "INC-AF70EBB0A692",
+  "items": 3,
+  "last_seen": "2026-09-10T12:24:09.850262+04:00",
   "local": {
    "references": [
     "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
@@ -123,16 +123,25 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "status": "direct"
    }
   ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Le Tampon : une cyberattaque frappe la mairie et perturbe fortement les services municipaux",
   "threat": "Inconnu",
@@ -142,11 +151,13 @@
    "reason": "THREAT_RESERVED_BY_SOURCE",
    "sources": [
     "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES",
     "VEILLE_LLM"
    ],
    "status": "unknown"
   },
   "urls": [
+   "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm",
    "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/"
   ],
   "vulnerable_people_data_exposed": false
@@ -226,69 +237,6 @@
   "urls": [
    "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5",
    "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
-  ],
-  "vulnerable_people_data_exposed": false
- },
- {
-  "basis": "PUBLICATION",
-  "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": false,
-   "personal_data_types": [],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
-  "date": "2026-09-09",
-  "first_seen": "2026-09-10T12:10:30.914305+04:00",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-AF70EBB0A692",
-  "items": 1,
-  "last_seen": "2026-09-10T12:10:30.914305+04:00",
-  "location": "La Réunion",
-  "org": "Ville du Tampon",
-  "personal_data_exposed": false,
-  "quality_alerts": [],
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Ville du Tampon",
-   "evidence_url": "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Inconnu",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "Aucune fuite de données confirmée à ce stade",
-   "reason": "THREAT_RESERVED_BY_SOURCE",
-   "sources": [
-    "FRENCHBREACHES"
-   ],
-   "status": "unknown"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm"
   ],
   "vulnerable_people_data_exposed": false
  }

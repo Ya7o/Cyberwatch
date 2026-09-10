@@ -5,7 +5,7 @@
   "claims": [],
   "data_types": [],
   "datasets": [],
-  "display_summary": "",
+  "display_summary": "Le Tampon : une cyberattaque frappe la mairie et perturbe fortement les services municipaux",
   "fields": {
    "impact": {
     "evidence": "L’incident provoque d’importantes perturbations dans le fonctionnement des services municipaux.**",
@@ -21,6 +21,16 @@
   "rejected_fields": [],
   "systems": [],
   "timeline": [
+   {
+    "date": "2026-09-09",
+    "event": "La mairie du Tampon, à La Réunion , est touchée par une cyberattaque depuis la matinée de ce mercredi 9 septembre 2026 .",
+    "evidence": "La mairie du Tampon, à La Réunion , est touchée par une cyberattaque depuis la matinée de ce mercredi 9 septembre 2026 .",
+    "source": "CYBERATTAQUE_ORG",
+    "sources": [
+     "CYBERATTAQUE_ORG"
+    ],
+    "status": "unknown"
+   },
    {
     "date": "2026-09-09",
     "event": "La Ville du Tampon, à La Réunion, annonce être victime d’une cyberattaque affectant les services de la mairie depuis la matinée du mercredi 9 septembre 2026.",
@@ -287,31 +297,5 @@
     "value": "CVE-2026-72898"
    }
   ]
- },
- "INC-F7E0A7E8A73F": {
-  "affected": [],
-  "attack_flow": [],
-  "claims": [],
-  "data_types": [],
-  "datasets": [],
-  "display_summary": "Le Tampon : une cyberattaque frappe la mairie et perturbe fortement les services municipaux",
-  "fields": {},
-  "quality_alerts": [],
-  "rejected_fields": [],
-  "systems": [],
-  "timeline": [
-   {
-    "date": "2026-09-09",
-    "event": "La mairie du Tampon, à La Réunion , est touchée par une cyberattaque depuis la matinée de ce mercredi 9 septembre 2026 .",
-    "evidence": "La mairie du Tampon, à La Réunion , est touchée par une cyberattaque depuis la matinée de ce mercredi 9 septembre 2026 .",
-    "source": "CYBERATTAQUE_ORG",
-    "sources": [
-     "CYBERATTAQUE_ORG"
-    ],
-    "status": "unknown"
-   }
-  ],
-  "version": 3,
-  "vulnerabilities": []
  }
 }

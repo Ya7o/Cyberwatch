@@ -16,7 +16,7 @@ from .runner_support import save_snapshot_provenance
 GENERATED_FILES = (
     "items.csv", "incidents.csv", "source_facts.csv", "sector_resolution.csv",
     "incident_id_registry.csv", "incident_dedup_registry.csv",
-    "organisation_identity_registry.csv", "entity_watch.csv",
+    "entity_watch.csv",
     "run_log.csv", "run_sources.csv", "production_metrics.csv",
     "snapshot.json", "baseline.json", "dedup_ai_daily_cache.csv",
     "dedup_ai_daily_usage.csv", "dedup_review_latest.json", "dedup_review_queue.json",

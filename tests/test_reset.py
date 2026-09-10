@@ -36,6 +36,7 @@ def test_purge_clears_generated_state_and_dashboard(isolated_store, make_item):
     preserved = {
         name: f"reference:{name}" for name in (
             "sources.csv", "enrichment_reference.csv", "organisation_aliases.csv",
+            "organisation_identity_registry.csv",
             "territorial_identities.csv", "editorial_corrections.json", "personal-notes.txt",
         )
     }

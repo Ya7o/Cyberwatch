@@ -60,6 +60,10 @@ def test_fraicheur_est_strictement_inferieure_a_36_heures(monkeypatch):
 
 
 def test_cibles_qualite_declenchent_une_alerte_sans_fausser_les_valeurs(monkeypatch):
+    monkeypatch.setattr(production.qualification, "payload", lambda *_args: {
+        "run_id": "RUN-1", "state": "UNKNOWN", "reasons": [],
+        "pending_fields": 0, "pending_pairs": 0, "label": "",
+    })
     monkeypatch.setattr(store, "load_snapshot", lambda: {"As_Of": "2026-09-01T00:00:00+00:00"})
     monkeypatch.setattr(store, "load_run_log", lambda: [])
     monkeypatch.setattr(store, "load_incidents", lambda: [

@@ -1,0 +1,357 @@
+{
+  "facts": {
+    "INC-2AF4C7544CC3": {
+      "fields": {
+        "evolution": {
+          "evidence": "Shipup dit avoir corrigé la vulnérabilité exploitée.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "confirmed",
+          "value": "La vulnérabilité exploitée a été corrigée par Shipup."
+        },
+        "impact": {
+          "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "confirmed",
+          "value": "Des données de contact de clients ont été exposées."
+        },
+        "initial_access": {
+          "evidence": "incident illustre une nouvelle fois l’effet domino que peut provoquer la compromission d’un prestataire",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "confirmed",
+          "value": "third_party"
+        },
+        "third_party": {
+          "evidence": "Aroma-Zone informe certains de ses clients qu’un incident de sécurité ayant touché Shipup...",
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "confirmed",
+          "value": "Shipup"
+        }
+      },
+      "data_types": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "confirmed",
+          "value": "adresses e-mail"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "confirmed",
+          "value": "numéros de téléphone"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "confirmed",
+          "value": "noms et prénoms"
+        }
+      ],
+      "vulnerabilities": [
+        {
+          "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale.",
+          "relationship": "mentioned",
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "CVE-2026-72898"
+        }
+      ]
+    },
+    "INC-09D2AFD7707B": {
+      "fields": {
+        "data_volume": {
+          "evidence": "Les cybercriminels affirment avoir récupéré environ 70 Go de données.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "claimed",
+          "value": "70 Go"
+        },
+        "discovered_date": {
+          "source": "RANSOMWARE_LIVE",
+          "sources": [
+            "RANSOMWARE_LIVE"
+          ],
+          "status": "claimed",
+          "value": "2026-09-08"
+        },
+        "threat_actor": {
+          "evidence": "Panzer",
+          "source": "RANSOMWARE_LIVE",
+          "sources": [
+            "RANSOMWARE_LIVE",
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "claimed",
+          "value": "Panzer"
+        }
+      },
+      "datasets": [],
+      "display_summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données."
+    },
+    "INC-72E15EC21567": {
+      "affected": [
+        {
+          "evidence": "Selon les pirates, environ 118 000 commandes de 2020 à 2025 auraient été récupérées.",
+          "raw": "environ 118 000 commandes",
+          "scope": "commandes 2020-2025",
+          "semantic": "commandes 2020 2025",
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "claimed",
+          "unit": "records",
+          "value": 118000
+        }
+      ],
+      "data_types": [
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "claimed",
+          "value": "informations de commandes"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "références de commande"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "facturation"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "montants"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "noms et prénoms"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "adresses postales"
+        },
+        {
+          "source": "FRENCHBREACHES",
+          "sources": [
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "numéros de téléphone"
+        }
+      ]
+    },
+    "INC-06870EC77814": {
+      "fields": {
+        "impact": {
+          "evidence": "Des adresses e-mail et données de contacts exposées.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG"
+          ],
+          "status": "claimed",
+          "value": "Des adresses e-mail et données de contacts exposées."
+        },
+        "threat_actor": {
+          "evidence": "revendiquée ce 8 septembre 2026 par le hacker Sophia.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "claimed",
+          "value": "Sophia"
+        }
+      },
+      "data_types": [
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "adresses e-mail"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "noms et prénoms"
+        },
+        {
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "identifiants techniques"
+        }
+      ],
+      "vulnerabilities": [
+        {
+          "evidence": "La CVE-2026-12757 affectant Icegram Express a été publiée la veille, sans preuve de lien avec l’incident.",
+          "relationship": "candidate",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "CVE-2026-12757"
+        },
+        {
+          "evidence": "La CVE-2026-1651 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+          "relationship": "mentioned",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "CVE-2026-1651"
+        },
+        {
+          "evidence": "La CVE-2026-81290 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+          "relationship": "mentioned",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "reported",
+          "value": "CVE-2026-81290"
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2026-09-08",
+          "event": "Sophia revendique une fuite de données concernant Vision2i",
+          "evidence": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i.",
+          "source": "CYBERATTAQUE_ORG",
+          "sources": [
+            "CYBERATTAQUE_ORG",
+            "FRENCHBREACHES"
+          ],
+          "status": "claimed"
+        }
+      ]
+    }
+  },
+  "latest": [
+    {
+      "id": "INC-2AF4C7544CC3",
+      "sector": "Commerce / Distribution",
+      "threat": "Fuite de données",
+      "threat_status": {
+        "conflict": false,
+        "evidence": "Des données de contact de clients Aroma-Zone ont été consultées par des personnes non autorisées.",
+        "reason": "THREAT_EDITORIAL_CORRECTION",
+        "sources": [
+          "CYBERATTAQUE_ORG"
+        ],
+        "status": "confirmed"
+      },
+      "credentials_or_secrets_exposed": false
+    },
+    {
+      "id": "INC-09D2AFD7707B",
+      "sector": "Finance / Assurance",
+      "threat": "Ransomware",
+      "threat_status": {
+        "conflict": false,
+        "evidence": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès.",
+        "reason": "THREAT_EDITORIAL_CORRECTION",
+        "sources": [
+          "CYBERATTAQUE_ORG",
+          "RANSOMWARE_LIVE"
+        ],
+        "status": "claimed"
+      },
+      "credentials_or_secrets_exposed": false
+    },
+    {
+      "id": "INC-72E15EC21567",
+      "sector": "Commerce / Distribution",
+      "threat": "Fuite de données",
+      "threat_status": {
+        "conflict": false,
+        "evidence": "LunarisSec revendique une fuite de données concernant Proshop FFT.",
+        "reason": "THREAT_EDITORIAL_CORRECTION",
+        "sources": [
+          "FRENCHBREACHES"
+        ],
+        "status": "claimed"
+      },
+      "credentials_or_secrets_exposed": false
+    },
+    {
+      "id": "INC-06870EC77814",
+      "sector": "Services aux entreprises",
+      "threat": "Fuite de données",
+      "threat_status": {
+        "conflict": false,
+        "evidence": "Sophia revendique la publication de données attribuées à Vision2i.",
+        "reason": "THREAT_EDITORIAL_CORRECTION",
+        "sources": [
+          "CYBERATTAQUE_ORG",
+          "FRENCHBREACHES"
+        ],
+        "status": "claimed"
+      },
+      "credentials_or_secrets_exposed": false
+    }
+  ]
+}

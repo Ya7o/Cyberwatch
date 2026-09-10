@@ -128,12 +128,18 @@ def build(destination: Path) -> Path:
         if origin.exists():
             shutil.copyfile(origin, data / name)
 
-    # Le corpus vivant peut déjà contenir les observations auditées — une
-    # collecte réelle sur la même fenêtre les ramène. L'ajout est donc
-    # idempotent : reconstituer l'état audité ne doit jamais dupliquer une
-    # observation, ni écraser un incident déjà fusionné par une reprise
-    # antérieure.
-    items = _appended(store.read_csv(store.ITEMS_CSV), payload["new_items"], "Item_ID")
+    # Reconstituer exactement l'état audité, même après une PURGE suivie d'une
+    # nouvelle collecte : les observations ciblées remplacent leurs versions
+    # vivantes déjà corrigées, et une troisième observation du même événement
+    # (par exemple VEILLE_LLM) ne doit pas modifier ce test de reprise à deux
+    # sources.
+    audited_item_ids = {row["Item_ID"] for row in payload["new_items"]}
+    items = [
+        row for row in store.read_csv(store.ITEMS_CSV)
+        if row.get("Item_ID") in audited_item_ids
+        or row.get("Organisation_Key") not in {"le tampon", "ville du tampon"}
+    ]
+    items = _restored(items, payload["new_items"], "Item_ID")
     incidents = store.read_csv(store.INCIDENTS_CSV)
     for row in incidents:
         row["Organisation"] = _CANONICAL_LABELS.get(row["Organisation"], row["Organisation"])

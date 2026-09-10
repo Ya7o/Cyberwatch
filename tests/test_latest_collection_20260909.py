@@ -5,16 +5,12 @@ import json
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+FIXTURE = Path(__file__).parent / "fixtures" / "latest_collection_20260909.json"
 
 
 def _payloads():
-    details = json.loads((ROOT / "assets/data/facts.json").read_text(encoding="utf-8"))
-    latest = {
-        row["id"]: row
-        for row in json.loads((ROOT / "assets/data/latest.json").read_text(encoding="utf-8"))
-    }
-    return details, latest
+    payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    return payload["facts"], {row["id"]: row for row in payload["latest"]}
 
 
 def test_aroma_zone_ne_publie_que_les_donnees_de_contact():
@@ -67,4 +63,3 @@ def test_vision2i_separe_identifiants_techniques_et_cve_contextuelles():
     }
     assert "cvss" not in detail["fields"]
     assert all("**" not in row["event"] for row in detail["timeline"])
-
