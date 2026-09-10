@@ -49,12 +49,15 @@ def test_model_routing_defaults_and_legacy_default(monkeypatch):
     monkeypatch.delenv("OPENAI_MODEL", raising=False)
     monkeypatch.delenv("SOURCE_FACTS_MODEL", raising=False)
     monkeypatch.delenv("CYBERATTAQUE_SEMANTIC_MODEL", raising=False)
+    monkeypatch.delenv("EDITORIAL_SEMANTIC_MODEL", raising=False)
+    monkeypatch.delenv("DEDUP_MODEL", raising=False)
     assert llm_runtime.model_for_task("identity") == "gpt-5-nano"
-    assert llm_runtime.model_for_task("source_facts") == "gpt-4o-mini"
-    assert llm_runtime.model_for_task("cyberattaque_semantic") == "gpt-4o-mini"
-    assert llm_runtime.model_for_task("dedup") == "gpt-4o-mini"
+    assert llm_runtime.model_for_task("source_facts") == "gpt-5-mini"
+    assert llm_runtime.model_for_task("cyberattaque_semantic") == "gpt-5-mini"
+    assert llm_runtime.model_for_task("editorial_semantic") == "gpt-5-mini"
+    assert llm_runtime.model_for_task("dedup") == "gpt-5-mini"
     # Un ancien DEFAULT_MODEL métier ne doit plus neutraliser le routage riche.
-    assert llm_runtime.model_for_task("source_facts", "gpt-5-nano") == "gpt-4o-mini"
+    assert llm_runtime.model_for_task("source_facts", "gpt-5-nano") == "gpt-5-mini"
 
 
 def test_model_routing_task_override_wins(monkeypatch):
@@ -71,8 +74,14 @@ def test_runtime_does_not_retry_by_default(monkeypatch):
     assert runtime.max_retries == 0
 
 
-def test_runtime_uses_strict_structured_outputs(monkeypatch):
+@pytest.mark.parametrize("task, expected_model, expected_cost", [
+    ("unit", "gpt-5-nano", 0.000013),
+    ("source_facts", "gpt-5-mini", 0.000065),
+])
+def test_runtime_uses_strict_structured_outputs(monkeypatch, task, expected_model, expected_cost):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+    monkeypatch.delenv(f"{task.upper()}_MODEL", raising=False)
     runtime = llm_runtime.LlmRuntime()
     seen = {}
 
@@ -82,7 +91,7 @@ def test_runtime_uses_strict_structured_outputs(monkeypatch):
 
     monkeypatch.setattr(llm_runtime.requests, "post", fake_post)
     result = runtime.call_json(
-        task="unit",
+        task=task,
         model="gpt-5-nano",
         system_prompt="system",
         user_content="user",
@@ -96,9 +105,11 @@ def test_runtime_uses_strict_structured_outputs(monkeypatch):
     assert seen["text"]["format"]["strict"] is True
     assert seen["reasoning"] == {"effort": "minimal"}
     assert result.usage.input_tokens == 100
-    assert result.model == "gpt-5-nano"
+    assert seen["model"] == expected_model
+    assert result.model == expected_model
+    assert result.usage.estimated_cost_usd == pytest.approx(expected_cost)
     assert runtime.stats.calls_succeeded == 1
-    assert runtime.stats.by_task["unit"]["calls_succeeded"] == 1
+    assert runtime.stats.by_task[task]["calls_succeeded"] == 1
 
 
 def test_post_response_enforces_rich_model_for_legacy_body(monkeypatch):
@@ -115,11 +126,12 @@ def test_post_response_enforces_rich_model_for_legacy_body(monkeypatch):
     monkeypatch.setattr(llm_runtime.requests, "post", fake_post)
     result = runtime.post_response(
         task="source_facts",
-        body={"model": "gpt-5-nano", "input": []},
+        body={"model": "gpt-5-nano", "input": [], "reasoning": {"effort": "minimal"}},
     )
-    assert seen["model"] == "gpt-4o-mini"
-    assert result.model == "gpt-4o-mini"
-    assert runtime.stats.by_task["source_facts"]["last_model"] == "gpt-4o-mini"
+    assert seen["model"] == "gpt-5-mini"
+    assert seen["reasoning"] == {"effort": "minimal"}
+    assert result.model == "gpt-5-mini"
+    assert runtime.stats.by_task["source_facts"]["last_model"] == "gpt-5-mini"
 
 
 def test_runtime_retries_429(monkeypatch):

@@ -90,6 +90,13 @@ déclaré « performance non mesurée ».
 réseau et utiliser l'API OpenAI si `OPENAI_API_KEY` est présente. Sans clé, la
 collecte continue et les valeurs non résolues restent `Inconnu`.
 
+Le routage LLM utilise `gpt-5-mini` pour l'extraction de faits, l'analyse
+sémantique et la déduplication, et `gpt-5-nano` pour les autres tâches.
+`OPENAI_MODEL` permet de remplacer le modèle globalement ; les variables
+`<TASK>_MODEL` (par exemple `SOURCE_FACTS_MODEL` ou `DEDUP_MODEL`) ont priorité
+pour une tâche donnée. Les appels utilisent l'API Responses avec des sorties
+JSON structurées et un effort de raisonnement `minimal` par défaut.
+
 `MAJ` et `PURGE` sont aussi acceptées en minuscules. `MAJ` conserve le stock
 existant et fonctionne également sur une base neuve ou purgée. La fenêtre
 couvre hier et aujourd'hui à La Réunion (UTC+4) : les dates des sources étant

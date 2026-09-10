@@ -20,7 +20,7 @@ from typing import Any
 import requests
 
 DEFAULT_MODEL = "gpt-5-nano"
-RICH_MODEL = "gpt-4o-mini"
+RICH_MODEL = "gpt-5-mini"
 OPENAI_URL = "https://api.openai.com/v1/responses"
 DEFAULT_TIMEOUT_SECONDS = 30
 DEFAULT_MAX_RETRIES = 0
