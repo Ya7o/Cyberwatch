@@ -286,6 +286,14 @@ _HYPOTHETICAL_RE = re.compile(
     r"laisse(?:nt|rait|raient)?\s+craindre|accroit(?:re|s|)?\s+le\s+risque)\b",
     re.I,
 )
+#: Phrase pédagogique décrivant ce qu'une attaque « peut » entraîner en général.
+#: Elle énumère des vecteurs sans en imputer aucun à la victime analysée, et ne
+#: constitue donc pas une preuve d'accès initial.
+_GENERIC_EXPLAINER_RE = re.compile(
+    r"\b(?:peut|peuvent)\s+(?:ainsi\s+|alors\s+|[ée]galement\s+)?"
+    r"(?:conduire|entra[îi]ner|permettre|amener|provoquer|aboutir|donner\s+lieu)\b",
+    re.I,
+)
 _RESPONSE_ACTION_RE = re.compile(
     r"\b(?:isol(?:er|[ée]e?s?)|confinement|rem[ée]diation|restaur(?:er|ation|[ée]e?s?)|"
     r"r[ée]initialis(?:er|ation|[ée]e?s?)|investigation|forensic|enqu[êe]te|notification|CNIL|"

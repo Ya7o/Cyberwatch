@@ -56,6 +56,7 @@ from .source_facts_ai_contract import (
     _DATA_TYPES_UNDISCLOSED_RE,
     _DATA_TYPE_PATTERNS,
     _EDITORIAL_FIELDS,
+    _GENERIC_EXPLAINER_RE,
     _HYPOTHETICAL_RE,
     _IMPACT_TRIGGER,
     _INITIAL_ACCESS_CAUSAL_RE,
@@ -467,16 +468,6 @@ _INITIAL_ACCESS_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (
         r"\b(?:via|chez)\b.{0,80}\b(?:prestataire|fournisseur|sous[- ]traitant|tiers)\b.{0,80}\bcompromis\w*\b", re.I)),
     ("remote_access", re.compile(
         r"\b(?:RDP|VPN|bureau\s+[àa]\s+distance|acc[èe]s\s+distant)\b.{0,100}\b(?:compromis|exploit[ée]|intrusion|acc[èe]s\s+non\s+autoris[ée])\b", re.I)),
-)
-
-
-#: Phrase pédagogique décrivant ce qu'une attaque « peut » entraîner en général.
-#: Elle énumère des vecteurs sans en imputer aucun à la victime analysée, et ne
-#: constitue donc pas une preuve d'accès initial.
-_GENERIC_EXPLAINER_RE = re.compile(
-    r"\b(?:peut|peuvent)\s+(?:ainsi\s+|alors\s+|[ée]galement\s+)?"
-    r"(?:conduire|entra[îi]ner|permettre|amener|provoquer|aboutir|donner\s+lieu)\b",
-    re.I,
 )
 
 
