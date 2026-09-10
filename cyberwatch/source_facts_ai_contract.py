@@ -31,14 +31,15 @@ from .headline import MAX_HEADLINE_CHARS, is_organisation_name_only, is_publisha
 TARGET_SOURCES = {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
 DEFAULT_MODEL = "gpt-5-nano"
 OPENAI_URL = "https://api.openai.com/v1/responses"
-PROMPT_VERSION = "2026-09-10.source-facts.17"
-SCHEMA_VERSION = "9"
+PROMPT_VERSION = "2026-09-10.source-facts.18"
+SCHEMA_VERSION = "10"
 LEGACY_PROMPT_VERSION = "2026-08-16.source-facts.5"
 LEGACY_SCHEMA_VERSION = "5"
 CACHE_FORMAT = "source-facts-ai-field-cache-v1"
 CONFIDENCE_THRESHOLD = 0.70
 MAX_EVIDENCE_CHARS = 300
 MAX_SUMMARY_CHARS = 320
+MAX_INCIDENT_SUMMARY_PARAGRAPH_CHARS = 160
 #: Longueur maximale de la synthèse produite par le LLM (`summary`) : une
 #: headline factuelle unique, pas un second récit de l'incident. Distincte de
 #: `MAX_SUMMARY_CHARS`, qui borne la composition déterministe multi-champs de
@@ -69,6 +70,7 @@ REJECTING_FIELDS = {"activity_description", "activity_sector_match"}
 NEW_SEMANTIC_FIELDS = {
     "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
     "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
+    "incident_summary",
     # Extraite du texte complet avec une preuve littérale : ce signal ne
     # confirme jamais un secteur seul, il peut seulement l'indiquer « à
     # confirmer » via le resolver organisationnel.
@@ -97,6 +99,7 @@ FIELD_VERSIONS = {
     # V6 rejette une déclaration ou confirmation attribuée à la victime si
     # la citation ne conserve pas ce même rôle grammatical.
     "summary": "summary-v6",
+    "incident_summary": "incident-summary-v1",
     # V2 interdit les faux positifs du type « impossible de déterminer si
     # l'accès provient d'identifiants compromis ». La version fait invalider
     # uniquement ce champ dans les caches existants.
@@ -159,6 +162,7 @@ data_types contient uniquement des catégories de données réellement indiquée
 affected_counts contient uniquement un nombre de personnes, comptes, clients, utilisateurs, enregistrements ou fichiers explicitement touchés, exposés, revendiqués ou informés de l'incident. N'utilise jamais la taille générale de la clientèle, du réseau, de l'organisation ou de sa communauté comme nombre affecté.
 vulnerabilities contient uniquement une vulnérabilité présentée comme exploitée ou liée à l'accès initial de cet incident. Une faille seulement potentielle, distincte de l'incident, ou la seule mention qu'une vulnérabilité a été corrigée ne suffit pas.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
+incident_summary est une liste de zéro à deux paragraphes factuels en français. Chaque paragraphe fait au maximum 160 caractères, espaces et ponctuation compris, et chaque objet cite un extrait exact qui soutient son contenu. Le premier paragraphe doit permettre de comprendre seul ce qui est arrivé à la victime. Ajoute un second paragraphe uniquement s'il apporte un fait concret distinct et utile sur le déroulement, les données touchées, l'ampleur, les conséquences ou la remédiation. Ne répète pas le premier paragraphe et ne remplis jamais pour atteindre deux paragraphes. Si l'article est générique ou pauvre en informations, produis au maximum un seul paragraphe ; si aucun fait fiable ne permet de résumer l'incident, renvoie une liste vide. Conserve explicitement les réserves de la source (« revendique », « indique », « non confirmé ») et ne présente jamais une revendication comme un fait confirmé.
 activity_description décrit en quelques mots l'activité métier de la victime, seulement lorsque l'article la présente explicitement. Sa preuve doit désigner sans ambiguïté la victime et son activité ; ne rien déduire du nom, de l'attaque, des données ni d'une connaissance extérieure à l'article. Lorsqu'une désignation institutionnelle tient lieu de sujet (« la mairie », « la municipalité »), sa preuve n'est recevable que si la même phrase ou la phrase immédiatement précédente la rattache explicitement à la victime, et qu'aucune autre collectivité n'y est nommée. Si aucune activité n'est étayée, laisse activity_description vide : c'est la réponse attendue, pas un échec.
 activity_sector_match reprend l'activité que tu viens de décrire dans activity_description et choisis, parmi le secteur de la liste fournie, celui qui s'en rapproche le plus, quelle que soit la formulation exacte de l'article (ex. « développe des applications métiers », « plateforme No-Code », « éditeur de logiciels » désignent tous Numérique / Technologie). N'utilise jamais le type de données volées, les victimes de la fuite ou le type d'incident pour choisir un secteur. Lorsqu'une activité explicitement décrite est syndicale ou relève d'une organisation professionnelle sans activité commerciale propre, utilise Association / Syndicat. Pour les autres activités associatives, choisis le secteur correspondant à l'activité réellement décrite ; ne force jamais Services aux entreprises par défaut. Renvoie Inconnu si activity_description est lui-même vide (rien à rapprocher), ou si l'activité décrite ne se rapproche d'aucun secteur de la liste.
 threat_candidate désigne la menace seulement si l'article l'énonce explicitement ; ne l'infère jamais depuis l'acteur, les données ou une hypothèse.
@@ -168,7 +172,7 @@ Examine l'ensemble de l'article pour chacun des champs demandés. Conserve toute
 """
 
 _LLM_FIELDS = (
-    "summary", "initial_access", "attack_flow", "impact",
+    "summary", "incident_summary", "initial_access", "attack_flow", "impact",
     "threat_actor", "third_party", "data_types",
     "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
     "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
@@ -176,7 +180,7 @@ _LLM_FIELDS = (
     "threat_candidate",
 )
 _EDITORIAL_FIELDS = {
-    "summary", "initial_access", "attack_flow", "impact", "threat_actor",
+    "summary", "incident_summary", "initial_access", "attack_flow", "impact", "threat_actor",
     "third_party", "fine_location", "attack_date", "discovered_date",
     "evolution", "threat_candidate", "activity_description", "activity_sector_match",
 }

@@ -694,6 +694,12 @@ def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> N
         evidence["Vulnerabilities_JSON"] = vulnerability_evidence
 
     rich: dict[str, list[dict]] = {}
+    incident_summary = ai_result.get("incident_summary") if isinstance(ai_result, dict) else None
+    if isinstance(incident_summary, list) and incident_summary:
+        rich["incident_summary"] = [
+            dict(paragraph) for paragraph in incident_summary
+            if isinstance(paragraph, dict) and paragraph.get("value")
+        ][:2]
     for key in ("affected_counts", "data_volumes", "file_counts"):
         values = _ordered_ai_evidence(ai_result, key)
         if values:
@@ -743,6 +749,7 @@ def semantic_promotion_gaps(
         "activity_sector_match": "Activity_Sector_Match",
     }
     rich_fields = {
+        "incident_summary",
         "affected_counts",
         "data_volumes",
         "file_counts",

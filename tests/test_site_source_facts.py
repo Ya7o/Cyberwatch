@@ -4,8 +4,61 @@ La couche reste auxiliaire : provenance par Item_ID, aucune fusion arbitraire
 entre sources et aucune mutation des champs canoniques de l'incident.
 """
 
+import json
+
 from cyberwatch import config, identity, site
 from cyberwatch.model import Incident, Item
+
+
+def test_resume_detail_traverse_les_metadonnees_source():
+    paragraphs = [
+        {
+            "value": "Exemple SA confirme une exposition de données clients.",
+            "confidence": 0.91,
+            "evidence": "Exemple SA confirme une exposition de données clients.",
+        },
+        {
+            "value": "La société a réinitialisé les accès compromis.",
+            "confidence": 0.88,
+            "evidence": "La société a réinitialisé les accès compromis.",
+        },
+        {
+            "value": "Ce troisième paragraphe ne doit jamais être publié.",
+            "confidence": 0.9,
+            "evidence": "Ce troisième paragraphe ne doit jamais être publié.",
+        },
+    ]
+    payload = site._source_fact_payload({
+        "Item_ID": "ITM-summary",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Source_Metadata_JSON": json.dumps({
+            "rich_facts": {"incident_summary": paragraphs},
+        }),
+    })
+    published = payload["rich_facts"]["incident_summary"]
+    assert published[0]["value"] == paragraphs[0]["value"]
+    assert published[0]["evidence"] == paragraphs[0]["evidence"]
+    assert published[0]["confidence"] == 0.91
+    assert [paragraph["value"] for paragraph in published] == [
+        paragraphs[0]["value"], paragraphs[1]["value"]
+    ]
+
+
+def test_resume_detail_rejette_un_paragraphe_trop_long():
+    payload = site._source_fact_payload({
+        "Item_ID": "ITM-summary-long",
+        "Source_ID": "CYBERATTAQUE_ORG",
+        "Source_Metadata_JSON": json.dumps({
+            "rich_facts": {
+                "incident_summary": [{
+                    "value": "x" * 161,
+                    "confidence": 0.91,
+                    "evidence": "Une preuve exacte et exploitable.",
+                }],
+            },
+        }),
+    })
+    assert payload is None
 
 
 def _item(item_id: str, source_id: str, date: str = "2026-08-10") -> Item:
@@ -252,11 +305,12 @@ def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
 
     assert "async function openIncident(id)" in js
     assert "const validDetail = detail && detail.version === 3" in js
-    assert "function dataTypesHtml(entries)" in js
+    assert "function incidentSummaryParagraphs(incident, detail)" in js
 
 
-def test_renderer_ui_ne_duplique_pas_affected_files_et_file_count():
+def test_renderer_ui_n_assemble_plus_les_faits_structures():
     js = open("assets/dashboard-v2.js", encoding="utf-8").read()
-    assert "function affectedHtml(records)" in js
-    assert '<dt>Volume documenté</dt>' in js
+    assert "detail.summary_paragraphs" in js
+    assert "detail.affected" not in js
+    assert "detail.file_count" not in js
     assert 'detailField("Fichiers"' not in js

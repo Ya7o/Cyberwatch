@@ -26,7 +26,10 @@ def _output_for(body: dict, **values):
     result = {}
     properties = body["text"]["format"]["schema"]["properties"]
     for field in properties:
-        if field in {"data_types", "affected_counts", "data_volumes", "file_counts", "attack_flow"}:
+        if field in {
+            "data_types", "affected_counts", "data_volumes", "file_counts",
+            "attack_flow", "incident_summary",
+        }:
             result[field] = values.get(field, [])
         else:
             result[field] = values.get(
@@ -41,6 +44,109 @@ def _configure(monkeypatch, tmp_path):
     monkeypatch.setenv("SOURCE_FACTS_AI_STATS_PATH", str(tmp_path / "stats.json"))
     monkeypatch.setenv("SOURCE_FACTS_RETRY_QUEUE_PATH", str(tmp_path / "retry.json"))
     sfa.reset_runtime_for_tests()
+
+
+def test_incident_summary_schema_and_default_request():
+    entry = RawEntry(
+        title="Exemple SA touchée par une intrusion",
+        content="Exemple SA confirme que des données clients ont été consultées.",
+    )
+    fields = sfa.fields_needed_for_ai(_item(), entry)
+    assert "summary" in fields
+    assert "incident_summary" in fields
+    schema = sfa._schema({"incident_summary"})
+    assert schema["properties"]["incident_summary"]["maxItems"] == 2
+
+
+def test_incident_summary_accepts_two_grounded_paragraphs():
+    evidence_1 = "Exemple SA confirme que des données clients ont été consultées."
+    evidence_2 = "L’entreprise a révoqué les accès compromis et informé les clients."
+    paragraphs = sfa._normalize_incident_summary([
+        {
+            "value": "Exemple SA confirme une intrusion ayant exposé des données clients.",
+            "confidence": 0.92,
+            "evidence": evidence_1,
+        },
+        {
+            "value": "L’entreprise a révoqué les accès compromis et informé les clients concernés.",
+            "confidence": 0.88,
+            "evidence": evidence_2,
+        },
+    ], f"{evidence_1} {evidence_2}", "Exemple SA")
+    assert [row["value"] for row in paragraphs] == [
+        "Exemple SA confirme une intrusion ayant exposé des données clients.",
+        "L’entreprise a révoqué les accès compromis et informé les clients concernés.",
+    ]
+    assert all(len(row["value"]) <= 160 for row in paragraphs)
+
+
+def test_incident_summary_rejects_oversized_first_paragraph():
+    evidence = "Exemple SA confirme une intrusion."
+    accepted = sfa._normalize_incident_summary([{
+        "value": "X" * 160, "confidence": 0.9, "evidence": evidence,
+    }], evidence, "Exemple SA")
+    assert len(accepted[0]["value"]) == 160
+    assert sfa._normalize_incident_summary([{
+        "value": "X" * 161, "confidence": 0.9, "evidence": evidence,
+    }], evidence, "Exemple SA") == []
+
+
+def test_incident_summary_keeps_first_when_second_is_generic_or_repeated():
+    evidence = "Exemple SA confirme une intrusion ayant exposé des données clients."
+    first = {
+        "value": "Exemple SA confirme une intrusion ayant exposé des données clients.",
+        "confidence": 0.9, "evidence": evidence,
+    }
+    generic = {
+        "value": "Une enquête est en cours.", "confidence": 0.9,
+        "evidence": "Une enquête est en cours.",
+    }
+    context = f"{evidence} Une enquête est en cours."
+    assert sfa._normalize_incident_summary(
+        [first, generic], context, "Exemple SA"
+    ) == [first]
+    assert sfa._normalize_incident_summary(
+        [first, dict(first)], evidence, "Exemple SA"
+    ) == [first]
+    generic_first = {
+        "value": "Un incident a été signalé.", "confidence": 0.9,
+        "evidence": "Un incident a été signalé.",
+    }
+    assert sfa._normalize_incident_summary(
+        [generic_first, first], f"Un incident a été signalé. {evidence}", "Exemple SA"
+    ) == [generic_first]
+
+
+def test_incident_summary_is_cached_by_its_own_version(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    evidence = "Exemple SA confirme que des données clients ont été consultées."
+    entry = RawEntry(title="Exemple SA", content=evidence)
+    calls = []
+
+    def fake_post(body, _runtime):
+        calls.append(body)
+        return _payload(_output_for(
+            body,
+            summary={
+                "value": "Exemple SA confirme une exposition de données clients.",
+                "confidence": 0.9, "evidence": evidence,
+            },
+            incident_summary=[{
+                "value": "Exemple SA confirme une exposition de données clients.",
+                "confidence": 0.9, "evidence": evidence,
+            }],
+        ))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    first = sfa.enrich(_item(), entry)
+    second = sfa.enrich(_item(), entry)
+    assert first["incident_summary"] == second["incident_summary"]
+    assert len(calls) == 1
+    runtime = sfa._runtime()
+    key = sfa._cache_item_key(_item(), entry, runtime)
+    cached = runtime.cache[key]["fields"]["incident_summary"]
+    assert cached["version"] == sfa.FIELD_VERSIONS["incident_summary"]
+    assert cached["status"] == "accepted"
 
 
 def test_activity_trace_preserves_response_rejections_and_effective_model(monkeypatch, tmp_path):
@@ -104,7 +210,7 @@ def test_headline_est_demandee_meme_sur_contenu_court(monkeypatch, tmp_path):
         title="Exemple SA",
         content="L'attaque a été revendiquée par LockBit.",
     )
-    assert sfa.fields_needed_for_ai(_item(), entry) == {"summary"}
+    assert sfa.fields_needed_for_ai(_item(), entry) == {"summary", "incident_summary"}
     assert sfa.enrich(_item(), entry)["summary"]["value"].startswith("LockBit")
     assert called
 
@@ -200,7 +306,7 @@ def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
     )
     assert len(bodies) == 1
     props = set(bodies[0]["text"]["format"]["schema"]["properties"])
-    assert props == {"summary", "threat_actor"}
+    assert props == {"summary", "incident_summary", "threat_actor"}
     assert result["threat_actor"]["value"] == "LockBit"
 
 
@@ -490,7 +596,9 @@ def test_ancien_cache_reutilise_les_champs_compatibles(monkeypatch, tmp_path):
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     result = sfa.enrich(item, entry)
     assert result["threat_actor"]["value"] == "LockBit"
-    assert set(bodies[0]["text"]["format"]["schema"]["properties"]) == {"summary"}
+    assert set(bodies[0]["text"]["format"]["schema"]["properties"]) == {
+        "summary", "incident_summary",
+    }
     assert sfa.runtime_stats()["legacy_field_cache_hits"] == 1
 
 

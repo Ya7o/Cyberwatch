@@ -17,6 +17,7 @@ from .headline import (
     is_publishable_headline,
     strip_markdown_emphasis,
     summary_role_is_supported,
+    victim_claims_incident,
 )
 from .normalize import classify_threat, searchable
 from .source_facts_ai_contract import (
@@ -25,6 +26,7 @@ from .source_facts_ai_contract import (
     MAX_ATTACK_FLOW_STEPS,
     MAX_EVIDENCE_CHARS,
     MAX_LABEL_VALUE_CHARS,
+    MAX_INCIDENT_SUMMARY_PARAGRAPH_CHARS,
     _ATTACK_ACTION_RE,
     _DATA_TYPE_PATTERNS,
     _HYPOTHETICAL_RE,
@@ -244,6 +246,79 @@ def _normalize_summary(raw, context: str, organisation: str = "") -> dict | None
     return fact
 
 
+_INCIDENT_SUMMARY_GENERIC_RE = re.compile(
+    r"^(?:(?:un|cet|cette)\s+(?:cyber[- ]?)?incident|l[’'](?:cyber[- ]?)?incident)\s+"
+    r"(?:concernant\s+.{2,80}\s+)?"
+    r"(?:a\s+[ée]t[ée]\s+signal[ée]|est\s+survenu|fait\s+l[’']objet\s+d[’']une\s+enqu[êe]te)\.?$|"
+    r"^(?:une\s+enqu[êe]te\s+est\s+en\s+cours|des\s+mesures\s+ont\s+[ée]t[ée]\s+prises|"
+    r"la\s+situation\s+est\s+suivie)\.?$",
+    re.I,
+)
+
+
+def _incident_summary_is_generic(value: str) -> bool:
+    return bool(_INCIDENT_SUMMARY_GENERIC_RE.fullmatch(value.strip()))
+
+
+def _incident_summary_is_duplicate(first: str, second: str) -> bool:
+    first_key = searchable(first)
+    second_key = searchable(second)
+    if not first_key or not second_key:
+        return True
+    if first_key == second_key or first_key in second_key or second_key in first_key:
+        return True
+    first_words = set(first_key.split())
+    second_words = set(second_key.split())
+    return len(first_words & second_words) / max(1, len(first_words | second_words)) >= 0.8
+
+
+def _normalize_incident_summary_paragraph(
+    raw, context: str, organisation: str = ""
+) -> dict | None:
+    if not isinstance(raw, dict):
+        return None
+    source_value = str(raw.get("value") or "")
+    if (
+        "\n" in source_value
+        or source_value.lstrip().startswith(("-", "*", "#"))
+        or "**" in source_value
+    ):
+        return None
+    fact = _normalize_fact(raw, context)
+    if not fact:
+        return None
+    value = fact["value"] = strip_markdown_emphasis(fact["value"])
+    if (
+        len(value) > MAX_INCIDENT_SUMMARY_PARAGRAPH_CHARS
+        or _HEADLINE_TECHNICAL_RE.search(value)
+        or is_organisation_name_only(value, organisation)
+        or victim_claims_incident(value, organisation)
+        or not summary_role_is_supported(value, fact["evidence"], organisation)
+    ):
+        return None
+    return fact
+
+
+def _normalize_incident_summary(raw, context: str, organisation: str = "") -> list[dict]:
+    """Valide un résumé autonome, puis au plus un complément substantiel."""
+    if not isinstance(raw, list) or not raw:
+        return []
+    first = _normalize_incident_summary_paragraph(raw[0], context, organisation)
+    if not first:
+        return []
+    result = [first]
+    if len(raw) < 2 or _incident_summary_is_generic(first["value"]):
+        return result
+    second = _normalize_incident_summary_paragraph(raw[1], context, organisation)
+    if (
+        second
+        and not _incident_summary_is_generic(second["value"])
+        and not _incident_summary_is_duplicate(first["value"], second["value"])
+    ):
+        result.append(second)
+    return result
+
+
 def _normalize_data_types(raw: dict, context: str) -> list[dict]:
     values: list[dict] = []
     seen: set[str] = set()
@@ -310,6 +385,12 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
         fact = _normalize_summary(raw.get("summary"), context, organisation)
         if fact:
             result["summary"] = fact
+    if "incident_summary" in fields:
+        paragraphs = _normalize_incident_summary(
+            raw.get("incident_summary"), context, organisation
+        )
+        if paragraphs:
+            result["incident_summary"] = paragraphs
     if "initial_access" in fields:
         fact = _normalize_initial_access(raw.get("initial_access"), context)
         if fact:

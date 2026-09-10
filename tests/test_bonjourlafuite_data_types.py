@@ -99,29 +99,9 @@ def test_payload_dashboard_transmet_la_liste_sans_transformation():
     assert payload["data_types"] == FRANCE_VAE_TYPES
 
 
-def test_dashboard_regroupe_les_types_valides_avec_fallback_autres():
-    """Cible `dashboard-v2.js` (`dataTypeFamily()`/`DATA_TYPE_FAMILY_RULES`),
-    le runtime actif — `dashboard.js` (v1) qu'il a remplacé a été retiré.
-
-    Les valeurs ont déjà franchi les validateurs du serveur. Le navigateur ne
-    doit donc plus supprimer contrats, commandes, commentaires ou données RH
-    simplement parce que sa taxonomie visuelle est plus courte."""
+def test_dashboard_affiche_le_resume_resolu_sans_taxonomie_supplementaire():
+    """Le navigateur affiche le résumé déjà validé côté serveur."""
     dashboard = (Path(__file__).parents[1] / "assets" / "dashboard-v2.js").read_text(encoding="utf-8")
-    for label in (
-        "Santé",
-        "Financières",
-        "Authentification",
-        "Administratives",
-        "Professionnelles",
-        "Identité",
-        "Coordonnées",
-    ):
-        assert label in dashboard
-    assert "function dataTypeFamily(value)" in dashboard
-    assert "function dataTypesHtml(entries)" in dashboard
-    assert "dataTypesHtml(detail.data_types || [])" in dashboard
-    family_order_line = next(
-        line for line in dashboard.splitlines() if "DATA_TYPE_FAMILY_ORDER = [" in line
-    )
-    assert "Autres" in family_order_line
-    assert 'return "Autres";' in dashboard
+    assert "detail.summary_paragraphs" in dashboard
+    assert "dataTypeFamily" not in dashboard
+    assert "detail.data_types" not in dashboard

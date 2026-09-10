@@ -497,248 +497,30 @@
     return state.facts;
   }
 
-  // Petite énumération fermée pour les valeurs déterministes connues
-  // (ex. "third_party" posé par cyberwatch/source_facts.py) ; toute autre
-  // valeur (texte libre promu par fact_resolution.py::_claim_scalar()) est
-  // affichée telle quelle plutôt que masquée — brancher ce libellé sur
-  // shared.js aurait effacé silencieusement ce texte libre.
-  const INITIAL_ACCESS_LABELS = { phishing: "Phishing", compromised_credentials: "Identifiants compromis", vulnerability_exploitation: "Exploitation d’une vulnérabilité", remote_access: "Accès distant", third_party: "Tiers compromis", malware: "Malware", other: "Autre" };
-  const initialAccessLabel = (value) => INITIAL_ACCESS_LABELS[value] || value || "";
-
-  function detailField(label, content, status, evidence = "") {
-    const empty = !content || (Array.isArray(content) && !content.length);
-    const rendered = empty
-      ? '<span class="detail-empty">—</span>'
-      : Array.isArray(content) ? content.map((item) => `<span class="detail-chip">${esc(item)}</span>`).join("") : esc(content);
-    const badge = !empty && status ? statusBadge(status) : "";
-    // Sur téléphone, une valeur narrative ne doit pas être écrasée dans la
-    // petite colonne de droite. Les champs courts restent, eux, compacts.
-    const needsFullWidth = Array.isArray(content) || String(content || "").trim().length > 26;
-    const layout = needsFullWidth ? " resolved-field--wide" : "";
-    const proof = evidence ? ` title="${esc(evidence)}"` : "";
-    return `<div class="resolved-field${layout}"><dt>${esc(label)}</dt><dd${proof}>${rendered}${badge}</dd></div>`;
+  function incidentSummaryParagraphs(incident, detail) {
+    const validDetail = detail && detail.version === 3;
+    const raw = validDetail && Array.isArray(detail.summary_paragraphs)
+      ? detail.summary_paragraphs.slice(0, 2).map((value) => String(value || "").trim())
+      : [];
+    const generated = raw[0] && raw[0].length <= 160
+      ? raw.filter((value) => known(value) && value.length <= 160)
+      : [];
+    if (generated.length) return generated;
+    const headline = cleanSummary((validDetail && detail.display_summary) || incident.summary);
+    if (known(headline) && headline.length <= 160) return [headline];
+    return ["Les informations disponibles ne permettent pas encore de résumer précisément cet incident."];
   }
-
-  // Regroupement par famille et code couleur de sensibilité des données
-  // compromises, calculés par règles déterministes côté client — jamais par
-  // le LLM (§ Identité hors LLM, CLAUDE.md).
-  const DATA_TYPE_FAMILY_ORDER = ["Identité", "Coordonnées", "Financières", "Authentification", "Santé", "Professionnelles", "Administratives", "Autres"];
-  // Certains libellés canoniques sont au pluriel avec la marque du pluriel
-  // sur le premier mot ("mots de passe", "cartes de paiement", "pièces
-  // d'identité") : une simple sous-chaîne au singulier ne les retrouve pas
-  // (« mots » ne contient pas « mot »). Les deux formes sont donc listées
-  // explicitement plutôt que de deviner un radical.
-  const DATA_TYPE_FAMILY_RULES = [
-    ["Santé", ["sante", "medical", "medic", "patient", "diagnostic", "patholog", "ordonnance", "traitement", "vaccin"]],
-    ["Financières", ["iban", "rib", "bancair", "carte de paiement", "cartes de paiement", "carte bancaire", "cartes bancaires", "paiement", "transaction", "financement", "factur", "revenu", "salaire", "patrimoine"]],
-    ["Authentification", ["mot de passe", "mots de passe", "password", "hash", "identifiant", "login", "token", "authent", "cle api", "secret", "otp"]],
-    ["Administratives", ["nir", "securite sociale", "passeport", "carte d identite", "cartes d identite", "piece d identite", "pieces d identite", "permis de conduire", "acte de naissance", "justificatif de domicile", "immatriculation", "siret", "siren"]],
-    ["Professionnelles", ["certification", "qualification", "experience", "evaluation", "formation", "parcours professionnel", "emploi", "poste", "metier", "profession", "employeur"]],
-    ["Identité", ["nom", "prenom", "genre", "civilite", "photo", "selfie", "biometr", "nationalite"]],
-    ["Coordonnées", ["mail", "adresse", "telephone", "mobile", "departement", "pays", "ville", "code postal", "numero client", "identifiant client", "date de naissance", "naissance"]],
-  ];
-  const SENSITIVITY_CRITICAL_MARKERS = ["mot de passe", "mots de passe", "password", "hash", "token", "otp", "secret", "cle api", "authent", "sante", "medical", "patient", "diagnostic", "patholog", "ordonnance", "traitement", "vaccin", "nir", "securite sociale", "passeport", "carte d identite", "cartes d identite", "piece d identite", "pieces d identite", "permis de conduire", "biometr", "selfie"];
-  const SENSITIVITY_HIGH_MARKERS = ["iban", "rib", "bancair", "carte de paiement", "cartes de paiement", "carte bancaire", "cartes bancaires", "releve de compte", "revenu", "salaire", "patrimoine"];
-  const SENSITIVITY_MODERATE_MARKERS = ["mail", "telephone", "mobile", "adresse", "numero client", "identifiant client", "date de naissance", "naissance"];
-
-  // Une correspondance en sous-chaîne brute matche aussi au milieu d'un mot
-  // (ex. le mot-clé "formation" est littéralement contenu dans "information"),
-  // ce qui a bucketé à tort des valeurs anglaises non canonisées ("case
-  // information") dans "Professionnelles". Exiger que le mot-clé démarre un
-  // mot (précédé d'une espace ou du début de chaîne) suffit à éliminer ce
-  // faux positif tout en gardant les radicaux volontaires ("medic" doit
-  // toujours matcher "medical") : les libellés canoniques partagés avec le
-  // backend (cyberwatch/normalize.py::canonical_data_type) sont toujours des
-  // mots bien séparés, jamais des collisions médianes de ce genre.
-  const startsAtWordBoundary = (normalized, keyword) => ` ${normalized} `.includes(` ${keyword}`);
-
-  function dataTypeFamily(value) {
-    const normalized = normalize(value);
-    for (const [label, keywords] of DATA_TYPE_FAMILY_RULES) {
-      if (keywords.some((keyword) => startsAtWordBoundary(normalized, keyword))) return label;
-    }
-    // Le serveur a déjà validé ces catégories. Les supprimer ici rompait le
-    // contrat de publication et masquait notamment contrats, commandes et RH.
-    return "Autres";
-  }
-
-  function dataTypeSensitivity(value) {
-    const normalized = normalize(value);
-    if (SENSITIVITY_CRITICAL_MARKERS.some((marker) => startsAtWordBoundary(normalized, marker))) return "critical";
-    if (SENSITIVITY_HIGH_MARKERS.some((marker) => startsAtWordBoundary(normalized, marker))) return "high";
-    if (SENSITIVITY_MODERATE_MARKERS.some((marker) => startsAtWordBoundary(normalized, marker))) return "moderate";
-    return "";
-  }
-
-  function dataTypesHtml(entries) {
-    const values = (entries || []).filter((entry) => known(entry?.value));
-    if (!values.length) return detailField("Données concernées", []);
-    const groups = new Map(DATA_TYPE_FAMILY_ORDER.map((label) => [label, []]));
-    const seen = new Set();
-    values.forEach((entry) => {
-      const cleaned = String(entry.value).trim();
-      if (!cleaned || seen.has(cleaned)) return;
-      const family = dataTypeFamily(cleaned);
-      if (!family) return;
-      seen.add(cleaned);
-      groups.get(family).push({ ...entry, value: cleaned });
-    });
-    const rendered = DATA_TYPE_FAMILY_ORDER.map((label) => {
-      const items = groups.get(label) || [];
-      if (!items.length) return "";
-      const chips = items.map((entry) => {
-        const tier = dataTypeSensitivity(entry.value);
-        const tierClass = tier ? ` incident-data-value--sensitivity-${tier}` : "";
-        return `<span class="incident-data-value${tierClass}">${esc(entry.value)}</span>${statusBadge(entry.status)}`;
-      }).join("");
-      // Un groupe contenant du sensible (mot de passe, IBAN, santé…) mérite
-      // d'être visible sans clic supplémentaire, contrairement à un groupe
-      // anodin (ex. coordonnées) qui reste replié par défaut.
-      const hasSensitive = items.some((entry) => ["critical", "high"].includes(dataTypeSensitivity(entry.value)));
-      return `<details class="incident-data-group"${hasSensitive ? " open" : ""}><summary>${esc(label)} · ${items.length}</summary><div class="incident-data-values">${chips}</div></details>`;
-    }).filter(Boolean).join("");
-    return `<div class="incident-data-types"><div class="incident-data-types-title">Données concernées :</div>${rendered}</div>`;
-  }
-
-  function unitLabel(value) {
-    return ({ people: "personnes", accounts: "comptes", users: "utilisateurs", clients: "clients", records: "enregistrements", files: "fichiers" })[value] || value || "";
-  }
-
-  function statusBadge(status) {
-    if (!status) return "";
-    const label = CLAIM_STATUS_LABELS[status] || "Documenté";
-    return ` <span class="claim-status claim-status--${esc(status)}">${esc(label)}</span>`;
-  }
-
-  const VOLUME_VISIBLE_CAP = 4;
-  function affectedHtml(records) {
-    if (!Array.isArray(records) || !records.length) return detailField("Volume documenté", []);
-    const chipText = (record) => {
-      const raw = record.raw || "";
-      let value = raw || `${formatNumber(record.value)} ${unitLabel(record.unit)}`.trim();
-      if (record.semantic === "unique" && record.unit === "records" && !raw) value = `${formatNumber(record.value)} enregistrements uniques`;
-      const scope = String(record.scope || "").trim();
-      if (scope && !["total", "unspecified"].includes(scope) && !normalize(value).includes(normalize(scope))) value += ` · ${scope}`;
-      return value;
-    };
-    const chip = (record) => `<span class="detail-chip">${esc(chipText(record))}</span>${statusBadge(record.status)}`;
-    // Une dizaine de chiffres proches est illisible d'un coup d'œil : seuls
-    // les plus significatifs restent visibles, le reste se déplie.
-    const sorted = [...records].sort((a, b) => (Number(b.value) || 0) - (Number(a.value) || 0));
-    const visible = sorted.slice(0, VOLUME_VISIBLE_CAP);
-    const rest = sorted.slice(VOLUME_VISIBLE_CAP);
-    const restHtml = rest.length
-      ? `<details class="volume-more"><summary>${rest.length} autre${rest.length > 1 ? "s" : ""} valeur${rest.length > 1 ? "s" : ""}</summary>${rest.map(chip).join("")}</details>`
-      : "";
-    return `<div class="resolved-field resolved-field--wide"><dt>Volume documenté</dt><dd>${visible.map(chip).join("")}${restHtml}</dd></div>`;
-  }
-
-  function timelineHtml(rows) {
-    if (!Array.isArray(rows) || !rows.length) return "";
-    // fact_resolution.py::_timeline_entries() déduplique déjà les entrées qui
-    // ne font que reformuler le même jour (voir _drop_timeline_evidence_duplicates) :
-    // seul le tri chronologique reste à faire ici.
-    const sorted = [...rows].filter((row) => known(row.event)).sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
-    if (!sorted.length) return "";
-    return sorted.map((row) => {
-      const date = known(row.date) ? formatDate(row.date) : "Date non précisée";
-      const proof = row.evidence ? ` title="${esc(row.evidence)}"` : "";
-      const wide = String(row.event || "").trim().length > 26 ? " resolved-field--wide" : "";
-      return `<div class="resolved-field claim-field${wide}"><dt>${esc(date)}</dt><dd${proof}>${esc(row.event)}${statusBadge(row.status)}</dd></div>`;
-    }).join("");
-  }
-
-  function evidenceEntriesHtml(label, entries, valueKey = "value") {
-    const rows = (entries || []).filter((entry) => known(entry?.[valueKey]));
-    if (!rows.length) return detailField(label, []);
-    return `<div class="resolved-field resolved-field--wide"><dt>${esc(label)}</dt><dd>${rows.map((entry) => {
-      const proof = entry.evidence ? ` title="${esc(entry.evidence)}"` : "";
-      return `<span class="detail-chip"${proof}>${esc(entry[valueKey])}</span>${statusBadge(entry.status)}`;
-    }).join("")}</dd></div>`;
-  }
-
-  const QUALITY_LABELS = {
-    THREAT_CONFLICT: "Conflit de menace non résolu",
-    THREAT_CONFLICT_RESOLVED: "Conflit de menace arbitré par les preuves",
-    SOURCE_FACTS_NOT_PROPAGATED: "Fait source non propagé",
-    SUMMARY_FACT_CONTRADICTION: "Résumé contradictoire avec le rôle de la victime",
-    DATA_TYPES_EMPTY_WITH_PERSONAL_DATA_EVIDENCE: "Catégories de données à vérifier",
-    SENSITIVE_FLAG_INCONSISTENT: "Indicateur de sensibilité incohérent",
-    PERSONAL_DATA_FLAG_INCONSISTENT: "Indicateur de données personnelles incohérent",
-  };
-
-  function qualityAlertsHtml(alerts) {
-    const rows = (alerts || []).filter((alert) => alert?.code);
-    if (!rows.length) return "";
-    return `<section class="incident-quality-alerts"><h3>Contrôles qualité</h3><ul>${rows.map((alert) => `<li data-severity="${esc(alert.severity || "warning")}">${esc(QUALITY_LABELS[alert.code] || alert.code)}${alert.field ? ` · ${esc(alert.field)}` : ""}</li>`).join("")}</ul></section>`;
-  }
-
-  function detailSection(title, fields, { collapsible = false } = {}) {
-    const content = fields.filter(Boolean).join("");
-    if (!content) return "";
-    if (!collapsible) return `<section class="resolved-facts-section"><h4>${esc(title)}</h4>${content}</section>`;
-    // Repliée par défaut : la section entière (titre + contenu), pas
-    // seulement une liste imbriquée à l'intérieur (retour utilisateur sur
-    // la chronologie, "trop imposante" quand tout est déplié d'un coup).
-    return `<details class="resolved-facts-section resolved-facts-section--collapsible"><summary>${esc(title)}</summary>${content}</details>`;
-  }
-
-  const CLAIM_STATUS_LABELS = { confirmed: "Confirmé", reported: "Rapporté", claimed: "Revendiqué", hypothesis: "Hypothèse", unknown: "Inconnu", unconfirmed: "Non confirmé", denied: "Démenti", negated: "Démenti", inferred: "Déduit", referenced: "Référencé" };
 
   async function openIncident(id) {
     const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) return;
     const facts = await ensureFacts();
     const detail = facts[id];
-    const sourceLinks = unique(incident.urls || []).map(safeUrl).filter(Boolean);
     const meta = [incident.date ? formatDate(incident.date) : "", incident.threat, incident.sector, incident.location].filter(known).join(" · ");
-    const validDetail = detail && detail.version === 3;
-    const fields = validDetail ? detail.fields || {} : {};
-    const systemsAndPerimeters = validDetail
-      ? [...(detail.systems || []), ...(detail.datasets || [])]
-      : [];
-    const timelineRows = validDetail ? timelineHtml(detail.timeline || []) : "";
-    const exploitedVulnerabilities = validDetail
-      ? (detail.vulnerabilities || []).filter((entry) => !entry.relationship || entry.relationship === "exploited")
-      : [];
-    const contextualVulnerabilities = validDetail
-      ? (detail.vulnerabilities || []).filter((entry) => ["candidate", "mentioned"].includes(entry.relationship))
-      : [];
-    const values = validDetail ? [
-      detailSection("Qualification", [
-        detailField("Menace principale", incident.threat, incident.threat_status?.status, incident.threat_status?.evidence),
-        detailField("Secteur", incident.sector, incident.sector_status?.status, incident.sector_status?.evidence),
-      ]),
-      detailSection("Acteur & vecteur", [
-        detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status, fields.threat_actor?.evidence),
-        detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status, fields.third_party?.evidence),
-        detailField("Vecteur d’entrée", fields.initial_access?.value ? initialAccessLabel(fields.initial_access.value) : "", fields.initial_access?.status, fields.initial_access?.evidence),
-        evidenceEntriesHtml("Déroulé documenté", detail.attack_flow || [], "action"),
-        evidenceEntriesHtml("Vulnérabilités exploitées", exploitedVulnerabilities),
-        evidenceEntriesHtml("Vulnérabilités candidates ou mentionnées", contextualVulnerabilities),
-        detailField("CVSS", fields.cvss?.value, fields.cvss?.status, fields.cvss?.evidence),
-      ]),
-      detailSection("Chronologie", [
-        known(fields.fine_location?.value) ? detailField("Localisation précise", fields.fine_location.value, fields.fine_location.status, fields.fine_location.evidence) : "",
-        detailField("Date de l’attaque", known(fields.attack_date?.value) ? formatDate(fields.attack_date.value) : "", fields.attack_date?.status, fields.attack_date?.evidence),
-        detailField("Date de découverte", known(fields.discovered_date?.value) ? formatDate(fields.discovered_date.value) : "", fields.discovered_date?.status, fields.discovered_date?.evidence),
-        timelineRows,
-      ], { collapsible: true }),
-      detailSection("Impact & données documentées", [
-        affectedHtml(detail.affected || []),
-        known(fields.data_volume?.value) ? detailField("Volume de données", fields.data_volume.value, fields.data_volume.status, fields.data_volume.evidence) : "",
-        dataTypesHtml(detail.data_types || []),
-        evidenceEntriesHtml("Systèmes & périmètres concernés", systemsAndPerimeters),
-        detailField("Impact", fields.impact?.value, fields.impact?.status, fields.impact?.evidence),
-        known(fields.evolution?.value) ? detailField("Évolution / remédiation", fields.evolution.value, fields.evolution.status, fields.evolution.evidence) : "",
-      ]),
-    ].filter(Boolean).join("") : "";
-    const summary = cleanSummary((validDetail && detail.display_summary) || incident.summary);
+    const paragraphs = incidentSummaryParagraphs(incident, detail);
     const tentativeChip = sectorTentativeChip(incident);
     $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}${tentativeChip ? `<p>${tentativeChip}</p>` : ""}</div>
-      ${summary ? `<p class="detail-summary">${esc(summary)}</p>` : ""}
-      <section class="resolved-facts"><h3>Éléments documentés</h3>${values || '<p class="empty-state">Aucun élément structuré supplémentaire.</p>'}</section>
-      ${qualityAlertsHtml(incident.quality_alerts)}
+      <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
       <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div></div>`;
     // Réouvrir la fiche d'un autre incident doit repartir du haut : un
     // <dialog> natif ne réinitialise pas toujours son scroll interne.

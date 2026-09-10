@@ -106,6 +106,7 @@ from .source_facts_ai_normalize import (
     _normalize_data_types,
     _normalize_fact,
     _normalize_impact,
+    _normalize_incident_summary,
     _normalize_initial_access,
     _normalize_record_lists,
     _normalize_summary,
@@ -259,7 +260,7 @@ def _has_semantic_context(entry: RawEntry) -> bool:
 def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set[str]:
     requested = _legacy_fields_needed(item, entry, seed)
     if _full_context(entry):
-        requested.add("summary")
+        requested.update({"summary", "incident_summary"})
     if not _has_semantic_context(entry):
         return requested
     # One request contains every semantic gap. Cache filtering later removes
@@ -619,7 +620,10 @@ def _migrate_legacy_cache(runtime: _Runtime, key: str, item: Item, entry: RawEnt
 
 
 def _max_output_tokens(runtime: _Runtime, fields: set[str]) -> int:
-    weights = {"attack_flow": 360, "data_types": 220, "summary": 160, "impact": 140}
+    weights = {
+        "attack_flow": 360, "data_types": 220, "summary": 160,
+        "incident_summary": 400, "impact": 140,
+    }
     estimate = 260 + sum(weights.get(field, 140) for field in fields)
     return min(runtime.max_output_tokens, max(600, estimate))
 

@@ -67,6 +67,9 @@ def _record_schema(*, numeric: bool = False) -> dict:
 def _schema(fields: set[str]) -> dict:
     definitions = {
         "summary": _fact_schema(),
+        "incident_summary": {
+            "type": "array", "items": _fact_schema(), "maxItems": 2,
+        },
         "initial_access": _initial_access_schema(),
         "attack_flow": _attack_flow_schema(),
         "impact": _fact_schema(),

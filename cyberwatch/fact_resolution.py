@@ -803,6 +803,38 @@ def best_publishable_summary(facts: Iterable[dict], *, organisation: str = "") -
     return max(candidates)[2] if candidates else ""
 
 
+def resolve_incident_summary(facts: Iterable[dict]) -> list[str]:
+    """Retient les paragraphes validés d'un seul article, sans les fusionner."""
+    candidates: list[tuple[tuple[int, int, int, str], list[str]]] = []
+    for fact in _ordered_facts(facts):
+        rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
+        raw = rich.get("incident_summary") if isinstance(rich, dict) else None
+        if not isinstance(raw, list) or not raw:
+            continue
+        paragraphs: list[str] = []
+        for record in raw[:2]:
+            value = _text(record.get("value")) if isinstance(record, dict) else ""
+            if not value or len(value) > 160:
+                break
+            paragraphs.append(value)
+        if not paragraphs:
+            continue
+        richness = sum(bool(fact.get(key)) for key in (
+            "summary", "initial_access", "attack_flow", "impact", "threat_actor",
+            "third_party", "data_types", "affected_count", "evolution",
+        ))
+        richness += sum(bool(rich.get(key)) for key in (
+            "affected_counts", "data_volumes", "affected_systems",
+            "affected_datasets", "data_types", "vulnerabilities", "timeline",
+        ))
+        rank = (
+            len(paragraphs), richness, -source_rank(fact.get("source")),
+            _text(fact.get("item_id")),
+        )
+        candidates.append((rank, paragraphs))
+    return max(candidates, key=lambda candidate: candidate[0])[1] if candidates else []
+
+
 def _evidence_unique_value_counts(facts: Iterable[dict]) -> list[dict]:
     """Retrouve, dans l'evidence déjà stockée des claims, un décompte de
     valeurs uniques par type de donnée jamais extrait comme fait séparé (ex.
@@ -928,6 +960,7 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
         rejected_fields.add("cvss")
     resolved = {
         "version": 3,
+        "summary_paragraphs": resolve_incident_summary(ordered),
         "fields": {field: value for field, value in fields.items() if value},
         "data_types": _data_types_entries(ordered),
         "vulnerabilities": vulnerabilities,

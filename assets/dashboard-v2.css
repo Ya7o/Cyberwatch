@@ -82,28 +82,9 @@
 .detail-heading { margin-bottom:.8rem; }
 .detail-heading h2 { margin-bottom:.25rem; }
 .detail-heading p { margin:0; color:var(--text-muted); }
-.detail-summary { font-size:1.02rem; line-height:1.6; padding:.85rem 1rem; background:var(--surface-soft,var(--surface)); border-radius:12px; }
-.resolved-facts { margin-top:1rem; }
-.resolved-facts h3 { margin-bottom:.75rem; }
-.resolved-facts-section { margin-top:1.1rem; }
-.resolved-facts-section:first-child { margin-top:0; }
-.resolved-facts-section h4 { margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.02em; }
-/* Variante repliable : le titre de section devient le déclencheur du
-   <details>, avec le même habillage typographique que le h4 ci-dessus. */
-.resolved-facts-section--collapsible > summary { cursor:pointer; margin:0 0 .3rem; font-size:.82rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.02em; user-select:none; }
-.resolved-facts-section--collapsible > summary:focus-visible,
-.incident-data-group > summary:focus-visible,
-.volume-more > summary:focus-visible { outline:2px solid var(--series-1); outline-offset:2px; border-radius:4px; }
-.resolved-facts-section--collapsible[open] > summary { margin-bottom:.3rem; }
-.resolved-field { display:grid; grid-template-columns:minmax(150px,220px) 1fr; gap:1rem; padding:.65rem 0; border-top:1px solid var(--border); }
-.resolved-field dt { color:var(--text-muted); font-size:.86rem; }
-.resolved-field dd { margin:0; line-height:1.5; display:flex; gap:.35rem; flex-wrap:wrap; align-items:center; }
-/* Rayon modéré plutôt qu'une pilule pleine (999px) : une puce longue
-   ("14 947 adresses e-mail uniques") s'enroule parfois sur 2 lignes, et une
-   pilule pleine se déforme visuellement dès qu'elle n'est plus sur une
-   seule ligne — un rectangle arrondi reste propre dans les deux cas. */
-.detail-chip { border:1px solid var(--border); border-radius:12px; padding:.18rem .5rem; font-size:.82rem; }
-.detail-empty { color:var(--text-muted); }
+.detail-summary { margin:0; font-size:1rem; line-height:1.75; overflow-wrap:anywhere; }
+.detail-summary p { margin:0 0 .7rem; }
+.detail-summary p:last-child { margin-bottom:0; }
 .detail-sources { margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:grid; gap:.6rem; }
 .evidence-links { display:flex; flex-wrap:wrap; gap:.5rem; }
 .evidence-links a { font-size:.82rem; }
@@ -115,7 +96,6 @@
   .incident-side { min-width:0; width:100%; }
   .analysis-grid { grid-template-columns:1fr; }
   .metric-bar { grid-template-columns:minmax(110px,1fr) minmax(80px,2fr) auto; }
-  .resolved-field { grid-template-columns:minmax(92px,120px) 1fr; gap:.55rem; align-items:baseline; }
   .location-menu { position:fixed; left:1rem; right:1rem; top:20%; max-height:60vh; }
 }
 
@@ -126,41 +106,8 @@
 .location-picker { min-width:0; }
 .location-picker > .btn { width:100%; min-height:44px; padding:.5rem .7rem; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.25; }
 .incident-source-badges { justify-content:flex-start; }
-.detail-summary { font-size:1rem; line-height:1.55; padding:.7rem .85rem; border-radius:10px; }
-.resolved-facts { margin-top:.8rem; }
-.resolved-facts h3 { margin-bottom:.5rem; }
-.resolved-field { grid-template-columns:minmax(150px,190px) 1fr; gap:.75rem; padding:.45rem 0; }
-.detail-chip { padding:.16rem .48rem; }
-.incident-data-types { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.35rem .8rem; margin-top:.45rem; }
-/* style.css définit .incident-data-group/.incident-data-value (legacy,
-   réutilisés ici) sans taille de police ni rayon de coin harmonisés : ils
-   héritaient donc du corps de page (~16px) et d'une pastille pleine
-   (border-radius:999px), plus gros et visuellement différent du reste de la
-   fiche redessinée (.82-.86rem, .detail-chip en 12px depuis le round 2).
-   Rebranchés ici sur la même échelle et la même forme. */
-.incident-data-types-title { grid-column:1 / -1; margin-bottom:0; font-size:.86rem; }
-.incident-data-group { margin:0; }
-.incident-data-group > summary { min-height:0; padding:.15rem 0; font-size:.86rem; color:var(--text-secondary); }
-.incident-data-values { margin-top:.25rem; }
-.incident-data-value { padding:.14rem .45rem; font-size:.82rem; border-radius:12px; }
-.incident-data-value--sensitivity-moderate { background:rgba(190,130,0,.10); border-color:rgba(190,130,0,.34); }
-.incident-data-value--sensitivity-high { background:rgba(190,62,62,.11); border-color:rgba(190,62,62,.38); }
-.incident-data-value--sensitivity-critical { background:rgba(190,62,62,.18); border-color:rgba(190,62,62,.58); }
-/* "+N autres valeurs" : repli du même type que les groupes de données
-   ci-dessus, pour ne pas noyer la fiche sous une dizaine de puces. */
-.volume-more { flex-basis:100%; margin-top:.2rem; }
-.volume-more > summary { cursor:pointer; font-size:.82rem; color:var(--text-muted); list-style:none; }
-.volume-more > summary::-webkit-details-marker { display:none; }
-.volume-more > summary::before { content:"+ "; }
-.volume-more[open] > summary { margin-bottom:.35rem; }
-.volume-more .detail-chip { margin:.15rem .35rem .15rem 0; display:inline-block; }
 .detail-sources { margin-top:.8rem; padding-top:.75rem; gap:.4rem; }
 .detail-sources .incident-source-badges { justify-content:flex-start; }
-.claim-field dd { align-items:center; }
-.claim-status { display:inline-block; margin-left:.2rem; padding:.08rem .38rem; border:1px solid var(--border); border-radius:999px; color:var(--text-muted); font-size:.72rem; line-height:1.2; }
-.claim-status--confirmed { border-color:rgba(30,130,80,.45); color:#167147; }
-.claim-status--claimed,.claim-status--hypothesis { border-color:rgba(180,125,0,.45); color:#8a5d00; }
-
 @media (max-width:1320px) {
   .search-bar { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .search-field { grid-column:span 2; }
@@ -168,23 +115,6 @@
 @media (max-width:760px) {
   .search-bar { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .search-field { grid-column:1 / -1; }
-  .incident-data-types { grid-template-columns:1fr; }
-  /* Les listes et textes narratifs ne doivent jamais être comprimés dans la
-     seconde colonne du couple libellé/valeur sur téléphone. Les valeurs
-     courtes restent en ligne pour conserver une fiche dense. */
-  .resolved-field--wide { grid-template-columns:1fr; gap:.3rem; }
-  .resolved-field--wide dd { justify-content:flex-start; }
-  /* La règle de densité V2 (ligne ~98) fixe une colonne d'étiquette
-     150-190px, chargée après la règle mobile 92-120px de style.css : à
-     poids de sélecteur égal, elle l'emportait même sur petit écran et
-     grignotait la place de la valeur. On la resserre ici pour de bon. */
-  .resolved-field { grid-template-columns:minmax(96px,128px) 1fr; gap:.5rem; padding:.5rem 0; }
-  .resolved-field dt, .resolved-field dd { font-size:.84rem; }
   .detail-dialog { max-height:92vh; }
   .detail-heading h2 { font-size:1.15rem; }
-  .resolved-facts-section h4, .resolved-facts-section--collapsible > summary { font-size:.76rem; }
 }
-.incident-quality-alerts { margin-top: 1rem; padding: .85rem 1rem; border: 1px solid var(--border, #d7dde5); border-radius: .75rem; }
-.incident-quality-alerts h3 { margin: 0 0 .45rem; font-size: .9rem; }
-.incident-quality-alerts ul { margin: 0; padding-left: 1.1rem; }
-.incident-quality-alerts li[data-severity="error"] { color: #a61b1b; }

@@ -143,107 +143,6 @@ def test_priorite_des_sources_n_existe_plus_dans_le_runtime():
     assert expected in backend
 
 
-def test_detail_consomme_le_schema_resolu_et_n_affiche_que_les_champs_presents():
-    js = _read("assets/dashboard-v2.js")
-    assert "detail.fields || {}" in js
-    assert "detail.data_types || []" in js
-    assert "detail.affected || []" in js
-    assert "detail.display_summary" in js
-    assert "Éléments documentés" in js
-    assert "Première observation" not in js
-    assert "Dernière observation" not in js
-    assert "incident-fact-source" not in js
-
-
-def test_volume_documente_porte_un_badge_de_statut_par_entree():
-    """DINUM a un volume au statut "negated" (contesté) — il ne doit pas avoir
-    le même poids visuel qu'un volume confirmé."""
-    js = _read("assets/dashboard-v2.js")
-    assert "function affectedHtml(records)" in js
-    assert 'claim-status claim-status--${esc(status)}' in js
-    assert "CLAIM_STATUS_LABELS[status]" in js
-
-
-def test_statut_de_preuve_est_conserve_sur_les_faits_affiches():
-    """Le contre-audit impose de ne plus perdre confirmé/revendiqué/hypothèse
-    entre facts.json et la fiche."""
-    js = _read("assets/dashboard-v2.js")
-    assert "function documentedClaimsHtml" not in js
-    assert 'detailField("Acteur revendicateur", fields.threat_actor?.value, fields.threat_actor?.status, fields.threat_actor?.evidence)' in js
-    assert 'detailField("Tiers impliqué", fields.third_party?.value, fields.third_party?.status, fields.third_party?.evidence)' in js
-    assert 'detailField("Impact", fields.impact?.value, fields.impact?.status, fields.impact?.evidence)' in js
-    assert "statusBadge(record.status)" in js
-    assert "statusBadge(row.status)" in js
-    assert "statusBadge(entry.status)" in js
-    assert 'unknown: "Inconnu"' in js
-    assert 'inferred: "Déduit"' in js
-    assert "fields.impact?.evidence" in js
-    assert 'evidenceEntriesHtml("Systèmes & périmètres concernés"' in js
-
-
-def test_types_valides_non_classes_restent_visibles():
-    js = _read("assets/dashboard-v2.js")
-    assert '"Administratives", "Autres"' in js
-    assert 'return "Autres";' in js
-
-
-def test_detail_affiche_les_champs_resolus_lorsqu_ils_sont_presents():
-    """Vecteur d'entrée/CVSS/dates sont réintégrés (structure en sections
-    `main`) : `fact_resolution.py` les projette désormais depuis des claims
-    typés avec un garde-fou de cohérence (voir `_claim_scalar`/
-    `_claim_list_entries`)."""
-    js = _read("assets/dashboard-v2.js")
-    assert 'detailField("Vecteur d’entrée"' in js
-    assert 'evidenceEntriesHtml("Vulnérabilités exploitées"' in js
-    assert 'evidenceEntriesHtml("Vulnérabilités candidates ou mentionnées"' in js
-    assert 'evidenceEntriesHtml("Déroulé documenté"' in js
-    assert 'detailField("Date de l’attaque"' in js
-    assert 'detailField("Date de découverte"' in js
-    assert 'detailField("CVSS"' in js
-    # Pas de mapping figé window.CW-only : initialAccessLabel() reste local
-    # et retombe sur le texte libre si la valeur ne matche aucune énumération.
-    assert "const initialAccessLabel" in js
-    assert "window.CW" not in js
-
-
-def test_champs_rares_sont_affiches_uniquement_lorsqu_ils_sont_documentes():
-    """Les faits ne sont plus perdus, sans réintroduire des lignes vides sur
-    tous les incidents."""
-    js = _read("assets/dashboard-v2.js")
-    assert 'known(fields.fine_location?.value) ? detailField("Localisation précise"' in js
-    assert 'known(fields.data_volume?.value) ? detailField("Volume de données"' in js
-    assert 'known(fields.evolution?.value) ? detailField("Évolution / remédiation"' in js
-
-
-def test_detail_rend_la_chronologie_dedupliquee():
-    """La chronologie brute avait été retirée car elle dupliquait les faits
-    sourcés et mélangeait formats de date/markdown non nettoyés. Ces deux
-    causes sont désormais corrigées côté fact_resolution.py
-    (_drop_claims_duplicating_timeline, _drop_timeline_evidence_duplicates,
-    normalisation ISO, retrait du markdown) : la chronologie est réaffichée,
-    triée, avec les dates passées par formatDate()."""
-    js = _read("assets/dashboard-v2.js")
-    assert "function timelineHtml(rows)" in js
-    assert 'detailSection("Chronologie"' in js
-    assert "timelineRows" in js
-    assert "formatDate(row.date)" in js
-
-
-def test_chronologie_se_replie_en_un_seul_bloc():
-    """Retour utilisateur round 2 : round 1 ne repliait que la liste détaillée
-    ("Chronologie détaillée"), les deux champs de dates restant toujours
-    visibles au niveau de la section. La section "Chronologie" entière doit
-    désormais se plier/déplier d'un coup, sans repli imbriqué à l'intérieur."""
-    js = _read("assets/dashboard-v2.js")
-    assert "function detailSection(title, fields, { collapsible = false } = {})" in js
-    assert 'return `<details class="resolved-facts-section resolved-facts-section--collapsible"><summary>${esc(title)}</summary>${content}</details>`;' in js
-    assert 'detailSection("Chronologie", [' in js
-    assert "{ collapsible: true }" in js
-    # Plus de repli imbriqué dans le repli : la chronologie détaillée n'est
-    # plus enveloppée dans son propre <details> séparé.
-    assert '<summary>Chronologie détaillée</summary>' not in js
-
-
 def test_detail_revient_en_haut_du_popup_a_chaque_ouverture():
     """Un <dialog> natif ne réinitialise pas toujours son scroll interne :
     rouvrir la fiche d'un autre incident après avoir scrollé loin dans le
@@ -251,24 +150,6 @@ def test_detail_revient_en_haut_du_popup_a_chaque_ouverture():
     js = _read("assets/dashboard-v2.js")
     assert '$("#detail-dialog-content").scrollTop = 0;' in js
     assert '$("#detail-dialog").scrollTop = 0;' in js
-
-
-def test_toutes_les_caracteristiques_retenues_s_affichent_meme_vides():
-    """Changement de philosophie assumé (retour utilisateur) : une fiche
-    incident garde toujours la même forme prévisible, plutôt que de masquer
-    silencieusement les champs sans valeur documentée."""
-    js = _read("assets/dashboard-v2.js")
-    assert 'const empty = !content || (Array.isArray(content) && !content.length);' in js
-    assert '<span class="detail-empty">—</span>' in js
-
-
-def test_groupe_de_donnees_sensibles_est_deplie_par_defaut():
-    """Retour utilisateur round 2 : un groupe contenant du IBAN, un mot de
-    passe ou une donnée de santé mérite d'être visible sans clic
-    supplémentaire, contrairement à un groupe anodin (coordonnées…)."""
-    js = _read("assets/dashboard-v2.js")
-    assert 'const hasSensitive = items.some((entry) => ["critical", "high"].includes(dataTypeSensitivity(entry.value)));' in js
-    assert '<details class="incident-data-group"${hasSensitive ? " open" : ""}>' in js
 
 
 def test_couleurs_de_la_fiche_reutilisent_les_variables_reellement_definies():
@@ -280,16 +161,6 @@ def test_couleurs_de_la_fiche_reutilisent_les_variables_reellement_definies():
     css = _read("assets/dashboard-v2.css")
     assert "var(--muted)" not in css
     assert "color:var(--text-muted)" in css
-    assert "color:var(--text-secondary)" in css
-
-
-def test_systemes_et_perimetres_sont_un_seul_champ_fusionne():
-    """"Périmètres de données" redisait ce que "Systèmes concernés" exprimait
-    déjà (retour utilisateur : champ perçu comme redondant)."""
-    js = _read("assets/dashboard-v2.js")
-    assert 'evidenceEntriesHtml("Systèmes & périmètres concernés", systemsAndPerimeters)' in js
-    assert "detailField(\"Systèmes concernés\"" not in js
-    assert "detailField(\"Périmètres de données\"" not in js
 
 
 def test_libelles_de_sources_ne_dependent_pas_de_shared_js():
@@ -298,14 +169,6 @@ def test_libelles_de_sources_ne_dependent_pas_de_shared_js():
     js = _read("assets/dashboard-v2.js")
     assert "const SOURCE_LABELS" in js
     assert "window.CW" not in js
-
-
-def test_detail_mobile_donne_toute_la_largeur_aux_listes_et_textes_longs():
-    js = _read("assets/dashboard-v2.js")
-    css = _read("assets/dashboard-v2.css")
-    assert 'resolved-field--wide' in js
-    assert 'String(content || "").trim().length > 26' in js
-    assert '.resolved-field--wide { grid-template-columns:1fr;' in css
 
 
 def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
@@ -331,33 +194,6 @@ def test_facts_json_commite_est_strictement_v3():
     assert isinstance(facts, dict)
     assert facts
     assert all(isinstance(detail, dict) and detail.get("version") == 3 for detail in facts.values())
-
-
-def test_groupes_et_puces_de_donnees_partagent_l_echelle_typographique_harmonisee():
-    """Root cause round 3 : `.incident-data-group > summary` (style.css, code
-    hérité) porte `font-weight:600` sans aucune taille de police, donc il
-    hérite du corps de page (~16px) — bien plus gros que le reste de la
-    fiche redessinée (.82-.86rem). Même lacune sur `.incident-data-value`.
-
-    Round 4 : `.incident-data-value` héritait aussi de style.css un rayon de
-    coin plein (`border-radius:999px`, pastille), jamais aligné sur les
-    autres puces de la fiche (`.detail-chip`, réduites à 12px dès le round 2
-    pour éviter l'effet pastille déformée sur texte long) — retour
-    utilisateur réel ("parfois une bulle, parfois pas")."""
-    css = _read("assets/dashboard-v2.css")
-    assert ".incident-data-group > summary { min-height:0; padding:.15rem 0; font-size:.86rem; color:var(--text-secondary); }" in css
-    assert ".incident-data-value { padding:.14rem .45rem; font-size:.82rem; border-radius:12px; }" in css
-    assert ".incident-data-types-title { grid-column:1 / -1; margin-bottom:0; font-size:.86rem; }" in css
-
-
-def test_volume_documente_plafonne_les_puces_visibles():
-    """Retour utilisateur round 3 : jusqu'à 10-12 puces dans "Volume
-    documenté" (cas réel Solimut) rendaient le champ illisible. Seules les
-    plus significatives restent visibles ; le reste se déplie."""
-    js = _read("assets/dashboard-v2.js")
-    assert "const VOLUME_VISIBLE_CAP = 4;" in js
-    assert "const sorted = [...records].sort((a, b) => (Number(b.value) || 0) - (Number(a.value) || 0));" in js
-    assert 'class="volume-more"' in js
 
 
 def test_autres_elements_documentes_est_retire_de_la_fiche():
@@ -405,3 +241,14 @@ def test_incidents_complets_ne_sont_charges_qu_a_l_ouverture_de_recherche():
     assert "async function ensureIncidents()" in js
     assert 'if (state.view === "recherche") await ensureIncidents();' in js
     assert "assets/data/incidents.json" not in init
+
+
+def test_detail_presente_un_resume_seul_et_les_sources():
+    js = _read("assets/dashboard-v2.js")
+    modal = js[js.index("async function openIncident"):js.index("function bindGlobal")]
+    assert "incidentSummaryParagraphs(incident, detail)" in modal
+    assert 'paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`)' in modal
+    assert "sourceBadges(incident)" in modal
+    assert "resolved-facts" not in modal
+    assert "qualityAlertsHtml" not in modal
+    assert "detailField" not in js

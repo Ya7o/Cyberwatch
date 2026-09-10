@@ -292,11 +292,16 @@ def test_snapshot_semantique_est_consomme_sans_second_appel(monkeypatch):
         content_hash=sfa.content_hash(entry),
         fields={
             "summary": {"value": "Un prestataire compromis a exposé des données clients d’Exemple SA.", "evidence": "un prestataire compromis a exposé des données clients"},
+            "incident_summary": [{
+                "value": "Exemple SA confirme une exposition de données clients via un prestataire.",
+                "confidence": 0.9,
+                "evidence": "Exemple SA a confirmé qu'un prestataire compromis a exposé des données clients.",
+            }],
             "third_party": {"value": "prestataire", "evidence": "un prestataire compromis"},
             "impact": {"value": "Des données clients ont été exposées.", "evidence": "a exposé des données clients"},
             "affected_datasets": [{"value": "données clients", "evidence": "données clients"}],
         },
-        statuses={"summary": "accepted"},
+        statuses={"summary": "accepted", "incident_summary": "accepted"},
     )
     monkeypatch.setattr(sfa, "extract_semantic", lambda *_: (_ for _ in ()).throw(AssertionError("second call")))
 
@@ -304,6 +309,10 @@ def test_snapshot_semantique_est_consomme_sans_second_appel(monkeypatch):
 
     assert fact["Summary"].startswith("Un prestataire")
     assert fact["Third_Party"] == "prestataire"
+    metadata = sf._loads_json(fact["Source_Metadata_JSON"])
+    assert metadata["rich_facts"]["incident_summary"][0]["value"].startswith(
+        "Exemple SA confirme"
+    )
     assert sf.semantic_promotion_gaps(fact, semantic) == []
 
 

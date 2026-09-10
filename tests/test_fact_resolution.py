@@ -28,6 +28,54 @@ def test_nom_organisation_n_est_jamais_une_synthese_publiable():
     ], organisation="Exemple SA") == "Exemple SA subit une fuite de données clients."
 
 
+def test_resume_detail_reste_attache_a_un_seul_article():
+    one = fact(
+        "CYBERATTAQUE_ORG", item_id="ITM-rich-one", summary="Résumé carte",
+        impact="Impact", threat_actor="Acteur", data_types=["e-mails"],
+        rich_facts={"incident_summary": [
+            {"value": "Un article très riche ne propose ici qu’un paragraphe."},
+        ]},
+    )
+    two = fact(
+        "FRENCHBREACHES", item_id="ITM-two",
+        rich_facts={"incident_summary": [
+            {"value": "Le premier paragraphe explique seul l’incident."},
+            {"value": "Le second apporte une conséquence distincte."},
+        ]},
+    )
+    resolved = fr.resolve_incident_facts([one, two])
+    assert resolved["summary_paragraphs"] == [
+        "Le premier paragraphe explique seul l’incident.",
+        "Le second apporte une conséquence distincte.",
+    ]
+    assert "Un article très riche" not in " ".join(resolved["summary_paragraphs"])
+
+
+def test_resume_detail_departage_par_richesse_puis_priorite_source():
+    low_priority = fact(
+        "FRENCHBREACHES", item_id="ITM-low", impact="Conséquence",
+        rich_facts={"incident_summary": [{"value": "Résumé de la source riche."}]},
+    )
+    high_priority = fact(
+        "CYBERATTAQUE_ORG", item_id="ITM-high",
+        rich_facts={"incident_summary": [{"value": "Résumé de la source prioritaire."}]},
+    )
+    assert fr.resolve_incident_summary([high_priority, low_priority]) == [
+        "Résumé de la source riche."
+    ]
+    low_priority.pop("impact")
+    assert fr.resolve_incident_summary([low_priority, high_priority]) == [
+        "Résumé de la source prioritaire."
+    ]
+
+
+def test_resume_detail_absent_est_publie_comme_liste_vide():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", summary="Exemple signale une fuite de données."),
+    ])
+    assert resolved["summary_paragraphs"] == []
+
+
 def test_victime_ne_peut_pas_revendiquer_sa_propre_attaque():
     assert not fr.is_publishable_summary(
         "Géofoncier revendique une cyberattaque visant ses données.",

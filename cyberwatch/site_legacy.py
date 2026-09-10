@@ -95,6 +95,13 @@ def _clean_rich_record(value: object, *, count: bool = False) -> dict | None:
     result: dict[str, object] = {}
     status_value = str(value.get("status") or "unknown").strip().lower()
     result["status"] = status_value if status_value in _RICH_STATUSES else "unknown"
+    confidence = value.get("confidence")
+    if (
+        isinstance(confidence, (int, float))
+        and not isinstance(confidence, bool)
+        and 0 <= confidence <= 1
+    ):
+        result["confidence"] = float(confidence)
     placeholders = {"null", "none", "unknown", "inconnu", "n/a", "na"}
     for key in (
         "type", "kind", "scope", "date", "actor", "subject", "relation",
@@ -145,6 +152,7 @@ def _rich_facts_from_metadata(row: dict) -> dict | None:
 
     payload: dict[str, object] = {"version": str(rich.get("version") or "1")}
     collections = (
+        ("incident_summary", False),
         ("affected_counts", True),
         ("claims", False),
         ("affected_systems", False),
@@ -160,7 +168,14 @@ def _rich_facts_from_metadata(row: dict) -> dict | None:
         if not isinstance(values, list):
             continue
         cleaned = []
-        for value in values[:24]:
+        limit = 2 if key == "incident_summary" else 24
+        for value in values[:limit]:
+            if (
+                key == "incident_summary"
+                and isinstance(value, dict)
+                and len(str(value.get("value") or "").strip()) > 160
+            ):
+                continue
             record = _clean_rich_record(value, count=is_count)
             if record:
                 cleaned.append(record)
