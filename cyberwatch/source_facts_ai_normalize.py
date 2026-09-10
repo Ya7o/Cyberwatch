@@ -23,11 +23,9 @@ from .normalize import classify_threat, searchable
 from .source_facts_ai_contract import (
     CONFIDENCE_THRESHOLD,
     INITIAL_ACCESS_VALUES,
-    MAX_ATTACK_FLOW_STEPS,
     MAX_EVIDENCE_CHARS,
     MAX_LABEL_VALUE_CHARS,
     MAX_INCIDENT_SUMMARY_PARAGRAPH_CHARS,
-    _ATTACK_ACTION_RE,
     _DATA_TYPE_PATTERNS,
     _HYPOTHETICAL_RE,
     _INITIAL_ACCESS_CAUSAL_RE,
@@ -178,34 +176,6 @@ def _normalize_initial_access(raw, context: str) -> dict | None:
     return fact
 
 
-def _normalize_attack_flow(raw, context: str) -> list[dict]:
-    if not isinstance(raw, list):
-        return []
-    result: list[dict] = []
-    seen = set()
-    for candidate in raw[:MAX_ATTACK_FLOW_STEPS]:
-        if not isinstance(candidate, dict):
-            continue
-        action = " ".join(str(candidate.get("action") or "").split()).strip()
-        evidence = " ".join(str(candidate.get("evidence") or "").split()).strip()
-        confidence = _valid_confidence(candidate.get("confidence"))
-        if not action or confidence is None or confidence < CONFIDENCE_THRESHOLD:
-            continue
-        if not evidence or len(evidence) > MAX_EVIDENCE_CHARS or not _grounded(evidence, context):
-            continue
-        combined = f"{action} {evidence}"
-        if _HYPOTHETICAL_RE.search(combined) or _RESPONSE_ACTION_RE.search(combined):
-            continue
-        if not _ATTACK_ACTION_RE.search(combined) and "exfiltr" not in searchable(combined):
-            continue
-        key = searchable(action)
-        if not key or key in seen:
-            continue
-        seen.add(key)
-        result.append({"action": action, "confidence": confidence, "evidence": evidence})
-    return result
-
-
 def _normalize_impact(raw, context: str) -> dict | None:
     fact = _normalize_fact(raw, context)
     if not fact:
@@ -343,8 +313,6 @@ def _normalize_record_lists(raw: dict, context: str, fields: set[str]) -> dict:
     result: dict = {}
     parsers = (
         ("affected_counts", sf._parse_count_phrase),
-        ("data_volumes", sf._extract_volume),
-        ("file_counts", sf._extract_file_count),
     )
     for key, parser in parsers:
         if key not in fields:
@@ -371,9 +339,6 @@ def _normalize_record_lists(raw: dict, context: str, fields: set[str]) -> dict:
                 value, unit, raw_value = parsed
                 if value:
                     values.append({"value": int(value), "unit": unit, "raw": raw_value, **common})
-            elif parsed:
-                unit = str(candidate.get("unit") or ("files" if key == "file_counts" else ""))
-                values.append({"value": parsed, "unit": unit, **common})
         if values:
             result[key] = values[:20]
     return result
@@ -395,10 +360,6 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
         fact = _normalize_initial_access(raw.get("initial_access"), context)
         if fact:
             result["initial_access"] = fact
-    if "attack_flow" in fields:
-        values = _normalize_attack_flow(raw.get("attack_flow"), context)
-        if values:
-            result["attack_flow"] = values
     if "impact" in fields:
         fact = _normalize_impact(raw.get("impact"), context)
         if fact:
@@ -412,7 +373,7 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
         values = _normalize_data_types(raw, context)
         if values:
             result["data_types"] = values
-    for key in ("fine_location", "evolution"):
+    for key in ("fine_location",):
         if key in fields:
             fact = _normalize_fact(raw.get(key), context)
             if fact:
@@ -431,19 +392,6 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
             grounded_threat = classify_threat(fact["evidence"])
             if not _HYPOTHETICAL_RE.search(window) and grounded_threat == fact["value"]:
                 result["threat_candidate"] = fact
-    for key in ("attack_date", "discovered_date"):
-        if key in fields:
-            fact = _normalize_fact(raw.get(key), context, require_value_in_evidence=True)
-            if fact and re.fullmatch(r"\d{4}-\d{2}-\d{2}", fact["value"]):
-                result[key] = fact
-    if "vulnerabilities" in fields:
-        values = []
-        for candidate in raw.get("vulnerabilities", []) if isinstance(raw.get("vulnerabilities"), list) else []:
-            fact = _normalize_fact(candidate, context, require_value_in_evidence=True)
-            if fact and re.fullmatch(r"CVE-\d{4}-\d{4,7}", fact["value"], re.I):
-                values.append(fact)
-        if values:
-            result["vulnerabilities"] = values[:20]
     for key in ("affected_systems", "affected_datasets"):
         if key in fields:
             values = []

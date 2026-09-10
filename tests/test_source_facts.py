@@ -132,7 +132,7 @@ def test_dispatch_et_schema_et_version_v6():
     assert fact["Extraction_Version"] == "6"
     assert sf.SOURCE_FACTS_VERSION == "6"
     assert "Initial_Access" in SOURCE_FACT_COLUMNS
-    assert "Attack_Flow_JSON" in SOURCE_FACT_COLUMNS
+    assert "Attack_Flow_JSON" not in SOURCE_FACT_COLUMNS
 
 
 def test_erreur_extracteur_ne_bloque_jamais():
@@ -391,9 +391,9 @@ def test_count_ignore_les_faux_positifs_et_continue_apres_eux():
 
 
 def test_volume_ne_devient_jamais_compteur():
+    """Un volume de données n'est pas un nombre de personnes touchées."""
     for text in ("13,8 Go", "3,4 Go", "261,4 Mo"):
         assert sf._parse_count_phrase(text) == ("", "", "")
-        assert sf._extract_volume(text) == text
 
 
 BONJOUR_HTML = """
@@ -554,18 +554,6 @@ def test_enrichissement_semantique_est_materialise(monkeypatch):
             "confidence": .99,
             "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI.",
         },
-        "attack_flow": [
-            {
-                "action": "Exploitation de la vulnérabilité",
-                "confidence": .99,
-                "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI.",
-            },
-            {
-                "action": "Exfiltration des données",
-                "confidence": .95,
-                "evidence": "L'attaquant a ensuite exfiltré les données clients.",
-            },
-        ],
         "impact": {
             "value": "Des données clients ont été exfiltrées.",
             "confidence": .95,
@@ -581,15 +569,11 @@ def test_enrichissement_semantique_est_materialise(monkeypatch):
     )
     fact = sf.extract_source_fact(make_item("CYBERATTAQUE_ORG", organisation="Société Exemple"), entry, CO)
     assert fact["Initial_Access"] == "vulnerability_exploitation"
-    assert json.loads(fact["Attack_Flow_JSON"]) == [
-        {"action": "Exploitation de la vulnérabilité", "evidence": "L'attaquant a exploité la vulnérabilité pour entrer dans le SI."},
-        {"action": "Exfiltration des données", "evidence": "L'attaquant a ensuite exfiltré les données clients."},
-    ]
     assert fact["Summary"] == "Intrusion via une vulnérabilité, suivie d'une exfiltration."
     assert fact["Impact"] == "Des données clients ont été exfiltrées."
     evidence = json.loads(fact["Evidence_JSON"])
     assert evidence["Initial_Access"]
-    assert len(evidence["Attack_Flow_JSON"]) == 2
+    assert evidence["Impact"]
 
 
 def test_ai_count_est_valide_mecaniquement(monkeypatch):

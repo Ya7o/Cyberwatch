@@ -102,25 +102,6 @@ def test_cgt_acteur_generique_et_vecteur_indetermine_sont_rejetes():
     assert "initial_access" not in resolved["fields"]
 
 
-def test_deroule_attaquant_est_propage_avec_preuve_et_statut():
-    resolved = fr.resolve_incident_facts([fact(
-        "CYBERATTAQUE_ORG",
-        claim_status="claimed",
-        attack_flow=[{
-            "action": "extraction de la base clients",
-            "evidence": "L'acteur affirme avoir extrait la base clients.",
-        }],
-    )])
-    assert resolved["attack_flow"] == [{
-        "action": "extraction de la base clients",
-        "evidence": "L'acteur affirme avoir extrait la base clients.",
-        "status": "claimed",
-        "source": "CYBERATTAQUE_ORG",
-        "sources": ["CYBERATTAQUE_ORG"],
-    }]
-    assert resolved["quality_alerts"] == []
-
-
 def test_resume_ou_la_victime_revendique_declenche_une_alerte_qualite():
     resolved = fr.resolve_incident_facts([
         fact("CYBERATTAQUE_ORG", summary="Géofoncier revendique une cyberattaque."),
@@ -714,22 +695,6 @@ def test_statut_scalaire_suit_la_revendication_dans_sa_preuve():
     )])
 
     assert resolved["fields"]["threat_actor"]["status"] == "claimed"
-
-
-def test_volume_legacy_herite_du_statut_de_sa_preuve_riche():
-    resolved = fr.resolve_incident_facts([fact(
-        "CYBERATTAQUE_ORG",
-        data_volume="335 Mo",
-        claim_status="confirmed",
-        rich_facts={"data_volumes": [{
-            "value": 335,
-            "unit": "MO",
-            "status": "claimed",
-            "evidence": "Le hacker revendique 335 Mo de données.",
-        }]},
-    )])
-
-    assert resolved["fields"]["data_volume"]["status"] == "claimed"
 
 
 def test_decompte_specifique_remplace_la_reparation_generique_du_meme_extrait():

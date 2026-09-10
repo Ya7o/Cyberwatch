@@ -77,3 +77,17 @@ def test_collection_riche_peut_etre_remplacee_par_une_correction_sourcee():
         "status": "confirmed",
         "evidence": "des adresses e-mail ont été exposées",
     }]
+
+
+def test_une_regle_visant_une_colonne_disparue_est_signalee():
+    """Une correction qui ne peut plus rien produire ne doit pas rester muette."""
+    problems = editorial_corrections.validate({
+        "items": {},
+        "source_facts": {"ITM-x": {"set": {"Attack_Flow_JSON": "valeur"}, "clear": ["Impact"]}},
+    })
+    assert problems and "Attack_Flow_JSON" in problems[0]
+    assert "Impact" not in problems[0]
+
+
+def test_le_registre_versionne_ne_contient_aucune_regle_morte():
+    assert editorial_corrections.validate() == []

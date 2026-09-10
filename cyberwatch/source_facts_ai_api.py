@@ -30,23 +30,6 @@ def _initial_access_schema() -> dict:
     return schema
 
 
-def _attack_flow_schema() -> dict:
-    return {
-        "type": "array",
-        "maxItems": MAX_ATTACK_FLOW_STEPS,
-        "items": {
-            "type": "object",
-            "properties": {
-                "action": {"type": "string"},
-                "confidence": {"type": "number"},
-                "evidence": {"type": "string"},
-            },
-            "required": ["action", "confidence", "evidence"],
-            "additionalProperties": False,
-        },
-    }
-
-
 def _record_schema(*, numeric: bool = False) -> dict:
     """Schema evidence-first for facts which are retained as rich records."""
     return {
@@ -71,19 +54,12 @@ def _schema(fields: set[str]) -> dict:
             "type": "array", "items": _fact_schema(), "maxItems": 2,
         },
         "initial_access": _initial_access_schema(),
-        "attack_flow": _attack_flow_schema(),
         "impact": _fact_schema(),
         "threat_actor": _fact_schema(),
         "third_party": _fact_schema(),
         "data_types": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "fine_location": _fact_schema(),
-        "attack_date": _fact_schema(),
-        "discovered_date": _fact_schema(),
-        "evolution": _fact_schema(),
-        "vulnerabilities": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "affected_counts": {"type": "array", "items": _record_schema(numeric=True), "maxItems": 20},
-        "data_volumes": {"type": "array", "items": _record_schema(), "maxItems": 20},
-        "file_counts": {"type": "array", "items": _record_schema(numeric=True), "maxItems": 20},
         "affected_systems": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "affected_datasets": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "activity_description": _fact_schema(),

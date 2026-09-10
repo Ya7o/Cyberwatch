@@ -42,7 +42,6 @@ _FACT_TEXT_FIELDS = {
     "Fine_Location": "fine_location",
     "Affected_Unit": "affected_unit",
     "Affected_Count_Raw": "affected_count_raw",
-    "Data_Volume_Raw": "data_volume",
     "CVSS_Raw": "cvss",
     "Attack_Date": "attack_date",
     "Discovered_Date": "discovered_date",
@@ -55,7 +54,6 @@ _FACT_TEXT_FIELDS = {
 _FACT_INT_FIELDS = {
     "Affected_Count": "affected_count",
     "File_Count": "file_count",
-    "Cyberattack_Score": "cyberattack_score",
 }
 _FACT_LIST_FIELDS = {
     "Data_Types_JSON": "data_types",
@@ -271,24 +269,6 @@ def _source_fact_payload(row: dict) -> dict | None:
             file_proof = " ".join(str(value) for value in file_proof if value)
         if payload.get("file_count") and str(file_proof or "").strip():
             payload["file_count_evidence"] = str(file_proof).strip()[:600]
-
-    raw_flow = str(row.get("Attack_Flow_JSON") or "").strip()
-    if raw_flow:
-        try:
-            flow = json.loads(raw_flow)
-        except (TypeError, ValueError):
-            flow = []
-        if isinstance(flow, list):
-            cleaned_flow = []
-            for step in flow[:4]:
-                if not isinstance(step, dict):
-                    continue
-                action = str(step.get("action") or "").strip()
-                evidence = str(step.get("evidence") or "").strip()
-                if action and evidence:
-                    cleaned_flow.append({"action": action, "evidence": evidence})
-            if cleaned_flow:
-                payload["attack_flow"] = cleaned_flow
 
     rich_facts = _rich_facts_from_metadata(row)
     if rich_facts:

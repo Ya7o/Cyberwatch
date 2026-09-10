@@ -242,6 +242,56 @@ def test_le_verdict_devient_partiel_sur_un_couple_non_resolu(outcome, attendu_pa
     assert (verdict["state"] == qualification.STATE_PARTIAL) is attendu_partial
 
 
+def _deferred(reason, fields, item_id="ITM-test"):
+    return {"item": {"Item_ID": item_id}, "pending_fields": list(fields), "reason": reason}
+
+
+def test_une_absence_dans_la_source_ne_declenche_pas_d_alerte():
+    """Un champ que l'article ne documente pas est un fait éditorial.
+
+    Le run reste PARTIAL à cause de la panne, mais le motif ne cite que les
+    champs réellement dus : les deux familles de motifs ne se confondent pas.
+    """
+    run = qualification.QualificationRun(
+        run_id="RUN-TEST", documented=True, deferred_source="archive",
+        extraction={"items_would_call": 2, "calls_attempted": 2},
+        deferred=[
+            _deferred("SEMANTIC_MISS", ["attack_date", "impact"], "ITM-absent"),
+            _deferred("TECHNICAL_FAILURE", ["summary"], "ITM-panne"),
+        ],
+    )
+    verdict = qualification.evaluate(run)
+    assert verdict["state"] == qualification.STATE_PARTIAL
+    assert verdict["pending_fields"] == 3          # la télémétrie garde tout
+    assert verdict["pending_required_fields"] == 1  # seule la panne est due
+    assert any("1 champ(s) d'extraction différé(s)" in reason
+               for reason in verdict["reasons"])
+
+
+def test_un_run_sans_panne_reste_complet_malgre_des_champs_non_documentes():
+    run = qualification.QualificationRun(
+        run_id="RUN-TEST", documented=True, deferred_source="archive",
+        extraction={"items_would_call": 1, "calls_attempted": 1},
+        deferred=[_deferred("SEMANTIC_MISS", ["attack_date", "vulnerabilities"])],
+    )
+    verdict = qualification.evaluate(run)
+    assert verdict["state"] == qualification.STATE_COMPLETE
+    assert verdict["pending_fields"] == 2
+    assert verdict["pending_required_fields"] == 0
+
+
+def test_un_motif_de_report_inconnu_continue_d_alerter():
+    """Le vocabulaire des motifs est ouvert : le silence ne relâche rien."""
+    run = qualification.QualificationRun(
+        run_id="RUN-TEST", documented=True, deferred_source="archive",
+        extraction={"items_would_call": 1, "calls_attempted": 1},
+        deferred=[_deferred("", ["summary"]), _deferred("COST_LIMIT", ["impact"])],
+    )
+    verdict = qualification.evaluate(run)
+    assert verdict["state"] == qualification.STATE_PARTIAL
+    assert verdict["pending_required_fields"] == 2
+
+
 def test_l_alerte_de_production_reprend_le_motif_de_rejet(monkeypatch):
     from cyberwatch import production
 

@@ -17,15 +17,10 @@ CORRECTIONS_PATH = Path(__file__).resolve().parents[1] / "data" / "editorial_cor
 _SEMANTIC_FIELD_BY_COLUMN = {
     "Summary": "summary",
     "Initial_Access": "initial_access",
-    "Attack_Flow_JSON": "attack_flow",
     "Impact": "impact",
     "Threat_Actor": "threat_actor",
     "Third_Party": "third_party",
     "Fine_Location": "fine_location",
-    "Attack_Date": "attack_date",
-    "Discovered_Date": "discovered_date",
-    "Evolution": "evolution",
-    "Vulnerabilities_JSON": "vulnerabilities",
     "Data_Types_JSON": "data_types",
     "Activity_Description": "activity_description",
     "Activity_Sector_Match": "activity_sector_match",
@@ -49,6 +44,42 @@ def load(path: Path = CORRECTIONS_PATH) -> dict:
         if not isinstance(payload.get(key, {}), dict):
             raise ValueError(f"Invalid editorial corrections section: {key}")
     return payload
+
+
+def validate(corrections: dict | None = None) -> list[str]:
+    """Règles qui ne peuvent plus rien produire.
+
+    Une correction visant une colonne disparue du contrat SourceFacts
+    s'applique sans effet et sans bruit : elle survit à la suppression du
+    champ et laisse croire que le fait est corrigé. On la signale ici plutôt
+    que de la laisser s'accumuler.
+    """
+    from .model import ITEM_COLUMNS, SOURCE_FACT_COLUMNS
+
+    payload = corrections if corrections is not None else load()
+    problems: list[str] = []
+    scopes = (
+        ("items", set(ITEM_COLUMNS), ("set", "clear")),
+        ("source_facts", set(SOURCE_FACT_COLUMNS), ("set", "clear", "evidence_set")),
+    )
+    for section, columns, operations in scopes:
+        for item_id, rule in (payload.get(section) or {}).items():
+            if not isinstance(rule, dict):
+                continue
+            targets: list[str] = []
+            for operation in operations:
+                value = rule.get(operation)
+                if isinstance(value, dict):
+                    targets.extend(value)
+                elif isinstance(value, list):
+                    targets.extend(str(entry) for entry in value)
+            unknown = sorted({name for name in targets if name not in columns})
+            if unknown:
+                problems.append(
+                    f"Correction éditoriale {section}/{item_id} : colonne(s) inconnue(s) "
+                    + ", ".join(unknown)
+                )
+    return problems
 
 
 def apply_items(items: list, corrections: dict | None = None) -> list[str]:

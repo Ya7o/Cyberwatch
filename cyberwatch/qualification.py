@@ -20,6 +20,7 @@ from pathlib import Path
 
 from . import store
 from .sector_activity import ACTIVITY_FIELDS
+from .source_facts_ai_contract import is_blocking_defer_reason
 
 #: Tous les traitements nécessaires de ce run sont terminés.
 STATE_COMPLETE = "COMPLETE"
@@ -211,17 +212,27 @@ def _pending_field_count(run: QualificationRun) -> tuple[int, bool]:
 
 
 def _required_run(run: QualificationRun) -> QualificationRun:
-    """Les descriptions manquantes d'un secteur étayé restent un enrichissement secondaire."""
+    """Ce que ce run devait produire et n'a pas produit.
+
+    Deux retraits, de même nature : ne comptent comme dus que les champs qu'un
+    traitement effectif aurait dû rendre. Un dossier différé pour un motif
+    sémantique décrit une source qui ne documente pas le champ — c'est un fait
+    éditorial, pas une panne, et il ne fait pas basculer le run en PARTIAL. Les
+    descriptions manquantes d'un secteur déjà étayé par ailleurs restent, elles,
+    un enrichissement secondaire.
+    """
+    deferred_rows = [row for row in run.deferred
+                     if is_blocking_defer_reason(row.get("reason"))]
     resolved = set((run.sectors or {}).get("resolved_item_ids", []))
     if not resolved:
-        return run
+        return replace(run, deferred=deferred_rows)
 
     def fields(item_id, values):
         return sorted(set(values or ()) - (ACTIVITY_FIELDS if item_id in resolved else set()))
 
     deferred = [{**row, "pending_fields": fields(
         (row.get("item") or {}).get("Item_ID"), row.get("pending_fields")
-    )} for row in run.deferred]
+    )} for row in deferred_rows]
     trace = []
     for event in run.trace:
         if not isinstance(event, dict):

@@ -410,25 +410,20 @@ def _majority(values: list[str], fallback: str) -> str:
 
 
 def _canonical_organisation_label(ordered: list[Item]) -> str:
-    """Libellé publié d'une composante fusionnée.
+    """Libellé publié d'une composante fusionnée : celui que les sources emploient le plus.
 
-    `_majority` exclut le `fallback` de son décompte : à deux membres, c'est
-    donc l'autre libellé qui gagne, sans considération de canonicité. Sur la
-    fusion du Tampon cela publiait l'alias « Ville du Tampon » alors que le
-    registre d'identité désigne « Le Tampon » comme forme canonique.
-
-    Les membres dont la clé brute est déjà la clé canonique de la composante
-    sont donc préférés ; à défaut, on retombe sur le comportement historique.
+    Décompte plein, contrairement à `_majority` qui écarte le `fallback` du
+    sien et fait donc gagner le libellé minoritaire dès qu'il n'y a que deux
+    membres. À égalité, le premier dans l'ordre alphabétique tranche : le
+    résultat ne dépend ni de l'ordre de collecte, ni du sens conventionnel
+    alias -> canonique choisi par le registre d'identité.
     """
-    fallback = ordered[0].Organisation_Raw or ""
-    canonical_key = _effective_key(ordered[0])
-    canonical = [
-        item.Organisation_Raw for item in ordered
-        if item.Organisation_Raw and organisation_key(item.Organisation_Raw) == canonical_key
-    ]
-    if canonical:
-        return _majority(canonical, canonical[0])
-    return _majority([item.Organisation_Raw for item in ordered], fallback)
+    labels = [item.Organisation_Raw for item in ordered if item.Organisation_Raw]
+    if not labels:
+        return ""
+    counts = Counter(labels)
+    top = max(counts.values())
+    return min(label for label, count in counts.items() if count == top)
 
 
 def _strict_majority(values: list[str], fallback: str) -> str:

@@ -161,7 +161,6 @@
     "ITM-ec4d0cdfab6fa8df": {
       "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
       "reason": "Le volume de 5,79 To concerne Berlin, pas SAD'S Interim.",
-      "clear": ["Data_Volume_Raw"],
       "set": {"Threat_Actor": "Rhysida", "Claim_Status": "claimed"},
       "evidence_set": {"Threat_Actor": "SAD’S Interim est la nouvelle victime revendiquée par le groupe de ransomware Rhysida."},
       "rich_remove_evidence_contains": ["État de Berlin", "administration de Berlin"]
@@ -452,13 +451,11 @@
       "set": {
         "Threat_Actor": "Panzer",
         "Claim_Status": "claimed",
-        "Summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données.",
-        "Data_Volume_Raw": "70 Go"
+        "Summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données."
       },
       "evidence_set": {
         "Threat_Actor": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer.",
-        "Summary": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer.",
-        "Data_Volume_Raw": "Les cybercriminels affirment avoir récupéré environ 70 Go de données."
+        "Summary": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer."
       },
       "rich_set": {
         "affected_counts": [],

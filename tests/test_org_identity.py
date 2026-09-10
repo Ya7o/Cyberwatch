@@ -218,6 +218,33 @@ def test_registry_invalid_origin_rejected():
     assert any("Origin invalide" in problem for problem in problems)
 
 
+def test_registry_file_rejects_manual_origin(tmp_path):
+    """Le chargement du fichier est aussi strict que la fusion.
+
+    Sans ce contrôle, une ligne refusée à l'écriture s'appliquait quand même
+    une fois posée sur disque : c'est par là qu'une décision saisie à la main
+    atteignait `effective_organisation_key`.
+    """
+    from cyberwatch import store
+
+    path = tmp_path / "organisation_identity_registry.csv"
+    for origin in ("MANUAL", "MANUAL_AUDIT"):
+        store.write_csv(path, oi.ORGANISATION_IDENTITY_REGISTRY_COLUMNS,
+                        [_row("aliasco", "canonicalco", origin=origin)])
+        with pytest.raises(ValueError, match="Origin invalide"):
+            oi.load_organisation_identity_registry(path)
+
+
+def test_registry_file_accepts_machine_origins(tmp_path):
+    from cyberwatch import store
+
+    path = tmp_path / "organisation_identity_registry.csv"
+    for origin in (oi.ORIGIN_LLM_CONFIRMED, oi.ORIGIN_DETERMINISTIC_CONFIRMED):
+        store.write_csv(path, oi.ORGANISATION_IDENTITY_REGISTRY_COLUMNS,
+                        [_row("aliasco", "canonicalco", origin=origin)])
+        assert oi.load_organisation_identity_registry(path) == {"aliasco": "canonicalco"}
+
+
 def test_registry_alias_equal_canonical_rejected():
     merged, problems = oi.merge_organisation_identity_rows([], [_row("a", "a")])
     assert merged == []

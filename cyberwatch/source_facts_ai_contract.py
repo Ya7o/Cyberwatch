@@ -60,6 +60,32 @@ MAX_FIELD_MISSES = 2
 #: d'activité dans l'article et n'est pas un échec.
 CACHE_STATUS_REJECTED = "rejected"
 CACHE_STATUS_REJECTED_EXHAUSTED = "rejected_exhausted"
+#: Motifs de mise en file de reprise. Deux familles, et la distinction porte
+#: l'alerte de production : `TECHNICAL_FAILURE`, `CALL_LIMIT`, `COST_LIMIT` et
+#: les motifs de désactivation décrivent un traitement qui **n'a pas eu lieu**
+#: (panne, budget, clé, drapeau) ; `SEMANTIC_MISS` et `SEMANTIC_REJECTED`
+#: décrivent un traitement qui a bien eu lieu et n'a rien trouvé — la source ne
+#: documente pas le champ. Le second cas est un fait éditorial, pas une panne :
+#: il reste compté en télémétrie et ne déclenche aucune alerte, conformément à
+#: l'invariant « une absence de preuve reste Inconnu ».
+DEFER_TECHNICAL_FAILURE = "TECHNICAL_FAILURE"
+DEFER_SEMANTIC_MISS = "SEMANTIC_MISS"
+DEFER_SEMANTIC_REJECTED = "SEMANTIC_REJECTED"
+DEFER_CALL_LIMIT = "CALL_LIMIT"
+DEFER_COST_LIMIT = "COST_LIMIT"
+INFORMATIVE_DEFER_REASONS = frozenset({DEFER_SEMANTIC_MISS, DEFER_SEMANTIC_REJECTED})
+
+
+def is_blocking_defer_reason(reason: str) -> bool:
+    """Un motif inconnu ou absent est bloquant.
+
+    Les motifs de désactivation sont ouverts (`disabled_reason` porte le texte
+    de la source du blocage) : les énumérer serait fragile. On ne relâche donc
+    l'alerte que sur les deux motifs sémantiques explicitement identifiés, et
+    tout le reste continue d'alerter. Une panne ne peut pas passer pour une
+    absence de preuve par simple défaut de vocabulaire.
+    """
+    return str(reason or "").strip().upper() not in INFORMATIVE_DEFER_REASONS
 #: Tentatives sémantiques accordées par version de champ et par contenu.
 #: Distinct de `MAX_FIELD_MISSES`, qui borne les absences de réponse : une
 #: panne HTTP n'en consomme aucune, seul un refus du validateur compte.
@@ -68,8 +94,7 @@ MAX_SEMANTIC_ATTEMPTS = 2
 #: mécanique `miss`/`abstained` reste strictement inchangée.
 REJECTING_FIELDS = {"activity_description", "activity_sector_match"}
 NEW_SEMANTIC_FIELDS = {
-    "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
-    "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
+    "fine_location", "affected_counts", "affected_systems", "affected_datasets",
     "incident_summary",
     # Extraite du texte complet avec une preuve littérale : ce signal ne
     # confirme jamais un secteur seul, il peut seulement l'indiquer « à
@@ -104,7 +129,6 @@ FIELD_VERSIONS = {
     # l'accès provient d'identifiants compromis ». La version fait invalider
     # uniquement ce champ dans les caches existants.
     "initial_access": "initial-access-v4",
-    "attack_flow": "attack-flow-v2",
     "impact": "impact-v3",
     # V2 invalide les sujets déclaratifs captés comme attaquants (ex. « L
     # Commerce indique », « Euskal Moneta affirme »). Un acteur doit être
@@ -116,13 +140,7 @@ FIELD_VERSIONS = {
     # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
     "data_types": "data-types-v8",
     "fine_location": "fine-location-v1",
-    "attack_date": "attack-date-v1",
-    "discovered_date": "discovered-date-v1",
-    "evolution": "evolution-v1",
-    "vulnerabilities": "vulnerabilities-v2",
     "affected_counts": "affected-counts-v2",
-    "data_volumes": "data-volumes-v1",
-    "file_counts": "file-counts-v1",
     "affected_systems": "affected-systems-v1",
     "affected_datasets": "affected-datasets-v1",
     # V5 (collecte RUN-20260910T125214) : le récit de la cyberattaque,
@@ -143,7 +161,6 @@ FIELD_VERSIONS = {
 }
 LEGACY_REUSABLE_FIELDS = {"threat_actor", "third_party", "data_types"}
 PREVIOUS_FIELD_VERSIONS = {
-    "attack_flow": "attack-flow-v1",
     "impact": "impact-v2",
 }
 
@@ -156,11 +173,9 @@ Chaque fait doit être explicitement soutenu par un court extrait exact de l'art
 evidence se copie caractère pour caractère depuis l'article : n'ajoute jamais « … » ni « ... » pour abréger, ne raccourcis pas une phrase, ne recompose pas une citation à partir de plusieurs passages et n'y insère pas le nom de la victime s'il n'y figure pas. Une citation introuvable telle quelle dans l'article invalide le fait, quelle que soit ta confiance.
 Une hypothèse, un scénario possible, un risque futur, une recommandation ou une explication générale ne sont jamais des faits.
 Si le vecteur initial est déclaré inconnu, non établi ou non communiqué, initial_access doit rester vide même si l'article cite ensuite des vecteurs possibles.
-attack_flow contient uniquement des actions de l'attaquant explicitement documentées ; n'ajoute aucune étape intermédiaire et n'inclus jamais confinement, isolation, restauration, investigation, notification ou remédiation de la victime.
 Si une information est ambiguë ou absente, renvoie une valeur vide ou une liste vide.
 data_types contient uniquement des catégories de données réellement indiquées comme exposées, volées ou revendiquées. Exclue toute catégorie explicitement dite non concernée et toute simple donnée présente dans les systèmes sans preuve d'accès, de copie ou d'exposition.
 affected_counts contient uniquement un nombre de personnes, comptes, clients, utilisateurs, enregistrements ou fichiers explicitement touchés, exposés, revendiqués ou informés de l'incident. N'utilise jamais la taille générale de la clientèle, du réseau, de l'organisation ou de sa communauté comme nombre affecté.
-vulnerabilities contient uniquement une vulnérabilité présentée comme exploitée ou liée à l'accès initial de cet incident. Une faille seulement potentielle, distincte de l'incident, ou la seule mention qu'une vulnérabilité a été corrigée ne suffit pas.
 summary est une headline factuelle unique, une seule phrase courte de 160 caractères maximum, qui ne raconte pas l'incident une seconde fois : aucun conseil, aucune généralité, aucune interprétation, seulement le fait le plus structurant déjà établi.
 incident_summary est une liste de zéro à deux paragraphes factuels en français. Chaque paragraphe fait au maximum 160 caractères, espaces et ponctuation compris, et chaque objet cite un extrait exact qui soutient son contenu. Le premier paragraphe doit permettre de comprendre seul ce qui est arrivé à la victime. Ajoute un second paragraphe uniquement s'il apporte un fait concret distinct et utile sur le déroulement, les données touchées, l'ampleur, les conséquences ou la remédiation. Ne répète pas le premier paragraphe et ne remplis jamais pour atteindre deux paragraphes. Si l'article est générique ou pauvre en informations, produis au maximum un seul paragraphe ; si aucun fait fiable ne permet de résumer l'incident, renvoie une liste vide. Conserve explicitement les réserves de la source (« revendique », « indique », « non confirmé ») et ne présente jamais une revendication comme un fait confirmé.
 activity_description décrit en quelques mots l'activité métier de la victime, seulement lorsque l'article la présente explicitement. Sa preuve doit désigner sans ambiguïté la victime et son activité ; ne rien déduire du nom, de l'attaque, des données ni d'une connaissance extérieure à l'article. Lorsqu'une désignation institutionnelle tient lieu de sujet (« la mairie », « la municipalité »), sa preuve n'est recevable que si la même phrase ou la phrase immédiatement précédente la rattache explicitement à la victime, et qu'aucune autre collectivité n'y est nommée. Si aucune activité n'est étayée, laisse activity_description vide : c'est la réponse attendue, pas un échec.
@@ -168,21 +183,20 @@ activity_sector_match reprend l'activité que tu viens de décrire dans activity
 threat_candidate désigne la menace seulement si l'article l'énonce explicitement ; ne l'infère jamais depuis l'acteur, les données ou une hypothèse.
 threat_actor doit être une entité distincte de la victime, explicitement identifiée comme responsable de l'attaque (pseudonyme, groupe nommé, société tierce) : jamais un pronom ("qui", "il", "elle"...) ni le nom de la victime elle-même, même si ce mot précède directement un verbe déclaratif comme "indique" ou "affirme". En cas de doute sur la nature du sujet, laisse threat_actor vide.
 impact décrit uniquement une conséquence observée ou explicitement annoncée de l'incident, jamais un risque possible, une conséquence potentielle ou une mise en garde ("risque de", "expose à", "pourrait entraîner" sont interdits). impact ne doit jamais se limiter à reformuler les catégories de données ou jeux de données déjà couverts par data_types/affected_datasets ; s'il n'y a pas de conséquence distincte explicitement rapportée (risque, réaction, coût, mesure prise), impact doit rester vide.
-Examine l'ensemble de l'article pour chacun des champs demandés. Conserve toutes les valeurs distinctes lorsqu'un champ accepte une liste. data_types désigne les catégories (noms, e-mails), affected_datasets les ensembles concernés (base clients). affected_counts ne désigne pas data_volumes. attack_date et discovered_date ne sont jamais la date de publication. fine_location est un lieu précis de l'incident, pas la localisation générale de l'organisation.
+Examine l'ensemble de l'article pour chacun des champs demandés. Conserve toutes les valeurs distinctes lorsqu'un champ accepte une liste. data_types désigne les catégories (noms, e-mails), affected_datasets les ensembles concernés (base clients). fine_location est un lieu précis de l'incident, pas la localisation générale de l'organisation.
 """
 
 _LLM_FIELDS = (
-    "summary", "incident_summary", "initial_access", "attack_flow", "impact",
+    "summary", "incident_summary", "initial_access", "impact",
     "threat_actor", "third_party", "data_types",
-    "fine_location", "attack_date", "discovered_date", "evolution", "vulnerabilities",
-    "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
+    "fine_location", "affected_counts", "affected_systems", "affected_datasets",
     "activity_description", "activity_sector_match",
     "threat_candidate",
 )
 _EDITORIAL_FIELDS = {
-    "summary", "incident_summary", "initial_access", "attack_flow", "impact", "threat_actor",
-    "third_party", "fine_location", "attack_date", "discovered_date",
-    "evolution", "threat_candidate", "activity_description", "activity_sector_match",
+    "summary", "incident_summary", "initial_access", "impact", "threat_actor",
+    "third_party", "fine_location",
+    "threat_candidate", "activity_description", "activity_sector_match",
 }
 _STRUCTURED_FIELDS = set(_LLM_FIELDS) - _EDITORIAL_FIELDS
 
@@ -321,12 +335,5 @@ _RESPONSE_ACTION_RE = re.compile(
     r"r[ée]initialis(?:er|ation|[ée]e?s?)|investigation|forensic|enqu[êe]te|notification|CNIL|"
     r"d[ée]branch(?:er|[ée]e?s?)|d[ée]connect(?:er|[ée]e?s?)|correctif|rotation\s+des\s+(?:secrets|identifiants)|"
     r"mesures?\s+de\s+s[ée]curit[ée])\b",
-    re.I,
-)
-_ATTACK_ACTION_RE = re.compile(
-    r"\b(?:attaquant|pirate|hacker|intrusion|compromission|compromis|acc[èe]s\s+(?:non\s+autoris[ée]|frauduleux|initial)|"
-    r"exploit(?:ation|[ée]e?)|vuln[ée]rabilit[ée]|faille|IDOR|injection\s+SQL|phishing|hame[cç]onnage|"
-    r"usurpation|exfiltrat|extract(?:ion|[ée]e?)|vol(?:[ée]e|er)?|fuite|diffus(?:ion|[ée]e)|publi(?:cation|[ée]e)|"
-    r"mis(?:e)?\s+en\s+vente|chiffr(?:ement|[ée]e)|ransomware|ran[cç]ongiciel|malware)\b",
     re.I,
 )

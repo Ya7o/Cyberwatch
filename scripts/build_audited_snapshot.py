@@ -38,10 +38,28 @@ CYBERATTAQUE_URL = (
 
 #: Référentiels recopiés tels quels : ils ne sont pas modifiés par la reprise.
 _COPIED = (
-    "enrichment_reference.csv", "organisation_identity_registry.csv",
+    "enrichment_reference.csv",
     "organisation_aliases.csv", "incident_dedup_registry.csv",
     "editorial_corrections.json", "sources.csv", "territorial_identities.csv",
 )
+
+#: L'état audité comportait une identité déjà validée entre les deux libellés
+#: de l'événement ciblé. Elle est figée ici, sous la forme que le filet
+#: quotidien produit (`Origin=LLM_CONFIRMED`, preuve et empreinte d'entrée) :
+#: la reprise testée porte sur la fusion et la redirection d'incidents, pas
+#: sur la façon dont l'identité a été établie. `data/` reste vide de toute
+#: décision saisie à la main.
+_AUDITED_IDENTITY_ROW = {
+    "Alias_Key": "ville du tampon", "Canonical_Key": "le tampon",
+    "Alias_Raw": "Ville du Tampon", "Canonical_Raw": "Le Tampon",
+    "Decision": "SAME", "Origin": "LLM_CONFIRMED", "Confidence": "0.9500",
+    "Evidence": "Les deux articles décrivent la cyberattaque annoncée par la "
+                "Ville du Tampon, commune du Tampon, le 9 septembre 2026.",
+    "First_Seen": "2026-09-10T03:23:51+00:00",
+    "Last_Validated": "2026-09-10T03:23:51+00:00",
+    "Model": "gpt-5-nano", "Prompt_Version": "2026-09-09.3",
+    "Input_Hash": "a" * 64,
+}
 
 #: Libellés d'incident que le corpus courant n'a pas encore alignés sur le
 #: registre d'identité. Ils sont sans rapport avec la reprise du Tampon : la
@@ -127,6 +145,8 @@ def build(destination: Path) -> Path:
         origin = store.DATA_DIR / name
         if origin.exists():
             shutil.copyfile(origin, data / name)
+    _write_csv(data / "organisation_identity_registry.csv",
+               list(_AUDITED_IDENTITY_ROW), [_AUDITED_IDENTITY_ROW])
 
     # Reconstituer exactement l'état audité, même après une PURGE suivie d'une
     # nouvelle collecte : les observations ciblées remplacent leurs versions

@@ -310,7 +310,7 @@ def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
     assert result["threat_actor"]["value"] == "LockBit"
 
 
-def test_enrichissement_80_20_extrait_vecteur_flow_resume_impact(monkeypatch, tmp_path):
+def test_enrichissement_80_20_extrait_vecteur_resume_impact(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     bodies = []
     entry = RawEntry(
@@ -336,18 +336,6 @@ def test_enrichissement_80_20_extrait_vecteur_flow_resume_impact(monkeypatch, tm
                 "confidence": .99,
                 "evidence": "L'attaquant a exploité une vulnérabilité du portail VPN pour obtenir un accès initial.",
             },
-            attack_flow=[
-                {
-                    "action": "Exploitation d'une vulnérabilité VPN",
-                    "confidence": .99,
-                    "evidence": "L'attaquant a exploité une vulnérabilité du portail VPN pour obtenir un accès initial.",
-                },
-                {
-                    "action": "Exfiltration de données clients",
-                    "confidence": .97,
-                    "evidence": "Il a ensuite accédé au serveur de fichiers puis exfiltré des données clients.",
-                },
-            ],
             impact={
                 "value": "Des données clients ont été exfiltrées.",
                 "confidence": .95,
@@ -358,9 +346,9 @@ def test_enrichissement_80_20_extrait_vecteur_flow_resume_impact(monkeypatch, tm
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     result = sfa.enrich(_item(), entry)
     props = set(bodies[0]["text"]["format"]["schema"]["properties"])
-    assert {"summary", "initial_access", "attack_flow", "impact"} <= props
+    assert {"summary", "initial_access", "impact"} <= props
+    assert "attack_flow" not in props  # champ retiré du schéma
     assert result["initial_access"]["value"] == "vulnerability_exploitation"
-    assert len(result["attack_flow"]) == 2
     assert result["summary"]["value"].startswith("Intrusion via")
     assert result["impact"]["value"]
 
@@ -430,41 +418,6 @@ def test_vecteur_conditionnel_impossible_a_determiner_est_inconnu():
 
     assert sfa._deterministic_initial_access(context) is None
     assert sfa._normalize_initial_access(candidate, context) is None
-
-
-def test_attack_flow_exclut_remediation_et_hypotheses(monkeypatch, tmp_path):
-    _configure(monkeypatch, tmp_path)
-    entry = RawEntry(
-        title="Exemple",
-        content=(
-            "L'attaquant a exfiltré des données clients après son intrusion. "
-            "L'entreprise a isolé les serveurs et lancé une investigation forensic. "
-            "Un mouvement latéral pourrait avoir eu lieu mais cela n'est pas confirmé."
-        ),
-    )
-
-    def fake_post(body, _runtime):
-        return _payload(_output_for(
-            body,
-            attack_flow=[
-                {
-                    "action": "Exfiltration de données clients", "confidence": .95,
-                    "evidence": "L'attaquant a exfiltré des données clients après son intrusion.",
-                },
-                {
-                    "action": "Isolation des serveurs", "confidence": .99,
-                    "evidence": "L'entreprise a isolé les serveurs et lancé une investigation forensic.",
-                },
-                {
-                    "action": "Mouvement latéral", "confidence": .9,
-                    "evidence": "Un mouvement latéral pourrait avoir eu lieu mais cela n'est pas confirmé.",
-                },
-            ],
-        ))
-
-    monkeypatch.setattr(sfa, "_post_openai", fake_post)
-    result = sfa.enrich(_item(), entry) or {}
-    assert [step["action"] for step in result["attack_flow"]] == ["Exfiltration de données clients"]
 
 
 def test_evidence_non_presente_est_rejetee(monkeypatch, tmp_path):
@@ -892,31 +845,26 @@ def test_article_riche_normalise_tous_les_faits_semantiques_et_les_revalide():
         "La base clients contient des noms et des e-mails. Les serveurs VMware ESXi ont été interrompus 48 h."
     )
     raw = {
-        "attack_date": {"value": "2026-08-12", "confidence": .9, "evidence": "attaque du 2026-08-12"},
-        "vulnerabilities": [{"value": "CVE-2026-12345", "confidence": .9, "evidence": "CVE-2026-12345"}],
         "affected_counts": [{"value": 150000, "unit": "clients", "scope": "total", "status": "confirmed", "confidence": .9, "evidence": "150 000 clients sont concernés"}],
-        "data_volumes": [{"value": "2,4 To", "unit": "TB", "scope": "total", "status": "confirmed", "confidence": .9, "evidence": "2,4 To de données"}],
-        "file_counts": [{"value": 12000, "unit": "files", "scope": "total", "status": "confirmed", "confidence": .9, "evidence": "12 000 fichiers ont été exfiltrés"}],
         "affected_systems": [{"value": "serveurs VMware ESXi", "confidence": .9, "evidence": "serveurs VMware ESXi"}],
         "affected_datasets": [{"value": "base clients", "confidence": .9, "evidence": "base clients"}],
     }
     fields = set(raw)
     result = sfa._normalize(raw, context, fields)
-    assert result["attack_date"]["value"] == "2026-08-12"
-    assert result["vulnerabilities"][0]["value"] == "CVE-2026-12345"
     assert result["affected_counts"][0]["value"] == 150000
-    assert result["data_volumes"][0]["value"] == "2,4 To"
-    assert result["file_counts"][0]["value"] == "12000"
     assert result["affected_systems"][0]["value"] == "serveurs VMware ESXi"
     assert result["affected_datasets"][0]["value"] == "base clients"
 
 
-def test_cve_llm_absente_de_la_preuve_et_date_imprecise_sont_rejetee():
-    context = "L'incident a eu lieu courant juillet."
+def test_un_champ_retire_du_schema_n_est_plus_jamais_normalise():
+    """Les champs sans lecteur ne sont plus demandés : une réponse qui en
+    contiendrait quand même ne produit rien."""
+    context = "L'attaque du 2026-08-12 a exploité CVE-2026-12345, 2,4 To exfiltrés."
     result = sfa._normalize({
-        "attack_date": {"value": "2026-07-01", "confidence": .9, "evidence": "courant juillet"},
-        "vulnerabilities": [{"value": "CVE-2026-99999", "confidence": .9, "evidence": "courant juillet"}],
-    }, context, {"attack_date", "vulnerabilities"})
+        "attack_date": {"value": "2026-08-12", "confidence": .9, "evidence": "L'attaque du 2026-08-12"},
+        "vulnerabilities": [{"value": "CVE-2026-12345", "confidence": .9, "evidence": "CVE-2026-12345"}],
+        "data_volumes": [{"value": "2,4 To", "unit": "TB", "confidence": .9, "evidence": "2,4 To exfiltrés"}],
+    }, context, {"attack_date", "vulnerabilities", "data_volumes"})
     assert result == {}
 
 

@@ -38,9 +38,17 @@ def audited_snapshot(tmp_path, monkeypatch):
     for name, target in builder.store_targets(tmp_path).items():
         monkeypatch.setattr(store, name, target)
 
-    from cyberwatch import editorial_corrections, site
+    from cyberwatch import editorial_corrections, org_identity, site
     monkeypatch.setattr(
         editorial_corrections, "CORRECTIONS_PATH", data / "editorial_corrections.json"
+    )
+    # L'état audité porte son propre registre d'identité : `effective_organisation_key`
+    # lit un singleton de module, chargé depuis `data/` à l'import.
+    monkeypatch.setattr(
+        org_identity, "ORGANISATION_IDENTITY_REGISTRY",
+        org_identity.load_organisation_identity_registry(
+            data / "organisation_identity_registry.csv"
+        ),
     )
     monkeypatch.setattr(site, "build", lambda: (0, 0))
     return data

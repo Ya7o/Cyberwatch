@@ -8,7 +8,8 @@ import os
 import sys
 from pathlib import Path
 
-from . import config, enrichment, production, qualification, reset, sector_resolution, site, status, store
+from . import (config, editorial_corrections, enrichment, production, qualification, reset,
+               sector_resolution, site, status, store)
 from .runner import MODE_MAJ, execute, make_run_context
 
 
@@ -136,6 +137,11 @@ def cmd_check(args) -> int:
         print("BASE INCOHÉRENTE")
         for problem in problems:
             print(f"! {problem}")
+        return 1
+
+    editorial_problems = editorial_corrections.validate()
+    if editorial_problems:
+        print("BASE INCOHÉRENTE : " + " ; ".join(editorial_problems))
         return 1
 
     items = store.load_items()

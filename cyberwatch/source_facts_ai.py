@@ -32,12 +32,13 @@ from .source_facts_ai_contract import (
     CONFIDENCE_THRESHOLD,
     DATA_TYPES_UNDISCLOSED_LABEL,
     DEFAULT_MODEL,
+    DEFER_CALL_LIMIT,
+    DEFER_COST_LIMIT,
     FIELD_VERSIONS,
     INITIAL_ACCESS_VALUES,
     LEGACY_PROMPT_VERSION,
     LEGACY_REUSABLE_FIELDS,
     LEGACY_SCHEMA_VERSION,
-    MAX_ATTACK_FLOW_STEPS,
     MAX_EVIDENCE_CHARS,
     MAX_FIELD_MISSES,
     MAX_SEMANTIC_ATTEMPTS,
@@ -55,7 +56,6 @@ from .source_facts_ai_contract import (
     TARGET_SOURCES,
     SemanticExtraction,
     _ACTOR_TRIGGER,
-    _ATTACK_ACTION_RE,
     _DATA_RELATION,
     _DATA_TYPES_UNDISCLOSED_RE,
     _DATA_TYPE_PATTERNS,
@@ -102,7 +102,6 @@ from .source_facts_ai_normalize import (
     _grounded,
     _negated_data_type,
     _normalize,
-    _normalize_attack_flow,
     _normalize_data_types,
     _normalize_fact,
     _normalize_impact,
@@ -218,7 +217,6 @@ def _legacy_input_hash(item: Item, entry: RawEntry, runtime: _Runtime, fields: s
 
 
 from .source_facts_ai_api import (
-    _attack_flow_schema,
     _extract_output_text,
     _fact_schema,
     _initial_access_schema,
@@ -265,7 +263,7 @@ def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set
         return requested
     # One request contains every semantic gap. Cache filtering later removes
     # fields already known without splitting this article into several calls.
-    requested.update(NEW_SEMANTIC_FIELDS | {"summary", "initial_access", "attack_flow"})
+    requested.update(NEW_SEMANTIC_FIELDS | {"summary", "initial_access"})
     from .sector_resolution import entry_sector_decision
     if entry_sector_decision(item, entry):
         requested -= REJECTING_FIELDS
@@ -299,9 +297,6 @@ def _cache_entry(runtime: _Runtime, key: str, item: Item, entry: RawEntry) -> di
 def _revalidate_previous_cached_value(field: str, value, context: str):
     if value is None:
         return None
-    if field == "attack_flow":
-        cleaned = _normalize_attack_flow(value, context)
-        return cleaned or None
     if field == "impact":
         return _normalize_impact(value, context)
     return value
@@ -621,7 +616,7 @@ def _migrate_legacy_cache(runtime: _Runtime, key: str, item: Item, entry: RawEnt
 
 def _max_output_tokens(runtime: _Runtime, fields: set[str]) -> int:
     weights = {
-        "attack_flow": 360, "data_types": 220, "summary": 160,
+        "data_types": 220, "summary": 160,
         "incident_summary": 400, "impact": 140,
     }
     estimate = 260 + sum(weights.get(field, 140) for field in fields)
@@ -705,7 +700,8 @@ def _blocked_pass(runtime: _Runtime, item: Item, entry: RawEntry, missing: set[s
         reason = getattr(runtime, "disabled_reason", "DISABLED")
         status = "disabled"
     elif runtime.calls >= runtime.max_calls or runtime.cost >= runtime.max_cost:
-        reason = "CALL_LIMIT" if runtime.calls >= runtime.max_calls else "COST_LIMIT"
+        reason = (DEFER_CALL_LIMIT if runtime.calls >= runtime.max_calls
+                  else DEFER_COST_LIMIT)
         status = "budget_blocked"
         runtime.calls_budget_blocked += 1
     else:

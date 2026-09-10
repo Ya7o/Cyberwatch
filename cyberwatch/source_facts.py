@@ -59,7 +59,6 @@ _CVSS_RE = re.compile(
     r"\bCVSS[:\s]*(?:score\s*)?(?:de\s*)?(\d{1,2}(?:[.,]\d)?)(?:\s*/\s*10)?\b",
     re.I,
 )
-_VOLUME_RE = re.compile(r"\b\d[\d\s ,.]*\s*(?:Ko|Mo|Go|To|KB|MB|GB|TB)\b", re.I)
 _FILE_COUNT_RE = re.compile(r"\b(\d[\d\s .,]*)\s*(?:fichiers?|documents?)\b", re.I)
 
 
@@ -70,14 +69,6 @@ def _extract_cves(*texts: str) -> list[str]:
 def _extract_cvss(*texts: str) -> str:
     for text in texts:
         match = _CVSS_RE.search(text or "")
-        if match:
-            return match.group(0).strip()
-    return ""
-
-
-def _extract_volume(*texts: str) -> str:
-    for text in texts:
-        match = _VOLUME_RE.search(text or "")
         if match:
             return match.group(0).strip()
     return ""
@@ -350,24 +341,6 @@ def _ai_count(ai_result: dict) -> tuple[str, str, str, str]:
     return "", "", "", ""
 
 
-def _ai_volume(ai_result: dict) -> tuple[str, str]:
-    for candidate in _ordered_ai_evidence(ai_result, "data_volumes"):
-        evidence = str(candidate.get("evidence") or "").strip()
-        value = _extract_volume(evidence)
-        if value:
-            return value, evidence
-    return "", ""
-
-
-def _ai_file_count(ai_result: dict) -> tuple[str, str]:
-    for candidate in _ordered_ai_evidence(ai_result, "file_counts"):
-        evidence = str(candidate.get("evidence") or "").strip()
-        value = _extract_file_count(evidence)
-        if value:
-            return value, evidence
-    return "", ""
-
-
 def _ai_data_types(ai_result: dict) -> tuple[list[str], dict[str, str]]:
     values = ai_result.get("data_types") if isinstance(ai_result, dict) else None
     if not isinstance(values, list):
@@ -405,27 +378,6 @@ def _ai_initial_access(ai_result: dict) -> tuple[str, str]:
     if value not in source_facts_ai.INITIAL_ACCESS_VALUES or not evidence:
         return "", ""
     return value, evidence
-
-
-def _ai_attack_flow(ai_result: dict) -> tuple[list[dict], list[str]]:
-    values = ai_result.get("attack_flow") if isinstance(ai_result, dict) else None
-    if not isinstance(values, list):
-        return [], []
-    result: list[dict] = []
-    evidence: list[str] = []
-    seen = set()
-    for candidate in values[:source_facts_ai.MAX_ATTACK_FLOW_STEPS]:
-        if not isinstance(candidate, dict):
-            continue
-        action = str(candidate.get("action") or "").strip()
-        proof = str(candidate.get("evidence") or "").strip()
-        key = searchable(action)
-        if not action or not proof or not key or key in seen:
-            continue
-        seen.add(key)
-        result.append({"action": action, "evidence": proof})
-        evidence.append(proof)
-    return result, evidence
 
 
 def _blank_fact(item: Item, spec: SourceSpec) -> dict:
@@ -667,11 +619,6 @@ def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> N
         fact["Initial_Access"] = initial_access
         evidence["Initial_Access"] = initial_evidence
 
-    attack_flow, flow_evidence = _ai_attack_flow(ai_result)
-    if attack_flow:
-        fact["Attack_Flow_JSON"] = _dumps_json(attack_flow)
-        evidence["Attack_Flow_JSON"] = flow_evidence
-
     summary, summary_evidence = _ai_text(ai_result, "summary")
     if summary:
         fact["Summary"] = summary
@@ -682,16 +629,10 @@ def _apply_semantic_enrichment(fact: dict, evidence: dict, ai_result: dict) -> N
         fact["Impact"] = impact
         evidence["Impact"] = impact_evidence
 
-    for key, column in (("fine_location", "Fine_Location"), ("attack_date", "Attack_Date"), ("discovered_date", "Discovered_Date"), ("evolution", "Evolution")):
-        value, proof = _ai_text(ai_result, key)
-        if value and not fact.get(column):
-            fact[column] = value
-            evidence[column] = proof
-
-    vulnerabilities, vulnerability_evidence = _ai_data_types({"data_types": ai_result.get("vulnerabilities", [])})
-    if vulnerabilities:
-        fact["Vulnerabilities_JSON"] = _dumps_json(vulnerabilities)
-        evidence["Vulnerabilities_JSON"] = vulnerability_evidence
+    value, proof = _ai_text(ai_result, "fine_location")
+    if value and not fact.get("Fine_Location"):
+        fact["Fine_Location"] = value
+        evidence["Fine_Location"] = proof
 
     rich: dict[str, list[dict]] = {}
     incident_summary = ai_result.get("incident_summary") if isinstance(ai_result, dict) else None
@@ -735,15 +676,10 @@ def semantic_promotion_gaps(
     scalar = {
         "summary": "Summary",
         "initial_access": "Initial_Access",
-        "attack_flow": "Attack_Flow_JSON",
         "impact": "Impact",
         "threat_actor": "Threat_Actor",
         "third_party": "Third_Party",
         "fine_location": "Fine_Location",
-        "attack_date": "Attack_Date",
-        "discovered_date": "Discovered_Date",
-        "evolution": "Evolution",
-        "vulnerabilities": "Vulnerabilities_JSON",
         "data_types": "Data_Types_JSON",
         "activity_description": "Activity_Description",
         "activity_sector_match": "Activity_Sector_Match",
@@ -880,11 +816,6 @@ def _structured_summary(fact: dict, evidence: dict) -> tuple[str, list[str]]:
     details: list[str] = []
     proofs: list[str] = []
 
-    volume = str(fact.get("Data_Volume_Raw") or "").strip()
-    if volume:
-        details.append(f"{volume} de données")
-        proofs.extend(_evidence_values(evidence.get("Data_Volume_Raw")) or [volume])
-
     affected_raw = str(fact.get("Affected_Count_Raw") or "").strip()
     affected_unit = str(fact.get("Affected_Unit") or "").strip()
     if affected_raw:
@@ -931,17 +862,6 @@ def _derive_summary(fact: dict, evidence: dict) -> None:
         proof = evidence.get("Initial_Access")
         if isinstance(proof, str) and proof:
             proofs.append(proof)
-    flow = _loads_json(str(fact.get("Attack_Flow_JSON") or ""))
-    if isinstance(flow, list) and flow:
-        actions = [str(step.get("action") or "").strip() for step in flow if isinstance(step, dict)]
-        actions = [action for action in actions if action][:2]
-        if actions:
-            parts.append("Déroulé documenté : " + " → ".join(actions) + ".")
-        flow_proofs = evidence.get("Attack_Flow_JSON") or []
-        if isinstance(flow_proofs, str):
-            flow_proofs = [flow_proofs]
-        if isinstance(flow_proofs, list):
-            proofs.extend(str(value).strip() for value in flow_proofs[:2] if str(value).strip())
     impact = str(fact.get("Impact") or "").strip()
     if impact:
         parts.append("Impact documenté : " + impact.rstrip(" .") + ".")

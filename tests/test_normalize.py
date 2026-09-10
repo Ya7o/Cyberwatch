@@ -546,20 +546,31 @@ class TestCollectiviteVilleDu:
     def test_la_collectivite_est_une_administration(self, organisation):
         assert classify_sector(organisation) == config.SECTOR_ADMIN
 
-    def test_ville_du_tampon_et_le_tampon_sont_la_meme_organisation(self):
-        """Le rapprochement est sourcé dans le registre d'identité, pas global.
+    def test_le_prefixe_administratif_ne_fusionne_jamais_de_lui_meme(self):
+        """Aucun dépouillement global du préfixe : ce serait un faux positif.
 
-        `organisation_key` reste fidèle au nom brut : généraliser la
-        suppression du préfixe fusionnerait « Ville de X » avec toute autre
-        entité nommée « X ». C'est `effective_organisation_key` qui applique la
-        décision manuelle, tracée avec sa preuve dans
-        `data/organisation_identity_registry.csv`.
+        « Ville de X » et « X » peuvent désigner deux entités distinctes — une
+        commune et une entreprise du même nom. Le rapprochement n'est donc
+        jamais déduit du libellé : il est tranché au cas par cas par le filet
+        de déduplication, qui le fait valider avec une preuve nommant les deux
+        libellés puis le persiste dans le registre d'identité.
         """
         from cyberwatch.org_identity import effective_organisation_key
 
-        assert organisation_key("Ville du Tampon") != organisation_key("Le Tampon")
+        for prefixe, nu in (("Ville du Tampon", "Le Tampon"),
+                            ("Ville de Paris", "Paris"),
+                            ("Mairie de Bordeaux", "Bordeaux")):
+            assert organisation_key(prefixe) != organisation_key(nu)
+            assert effective_organisation_key(prefixe) != effective_organisation_key(nu)
+
+    def test_une_identite_validee_rapproche_les_deux_libelles(self, monkeypatch):
+        """Une fois la décision validée et persistée, les deux clés convergent."""
+        from cyberwatch import org_identity
+
+        monkeypatch.setattr(org_identity, "ORGANISATION_IDENTITY_REGISTRY",
+                            {"ville du tampon": "le tampon"})
         assert (
-            effective_organisation_key("Ville du Tampon")
-            == effective_organisation_key("Le Tampon")
+            org_identity.effective_organisation_key("Ville du Tampon")
+            == org_identity.effective_organisation_key("Le Tampon")
             == "le tampon"
         )

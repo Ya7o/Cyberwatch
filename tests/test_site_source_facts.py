@@ -105,7 +105,6 @@ def test_source_fact_payload_omet_les_champs_vides_et_parse_les_listes():
         "Data_Types_JSON": '["emails","noms"]',
         "Vulnerabilities_JSON": '["CVE-2026-12345"]',
         "Initial_Access": "vulnerability_exploitation",
-        "Attack_Flow_JSON": '[{"action":"Exploitation CVE","evidence":"CVE exploitée"},{"action":"Exfiltration","evidence":"données exfiltrées"}]',
         "Evidence_URLs_JSON": '["https://example.test/preuve"]',
         "Extraction_Method": "FRENCHBREACHES",
         "Evidence_JSON": '{"debug":true}',
@@ -122,10 +121,6 @@ def test_source_fact_payload_omet_les_champs_vides_et_parse_les_listes():
         "data_types": ["emails", "noms"],
         "vulnerabilities": ["CVE-2026-12345"],
         "evidence_urls": ["https://example.test/preuve"],
-        "attack_flow": [
-            {"action": "Exploitation CVE", "evidence": "CVE exploitée"},
-            {"action": "Exfiltration", "evidence": "données exfiltrées"},
-        ],
     }
     assert "third_party" not in payload
     assert "Evidence_JSON" not in payload
@@ -173,17 +168,6 @@ def test_rich_facts_preserve_type_timeline_relations_et_volumes():
     assert rich["timeline"][0]["event"] == "Incident détecté"
     assert rich["relations"][0]["relation"] == "compromised_via"
     assert rich["data_volumes"][0]["unit"] == "gb"
-
-
-def test_attack_flow_invalide_est_ignore_sans_casser_le_payload():
-    payload = site._source_fact_payload({
-        "Item_ID": "ITM-a",
-        "Source_ID": "FRENCHBREACHES",
-        "Summary": "Synthèse utile",
-        "Attack_Flow_JSON": '[{"action":"Sans preuve"},{"evidence":"sans action"},"invalide"]',
-    })
-    assert payload["summary"] == "Synthèse utile"
-    assert "attack_flow" not in payload
 
 
 def test_veille_llm_reste_sur_son_renderer_historique():
@@ -236,7 +220,6 @@ def test_best_summary_prend_la_source_la_plus_riche_sans_fusion_llm():
             "source": "FRENCHBREACHES", "item_id": "ITM-b",
             "summary": "Synthèse documentée.",
             "initial_access": "compromised_credentials",
-            "attack_flow": [{"action": "Intrusion", "evidence": "preuve"}],
             "impact": "Impact", "threat_actor": "Groupe X",
         },
     ]

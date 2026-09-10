@@ -44,7 +44,6 @@ SCALAR_FIELDS = (
     "impact",
     "evolution",
     "cvss",
-    "data_volume",
 )
 UNIT_LABELS = {
     "people": "personnes",
@@ -568,35 +567,6 @@ def _claim_scalar(claims: Iterable[dict], claim_type: str) -> dict | None:
     }
 
 
-def _attack_flow_entries(facts: Iterable[dict]) -> list[dict]:
-    selected: dict[str, dict] = {}
-    for fact in _ordered_facts(facts):
-        source = _text(fact.get("source"))
-        status = _status({"status": fact.get("claim_status")})
-        steps = fact.get("attack_flow")
-        if not isinstance(steps, list):
-            continue
-        for step in steps:
-            if not isinstance(step, dict):
-                continue
-            action = _text(step.get("action"))
-            evidence = _text(step.get("evidence"))
-            if not action or not evidence:
-                continue
-            key = _norm(action)
-            if key not in selected:
-                selected[key] = {
-                    "action": action,
-                    "evidence": evidence,
-                    "status": status,
-                    "source": source,
-                    "sources": [source] if source else [],
-                }
-            elif source and source not in selected[key]["sources"]:
-                selected[key]["sources"].append(source)
-    return list(selected.values())
-
-
 def _propagation_alerts(
     facts: list[dict],
     resolved: dict,
@@ -617,7 +587,6 @@ def _propagation_alerts(
             })
 
     list_contracts = {
-        "attack_flow": "attack_flow",
         "data_types": "data_types",
         "vulnerabilities": "vulnerabilities",
     }
@@ -820,7 +789,7 @@ def resolve_incident_summary(facts: Iterable[dict]) -> list[str]:
         if not paragraphs:
             continue
         richness = sum(bool(fact.get(key)) for key in (
-            "summary", "initial_access", "attack_flow", "impact", "threat_actor",
+            "summary", "initial_access", "impact", "threat_actor",
             "third_party", "data_types", "affected_count", "evolution",
         ))
         richness += sum(bool(rich.get(key)) for key in (
@@ -969,7 +938,6 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
         "datasets": _resolve_rich_entities(ordered, "affected_datasets"),
         "claims": claims,
         "timeline": timeline,
-        "attack_flow": _attack_flow_entries(ordered),
     }
     # Les claims sont déjà publiés dans chaque fait source. Ils servent ici à
     # composer la synthèse canonique sans dupliquer tout leur détail dans la

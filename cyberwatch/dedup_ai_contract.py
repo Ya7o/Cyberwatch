@@ -34,7 +34,7 @@ STATUS_NOT_REVIEWED_PAIR_TOO_LARGE = "NOT_REVIEWED_PAIR_TOO_LARGE"
 #: batch n'invalide jamais silencieusement le cache pair-à-pair existant, et
 #: réciproquement.
 DAILY_BATCH_SCHEMA_NAME = "cyberwatch_dedup_batch_audit"
-DAILY_BATCH_PROMPT_VERSION = "2026-09-09.3"
+DAILY_BATCH_PROMPT_VERSION = "2026-09-11.1"
 DAILY_BATCH_SCHEMA_VERSION = "2"
 
 #: Seuil de confiance requis pour qu'une décision LLM soit proposée aux
@@ -87,7 +87,6 @@ FACT_FIELDS = (
     "Affected_Count",
     "Affected_Unit",
     "Affected_Count_Raw",
-    "Data_Volume_Raw",
     "File_Count",
     "Data_Types_JSON",
     "Impact",

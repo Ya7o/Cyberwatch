@@ -50,24 +50,6 @@ python scripts/check_llm_config.py
 Le fichier `.env` local est ignoré par Git. Ne jamais copier la valeur du
 secret dans une issue, un log, un rapport d'audit ou un fichier versionné.
 
-## Reprise secteur et déduplication du 6 septembre 2026
-
-La commande suivante reconstruit d'abord les CSV dans un dossier séparé :
-
-```bash
-python scripts/backfill_sector_dedup.py
-```
-
-Après revue de `validation/sector_dedup_2026-09-06/backfill/`, `--apply`
-recopie les artefacts validés dans `data/`. La reprise est idempotente. Elle
-n'appelle pas l'API OpenAI : les deux paires historiques sont appuyées par les
-décisions relues dans `audit/sector_dedup_2026-09-06/`.
-
-Le retour arrière local restaure les fichiers contenus dans
-`validation/sector_dedup_2026-09-06/before.tar.gz`, puis reconstruit le site et
-relance `check` et `validate-business`. Avant restauration, vérifier que la
-liste des chemins de l'archive reste contenue dans le dépôt.
-
 ## Notification
 
 `monitor.yml` vérifie la production toutes les six heures. Une collecte en

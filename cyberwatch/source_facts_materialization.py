@@ -8,20 +8,17 @@ from . import source_facts_ai
 
 PUBLIC_COLUMNS = {
     "summary": "Summary", "initial_access": "Initial_Access",
-    "attack_flow": "Attack_Flow_JSON", "impact": "Impact",
+    "impact": "Impact",
     "threat_actor": "Threat_Actor", "third_party": "Third_Party",
-    "fine_location": "Fine_Location", "attack_date": "Attack_Date",
-    "discovered_date": "Discovered_Date", "evolution": "Evolution",
-    "vulnerabilities": "Vulnerabilities_JSON", "data_types": "Data_Types_JSON",
+    "fine_location": "Fine_Location", "data_types": "Data_Types_JSON",
     "activity_description": "Activity_Description",
     "activity_sector_match": "Activity_Sector_Match",
 }
 RICH_FIELDS = {
-    "affected_counts", "data_volumes", "file_counts", "affected_systems", "affected_datasets",
+    "affected_counts", "affected_systems", "affected_datasets",
 }
 LIST_COLUMNS = {
-    "attack_flow": "Attack_Flow_JSON", "data_types": "Data_Types_JSON",
-    "vulnerabilities": "Vulnerabilities_JSON",
+    "data_types": "Data_Types_JSON",
 }
 
 
@@ -81,11 +78,11 @@ def _materialize_list(field: str, value: object, fact: dict, evidence: dict) -> 
     column = LIST_COLUMNS.get(field)
     if not column or str(fact.get(column) or "").strip() or not isinstance(value, list):
         return False
-    values = value if field == "attack_flow" else [
-        item.get("value") if isinstance(item, dict) else item for item in value
+    values = [
+        str(item.get("value") if isinstance(item, dict) else item).strip()
+        for item in value
     ]
-    if field != "attack_flow":
-        values = [str(item).strip() for item in values if str(item).strip()]
+    values = [item for item in values if item]
     if not values:
         return False
     fact[column] = _dumps(values)

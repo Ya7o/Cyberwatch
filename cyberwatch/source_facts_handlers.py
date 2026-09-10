@@ -15,11 +15,9 @@ from .source_facts import (
     _ai_activity,
     _ai_count,
     _ai_data_types,
-    _ai_file_count,
     _ai_sector_match,
     _ai_text,
     _ai_threat_candidate,
-    _ai_volume,
     _apply_semantic_enrichment,
     _blank_fact,
     _claim_status,
@@ -29,7 +27,6 @@ from .source_facts import (
     _extract_cvss,
     _extract_file_count,
     _extract_victim_activity,
-    _extract_volume,
     _finalize,
     _first_valid_match,
     _from_bonjourlafuite,
@@ -69,17 +66,9 @@ def _apply_semantic_details(
     else:
         metadata.pop("threat_reservation", None)
     fact["Source_Metadata_JSON"] = _dumps_json(metadata)
-    volume, volume_evidence = _ai_volume(ai_result)
-    if volume:
-        fact["Data_Volume_Raw"] = volume
-        if volume_evidence:
-            evidence["Data_Volume_Raw"] = volume_evidence
-    file_count, file_evidence = _ai_file_count(ai_result)
-    file_count = file_count or _extract_file_count(text)
+    file_count = _extract_file_count(text)
     if file_count:
         fact["File_Count"] = file_count
-        if file_evidence:
-            evidence["File_Count"] = file_evidence
     data_types, data_evidence = _ai_data_types(ai_result)
     if data_types:
         fact["Data_Types_JSON"] = _dumps_json(data_types)
@@ -429,13 +418,12 @@ def _should_clear_fact(column: str, new: dict, new_meta: dict, field_columns: di
 
 
 def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]:
-    refreshable = {"Summary", "Initial_Access", "Attack_Flow_JSON", "Impact", "Activity_Description", "Activity_Sector_Match"}
+    refreshable = {"Summary", "Initial_Access", "Impact", "Activity_Description", "Activity_Sector_Match"}
     base = {"Item_ID", "Source_ID", "Extraction_Method", "Extraction_Version", "Source_Metadata_JSON"}
 
     ai_field_for_column = {
         "Summary": "summary",
         "Initial_Access": "initial_access",
-        "Attack_Flow_JSON": "attack_flow",
         "Impact": "impact",
         "Activity_Description": "activity_description",
         "Activity_Sector_Match": "activity_sector_match",

@@ -7,6 +7,9 @@ from .model import Item
 from .source_facts_ai_contract import (
     CACHE_STATUS_REJECTED,
     CACHE_STATUS_REJECTED_EXHAUSTED,
+    DEFER_SEMANTIC_MISS,
+    DEFER_SEMANTIC_REJECTED,
+    DEFER_TECHNICAL_FAILURE,
 )
 
 
@@ -29,7 +32,7 @@ def settle(
     Une panne technique ne rend jamais rien terminal : elle redemande tout.
     """
     if not completed:
-        defer(item, entry, fields, "TECHNICAL_FAILURE")
+        defer(item, entry, fields, DEFER_TECHNICAL_FAILURE)
         return
     statuses = statuses or {}
     terminal = {field for field in fields if statuses.get(field) in {"accepted", "abstained"}}
@@ -44,7 +47,7 @@ def settle(
         # Un seul appel : deux `enqueue` successifs sur la même clé écraseraient
         # le motif scalaire. Le détail par champ reste dans `field_reasons`.
         defer(item, entry, pending,
-              "SEMANTIC_REJECTED" if rejected else "SEMANTIC_MISS",
+              DEFER_SEMANTIC_REJECTED if rejected else DEFER_SEMANTIC_MISS,
               reasons={field: str((reasons or {}).get(field, "")) for field in pending})
     if exhausted:
         source_facts_retry.mark_exhausted(

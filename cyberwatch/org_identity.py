@@ -188,9 +188,13 @@ DECISION_SAME = "SAME"
 
 ORIGIN_LLM_CONFIRMED = "LLM_CONFIRMED"
 ORIGIN_DETERMINISTIC_CONFIRMED = "DETERMINISTIC_CONFIRMED"
-ORIGIN_MANUAL = "MANUAL"
+#: Le registre n'accepte que des décisions produites et validées par la
+#: chaîne : un rapprochement saisi à la main réglerait un cas nommé sans rien
+#: apprendre au système, et masquerait au filet quotidien la paire qu'il est
+#: précisément chargé de trancher (`duplicate_audit.find_daily_llm_candidates`
+#: ne voit que ce que le déterministe a laissé séparé).
 _ALLOWED_REGISTRY_ORIGINS = frozenset({
-    ORIGIN_LLM_CONFIRMED, ORIGIN_DETERMINISTIC_CONFIRMED, ORIGIN_MANUAL,
+    ORIGIN_LLM_CONFIRMED, ORIGIN_DETERMINISTIC_CONFIRMED,
 })
 
 
@@ -216,11 +220,20 @@ def _organisation_identity_rows_by_alias(
         alias = str(row.get("Alias_Key", "")).strip()
         canonical = str(row.get("Canonical_Key", "")).strip()
         decision = str(row.get("Decision", "")).strip()
+        origin = str(row.get("Origin", "")).strip()
         if decision != DECISION_SAME:
             continue
         if not alias or not canonical or alias == canonical:
             if strict:
                 problems.append(f"Registre identité organisation : ligne invalide {row}")
+            continue
+        if origin not in _ALLOWED_REGISTRY_ORIGINS:
+            # Même contrôle qu'à la fusion : sans lui, une ligne refusée à
+            # l'écriture s'appliquait quand même une fois sur disque.
+            if strict:
+                problems.append(
+                    f"Registre identité organisation : Origin invalide {origin!r} sur {alias}"
+                )
             continue
         if alias in by_alias and by_alias[alias]["Canonical_Key"] != canonical:
             problems.append(f"Registre identité organisation : collision sur {alias}")

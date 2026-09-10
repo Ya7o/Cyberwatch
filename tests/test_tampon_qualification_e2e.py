@@ -19,7 +19,11 @@ from cyberwatch import (
     article_body,
     config,
     dedup,
+    dedup_ai,
+    dedup_ai_validation,
+    duplicate_audit,
     enrichment,
+    org_identity,
     source_facts,
     sources,
     threat_reservation,
@@ -74,6 +78,20 @@ def _item(source: str, organisation: str, url: str, threat: str, title: str) -> 
         Title=title,
         URL=url,
         Collected_As_Of="2026-09-10T07:23:51+04:00",
+    )
+
+
+@pytest.fixture
+def identite_validee(monkeypatch):
+    """Rejoue l'état d'après la décision du filet, sans refaire l'appel.
+
+    Le registre versionné n'accepte que des décisions produites par la chaîne
+    (`Origin=LLM_CONFIRMED`) : les tests dont le sujet n'est pas l'identité
+    partent donc de la décision déjà validée, sans qu'aucune ligne saisie à la
+    main n'existe dans `data/`.
+    """
+    monkeypatch.setattr(
+        org_identity, "ORGANISATION_IDENTITY_REGISTRY", {"ville du tampon": "le tampon"},
     )
 
 
@@ -172,30 +190,73 @@ def test_ville_du_tampon_est_une_collectivite_de_la_reunion(observations):
         assert incident.Localisation == "La Réunion"
 
 
-def test_les_deux_sources_du_tampon_ne_font_qu_un_incident(observations):
-    """Ligne 6 : une fiche, deux sources, sans aucun appel LLM."""
+def test_sans_decision_validee_les_deux_libelles_restent_deux_incidents(observations):
+    """Le déterministe ne devine pas une identité : il la laisse ouverte.
+
+    C'est la situation d'avant décision. Elle n'est pas un défaut : rapprocher
+    « Ville du X » de « X » sur la seule forme du libellé fusionnerait aussi
+    une commune avec l'entreprise homonyme.
+    """
+    result = _finalize(observations)
+    assert len(result.incidents) == 2
+
+
+def test_le_filet_quotidien_voit_la_paire_que_le_deterministe_a_laissee(observations):
+    """Ligne 6 : le mécanisme générique est armé sur ce cas, sans le nommer.
+
+    Le filet ne reçoit que les paires non tranchées par le déterministe : une
+    identité écrite à la main les lui cacherait, et le cas suivant, inconnu,
+    ne serait pas couvert.
+    """
+    items = [item for item, _, _ in observations]
+    candidats = duplicate_audit.find_daily_llm_candidates(items, items)
+    paires = {
+        frozenset((c.left.Organisation_Raw, c.right.Organisation_Raw)) for c in candidats
+    }
+    assert frozenset(("Ville du Tampon", "Le Tampon")) in paires
+
+
+def test_une_decision_sourcee_produit_une_identite_machine(observations):
+    """La décision passe la porte de validation et devient une ligne du registre."""
+    items = [item for item, _, _ in observations]
+    candidat = next(
+        c for c in duplicate_audit.find_daily_llm_candidates(items, items)
+        if {c.left.Organisation_Raw, c.right.Organisation_Raw}
+        == {"Ville du Tampon", "Le Tampon"}
+    )
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK, same_organisation=dedup_ai.SAME, confidence=0.95,
+        evidence="La Ville du Tampon et Le Tampon désignent la même commune : "
+                 "les deux articles décrivent la cyberattaque du 9 septembre 2026.",
+    )
+    row = dedup_ai_validation.validate_ai_dedup_decision(
+        candidat, decision, model="gpt-5-nano", input_hash="h" * 64,
+    )
+    assert row is not None
+    assert row["Origin"] == "LLM_CONFIRMED"
+    assert {row["Alias_Key"], row["Canonical_Key"]} == {"le tampon", "ville du tampon"}
+    assert row["Evidence"] and row["Input_Hash"]
+
+
+def test_une_identite_validee_fait_une_fiche_a_deux_sources(observations, identite_validee):
+    """Une fois la décision persistée, la fusion est déterministe et reproductible."""
     result = _finalize(observations)
     assert len(result.incidents) == 1
     incident = result.incidents[0]
     assert incident.Items_Count == 2
     assert set(str(incident.Sources).split(" | ")) == {"FRENCHBREACHES", "CYBERATTAQUE_ORG"}
-    # Le libellé publié est la forme canonique du registre, pas l'alias.
+    # Libellé publié : celui que les sources emploient le plus, départage stable.
     assert incident.Organisation == "Le Tampon"
 
 
-def test_le_rapprochement_du_tampon_est_source_et_non_generalise():
-    """L'alias est une décision manuelle tracée, pas une règle de préfixe globale."""
+def test_le_prefixe_administratif_n_est_jamais_generalise():
+    """Généraliser aurait fusionné toute « Ville de X » avec l'entité « X »."""
     assert organisation_key("Ville du Tampon") != organisation_key("Le Tampon")
-    assert (
-        effective_organisation_key("Ville du Tampon")
-        == effective_organisation_key("Le Tampon")
-        == "le tampon"
-    )
-    # Généraliser aurait fusionné toute « Ville de X » avec l'entité « X ».
     assert effective_organisation_key("Ville de Paris") != effective_organisation_key("Paris")
+    assert effective_organisation_key("Mairie de Bordeaux") != effective_organisation_key("Bordeaux")
 
 
-def test_tarnos_reste_separe_du_tampon(observations, make_item):
+def test_tarnos_reste_separe_du_tampon(observations, make_item, identite_validee):
     """Ligne 7 : le candidat Tarnos est du bruit de similarité de noms."""
     items = [item for item, _, _ in observations]
     tarnos = make_item(
@@ -209,7 +270,7 @@ def test_tarnos_reste_separe_du_tampon(observations, make_item):
     assert len(incidents) == 2
 
 
-def test_les_gardes_fous_de_separation_restent_actifs(observations, make_item):
+def test_les_gardes_fous_de_separation_restent_actifs(observations, make_item, identite_validee):
     """Ligne 8 : dates contradictoires et récidive séparent toujours."""
     items = [item for item, _, _ in observations]
     recidive = make_item(
@@ -448,7 +509,7 @@ def test_le_rapport_rend_les_deux_tableaux():
 
 # --- Évaluation isolée du modèle courant ------------------------------------
 
-def test_l_evaluation_n_appelle_rien_et_declare_sa_couverture(tmp_path, monkeypatch):
+def test_l_evaluation_n_appelle_rien_et_declare_sa_couverture(tmp_path, monkeypatch, identite_validee):
     """L'évaluation tourne hors réseau, hors production, et le dit."""
     import importlib.util
 
