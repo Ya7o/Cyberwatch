@@ -17,6 +17,9 @@ _STRUCTURED_SOURCE_SECTOR_ALIASES = {
     "professional services": config.SECTOR_SERVICES,
     "technology": config.SECTOR_TECH,
     "retail e commerce": config.SECTOR_RETAIL,
+    "commerce": config.SECTOR_RETAIL,
+    "public": config.SECTOR_ADMIN,
+    "secteur public": config.SECTOR_ADMIN,
 }
 
 _KNOWN_ORGANISATION_SECTORS = {

@@ -127,3 +127,19 @@ preuve, et la proposition localisant un prestataire ou un autre tiers est
 lorsque sa citation nomme explicitement la victime. Des territoires
 incompatibles dans un même incident produisent `Inconnu` au lieu d'un choix par
 ordre lexical.
+
+
+### Secteur établi et description d'activité
+
+La qualification sectorielle et la description métier sont évaluées séparément.
+Une référence exacte sourcée, une identité institutionnelle explicite ou une
+rubrique sectorielle attachée à l'article suffisent à établir le secteur sans
+forcer une description d'activité. Une rubrique source est `reported`, une
+identité ou activité interprétée reste `inferred`.
+
+Une fois le secteur étayé, les champs activité/secteur ne sont plus demandés ni
+repris automatiquement. Les refus antérieurs restent dans les traces et caches
+pour audit ; ils ne déclenchent plus d'alerte sectorielle. Les secteurs inconnus,
+non étayés ou contradictoires restent signalés, ainsi que les difficultés de
+qualification des autres champs. Les règles de priorité et le refus de
+l'activité d'un prestataire sont conservés.

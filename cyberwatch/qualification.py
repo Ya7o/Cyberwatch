@@ -13,8 +13,9 @@ revue de déduplication, puis rend un état, ses motifs et ses décomptes.
 
 from __future__ import annotations
 
+import csv
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from . import store
@@ -91,6 +92,7 @@ class QualificationRun:
     #: "live" (file courante, ne décrit que le dernier run) ou "" (inconnue).
     #: Le défaut vide préserve le chemin des runs construits à la main.
     deferred_source: str = ""
+    sectors: dict | None = None
 
     @property
     def pairs(self) -> list[dict]:
@@ -112,6 +114,18 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
     contexts = _read_json(directory / "source_facts_ai_contexts.json") if directory else None
     dedup = _read_json(directory / "dedup_review.json") if directory else None
     archived = _read_json(directory / "source_facts_retry_queue.json") if directory else None
+    sectors = archived.get("sector_qualification") if isinstance(archived, dict) else None
+    if sectors is None:
+        # Uniquement les décisions de CE run ; jamais le corpus courant pour un ancien run.
+        from . import sector_resolution
+        path = (root or store.DATA_DIR) / "sector_resolution.csv"
+        if path.exists():
+            with path.open(encoding="utf-8-sig", newline="") as stream:
+                rows = [row for row in csv.DictReader(stream) if row.get("Run_ID") == run_id]
+            if rows:
+                snapshot = _read_json((root or store.DATA_DIR) / "snapshot.json") or {}
+                incidents = store.load_incidents() if root is None and snapshot.get("Run_ID") == run_id else None
+                sectors = sector_resolution.qualification_summary(rows, incidents)
     archived = archived.get("entries") if isinstance(archived, dict) else None
     if isinstance(archived, list):
         deferred = [row for row in archived if isinstance(row, dict)]
@@ -134,6 +148,7 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
         pending_pairs=[row for row in pending if isinstance(row, dict)] if isinstance(pending, list) else [],
         documented=isinstance(extraction, dict) or isinstance(dedup, dict),
         deferred_source=deferred_source,
+        sectors=sectors if isinstance(sectors, dict) else None,
     )
 
 
@@ -157,6 +172,7 @@ def run_from_snapshot(payload: dict) -> QualificationRun:
         # Un audit sans file figée ne sait pas ce qui restait en attente : le
         # dire, plutôt que d'annoncer zéro.
         deferred_source="archive" if payload.get("deferred_entries") is not None else "",
+        sectors=payload.get("sector_qualification"),
     )
 
 
@@ -192,6 +208,28 @@ def _pending_field_count(run: QualificationRun) -> tuple[int, bool]:
     if run.deferred_source == "live":
         return sum(len(row.get("pending_fields") or ()) for row in run.deferred), True
     return 0, False
+
+
+def _required_run(run: QualificationRun) -> QualificationRun:
+    """Les descriptions manquantes d'un secteur étayé restent un enrichissement secondaire."""
+    resolved = set((run.sectors or {}).get("resolved_item_ids", []))
+    if not resolved:
+        return run
+
+    def fields(item_id, values):
+        return sorted(set(values or ()) - (ACTIVITY_FIELDS if item_id in resolved else set()))
+
+    deferred = [{**row, "pending_fields": fields(
+        (row.get("item") or {}).get("Item_ID"), row.get("pending_fields")
+    )} for row in run.deferred]
+    trace = []
+    for event in run.trace:
+        if not isinstance(event, dict):
+            continue
+        requested = fields(event.get("item_id"), event.get("requested_fields"))
+        if requested or event.get("item_id") not in resolved:
+            trace.append({**event, "requested_fields": requested})
+    return replace(run, deferred=deferred, trace=trace)
 
 
 def _pair_counts(run: QualificationRun) -> dict | None:
@@ -264,6 +302,8 @@ def evaluate(run: QualificationRun) -> dict:
     reasons: list[str] = []
     pending_fields, pending_known = _pending_field_count(run)
     blocked_pairs = _blocked_pairs(run)
+    required = _required_run(run)
+    pending_required, _ = _pending_field_count(required)
 
     if not run.run_id or not run.documented:
         return {
@@ -280,8 +320,8 @@ def evaluate(run: QualificationRun) -> dict:
     extraction = _extraction_counts(run)
     dedup = _dedup_counts(run)
 
-    if pending_fields:
-        reasons.append(f"{pending_fields} champ(s) d'extraction différé(s)")
+    if pending_required:
+        reasons.append(f"{pending_required} champ(s) d'extraction différé(s)")
     if extraction["disabled_events"]:
         reasons.append(
             f"{extraction['disabled_events']} passage(s) d'extraction désactivé(s)"
@@ -304,17 +344,26 @@ def evaluate(run: QualificationRun) -> dict:
     # satisfait, y compris quand tous les appels du run ont réussi. Une
     # abstention explicite, elle, n'entre dans aucune de ces conditions.
     pairs = extraction["pairs"]
-    if _pair_total(pairs, "rejected"):
+    if run.sectors is not None:
+        unknown = len(run.sectors.get("unknown_item_ids", []))
+        conflicts = len(run.sectors.get("conflict_item_ids", []))
+        if unknown:
+            reasons.append(f"{unknown} observation(s) au secteur inconnu ou non étayé")
+        if run.sectors.get("unknown_incidents"):
+            reasons.append(f"{run.sectors['unknown_incidents']} incident(s) au secteur inconnu ou contradictoire")
+        if conflicts:
+            reasons.append(f"{conflicts} contradiction(s) sectorielle(s)")
+    if run.sectors is None and _pair_total(pairs, "rejected"):
         reasons.append(
             f"{_pair_total(pairs, 'rejected')} couple(s) activité/secteur "
             "rejeté(s) en attente de reprise"
         )
-    if _pair_total(pairs, "rejected_exhausted"):
+    if run.sectors is None and _pair_total(pairs, "rejected_exhausted"):
         reasons.append(
             f"{_pair_total(pairs, 'rejected_exhausted')} couple(s) activité/secteur "
             "en rejet persistant (tentatives épuisées)"
         )
-    if _pair_total(pairs, "technical_failure"):
+    if run.sectors is None and _pair_total(pairs, "technical_failure"):
         reasons.append(
             f"{_pair_total(pairs, 'technical_failure')} couple(s) activité/secteur "
             "en échec technique"
@@ -335,6 +384,8 @@ def evaluate(run: QualificationRun) -> dict:
         "reasons": reasons,
         "pending_fields": pending_fields,
         "pending_fields_available": pending_known,
+        "pending_required_fields": pending_required,
+        "sectors": run.sectors,
         "pending_pairs": len(blocked_pairs),
         "extraction": extraction,
         "dedup": dedup,
@@ -343,7 +394,7 @@ def evaluate(run: QualificationRun) -> dict:
 
 def _extraction_counts(run: QualificationRun) -> dict:
     stats = run.extraction
-    events = [row for row in run.trace if isinstance(row, dict)]
+    events = [row for row in _required_run(run).trace if isinstance(row, dict)]
     return {
         "items_eligible": int(stats.get("items_eligible") or 0),
         "needed": int(stats.get("items_would_call") or 0),
@@ -390,6 +441,8 @@ def payload(run_id: str = "", root: Path | None = None) -> dict:
         "pending_fields_available": verdict["pending_fields_available"],
         "pending_pairs": verdict["pending_pairs"],
         "pairs": verdict["extraction"]["pairs"],
+        "sectors": verdict.get("sectors"),
+        "pending_required_fields": verdict.get("pending_required_fields", verdict["pending_fields"]),
         "label": INCOMPLETE_LABEL if verdict["state"] == STATE_PARTIAL else "",
     }
 
@@ -581,6 +634,10 @@ def markdown_report(run: QualificationRun) -> str:
         f"- Modèle de déduplication demandé : `{dedup['requested_model'] or '—'}` ; "
         f"exécuté : `{dedup['effective_model'] or '—'}`",
     ]
+    if run.sectors is not None:
+        lines.append(f"- Secteurs étayés : **{run.sectors['resolved']}/{run.sectors['items']}**")
+        lines.append("- Les refus activité/secteur restent consultables ; une description "
+                     "manquante ne remet pas en cause un secteur étayé.")
     for reason in verdict["reasons"]:
         lines.append(f"- ! {reason}")
     lines += [

@@ -511,7 +511,8 @@ def test_le_verdict_atteint_le_payload_de_statut():
     assert "qualification" in payload
     verdict = payload["qualification"]
     assert set(verdict) == {"run_id", "state", "reasons", "pending_fields",
-                            "pending_fields_available", "pending_pairs", "pairs", "label"}
+                            "pending_fields_available", "pending_pairs", "pairs", "label",
+                            "sectors", "pending_required_fields"}
     # La couverture sectorielle publiée et l'état d'extraction sont deux
     # lectures distinctes : les couples ne se déduisent pas des secteurs.
     assert verdict["pairs"] is None or "requested" in verdict["pairs"]

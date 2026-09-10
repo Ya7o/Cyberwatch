@@ -5,7 +5,7 @@ import os
 
 from . import source_facts, source_facts_ai, source_facts_retry, sources
 from .collectors.base import RawEntry, SourceSpec
-from .model import Item
+from .model import Incident, Item
 
 
 def extract(item: Item, entry: RawEntry, spec: SourceSpec, *,
@@ -60,6 +60,15 @@ def retry_pending(queued_at_start: list[dict], *,
     scope = fields if fields is not None else retry_scope()
     # Un dossier réduit à un rejet persistant n'a plus de travail : il reste
     # visible mais ne consomme aucun des créneaux de reprise du run.
+    from .sector_activity import ACTIVITY_FIELDS
+    from .sector_resolution import entry_sector_decision
+    for pending in queued_at_start:
+        try:
+            item, entry = source_facts_retry.restore(pending)
+        except (TypeError, ValueError):
+            continue
+        if entry_sector_decision(item, entry):
+            source_facts_retry.resolve(item, entry, ACTIVITY_FIELDS)
     active = _pending_by_key(scope)
     if source_facts_ai._runtime().enabled:
         for pending in queued_at_start:
@@ -100,3 +109,21 @@ def retry_pending(queued_at_start: list[dict], *,
         "facts_refreshed": len(retry_rows),
         "queued_after": len(source_facts_retry.load()),
     }
+
+
+def settle_sectors(rows: list[dict], incidents: list[Incident]) -> dict:
+    """Clôt la reprise sectorielle une fois les décisions finales établies."""
+    from .sector_activity import ACTIVITY_FIELDS
+    from .sector_resolution import qualification_summary
+
+    summary = qualification_summary(rows, incidents)
+    resolved = set(summary["resolved_item_ids"])
+    for pending in source_facts_retry.load():
+        if (pending.get("item") or {}).get("Item_ID") not in resolved:
+            continue
+        try:
+            item, entry = source_facts_retry.restore(pending)
+        except (TypeError, ValueError):
+            continue
+        source_facts_retry.resolve(item, entry, ACTIVITY_FIELDS)
+    return summary

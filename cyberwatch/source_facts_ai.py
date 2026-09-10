@@ -20,7 +20,7 @@ from pathlib import Path
 
 import requests
 
-from . import config, llm_runtime, source_facts_ai_retry
+from . import config, llm_runtime, source_facts_ai_retry, source_facts_retry
 from .collectors.base import RawEntry
 from .model import Item
 from .normalize import classify_threat, searchable
@@ -265,6 +265,9 @@ def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set
     # One request contains every semantic gap. Cache filtering later removes
     # fields already known without splitting this article into several calls.
     requested.update(NEW_SEMANTIC_FIELDS | {"summary", "initial_access", "attack_flow"})
+    from .sector_resolution import entry_sector_decision
+    if entry_sector_decision(item, entry):
+        requested -= REJECTING_FIELDS
     if not (seed or {}).get("impact"):
         requested.add("impact")
     return requested
@@ -726,6 +729,11 @@ def enrich(item: Item, entry: RawEntry, *,
     context_meta = runtime.record_context(prepared)
     seed = _deterministic_seed(entry)
     fields = _fields_needed(item, entry, seed)
+    from .sector_resolution import entry_sector_decision
+    if entry_sector_decision(item, entry):
+        # Les refus restent dans les traces/cache ; ils ne justifient plus
+        # de reprise automatique quand une preuve indépendante classe le secteur.
+        source_facts_retry.resolve(item, entry, REJECTING_FIELDS)
     requested = set(requested_fields or ())
     if requested_fields is not None:
         fields &= requested

@@ -92,7 +92,11 @@ def resolve(item: Item, entry: RawEntry, fields: set[str]) -> None:
             continue
         pending = set(row.get("pending_fields", [])) - fields
         changed = True
-        row = {**row, "pending_fields": sorted(pending)}
+        row = {**row, "pending_fields": sorted(pending),
+               "exhausted_fields": {k: v for k, v in row.get("exhausted_fields", {}).items()
+                                    if k not in fields},
+               "field_reasons": {k: v for k, v in row.get("field_reasons", {}).items()
+                                 if k not in fields}}
         # Un dossier dont tous les champs sont résolus disparaît ; celui qui
         # garde un rejet persistant reste visible sans être rejouable.
         if pending or row.get("exhausted_fields"):
@@ -155,7 +159,8 @@ def pending_for(record: dict, scope: set[str] | None = None) -> set[str] | None:
     return fields & scope if scope else fields
 
 
-def archive(run_id: str, root: Path | None = None) -> Path | None:
+def archive(run_id: str, root: Path | None = None, *,
+            sector_qualification: dict | None = None) -> Path | None:
     """Fige la file telle qu'elle est à la fin de ce run.
 
     Les rapports historiques cessent ainsi de dépendre de la file courante,
@@ -178,5 +183,6 @@ def archive(run_id: str, root: Path | None = None) -> Path | None:
         "run_id": str(run_id),
         "archived_at": dt.datetime.now(dt.UTC).isoformat(),
         "entries": load(),
+        "sector_qualification": sector_qualification,
     })
     return path

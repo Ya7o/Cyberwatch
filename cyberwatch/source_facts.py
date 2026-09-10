@@ -654,7 +654,10 @@ _FB_SECTOR_RE = re.compile(
 
 
 def _native_frenchbreaches_sector(text: str) -> str:
-    match = _FB_SECTOR_RE.search(text or "")
+    # Une rubrique sur sa propre ligne appartient à cet article, sans exiger
+    # de description métier ni absorber le titre situé sur la ligne suivante.
+    line = re.search(r"(?im)^\s*[—–-]?\s*Secteur\s*[:—–-]?\s*([^\n]{2,60})$", text or "")
+    match = line or _FB_SECTOR_RE.search(text or "")
     return " ".join(match.group(1).split()).strip(" -:;.") if match else ""
 
 
@@ -777,6 +780,20 @@ def sanitize_source_facts(facts: list[dict]) -> tuple[list[dict], list[str]]:
         semantic_statuses = metadata.get("_source_facts_semantic_status")
         semantic_statuses = dict(semantic_statuses) if isinstance(semantic_statuses, dict) else {}
         touched = False
+
+        from .sector_activity import describes_incident
+        activity = str(fact.get("Activity_Description") or "")
+        if activity and describes_incident(activity):
+            metadata["rejected_activity_description"] = {
+                "value": activity, "evidence": evidence.get("Activity_Description", ""),
+                "reason": "ACTIVITY_NOT_DESCRIBED",
+            }
+            for column, field in (("Activity_Description", "activity_description"),
+                                  ("Activity_Sector_Match", "activity_sector_match")):
+                fact[column] = ""
+                evidence.pop(column, None)
+                semantic_statuses[field] = "rejected_quality"
+            touched = True
 
         actor = str(fact.get("Threat_Actor") or "").strip()
         if actor and not _valid_actor(actor):

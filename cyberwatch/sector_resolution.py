@@ -6,7 +6,8 @@ from dataclasses import dataclass
 
 from . import config
 from . import sector as sector_policy
-from .model import Item
+from .collectors.base import RawEntry
+from .model import Incident, Item
 from .normalize import organisation_key
 
 SECTOR_UNKNOWN_TARGET_PCT = 10.0  # Alerte, jamais un secteur par défaut.
@@ -197,3 +198,40 @@ def fact_transport_gaps(items: list[Item], facts: list[dict], reference: dict) -
 def unknown_rate(items: list[Item]) -> float:
     unknown = sum(item.Sector == config.SECTOR_UNKNOWN for item in items)
     return round(100.0 * unknown / len(items), 2) if items else 0.0
+
+
+# Une valeur héritée sans preuve n'est pas une qualification achevée.
+SUPPORTED_REASONS = frozenset({
+    "REFERENCE_EXACT", "ORGANISATION_NAME_RULE", "SOURCE_SECTOR_RAW",
+    "ACTIVITY_RULE", "ACTIVITY_EVIDENCE_RULE", "SEMANTIC_ACTIVITY_MATCH",
+    "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+})
+
+
+def entry_sector_decision(item: Item, entry: RawEntry) -> SectorDecision | None:
+    """Preuve indépendante de la description métier, disponible avant le LLM."""
+    from . import article_body, enrichment
+    from .source_facts import _native_frenchbreaches_sector
+
+    raw = entry.sector
+    if item.Source_ID == "FRENCHBREACHES":
+        raw = _native_frenchbreaches_sector(article_body.body(entry.content)) or raw
+    decision = resolve_item(item, {"Source_Sector_Raw": raw}, enrichment.load_reference())
+    return decision if decision.reason in SUPPORTED_REASONS and _valid(decision.sector) else None
+
+
+def qualification_summary(rows: list[dict], incidents: list[Incident] | None = None) -> dict:
+    """Couverture sectorielle distincte de la qualité d'une description métier."""
+    resolved = [row["Item_ID"] for row in rows
+                if _valid(str(row.get("Resolved_Sector") or ""))
+                and row.get("Reason") in SUPPORTED_REASONS]
+    conflicts = [row["Item_ID"] for row in rows if "CONFLICT" in str(row.get("Reason", ""))]
+    unknown = [row["Item_ID"] for row in rows if row["Item_ID"] not in resolved]
+    unknown_incidents = (sum(i.Secteur == config.SECTOR_UNKNOWN for i in incidents)
+                         if incidents is not None else None)
+    return {
+        "resolved_item_ids": sorted(resolved), "unknown_item_ids": sorted(unknown),
+        "conflict_item_ids": sorted(conflicts), "items": len(rows),
+        "resolved": len(resolved), "unknown_incidents": unknown_incidents,
+        "state": "PARTIAL" if unknown or unknown_incidents else "COMPLETE",
+    }

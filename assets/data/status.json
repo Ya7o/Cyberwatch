@@ -1619,11 +1619,28 @@
   "pending_fields": 43,
   "pending_fields_available": true,
   "pending_pairs": 0,
+  "pending_required_fields": 31,
   "reasons": [
-   "43 champ(s) d'extraction différé(s)",
-   "6 couple(s) activité/secteur rejeté(s) en attente de reprise"
+   "31 champ(s) d'extraction différé(s)"
   ],
   "run_id": "RUN-20260910T155431",
+  "sectors": {
+   "conflict_item_ids": [],
+   "items": 7,
+   "resolved": 7,
+   "resolved_item_ids": [
+    "ITM-0c085da888611a12",
+    "ITM-297a7e21d0f7da49",
+    "ITM-3a1f12b53d6e809e",
+    "ITM-56fe2e286f88ef44",
+    "ITM-5d429a6cb36dada4",
+    "ITM-5fea535fff602aa4",
+    "ITM-f2c9b54af4eae1da"
+   ],
+   "state": "COMPLETE",
+   "unknown_incidents": 0,
+   "unknown_item_ids": []
+  },
   "state": "PARTIAL"
  },
  "run": {

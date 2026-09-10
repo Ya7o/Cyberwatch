@@ -861,17 +861,26 @@ def execute(
     report.llm_calls, report.llm_cost_usd = _llm_totals()
 
     if persist:
-        source_facts_ai._runtime().checkpoint(force=True)
-        # La file est globale et sans identifiant de run : sans cette copie,
-        # un rapport historique décrirait l'état courant, pas le sien.
-        source_facts_retry.archive(context.run_id)
-        llm_runtime._write_stats()
-        _persist(
-            report,
-            watch_rows if not offline else [],
-            persist_snapshot=offline or (report.overall == status.OK and not report.problems),
-        )
+        _checkpoint_and_persist(report, watch_rows, offline)
     return report
+
+
+def _checkpoint_and_persist(report: RunReport, watch_rows: list[dict], offline: bool) -> None:
+    context = report.context
+    sector_summary = runner_source_facts.settle_sectors(
+        report.sector_resolution_rows, report.incidents
+    )
+    report.source_facts_retry_summary["queued_after"] = len(source_facts_retry.load())
+    source_facts_ai._runtime().checkpoint(force=True)
+    # La file est globale et sans identifiant de run : sans cette copie,
+    # un rapport historique décrirait l'état courant, pas le sien.
+    source_facts_retry.archive(context.run_id, sector_qualification=sector_summary)
+    llm_runtime._write_stats()
+    _persist(
+        report,
+        watch_rows if not offline else [],
+        persist_snapshot=offline or (report.overall == status.OK and not report.problems),
+    )
 
 
 def _run_source_rows(report: RunReport) -> list[dict]:

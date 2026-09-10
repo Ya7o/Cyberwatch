@@ -70,6 +70,15 @@ def organisation_span(organisation: str, evidence: str) -> tuple[int, int] | Non
     return match.span() if match else None
 
 
+def describes_incident(value: str) -> bool:
+    """Un récit de victimisation ne décrit pas le métier de l'organisation."""
+    normalized = searchable(value)
+    event = re.search(r"\b(?:est|etait|a ete) (?:victime|touchee?|concernee?|affectee?)\b", normalized)
+    # Une apposition métier avant le récit reste une preuve d'activité :
+    # « Acme, plateforme dédiée à l'emploi, est concernée » est exploitable.
+    return bool(event and not _ACTIVITY.search(normalized[:event.start()]))
+
+
 def supported_activity(organisation: str, value: str, evidence: str) -> bool:
     proof = searchable(evidence)
     segments = re.split(r"(?<=[.!?;])\s+|\n+", evidence)
@@ -88,6 +97,8 @@ def supported_activity(organisation: str, value: str, evidence: str) -> bool:
         body = proof[span[1]:].strip()
         if not _SUBJECT.search(body):
             return False
+    if describes_incident(value):
+        return False
     if re.search(r"\b(?:son|ses|le|un|du|d un) (?:prestataire|fournisseur|partenaire|client)\b", body):
         return False
     if re.search(r"\b(?:utilise|fait appel|client de|via)\b", body):
