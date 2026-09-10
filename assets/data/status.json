@@ -1607,12 +1607,23 @@
   }
  },
  "qualification": {
-  "label": "",
+  "label": "Qualification incomplète",
+  "pairs": {
+   "rejected": {
+    "from_cache": 0,
+    "from_call": 6,
+    "total": 6
+   },
+   "requested": 6
+  },
   "pending_fields": 0,
+  "pending_fields_available": true,
   "pending_pairs": 0,
-  "reasons": [],
+  "reasons": [
+   "6 couple(s) activité/secteur rejeté(s) en attente de reprise"
+  ],
   "run_id": "RUN-20260910T125214",
-  "state": "COMPLETE"
+  "state": "PARTIAL"
  },
  "run": {
   "as_of": "2026-09-10T12:52:14.462282+04:00",
