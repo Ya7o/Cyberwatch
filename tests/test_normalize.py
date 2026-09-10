@@ -547,4 +547,19 @@ class TestCollectiviteVilleDu:
         assert classify_sector(organisation) == config.SECTOR_ADMIN
 
     def test_ville_du_tampon_et_le_tampon_sont_la_meme_organisation(self):
-        assert organisation_key("Ville du Tampon") == organisation_key("Le Tampon")
+        """Le rapprochement est sourcé dans le registre d'identité, pas global.
+
+        `organisation_key` reste fidèle au nom brut : généraliser la
+        suppression du préfixe fusionnerait « Ville de X » avec toute autre
+        entité nommée « X ». C'est `effective_organisation_key` qui applique la
+        décision manuelle, tracée avec sa preuve dans
+        `data/organisation_identity_registry.csv`.
+        """
+        from cyberwatch.org_identity import effective_organisation_key
+
+        assert organisation_key("Ville du Tampon") != organisation_key("Le Tampon")
+        assert (
+            effective_organisation_key("Ville du Tampon")
+            == effective_organisation_key("Le Tampon")
+            == "le tampon"
+        )

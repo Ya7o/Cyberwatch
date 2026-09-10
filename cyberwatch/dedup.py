@@ -16,7 +16,7 @@ from .incident_dedup import decision_map as incident_decision_map
 from .incident_dedup import pair_key as incident_pair_key
 from .model import Incident, Item
 from .sector_resolution import component_sector
-from .normalize import _base_organisation_key, date_or_empty, searchable
+from .normalize import _base_organisation_key, date_or_empty, organisation_key, searchable
 from .org_identity import effective_organisation_key
 from . import threat_resolution
 
@@ -409,6 +409,28 @@ def _majority(values: list[str], fallback: str) -> str:
     return min(value for value, count in counts.items() if count == top)
 
 
+def _canonical_organisation_label(ordered: list[Item]) -> str:
+    """Libellé publié d'une composante fusionnée.
+
+    `_majority` exclut le `fallback` de son décompte : à deux membres, c'est
+    donc l'autre libellé qui gagne, sans considération de canonicité. Sur la
+    fusion du Tampon cela publiait l'alias « Ville du Tampon » alors que le
+    registre d'identité désigne « Le Tampon » comme forme canonique.
+
+    Les membres dont la clé brute est déjà la clé canonique de la composante
+    sont donc préférés ; à défaut, on retombe sur le comportement historique.
+    """
+    fallback = ordered[0].Organisation_Raw or ""
+    canonical_key = _effective_key(ordered[0])
+    canonical = [
+        item.Organisation_Raw for item in ordered
+        if item.Organisation_Raw and organisation_key(item.Organisation_Raw) == canonical_key
+    ]
+    if canonical:
+        return _majority(canonical, canonical[0])
+    return _majority([item.Organisation_Raw for item in ordered], fallback)
+
+
 def _strict_majority(values: list[str], fallback: str) -> str:
     meaningful = [value for value in values if value and value != fallback]
     if not meaningful:
@@ -459,10 +481,7 @@ def _incident_from_component(
         Incident_ID=stable_id or incident_id(incident_key, ordered[0].Item_ID),
         Date=date,
         Date_Basis=basis,
-        Organisation=_majority(
-            [item.Organisation_Raw for item in ordered],
-            ordered[0].Organisation_Raw or "",
-        ),
+        Organisation=_canonical_organisation_label(ordered),
         Secteur=component_sector(ordered),
         Menace=threat_resolution.resolve_component(ordered, facts_by_item).value,
         Localisation=_preferred_enrichment(ordered, "Location", config.LOC_INCONNU),

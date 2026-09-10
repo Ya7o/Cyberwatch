@@ -335,9 +335,15 @@ _INCIDENT_COUNT_CONTEXT_RE = re.compile(
     r"inform[ée]s? de l['’]incident|donn[ée]es?|enregistrements?)\b",
     re.I,
 )
+#: Contextes où un nombre décrit la taille de l'organisation ou de son parc,
+#: jamais un décompte de victimes. « Elle compte environ 82 600 habitants »
+#: (Le Tampon, 09/09/2026) est le cas type : une donnée de cadrage
+#: encyclopédique, sans rapport avec l'incident.
 _BACKGROUND_COUNT_CONTEXT_RE = re.compile(
     r"\b(?:en circulation|dans (?:son|le) r[ée]seau|utilisateurs? particuliers|"
-    r"professionnels? dans son r[ée]seau|membres? du r[ée]seau)\b",
+    r"professionnels? dans son r[ée]seau|membres? du r[ée]seau|"
+    r"habitants?|population|administr[ée]s?|licenci[ée]s?|"
+    r"salari[ée]s? du groupe|effectifs?)\b",
     re.I,
 )
 
