@@ -16,7 +16,9 @@ def test_collecte_planifiee_a_un_seul_passage_quotidien():
 
 def test_collecte_planifiee_ne_reconstruit_plus_l_historique():
     workflow = _workflow()
-    assert "if: github.event_name == 'workflow_dispatch'" not in workflow
+    collect_step = workflow.split("- name: Collecter", 1)[1].split("- name:", 1)[0]
+    assert "github.event_name != 'workflow_dispatch'" in collect_step
+    assert "python -m cyberwatch maj" in collect_step
     assert "COLLECTION_EPOCH" not in workflow
     assert "python -m cyberwatch maj" in workflow
     assert "create" not in workflow

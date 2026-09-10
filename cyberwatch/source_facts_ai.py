@@ -106,6 +106,7 @@ from .source_facts_ai_normalize import (
     _normalize_record_lists,
     _normalize_summary,
     _truncate_context,
+    prepared_context,
     _valid_confidence,
     content_hash,
 )
@@ -140,6 +141,40 @@ def field_statuses(item: Item, entry: RawEntry) -> dict[str, str]:
         if status in {"accepted", "miss", "abstained"}:
             result[field] = status
     return result
+
+
+def _record_cache_read(
+    runtime: _Runtime, item: Item, entry: RawEntry, fields: set[str],
+    values: dict, satisfied: set[str], context_meta: dict,
+) -> None:
+    """Journalise une lecture de cache, valeur par valeur.
+
+    L'audit du 10 septembre 2026 comptait 17 valeurs acceptées réutilisées et
+    40 abstentions sans qu'aucune trace du run ne dise lesquelles ni sur quel
+    article : une collecte sans appel restait donc indocumentée. `effective_model`
+    reste vide ici — aucune inférence n'a eu lieu dans ce run.
+    """
+    read = sorted(fields & satisfied)
+    if not read:
+        return
+    entries = (runtime.cache.get(_cache_item_key(item, entry, runtime)) or {}).get("fields") or {}
+    runtime.record_event(
+        item_id=item.Item_ID, url=item.URL, status="cache_read",
+        content_hash=_content_hash(entry), context=context_meta,
+        requested_fields=read, effective_model="",
+        cached_model=(runtime.cache.get(_cache_item_key(item, entry, runtime)) or {}).get(
+            "effective_model", ""
+        ),
+        fields={
+            field: {
+                "status": str((entries.get(field) or {}).get("status") or ""),
+                "version": str((entries.get(field) or {}).get("version") or ""),
+                "value": values.get(field),
+                "rejection_reason": str((entries.get(field) or {}).get("rejection_reason") or ""),
+            }
+            for field in read
+        },
+    )
 
 
 def _cache_item_key(item: Item, entry: RawEntry, runtime: _Runtime) -> str:
@@ -251,6 +286,34 @@ def _cache_value_present(value) -> bool:
     return value not in (None, "", [], {})
 
 
+#: Statut terminal d'une valeur retirée par une évolution de contrat ou par une
+#: revalidation. Elle reste lisible dans le cache et dans la trace, mais aucun
+#: chemin ne la republie : seul `accepted` est matérialisé.
+CACHE_STATUS_INVALIDATED = "invalidated"
+
+
+def _invalidate_cached_field(
+    runtime: _Runtime, field: str, cached: dict, version: str, reason: str
+) -> None:
+    """Retire une valeur du cache sans l'effacer de la trace.
+
+    L'audit demandait qu'une valeur invalidée reste consultable — c'est le seul
+    moyen de distinguer les étages « réponse brute », « validation » et
+    « fait publié » — mais qu'elle ne puisse plus revenir comme acceptée. Elle
+    est donc déplacée dans `invalidated_value` et son statut devient terminal.
+    """
+    runtime.fields_invalidated += 1
+    if not _cache_value_present(cached.get("invalidated_value")):
+        cached["invalidated_value"] = cached.get("value")
+    cached.update({
+        "status": CACHE_STATUS_INVALIDATED,
+        "value": None,
+        "invalidated_from_version": cached.get("version"),
+        "invalidated_reason": reason,
+        "version": version,
+    })
+
+
 def _cache_miss_count(cached: dict) -> int:
     try:
         return max(0, int(cached.get("misses") or 0))
@@ -276,10 +339,18 @@ def _read_field_cache(
         if cached.get("version") != current_version:
             previous = PREVIOUS_FIELD_VERSIONS.get(field)
             if previous and cached.get("version") == previous:
-                cached["value"] = _revalidate_previous_cached_value(field, cached.get("value"), context)
+                revalidated = _revalidate_previous_cached_value(field, cached.get("value"), context)
+                if revalidated is None and _cache_value_present(cached.get("value")):
+                    _invalidate_cached_field(
+                        runtime, field, cached, current_version, "REVALIDATION_REJECTED"
+                    )
+                    continue
+                cached["value"] = revalidated
                 cached["version"] = current_version
             else:
-                runtime.fields_invalidated += 1
+                _invalidate_cached_field(
+                    runtime, field, cached, current_version, "CONTRACT_VERSION_CHANGED"
+                )
                 continue
 
         value = cached.get("value")
@@ -311,6 +382,12 @@ def _read_field_cache(
                 cached["status"] = status
                 cached["misses"] = max(1, _cache_miss_count(cached))
                 runtime.legacy_null_migrations += 1
+
+        if status == CACHE_STATUS_INVALIDATED:
+            # Terminal : le champ est redemandé, mais son statut n'est pas
+            # réécrit en `miss`, sans quoi la raison du retrait disparaîtrait
+            # du cache après deux passes.
+            continue
 
         if status == "miss":
             misses = max(1, _cache_miss_count(cached))
@@ -471,6 +548,8 @@ def enrich(item: Item, entry: RawEntry, *,
 
     runtime = _runtime()
     runtime.items_eligible += 1
+    prepared = prepared_context(entry)
+    context_meta = runtime.record_context(prepared)
     seed = _deterministic_seed(entry)
     fields = _fields_needed(item, entry, seed)
     requested = set(requested_fields or ())
@@ -512,9 +591,11 @@ def enrich(item: Item, entry: RawEntry, *,
         source_facts_ai_retry.settle(item, entry, fields, completed=True, statuses=statuses)
         runtime.cache_hits += 1
         runtime.items_fully_cached += 1
+        _record_cache_read(runtime, item, entry, fields, cached, satisfied, context_meta)
         return {**seed, **cached} or None
     if satisfied:
         runtime.items_partially_cached += 1
+        _record_cache_read(runtime, item, entry, satisfied, cached, satisfied, context_meta)
     runtime.items_would_call += 1
     if not runtime.enabled:
         source_facts_ai_retry.defer(
@@ -522,6 +603,7 @@ def enrich(item: Item, entry: RawEntry, *,
         )
         runtime.record_event(item_id=item.Item_ID, url=item.URL, status="disabled",
                              requested_fields=sorted(missing), content_hash=_content_hash(entry),
+                             context=context_meta, effective_model="",
                              reason=getattr(runtime, "disabled_reason", "DISABLED"))
         return {**seed, **cached} or None
     if runtime.calls >= runtime.max_calls or runtime.cost >= runtime.max_cost:
@@ -530,10 +612,16 @@ def enrich(item: Item, entry: RawEntry, *,
         runtime.calls_budget_blocked += 1
         runtime.record_event(item_id=item.Item_ID, url=item.URL, status="budget_blocked",
                              requested_fields=sorted(missing), content_hash=_content_hash(entry),
+                             context=context_meta, effective_model="",
                              reason="CALL_LIMIT" if runtime.calls >= runtime.max_calls else "COST_LIMIT")
         return {**seed, **cached} or None
 
     context = _truncate_context(full_context, runtime.max_context_chars)
+    if len(context) != len(full_context):
+        # La réduction imposée par la limite est tracée explicitement : sans
+        # cela, une réponse jugée sur un texte amputé serait indiscernable
+        # d'une réponse jugée sur l'article entier.
+        context_meta = {**context_meta, "truncated": True, "submitted_chars": len(context)}
     normalized, completed = _perform_request(item, entry, context, missing, runtime, key)
     statuses = field_statuses(item, entry) if completed else None
     source_facts_ai_retry.settle(item, entry, missing, completed=completed, statuses=statuses)

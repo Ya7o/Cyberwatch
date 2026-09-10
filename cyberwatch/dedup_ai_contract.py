@@ -24,6 +24,10 @@ STATUS_ERROR = "ERROR"
 #: (nombre ou taille), à distinguer explicitement d'une absence de candidat
 #: ou d'un filet désactivé (§Lot 15) : ce n'est jamais une absence de doublon.
 STATUS_NOT_REVIEWED_CAPACITY = "NOT_REVIEWED_CAPACITY"
+#: Paire dont la seule charge utile dépasse déjà le budget du batch. Elle est
+#: différée telle quelle : tronquer son JSON produirait un objet incomplet que
+#: le modèle jugerait sur des faits amputés, sans que rien ne le signale.
+STATUS_NOT_REVIEWED_PAIR_TOO_LARGE = "NOT_REVIEWED_PAIR_TOO_LARGE"
 
 #: Batch quotidien (§Lot 3) : version de prompt et de schéma distinctes du
 #: challenger paire-à-paire historique, afin qu'un changement de forme de

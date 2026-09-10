@@ -9,6 +9,9 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 ## Invariants
 
 - Une MAJ lit seulement aujourd'hui et hier et conserve le corpus existant.
+- `MAJ` / `maj` lance `python -m cyberwatch maj`, y compris après une purge.
+- `PURGE` / `purge` lance `python -m cyberwatch purge` : vider le corpus,
+  les caches et files de reprise, puis générer un dashboard vide, sans collecte.
 - `data/` est canonique et `assets/data/` est généré.
 - Une absence de preuve reste `Inconnu`.
 - Une panne de source est journalisée et n'est pas masquée.
@@ -20,7 +23,7 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 
 - `.github/workflows/ci.yml` : smoke tests ;
 - `.github/workflows/collect.yml` : collecte quotidienne ou manuelle et
-  publication directe sur `main`.
+  publication directe sur `main`, avec choix manuel MAJ ou PURGE.
 
 Ne pas ajouter de branche `prod`, golden, campagne de qualification, workflow
 de promotion, reset parallèle ou nouvelle couche sans besoin produit réel.

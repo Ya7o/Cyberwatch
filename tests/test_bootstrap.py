@@ -1,4 +1,4 @@
-"""Contrats de bootstrap : une MAJ ne peut jamais initialiser une base vide."""
+"""Contrats de bootstrap : une MAJ accepte une base neuve, jamais incohérente."""
 
 from types import SimpleNamespace
 
@@ -43,11 +43,23 @@ def valid_snapshot(make_item, as_of="2026-08-14T08:00:00+04:00"):
     })
 
 
-def test_maj_without_snapshot_is_refused(tmp_path, monkeypatch, capsys):
+def test_maj_without_snapshot_is_allowed(tmp_path, monkeypatch):
     isolate_store(tmp_path, monkeypatch)
     args = SimpleNamespace(as_of=None, start=None, layers="all")
-    assert cli.cmd_maj(args) == 1
-    assert "Aucun snapshot Cyberwatch valide" in capsys.readouterr().out
+    called = []
+    monkeypatch.setattr(cli, "execute", lambda context: called.append(context) or SimpleNamespace(overall=status.OK))
+    monkeypatch.setattr(cli, "_print_summary", lambda report: None)
+    monkeypatch.setattr(cli.site, "build", lambda: None)
+    assert cli.cmd_maj(args) == 0
+    assert len(called) == 1
+
+
+def test_maj_refuses_incoherent_base(tmp_path, monkeypatch, make_item, capsys):
+    isolate_store(tmp_path, monkeypatch)
+    store.save_items([make_item()])
+    monkeypatch.setattr(cli, "execute", lambda context: (_ for _ in ()).throw(AssertionError("collecte interdite")))
+    assert cli.main(["MAJ"]) == 1
+    assert "Base incohérente" in capsys.readouterr().out
 
 
 def test_maj_with_valid_snapshot_is_allowed(tmp_path, monkeypatch, make_item):

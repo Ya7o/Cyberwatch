@@ -1,0 +1,67 @@
+{
+  "version": "qualification-eval-2026-09-10.1",
+  "source": "audit/latest_collection_2026-09-10/rapport.md",
+  "note": "Attendus humains de l'audit. Ils décrivent ce qu'un lecteur établit à partir du texte figé, pas ce qu'un modèle a répondu. Toute case absente vaut « aucune valeur attendue » : produire une valeur y est une affirmation non étayée.",
+  "articles": [
+    {
+      "item_id": "ITM-0c085da888611a12",
+      "source_id": "FRENCHBREACHES",
+      "context": "tests/fixtures/tampon_20260910/ITM-0c085da888611a12-context.txt",
+      "organisation": "Ville du Tampon",
+      "url": "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm",
+      "published_date": "2026-09-09",
+      "expected": {
+        "threat": "Inconnu",
+        "sector": "Administration / Collectivité",
+        "location": "La Réunion",
+        "initial_access": null,
+        "affected_count": null,
+        "data_types": [],
+        "vulnerabilities": [],
+        "impact": "présente",
+        "third_party": null
+      },
+      "must_abstain": ["initial_access", "affected_count", "data_types", "vulnerabilities"],
+      "forbidden_claims": [
+        "Ransomware", "Fuite de données", "vulnerability_exploitation", "82600", "82 600"
+      ]
+    },
+    {
+      "item_id": "ITM-f2c9b54af4eae1da",
+      "source_id": "CYBERATTAQUE_ORG",
+      "context": "tests/fixtures/tampon_20260910/ITM-f2c9b54af4eae1da-context.txt",
+      "organisation": "Le Tampon",
+      "url": "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/",
+      "published_date": "2026-09-09",
+      "expected": {
+        "threat": "Inconnu",
+        "sector": "Administration / Collectivité",
+        "location": "La Réunion",
+        "initial_access": null,
+        "affected_count": null,
+        "data_types": [],
+        "vulnerabilities": [],
+        "impact": "présente",
+        "third_party": null
+      },
+      "must_abstain": ["initial_access", "affected_count", "data_types", "vulnerabilities"],
+      "forbidden_claims": [
+        "Ransomware", "Fuite de données", "vulnerability_exploitation", "82600", "82 600"
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "left": "ITM-0c085da888611a12",
+      "right": "ITM-f2c9b54af4eae1da",
+      "expected_merge": true,
+      "reason": "Deux sources décrivent la cyberattaque annoncée le 9 septembre 2026 contre la mairie du Tampon, à La Réunion."
+    },
+    {
+      "left": "ITM-0c085da888611a12",
+      "right": "ITM-TARNOS-SYNTHETIQUE",
+      "expected_merge": false,
+      "reason": "Tarnos est une commune des Landes : la similarité de noms est du bruit, pas une identité."
+    }
+  ]
+}

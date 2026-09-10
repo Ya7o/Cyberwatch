@@ -267,6 +267,18 @@ def stabilize_threats(items: list[Item], reservations: dict[str, dict] | None = 
                 and not threat_reservation.covers(reservation, scope)
             ):
                 item.Threat = scope
+        # Dernière porte : une menace que l'article écarte explicitement ne peut
+        # pas rester sur l'observation. Elle vient soit du périmètre d'un flux,
+        # soit d'une classification de texte antérieure à ce contrat — jamais
+        # d'une preuve. Les contrats natifs des sources ci-dessus, notamment les
+        # revendications de ransomware.live, sont déjà tranchés et préservés ;
+        # `Threat_Raw` conserve dans tous les cas la déclaration de la source.
+        if (
+            item.Source_ID not in _AUTHORITATIVE_NATIVE_THREAT_SOURCES
+            and item.Source_ID not in _AUTHORITATIVE_DEFAULT_THREATS
+            and threat_reservation.covers(reservation, item.Threat)
+        ):
+            item.Threat = config.THREAT_UNKNOWN
         changed += item.Threat != before
     return changed
 

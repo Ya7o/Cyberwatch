@@ -10,7 +10,7 @@ from __future__ import annotations
 import hashlib
 import re
 
-from . import config
+from . import article_body, config
 from .collectors.base import RawEntry
 from .headline import (
     is_organisation_name_only,
@@ -37,12 +37,37 @@ from .source_facts_ai_contract import (
 )
 
 
-def _full_context(entry: RawEntry) -> str:
+def _captured_context(entry: RawEntry) -> str:
+    """Texte exact tel que la collecte l'a capturé, navigation comprise."""
     return "\n\n".join(part.strip() for part in (entry.title, entry.summary, entry.content) if (part or "").strip())
 
 
+def prepared_context(entry: RawEntry) -> article_body.PreparedContext:
+    """Contexte capturé et contexte préparé, avec empreintes et retraits."""
+    return article_body.prepare_entry(entry)
+
+
+def _full_context(entry: RawEntry) -> str:
+    """Contexte réellement soumis à l'extraction : le corps principal seul.
+
+    Les articles connexes et les ressources de bas de page ne décrivent pas
+    l'incident de cette victime. Les laisser dans le contexte revenait à
+    publier « fuite de données » sur un article qui écarte explicitement cette
+    menace (Le Tampon, 09/09/2026) et à imputer à Citadium la CVE d'un article
+    Shipup recopié au-dessus du corps réel.
+    """
+    return article_body.prepare_entry(entry).prepared
+
+
 def _content_hash(entry: RawEntry) -> str:
-    return hashlib.sha256(_full_context(entry).encode("utf-8")).hexdigest()
+    """Empreinte du texte **capturé**, pas du texte préparé.
+
+    Elle identifie une version d'article dans le cache : la faire dépendre des
+    règles de préparation invaliderait tout le cache à chaque évolution de
+    celles-ci, sans qu'aucune source n'ait changé. La revalidation des valeurs
+    caches se fait sur le contexte préparé, champ par champ.
+    """
+    return hashlib.sha256(_captured_context(entry).encode("utf-8")).hexdigest()
 
 
 def content_hash(entry: RawEntry) -> str:

@@ -12,10 +12,15 @@ DAILY_STATUS_CAPACITY_LIMIT = "CAPACITY_LIMIT"
 DAILY_USAGE_COLUMNS = DEDUP_AI_DAILY_USAGE_COLUMNS
 
 
+def _too_large(state) -> int:
+    """Paires différées parce que leur seule charge utile dépassait le budget."""
+    return int(getattr(state, "candidates_not_reviewed_too_large", 0) or 0)
+
+
 def daily_status(state) -> str:
     if not state.enabled or not state.daily_enabled:
         return DAILY_STATUS_LLM_DISABLED
-    if state.candidates_not_reviewed_capacity > 0:
+    if state.candidates_not_reviewed_capacity > 0 or _too_large(state) > 0:
         return DAILY_STATUS_CAPACITY_LIMIT
     if state.calls_budget_blocked > 0 and state.batch_calls_succeeded == 0:
         return DAILY_STATUS_BUDGET_BLOCKED
@@ -42,6 +47,7 @@ def daily_summary(state) -> dict[str, object]:
         "dedup_candidates_generated": state.candidates_generated,
         "dedup_candidates_selected": state.candidates_selected,
         "dedup_candidates_not_reviewed_capacity": state.candidates_not_reviewed_capacity,
+        "dedup_candidates_not_reviewed_too_large": _too_large(state),
         "dedup_llm_calls": state.batch_calls_attempted,
         "dedup_llm_calls_succeeded": state.batch_calls_succeeded,
         "dedup_llm_calls_failed": state.batch_calls_failed,
@@ -53,7 +59,9 @@ def daily_summary(state) -> dict[str, object]:
         "dedup_org_aliases_applied": state.organisation_identity_rows_applied,
         "dedup_incident_decisions_applied": state.incident_decision_rows_applied,
         "dedup_incident_merges_enabled": True,
-        "dedup_review_required": len(state.pending_rows) or state.candidates_not_reviewed_capacity,
+        "dedup_review_required": (
+            len(state.pending_rows) or state.candidates_not_reviewed_capacity or _too_large(state)
+        ),
         "dedup_retry_exhausted": sum(
             row.get("status") == "RETRY_EXHAUSTED" for row in state.pending_rows
         ),

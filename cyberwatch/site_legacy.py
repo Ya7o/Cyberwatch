@@ -30,6 +30,7 @@ from xml.sax.saxutils import escape as xml_escape
 from . import analytics, config, identity, incident_identity, site_status, site_window, sources, status, store
 from .dedup import group_components
 from .model import Incident, Item
+from .headline import strip_markdown_emphasis
 from .normalize import organisation_key
 from .org_identity import effective_organisation_key
 
@@ -202,7 +203,11 @@ def _source_fact_payload(row: dict) -> dict | None:
     payload: dict[str, object] = {"source": source_id, "item_id": item_id}
 
     for column, key in _FACT_TEXT_FIELDS.items():
-        value = str(row.get(column) or "").strip()
+        # Le texte affiché est nettoyé de ses marqueurs Markdown résiduels — le
+        # chapô FrenchBreaches publiait « …services municipaux.** ». La citation
+        # brute, elle, reste intacte dans `Evidence_JSON` et dans le CSV : c'est
+        # elle qui sert de preuve en audit.
+        value = strip_markdown_emphasis(str(row.get(column) or "").strip())
         if value:
             payload[key] = value
 

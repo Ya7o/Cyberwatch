@@ -35,9 +35,12 @@ def test_collect_refuse_de_publier_si_main_change_pendant_le_run():
     assert "git pull --rebase origin main" not in content
 
 
-def test_collect_exposes_only_daily_update():
+def test_collect_exposes_daily_update_and_explicit_manual_purge():
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
     assert "python -m cyberwatch maj" in content
+    assert "python -m cyberwatch purge" in content
+    assert "github.event_name == 'workflow_dispatch' && inputs.operation == 'PURGE'" in content
+    assert "default: MAJ" in content
     assert "create" not in content
 
 

@@ -446,7 +446,14 @@ def _finalize(fact: dict, item: Item, entry: RawEntry, evidence: dict) -> dict |
         return None
     fact["Evidence_JSON"] = _dumps_json(evidence)
     semantic_status = fact.pop("_Semantic_Refresh_Status", None)
-    metadata = dict(entry.source_metadata or {})
+    # Les métadonnées déjà posées par les handlers — contexte éditorial,
+    # empreintes de préparation, réserve de menace — étaient écrasées ici par
+    # celles du collecteur. C'est ce qui laissait `Editorial_Evidence` vide dans
+    # le filet de déduplication et empêchait une décision « Inconnu » explicite
+    # de survivre aux passes de reprise. Le collecteur reste prioritaire sur les
+    # clés qu'il renseigne lui-même ; le reste est conservé.
+    metadata = {**(_loads_json(fact.get("Source_Metadata_JSON")) or {}),
+                **dict(entry.source_metadata or {})}
     threat_tentative = fact.pop("_Threat_Tentative", None)
     if isinstance(threat_tentative, dict):
         metadata["threat_tentative"] = threat_tentative

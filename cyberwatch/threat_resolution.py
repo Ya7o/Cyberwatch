@@ -231,10 +231,17 @@ def resolve_component(
     # Les réserves établies à l'extraction voyagent dans les métadonnées
     # SourceFacts. Une menace explicitement écartée par la source ne peut
     # devenir ni un signal, ni un repli legacy, ni la valeur publiée.
+    # `facts_by_item` porte tout le corpus : n'en lire que les observations de
+    # CETTE composante. Parcourir la table entière faisait qu'une réserve posée
+    # sur un article retirait la menace de tous les incidents du snapshot.
     reserved: set[str] = set()
-    for rows in facts_by_item.values():
-        for payload in threat_reservation.index_source_facts(rows).values():
+    reservation_evidence = ""
+    for item in ordered:
+        for payload in threat_reservation.index_source_facts(
+            facts_by_item.get(item.Item_ID) or []
+        ).values():
             reserved.update(str(value) for value in payload.get("reserved") or ())
+            reservation_evidence = reservation_evidence or str(payload.get("evidence") or "")
     # Compromission de compte et tiers compromis décrivent des vecteurs. Ils
     # ne créent pas un conflit avec une menace événementielle documentée.
     non_primary = {config.THREAT_ACCOUNT, config.THREAT_THIRD_PARTY}
@@ -270,5 +277,19 @@ def resolve_component(
                 threat, status, f"THREAT_EVIDENCE_{threat.upper().replace(' / ', '_').replace(' ', '_')}",
                 sources, evidence, conflict,
             )
+
+    # Une réserve sourcée est une preuve : celle que la nature de l'attaque
+    # n'est pas établie. Elle prime donc sur un repli legacy, qui n'est qu'un
+    # défaut de flux. Sans cela, une valeur générique portée par un troisième
+    # item — « Autre cyber » du snapshot VEILLE_LLM sur Le Tampon — republiait
+    # une catégorie alors que les deux articles refusent explicitement de
+    # trancher. Ce retour n'intervient qu'après la boucle des menaces
+    # spécifiques : une preuve positive subsistante l'emporte toujours.
+    if reservation_evidence:
+        return ThreatDecision(
+            config.THREAT_UNKNOWN, "unknown", "THREAT_RESERVED_BY_SOURCE",
+            tuple(sorted({item.Source_ID for item in ordered if item.Source_ID})),
+            reservation_evidence, conflict,
+        )
 
     return _legacy_threat_decision(ordered, item_threats, reserved)

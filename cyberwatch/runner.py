@@ -8,7 +8,7 @@ import os
 from collections import defaultdict
 from dataclasses import dataclass, field
 
-from . import config, dedup_ai, dedup_review, enrichment, identity, incident_dedup, incident_identity, llm_runtime, org_identity, production, runner_dedup, runner_ingestion, runner_source_facts, sector as sector_policy, sector_resolution, source_facts, source_facts_ai, source_facts_retry, sources, status, store, watchlists
+from . import article_body, config, dedup_ai, dedup_review, enrichment, identity, incident_dedup, incident_identity, llm_runtime, org_identity, production, runner_dedup, runner_ingestion, runner_source_facts, sector as sector_policy, sector_resolution, source_facts, source_facts_ai, source_facts_retry, sources, status, store, watchlists
 from .runner_support import (
     code_commit,
     repair_item_integrity,
@@ -156,6 +156,37 @@ def _organisation_for_entry(
     return organisation
 
 
+def _ingestion_sector_and_location(
+    entry: RawEntry, organisation: str, sector_hint: str,
+    reference: dict[str, enrichment.Enrichment],
+) -> tuple[str, str]:
+    """Secteur et territoire retenus à l'ingestion, sans règle de texte libre.
+
+    Priorité volontairement courte : référence validée, catégorie structurée de
+    la source, puis règle sûre sur le nom. Sinon le secteur reste Inconnu — la
+    valeur brute de la source est persistée dans source_facts et présentée plus
+    tard au résolveur organisationnel.
+    """
+    native_sector = sector_policy.classify_source_sector(entry.sector)
+    sector = config.SECTOR_UNKNOWN
+    location = classify_location(given=entry.location)
+    reference_sector, location = enrichment.enrich_unknowns(
+        organisation, sector, location, reference
+    )
+    deterministic_candidate = config.SECTOR_UNKNOWN
+    if sector_hint:
+        deterministic_candidate = sector_policy.classify_source_sector(sector_hint)
+    if deterministic_candidate == config.SECTOR_UNKNOWN:
+        deterministic_candidate = sector_policy.classify_sector_name(organisation)
+    if reference_sector != config.SECTOR_UNKNOWN:
+        sector = reference_sector
+    elif native_sector != config.SECTOR_UNKNOWN:
+        sector = native_sector
+    elif deterministic_candidate != config.SECTOR_UNKNOWN:
+        sector = deterministic_candidate
+    return sector, location
+
+
 def entry_to_item(
     entry: RawEntry,
     spec: SourceSpec,
@@ -173,7 +204,10 @@ def entry_to_item(
 
     text = f"{entry.title} {entry.summary}"
     if spec.params.get("include_content"):
-        text = f"{text} {entry.content}"
+        # Le corps principal seul : les ressources de bas de page « Annuaire
+        # fuite de données » ne qualifient pas la menace d'un article qui
+        # écarte explicitement toute fuite (Le Tampon, 09/09/2026).
+        text = f"{text} {article_body.body(entry.content)}"
 
     scope_is_cyber = spec.default_threat or spec.params.get("scope_is_cyber")
     if not scope_is_cyber and not looks_cyber(text):
@@ -199,30 +233,9 @@ def entry_to_item(
 
     threat = classify_threat(text, default=spec.default_threat)
 
-    # Les secteurs structurés sont normalisés sans passer par les règles de
-    # texte libre. Une catégorie source trop large reste volontairement Inconnu.
-    native_sector = sector_policy.classify_source_sector(entry.sector)
-    # Sector reste indécidé pendant l'ingestion. La valeur source brute sera
-    # persistée dans source_facts puis présentée au résolveur organisationnel.
-    sector = config.SECTOR_UNKNOWN
-    location = classify_location(given=entry.location)
-
-    reference_sector, location = enrichment.enrich_unknowns(
-        organisation, sector, location, reference or {}
+    sector, location = _ingestion_sector_and_location(
+        entry, organisation, sector_hint, reference or {}
     )
-    # Priorité volontairement courte : référence, catégorie structurée de la
-    # source, puis règle sûre sur le nom. Sinon le secteur reste Inconnu.
-    deterministic_candidate = config.SECTOR_UNKNOWN
-    if sector_hint:
-        deterministic_candidate = sector_policy.classify_source_sector(sector_hint)
-    if deterministic_candidate == config.SECTOR_UNKNOWN:
-        deterministic_candidate = sector_policy.classify_sector_name(organisation)
-    if reference_sector != config.SECTOR_UNKNOWN:
-        sector = reference_sector
-    elif native_sector != config.SECTOR_UNKNOWN:
-        sector = native_sector
-    elif deterministic_candidate != config.SECTOR_UNKNOWN:
-        sector = deterministic_candidate
     if location == config.LOC_INCONNU:
         # Stabilisation Location v0.7.32 : le défaut source reste différé pour
         # laisser un match entreprise exact fournir 974/976 en priorité.

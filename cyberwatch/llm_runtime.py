@@ -103,11 +103,23 @@ class LlmUsage:
 
 @dataclass(frozen=True)
 class LlmCallResult:
+    """Résultat d'un appel, avec les trois identités de modèle distinctes.
+
+    ``requested_model`` est ce que l'appelant a demandé, ``model`` ce que la
+    politique de routage a résolu avant transport, et ``declared_model`` ce que
+    la réponse dit avoir exécuté. Les confondre revenait à écrire
+    ``model=gpt-5-nano`` dans le cache pour des valeurs produites par
+    ``gpt-4o-mini`` — exactement ce que l'audit a relevé sur les 17 extractions
+    réutilisées.
+    """
+
     data: dict[str, Any]
     usage: LlmUsage
     duration_seconds: float
     retries: int
     model: str = ""
+    requested_model: str = ""
+    declared_model: str = ""
 
 
 @dataclass(frozen=True)
@@ -117,6 +129,8 @@ class LlmTransportResult:
     duration_seconds: float
     retries: int
     model: str = ""
+    requested_model: str = ""
+    declared_model: str = ""
 
 
 @dataclass
@@ -251,9 +265,8 @@ class LlmRuntime:
             raise LlmError("OPENAI_API_KEY absente")
 
         request_body = dict(body)
-        request_body["model"] = model_for_task(
-            task, str(body.get("model") or "")
-        )
+        requested_model = str(body.get("model") or "")
+        request_body["model"] = model_for_task(task, requested_model)
         model = request_body["model"]
         if model.startswith("gpt-4o"):
             request_body.pop("reasoning", None)
@@ -293,7 +306,11 @@ class LlmRuntime:
                     usage = extract_usage(payload, model)
                     duration = _monotonic() - started
                     self._record_success(task, model, usage, duration, retries)
-                    return LlmTransportResult(payload, usage, duration, retries, model)
+                    return LlmTransportResult(
+                        payload, usage, duration, retries, model,
+                        requested_model=requested_model,
+                        declared_model=str(payload.get("model") or ""),
+                    )
 
                 retryable = response.status_code == 429 or 500 <= response.status_code < 600
                 if response.status_code == 429:
@@ -344,7 +361,9 @@ class LlmRuntime:
             body["reasoning"] = {"effort": reasoning_effort}
         t = self.post_response(task=task, body=body)
         return LlmCallResult(
-            extract_output_json(t.payload), t.usage, t.duration_seconds, t.retries, t.model
+            extract_output_json(t.payload), t.usage, t.duration_seconds, t.retries, t.model,
+            requested_model=(model or "").strip(),
+            declared_model=t.declared_model,
         )
 
 
@@ -451,6 +470,10 @@ def begin_run(run_id: str) -> None:
     _RUNTIME.run_id = run_id
 
 
-def reset_runtime_for_tests() -> None:
+def reset_runtime() -> None:
+    """Oublie les compteurs et la provenance du run, notamment après PURGE."""
     global _RUNTIME
     _RUNTIME = LlmRuntime()
+
+
+reset_runtime_for_tests = reset_runtime

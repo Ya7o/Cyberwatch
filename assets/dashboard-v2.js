@@ -255,12 +255,20 @@
     if (age.status === "unknown") {
       messages.push("La date du dernier snapshot est indisponible.");
     }
+    // Qualification incomplète : la publication a bien eu lieu, mais des
+    // traitements nécessaires — extraction ou déduplication — sont restés
+    // bloqués. L'alerte le dit au lieu de laisser croire à un run complet.
+    const qualification = state.status?.qualification || {};
+    if (qualification.state === "PARTIAL") {
+      const reasons = (qualification.reasons || []).join(" ; ");
+      messages.push(`${qualification.label || "Qualification incomplète"}${reasons ? ` : ${reasons}` : ""}.`);
+    }
 
     alert.hidden = messages.length === 0;
     if (!messages.length) return;
-    const alertStatus = age.status === "stale" ? "stale" : ["warning", "unknown"].includes(age.status) ? "warning" : "coverage";
+    const alertStatus = age.status === "stale" ? "stale" : ["warning", "unknown"].includes(age.status) ? "warning" : qualification.state === "PARTIAL" ? "warning" : "coverage";
     alert.dataset.status = alertStatus;
-    strong.textContent = alertStatus === "stale" ? "Données périmées." : alertStatus === "warning" ? "Mise à jour en retard." : "Couverture partielle.";
+    strong.textContent = alertStatus === "stale" ? "Données périmées." : age.status === "warning" || age.status === "unknown" ? "Mise à jour en retard." : qualification.state === "PARTIAL" ? (qualification.label || "Qualification incomplète") : "Couverture partielle.";
     detail.textContent = messages.join(" ");
   }
 
@@ -405,7 +413,19 @@
     const dedupValue = (key) => quality[key] === null || quality[key] === undefined
       ? "n.d."
       : formatNumber(quality[key]);
+    const qualification = state.status?.qualification || {};
+    const qualificationOk = qualification.state === "UNKNOWN" || !qualification.state
+      ? null
+      : qualification.state !== "PARTIAL";
     $("#production-metrics").innerHTML = [
+      productionMetric(
+        "Qualification",
+        qualification.state || "n.d.",
+        qualification.state === "PARTIAL"
+          ? `${formatNumber(qualification.pending_fields || 0)} champ(s) · ${formatNumber(qualification.pending_pairs || 0)} paire(s) en attente`
+          : "traitements nécessaires terminés",
+        qualificationOk,
+      ),
       productionMetric("Série planifiée", `${reliability.consecutive_successes || 0}/${reliability.required_consecutive_successes || 7}`, observed ? `${Number(reliability.success_rate_pct).toFixed(2)} % de succès observés` : "preuve en acquisition", observed ? Boolean(reliability.seven_run_proof_ready) : null),
       productionMetric("Secteur inconnu", sectorKnown ? `${sector.toFixed(2)} %` : "n.d.", `cible < ${targets.sector_unknown_pct || 20} %`, sectorKnown ? sector < Number(targets.sector_unknown_pct || 20) : null),
       productionMetric("Localisation inconnue", locationKnown ? `${location.toFixed(2)} %` : "n.d.", `cible < ${targets.location_unknown_pct || 5} %`, locationKnown ? location < Number(targets.location_unknown_pct || 5) : null),

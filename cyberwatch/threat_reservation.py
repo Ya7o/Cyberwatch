@@ -217,7 +217,14 @@ def covers(payload: object, threat: str) -> bool:
 
 
 def index_source_facts(rows) -> dict[str, dict]:
-    """Réserves archivées par ``Item_ID``, relues des métadonnées SourceFacts."""
+    """Réserves archivées par ``Item_ID``, relues des métadonnées SourceFacts.
+
+    Une ligne antérieure à ce contrat ne porte pas de décision archivée. Si elle
+    conserve le contexte éditorial de l'article, la réserve y est recalculée :
+    c'est le seul moyen qu'une reprise applique les mêmes règles aux valeurs
+    déterministes, aux valeurs LLM et aux valeurs issues du cache. Sans contexte,
+    aucune réserve n'est inventée.
+    """
     index: dict[str, dict] = {}
     for row in rows or ():
         item_id = str(row.get("Item_ID") or "").strip()
@@ -227,7 +234,12 @@ def index_source_facts(rows) -> dict[str, dict]:
             metadata = json.loads(row.get("Source_Metadata_JSON") or "{}")
         except (ValueError, TypeError):
             continue
-        payload = metadata.get("threat_reservation") if isinstance(metadata, dict) else None
+        if not isinstance(metadata, dict):
+            continue
+        payload = metadata.get("threat_reservation")
+        if not (isinstance(payload, dict) and payload.get("reserved")):
+            context = str(metadata.get("editorial_context") or "")
+            payload = decision(context) if context else None
         if isinstance(payload, dict) and payload.get("reserved"):
             index[item_id] = payload
     return index

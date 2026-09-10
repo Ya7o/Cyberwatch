@@ -1,0 +1,76 @@
+{
+  "version": "qualification-eval-2026-09-10.1",
+  "expectations": "bench/qualification_eval/expectations.json",
+  "verdict": {
+    "label": "performance non mesurée",
+    "raw_stage_measured": false,
+    "validation_stage_measured": true,
+    "publication_stage_measured": true,
+    "complete": false,
+    "model_comparison": "aucune : un seul modèle exécuté, aucune supériorité mesurée"
+  },
+  "raw_response": {
+    "measured": false,
+    "label": "performance non mesurée",
+    "articles": []
+  },
+  "validated": {
+    "measured": true,
+    "articles": [
+      {
+        "item_id": "ITM-0c085da888611a12",
+        "appropriate_abstentions": [
+          "initial_access",
+          "affected_count",
+          "data_types",
+          "vulnerabilities"
+        ],
+        "missing_abstentions": [],
+        "unsupported_claims": [],
+        "impact": "L’incident provoque d’importantes perturbations dans le fonctionnement des services municipaux.**",
+        "impact_evidence": "L’incident provoque d’importantes perturbations dans le fonctionnement des services municipaux.**",
+        "summary": "",
+        "quoted_evidence_grounded": true,
+        "duration_seconds": 0.062
+      },
+      {
+        "item_id": "ITM-f2c9b54af4eae1da",
+        "appropriate_abstentions": [
+          "initial_access",
+          "affected_count",
+          "data_types",
+          "vulnerabilities"
+        ],
+        "missing_abstentions": [],
+        "unsupported_claims": [],
+        "impact": "",
+        "impact_evidence": "",
+        "summary": "Le Tampon : une cyberattaque frappe la mairie et perturbe fortement les services municipaux",
+        "quoted_evidence_grounded": true,
+        "duration_seconds": 0.024
+      }
+    ]
+  },
+  "published": {
+    "measured": true,
+    "incidents": [
+      {
+        "incident_id": "INC-F7E0A7E8A73F",
+        "organisation": "Le Tampon",
+        "sector": "Administration / Collectivité",
+        "threat": "Inconnu",
+        "location": "La Réunion",
+        "sources": [
+          "CYBERATTAQUE_ORG",
+          "FRENCHBREACHES"
+        ],
+        "items": 2
+      }
+    ],
+    "correct_published_fields": 6,
+    "incorrect_published_fields": [],
+    "correct_merges": 2,
+    "false_merges": [],
+    "missed_merges": []
+  }
+}

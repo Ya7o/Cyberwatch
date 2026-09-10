@@ -6,7 +6,7 @@ import datetime as dt
 import json
 from pathlib import Path
 
-from . import config, duplicate_audit, incident_dedup, org_identity, store
+from . import config, duplicate_audit, incident_dedup, org_identity, qualification, store
 from . import dedup as dedup_engine
 from .model import Incident, Item
 from .normalize import classify_location, classify_sector, classify_threat, looks_cyber
@@ -387,6 +387,29 @@ def _sector_status_groups(rows: list[dict]) -> tuple[list[dict], list[dict], lis
     return inferred, referenced, low
 
 
+def _dedup_alert_reasons(snapshot: dict, latest: dict) -> list[str]:
+    """Motifs d'alerte issus de la revue de déduplication du run publié."""
+    reasons: list[str] = []
+    dedup_rows = store.load_dedup_ai_daily_usage()
+    current: dict[str, object] = next((row for row in reversed(dedup_rows)
+                                       if row.get("Run_ID") == snapshot.get("Run_ID")), {})
+    if current.get("Status") in {"LLM_DISABLED", "LLM_ERROR", "BUDGET_BLOCKED",
+                                 "CAPACITY_LIMIT", "REVIEW_REQUIRED"}:
+        reasons.append(f"revue dédup dégradée : {current['Status']}")
+    if _float(current.get("Review_Required")) > 0:
+        reasons.append(f"paires dédup en attente : {current['Review_Required']}")
+    missed_pairs = _optional_int(latest.get("Missed_Duplicate_Candidate_Pairs"))
+    same_not_grouped = _optional_int(latest.get("Validated_Same_Not_Grouped_Pairs"))
+    pending_pairs = _optional_int(latest.get("Pending_Review_Pairs"))
+    if missed_pairs:
+        reasons.append(f"doublons potentiellement manqués : {missed_pairs}")
+    if same_not_grouped:
+        reasons.append(f"décisions SAME non regroupées : {same_not_grouped}")
+    if pending_pairs and _float(current.get("Review_Required")) <= 0:
+        reasons.append(f"paires dédup en attente : {pending_pairs}")
+    return reasons
+
+
 def health_payload(*, now: dt.datetime | None = None) -> dict:
     now = now or dt.datetime.now(dt.UTC)
     if now.tzinfo is None:
@@ -407,23 +430,15 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
     reliability = scheduled_reliability(store.load_run_log())
     sector_rows = store.load_sector_resolution()
     inferred_rows, referenced_rows, low_rows = _sector_status_groups(sector_rows)
-    reasons: list[str] = []
-    dedup_rows = store.load_dedup_ai_daily_usage()
-    current_dedup: dict[str, object] = next((row for row in reversed(dedup_rows)
-                                            if row.get("Run_ID") == snapshot.get("Run_ID")), {})
-    if current_dedup.get("Status") in {"LLM_DISABLED", "LLM_ERROR", "BUDGET_BLOCKED", "CAPACITY_LIMIT", "REVIEW_REQUIRED"}:
-        reasons.append(f"revue dédup dégradée : {current_dedup['Status']}")
-    if _float(current_dedup.get("Review_Required")) > 0:
-        reasons.append(f"paires dédup en attente : {current_dedup['Review_Required']}")
-    missed_pairs = _optional_int(latest.get("Missed_Duplicate_Candidate_Pairs"))
-    same_not_grouped = _optional_int(latest.get("Validated_Same_Not_Grouped_Pairs"))
-    pending_pairs = _optional_int(latest.get("Pending_Review_Pairs"))
-    if missed_pairs:
-        reasons.append(f"doublons potentiellement manqués : {missed_pairs}")
-    if same_not_grouped:
-        reasons.append(f"décisions SAME non regroupées : {same_not_grouped}")
-    if pending_pairs and _float(current_dedup.get("Review_Required")) <= 0:
-        reasons.append(f"paires dédup en attente : {pending_pairs}")
+    reasons = _dedup_alert_reasons(snapshot, latest)
+    qualification_payload = qualification.payload(str(snapshot.get("Run_ID", "") or ""))
+    if qualification_payload["state"] == qualification.STATE_PARTIAL:
+        # Le run est publié — les contrôles d'intégrité restent bloquants et
+        # ne sont pas touchés — mais son verdict de qualification doit le dire.
+        detail = " ; ".join(qualification_payload["reasons"])
+        reasons.append(
+            f"{qualification.INCOMPLETE_LABEL}" + (f" : {detail}" if detail else "")
+        )
     if age_hours is None:
         reasons.append("fraîcheur du snapshot inconnue")
     elif not freshness_ok:
@@ -449,6 +464,7 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
     return {
         "alert": bool(reasons),
         "alert_reasons": reasons,
+        "qualification": qualification_payload,
         "freshness": {
             "snapshot_as_of": snapshot.get("As_Of", ""),
             "age_hours": age_hours,
@@ -510,8 +526,14 @@ def markdown_report(payload: dict) -> str:
         if quality["location_unknown_pct"] is None
         else f"{quality['location_unknown_pct']:.2f} %"
     )
+    qual = payload.get("qualification") or {}
+    qualification_line = "- Qualification : **{}**{}".format(
+        qual.get("state") or "n.d.",
+        f" — {qual['label']}" if qual.get("label") else "",
+    )
     lines = [
         "## Production — fiabilité quotidienne",
+        qualification_line,
         f"- Fraîcheur : **{age}** (cible < {fresh['target_hours']:.0f} h)",
         f"- Succès planifiés : **{scheduled_rate}** sur {reliability['observed']} run(s) observé(s) (cible ≥ {reliability['target_pct']:.0f} %)",
         f"- Série planifiée : **{reliability['consecutive_successes']}/{reliability['required_consecutive_successes']}** succès consécutifs réels",

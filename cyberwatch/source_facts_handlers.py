@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 
-from . import config, source_facts_ai, threat_reservation
+from . import article_body, config, source_facts_ai, threat_reservation
 from .collectors.base import RawEntry, SourceSpec
 from .model import SOURCE_FACT_COLUMNS, Item
 from .normalize import parse_date
@@ -54,11 +54,16 @@ def _apply_semantic_details(
 ) -> None:
     metadata = _loads_json(fact.get("Source_Metadata_JSON", "")) or {}
     metadata["editorial_context"] = (entry.content or entry.summary)[:12000]
+    # Contexte capturé et contexte préparé restent distincts : seules leurs
+    # empreintes et leurs tailles sont archivées ici, le texte étant stocké une
+    # seule fois par empreinte dans le journal du run.
+    prepared = article_body.prepare_entry(entry)
+    metadata["context_preparation"] = prepared.metadata()
     # La décision de menace voyage avec ses preuves dans les métadonnées
     # existantes : c'est ce qui permet aux passes de reprise et de
     # stabilisation de reconnaître un « Inconnu » explicitement établi au lieu
     # de le réécraser par le défaut de flux de la source.
-    decision = threat_reservation.decision(entry.title, entry.summary, entry.content)
+    decision = threat_reservation.decision(prepared.prepared)
     if decision:
         metadata["threat_reservation"] = decision
     else:
@@ -92,12 +97,16 @@ def _apply_semantic_details(
     if cvss:
         fact["CVSS_Raw"] = cvss
     llm_activity, activity_evidence = _ai_activity(ai_result, organisation)
+    # L'activité de la victime se lit dans son article, jamais dans l'article
+    # connexe recopié au-dessus : « Shipup, plateforme spécialisée dans le
+    # suivi des livraisons » décrit le prestataire, pas Citadium.
+    main_body = article_body.body(entry.content)
     activity = llm_activity or _extract_victim_activity(
-        organisation, entry.title, entry.summary, entry.content
+        organisation, entry.title, entry.summary, main_body
     )
     from .sector_activity import activity_from_text
     literal_activity, literal_proof = activity_from_text(
-        organisation, entry.summary, entry.content
+        organisation, entry.summary, main_body
     )
     if not llm_activity and literal_activity:
         activity, activity_evidence = literal_activity, literal_proof
@@ -122,7 +131,7 @@ def _from_frenchbreaches(
 ) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
-    text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
+    text = article_body.prepare_entry(entry).prepared
     organisation = entry.organisation or item.Organisation_Raw
     semantic = semantic or source_facts_ai.extract_semantic(item, entry)
     ai_result = semantic.fields
@@ -142,12 +151,12 @@ def _from_frenchbreaches(
             fact["Claim_Status"] = ai_status
             evidence["Claim_Status"] = ai_status_evidence
 
-    sector_raw = _native_frenchbreaches_sector(entry.content)
+    sector_raw = _native_frenchbreaches_sector(article_body.body(entry.content))
     if sector_raw:
         fact["Source_Sector_Raw"] = sector_raw
         evidence["Source_Sector_Raw"] = sector_raw
 
-    native_count = _parse_count_phrase(entry.content)
+    native_count = _parse_count_phrase(article_body.body(entry.content))
     if native_count[0]:
         count, unit, raw_count = native_count
         evidence["Affected_Count_Raw"] = raw_count
@@ -222,7 +231,7 @@ def _from_cyberattaque_org(
 ) -> dict | None:
     fact = _blank_fact(item, spec)
     evidence: dict = {}
-    text = " ".join(part for part in (entry.title, entry.summary, entry.content) if part)
+    text = article_body.prepare_entry(entry).prepared
     organisation = entry.organisation or item.Organisation_Raw
     semantic = semantic or source_facts_ai.extract_semantic(item, entry)
     ai_result = semantic.fields

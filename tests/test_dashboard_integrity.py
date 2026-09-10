@@ -116,7 +116,9 @@ def test_collecte_planifiee_est_active_et_quotidienne():
     workflow = _read(".github/workflows/collect.yml")
     assert 'cron: "0 7 * * *"' in workflow
     assert workflow.count("cron:") == 1
-    assert "if: github.event_name == 'workflow_dispatch'" not in workflow
+    collect_step = workflow.split("- name: Collecter", 1)[1].split("- name:", 1)[0]
+    assert "github.event_name != 'workflow_dispatch'" in collect_step
+    assert "python -m cyberwatch maj" in collect_step
     assert "corpus_coverage.needs_backfill" not in workflow
     assert "COLLECTION_EPOCH" not in workflow
     assert "python -m cyberwatch maj" in workflow

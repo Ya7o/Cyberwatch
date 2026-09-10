@@ -5,6 +5,14 @@ on:
     # Collecte quotidienne : 11:00 à La Réunion (UTC+4).
     - cron: "0 7 * * *"
   workflow_dispatch:
+    inputs:
+      operation:
+        description: "MAJ collecte les dernières publications ; PURGE vide la base."
+        type: choice
+        default: MAJ
+        options:
+          - MAJ
+          - PURGE
 
 permissions:
   contents: write
@@ -30,24 +38,35 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
       - name: Collecter
+        if: github.event_name != 'workflow_dispatch' || inputs.operation != 'PURGE'
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           # Plafond partagé par l'enrichissement et la déduplication.
           LLM_MAX_COST_USD_PER_RUN: "0.03"
           DEDUP_AI_DAILY_ENABLED: "1"
         run: python -m cyberwatch maj
+      - name: Purger la base
+        if: github.event_name == 'workflow_dispatch' && inputs.operation == 'PURGE'
+        run: python -m cyberwatch purge
       - name: Valider
         run: |
           python -m cyberwatch check
           python -m cyberwatch validate-business
       - name: Suivre la production
+        if: github.event_name != 'workflow_dispatch' || inputs.operation != 'PURGE'
         id: production_health
         run: python -m cyberwatch production-status --markdown --github-output | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Résumé du run
         shell: bash
+        env:
+          OPERATION: ${{ inputs.operation || 'MAJ' }}
         run: |
-          echo "## Cyberwatch — MAJ quotidienne" >> "$GITHUB_STEP_SUMMARY"
-          python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
+          echo "## Cyberwatch — $OPERATION" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$OPERATION" = "PURGE" ]; then
+            echo "Base vidée : 0 item, 0 incident. Prochaine MAJ : hier et aujourd'hui." >> "$GITHUB_STEP_SUMMARY"
+          else
+            python -m cyberwatch report >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Publier les données sur main
         run: |
           git config user.name "cyberwatch-bot"
@@ -59,10 +78,10 @@ jobs:
           fi
           git add data assets/data
           if git diff --staged --quiet; then exit 0; fi
-          git commit -m "data: collecte"
+          git commit -m "data: mise à jour du corpus"
           git push origin HEAD:main
       - name: Notifier l'état de production
-        if: always()
+        if: always() && (inputs.operation != 'PURGE' || failure())
         env:
           GH_TOKEN: ${{ github.token }}
           JOB_STATUS: ${{ job.status }}

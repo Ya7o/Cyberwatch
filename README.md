@@ -20,7 +20,7 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 - `assets/data/` est généré pour le dashboard ;
 - `main` contient le code, les données et la production GitHub Pages.
 
-Il n'existe ni branche `prod`, ni promotion, ni workflow de reset parallèle.
+La purge utilise la même CLI et le même workflow que la collecte.
 
 ## Sources actives
 
@@ -49,20 +49,61 @@ pip install -r requirements-dev.txt
 # quotidien : aujourd'hui + hier uniquement
 python -m cyberwatch maj
 
+# vider le corpus et le dashboard, sans lancer de collecte
+python -m cyberwatch PURGE
+
 # contrôles et dashboard
 python -m cyberwatch check
 python -m cyberwatch build-site
 python -m cyberwatch report
+python -m cyberwatch report --qualification [--run-id RUN-…]
 python -m cyberwatch production-status --markdown
 python -m cyberwatch validate-business
+python scripts/apply_editorial_corrections.py --items ITM-…,ITM-…
+python scripts/evaluate_qualification.py
 python scripts/code_health.py --module-budget 0 --function-budget 0
 python scripts/git_governance_audit.py
 python scripts/audit_sectors.py
 ```
 
+`report --qualification` rend, pour un run, les deux tableaux de qualification —
+extraction → décision par champ, et déduplication par paire — à partir des
+journaux de `data/llm_runs/<RUN_ID>/`. Sans option, `report` conserve son
+résumé habituel du dernier run. L'état du verdict (`COMPLETE`, `PARTIAL`,
+`NOT_NEEDED`, `UNKNOWN`) est aussi publié dans `assets/data/status.json` ; un
+verdict `PARTIAL` affiche « Qualification incomplète » dans le dashboard et
+dans le rapport de production, sans interrompre la publication.
+
+`scripts/apply_editorial_corrections.py --items` applique une reprise ciblée :
+simulation par défaut, rapport avant/après détaillé, et refus d'écriture si une
+observation ou un incident hors périmètre change sémantiquement. `--write`
+enregistre les données canoniques, régénère les artefacts et consigne la
+réparation dans `data/editorial_repair_report.json`.
+
+`scripts/evaluate_qualification.py` mesure le modèle courant sur les textes
+figés de `bench/qualification_eval/expectations.json`, sans écriture en
+production. Les étages validation et publication sont mesurés hors réseau ;
+l'étage « réponse brute » exige `--api` **et** `OPENAI_API_KEY`, et reste sinon
+déclaré « performance non mesurée ».
+
 `maj` ajoute les dernières publications calendaires. Elle peut accéder au
 réseau et utiliser l'API OpenAI si `OPENAI_API_KEY` est présente. Sans clé, la
 collecte continue et les valeurs non résolues restent `Inconnu`.
+
+`MAJ` et `PURGE` sont aussi acceptées en minuscules. `MAJ` conserve le stock
+existant et fonctionne également sur une base neuve ou purgée. La fenêtre
+couvre hier et aujourd'hui à La Réunion (UTC+4) : les dates des sources étant
+traitées à la journée, ce n'est pas un filtre glissant à l'heure près.
+
+`PURGE` efface immédiatement les items, incidents, faits, registres calculés,
+caches, files de reprise, journaux et rapports générés dans `data/`, puis
+régénère le dashboard vide. Elle ne lance ni collecte ni appel LLM. Les
+sources, référentiels, alias et corrections éditoriales sont conservés.
+La prochaine `MAJ` collecte uniquement sa fenêtre quotidienne ; elle ne
+recharge pas tout l'historique. La purge est locale jusqu'à la publication
+des fichiers : elle ne réécrit pas l'historique Git.
+Les chemins de cache personnalisés doivent rester dans `data/` ; sinon la
+purge s'arrête avant toute suppression.
 
 En production, la clé n'est pas stockée dans le dépôt. Elle se trouve dans
 GitHub : **Settings → Secrets and variables → Actions → Repository
@@ -106,7 +147,10 @@ Trois workflows, avec un seul chemin d'écriture des données :
 - `monitor.yml` contrôle la fraîcheur toutes les six heures et ouvre, met à
   jour ou clôt un ticket GitHub `[Cyberwatch] Alerte production`.
 
-Le lancement manuel de `collect.yml` exécute la même `maj`. Un plafond global
+Le lancement manuel de `collect.yml` propose `operation: MAJ` (par défaut)
+ou `PURGE`. La purge publie le dashboard vide sur `main` avec le même verrou
+d'écriture que la collecte ; elle ne désactive pas la prochaine MAJ planifiée.
+Un plafond global
 de 0,03 $ couvre l'extraction de faits et le filet final de déduplication. Les
 usages détaillés sont consignés dans `data/llm_usage.json`.
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from . import config, production, site_window, status, store
+from . import config, production, qualification, site_window, status, store
 
 _CANDIDATE_REASON_TEXT = {
     status.CANDIDATE_BLIND_SPOT: "Source active mais techniquement inaccessible (angle mort).",
@@ -41,6 +41,10 @@ def empty_payload(base_state: str, base_problems: list[str]) -> dict:
         "run": {},
         "integrity": site_window.coverage_status([]),
         "production": production.snapshot_payload([], ""),
+        "qualification": {
+            "run_id": "", "state": qualification.STATE_UNKNOWN, "reasons": [],
+            "pending_fields": 0, "pending_pairs": 0, "label": "",
+        },
         "counts": {"ok": 0, "partial": 0, "fail": 0, "skipped": 0},
         "sources": [],
         "blind_spots": [],
@@ -218,6 +222,11 @@ def build(
     if base_state != store.BASE_VALID:
         return empty_payload(base_state, base_problems)
 
+    if store.load_snapshot().get("Operation") == "PURGE":
+        payload = empty_payload(store.BASE_UNINITIALIZED, [])
+        payload["message"] = "Base vidée. Lancez MAJ pour collecter les dernières publications."
+        return payload
+
     run_log = store.load_run_log()
     last_run = run_log[-1] if run_log else {}
     last_run_id = last_run.get("Run_ID", "")
@@ -237,6 +246,9 @@ def build(
         "method_id": last_run.get("Method_ID", config.METHOD_ID),
         "integrity": site_window.coverage_status(run_log),
         "production": production.snapshot_payload(run_log, last_run_id),
+        # Verdict de qualification du dernier run : un run publié dont
+        # l'extraction ou la déduplication est restée bloquée doit le dire.
+        "qualification": qualification.payload(last_run_id),
         "run": _run_payload(last_run, last_run_id),
         "counts": counts,
         "sources": rows,

@@ -8,7 +8,7 @@ import os
 import sys
 from pathlib import Path
 
-from . import config, enrichment, production, sector_resolution, site, status, store
+from . import config, enrichment, production, qualification, reset, sector_resolution, site, status, store
 from .runner import MODE_MAJ, execute, make_run_context
 
 
@@ -36,8 +36,8 @@ _print_summary = _summary
 
 
 def _run(args) -> int:
-    if store.snapshot_state()[0] != store.BASE_VALID:
-        print("ERREUR : Aucun snapshot Cyberwatch valide n'existe.")
+    if store.snapshot_state()[0] == store.BASE_INCOHERENT:
+        print("ERREUR : Base incohérente. Corriger les données ou lancer PURGE pour repartir de zéro.")
         return 1
 
     context = make_run_context(
@@ -57,13 +57,36 @@ def cmd_maj(args) -> int:
     return _run(args)
 
 
+def cmd_purge(_args) -> int:
+    try:
+        reset.purge()
+    except (OSError, ValueError) as exc:
+        print(f"ERREUR : PURGE interrompue : {exc}", file=sys.stderr)
+        return 1
+    site.build()
+    print("PURGE terminée : 0 item, 0 incident. La prochaine MAJ collectera hier et aujourd'hui.")
+    return 0
+
+
 def cmd_build_site(_args) -> int:
     incidents, sources = site.build()
     print(f"Dashboard généré : {incidents} incidents, {sources} sources.")
     return 0
 
 
-def cmd_report(_args) -> int:
+def cmd_report(args) -> int:
+    """Dernier run, ou rapport de qualification si `--qualification` est passé.
+
+    Le comportement par défaut est inchangé : sans option, la commande rend
+    exactement le résumé historique du dernier run.
+    """
+    if getattr(args, "qualification", False):
+        run = qualification.load_run(getattr(args, "run_id", "") or "")
+        if not run.run_id:
+            print("Aucun run enregistré.")
+            return 0
+        print(qualification.markdown_report(run))
+        return 0
     rows = store.load_run_log()
     if not rows:
         print("Aucun run enregistré.")
@@ -141,14 +164,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="cyberwatch", description="Veille cyber quotidienne.")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    maj = commands.add_parser("maj", help="Collecter aujourd'hui et hier.")
+    maj = commands.add_parser("maj", aliases=["MAJ"], help="Collecter aujourd'hui et hier.")
     _common(maj)
     maj.set_defaults(func=cmd_maj)
+
+    purge = commands.add_parser("purge", aliases=["PURGE"], help="Vider la base et le dashboard, sans collecte.")
+    purge.set_defaults(func=cmd_purge)
 
     build = commands.add_parser("build-site", help="Régénérer le dashboard.")
     build.set_defaults(func=cmd_build_site)
 
     report = commands.add_parser("report", help="Afficher le dernier run.")
+    report.add_argument(
+        "--qualification", action="store_true",
+        help="Rendre les tableaux extraction/décision et déduplication du run.",
+    )
+    report.add_argument(
+        "--run-id", dest="run_id", default="",
+        help="Run à rapporter ; par défaut le dernier run journalisé.",
+    )
     report.set_defaults(func=cmd_report)
 
     validate_business = commands.add_parser(

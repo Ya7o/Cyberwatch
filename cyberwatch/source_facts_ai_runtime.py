@@ -105,6 +105,10 @@ class _Runtime:
         self.fields_requested_new: Counter[str] = Counter()
         self.error_reasons: Counter[str] = Counter()
         self.trace_events: list[dict] = []
+        # Contextes stockés une seule fois par empreinte : un article relu deux
+        # fois dans le même run n'écrit pas son texte deux fois, et un événement
+        # ne porte que l'empreinte.
+        self.contexts: dict[str, dict] = {}
         self.effective_model = ""
         self.run_id = ""
         self.cache_path = _cache_path()
@@ -137,8 +141,29 @@ class _Runtime:
         except OSError:
             return
 
+    def record_context(self, prepared) -> dict:
+        """Archive un contexte préparé et rend ses empreintes et tailles.
+
+        Le texte capturé et le texte préparé sont conservés séparément : un
+        audit doit pouvoir distinguer « la collecte ne l'a pas vu » de « la
+        préparation l'a retiré ». Chacun n'est stocké qu'une fois.
+        """
+        metadata = prepared.metadata()
+        for kind, digest, text in (
+            ("captured", metadata["captured_hash"], prepared.captured),
+            ("prepared", metadata["prepared_hash"], prepared.prepared),
+        ):
+            self.contexts.setdefault(digest, {"kind": kind, "chars": len(text), "text": text})
+        return metadata
+
     def record_event(self, **event) -> None:
-        """Journal borné au run courant, sans en-têtes HTTP ni clé API."""
+        """Journal borné au run courant, sans en-têtes HTTP ni clé API.
+
+        ``requested_model`` est le modèle demandé, ``effective_model`` celui qui
+        a réellement produit une valeur. En l'absence d'appel — cache, filet
+        désactivé, budget épuisé — il reste vide : un run sans inférence ne doit
+        attribuer aucune valeur à un modèle.
+        """
         from datetime import datetime, timezone
         self.trace_events.append({
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -149,12 +174,30 @@ class _Runtime:
             **event,
         })
 
+    def _run_history_dir(self) -> Path | None:
+        if not self.run_id:
+            return None
+        name = "".join(c for c in self.run_id if c.isalnum() or c in "-_")
+        return self.stats_path.parent / "llm_runs" / name
+
     def save_trace(self) -> None:
         if not self.trace_events and not self.run_id:
             return
-        path = self.cache_path.parent / "source_facts_ai_trace.json"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(self.trace_events, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        directory = self.cache_path.parent
+        directory.mkdir(parents=True, exist_ok=True)
+        trace = json.dumps(self.trace_events, ensure_ascii=False, indent=2) + "\n"
+        (directory / "source_facts_ai_trace.json").write_text(trace, encoding="utf-8")
+        contexts = json.dumps(self.contexts, ensure_ascii=False, indent=2) + "\n"
+        (directory / "source_facts_ai_contexts.json").write_text(contexts, encoding="utf-8")
+        history = self._run_history_dir()
+        if history is None:
+            return
+        try:
+            history.mkdir(parents=True, exist_ok=True)
+            (history / "source_facts_ai_trace.json").write_text(trace, encoding="utf-8")
+            (history / "source_facts_ai_contexts.json").write_text(contexts, encoding="utf-8")
+        except OSError:
+            return
 
     def stats(self) -> dict:
         total = sum(self.durations)
@@ -214,8 +257,8 @@ class _Runtime:
             tmp = self.stats_path.with_suffix(self.stats_path.suffix + ".tmp")
             tmp.write_text(json.dumps(self.stats(), ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
             tmp.replace(self.stats_path)
-            if self.run_id:
-                history = self.stats_path.parent / "llm_runs" / "".join(c for c in self.run_id if c.isalnum() or c in "-_")
+            history = self._run_history_dir()
+            if history is not None:
                 history.mkdir(parents=True, exist_ok=True)
                 (history / self.stats_path.name).write_text(json.dumps(self.stats(), indent=2) + "\n", encoding="utf-8")
         except OSError:
@@ -259,9 +302,13 @@ def _flush_runtime() -> None:
 atexit.register(_flush_runtime)
 
 
-def reset_runtime_for_tests() -> None:
+def reset_runtime() -> None:
+    """Oublie le cache mémoire et empêche sa réécriture après une purge."""
     global _RUNTIME
     _RUNTIME = None
+
+
+reset_runtime_for_tests = reset_runtime
 
 
 def runtime_stats() -> dict:

@@ -1,0 +1,56 @@
+{
+  "exit_code": 0,
+  "mode": "écriture",
+  "scope": [
+    "ITM-0c085da888611a12",
+    "ITM-f2c9b54af4eae1da"
+  ],
+  "corrected_source_facts": [],
+  "items_before": 130,
+  "items_after": 130,
+  "incidents_before": 76,
+  "incidents_after": 75,
+  "changed_items": [
+    "ITM-0c085da888611a12",
+    "ITM-f2c9b54af4eae1da"
+  ],
+  "changed_incidents": [
+    "INC-AF70EBB0A692",
+    "INC-F7E0A7E8A73F"
+  ],
+  "changed_source_facts": [],
+  "new_redirects": {
+    "INC-F7E0A7E8A73F": "INC-AF70EBB0A692"
+  },
+  "out_of_scope": {
+    "items": [],
+    "incidents": []
+  },
+  "problems": [],
+  "written": true,
+  "dedup_pairs_reconciled": [
+    "ITM-0c085da888611a12|ITM-f2c9b54af4eae1da"
+  ],
+  "items": 130,
+  "incidents": 75,
+  "incident_survivant": {
+    "id": "INC-AF70EBB0A692",
+    "organisation": "Le Tampon",
+    "secteur": "Administration / Collectivité",
+    "menace": "Inconnu",
+    "localisation": "La Réunion",
+    "sources": "CYBERATTAQUE_ORG | FRENCHBREACHES",
+    "observations": 2
+  },
+  "redirection": {
+    "INC-F7E0A7E8A73F": "INC-AF70EBB0A692"
+  },
+  "file_de_dedoublonnage_restante": [
+    {
+      "left": "ITM-autre",
+      "pair_key": "ITM-autre|ITM-encore",
+      "right": "ITM-encore",
+      "status": "DISABLED"
+    }
+  ]
+}

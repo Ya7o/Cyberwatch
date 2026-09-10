@@ -2,6 +2,7 @@
 from __future__ import annotations
 import json
 import time
+from . import article_body
 from .model import Item
 from .collectors.base import RawEntry
 from .source_facts_ai_runtime import _Runtime, SourceFactsAiError
@@ -12,8 +13,14 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
     from .source_facts_ai_activity import normalize_activity
 
     body = api._request_body(item, context, fields, runtime)
+    # Le contexte soumis est archivé une seule fois par empreinte ; l'événement
+    # n'en porte que l'empreinte et la taille. Le corps de requête est conservé
+    # tel quel : il fige les paramètres de troncature réellement appliqués.
+    submitted = runtime.record_context(article_body.prepare(context))
     event = {"item_id": item.Item_ID, "source_id": item.Source_ID, "url": item.URL,
-             "content_hash": api._content_hash(entry), "context": context,
+             "content_hash": api._content_hash(entry),
+             "submitted_context_hash": submitted["prepared_hash"],
+             "submitted_context_chars": submitted["prepared_chars"],
              "organisation": item.Organisation_Raw, "requested_fields": sorted(fields),
              "field_versions": {field: FIELD_VERSIONS[field] for field in fields},
              "request": body}
