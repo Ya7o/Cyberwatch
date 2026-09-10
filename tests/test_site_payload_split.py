@@ -11,6 +11,8 @@ import json
 import xml.etree.ElementTree as ET
 from datetime import date, timedelta
 
+import pytest
+
 from cyberwatch import config, site
 
 ATOM = {"a": "http://www.w3.org/2005/Atom"}
@@ -35,6 +37,26 @@ def _payload():
              facts=[{"source": "BONJOURLAFUITE", "item_id": f"ITM-{offset}", "impact": "x"}])
         for offset in range(0, 120)
     ]
+
+
+def test_build_recharge_le_registre_identite_avant_de_lire_les_incidents(monkeypatch):
+    calls = []
+
+    monkeypatch.setattr(
+        site.org_identity,
+        "reload_organisation_identity_registry",
+        lambda path: calls.append(path),
+    )
+
+    def stop_after_reload():
+        raise RuntimeError("stop after identity registry reload")
+
+    monkeypatch.setattr(site.store, "load_incidents", stop_after_reload)
+
+    with pytest.raises(RuntimeError, match="stop after identity registry reload"):
+        site.build()
+
+    assert calls == [site.store.ORGANISATION_IDENTITY_REGISTRY_CSV]
 
 
 def test_latest_est_borne_a_la_fenetre_de_veille_et_sans_faits():

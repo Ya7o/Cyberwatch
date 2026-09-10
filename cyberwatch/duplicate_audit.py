@@ -101,12 +101,13 @@ class CandidateSignals:
 
     @property
     def any_signal(self) -> bool:
-        return self.strong_signal_count > 0 or self.fuzzy_score >= DAILY_LLM_FUZZY_THRESHOLD
+        return self.strong_signal_count > 0 or self.fuzzy_score > DAILY_LLM_FUZZY_THRESHOLD
 
 
-#: Seuil minimal de similarité pour qu'une paire sans aucun signal structurel
-#: entre malgré tout dans le périmètre du filet quotidien. Volontairement bas :
-#: ce n'est qu'une porte d'entrée vers le LLM, jamais une preuve d'identité.
+#: Seuil minimal de similarité pour qu'une paire sans signal structurel entre
+#: dans le périmètre du filet quotidien. Un score neutre de 0,5 faisait entrer
+#: des noms sans rapport (cas réel Printemps / SAD'S Interim) et permettait au
+#: LLM de créer un alias persistant sans aucun indice d'identité positif.
 DAILY_LLM_FUZZY_THRESHOLD = 0.5
 
 #: Nombre maximal de candidats historiques conservés par nouvel item, après

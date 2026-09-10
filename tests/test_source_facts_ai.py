@@ -659,6 +659,31 @@ def test_deterministic_data_types_rejette_une_negation_placee_avant_la_liste():
     ]
 
 
+def test_data_types_rejette_remediation_risque_et_description_du_service():
+    context = (
+        "Les adresses e-mail ont été exfiltrées lors de l'incident. "
+        "Le prestataire chargé du suivi des commandes et des livraisons a "
+        "révoqué les sessions et renouvelé les identifiants concernés. "
+        "Ces messages peuvent permettre de réclamer des coordonnées bancaires."
+    )
+    raw = {"data_types": [
+        {"value": "adresses e-mail", "confidence": .9,
+         "evidence": "Les adresses e-mail ont été exfiltrées lors de l'incident."},
+        {"value": "informations de commandes", "confidence": .9,
+         "evidence": "Le prestataire chargé du suivi des commandes et des livraisons"},
+        {"value": "identifiants", "confidence": .9,
+         "evidence": "a révoqué les sessions et renouvelé les identifiants concernés"},
+        {"value": "données bancaires", "confidence": .9,
+         "evidence": "Ces messages peuvent permettre de réclamer des coordonnées bancaires."},
+    ]}
+    assert [row["value"] for row in sfa._normalize(raw, context, {"data_types"})["data_types"]] == [
+        "adresses e-mail"
+    ]
+    assert [row["value"] for row in sfa._deterministic_data_types(context)] == [
+        "adresses e-mail"
+    ]
+
+
 def test_vulnerabilite_de_contexte_corrigee_n_est_pas_le_vecteur_de_l_incident():
     context = (
         "Des indices orientent vers une extraction via Metabase. "

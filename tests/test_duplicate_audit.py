@@ -239,6 +239,22 @@ def test_candidate_generation_no_candidate_for_unrelated_items(make_item):
     assert find_daily_llm_candidates([left], [left, right]) == []
 
 
+def test_candidate_generation_rejects_neutral_fuzzy_printemps_sads(make_item):
+    """Régression du faux rapprochement publié le 9 septembre 2026."""
+    printemps = make_item(
+        source="FRENCHBREACHES", org="Printemps", threat="Incident tiers",
+        published="2026-09-09", url="https://example.test/printemps",
+    )
+    sads = make_item(
+        source="CYBERATTAQUE_ORG", org="SAD’S Interim", threat="Ransomware",
+        published="2026-09-08", url="https://example.test/sads",
+    )
+    signals = compute_candidate_signals(printemps, sads)
+    assert signals.strong_signal_count == 0
+    assert signals.fuzzy_score == 0.5
+    assert find_daily_llm_candidates([printemps], [printemps, sads]) == []
+
+
 def test_dedup_identity_benchmark_on_regression_corpus():
     """§Lot 0/16 — critère d'acceptation #12 : 0 faux merge sur le corpus."""
     import json

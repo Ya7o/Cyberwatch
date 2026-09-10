@@ -13,6 +13,7 @@ from . import (
     config,
     data_sensitivity,
     fact_resolution,
+    org_identity,
     sector_resolution,
     site_legacy as _legacy,
     site_window,
@@ -151,6 +152,12 @@ def _decorate_payload(
 
 def build() -> tuple[int, int]:
     """Écrit le site avec faits bruts pour analytics et faits résolus pour l'UI."""
+    # `maj` persiste éventuellement de nouveaux alias juste avant d'appeler le
+    # build dans le même processus. Toujours relire le registre sur disque évite
+    # que les JSON publics soient construits avec l'ancien état en mémoire.
+    org_identity.reload_organisation_identity_registry(
+        store.ORGANISATION_IDENTITY_REGISTRY_CSV
+    )
     incidents = store.load_incidents()
     items = store.load_items()
     source_fact_rows = store.load_source_facts()

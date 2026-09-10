@@ -55,7 +55,7 @@ STATUS_NOT_REVIEWED_CAPACITY = "NOT_REVIEWED_CAPACITY"
 #: batch n'invalide jamais silencieusement le cache pair-à-pair existant, et
 #: réciproquement.
 DAILY_BATCH_SCHEMA_NAME = "cyberwatch_dedup_batch_audit"
-DAILY_BATCH_PROMPT_VERSION = "2026-09-06.2"
+DAILY_BATCH_PROMPT_VERSION = "2026-09-09.3"
 DAILY_BATCH_SCHEMA_VERSION = "2"
 
 #: Seuil de confiance requis pour qu'une décision LLM soit proposée aux
@@ -490,7 +490,9 @@ BATCH_SYSTEM_PROMPT = (
     "conflicting_facts que si les ordres de grandeur different reellement "
     "(ex. 10 000 contre 50 000). "
     "matched_facts et conflicting_facts citent brievement les champs fournis "
-    "qui appuient ou contredisent ta decision. Une fusion abusive est plus "
+    "qui appuient ou contredisent ta decision. Pour repondre "
+    "same_organisation=SAME, evidence ou matched_facts doit citer explicitement "
+    "les deux libelles d'organisation de la paire. Une fusion abusive est plus "
     "grave qu'un doublon laisse separe : en cas de doute reel, reponds "
     "UNKNOWN."
 )
@@ -837,6 +839,49 @@ def _rank_alias_canonical(
     return right_key, right_raw, left_key, left_raw
 
 
+def _identity_evidence_covers_both(
+    candidate: DedupAuditCandidate, decision: DedupAiDecision,
+) -> bool:
+    """Vérifie que la justification du modèle traite bien les deux victimes.
+
+    Les décisions batch peuvent accidentellement réutiliser les faits d'un seul
+    côté. Une confiance élevée ne remplace pas une preuve qui nomme les deux
+    libellés comparés.
+    """
+    evidence = searchable(" ".join((decision.evidence, *decision.matched_facts)))
+    def covered(item) -> bool:
+        key = organisation_key(item.Organisation_Raw) or item.Organisation_Key
+        normalized = searchable(key)
+        return bool(normalized) and normalized in evidence
+
+    return covered(candidate.left) and covered(candidate.right)
+
+
+def _identity_decision_is_grounded(
+    candidate: DedupAuditCandidate, decision: DedupAiDecision,
+) -> bool:
+    """Garde qualité commune aux écritures organisation et incident."""
+    signals = candidate.signals
+    if signals is None:
+        # Les anciens candidats d'audit manuel n'alimentent pas le filet
+        # quotidien. Leur contrat historique reste inchangé.
+        return True
+    if not signals.any_signal or not _identity_evidence_covers_both(candidate, decision):
+        return False
+    left_threat = candidate.left.Threat
+    right_threat = candidate.right.Threat
+    known_threats = {
+        value for value in (left_threat, right_threat)
+        if value and value != config.THREAT_UNKNOWN
+    }
+    # Une simple ressemblance floue ne suffit pas quand les deux sources
+    # décrivent des familles de menace différentes. Un signal structurel
+    # d'identité (nom compact, acronyme, domaine, identifiant) reste requis.
+    if len(known_threats) > 1 and signals.strong_signal_count == 0:
+        return False
+    return True
+
+
 def validate_ai_dedup_decision(
     candidate: DedupAuditCandidate,
     decision: DedupAiDecision,
@@ -865,6 +910,8 @@ def validate_ai_dedup_decision(
     if decision.same_organisation != SAME:
         return None
     if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
+        return None
+    if not _identity_decision_is_grounded(candidate, decision):
         return None
     left_key = organisation_key(candidate.left.Organisation_Raw) or candidate.left.Organisation_Key
     right_key = organisation_key(candidate.right.Organisation_Raw) or candidate.right.Organisation_Key
@@ -917,6 +964,8 @@ def validate_ai_incident_decision(
     if decision.same_incident not in {SAME, DIFFERENT}:
         return None
     if decision.confidence < ORG_IDENTITY_CONFIDENCE_THRESHOLD:
+        return None
+    if not _identity_decision_is_grounded(candidate, decision):
         return None
     if (
         decision.same_incident == DIFFERENT

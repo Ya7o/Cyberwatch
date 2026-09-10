@@ -95,7 +95,7 @@ FIELD_VERSIONS = {
     "third_party": "third-party-v1",
     # V4 invalide les valeurs LLM/déterministes dont la « preuve » n'était qu'un mot
     # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
-    "data_types": "data-types-v7",
+    "data_types": "data-types-v8",
     "fine_location": "fine-location-v1",
     "attack_date": "attack-date-v1",
     "discovered_date": "discovered-date-v1",

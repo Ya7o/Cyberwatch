@@ -280,8 +280,8 @@ def group_components(
 ) -> list[list[Item]]:
     """Réunit des composantes compatibles, dans un ordre déterministe.
 
-    Les liens d'identité native sont appliqués d'abord, puis les verdicts SAME
-    persistés, puis les règles déterministes ordinaires. Toute réunion autre
+    Les liens d'identité native sont appliqués d'abord, puis les règles
+    déterministes ordinaires, et enfin les verdicts SAME persistés. Toute réunion autre
     qu'une identité native exacte est contrôlée contre chaque paire des deux
     composantes : aucun veto fort ni dépassement de la fenêtre de 14 jours ne
     peut ainsi être contourné par transitivité.
@@ -325,8 +325,8 @@ def group_components(
                     continue
                 priority = (
                     0 if decision.reason_code == "INCIDENT_MERGE_SOURCE_ITEM_ID"
-                    else 1 if decision.reason_code == "INCIDENT_MERGE_LLM_CONFIRMED"
-                    else 2
+                    else 2 if decision.reason_code == "INCIDENT_MERGE_LLM_CONFIRMED"
+                    else 1
                 )
                 pair = _pair_cache_key(left, right)
                 temporal = _temporal_pair(left, right)

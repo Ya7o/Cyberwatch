@@ -985,6 +985,9 @@ def _persist(
         # snapshot final. Un run cassé ne peut donc plus polluer la MAJ suivante.
         store.save_incident_dedup_registry(report.incident_dedup_rows)
         store.save_organisation_identity_registry_rows(report.organisation_identity_rows)
+        org_identity.reload_organisation_identity_registry(
+            store.ORGANISATION_IDENTITY_REGISTRY_CSV
+        )
         if report.dedup_ai_state is not None:
             dedup_review.save(report.dedup_ai_state)
         save_snapshot_provenance(

@@ -810,6 +810,51 @@ def test_data_type_rich_negated_is_not_published_as_exposed():
     assert [entry["value"] for entry in resolved["data_types"]] == ["adresses e-mail"]
 
 
+def test_data_types_de_remediation_risque_et_role_prestataire_sont_rejetes():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        rich_facts={"data_types": [
+            {
+                "value": "identifiants",
+                "status": "reported",
+                "evidence": "Le prestataire a révoqué les sessions et renouvelé les identifiants concernés.",
+            },
+            {
+                "value": "données bancaires",
+                "status": "unknown",
+                "evidence": "Ces informations peuvent permettre de réclamer des coordonnées bancaires.",
+            },
+            {
+                "value": "informations de commandes",
+                "status": "unknown",
+                "evidence": "Le prestataire est chargé du suivi des commandes et des livraisons.",
+            },
+            {
+                "value": "adresses e-mail",
+                "status": "confirmed",
+                "evidence": "Les adresses e-mail ont été extraites sans autorisation.",
+            },
+        ]},
+    )])
+    assert [entry["value"] for entry in resolved["data_types"]] == ["adresses e-mail"]
+
+
+def test_prestataire_generique_n_est_pas_un_acteur_de_menace():
+    resolved = fr.resolve_incident_facts([
+        fact("CYBERATTAQUE_ORG", threat_actor="prestataire", claim_status="confirmed")
+    ])
+    assert "threat_actor" not in resolved["fields"]
+
+
+def test_risque_futur_n_est_pas_un_impact_observe():
+    resolved = fr.resolve_incident_facts([fact(
+        "CYBERATTAQUE_ORG",
+        impact="Risque important d'usurpation d'identité et de fraude.",
+        impact_evidence="Un risque majeur d’usurpation et de fraude subsiste.",
+    )])
+    assert "impact" not in resolved["fields"]
+
+
 def test_meme_type_de_donnee_formule_differemment_selon_la_source_ne_fait_pas_doublon():
     """Cas réel constaté sur SUEZ : CYBERATTAQUE_ORG écrit "adresses e-mail",
     BONJOURLAFUITE écrit "Adresse email" — même type, deux formulations."""

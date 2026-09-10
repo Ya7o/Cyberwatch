@@ -7,11 +7,9 @@
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
-    "identifiants",
     "adresses e-mail",
     "numéros de téléphone",
-    "noms et prénoms",
-    "données personnelles"
+    "noms et prénoms"
    ],
    "sensitive_data_exposed": false,
    "sensitive_data_types": [],
@@ -27,10 +25,13 @@
   "org": "Citadium",
   "personal_data_exposed": true,
   "quality_alerts": [],
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-09 : enseigne de mode urbaine et lifestyle du Groupe Printemps.",
+   "evidence_url": "https://www.groupe-printemps.com/profil-chiffres-cles",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "sensitive_data_exposed": false,
   "sensitive_data_types": [],
@@ -58,12 +59,12 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Citadium a informé des clients que leurs données personnelles ont été extraites lors d'une cyberattaque contre Shipup.",
+  "summary": "Citadium confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "Citadium concerné par une cyberattaque visant Shipup, exposant des données personnelles de clients.",
-   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "evidence": "Citadium est concernée par un accès non autorisé à des données personnelles chez Shipup.",
+   "reason": "THREAT_EDITORIAL_CORRECTION",
    "sources": [
     "CYBERATTAQUE_ORG",
     "FRENCHBREACHES"
@@ -81,44 +82,44 @@
   "credentials_or_secrets_exposed": false,
   "data_exposure": {
    "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": true,
+   "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
     "adresses e-mail",
     "numéros de téléphone",
-    "noms et prénoms",
-    "identifiants",
-    "données bancaires",
-    "données personnelles"
+    "noms et prénoms"
    ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "données bancaires"
-   ],
+   "sensitive_data_exposed": false,
+   "sensitive_data_types": [],
    "vulnerable_people_data_exposed": false
   },
   "date": "2026-09-09",
   "first_seen": "2026-09-09T15:59:59.832315+04:00",
-  "high_sensitivity_data_exposed": true,
+  "high_sensitivity_data_exposed": false,
   "id": "INC-AFF157A4627F",
-  "items": 1,
-  "last_seen": "2026-09-09T15:59:59.832315+04:00",
-  "location": "Inconnu",
+  "items": 2,
+  "last_seen": "2026-09-09T17:15:43.314608+04:00",
+  "location": "France métropolitaine",
   "org": "Printemps",
   "personal_data_exposed": true,
   "quality_alerts": [],
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Audit 2026-09-09 : enseigne de grands magasins de mode luxe beauté et lifestyle.",
+   "evidence_url": "https://www.groupe-printemps.com/printemps",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "données bancaires"
-  ],
+  "sensitive_data_exposed": false,
+  "sensitive_data_types": [],
   "source_link_status": [
    {
     "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "FRENCHBREACHES",
     "status": "direct"
    }
   ],
@@ -126,23 +127,30 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "Printemps informe d'une fuite de données clients due à une cyberattaque sur le prestataire Shipup.",
+  "summary": "Printemps confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup.",
   "threat": "Fuite de données",
   "threat_status": {
    "conflict": false,
-   "evidence": "Printemps : les données clients dérobées après une cyberattaque chez Shipup",
-   "reason": "THREAT_EVIDENCE_FUITE_DE_DONNÉES",
+   "evidence": "Printemps confirme un accès et une extraction non autorisés de données personnelles chez Shipup.",
+   "reason": "THREAT_EDITORIAL_CORRECTION",
    "sources": [
-    "CYBERATTAQUE_ORG"
+    "CYBERATTAQUE_ORG",
+    "FRENCHBREACHES"
    ],
-   "status": "reported"
+   "status": "confirmed"
   },
   "urls": [
+   "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5",
    "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
   ],
   "vulnerable_people_data_exposed": false
@@ -371,100 +379,6 @@
   "credentials_or_secrets_exposed": false,
   "data_exposure": {
    "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": true,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "données de santé",
-    "pièces d'identité",
-    "données bancaires"
-   ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "données de santé",
-    "données bancaires"
-   ],
-   "vulnerable_people_data_exposed": false
-  },
-  "date": "2026-09-08",
-  "first_seen": "2026-09-08T15:48:40.951089+04:00",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-61993D19E8E2",
-  "items": 3,
-  "last_seen": "2026-09-09T17:15:43.314608+04:00",
-  "location": "France métropolitaine",
-  "org": "Printemps",
-  "personal_data_exposed": true,
-  "quality_alerts": [],
-  "sector": "Services aux entreprises",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Professional Services",
-   "evidence_url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "données de santé",
-   "données bancaires"
-  ],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   },
-   {
-    "source": "RANSOMWARE_LIVE",
-    "status": "direct"
-   }
-  ],
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5"
-   },
-   {
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES",
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "La cyberattaque de SAD’S Interim expose des données sensibles, y compris des passeports et des informations de paie, revendiquées par le groupe Rhysida.",
-  "threat": "Ransomware",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "SAD'S Interim revendiqué par rhysida",
-   "reason": "THREAT_EVIDENCE_RANSOMWARE",
-   "sources": [
-    "CYBERATTAQUE_ORG",
-    "RANSOMWARE_LIVE"
-   ],
-   "status": "reported"
-  },
-  "urls": [
-   "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
-   "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5",
-   "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
-  ],
-  "vulnerable_people_data_exposed": false
- },
- {
-  "basis": "PUBLICATION",
-  "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
    "high_sensitivity_data_exposed": false,
    "personal_data_exposed": true,
    "personal_data_types": [
@@ -524,6 +438,96 @@
   },
   "urls": [
    "https://frenchbreaches.com/alertes/proshop-fft-mtt46t1ddrdidq2nzgd"
+  ],
+  "vulnerable_people_data_exposed": false
+ },
+ {
+  "basis": "PUBLICATION",
+  "credentials_or_secrets_exposed": false,
+  "data_exposure": {
+   "credentials_or_secrets_exposed": false,
+   "high_sensitivity_data_exposed": true,
+   "personal_data_exposed": true,
+   "personal_data_types": [
+    "données de santé",
+    "pièces d'identité",
+    "données bancaires"
+   ],
+   "sensitive_data_exposed": true,
+   "sensitive_data_types": [
+    "données de santé",
+    "données bancaires"
+   ],
+   "vulnerable_people_data_exposed": false
+  },
+  "date": "2026-09-08",
+  "first_seen": "2026-09-08T15:48:40.951089+04:00",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-61993D19E8E2",
+  "items": 2,
+  "last_seen": "2026-09-08T15:48:40.951089+04:00",
+  "location": "France métropolitaine",
+  "org": "SAD'S Interim",
+  "personal_data_exposed": true,
+  "quality_alerts": [
+   {
+    "code": "SOURCE_FACTS_NOT_PROPAGATED",
+    "field": "impact",
+    "severity": "warning"
+   }
+  ],
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "sensitive_data_exposed": true,
+  "sensitive_data_types": [
+   "données de santé",
+   "données bancaires"
+  ],
+  "source_link_status": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "status": "direct"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "status": "direct"
+   }
+  ],
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "La cyberattaque de SAD’S Interim expose des données sensibles, y compris des passeports et des informations de paie, revendiquées par le groupe Rhysida.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "conflict": false,
+   "evidence": "SAD'S Interim revendiqué par rhysida",
+   "reason": "THREAT_EVIDENCE_RANSOMWARE",
+   "sources": [
+    "CYBERATTAQUE_ORG",
+    "RANSOMWARE_LIVE"
+   ],
+   "status": "reported"
+  },
+  "urls": [
+   "http://rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.onion/archive.php?company=268",
+   "https://www.cyberattaque.org/sads-interim-une-cyberattaque-expose-passeports-nir-et-donnees-de-sante/"
   ],
   "vulnerable_people_data_exposed": false
  },
@@ -3063,6 +3067,11 @@
   "personal_data_exposed": true,
   "quality_alerts": [
    {
+    "code": "SOURCE_FACTS_NOT_PROPAGATED",
+    "field": "impact",
+    "severity": "warning"
+   },
+   {
     "code": "THREAT_CONFLICT_RESOLVED",
     "field": "threat",
     "severity": "info"
@@ -4176,9 +4185,9 @@
  },
  {
   "basis": "PUBLICATION",
-  "credentials_or_secrets_exposed": true,
+  "credentials_or_secrets_exposed": false,
   "data_exposure": {
-   "credentials_or_secrets_exposed": true,
+   "credentials_or_secrets_exposed": false,
    "high_sensitivity_data_exposed": true,
    "personal_data_exposed": true,
    "personal_data_types": [
@@ -4192,8 +4201,7 @@
    ],
    "sensitive_data_exposed": true,
    "sensitive_data_types": [
-    "données bancaires",
-    "mots de passe"
+    "données bancaires"
    ],
    "vulnerable_people_data_exposed": false
   },
@@ -4217,8 +4225,7 @@
   },
   "sensitive_data_exposed": true,
   "sensitive_data_types": [
-   "données bancaires",
-   "mots de passe"
+   "données bancaires"
   ],
   "source_link_status": [
    {
@@ -4994,7 +5001,7 @@
    "sensitive_data_types": [
     "numéros de sécurité sociale"
    ],
-   "vulnerable_people_data_exposed": true
+   "vulnerable_people_data_exposed": false
   },
   "date": "2026-08-29",
   "first_seen": "2026-08-31T23:59:59+04:00",
@@ -5057,7 +5064,7 @@
    "https://frenchbreaches.com/alertes/marie-blach-re-mtemu3hpnhmwfkgvnyf",
    "https://www.cyberattaque.org/marie-blachere-les-donnees-rh-demployes-revendiques-dans-une-fuite/"
   ],
-  "vulnerable_people_data_exposed": true
+  "vulnerable_people_data_exposed": false
  },
  {
   "basis": "PUBLICATION",

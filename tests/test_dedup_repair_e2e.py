@@ -32,12 +32,24 @@ def mock_transport(monkeypatch, label='SAME'):
         candidates = body['candidates']
         calls.append(candidates)
         return SimpleNamespace(
-            data={'decisions': [{'candidate_id': c['candidate_id'], 'same_organisation': 'SAME',
-                                  'same_incident': label, 'confidence': .95,
-                                  'evidence': 'Même notification, même archive et même contexte.',
-                                  'reason': 'Corroboration entre les deux sources.',
-                                  'matched_facts': ['notification', 'volume'], 'conflicting_facts': []}
-                                 for c in candidates]},
+            data={'decisions': [{
+                'candidate_id': c['candidate_id'],
+                'same_organisation': 'SAME',
+                'same_incident': label,
+                'confidence': .95,
+                'evidence': (
+                    f"{c['left']['Organisation_Raw']} et "
+                    f"{c['right']['Organisation_Raw']} désignent la même victime."
+                ),
+                'reason': 'Corroboration entre les deux sources.',
+                'matched_facts': [
+                    c['left']['Organisation_Raw'],
+                    c['right']['Organisation_Raw'],
+                    'notification',
+                    'volume',
+                ],
+                'conflicting_facts': [],
+            } for c in candidates]},
             model='test-model', duration_seconds=0,
             usage=SimpleNamespace(estimated_cost_usd=0, input_tokens=10, output_tokens=10),
         )
@@ -152,7 +164,13 @@ def test_alias_does_not_bypass_incident_time_bound(make_item):
     a = make_item(org='Example Company', source='A', published='2026-01-01')
     b = make_item(org='ExampleCompany', source='B', published='2026-02-01')
     candidate = find_daily_llm_candidates([a], [a, b])[0]
-    decision = dedup_ai.DedupAiDecision(status='OK', same_organisation='SAME', same_incident='SAME', confidence=.95)
+    decision = dedup_ai.DedupAiDecision(
+        status='OK',
+        same_organisation='SAME',
+        same_incident='SAME',
+        confidence=.95,
+        evidence='Example Company et ExampleCompany désignent la même victime.',
+    )
     assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
     assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is not None
 

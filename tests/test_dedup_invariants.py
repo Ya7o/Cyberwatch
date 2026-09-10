@@ -329,3 +329,41 @@ def test_llm_same_never_overrides_conflicting_native_ids(make_item):
 
     assert decide_merge(left, right, decisions).reason_code == "INCIDENT_KEEP_CONFLICTING_SOURCE_ITEM_ID"
     assert len(group_components([left, right], decisions)) == 2
+
+
+def test_deterministic_edge_precedes_llm_edge_in_contaminated_component(
+    make_item, monkeypatch,
+):
+    """Régression Printemps/SAD'S : la vraie paire homonyme est réunie avant
+    qu'une arête LLM puisse créer une composante ensuite bloquée par un veto."""
+    from cyberwatch import org_identity
+
+    printemps_article = make_item(
+        source="CYBERATTAQUE_ORG", source_item_id="3054", org="Printemps",
+        published="2026-09-09", url="https://example.test/printemps-article",
+    )
+    printemps_alert = make_item(
+        source="FRENCHBREACHES", org="Printemps", published="2026-09-09",
+        url="https://example.test/printemps-alert",
+    )
+    sads_article = make_item(
+        source="CYBERATTAQUE_ORG", source_item_id="3034", org="SAD’S Interim",
+        published="2026-09-08", url="https://example.test/sads",
+    )
+    monkeypatch.setattr(
+        org_identity,
+        "ORGANISATION_IDENTITY_REGISTRY",
+        {"printemps": "sad s interim"},
+    )
+    decisions = {
+        pair_key(printemps_alert.Item_ID, sads_article.Item_ID): SAME,
+    }
+
+    components = group_components(
+        [printemps_article, printemps_alert, sads_article], decisions
+    )
+
+    assert sorted(sorted(item.Item_ID for item in component) for component in components) == sorted([
+        sorted([printemps_article.Item_ID, printemps_alert.Item_ID]),
+        [sads_article.Item_ID],
+    ])

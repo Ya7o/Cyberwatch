@@ -1,125 +1,147 @@
-# Audit de la dernière collecte — 9 septembre 2026
+# Audit de la dernière collecte — 9 septembre 2026, 17 h 15
 
-**Verdict : la collecte est techniquement réussie et la déduplication des quatre nouveaux incidents est correcte, mais aucune des quatre nouvelles fiches n'est entièrement fiable dans son volet détail.** Les types de menace principaux et les localisations générales sont cohérents. Trois secteurs restent inconnus alors que deux sont directement résolubles et qu'une source officielle permet de résoudre le troisième. Des négations et des risques futurs sont encore publiés comme données exposées ; des CVE seulement contextuelles apparaissent comme « vulnérabilités exploitées ».
+**Verdict : publication techniquement réussie, mais données métier invalides.** Les deux nouvelles observations FrenchBreaches de Citadium et Printemps auraient dû enrichir les incidents homonymes déjà collectés. Citadium est correctement regroupé. Printemps est fusionné à tort avec SAD'S Interim : le site publie désormais deux fiches nommées Printemps, dont une porte le ransomware Rhysida, les données de santé et les sources de SAD'S Interim. Cette erreur P0 est persistée dans les registres de déduplication et d'identité.
+
+**Correction appliquée le 10 septembre 2026.** Printemps est de nouveau regroupé avec ses deux sources sous `INC-AFF157A4627F` et SAD'S Interim est restauré sous `INC-61993D19E8E2`. Citadium et Printemps sont qualifiés `Commerce / Distribution`, en `France métropolitaine`, avec une menace `Fuite de données`. Les volets détail ne conservent que les noms, prénoms, adresses e-mail et numéros de téléphone comme données exposées ; Shipup reste un tiers, la CVE reste une mention de contexte et les événements de chronologie sont bornés à leur victime. Après correction, les secteurs inconnus représentent 7/74 incidents (9,46 %) et les localisations inconnues 3/74 (4,05 %).
+
+Les protections ajoutées rejettent le score flou neutre de 0,5, exigent une justification couvrant les deux victimes avant toute identité `SAME`, bloquent une paire à menaces contradictoires sans signal structurel, appliquent les rapprochements déterministes avant les arêtes LLM, rechargent le registre d'identité avant la génération du site et filtrent les catégories issues d'une remédiation, d'un risque futur ou du rôle d'un prestataire. La recette complète passe avec 1 097 tests, Ruff, mypy, `cyberwatch check`, `validate-business` et deux générations successives du site sans différence.
 
 ## Périmètre
 
 | Élément | Valeur |
 |---|---|
-| Run | `RUN-20260909T075206` |
-| GitHub Actions | [34308754840](https://github.com/Ya7o/Cyberwatch/actions/runs/34308754840) |
-| Commit de départ | `a9bba4dd761a7f03bf240703f00eca9c525dac93` |
-| Commit publié | `94986c7e70bcaa25d7649ac8c371d690b1a4c7f5` |
+| Run | `RUN-20260909T171543` |
+| GitHub Actions | [34355934869](https://github.com/Ya7o/Cyberwatch/actions/runs/34355934869) |
+| Commit de départ | `ee9d70158be5cb9ab1cff31dbaef9e10db605d86` |
+| Commit publié | `a5396e0ddd02e8e860d3a449553f774c8a2f289f` |
 | Fenêtre | 8–9 septembre 2026 |
-| Corpus après collecte | 124 observations, 72 incidents |
-| Ajouts | 7 observations, 4 incidents |
-| Durée / requêtes | 107,4 s / 17 |
-| Appels LLM / coût | 27 / 0,016522 $ |
+| Corpus après collecte | 128 observations, 74 incidents |
+| Delta réel | 2 observations, 0 nouvel incident attendu |
+| Durée / requêtes | 60,4 s / 19 |
+| Appels LLM / coût | 9 / 0,005831 $ |
 
-L'audit compare le commit précédant la collecte au commit publié, relit les sept nouvelles observations et leurs faits source, examine les traces LLM et les décisions de déduplication, puis exécute réellement `openIncident()` sur les quatre nouvelles fiches avec les JSON publics courants.
+Les observations ajoutées sont :
 
-La comparaison JSON structurée des 68 incidents préexistants et de leurs volets détail ne trouve **aucune modification publiée** : aucun identifiant n'est retiré et aucun champ d'une ancienne fiche ne change. Les 23 appels `source_facts` ont donc alimenté les caches et reprises sans régression visible sur l'historique. Le delta public se limite exactement aux quatre incidents ajoutés ci-dessous.
+- `ITM-3a1f12b53d6e809e`, Citadium, FrenchBreaches ;
+- `ITM-56fe2e286f88ef44`, Printemps, FrenchBreaches.
 
-Un premier lancement, [34308433114](https://github.com/Ya7o/Cyberwatch/actions/runs/34308433114), s'est arrêté avant publication parce que le contrôle de transport interprétait cinq suppressions éditoriales volontaires comme des pertes accidentelles. Le correctif `a9bba4d` a rendu ces suppressions explicites. Le run audité est le second lancement, réussi et publié ; l'échec précédent n'a ajouté aucune observation.
+Le run annonce bien `+0 nouveaux` au niveau incident. Aucun identifiant d'incident n'est ajouté ou retiré entre les deux commits. Seules les fiches Citadium, Printemps et SAD'S Interim devaient être susceptibles d'évoluer.
 
 ## Logs de la chaîne
 
-Les quatre sources directes sont `OK` à 100 % : FrenchBreaches (4 items), BonjourLaFuite (2), Cyberattaque.org (4) et Ransomware.live (2). `VEILLE_LLM` reste `PARTIAL` à 99 % : son snapshot régional date du 2 septembre, soit sept jours d'ancienneté pour une limite de deux jours, et n'apporte aucun item dans la fenêtre demandée.
+Les quatre sources directes sont `OK` à 100 % : FrenchBreaches collecte 6 éléments avec 8 requêtes, BonjourLaFuite 2 avec 1 requête, Cyberattaque.org 6 avec 3 requêtes et Ransomware.live 2 avec 7 requêtes. `VEILLE_LLM` reste `PARTIAL` à 99 % : son snapshot du 2 septembre a sept jours d'ancienneté pour une limite de deux jours et ne fournit aucun élément dans la fenêtre.
 
-Les 27 appels LLM ont tous réussi : 23 pour `source_facts`, 3 pour l'extraction sémantique Cyberattaque.org et 1 pour la revue dédup. Aucun appel n'a échoué, expiré ou été bloqué par le plafond. Le modèle effectif est `gpt-4o-mini`, malgré `gpt-5-nano` demandé par la configuration. Sur 26 items éligibles aux faits sémantiques, 3 sont entièrement servis par le cache et 23 font l'objet d'un appel. Les métriques enregistrent 35 premiers échecs de champ, 33 reprises de champ, 2 récupérations et 94 nouvelles abstentions.
+Les 9 appels LLM réussissent sans erreur, délai dépassé, réponse 429/5xx ni blocage budgétaire. Huit appels concernent `source_facts` et un appel batch traite cinq décisions de déduplication. Le modèle effectif est `gpt-4o-mini` malgré `gpt-5-nano` demandé. Parmi 24 observations éligibles aux faits sémantiques, 16 sont entièrement servies par le cache et 4 partiellement. Les reprises de champs produisent 35 nouvelles abstentions et aucune récupération.
 
-Les contrôles `cyberwatch check` et les 22 cas métier passent. La surveillance signale toutefois `REVIEW_REQUIRED`, 19 paires de déduplication en attente et 13,89 % de secteurs inconnus, au-dessus de la cible interne de 10 %. La localisation inconnue reste dans la cible à 4,17 %.
+Les commandes `cyberwatch check` et `validate-business` passent. Le suivi de production signale cependant `REVIEW_REQUIRED`, 26 paires en attente, 12,16 % de secteurs inconnus et 5,41 % de localisations inconnues. Le statut global reste `OK` et le compteur `Dedup_Known_False_Merges` reste à zéro, alors que l'audit du delta établit une fusion erronée. Ce compteur ne couvre que le corpus fixe de validation, pas les nouvelles décisions appliquées au corpus vivant.
 
-## Déduplication
+## Déduplication — erreur P0
 
-Les regroupements des nouvelles observations sont corrects :
+### Citadium
 
-- Aroma-Zone : Cyberattaque.org + FrenchBreaches, 2 observations ;
-- Financière d'Uzès : Cyberattaque.org + Ransomware.live, 2 observations ;
-- Vision2i : Cyberattaque.org + FrenchBreaches, 2 observations ;
-- Proshop FFT : FrenchBreaches seul, 1 observation.
+Le regroupement est correct et conserve l'identifiant `INC-F7B381806AEC` :
 
-Le filet LLM examine 15 paires, dont 7 depuis le cache. Il ne propose aucune fusion et n'en applique aucune. Les quatre comparaisons impliquant une nouvelle observation opposent Aroma-Zone à Micromania ou Aveyron, et Financière d'Uzès à La financière d'Orion. Les réponses `DIFFERENT` à 0,5 restent `UNKNOWN`, conformément au nouveau seuil : elles sont non concluantes mais ne bloquent aucun regroupement légitime observé ici. Aucun doublon manqué n'est établi parmi les quatre nouveaux incidents.
+- `ITM-297a7e21d0f7da49`, Cyberattaque.org ;
+- `ITM-3a1f12b53d6e809e`, FrenchBreaches.
 
-## Audit des quatre incidents
+Même victime, même date de publication, même prestataire Shipup et même exposition de données de contact : les deux observations décrivent bien le même incident.
 
-### Aroma-Zone — `INC-2AF4C7544CC3` — correction P1
+### Printemps et SAD'S Interim
 
-Le regroupement et la menace finale « Fuite de données — Confirmé » sont cohérents. L'observation Cyberattaque.org porte encore `Phishing / fraude`, mais le résolveur d'incident corrige ce défaut grâce au résumé et à l'impact. Shipup est correctement identifié comme tiers compromis et la France métropolitaine est cohérente.
+La paire `ITM-56fe2e286f88ef44|ITM-ec4d0cdfab6fa8df` reçoit le verdict LLM `SAME/SAME` à 0,90. Elle rapproche pourtant :
 
-Le volet publié contient cependant plusieurs erreurs :
+- Printemps / FrenchBreaches / incident tiers Shipup / 9 septembre ;
+- SAD'S Interim / Cyberattaque.org / ransomware Rhysida / 8 septembre.
 
-- acteur revendicateur « prestataire — Revendiqué », alors qu'aucun attaquant nommé n'est établi ;
-- mots de passe, données bancaires, identifiants et informations de commandes affichés comme données concernées ;
-- `CVE-2026-72898` affichée sous « Vulnérabilités exploitées » sans preuve qu'elle est la faille de l'incident Aroma-Zone ;
-- secteur inconnu.
+Tous les signaux transmis par le générateur de candidats sont négatifs : `exact_key=false`, `compact_match=false`, `token_permutation=false`, `containment=false`, `acronym_match=false`, aucun domaine ni identifiant d'entreprise partagé, et un score flou neutre de 0,5. La justification du modèle ne cite que SAD'S Interim, Rhysida et la date du 8 septembre ; elle n'apporte aucune preuve concernant Printemps. Une autre paire du même batch, opposant la même observation Printemps à l'observation Ransomware.live de SAD'S Interim, est correctement classée `DIFFERENT/UNKNOWN` à 0,5.
 
-Les preuves disent au contraire que les mots de passe, données bancaires, paiements, historiques de commandes et détails de livraison ne seraient pas concernés. Une autre phrase explique seulement que de futurs messages frauduleux pourraient chercher à obtenir des identifiants, mots de passe ou données bancaires. Ces passages de négation et de risque sont transformés en catégories exposées. Les données étayées sont les noms, prénoms, adresses e-mail et numéros de téléphone. Le secteur attendu est `Commerce / Distribution`, activité confirmable par le site officiel d'Aroma-Zone ; la proposition LLM Commerce a été rejetée parce que sa citation ne démontrait pas l'activité.
+Le validateur automatique ne contrôle que le statut, `SAME`, la confiance minimale de 0,85 et la proximité temporelle. Il ne requiert aucun signal positif d'identité, aucune mention des deux victimes dans les preuves et aucun accord de menace. Le verdict crée alors deux lignes persistantes :
 
-Sources : [Cyberattaque.org](https://www.cyberattaque.org/aroma-zone-une-cyberattaque-chez-shipup-expose-les-donnees-de-clients/), [FrenchBreaches](https://frenchbreaches.com/alertes/aroma-zone-shipup-mtt6j96rnh5ec06x7w).
+- alias d'organisation `printemps -> sad s interim` dans `organisation_identity_registry.csv` ;
+- fusion de paire `ITM-56fe2e286f88ef44|ITM-ec4d0cdfab6fa8df` dans `incident_dedup_registry.csv`.
 
-### Financière d'Uzès — `INC-09D2AFD7707B` — correction P1
+Les arêtes LLM sont appliquées avant les rapprochements déterministes par nom canonique. La nouvelle observation Printemps rejoint donc SAD'S Interim en priorité. La fusion correcte avec l'observation Cyberattaque.org de Printemps est ensuite bloquée par le veto « deux éléments Cyberattaque.org avec des identifiants source différents » présent dans la composante contaminée.
 
-Le regroupement, la menace Ransomware, le secteur Finance / Assurance et la localisation France métropolitaine sont cohérents. Le volume de 70 Go et l'acteur Panzer proviennent d'une revendication.
+Conséquences publiques :
 
-Le volet transforme néanmoins cette revendication en faits plus forts :
+- `INC-AFF157A4627F` reste une fiche Printemps « Fuite de données » avec une seule observation ;
+- `INC-61993D19E8E2`, auparavant SAD'S Interim, est renommé Printemps et reçoit trois sources, dont l'URL FrenchBreaches de Printemps ;
+- le site présente donc deux Printemps, l'un en fuite de données et l'autre en ransomware Rhysida avec passeports, données de santé, paie et données bancaires ;
+- SAD'S Interim disparaît comme libellé de carte alors que son résumé et ses faits restent publiés sous le second Printemps.
 
-- résumé « La Financière d'Uzès a déclaré avoir subi une cyberattaque », alors que l'article indique qu'aucune confirmation publique de la victime n'a été identifiée ;
-- jeu de données « données clients — Confirmé », extrait d'une phrase conditionnelle demandant précisément si les 70 Go contiennent des données clients ;
-- localisation précise « Paris — Revendiqué », déduite d'une liste de six bureaux et sans lien avec le lieu de l'incident ;
-- volume de 70 Go affiché `Inconnu` et acteur Panzer `Inconnu`, alors que leurs statuts doivent être `Revendiqué`.
+## Reproductibilité — erreur P0
 
-La qualification correcte est une revendication de ransomware par Panzer portant sur 70 Go, sans confirmation de la victime ni contenu des données établi. La localisation générale France peut rester ; le lieu précis doit être vide.
+Les incidents et les volets détail sont générés avec deux états différents du registre d'identité. Le fichier d'incidents voit l'alias LLM appliqué pendant le run, tandis que la construction initiale des détails utilise encore le registre chargé avant cette décision.
 
-Source : [Cyberattaque.org](https://www.cyberattaque.org/financiere-duzes-70-go-de-donnees-volees-apres-une-cyberattaque/).
+Un `build-site` isolé depuis le seul commit `a5396e0` modifie immédiatement trois artefacts versionnés : `facts.json`, `incidents.json` et `latest.json`. Les faits FrenchBreaches de Printemps quittent `INC-AFF157A4627F` et rejoignent `INC-61993D19E8E2`. Le commit publié n'est donc pas reproductible sans aucune nouvelle donnée ni aucun appel externe.
 
-### Proshop FFT — `INC-72E15EC21567` — correction P1
+## Audit des incidents touchés
 
-La menace « Fuite de données », l'acteur LunarisSec et la localisation France métropolitaine sont cohérents. Le texte et les échantillons étayent la présence de données de commandes, noms, adresses et téléphones, tout en conservant la revendication sur le volume total.
+### Citadium — `INC-F7B381806AEC` — correction P1
 
-Trois informations importantes sont mal publiées :
+La menace « Fuite de données — Confirmé », le tiers Shipup et la localisation générale France métropolitaine sont cohérents. Aucun acteur malveillant nommé, volume ou lieu précis n'est établi. `CVE-2026-72898` est correctement classée comme vulnérabilité seulement mentionnée, pas comme faille prouvée de cet incident.
 
-- le secteur reste inconnu malgré la mention explicite « place de marché de la Fédération Française de Tennis » et le secteur source Commerce ; `Commerce / Distribution` est directement étayé ;
-- les 118 000 commandes, acceptées par l'extraction sémantique comme volume revendiqué, disparaissent entièrement du volet parce que l'unité `commandes` n'est pas transportée par le résolveur des volumes affectés ;
-- la menace apparaît `Inconnu` au lieu de `Revendiqué`.
+Le secteur reste `Inconnu`, alors que Citadium est une enseigne de magasins et de commerce électronique du groupe Printemps. Le secteur attendu est `Commerce / Distribution`. La [page officielle du groupe](https://www.groupe-printemps.com/profil-chiffres-cles) décrit explicitement Citadium parmi ses enseignes et magasins de mode urbaine.
 
-Le volet affiche aussi `identifiants` dans les données concernées. Les preuves distinguent des identifiants ou références de commande des identifiants de connexion et disent explicitement que les échantillons ne justifient pas d'affirmer la présence d'identifiants de connexion ou de données bancaires. Le libellé doit rester « références/identifiants de commande », sans signaler des secrets d'authentification.
+Le volet détail publie encore deux catégories non étayées :
 
-Sources : [FrenchBreaches](https://frenchbreaches.com/alertes/proshop-fft-mtt46t1ddrdidq2nzgd), [site officiel Proshop FFT](https://proshop.fft.fr/).
+- `informations de commandes`, déduites du rôle de Shipup dans le suivi des commandes et livraisons, sans preuve que ces informations ont été exposées ;
+- `identifiants`, extraits d'une phrase de remédiation indiquant que Shipup a renouvelé ses clés et identifiants, pas d'une liste de données clients exposées.
 
-### Vision2i — `INC-06870EC77814` — correction P1
+Les données effectivement documentées sont noms, prénoms, adresses e-mail et numéros de téléphone. Les mots de passe et données bancaires apparaissent encore dans les claims bruts comme objets d'un risque futur de phishing, mais le résolveur les écarte correctement de la liste publique pour Citadium.
 
-Le regroupement, la menace « Fuite de données — Revendiqué », l'acteur Sophia et la localisation France métropolitaine sont cohérents. L'absence de volume est justifiée : aucun nombre total de contacts n'est donné.
+La chronologie contient aussi un événement propre à Printemps (« informé le 20 août ») et deux formulations redondantes sur les correctifs Metabase du 6 août. L'extracteur de page ne borne pas les faits à la victime courante lorsqu'un article décrit plusieurs clients de Shipup.
 
-Le détail publié est trompeur sur les données et le vecteur :
+Sources : [Cyberattaque.org](https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/), [FrenchBreaches](https://frenchbreaches.com/alertes/citadium-shipup-mtu3vt912q1i17on3ex).
 
-- `mots de passe — Inconnu` est affiché alors que les deux sources expliquent que le champ `hash` ne doit pas être assimilé à un mot de passe et qu'aucun mot de passe en clair n'est observé ;
-- `CVE-2026-12757`, `CVE-2026-1651` et `CVE-2026-81290` sont affichées sous « Vulnérabilités exploitées » ;
-- un CVSS 6,5/10 est rattaché à l'incident ;
-- les sources disent explicitement qu'aucun élément ne permet d'établir qu'une de ces failles est le vecteur et que le scénario reste inconnu ;
-- la chronologie duplique plusieurs formulations éditoriales, conserve un fragment Markdown `**` et affiche la publication de la CVE comme événement de l'incident ;
-- le secteur reste inconnu.
+### Printemps — `INC-AFF157A4627F` — correction P1
 
-Le validateur a correctement supprimé le vecteur `vulnerability_exploitation` proposé par le LLM, car sa preuve constatait seulement la publication d'une CVE. En revanche, la liste générique des CVE contourne cette validation et le renderer les présente toutes comme exploitées. Le secteur proposé `Numérique / Technologie` était fondé uniquement sur l'utilisation de WordPress et a été correctement rejeté. Le site officiel décrit Vision2i comme une agence de communication et de conseil située à Orvault ; la taxonomie attendue est `Services aux entreprises` avec cette preuve externe.
+Cette fiche est la bonne base : la menace est une fuite de données liée à Shipup. Elle reste toutefois séparée de l'observation FrenchBreaches correspondante. Son statut est seulement `reported`, sa localisation reste `Inconnu` et son secteur reste `Inconnu`. Après regroupement correct, la menace doit être `confirmed`, la localisation générale `France métropolitaine` et le secteur `Commerce / Distribution`. Le [site officiel du groupe Printemps](https://www.groupe-printemps.com/printemps) qualifie directement Printemps d'acteur du commerce de la mode, du luxe, de la beauté et du lifestyle.
 
-Sources : [Cyberattaque.org](https://www.cyberattaque.org/vision2i-une-cyberattaque-expose-une-base-de-contacts-de-son-site-wordpress/), [FrenchBreaches](https://frenchbreaches.com/alertes/vision2i-mtt59zu9f60dfx10m5g), [site officiel Vision2i](https://vision2i.fr/).
+Le détail contient plusieurs fausses qualifications :
 
-## Causes communes
+- acteur revendicateur `prestataire`, alors que Shipup est le tiers compromis et qu'aucun attaquant nommé n'est publié ;
+- `identifiants`, issu du renouvellement des clés et sessions de Shipup ;
+- `données bancaires`, issu d'une conséquence possible et d'une recommandation de ne pas communiquer ses coordonnées bancaires ;
+- indicateur `high_sensitivity_data_exposed=true` et type sensible « données bancaires », produits par ce dernier faux positif ;
+- `informations de commandes`, déduit du rôle opérationnel du prestataire plutôt que de la liste des données exposées.
 
-1. L'extraction lexicale des catégories de données ne borne pas suffisamment les négations, exclusions et risques futurs. Elle publie ainsi des mots de passe ou données bancaires explicitement absents.
-2. La détection de vulnérabilités conserve les CVE mentionnées comme contexte. Leur statut et leur relation avec l'incident disparaissent ensuite, tandis que l'interface les intitule toutes « Vulnérabilités exploitées ».
-3. Le statut d'une proposition conditionnelle contenant « confirme » peut devenir `confirmed`, même lorsque la phrase demande si une confirmation existe.
-4. Le vocabulaire des volumes affectés ne transporte pas l'unité `commandes`, bien que la réponse LLM soit acceptée et conservée dans les faits riches.
-5. Le générateur de résumé n'impose pas que l'acteur grammatical de « a déclaré » soit soutenu par la citation ; une apparition sur un site de ransomware devient une déclaration de la victime.
-6. Le validateur sectoriel bloque à raison les preuves qui décrivent WordPress ou Shipup à la place de la victime, mais ne récupère pas automatiquement les preuves valides déjà présentes pour Proshop FFT et ne consulte pas de référence officielle pour Aroma-Zone ou Vision2i.
+Les données soutenues sont les noms, prénoms, adresses e-mail et numéros de téléphone. Le tiers Shipup est correct. `CVE-2026-72898` reste une mention de contexte et ne doit pas être présentée comme exploitation établie pour Printemps. Aucun lieu précis ne doit être déduit de l'adresse du magasin Haussmann ou du siège.
 
-## Recette attendue
+Sources : [Cyberattaque.org](https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/), [FrenchBreaches](https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5).
 
-- retirer les catégories issues de négations, d'exclusions et de scénarios de risque ;
-- distinguer vulnérabilités mentionnées, vulnérabilités candidates et vulnérabilités effectivement exploitées jusqu'au renderer ;
-- transporter `commandes` comme unité de volume d'enregistrements avec le statut revendiqué ;
-- refuser les résumés attribuant une confirmation ou une déclaration à la victime sans citation correspondante ;
-- ajouter des références d'activité pour Aroma-Zone, Proshop FFT et Vision2i ;
-- rejouer les quatre incidents jusqu'au HTML et ajouter ces contre-exemples aux tests métier.
+### SAD'S Interim — `INC-61993D19E8E2` — restauration P0
 
-Cet audit n'a modifié ni les données canoniques ni le site publié et n'a lancé aucun appel LLM supplémentaire.
+Avant la collecte, cet identifiant portait correctement SAD'S Interim, deux observations et les sources Cyberattaque.org et Ransomware.live. La menace ransomware, l'acteur Rhysida, le secteur `Services aux entreprises` et la localisation France métropolitaine sont cohérents avec cette victime.
+
+La collecte remplace seulement son libellé par Printemps, ajoute l'URL FrenchBreaches de Printemps et fait passer le nombre d'observations de deux à trois. Le résumé et le détail restent ceux de SAD'S Interim dans le commit publié. Un rebuild y ajoute en plus les faits de contact de Printemps. Il faut restaurer le nom SAD'S Interim, retirer l'observation et la source Printemps, puis conserver les deux observations historiques de SAD'S Interim.
+
+## Secteurs et localisations indéterminés
+
+Le taux de secteurs inconnus reste à 9 incidents sur 74, soit 12,16 %, au-dessus de la cible de 10 %. Les neuf fiches sont Citadium, Printemps, Medikwestindies, Les Curistes, SPA du Pays de Montbéliard, Accent Rouge, Tisséo, Géofoncier et LebonSiege. Les deux nouvelles observations affichent `NO_ACTIVITY_EVIDENCE` : les appels sémantiques demandent bien `activity_description` et `activity_sector_match`, mais terminent en `miss`. Citadium et Printemps sont immédiatement résolubles en `Commerce / Distribution` avec la référence officielle du groupe.
+
+Le taux de localisations inconnues passe de 5/74 à 4/74, soit 5,41 %, encore au-dessus de la cible de 5 %. Les fiches concernées sont Printemps, SPA du Pays de Montbéliard, Dropbox et Stade Montois Omnisports. L'amélioration d'une unité correspond à Citadium. L'observation FrenchBreaches de Printemps porte bien `France métropolitaine`, mais la fausse fusion l'empêche d'enrichir la bonne fiche Printemps.
+
+## Causes racines
+
+1. Le générateur envoie au LLM des paires sans aucun signal positif d'identité : tous les indicateurs peuvent être faux avec un score flou neutre de 0,5.
+2. Le validateur autorise une fusion `SAME/SAME` à partir de la seule confiance déclarée par le modèle, sans exiger que les preuves couvrent les deux organisations ni vérifier une contradiction de noms ou de menaces.
+3. Une identité LLM erronée devient un alias global persistant et une fusion d'incident persistante dans le même run.
+4. Les arêtes LLM ont priorité sur les rapprochements déterministes par nom, ce qui permet à une mauvaise fusion de bloquer ensuite la bonne.
+5. Le registre est persisté avant la construction du site, mais l'état d'identité déjà chargé en mémoire n'est pas rechargé ; incidents et détails ne partagent donc pas la même vue du registre.
+6. L'extraction de catégories ne distingue pas encore assez les données exposées, les fonctions du prestataire, les mesures de remédiation et les risques futurs.
+7. L'extraction de pages multi-victimes laisse passer dans Citadium des dates propres à Printemps.
+8. Les contrôles métier mesurent un corpus fixe et ne recherchent pas les contradictions des regroupements nouvellement appliqués au corpus réel.
+
+## Recette de correction
+
+- supprimer les deux décisions persistées `printemps -> sad s interim` et `ITM-56fe2e286f88ef44|ITM-ec4d0cdfab6fa8df` ;
+- regrouper les deux observations Printemps et restaurer la composante SAD'S Interim ;
+- interdire l'application d'un verdict LLM `SAME` sans au moins un signal positif d'identité et une preuve mentionnant les deux libellés ;
+- opposer un veto aux noms normalisés nettement différents et aux menaces incompatibles lorsque le modèle n'apporte aucune preuve d'alias ;
+- appliquer les arêtes exactes/canoniques avant les arêtes LLM ;
+- persister et recharger les registres avant toute reconstruction d'incidents ou de faits, puis ajouter un test de rebuild sans diff ;
+- filtrer les données issues de remédiations, de risques futurs et de descriptions fonctionnelles ;
+- borner la chronologie à la victime courante ;
+- ajouter Citadium et Printemps aux références sectorielles en `Commerce / Distribution` ;
+- ajouter ce faux rapprochement et les deux volets détail au corpus de régression vivant.

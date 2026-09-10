@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-09.2",
+  "version": "2026-09-10.1",
   "items": {
     "ITM-21712d3c95aeb085": {"set": {"Location": "Guadeloupe"}},
     "ITM-eafcb7b7a88e0222": {"set": {"Threat": "Fuite de données", "Sector": "Administration / Collectivité"}},
@@ -24,6 +24,140 @@
     "ITM-a27286500e1e2431": {"set":{"Threat":"Fuite de données"}}
   },
   "source_facts": {
+    "ITM-297a7e21d0f7da49": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Conserve uniquement les données de contact exposées ; le suivi des commandes décrit le service du tiers et le renouvellement des identifiants est une remédiation.",
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]",
+        "Impact": "Des données de contact de clients Citadium ont été consultées et extraites sans autorisation.",
+        "Summary": "Citadium confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup."
+      },
+      "evidence_set": {
+        "Third_Party": "Citadium informe certains de ses clients qu’une partie de leurs données personnelles a été consultée et extraite sans autorisation à la suite d’une cyberattaque ayant touché son prestataire Shipup.",
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {"value": "adresses e-mail", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "numéros de téléphone", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "noms et prénoms", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."}
+        ],
+        "timeline": [
+          {"date": "2026-08-25", "event": "Citadium notifie la violation de données à la CNIL", "status": "confirmed", "evidence": "Citadium indique avoir officiellement notifié la violation de données le 25 août 2026."}
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {"value": "Fuite de données", "status": "confirmed", "evidence": "Des données personnelles de clients Citadium ont été consultées et extraites sans autorisation."}
+      }
+    },
+    "ITM-3a1f12b53d6e809e": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Retire les fonctions de Shipup, les risques futurs et la chronologie de Printemps ; la CVE est seulement mentionnée dans le contexte de campagne.",
+      "clear": ["Vulnerabilities_JSON"],
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]"
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {"value": "adresses e-mail", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "numéros de téléphone", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "noms et prénoms", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."}
+        ],
+        "timeline": [],
+        "vulnerabilities": [
+          {"value": "CVE-2026-72898", "status": "reported", "relationship": "mentioned", "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale."}
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {"value": "Fuite de données", "status": "confirmed", "evidence": "Citadium est concernée par un accès non autorisé à des données personnelles chez Shipup."}
+      }
+    },
+    "ITM-5d429a6cb36dada4": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le prestataire n’est pas un attaquant ; commandes et identifiants décrivent le service ou la remédiation, et les données bancaires sont un risque futur.",
+      "clear": ["Threat_Actor"],
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]",
+        "Impact": "Des données de contact de clients Printemps ont été consultées et extraites sans autorisation.",
+        "Summary": "Printemps confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup."
+      },
+      "evidence_set": {
+        "Third_Party": "Printemps informe certains de ses clients qu’une partie de leurs données personnelles a été consultée et extraite sans autorisation lors d’une cyberattaque ayant touché son prestataire Shipup.",
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {"value": "adresses e-mail", "status": "confirmed", "evidence": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "numéros de téléphone", "status": "confirmed", "evidence": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "noms et prénoms", "status": "confirmed", "evidence": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."}
+        ],
+        "timeline": [
+          {"date": "2026-09-04", "event": "Printemps informe les clients concernés", "status": "reported", "evidence": "Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le 4 septembre 2026."}
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {"value": "Fuite de données", "status": "confirmed", "evidence": "Des données personnelles de clients Printemps ont été consultées et extraites sans autorisation."}
+      }
+    },
+    "ITM-56fe2e286f88ef44": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Retire les fonctions du prestataire, les recommandations et les risques futurs ; la CVE est contextuelle à la campagne Metabase.",
+      "clear": ["Vulnerabilities_JSON"],
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]"
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {"value": "adresses e-mail", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "numéros de téléphone", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."},
+          {"value": "noms et prénoms", "status": "confirmed", "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."}
+        ],
+        "timeline": [
+          {"date": "2026-08-20", "event": "Printemps est informé de l’incident", "status": "reported", "evidence": "Printemps indique avoir été informé de l’incident le 20 août 2026."},
+          {"date": "2026-08-25", "event": "Printemps notifie la violation à la CNIL", "status": "reported", "evidence": "Printemps indique avoir effectué une notification auprès de la CNIL le 25 août 2026."}
+        ],
+        "vulnerabilities": [
+          {"value": "CVE-2026-72898", "status": "reported", "relationship": "mentioned", "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale."}
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {"value": "Fuite de données", "status": "confirmed", "evidence": "Printemps confirme un accès et une extraction non autorisés de données personnelles chez Shipup."}
+      }
+    },
     "ITM-ec4d0cdfab6fa8df": {
       "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
       "reason": "Le volume de 5,79 To concerne Berlin, pas SAD'S Interim.",

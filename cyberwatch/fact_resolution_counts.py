@@ -110,6 +110,7 @@ _ACTOR_PRONOUN_BLOCKLIST = {
     "la structure", "l etablissement", "la compagnie", "la firme",
     "l entite", "syndicat", "le syndicat", "association", "l association",
     "organisation", "entreprise", "societe", "victime",
+    "prestataire", "fournisseur", "sous traitant", "tiers",
 }
 
 _VICTIM_DECLARATION_RE = re.compile(
@@ -203,6 +204,11 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
             continue
         source = _text(fact.get("source"))
         evidence = _text(fact.get(f"{field}_evidence"))
+        if field == "impact" and (
+            _HYPOTHETICAL_EVIDENCE_RE.search(evidence or _text(value))
+            or _NEGATED_EVIDENCE_RE.search(evidence or _text(value))
+        ):
+            continue
         resolved_status = _status({"status": fact.get("claim_status")})
         if field == "data_volume":
             rich = fact.get("rich_facts") if isinstance(fact.get("rich_facts"), dict) else {}
@@ -294,7 +300,9 @@ _NEGATED_EVIDENCE_RE = re.compile(
 )
 _HYPOTHETICAL_EVIDENCE_RE = re.compile(
     r"\b(?:pourrait|pourraient|permettrait|potentielle?|peut par exemple|"
-    r"risque(?:nt)? de|ne signifie toutefois pas)\b|"
+    r"ne signifie toutefois pas)\b|"
+    r"\brisque\b.{0,50}\bd(?:e|['’])\b|"
+    r"\b(?:peut|peuvent)\b.{0,100}\bpermettre\b|"
     r"\b(?:peut|peuvent)\b.{0,100}\b(?:chercher|tenter|r[ée]cup[ée]r|obtenir|contenir|confirmer)|"
     r"\b(?:d[ée]terminer|savoir|v[ée]rifier)\s+si\b|"
     r"\bsi\b.{0,100}\b(?:[ée]t[ée]|avait|confirme|contient|concerne|comprend|inclut)|"

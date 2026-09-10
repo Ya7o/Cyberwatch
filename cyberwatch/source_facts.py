@@ -182,6 +182,7 @@ _ACTOR_SENTINELS = {
     "ransomware", "rancongiciel", "cybercriminel", "cybercriminels", "pirate", "pirates",
     "article", "publication", "source", "entreprise", "l entreprise", "l'entreprise",
     "societe", "la societe", "organisation", "l organisation", "l'organisation", "victime",
+    "prestataire", "fournisseur", "sous traitant", "sous-traitant", "tiers",
     "syndicat", "le syndicat", "association", "l association", "l'association",
     "celui ci", "celle ci", "celui la", "celle la", "ce dernier", "cette derniere",
 }

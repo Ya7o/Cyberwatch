@@ -192,8 +192,10 @@ def _evidence_sentence(evidence: str, context: str) -> str:
 
 
 def _negated_data_type(value: str, evidence: str, context: str) -> bool:
-    """Vérifie qu'une catégorie LLM n'est pas citée pour nier son exposition."""
+    """Vérifie qu'une catégorie n'est pas citée hors d'une exposition réelle."""
     sentence = _evidence_sentence(evidence, context)
+    if _NON_EXPOSURE_DATA_CONTEXT_RE.search(sentence):
+        return True
     value_key = searchable(value)
     for canonical, pattern in _DATA_TYPE_PATTERNS:
         if searchable(canonical) != value_key:
@@ -202,6 +204,19 @@ def _negated_data_type(value: str, evidence: str, context: str) -> bool:
             if _NEGATED_DATA_VALUE_PREFIX.search(sentence[:match.start()]):
                 return True
     return False
+
+
+_NON_EXPOSURE_DATA_CONTEXT_RE = re.compile(
+    r"\b(?:recommand\w*|conseill\w*)\b.{0,140}\b(?:communiquer|transmettre|partager)\b|"
+    r"\b(?:peut|peuvent|pourrait|pourraient)\b.{0,100}\b(?:permettre|servir|chercher|"
+    r"obtenir|r[ée]cup[ée]rer|r[ée]clamer)\b|"
+    r"\b(?:renouvel\w*|r[ée]voqu\w*|d[ée]sactiv\w*|r[ée]initialis\w*|rotation)\b"
+    r".{0,120}\b(?:cl[ée]s?|identifiants?|sessions?|mots? de passe|acc[èe]s)\b|"
+    r"\b(?:prestataire|fournisseur|sous[- ]traitant|tiers)\b.{0,100}"
+    r"\b(?:charg[ée]|sp[ée]cialis[ée]|intervenant)\b.{0,100}"
+    r"\b(?:suivi|gestion)\b.{0,50}\b(?:commandes?|livraisons?|colis)\b",
+    re.I,
+)
 
 
 def _valid_confidence(value) -> float | None:
@@ -512,6 +527,7 @@ def _deterministic_data_types(context: str) -> list[dict]:
             if (
                 _NEGATED_DATA_VALUE_SENTENCE.search(sentence)
                 or _NEGATED_DATA_RELATION.search(window)
+                or _NON_EXPOSURE_DATA_CONTEXT_RE.search(sentence)
                 or _negated_data_type(canonical, match.group(0), context)
                 or not _DATA_RELATION.search(window)
             ):

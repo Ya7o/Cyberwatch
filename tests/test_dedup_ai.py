@@ -335,7 +335,8 @@ def test_validate_applies_high_confidence_same_organisation(make_item):
     candidate = candidates[0]
     decision = dedup_ai.DedupAiDecision(
         status=dedup_ai.STATUS_OK, same_organisation=dedup_ai.SAME,
-        same_incident=dedup_ai.DIFFERENT, confidence=0.97, evidence="e",
+        same_incident=dedup_ai.DIFFERENT, confidence=0.97,
+        evidence="Zorglub9 Consulting et Zorglub9Consulting désignent la même organisation.",
     )
     proposal = dedup_ai.validate_ai_dedup_decision(candidate, decision, model="gpt-4o-mini")
     assert proposal is not None
@@ -357,11 +358,60 @@ def test_validate_applies_confidence_juste_au_dessus_du_seuil(make_item):
     candidate = find_daily_llm_candidates([left], [left, right])[0]
     decision = dedup_ai.DedupAiDecision(
         status=dedup_ai.STATUS_OK, same_organisation=dedup_ai.SAME,
-        same_incident=dedup_ai.SAME, confidence=0.90, evidence="e",
+        same_incident=dedup_ai.SAME, confidence=0.90,
+        evidence="Zorglub6 Consulting et Zorglub6Consulting désignent la même organisation.",
     )
     proposal = dedup_ai.validate_ai_dedup_decision(candidate, decision, model="gpt-4o-mini")
     assert proposal is not None
     assert proposal["Decision"] == "SAME"
+
+
+def test_validate_rejects_same_when_evidence_omits_one_organisation(make_item):
+    left = make_item(source="A", org="Printemps", threat="Incident tiers", published="2026-09-09")
+    right = make_item(source="B", org="SAD’S Interim", threat="Ransomware", published="2026-09-08")
+    from cyberwatch.duplicate_audit import CandidateSignals
+    candidate = DedupAuditCandidate(
+        risk_type=RISK_MISSED_DUPLICATE,
+        left=left,
+        right=right,
+        days_apart=1,
+        reason_code="DUPLICATE_CANDIDATE_DAILY_LLM",
+        signals=CandidateSignals(fuzzy_score=0.8),
+    )
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK,
+        same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.SAME,
+        confidence=0.99,
+        evidence="SAD’S Interim est victime du ransomware Rhysida.",
+        matched_facts=("Organisation_Raw : SAD’S Interim",),
+        conflicting_facts=("Printemps", "SAD’S Interim"),
+    )
+    assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is None
+    assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
+
+
+def test_validate_rejects_fuzzy_only_identity_with_conflicting_threats(make_item):
+    left = make_item(source="A", org="Alpha Services", threat="Incident tiers")
+    right = make_item(source="B", org="Alfa Services", threat="Ransomware")
+    from cyberwatch.duplicate_audit import CandidateSignals
+    candidate = DedupAuditCandidate(
+        risk_type=RISK_MISSED_DUPLICATE,
+        left=left,
+        right=right,
+        days_apart=1,
+        reason_code="DUPLICATE_CANDIDATE_DAILY_LLM",
+        signals=CandidateSignals(fuzzy_score=0.9),
+    )
+    decision = dedup_ai.DedupAiDecision(
+        status=dedup_ai.STATUS_OK,
+        same_organisation=dedup_ai.SAME,
+        same_incident=dedup_ai.SAME,
+        confidence=0.99,
+        evidence="Alpha Services et Alfa Services désignent la même organisation.",
+    )
+    assert dedup_ai.validate_ai_dedup_decision(candidate, decision) is None
+    assert dedup_ai.validate_ai_incident_decision(candidate, decision) is None
 
 
 def test_validate_rejects_low_confidence(make_item):

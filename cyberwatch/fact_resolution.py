@@ -70,6 +70,17 @@ _ACTOR_PREFIX_RE = re.compile(
     r"pirate|attaquant|groupe|collectif|gang))\s+",
     re.I,
 )
+_NON_EXPOSURE_DATA_CONTEXT_RE = re.compile(
+    r"\b(?:recommand\w*|conseill\w*)\b.{0,140}\b(?:communiquer|transmettre|partager)\b|"
+    r"\b(?:peut|peuvent|pourrait|pourraient)\b.{0,100}\b(?:permettre|servir|chercher|"
+    r"obtenir|r[ée]cup[ée]rer|r[ée]clamer)\b|"
+    r"\b(?:renouvel\w*|r[ée]voqu\w*|d[ée]sactiv\w*|r[ée]initialis\w*|rotation)\b"
+    r".{0,120}\b(?:cl[ée]s?|identifiants?|sessions?|mots? de passe|acc[èe]s)\b|"
+    r"\b(?:prestataire|fournisseur|sous[- ]traitant|tiers)\b.{0,100}"
+    r"\b(?:charg[ée]|sp[ée]cialis[ée]|intervenant)\b.{0,100}"
+    r"\b(?:suivi|gestion)\b.{0,50}\b(?:commandes?|livraisons?|colis)\b",
+    re.I,
+)
 
 
 from .fact_resolution_counts import (
@@ -222,6 +233,8 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
         if evidence and _NEGATED_EVIDENCE_RE.search(evidence):
             return
         if evidence and _HYPOTHETICAL_EVIDENCE_RE.search(evidence):
+            return
+        if evidence and _NON_EXPOSURE_DATA_CONTEXT_RE.search(evidence):
             return
         if not value or _norm(value) in UNKNOWN_VALUES or len(value) > _MAX_DATA_TYPE_CHARS or _NUMERIC_ONLY_RE.fullmatch(value):
             return
