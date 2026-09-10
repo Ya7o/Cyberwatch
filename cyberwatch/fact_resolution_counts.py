@@ -8,6 +8,8 @@ arbitrages.
 from __future__ import annotations
 
 import re
+
+from . import hypothesis_lexicon
 import unicodedata
 from typing import Any, Callable, Iterable
 from .headline import is_publishable_headline
@@ -229,7 +231,8 @@ def resolve_scalar(facts: Iterable[dict], field: str) -> dict | None:
         source = _text(fact.get("source"))
         evidence = _text(fact.get(f"{field}_evidence"))
         if field == "impact" and (
-            _HYPOTHETICAL_EVIDENCE_RE.search(evidence or _text(value))
+            hypothesis_lexicon.IMPACT_RE.search(evidence or _text(value))
+            or hypothesis_lexicon.IMPACT_RE.search(_text(value))
             or _NEGATED_EVIDENCE_RE.search(evidence or _text(value))
         ):
             continue
@@ -323,17 +326,9 @@ _NEGATED_EVIDENCE_RE = re.compile(
     r"\b(?:ne sont pas|n'est pas|non concern[ée]s?|non expos[ée]s?)\b",
     re.I,
 )
-_HYPOTHETICAL_EVIDENCE_RE = re.compile(
-    r"\b(?:pourrait|pourraient|permettrait|potentielle?|peut par exemple|"
-    r"ne signifie toutefois pas)\b|"
-    r"\brisque\b.{0,50}\bd(?:e|['’])\b|"
-    r"\b(?:peut|peuvent)\b.{0,100}\bpermettre\b|"
-    r"\b(?:peut|peuvent)\b.{0,100}\b(?:chercher|tenter|r[ée]cup[ée]r|obtenir|contenir|confirmer)|"
-    r"\b(?:d[ée]terminer|savoir|v[ée]rifier)\s+si\b|"
-    r"\bsi\b.{0,100}\b(?:[ée]t[ée]|avait|confirme|contient|concerne|comprend|inclut)|"
-    r"\bil ne serait (?:donc )?pas justifi[ée]\b",
-    re.I,
-)
+#: Alias historique du palier publication ; le vocabulaire vit désormais
+#: dans :mod:`cyberwatch.hypothesis_lexicon`.
+_HYPOTHETICAL_EVIDENCE_RE = hypothesis_lexicon.PUBLICATION_RE
 _INCIDENT_COUNT_CONTEXT_RE = re.compile(
     r"\b(?:incident|attaque|cyberattaque|fuite|expos[ée]|touch[ée]|concern[ée]|"
     r"affect[ée]|victime|compromis|exfiltr|vol[ée]|r[ée]cup[ée]r|revendiqu|"

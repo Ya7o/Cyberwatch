@@ -27,6 +27,24 @@ _EDITORIAL_TITLE = re.compile(
 )
 
 
+_MARKDOWN_EMPHASIS_RE = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
+#: Marqueur de gras resté ouvert : un paragraphe source coupé laisse un `**`
+#: sans fermeture, que la substitution par paires ne peut pas atteindre.
+_MARKDOWN_DANGLING_RE = re.compile(r"\*{2,}")
+
+
+def strip_markdown_emphasis(text: str) -> str:
+    """Retire le gras Markdown (`**...**`/`__...__`) qui a pu fuiter tel quel
+    depuis un article source (constaté sur FRENCHBREACHES) — garde le texte,
+    jamais la syntaxe d'édition.
+
+    À n'appliquer qu'aux textes affichés : les citations brutes conservées pour
+    l'audit gardent leur syntaxe d'origine.
+    """
+    cleaned = _MARKDOWN_EMPHASIS_RE.sub(lambda m: m.group(1) or m.group(2), str(text or ""))
+    return " ".join(_MARKDOWN_DANGLING_RE.sub("", cleaned).split())
+
+
 def rejection_reason(value: object) -> str:
     text = " ".join(str(value or "").split()).strip()
     if not text:

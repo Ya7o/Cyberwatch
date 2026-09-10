@@ -15,6 +15,8 @@ import json
 import math
 import os
 import re
+
+from . import hypothesis_lexicon
 import time
 from pathlib import Path
 
@@ -278,14 +280,9 @@ _INITIAL_ACCESS_EVENT_RE = re.compile(
     r"\b(?:acc[èe]s|intrusion|compromission|p[ée]n[ée]tration|connexion)\b",
     re.I,
 )
-_HYPOTHETICAL_RE = re.compile(
-    r"\b(?:pourrait|pourraient|peut[- ]?[êe]tre|possible|possiblement|potentiellement|probable|probablement|"
-    r"hypoth[èe]se|sc[ée]nario|suspect[ée]?|suppos[ée]?|envisag[ée]?|pr[ée]sum[ée]e?s?|semblerait|"
-    r"serait|agirait|aurait|auraient|susceptible(?:s)?|non\s+confirm[ée]|sans\s+confirmation|reste\s+inconnu|"
-    r"risques?\s+(?:de|d['’])|expose(?:nt|rait|raient)?\s+(?:à|a)|augmente(?:nt|rait|raient)?\s+le\s+risque|"
-    r"laisse(?:nt|rait|raient)?\s+craindre|accroit(?:re|s|)?\s+le\s+risque)\b",
-    re.I,
-)
+#: Alias historique du palier extraction ; le vocabulaire vit désormais
+#: dans :mod:`cyberwatch.hypothesis_lexicon`.
+_HYPOTHETICAL_RE = hypothesis_lexicon.EXTRACTION_RE
 #: Phrase pédagogique décrivant ce qu'une attaque « peut » entraîner en général.
 #: Elle énumère des vecteurs sans en imputer aucun à la victime analysée, et ne
 #: constitue donc pas une preuve d'accès initial.

@@ -15,6 +15,7 @@ from .collectors.base import RawEntry
 from .headline import (
     is_organisation_name_only,
     is_publishable_headline,
+    strip_markdown_emphasis,
     summary_role_is_supported,
 )
 from .normalize import classify_threat, searchable
@@ -182,6 +183,7 @@ def _normalize_impact(raw, context: str) -> dict | None:
     fact = _normalize_fact(raw, context)
     if not fact:
         return None
+    fact["value"] = strip_markdown_emphasis(fact["value"])
     window = _evidence_window(fact["evidence"], context)
     combined = f"{fact['value']} {window}"
     if _HYPOTHETICAL_RE.search(combined) or _RESPONSE_ACTION_RE.search(combined):
@@ -204,7 +206,10 @@ def _normalize_summary(raw, context: str, organisation: str = "") -> dict | None
     fact = _normalize_fact(raw, context)
     if not fact:
         return None
-    value = fact["value"]
+    # `rejection_reason` rejette tout `**` : sans ce nettoyage, un résidu
+    # Markdown de la source faisait perdre un résumé pourtant valide au lieu de
+    # le corriger. La preuve, elle, garde sa syntaxe d'origine.
+    value = fact["value"] = strip_markdown_emphasis(fact["value"])
     if (
         not is_publishable_headline(value)
         or is_organisation_name_only(value, organisation)

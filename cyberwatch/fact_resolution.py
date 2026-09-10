@@ -13,6 +13,7 @@ from typing import Any, Callable, Iterable
 from .headline import (
     is_publishable_for_organisation,
     is_publishable_headline,
+    strip_markdown_emphasis,
     victim_claims_incident,
 )
 from .normalize import (
@@ -21,6 +22,7 @@ from .normalize import (
     is_recognized_data_type,
     parse_date,
 )
+from . import hypothesis_lexicon
 from .fact_resolution_vulnerabilities import resolve_vulnerabilities
 
 SOURCE_PRIORITY = (
@@ -521,7 +523,11 @@ def _impact_is_publishable(value: Any, status: str = "") -> bool:
     text = _text(value)
     if not text or _status({"status": status}) in {"negated", "denied", "hypothesis"}:
         return False
-    if _HYPOTHETICAL_EVIDENCE_RE.search(text):
+    # Palier élargi : le contrat d'impact interdit explicitement le risque
+    # futur et la conséquence potentielle. « des attaques ciblées possibles via
+    # des e-mails ou appels frauduleux » passait le palier de publication
+    # générique, qui ne connaît ni « possible » ni « éventuel ».
+    if hypothesis_lexicon.IMPACT_RE.search(text):
         return False
     if _DATA_ONLY_IMPACT_RE.search(text) and not _IMPACT_CONSEQUENCE_RE.search(text):
         return False
@@ -653,14 +659,8 @@ def _propagation_alerts(
     return alerts
 
 
-_MARKDOWN_EMPHASIS_RE = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
-
-
-def _strip_markdown_emphasis(text: str) -> str:
-    """Retire le gras Markdown (`**...**`/`__...__`) qui a pu fuiter tel quel
-    depuis un article source (constaté sur FRENCHBREACHES) — garde le texte,
-    jamais la syntaxe d'édition."""
-    return _MARKDOWN_EMPHASIS_RE.sub(lambda m: m.group(1) or m.group(2), text)
+#: Alias historique ; le nettoyage vit désormais dans :mod:`cyberwatch.headline`.
+_strip_markdown_emphasis = strip_markdown_emphasis
 
 
 def _timeline_entries(facts: Iterable[dict]) -> list[dict]:
