@@ -1,52 +1,19 @@
 {
  "analytics": {
-  "dated_incidents": 6,
+  "dated_incidents": 0,
   "focus": {
    "by_location": {
     "La Réunion": 0,
     "Mayotte": 0
    },
    "comparison": {
-    "by_source": {
-     "CYBERATTAQUE_ORG": 5,
-     "FRENCHBREACHES": 5
-    },
-    "dominant_source_pct": 83.3,
-    "incidents": 6,
+    "by_source": {},
+    "dominant_source_pct": 0.0,
+    "incidents": 0,
     "ransomware_pct": 0.0,
-    "sectors": [
-     {
-      "count": 1,
-      "label": "Administration / Collectivité"
-     },
-     {
-      "count": 1,
-      "label": "Hébergement / Tourisme / Restauration"
-     },
-     {
-      "count": 1,
-      "label": "Numérique / Technologie"
-     },
-     {
-      "count": 1,
-      "label": "Éducation / Formation"
-     }
-    ],
+    "sectors": [],
     "threat_profile_reliable": false,
-    "threats": [
-     {
-      "count": 3,
-      "label": "Intrusion"
-     },
-     {
-      "count": 2,
-      "label": "Fuite de données"
-     },
-     {
-      "count": 1,
-      "label": "Phishing / fraude"
-     }
-    ]
+    "threats": []
    },
    "days_since_last": null,
    "incidents": 0,
@@ -80,46 +47,13 @@
     "Seychelles": 0
    },
    "comparison": {
-    "by_source": {
-     "CYBERATTAQUE_ORG": 5,
-     "FRENCHBREACHES": 5
-    },
-    "dominant_source_pct": 83.3,
-    "incidents": 6,
+    "by_source": {},
+    "dominant_source_pct": 0.0,
+    "incidents": 0,
     "ransomware_pct": 0.0,
-    "sectors": [
-     {
-      "count": 1,
-      "label": "Administration / Collectivité"
-     },
-     {
-      "count": 1,
-      "label": "Hébergement / Tourisme / Restauration"
-     },
-     {
-      "count": 1,
-      "label": "Numérique / Technologie"
-     },
-     {
-      "count": 1,
-      "label": "Éducation / Formation"
-     }
-    ],
+    "sectors": [],
     "threat_profile_reliable": false,
-    "threats": [
-     {
-      "count": 3,
-      "label": "Intrusion"
-     },
-     {
-      "count": 2,
-      "label": "Fuite de données"
-     },
-     {
-      "count": 1,
-      "label": "Phishing / fraude"
-     }
-    ]
+    "threats": []
    },
    "days_since_last": null,
    "incidents": 0,
@@ -148,183 +82,26 @@
    "silence_is_unusual": false
   },
   "quality": {
-   "corroborated_pct": 66.7,
-   "first_date": "2026-08-21",
-   "history_months": 2,
-   "incidents": 6,
-   "last_date": "2026-09-11",
-   "mono_source": 2,
-   "mono_source_pct": 33.3,
-   "organisations": 6,
-   "sources": 2,
-   "unknown_pct": {
-    "location": 16.7,
-    "sector": 16.7,
-    "threat": 0.0
-   },
-   "with_summary_pct": 100.0
+   "incidents": 0
   },
   "series": {
    "excluded_future": 0,
-   "months": [
-    "2026-08",
-    "2026-09"
-   ],
-   "sector": {
-    "Administration / Collectivité": [
-     0,
-     1
-    ],
-    "Hébergement / Tourisme / Restauration": [
-     0,
-     1
-    ],
-    "Numérique / Technologie": [
-     0,
-     1
-    ],
-    "Éducation / Formation": [
-     1,
-     0
-    ],
-    "Énergie / Utilities": [
-     0,
-     1
-    ]
-   },
-   "sources_observed": [
-    2,
-    2
-   ],
-   "threat": {
-    "Fuite de données": [
-     0,
-     2
-    ],
-    "Intrusion": [
-     1,
-     2
-    ],
-    "Phishing / fraude": [
-     0,
-     1
-    ]
-   },
-   "total": [
-    1,
-    5
-   ]
+   "months": [],
+   "sector": {},
+   "sources_observed": [],
+   "threat": {},
+   "total": []
   },
-  "signals": [
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 5,
-     "known_ratio": 0.933,
-     "level": "medium",
-     "multi_source_incidents": 4,
-     "score": 62
-    },
-    "current": 5,
-    "delta": 5,
-    "dimension": "location",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-3AAEEA9D575F",
-     "INC-575DE7755221",
-     "INC-5F3F78296574",
-     "INC-7BF9828040F8",
-     "INC-894F818C0189"
-    ],
-    "kind": "emerging",
-    "label": "France métropolitaine",
-    "previous": 0,
-    "share_pct": 83.3,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 3,
-     "known_ratio": 0.889,
-     "level": "low",
-     "multi_source_incidents": 2,
-     "score": 48
-    },
-    "current": 3,
-    "delta": 3,
-    "dimension": "threat",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-673354204E98",
-     "INC-7BF9828040F8",
-     "INC-894F818C0189"
-    ],
-    "kind": "emerging",
-    "label": "Intrusion",
-    "previous": 0,
-    "share_pct": 50.0,
-    "window_days": 30
-   }
-  ],
+  "signals": [],
   "top_90d": {
-   "location": [
-    {
-     "count": 5,
-     "label": "France métropolitaine"
-    },
-    {
-     "count": 1,
-     "label": "Inconnu"
-    }
-   ],
-   "sector": [
-    {
-     "count": 1,
-     "label": "Administration / Collectivité"
-    },
-    {
-     "count": 1,
-     "label": "Hébergement / Tourisme / Restauration"
-    },
-    {
-     "count": 1,
-     "label": "Inconnu"
-    },
-    {
-     "count": 1,
-     "label": "Numérique / Technologie"
-    },
-    {
-     "count": 1,
-     "label": "Éducation / Formation"
-    },
-    {
-     "count": 1,
-     "label": "Énergie / Utilities"
-    }
-   ],
-   "threat": [
-    {
-     "count": 3,
-     "label": "Intrusion"
-    },
-    {
-     "count": 2,
-     "label": "Fuite de données"
-    },
-    {
-     "count": 1,
-     "label": "Phishing / fraude"
-    }
-   ]
+   "location": [],
+   "sector": [],
+   "threat": []
   }
  },
  "counts": {
   "fail": 0,
-  "ok": 5,
+  "ok": 0,
   "partial": 0,
   "skipped": 0
  },
@@ -377,26 +154,27 @@
    "SKIPPED": "Hors périmètre de ce run"
   }
  },
+ "message": "Base vidée. Lancez MAJ pour collecter les dernières publications.",
  "production": {
   "performance": {
-   "duration_seconds": 133.2,
-   "llm_calls": 11,
-   "llm_cost_usd": 0.019019,
-   "requests": 18
+   "duration_seconds": 0.0,
+   "llm_calls": 0,
+   "llm_cost_usd": 0.0,
+   "requests": 0
   },
   "quality": {
    "corpus_classification_errors": 0,
    "corpus_false_negatives": 0,
    "corpus_false_positive_rate_pct": 0.0,
    "dedup_known_false_merges": 0,
-   "location_unknown_pct": 16.67,
-   "missed_duplicate_candidate_pairs": 0,
-   "pending_review_pairs": 0,
-   "potential_duplicate_pairs": 3,
-   "potential_duplicate_rate_pct": 50.0,
-   "sector_unknown_pct": 16.67,
-   "validated_same_not_grouped_pairs": 0,
-   "weak_merge_review_pairs": 3
+   "location_unknown_pct": 0.0,
+   "missed_duplicate_candidate_pairs": null,
+   "pending_review_pairs": null,
+   "potential_duplicate_pairs": 0,
+   "potential_duplicate_rate_pct": 0.0,
+   "sector_unknown_pct": 0.0,
+   "validated_same_not_grouped_pairs": null,
+   "weak_merge_review_pairs": null
   },
   "scheduled_reliability": {
    "consecutive_successes": 0,
@@ -416,120 +194,13 @@
   }
  },
  "qualification": {
-  "label": "Qualification incomplète",
-  "pairs": {
-   "accepted": {
-    "from_cache": 0,
-    "from_call": 4,
-    "total": 4
-   },
-   "rejected": {
-    "from_cache": 0,
-    "from_call": 3,
-    "total": 3
-   },
-   "requested": 7
-  },
-  "pending_fields": 7,
-  "pending_fields_available": true,
+  "label": "",
+  "pending_fields": 0,
   "pending_pairs": 0,
-  "pending_required_fields": 0,
-  "reasons": [
-   "2 observation(s) au secteur inconnu ou non étayé",
-   "1 incident(s) au secteur inconnu ou contradictoire"
-  ],
-  "run_id": "RUN-20260911T171856",
-  "sectors": {
-   "conflict_item_ids": [],
-   "items": 10,
-   "resolved": 8,
-   "resolved_item_ids": [
-    "ITM-1764b17f2c4b5c48",
-    "ITM-6b1c17292d5b2271",
-    "ITM-7117d7b0e950425f",
-    "ITM-8e1b34e80f9a2eb7",
-    "ITM-8e97f9a3bc158ae7",
-    "ITM-d6937a7d84d3f70d",
-    "ITM-e1e3ecdb12ce1f80",
-    "ITM-f4e4e11cbcc11b38"
-   ],
-   "state": "PARTIAL",
-   "unknown_incidents": 1,
-   "unknown_item_ids": [
-    "ITM-2f18fd4763986071",
-    "ITM-c9f092781992098e"
-   ]
-  },
-  "state": "PARTIAL"
+  "reasons": [],
+  "run_id": "",
+  "state": "UNKNOWN"
  },
- "run": {
-  "as_of": "2026-09-11T17:18:56.604437+04:00",
-  "duration": "133.2",
-  "id": "RUN-20260911T171856",
-  "incidents": 6,
-  "incidents_hash": "b53939bdc468eed4625e8a04d2b1b0a2f99bdd5ccc551c74b162c90dceee3fd2",
-  "items": 10,
-  "items_hash": "fffd316ee5a2cfb7f26646306d76222b2bfc6dcad541e4a95be00eb70046c346",
-  "layers": "CORE_DIRECT,REGIONAL_WATCH",
-  "mode": "MAJ",
-  "new_incidents": 6,
-  "new_items": 10,
-  "notes": "",
-  "overall": "OK",
-  "requests": 18,
-  "target_end": "2026-09-11",
-  "target_start": "2026-09-10"
- },
- "sources": [
-  {
-   "comment": "items_in_window=0",
-   "duration": "4.5",
-   "id": "BONJOURLAFUITE",
-   "items": 0,
-   "items_collected": 0,
-   "last_run": "2026-09-11T17:18:56.604437+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  },
-  {
-   "comment": "articles_seen=100; articles_in_window=5; victims_identified=5; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
-   "duration": "53.8",
-   "id": "CYBERATTAQUE_ORG",
-   "items": 5,
-   "items_collected": 5,
-   "last_run": "2026-09-11T17:18:56.604437+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  },
-  {
-   "comment": "details_hydrates=5/5; rich_facts=5/5; details_degrades=0",
-   "duration": "54.3",
-   "id": "FRENCHBREACHES",
-   "items": 5,
-   "items_collected": 5,
-   "last_run": "2026-09-11T17:18:56.604437+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  },
-  {
-   "comment": "items_seen=695; items_in_window=0",
-   "duration": "10.2",
-   "id": "RANSOMWARE_LIVE",
-   "items": 0,
-   "items_collected": 0,
-   "last_run": "2026-09-11T17:18:56.604437+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  },
-  {
-   "comment": "snapshot_records=11; admitted=8; candidates=3; materialized=8; future=0; requested_window_hits=0; generated_at=2026-09-10T09:42:26+04:00; freshness_days=1; max_age_days=2",
-   "duration": "0.0",
-   "id": "VEILLE_LLM",
-   "items": 0,
-   "items_collected": 0,
-   "last_run": "2026-09-11T17:18:56.604437+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  }
- ]
+ "run": {},
+ "sources": []
 }
