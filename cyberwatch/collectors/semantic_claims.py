@@ -290,10 +290,11 @@ def enrich(
     if not enabled(policy, source_id) or not is_candidate(text, deterministic):
         return {}
 
-    model = os.getenv(
+    requested_model = os.getenv(
         f"{policy.env_prefix}_MODEL",
         os.getenv("OPENAI_MODEL", llm_runtime.DEFAULT_MODEL),
     ).strip() or llm_runtime.DEFAULT_MODEL
+    model = llm_runtime.model_for_task(policy.task, requested_model)
     cache_key = _cache_key(policy, source_id, text or "", model)
     cache = _load_cache(policy)
     cached = cache.get(cache_key)
@@ -338,7 +339,9 @@ def enrich(
         "claims": claims,
         "timeline": timeline,
         "relations": relations,
-        "model": model,
+        "model": call.model,
+        "requested_model": requested_model,
+        "declared_model": call.declared_model,
         "prompt_version": policy.prompt_version,
         "cache_hit": False,
         "proposed": proposed,

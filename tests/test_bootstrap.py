@@ -102,7 +102,8 @@ def test_site_build_on_uninitialized_base_is_explicit(tmp_path, monkeypatch):
     assert not store.SNAPSHOT_JSON.exists()
     import json
     status_payload = json.loads((store.SITE_DATA_DIR / "status.json").read_text(encoding="utf-8"))
-    assert status_payload["initialized"] is False
+    assert status_payload["run"] == {}
+    assert status_payload["message"] == "Aucune collecte validée disponible."
     assert "health" not in status_payload["run"]
 
 

@@ -53,7 +53,7 @@ def test_resume_detail_reste_attache_a_un_seul_article():
 
 def test_resume_detail_departage_par_richesse_puis_priorite_source():
     low_priority = fact(
-        "FRENCHBREACHES", item_id="ITM-low", impact="Conséquence",
+        "FRENCHBREACHES", item_id="ITM-low", data_types=["adresses e-mail"],
         rich_facts={"incident_summary": [{"value": "Résumé de la source riche."}]},
     )
     high_priority = fact(
@@ -63,7 +63,8 @@ def test_resume_detail_departage_par_richesse_puis_priorite_source():
     assert fr.resolve_incident_summary([high_priority, low_priority]) == [
         "Résumé de la source riche."
     ]
-    low_priority.pop("impact")
+    low_priority.pop("data_types")
+    low_priority["impact"] = "Un détail historique ne doit pas avantager cet article."
     assert fr.resolve_incident_summary([low_priority, high_priority]) == [
         "Résumé de la source prioritaire."
     ]

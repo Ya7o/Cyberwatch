@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-
 from . import config, production, qualification, site_window, status, store
 
 _CANDIDATE_REASON_TEXT = {
@@ -47,8 +45,6 @@ def empty_payload(base_state: str, base_problems: list[str]) -> dict:
         },
         "counts": {"ok": 0, "partial": 0, "fail": 0, "skipped": 0},
         "sources": [],
-        "blind_spots": [],
-        "entities": [],
         "history": [],
         "focus_locations": config.FOCUS_LOCATIONS,
         "labels": _labels(),
@@ -140,25 +136,6 @@ def source_rows(current: list[dict], metadata: dict[str, dict], last_run: dict) 
     )
 
 
-def blind_rows(rows: list[dict]) -> list[dict]:
-    return [
-        {
-            "id": row["id"],
-            "layer": row["layer"],
-            "status": row["status"],
-            "coverage": row["coverage"],
-            "reason": row["reason"],
-            "detail": (
-                f"{row['units_done']}/{row['units_expected']} unités traitées"
-                if row["units_expected"]
-                else ""
-            ),
-        }
-        for row in rows
-        if row["status"] in (status.NOT_COVERED, status.PARTIAL, status.FAIL)
-    ]
-
-
 def history_rows(run_log: list[dict]) -> list[dict]:
     return [
         {
@@ -172,23 +149,6 @@ def history_rows(run_log: list[dict]) -> list[dict]:
             "overall": row.get("Overall_Status", ""),
         }
         for row in run_log[-60:]
-    ]
-
-
-def entity_rows(entity_watch: list[dict]) -> list[dict]:
-    return [
-        {
-            "entity": row.get("Entity", ""),
-            "territory": row.get("Territory", ""),
-            "kind": row.get("Type", ""),
-            "sector": row.get("Sector_Hint", ""),
-            "last_queried": row.get("Last_Queried", ""),
-            "query_status": row.get("Query_Status", ""),
-            "items": _to_int(row.get("Items_Found")),
-            "last_incident": row.get("Last_Incident_Date", ""),
-            "last_incident_id": row.get("Last_Incident_ID", ""),
-        }
-        for row in entity_watch
     ]
 
 
@@ -213,10 +173,7 @@ def _run_payload(last_run: dict, last_run_id: str) -> dict:
     }
 
 
-def build(
-    metadata: dict[str, dict],
-    coverage_groups: Callable[[list[dict], dict[str, dict]], dict[str, dict]],
-) -> dict:
+def build(metadata: dict[str, dict]) -> dict:
     """Assemble l'état courant à partir des journaux versionnés."""
     base_state, base_problems = store.snapshot_state()
     if base_state != store.BASE_VALID:
@@ -252,9 +209,6 @@ def build(
         "run": _run_payload(last_run, last_run_id),
         "counts": counts,
         "sources": rows,
-        "blind_spots": blind_rows(rows),
-        "coverage_groups": coverage_groups(rows, metadata),
-        "entities": entity_rows(store.load_entity_watch()),
         "history": history_rows(run_log),
         "focus_locations": config.FOCUS_LOCATIONS,
         "labels": _labels(),

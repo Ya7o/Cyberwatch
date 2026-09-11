@@ -136,13 +136,14 @@ def _restored(existing: list[dict], audited: list[dict], key: str) -> list[dict]
     return list(by_key.values())
 
 
-def build(destination: Path) -> Path:
-    """Écrit l'état audité — 130 observations, 76 incidents — sous ``destination``."""
+def build(destination: Path, *, base_data: Path | None = None) -> Path:
+    """Reconstitue l'audit, avec une base figée optionnelle pour les tests."""
+    base_data = store.DATA_DIR if base_data is None else base_data
     payload = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
     data = destination / "data"
     data.mkdir(parents=True, exist_ok=True)
     for name in _COPIED:
-        origin = store.DATA_DIR / name
+        origin = base_data / name
         if origin.exists():
             shutil.copyfile(origin, data / name)
     _write_csv(data / "organisation_identity_registry.csv",
@@ -155,17 +156,17 @@ def build(destination: Path) -> Path:
     # sources.
     audited_item_ids = {row["Item_ID"] for row in payload["new_items"]}
     items = [
-        row for row in store.read_csv(store.ITEMS_CSV)
+        row for row in store.read_csv(base_data / "items.csv")
         if row.get("Item_ID") in audited_item_ids
         or row.get("Organisation_Key") not in {"le tampon", "ville du tampon"}
     ]
     items = _restored(items, payload["new_items"], "Item_ID")
-    incidents = store.read_csv(store.INCIDENTS_CSV)
+    incidents = store.read_csv(base_data / "incidents.csv")
     for row in incidents:
         row["Organisation"] = _CANONICAL_LABELS.get(row["Organisation"], row["Organisation"])
     incidents = _restored(incidents, _audited_incidents(), "Incident_ID")
-    facts = _appended(store.read_csv(store.SOURCE_FACTS_CSV), _audited_facts(payload), "Item_ID")
-    registry = _restored(store.read_csv(store.INCIDENT_ID_REGISTRY_CSV), [
+    facts = _restored(store.read_csv(base_data / "source_facts.csv"), _audited_facts(payload), "Item_ID")
+    registry = _restored(store.read_csv(base_data / "incident_id_registry.csv"), [
         {"Incident_ID": SURVIVING_INCIDENT, "Anchor_Item_ID": FRENCHBREACHES_ITEM,
          "Organisation_Key": "ville du tampon", "Redirect_To": ""},
         {"Incident_ID": REDIRECTED_INCIDENT, "Anchor_Item_ID": CYBERATTAQUE_ITEM,

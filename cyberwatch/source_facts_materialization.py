@@ -110,11 +110,20 @@ def materialize_cached_llm_fields(
     facts: list[dict], cache_entries: list[dict]
 ) -> tuple[list[dict], list[str]]:
     """Réhydrate uniquement les valeurs acceptées par le contrat LLM courant."""
-    by_key = {
-        (str(entry.get("item_id") or ""), str(entry.get("content_hash") or "")): entry
-        for entry in cache_entries
-        if isinstance(entry, dict) and entry.get("item_id") and entry.get("content_hash")
-    }
+    expected_model = source_facts_ai.resolved_model()
+    by_key: dict[tuple[str, str], dict] = {}
+    priorities: dict[tuple[str, str], int] = {}
+    for entry in cache_entries:
+        if not isinstance(entry, dict) or not entry.get("item_id") or not entry.get("content_hash"):
+            continue
+        key = (str(entry["item_id"]), str(entry["content_hash"]))
+        cached_model = str(entry.get("effective_model") or entry.get("model") or "")
+        if cached_model and cached_model != expected_model:
+            continue
+        priority = 2 if cached_model == expected_model else 1
+        if priority > priorities.get(key, 0):
+            by_key[key] = entry
+            priorities[key] = priority
     changed: list[str] = []
     for fact in facts:
         metadata = _loads(fact.get("Source_Metadata_JSON"))

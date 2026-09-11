@@ -137,6 +137,15 @@ _NON_EXPOSURE_DATA_CONTEXT_RE = re.compile(
     re.I,
 )
 
+# Risque de réutilisation future des données (cas Printemps du 10/09/2026).
+# Portée limitée à la phrase citée : une mise en garde voisine ne doit pas
+# annuler une attaque par phishing effectivement relatée ailleurs.
+_FUTURE_THREAT_USE_RE = re.compile(
+    r"\b(?:peut|peuvent|pourrait|pourraient)\b.{0,120}"
+    r"\b(?:utilis[ée]\w*|servir|faciliter|entra[îi]ner|permettre)\b",
+    re.I,
+)
+
 
 def _valid_confidence(value) -> float | None:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
@@ -390,7 +399,9 @@ def _normalize(raw: dict, context: str, fields: set[str], organisation: str = ""
             # Malware (cas réel LebonSiege). Le candidat doit être la menace
             # que le classifieur déterministe relit dans l'extrait exact.
             grounded_threat = classify_threat(fact["evidence"])
-            if not _HYPOTHETICAL_RE.search(window) and grounded_threat == fact["value"]:
+            if (not _HYPOTHETICAL_RE.search(window)
+                    and not _FUTURE_THREAT_USE_RE.search(_evidence_sentence(fact["evidence"], context))
+                    and grounded_threat == fact["value"]):
                 result["threat_candidate"] = fact
     for key in ("affected_systems", "affected_datasets"):
         if key in fields:

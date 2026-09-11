@@ -9,6 +9,7 @@ from __future__ import annotations
 import os
 
 from . import cyberattaque_semantic_selector, semantic_claims
+from .. import llm_runtime
 
 # Le contrat sémantique reste compatible avec la version précédente : garder la
 # version évite de rendre froid le cache et le backfill pour un simple changement
@@ -86,6 +87,7 @@ def enrich(text: str, deterministic: dict) -> dict:
         "CYBERATTAQUE_SEMANTIC_MODEL",
         os.getenv("OPENAI_MODEL", DEFAULT_MODEL),
     ).strip() or DEFAULT_MODEL
+    model = llm_runtime.model_for_task(_POLICY.task, model)
     legacy_key = _legacy_key(text or "", model)
     cache = _load_cache()
     cached = cache.get(legacy_key)

@@ -199,8 +199,21 @@ def _record_cache_read(
 
 
 def _cache_item_key(item: Item, entry: RawEntry, runtime: _Runtime) -> str:
-    payload = "\x1f".join((item.Item_ID, item.Source_ID, _content_hash(entry), runtime.model))
+    model = llm_runtime.model_for_task("source_facts", runtime.model)
+    prefix = (item.Item_ID, item.Source_ID, _content_hash(entry))
+    legacy = hashlib.sha256("\x1f".join((*prefix, runtime.model)).encode("utf-8")).hexdigest()
+    # Garder les anciens caches dont le transport a établi la provenance.
+    # L'espace de clés neuf évite la collision historique nano demandé/mini exécuté.
+    if (runtime.cache.get(legacy) or {}).get("effective_model") == model:
+        return legacy
+    payload = "\x1f".join((*prefix, "resolved-model-v1", model))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def resolved_model() -> str:
+    """Modèle effectif qui délimite le cache SourceFacts courant."""
+    runtime = _runtime()
+    return llm_runtime.model_for_task("source_facts", runtime.model)
 
 
 def _legacy_input_hash(item: Item, entry: RawEntry, runtime: _Runtime, fields: set[str]) -> str:
@@ -219,9 +232,7 @@ def _legacy_input_hash(item: Item, entry: RawEntry, runtime: _Runtime, fields: s
 from .source_facts_ai_api import (
     _extract_output_text,
     _fact_schema,
-    _initial_access_schema,
     _post_openai,
-    _record_schema,
     _schema,
     _usage,
     _usage_cost,
@@ -229,6 +240,7 @@ from .source_facts_ai_api import (
 )
 
 def _legacy_fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set[str]:
+    """Reconstitue les clés de l'ancien cache groupé, y compris ses champs retirés."""
     from . import source_facts as sf
 
     text = _full_context(entry)
@@ -256,19 +268,17 @@ def _has_semantic_context(entry: RawEntry) -> bool:
 
 
 def _fields_needed(item: Item, entry: RawEntry, seed: dict | None = None) -> set[str]:
-    requested = _legacy_fields_needed(item, entry, seed)
+    requested = _legacy_fields_needed(item, entry, seed) & set(_LLM_FIELDS)
     if _full_context(entry):
         requested.update({"summary", "incident_summary"})
     if not _has_semantic_context(entry):
         return requested
     # One request contains every semantic gap. Cache filtering later removes
     # fields already known without splitting this article into several calls.
-    requested.update(NEW_SEMANTIC_FIELDS | {"summary", "initial_access"})
+    requested.update(NEW_SEMANTIC_FIELDS | {"summary"})
     from .sector_resolution import entry_sector_decision
     if entry_sector_decision(item, entry):
         requested -= REJECTING_FIELDS
-    if not (seed or {}).get("impact"):
-        requested.add("impact")
     return requested
 
 
@@ -281,11 +291,14 @@ def fields_needed_for_ai(item: Item, entry: RawEntry) -> set[str]:
 def _cache_entry(runtime: _Runtime, key: str, item: Item, entry: RawEntry) -> dict:
     value = runtime.cache.get(key)
     if not isinstance(value, dict):
+        model = llm_runtime.model_for_task("source_facts", runtime.model)
         value = {
             "item_id": item.Item_ID,
             "source_id": item.Source_ID,
             "content_hash": _content_hash(entry),
-            "model": runtime.model,
+            "model": model,
+            "requested_model": runtime.model,
+            "effective_model": model,
             "fields": {},
         }
         runtime.cache[key] = value
@@ -299,6 +312,8 @@ def _revalidate_previous_cached_value(field: str, value, context: str):
         return None
     if field == "impact":
         return _normalize_impact(value, context)
+    if field == "threat_candidate":
+        return _normalize({field: value}, context, {field}).get(field)
     return value
 
 
@@ -617,7 +632,7 @@ def _migrate_legacy_cache(runtime: _Runtime, key: str, item: Item, entry: RawEnt
 def _max_output_tokens(runtime: _Runtime, fields: set[str]) -> int:
     weights = {
         "data_types": 220, "summary": 160,
-        "incident_summary": 400, "impact": 140,
+        "incident_summary": 400,
     }
     estimate = 260 + sum(weights.get(field, 140) for field in fields)
     return min(runtime.max_output_tokens, max(600, estimate))
@@ -628,6 +643,12 @@ def _error_category(exc: Exception) -> str:
         return "json_decode"
     if isinstance(exc, SourceFactsAiError):
         text = str(exc)
+        if text.startswith("response_not_completed"):
+            return "response_incomplete"
+        if text.startswith("response_refused"):
+            return "response_refused"
+        if text.startswith("response_missing_fields"):
+            return "response_missing_fields"
         if "max_output_tokens" in text or "max_output" in text:
             return "max_output_tokens"
         if "no_output_text" in text or "status=" in text:
@@ -824,22 +845,11 @@ def extract_semantic(item: Item, entry: RawEntry, *,
     reprise sectorielle ne recalcule pas les autres champs en attente du même
     dossier, et ne les retire pas non plus de la file.
     """
-    editorial = _EDITORIAL_FIELDS if only_fields is None else _EDITORIAL_FIELDS & only_fields
-    structured = _STRUCTURED_FIELDS if only_fields is None else _STRUCTURED_FIELDS & only_fields
-    if only_fields is not None and not editorial:
-        fields: dict = {}
-        if structured:
-            fields = enrich(item, entry, requested_fields=structured) or {}
-        return SemanticExtraction(
-            item_id=item.Item_ID,
-            content_hash=content_hash(entry),
-            fields=dict(fields),
-            statuses=dict(field_statuses(item, entry)),
-        )
+    requested = set(_LLM_FIELDS) if only_fields is None else set(_LLM_FIELDS) & only_fields
     # Compatibilité avec les adaptateurs/tests qui remplacent encore `enrich`
     # par une fonction historique à deux arguments.
     try:
-        fields = enrich(item, entry, requested_fields=editorial) or {}
+        fields = enrich(item, entry, requested_fields=requested) or {}
     except TypeError as exc:
         if "requested_fields" not in str(exc):
             raise
@@ -850,15 +860,6 @@ def extract_semantic(item: Item, entry: RawEntry, *,
             fields=dict(fields),
             statuses=dict(field_statuses(item, entry)),
         )
-    context = _full_context(entry)
-    # Les articles courts ont rarement des jeux de données ou une chronologie
-    # suffisamment explicites. Une seconde passe leur ferait seulement payer
-    # des abstentions ; les articles riches reçoivent ce contrat spécialisé.
-    if structured and (len(context) >= 700 or _SEMANTIC_DATA_TYPES_TRIGGER.search(context)):
-        fields = {
-            **fields,
-            **(enrich(item, entry, requested_fields=structured) or {}),
-        }
     return SemanticExtraction(
         item_id=item.Item_ID,
         content_hash=content_hash(entry),

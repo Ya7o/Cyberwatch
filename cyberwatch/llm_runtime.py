@@ -11,6 +11,7 @@ import atexit
 from dataclasses import asdict, dataclass, field
 import json
 import os
+import re
 from pathlib import Path
 import threading
 import time
@@ -25,10 +26,10 @@ OPENAI_URL = "https://api.openai.com/v1/responses"
 DEFAULT_TIMEOUT_SECONDS = 30
 DEFAULT_MAX_RETRIES = 0
 DEFAULT_PRICING = {
-    "gpt-5-nano": {"input": 0.05, "output": 0.40},
-    "gpt-4o-mini": {"input": 0.15, "output": 0.60},
-    "gpt-5-mini": {"input": 0.25, "output": 2.00},
-    "gpt-4o": {"input": 2.50, "output": 10.00},
+    "gpt-5-nano": {"input": 0.05, "cached_input": 0.005, "output": 0.40},
+    "gpt-4o-mini": {"input": 0.15, "cached_input": 0.075, "output": 0.60},
+    "gpt-5-mini": {"input": 0.25, "cached_input": 0.025, "output": 2.00},
+    "gpt-4o": {"input": 2.50, "cached_input": 1.25, "output": 10.00},
 }
 
 RICH_TASK_MARKERS = ("semantic", "source_facts", "source-facts", "dedup")
@@ -268,6 +269,7 @@ class LlmRuntime:
         requested_model = str(body.get("model") or "")
         request_body["model"] = model_for_task(task, requested_model)
         model = request_body["model"]
+        pricing_for(model)  # Un modèle non tarifé ne doit pas contourner le budget.
         if model.startswith("gpt-4o"):
             request_body.pop("reasoning", None)
         self._reserve_call(task)
@@ -368,13 +370,19 @@ class LlmRuntime:
 
 
 def pricing_for(model: str) -> dict:
-    return DEFAULT_PRICING.get(model, DEFAULT_PRICING[DEFAULT_MODEL])
+    name = re.sub(r"-\d{4}-\d{2}-\d{2}$", "", model)
+    if name not in DEFAULT_PRICING:
+        raise LlmError(f"tarif LLM inconnu pour {model}")
+    return DEFAULT_PRICING[name]
 
 
-def estimate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
+def estimate_cost(model: str, input_tokens: int, output_tokens: int,
+                  cached_input_tokens: int = 0) -> float:
     rates = pricing_for(model)
+    cached = max(0, min(cached_input_tokens, input_tokens))
     return (
-        input_tokens / 1_000_000 * rates["input"]
+        (input_tokens - cached) / 1_000_000 * rates["input"]
+        + cached / 1_000_000 * rates["cached_input"]
         + output_tokens / 1_000_000 * rates["output"]
     )
 
@@ -386,10 +394,26 @@ def extract_usage(payload: dict, model: str = DEFAULT_MODEL) -> LlmUsage:
     o = int(u.get("output_tokens", 0) or 0)
     r = int((u.get("output_tokens_details") or {}).get("reasoning_tokens", 0) or 0)
     total = int(u.get("total_tokens") or i + o)
-    return LlmUsage(i, c, o, r, total, estimate_cost(model, i, o))
+    return LlmUsage(i, c, o, r, total, estimate_cost(model, i, o, c))
+
+
+def ensure_response_completed(payload: dict) -> None:
+    """Un JSON lisible n'est pas forcément une réponse terminée sans refus."""
+    status = payload.get("status")
+    # L'absence de statut reste compatible avec les anciens enregistrements.
+    if status is not None and status != "completed":
+        details = payload.get("incomplete_details") or payload.get("error") or {}
+        raise LlmError(f"response_not_completed: status={status}, details={details}")
+    for output in payload.get("output") or []:
+        if not isinstance(output, dict):
+            continue
+        for part in output.get("content") or []:
+            if isinstance(part, dict) and part.get("type") == "refusal":
+                raise LlmError("response_refused")
 
 
 def extract_output_json(payload: dict) -> dict:
+    ensure_response_completed(payload)
     text = payload.get("output_text")
     if not isinstance(text, str) or not text.strip():
         text = ""

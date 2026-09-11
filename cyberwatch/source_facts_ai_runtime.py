@@ -108,6 +108,8 @@ class _Runtime:
         self.durations: list[float] = []
         self.fields_requested: Counter[str] = Counter()
         self.fields_requested_new: Counter[str] = Counter()
+        self.field_outcomes: Counter[str] = Counter()
+        self.field_outcomes_by_name: dict[str, Counter[str]] = {}
         self.error_reasons: Counter[str] = Counter()
         self.trace_events: list[dict] = []
         # Contextes stockés une seule fois par empreinte : un article relu deux
@@ -280,6 +282,17 @@ class _Runtime:
             "estimated_cost_usd": round(self.cost, 6),
             "fields_requested": dict(sorted(self.fields_requested.items())),
             "fields_requested_new": dict(sorted(self.fields_requested_new.items())),
+            "field_outcomes": dict(sorted(self.field_outcomes.items())),
+            "field_outcomes_by_name": {
+                field: dict(sorted(outcomes.items()))
+                for field, outcomes in sorted(self.field_outcomes_by_name.items())
+            },
+            "accepted_field_rate": round(
+                self.field_outcomes.get("accepted", 0) / sum(self.field_outcomes.values()), 4
+            ) if self.field_outcomes else 0.0,
+            "cost_per_accepted_field_usd": round(
+                self.cost / self.field_outcomes.get("accepted", 0), 8
+            ) if self.field_outcomes.get("accepted", 0) else None,
             "error_reasons": dict(sorted(self.error_reasons.items())),
         }
 

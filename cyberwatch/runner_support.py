@@ -106,7 +106,7 @@ def run_log_row(report: RunReport, counts: dict[str, int]) -> dict[str, object]:
     journal reste lisible indépendamment de l'ordre d'écriture des fichiers
     canoniques.
     """
-    from . import status
+    from . import sources, status
 
     context = report.context
     return {
@@ -116,7 +116,9 @@ def run_log_row(report: RunReport, counts: dict[str, int]) -> dict[str, object]:
         "Method_ID": context.method_id,
         "Target_Start": context.target_start,
         "Target_End": context.target_end,
-        "Layers": ",".join(context.layers),
+        "Layers": ",".join(dict.fromkeys(
+            spec.layer for spec in sources.active_sources(context.layers)
+        )),
         "Items_Count": len(report.items),
         "Incidents_Count": len(report.incidents),
         "New_Items": report.new_items,

@@ -4,11 +4,7 @@ from __future__ import annotations
 
 from . import config, llm_runtime
 from .model import Item
-from .source_facts_ai_contract import (
-    INITIAL_ACCESS_VALUES,
-    MAX_ATTACK_FLOW_STEPS,
-    _LLM_FIELDS,
-)
+from .source_facts_ai_contract import _LLM_FIELDS
 from .source_facts_ai_runtime import SourceFactsAiError, _Runtime
 
 def _fact_schema() -> dict:
@@ -24,44 +20,13 @@ def _fact_schema() -> dict:
     }
 
 
-def _initial_access_schema() -> dict:
-    schema = _fact_schema()
-    schema["properties"]["value"] = {"type": "string", "enum": ["", *sorted(INITIAL_ACCESS_VALUES)]}
-    return schema
-
-
-def _record_schema(*, numeric: bool = False) -> dict:
-    """Schema evidence-first for facts which are retained as rich records."""
-    return {
-        "type": "object",
-        "properties": {
-            "value": {"type": "number" if numeric else "string"},
-            "unit": {"type": "string"},
-            "scope": {"type": "string"},
-            "status": {"type": "string"},
-            "confidence": {"type": "number"},
-            "evidence": {"type": "string"},
-        },
-        "required": ["value", "unit", "scope", "status", "confidence", "evidence"],
-        "additionalProperties": False,
-    }
-
-
 def _schema(fields: set[str]) -> dict:
     definitions = {
         "summary": _fact_schema(),
         "incident_summary": {
             "type": "array", "items": _fact_schema(), "maxItems": 2,
         },
-        "initial_access": _initial_access_schema(),
-        "impact": _fact_schema(),
-        "threat_actor": _fact_schema(),
-        "third_party": _fact_schema(),
         "data_types": {"type": "array", "items": _fact_schema(), "maxItems": 20},
-        "fine_location": _fact_schema(),
-        "affected_counts": {"type": "array", "items": _record_schema(numeric=True), "maxItems": 20},
-        "affected_systems": {"type": "array", "items": _fact_schema(), "maxItems": 20},
-        "affected_datasets": {"type": "array", "items": _fact_schema(), "maxItems": 20},
         "activity_description": _fact_schema(),
         "activity_sector_match": {**_fact_schema(), "properties": {**_fact_schema()["properties"], "value": {"type": "string", "enum": [*config.SECTORS]}}},
         "threat_candidate": {**_fact_schema(), "properties": {**_fact_schema()["properties"], "value": {"type": "string", "enum": ["", *config.THREATS]}}},
@@ -88,6 +53,10 @@ def _user_prompt(item: Item, context: str, fields: set[str]) -> str:
 
 
 def _extract_output_text(payload: dict) -> str:
+    try:
+        llm_runtime.ensure_response_completed(payload)
+    except llm_runtime.LlmError as exc:
+        raise SourceFactsAiError(str(exc)) from exc
     text = payload.get("output_text")
     if text:
         return str(text)
@@ -133,5 +102,4 @@ def _usage(payload: dict) -> tuple[int, int]:
 
 
 def _usage_cost(payload: dict, model: str) -> float:
-    input_tokens, output_tokens = _usage(payload)
-    return llm_runtime.estimate_cost(model, input_tokens, output_tokens)
+    return llm_runtime.extract_usage(payload, model).estimated_cost_usd

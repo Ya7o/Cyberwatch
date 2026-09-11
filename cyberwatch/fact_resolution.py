@@ -760,6 +760,21 @@ def is_publishable_summary(value: str, *, organisation: str = "") -> bool:
     return True
 
 
+def summary_richness(fact: dict) -> int:
+    """Départage les récits sur les seuls faits encore demandés au LLM.
+
+    Les détails historiques ne doivent pas avantager un article ancien face
+    à un article extrait avec le contrat compact.
+    """
+    rich = fact.get("rich_facts") or {}
+    return sum((
+        bool(fact.get("summary")),
+        bool(fact.get("data_types") or rich.get("data_types")),
+        bool(rich.get("activity_description")),
+        bool(rich.get("threat_candidate")),
+    ))
+
+
 def best_publishable_summary(facts: Iterable[dict], *, organisation: str = "") -> str:
     """Choisit la meilleure headline déjà validée, jamais un détail structuré."""
     candidates = []
@@ -767,7 +782,7 @@ def best_publishable_summary(facts: Iterable[dict], *, organisation: str = "") -
         value = _text(fact.get("summary"))
         if not is_publishable_summary(value, organisation=organisation):
             continue
-        richness = sum(bool(fact.get(key)) for key in ("impact", "affected_count", "data_types", "threat_actor"))
+        richness = summary_richness(fact)
         candidates.append((richness, -source_rank(fact.get("source")), value))
     return max(candidates)[2] if candidates else ""
 
@@ -788,14 +803,7 @@ def resolve_incident_summary(facts: Iterable[dict]) -> list[str]:
             paragraphs.append(value)
         if not paragraphs:
             continue
-        richness = sum(bool(fact.get(key)) for key in (
-            "summary", "initial_access", "impact", "threat_actor",
-            "third_party", "data_types", "affected_count", "evolution",
-        ))
-        richness += sum(bool(rich.get(key)) for key in (
-            "affected_counts", "data_volumes", "affected_systems",
-            "affected_datasets", "data_types", "vulnerabilities", "timeline",
-        ))
+        richness = summary_richness(fact)
         rank = (
             len(paragraphs), richness, -source_rank(fact.get("source")),
             _text(fact.get("item_id")),

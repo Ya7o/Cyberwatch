@@ -205,7 +205,7 @@ def test_types_de_donnees_deterministes_sans_api(monkeypatch, tmp_path):
 def test_headline_est_demandee_meme_sur_contenu_court(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     called = []
-    monkeypatch.setattr(sfa, "_post_openai", lambda *_: called.append(True) or _payload({"summary": {"value": "LockBit revendique une attaque contre Exemple SA.", "confidence": .9, "evidence": "attaque a été revendiquée par LockBit"}}))
+    monkeypatch.setattr(sfa, "_post_openai", lambda *_: called.append(True) or _payload({"summary": {"value": "LockBit revendique une attaque contre Exemple SA.", "confidence": .9, "evidence": "attaque a été revendiquée par LockBit"}, "incident_summary": []}))
     entry = RawEntry(
         title="Exemple SA",
         content="L'attaque a été revendiquée par LockBit.",
@@ -280,7 +280,7 @@ def test_activity_description_llm_is_grounded_and_becomes_a_provisional_signal()
     }, context, {"activity_description"}) == {}
 
 
-def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
+def test_schema_court_garde_les_resumes_sans_demander_acteur(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     bodies = []
 
@@ -306,11 +306,12 @@ def test_schema_dynamique_acteur_uniquement_plus_resume(monkeypatch, tmp_path):
     )
     assert len(bodies) == 1
     props = set(bodies[0]["text"]["format"]["schema"]["properties"])
-    assert props == {"summary", "incident_summary", "threat_actor"}
-    assert result["threat_actor"]["value"] == "LockBit"
+    assert props == {"summary", "incident_summary"}
+    assert "threat_actor" not in result
+    assert result["summary"]["value"] == "L'attaque est attribuée à LockBit."
 
 
-def test_enrichissement_80_20_extrait_vecteur_resume_impact(monkeypatch, tmp_path):
+def test_enrichissement_garde_le_resume_sans_demander_les_details(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     bodies = []
     entry = RawEntry(
@@ -346,11 +347,10 @@ def test_enrichissement_80_20_extrait_vecteur_resume_impact(monkeypatch, tmp_pat
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     result = sfa.enrich(_item(), entry)
     props = set(bodies[0]["text"]["format"]["schema"]["properties"])
-    assert {"summary", "initial_access", "impact"} <= props
-    assert "attack_flow" not in props  # champ retiré du schéma
-    assert result["initial_access"]["value"] == "vulnerability_exploitation"
+    assert {"summary", "incident_summary", "activity_description", "activity_sector_match", "threat_candidate"} <= props
+    from cyberwatch.source_facts_ai_contract import RETIRED_LLM_FIELDS
+    assert not props & RETIRED_LLM_FIELDS
     assert result["summary"]["value"].startswith("Intrusion via")
-    assert result["impact"]["value"]
 
 
 def test_vecteur_inconnu_ne_devient_jamais_une_hypothese(monkeypatch, tmp_path):
@@ -517,16 +517,16 @@ def test_invalidation_dun_champ_ne_recalcule_pas_les_autres(monkeypatch, tmp_pat
 
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     sfa.enrich(_item(), entry)
-    monkeypatch.setitem(sfa.FIELD_VERSIONS, "initial_access", "initial-access-v2-test")
+    monkeypatch.setitem(sfa.FIELD_VERSIONS, "summary", "summary-test")
     sfa.enrich(_item(), entry)
     assert len(calls) == 2
     # Le modèle n'a rien proposé pour l'activité : abstention terminale, donc
     # seul le champ dont la version a changé est redemandé.
-    assert calls[1] == {"initial_access"}
+    assert calls[1] == {"summary"}
     assert sfa.runtime_stats()["fields_invalidated"] >= 1
 
 
-def test_ancien_cache_reutilise_les_champs_compatibles(monkeypatch, tmp_path):
+def test_ancien_cache_ne_rematerialise_pas_un_champ_retire(monkeypatch, tmp_path):
     _configure(monkeypatch, tmp_path)
     item = _item()
     entry = RawEntry(title="Exemple", content="L'attaque a été attribuée à LockBit.")
@@ -548,11 +548,12 @@ def test_ancien_cache_reutilise_les_champs_compatibles(monkeypatch, tmp_path):
 
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     result = sfa.enrich(item, entry)
-    assert result["threat_actor"]["value"] == "LockBit"
+    assert "threat_actor" not in result
+    assert runtime.legacy_cache[key]["threat_actor"]["value"] == "LockBit"
     assert set(bodies[0]["text"]["format"]["schema"]["properties"]) == {
         "summary", "incident_summary",
     }
-    assert sfa.runtime_stats()["legacy_field_cache_hits"] == 1
+    assert sfa.runtime_stats()["legacy_field_cache_hits"] == 0
 
 
 def test_budget_appels_est_respecte(monkeypatch, tmp_path):
@@ -591,8 +592,8 @@ def test_valeur_rejetee_est_reessayee_puis_devient_abstention(monkeypatch, tmp_p
     def fake_post(body, _runtime):
         return _payload(_output_for(
             body,
-            fine_location={
-                "value": "Saint-Denis de La Réunion",
+            threat_candidate={
+                "value": "Ransomware",
                 "confidence": 0.95,
                 "evidence": "citation absente du texte",
             },
@@ -600,17 +601,17 @@ def test_valeur_rejetee_est_reessayee_puis_devient_abstention(monkeypatch, tmp_p
 
     monkeypatch.setattr(sfa, "_post_openai", fake_post)
     sfa.enrich(item, entry)
-    assert sfa.field_statuses(item, entry)["fine_location"] == "miss"
+    assert sfa.field_statuses(item, entry)["threat_candidate"] == "miss"
 
     from cyberwatch import source_facts_retry
     assert any(
-        "fine_location" in row["pending_fields"] for row in source_facts_retry.load()
+        "threat_candidate" in row["pending_fields"] for row in source_facts_retry.load()
     )
 
     sfa.enrich(item, entry)
-    assert sfa.field_statuses(item, entry)["fine_location"] == "abstained"
+    assert sfa.field_statuses(item, entry)["threat_candidate"] == "abstained"
     assert not any(
-        "fine_location" in row["pending_fields"] for row in source_facts_retry.load()
+        "threat_candidate" in row["pending_fields"] for row in source_facts_retry.load()
     )
 
 
@@ -868,15 +869,97 @@ def test_un_champ_retire_du_schema_n_est_plus_jamais_normalise():
     assert result == {}
 
 
-def test_prompt_precise_acteur_distinct_de_la_victime_et_impact_non_redondant():
-    """Cas réels constatés (audit 2026-08-25) : threat_actor="qui"/"L'entreprise"
-    (sujet grammatical d'un verbe déclaratif capté sans vérification) sur
-    Groupe Bernard/Emil Frey France, et impact qui ne fait que reformuler
-    les valeurs déjà extraites dans Systèmes & périmètres sur Emil Frey
-    France. Le prompt n'avait aucune consigne dédiée à threat_actor, et
-    aucune consigne empêchant impact de paraphraser data_types/
-    affected_datasets."""
-    prompt = sfa._SYSTEM_PROMPT
-    assert "entité distincte de la victime" in prompt
-    assert "jamais un pronom" in prompt
-    assert "ne doit jamais se limiter à reformuler" in prompt
+def test_prompt_limite_aux_champs_encore_demandes():
+    from cyberwatch.source_facts_ai_contract import RETIRED_LLM_FIELDS
+
+    assert not any(field in sfa._SYSTEM_PROMPT for field in RETIRED_LLM_FIELDS)
+    assert "extrait exact" in sfa._SYSTEM_PROMPT
+    assert "N'utilise aucune connaissance externe" in sfa._SYSTEM_PROMPT
+
+
+def test_le_risque_futur_de_phishing_ne_devient_pas_une_menace():
+    evidence = "Ces informations peuvent notamment être utilisées pour construire des tentatives de phishing ou de smishing personnalisées."
+    proposal = {"value": "Phishing / fraude", "evidence": evidence, "confidence": .9}
+    assert sfa._normalize({"threat_candidate": proposal}, evidence, {"threat_candidate"}) == {}
+    occurred = "L'attaque par phishing a permis le vol des identifiants."
+    proposal["evidence"] = occurred
+    assert sfa._normalize({"threat_candidate": proposal}, occurred + " " + evidence, {"threat_candidate"})
+
+
+def test_cache_source_facts_isole_le_modele_resolu_et_reutilise_le_legacy_prouve(monkeypatch, tmp_path):
+    import hashlib
+
+    _configure(monkeypatch, tmp_path)
+    item, entry, runtime = _item(), RawEntry(title="Article"), sfa._runtime()
+    old_key = hashlib.sha256("\x1f".join((item.Item_ID, item.Source_ID, sfa._content_hash(entry), runtime.model)).encode()).hexdigest()
+    runtime.cache[old_key] = {"effective_model": "gpt-5-mini", "fields": {}}
+    monkeypatch.setenv("SOURCE_FACTS_MODEL", "gpt-5-mini")
+    assert sfa._cache_item_key(item, entry, runtime) == old_key
+    monkeypatch.setenv("SOURCE_FACTS_MODEL", "gpt-5-nano")
+    assert sfa._cache_item_key(item, entry, runtime) != old_key
+
+
+def test_reponse_incomplete_facturable_ne_devient_pas_abstention(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    item = _item()
+    entry = RawEntry(title="Exemple SA", content="Exemple SA annonce un incident.")
+    def fake_post(body, runtime):
+        runtime.effective_model = "gpt-5-mini"
+        result = _payload(_output_for(body))
+        result["status"] = "incomplete"
+        result["incomplete_details"] = {"reason": "max_output_tokens"}
+        return result
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    sfa.enrich(item, entry)
+    assert sfa.field_statuses(item, entry) == {}
+    assert sfa.runtime_stats()["calls_failed"] == 1
+    assert sfa.runtime_stats()["input_tokens"] == 100
+    assert sfa.runtime_stats()["estimated_cost_usd"] > 0
+    from cyberwatch import source_facts_retry
+    assert all(row["reason"] == "TECHNICAL_FAILURE" for row in source_facts_retry.load())
+
+
+def test_champ_manquant_n_est_pas_une_abstention(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    monkeypatch.setattr(sfa, "_post_openai", lambda *args: _payload({}))
+    item, entry = _item(), RawEntry(title="Exemple SA")
+    sfa.enrich(item, entry)
+    assert sfa.field_statuses(item, entry) == {}
+    assert sfa.runtime_stats()["calls_failed"] == 1
+    assert sfa.runtime_stats()["error_reasons"] == {"response_missing_fields": 1}
+
+
+def test_une_seule_demande_reunit_resumes_et_types_de_donnees(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    entry = RawEntry(title="Exemple SA", content="Données exposées : coordonnées professionnelles du personnel. " * 15)
+    calls = []
+    def fake_post(body, runtime):
+        fields = set(body["text"]["format"]["schema"]["properties"])
+        calls.append(fields)
+        return _payload(_output_for(body))
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    sfa.extract_semantic(_item(), entry)
+    assert len(calls) == 1
+    assert {"summary", "incident_summary", "data_types"} <= calls[0]
+
+
+def test_telemetrie_distingue_acceptation_abstention_et_rejet(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    evidence = "Une attaque par phishing a permis le vol des identifiants."
+    entry = RawEntry(title="Exemple SA", content=evidence)
+    def fake_post(body, runtime):
+        return _payload(_output_for(
+            body,
+            summary={"value": "Exemple SA signale une attaque par phishing.",
+                     "confidence": .9, "evidence": evidence},
+            threat_candidate={"value": "Phishing / fraude", "confidence": .9,
+                              "evidence": evidence},
+        ))
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    sfa.enrich(_item(), entry)
+    stats = sfa.runtime_stats()
+    assert stats["field_outcomes"]["accepted"] >= 2
+    assert stats["field_outcomes"]["abstained"] >= 1
+    assert 0 < stats["accepted_field_rate"] < 1
+    assert stats["cost_per_accepted_field_usd"] > 0
+    assert stats["field_outcomes_by_name"]["summary"] == {"accepted": 1}

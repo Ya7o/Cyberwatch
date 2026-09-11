@@ -64,8 +64,9 @@ def test_purge_clears_generated_state_and_dashboard(isolated_store, make_item):
     for name, expected in (("incidents", []), ("latest", []), ("facts", {})):
         assert json.loads((store.SITE_DATA_DIR / f"{name}.json").read_text()) == expected
     payload = json.loads((store.SITE_DATA_DIR / "status.json").read_text())
-    assert payload["initialized"] is False
-    assert payload["history"] == payload["entities"] == []
+    assert payload["run"] == {}
+    assert payload["sources"] == []
+    assert "history" not in payload and "entities" not in payload
     assert "Base vidée" in payload["message"]
     assert "<item>" not in (store.SITE_DATA_DIR / "reunion-mayotte.xml").read_text()
     assert cli.main(["check"]) == 0

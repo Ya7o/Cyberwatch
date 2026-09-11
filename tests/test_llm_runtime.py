@@ -75,8 +75,8 @@ def test_runtime_does_not_retry_by_default(monkeypatch):
 
 
 @pytest.mark.parametrize("task, expected_model, expected_cost", [
-    ("unit", "gpt-5-nano", 0.000013),
-    ("source_facts", "gpt-5-mini", 0.000065),
+    ("unit", "gpt-5-nano", 0.00001255),
+    ("source_facts", "gpt-5-mini", 0.00006275),
 ])
 def test_runtime_uses_strict_structured_outputs(monkeypatch, task, expected_model, expected_cost):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
@@ -280,3 +280,61 @@ def test_candidate_requires_gap_for_length_only():
 def test_extract_output_json_rejects_missing_text():
     with pytest.raises(llm_runtime.LlmError):
         llm_runtime.extract_output_json({"status": "incomplete", "incomplete_details": {"reason": "max_output_tokens"}})
+
+
+def test_cost_uses_cached_input_price_and_dated_model():
+    payload = _payload({}, input_tokens=1000, output_tokens=100)
+    payload["usage"]["input_tokens_details"]["cached_tokens"] = 800
+    usage = llm_runtime.extract_usage(payload, "gpt-5-mini-2025-08-07")
+    assert usage.estimated_cost_usd == pytest.approx(0.00027)
+
+
+def test_unknown_price_is_never_silently_nano(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("UNIT_MODEL", "unknown-model")
+    runtime = llm_runtime.LlmRuntime()
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *a, **kw: pytest.fail("transport interdit"))
+    with pytest.raises(llm_runtime.LlmError, match="tarif"):
+        runtime.post_response(task="unit", body={"input": []})
+
+
+@pytest.mark.parametrize("status_value", ["incomplete", "failed", "cancelled", "in_progress"])
+def test_parseable_json_is_not_a_completed_response(status_value):
+    payload = _payload({"value": "plausible"})
+    payload["status"] = status_value
+    with pytest.raises(llm_runtime.LlmError):
+        llm_runtime.extract_output_json(payload)
+
+
+def test_refusal_cannot_be_hidden_by_parseable_text():
+    payload = _payload({"value": "plausible"})
+    payload["output"][0]["content"].append({"type": "refusal", "refusal": "Refus"})
+    with pytest.raises(llm_runtime.LlmError):
+        llm_runtime.extract_output_json(payload)
+
+
+def test_semantic_cache_and_provenance_follow_resolved_model(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("AUDIT_CACHE_PATH", str(tmp_path / "cache.json"))
+    policy = semantic_claims.SemanticPolicy("editorial_semantic", "audit-v1", "system", "AUDIT", "cache.json")
+    monkeypatch.setattr(semantic_claims, "is_candidate", lambda *args: True)
+    calls = []
+
+    def fake_call(**kwargs):
+        model = llm_runtime.model_for_task(kwargs["task"], kwargs["model"])
+        calls.append(model)
+        return SimpleNamespace(data={"claims": [], "timeline": [], "relations": []},
+            model=model, declared_model=model + "-2025-08-07", usage=llm_runtime.LlmUsage(),
+            duration_seconds=0, retries=0)
+
+    monkeypatch.setattr(llm_runtime, "runtime", lambda: SimpleNamespace(call_json=fake_call, enabled=True))
+    monkeypatch.setenv("EDITORIAL_SEMANTIC_MODEL", "gpt-5-mini")
+    first = semantic_claims.enrich("Article.", {}, source_id="TEST", policy=policy)
+    assert first["model"] == "gpt-5-mini"
+    assert first["declared_model"] == "gpt-5-mini-2025-08-07"
+    assert semantic_claims.enrich("Article.", {}, source_id="TEST", policy=policy)["cache_hit"]
+    monkeypatch.setenv("EDITORIAL_SEMANTIC_MODEL", "gpt-5-nano")
+    assert not semantic_claims.enrich("Article.", {}, source_id="TEST", policy=policy)["cache_hit"]
+    assert calls == ["gpt-5-mini", "gpt-5-nano"]

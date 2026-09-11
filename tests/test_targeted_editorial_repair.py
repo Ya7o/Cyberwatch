@@ -1,8 +1,8 @@
 """Reprise ciblée du snapshot audité — périmètre, simulation, idempotence.
 
-L'état audité `RUN-20260910T072351` n'a jamais été commité : il est reconstitué
-ici à partir de `audit/latest_collection_2026-09-10/run_snapshot.json`, qui fige
-ses 2 nouvelles observations, leurs faits et son registre d'incidents. Le test
+L'état audité `RUN-20260910T072351` est reconstitué à partir de
+`audit/latest_collection_2026-09-10/run_snapshot.json`, qui fige ses 2 nouvelles
+observations, leurs faits et son registre d'incidents, et d'un témoin figé. Le test
 travaille dans un répertoire de données temporaire et n'écrit jamais dans
 `data/` ni dans `assets/data/`.
 """
@@ -31,10 +31,10 @@ REDIRECTED_INCIDENT = builder.REDIRECTED_INCIDENT
 
 @pytest.fixture
 def audited_snapshot(tmp_path, monkeypatch):
-    """Reconstitue l'état audité — 130 observations, 76 incidents — dans tmp_path."""
+    """Deux observations auditées et un témoin indépendant, figés dans les fixtures."""
     if not builder.available():
         pytest.skip("preuves d'audit absentes de l'arbre")
-    data = builder.build(tmp_path)
+    data = builder.build(tmp_path, base_data=ROOT / "tests/fixtures/targeted_repair")
     for name, target in builder.store_targets(tmp_path).items():
         monkeypatch.setattr(store, name, target)
 
@@ -70,10 +70,8 @@ SCOPE = ("--items", f"{FRENCHBREACHES_ITEM},{CYBERATTAQUE_ITEM}")
 def test_la_simulation_est_le_defaut_et_ne_touche_rien(audited_snapshot, capsys):
     """Sans `--write`, l'état de départ est intact et le rapport est détaillé.
 
-    Les effectifs sont dérivés de l'état reconstitué, pas figés : le corpus
-    vivant sert de base et son volume dépend des collectes déjà passées. Le
-    contrat porte sur l'effet de la reprise — aucune observation perdue, un
-    incident de moins — pas sur une taille de corpus.
+    Le corpus de départ est figé. Aucune observation ne doit disparaître et
+    seuls les deux incidents ciblés doivent fusionner.
     """
     items_before = len(store.read_csv(store.ITEMS_CSV))
     incidents_before = len(store.read_csv(store.INCIDENTS_CSV))

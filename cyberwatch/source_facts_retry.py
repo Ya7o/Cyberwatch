@@ -159,6 +159,25 @@ def pending_for(record: dict, scope: set[str] | None = None) -> set[str] | None:
     return fields & scope if scope else fields
 
 
+def retire_fields(fields: frozenset[str]) -> None:
+    """Retire le travail abandonné du contrat, sans modifier les archives de run."""
+    entries = load()
+    kept = []
+    for row in entries:
+        if row.get("pending_fields") is None:
+            kept.append(row)
+            continue
+        row = {**row, "pending_fields": sorted(set(row["pending_fields"]) - fields),
+               "exhausted_fields": {key: value for key, value in row.get("exhausted_fields", {}).items()
+                                    if key not in fields},
+               "field_reasons": {key: value for key, value in row.get("field_reasons", {}).items()
+                                 if key not in fields}}
+        if row["pending_fields"] or row["exhausted_fields"]:
+            kept.append(row)
+    if kept != entries:
+        save(kept)
+
+
 def archive(run_id: str, root: Path | None = None, *,
             sector_qualification: dict | None = None) -> Path | None:
     """Fige la file telle qu'elle est à la fin de ce run.

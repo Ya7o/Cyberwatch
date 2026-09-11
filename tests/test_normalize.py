@@ -546,7 +546,7 @@ class TestCollectiviteVilleDu:
     def test_la_collectivite_est_une_administration(self, organisation):
         assert classify_sector(organisation) == config.SECTOR_ADMIN
 
-    def test_le_prefixe_administratif_ne_fusionne_jamais_de_lui_meme(self):
+    def test_le_prefixe_administratif_ne_fusionne_jamais_de_lui_meme(self, monkeypatch):
         """Aucun dépouillement global du préfixe : ce serait un faux positif.
 
         « Ville de X » et « X » peuvent désigner deux entités distinctes — une
@@ -556,6 +556,9 @@ class TestCollectiviteVilleDu:
         libellés puis le persiste dans le registre d'identité.
         """
         from cyberwatch.org_identity import effective_organisation_key
+        from cyberwatch import org_identity
+
+        monkeypatch.setattr(org_identity, "ORGANISATION_IDENTITY_REGISTRY", {})
 
         for prefixe, nu in (("Ville du Tampon", "Le Tampon"),
                             ("Ville de Paris", "Paris"),

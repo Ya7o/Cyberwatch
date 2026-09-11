@@ -1,35 +1,12 @@
 [
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "identifiants",
-    "adresses IP"
-   ],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-11",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-7BF9828040F8",
-  "items": 2,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "France métropolitaine",
   "org": "Ville de Joigny",
   "personal_data_exposed": true,
-  "quality_alerts": [
-   {
-    "code": "THREAT_CONFLICT_RESOLVED",
-    "field": "threat",
-    "severity": "info"
-   }
-  ],
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.8,
@@ -38,18 +15,6 @@
    "reason": "ORGANISATION_NAME_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -65,49 +30,16 @@
    "FRENCHBREACHES"
   ],
   "summary": "Cyberattaque contre la ville de Joigny : 268 795 tentatives d’intrusion en une semaine",
-  "threat": "Ransomware",
-  "threat_status": {
-   "conflict": true,
-   "evidence": "La Ville de Joigny et la Communauté de communes du Jovinien ont repoussé 268 795 tentatives d’attaques informatiques en une semaine.",
-   "reason": "THREAT_EVIDENCE_RANSOMWARE",
-   "sources": [
-    "FRENCHBREACHES"
-   ],
-   "status": "confirmed"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/ville-de-joigny-mtwuflm1iee4jiwh7bf",
-   "https://www.cyberattaque.org/cyberattaque-contre-la-ville-de-joigny-268-795-tentatives-dintrusion-en-une-semaine/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Ransomware"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "noms et prénoms",
-    "dates de naissance",
-    "adresses e-mail",
-    "numéros de téléphone"
-   ],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-11",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-673354204E98",
-  "items": 1,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "Inconnu",
   "org": "GreenGo",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
    "confidence": 0.8,
@@ -116,14 +48,6 @@
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -134,65 +58,21 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "GreenGo annonce qu’un accès non autorisé a consulté des données clients via un outil interne Metabase entre le 9 août et le 7 septembre 2026.",
-  "threat": "Intrusion",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "GreenGo victime d’une cyberattaque : données de comptes, réservations et messages consultés",
-   "reason": "THREAT_EVIDENCE_INTRUSION",
-   "sources": [
-    "CYBERATTAQUE_ORG"
-   ],
-   "status": "reported"
-  },
-  "urls": [
-   "https://www.cyberattaque.org/greengo-victime-dune-cyberattaque-donnees-de-comptes-reservations-et-messages-potentiellement-consultes/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Intrusion"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": true,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": true,
-   "high_sensitivity_data_exposed": true,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "données bancaires",
-    "identifiants"
-   ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "données bancaires",
-    "mots de passe"
-   ],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-11",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": true,
   "id": "INC-5F3F78296574",
-  "items": 1,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "France métropolitaine",
   "org": "WiziShop",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Inconnu",
   "sector_status": {
    "reason": "NO_ACTIVITY_EVIDENCE",
    "status": "unknown"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "données bancaires",
-   "mots de passe"
-  ],
-  "source_link_status": [
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "FRENCHBREACHES",
@@ -203,48 +83,16 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate pseudonyme « ChimeraZ » revendique et affirme avoir publié une base de factures de WiziShop et Dropizi contenant 511 661 lignes.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "",
-   "reason": "THREAT_SINGLE_LEGACY_VALUE",
-   "sources": [],
-   "status": "unknown"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/wizishop-dropizi-mtw3klqur74gdjp72ya"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Fuite de données"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": true,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": true,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "numéros de téléphone",
-    "adresses e-mail",
-    "identifiants",
-    "adresses postales"
-   ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "mots de passe"
-   ],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-11",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-575DE7755221",
-  "items": 2,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "France métropolitaine",
   "org": "Aqualter",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Énergie / Utilities",
   "sector_status": {
    "confidence": 0.8,
@@ -253,20 +101,6 @@
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "mots de passe"
-  ],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -282,47 +116,16 @@
    "FRENCHBREACHES"
   ],
   "summary": "Aqualter : 187 000 numéros de téléphone exposés après une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "Aqualter : 187 000 numéros de téléphone exposés après une cyberattaque",
-   "reason": "THREAT_EVIDENCE_INTRUSION",
-   "sources": [
-    "CYBERATTAQUE_ORG"
-   ],
-   "status": "reported"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
-   "https://www.cyberattaque.org/aqualter-187-000-numeros-de-telephone-exposes-apres-une-cyberattaque/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Intrusion"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "adresses e-mail",
-    "numéros de téléphone"
-   ],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-11",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-3AAEEA9D575F",
-  "items": 2,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "France métropolitaine",
   "org": "Brevo",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Numérique / Technologie",
   "sector_status": {
    "confidence": 0.8,
@@ -331,18 +134,6 @@
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -358,50 +149,16 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un attaquant a exploité une faille SSO pour accéder à 138 comptes clients de Brevo.",
-  "threat": "Phishing / fraude",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "Brevo : 138 comptes compromis, une vaste campagne de phishing frappe Trezor et CoinTracking",
-   "reason": "THREAT_EVIDENCE_PHISHING_FRAUDE",
-   "sources": [
-    "CYBERATTAQUE_ORG"
-   ],
-   "status": "reported"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/brevo-mtwuixif0kdw2y7yp3bn",
-   "https://www.cyberattaque.org/brevo-cyberattaque-campagne-de-phishing-frappe-trezor-et-cointracking/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Phishing / fraude"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": true,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": true,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "noms et prénoms",
-    "identifiants",
-    "adresses e-mail"
-   ],
-   "sensitive_data_exposed": true,
-   "sensitive_data_types": [
-    "mots de passe"
-   ],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-10",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-EEF2BD5C3F4C",
-  "items": 1,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "France métropolitaine",
   "org": "École supérieure d’arts & médias",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Éducation / Formation",
   "sector_status": {
    "confidence": 0.8,
@@ -410,16 +167,6 @@
    "reason": "ORGANISATION_NAME_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": true,
-  "sensitive_data_types": [
-   "mots de passe"
-  ],
-  "source_link_status": [
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "FRENCHBREACHES",
@@ -430,60 +177,21 @@
    "FRENCHBREACHES"
   ],
   "summary": "École supérieure d’arts & médias (ESAM)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "",
-   "reason": "THREAT_SINGLE_LEGACY_VALUE",
-   "sources": [],
-   "status": "unknown"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/cole-sup-rieure-d-arts-m-dias-esam-mtvzmq32iapsm7uc9oj"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Fuite de données"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": false,
-   "personal_data_types": [],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-10",
-  "first_seen": "2026-09-11T15:53:33.993142+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-7BBAA7C5EDDA",
-  "items": 1,
-  "last_seen": "2026-09-11T15:53:33.993142+04:00",
   "location": "Inconnu",
   "org": "L’ésam Caen/Cherbourg",
   "personal_data_exposed": false,
-  "quality_alerts": [
-   {
-    "code": "SOURCE_FACTS_NOT_PROPAGATED",
-    "field": "data_types",
-    "severity": "warning"
-   }
-  ],
   "sector": "Inconnu",
   "sector_status": {
    "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
    "status": "unknown"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -494,47 +202,16 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "L’ésam Caen/Cherbourg victime d’une cyberattaque en pleine rentrée universitaire",
-  "threat": "Intrusion",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "L’ésam Caen/Cherbourg victime d’une cyberattaque en pleine rentrée universitaire",
-   "reason": "THREAT_EVIDENCE_INTRUSION",
-   "sources": [
-    "CYBERATTAQUE_ORG"
-   ],
-   "status": "confirmed"
-  },
-  "urls": [
-   "https://www.cyberattaque.org/lesam-caen-cherbourg-victime-dune-cyberattaque-en-pleine-rentree-universitaire/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Intrusion"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "adresses e-mail",
-    "numéros de téléphone",
-    "noms et prénoms"
-   ],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-09",
-  "first_seen": "2026-09-10T21:41:35.413509+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-F7B381806AEC",
-  "items": 2,
-  "last_seen": "2026-09-10T21:41:35.413509+04:00",
   "location": "France métropolitaine",
   "org": "Citadium",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.9,
@@ -543,18 +220,6 @@
    "reason": "REFERENCE_EXACT",
    "status": "referenced"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -570,49 +235,16 @@
    "FRENCHBREACHES"
   ],
   "summary": "Citadium confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "Citadium est concernée par un accès non autorisé à des données personnelles chez Shipup.",
-   "reason": "THREAT_EDITORIAL_CORRECTION",
-   "sources": [
-    "CYBERATTAQUE_ORG",
-    "FRENCHBREACHES"
-   ],
-   "status": "confirmed"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/citadium-shipup-mtu3vt912q1i17on3ex",
-   "https://www.cyberattaque.org/citadium-des-informations-clients-recuperees-lors-de-la-cyberattaque-contre-shipup/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Fuite de données"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": true,
-   "personal_data_types": [
-    "adresses e-mail",
-    "numéros de téléphone",
-    "noms et prénoms"
-   ],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-09",
-  "first_seen": "2026-09-10T21:41:35.413509+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-AFF157A4627F",
-  "items": 2,
-  "last_seen": "2026-09-10T21:41:35.413509+04:00",
   "location": "France métropolitaine",
   "org": "Printemps",
   "personal_data_exposed": true,
-  "quality_alerts": [],
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.9,
@@ -621,18 +253,6 @@
    "reason": "REFERENCE_EXACT",
    "status": "referenced"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -648,45 +268,16 @@
    "FRENCHBREACHES"
   ],
   "summary": "Printemps confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "Printemps confirme un accès et une extraction non autorisés de données personnelles chez Shipup.",
-   "reason": "THREAT_EDITORIAL_CORRECTION",
-   "sources": [
-    "CYBERATTAQUE_ORG",
-    "FRENCHBREACHES"
-   ],
-   "status": "confirmed"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/printemps-shipup-mtu3svqcg9dj6ir9dd5",
-   "https://www.cyberattaque.org/printemps-les-donnees-clients-derobees-apres-une-cyberattaque-chez-shipup/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Fuite de données"
  },
  {
-  "basis": "PUBLICATION",
   "credentials_or_secrets_exposed": false,
-  "data_exposure": {
-   "credentials_or_secrets_exposed": false,
-   "high_sensitivity_data_exposed": false,
-   "personal_data_exposed": false,
-   "personal_data_types": [],
-   "sensitive_data_exposed": false,
-   "sensitive_data_types": [],
-   "vulnerable_people_data_exposed": false
-  },
   "date": "2026-09-09",
-  "first_seen": "2026-09-10T21:41:35.413509+04:00",
   "high_sensitivity_data_exposed": false,
   "id": "INC-345F23896AC0",
-  "items": 2,
-  "last_seen": "2026-09-10T21:41:35.413509+04:00",
   "location": "La Réunion",
   "org": "Le Tampon",
   "personal_data_exposed": false,
-  "quality_alerts": [],
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.8,
@@ -695,18 +286,6 @@
    "reason": "ORGANISATION_NAME_RULE",
    "status": "inferred"
   },
-  "sensitive_data_exposed": false,
-  "sensitive_data_types": [],
-  "source_link_status": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "status": "direct"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "status": "direct"
-   }
-  ],
   "source_links": [
    {
     "source": "CYBERATTAQUE_ORG",
@@ -722,21 +301,6 @@
    "FRENCHBREACHES"
   ],
   "summary": "Le Tampon : une cyberattaque frappe la mairie et perturbe fortement les services municipaux",
-  "threat": "Inconnu",
-  "threat_status": {
-   "conflict": false,
-   "evidence": "Aucune information n’a non plus été communiquée concernant une éventuelle exfiltration de données personnelles ou un chiffrement des serveurs.",
-   "reason": "THREAT_RESERVED_BY_SOURCE",
-   "sources": [
-    "CYBERATTAQUE_ORG",
-    "FRENCHBREACHES"
-   ],
-   "status": "unknown"
-  },
-  "urls": [
-   "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm",
-   "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/"
-  ],
-  "vulnerable_people_data_exposed": false
+  "threat": "Inconnu"
  }
 ]

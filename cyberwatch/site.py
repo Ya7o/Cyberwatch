@@ -1,10 +1,9 @@
 """Façade de publication du dashboard.
 
 L'implémentation historique reste dans :mod:`cyberwatch.site_legacy` afin de
-préserver ses contrats et helpers éprouvés. Cette façade centralise désormais
-la frontière de publication des faits : les analytics continuent de recevoir
-les faits bruts par source, tandis que ``facts.json`` reçoit uniquement la vue
-canonique résolue par :mod:`cyberwatch.fact_resolution`.
+préserver ses contrats et helpers éprouvés. Cette façade limite les JSON publics
+aux informations consommées par le dashboard. Les résolveurs et les analytics
+internes conservent l'accès aux faits complets du corpus canonique.
 """
 from __future__ import annotations
 
@@ -21,6 +20,40 @@ from . import (
     threat_resolution,
 )
 from .normalize import organisation_key
+
+
+# Contrat du navigateur. Les faits complets restent canoniques dans data/ et
+# disponibles aux résolveurs ; seuls les champs lus par le dashboard voyagent.
+_INCIDENT_PUBLIC_FIELDS = frozenset({
+    "id", "date", "org", "sector", "threat", "location", "sources",
+    "source_links", "summary", "sector_status", "sector_tentative", "threat_tentative",
+    "personal_data_exposed", "high_sensitivity_data_exposed",
+    "credentials_or_secrets_exposed",
+})
+_FACT_PUBLIC_FIELDS = frozenset({"version", "summary_paragraphs", "display_summary"})
+_SOURCE_PUBLIC_FIELDS = frozenset({
+    "id", "status", "last_run", "duration", "items_collected", "items",
+    "reason", "comment",
+})
+_ANALYTICS_PUBLIC_FIELDS = frozenset({
+    "dated_incidents", "quality", "series", "top_90d", "signals", "focus", "ocean",
+})
+
+
+def _public_fields(row: dict, fields: frozenset[str]) -> dict:
+    return {key: value for key, value in row.items() if key in fields}
+
+
+def _public_status(state: dict) -> dict:
+    result = {key: value for key, value in state.items() if key not in {
+        "initialized", "method_id", "entities", "coverage_groups", "blind_spots",
+        "history",
+    }}
+    result["sources"] = [_public_fields(row, _SOURCE_PUBLIC_FIELDS)
+                         for row in state.get("sources", [])]
+    result["analytics"] = _public_fields(state.get("analytics", {}), _ANALYTICS_PUBLIC_FIELDS)
+    return result
+
 
 def _sensitive_types(detail: dict) -> list[str]:
     return list(data_sensitivity.classify(detail)["sensitive_data_types"])
@@ -194,7 +227,7 @@ def build() -> tuple[int, int]:
         ocean_locations=config.OCEAN_LOCATIONS,
     )
 
-    slim = [_legacy._without_facts(row) for row in payload]
+    slim = [_public_fields(row, _INCIDENT_PUBLIC_FIELDS) for row in payload]
     latest = site_window.latest_rows(
         payload,
         state.get("run", {}).get("as_of", ""),
@@ -204,10 +237,13 @@ def build() -> tuple[int, int]:
     store.write_json(store.SITE_DATA_DIR / "incidents.json", slim)
     store.write_json(
         store.SITE_DATA_DIR / "latest.json",
-        [_legacy._without_facts(row) for row in latest],
+        [_public_fields(row, _INCIDENT_PUBLIC_FIELDS) for row in latest],
     )
-    store.write_json(store.SITE_DATA_DIR / "facts.json", resolved)
-    store.write_json(store.SITE_DATA_DIR / "status.json", state)
+    store.write_json(store.SITE_DATA_DIR / "facts.json", {
+        incident_id: _public_fields(detail, _FACT_PUBLIC_FIELDS)
+        for incident_id, detail in resolved.items()
+    })
+    store.write_json(store.SITE_DATA_DIR / "status.json", _public_status(state))
     (store.SITE_DATA_DIR / "reunion-mayotte.xml").write_text(
         _legacy.focus_feed(
             payload,

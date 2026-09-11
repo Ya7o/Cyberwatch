@@ -932,7 +932,10 @@ def _persist(
     if report.outcomes:
         store.append_run_sources(_run_source_rows(report))
 
-        if persist_snapshot:
+        if persist_snapshot and any(
+            spec.layer == config.LAYER_ENTITY_WATCH
+            for spec in sources.active_sources(context.layers)
+        ):
             store.save_entity_watch(
                 build_entity_watch(watch_rows, report.incidents, context.as_of, store.load_entity_watch())
             )

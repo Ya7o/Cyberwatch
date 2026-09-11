@@ -60,10 +60,6 @@ _FACT_LIST_FIELDS = {
     "Vulnerabilities_JSON": "vulnerabilities",
     "Evidence_URLs_JSON": "evidence_urls",
 }
-_SUMMARY_RICHNESS_KEYS = (
-    "initial_access", "attack_flow", "impact", "threat_actor",
-    "data_types", "vulnerabilities", "affected_count", "rich_facts",
-)
 _RICH_STATUSES = {"confirmed", "reported", "claimed", "hypothesis", "denied", "negated", "unknown"}
 _RICH_UNITS = {"people", "accounts", "users", "clients", "records", "files"}
 _RICH_VOLUME_UNITS = {"B", "KB", "MB", "GB", "TB", "PB"}
@@ -332,7 +328,9 @@ def _best_source_summary(facts: list[dict]) -> str:
         return ""
 
     def rank(fact: dict) -> tuple[int, str, str]:
-        richness = sum(bool(fact.get(key)) for key in _SUMMARY_RICHNESS_KEYS)
+        from .fact_resolution import summary_richness
+
+        richness = summary_richness(fact)
         # `max` + ordre lexical rend l'égalité entièrement déterministe.
         return richness, str(fact.get("source", "")), str(fact.get("item_id", ""))
 
@@ -520,47 +518,9 @@ _CANDIDATE_REASON_TEXT = {
 }
 
 
-def _coverage_groups(rows: list[dict], metadata: dict[str, dict]) -> dict[str, dict]:
-    """Agrège les sources requises sans masquer celles absentes du run.
-
-    Un titre arrêté ou à activité incertaine n'est pas un échec de couverture
-    (§13 Lot 1 Mayotte) : seule une source réellement active et cassée compte
-    contre `coverage`. Les candidates non activées sont réparties par
-    `candidate_status` (angle mort technique / à confirmer / arrêté), affichées
-    à titre informatif sans jamais faire passer le groupe en `PARTIAL`.
-    """
-    groups: dict[str, list[dict]] = {}
-    for row in rows:
-        group = metadata.get(row["id"], {}).get("coverage_group", "")
-        if group:
-            groups.setdefault(group, []).append(row)
-    payload = {}
-    for group, members in groups.items():
-        candidate_of = lambda row: metadata.get(row["id"], {}).get("candidate_status", "")
-        collected = sum(row["status"] == status.OK for row in members)
-        blind_spot = sum(candidate_of(row) == status.CANDIDATE_BLIND_SPOT for row in members)
-        to_confirm = sum(candidate_of(row) == status.CANDIDATE_TO_CONFIRM for row in members)
-        ceased = sum(candidate_of(row) == status.CANDIDATE_CEASED for row in members)
-        broken = sum(
-            row["status"] in (status.FAIL, status.PARTIAL)
-            or (row["status"] == status.NOT_COVERED and not candidate_of(row))
-            for row in members
-        )
-        payload[group] = {
-            "expected": len(members),
-            "collected": collected,
-            "blind_spot": blind_spot,
-            "to_confirm": to_confirm,
-            "ceased": ceased,
-            "broken": broken,
-            "coverage": "COMPLETE" if not broken else "PARTIAL",
-        }
-    return payload
-
-
 def status_payload() -> dict:
-    """Santé du dernier run, angles morts, veille et état de chaque source."""
-    return site_status.build(_source_metadata(), _coverage_groups)
+    """Santé du dernier run et état de chaque source."""
+    return site_status.build(_source_metadata())
 
 def _to_int(value) -> int:
     try:

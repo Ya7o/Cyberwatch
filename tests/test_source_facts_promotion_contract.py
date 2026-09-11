@@ -134,6 +134,40 @@ def test_materialise_cache_borne_par_item_et_hash():
     assert sf.semantic_materialization_gaps(hydrated) == []
 
 
+def test_materialise_uniquement_le_cache_du_modele_resolu(monkeypatch, tmp_path):
+    monkeypatch.setenv("CYBERWATCH_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("SOURCE_FACTS_MODEL", "gpt-5-mini")
+    sfa.reset_runtime_for_tests()
+    fact = {
+        "Item_ID": "ITM-model",
+        "Summary": "",
+        "Evidence_JSON": "{}",
+        "Source_Metadata_JSON": sf._dumps_json({
+            "_source_facts_content_hash": "same-hash",
+            "_source_facts_semantic_status": {"summary": "accepted"},
+        }),
+    }
+    version = sfa.FIELD_VERSIONS["summary"]
+    caches = [
+        {
+            "item_id": "ITM-model", "content_hash": "same-hash",
+            "effective_model": "gpt-5-nano",
+            "fields": {"summary": {"status": "accepted", "version": version,
+                                    "value": {"value": "Résumé nano", "evidence": "preuve"}}},
+        },
+        {
+            "item_id": "ITM-model", "content_hash": "same-hash",
+            "effective_model": "gpt-5-mini",
+            "fields": {"summary": {"status": "accepted", "version": version,
+                                    "value": {"value": "Résumé mini", "evidence": "preuve"}}},
+        },
+    ]
+    hydrated, changed = sf.materialize_cached_llm_fields([fact], caches)
+    assert changed == ["ITM-model"]
+    assert hydrated[0]["Summary"] == "Résumé mini"
+
+
 def test_materialise_cache_ignore_un_contrat_llm_obsolete():
     fact = {
         "Item_ID": "ITM-old",

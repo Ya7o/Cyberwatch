@@ -55,6 +55,9 @@ def retry_pending(queued_at_start: list[dict], *,
                   fields: set[str] | None = None) -> tuple[list[dict], dict]:
     """Reprend quelques champs différés, même après la fenêtre de collecte."""
     retry_rows: list[dict] = []
+    from .source_facts_ai_contract import RETIRED_LLM_FIELDS
+
+    source_facts_retry.retire_fields(RETIRED_LLM_FIELDS)
     retry_limit = max(0, int(os.getenv("SOURCE_FACTS_RETRY_MAX_PER_RUN", "5")))
     attempted = 0
     scope = fields if fields is not None else retry_scope()

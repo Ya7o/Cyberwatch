@@ -82,7 +82,13 @@ def _item(source: str, organisation: str, url: str, threat: str, title: str) -> 
 
 
 @pytest.fixture
-def identite_validee(monkeypatch):
+def registre_vierge(monkeypatch):
+    """L'identité de la fixture précède toute décision persistée en production."""
+    monkeypatch.setattr(org_identity, "ORGANISATION_IDENTITY_REGISTRY", {})
+
+
+@pytest.fixture
+def identite_validee(monkeypatch, registre_vierge):
     """Rejoue l'état d'après la décision du filet, sans refaire l'appel.
 
     Le registre versionné n'accepte que des décisions produites par la chaîne
@@ -96,7 +102,7 @@ def identite_validee(monkeypatch):
 
 
 @pytest.fixture
-def observations(monkeypatch):
+def observations(monkeypatch, registre_vierge):
     """Les deux observations du Tampon, extraites sans aucun appel LLM.
 
     `SOURCE_FACTS_AI_ENABLED=0` reproduit exactement le run audité : le filet
@@ -568,7 +574,7 @@ def test_le_verdict_atteint_le_payload_de_statut():
     """Le dashboard reçoit l'objet `qualification`, pas seulement les journaux."""
     from cyberwatch import qualification, site_status
 
-    payload = site_status.build({}, lambda rows, metadata: {})
+    payload = site_status.build({})
     assert "qualification" in payload
     verdict = payload["qualification"]
     assert set(verdict) == {"run_id", "state", "reasons", "pending_fields",

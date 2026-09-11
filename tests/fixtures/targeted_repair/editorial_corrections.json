@@ -1,0 +1,1114 @@
+{
+  "version": "2026-09-10.1",
+  "items": {},
+  "source_facts": {
+    "ITM-297a7e21d0f7da49": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Conserve uniquement les données de contact exposées ; le suivi des commandes décrit le service du tiers et le renouvellement des identifiants est une remédiation.",
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]",
+        "Impact": "Des données de contact de clients Citadium ont été consultées et extraites sans autorisation.",
+        "Summary": "Citadium confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup."
+      },
+      "evidence_set": {
+        "Third_Party": "Citadium informe certains de ses clients qu’une partie de leurs données personnelles a été consultée et extraite sans autorisation à la suite d’une cyberattaque ayant touché son prestataire Shipup.",
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-08-25",
+            "event": "Citadium notifie la violation de données à la CNIL",
+            "status": "confirmed",
+            "evidence": "Citadium indique avoir officiellement notifié la violation de données le 25 août 2026."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "Des données personnelles de clients Citadium ont été consultées et extraites sans autorisation."
+        }
+      }
+    },
+    "ITM-3a1f12b53d6e809e": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Retire les fonctions de Shipup, les risques futurs et la chronologie de Printemps ; la CVE est seulement mentionnée dans le contexte de campagne.",
+      "clear": [
+        "Vulnerabilities_JSON"
+      ],
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]"
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          }
+        ],
+        "timeline": [],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-72898",
+            "status": "reported",
+            "relationship": "mentioned",
+            "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "Citadium est concernée par un accès non autorisé à des données personnelles chez Shipup."
+        }
+      }
+    },
+    "ITM-5d429a6cb36dada4": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le prestataire n’est pas un attaquant ; commandes et identifiants décrivent le service ou la remédiation, et les données bancaires sont un risque futur.",
+      "clear": [
+        "Threat_Actor"
+      ],
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]",
+        "Impact": "Des données de contact de clients Printemps ont été consultées et extraites sans autorisation.",
+        "Summary": "Printemps confirme l’exposition de données de contact de certains clients après une cyberattaque contre Shipup."
+      },
+      "evidence_set": {
+        "Third_Party": "Printemps informe certains de ses clients qu’une partie de leurs données personnelles a été consultée et extraite sans autorisation lors d’une cyberattaque ayant touché son prestataire Shipup.",
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent les noms, prénoms, adresses e-mail et numéros de téléphone."
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-04",
+            "event": "Printemps informe les clients concernés",
+            "status": "reported",
+            "evidence": "Le message d’information aux clients consulté par Cyberattaque.org a été envoyé le 4 septembre 2026."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "Des données personnelles de clients Printemps ont été consultées et extraites sans autorisation."
+        }
+      }
+    },
+    "ITM-56fe2e286f88ef44": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Retire les fonctions du prestataire, les recommandations et les risques futurs ; la CVE est contextuelle à la campagne Metabase.",
+      "clear": [
+        "Vulnerabilities_JSON"
+      ],
+      "set": {
+        "Claim_Status": "confirmed",
+        "Third_Party": "Shipup",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]"
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "numéros de téléphone": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone.",
+          "noms et prénoms": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "claims": [],
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Les informations concernées comprennent notamment des noms, prénoms, adresses e-mail et numéros de téléphone."
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-08-20",
+            "event": "Printemps est informé de l’incident",
+            "status": "reported",
+            "evidence": "Printemps indique avoir été informé de l’incident le 20 août 2026."
+          },
+          {
+            "date": "2026-08-25",
+            "event": "Printemps notifie la violation à la CNIL",
+            "status": "reported",
+            "evidence": "Printemps indique avoir effectué une notification auprès de la CNIL le 25 août 2026."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-72898",
+            "status": "reported",
+            "relationship": "mentioned",
+            "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "Printemps confirme un accès et une extraction non autorisés de données personnelles chez Shipup."
+        }
+      }
+    },
+    "ITM-ec4d0cdfab6fa8df": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le volume de 5,79 To concerne Berlin, pas SAD'S Interim.",
+      "set": {
+        "Threat_Actor": "Rhysida",
+        "Claim_Status": "claimed"
+      },
+      "evidence_set": {
+        "Threat_Actor": "SAD’S Interim est la nouvelle victime revendiquée par le groupe de ransomware Rhysida."
+      },
+      "rich_remove_evidence_contains": [
+        "État de Berlin",
+        "administration de Berlin"
+      ]
+    },
+    "ITM-eafcb7b7a88e0222": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Isole la revendication 2026 du précédent incident SNU de 2023 et de ses données.",
+      "clear": [
+        "Affected_Count",
+        "Affected_Unit",
+        "Affected_Count_Raw"
+      ],
+      "set": {
+        "Claim_Status": "claimed",
+        "Activity_Description": "dispositif public national destiné aux jeunes",
+        "Activity_Sector_Match": "Administration / Collectivité",
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\",\"identifiants\"]"
+      },
+      "evidence_set": {
+        "Activity_Description": "Le Service national universel est un dispositif public national destiné aux jeunes.",
+        "Activity_Sector_Match": "Le Service national universel est un dispositif public national destiné aux jeunes."
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "Deux bases de comptes sont revendiquées comme récupérées en 2026."
+        }
+      },
+      "rich_remove_evidence_contains": [
+        "2023",
+        "précédent incident",
+        "Pour les jeunes concernés"
+      ],
+      "rich_remove_values": {
+        "affected_counts": [
+          150000
+        ],
+        "data_types": [
+          "mots de passe"
+        ],
+        "claims": [
+          "mots de passe",
+          150000
+        ]
+      }
+    },
+    "ITM-1673e221850aa327": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Restaure l'acteur et l'activité explicitement cités pour Yvetot.",
+      "set": {
+        "Threat_Actor": "lazymean10",
+        "Activity_Description": "communauté de communes",
+        "Activity_Sector_Match": "Administration / Collectivité",
+        "Claim_Status": "reported"
+      },
+      "evidence_set": {
+        "Threat_Actor": "Un hacker se présentant sous le pseudonyme lazymean10 a publié plusieurs liens.",
+        "Activity_Description": "La Communauté de communes Yvetot Normandie est située en Seine-Maritime.",
+        "Activity_Sector_Match": "La Communauté de communes Yvetot Normandie est située en Seine-Maritime."
+      }
+    },
+    "ITM-21712d3c95aeb085": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "La capture est ancienne, l'acteur nommé est ANKA Team et l'impact décrit seulement un risque futur.",
+      "clear": [
+        "Impact"
+      ],
+      "set": {
+        "Threat_Actor": "ANKA Team",
+        "Claim_Status": "claimed",
+        "Summary": "Revendication publiée en 2026 à partir d’une capture datée du 3 juin 2017 concernant Medikwestindies."
+      },
+      "evidence_set": {
+        "Threat_Actor": "La capture est attribuée à ANKA Team.",
+        "Summary": "La capture diffusée est datée du 3 juin 2017."
+      }
+    },
+    "ITM-73d8dbdd9d0635b0": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le texte indique que le vecteur Jinko ne peut pas être déterminé.",
+      "clear": [
+        "Initial_Access"
+      ]
+    },
+    "ITM-46f2bb70da9e82d5": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le texte indique que le vecteur Jinko ne peut pas être déterminé.",
+      "clear": [
+        "Initial_Access"
+      ]
+    },
+    "ITM-fc70490f5bdaa7b5": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "ChimeraZ est l'acteur, pas un tiers impliqué.",
+      "clear": [
+        "Third_Party"
+      ],
+      "set": {
+        "Threat_Actor": "ChimeraZ"
+      }
+    },
+    "ITM-5d215664429352e6": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "ChimeraZ est l'acteur, pas un tiers impliqué.",
+      "clear": [
+        "Third_Party"
+      ],
+      "set": {
+        "Threat_Actor": "ChimeraZ"
+      }
+    },
+    "ITM-827f9d9d0933d5cb": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "La source exclut les données bancaires de la fuite Répar’stores.",
+      "clear": [
+        "Data_Types_JSON"
+      ],
+      "rich_remove_values": {
+        "data_types": [
+          "données bancaires",
+          "IBAN / RIB"
+        ],
+        "claims": [
+          "données bancaires",
+          "IBAN / RIB"
+        ]
+      }
+    },
+    "ITM-5038ebd6674ce417": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Les 100 000 utilisateurs décrivent le service Footsider, pas les victimes.",
+      "rich_remove_values": {
+        "affected_counts": [
+          100000
+        ],
+        "claims": [
+          100000
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "L’article décrit une exposition de comptes, sans rançongiciel."
+        }
+      }
+    },
+    "ITM-7ddc5f6739f7709d": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Les 100 000 utilisateurs décrivent le service Footsider, pas les victimes.",
+      "rich_remove_values": {
+        "affected_counts": [
+          100000
+        ],
+        "claims": [
+          100000
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "La source rapporte une fuite revendiquée, sans rançongiciel."
+        }
+      }
+    },
+    "ITM-ace9f988608c3eec": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "La violation de données personnelles est la conséquence principale documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une violation de données personnelles."
+        }
+      }
+    },
+    "ITM-af552eefe974f150": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "L’exfiltration de données AMF est confirmée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "La source confirme l’exfiltration de données."
+        }
+      }
+    },
+    "ITM-fef84eaa6ff9af51": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "L’exfiltration de données AMF est confirmée.",
+      "clear": [
+        "Fine_Location"
+      ],
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "La source confirme l’exfiltration de données."
+        }
+      }
+    },
+    "ITM-31ca81b910b22756": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-909b1b6129a81f63": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "La source rapporte une fuite revendiquée."
+        }
+      }
+    },
+    "ITM-48e2bee9b75f6d4b": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-ab8836dc2f58e58e": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-7cc16874b28f6592": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-3a41569a8967db5a": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-ec7dface31b72e5c": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-0889c66115507f6c": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Exposition de données documentée.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-9278dd653363ee24": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "157 est le total mensuel Qilin, pas le nombre de victimes de Jouvet.",
+      "clear": [
+        "Affected_Count",
+        "Affected_Unit",
+        "Affected_Count_Raw"
+      ],
+      "rich_remove_values": {
+        "affected_counts": [
+          157
+        ],
+        "claims": [
+          157
+        ]
+      }
+    },
+    "ITM-ac5aea25b29b9175": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "La vulnérabilité est contredite ou non établie pour ZLV.",
+      "clear": [
+        "Initial_Access"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "vulnerability_exploitation",
+          "exploitation de vulnérabilité"
+        ]
+      }
+    },
+    "ITM-a51172ec15657a8a": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "La vulnérabilité est contredite ou non établie pour ZLV.",
+      "clear": [
+        "Initial_Access"
+      ]
+    },
+    "ITM-0867a5b8ab130b38": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le vecteur FFTir n'est pas établi.",
+      "clear": [
+        "Initial_Access"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "vulnerability_exploitation",
+          "exploitation de vulnérabilité"
+        ]
+      }
+    },
+    "ITM-4cc8816fbf2bf2c7": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le phishing est un risque futur, pas le vecteur Actis.",
+      "clear": [
+        "Initial_Access"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "phishing"
+        ]
+      }
+    },
+    "ITM-df47b6d6c045ee30": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le phishing est un risque futur, pas le vecteur Actis.",
+      "clear": [
+        "Initial_Access"
+      ]
+    },
+    "ITM-3634a3939669099f": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le phishing est un risque futur, pas le vecteur Libercourt.",
+      "clear": [
+        "Initial_Access"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "phishing"
+        ]
+      }
+    },
+    "ITM-67466aa3ed46e2ee": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le phishing est un risque futur, pas le vecteur Libercourt.",
+      "clear": [
+        "Initial_Access"
+      ]
+    },
+    "ITM-ba3837c2af95dd26": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Landmark Global France est un tiers, pas l'acteur de ColisExpat.",
+      "clear": [
+        "Threat_Actor"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "Landmark Global France"
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-e67866257a323b8b": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Landmark Global France est un tiers, pas l'acteur de ColisExpat.",
+      "clear": [
+        "Threat_Actor"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "Landmark Global France"
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "reported",
+          "evidence": "La source documente une exposition de données."
+        }
+      }
+    },
+    "ITM-2eed670173f2bfd2": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Shipup ne doit pas être publié comme acteur de Micromania.",
+      "clear": [
+        "Threat_Actor",
+        "Third_Party"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "Shipup"
+        ]
+      }
+    },
+    "ITM-cdce24fe660aba3c": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Shipup ne doit pas être publié comme acteur de Micromania.",
+      "clear": [
+        "Threat_Actor",
+        "Third_Party"
+      ],
+      "rich_remove_values": {
+        "claims": [
+          "Shipup"
+        ]
+      }
+    },
+    "ITM-87d241b7fe2c7429": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "« plateforme » n'est pas un acteur nommé.",
+      "clear": [
+        "Threat_Actor"
+      ]
+    },
+    "ITM-014806ad25b64a9f": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "« l’auteur de la publication » n'est pas un acteur nommé.",
+      "clear": [
+        "Threat_Actor"
+      ]
+    },
+    "ITM-1cbbdf426dbaafd0": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "7 880 désigne des enregistrements YouFid, pas des personnes uniques.",
+      "set": {
+        "Affected_Unit": "records",
+        "Affected_Count_Raw": "7 880 enregistrements"
+      },
+      "rich_remove_values": {
+        "affected_counts": [
+          7880
+        ],
+        "claims": [
+          7880
+        ]
+      }
+    },
+    "ITM-9be0e51d6fc67e1c": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "2 800 désigne des enregistrements Charbonneaux-Brabant, pas des personnes uniques.",
+      "set": {
+        "Affected_Unit": "records",
+        "Affected_Count_Raw": "plus de 2 800 enregistrements"
+      }
+    },
+    "ITM-7a623d24b9173dd1": {
+      "audit": "LAST_TWO_COLLECTIONS_2026-09-08",
+      "reason": "Le site SPA semble accessible ; le rétablissement n'est pas confirmé.",
+      "set": {
+        "Claim_Status": "reported"
+      }
+    },
+    "ITM-fc5feeb5ddf1ff43": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le prestataire Shipup est un tiers et seules les données de contact sont confirmées.",
+      "clear": [
+        "Threat_Actor"
+      ],
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          }
+        ],
+        "relations": []
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "confirmed",
+          "evidence": "Des données de contact de clients Aroma-Zone ont été consultées par des personnes non autorisées."
+        }
+      },
+      "rich_remove_values": {
+        "claims": [
+          "Shipup"
+        ]
+      }
+    },
+    "ITM-e24b48e0b9e1e799": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Exclut les données niées ou citées comme risque futur ; la CVE relève du contexte de campagne.",
+      "set": {
+        "Data_Types_JSON": "[\"adresses e-mail\",\"numéros de téléphone\",\"noms et prénoms\"]"
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+          "numéros de téléphone": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées.",
+          "noms et prénoms": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+        }
+      },
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "confirmed",
+            "evidence": "Des noms, prénoms, adresses e-mail et numéros de téléphone ont pu être consultés par des personnes non autorisées."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-72898",
+            "status": "reported",
+            "evidence": "La CVE-2026-72898 figure parmi les failles Metabase corrigées et activement exploitées dans la campagne générale.",
+            "relationship": "mentioned"
+          }
+        ],
+        "relations": []
+      },
+      "rich_remove_values": {
+        "claims": [
+          "Shipup"
+        ]
+      }
+    },
+    "ITM-f5b94936735b27a5": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "La victime ne confirme pas l’incident ; Paris est un bureau et les données clients sont hypothétiques.",
+      "clear": [
+        "Fine_Location"
+      ],
+      "set": {
+        "Threat_Actor": "Panzer",
+        "Claim_Status": "claimed",
+        "Summary": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès et le vol d’environ 70 Go de données."
+      },
+      "evidence_set": {
+        "Threat_Actor": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer.",
+        "Summary": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer."
+      },
+      "rich_set": {
+        "affected_counts": [],
+        "affected_datasets": [],
+        "data_volumes": [
+          {
+            "value": 70,
+            "status": "claimed",
+            "evidence": "Les cybercriminels affirment avoir récupéré environ 70 Go de données.",
+            "unit": "Go",
+            "raw": "environ 70 Go",
+            "scope": "données volées"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-08",
+            "event": "Revendication de Panzer contre la Financière d’Uzès",
+            "status": "claimed",
+            "evidence": "La Financière d’Uzès apparaît ce 8 septembre 2026 parmi les victimes revendiquées par le groupe de ransomware Panzer."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Ransomware",
+          "status": "claimed",
+          "evidence": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès."
+        }
+      }
+    },
+    "ITM-33f6c49a4ee154fc": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "L’entrée provient du site de revendication Panzer.",
+      "set": {
+        "Claim_Status": "claimed"
+      },
+      "evidence_set": {
+        "Claim_Status": "Revendication publiée par Panzer."
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Ransomware",
+          "status": "claimed",
+          "evidence": "Panzer revendique une attaque par ransomware contre la Financière d’Uzès."
+        }
+      }
+    },
+    "ITM-42866ee66e14ca48": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Transporte les 118 000 commandes et distingue leurs références des identifiants de connexion explicitement non établis.",
+      "set": {
+        "Affected_Count": "118000",
+        "Affected_Unit": "records",
+        "Affected_Count_Raw": "environ 118 000 commandes",
+        "Data_Types_JSON": "[\"informations de commandes\",\"références de commande\",\"facturation\",\"montants\",\"noms et prénoms\",\"adresses postales\",\"numéros de téléphone\"]"
+      },
+      "evidence_set": {
+        "Affected_Count_Raw": {
+          "text": "Selon les pirates, environ 118 000 commandes de 2020 à 2025 auraient été récupérées.",
+          "status": "claimed"
+        },
+        "Data_Types_JSON": {
+          "informations de commandes": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT.",
+          "références de commande": "Les échantillons contiennent un identifiant de commande.",
+          "facturation": "Les échantillons contiennent des informations de facturation.",
+          "montants": "Les échantillons contiennent les montants des commandes.",
+          "noms et prénoms": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone.",
+          "adresses postales": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone.",
+          "numéros de téléphone": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+        }
+      },
+      "rich_set": {
+        "affected_counts": [
+          {
+            "value": 118000,
+            "status": "claimed",
+            "evidence": "Selon les pirates, environ 118 000 commandes de 2020 à 2025 auraient été récupérées.",
+            "unit": "records",
+            "raw": "environ 118 000 commandes",
+            "scope": "commandes 2020-2025"
+          }
+        ],
+        "data_types": [
+          {
+            "value": "informations de commandes",
+            "status": "claimed",
+            "evidence": "LunarisSec revendique la fuite de 118 000 commandes de Proshop FFT."
+          },
+          {
+            "value": "références de commande",
+            "status": "reported",
+            "evidence": "Les échantillons contiennent un identifiant de commande."
+          },
+          {
+            "value": "facturation",
+            "status": "reported",
+            "evidence": "Les échantillons contiennent des informations de facturation."
+          },
+          {
+            "value": "montants",
+            "status": "reported",
+            "evidence": "Les échantillons contiennent les montants des commandes."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "reported",
+            "evidence": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+          },
+          {
+            "value": "adresses postales",
+            "status": "reported",
+            "evidence": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+          },
+          {
+            "value": "numéros de téléphone",
+            "status": "reported",
+            "evidence": "Les échantillons montrent des données commerciales et transactionnelles, des noms et prénoms, des adresses postales et des numéros de téléphone."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "LunarisSec revendique une fuite de données concernant Proshop FFT."
+        }
+      }
+    },
+    "ITM-9f99ff6be672b738": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le champ WordPress est technique, aucun mot de passe ni vecteur CVE n’est établi.",
+      "clear": [
+        "CVSS_Raw"
+      ],
+      "set": {
+        "Data_Types_JSON": "[\"adresses e-mail\",\"noms et prénoms\",\"identifiants techniques\"]",
+        "Summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i."
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress.",
+          "noms et prénoms": "Les champs de la base comprennent prénom et nom.",
+          "identifiants techniques": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+        },
+        "Summary": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+      },
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "reported",
+            "evidence": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent prénom et nom."
+          },
+          {
+            "value": "identifiants techniques",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-12757",
+            "status": "reported",
+            "evidence": "La CVE-2026-12757 affectant Icegram Express a été publiée la veille, sans preuve de lien avec l’incident.",
+            "relationship": "candidate"
+          },
+          {
+            "value": "CVE-2026-1651",
+            "status": "reported",
+            "evidence": "La CVE-2026-1651 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          },
+          {
+            "value": "CVE-2026-81290",
+            "status": "reported",
+            "evidence": "La CVE-2026-81290 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-08",
+            "event": "Sophia revendique une fuite de données concernant Vision2i",
+            "status": "claimed",
+            "evidence": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "Sophia revendique la publication de données attribuées à Vision2i."
+        }
+      }
+    },
+    "ITM-a27286500e1e2431": {
+      "audit": "LAST_COLLECTION_2026-09-09",
+      "reason": "Le champ WordPress est technique, aucun mot de passe ni vecteur CVE n’est établi.",
+      "clear": [
+        "CVSS_Raw"
+      ],
+      "set": {
+        "Data_Types_JSON": "[\"adresses e-mail\",\"noms et prénoms\",\"identifiants techniques\"]",
+        "Summary": "Sophia revendique la publication d’une base de contacts attribuée au site WordPress de Vision2i."
+      },
+      "evidence_set": {
+        "Data_Types_JSON": {
+          "adresses e-mail": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress.",
+          "noms et prénoms": "Les champs de la base comprennent prénom et nom.",
+          "identifiants techniques": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+        },
+        "Summary": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+      },
+      "rich_set": {
+        "data_types": [
+          {
+            "value": "adresses e-mail",
+            "status": "reported",
+            "evidence": "Un extrait de la base de contacts Vision2i a été diffusé avec des adresses e-mail et des informations associées aux contacts WordPress."
+          },
+          {
+            "value": "noms et prénoms",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent prénom et nom."
+          },
+          {
+            "value": "identifiants techniques",
+            "status": "reported",
+            "evidence": "Les champs de la base comprennent un identifiant WordPress, distinct d’un identifiant de connexion."
+          }
+        ],
+        "vulnerabilities": [
+          {
+            "value": "CVE-2026-12757",
+            "status": "reported",
+            "evidence": "La CVE-2026-12757 affectant Icegram Express a été publiée la veille, sans preuve de lien avec l’incident.",
+            "relationship": "candidate"
+          },
+          {
+            "value": "CVE-2026-1651",
+            "status": "reported",
+            "evidence": "La CVE-2026-1651 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          },
+          {
+            "value": "CVE-2026-81290",
+            "status": "reported",
+            "evidence": "La CVE-2026-81290 est mentionnée dans le contexte technique sans lien établi avec l’incident.",
+            "relationship": "mentioned"
+          }
+        ],
+        "timeline": [
+          {
+            "date": "2026-09-08",
+            "event": "Sophia revendique une fuite de données concernant Vision2i",
+            "status": "claimed",
+            "evidence": "Sophia publie le 8 septembre 2026 des données présentées comme provenant de Vision2i."
+          }
+        ]
+      },
+      "metadata_set": {
+        "threat_override": {
+          "value": "Fuite de données",
+          "status": "claimed",
+          "evidence": "Sophia revendique la publication de données attribuées à Vision2i."
+        }
+      }
+    }
+  }
+}
