@@ -1,1 +1,210 @@
-[]
+[
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7BF9828040F8",
+  "location": "France métropolitaine",
+  "org": "Ville de Joigny",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ville de Joigny",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-contre-la-ville-de-joigny-268-795-tentatives-dintrusion-en-une-semaine/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-contre-la-ville-de-joigny-268-795-tentatives-dintrusion-en-une-semaine/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ville-de-joigny-mtwuflm1iee4jiwh7bf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Ville de Joigny et la Communauté de communes du Jovinien ont enregistré 268 795 tentatives d'intrusion en une semaine.",
+  "threat": "Ransomware"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-673354204E98",
+  "location": "Inconnu",
+  "org": "GreenGo",
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "GreenGo est une plateforme française spécialisée dans la réservation d’hébergements, avec un positionnement axé sur le tourisme responsable.",
+   "evidence_url": "https://www.cyberattaque.org/greengo-victime-dune-cyberattaque-donnees-de-comptes-reservations-et-messages-potentiellement-consultes/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/greengo-victime-dune-cyberattaque-donnees-de-comptes-reservations-et-messages-potentiellement-consultes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "GreenGo victime d’une cyberattaque : données de comptes, réservations et messages consultés",
+  "threat": "Intrusion"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-5F3F78296574",
+  "location": "France métropolitaine",
+  "org": "WiziShop",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/wizishop-dropizi-mtw3klqur74gdjp72ya"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la publication d'une base de factures de WiziShop et Dropizi contenant 511 661 lignes et 21 402 boutiques.",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-575DE7755221",
+  "location": "France métropolitaine",
+  "org": "Aqualter",
+  "personal_data_exposed": true,
+  "sector": "Énergie / Utilities",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Aqualter  est une entreprise française indépendante spécialisée dans les métiers de l’eau.",
+   "evidence_url": "https://www.cyberattaque.org/aqualter-187-000-numeros-de-telephone-exposes-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/aqualter-187-000-numeros-de-telephone-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite revendiquée expose 187 073 numéros de téléphone et 86 156 adresses e-mail liées à Aqualter.",
+  "threat": "Intrusion"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3AAEEA9D575F",
+  "location": "France métropolitaine",
+  "org": "Brevo",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Brevo, plateforme française spécialisée dans l’emailing, le marketing digital et la gestion de la relation client, confirme un incident de sécurité ayant permis à un attaquant d’accéder à 138 comptes clients.",
+   "evidence_url": "https://frenchbreaches.com/alertes/brevo-mtwuixif0kdw2y7yp3bn",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/brevo-cyberattaque-campagne-de-phishing-frappe-trezor-et-cointracking/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/brevo-mtwuixif0kdw2y7yp3bn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Brevo confirme qu’une faille SSO a permis à un attaquant d’accéder à 138 comptes clients.",
+  "threat": "Phishing / fraude"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EEF2BD5C3F4C",
+  "location": "France métropolitaine",
+  "org": "École supérieure d’arts & médias",
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "École supérieure d’arts & médias",
+   "evidence_url": "https://frenchbreaches.com/alertes/cole-sup-rieure-d-arts-m-dias-esam-mtvzmq32iapsm7uc9oj",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cole-sup-rieure-d-arts-m-dias-esam-mtvzmq32iapsm7uc9oj"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "École supérieure d’arts & médias (ESAM)",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7BBAA7C5EDDA",
+  "location": "Inconnu",
+  "org": "L’ésam Caen/Cherbourg",
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "L’ Esam Caen/Cherbourg est un établissement public de coopération culturelle né en 2011 de la fusion des écoles d’art de Caen et de Cherbourg.",
+   "evidence_url": "https://www.cyberattaque.org/lesam-caen-cherbourg-victime-dune-cyberattaque-en-pleine-rentree-universitaire/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lesam-caen-cherbourg-victime-dune-cyberattaque-en-pleine-rentree-universitaire/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "L’ésam Caen/Cherbourg victime d’une cyberattaque en pleine rentrée universitaire",
+  "threat": "Intrusion"
+ }
+]
