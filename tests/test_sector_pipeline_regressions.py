@@ -92,6 +92,14 @@ def test_valid_source_cannot_hide_an_explicit_activity_conflict():
     assert sector_resolution.component_sector([first, other]) == config.SECTOR_UNKNOWN
 
 
+def test_explicit_institution_name_beats_legal_form_activity_in_component():
+    rows = [
+        {"Resolved_Sector": config.SECTOR_EDUCATION, "Reason": "ORGANISATION_NAME_RULE"},
+        {"Resolved_Sector": config.SECTOR_ADMIN, "Reason": "SEMANTIC_ACTIVITY_MATCH"},
+    ]
+    assert sector_resolution.component_sector_rows(rows) == config.SECTOR_EDUCATION
+
+
 def test_partial_literal_quote_can_bind_to_victim_in_same_sentence():
     context = 'ZeroGaspi commercialise en ligne des produits anti-gaspillage.'
     raw = {field: {'value': 'vente en ligne' if field=='activity_description' else config.SECTOR_RETAIL,

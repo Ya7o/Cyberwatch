@@ -52,6 +52,58 @@ def test_negated_threats_remain_negative_through_finalization(monkeypatch):
     assert report.incidents[0].Menace == config.THREAT_INTRUSION
 
 
+def test_joigny_denial_cannot_publish_ransomware(monkeypatch):
+    fact = {
+        "Item_ID": "audit",
+        "Summary": "La collectivité a repoussé 268 795 tentatives d'intrusion.",
+        "Impact": (
+            "La collectivité n’indique pas non plus avoir subi de chiffrement "
+            "de ses serveurs, d’interruption majeure de ses services ou de "
+            "demande de rançon."
+        ),
+        "Claim_Status": "confirmed",
+    }
+    item = _item(
+        Title="Ville de Joigny : 268 795 tentatives d’intrusion en une semaine",
+        Threat=config.THREAT_RANSOMWARE,
+    )
+    decision = _finalize(monkeypatch, [item], [fact]).incidents[0]
+    assert decision.Menace == config.THREAT_INTRUSION
+
+
+def test_aqualter_explicit_claimed_leak_beats_generic_cyberattack(monkeypatch):
+    fact = {
+        "Item_ID": "audit",
+        "Summary": (
+            "Une fuite revendiquée expose 187 073 numéros de téléphone et "
+            "86 156 adresses e-mail liées à Aqualter."
+        ),
+        "Claim_Status": "claimed",
+    }
+    item = _item(
+        Title="Aqualter : 187 000 numéros de téléphone exposés après une cyberattaque",
+        Threat=config.THREAT_INTRUSION,
+    )
+    assert _finalize(monkeypatch, [item], [fact]).incidents[0].Menace == config.THREAT_LEAK
+
+
+def test_accepted_threat_candidate_participates_in_final_decision(monkeypatch):
+    fact = {
+        "Item_ID": "audit",
+        "Claim_Status": "reported",
+        "Source_Metadata_JSON": json.dumps({
+            "_source_facts_semantic_status": {"threat_candidate": "accepted"},
+            "threat_tentative": {
+                "value": config.THREAT_INTRUSION,
+                "confidence": 0.9,
+                "evidence": "Une faille a permis un accès non autorisé à l'infrastructure.",
+            },
+        }),
+    }
+    item = _item(Title="Acme signale un incident de sécurité", Threat=config.THREAT_LEAK)
+    assert _finalize(monkeypatch, [item], [fact]).incidents[0].Menace == config.THREAT_INTRUSION
+
+
 def test_specific_summary_threat_beats_feed_default(monkeypatch):
     entry = RawEntry(
         title="Acme",

@@ -1,10 +1,12 @@
 from cyberwatch.duplicate_audit import (
+    DUPLICATE_CANDIDATE_DAILY_LLM,
     DUPLICATE_CANDIDATE_SHARED_COMPANY_ID,
     MERGE_REVIEW_RANSOMWARE_CORROBORATION,
     MERGE_REVIEW_WEAK_CANONICAL_NAME,
     RISK_FALSE_MERGE,
     RISK_MISSED_DUPLICATE,
     find_audit_candidates,
+    find_daily_llm_candidates,
 )
 
 
@@ -68,3 +70,18 @@ def test_current_alias_resolution_does_not_remain_a_missed_duplicate(make_item, 
     monkeypatch.setattr("cyberwatch.duplicate_audit._effective_key", lambda _item: "identite-canonique")
     candidates = find_audit_candidates([left, right])
     assert all(candidate.risk_type != RISK_MISSED_DUPLICATE for candidate in candidates)
+
+
+def test_embedded_acronym_surfaces_esam_pair_for_daily_review(make_item):
+    left = make_item(
+        source="CYBERATTAQUE_ORG", org="L’ésam Caen/Cherbourg",
+        published="2026-09-10", url="https://a",
+    )
+    right = make_item(
+        source="FRENCHBREACHES", org="École supérieure d’arts & médias",
+        published="2026-09-10", url="https://b",
+    )
+    candidates = find_daily_llm_candidates([left, right], [left, right])
+    assert len(candidates) == 1
+    assert candidates[0].reason_code == DUPLICATE_CANDIDATE_DAILY_LLM
+    assert candidates[0].signals and candidates[0].signals.acronym_match is True

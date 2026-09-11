@@ -60,6 +60,59 @@ _CVSS_RE = re.compile(
     re.I,
 )
 _FILE_COUNT_RE = re.compile(r"\b(\d[\d\s .,]*)\s*(?:fichiers?|documents?)\b", re.I)
+_ATTACK_TIMELINE_RE = re.compile(
+    r"\b(?:cyberattaque|attaque|intrusion|compromission)\b.{0,100}"
+    r"\b(?:a eu lieu|est survenue|a commence|victime)\b|"
+    r"\b(?:a ete victime|victime)\b.{0,100}"
+    r"\b(?:cyberattaque|attaque|intrusion|compromission)\b",
+    re.I,
+)
+_DISCOVERY_TIMELINE_RE = re.compile(
+    r"\b(?:detectee?|decouverte?|notifiee?|informee?|publiee?|revelee?)\b", re.I,
+)
+
+
+def _attack_date_from_rich(metadata: dict) -> tuple[str, str]:
+    rich = metadata.get("rich_facts") if isinstance(metadata.get("rich_facts"), dict) else {}
+    timeline = rich.get("timeline") if isinstance(rich, dict) else None
+    candidates: list[tuple[int, int, str, str]] = []
+    for position, row in enumerate(timeline if isinstance(timeline, list) else []):
+        if not isinstance(row, dict):
+            continue
+        date = parse_date(row.get("date"))
+        evidence = str(row.get("evidence") or row.get("event") or "").strip()
+        blob = searchable(evidence)
+        if not date or not evidence or not _ATTACK_TIMELINE_RE.search(blob):
+            continue
+        score = 2
+        if re.search(r"\b(?:a eu lieu|est survenue|a commence)\b", blob, re.I):
+            score += 2
+        if _DISCOVERY_TIMELINE_RE.search(blob) and not re.search(
+            r"\b(?:mais|avant d|apres avoir)\b", blob, re.I
+        ):
+            score -= 3
+        candidates.append((score, position, date, evidence))
+    if not candidates:
+        return "", ""
+    _, _, date, evidence = sorted(candidates, key=lambda row: (-row[0], row[1]))[0]
+    return date, evidence
+
+
+def apply_event_dates(items: list[Item], facts: list[dict]) -> list[str]:
+    """Propage une date d'attaque sourcée sans modifier l'identité de l'item."""
+    dates: dict[str, str] = {}
+    for row in facts:
+        item_id = str(row.get("Item_ID") or "")
+        date = parse_date(row.get("Attack_Date"))
+        if item_id and date:
+            dates[item_id] = date
+    changed: list[str] = []
+    for item in items:
+        candidate = dates.get(item.Item_ID, "")
+        if not item.Event_Date and candidate:
+            item.Event_Date = candidate
+            changed.append(item.Item_ID)
+    return sorted(changed)
 
 
 def _extract_cves(*texts: str) -> list[str]:
@@ -723,6 +776,13 @@ def sanitize_source_facts(facts: list[dict]) -> tuple[list[dict], list[str]]:
         semantic_statuses = metadata.get("_source_facts_semantic_status")
         semantic_statuses = dict(semantic_statuses) if isinstance(semantic_statuses, dict) else {}
         touched = False
+
+        if not parse_date(fact.get("Attack_Date")):
+            attack_date, attack_evidence = _attack_date_from_rich(metadata)
+            if attack_date:
+                fact["Attack_Date"] = attack_date
+                evidence["Attack_Date"] = attack_evidence
+                touched = True
 
         from .sector_activity import describes_incident
         activity = str(fact.get("Activity_Description") or "")

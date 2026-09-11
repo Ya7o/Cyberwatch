@@ -17,12 +17,19 @@ from .base import entry_allowed_before_enrichment
 
 STATUSES = {"confirmed", "reported", "claimed", "hypothesis", "denied", "negated", "unknown"}
 _STATUS_PRIORITY = {"confirmed": 7, "reported": 6, "claimed": 5, "hypothesis": 3, "denied": 2, "negated": 1, "unknown": 0}
-_HYPOTHESIS = re.compile(r"\b(?:pourrait|pourraient|susceptible|potentiellement|possible|hypoth[èe]se|serait|seraient|aurait|auraient)\b", re.I)
+_HYPOTHESIS = re.compile(r"\b(?:peut|peuvent|pourrait|pourraient|susceptible|potentiellement|possible|hypoth[èe]se|serait|seraient|aurait|auraient)\b", re.I)
 _NEGATION = re.compile(r"\b(?:n['’ ](?:ai|as|a|avons|avez|ont|est|sommes|[êe]tes|sont)\s+pas|ne\s+.{0,40}\s+pas|aucun(?:e)?|sans\s+(?:preuve|confirmation)|non\s+touch[ée]|pas\s+touch[ée]|impossible\s+de\s+(?:d[ée]terminer|savoir|[ée]tablir))\b", re.I)
 _DENIED = re.compile(r"\b(?:d[ée]ment|d[ée]menti|nie|nient|conteste|contestent)\b", re.I)
 _CONFIRMED = re.compile(r"\b(?:confirme|confirm[ée]e?s?|reconna[iî]t|reconnu|admet|admis|officiellement)\b", re.I)
 _CLAIMED = re.compile(r"\b(?:revendiqu[ée]e?s?|affirme|affirment|dit\s+avoir|selon\s+(?:l['’]?attaquant|le\s+groupe|les\s+pirates?))\b", re.I)
 _REPORTED = re.compile(r"\b(?:rapport[ée]e?s?|indique|indiquent|selon\s+(?:le|la|les|un|une)\s+)\b", re.I)
+_NON_EXPOSURE_LIST = re.compile(
+    r"\b(?:ne sont pas concernees?|ne contient pas|ne contiennent pas|"
+    r"ne figurent pas|sont exclues?|contrairement a)\b|"
+    r"\b(?:recommande|conseille)\w*\b.{0,100}\b(?:ne jamais|mot de passe|"
+    r"coordonnees bancaires|identifiants?)\b",
+    re.I,
+)
 
 _COUNT_RE = re.compile(r"(?P<number>\d[\d\s\u202f.,]*\d|\d)\s*(?P<scale>millions?|milliers?|mille)?\s*(?:de\s+|d['’])?\s*(?P<unit>comptes?|personnes?|utilisateurs?|clients?|lignes?|enregistrements?|dossiers?|fichiers?|victimes?|agents?|employ[ée]s?|assur[ée]s?)\b", re.I)
 _UNIT_MAP = {
@@ -142,20 +149,29 @@ def _extract_data_types(sentences: list[str]) -> list[dict]:
     # doit rester applicable aux éléments immédiats, sans jamais parcourir tout
     # l'article hors de cette fenêtre bornée.
     context_left = 0
+    blocked_context_left = 0
+    inherited_status = "unknown"
     for sentence in sentences:
         status=_status(sentence)
         incident_context = bool(re.search(r"\b(?:donn[ée]es?|fuite|vol|expos|comprom|exfiltr|publi|concern|contiend|inclu)\w*\b", sentence, re.I))
         if incident_context:
             context_left = 12
+            inherited_status = status
+            blocked_context_left = 12 if (
+                status in {"negated", "denied"} or _NON_EXPOSURE_LIST.search(searchable(sentence))
+            ) else 0
         elif context_left:
             context_left -= 1
+            blocked_context_left = max(0, blocked_context_left - 1)
         else:
             continue
         # A denial belongs to the source text, not to the positive list of
         # exposed categories.  Keeping it here would make a statement such as
         # "aucun IBAN identifié" appear as an exposed IBAN downstream.
-        if status in {"negated", "denied"}:
+        if status in {"negated", "denied"} or blocked_context_left or _NON_EXPOSURE_LIST.search(searchable(sentence)):
             continue
+        if status == "unknown" and inherited_status in {"confirmed", "reported", "claimed", "hypothesis"}:
+            status = inherited_status
         for label, pattern in _DATA_TYPES:
             if not pattern.search(sentence):
                 continue

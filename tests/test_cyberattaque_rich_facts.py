@@ -82,6 +82,53 @@ def test_negated_data_types_are_not_published_as_exposed():
     assert {row["value"] for row in rows} == {"adresses e-mail"}
 
 
+def test_negative_list_heading_blocks_following_bullets():
+    entry = RawEntry(
+        title="Exemple : fuite de factures",
+        content=(
+            "Les factures exposées contiennent des adresses postales.\n"
+            "Les données suivantes ne sont pas concernées :\n"
+            "- les coordonnées bancaires ;\n"
+            "- les identifiants de connexion ;\n"
+            "- les mots de passe ;\n"
+            "- les commandes."
+        ),
+    )
+    enrich_entry_metadata(entry)
+    values = {row["value"] for row in entry.source_metadata["rich_facts"]["data_types"]}
+    assert values == {"factures", "adresses postales"}
+
+
+def test_comparison_and_security_advice_are_not_exposed_data():
+    entry = RawEntry(
+        title="Exemple : fuite de contacts",
+        content=(
+            "Les données exposées sont des adresses e-mail et des numéros de téléphone. "
+            "Contrairement à certaines fuites contenant des mots de passe ou des "
+            "informations bancaires, les données annoncées ici sont limitées à ces contacts. "
+            "L'établissement recommande de ne jamais communiquer ses mots de passe."
+        ),
+    )
+    enrich_entry_metadata(entry)
+    values = {row["value"] for row in entry.source_metadata["rich_facts"]["data_types"]}
+    assert values == {"adresses e-mail", "numéros de téléphone"}
+
+
+def test_hypothetical_list_status_is_inherited_by_bullets():
+    entry = RawEntry(
+        title="Exemple : incident de sécurité",
+        content=(
+            "Les données potentiellement concernées comprennent :\n"
+            "- les noms et prénoms ;\n"
+            "- les adresses e-mail."
+        ),
+    )
+    enrich_entry_metadata(entry)
+    rows = entry.source_metadata["rich_facts"]["data_types"]
+    assert rows
+    assert {row["status"] for row in rows} == {"hypothesis"}
+
+
 def test_access_hypothesis_is_not_misclassified_as_exposed_credentials():
     entry = RawEntry(
         title="Exemple : fuite de données",

@@ -38,7 +38,8 @@ _STATUS_RANK = {
 }
 
 _LEAK_RE = re.compile(
-    r"\b(?:fuite(?:\s+\w+){0,3}\s+de\s+donnees|data\s+breach|exfiltr\w*|vol\s+de\s+donnees|"
+    r"\b(?:fuite(?:\s+de\s+donnees|\s+revendiquee)?\b|data\s+breach|exfiltr\w*|vol\s+de\s+donnees|"
+    r"publication\s+d\s+une\s+base|"
     r"(?:donnees|base|fichiers?|documents?|comptes?)\b.{0,70}\b"
     r"(?:vole\w*|derob\w*|expose\w*|diffus\w*|publie\w*|extrait\w*|mis(?:e)?\s+en\s+vente))\b"
 )
@@ -80,12 +81,6 @@ def index_source_facts(rows: Iterable[dict] | None) -> dict[str, list[dict]]:
         if item_id:
             indexed[item_id].append(row)
     return dict(indexed)
-
-
-def _fact_has_leak_evidence(blob: str) -> bool:
-    # ``blob`` a déjà été nettoyé des négations et des risques éditoriaux.
-    # Relire le résumé brut ici réintroduirait précisément ces faux positifs.
-    return bool(_LEAK_RE.search(blob))
 
 
 def _best_signal(signals: list[tuple[str, str, str]]) -> tuple[str, tuple[str, ...], str]:
@@ -133,6 +128,42 @@ def _editorial_threat_decision(
     return ThreatDecision(
         next(iter(values)), status, "THREAT_EDITORIAL_CORRECTION", sources, evidence, conflict,
     )
+
+
+def _append_tentative_signal(metadata: dict, signals: dict, source: str) -> None:
+    tentative = metadata.get("threat_tentative")
+    statuses = metadata.get("_source_facts_semantic_status", {})
+    try:
+        confidence = float(tentative.get("confidence") or 0) \
+            if isinstance(tentative, dict) else 0.0
+    except (TypeError, ValueError):
+        confidence = 0.0
+    if (
+        isinstance(tentative, dict)
+        and isinstance(statuses, dict)
+        and statuses.get("threat_candidate") == "accepted"
+        and tentative.get("value") in config.THREATS
+        and confidence >= 0.75
+    ):
+        signals[str(tentative["value"])].append((
+            "reported", source, str(tentative.get("evidence") or ""),
+        ))
+
+
+def _append_text_signals(signals: dict, text: str, status: str, source: str) -> None:
+    blob = threat_evidence_text(text)
+    if not blob:
+        return
+    for threat, pattern in (
+        (config.THREAT_RANSOMWARE, _RANSOMWARE_RE),
+        (config.THREAT_DDOS, _DDOS_RE),
+        (config.THREAT_MALWARE, _MALWARE_RE),
+        (config.THREAT_LEAK, _LEAK_RE),
+        (config.THREAT_PHISHING, _PHISHING_RE),
+        (config.THREAT_INTRUSION, _INTRUSION_RE),
+    ):
+        if pattern.search(blob):
+            signals[threat].append((status, source, text))
 
 
 def _collect_signals(
@@ -192,25 +223,17 @@ def _collect_signals(
             status = str(row.get("Claim_Status") or "reported").strip().lower()
             if status in {"denied", "negated", "hypothesis", "unconfirmed"}:
                 continue
+            _append_tentative_signal(metadata, signals, source)
             summary = str(row.get("Summary") or "").strip()
             impact = str(row.get("Impact") or "").strip()
-            fact_blob = threat_evidence_text(summary, impact)
-            evidence = summary or impact or item.Title
-            if _RANSOMWARE_RE.search(fact_blob):
-                signals[config.THREAT_RANSOMWARE].append((status, source, evidence))
-            if _DDOS_RE.search(fact_blob):
-                signals[config.THREAT_DDOS].append((status, source, evidence))
-            if _MALWARE_RE.search(fact_blob):
-                signals[config.THREAT_MALWARE].append((status, source, evidence))
-            if _fact_has_leak_evidence(fact_blob):
-                signals[config.THREAT_LEAK].append((status, source, evidence))
-            if _PHISHING_RE.search(fact_blob):
-                signals[config.THREAT_PHISHING].append((status, source, evidence))
-            if _INTRUSION_RE.search(fact_blob):
-                signals[config.THREAT_INTRUSION].append((status, source, evidence))
+            # Tester chaque fait séparément conserve la preuve qui a réellement
+            # déclenché la catégorie et empêche une négation de l'impact d'être
+            # justifiée à tort par le résumé.
+            for evidence in (summary, impact):
+                _append_text_signals(signals, evidence, status, source)
             initial_access = str(row.get("Initial_Access") or "").strip()
             if initial_access == "third_party" or str(row.get("Third_Party") or "").strip():
-                signals[config.THREAT_THIRD_PARTY].append((status, source, evidence))
+                signals[config.THREAT_THIRD_PARTY].append((status, source, summary or impact or item.Title))
 
     return signals, editorial_overrides
 

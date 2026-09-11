@@ -46,7 +46,10 @@ def content_hash(text: str) -> str:
 
 
 def _enabled() -> bool:
-    flag = os.getenv("CYBERATTAQUE_SEMANTIC_ENABLED", "1").strip().lower()
+    # SourceFacts couvre désormais les champs sémantiques publiés en une passe
+    # par article. Le second extracteur atomique reste disponible pour les
+    # audits ciblés, mais n'ajoute plus cinq appels par défaut à chaque MAJ.
+    flag = os.getenv("CYBERATTAQUE_SEMANTIC_ENABLED", "0").strip().lower()
     return bool(os.getenv("OPENAI_API_KEY", "").strip()) and flag not in {"0", "false", "no", "off"}
 
 

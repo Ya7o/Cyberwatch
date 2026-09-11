@@ -28,6 +28,24 @@ def _proposals(raw: dict, fields: set[str]) -> dict:
     return out
 
 
+def _previous_fields(runtime: _Runtime, key: str) -> dict:
+    entry = runtime.cache.get(key, {})
+    if isinstance(entry, dict) and isinstance(entry.get("fields"), dict):
+        return dict(entry["fields"])
+    return {}
+
+
+def _record_field_outcomes(runtime: _Runtime, cache: dict, fields: set[str]) -> dict:
+    outcomes = {
+        field: str(cache["fields"][field].get("status") or "unknown")
+        for field in fields
+    }
+    runtime.field_outcomes.update(outcomes.values())
+    for field, outcome in outcomes.items():
+        runtime.field_outcomes_by_name.setdefault(field, Counter())[outcome] += 1
+    return outcomes
+
+
 def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
                      runtime: _Runtime, key: str, api) -> tuple[dict, bool]:
     from .source_facts_ai_activity import normalize_activity, rejection_kind
@@ -71,12 +89,7 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         # `_store_field_cache` de distinguer une absence explicite d'une valeur
         # proposée puis refusée, au lieu de le corriger après coup.
         _, reasons = normalize_activity(raw, context, organisation)
-        previous_entry = runtime.cache.get(key, {})
-        previous_fields = (
-            dict(previous_entry.get("fields", {}))
-            if isinstance(previous_entry, dict) and isinstance(previous_entry.get("fields"), dict)
-            else {}
-        )
+        previous_fields = _previous_fields(runtime, key)
         api._store_field_cache(runtime, key, item, entry, fields, normalized,
                                raw=raw, reasons=reasons)
         cache = runtime.cache[key]
@@ -104,13 +117,7 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
                 and not isinstance(previous_fields.get(field), dict)
             ):
                 record.update(status="miss", misses=1)
-        field_outcomes = {
-            field: str(cache["fields"][field].get("status") or "unknown")
-            for field in fields
-        }
-        runtime.field_outcomes.update(field_outcomes.values())
-        for field, outcome in field_outcomes.items():
-            runtime.field_outcomes_by_name.setdefault(field, Counter())[outcome] += 1
+        field_outcomes = _record_field_outcomes(runtime, cache, fields)
         if api.REJECTING_FIELDS & fields:
             api._record_pair_from_cache(runtime, item, entry, key, "call")
         runtime.record_event(**event, status="success", normalized=normalized,

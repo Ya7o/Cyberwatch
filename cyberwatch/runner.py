@@ -809,6 +809,7 @@ def execute(
     report.source_facts, _sanitized_fact_ids = source_facts.sanitize_source_facts(
         report.source_facts
     )
+    source_facts.apply_event_dates(report.items, report.source_facts)
     enriched = enrichment.finalize_snapshot(
         report.items, report.source_facts, run_id=context.run_id, as_of=context.as_of,
     )
@@ -869,6 +870,9 @@ def _checkpoint_and_persist(report: RunReport, watch_rows: list[dict], offline: 
     context = report.context
     sector_summary = runner_source_facts.settle_sectors(
         report.sector_resolution_rows, report.incidents
+    )
+    runner_source_facts.settle_published_fields(
+        report.source_facts, report.items, report.incidents
     )
     report.source_facts_retry_summary["queued_after"] = len(source_facts_retry.load())
     source_facts_ai._runtime().checkpoint(force=True)

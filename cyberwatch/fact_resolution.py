@@ -292,7 +292,10 @@ def _data_types_entries(facts: Iterable[dict]) -> list[dict]:
                         (),
                     )
         legacy = fact.get("data_types")
-        if isinstance(legacy, list):
+        # Quand l'adaptateur riche a tourné pour cette même source, sa sortie
+        # phrase par phrase remplace la liste plate dépourvue de contexte. Cela
+        # évite de republier une IP attaquante ou une puce sous un titre négatif.
+        if isinstance(legacy, list) and not isinstance(rich_values, list):
             for raw in legacy:
                 # Claim_Status qualifie l'incident, pas chaque catégorie. Le
                 # statut précis vient des faits riches lorsqu'ils existent ;

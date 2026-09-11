@@ -637,6 +637,33 @@ def test_ransomware_live_reste_structuré_sans_llm():
     assert json.loads(fact["Evidence_URLs_JSON"]) == ["https://leaksite.example/exemple-sa"]
 
 
+def test_attack_date_is_recovered_from_rich_timeline_and_propagated(make_item):
+    row = {
+        "Item_ID": "audit-date",
+        "Attack_Date": "",
+        "Evidence_JSON": "",
+        "Source_Metadata_JSON": json.dumps({"rich_facts": {"timeline": [
+            {
+                "date": "2026-09-03",
+                "event": "L'incident a été détecté le 3 septembre 2026.",
+                "evidence": "L'incident a été détecté le 3 septembre 2026.",
+            },
+            {
+                "date": "2026-08-21",
+                "event": "La cyberattaque a eu lieu le 21 août 2026.",
+                "evidence": "La cyberattaque a eu lieu le 21 août 2026.",
+            },
+        ]}}),
+    }
+    rows, changed = sf.sanitize_source_facts([row])
+    assert changed == ["audit-date"]
+    assert rows[0]["Attack_Date"] == "2026-08-21"
+    item = make_item("CYBERATTAQUE_ORG")
+    item.Item_ID = "audit-date"
+    assert sf.apply_event_dates([item], rows) == ["audit-date"]
+    assert item.Event_Date == "2026-08-21"
+
+
 def test_ransomware_generique_rejete():
     fact = sf.extract_source_fact(make_item("RANSOMWARE_LIVE"), _ransom_entry(group="Ransomware"), RANSOM)
     assert fact is None or fact["Threat_Actor"] == ""

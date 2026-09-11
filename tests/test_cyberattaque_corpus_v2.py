@@ -61,3 +61,11 @@ def test_semantic_validator_rejects_invented_evidence_and_numbers():
 def test_semantic_llm_is_disabled_without_api_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     assert cyberattaque_semantic.should_use_llm("x" * 6000, {"claims": []}) is False
+
+
+def test_semantic_llm_is_opt_in_even_with_api_key(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.delenv("CYBERATTAQUE_SEMANTIC_ENABLED", raising=False)
+    assert cyberattaque_semantic._enabled() is False
+    monkeypatch.setenv("CYBERATTAQUE_SEMANTIC_ENABLED", "1")
+    assert cyberattaque_semantic._enabled() is True

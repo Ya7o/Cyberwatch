@@ -167,6 +167,26 @@ def component_sector_rows(rows: list[dict]) -> str:
     known = [row for row in rows if _valid(str(row.get("Resolved_Sector") or ""))]
     sectors = {row["Resolved_Sector"] for row in known}
     if len(sectors) > 1:
+        # Une identité institutionnelle explicite (« École supérieure… »)
+        # décrit mieux la victime qu'une activité sémantique fondée sur sa
+        # forme juridique (« établissement public de coopération »).
+        reason_rank = {
+            "REFERENCE_EXACT": 3,
+            "ORGANISATION_NAME_RULE": 2,
+            "ACTIVITY_RULE": 1,
+            "ACTIVITY_EVIDENCE_RULE": 1,
+            "SEMANTIC_ACTIVITY_MATCH": 1,
+            "ACTIVITY_OVERRIDES_SOURCE_LABEL": 1,
+            "SOURCE_SECTOR_RAW": 0,
+            "LEGACY_KNOWN_SECTOR": 0,
+        }
+        best_rank = max(reason_rank.get(str(row.get("Reason") or ""), 0) for row in known)
+        strongest = {
+            row["Resolved_Sector"] for row in known
+            if reason_rank.get(str(row.get("Reason") or ""), 0) == best_rank
+        }
+        if len(strongest) == 1:
+            return next(iter(strongest))
         supported = {row["Resolved_Sector"] for row in known if row.get("Reason") in {
             "REFERENCE_EXACT", "ACTIVITY_RULE", "SEMANTIC_ACTIVITY_MATCH",
             "ACTIVITY_OVERRIDES_SOURCE_LABEL", "ORGANISATION_NAME_RULE",

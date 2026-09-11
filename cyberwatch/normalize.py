@@ -279,6 +279,12 @@ _NEGATABLE_THREATS = (
 # candidats ; une autre mention positive située ailleurs dans le texte reste
 # donc exploitable.
 _THREAT_NEGATION_PATTERNS = (
+    # « La collectivité n’indique pas non plus avoir subi … de demande de
+    # rançon » : le verbe déclaratif porte la négation sur toute l'énumération.
+    re.compile(
+        r"\bn (?:indique|mentionne|signale|rapporte) pas(?: non plus)? avoir subi\b"
+        rf".{{0,220}}\b(?:{_NEGATABLE_THREATS}|rancon)\b"
+    ),
     re.compile(
         r"\b(?:aucune|aucun|pas de|sans)\s+"
         r"(?:attaque\s+(?:par\s+)?)?"
@@ -310,6 +316,11 @@ _DOWNSTREAM_THREAT_PATTERNS = (
     re.compile(
         r"\b(?:risque|risques|facilite|facilitant|favorise|favorisant|pourrait faciliter)"
         r"(?: [a-z]+){0,5}\s+(?:phishing|hameconnage|fraude|malware|rancongiciel)\b"
+    ),
+    re.compile(
+        r"\b(?:bloquees?|repoussees?|arretees?|evitees?)\b.{0,80}"
+        r"\bavant de (?:provoquer|causer|entrainer)\b.{0,80}"
+        r"\b(?:fuite|exfiltration|rancongiciel|ransomware)\b"
     ),
 )
 

@@ -1095,6 +1095,15 @@ def test_negation_rich_ne_laisse_pas_survivre_le_meme_type_legacy():
     assert [entry["value"] for entry in resolved["data_types"]] == ["numéros de téléphone"]
 
 
+def test_rich_extraction_supersedes_uncorroborated_legacy_types_for_same_source():
+    resolved = fr.resolve_incident_facts([fact(
+        "FRENCHBREACHES",
+        data_types=["adresses IP"],
+        rich_facts={"data_types": []},
+    )])
+    assert resolved["data_types"] == []
+
+
 def test_population_generale_n_est_pas_un_volume_affecte():
     resolved = fr.resolve_incident_facts([fact(
         "CYBERATTAQUE_ORG",

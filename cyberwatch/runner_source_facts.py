@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import os
 
-from . import source_facts, source_facts_ai, source_facts_retry, sources
+from . import config, source_facts, source_facts_ai, source_facts_retry, sources
 from .collectors.base import RawEntry, SourceSpec
 from .model import Incident, Item
 
@@ -130,3 +130,36 @@ def settle_sectors(rows: list[dict], incidents: list[Incident]) -> dict:
             continue
         source_facts_retry.resolve(item, entry, ACTIVITY_FIELDS)
     return summary
+
+
+def settle_published_fields(
+    rows: list[dict], items: list[Item], incidents: list[Incident]
+) -> None:
+    """Retire les reprises sans effet lorsque la publication a déjà une valeur.
+
+    Une tentative sémantique reste utile seulement si elle peut encore changer
+    la fiche : un résumé déterministe publiable ou une menace finale connue ne
+    justifient pas un nouvel appel au run suivant.
+    """
+    facts = {str(row.get("Item_ID") or ""): row for row in rows}
+    threat_urls = "\n".join(
+        incident.Source_URLs for incident in incidents
+        if incident.Menace and incident.Menace != config.THREAT_UNKNOWN
+    )
+    items_by_id = {item.Item_ID: item for item in items}
+    for pending in source_facts_retry.load():
+        try:
+            item, entry = source_facts_retry.restore(pending)
+        except (TypeError, ValueError):
+            continue
+        current = items_by_id.get(item.Item_ID, item)
+        fact = facts.get(item.Item_ID, {})
+        resolved: set[str] = set()
+        if str(fact.get("Summary") or "").strip():
+            resolved.update({"summary", "incident_summary"})
+        if current.URL and current.URL in threat_urls:
+            resolved.add("threat_candidate")
+        if current.Event_Date or str(fact.get("Attack_Date") or "").strip():
+            resolved.add("attack_date")
+        if resolved:
+            source_facts_retry.resolve(item, entry, resolved)

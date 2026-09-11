@@ -440,8 +440,13 @@ def compute_candidate_signals(
     token_permutation = _same_permutation(left_key, right_key)
     short, long = sorted((left_key, right_key), key=len)
     containment = _contains_word_sequence(long, short)
-    acronym_match = bool(left_acronym) and (
-        left_compact == right_acronym or right_compact == left_acronym
+    left_tokens = set(left_key.split())
+    right_tokens = set(right_key.split())
+    acronym_match = bool(left_acronym and right_acronym) and (
+        left_compact == right_acronym
+        or right_compact == left_acronym
+        or (3 <= len(right_acronym) <= 10 and right_acronym in left_tokens)
+        or (3 <= len(left_acronym) <= 10 and left_acronym in right_tokens)
     )
 
     left_company = company_ids.get(left.Organisation_Key, "") or company_ids.get(left_key, "")
