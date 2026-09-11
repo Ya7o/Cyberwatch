@@ -1,0 +1,1919 @@
+{
+ "archived_at": "2026-09-11T18:22:00.469014+00:00",
+ "entries": [
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/09/2026\n— Secteur Commerce\nBoulanger : un pirate revendique la fuite de plus de 132 000 dossiers clients liés au SAV\nUn pirate se présentant sous le pseudonyme « fuie » revendique la publication d’une base de données attribuée à Boulanger.com. Le fichier analysé contient 132 229 enregistrements qui semblent correspondre à des dossiers de service après-vente (SAV), de réparation ou de prise en charge sous garantie.\nL’analyse du fichier montre que les dossiers associent des informations personnelles de clients à des données détaillées sur leurs appareils et leur prise en charge : numéro de dossier, marque, modèle, numéro de série, facture, date et prix d’achat, panne, garantie, magasin d’achat et date de clôture.\nLes données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail. Parmi les 62 305 dossiers comportant une date d’achat, les informations vont jusqu’au 10 septembre 2026, soit la veille de la publication revendiquée de la base.\nLe fichier contient bien des données caractéristiques de dossiers SAV, mais son analyse ne permet pas de déterminer quel système, outil ou éventuel prestataire aurait été compromis.\nUne base de 132 230 enregistrements revendiquée\nUn utilisateur utilisant le pseudonyme « fuie » a publié sur un forum cybercriminel un sujet intitulé :\n“[FR] Boulanger.com - 132K”\nDans son message, l’auteur affirme avoir mis en ligne une base de données attribuée à Boulanger.com, avec :\nune date indiquée au 11 septembre 2026 ;\n132 230 enregistrements revendiqués.\nL’accès au téléchargement est dissimulé derrière le système de points du forum.\nÀ ce stade, l’origine et l’authenticité de l’intégralité de la base n’ont pas été confirmées indépendamment.\nLe service après-vente de Boulanger semble concerné\nL’échantillon publié apporte plusieurs indications sur le système dont pourraient provenir les données.\nLes champs visibles correspondent fortement à des dossiers de service après-vente ou de réparation :\nnuméro de dossier ;\nmarque et modèle du produit ;\ncode produit ;\ndésignation de l’appareil ;\nnuméro de série ;\nnuméro de facture ;\ndate d’achat ;\nprix d’achat ;\nmotif du dossier ;\ntype de garantie ;\nmontant autorisé ;\ndate de clôture du dossier ;\nmagasin d’achat.\nL’exemple visible mentionne notamment un dossier concernant un lave-vaisselle, avec le motif « panne hors garantie ».\nCes éléments laissent donc penser qu’un outil ou une base liée au SAV, au suivi des réparations ou aux dossiers techniques de Boulanger pourrait être concerné.\nIl n’est toutefois pas possible, à partir de cet extrait seul, d’identifier précisément l’application, le système ou l’éventuel prestataire à l’origine des données.\nDes données personnelles de clients apparaissent dans l’échantillon\nAu-delà des informations relatives aux appareils, l’extrait comporte plusieurs données directement associées au client.\nParmi les champs visibles figurent :\nnom ;\nprénom ;\nnuméro de téléphone ;\nnuméro de téléphone portable ;\nadresse e-mail ;\nadresse postale complète ;\ncode postal ;\nville ;\nun numéro de sociétaire ou identifiant client.\nLes données permettraient donc potentiellement de relier l’identité et les coordonnées d’un client à un achat précis, à son appareil et à un dossier de SAV.\nDes informations détaillées sur les achats et les appareils\nLa base revendiquée semble également contenir un niveau de détail important sur les équipements des clients.\nL’échantillon comprend notamment :\nla marque du produit ;\nsa référence ;\nson modèle ;\nsa désignation ;\nson numéro de série ;\nson numéro de facture ;\nsa date d’achat ;\nson prix d’achat ;\nle magasin dans lequel l’achat a été effectué ;\nle motif du dossier SAV ;\nle statut de la garantie.\nCe type d’informations pourrait permettre à un attaquant de construire des messages frauduleux particulièrement crédibles en faisant référence à un véritable appareil détenu par la victime, à sa marque, à son achat ou à une ancienne intervention SAV.\nL’analyse du fichier complet montre que 62 305 enregistrements comportent une date d’achat et 117 348 une date de clôture de dossier. Des numéros de série sont présents dans 122 491 dossiers, tandis que 130 043 enregistrements mentionnent un magasin d’achat.\nLes dates d’achat renseignées vont jusqu’au 10 septembre 2026, ce qui montre que la base contient des informations particulièrement récentes. Une date isolée remonte à 1930, mais son caractère atypique laisse penser qu’il pourrait s’agir d’une erreur de saisie.\nQuels risques pour les clients concernés ?\nSi les données sont authentiques, leur exploitation pourrait faciliter des campagnes de phishing et d’ingénierie sociale ciblées.\nUn fraudeur pourrait notamment se faire passer pour Boulanger ou son service après-vente en mentionnant :\nle nom du client ;\nson appareil ;\nsa marque et son modèle ;\nune date d’achat ;\nun problème technique ;\nun ancien dossier de réparation.\nLa présence simultanée des coordonnées personnelles et de données précises concernant les achats pourrait rendre ce type de fraude particulièrement crédible.\nLes clients doivent donc être vigilants face aux messages ou appels évoquant un remboursement, une réparation, une garantie ou une intervention technique.\nL’origine de la base reste inconnue\nLa publication du pirate ne permet pas de déterminer comment les données auraient été obtenues.\nÀ ce stade, aucun élément visible ne permet d’établir si elles proviennent d’un piratage direct de Boulanger, d’un outil interne dédié au SAV, d’une application utilisée pour gérer les réparations, d’un prestataire externe ou d’une autre source.\nLa date réelle d’une éventuelle compromission et la méthode utilisée par l’attaquant restent également inconnues.\nUne revendication qui doit encore être confirmée\nLe pirate revendique la publication de 132 230 enregistrements attribués à Boulanger.com.\nL’échantillon visible semble cohérent avec des dossiers de service après-vente, combinant informations personnelles, données d’achat et informations techniques sur les produits.\nIl n’est néanmoins pas possible d’affirmer à ce stade que 132 230 clients uniques sont concernés : le chiffre affiché correspond au nombre d’enregistrements revendiqué par le pirate.\nUne communication de Boulanger ou des vérifications complémentaires seront nécessaires pour déterminer l’authenticité de la base, son origine exacte et le nombre réel de personnes concernées.\nFrenchBreaches continuera de suivre l’incident en cas de communication de l’entreprise ou de nouveaux éléments.\nRessources utiles :\nAnnuaire fuite de données\n|\nQue faire après une fuite de données\n|\nBlog fuite de données",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-11",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 6699,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Une base de 132 230 enregistrements revendiquée",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "132 230 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "records",
+        "value": 132230
+       },
+       {
+        "date": "",
+        "evidence": "# Boulanger : un pirate revendique la fuite de plus de 132 000 dossiers clients liés au SAV",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "132 000 dossiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "files",
+        "value": 132000
+       },
+       {
+        "date": "2026-09-10",
+        "evidence": "Parmi les 62 305 dossiers comportant une date d’achat, les informations vont jusqu’au 10 septembre 2026, soit la veille de la publication revendiquée de la base.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "62 305 dossiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "files",
+        "value": 62305
+       },
+       {
+        "date": "",
+        "evidence": "Il n’est néanmoins pas possible d’affirmer à ce stade que 132 230 clients uniques sont concernés : le chiffre affiché correspond au nombre d’enregistrements revendiqué par le pirate.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "132 230 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "unit": "clients",
+        "value": 132230
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier analysé contient 132 229 enregistrements qui semblent correspondre à des dossiers de service après-vente (SAV), de réparation ou de prise en charge sous garantie.**",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "132 229 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "records",
+        "value": 132229
+       },
+       {
+        "date": "",
+        "evidence": "Des numéros de série sont présents dans 122 491 dossiers, tandis que 130 043 enregistrements mentionnent un magasin d’achat.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "130 043 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "records",
+        "value": 130043
+       },
+       {
+        "date": "",
+        "evidence": "Des numéros de série sont présents dans 122 491 dossiers, tandis que 130 043 enregistrements mentionnent un magasin d’achat.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "122 491 dossiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 122491
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier complet montre que 62 305 enregistrements comportent une date d’achat et 117 348 une date de clôture de dossier.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "raw": "62 305 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "records",
+        "value": 62305
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Une base de 132 230 enregistrements revendiquée",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 132230
+       },
+       {
+        "date": "",
+        "evidence": "# Boulanger : un pirate revendique la fuite de plus de 132 000 dossiers clients liés au SAV",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 132000
+       },
+       {
+        "date": "2026-09-10",
+        "evidence": "Parmi les 62 305 dossiers comportant une date d’achat, les informations vont jusqu’au 10 septembre 2026, soit la veille de la publication revendiquée de la base.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 62305
+       },
+       {
+        "date": "",
+        "evidence": "Il n’est néanmoins pas possible d’affirmer à ce stade que 132 230 clients uniques sont concernés : le chiffre affiché correspond au nombre d’enregistrements revendiqué par le pirate.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 132230
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier analysé contient 132 229 enregistrements qui semblent correspondre à des dossiers de service après-vente (SAV), de réparation ou de prise en charge sous garantie.**",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 132229
+       },
+       {
+        "date": "",
+        "evidence": "Des numéros de série sont présents dans 122 491 dossiers, tandis que 130 043 enregistrements mentionnent un magasin d’achat.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 130043
+       },
+       {
+        "date": "",
+        "evidence": "Des numéros de série sont présents dans 122 491 dossiers, tandis que 130 043 enregistrements mentionnent un magasin d’achat.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 122491
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier complet montre que 62 305 enregistrements comportent une date d’achat et 117 348 une date de clôture de dossier.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 62305
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier montre que les dossiers associent des informations personnelles de clients à des données détaillées sur leurs appareils et leur prise en charge : numéro de dossier, marque, modèle, numéro de série, facture, date et prix d’achat, panne, garantie, magasin d’achat et date de clôture.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier montre que les dossiers associent des informations personnelles de clients à des données détaillées sur leurs appareils et leur prise en charge : numéro de dossier, marque, modèle, numéro de série, facture, date et prix d’achat, panne, garantie, magasin d’achat et date de clôture.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "numéro de facture ;",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "prix d’achat ;",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "un numéro de sociétaire ou identifiant client.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier montre que les dossiers associent des informations personnelles de clients à des données détaillées sur leurs appareils et leur prise en charge : numéro de dossier, marque, modèle, numéro de série, facture, date et prix d’achat, panne, garantie, magasin d’achat et date de clôture.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier montre que les dossiers associent des informations personnelles de clients à des données détaillées sur leurs appareils et leur prise en charge : numéro de dossier, marque, modèle, numéro de série, facture, date et prix d’achat, panne, garantie, magasin d’achat et date de clôture.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles présentes comprennent notamment des noms, prénoms, adresses postales, numéros de téléphone et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "numéro de facture ;",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "prix d’achat ;",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "un numéro de sociétaire ou identifiant client.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "identifiants"
+       }
+      ],
+      "data_volumes": [],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 7198,
+       "claims": 17,
+       "hypotheses": 3,
+       "semantic_candidate": true,
+       "sentences": 102
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [
+       {
+        "date": "2026-09-10",
+        "event": "Parmi les 62 305 dossiers comportant une date d’achat, les informations vont jusqu’au 10 septembre 2026, soit la veille de la publication revendiquée de la base.",
+        "evidence": "Parmi les 62 305 dossiers comportant une date d’achat, les informations vont jusqu’au 10 septembre 2026, soit la veille de la publication revendiquée de la base.",
+        "item_id": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "# Boulanger : un pirate revendique la fuite de plus de 132 000 dossiers clients liés au SAV\n\n**Un pirate se présentant sous le pseudonyme « fuie » revendique la publication d’une base de données attribuée à Boulanger.com. Le fichier analysé contient 132 229 enregistrements qui semblent correspondre à des dossiers de service après-vente (SAV), de réparation ou de prise en charge sous garantie.**\n\nL’analyse du fichier montre que les dossiers associent des **informations personnelles...",
+    "threat": "Fuite de données",
+    "title": "Boulanger",
+    "url": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "summary": "CONFIDENCE_REJECTED"
+   },
+   "first_queued_at": "2026-09-11T18:19:42.241734+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-11T22:19:12.688372+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-6d660f08d2bb4755",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "boulanger",
+    "Organisation_Raw": "Boulanger",
+    "Published_Date": "2026-09-11",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Boulanger",
+    "URL": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd"
+   },
+   "key": "ITM-6d660f08d2bb4755:46f2fdeabfcc169d5d0726e8c988cfd68dae076925077f4f93f59c87e404410e",
+   "last_queued_at": "2026-09-11T18:19:42.241734+00:00",
+   "pending_fields": [
+    "summary"
+   ],
+   "reason": "SEMANTIC_MISS"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/09/2026\n— Secteur Télécom & Médias\nSalt confirme un incident de sécurité : des données personnelles de clients potentiellement exposées\nSalt Mobile SA, l’un des trois principaux opérateurs télécoms suisses, confirme un incident de sécurité concernant certaines données personnelles de ses clients. L’opérateur indique avoir identifié une utilisation abusive d’un accès existant à un système périphérique, sans intrusion dans ses systèmes principaux.\nSalt avait lancé des vérifications après la diffusion en ligne d’allégations faisant état d’une possible fuite de données clients.\nÀ l’issue de ces investigations, l’opérateur affirme avoir exclu une intrusion dans ses systèmes, mais confirme qu’un accès existant à un système périphérique a été utilisé de manière abusive.\nLes données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.\nSalt, l’un des principaux opérateurs télécoms suisses\nSalt Mobile SA est un opérateur suisse de téléphonie mobile, internet fixe et télévision.\nAnciennement connue sous le nom d’Orange Suisse, l’entreprise fait partie des trois principaux opérateurs télécoms du pays aux côtés de Swisscom et Sunrise.\nSalt revendique plus de 1,7 million de clients mobiles postpayés et plus de 260 000 clients internet fixe, soit près de deux millions d’abonnements résidentiels et professionnels.\nL’entreprise est contrôlée par NJJ, le groupe d’investissement de Xavier Niel.\nDes allégations de fuite de données diffusées en ligne\nSalt explique avoir lancé des investigations après la diffusion en ligne d’allégations concernant une possible fuite de données de clients.\nL’opérateur ne précise pas, dans sa communication, la source de ces allégations ni le volume de données qui aurait été mis en circulation.\nLes équipes de Salt indiquent avoir effectué des vérifications approfondies afin de déterminer si ses systèmes avaient été compromis.\nPas d’intrusion dans les systèmes principaux selon Salt\nSelon Salt, les investigations ont permis d’exclure une intrusion dans les systèmes de l’opérateur.\nL’entreprise indique cependant avoir identifié une utilisation abusive d’un accès existant à un système périphérique.\nAutrement dit, l’incident ne serait pas lié à une compromission directe de l’infrastructure centrale de Salt mais à un accès déjà existant ayant été utilisé de manière non autorisée.\nL’opérateur ne précise pas publiquement :\nla nature exacte du système périphérique concerné ;\nl’identité de la personne ou du groupe ayant utilisé cet accès ;\nla manière dont cet accès a été obtenu ou détourné ;\nla durée pendant laquelle il a été utilisé ;\nle nombre exact de comptes ou de clients concernés.\nNoms, adresses, téléphones et dates de naissance potentiellement concernés\nSalt indique que les données personnelles susceptibles d’avoir été concernées se limitent aux informations suivantes :\nnom ;\nprénom ;\nadresse postale ;\nnuméro de téléphone mobile ;\ndate de naissance ;\nadresse e-mail.\nLa combinaison de ces données peut néanmoins présenter un risque important pour les personnes concernées.\nUn attaquant disposant d’un nom, d’une adresse, d’un numéro de téléphone, d’une date de naissance et d’un e-mail peut notamment construire des campagnes de phishing ou de fraude particulièrement crédibles.\nAucun mot de passe ni donnée bancaire concernés selon Salt\nSalt affirme que l’accès au système concerné était limité.\nL’opérateur indique qu’aucune donnée sensible telle que :\nles mots de passe ;\nles coordonnées bancaires ;\nl’historique client\nn’est concernée par l’incident.\nCette distinction est importante : l’incident porte sur des données d’identification et de contact, mais Salt affirme que les données permettant directement d’accéder aux comptes ou aux moyens de paiement n’ont pas été exposées.\nUn risque de phishing et d’usurpation d’identité\nMême en l’absence de mots de passe ou de coordonnées bancaires, les données potentiellement exposées peuvent être exploitées à des fins frauduleuses.\nLa présence simultanée d’un nom, d’une date de naissance, d’une adresse postale, d’un numéro de téléphone et d’une adresse e-mail peut notamment faciliter :\ndes campagnes de phishing ciblé ;\ndes appels frauduleux se faisant passer pour Salt ;\nde faux messages du support client ;\ndes tentatives de récupération d’identifiants ;\ndes fraudes utilisant des informations personnelles réelles ;\ncertaines tentatives d’usurpation d’identité.\nSalt recommande ainsi à ses clients de rester particulièrement vigilants face aux e-mails, SMS et appels suspects utilisant leurs informations personnelles.\nSalt rappelle qu’il ne demande jamais certaines informations sensibles\nL’opérateur précise que Salt et ses partenaires ne demanderont jamais à leurs clients de transmettre par e-mail, SMS ou téléphone :\nun mot de passe ;\ndes coordonnées bancaires ;\nou toute autre information confidentielle.\nLa présence de véritables informations personnelles dans un message ne doit donc pas être considérée comme une preuve de légitimité.\nLes accès concernés sécurisés\nSalt indique avoir pris les mesures nécessaires après avoir identifié l’utilisation abusive du système périphérique.\nL’entreprise affirme notamment avoir :\nsécurisé les accès concernés ;\nrenforcé ses dispositifs de sécurité ;\nengagé une revue plus large de ses processus ;\nrenforcé ses contrôles d’accès ;\npoursuivi l’amélioration de ses méthodes de détection et de défense.\nL’opérateur ne détaille cependant pas les mesures techniques précises mises en œuvre.\nUn incident qui ne perturbe pas les services\nAu moment de la publication, Salt n’indique aucune interruption de son réseau ou de ses services liée à l’incident.\nLa page officielle de suivi des services de l’opérateur indique que tous les services fonctionnent correctement.\nL’incident semble donc concerner principalement la confidentialité de certaines données clients, plutôt que la disponibilité du réseau mobile ou internet.\nCombien de clients sont concernés ?\nC’est l’une des principales inconnues à ce stade.\nSalt ne communique pas le nombre exact de personnes dont les données ont pu être consultées ou récupérées.\nL’opérateur compte plus de 1,7 million d’abonnés mobiles postpayés et plus de 260 000 clients internet fixe en Suisse.\nCela ne signifie évidemment pas que l’ensemble de ces clients est concerné.\nEn l’absence de chiffre communiqué par Salt, il est impossible d’évaluer précisément l’ampleur de l’incident.\nUne « potentielle fuite » devenue un incident confirmé\nLa formulation utilisée par Salt reste prudente.\nL’entreprise parle d’un « potentiel incident de sécurité » et explique avoir réagi après des allégations de fuite diffusées en ligne.\nCependant, ses investigations ont bien confirmé qu’un accès existant à un système périphérique a été utilisé de manière abusive.\nIl est donc possible de parler d’un incident de sécurité confirmé, tout en restant prudent sur l’existence et l’ampleur d’une éventuelle exfiltration de données.\nSalt confirme un accès abusif à un système contenant des données clients, mais ne précise pas encore si ces informations ont effectivement été copiées ou diffusées, ni combien de personnes sont concernées.\nCe qui est confirmé par Salt\nÀ ce stade, les éléments suivants sont confirmés :\nSalt a enquêté après des allégations de fuite de données clients ;\naucune intrusion dans les systèmes principaux de Salt n’a été identifiée ;\nune utilisation abusive d’un accès existant à un système périphérique a été constatée ;\ncertaines données personnelles ont pu être concernées ;\nles données concernées peuvent inclure noms, prénoms, adresses postales, téléphones, dates de naissance et e-mails ;\nles mots de passe ne seraient pas concernés ;\nles coordonnées bancaires ne seraient pas concernées ;\nl’historique client ne serait pas concerné ;\nles accès concernés ont été sécurisés ;\nSalt indique renforcer ses contrôles et dispositifs de sécurité.\nCe qui reste à déterminer\nPlusieurs questions restent sans réponse :\nle nombre exact de clients concernés ;\nla nature exacte du système périphérique touché ;\nla durée de l’accès abusif ;\nla personne ou le groupe responsable ;\nla manière dont l’accès a été détourné ;\nl’existence ou non d’une exfiltration effective ;\nle volume exact des données concernées ;\nl’éventuelle diffusion ou revente de ces informations ;\nla date exacte de l’incident.\nLes clients appelés à la vigilance\nLes personnes utilisant les services Salt doivent désormais porter une attention particulière aux communications inhabituelles.\nIl est notamment recommandé :\nde ne pas cliquer sur les liens contenus dans des SMS ou e-mails inattendus ;\nde ne jamais transmettre un mot de passe ou un code de validation ;\nde vérifier l’adresse de l’expéditeur ;\nde contacter Salt via ses canaux officiels en cas de doute ;\nde se méfier d’un interlocuteur connaissant déjà certaines informations personnelles.\nUn fraudeur disposant de véritables informations comme votre nom, téléphone ou date de naissance peut utiliser ces éléments pour rendre son message beaucoup plus crédible.\nConclusion\nSalt Mobile SA confirme un incident de sécurité impliquant l’utilisation abusive d’un accès existant à un système périphérique contenant certaines données clients.\nLes informations potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.\nSalt affirme en revanche que les mots de passe, coordonnées bancaires et historiques clients ne sont pas concernés.\nL’opérateur indique avoir sécurisé les accès concernés et renforcé ses dispositifs de protection.\nÀ ce stade, le nombre exact de clients touchés, le volume de données concerné et l’existence d’une exfiltration effective ne sont pas précisés publiquement.\nL’incident est donc confirmé, mais son ampleur complète reste encore à déterminer.\nRessources utiles :\nAnnuaire fuite de données\n|\nQue faire après une fuite de données\n|\nBlog fuite de données",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-11",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 10049,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Salt revendique plus de 1,7 million de clients mobiles postpayés et plus de 260 000 clients internet fixe, soit près de deux millions d’abonnements résidentiels et professionnels.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "raw": "1,7 million de clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "clients",
+        "value": 1700000
+       },
+       {
+        "date": "",
+        "evidence": "Salt revendique plus de 1,7 million de clients mobiles postpayés et plus de 260 000 clients internet fixe, soit près de deux millions d’abonnements résidentiels et professionnels.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "raw": "260 000 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "clients",
+        "value": 260000
+       },
+       {
+        "date": "",
+        "evidence": "L’opérateur compte plus de 1,7 million d’abonnés mobiles postpayés et plus de 260 000 clients internet fixe en Suisse.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "raw": "260 000 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "clients",
+        "value": 260000
+       }
+      ],
+      "affected_datasets": [
+       {
+        "date": "",
+        "evidence": "Salt avait lancé des vérifications après la diffusion en ligne d’allégations faisant état d’une possible fuite de données clients.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "données clients"
+       },
+       {
+        "date": "",
+        "evidence": "L’incident semble donc concerner principalement la confidentialité de certaines données clients, plutôt que la disponibilité du réseau mobile ou internet.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "données clients"
+       },
+       {
+        "date": "",
+        "evidence": "Salt confirme un accès abusif à un système contenant des données clients, mais ne précise pas encore si ces informations ont effectivement été copiées ou diffusées, ni combien de personnes sont concernées.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "value": "données clients"
+       },
+       {
+        "date": "",
+        "evidence": "Salt Mobile SA confirme un incident de sécurité impliquant l’utilisation abusive d’un accès existant à un système périphérique contenant certaines données clients.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "confirmed",
+        "value": "données clients"
+       }
+      ],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Salt revendique plus de 1,7 million de clients mobiles postpayés et plus de 260 000 clients internet fixe, soit près de deux millions d’abonnements résidentiels et professionnels.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 1700000
+       },
+       {
+        "date": "",
+        "evidence": "Salt revendique plus de 1,7 million de clients mobiles postpayés et plus de 260 000 clients internet fixe, soit près de deux millions d’abonnements résidentiels et professionnels.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 260000
+       },
+       {
+        "date": "",
+        "evidence": "L’opérateur compte plus de 1,7 million d’abonnés mobiles postpayés et plus de 260 000 clients internet fixe en Suisse.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 260000
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "prénom ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "adresse postale ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "numéro de téléphone mobile ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "date de naissance ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "adresse e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Même en l’absence de mots de passe ou de coordonnées bancaires, les données potentiellement exposées peuvent être exploitées à des fins frauduleuses.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Même en l’absence de mots de passe ou de coordonnées bancaires, les données potentiellement exposées peuvent être exploitées à des fins frauduleuses.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "des tentatives de récupération d’identifiants ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "de ne pas cliquer sur les liens contenus dans des SMS ou e-mails inattendus ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "de ne jamais transmettre un mot de passe ou un code de validation ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Salt avait lancé des vérifications après la diffusion en ligne d’allégations faisant état d’une possible fuite de données clients.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "dataset",
+        "value": "données clients"
+       },
+       {
+        "date": "",
+        "evidence": "L’incident semble donc concerner principalement la confidentialité de certaines données clients, plutôt que la disponibilité du réseau mobile ou internet.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "dataset",
+        "value": "données clients"
+       },
+       {
+        "date": "",
+        "evidence": "Salt confirme un accès abusif à un système contenant des données clients, mais ne précise pas encore si ces informations ont effectivement été copiées ou diffusées, ni combien de personnes sont concernées.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "type": "dataset",
+        "value": "données clients"
+       },
+       {
+        "date": "",
+        "evidence": "Salt Mobile SA confirme un incident de sécurité impliquant l’utilisation abusive d’un accès existant à un système périphérique contenant certaines données clients.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "confirmed",
+        "type": "dataset",
+        "value": "données clients"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les données personnelles potentiellement concernées comprennent les noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "prénom ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "adresse postale ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "numéro de téléphone mobile ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "date de naissance ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "adresse e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Même en l’absence de mots de passe ou de coordonnées bancaires, les données potentiellement exposées peuvent être exploitées à des fins frauduleuses.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Même en l’absence de mots de passe ou de coordonnées bancaires, les données potentiellement exposées peuvent être exploitées à des fins frauduleuses.",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "des tentatives de récupération d’identifiants ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "de ne pas cliquer sur les liens contenus dans des SMS ou e-mails inattendus ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "de ne jamais transmettre un mot de passe ou un code de validation ;",
+        "item_id": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "mots de passe"
+       }
+      ],
+      "data_volumes": [],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 10538,
+       "claims": 22,
+       "hypotheses": 9,
+       "semantic_candidate": true,
+       "sentences": 138
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "# Salt confirme un incident de sécurité : des données personnelles de clients potentiellement exposées\n\n**Salt Mobile SA, l’un des trois principaux opérateurs télécoms suisses, confirme un incident de sécurité concernant certaines données personnelles de ses clients. L’opérateur indique avoir identifié une utilisation abusive d’un accès existant à un système périphérique, sans intrusion dans ses systèmes principaux.**\n\nSalt avait lancé des vérifications après la diffus...",
+    "threat": "Fuite de données",
+    "title": "Salt Mobile",
+    "url": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-09-11T18:19:49.512954+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-11T22:19:12.688372+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-48ecbdf8da035a41",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "salt mobile",
+    "Organisation_Raw": "Salt Mobile",
+    "Published_Date": "2026-09-11",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Salt Mobile",
+    "URL": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k"
+   },
+   "key": "ITM-48ecbdf8da035a41:454ad835814d817bcc3151d24dceb1ac03d1e7d164c73dc3a7a988ffb7e3eeb5",
+   "last_queued_at": "2026-09-11T18:19:49.512954+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/09/2026\n— Secteur Commerce\nGreenGo victime d’une cyberattaque : des données de comptes, réservations et messages potentiellement consultées\nGreenGo a été victime d’un incident de sécurité ayant permis à un acteur non autorisé d’accéder à un outil interne d’analyse de données. L’accès, rendu possible par une vulnérabilité affectant Metabase, a potentiellement exposé des données personnelles, des informations de réservation et des messages échangés sur la plateforme.\nSelon GreenGo, l’accès non autorisé aurait été possible entre le 9 août et le 7 septembre 2026.\nL’entreprise indique avoir découvert l’incident le 7 septembre à 19 h 20, avant de couper l’accès de l’attaquant dans la soirée et de déployer plusieurs mesures de sécurité.\nLes données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo. L’entreprise affirme qu’aucune donnée de carte bancaire n’est concernée.\nUne cyberattaque contre GreenGo\nGreenGo, plateforme française spécialisée dans la réservation d’hébergements et le tourisme responsable, informe ses utilisateurs d’un incident de sécurité ayant affecté un outil utilisé en interne.\nSelon les informations communiquées par l’entreprise, un acteur non autorisé est parvenu à accéder à un outil interne d’analyse de données reposant sur Metabase.\nL’incident ne concerne donc pas directement le système de paiement de GreenGo, mais un outil permettant d’analyser certaines données détenues par la plateforme.\nCet accès a potentiellement permis à l’attaquant de consulter différentes catégories de données personnelles et d’informations relatives aux réservations.\nUne vulnérabilité affectant Metabase\nGreenGo indique que l’attaquant a exploité une vulnérabilité de sécurité affectant Metabase, un logiciel d’analyse et de visualisation de données.\nSelon l’entreprise, l’accès non autorisé aurait été possible entre le 9 août et le 7 septembre 2026.\nLa vulnérabilité avait fait l’objet d’un correctif logiciel, mais GreenGo indique n’en avoir eu connaissance que le 7 septembre.\nL’entreprise rapproche également l’incident d’une campagne d’attaques observée à partir du mois d’août 2026 et ayant concerné de nombreuses organisations utilisant Metabase.\nL’accès découvert le 7 septembre à 19 h 20\nGreenGo affirme avoir identifié l’accès non autorisé le 7 septembre 2026 à 19 h 20.\nAprès cette découverte, les premières mesures de sécurité auraient été engagées quelques minutes plus tard.\nL’entreprise indique avoir coupé l’accès utilisé par l’attaquant dans la soirée.\nLes 7 et 8 septembre, différentes mesures ont ensuite été appliquées afin de sécuriser l’environnement concerné et d’empêcher une nouvelle exploitation de la vulnérabilité.\nDes données personnelles potentiellement consultées\nSelon la notification adressée aux utilisateurs, plusieurs catégories de données ont pu être consultées par l’attaquant.\nLes informations potentiellement concernées comprennent :\nprénom et nom ;\ndate de naissance ;\nadresse e-mail ;\nnuméro de téléphone ;\ninformations relatives aux réservations et aux séjours ;\navis et favoris enregistrés sur GreenGo ;\nmessages échangés via la messagerie GreenGo ;\ninformations liées au système de parrainage.\nLa nature des informations accessibles rend l’incident particulièrement sensible, puisqu’elles peuvent associer l’identité et les coordonnées d’une personne à des informations concernant ses voyages ou ses réservations.\nSelon GreenGo, l’accès obtenu par l’attaquant était limité à la consultation des données. L’entreprise affirme n’avoir identifié aucune modification ou suppression des informations enregistrées.\nLes messages échangés sur GreenGo concernés\nParmi les données potentiellement accessibles figurent les messages échangés via la messagerie de GreenGo.\nCes échanges peuvent contenir des informations liées à l’organisation d’un séjour ou aux communications entre voyageurs et hébergeurs.\nGreenGo indique également que les avis et favoris ainsi que certaines informations relatives au parrainage ont pu être consultés.\nL’entreprise ne précise pas publiquement combien de messages ou d’échanges ont effectivement été consultés par l’attaquant.\nLes cartes cadeaux également concernées\nL’incident peut également concerner les utilisateurs ayant utilisé ou reçu des cartes cadeaux GreenGo.\nSelon l’entreprise, les informations accessibles peuvent notamment comprendre :\nle message associé à une carte cadeau ;\nson montant ;\nson bénéficiaire ;\nle code de la carte cadeau.\nPour les cartes cadeaux encore valides et non utilisées, GreenGo prévoit de fournir un nouveau code sécurisé.\nLes anciens codes concernés doivent être renouvelés afin d’empêcher leur éventuelle utilisation à la suite de l’incident.\nAucune donnée bancaire exposée selon GreenGo\nGreenGo indique qu’aucune donnée de carte bancaire n’est concernée par la compromission.\nL’entreprise précise que les systèmes touchés ne stockent pas :\nles numéros de carte bancaire ;\nles dates d’expiration ;\nles cryptogrammes visuels.\nLes paiements effectués sur la plateforme sont traités par le prestataire Stripe.\nLes moyens de paiement ne seraient donc pas exposés dans le cadre de cet incident.\nLes mots de passe ne sont pas stockés en clair\nGreenGo précise également que les mots de passe des utilisateurs ne sont pas enregistrés en clair dans les données accessibles.\nIls sont stockés sous forme d’empreintes utilisant Argon2, un mécanisme destiné à rendre beaucoup plus difficile la récupération du mot de passe d’origine.\nPar mesure de précaution, GreenGo recommande néanmoins aux utilisateurs de modifier leur mot de passe.\nCette précaution est particulièrement importante lorsqu’un mot de passe identique ou similaire est utilisé sur plusieurs services.\nUn accès limité à la lecture selon GreenGo\nSelon les investigations communiquées par GreenGo, l’accès obtenu par l’attaquant était limité à la lecture des données.\nL’entreprise affirme n’avoir constaté aucune modification ni suppression des informations enregistrées.\nÀ ce stade, l’incident correspond donc principalement à une consultation potentielle de données.\nGreenGo poursuit néanmoins ses investigations afin de déterminer précisément l’étendue de l’accès obtenu par l’attaquant.\nDes mesures de sécurité prises après la découverte\nAprès avoir découvert l’incident, GreenGo indique avoir engagé plusieurs mesures afin de contenir la compromission.\nL’entreprise affirme notamment avoir :\nappliqué une mise à jour de sécurité ;\nbloqué le point d’accès vulnérable ;\nsupprimé les comptes ou clés d’accès non reconnus ;\nrévoqué les sessions actives ;\nprocédé à une réinitialisation des mots de passe ;\nrenforcé la sécurité de l’outil concerné ;\nrenforcé son système d’authentification.\nGreenGo prévoit également le renouvellement des codes des cartes cadeaux concernées.\nLa CNIL notifiée et une plainte déposée\nGreenGo indique avoir notifié l’incident à la Commission nationale de l’informatique et des libertés (CNIL).\nL’entreprise précise également avoir déposé une plainte pénale auprès du procureur de la République.\nLes investigations se poursuivent afin de déterminer précisément le périmètre de l’accès non autorisé et les éventuelles conséquences de l’incident.\nUn risque important de phishing ciblé\nL’un des principaux risques pour les utilisateurs concernés est désormais celui du phishing ciblé.\nLes données potentiellement consultées peuvent permettre à un cybercriminel de construire des messages beaucoup plus crédibles qu’un e-mail frauduleux classique.\nUn attaquant disposant du nom d’une personne, de son adresse e-mail, de son numéro de téléphone et d’informations concernant une réservation pourrait notamment tenter de se faire passer pour :\nGreenGo ;\nun hébergeur ;\nun voyageur ;\nun prestataire de paiement ;\nune banque.\nLa présence de véritables informations concernant un séjour ou une réservation peut renforcer considérablement la crédibilité d'un message frauduleux.\nLes utilisateurs appelés à la vigilance\nLes utilisateurs concernés doivent donc rester particulièrement attentifs aux e-mails, SMS et appels inattendus.\nIl est notamment recommandé :\nde ne jamais communiquer son mot de passe à la suite d’une sollicitation inattendue ;\nde ne pas transmettre de code de validation reçu par SMS ou e-mail ;\nde vérifier attentivement l’adresse de l’expéditeur ;\nd’éviter de cliquer sur un lien en cas de doute ;\nde modifier son mot de passe GreenGo, particulièrement s’il est réutilisé ailleurs ;\nde se méfier des messages utilisant de véritables informations concernant une réservation.\nLa présence dans un message de véritables informations concernant un séjour ou une réservation GreenGo ne garantit pas que celui-ci soit légitime.\nCe qui est confirmé\nÀ ce stade, les informations communiquées permettent d’établir les éléments suivants :\nGreenGo a subi un incident de sécurité ;\nun acteur non autorisé a accédé à un outil interne d’analyse de données ;\nl’incident implique une vulnérabilité affectant Metabase ;\nl’accès aurait été possible entre le 9 août et le 7 septembre 2026 ;\nGreenGo a découvert l’accès le 7 septembre à 19 h 20 ;\ndes données personnelles ont potentiellement été consultées ;\nles informations concernées peuvent inclure noms, prénoms, dates de naissance, e-mails et téléphones ;\ndes informations de réservation et de séjour peuvent être concernées ;\ndes messages échangés via GreenGo ont potentiellement été accessibles ;\ncertaines informations liées aux cartes cadeaux peuvent être concernées ;\nGreenGo affirme qu’aucune donnée de carte bancaire n’est exposée ;\nles mots de passe ne seraient pas stockés en clair ;\nl’accès de l’attaquant aurait été limité à la lecture ;\naucune modification ou suppression de données n’aurait été constatée ;\nplusieurs mesures de sécurité ont été appliquées ;\nla CNIL a été notifiée ;\nune plainte pénale a été déposée.\nCe qui reste à déterminer\nPlusieurs éléments restent encore à préciser :\nle nombre exact d’utilisateurs concernés ;\nle volume total de données effectivement consultées ;\nles données effectivement consultées pour chaque utilisateur ;\nl’identité de l’attaquant ou du groupe responsable ;\nla durée précise de chaque accès non autorisé ;\nl’utilisation éventuelle des informations après leur consultation ;\nl’existence éventuelle de copies réalisées par l’attaquant ;\nles conséquences à plus long terme de l’incident.\nLes investigations menées par GreenGo doivent permettre de préciser le périmètre réel de la compromission.\nConclusion\nGreenGo a été victime d’un incident de sécurité ayant permis à un acteur non autorisé d’accéder à un outil interne reposant sur Metabase entre le 9 août et le 7 septembre 2026.\nDes données personnelles, informations de réservation, détails concernant les séjours et messages échangés via la plateforme ont potentiellement pu être consultés.\nGreenGo affirme toutefois qu’aucune donnée de carte bancaire n’est concernée et que les mots de passe ne sont pas stockés en clair.\nSelon l’entreprise, l’accès de l’attaquant était limité à la lecture et aucune modification ou suppression de données n’a été identifiée.\nAprès la découverte de l’incident le 7 septembre à 19 h 20, GreenGo indique avoir bloqué l’accès vulnérable, révoqué les sessions actives, supprimé les accès inconnus et renforcé ses dispositifs de sécurité.\nLa CNIL a été notifiée et une plainte pénale a été déposée.\nLe nombre exact de personnes concernées et le volume total de données effectivement consultées ne sont pas précisés à ce stade.\nRessources utiles :\nAnnuaire fuite de données\n|\nQue faire après une fuite de données\n|\nBlog fuite de données",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-11",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 11725,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [
+       {
+        "date": "",
+        "evidence": "# GreenGo victime d’une cyberattaque : des données de comptes, réservations et messages potentiellement consultées",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "réservations"
+       },
+       {
+        "date": "",
+        "evidence": "GreenGo, plateforme française spécialisée dans la réservation d’hébergements et le tourisme responsable, informe ses utilisateurs d’un incident de sécurité ayant affecté un outil utilisé en interne.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "réservations"
+       },
+       {
+        "date": "",
+        "evidence": "La présence dans un message de véritables informations concernant un séjour ou une réservation GreenGo ne garantit pas que celui-ci soit légitime.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "value": "réservations"
+       }
+      ],
+      "affected_systems": [
+       {
+        "date": "",
+        "evidence": "L’accès, rendu possible par une vulnérabilité affectant Metabase, a potentiellement exposé des données personnelles, des informations de réservation et des messages échangés sur la plateforme.**",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "Metabase"
+       },
+       {
+        "date": "",
+        "evidence": "Selon les informations communiquées par l’entreprise, un acteur non autorisé est parvenu à accéder à un outil interne d’analyse de données reposant sur Metabase.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "Metabase"
+       },
+       {
+        "date": "",
+        "evidence": "Une vulnérabilité affectant Metabase",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "Metabase"
+       }
+      ],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Ces échanges peuvent contenir des informations liées à l’organisation d’un séjour ou aux communications entre voyageurs et hébergeurs.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "informations de séjour"
+       },
+       {
+        "date": "",
+        "evidence": "son montant ;",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "procédé à une réinitialisation des mots de passe ;",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les utilisateurs concernés doivent donc rester particulièrement attentifs aux e-mails, SMS et appels inattendus.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "de ne jamais communiquer son mot de passe à la suite d’une sollicitation inattendue ;",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "L’accès, rendu possible par une vulnérabilité affectant Metabase, a potentiellement exposé des données personnelles, des informations de réservation et des messages échangés sur la plateforme.**",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "system",
+        "value": "Metabase"
+       },
+       {
+        "date": "",
+        "evidence": "Selon les informations communiquées par l’entreprise, un acteur non autorisé est parvenu à accéder à un outil interne d’analyse de données reposant sur Metabase.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "system",
+        "value": "Metabase"
+       },
+       {
+        "date": "",
+        "evidence": "Une vulnérabilité affectant Metabase",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "system",
+        "value": "Metabase"
+       },
+       {
+        "date": "",
+        "evidence": "# GreenGo victime d’une cyberattaque : des données de comptes, réservations et messages potentiellement consultées",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "dataset",
+        "value": "réservations"
+       },
+       {
+        "date": "",
+        "evidence": "GreenGo, plateforme française spécialisée dans la réservation d’hébergements et le tourisme responsable, informe ses utilisateurs d’un incident de sécurité ayant affecté un outil utilisé en interne.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "dataset",
+        "value": "réservations"
+       },
+       {
+        "date": "",
+        "evidence": "La présence dans un message de véritables informations concernant un séjour ou une réservation GreenGo ne garantit pas que celui-ci soit légitime.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "type": "dataset",
+        "value": "réservations"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les données potentiellement consultées comprennent notamment les noms, prénoms, dates de naissance, adresses e-mail, numéros de téléphone, informations de réservation et messages échangés via GreenGo.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Ces échanges peuvent contenir des informations liées à l’organisation d’un séjour ou aux communications entre voyageurs et hébergeurs.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "informations de séjour"
+       },
+       {
+        "date": "",
+        "evidence": "son montant ;",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "procédé à une réinitialisation des mots de passe ;",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les utilisateurs concernés doivent donc rester particulièrement attentifs aux e-mails, SMS et appels inattendus.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "de ne jamais communiquer son mot de passe à la suite d’une sollicitation inattendue ;",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "mots de passe"
+       }
+      ],
+      "data_volumes": [],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 12205,
+       "claims": 15,
+       "hypotheses": 8,
+       "semantic_candidate": true,
+       "sentences": 156
+      },
+      "relations": [
+       {
+        "evidence": "Les paiements effectués sur la plateforme sont traités par le prestataire Stripe.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "object": "Stripe.",
+        "relation": "compromised_via",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "subject": "victime"
+       },
+       {
+        "evidence": "Des données personnelles, informations de réservation, détails concernant les séjours et messages échangés via la plateforme ont potentiellement pu être consultés.",
+        "item_id": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+        "object": "ont",
+        "relation": "compromised_via",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "subject": "victime"
+       }
+      ],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "# GreenGo victime d’une cyberattaque : des données de comptes, réservations et messages potentiellement consultées\n\n**GreenGo a été victime d’un incident de sécurité ayant permis à un acteur non autorisé d’accéder à un outil interne d’analyse de données. L’accès, rendu possible par une vulnérabilité affectant Metabase, a potentiellement exposé des données personnelles, des informations de réservation et des messages échangés sur la plateforme.**\n\nSelon GreenGo, l’...",
+    "threat": "Fuite de données",
+    "title": "GreenGo",
+    "url": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "summary": "EVIDENCE_TOO_LONG"
+   },
+   "first_queued_at": "2026-09-11T18:20:08.593378+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-11T22:19:12.688372+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-4c238d21765dbe75",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "greengo",
+    "Organisation_Raw": "GreenGo",
+    "Published_Date": "2026-09-11",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "GreenGo",
+    "URL": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r"
+   },
+   "key": "ITM-4c238d21765dbe75:a20f2861eb04d9a5de03b96c2f6cea240da892fa25d978ba20e7e1e25cfdf030",
+   "last_queued_at": "2026-09-11T18:20:08.593378+00:00",
+   "pending_fields": [
+    "summary"
+   ],
+   "reason": "SEMANTIC_MISS"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/09/2026\n— Secteur Industrie\nAqualter : un pirate revendique la fuite de données de plus de 273 000 clients\nUn pirate se présentant sous le pseudonyme « ChimeraZ » revendique la publication d’une base de données attribuée à Aqualter, entreprise française spécialisée dans la gestion de l’eau. Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.\nSelon la publication consultée, la base contiendrait 320 936 lignes pour 273 229 clients.\nLe pirate affirme avoir récupéré et publié :\n187 073 numéros de téléphone ;\n86 156 adresses e-mail.\nL’ensemble représenterait environ 7 Mo de données, réparties dans des fichiers au format CSV.\nUne fuite de données revendiquée contre Aqualter\nUn utilisateur utilisant le pseudonyme ChimeraZ a publié sur un forum de cybercriminalité un sujet intitulé :\n“[FR] 273K Aqualter.com (ONLY EMAILS/PHONES)”\nDans son message, l’auteur affirme diffuser les coordonnées de clients d’Aqualter.\nLes données seraient essentiellement constituées de numéros de téléphone et d’adresses e-mail.\nPlus de 273 000 clients concernés selon le pirate\nSelon les informations affichées dans la publication, la base contiendrait :\n320 936 lignes ;\n273 229 clients ;\n187 073 numéros de téléphone ;\n86 156 adresses e-mail ;\nenviron 7 Mo de données ;\ndes fichiers au format CSV.\nLes informations semblent avoir été séparées en au moins deux fichiers distincts consacrés respectivement aux adresses e-mail et aux numéros de téléphone.\nLe chiffre de 273 229 clients est avancé par le pirate et n’a pas été confirmé indépendamment.\nDes adresses e-mail et numéros de téléphone publiés\nLes extraits visibles dans la publication montrent des données structurées associant un identifiant à une information de contact.\nLe pirate indique disposer d’environ 86 156 adresses e-mail, regroupées dans un fichier présenté sous le nom 86K_emails.csv.\nUn second fichier, 187K_phones.csv, contiendrait 187 073 numéros de téléphone.\nLe total annoncé atteint 320 936 lignes, un chiffre supérieur aux 273 229 clients revendiqués. Il ne faut donc pas interpréter chaque ligne comme correspondant à un client unique.\nL’origine exacte des données reste inconnue\nLa publication ne permet pas de déterminer précisément comment ces informations auraient été obtenues.\nÀ ce stade, aucun élément visible ne permet d’établir la vulnérabilité éventuellement exploitée, la date de la compromission ou le système informatique concerné.\nIl n’est donc pas possible d’affirmer, sur la seule base de cette revendication, si les données proviennent d’un piratage direct d’Aqualter, d’une application, d’un prestataire ou d’une autre source.\nQuels risques pour les clients concernés ?\nLa publication d’adresses e-mail et de numéros de téléphone pourrait faciliter des campagnes de phishing et de SMS frauduleux, notamment en usurpant l’identité d’Aqualter ou d'un service lié à la gestion de l’eau.\nCes coordonnées peuvent également être recoupées avec d’autres bases de données compromises afin de rendre des tentatives d’ingénierie sociale ou d’usurpation d’identité plus crédibles.\nAucun mot de passe, numéro de carte bancaire ou document d’identité n’est revendiqué dans la publication visible.\nUne revendication qui reste à confirmer\nSelon ChimeraZ, la fuite concernerait 273 229 clients, avec 187 073 numéros de téléphone et 86 156 adresses e-mail publiés au format CSV.\nCes chiffres restent toutefois ceux avancés par le pirate. Une confirmation d’Aqualter ou des vérifications complémentaires restent nécessaires pour établir précisément l’origine, l’authenticité et le périmètre de la fuite.\nFrenchBreaches continuera de suivre l’incident en cas de communication de l’entreprise ou de nouveaux éléments.\nRessources utiles :\nAnnuaire fuite de données\n|\nQue faire après une fuite de données\n|\nBlog fuite de données",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-11",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 3924,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Selon la publication consultée, la base contiendrait **320 936 lignes** pour...",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "320 936 lignes",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "unit": "records",
+        "value": 320936
+       },
+       {
+        "date": "",
+        "evidence": "Selon la publication consultée, la base contiendrait 320 936 lignes pour 273 229 clients.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 229 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "Plus de 273 000 clients concernés selon le pirate",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 000 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "unit": "clients",
+        "value": 273000
+       },
+       {
+        "date": "",
+        "evidence": "Le total annoncé atteint 320 936 lignes, un chiffre supérieur aux 273 229 clients revendiqués.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "320 936 lignes",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "records",
+        "value": 320936
+       },
+       {
+        "date": "",
+        "evidence": "Le total annoncé atteint 320 936 lignes, un chiffre supérieur aux 273 229 clients revendiqués.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 229 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "# Aqualter : un pirate revendique la fuite de données de plus de 273 000 clients",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 000 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "clients",
+        "value": 273000
+       },
+       {
+        "date": "",
+        "evidence": "Le chiffre de 273 229 clients est avancé par le pirate et n’a pas été confirmé indépendamment.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 229 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "320 936 lignes ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "320 936 lignes",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "records",
+        "value": 320936
+       },
+       {
+        "date": "",
+        "evidence": "273 229 clients ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 229 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "raw": "273 000 clients",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "clients",
+        "value": 273000
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Selon la publication consultée, la base contiendrait **320 936 lignes** pour...",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 320936
+       },
+       {
+        "date": "",
+        "evidence": "Selon la publication consultée, la base contiendrait 320 936 lignes pour 273 229 clients.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "Plus de 273 000 clients concernés selon le pirate",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273000
+       },
+       {
+        "date": "",
+        "evidence": "Le total annoncé atteint 320 936 lignes, un chiffre supérieur aux 273 229 clients revendiqués.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 320936
+       },
+       {
+        "date": "",
+        "evidence": "Le total annoncé atteint 320 936 lignes, un chiffre supérieur aux 273 229 clients revendiqués.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "# Aqualter : un pirate revendique la fuite de données de plus de 273 000 clients",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273000
+       },
+       {
+        "date": "",
+        "evidence": "Le chiffre de 273 229 clients est avancé par le pirate et n’a pas été confirmé indépendamment.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "320 936 lignes ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 320936
+       },
+       {
+        "date": "",
+        "evidence": "273 229 clients ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273229
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "clients",
+        "value": 273000
+       },
+       {
+        "date": "",
+        "evidence": "L’ensemble représenterait environ 7 Mo de données, réparties dans des fichiers au format CSV.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 7.0
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "187 073 numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "86 156 adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données seraient essentiellement constituées de numéros de téléphone et d’adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données seraient essentiellement constituées de numéros de téléphone et d’adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "187 073 numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "86 156 adresses e-mail ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les extraits visibles dans la publication montrent des données structurées associant un identifiant à une information de contact.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "187 073 numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "86 156 adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données seraient essentiellement constituées de numéros de téléphone et d’adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données seraient essentiellement constituées de numéros de téléphone et d’adresses e-mail.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "187 073 numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "86 156 adresses e-mail ;",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "reported",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les extraits visibles dans la publication montrent des données structurées associant un identifiant à une information de contact.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "identifiants"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "L’ensemble représenterait environ 7 Mo de données, réparties dans des fichiers au format CSV.",
+        "item_id": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 7.0
+       }
+      ],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 4417,
+       "claims": 20,
+       "hypotheses": 2,
+       "semantic_candidate": true,
+       "sentences": 57
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "# Aqualter : un pirate revendique la fuite de données de plus de 273 000 clients\n\n**Un pirate se présentant sous le pseudonyme « ChimeraZ » revendique la publication d’une base de données attribuée à Aqualter, entreprise française spécialisée dans la gestion de l’eau. Le fichier contiendrait les coordonnées de plus de 273 000 clients, principalement des adresses e-mail et des numéros de téléphone.**\n\nSelon la publication consultée, la base contiendrait **320 936 lignes** pour...",
+    "threat": "Fuite de données",
+    "title": "Aqualter",
+    "url": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "summary": "HEADLINE_TOO_LONG"
+   },
+   "first_queued_at": "2026-09-11T18:20:31.440460+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-11T22:19:12.688372+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-e1e3ecdb12ce1f80",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "aqualter",
+    "Organisation_Raw": "Aqualter",
+    "Published_Date": "2026-09-11",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Aqualter",
+    "URL": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b"
+   },
+   "key": "ITM-e1e3ecdb12ce1f80:33a3fea27a96726668b006bae1cbaf73bf16b83f01d095c8b225fa391e4e2138",
+   "last_queued_at": "2026-09-11T18:20:31.440460+00:00",
+   "pending_fields": [
+    "summary"
+   ],
+   "reason": "SEMANTIC_MISS"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "L’ École supérieure d’arts et médias de Caen/Cherbourg (Esam)  a été victime d’une cyberattaque le  21 août 2026 . L’intrusion n’a toutefois été détectée que le  3 septembre , en raison de la fermeture estivale de l’établissement. Une faille de sécurité aurait permis un  accès non autorisé à son infrastructure d’hébergement internet et à certaines applications , exposant potentiellement des données personnelles d’usagers et de personnels. \n\n\n\n L’établissement indique avoir depuis  bloqué les accès concernés, renforcé ses mesures de sécurité et lancé des investigations  afin de déterminer précisément l’étendue de l’incident. Une notification a également été adressée à la  CNIL  et une plainte a été déposée. \n\n\n\n Une intrusion survenue le 21 août, détectée le 3 septembre \n\n\n\n La chronologie de l’incident constitue l’un des principaux éléments connus à ce stade. L’acte de cybermalveillance remonte au  21 août 2026 , mais il n’a été identifié que le  3 septembre , soit près de deux semaines plus tard. \n\n\n\n Selon l’Esam, ce délai s’explique notamment par la  fermeture estivale de l’établissement . Dès la découverte de l’incident, les accès concernés auraient été bloqués et des mesures de sécurisation supplémentaires mises en place. \n\n\n\n \n « Une faille de sécurité a permis l’accès à l’infrastructure d’hébergement internet et à certaines applications liées, exposant potentiellement des données à caractère personnel. » \n Esam Caen/Cherbourg  \n\n\n\n Des données personnelles potentiellement exposées \n\n\n\n L’établissement confirme que l’attaque a permis un  accès non autorisé à des systèmes contenant des données personnelles . Le périmètre exact des informations consultées ou éventuellement récupérées par l’attaquant n’est cependant pas encore connu publiquement. \n\n\n\n À ce stade, il convient donc de distinguer les données présentes dans les systèmes compromis de celles qui auraient effectivement pu être  consultées, copiées ou exfiltrées . Les investigations doivent notamment permettre d’identifier les applications atteintes, les comptes concernés et la nature précise des informations auxquelles l’attaquant a pu accéder. \n\n\n\n Une école publique implantée à Caen et Cherbourg \n\n\n\n L’ Esam Caen/Cherbourg  est un établissement public de coopération culturelle né en 2011 de la fusion des écoles d’art de Caen et de Cherbourg. Il est notamment soutenu par le ministère de la Culture, la Région Normandie, Caen la mer, la Ville de Cherbourg-en-Cotentin et la Communauté d’agglomération du Cotentin. \n\n\n\n L’école accueille environ  270 étudiants  dans les domaines de l’art, du design graphique et de l’édition. Son site de Cherbourg accueille également une classe préparatoire, tandis que plusieurs centaines d’enfants, d’adolescents et d’adultes participent aux activités et ateliers proposés au Grand Public. \n\n\n\n Usagers et personnels appelés à la vigilance \n\n\n\n Face au risque d’exposition de données personnelles, l’Esam invite ses  usagers et collaborateurs à se montrer particulièrement vigilants  face aux messages, appels ou communications inhabituelles qu’ils pourraient recevoir. \n\n\n\n L’établissement recommande notamment de  ne jamais communiquer ses mots de passe  et de modifier ceux qui seraient identiques ou similaires à des identifiants utilisés sur d’autres services en ligne. \n\n\n\n Si des informations permettant d’identifier des étudiants, personnels ou usagers ont effectivement été récupérées, elles pourraient notamment être utilisées pour construire des campagnes de  phishing ou d’usurpation particulièrement crédibles , en se faisant passer pour l’administration, la scolarité ou un service lié à l’établissement. \n\n\n\n La CNIL notifiée et une plainte déposée \n\n\n\n L’Esam indique avoir procédé à une  notification auprès de la CNIL  et avoir déposé plainte à la suite de l’incident. Ces démarches accompagnent les investigations techniques engagées pour déterminer l’origine de la compromission et son ampleur réelle. \n\n\n\n Aucune information publique ne permet pour l’instant d’attribuer l’attaque à un groupe cybercriminel précis. De même, aucun élément ne permet à ce stade de confirmer l’utilisation d’un ransomware ou le chiffrement des systèmes de l’établissement. \n\n\n\n Aucune fuite publique identifiée à ce stade \n\n\n\n Dans les éléments actuellement disponibles,  aucune base de données attribuée à l’Esam Caen/Cherbourg n’a été identifiée publiquement en téléchargement . Il n’est donc pas possible de vérifier indépendamment la nature, le volume ou le nombre de personnes éventuellement concernées par une exfiltration de données. \n\n\n\n Le principal enjeu des investigations sera désormais de déterminer  ce que l’attaquant a réellement pu consulter ou récupérer entre l’intrusion du 21 août et sa détection le 3 septembre . Le périmètre définitif de la cyberattaque reste donc à préciser.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-09-10",
+    "sector": "",
+    "source_item_id": "3065",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Une faille de sécurité aurait permis un  accès non autorisé à son infrastructure d’hébergement internet et à certaines applications , exposant potentiellement des données personnelles d’usagers et de personnels.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "informations de séjour"
+       },
+       {
+        "date": "2026-08-21",
+        "evidence": "L’École supérieure d’arts et médias de Caen/Cherbourg (Esam) a été victime d’une cyberattaque le 21 août 2026.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "L’École supérieure d’arts et médias de Caen/Cherbourg (Esam) a été victime d’une cyberattaque le 21 août 2026."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Une faille de sécurité aurait permis un  accès non autorisé à son infrastructure d’hébergement internet et à certaines applications , exposant potentiellement des données personnelles d’usagers et de personnels.",
+        "status": "hypothesis",
+        "value": "informations de séjour"
+       }
+      ],
+      "data_volumes": [],
+      "profile": {
+       "chars": 5045,
+       "claims": 1,
+       "dates": 3,
+       "hypotheses": 1,
+       "numbers": 0,
+       "sentences": 40
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-08-21",
+        "event": "L’École supérieure d’arts et médias de Caen/Cherbourg (Esam) a été victime d’une cyberattaque le 21 août 2026.",
+        "evidence": "L’École supérieure d’arts et médias de Caen/Cherbourg (Esam) a été victime d’une cyberattaque le 21 août 2026.",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "L’École supérieure d’arts et médias de Caen/Cherbourg (Esam) a été victime d’une cyberattaque le 21 août 2026. L’intrusion…",
+    "threat": "",
+    "title": "L’ésam Caen/Cherbourg victime d’une cyberattaque en pleine rentrée universitaire",
+    "url": "https://www.cyberattaque.org/lesam-caen-cherbourg-victime-dune-cyberattaque-en-pleine-rentree-universitaire/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_IDENTITY_AMBIGUOUS",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-09-11T18:21:52.073649+00:00",
+   "item": {
+    "Collected_As_Of": "2026-09-11T22:19:12.688372+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-6b1c17292d5b2271",
+    "Location": "Inconnu",
+    "Organisation_Key": "l esam caen cherbourg",
+    "Organisation_Raw": "L’ésam Caen/Cherbourg",
+    "Published_Date": "2026-09-10",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "3065",
+    "Threat": "Ransomware",
+    "Threat_Raw": "",
+    "Title": "L’ésam Caen/Cherbourg victime d’une cyberattaque en pleine rentrée universitaire",
+    "URL": "https://www.cyberattaque.org/lesam-caen-cherbourg-victime-dune-cyberattaque-en-pleine-rentree-universitaire/"
+   },
+   "key": "ITM-6b1c17292d5b2271:37cec959489189e31f34d11c8feb0ddfd0c1e817119b0c2f2017dcf0d25689f1",
+   "last_queued_at": "2026-09-11T18:21:52.073649+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  }
+ ],
+ "run_id": "RUN-20260911T221912",
+ "sector_qualification": {
+  "conflict_item_ids": [],
+  "items": 18,
+  "resolved": 15,
+  "resolved_item_ids": [
+   "ITM-1764b17f2c4b5c48",
+   "ITM-26ccc95579f37b49",
+   "ITM-2f18fd4763986071",
+   "ITM-4c238d21765dbe75",
+   "ITM-6d660f08d2bb4755",
+   "ITM-7117d7b0e950425f",
+   "ITM-8e1b34e80f9a2eb7",
+   "ITM-8e97f9a3bc158ae7",
+   "ITM-a19da989cf9c4169",
+   "ITM-c8b4e76f286c41b3",
+   "ITM-c9f092781992098e",
+   "ITM-d5c554b19f3dcaa9",
+   "ITM-d6937a7d84d3f70d",
+   "ITM-e1e3ecdb12ce1f80",
+   "ITM-f4e4e11cbcc11b38"
+  ],
+  "state": "PARTIAL",
+  "unknown_incidents": 2,
+  "unknown_item_ids": [
+   "ITM-48ecbdf8da035a41",
+   "ITM-4bd5428d86dc863b",
+   "ITM-6b1c17292d5b2271"
+  ]
+ },
+ "summary": {
+  "by_field": {
+   "activity_description": 2,
+   "activity_sector_match": 2,
+   "summary": 3
+  },
+  "by_kind": {
+   "ACTIVITY_NOT_DESCRIBED": 3,
+   "AMBIGUOUS_IDENTITY": 1,
+   "EVIDENCE_TOO_LONG": 1,
+   "HEADLINE_VALIDATION": 1,
+   "LOW_CONFIDENCE": 1
+  },
+  "by_reason": {
+   "ACTIVITY_IDENTITY_AMBIGUOUS": 1,
+   "ACTIVITY_NOT_DESCRIBED": 1,
+   "CONFIDENCE_REJECTED": 1,
+   "EVIDENCE_TOO_LONG": 1,
+   "HEADLINE_TOO_LONG": 1,
+   "NO_VALID_ACTIVITY_PAIR": 2
+  },
+  "dossiers": 5,
+  "dossiers_pending": 5,
+  "exhausted_fields": 0,
+  "pending_fields": 7,
+  "reasons": [
+   {
+    "fields": 1,
+    "kind": "AMBIGUOUS_IDENTITY",
+    "reason": "ACTIVITY_IDENTITY_AMBIGUOUS"
+   },
+   {
+    "fields": 1,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "ACTIVITY_NOT_DESCRIBED"
+   },
+   {
+    "fields": 1,
+    "kind": "LOW_CONFIDENCE",
+    "reason": "CONFIDENCE_REJECTED"
+   },
+   {
+    "fields": 1,
+    "kind": "EVIDENCE_TOO_LONG",
+    "reason": "EVIDENCE_TOO_LONG"
+   },
+   {
+    "fields": 1,
+    "kind": "HEADLINE_VALIDATION",
+    "reason": "HEADLINE_TOO_LONG"
+   },
+   {
+    "fields": 2,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "NO_VALID_ACTIVITY_PAIR"
+   }
+  ]
+ },
+ "version": 2
+}
