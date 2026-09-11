@@ -15,6 +15,35 @@ def _pct(value: int, total: int) -> float:
     return round(100.0 * value / total, 2) if total else 0.0
 
 
+def _vocabulary_partition(facts: dict) -> dict:
+    """Répartit le vocabulaire structuré du snapshot en décisions explicites.
+
+    Aucune valeur brute ne doit tomber entre les mailles : chacune est soit un
+    libellé canonique, soit un alias reconnu, soit un cas volontairement laissé
+    ambigu. Tout ce qui sort en UNMAPPED est un trou de vocabulaire à combler.
+    """
+    from cyberwatch.sector import classify_source_sector, structured_sector_status
+
+    observed: dict[str, set] = {}
+    for fact in facts.values():
+        raw = str(fact.get("Source_Sector_Raw") or "").strip()
+        if raw:
+            observed.setdefault(raw, set()).add(str(fact.get("Source_ID") or ""))
+    partition: dict[str, list] = {"CANONICAL": [], "MAPPED": [],
+                                  "EXPLICITLY_UNRESOLVED": [], "UNMAPPED": []}
+    for raw, emitters in sorted(observed.items()):
+        partition[structured_sector_status(raw)].append({
+            "raw": raw,
+            "sector": classify_source_sector(raw),
+            "sources": sorted(emitters),
+        })
+    return {
+        "distinct_values": len(observed),
+        "counts": {status: len(rows) for status, rows in partition.items()},
+        "values": partition,
+    }
+
+
 def build_audit() -> dict:
     from cyberwatch import config, store
     from cyberwatch.normalize import organisation_key
@@ -74,6 +103,7 @@ def build_audit() -> dict:
                 len(baseline.get("unknown_incidents", [])), int(baseline.get("incidents_total", 0))
             ),
         },
+        "source_sector_vocabulary": _vocabulary_partition(facts),
         "root_causes": {
             "evidence_gaps_on_initially_unknown_items": dict(sorted(evidence_gaps.items())),
             "pipeline_gap": (

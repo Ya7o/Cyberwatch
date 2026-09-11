@@ -109,3 +109,76 @@ def test_publication_expose_la_preuve_du_secteur_reference():
         "evidence": "Activité validée",
         "evidence_url": "https://example.test/preuve",
     }
+
+
+def _wizishop() -> Item:
+    return Item(
+        Item_ID="ITM-2f18fd4763986071",
+        Source_ID="FRENCHBREACHES",
+        Organisation_Raw="WiziShop",
+        Organisation_Key="wizishop",
+        Sector=config.SECTOR_UNKNOWN,
+        Title="Fuite de données chez WiziShop",
+        URL="https://frenchbreaches.com/alertes/wizishop",
+    )
+
+
+def test_rubrique_de_source_qualifie_sans_activite_ni_llm():
+    """RUN-20260911T171856 : « Technologie » était extrait mais illisible."""
+    decision = sector_resolution.resolve_item(
+        _wizishop(),
+        {"Source_Sector_Raw": "Technologie", "Activity_Description": "",
+         "Activity_Sector_Match": ""},
+        {},
+    )
+    assert (decision.sector, decision.status, decision.reason) == (
+        config.SECTOR_TECH, "reported", "SOURCE_SECTOR_RAW")
+    assert decision.evidence == "Technologie"
+
+
+def test_rubrique_non_reconnue_est_nommee_et_non_confondue_avec_une_absence():
+    decision = sector_resolution.resolve_item(
+        _item(), {"Source_Sector_Raw": "Cryogénie quantique"}, {})
+    assert decision.sector == config.SECTOR_UNKNOWN
+    assert decision.status == "unknown"
+    assert decision.reason == "SOURCE_SECTOR_RAW_UNMAPPED"
+    assert decision.evidence == "Cryogénie quantique"
+
+
+def test_absence_de_rubrique_reste_une_absence_de_preuve():
+    decision = sector_resolution.resolve_item(_item(), {"Source_Sector_Raw": ""}, {})
+    assert decision.reason == "NO_ACTIVITY_EVIDENCE"
+
+
+def test_une_rubrique_incomprise_ne_prime_sur_aucune_preuve_existante():
+    """Le motif d'audit est un dernier ressort, jamais un court-circuit."""
+    previous = [{"Item_ID": "ITM-test", "Resolved_Sector": config.SECTOR_HEALTH,
+                 "Status": "referenced", "Reason": "REFERENCE_EXACT", "Confidence": "0.90"}]
+    item = _item()
+    item.Sector = config.SECTOR_HEALTH
+    rows = sector_resolution.resolve_items(
+        [item], [{"Item_ID": "ITM-test", "Source_Sector_Raw": "Cryogénie quantique"}], {},
+        previous_rows=previous)
+    assert rows[0]["Resolved_Sector"] == config.SECTOR_HEALTH
+    assert rows[0]["Reason"] == "REFERENCE_EXACT"
+
+
+def test_le_motif_d_audit_n_est_pas_une_preuve_recevable():
+    assert "SOURCE_SECTOR_RAW_UNMAPPED" not in sector_resolution.SUPPORTED_REASONS
+    rows = [{"Resolved_Sector": config.SECTOR_UNKNOWN, "Reason": "SOURCE_SECTOR_RAW_UNMAPPED"},
+            {"Resolved_Sector": config.SECTOR_TECH, "Reason": "ACTIVITY_RULE"}]
+    assert sector_resolution.component_sector_rows(rows) == config.SECTOR_TECH
+
+
+def test_une_activite_explicite_prime_toujours_sur_la_rubrique_de_source():
+    """Aqualter : « Industrie » désormais lisible ne doit pas battre l'activité."""
+    proof = "Aqualter est une entreprise spécialisée dans la gestion de l'eau."
+    decision = sector_resolution.resolve_item(
+        _item("Aqualter"),
+        {"Source_Sector_Raw": "Industrie", "Activity_Description": proof,
+         "Evidence_JSON": json.dumps({"Activity_Description": proof})},
+        {},
+    )
+    assert decision.sector == config.SECTOR_ENERGY
+    assert decision.reason == "ACTIVITY_OVERRIDES_SOURCE_LABEL"
+    assert "Industrie" in decision.evidence

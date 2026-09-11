@@ -248,9 +248,11 @@ SECTORS = [
 ]
 
 #: Correspondance des libellés d'activité anglophones de ransomware.live vers
-#: la taxonomie française. Appliquée uniquement au secteur explicitement fourni
-#: par la source, jamais au texte libre d'un article. Les catégories trop larges
-#: pour notre taxonomie restent volontairement Inconnu.
+#: la taxonomie française. Couche anglophone de l'index des secteurs structurés
+#: assemblé par ``sector.STRUCTURED_SECTOR_INDEX`` : elle n'est plus consultée
+#: directement par la politique sectorielle. Appliquée uniquement au secteur
+#: explicitement fourni par la source, jamais au texte libre d'un article. Les
+#: catégories trop larges pour notre taxonomie restent volontairement Inconnu.
 ACTIVITY_TO_SECTOR = {
     "manufacturing": SECTOR_INDUSTRY,
     "industrial machinery": SECTOR_INDUSTRY,
@@ -315,6 +317,65 @@ ACTIVITY_TO_SECTOR = {
     "loisirs": SECTOR_CULTURE,
     "agriculture and food production": SECTOR_AGRICULTURE,
 }
+
+#: Alias structurés qui ne se déduisent d'aucun libellé canonique : ni segment
+#: de la taxonomie, ni vocabulaire ransomware.live. Chacun est une rubrique
+#: réellement publiée par une source, et chacun doit rester auto-descriptif.
+#: Couche manuelle de ``sector.STRUCTURED_SECTOR_INDEX``.
+STRUCTURED_SECTOR_ALIASES = {
+    # Rubriques FRENCHBREACHES désignant sans ambiguïté le service public.
+    "public": SECTOR_ADMIN,
+    "secteur public": SECTOR_ADMIN,
+    # Rubriques anglophones sans équivalent de segment canonique français.
+    "technology": SECTOR_TECH,
+    "professional services": SECTOR_SERVICES,
+    "retail e commerce": SECTOR_RETAIL,
+}
+
+#: Libellés structurés volontairement laissés Inconnu, y compris lorsqu'une des
+#: couches de l'index les produirait. Ce n'est pas un oubli : c'est une décision
+#: tracée, que ``sector.structured_sector_status`` restitue en
+#: EXPLICITLY_UNRESOLVED. Les clés sont déjà normalisées par ``searchable``.
+STRUCTURED_SECTOR_AMBIGUOUS = frozenset({
+    # Segment de « Commerce / Distribution », mais seul il désigne aussi bien la
+    # distribution d'énergie, d'eau ou de films que le commerce de détail.
+    "distribution",
+    # Une prestation de service n'est pas un secteur : banque, santé et BTP en
+    # vendent tous. « Services aux entreprises » complet reste, lui, reconnu.
+    "services",
+    "service",
+    # Fourre-tout explicites d'une source qui n'a pas su classer sa victime.
+    "autre",
+    "autres",
+    "divers",
+    "other",
+    "others",
+    "miscellaneous",
+    "non renseigne",
+    "non classe",
+    "inconnu",
+    "unknown",
+    "n a",
+    "sans objet",
+    # Désignent une taille ou un statut d'entreprise, jamais une activité.
+    "entreprise",
+    "entreprises",
+    "prive",
+    "secteur prive",
+    "private",
+    "private sector",
+    "pme",
+    "tpe",
+    "grand compte",
+    "particulier",
+    "particuliers",
+    # Revendiquent plusieurs secteurs à la fois : aucun ne peut être retenu.
+    "multi sector",
+    "multi sectoriel",
+    "multisectoriel",
+    "conglomerate",
+    "holding",
+})
 
 #: Motifs autorisés sur le nom de l'organisation uniquement. Ils doivent être
 #: quasi auto-descriptifs : aucun marqueur de marque générique (tech, immo,

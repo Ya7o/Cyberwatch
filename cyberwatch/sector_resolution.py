@@ -11,7 +11,7 @@ from .model import Incident, Item
 from .normalize import organisation_key
 
 SECTOR_UNKNOWN_TARGET_PCT = 10.0  # Alerte, jamais un secteur par défaut.
-POLICY_VERSION = "2026-09-06.sector.3"
+POLICY_VERSION = "2026-09-11.sector.4"
 
 
 @dataclass(frozen=True)
@@ -73,6 +73,21 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
     return reported or _unknown("ACTIVITY_TAXONOMY_UNRESOLVED", proof)
 
 
+def _unmapped_source_sector(fact: dict) -> SectorDecision | None:
+    """Distingue « aucune preuve » de « rubrique de source non reconnue ».
+
+    Motif d'audit seulement : le secteur reste Inconnu, la valeur brute est
+    conservée en preuve pour que le vocabulaire manquant soit corrigé plutôt que
+    dilué dans NO_ACTIVITY_EVIDENCE. Émis en dernier ressort, après la décision
+    précédente et le secteur hérité : une rubrique incomprise ne prime sur
+    aucune preuve existante.
+    """
+    raw = str(fact.get("Source_Sector_Raw") or "").strip()
+    if not raw or _valid(sector_policy.classify_source_sector(raw)):
+        return None
+    return _unknown("SOURCE_SECTOR_RAW_UNMAPPED", raw)
+
+
 def _decision_from_reference(item: Item, reference: dict) -> SectorDecision | None:
     entry = reference.get(organisation_key(item.Organisation_Raw))
     sector = str(getattr(entry, "sector", "") or "")
@@ -118,7 +133,7 @@ def resolve_item(
     if _valid(item.Sector):
         return SectorDecision(item.Sector, "reported", "LEGACY_KNOWN_SECTOR", 0.50,
                               item.Sector, item.URL)
-    return _unknown()
+    return _unmapped_source_sector(fact) or _unknown()
 
 
 def resolve_items(

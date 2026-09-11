@@ -13,14 +13,73 @@ from . import config
 from .normalize import organisation_key, searchable
 
 
-_STRUCTURED_SOURCE_SECTOR_ALIASES = {
-    "professional services": config.SECTOR_SERVICES,
-    "technology": config.SECTOR_TECH,
-    "retail e commerce": config.SECTOR_RETAIL,
-    "commerce": config.SECTOR_RETAIL,
-    "public": config.SECTOR_ADMIN,
-    "secteur public": config.SECTOR_ADMIN,
-}
+#: Statuts rendus par ``structured_sector_status`` : toute valeur brute connue
+#: reçoit l'un d'eux, jamais rien d'implicite.
+STRUCTURED_SECTOR_STATUSES = (
+    "ABSENT", "CANONICAL", "MAPPED", "EXPLICITLY_UNRESOLVED", "UNMAPPED",
+)
+
+
+def _canonical_sector_keys() -> dict[str, str]:
+    """Clé normalisée de chaque libellé canonique complet."""
+    return {searchable(sector): sector
+            for sector in config.SECTORS if sector != config.SECTOR_UNKNOWN}
+
+
+def _derive_taxonomy_aliases() -> dict[str, str]:
+    """Alias déduits des libellés canoniques eux-mêmes, segment par segment.
+
+    « Numérique / Technologie » se lit aussi bien « Numérique » que
+    « Technologie » : ce sont les deux noms que la taxonomie donne elle-même au
+    secteur. Dériver ces clés évite une table parallèle à maintenir et garantit
+    qu'un secteur ajouté demain apporte son vocabulaire avec lui.
+
+    Un segment revendiqué par deux secteurs ne désigne plus rien : la
+    construction échoue plutôt que de trancher au hasard.
+    """
+    aliases: dict[str, str] = {}
+    for sector in config.SECTORS:
+        if sector == config.SECTOR_UNKNOWN:
+            continue
+        for segment in [sector, *sector.split("/")]:
+            key = searchable(segment)
+            if not key:
+                continue
+            if aliases.get(key, sector) != sector:
+                raise ValueError(
+                    f"segment sectoriel ambigu {key!r} : "
+                    f"{aliases[key]!r} et {sector!r}"
+                )
+            aliases[key] = sector
+    return aliases
+
+
+def _build_structured_sector_index() -> dict[str, str]:
+    """Index unique des libellés structurés, assemblé une fois à l'import.
+
+    Trois couches concordantes — taxonomie dérivée, vocabulaire anglophone de
+    ransomware.live, alias manuels — dont on retire les libellés déclarés
+    ambigus. Une couche qui contredirait la taxonomie est une erreur de
+    politique, pas un cas à arbitrer silencieusement.
+    """
+    index = _derive_taxonomy_aliases()
+    for layer in (config.ACTIVITY_TO_SECTOR, config.STRUCTURED_SECTOR_ALIASES):
+        for key, sector in layer.items():
+            if index.get(key, sector) != sector:
+                raise ValueError(
+                    f"alias structuré contradictoire {key!r} : "
+                    f"{index[key]!r} et {sector!r}"
+                )
+            index[key] = sector
+    return {key: sector for key, sector in index.items()
+            if key not in config.STRUCTURED_SECTOR_AMBIGUOUS}
+
+
+_CANONICAL_SECTOR_KEYS = _canonical_sector_keys()
+
+#: Source unique de vérité des libellés structurés de secteur. La correspondance
+#: est EXACTE après normalisation lexicale : ni sous-chaîne, ni approximation.
+STRUCTURED_SECTOR_INDEX = _build_structured_sector_index()
 
 _KNOWN_ORGANISATION_SECTORS = {
     "capgemini": config.SECTOR_SERVICES,
@@ -47,17 +106,38 @@ def _from_rules(text: str, rules: list[tuple[str, list[str]]]) -> str:
 
 
 def classify_source_sector(given: str = "") -> str:
-    """Normalise uniquement un secteur explicitement structuré par la source."""
+    """Normalise uniquement un secteur explicitement structuré par la source.
+
+    Réservé aux champs qu'une source renseigne explicitement : jamais un titre,
+    un nom d'organisation, un résumé ou le texte libre d'un article. La casse,
+    les accents, la ponctuation et les espaces sont absorbés par ``searchable``,
+    mais la correspondance finale reste exacte — « technologie médicale » n'est
+    pas « Technologie ».
+    """
     cleaned = (given or "").strip()
     if not cleaned:
         return config.SECTOR_UNKNOWN
-    if cleaned in config.SECTORS:
-        return cleaned
+    return STRUCTURED_SECTOR_INDEX.get(searchable(cleaned), config.SECTOR_UNKNOWN)
+
+
+def structured_sector_status(given: str = "") -> str:
+    """Qualifie la décision prise sur un libellé structuré, résolue ou non.
+
+    Distingue les trois silences que ``classify_source_sector`` confond en
+    Inconnu : secteur absent, libellé volontairement laissé ambigu, libellé
+    présent mais que le vocabulaire ne connaît pas encore.
+    """
+    cleaned = (given or "").strip()
+    if not cleaned:
+        return "ABSENT"
     key = searchable(cleaned)
-    return config.ACTIVITY_TO_SECTOR.get(
-        key,
-        _STRUCTURED_SOURCE_SECTOR_ALIASES.get(key, config.SECTOR_UNKNOWN),
-    )
+    if not key or key in config.STRUCTURED_SECTOR_AMBIGUOUS:
+        return "EXPLICITLY_UNRESOLVED"
+    if key in _CANONICAL_SECTOR_KEYS:
+        return "CANONICAL"
+    if key in STRUCTURED_SECTOR_INDEX:
+        return "MAPPED"
+    return "UNMAPPED"
 
 
 def _watchlist_sector(organisation: str) -> str:

@@ -1,0 +1,22 @@
+{
+  "_comment": [
+    "Vocabulaire structuré réellement publié par les sources, figé pour servir",
+    "de garde-fou : toute valeur distincte de Source_Sector_Raw observée dans",
+    "le corpus doit figurer ici avec une décision explicite. Une valeur absente",
+    "fait échouer tests/test_structured_sector_vocabulary.py — le correctif est",
+    "de l'ajouter ici (et un alias si elle est non ambiguë), jamais de désarmer",
+    "le test. status : CANONICAL | MAPPED | EXPLICITLY_UNRESOLVED."
+  ],
+  "vocabulary": [
+    {"raw": "Retail & E-Commerce", "sources": ["RANSOMWARE_LIVE"], "status": "MAPPED", "sector": "Commerce / Distribution"},
+    {"raw": "Government & Defense", "sources": ["RANSOMWARE_LIVE"], "status": "MAPPED", "sector": "Administration / Collectivité"},
+    {"raw": "Manufacturing", "sources": ["RANSOMWARE_LIVE"], "status": "MAPPED", "sector": "Industrie / Manufacture"},
+    {"raw": "Professional Services", "sources": ["RANSOMWARE_LIVE"], "status": "MAPPED", "sector": "Services aux entreprises"},
+    {"raw": "public", "sources": ["FRENCHBREACHES"], "status": "MAPPED", "sector": "Administration / Collectivité"},
+    {"raw": "Commerce", "sources": ["FRENCHBREACHES"], "status": "MAPPED", "sector": "Commerce / Distribution"},
+    {"raw": "Technologie", "sources": ["FRENCHBREACHES"], "status": "MAPPED", "sector": "Numérique / Technologie"},
+    {"raw": "Industrie", "sources": ["FRENCHBREACHES"], "status": "MAPPED", "sector": "Industrie / Manufacture"},
+    {"raw": "Transport", "sources": ["FRENCHBREACHES"], "status": "MAPPED", "sector": "Transport / Logistique"},
+    {"raw": "Éducation", "sources": ["FRENCHBREACHES"], "status": "MAPPED", "sector": "Éducation / Formation"}
+  ]
+}

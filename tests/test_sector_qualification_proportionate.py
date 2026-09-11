@@ -57,6 +57,8 @@ def test_uncertain_legacy_sector_still_requests_activity(monkeypatch):
 
 @pytest.mark.parametrize("label,sector", [
     ("Commerce", config.SECTOR_RETAIL), ("public", config.SECTOR_ADMIN),
+    ("Technologie", config.SECTOR_TECH), ("Industrie", config.SECTOR_INDUSTRY),
+    ("Transport", config.SECTOR_TRANSPORT), ("Éducation", config.SECTOR_EDUCATION),
 ])
 def test_source_heading_qualifies_without_activity(monkeypatch, label, sector):
     monkeypatch.setattr(enrichment, "load_reference", lambda: {})
