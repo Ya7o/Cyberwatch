@@ -877,6 +877,81 @@ def test_prompt_limite_aux_champs_encore_demandes():
     assert "N'utilise aucune connaissance externe" in sfa._SYSTEM_PROMPT
 
 
+def test_le_prompt_expose_la_limite_de_preuve_reellement_appliquee():
+    """Le modèle reçoit la borne du validateur, pas un « court » sans chiffre."""
+    from cyberwatch.source_facts_ai_contract import (
+        RETRY_EVIDENCE_INSTRUCTIONS,
+        _system_prompt,
+    )
+
+    assert sfa._SYSTEM_PROMPT == _system_prompt(sfa.MAX_EVIDENCE_CHARS)
+    assert f"evidence fait au maximum {sfa.MAX_EVIDENCE_CHARS} caractères" in sfa._SYSTEM_PROMPT
+    assert "une seule phrase" in sfa._SYSTEM_PROMPT
+    assert "« … » ni « ... »" in sfa._SYSTEM_PROMPT
+    # La limite est injectée, jamais recopiée : une autre borne se propage.
+    assert "au maximum 123 caractères" in _system_prompt(123)
+    assert "300" not in _system_prompt(123)
+    assert f"{sfa.MAX_EVIDENCE_CHARS} caractères" in RETRY_EVIDENCE_INSTRUCTIONS["EVIDENCE_TOO_LONG"]
+
+
+def test_une_preuve_au_dela_de_la_limite_reste_rejetee():
+    sentence = "Exemple SA confirme une intrusion dans son système d'information. "
+    context = sentence * 6
+    evidence = context.strip()
+    assert len(evidence) > sfa.MAX_EVIDENCE_CHARS
+    raw = {"value": "Exemple SA confirme une intrusion.", "confidence": .9, "evidence": evidence}
+    assert sfa._normalize_summary(raw, context) is None
+    assert sfa._normalize_summary({**raw, "evidence": sentence.strip()}, context) is not None
+
+
+def test_la_reprise_ne_cible_que_les_champs_dont_la_preuve_a_ete_refusee(monkeypatch, tmp_path):
+    _configure(monkeypatch, tmp_path)
+    runtime = sfa._runtime()
+    runtime.cache["k"] = {"fields": {
+        "summary": {"status": "miss", "misses": 1, "rejection_reason": "EVIDENCE_TOO_LONG",
+                    "version": sfa.FIELD_VERSIONS["summary"]},
+        "threat_candidate": {"status": "miss", "misses": 1,
+                             "rejection_reason": "FIELD_VALIDATION_REJECTED",
+                             "version": sfa.FIELD_VERSIONS["threat_candidate"]},
+    }}
+    bodies = []
+
+    def fake_post(body, _runtime):
+        bodies.append(body)
+        return _payload(_output_for(body))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    context = "Exemple SA confirme une intrusion."
+    sfa._perform_request(_item(), RawEntry(title="Exemple SA", content=context), context,
+                         {"summary", "threat_candidate"}, runtime, "k")
+    prompt = bodies[0]["input"][1]["content"]
+    assert "=== Reprise ciblée ===" in prompt
+    assert f"- summary : la citation précédente dépassait {sfa.MAX_EVIDENCE_CHARS}" in prompt
+    assert "- threat_candidate" not in prompt
+
+
+def test_le_motif_d_un_champ_hors_activite_nomme_l_etape_qui_refuse():
+    from cyberwatch.source_facts_ai_normalize import field_rejection_reason
+
+    context = "Exemple SA confirme une intrusion. Les services sont rétablis."
+    fact = {"confidence": .9, "evidence": "Exemple SA confirme une intrusion."}
+    cases = {
+        "MISSING_MODEL_FIELD": {},
+        "EMPTY_MODEL_VALUE": {"summary": {**fact, "value": ""}},
+        "CONFIDENCE_REJECTED": {"summary": {**fact, "value": "Intrusion", "confidence": .2}},
+        "EVIDENCE_NOT_GROUNDED": {"summary": {**fact, "value": "Intrusion",
+                                              "evidence": "Exemple SA confirme. Services rétablis."}},
+        "HEADLINE_LIST_OR_PREFIX": {"summary": {**fact, "value": "Impact: fuite de données"}},
+        "HEADLINE_ORGANISATION_NAME_ONLY": {"summary": {**fact, "value": "Exemple SA"}},
+    }
+    for expected, raw in cases.items():
+        assert field_rejection_reason("summary", raw, context, "Exemple SA") == expected
+    assert field_rejection_reason("incident_summary", {"incident_summary": []}, context) == "EMPTY_MODEL_VALUE"
+    assert field_rejection_reason(
+        "threat_candidate", {"threat_candidate": {**fact, "value": "Malware"}}, context,
+    ) == "FIELD_VALIDATION_REJECTED"
+
+
 def test_le_risque_futur_de_phishing_ne_devient_pas_une_menace():
     evidence = "Ces informations peuvent notamment être utilisées pour construire des tentatives de phishing ou de smishing personnalisées."
     proposal = {"value": "Phishing / fraude", "evidence": evidence, "confidence": .9}

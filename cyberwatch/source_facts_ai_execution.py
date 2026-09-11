@@ -7,7 +7,7 @@ from . import article_body, llm_runtime
 from .model import Item
 from .collectors.base import RawEntry
 from .source_facts_ai_runtime import _Runtime, SourceFactsAiError
-from .source_facts_ai_contract import FIELD_VERSIONS
+from .source_facts_ai_contract import FIELD_VERSIONS, RETRY_EVIDENCE_INSTRUCTIONS
 
 def _proposals(raw: dict, fields: set[str]) -> dict:
     """Valeur et preuve brutes proposées, champ par champ.
@@ -46,11 +46,32 @@ def _record_field_outcomes(runtime: _Runtime, cache: dict, fields: set[str]) -> 
     return outcomes
 
 
+def _retry_reasons(previous_fields: dict, fields: set[str]) -> dict[str, str]:
+    """Champs redemandés parce que leur preuve a été refusée, avec ce motif.
+
+    Le motif vient du validateur déterministe, jamais du modèle : la reprise
+    rappelle le contrat violé, sans rien assouplir.
+    """
+    out: dict[str, str] = {}
+    for field in sorted(fields):
+        record = previous_fields.get(field)
+        if not isinstance(record, dict):
+            continue
+        reason = str(record.get("rejection_reason") or "")
+        status = str(record.get("status") or "").strip().lower()
+        if status in {"miss", "rejected"} and reason in RETRY_EVIDENCE_INSTRUCTIONS:
+            out[field] = reason
+    return out
+
+
 def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
                      runtime: _Runtime, key: str, api) -> tuple[dict, bool]:
-    from .source_facts_ai_activity import normalize_activity, rejection_kind
+    from .source_facts_ai_activity import field_rejection_kind, normalize_activity
+    from .source_facts_ai_normalize import field_rejection_reason
 
-    body = api._request_body(item, context, fields, runtime)
+    previous_fields = _previous_fields(runtime, key)
+    retry_reasons = _retry_reasons(previous_fields, fields)
+    body = api._request_body(item, context, fields, runtime, retry_reasons=retry_reasons)
     # Le contexte soumis est archivé une seule fois par empreinte ; l'événement
     # n'en porte que l'empreinte et la taille. Le corps de requête est conservé
     # tel quel : il fige les paramètres de troncature réellement appliqués.
@@ -61,6 +82,7 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
              "submitted_context_chars": submitted["prepared_chars"],
              "organisation": item.Organisation_Raw, "requested_fields": sorted(fields),
              "field_versions": {field: FIELD_VERSIONS[field] for field in fields},
+             "retry_reasons": retry_reasons,
              "request": body}
     started = time.monotonic()
     runtime.calls += 1
@@ -89,14 +111,14 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         # `_store_field_cache` de distinguer une absence explicite d'une valeur
         # proposée puis refusée, au lieu de le corriger après coup.
         _, reasons = normalize_activity(raw, context, organisation)
-        previous_fields = _previous_fields(runtime, key)
         api._store_field_cache(runtime, key, item, entry, fields, normalized,
                                raw=raw, reasons=reasons)
         cache = runtime.cache[key]
         cache["effective_model"] = model
         cache["declared_model"] = str(payload.get("model") or "")
         runtime.effective_model = cache["effective_model"]
-        rejected = {field: reasons.get(field, "EMPTY_OR_REJECTED_BY_VALIDATOR")
+        rejected = {field: reasons.get(field)
+                    or field_rejection_reason(field, raw, context, organisation)
                     for field in fields if field not in normalized}
         for field, reason in rejected.items():
             record = cache["fields"][field]
@@ -123,7 +145,7 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         runtime.record_event(**event, status="success", normalized=normalized,
                              proposals=_proposals(raw, fields), rejections=rejected,
                              field_outcomes=field_outcomes,
-                             rejection_kinds={field: rejection_kind(reason)
+                             rejection_kinds={field: field_rejection_kind(field, reason)
                                               for field, reason in rejected.items()})
         runtime.calls_succeeded += 1
         return normalized, True

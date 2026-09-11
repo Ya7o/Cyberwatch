@@ -14,6 +14,7 @@ import pytest
 from cyberwatch import qualification, source_facts_ai as sfa, source_facts_retry
 from cyberwatch.collectors.base import RawEntry
 from cyberwatch.model import Item
+from cyberwatch.sector_activity import names_third_party
 from cyberwatch.source_facts_ai_activity import normalize_activity, rejection_kind
 from cyberwatch.source_facts_ai_contract import (
     CACHE_STATUS_REJECTED,
@@ -118,6 +119,53 @@ def test_la_mairie_exige_un_rattachement_explicite_et_non_ambigu(context, accept
     else:
         assert result == {}
         assert rejection_kind(reasons["activity_description"]) == "AMBIGUOUS_IDENTITY"
+
+
+# --- 2 bis. Un tiers nommé n'est pas un tiers auteur de l'activité ----------
+
+def _pair(evidence, sector="Numérique / Technologie"):
+    return {
+        "activity_description": {"value": evidence, "confidence": 0.9, "evidence": evidence},
+        "activity_sector_match": {"value": sector, "confidence": 0.9, "evidence": evidence},
+    }
+
+
+@pytest.mark.parametrize("organisation,evidence", [
+    ("Brevo", "Brevo fournit aux entreprises des outils permettant de gérer leurs relations clients."),
+    ("Acme", "Acme développe un logiciel de gestion des fournisseurs."),
+    ("Foo", "Foo propose une plateforme destinée aux clients professionnels."),
+])
+def test_un_nom_de_tiers_dans_l_offre_de_la_victime_ne_la_disqualifie_pas(organisation, evidence):
+    assert not names_third_party(organisation, evidence)
+    result, reasons = normalize_activity(_pair(evidence), evidence, organisation)
+    assert result["activity_description"]["evidence"] == evidence
+    assert result["activity_sector_match"]["value"] == "Numérique / Technologie"
+    assert "activity_description" not in reasons
+
+
+@pytest.mark.parametrize("evidence", [
+    "Acme utilise un prestataire spécialisé dans la gestion des commandes.",
+    "L'incident est survenu chez un fournisseur chargé de la logistique.",
+    "Acme fait appel à un partenaire qui développe ses applications.",
+    "Un client d'Acme, spécialisé dans la logistique, a signalé l'incident.",
+])
+def test_une_activite_attribuee_a_un_tiers_reste_rejetee_comme_telle(evidence):
+    assert names_third_party("Acme", evidence)
+    result, reasons = normalize_activity(_pair(evidence, "Transport / Logistique"), evidence, "Acme")
+    assert result == {}
+    assert reasons["activity_description"] == "ACTIVITY_THIRD_PARTY"
+    assert reasons["activity_sector_match"] == "NO_VALID_ACTIVITY_PAIR"
+
+
+@pytest.mark.parametrize("evidence", [
+    # Le destinataire est la population touchée, pas un marché.
+    "Acme propose aux clients concernés un outil de vérification.",
+    "Acme propose aux entreprises touchées des solutions de remédiation.",
+])
+def test_une_offre_de_remediation_n_est_pas_une_activite(evidence):
+    result, reasons = normalize_activity(_pair(evidence), evidence, "Acme")
+    assert result == {}
+    assert reasons["activity_description"] == "ACTIVITY_NOT_DESCRIBED"
 
 
 def test_une_citation_inventee_est_rejetee_malgre_une_confiance_de_090():

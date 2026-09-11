@@ -14,7 +14,7 @@ from . import article_body, config
 from .collectors.base import RawEntry
 from .headline import (
     is_organisation_name_only,
-    is_publishable_headline,
+    rejection_reason as headline_rejection_reason,
     strip_markdown_emphasis,
     summary_role_is_supported,
     victim_claims_incident,
@@ -154,19 +154,38 @@ def _valid_confidence(value) -> float | None:
     return number if 0 <= number <= 1 else None
 
 
-def _normalize_fact(raw, context: str, require_value_in_evidence: bool = False) -> dict | None:
+def evidence_rejection(raw, context: str) -> str:
+    """Premier motif pour lequel une proposition échoue le contrat de preuve.
+
+    Rend `""` si valeur, confiance et citation sont recevables. Seule
+    définition de ce contrat : `_normalize_fact` décide avec elle, les rapports
+    et la reprise ciblée la nomment avec elle.
+    """
     if not isinstance(raw, dict):
+        return "MISSING_MODEL_FIELD"
+    if not " ".join(str(raw.get("value") or "").split()):
+        return "EMPTY_MODEL_VALUE"
+    confidence = _valid_confidence(raw.get("confidence"))
+    if confidence is None or confidence < CONFIDENCE_THRESHOLD:
+        return "CONFIDENCE_REJECTED"
+    evidence = " ".join(str(raw.get("evidence") or "").split())
+    if not evidence:
+        return "EVIDENCE_MISSING"
+    if len(evidence) > MAX_EVIDENCE_CHARS:
+        return "EVIDENCE_TOO_LONG"
+    if not _grounded(evidence, context):
+        return "EVIDENCE_NOT_GROUNDED"
+    return ""
+
+
+def _normalize_fact(raw, context: str, require_value_in_evidence: bool = False) -> dict | None:
+    if evidence_rejection(raw, context):
         return None
     value = " ".join(str(raw.get("value") or "").split()).strip()
     evidence = " ".join(str(raw.get("evidence") or "").split()).strip()
-    confidence = _valid_confidence(raw.get("confidence"))
-    if confidence is None or confidence < CONFIDENCE_THRESHOLD or not value:
-        return None
-    if not evidence or len(evidence) > MAX_EVIDENCE_CHARS or not _grounded(evidence, context):
-        return None
     if require_value_in_evidence and searchable(value) not in searchable(evidence):
         return None
-    return {"value": value, "confidence": confidence, "evidence": evidence}
+    return {"value": value, "confidence": _valid_confidence(raw.get("confidence")), "evidence": evidence}
 
 
 def _normalize_initial_access(raw, context: str) -> dict | None:
@@ -216,13 +235,47 @@ def _normalize_summary(raw, context: str, organisation: str = "") -> dict | None
     # Markdown de la source faisait perdre un résumé pourtant valide au lieu de
     # le corriger. La preuve, elle, garde sa syntaxe d'origine.
     value = fact["value"] = strip_markdown_emphasis(fact["value"])
-    if (
-        not is_publishable_headline(value)
-        or is_organisation_name_only(value, organisation)
-        or not summary_role_is_supported(value, fact["evidence"], organisation)
-    ):
+    if _headline_rejection(value, fact["evidence"], organisation):
         return None
     return fact
+
+
+def _headline_rejection(value: str, evidence: str, organisation: str) -> str:
+    """Motif du refus d'une headline déjà prouvée, ou `""`."""
+    reason = headline_rejection_reason(value)
+    if reason:
+        return f"HEADLINE_{reason.upper()}"
+    if is_organisation_name_only(value, organisation):
+        return "HEADLINE_ORGANISATION_NAME_ONLY"
+    if not summary_role_is_supported(value, evidence, organisation):
+        return "HEADLINE_ROLE_NOT_SUPPORTED"
+    return ""
+
+
+def field_rejection_reason(field: str, raw: dict, context: str, organisation: str = "") -> str:
+    """Motif technique du refus d'un champ hors couple activité/secteur.
+
+    Il nomme l'étape qui a refusé, sans juger du bien-fondé de ce refus : le
+    contrat de preuve d'abord, puis le validateur propre au champ.
+    """
+    candidate = raw.get(field) if isinstance(raw, dict) else None
+    if isinstance(candidate, list):
+        if not candidate:
+            return "EMPTY_MODEL_VALUE"
+        # Le premier paragraphe décide seul d'incident_summary ; data_types
+        # n'est refusé que si chaque élément l'est.
+        items = candidate[:1] if field == "incident_summary" else candidate
+        reasons = {evidence_rejection(item, context) for item in items}
+        reason = reasons.pop() if len(reasons) == 1 else ""
+        return reason or "FIELD_VALIDATION_REJECTED"
+    reason = evidence_rejection(candidate, context)
+    if reason:
+        return reason
+    if field == "summary":
+        value = strip_markdown_emphasis(" ".join(str(candidate.get("value")).split()))
+        evidence = " ".join(str(candidate.get("evidence")).split())
+        reason = _headline_rejection(value, evidence, organisation)
+    return reason or "FIELD_VALIDATION_REJECTED"
 
 
 _INCIDENT_SUMMARY_GENERIC_RE = re.compile(

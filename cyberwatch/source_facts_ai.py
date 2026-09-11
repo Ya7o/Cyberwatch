@@ -665,12 +665,13 @@ def _error_category(exc: Exception) -> str:
     return type(exc).__name__
 
 
-def _request_body(item: Item, context: str, fields: set[str], runtime: _Runtime) -> dict:
+def _request_body(item: Item, context: str, fields: set[str], runtime: _Runtime,
+                  retry_reasons: dict[str, str] | None = None) -> dict:
     return {
         "model": runtime.model,
         "input": [
             {"role": "system", "content": _SYSTEM_PROMPT},
-            {"role": "user", "content": _user_prompt(item, context, fields)},
+            {"role": "user", "content": _user_prompt(item, context, fields, retry_reasons)},
         ],
         "text": {"format": {
             "type": "json_schema",

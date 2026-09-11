@@ -24,14 +24,29 @@ KIND_ACTIVITY_NOT_DESCRIBED = "ACTIVITY_NOT_DESCRIBED"
 KIND_THIRD_PARTY_ACTIVITY = "THIRD_PARTY_ACTIVITY"
 KIND_AMBIGUOUS_IDENTITY = "AMBIGUOUS_IDENTITY"
 KIND_EVIDENCE_NOT_FOUND = "EVIDENCE_NOT_FOUND"
+#: Une citation exacte mais au-delà de la limite contractuelle n'est pas une
+#: citation introuvable : les deux appellent une reprise différente.
+KIND_EVIDENCE_TOO_LONG = "EVIDENCE_TOO_LONG"
 KIND_SECTOR_CONTRADICTION = "SECTOR_CONTRADICTION"
+#: Familles hors couple activité/secteur : headline refusée par son contrat,
+#: autre validateur de champ, ou traitement qui n'a pas eu lieu.
+KIND_HEADLINE_VALIDATION = "HEADLINE_VALIDATION"
+KIND_FIELD_VALIDATION = "FIELD_VALIDATION"
+KIND_NOT_PROCESSED = "NOT_PROCESSED"
+KIND_LOW_CONFIDENCE = "LOW_CONFIDENCE"
+KIND_UNCLASSIFIED = "UNCLASSIFIED"
+#: Familles qui ne qualifient que le couple activité/secteur.
+ACTIVITY_KINDS = frozenset({
+    KIND_ACTIVITY_NOT_DESCRIBED, KIND_THIRD_PARTY_ACTIVITY,
+    KIND_AMBIGUOUS_IDENTITY, KIND_SECTOR_CONTRADICTION,
+})
 
 REJECTION_KINDS: dict[str, str] = {
     "MISSING_MODEL_FIELD": KIND_ABSENT,
     "EMPTY_MODEL_VALUE": KIND_ABSENT,
     "CONFIDENCE_REJECTED": KIND_ACTIVITY_NOT_DESCRIBED,
     "EVIDENCE_MISSING": KIND_EVIDENCE_NOT_FOUND,
-    "EVIDENCE_TOO_LONG": KIND_EVIDENCE_NOT_FOUND,
+    "EVIDENCE_TOO_LONG": KIND_EVIDENCE_TOO_LONG,
     "EVIDENCE_NOT_GROUNDED": KIND_EVIDENCE_NOT_FOUND,
     "ACTIVITY_NOT_DESCRIBED": KIND_ACTIVITY_NOT_DESCRIBED,
     "ACTIVITY_THIRD_PARTY": KIND_THIRD_PARTY_ACTIVITY,
@@ -42,12 +57,35 @@ REJECTION_KINDS: dict[str, str] = {
     "EMPTY_OR_REJECTED_BY_VALIDATOR": KIND_ACTIVITY_NOT_DESCRIBED,
     "SECTOR_CONTRADICTS_ACTIVITY_EVIDENCE": KIND_SECTOR_CONTRADICTION,
     "SECTOR_ACTIVITY_EVIDENCE_MISMATCH": KIND_SECTOR_CONTRADICTION,
+    "FIELD_VALIDATION_REJECTED": KIND_FIELD_VALIDATION,
+    "TECHNICAL_FAILURE": KIND_NOT_PROCESSED,
+    "CALL_LIMIT": KIND_NOT_PROCESSED,
+    "COST_LIMIT": KIND_NOT_PROCESSED,
 }
 
 
-def rejection_kind(reason: str) -> str:
+def rejection_kind(reason: str, default: str = KIND_ACTIVITY_NOT_DESCRIBED) -> str:
     """Famille d'un motif technique, pour le rapport et les compteurs."""
-    return REJECTION_KINDS.get(str(reason or "").strip(), KIND_ACTIVITY_NOT_DESCRIBED)
+    code = str(reason or "").strip()
+    if code in REJECTION_KINDS:
+        return REJECTION_KINDS[code]
+    if code.startswith("HEADLINE_"):
+        return KIND_HEADLINE_VALIDATION
+    return default
+
+
+def field_rejection_kind(field: str, reason: str) -> str:
+    """Famille d'un motif pour ce champ, sans lui prêter celle d'un autre.
+
+    Une famille propre au couple activité/secteur ne qualifie que ce couple ;
+    un motif inconnu reste non classé plutôt que rangé par défaut.
+    """
+    kind = rejection_kind(reason, default=KIND_UNCLASSIFIED)
+    if field in ACTIVITY_FIELDS or kind not in ACTIVITY_KINDS:
+        return kind
+    if str(reason or "").strip() == "CONFIDENCE_REJECTED":
+        return KIND_LOW_CONFIDENCE
+    return KIND_UNCLASSIFIED
 
 
 def is_abstention(reason: str) -> bool:
@@ -63,7 +101,7 @@ def binding_rejection(organisation: str, proof: str, context: str = "") -> str:
     d'un prestataire, la citation ne désigne pas la victime, ou elle la
     désigne mais ne lui prête aucune activité.
     """
-    if names_third_party(proof):
+    if names_third_party(organisation, proof):
         return "ACTIVITY_THIRD_PARTY"
     if not victim_is_identifiable(organisation, proof):
         return "ACTIVITY_IDENTITY_AMBIGUOUS"
@@ -90,22 +128,11 @@ def pair_outcome(fields: dict) -> str:
 
 
 def rejection_reason(raw, context: str, organisation: str = "") -> str:
-    from .source_facts_ai import _grounded, _valid_confidence, CONFIDENCE_THRESHOLD, MAX_EVIDENCE_CHARS
-    if not isinstance(raw, dict):
-        return "MISSING_MODEL_FIELD"
-    if not str(raw.get("value") or "").strip():
-        return "EMPTY_MODEL_VALUE"
-    confidence = _valid_confidence(raw.get("confidence"))
-    if confidence is None or confidence < CONFIDENCE_THRESHOLD:
-        return "CONFIDENCE_REJECTED"
-    evidence = str(raw.get("evidence") or "").strip()
-    if not evidence:
-        return "EVIDENCE_MISSING"
-    if len(evidence) > MAX_EVIDENCE_CHARS:
-        return "EVIDENCE_TOO_LONG"
-    if not _grounded(evidence, context):
-        return "EVIDENCE_NOT_GROUNDED"
-    return binding_rejection(organisation, evidence, context)
+    from .source_facts_ai_normalize import evidence_rejection
+    reason = evidence_rejection(raw, context)
+    if reason:
+        return reason
+    return binding_rejection(organisation, " ".join(str(raw.get("evidence")).split()), context)
 
 
 def normalize_activity(raw: dict, context: str, organisation: str) -> tuple[dict, dict]:

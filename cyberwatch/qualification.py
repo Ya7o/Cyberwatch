@@ -665,7 +665,30 @@ def markdown_report(run: QualificationRun) -> str:
     for label, rows in groups.items():
         lines.append(f"| {label} | {len(rows)} |")
     lines += ["", "### Couples activité/secteur", "", pair_table(verdict)]
+    lines += ["", "### File de reprise", "", retry_queue_table(run)]
     lines += ["", "### Déduplication par paire", "", dedup_table(run)]
+    return "\n".join(lines)
+
+
+def retry_queue_table(run: QualificationRun) -> str:
+    """File de reprise de ce run : dossiers, champs, motifs techniques et familles."""
+    if run.deferred_source not in {"archive", "live"}:
+        return "_non disponible pour ce run_"
+    from .source_facts_retry import summary
+
+    counts = summary(run.deferred)
+    lines = [
+        f"- Dossiers : **{counts['dossiers']}** (dont {counts['dossiers_pending']} à reprendre)",
+        f"- Champs à reprendre : **{counts['pending_fields']}** ; "
+        f"en rejet persistant : **{counts['exhausted_fields']}**",
+        "",
+        "| Motif | Famille | Champs |",
+        "|---|---|---:|",
+    ]
+    if not counts["reasons"]:
+        lines.append("| _file vide_ |  |  |")
+    for row in counts["reasons"]:
+        lines.append(f"| {_cell(row['reason'])} | {_cell(row['kind'])} | {row['fields']} |")
     return "\n".join(lines)
 
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from . import config, llm_runtime
 from .model import Item
-from .source_facts_ai_contract import _LLM_FIELDS
+from .source_facts_ai_contract import RETRY_EVIDENCE_INSTRUCTIONS, _LLM_FIELDS
 from .source_facts_ai_runtime import SourceFactsAiError, _Runtime
 
 def _fact_schema() -> dict:
@@ -40,9 +40,10 @@ def _schema(fields: set[str]) -> dict:
     }
 
 
-def _user_prompt(item: Item, context: str, fields: set[str]) -> str:
+def _user_prompt(item: Item, context: str, fields: set[str],
+                 retry_reasons: dict[str, str] | None = None) -> str:
     requested = ", ".join(name for name in _LLM_FIELDS if name in fields)
-    return (
+    prompt = (
         "=== Métadonnées fiables ===\n"
         f"Source: {item.Source_ID}\nVictime: {item.Organisation_Raw}\n"
         f"Date de publication: {item.Published_Date}\n\n"
@@ -50,6 +51,16 @@ def _user_prompt(item: Item, context: str, fields: set[str]) -> str:
         f"=== Extraction demandée ===\nChamps uniquement: {requested}.\n"
         "N'ajoute aucun autre champ."
     )
+    # Seuls les champs redemandés après un refus de leur preuve reçoivent une
+    # consigne, et seulement celle de leur motif.
+    hints = [
+        f"- {name} : {RETRY_EVIDENCE_INSTRUCTIONS[retry_reasons[name]]}"
+        for name in _LLM_FIELDS
+        if name in fields and (retry_reasons or {}).get(name) in RETRY_EVIDENCE_INSTRUCTIONS
+    ]
+    if hints:
+        prompt += "\n\n=== Reprise ciblée ===\n" + "\n".join(hints)
+    return prompt
 
 
 def _extract_output_text(payload: dict) -> str:

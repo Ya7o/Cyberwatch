@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import datetime as dt
 import hashlib
+from collections import Counter
 import json
 import os
 from dataclasses import asdict
@@ -178,6 +179,53 @@ def retire_fields(fields: frozenset[str]) -> None:
         save(kept)
 
 
+def summary(entries: list[dict] | None = None) -> dict:
+    """Décompte de la file par dossier, champ, motif technique et famille.
+
+    Le motif d'un champ est celui que le validateur a enregistré ; à défaut,
+    celui qui a mis le dossier en file (panne, budget…). Rien n'est déduit
+    au-delà de ce que ces motifs disent.
+    """
+    from .source_facts_ai_activity import field_rejection_kind
+
+    rows = load() if entries is None else [row for row in entries if isinstance(row, dict)]
+    by_field: Counter = Counter()
+    by_reason: Counter = Counter()
+    by_kind: Counter = Counter()
+    pairs: Counter = Counter()
+    pending = exhausted = with_pending = 0
+    for row in rows:
+        reasons = row.get("field_reasons")
+        reasons = reasons if isinstance(reasons, dict) else {}
+        stale = row.get("exhausted_fields")
+        stale = stale if isinstance(stale, dict) else {}
+        fields = [(str(field), str(reasons.get(field) or row.get("reason") or ""))
+                  for field in row.get("pending_fields") or ()]
+        with_pending += bool(fields)
+        pending += len(fields)
+        exhausted += len(stale)
+        fields += [(str(field), str(detail.get("reason") or "") if isinstance(detail, dict) else "")
+                   for field, detail in stale.items()]
+        for field, reason in fields:
+            reason = reason or "UNSPECIFIED"
+            kind = field_rejection_kind(field, reason)
+            by_field[field] += 1
+            by_reason[reason] += 1
+            by_kind[kind] += 1
+            pairs[(reason, kind)] += 1
+    return {
+        "dossiers": len(rows),
+        "dossiers_pending": with_pending,
+        "pending_fields": pending,
+        "exhausted_fields": exhausted,
+        "by_field": dict(sorted(by_field.items())),
+        "by_reason": dict(sorted(by_reason.items())),
+        "by_kind": dict(sorted(by_kind.items())),
+        "reasons": [{"reason": reason, "kind": kind, "fields": count}
+                    for (reason, kind), count in sorted(pairs.items())],
+    }
+
+
 def archive(run_id: str, root: Path | None = None, *,
             sector_qualification: dict | None = None) -> Path | None:
     """Fige la file telle qu'elle est à la fin de ce run.
@@ -197,11 +245,13 @@ def archive(run_id: str, root: Path | None = None, *,
     except OSError:
         return None
     path = directory / "source_facts_retry_queue.json"
+    entries = load()
     store.write_json(path, {
         "version": QUEUE_VERSION,
         "run_id": str(run_id),
         "archived_at": dt.datetime.now(dt.UTC).isoformat(),
-        "entries": load(),
+        "entries": entries,
+        "summary": summary(entries),
         "sector_qualification": sector_qualification,
     })
     return path

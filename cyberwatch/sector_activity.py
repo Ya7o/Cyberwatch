@@ -18,8 +18,34 @@ _ACTIVITY = re.compile(
     r"gestion|assurance|banque|conseil|sport\w*|football|mobilite|immobili\w*|"
     r"repar\w*|plomberie|chauffage|climatisation|fidelis\w*|emploi|tourisme)\b"
 )
-_THIRD_PARTY = re.compile(
-    r"\b(?:prestataires?|fournisseurs?|partenaires?|clients?|filiales?|sous traitants?)\b"
+_THIRD_PARTY_NOUN = r"(?:prestataires?|fournisseurs?|partenaires?|clients?|filiales?|sous traitants?)"
+_THIRD_PARTY = re.compile(r"\b" + _THIRD_PARTY_NOUN + r"\b")
+#: Un tiers n'est l'auteur de l'activité citée que si la phrase le pose comme
+#: tel : lieu ou moyen de l'activité (« chez un fournisseur », « fait appel à
+#: un partenaire »), tiers qualifié par son propre métier (« un prestataire
+#: chargé de… ») ou victime complément du tiers (« un client de X »). Le nom
+#: seul ne suffit pas : « gérer leurs relations clients » décrit une offre.
+_THIRD_PARTY_ATTRIBUTION = re.compile(
+    r"\b(?:chez|via|par|utilise\w*|fait appel a|recours a|client de|confie\w*(?: \w+){0,3} a)"
+    r"(?: \w+){0,4}? " + _THIRD_PARTY_NOUN + r"\b"
+    r"|\b(?:son|sa|ses|leurs?|un|une|le|la|l|des|du|d un|l un de ses|l un des) "
+    + _THIRD_PARTY_NOUN
+    + r"(?: \w+){0,2}? (?:charge\w*|specialise\w*|qui|dont|en charge|responsable\w*)\b"
+)
+_THIRD_PARTY_OWNER = re.compile(r"\b" + _THIRD_PARTY_NOUN + r" (?:de|d|du|des)$")
+#: Une offre adressée à un marché décrit un métier même sans terme du lexique
+#: `_ACTIVITY` : « fournit aux entreprises des outils… », « propose une
+#: plateforme destinée aux clients professionnels ». Le destinataire est un
+#: marché, jamais les personnes touchées : « aux clients concernés » n'en est pas un.
+_MARKET = (
+    r"(?:entreprises|professionnels|particuliers|collectivites|organisations|administrations|"
+    r"pme|tpe|commercants|marques|clients professionnels)"
+)
+_OFFERING = r"(?:outils?|solutions?|plateformes?|services?|produits?|logiciels?)"
+_OFFER = re.compile(
+    r"\b" + _OFFERING + r"(?: \w+){0,3}? (?:destine\w* aux|a destination des|aux|pour les) "
+    + _MARKET + r"\b"
+    r"|\b(?:aux|a destination des) " + _MARKET + r" (?:des|de|d|un|une|les) " + _OFFERING + r"\b"
 )
 #: Désignations institutionnelles admises comme sujet à la place du nom de
 #: la victime. Volontairement limitée : « la mairie » et « la municipalité »
@@ -50,7 +76,7 @@ _PREFIX = re.compile(
 _SUBJECT = re.compile(
     r"^(?:est|sont|etait|entreprise|societe|reseau|plateforme|service|dispositif|"
     r"cooperative|organisme|etablissement|association|groupe|specialis\w*|"
-    r"commercialis\w*|vend\w*|propose|permet|intervient|exerce|assure|"
+    r"commercialis\w*|vend\w*|propose|fournit|fournissent|permet|intervient|exerce|assure|"
     r"developp\w*|edite\w*|editeur|fabrique|represente|accompagne|"
     r"transporte|distribue|gere|informe|confirme|le service|la plateforme)\b"
 )
@@ -103,7 +129,7 @@ def supported_activity(organisation: str, value: str, evidence: str) -> bool:
         return False
     if re.search(r"\b(?:utilise|fait appel|client de|via)\b", body):
         return False
-    return bool(value and _ACTIVITY.search(body))
+    return bool(value and (_ACTIVITY.search(body) or _OFFER.search(body)))
 
 
 def contextual_proof(organisation: str, evidence: str, context: str) -> str:
@@ -144,9 +170,18 @@ def activity_from_text(organisation: str, *texts: str) -> tuple[str, str]:
     return proof, proof
 
 
-def names_third_party(evidence: str) -> bool:
-    """La citation attribue l'activité décrite à un prestataire ou un client."""
-    return bool(_THIRD_PARTY.search(searchable(evidence)))
+def names_third_party(organisation: str, evidence: str) -> bool:
+    """La citation attribue l'activité décrite à un prestataire ou un client.
+
+    La seule présence d'un nom de tiers n'attribue rien : il faut que la phrase
+    fasse du tiers le sujet, le lieu ou le moyen de l'activité, ou de la
+    victime son complément.
+    """
+    proof = searchable(evidence)
+    if _THIRD_PARTY_ATTRIBUTION.search(proof):
+        return True
+    span = organisation_span(organisation, evidence)
+    return bool(span and _THIRD_PARTY_OWNER.search(proof[:span[0]].strip()))
 
 
 def victim_is_identifiable(organisation: str, evidence: str) -> bool:

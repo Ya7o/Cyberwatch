@@ -19,12 +19,46 @@ _GENERIC = re.compile(
     r"(?:entra[iî]n[ée]|provoqu[ée]|caus[ée]|confirm[ée])\s+(?:une\s+)?(?:exfiltration|fuite)\s+de\s+donn[ée]es\.?$",
     re.I,
 )
-_EDITORIAL_TITLE = re.compile(
-    r"^(?=[^:\n]{2,80}:\s+)(?=.*\b(?:cyberattaque|ransomware|attaque|intrusion|fuite|pirat\w*|"
-    r"donn[ée]es|menac[ée]s?|revendiqu[ée]s?|publie\w*\s+(?:\d[\d\s ,.]*\s+)?"
-    r"(?:r[ée]servations|fichiers?|bases?))\b).+$",
+#: Têtes de libellé d'un pseudo-champ (« Impact : … », « Données : … ») : le
+#: vocabulaire des champs eux-mêmes, pas celui des incidents.
+_FIELD_LABEL = re.compile(
+    r"^(?:impacts?|donn[ée]es|vecteurs?|d[ée]roul[ée]s?|[ée]l[ée]ments|statuts?|dates?|types?|"
+    r"cat[ée]gories?|victimes?|secteurs?|menaces?|sources?|acteurs?|revendications?|"
+    r"cons[ée]quences?|p[ée]rim[èe]tres?|origines?|nature|causes?|mesures?|chiffres|"
+    r"volum[ée]trie|localisation|lieu|pays|r[ée]sum[ée]|description|contexte)\b",
     re.I,
 )
+_WORD = re.compile(r"[\w’'-]+")
+_LIST_SEPARATOR = re.compile(r"\s*[,;/]\s*|\s+(?:et|ou)\s+")
+_DETERMINER = re.compile(
+    r"^(?:les?|la|l['’]|des|du|de|d['’]|un|une|ses|son|sa|leurs?|plus|pr[èe]s)\b", re.I
+)
+
+
+def _is_editorial_title(text: str) -> bool:
+    """« Sujet : fait » plutôt que « libellé : valeur » ou « libellé : liste ».
+
+    La structure décide, pas un vocabulaire d'incident : un préfixe qui est une
+    proposition (« GreenGo victime d'une cyberattaque ») porte le titre ; un
+    préfixe court (un nom) exige un corps qui énonce un fait, et non une
+    énumération nue de valeurs.
+    """
+    prefix, _, body = text.partition(": ")
+    prefix, body = prefix.strip(), body.strip().rstrip(".")
+    if not 2 <= len(prefix) <= 80 or ": " in body:
+        return False
+    prefix_words = _WORD.findall(prefix)
+    if len(prefix_words) <= 3 and _FIELD_LABEL.match(prefix):
+        return False
+    if len(prefix_words) >= 3:
+        return True
+    if len(_WORD.findall(body)) < 3:
+        return False
+    items = [part.strip() for part in _LIST_SEPARATOR.split(body) if part.strip()]
+    bare_list = len(items) >= 2 and all(
+        len(part.split()) <= 3 and not _DETERMINER.match(part) for part in items
+    )
+    return not bare_list
 
 
 _MARKDOWN_EMPHASIS_RE = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
@@ -59,7 +93,7 @@ def rejection_reason(value: object) -> str:
     # mais il est courant dans un vrai titre éditorial (« Organisation :
     # attaque… »). Le rejeter sans nuance privait notamment les articles
     # Cyberattaque.org d'une headline source pourtant directement prouvée.
-    if ": " in text and not _EDITORIAL_TITLE.match(text):
+    if ": " in text and not _is_editorial_title(text):
         return "list_or_prefix"
     if _TECHNICAL.search(text):
         return "technical_fragment"
