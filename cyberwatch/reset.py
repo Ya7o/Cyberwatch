@@ -23,6 +23,7 @@ GENERATED_FILES = (
     "source_facts_ai_cache.json", "source_facts_ai_trace.json",
     "source_facts_ai_contexts.json", "source_facts_ai_usage.json",
     "source_facts_retry_queue.json", "cyberattaque_semantic_cache.json",
+    "sector_semantic_cache.json", "sector_semantic_trace.json",
     "llm_usage.json", "performance_runs.json", "august_quality_audit.json",
     "editorial_repair_report.json", "qualification_repair_report.json",
     "sector_dedup_backfill_report.json", "sector_repair_report.json",
@@ -31,6 +32,7 @@ GENERATED_FILES = (
 RUNTIME_PATH_OPTIONS = (
     "SOURCE_FACTS_AI_CACHE_PATH", "SOURCE_FACTS_AI_STATS_PATH",
     "SOURCE_FACTS_RETRY_QUEUE_PATH", "CYBERATTAQUE_SEMANTIC_CACHE_PATH",
+    "SECTOR_SEMANTIC_CACHE_PATH", "SECTOR_SEMANTIC_TRACE_PATH",
     "LLM_USAGE_PATH", "CYBERWATCH_PERFORMANCE_LOG_PATH",
 )
 

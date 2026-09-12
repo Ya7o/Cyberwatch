@@ -370,6 +370,12 @@ STRUCTURED_SECTOR_AMBIGUOUS = frozenset({
     "particulier",
     "particuliers",
     # Revendiquent plusieurs secteurs à la fois : aucun ne peut être retenu.
+    # Rubrique composite de FRENCHBREACHES : « télécom » relève de Numérique /
+    # Technologie (cf. l'alias `telecommunications`) et « médias » de Culture /
+    # Médias / Loisirs. Retenir l'un des deux serait un tirage au sort : c'est
+    # l'activité étayée de l'article qui tranche, jamais la rubrique.
+    # searchable("Télécom & Médias") == "telecom medias".
+    "telecom medias",
     "multi sector",
     "multi sectoriel",
     "multisectoriel",

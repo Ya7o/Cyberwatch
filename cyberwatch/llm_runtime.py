@@ -38,6 +38,10 @@ DEFAULT_TASK_BUDGETS = {
     "cyberattaque_semantic": {"max_calls": 250, "max_cost_usd": 0.75},
     "editorial_semantic": {"max_calls": 250, "max_cost_usd": 0.75},
     "dedup": {"max_calls": 200, "max_cost_usd": 0.50},
+    # Mapper de second niveau : une phrase et dix-sept libellés par appel.
+    # Le plafond ne mord jamais en régime ; il borne une régression du
+    # portillon qui appellerait sur chaque ligne au lieu des seuls trous.
+    "sector_taxonomy": {"max_calls": 40, "max_cost_usd": 0.01},
 }
 
 

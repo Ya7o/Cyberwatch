@@ -140,6 +140,29 @@ def structured_sector_status(given: str = "") -> str:
     return "UNMAPPED"
 
 
+def structured_sector_vocabulary(facts) -> dict[str, dict[str, list[str]]]:
+    """Répartit les rubriques brutes observées par décision de vocabulaire.
+
+    Une seule lecture pour deux usages : l'audit hors ligne
+    (``scripts/audit_sectors.py``) et l'alerte de santé (:mod:`production`).
+    Aucune valeur ne tombe entre les mailles — chacune reçoit l'un des statuts
+    de :func:`structured_sector_status`, avec les sources qui l'émettent. Ce
+    qui sort en ``UNMAPPED`` est un trou de vocabulaire à combler, jamais à
+    deviner : une rubrique incomprise ne devient pas un secteur.
+    """
+    observed: dict[str, set[str]] = {}
+    for fact in facts:
+        raw = str(fact.get("Source_Sector_Raw") or "").strip()
+        if raw:
+            observed.setdefault(raw, set()).add(str(fact.get("Source_ID") or ""))
+    partition: dict[str, dict[str, list[str]]] = {
+        status: {} for status in STRUCTURED_SECTOR_STATUSES
+    }
+    for raw, emitters in sorted(observed.items()):
+        partition[structured_sector_status(raw)][raw] = sorted(emitters)
+    return partition
+
+
 def _watchlist_sector(organisation: str) -> str:
     """Secteur d'une entité de veille exactement reconnue, aliases inclus."""
     key = organisation_key(organisation)

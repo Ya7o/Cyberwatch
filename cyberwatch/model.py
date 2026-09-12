@@ -349,6 +349,12 @@ SOURCE_FACT_COLUMNS = [
     # Proposition issue de la même extraction de faits ; elle ne remplace pas
     # le secteur déterministe de l'incident.
     "Activity_Sector_Match",
+    # Rapprochement sémantique de second niveau, calculé en amont par
+    # `sector_semantic` quand ni le déterministe ni le premier appel source
+    # facts ne savent mapper une activité pourtant prouvée. Colonne distincte :
+    # la fusion traite `Activity_Sector_Match` comme rafraîchissable et l'audit
+    # de matérialisation y vérifie la réponse du premier appel, et elle seule.
+    "Activity_Sector_Semantic",
     "Affected_Count",
     "Affected_Unit",
     "Affected_Count_Raw",

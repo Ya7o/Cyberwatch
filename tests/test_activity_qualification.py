@@ -130,6 +130,44 @@ def _pair(evidence, sector="Numérique / Technologie"):
     }
 
 
+def test_salt_mobile_une_forme_juridique_postposee_ne_perd_plus_la_preuve():
+    """RUN-20260911T221912 : proposition littérale valide, refusée à tort.
+
+    Deux verrous indépendants la rejetaient, aucun lié à la confiance ni à
+    l'ancrage : `_SUBJECT` est ancré après le nom de la victime et « SA »
+    s'intercalait, et le lexique fermé `_ACTIVITY` ne contient aucun terme
+    télécom. C'est la vraie fonction de validation qui est exercée ici.
+    """
+    proof = ("Salt Mobile SA est un opérateur suisse de téléphonie mobile, "
+             "internet fixe et télévision.")
+    proposal = {
+        "activity_description": {"value": proof, "evidence": proof, "confidence": 0.93},
+        "activity_sector_match": {"value": "Numérique / Technologie",
+                                  "evidence": proof, "confidence": 0.85},
+    }
+    result, reasons = normalize_activity(proposal, proof, "Salt Mobile")
+    assert result["activity_description"]["evidence"] == proof
+    assert result["activity_sector_match"]["value"] == "Numérique / Technologie"
+    assert reasons == {}
+
+
+@pytest.mark.parametrize("evidence", [
+    # Le chemin générique accepte une FORME d'identité métier, jamais un récit
+    # d'incident, une simple appartenance ni une tête catégorielle nue.
+    "Acme est une victime de rançongiciel.",
+    "Acme est l'une des victimes de la fuite.",
+    "Acme est une entreprise touchée par la cyberattaque.",
+    "Acme est une entreprise qui a subi une intrusion.",
+    "Acme est une société française.",
+    "Acme est un groupe international.",
+    "Acme est une filiale du groupe Beta.",
+])
+def test_le_chemin_predicatif_generique_ne_relache_pas_le_contrat(evidence):
+    result, reasons = normalize_activity(_pair(evidence), evidence, "Acme")
+    assert result == {}
+    assert reasons["activity_sector_match"] == "NO_VALID_ACTIVITY_PAIR"
+
+
 @pytest.mark.parametrize("organisation,evidence", [
     ("Brevo", "Brevo fournit aux entreprises des outils permettant de gérer leurs relations clients."),
     ("Acme", "Acme développe un logiciel de gestion des fournisseurs."),

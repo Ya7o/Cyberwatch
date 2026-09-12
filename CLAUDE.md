@@ -18,6 +18,13 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 - `Item_ID`, `Organisation_Key` et `Incident_ID` sont reproductibles.
 - Le LLM ne contourne pas les règles déterministes d'identité ou de fusion.
 - Une réponse LLM invalide conserve le résultat déterministe.
+- Le déterministe traite les cas connus et sûrs ; il n'a pas à être exhaustif.
+  Quand une activité métier est prouvée mais qu'aucune règle ne sait la
+  rattacher, le LLM ne fait que le mapping sémantique vers `config.SECTORS`.
+  Sans activité prouvée, le système préfère `Inconnu` à une supposition.
+- Le mapper sectoriel sémantique s'exécute **en amont** et persiste son
+  verdict ; `sector_resolution.resolve_item` reste une fonction pure, sans
+  réseau ni clé API — `check`, le site et la reprise l'appellent.
 
 ## Surface opérationnelle
 

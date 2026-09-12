@@ -42,7 +42,11 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           # Plafond partagé par l'enrichissement et la déduplication.
-          LLM_MAX_COST_USD_PER_RUN: "0.03"
+          # Plafond partagé par l'enrichissement, la déduplication et le
+          # mapper sectoriel. Relevé de 0.03 à 0.035 : le run du 11/09 a
+          # consommé 0.0260 en source_facts seul, et le mapper s'exécute
+          # après — sans marge il serait coupé en budget_blocked.
+          LLM_MAX_COST_USD_PER_RUN: "0.035"
           DEDUP_AI_DAILY_ENABLED: "1"
         run: python -m cyberwatch maj
       - name: Purger la base

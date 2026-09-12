@@ -11,7 +11,7 @@ from .model import Incident, Item
 from .normalize import organisation_key
 
 SECTOR_UNKNOWN_TARGET_PCT = 10.0  # Alerte, jamais un secteur par défaut.
-POLICY_VERSION = "2026-09-11.sector.4"
+POLICY_VERSION = "2026-09-12.sector.5"
 
 
 @dataclass(frozen=True)
@@ -50,6 +50,15 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
         return reported or (_unknown("ORPHAN_SECTOR_MATCH") if _valid(matched) else None)
     if not supported_activity(item.Organisation_Raw, activity, proof):
         return reported or _unknown("ACTIVITY_EVIDENCE_REJECTED", proof)
+    # Rapprochement sémantique de second niveau, calculé en amont pendant la
+    # consolidation des SourceFacts et persisté : cette fonction ne fait que le
+    # LIRE. `resolve_item` est aussi appelée par `check`, par le site, par la
+    # réparation et par la boucle de reprise — un appel réseau ici les rendrait
+    # non déterministes, payants et dépendants d'une clé API. Promu dans
+    # `matched`, le verdict hérite de tout l'aval sans rien dupliquer :
+    # SEMANTIC_ACTIVITY_MATCH, confiance 0.80 et ACTIVITY_SECTOR_CONFLICT.
+    if not _valid(matched):
+        matched = str(fact.get("Activity_Sector_Semantic") or "").strip()
     rule = sector_policy.classify_sector_activity(activity)
     proof_rule = sector_policy.classify_sector_activity(proof)
     if _valid(proof_rule) and _valid(rule) and proof_rule != rule:
@@ -73,19 +82,26 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
     return reported or _unknown("ACTIVITY_TAXONOMY_UNRESOLVED", proof)
 
 
-def _unmapped_source_sector(fact: dict) -> SectorDecision | None:
-    """Distingue « aucune preuve » de « rubrique de source non reconnue ».
+def _unresolved_source_sector(fact: dict) -> SectorDecision | None:
+    """Distingue « aucune preuve », « rubrique ambiguë » et « rubrique inconnue ».
 
     Motif d'audit seulement : le secteur reste Inconnu, la valeur brute est
-    conservée en preuve pour que le vocabulaire manquant soit corrigé plutôt que
-    dilué dans NO_ACTIVITY_EVIDENCE. Émis en dernier ressort, après la décision
-    précédente et le secteur hérité : une rubrique incomprise ne prime sur
-    aucune preuve existante.
+    conservée en preuve. Les deux motifs appellent des correctifs opposés — une
+    rubrique composite (« Télécom & Médias » : télécom relève de Numérique /
+    Technologie, médias de Culture / Médias / Loisirs) est une décision déjà
+    tranchée dans ``config.STRUCTURED_SECTOR_AMBIGUOUS``, alors qu'un libellé
+    inédit est un vocabulaire à compléter. Les confondre ferait signaler
+    indéfiniment un trou déjà instruit. Émis en dernier ressort, après la
+    décision précédente et le secteur hérité : une rubrique non résolue ne
+    prime sur aucune preuve existante.
     """
     raw = str(fact.get("Source_Sector_Raw") or "").strip()
     if not raw or _valid(sector_policy.classify_source_sector(raw)):
         return None
-    return _unknown("SOURCE_SECTOR_RAW_UNMAPPED", raw)
+    ambiguous = sector_policy.structured_sector_status(raw) == "EXPLICITLY_UNRESOLVED"
+    return _unknown(
+        "SOURCE_SECTOR_RAW_AMBIGUOUS" if ambiguous else "SOURCE_SECTOR_RAW_UNMAPPED", raw
+    )
 
 
 def _decision_from_reference(item: Item, reference: dict) -> SectorDecision | None:
@@ -103,6 +119,12 @@ def _previous_decision(item: Item, previous: dict) -> SectorDecision | None:
         return None
     if previous.get("Reason") == "DEFAULT_OPERATIONAL_FALLBACK":
         return _unknown()
+    if not _valid(item.Sector):
+        # Préserver un secteur acquis a du sens ; préserver un motif d'audit
+        # Inconnu n'en a pas. Une rubrique reconnue ambiguë depuis le run
+        # précédent doit cesser d'être signalée comme vocabulaire manquant :
+        # le motif est recalculé avec ce que la politique sait aujourd'hui.
+        return None
     try:
         confidence = float(previous.get("Confidence") or 0)
     except (ValueError, TypeError):
@@ -133,7 +155,7 @@ def resolve_item(
     if _valid(item.Sector):
         return SectorDecision(item.Sector, "reported", "LEGACY_KNOWN_SECTOR", 0.50,
                               item.Sector, item.URL)
-    return _unmapped_source_sector(fact) or _unknown()
+    return _unresolved_source_sector(fact) or _unknown()
 
 
 def resolve_items(

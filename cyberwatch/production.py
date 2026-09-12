@@ -6,7 +6,8 @@ import datetime as dt
 import json
 from pathlib import Path
 
-from . import config, duplicate_audit, incident_dedup, org_identity, qualification, store
+from . import (config, duplicate_audit, incident_dedup, org_identity, qualification,
+               sector, store)
 from . import dedup as dedup_engine
 from .model import Incident, Item
 from .normalize import classify_location, classify_sector, classify_threat, looks_cyber
@@ -387,6 +388,20 @@ def _sector_status_groups(rows: list[dict]) -> tuple[list[dict], list[dict], lis
     return inferred, referenced, low
 
 
+def unmapped_source_sector_labels(rows: list[dict] | None = None) -> list[str]:
+    """Rubriques de source qu'aucune décision de vocabulaire ne couvre encore.
+
+    Trou de vocabulaire, jamais incohérence de base : la collecte doit pouvoir
+    publier ses artefacts d'audit, qui sont précisément ce qui permet de
+    combler le trou. Le contrôle vit donc ici, en alerte de qualité nommant les
+    libellés fautifs, et non dans ``cyberwatch check``, qui bloquerait la
+    publication du corpus qui les met au jour. Une rubrique volontairement
+    ambiguë n'en fait pas partie : sa décision est déjà prise.
+    """
+    facts = store.load_source_facts() if rows is None else rows
+    return sorted(sector.structured_sector_vocabulary(facts)["UNMAPPED"])
+
+
 def _dedup_alert_reasons(snapshot: dict, latest: dict) -> list[str]:
     """Motifs d'alerte issus de la revue de déduplication du run publié."""
     reasons: list[str] = []
@@ -431,6 +446,13 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
     sector_rows = store.load_sector_resolution()
     inferred_rows, referenced_rows, low_rows = _sector_status_groups(sector_rows)
     reasons = _dedup_alert_reasons(snapshot, latest)
+    unmapped_labels = unmapped_source_sector_labels()
+    if unmapped_labels:
+        # Publié malgré tout — le corpus reste cohérent — mais jamais invisible :
+        # une rubrique inédite doit être tranchée, pas subie ni devinée.
+        reasons.append(
+            "rubrique(s) de source non reconnue(s) : " + ", ".join(unmapped_labels)
+        )
     qualification_payload = qualification.payload(str(snapshot.get("Run_ID", "") or ""))
     if qualification_payload["state"] == qualification.STATE_PARTIAL:
         # Le run est publié — les contrôles d'intégrité restent bloquants et
@@ -479,6 +501,7 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
             "sector_referenced_items": len(referenced_rows),
             "sector_non_confirmed_items": len(inferred_rows) + len(referenced_rows),
             "sector_low_confidence_items": len(low_rows),
+            "source_sector_unmapped_labels": unmapped_labels,
             "location_unknown_pct": None if location_unknown_pct < 0 else location_unknown_pct,
             "location_unknown_target_pct": LOCATION_UNKNOWN_TARGET_PCT,
             "potential_duplicate_pairs": int(_float(latest.get("Potential_Duplicate_Pairs"))),
@@ -538,6 +561,9 @@ def markdown_report(payload: dict) -> str:
         f"- Succès planifiés : **{scheduled_rate}** sur {reliability['observed']} run(s) observé(s) (cible ≥ {reliability['target_pct']:.0f} %)",
         f"- Série planifiée : **{reliability['consecutive_successes']}/{reliability['required_consecutive_successes']}** succès consécutifs réels",
         f"- Secteur inconnu : **{sector_unknown}** (cible < {quality['sector_unknown_target_pct']:.0f} %)",
+        "- Rubriques source non reconnues : **{}**".format(
+            ", ".join(quality["source_sector_unmapped_labels"]) or "aucune"
+        ),
         f"- Localisation inconnue : **{location_unknown}** (cible < {quality['location_unknown_target_pct']:.0f} %)",
         "- Doublons potentiellement manqués : **{}**".format(
             quality["missed_duplicate_candidate_pairs"]

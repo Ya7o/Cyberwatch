@@ -136,6 +136,70 @@ def test_rubrique_de_source_qualifie_sans_activite_ni_llm():
     assert decision.evidence == "Technologie"
 
 
+def test_une_rubrique_composite_n_empeche_pas_l_activite_de_qualifier():
+    """RUN-20260911T221912 : « Télécom & Médias » est ambigu, la preuve ne l'est pas.
+
+    La rubrique combine deux familles de la taxonomie ; l'activité métier
+    explicitement prouvée tranche à sa place, et surtout pas SOURCE_SECTOR_RAW.
+    """
+    proof = ("Salt Mobile SA est un opérateur suisse de téléphonie mobile, "
+             "internet fixe et télévision.")
+    decision = sector_resolution.resolve_item(
+        _item("Salt Mobile"),
+        {"Source_Sector_Raw": "Télécom & Médias", "Activity_Description": proof,
+         "Activity_Sector_Match": config.SECTOR_TECH,
+         "Evidence_JSON": json.dumps({"Activity_Description": proof})},
+        {},
+    )
+    assert (decision.sector, decision.status, decision.reason) == (
+        config.SECTOR_TECH, "inferred", "SEMANTIC_ACTIVITY_MATCH")
+    assert decision.confidence == 0.80
+    assert decision.evidence == proof
+
+
+def test_une_activite_inedite_est_mappee_sans_que_le_deterministe_la_connaisse():
+    """Le déterministe traite les cas sûrs ; il n'a pas à être exhaustif.
+
+    Aucune règle de `SECTOR_ACTIVITY_RULES` ne connaît cette formulation : le
+    rapprochement sémantique doit pouvoir la rattacher à la taxonomie.
+    """
+    proof = ("Acme est un opérateur de constellations de nanosatellites "
+             "en orbite basse.")
+    assert sector_resolution.sector_policy.classify_sector_activity(proof) == (
+        config.SECTOR_UNKNOWN)
+    decision = sector_resolution.resolve_item(
+        _item("Acme"),
+        {"Activity_Description": proof, "Activity_Sector_Match": config.SECTOR_TECH,
+         "Evidence_JSON": json.dumps({"Activity_Description": proof})},
+        {},
+    )
+    assert (decision.sector, decision.reason) == (
+        config.SECTOR_TECH, "SEMANTIC_ACTIVITY_MATCH")
+
+
+def test_une_marque_sans_preuve_reste_inconnue_de_bout_en_bout():
+    """Le LLM ne devine pas : sans activité prouvée, Inconnu est la réponse."""
+    decision = sector_resolution.resolve_item(_item("Qare"), {}, {})
+    assert (decision.sector, decision.status, decision.reason) == (
+        config.SECTOR_UNKNOWN, "unknown", "NO_ACTIVITY_EVIDENCE")
+    assert decision.confidence == 0.0
+
+
+def test_une_rubrique_ambigue_n_est_pas_un_vocabulaire_manquant():
+    """« Connu mais volontairement ambigu » et « jamais analysé » diffèrent.
+
+    Les deux rendent Inconnu, mais l'un est une décision déjà instruite et
+    l'autre un trou de vocabulaire à combler : les confondre ferait signaler
+    indéfiniment un cas tranché.
+    """
+    decision = sector_resolution.resolve_item(
+        _item(), {"Source_Sector_Raw": "Télécom & Médias"}, {})
+    assert (decision.sector, decision.status, decision.reason) == (
+        config.SECTOR_UNKNOWN, "unknown", "SOURCE_SECTOR_RAW_AMBIGUOUS")
+    assert decision.confidence == 0.0
+    assert decision.evidence == "Télécom & Médias"
+
+
 def test_rubrique_non_reconnue_est_nommee_et_non_confondue_avec_une_absence():
     decision = sector_resolution.resolve_item(
         _item(), {"Source_Sector_Raw": "Cryogénie quantique"}, {})
@@ -163,8 +227,26 @@ def test_une_rubrique_incomprise_ne_prime_sur_aucune_preuve_existante():
     assert rows[0]["Reason"] == "REFERENCE_EXACT"
 
 
+def test_un_motif_d_audit_perime_est_recalcule_et_non_preserve():
+    """Un secteur acquis se préserve ; un motif d'audit Inconnu se recalcule.
+
+    « Télécom & Médias » était signalé comme vocabulaire manquant avant d'être
+    reconnu ambigu. Sans recalcul, la ligne resterait indéfiniment en
+    SOURCE_SECTOR_RAW_UNMAPPED et l'alerte de production porterait à faux.
+    """
+    previous = [{"Item_ID": "ITM-test", "Resolved_Sector": config.SECTOR_UNKNOWN,
+                 "Status": "unknown", "Reason": "SOURCE_SECTOR_RAW_UNMAPPED",
+                 "Confidence": "0.00", "Evidence": "Télécom & Médias"}]
+    rows = sector_resolution.resolve_items(
+        [_item()], [{"Item_ID": "ITM-test", "Source_Sector_Raw": "Télécom & Médias"}],
+        {}, previous_rows=previous)
+    assert rows[0]["Resolved_Sector"] == config.SECTOR_UNKNOWN
+    assert rows[0]["Reason"] == "SOURCE_SECTOR_RAW_AMBIGUOUS"
+
+
 def test_le_motif_d_audit_n_est_pas_une_preuve_recevable():
     assert "SOURCE_SECTOR_RAW_UNMAPPED" not in sector_resolution.SUPPORTED_REASONS
+    assert "SOURCE_SECTOR_RAW_AMBIGUOUS" not in sector_resolution.SUPPORTED_REASONS
     rows = [{"Resolved_Sector": config.SECTOR_UNKNOWN, "Reason": "SOURCE_SECTOR_RAW_UNMAPPED"},
             {"Resolved_Sector": config.SECTOR_TECH, "Reason": "ACTIVITY_RULE"}]
     assert sector_resolution.component_sector_rows(rows) == config.SECTOR_TECH

@@ -66,6 +66,9 @@ def test_cibles_qualite_declenchent_une_alerte_sans_fausser_les_valeurs(monkeypa
     })
     monkeypatch.setattr(store, "load_snapshot", lambda: {"As_Of": "2026-09-01T00:00:00+00:00"})
     monkeypatch.setattr(store, "load_run_log", lambda: [])
+    # Hermétique : sans cela, le nombre de motifs dépendrait du vocabulaire
+    # réellement publié dans data/source_facts.csv.
+    monkeypatch.setattr(store, "load_source_facts", lambda: [])
     monkeypatch.setattr(store, "load_incidents", lambda: [
         Incident(Secteur="Inconnu" if index < 4 else "Santé", Localisation="Inconnu" if index == 0 else "France métropolitaine")
         for index in range(20)

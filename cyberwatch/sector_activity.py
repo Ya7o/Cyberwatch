@@ -80,6 +80,65 @@ _SUBJECT = re.compile(
     r"developp\w*|edite\w*|editeur|fabrique|represente|accompagne|"
     r"transporte|distribue|gere|informe|confirme|le service|la plateforme)\b"
 )
+#: Une forme juridique postposée n'est pas le prédicat de la phrase : « Salt
+#: Mobile SA est un opérateur… » a le même sujet que « Salt Mobile est un
+#: opérateur… ». Sans ce retrait, le corps analysé commence par « sa », que
+#: `_SUBJECT` ne reconnaît pas, et une preuve littérale valide est perdue. Le
+#: retrait n'a lieu qu'en TÊTE de corps, juste après le nom de la victime :
+#: `as`, `se` et `ab` sont des mots courants ailleurs dans la phrase.
+_LEGAL_LEAD = re.compile(
+    r"^(?:sa|sas|sasu|sarl|scop|spa|ag|gmbh|ltd|llc|inc|plc|bv|nv|se|srl|ab|oy|as|kg)\b\s*"
+)
+#: Le récit de la victimisation reste hors du contrat de preuve, y compris par
+#: le chemin générique ci-dessous : « est une entreprise touchée par la
+#: cyberattaque » décrit l'incident, pas le métier.
+_INCIDENT_TERM = re.compile(
+    r"\b(?:victimes?|cibles?|ciblee?s?|touchee?s?|concernee?s?|piratee?s?|attaquee?s?|"
+    r"attaquants?|compromis\w*|intrusion|cyberattaques?|failles?|fuites?|rancongiciels?|"
+    r"ransomware|incidents?|breche\w*|violation\w*|subi\w*|exfiltr\w*|revendiqu\w*)\b"
+)
+#: L'appartenance à un groupe n'est pas une activité. La règle est déjà portée
+#: par le prompt d'extraction ; elle est répétée ici parce que le chemin
+#: générique contourne le lexique `_ACTIVITY` qui l'appliquait implicitement.
+_MEMBERSHIP = re.compile(
+    r"\b(?:filiales?|appartient|appartenant|detenue?|propriete|marque du groupe)\b"
+)
+#: Une tête de phrase purement catégorielle (« est une société ») ne dit rien
+#: du métier : elle n'est retenue que complétée (« une société DE transport »).
+_GENERIC_HEAD = re.compile(
+    r"^(?:est|sont)\s+(?:un|une|des)\s+(?:societes?|entreprises?|groupes?|structures?|"
+    r"organisations?|firmes?|compagnies?|marques?|enseignes?|pme|tpe|start up|startups?|"
+    r"acteurs?)\b"
+)
+#: Déterminant INDÉFINI seul : « est un opérateur de… » prédique une identité
+#: métier, « est l'une des principales communes » est un partitif qui situe la
+#: victime dans un ensemble sans la décrire.
+_PREDICATIVE = re.compile(r"^(?:est|sont)\s+(?:un|une|des)\s+\w+")
+_COMPLEMENT = re.compile(r"\b(?:de|d|en|dans|pour|specialis\w*)\b\s+\w+")
+
+
+def business_predicate(body: str) -> bool:
+    """Identité métier prédiquée, quand aucun terme du lexique fermé ne figure.
+
+    `_ACTIVITY` est une liste d'activités réellement observées : elle ne peut
+    pas couvrir l'ensemble des métiers — aucun terme télécom n'y figure, d'où
+    le rejet mesuré de « Salt Mobile SA est un opérateur suisse de téléphonie
+    mobile ». Ce chemin accepte la *forme grammaticale* de l'identité métier,
+    « X est un <nom> … », plutôt que son vocabulaire, sous trois gardes : pas
+    de récit d'incident, pas de simple appartenance à un groupe, pas de tête
+    catégorielle vide de complément.
+
+    Volontairement limité à la copule. Une variante verbale (verbe conjugué +
+    complément d'objet, pour couvrir « conçoit des systèmes… ») a été mesurée
+    sur le corpus : elle accepte « Brevo confirme une faille… » et « Printemps
+    informé le 20 août ». Elle est écartée et ne doit pas être réintroduite.
+    """
+    if _INCIDENT_TERM.search(body) or _MEMBERSHIP.search(body):
+        return False
+    generic = _GENERIC_HEAD.search(body)
+    if generic:
+        return bool(_COMPLEMENT.search(body[generic.end():]))
+    return bool(_PREDICATIVE.search(body))
 
 
 def organisation_span(organisation: str, evidence: str) -> tuple[int, int] | None:
@@ -120,7 +179,7 @@ def supported_activity(organisation: str, value: str, evidence: str) -> bool:
     else:
         if _THIRD_PARTY.search(proof[:span[0]]):
             return False
-        body = proof[span[1]:].strip()
+        body = _LEGAL_LEAD.sub("", proof[span[1]:].strip())
         if not _SUBJECT.search(body):
             return False
     if describes_incident(value):
@@ -129,7 +188,8 @@ def supported_activity(organisation: str, value: str, evidence: str) -> bool:
         return False
     if re.search(r"\b(?:utilise|fait appel|client de|via)\b", body):
         return False
-    return bool(value and (_ACTIVITY.search(body) or _OFFER.search(body)))
+    return bool(value and (_ACTIVITY.search(body) or _OFFER.search(body)
+                           or business_predicate(body)))
 
 
 def contextual_proof(organisation: str, evidence: str, context: str) -> str:

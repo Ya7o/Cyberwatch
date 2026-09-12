@@ -8,7 +8,7 @@ import os
 from collections import defaultdict
 from dataclasses import dataclass, field
 
-from . import article_body, config, dedup_ai, dedup_review, enrichment, identity, incident_dedup, incident_identity, llm_runtime, org_identity, production, runner_dedup, runner_ingestion, runner_source_facts, sector as sector_policy, sector_resolution, source_facts, source_facts_ai, source_facts_retry, sources, status, store, watchlists
+from . import article_body, config, dedup_ai, dedup_review, enrichment, identity, incident_dedup, incident_identity, llm_runtime, org_identity, production, runner_dedup, runner_ingestion, runner_source_facts, sector as sector_policy, sector_resolution, sector_semantic, source_facts, source_facts_ai, source_facts_retry, sources, status, store, watchlists
 from .runner_support import (
     code_commit,
     repair_item_integrity,
@@ -566,6 +566,7 @@ class RunReport:
     source_facts: list[dict] = field(default_factory=list)
     source_facts_retry_summary: dict = field(default_factory=dict)
     sector_resolution_rows: list[dict] = field(default_factory=list)
+    sector_semantic_ids: list[str] = field(default_factory=list)
     incident_id_registry: list[dict] = field(default_factory=list)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
@@ -808,6 +809,14 @@ def execute(
     )
     report.source_facts, _sanitized_fact_ids = source_facts.sanitize_source_facts(
         report.source_facts
+    )
+    # Après `sanitize` — une activité disqualifiée ne peut pas recevoir de
+    # secteur — et avant `finalize_snapshot`, pour que la colonne soit lisible
+    # dès la première résolution. Balaie tout le corpus, pas seulement la
+    # fenêtre du jour. Sans clé, sans budget ou sur panne : colonne vide et
+    # secteur Inconnu, jamais d'exception.
+    report.sector_semantic_ids = sector_semantic.annotate_source_facts(
+        report.items, report.source_facts, enrichment.load_reference()
     )
     source_facts.apply_event_dates(report.items, report.source_facts)
     enriched = enrichment.finalize_snapshot(

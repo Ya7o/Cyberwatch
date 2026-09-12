@@ -21,26 +21,26 @@ def _vocabulary_partition(facts: dict) -> dict:
     Aucune valeur brute ne doit tomber entre les mailles : chacune est soit un
     libellé canonique, soit un alias reconnu, soit un cas volontairement laissé
     ambigu. Tout ce qui sort en UNMAPPED est un trou de vocabulaire à combler.
-    """
-    from cyberwatch.sector import classify_source_sector, structured_sector_status
 
-    observed: dict[str, set] = {}
-    for fact in facts.values():
-        raw = str(fact.get("Source_Sector_Raw") or "").strip()
-        if raw:
-            observed.setdefault(raw, set()).add(str(fact.get("Source_ID") or ""))
-    partition: dict[str, list] = {"CANONICAL": [], "MAPPED": [],
-                                  "EXPLICITLY_UNRESOLVED": [], "UNMAPPED": []}
-    for raw, emitters in sorted(observed.items()):
-        partition[structured_sector_status(raw)].append({
-            "raw": raw,
-            "sector": classify_source_sector(raw),
-            "sources": sorted(emitters),
-        })
+    La partition elle-même vit dans :func:`cyberwatch.sector
+    .structured_sector_vocabulary` : l'audit et l'alerte de production doivent
+    compter les mêmes trous, donc lire le vocabulaire au même endroit.
+    """
+    from cyberwatch.sector import classify_source_sector, structured_sector_vocabulary
+
+    partition = structured_sector_vocabulary(facts.values())
+    values: dict[str, list] = {
+        status: [
+            {"raw": raw, "sector": classify_source_sector(raw), "sources": sources}
+            for raw, sources in rows.items()
+        ]
+        for status, rows in partition.items()
+        if status != "ABSENT"
+    }
     return {
-        "distinct_values": len(observed),
-        "counts": {status: len(rows) for status, rows in partition.items()},
-        "values": partition,
+        "distinct_values": sum(len(rows) for rows in values.values()),
+        "counts": {status: len(rows) for status, rows in values.items()},
+        "values": values,
     }
 
 

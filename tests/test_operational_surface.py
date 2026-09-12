@@ -45,8 +45,14 @@ def test_collect_exposes_daily_update_and_explicit_manual_purge():
 
 
 def test_collect_has_one_explicit_global_ai_budget():
+    """Un seul plafond, explicite, et sa valeur reste sous surveillance.
+
+    Relevé de 0.03 à 0.035 le 12/09 pour laisser passer le mapper sectoriel,
+    qui s'exécute après source_facts (0.0260 au run du 11/09). La valeur reste
+    figée ici : une inflation du budget doit être un choix, pas une dérive.
+    """
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
-    assert 'LLM_MAX_COST_USD_PER_RUN: "0.03"' in content
+    assert 'LLM_MAX_COST_USD_PER_RUN: "0.035"' in content
     assert content.count("MAX_COST_USD_PER_RUN") == 1
 
 

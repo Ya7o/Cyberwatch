@@ -160,6 +160,45 @@ def test_le_statut_rendu_appartient_toujours_au_contrat(given):
     assert structured_sector_status(given) in STRUCTURED_SECTOR_STATUSES
 
 
+def test_un_libelle_ambigu_n_est_mappe_par_aucune_couche():
+    """Un libellé tranché « non résolu » ne doit pas rester mappé ailleurs.
+
+    `STRUCTURED_SECTOR_INDEX` filtre les ambigus, mais `normalize.classify_sector`
+    interroge `ACTIVITY_TO_SECTOR` sans ce filtre : les deux chemins
+    divergeraient si l'intersection cessait d'être vide.
+    """
+    assert not set(config.STRUCTURED_SECTOR_AMBIGUOUS) & set(config.ACTIVITY_TO_SECTOR)
+    assert not set(config.STRUCTURED_SECTOR_AMBIGUOUS) & set(config.STRUCTURED_SECTOR_ALIASES)
+
+
+def test_un_libelle_inedit_est_signale_par_le_controle_de_production():
+    """Le garde-fou ne dépend plus de pytest seul : COLLECT le voit aussi.
+
+    Une rubrique composite déjà tranchée n'alerte pas ; une rubrique jamais
+    analysée alerte, nommément.
+    """
+    from cyberwatch import production
+
+    rows = [
+        {"Item_ID": "ITM-1", "Source_ID": "FRENCHBREACHES",
+         "Source_Sector_Raw": "Secteur quantique"},
+        {"Item_ID": "ITM-2", "Source_ID": "FRENCHBREACHES",
+         "Source_Sector_Raw": "Télécom & Médias"},
+        {"Item_ID": "ITM-3", "Source_ID": "FRENCHBREACHES",
+         "Source_Sector_Raw": "Technologie"},
+    ]
+    assert production.unmapped_source_sector_labels(rows) == ["Secteur quantique"]
+
+
+def test_le_corpus_courant_ne_laisse_aucune_rubrique_non_reconnue():
+    """Même garde-fou que le vocabulaire, mais par le chemin de production."""
+    from cyberwatch import production, store
+
+    if not CORPUS.exists():
+        pytest.skip("corpus absent (base purgée)")
+    assert production.unmapped_source_sector_labels(store.load_source_facts()) == []
+
+
 def test_un_libelle_inedit_est_signale_et_non_devine():
     assert structured_sector_status("Cryogénie quantique") == "UNMAPPED"
     assert classify_source_sector("Cryogénie quantique") == config.SECTOR_UNKNOWN
