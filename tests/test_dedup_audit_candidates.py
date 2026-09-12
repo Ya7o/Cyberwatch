@@ -10,6 +10,23 @@ from cyberwatch.duplicate_audit import (
 )
 
 
+import pytest
+
+from cyberwatch import org_identity
+
+
+@pytest.fixture(autouse=True)
+def _neutral_identity_registry(monkeypatch):
+    """Isole ces tests unitaires du registre d'identité appris en production.
+
+    Le registre `data/organisation_identity_registry.csv` grossit à chaque run :
+    une paire tranchée par le filet LLM devient une équivalence déterministe et
+    disparaît alors des candidats. Ces tests décrivent les signaux de
+    rapprochement, pas l'état du corpus — ils partent donc d'un registre vide.
+    """
+    monkeypatch.setattr(org_identity, "ORGANISATION_IDENTITY_REGISTRY", {})
+
+
 def test_shared_company_id_surfaces_unresolved_identity(make_item):
     left = make_item(source="A", org="Marque Exemple", published="2026-08-10", url="https://a")
     right = make_item(source="B", org="Societe Exemple SAS", published="2026-08-11", url="https://b")
