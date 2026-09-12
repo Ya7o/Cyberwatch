@@ -674,10 +674,16 @@ def _collect_for_run(
     replacement_source_ids = {
         spec.source_id for spec in active_specs if spec.params.get("replace_snapshot")
     }
+    # Une source de remplacement fournit déjà son snapshot complet et validé.
+    # La retailler à la fenêtre quotidienne viderait les jours sans nouvel
+    # événement puis supprimerait son historique lors du remplacement.
     collected_ids = {
         item.Item_ID
         for item in collected
-        if context.window.contains(item.Published_Date)
+        if (
+            item.Source_ID in replacement_source_ids
+            or context.window.contains(item.Published_Date)
+        )
     }
     collected = [item for item in collected if item.Item_ID in collected_ids]
     new_fact_rows = [
