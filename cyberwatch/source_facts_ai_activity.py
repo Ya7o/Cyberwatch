@@ -88,6 +88,39 @@ def field_rejection_kind(field: str, reason: str) -> str:
     return KIND_UNCLASSIFIED
 
 
+#: Champs dont le validateur juge la **citation**, jamais la valeur : un refus
+#: `FIELD_VALIDATION_REJECTED` y désigne une preuve inadaptée à une valeur qui,
+#: elle, reste recevable. Le couple activité/secteur en est exclu : son refus
+#: porte sur l'identité de la victime ou sur la taxonomie, deux décisions
+#: sémantiques qu'aucune nouvelle citation ne doit pouvoir retourner.
+EVIDENCE_BOUND_FIELDS = frozenset({"threat_candidate", "summary", "incident_summary"})
+
+#: Familles réparables sans toucher à la valeur proposée. `EVIDENCE_TOO_LONG`
+#: et `EVIDENCE_NOT_FOUND` disent l'un et l'autre que la citation est mauvaise,
+#: pas que la valeur l'est.
+_REPAIRABLE_KINDS = frozenset({KIND_EVIDENCE_TOO_LONG, KIND_EVIDENCE_NOT_FOUND})
+
+
+def evidence_repair_eligibility(field: str, rejection_code: str, rejection_kind_value: str = "") -> bool:
+    """Ce refus peut-il être levé par une meilleure citation, à valeur égale ?
+
+    La réparation de preuve ne rejuge rien : elle cherche, dans l'article, un
+    extrait exact qui soutient la valeur **déjà proposée**. Un retry ne modifie
+    jamais `value`. Une famille qui exprime un doute du modèle
+    (`LOW_CONFIDENCE`), une abstention (`ABSENT`), une identité incertaine
+    (`AMBIGUOUS_IDENTITY`) ou une taxonomie refusée (`ACTIVITY_NOT_DESCRIBED`,
+    qui recouvre `NO_VALID_ACTIVITY_PAIR` et `NO_VALID_TAXONOMY_MATCH`) n'est
+    donc pas réparable : la citer autrement ne la rendrait pas vraie.
+    """
+    code = str(rejection_code or "").strip()
+    kind = str(rejection_kind_value or "").strip() or field_rejection_kind(field, code)
+    if kind in _REPAIRABLE_KINDS:
+        return True
+    if kind == KIND_FIELD_VALIDATION or code == "FIELD_VALIDATION_REJECTED":
+        return field in EVIDENCE_BOUND_FIELDS
+    return False
+
+
 def is_abstention(reason: str) -> bool:
     """Le modèle n'a rien proposé : décision terminale, pas un échec."""
     return rejection_kind(reason) == KIND_ABSENT
