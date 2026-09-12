@@ -1,4 +1,5 @@
 {
+ "archived_at": "2026-09-12T11:20:59.674150+00:00",
  "entries": [
   {
    "attempts": 0,
@@ -554,5 +555,78 @@
    "reason": "SEMANTIC_REJECTED"
   }
  ],
+ "run_id": "RUN-20260912T151934",
+ "sector_qualification": {
+  "conflict_item_ids": [],
+  "items": 25,
+  "resolved": 22,
+  "resolved_item_ids": [
+   "ITM-1764b17f2c4b5c48",
+   "ITM-26ccc95579f37b49",
+   "ITM-2f18fd4763986071",
+   "ITM-32fe91231131ddf7",
+   "ITM-48ecbdf8da035a41",
+   "ITM-4c238d21765dbe75",
+   "ITM-5366750b9713f248",
+   "ITM-5fea535fff602aa4",
+   "ITM-62e437543f1280c0",
+   "ITM-6d660f08d2bb4755",
+   "ITM-7117d7b0e950425f",
+   "ITM-8e1b34e80f9a2eb7",
+   "ITM-a19da989cf9c4169",
+   "ITM-ba6d921c3cb19b45",
+   "ITM-c468aaef607411be",
+   "ITM-c9f092781992098e",
+   "ITM-d0c4415a4aa024c8",
+   "ITM-d6937a7d84d3f70d",
+   "ITM-e1e3ecdb12ce1f80",
+   "ITM-f4e4e11cbcc11b38",
+   "ITM-fc2b714cad93ff17",
+   "ITM-fdc47ad9dffdbe4d"
+  ],
+  "state": "PARTIAL",
+  "unknown_incidents": 1,
+  "unknown_item_ids": [
+   "ITM-4bd5428d86dc863b",
+   "ITM-8b87c4bab3fdb358",
+   "ITM-d5c554b19f3dcaa9"
+  ]
+ },
+ "summary": {
+  "by_field": {
+   "activity_description": 2,
+   "activity_sector_match": 2
+  },
+  "by_kind": {
+   "ACTIVITY_NOT_DESCRIBED": 3,
+   "AMBIGUOUS_IDENTITY": 1
+  },
+  "by_reason": {
+   "ACTIVITY_IDENTITY_AMBIGUOUS": 1,
+   "CONFIDENCE_REJECTED": 2,
+   "NO_VALID_ACTIVITY_PAIR": 1
+  },
+  "dossiers": 2,
+  "dossiers_pending": 1,
+  "exhausted_fields": 3,
+  "pending_fields": 1,
+  "reasons": [
+   {
+    "fields": 1,
+    "kind": "AMBIGUOUS_IDENTITY",
+    "reason": "ACTIVITY_IDENTITY_AMBIGUOUS"
+   },
+   {
+    "fields": 2,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "CONFIDENCE_REJECTED"
+   },
+   {
+    "fields": 1,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "NO_VALID_ACTIVITY_PAIR"
+   }
+  ]
+ },
  "version": 2
 }

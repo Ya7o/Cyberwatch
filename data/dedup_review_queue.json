@@ -5,7 +5,7 @@
     "right": "ITM-5366750b9713f248",
     "status": "VALIDATION_REJECTED",
     "first_seen": "RUN-20260912T111627",
-    "last_run": "RUN-20260912T111627",
+    "last_run": "RUN-20260912T151934",
     "attempts": 0,
     "same_organisation": "DIFFERENT",
     "same_incident": "DIFFERENT",
@@ -13,6 +13,23 @@
     "reason": "Different explicit organisation names and distinct event dates and impact descriptions — insufficient evidence to treat as same victim or same incident.",
     "blocked_reason": "",
     "input_hash": "8750864e833fb53666108d582a9cbe9e93e614055bab73c933cb820ee66369ef",
+    "model": "gpt-5-mini",
+    "disabled_reason": ""
+  },
+  {
+    "pair_key": "ITM-4c238d21765dbe75|ITM-5366750b9713f248",
+    "left": "ITM-5366750b9713f248",
+    "right": "ITM-4c238d21765dbe75",
+    "status": "UNKNOWN",
+    "first_seen": "RUN-20260912T151934",
+    "last_run": "RUN-20260912T151934",
+    "attempts": 0,
+    "same_organisation": "DIFFERENT",
+    "same_incident": "UNKNOWN",
+    "confidence": 0.9,
+    "reason": "Organisation names are explicit and different; multiple conflicting facts (location, sector, dates). Although both are data leaks, there is no evidence they refer to the same victim or incident. same_incident is set to UNKNOWN because same_organisation is DIFFERENT (same_incident could not be SAME) and there is insufficient linkage to assert they are related incidents.",
+    "blocked_reason": "",
+    "input_hash": "4f1ce406645e14c0dd79788f50def7eac6b8504a204ff9761df894a69e670ddc",
     "model": "gpt-5-mini",
     "disabled_reason": ""
   }
