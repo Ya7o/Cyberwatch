@@ -262,7 +262,6 @@ ACTIVITY_TO_SECTOR = {
     "automotive": SECTOR_INDUSTRY,
     "aerospace defense": SECTOR_INDUSTRY,
     "electronics": SECTOR_INDUSTRY,
-    "food beverages": SECTOR_INDUSTRY,
     "construction": SECTOR_CONSTRUCTION,
     "real estate": SECTOR_CONSTRUCTION,
     "business services": SECTOR_SERVICES,
@@ -299,7 +298,6 @@ ACTIVITY_TO_SECTOR = {
     "information technology": SECTOR_TECH,
     "software": SECTOR_TECH,
     "telecommunications": SECTOR_TECH,
-    "media internet": SECTOR_TECH,
     "energy utilities": SECTOR_ENERGY,
     "energy": SECTOR_ENERGY,
     "utilities": SECTOR_ENERGY,
@@ -316,6 +314,10 @@ ACTIVITY_TO_SECTOR = {
     "medias": SECTOR_CULTURE,
     "loisirs": SECTOR_CULTURE,
     "agriculture and food production": SECTOR_AGRICULTURE,
+    # La taxonomie nomme explicitement l'agroalimentaire : deux rubriques
+    # désignant la production alimentaire ne peuvent pas atterrir dans deux
+    # secteurs différents. Était Industrie / Manufacture jusqu'au 12/09.
+    "food beverages": SECTOR_AGRICULTURE,
 }
 
 #: Alias structurés qui ne se déduisent d'aucun libellé canonique : ni segment
@@ -376,6 +378,13 @@ STRUCTURED_SECTOR_AMBIGUOUS = frozenset({
     # l'activité étayée de l'article qui tranche, jamais la rubrique.
     # searchable("Télécom & Médias") == "telecom medias".
     "telecom medias",
+    # Même composition que ci-dessus : « media » seul rend Culture / Médias /
+    # Loisirs, et la rubrique qui le contient rendait Numérique / Technologie.
+    # Le même mot donnait donc deux secteurs selon la rubrique qui le porte.
+    # Retiré d'ACTIVITY_TO_SECTOR en même temps : `normalize.classify_sector`
+    # interroge cette table SANS le filtre des ambigus, les deux chemins
+    # divergeraient. Était Numérique / Technologie jusqu'au 12/09.
+    "media internet",
     "multi sector",
     "multi sectoriel",
     "multisectoriel",
