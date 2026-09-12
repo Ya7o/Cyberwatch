@@ -6,8 +6,7 @@ import datetime as dt
 import json
 from pathlib import Path
 
-from . import (config, duplicate_audit, incident_dedup, org_identity, qualification,
-               sector, store)
+from . import config, duplicate_audit, incident_dedup, org_identity, qualification, sector, store
 from . import dedup as dedup_engine
 from .model import Incident, Item
 from .normalize import classify_location, classify_sector, classify_threat, looks_cyber
@@ -425,18 +424,26 @@ def _dedup_alert_reasons(snapshot: dict, latest: dict) -> list[str]:
     return reasons
 
 
+def _snapshot_freshness(snapshot: dict, now: dt.datetime) -> tuple[float | None, bool]:
+    """Âge du snapshot publié, arrondi, et son verdict de fraîcheur.
+
+    Un horodatage illisible n'est pas un snapshot frais : l'âge reste inconnu
+    et le verdict faux, pour que l'alerte le dise au lieu de le supposer.
+    """
+    snapshot_at = _parse_datetime(snapshot.get("As_Of", ""))
+    if snapshot_at is None:
+        return None, False
+    exact = max(0.0, (now.astimezone(dt.UTC) - snapshot_at.astimezone(dt.UTC)
+                      ).total_seconds() / 3600)
+    return round(exact, 2), exact < FRESHNESS_TARGET_HOURS
+
+
 def health_payload(*, now: dt.datetime | None = None) -> dict:
     now = now or dt.datetime.now(dt.UTC)
     if now.tzinfo is None:
         now = now.replace(tzinfo=dt.UTC)
     snapshot = store.load_snapshot()
-    snapshot_at = _parse_datetime(snapshot.get("As_Of", ""))
-    exact_age_hours = None if snapshot_at is None else max(
-        0.0,
-        (now.astimezone(dt.UTC) - snapshot_at.astimezone(dt.UTC)).total_seconds() / 3600,
-    )
-    freshness_ok = exact_age_hours is not None and exact_age_hours < FRESHNESS_TARGET_HOURS
-    age_hours = None if exact_age_hours is None else round(exact_age_hours, 2)
+    age_hours, freshness_ok = _snapshot_freshness(snapshot, now)
 
     metrics = store.load_production_metrics()
     latest: dict[str, object] = next(
