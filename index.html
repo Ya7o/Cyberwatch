@@ -9,6 +9,7 @@
 <link rel="alternate" type="application/atom+xml" title="Cyberwatch — La Réunion / Mayotte" href="assets/data/reunion-mayotte.xml">
 <link rel="stylesheet" href="assets/style.css?v=20260822-3">
 <link rel="stylesheet" href="assets/dashboard-v2.css?v=20260910-1">
+<link rel="stylesheet" href="assets/dashboard-compact.css?v=20260912-1">
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -78,27 +79,24 @@
       </section>
       <section class="card" aria-labelledby="signals-title"><div class="card-head"><h2 id="signals-title">Ce qui change</h2></div><div id="signals-list" class="signal-list"></div></section>
       <section class="card" aria-labelledby="ocean-title"><div class="card-head"><h2 id="ocean-title">Océan Indien</h2></div><div class="ocean-compare"><div id="ocean-focus"></div><div id="ocean-ensemble"></div></div></section>
-      <section class="card" aria-labelledby="production-title">
-        <div class="card-head"><h2 id="production-title">Fiabilité de production</h2></div>
-        <div class="production-metrics" id="production-metrics"></div>
+      <section class="card ops-card" aria-labelledby="production-title">
+        <details class="ops-fold" id="production-fold">
+          <summary><span id="production-title">Fiabilité de production</span></summary>
+          <div class="ops-fold-body"><div class="production-metrics" id="production-metrics"></div></div>
+        </details>
       </section>
-      <section class="card reliability" id="sources" aria-labelledby="sources-title">
-        <div class="card-head"><h2 id="sources-title">État des sources</h2></div>
-        <div id="sources-leds" class="source-leds"></div>
-        <details class="sources-detail" open><summary>Détail par source</summary><table><thead><tr><th>Source</th><th>Statut</th><th>Dernière exécution</th><th>Durée</th><th>Éléments</th><th>Alerte</th></tr></thead><tbody id="sources-detail-body"></tbody></table></details>
+      <section class="card reliability ops-card" id="sources" aria-labelledby="sources-title">
+        <details class="ops-fold" id="sources-fold">
+          <summary><span id="sources-title">État des sources</span></summary>
+          <div class="ops-fold-body">
+            <div id="sources-leds" class="source-leds"></div>
+            <details class="sources-detail"><summary>Détail par source</summary><table><thead><tr><th>Source</th><th>Statut</th><th>Dernière exécution</th><th>Durée</th><th>Éléments</th><th>Alerte</th></tr></thead><tbody id="sources-detail-body"></tbody></table></details>
+          </div>
+        </details>
       </section>
     </div>
   </section>
 </main>
-
-<footer class="footer wrap" role="contentinfo">
-  <p><strong>Avertissement éditorial.</strong> Cyberwatch recense des publications publiques : une fiche n’est ni une attribution, ni une confirmation globale, et l’absence de fiche ne prouve pas l’absence d’incident.</p>
-  <details class="proof-levels">
-    <summary>Comprendre les niveaux de preuve</summary>
-    <p><strong>Confirmé</strong> : établi par une source directe ou étayé. <strong>Rapporté</strong> : relaté par une source. <strong>Revendiqué</strong> : déclaré par un acteur. <strong>Hypothèse</strong> : incertain. <strong>Démenti</strong> : contesté. <strong>Inconnu</strong> : preuve insuffisante.</p>
-  </details>
-  <p class="footer-meta"><a href="https://github.com/Ya7o/Cyberwatch/issues">Signaler une correction</a> · <a href="LICENSE">Licence MIT</a></p>
-</footer>
 
 <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-dialog-title">
   <div id="detail-dialog-content"></div>

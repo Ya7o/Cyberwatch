@@ -85,15 +85,13 @@ def test_actions_et_blocs_inutiles_sont_supprimes():
         assert removed not in html
 
 
-def test_cadre_editorial_contact_methode_et_preuve_sont_publics():
+def test_footer_editorial_et_liens_descriptifs_sont_retires():
     html = _read("index.html")
-    assert "Avertissement éditorial" in html
-    assert "Comprendre les niveaux de preuve" in html
-    assert 'href="METHODOLOGY.md"' in html
-    assert 'href="docs/EDITORIAL_POLICY.md"' in html
-    assert "github.com/Ya7o/Cyberwatch/issues" in html
-    assert 'href="LICENSE"' in html
-    assert (ROOT / "LICENSE").exists()
+    assert "Avertissement éditorial" not in html
+    assert "Comprendre les niveaux de preuve" not in html
+    assert "Signaler une correction" not in html
+    assert "Licence MIT" not in html
+    assert "<footer" not in html
 
 
 def test_cartes_ne_rendent_pas_la_provenance_redondante_ni_inconnu():
@@ -222,7 +220,11 @@ def test_analyse_affiche_le_pilotage_de_production():
     html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
 
+    assert 'id="production-fold"' in html
     assert 'id="production-metrics"' in html
+    assert 'id="sources-fold"' in html
+    assert '<details class="sources-detail"><summary>Détail par source</summary>' in html
+    assert 'href="assets/dashboard-compact.css' in html
     assert "function renderProduction()" in js
     assert "scheduled_reliability" in js
     assert "missed_duplicate_candidate_pairs" in js

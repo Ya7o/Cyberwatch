@@ -1,0 +1,31 @@
+/* Blocs opérationnels repliés par défaut pour garder l’analyse lisible. */
+.ops-card {
+  padding: 0;
+  overflow: hidden;
+}
+.ops-fold > summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .75rem;
+  min-height: 56px;
+  padding: .8rem 1.05rem;
+  font-size: 15.5px;
+  font-weight: 650;
+}
+.ops-fold > summary::-webkit-details-marker { display: none; }
+.ops-fold > summary::after {
+  content: "⌄";
+  color: var(--text-muted);
+  transition: transform .15s ease;
+}
+.ops-fold[open] > summary::after { transform: rotate(180deg); }
+.ops-fold[open] > summary { border-bottom: 1px solid var(--border); }
+.ops-fold-body { padding: 1rem 1.05rem 1.1rem; }
+.sources-detail { margin-top: .85rem; }
+@media (max-width: 760px) {
+  .ops-fold > summary { padding: .78rem .9rem; }
+  .ops-fold-body { padding: .9rem; }
+}
