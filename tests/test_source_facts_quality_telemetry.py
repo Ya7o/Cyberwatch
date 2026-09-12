@@ -30,7 +30,7 @@ def test_bonjourlafuite_claimed_summary_keeps_claim_semantics():
     fact = sf.extract_source_fact(item, entry, spec)
     assert fact is not None
     assert fact["Claim_Status"] == "claimed"
-    assert fact["Summary"].startswith("Données revendiquées selon BonjourLaFuite :")
+    assert fact["Summary"].startswith("BonjourLaFuite signale une revendication de fuite de données")
 
 
 def test_bonjourlafuite_unconfirmed_summary_is_not_affirmative():
@@ -46,7 +46,7 @@ def test_bonjourlafuite_unconfirmed_summary_is_not_affirmative():
     fact = sf.extract_source_fact(item, entry, spec)
     assert fact is not None
     assert fact["Claim_Status"] == "unconfirmed"
-    assert fact["Summary"].startswith("Données signalées mais non confirmées :")
+    assert fact["Summary"].startswith("BonjourLaFuite signale une fuite de données non confirmée")
 
 
 def _row(content_hash: str, *, summary: str = "", impact: str = "", statuses=None) -> dict:

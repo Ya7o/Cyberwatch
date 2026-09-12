@@ -78,6 +78,7 @@ def gap(item: Item, fact: dict, reference: dict) -> tuple[str, str] | None:
     ne la promeut pas faute de `matched`. Laisser le LLM la contredire serait
     une régression.
     """
+    from .blf_org_enrichment import activity_subject
     from .sector_resolution import _decision_from_reference, _valid
 
     if str(fact.get(COLUMN) or "").strip():
@@ -92,7 +93,7 @@ def gap(item: Item, fact: dict, reference: dict) -> tuple[str, str] | None:
     except (ValueError, TypeError):
         evidence = {}
     proof = str(evidence.get("Activity_Description") or "") if isinstance(evidence, dict) else ""
-    if not proof or not supported_activity(item.Organisation_Raw, activity, proof):
+    if not proof or not supported_activity(activity_subject(item, fact), activity, proof):
         return None
     if _valid(sector_policy.classify_sector_activity(activity)):
         return None
@@ -352,7 +353,8 @@ def annotate_source_facts(items: list[Item], facts: list[dict], reference: dict,
             continue
         activity, proof = found
         raw = str(fact.get("Source_Sector_Raw") or "").strip()
-        verdict = map_activity(item.Organisation_Raw, activity, proof,
+        from .blf_org_enrichment import activity_subject
+        verdict = map_activity(activity_subject(item, fact), activity, proof,
                                source_sector_raw=raw, call=call)
         accepted = verdict["sector"] != config.SECTOR_UNKNOWN
         events.append({

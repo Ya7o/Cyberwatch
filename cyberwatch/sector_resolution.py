@@ -33,8 +33,14 @@ def _unknown(reason: str = "NO_ACTIVITY_EVIDENCE", evidence: str = "") -> Sector
 
 
 def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
+    from .blf_org_enrichment import KEY, activity_subject, metadata
     from .sector_activity import supported_activity
 
+    provenance = metadata(fact.get("Source_Metadata_JSON")).get(KEY, {})
+    provenance = provenance if isinstance(provenance, dict) else {}
+    activity_url = str(provenance.get("evidence_url", item.URL))
+    if item.Source_ID == "BONJOURLAFUITE" and provenance.get("origin") == "BLF_ACTIVITY_CONFLICT":
+        return _unknown("BLF_ACTIVITY_CONFLICT")
     raw = str(fact.get("Source_Sector_Raw") or "").strip()
     sector = sector_policy.classify_source_sector(raw)
     reported = (SectorDecision(sector, "reported", "SOURCE_SECTOR_RAW", 0.70, raw, item.URL)
@@ -48,7 +54,7 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
     matched = str(fact.get("Activity_Sector_Match") or "").strip()
     if not activity:
         return reported or (_unknown("ORPHAN_SECTOR_MATCH") if _valid(matched) else None)
-    if not supported_activity(item.Organisation_Raw, activity, proof):
+    if not supported_activity(activity_subject(item, fact), activity, proof):
         return reported or _unknown("ACTIVITY_EVIDENCE_REJECTED", proof)
     # Rapprochement sémantique de second niveau, calculé en amont pendant la
     # consolidation des SourceFacts et persisté : cette fonction ne fait que le
@@ -68,7 +74,7 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
             "ACTIVITY_EVIDENCE_RULE",
             0.80,
             f"{proof} [description sémantique écartée : {activity}]",
-            item.URL,
+            activity_url,
         )
     if _valid(rule) and _valid(matched) and rule != matched:
         return _unknown("ACTIVITY_SECTOR_CONFLICT", f"{rule} | {matched} : {proof}")
@@ -78,7 +84,7 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
         if reported and reported.sector != value:
             reason = "ACTIVITY_OVERRIDES_SOURCE_LABEL"
             proof = f"{proof} [étiquette source écartée : {raw}]"
-        return SectorDecision(value, "inferred", reason, 0.80, proof, item.URL)
+        return SectorDecision(value, "inferred", reason, 0.80, proof, activity_url)
     return reported or _unknown("ACTIVITY_TAXONOMY_UNRESOLVED", proof)
 
 

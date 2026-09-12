@@ -585,6 +585,11 @@ def _from_bonjourlafuite(item: Item, entry: RawEntry, spec: SourceSpec) -> dict 
         fact["Affected_Count_Raw"] = raw_count
         evidence["Affected_Count_Raw"] = raw_count
 
+    from .blf_org_enrichment import build_blf_summary
+    fact["Source_Metadata_JSON"] = _dumps_json({"blf_origin": "BLF_NATIVE"})
+    fact["Summary"] = build_blf_summary(item, fact)
+    if fact["Summary"]:
+        evidence["Summary"] = evidence.get("Data_Types_JSON", "")
     _derive_summary(fact, evidence)
     _apply_blf_summary_certainty(fact)
 

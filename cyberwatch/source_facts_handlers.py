@@ -433,6 +433,12 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
         merged = dict(old)
         old_evidence = _loads_json(str(old.get("Evidence_JSON") or ""))
         new_evidence = _loads_json(str(new.get("Evidence_JSON") or ""))
+        if new.get("Source_ID") == "BONJOURLAFUITE" and str(old.get("Summary") or "").strip():
+            new = {**new, "Summary": old["Summary"]}
+            new_evidence = dict(new_evidence) if isinstance(new_evidence, dict) else {}
+            new_evidence.pop("Summary", None)
+            if isinstance(old_evidence, dict) and "Summary" in old_evidence:
+                new_evidence["Summary"] = old_evidence["Summary"]
         evidence = dict(old_evidence) if isinstance(old_evidence, dict) else {}
         old_meta = _loads_json(str(old.get("Source_Metadata_JSON") or ""))
         new_meta = _loads_json(str(new.get("Source_Metadata_JSON") or ""))

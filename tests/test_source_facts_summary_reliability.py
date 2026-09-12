@@ -221,11 +221,11 @@ def test_bonjourlafuite_derives_summary_from_rich_structured_data():
 
     fact = sf.extract_source_fact(item, entry, spec)
     assert fact is not None
-    assert fact["Summary"].startswith("Données revendiquées selon BonjourLaFuite :")
+    assert fact["Summary"].startswith("BonjourLaFuite signale une revendication de fuite de données")
     assert "Adresse e-mail" in fact["Summary"]
 
 
-def test_bonjourlafuite_keeps_abstention_for_one_weak_data_type():
+def test_bonjourlafuite_summarizes_even_one_published_data_type():
     item = _item("BONJOURLAFUITE")
     spec = SourceSpec(source_id="BONJOURLAFUITE", layer="core", zone="France")
     entry = RawEntry(
@@ -238,7 +238,8 @@ def test_bonjourlafuite_keeps_abstention_for_one_weak_data_type():
 
     fact = sf.extract_source_fact(item, entry, spec)
     assert fact is not None
-    assert fact["Summary"] == ""
+    assert "revendication de fuite de données concernant Exemple SA" in fact["Summary"]
+    assert "Adresse e-mail" in fact["Summary"]
 
 
 def test_extractor_failure_is_logged_without_breaking_collection(monkeypatch, caplog):

@@ -816,15 +816,15 @@ def execute(
     report.source_facts, _sanitized_fact_ids = source_facts.sanitize_source_facts(
         report.source_facts
     )
-    # Après `sanitize` — une activité disqualifiée ne peut pas recevoir de
-    # secteur — et avant `finalize_snapshot`, pour que la colonne soit lisible
-    # dès la première résolution. Balaie tout le corpus, pas seulement la
-    # fenêtre du jour. Sans clé, sans budget ou sur panne : colonne vide et
-    # secteur Inconnu, jamais d'exception.
+    # Après sanitation : activité BLF prouvée, puis mapping avant résolution.
+    from . import blf_org_enrichment
+    source_facts.apply_event_dates(report.items, report.source_facts)
+    blf_org_enrichment.enrich(
+        report.items, report.source_facts, incident_decisions=report.incident_dedup_rows,
+    )
     report.sector_semantic_ids = sector_semantic.annotate_source_facts(
         report.items, report.source_facts, enrichment.load_reference()
     )
-    source_facts.apply_event_dates(report.items, report.source_facts)
     enriched = enrichment.finalize_snapshot(
         report.items, report.source_facts, run_id=context.run_id, as_of=context.as_of,
     )

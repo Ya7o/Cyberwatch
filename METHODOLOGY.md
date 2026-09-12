@@ -1,5 +1,35 @@
 # Méthode du prototype
 
+## BonjourLaFuite : faits natifs et activité historique
+
+BLF produit un résumé déterministe dès qu'un type de données est publié,
+sans écraser un résumé existant. Les bulles et le statut publié sont conservés.
+Les types de données servent à l'impact et à la sensibilité, jamais au secteur.
+
+Avant le mapping secteur, les composantes d'incident exclusivement BLF,
+inconnues et sans activité ni rubrique exploitable recherchent une activité
+historique FrenchBreaches/Cyberattaque.org via l'identité canonique et ses alias.
+Une citation attribuant l'activité à l'organisation est obligatoire. L'URL de
+l'article améliore le score (2 contre 1 sans URL), puis la date de publication
+départage les preuves. Une observation future n'est pas réutilisée. Seules les
+descriptions identiques après normalisation sont reconnues compatibles ; les
+autres restent en conflit, y compris si leur secteur est identique.
+
+`Source_Metadata_JSON.blf_activity` conserve l'origine, l'item et la source
+historiques, l'organisation, la citation, l'URL et le score. Les origines sont
+`BLF_ACTIVITY_REUSE`, `BLF_EXTERNAL_ACTIVITY`, `BLF_ACTIVITY_CONFLICT` ou
+`BLF_NO_ACTIVITY_EVIDENCE` ; `blf_origin=BLF_NATIVE` identifie les faits natifs.
+Les preuves réutilisées sont réévaluées à chaque collecte/replay, et retirées
+si elles ne sont plus admissibles. La résolution reste pure et utilise le
+mapper secteur existant. Aucun appel LLM n'analyse une fiche BLF.
+
+`OrganisationActivityProvider` est un point d'injection pour un second lot :
+aucun provider réseau n'est branché par défaut. Une implémentation devra lire
+un contenu vérifiable, privilégier site officiel, registre public puis source
+éditoriale fiable. Le contrat exige identité concordante, activité, citation,
+URL HTTP(S), provider et confiance >= 0,8. Un résultat de recherche seul,
+une déduction depuis le nom ou les données volées ne constituent pas une preuve.
+
 Cyberwatch sert à voir chaque jour les nouveaux incidents cyber, lire une
 petite synthèse et ouvrir la fiche détaillée si nécessaire.
 

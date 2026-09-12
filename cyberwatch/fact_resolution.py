@@ -956,6 +956,11 @@ def resolve_incident_facts(facts: Iterable[dict], *, fallback_summary: str = "",
     resolved["display_summary"] = build_display_summary(
         resolved, fallback=fallback_summary
     )
+    from .blf_org_enrichment import published_summary
+    blf_paragraphs = published_summary(organisation, ordered)
+    if blf_paragraphs and not resolved["display_summary"]:
+        resolved["display_summary"] = blf_paragraphs[0]
+        resolved["summary_paragraphs"] = blf_paragraphs
     resolved["quality_alerts"] = _propagation_alerts(
         ordered, resolved, rejected_fields, organisation
     )
