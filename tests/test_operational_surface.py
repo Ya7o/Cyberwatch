@@ -35,7 +35,7 @@ def test_collect_refuse_de_publier_si_main_change_pendant_le_run():
     assert "git pull --rebase origin main" not in content
 
 
-def test_collect_exposes_daily_update_and_explicit_manual_purge():
+def test_collect_expose_daily_update_and_explicit_manual_purge():
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
     assert "python -m cyberwatch maj" in content
     assert "python -m cyberwatch purge" in content
@@ -45,12 +45,6 @@ def test_collect_exposes_daily_update_and_explicit_manual_purge():
 
 
 def test_collect_has_one_explicit_global_ai_budget():
-    """Un seul plafond, explicite, et sa valeur reste sous surveillance.
-
-    Relevé de 0.03 à 0.035 le 12/09 pour laisser passer le mapper sectoriel,
-    qui s'exécute après source_facts (0.0260 au run du 11/09). La valeur reste
-    figée ici : une inflation du budget doit être un choix, pas une dérive.
-    """
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
     assert 'LLM_MAX_COST_USD_PER_RUN: "0.035"' in content
     assert content.count("MAX_COST_USD_PER_RUN") == 1
@@ -109,11 +103,10 @@ def test_ci_execute_lint_et_typage_progressif():
     assert '"cyberwatch/site_status.py"' in pyproject
 
 
-def test_gouvernance_git_et_cadre_editorial_sont_versionnes():
-    governance = (ROOT / "docs" / "GIT_GOVERNANCE.md").read_text(encoding="utf-8")
-    editorial = (ROOT / "docs" / "EDITORIAL_POLICY.md").read_text(encoding="utf-8")
-    assert "aucun nouveau tag `archive/*`" in governance
-    assert "réécriture de `main`" in governance
-    assert "issues GitHub" in editorial
+def test_depot_ne_versionne_pas_d_archives_documentaires():
+    assert not (ROOT / "docs").exists()
+    assert not (ROOT / "audit").exists()
+    assert not (ROOT / "METHODOLOGY.md").exists()
+    assert not (ROOT / "ARCHITECTURE_STATUS.md").exists()
     assert (ROOT / "LICENSE").read_text(encoding="utf-8").startswith("MIT License")
     assert (ROOT / "scripts" / "git_governance_audit.py").exists()

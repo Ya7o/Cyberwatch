@@ -19,6 +19,4 @@ node --check assets/dashboard-integrity.js
 python -m cyberwatch check --allow-uninitialized
 ```
 
-Une collecte réelle n'est pas un test générique.
-
-Pour les règles métier, lire `METHODOLOGY.md` uniquement si la tâche le nécessite. Pour la résolution sectorielle, lire `docs/SECTOR_IMPLEMENTATION_2026-09-05.md` uniquement si nécessaire.
+Une collecte réelle n'est pas un test générique. Ne pas versionner de rapports d'audit, archives ou documentation temporaire.
