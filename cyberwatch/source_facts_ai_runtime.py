@@ -108,6 +108,17 @@ class _Runtime:
         self.durations: list[float] = []
         self.fields_requested: Counter[str] = Counter()
         self.fields_requested_new: Counter[str] = Counter()
+        # Réparation de preuve. Ces compteurs séparent ce que le taux
+        # d'acceptation confondait : un refus qui protège le corpus (mauvaise
+        # taxonomie, identité ambiguë, risque futur) n'est pas un échec du
+        # système, et une valeur récupérée sur une meilleure citation n'est pas
+        # une acceptation de première intention.
+        self.repair_eligible = 0
+        self.repair_deterministic_success = 0
+        self.repair_llm_calls = 0
+        self.repair_llm_success = 0
+        self.repair_failed = 0
+        self.repair_cost = 0.0
         self.field_outcomes: Counter[str] = Counter()
         self.field_outcomes_by_name: dict[str, Counter[str]] = {}
         self.error_reasons: Counter[str] = Counter()
@@ -287,6 +298,29 @@ class _Runtime:
                 field: dict(sorted(outcomes.items()))
                 for field, outcomes in sorted(self.field_outcomes_by_name.items())
             },
+            "repair_eligible": self.repair_eligible,
+            "repair_attempted": self.repair_eligible,
+            "repair_deterministic_success": self.repair_deterministic_success,
+            "repair_llm_calls": self.repair_llm_calls,
+            "repair_llm_success": self.repair_llm_success,
+            "repair_failed": self.repair_failed,
+            "repair_cost_usd": round(self.repair_cost, 8),
+            # `accepted` compte déjà les champs récupérés : l'acceptation de
+            # première intention est ce qui restait sans la réparation.
+            "initial_accepted": max(0, self.field_outcomes.get("accepted", 0)
+                                    - self.repair_deterministic_success - self.repair_llm_success),
+            "final_accepted": self.field_outcomes.get("accepted", 0),
+            "healthy_abstentions": self.field_outcomes.get("abstained", 0),
+            "unsafe_proposals_rejected": self.field_outcomes.get("rejected", 0),
+            "evidence_failures": self.field_outcomes.get("miss", 0),
+            "initial_acceptance_rate": round(
+                max(0, self.field_outcomes.get("accepted", 0)
+                    - self.repair_deterministic_success - self.repair_llm_success)
+                / sum(self.field_outcomes.values()), 4
+            ) if self.field_outcomes else 0.0,
+            "final_acceptance_rate": round(
+                self.field_outcomes.get("accepted", 0) / sum(self.field_outcomes.values()), 4
+            ) if self.field_outcomes else 0.0,
             "accepted_field_rate": round(
                 self.field_outcomes.get("accepted", 0) / sum(self.field_outcomes.values()), 4
             ) if self.field_outcomes else 0.0,

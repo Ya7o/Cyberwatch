@@ -9,6 +9,7 @@ from .collectors.base import RawEntry
 from .source_facts_ai_runtime import _Runtime, SourceFactsAiError
 from .source_facts_ai_contract import FIELD_VERSIONS, RETRY_EVIDENCE_INSTRUCTIONS
 from .evidence_repair import repair_evidence
+from . import evidence_repair_llm
 from .source_facts_ai_activity import evidence_repair_eligibility
 
 def _proposals(raw: dict, fields: set[str]) -> dict:
@@ -38,7 +39,7 @@ def _previous_fields(runtime: _Runtime, key: str) -> dict:
 
 
 
-def _repair_evidence_in_place(api, raw: dict, context: str, fields: set[str],
+def _repair_evidence_in_place(api, runtime, raw: dict, context: str, fields: set[str],
                               organisation: str, normalized: dict, reasons: dict) -> dict:
     """Cherche une meilleure citation pour les champs refusés sur leur preuve.
 
@@ -52,6 +53,7 @@ def _repair_evidence_in_place(api, raw: dict, context: str, fields: set[str],
 
     trace: dict = {}
     repaired = False
+    pending: dict[str, str] = {}
     for field in sorted(fields - normalized.keys()):
         reason = reasons.get(field) or field_rejection_reason(field, raw, context, organisation)
         kind = field_rejection_kind(field, reason)
@@ -67,10 +69,43 @@ def _repair_evidence_in_place(api, raw: dict, context: str, fields: set[str],
         if evidence:
             raw[field] = {**candidate, "evidence": evidence}
             repaired = True
+            runtime.repair_deterministic_success += 1
+        elif isinstance(candidate, dict) and str(value or "").strip():
+            # Rien dans l'article ne se laisse valider déterministement : ce
+            # champ part dans l'appel groupé, s'il y en a un.
+            pending[field] = str(value)
+    runtime.repair_eligible += sum(1 for record in trace.values() if record.get("eligible"))
+
+    if pending:
+        # Un seul appel par item, tous les champs réparables ensemble.
+        runtime.repair_llm_calls += 1
+        citations, repair_cost = evidence_repair_llm.request_evidence(context, pending, runtime.api_key)
+        runtime.repair_cost += repair_cost
+        runtime.cost += repair_cost
+        for field, evidence in citations.items():
+            candidate = raw.get(field)
+            if not isinstance(candidate, dict) or not evidence:
+                continue
+            raw[field] = {**candidate, "evidence": evidence}
+            repaired = True
+            trace[field].update(method="llm", evidence=evidence, llm_called=True)
+        for field in pending:
+            trace[field]["llm_called"] = True
+
     if repaired:
         normalized.update(api._normalize(raw, context, fields, organisation))
     for field, record in trace.items():
         record["final_outcome"] = "accepted" if field in normalized else "rejected"
+        if not record.get("eligible"):
+            continue
+        if record["final_outcome"] == "accepted":
+            if record.get("method") == "llm":
+                runtime.repair_llm_success += 1
+        else:
+            runtime.repair_failed += 1
+            # Une citation refusée par les validateurs n'est pas une réparation.
+            if record.get("method") == "deterministic":
+                runtime.repair_deterministic_success -= 1
     return trace
 
 
@@ -152,7 +187,7 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         _, reasons = normalize_activity(raw, context, organisation)
         # Réparation de preuve : une valeur juste refusée sur une mauvaise
         # citation retrouve sa chance, sans qu'aucun validateur soit assoupli.
-        repair = _repair_evidence_in_place(api, raw, context, fields, organisation,
+        repair = _repair_evidence_in_place(api, runtime, raw, context, fields, organisation,
                                            normalized, reasons)
         api._store_field_cache(runtime, key, item, entry, fields, normalized,
                                raw=raw, reasons=reasons)

@@ -190,3 +190,109 @@ def test_le_pipeline_repare_la_preuve_d_une_menace_et_conserve_la_valeur(monkeyp
     assert evidence != mauvaise
     assert evidence in " ".join(ARTICLE.split())
     assert len(evidence) <= 300
+
+
+# --- Retry LLM strictement extractif ---------------------------------------
+
+def _configure(monkeypatch, tmp_path):
+    from cyberwatch import source_facts_ai as sfa
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
+    monkeypatch.setenv("SOURCE_FACTS_AI_STATS_PATH", str(tmp_path / "stats.json"))
+    monkeypatch.setenv("SOURCE_FACTS_RETRY_QUEUE_PATH", str(tmp_path / "retry.json"))
+    sfa.reset_runtime_for_tests()
+    return sfa
+
+
+def _entry_item():
+    from cyberwatch.collectors.base import RawEntry
+    from cyberwatch.model import Item
+
+    return (RawEntry(title="Exemple SA : un pirate revendique la fuite de données", content=ARTICLE),
+            Item(Item_ID="ITM-repair", Source_ID="CYBERATTAQUE_ORG",
+                 Organisation_Raw="Exemple SA", Published_Date="2026-09-02"))
+
+
+MAUVAISE = "Un utilisateur d'un forum cybercriminel propose un fichier attribué à Exemple SA."
+
+
+def test_la_tache_de_reparation_reste_sur_le_modele_par_defaut():
+    """`source_facts` est un marqueur de tâche riche : un nom qui le contient
+    enverrait ce travail purement extractif sur le modèle cher."""
+    from cyberwatch import llm_runtime
+    from cyberwatch.evidence_repair_llm import TASK
+
+    assert TASK == "evidence_repair"
+    assert llm_runtime.model_for_task(TASK) == llm_runtime.DEFAULT_MODEL
+    assert llm_runtime.model_for_task(TASK) != llm_runtime.model_for_task("source_facts")
+    assert TASK in llm_runtime.DEFAULT_TASK_BUDGETS
+
+
+def test_aucun_appel_de_reparation_quand_le_deterministe_suffit(monkeypatch, tmp_path):
+    sfa = _configure(monkeypatch, tmp_path)
+    entry, item = _entry_item()
+    appels = []
+    monkeypatch.setattr(sfa, "_post_openai", lambda body, *_: _payload(_output_for(
+        body, threat_candidate={"value": "Fuite de données", "confidence": 0.95, "evidence": MAUVAISE})))
+    monkeypatch.setattr("cyberwatch.evidence_repair_llm.request_evidence",
+                        lambda *a, **k: appels.append(a) or ({}, 0.0))
+    result = sfa.enrich(item, entry)
+    assert result["threat_candidate"]["value"] == "Fuite de données"
+    assert appels == [], "la citation existait dans l'article : aucun appel ne devait partir"
+
+
+def test_le_retry_ne_peut_pas_imposer_une_citation_introuvable(monkeypatch, tmp_path):
+    """Le modèle rend une citation absente de l'article : le validateur la
+    refuse, et le champ reste rejeté. Jamais d'acceptation directe du retry."""
+    sfa = _configure(monkeypatch, tmp_path)
+    entry, item = _entry_item()
+    article = "Exemple SA a subi un incident informatique le 2 septembre 2026.\n"
+    from cyberwatch.collectors.base import RawEntry
+    entry = RawEntry(title="Exemple SA : incident", content=article)
+    monkeypatch.setattr(sfa, "_post_openai", lambda body, *_: _payload(_output_for(
+        body, threat_candidate={"value": "Fuite de données", "confidence": 0.95,
+                                "evidence": "Exemple SA a subi un incident informatique le 2 septembre 2026."})))
+    monkeypatch.setattr("cyberwatch.evidence_repair_llm.request_evidence",
+                        lambda *a, **k: ({"threat_candidate": "Une fuite massive a été confirmée par Exemple SA."}, 0.0))
+    result = sfa.enrich(item, entry) or {}
+    assert "threat_candidate" not in result
+
+
+def test_le_retry_groupe_les_champs_en_un_seul_appel_par_item(monkeypatch, tmp_path):
+    sfa = _configure(monkeypatch, tmp_path)
+    from cyberwatch.collectors.base import RawEntry
+    entry, item = _entry_item()
+    entry = RawEntry(title="Exemple SA : incident",
+                     content="Exemple SA a subi un incident informatique le 2 septembre 2026.\n")
+    appels = []
+    monkeypatch.setattr(sfa, "_post_openai", lambda body, *_: _payload(_output_for(
+        body,
+        threat_candidate={"value": "Fuite de données", "confidence": 0.95,
+                          "evidence": "Exemple SA a subi un incident informatique le 2 septembre 2026."},
+        summary={"value": "Exemple SA touchée.", "confidence": 0.9, "evidence": "citation absente de l'article"})))
+    monkeypatch.setattr("cyberwatch.evidence_repair_llm.request_evidence",
+                        lambda *a, **k: appels.append(a[1]) or ({}, 0.0))
+    sfa.enrich(item, entry)
+    assert len(appels) == 1
+    assert set(appels[0]) <= {"threat_candidate", "summary", "incident_summary"}
+
+
+def test_les_metriques_separent_reparations_et_refus_sains(monkeypatch, tmp_path):
+    sfa = _configure(monkeypatch, tmp_path)
+    entry, item = _entry_item()
+    monkeypatch.setattr(sfa, "_post_openai", lambda body, *_: _payload(_output_for(
+        body, threat_candidate={"value": "Fuite de données", "confidence": 0.95, "evidence": MAUVAISE})))
+    sfa.enrich(item, entry)
+    stats = sfa._runtime().stats()
+    for key in ("initial_accepted", "final_accepted", "healthy_abstentions",
+                "unsafe_proposals_rejected", "evidence_failures", "repair_eligible",
+                "repair_deterministic_success", "repair_llm_calls", "repair_llm_success",
+                "repair_failed", "repair_cost_usd",
+                "initial_acceptance_rate", "final_acceptance_rate"):
+        assert key in stats, key
+    assert stats["repair_deterministic_success"] == 1
+    assert stats["repair_llm_calls"] == 0
+    # La réparation ne gonfle pas l'acceptation de première intention.
+    assert stats["final_accepted"] > stats["initial_accepted"]
+    assert stats["final_acceptance_rate"] > stats["initial_acceptance_rate"]

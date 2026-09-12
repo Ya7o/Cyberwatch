@@ -42,6 +42,10 @@ DEFAULT_TASK_BUDGETS = {
     # Le plafond ne mord jamais en régime ; il borne une régression du
     # portillon qui appellerait sur chaque ligne au lieu des seuls trous.
     "sector_taxonomy": {"max_calls": 40, "max_cost_usd": 0.01},
+    # Retry purement extractif : une citation à retrouver, au plus un appel par
+    # item. Il reste sur le modèle par défaut — d'où un nom sans le marqueur
+    # `source_facts`, qui l'enverrait sur le modèle riche sans raison.
+    "evidence_repair": {"max_calls": 120, "max_cost_usd": 0.15},
 }
 
 
