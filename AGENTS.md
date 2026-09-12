@@ -1,18 +1,24 @@
-# Commandes opérationnelles Cyberwatch
+# Cyberwatch — instructions agent
 
-Quand l'utilisateur demande **MAJ**, exécuter `python -m cyberwatch MAJ`
-depuis la racine du dépôt, avec le Python du projet (`.venv/bin/python`
-si disponible). La collecte conserve le corpus et lit les publications
-d'hier et d'aujourd'hui, y compris sur une base neuve ou purgée.
+## Production
+- `main` est la source canonique.
+- Pour **MAJ** ou **PURGE** en production, utiliser `.github/workflows/collect.yml` ; ne pas lancer une collecte locale.
+- `PURGE` vide les données et génère un dashboard vide. Ne pas lancer `MAJ` automatiquement après : attendre une demande explicite ou la collecte planifiée.
+- `data/` est canonique ; `assets/data/` est généré.
 
-Quand l'utilisateur demande **PURGE**, exécuter `python -m cyberwatch PURGE`.
-Cette demande autorise à vider le corpus, les caches, files d'attente et
-journaux de collecte, puis à générer un dashboard vide. Ne pas lancer MAJ
-automatiquement après PURGE : attendre une demande de MAJ ou la collecte
-planifiée. Les sources et référentiels sont conservés.
+```bash
+gh workflow run collect.yml --ref main -f operation=MAJ
+gh workflow run collect.yml --ref main -f operation=PURGE
+```
 
-Ces commandes agissent sur la copie locale. Pour une demande concernant
-explicitement la production, utiliser le workflow COLLECT et son entrée
-`operation` (`MAJ` ou `PURGE`), qui publie les données sur `main`.
+## Validation
+```bash
+python -m pytest tests/ -q
+node --check assets/dashboard-v2.js
+node --check assets/dashboard-integrity.js
+python -m cyberwatch check --allow-uninitialized
+```
 
-Les instructions de développement et de validation sont dans `CLAUDE.md`.
+Une collecte réelle n'est pas un test générique.
+
+Pour les règles métier, lire `METHODOLOGY.md` uniquement si la tâche le nécessite. Pour la résolution sectorielle, lire `docs/SECTOR_IMPLEMENTATION_2026-09-05.md` uniquement si nécessaire.
