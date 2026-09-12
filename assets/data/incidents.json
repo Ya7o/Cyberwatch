@@ -1,1 +1,515 @@
-[]
+[
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-575DE7755221",
+  "location": "France métropolitaine",
+  "org": "Aqualter",
+  "personal_data_exposed": true,
+  "sector": "Énergie / Utilities",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Industrie / Manufacture"
+   ],
+   "evidence": "Aqualter est une entreprise française indépendante spécialisée dans les métiers de l’eau. Son activité concerne notamment la gestion de services liés à l’eau potable et à l’assainissement",
+   "evidence_url": "https://www.cyberattaque.org/aqualter-187-000-numeros-de-telephone-exposes-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/aqualter-187-000-numeros-de-telephone-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite revendiquée expose 187 073 numéros de téléphone et 86 156 adresses e-mail liées à Aqualter.",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1A4F2221C3A0",
+  "location": "France métropolitaine",
+  "org": "Boulanger",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/boulanger-touche-par-une-cyberattaque-avec-132-000-dossiers-sav-revendiques-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base attribuée à Boulanger contenant 132 230 dossiers SAV a été mise en ligne par un hacker le 11 septembre 2026.",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3AAEEA9D575F",
+  "location": "France métropolitaine",
+  "org": "Brevo",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Brevo fournit aux entreprises des outils permettant de gérer leurs campagnes d’e-mails, newsletters, SMS, contacts, automatisations marketing et relations clients .",
+   "evidence_url": "https://www.cyberattaque.org/brevo-cyberattaque-campagne-de-phishing-frappe-trezor-et-cointracking/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/brevo-cyberattaque-campagne-de-phishing-frappe-trezor-et-cointracking/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/brevo-mtwuixif0kdw2y7yp3bn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Brevo : 138 comptes compromis, une vaste campagne de phishing frappe Trezor et CoinTracking",
+  "threat": "Phishing / fraude"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-673354204E98",
+  "location": "France métropolitaine",
+  "org": "GreenGo",
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "GreenGo est une plateforme française spécialisée dans la réservation d’hébergements, avec un positionnement axé sur le tourisme responsable.",
+   "evidence_url": "https://www.cyberattaque.org/greengo-victime-dune-cyberattaque-donnees-de-comptes-reservations-et-messages-potentiellement-consultes/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/greengo-victime-dune-cyberattaque-donnees-de-comptes-reservations-et-messages-potentiellement-consultes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "GreenGo indique qu’un acteur non autorisé a consulté des données de comptes, réservations et messages via un outil interne reposant sur Metabase.",
+  "threat": "Intrusion"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7C0FCA2CE323",
+  "location": "France métropolitaine",
+  "org": "Pass Pass",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/passpass.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6FB6E50001AA",
+  "location": "France métropolitaine",
+  "org": "Salt Mobile",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Salt Mobile SA est un opérateur suisse de téléphonie mobile, internet fixe et télévision.",
+   "evidence_url": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Salt Mobile confirme une utilisation abusive d’un accès à un système périphérique potentiellement exposant des données personnelles clients.",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7BF9828040F8",
+  "location": "France métropolitaine",
+  "org": "Ville de Joigny",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ville de Joigny",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-contre-la-ville-de-joigny-268-795-tentatives-dintrusion-en-une-semaine/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-contre-la-ville-de-joigny-268-795-tentatives-dintrusion-en-une-semaine/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ville-de-joigny-mtwuflm1iee4jiwh7bf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Ville de Joigny a subi 268 795 tentatives d’intrusion détectées en une semaine, sans équipement endommagé ni données personnelles volées.",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-5F3F78296574",
+  "location": "France métropolitaine",
+  "org": "WiziShop",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/wizishop-dropizi-mtw3klqur74gdjp72ya",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/wizishop-dropizi-mtw3klqur74gdjp72ya"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique et publie une base de factures de WiziShop et Dropizi, revendiquant 511 661 lignes et 21 402 boutiques.",
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6E2B3A6C871F",
+  "location": "France métropolitaine",
+  "org": "NaturaBuy",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/naturabuy-mtwzqa9gplhhoi6l87a",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/naturabuy-victime-dune-cyberattaque-un-risque-pour-les-detenteurs-darmes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/naturabuy-mtwzqa9gplhhoi6l87a"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "NaturaBuy victime d’une cyberattaque, un risque pour les détenteurs d’armes",
+  "threat": "Intrusion"
+ },
+ {
+  "date": "2026-09-09",
+  "id": "INC-90C7B09E294B",
+  "location": "La Réunion",
+  "org": "Le Tampon",
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le Tampon",
+   "evidence_url": "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Fuite de données"
+ },
+ {
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D06CA5297DDC",
+  "location": "France métropolitaine",
+  "org": "Snexi",
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Snexi, spécialiste français des états des lieux et du diagnostic immobilier, confirme avoir été victime d’une cyberattaque le mercredi 2 septembre 2026 .",
+   "evidence_url": "https://www.cyberattaque.org/citya-snexi-fuite-de-donnees-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/citya-snexi-fuite-de-donnees-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/snexi-citya-immobilier-mtwb9nopcz1weg06yq7"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Snexi confirme une cyberattaque du 2 septembre 2026 et une revendication prétend contenir 2 249 970 lignes liées à Citya, dont près de 50 000 digicodes.",
+  "threat": "Fuite de données"
+ },
+ {
+  "date": "2026-07-25",
+  "id": "INC-9B11A8F11CE1",
+  "location": "La Réunion",
+  "org": "Ministère de l’Éducation nationale / Académie de La Réunion",
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ministère de l’Éducation nationale / Académie de La Réunion",
+   "evidence_url": "https://www.education.gouv.fr/incident-de-securite-affectant-les-donnees-de-personnels-de-l-education-nationale-505407",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.education.gouv.fr/incident-de-securite-affectant-les-donnees-de-personnels-de-l-education-nationale-505407"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Fuite de données"
+ },
+ {
+  "date": "2026-06-30",
+  "id": "INC-DEF298242E44",
+  "location": "La Réunion",
+  "org": "Lycée polyvalent Paul Moreau",
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Lycée polyvalent Paul Moreau",
+   "evidence_url": "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Fuite de données"
+ },
+ {
+  "date": "2026-06-29",
+  "id": "INC-3B8C2F71BF60",
+  "location": "La Réunion",
+  "org": "EGEP Réunion",
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Construction / BTP",
+   "evidence_url": "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Fuite de données"
+ },
+ {
+  "date": "2026-06-11",
+  "id": "INC-DB8BDF7CCB2D",
+  "location": "Mayotte",
+  "org": "Ville de Mamoudzou",
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Entité ou alias territorial validé du référentiel Cyberwatch",
+   "evidence_url": "https://github.com/Ya7o/Cyberwatch/blob/main/cyberwatch/watchlists.py",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Intrusion"
+ },
+ {
+  "date": "2026-05-31",
+  "id": "INC-08D80AA8EF71",
+  "location": "La Réunion",
+  "org": "Air Austral",
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Entité ou alias territorial validé du référentiel Cyberwatch",
+   "evidence_url": "https://github.com/Ya7o/Cyberwatch/blob/main/cyberwatch/watchlists.py",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Fuite de données"
+ },
+ {
+  "date": "2026-04-24",
+  "id": "INC-A36AFC8D9E10",
+  "location": "La Réunion",
+  "org": "STOR Solutions",
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Numérique / Technologie",
+   "evidence_url": "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Intrusion"
+ },
+ {
+  "date": "2026-02-19",
+  "id": "INC-78D32D7D8C37",
+  "location": "La Réunion",
+  "org": "EPF Réunion / VALGO",
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Administration / Collectivité",
+   "evidence_url": "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "threat": "Fuite de données"
+ }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "pair_key": "ITM-5366750b9713f248|ITM-c468aaef607411be",
+    "left": "ITM-c468aaef607411be",
+    "right": "ITM-5366750b9713f248",
+    "status": "VALIDATION_REJECTED",
+    "first_seen": "RUN-20260912T164223",
+    "last_run": "RUN-20260912T164223",
+    "attempts": 0,
+    "same_organisation": "DIFFERENT",
+    "same_incident": "DIFFERENT",
+    "confidence": 0.9,
+    "reason": "Les deux items concernent des organisations distinctes (noms explicites différents) malgré même localisation et nature de l'incident; pas d'indice concret qu'il s'agit du même compromission. -> DIFFERENT.",
+    "blocked_reason": "",
+    "input_hash": "8750864e833fb53666108d582a9cbe9e93e614055bab73c933cb820ee66369ef",
+    "model": "gpt-5-mini",
+    "disabled_reason": ""
+  }
+]

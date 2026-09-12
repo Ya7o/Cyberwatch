@@ -1,0 +1,68 @@
+{
+  "by_task": {
+    "dedup": {
+      "cached_input_tokens": 0,
+      "calls_attempted": 1,
+      "calls_budget_blocked": 0,
+      "calls_failed": 0,
+      "calls_succeeded": 1,
+      "duration_seconds": 8.554867451000007,
+      "estimated_cost_usd": 0.00263925,
+      "input_tokens": 4309,
+      "last_model": "gpt-5-mini",
+      "max_calls": 200,
+      "max_cost_usd": 0.5,
+      "output_tokens": 781,
+      "reasoning_tokens": 0,
+      "retries": 0,
+      "total_tokens": 5090
+    },
+    "source_facts": {
+      "cached_input_tokens": 0,
+      "calls_attempted": 16,
+      "calls_budget_blocked": 0,
+      "calls_failed": 0,
+      "calls_succeeded": 16,
+      "duration_seconds": 95.29636928600003,
+      "estimated_cost_usd": 0.026102499999999997,
+      "input_tokens": 51026,
+      "last_model": "gpt-5-mini",
+      "max_calls": 250,
+      "max_cost_usd": 0.75,
+      "output_tokens": 6673,
+      "reasoning_tokens": 0,
+      "retries": 0,
+      "total_tokens": 57699
+    }
+  },
+  "cached_input_tokens": 0,
+  "calls_attempted": 17,
+  "calls_budget_blocked": 0,
+  "calls_failed": 0,
+  "calls_succeeded": 17,
+  "disabled_reason": "",
+  "duration_seconds": 103.85123673700004,
+  "enabled": true,
+  "estimated_cost_usd": 0.028741749999999996,
+  "http_429": 0,
+  "http_5xx": 0,
+  "input_tokens": 55335,
+  "max_calls": 3000,
+  "max_cost_usd": 0.035,
+  "output_tokens": 7454,
+  "reasoning_tokens": 0,
+  "retries": 0,
+  "routing": {
+    "default_model": "gpt-5-nano",
+    "rich_model": "gpt-5-mini",
+    "rich_task_markers": [
+      "semantic",
+      "source_facts",
+      "source-facts",
+      "dedup"
+    ]
+  },
+  "run_id": "RUN-20260912T164223",
+  "timeouts": 0,
+  "total_tokens": 62789
+}

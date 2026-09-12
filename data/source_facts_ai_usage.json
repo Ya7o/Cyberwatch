@@ -1,0 +1,104 @@
+{
+  "abstained_field_cache_hits": 0,
+  "accepted_field_cache_hits": 0,
+  "accepted_field_rate": 0.629,
+  "activity_pairs": {
+    "accepted": {
+      "from_cache": 0,
+      "from_call": 4,
+      "total": 4
+    },
+    "rejected": {
+      "from_cache": 0,
+      "from_call": 3,
+      "total": 3
+    },
+    "requested": 7
+  },
+  "average_duration_seconds": 5.968,
+  "cache_format": "source-facts-ai-field-cache-v1",
+  "cache_hits": 0,
+  "calls_attempted": 16,
+  "calls_budget_blocked": 0,
+  "calls_failed": 0,
+  "calls_success": 16,
+  "cost_per_accepted_field_usd": 0.00066929,
+  "disabled_reason": "",
+  "effective_model": "gpt-5-mini",
+  "enabled": true,
+  "error_reasons": {},
+  "estimated_cost_usd": 0.026102,
+  "field_cache_hits": 0,
+  "field_outcomes": {
+    "abstained": 1,
+    "accepted": 39,
+    "miss": 18,
+    "rejected": 4
+  },
+  "field_outcomes_by_name": {
+    "activity_description": {
+      "accepted": 6,
+      "rejected": 1
+    },
+    "activity_sector_match": {
+      "accepted": 4,
+      "rejected": 3
+    },
+    "incident_summary": {
+      "accepted": 13,
+      "miss": 3
+    },
+    "summary": {
+      "accepted": 13,
+      "miss": 3
+    },
+    "threat_candidate": {
+      "abstained": 1,
+      "accepted": 3,
+      "miss": 12
+    }
+  },
+  "fields_invalidated": 0,
+  "fields_requested": {
+    "activity_description": 7,
+    "activity_sector_match": 7,
+    "incident_summary": 16,
+    "summary": 16,
+    "threat_candidate": 16
+  },
+  "fields_requested_new": {
+    "activity_description": 7,
+    "activity_sector_match": 7,
+    "incident_summary": 16,
+    "summary": 16,
+    "threat_candidate": 16
+  },
+  "http_429": 0,
+  "http_5xx": 0,
+  "input_tokens": 51026,
+  "items_eligible": 16,
+  "items_fully_cached": 0,
+  "items_partially_cached": 0,
+  "items_skipped_no_missing_fields": 0,
+  "items_would_call": 16,
+  "legacy_field_cache_hits": 0,
+  "legacy_null_migrations": 0,
+  "legacy_null_skips": 0,
+  "max_duration_seconds": 8.544,
+  "model": "gpt-5-nano",
+  "output_tokens": 6673,
+  "p50_duration_seconds": 5.684,
+  "p95_duration_seconds": 8.544,
+  "prompt_version": "2026-09-11.source-facts.20",
+  "rejected_field_cache_hits": 0,
+  "requested_model": "gpt-5-nano",
+  "retries": 0,
+  "run_id": "RUN-20260912T164223",
+  "schema_version": "11",
+  "semantic_first_misses": 7,
+  "semantic_new_abstentions": 16,
+  "semantic_recovered_on_retry": 0,
+  "semantic_retries": 0,
+  "timeouts": 0,
+  "total_duration_seconds": 95.494
+}
