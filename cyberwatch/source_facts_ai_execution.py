@@ -8,6 +8,8 @@ from .model import Item
 from .collectors.base import RawEntry
 from .source_facts_ai_runtime import _Runtime, SourceFactsAiError
 from .source_facts_ai_contract import FIELD_VERSIONS, RETRY_EVIDENCE_INSTRUCTIONS
+from .evidence_repair import repair_evidence
+from .source_facts_ai_activity import evidence_repair_eligibility
 
 def _proposals(raw: dict, fields: set[str]) -> dict:
     """Valeur et preuve brutes proposées, champ par champ.
@@ -33,6 +35,43 @@ def _previous_fields(runtime: _Runtime, key: str) -> dict:
     if isinstance(entry, dict) and isinstance(entry.get("fields"), dict):
         return dict(entry["fields"])
     return {}
+
+
+
+def _repair_evidence_in_place(api, raw: dict, context: str, fields: set[str],
+                              organisation: str, normalized: dict, reasons: dict) -> dict:
+    """Cherche une meilleure citation pour les champs refusés sur leur preuve.
+
+    La valeur proposée n'est jamais touchée : seule `evidence` est remplacée,
+    par un extrait exact de l'article. Rien n'est accepté ici — le fait n'existe
+    que si `_normalize` le revalide, avec les mêmes contrôles qu'au premier
+    passage. Rend la trace de réparation, champ par champ.
+    """
+    from .source_facts_ai_activity import field_rejection_kind
+    from .source_facts_ai_normalize import field_rejection_reason
+
+    trace: dict = {}
+    repaired = False
+    for field in sorted(fields - normalized.keys()):
+        reason = reasons.get(field) or field_rejection_reason(field, raw, context, organisation)
+        kind = field_rejection_kind(field, reason)
+        if not evidence_repair_eligibility(field, reason, kind):
+            trace[field] = {"initial_rejection": reason, "eligible": False}
+            continue
+        candidate = raw.get(field)
+        value = candidate.get("value") if isinstance(candidate, dict) else ""
+        evidence = repair_evidence(field, str(value or ""), context, organisation)
+        trace[field] = {"initial_rejection": reason, "eligible": True,
+                        "method": "deterministic" if evidence else "none",
+                        "evidence": evidence, "llm_called": False}
+        if evidence:
+            raw[field] = {**candidate, "evidence": evidence}
+            repaired = True
+    if repaired:
+        normalized.update(api._normalize(raw, context, fields, organisation))
+    for field, record in trace.items():
+        record["final_outcome"] = "accepted" if field in normalized else "rejected"
+    return trace
 
 
 def _record_field_outcomes(runtime: _Runtime, cache: dict, fields: set[str]) -> dict:
@@ -111,6 +150,10 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
         # `_store_field_cache` de distinguer une absence explicite d'une valeur
         # proposée puis refusée, au lieu de le corriger après coup.
         _, reasons = normalize_activity(raw, context, organisation)
+        # Réparation de preuve : une valeur juste refusée sur une mauvaise
+        # citation retrouve sa chance, sans qu'aucun validateur soit assoupli.
+        repair = _repair_evidence_in_place(api, raw, context, fields, organisation,
+                                           normalized, reasons)
         api._store_field_cache(runtime, key, item, entry, fields, normalized,
                                raw=raw, reasons=reasons)
         cache = runtime.cache[key]
@@ -146,7 +189,8 @@ def perform_request(item: Item, entry: RawEntry, context: str, fields: set[str],
                              proposals=_proposals(raw, fields), rejections=rejected,
                              field_outcomes=field_outcomes,
                              rejection_kinds={field: field_rejection_kind(field, reason)
-                                              for field, reason in rejected.items()})
+                                              for field, reason in rejected.items()},
+                             repair=repair)
         runtime.calls_succeeded += 1
         return normalized, True
     except (SourceFactsAiError, ValueError, TypeError, json.JSONDecodeError) as exc:

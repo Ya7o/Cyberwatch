@@ -133,3 +133,60 @@ def test_les_extraits_candidats_ne_enjambent_jamais_un_retour_ligne():
     assert "Une fuite de données a été confirmée par la société." in sentences
     assert not any("\n" in sentence for sentence in sentences)
     assert not any(sentence.startswith("Titre de section sans ponctuation finale Une") for sentence in sentences)
+
+
+# --- Branchement sur le vrai chemin d'appel --------------------------------
+
+def _payload(output: dict):
+    return {"output_text": json.dumps(output, ensure_ascii=False),
+            "usage": {"input_tokens": 10, "output_tokens": 5}}
+
+
+def _output_for(body: dict, **values):
+    listes = {"data_types", "affected_counts", "data_volumes", "file_counts",
+              "attack_flow", "incident_summary"}
+    return {field: values.get(field, [] if field in listes
+                              else {"value": "", "confidence": 0.0, "evidence": ""})
+            for field in body["text"]["format"]["schema"]["properties"]}
+
+
+ARTICLE = (
+    "Exemple SA : un pirate revendique la fuite de données de 10 000 clients\n"
+    "Un utilisateur d'un forum cybercriminel propose un fichier attribué à Exemple SA.\n"
+    "Exemple SA a confirmé une violation de données personnelles le 2 septembre 2026.\n"
+)
+
+
+def test_le_pipeline_repare_la_preuve_d_une_menace_et_conserve_la_valeur(monkeypatch, tmp_path):
+    """Bout en bout : le modèle propose la bonne menace avec une citation qui ne
+    la prouve pas ; la réparation retrouve la phrase du document et le fait est
+    publié sans que la valeur ait bougé."""
+    from cyberwatch import source_facts_ai as sfa
+    from cyberwatch.collectors.base import RawEntry
+    from cyberwatch.model import Item
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))
+    monkeypatch.setenv("SOURCE_FACTS_AI_STATS_PATH", str(tmp_path / "stats.json"))
+    monkeypatch.setenv("SOURCE_FACTS_RETRY_QUEUE_PATH", str(tmp_path / "retry.json"))
+    sfa.reset_runtime_for_tests()
+
+    entry = RawEntry(title="Exemple SA : un pirate revendique la fuite de données", content=ARTICLE)
+    item = Item(Item_ID="ITM-repair", Source_ID="CYBERATTAQUE_ORG",
+                Organisation_Raw="Exemple SA", Published_Date="2026-09-02")
+    # Citation exacte de l'article, mais qui n'énonce pas la fuite : c'est le
+    # refus `FIELD_VALIDATION_REJECTED` observé sur Aqualter et Snexi.
+    mauvaise = "Un utilisateur d'un forum cybercriminel propose un fichier attribué à Exemple SA."
+
+    def fake_post(body, _runtime=None):
+        return _payload(_output_for(body, threat_candidate={
+            "value": "Fuite de données", "confidence": 0.95, "evidence": mauvaise}))
+
+    monkeypatch.setattr(sfa, "_post_openai", fake_post)
+    result = sfa.enrich(item, entry)
+
+    assert result["threat_candidate"]["value"] == "Fuite de données"
+    evidence = result["threat_candidate"]["evidence"]
+    assert evidence != mauvaise
+    assert evidence in " ".join(ARTICLE.split())
+    assert len(evidence) <= 300
