@@ -37,7 +37,7 @@ def test_veille_llm_source_is_active_local_snapshot():
     assert spec.zone == "La Réunion / Mayotte"
 
 
-def test_veille_llm_imports_only_explicitly_accepted_records():
+def test_veille_llm_materializes_accepted_and_candidate_records():
     spec = sources.by_id("VEILLE_LLM")
     assert "min_score" not in spec.params
     with open(spec.params["path"], encoding="utf-8") as handle:
@@ -53,20 +53,20 @@ def test_veille_llm_imports_only_explicitly_accepted_records():
     assert raw["metadata"]["candidate_count"] == sum(
         row["admission"] == "CANDIDATE" for row in raw["records"]
     )
-    expected = [
-        row for row in raw["records"]
-        if row["admission"] == "ACCEPTED" and row["date"] <= "2026-08-15"
-    ]
+    expected = [row for row in raw["records"] if row["date"] <= "2026-08-15"]
     assert len(result.entries) == len(expected)
-    assert result.items_seen == raw["metadata"]["accepted_count"]
+    assert result.items_seen == len(expected)
     assert {entry.organisation for entry in result.entries} == {
         row["organisation"] for row in expected
     }
     assert all(entry.url == row["sources"][0] for entry, row in zip(result.entries, expected))
     assert all(entry.location in {config.LOC_REUNION, config.LOC_MAYOTTE} for entry in result.entries)
+    assert [entry.source_metadata["admission"] for entry in result.entries] == [
+        row["admission"] for row in expected
+    ]
 
 
-def test_veille_llm_admission_not_score_controls_publication(tmp_path, monkeypatch):
+def test_veille_llm_admission_not_score_controls_candidate_flag(tmp_path, monkeypatch):
     spec = sources.by_id("VEILLE_LLM")
     with open(spec.params["path"], encoding="utf-8") as handle:
         raw = json.load(handle)
@@ -82,9 +82,9 @@ def test_veille_llm_admission_not_score_controls_publication(tmp_path, monkeypat
     result = get_collector(spec.collector).collect(
         None, local_spec, Window("2026-01-01", "2026-08-15")
     )
-    entry_orgs = {entry.organisation for entry in result.entries}
-    assert accepted["organisation"] in entry_orgs
-    assert candidate["organisation"] not in entry_orgs
+    by_org = {entry.organisation: entry for entry in result.entries}
+    assert by_org[accepted["organisation"]].source_metadata["admission"] == "ACCEPTED"
+    assert by_org[candidate["organisation"]].source_metadata["admission"] == "CANDIDATE"
 
 
 def test_veille_llm_stale_snapshot_is_visible_but_non_blocking(tmp_path, monkeypatch):
@@ -136,6 +136,44 @@ def test_veille_llm_does_not_inflate_direct_source_count():
 def test_veille_llm_remains_source_when_only_evidence():
     incident = build_incidents([_item("VEILLE_LLM")])[0]
     assert incident.Sources == "VEILLE_LLM"
+
+
+def test_candidate_admission_is_published_and_independent_source_wins(monkeypatch):
+    key = ("signal local", "2026-08-31")
+    monkeypatch.setattr(site, "_regional_admission_by_key", lambda: {
+        key: {
+            "admission": "CANDIDATE",
+            "admission_reason": "Signal à corroborer.",
+            "summary": "Incident encore incertain.",
+            "score": 40,
+        }
+    })
+    candidate = {
+        "id": "INC-candidate", "org": "Signal local", "date": "2026-08-31",
+        "sources": ["VEILLE_LLM"],
+    }
+    corroborated = {
+        "id": "INC-confirmed", "org": "Signal local", "date": "2026-08-31",
+        "sources": ["CYBERATTAQUE_ORG"],
+    }
+    payload = [candidate, corroborated]
+    site._decorate_admission(payload)
+
+    assert candidate["admission"] == "CANDIDATE"
+    assert candidate["admission_reason"] == "Signal à corroborer."
+    assert candidate["summary"] == "Incident encore incertain."
+    assert corroborated["admission"] == "ACCEPTED"
+    assert "admission" in site._INCIDENT_PUBLIC_FIELDS
+    assert "admission_reason" in site._INCIDENT_PUBLIC_FIELDS
+
+
+def test_dashboard_candidate_badge_is_discreet_and_uses_regular_cards():
+    js = open("assets/dashboard-candidates.js", encoding="utf-8").read()
+    assert 'data-candidate-badge' in js
+    assert 'À confirmer' in js
+    assert '.incident-card[data-id]' in js
+    assert 'admission_reason' in js
+    assert 'Signaux à confirmer' not in js
 
 
 def test_dashboard_payload_exposes_local_summary_score_and_references():
