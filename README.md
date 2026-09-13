@@ -27,6 +27,22 @@ Une `MAJ` collecte uniquement aujourd'hui et hier à La Réunion (UTC+4) et cons
 | `RANSOMWARE_LIVE` | API JSON |
 | `VEILLE_LLM` | snapshot versionné La Réunion / Mayotte |
 
+## Qualification sectorielle
+
+Un secteur n'est publié que s'il repose sur une activité métier prouvée. L'ordre est : référentiel validé, nom institutionnel sûr, rubrique structurée de la source, activité citée dans l'article. À défaut, le secteur reste `Inconnu` avec un motif explicite — une abstention vaut mieux qu'une attribution non justifiée.
+
+Pour BonjourLaFuite, qui ne publie qu'un nom et des types de données, deux niveaux comblent le vide. Le niveau 1 réutilise une activité déjà prouvée pour la même identité canonique. Le niveau 2 va chercher la preuve dehors : URL déjà connue de Cyberwatch, puis registre public `recherche-entreprises.api.gouv.fr`. Aucun moteur de recherche généraliste n'est implémenté ni simulé.
+
+Un provider ne rend que des URL candidates ; il n'a aucun pouvoir de décision. La preuve n'existe qu'après téléchargement et vérification : citation littéralement présente dans le contenu, nom propre exactement celui de la victime, ni récit d'incident, ni activité d'un tiers ou d'une maison mère. Une fiche de registre n'est jamais retenue sur la seule concordance de nom — il faut une corroboration indépendante à l'échelle de la commune ou d'un département d'outre-mer. Le secteur est ensuite établi par la chaîne existante, déterministe d'abord, mapper taxonomique ensuite.
+
+Zéro appel de modèle sur tout chemin déterministe ; au plus un appel pour désigner une citation et un pour la taxonomie, la citation désignée repassant par toutes les portes déterministes. `data/organisation_activity_evidence.csv` mémorise une preuve par organisation et la re-vérifie à chaque lecture, si bien qu'un durcissement de politique est rétroactif.
+
+```bash
+python scripts/evaluate_external_activity.py   # benchmark d'activation, hors ligne
+```
+
+Le niveau 2 n'est activé en production qu'après ce benchmark : dix portes bloquantes, dont zéro faux positif, zéro erreur d'identité et zéro secteur sans activité prouvée. Résultat courant dans `validation/external_activity_20/report.md`.
+
 ## Production
 
 La collecte canonique passe par `.github/workflows/collect.yml`. Le secret GitHub `Cyberwatchapi` est injecté dans `OPENAI_API_KEY` et ne doit jamais être écrit dans le dépôt ou les journaux.

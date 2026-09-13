@@ -29,6 +29,7 @@ from .model import (
 from .incident_identity import REGISTRY_COLUMNS
 from .incident_dedup import REGISTRY_COLUMNS as INCIDENT_DEDUP_REGISTRY_COLUMNS
 from .org_identity import ORGANISATION_IDENTITY_REGISTRY_COLUMNS
+from .organisation_activity_store import EVIDENCE_COLUMNS
 
 # Racine du dépôt, déduite de l'emplacement du paquet.
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,6 +48,7 @@ ENRICHMENT_REFERENCE_CSV = DATA_DIR / "enrichment_reference.csv"
 INCIDENT_ID_REGISTRY_CSV = DATA_DIR / "incident_id_registry.csv"
 INCIDENT_DEDUP_REGISTRY_CSV = DATA_DIR / "incident_dedup_registry.csv"
 ORGANISATION_IDENTITY_REGISTRY_CSV = DATA_DIR / "organisation_identity_registry.csv"
+ORGANISATION_ACTIVITY_EVIDENCE_CSV = DATA_DIR / "organisation_activity_evidence.csv"
 DEDUP_AI_DAILY_USAGE_CSV = DATA_DIR / "dedup_ai_daily_usage.csv"
 PRODUCTION_METRICS_CSV = DATA_DIR / "production_metrics.csv"
 SECTOR_RESOLUTION_CSV = DATA_DIR / "sector_resolution.csv"
@@ -197,6 +199,30 @@ def load_organisation_identity_registry_rows(path: Path | None = None) -> list[d
 def save_organisation_identity_registry_rows(rows: list[dict], path: Path | None = None) -> None:
     ordered = sorted(rows, key=lambda row: (row.get("Alias_Key", ""), row.get("Canonical_Key", "")))
     write_csv(_organisation_identity_registry_path(path), ORGANISATION_IDENTITY_REGISTRY_COLUMNS, ordered)
+
+
+def _organisation_activity_evidence_path(path: Path | None = None) -> Path:
+    if path is not None:
+        return path
+    # Même convention que les autres référentiels : suivre le répertoire
+    # d'ITEMS_CSV, afin qu'un test qui isole le snapshot obtienne aussi un
+    # référentiel de preuves isolé sans jamais écrire dans data/ réel.
+    return ITEMS_CSV.parent / ORGANISATION_ACTIVITY_EVIDENCE_CSV.name
+
+
+def load_organisation_activity_evidence_rows(path: Path | None = None) -> list[dict]:
+    """Preuves d'activité externes déjà vérifiées (§ niveau 2).
+
+    Référentiel, pas état dérivé : une preuve porte sur l'organisation, pas sur
+    l'incident, et survit donc à une purge — comme le registre d'identité. La
+    relecture la re-vérifie de toute façon.
+    """
+    return read_csv(_organisation_activity_evidence_path(path))
+
+
+def save_organisation_activity_evidence_rows(rows: list[dict], path: Path | None = None) -> None:
+    ordered = sorted(rows, key=lambda row: row.get("Organisation_Key", ""))
+    write_csv(_organisation_activity_evidence_path(path), EVIDENCE_COLUMNS, ordered)
 
 
 def append_dedup_ai_daily_usage(row: dict, path: Path | None = None) -> None:

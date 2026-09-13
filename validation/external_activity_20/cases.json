@@ -1,0 +1,659 @@
+{
+ "description": "Corpus d'activation du niveau 2 : vingt incidents dont le secteur doit être justifié par une preuve téléchargée, ou refusé. L'évaluation ne fait aucun appel réseau ; le client HTTP, le résolveur DNS et les appels de modèle sont injectés.",
+ "version": "2026-09-13.external-activity.1",
+ "cases": [
+  {
+   "case_id": "01-nom-simple-site-officiel",
+   "kind": "prose",
+   "tests": "nom simple, site officiel facile, activité déterministe",
+   "organisation_raw": "PassPass",
+   "expected": {
+    "sector": "Transport / Logistique",
+    "sector_reason": "ACTIVITY_RULE",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "origin": "BLF_EXTERNAL_ACTIVITY",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://passpass-mobilite.fr/qui-sommes-nous"
+   ],
+   "dns": {
+    "passpass-mobilite.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://passpass-mobilite.fr/qui-sommes-nous": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/01-passpass.html"
+    }
+   }
+  },
+  {
+   "case_id": "02-url-de-reference",
+   "kind": "prose",
+   "tests": "URL de validation du référentiel, secteur déterministe",
+   "organisation_raw": "Librairie du Port",
+   "expected": {
+    "sector": "Commerce / Distribution",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "reference_url": "https://librairie-du-port.fr/a-propos",
+   "dns": {
+    "librairie-du-port.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://librairie-du-port.fr/a-propos": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/02-librairie.html"
+    }
+   }
+  },
+  {
+   "case_id": "03-site-officiel-difficile",
+   "kind": "prose",
+   "tests": "page-défi après HTTP 200, ordre des candidats",
+   "organisation_raw": "Atelier Ferrand",
+   "expected": {
+    "sector": "Industrie / Manufacture",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 2,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://atelier-ferrand.fr/",
+    "https://atelier-ferrand.fr/qui-sommes-nous"
+   ],
+   "dns": {
+    "atelier-ferrand.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://atelier-ferrand.fr/": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/03-portail.html"
+    },
+    "https://atelier-ferrand.fr/qui-sommes-nous": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/03-atelier.html"
+    }
+   }
+  },
+  {
+   "case_id": "04-activite-mappee-par-le-mapper",
+   "kind": "prose",
+   "tests": "activité prouvée, secteur résolu par le mapper taxonomique existant",
+   "organisation_raw": "Orbitale",
+   "expected": {
+    "sector": "Numérique / Technologie",
+    "sector_reason": "SEMANTIC_ACTIVITY_MATCH",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 1
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://orbitale-systems.fr/societe"
+   ],
+   "dns": {
+    "orbitale-systems.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "taxonomy": {
+    "sector": "Numérique / Technologie"
+   },
+   "fixtures": {
+    "https://orbitale-systems.fr/societe": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/04-orbitale.html"
+    }
+   }
+  },
+  {
+   "case_id": "05-citation-choisie-par-le-modele",
+   "kind": "prose",
+   "tests": "citation désignée par le modèle, puis revalidée déterministement",
+   "organisation_raw": "Maison Blanchet",
+   "expected": {
+    "sector": "Hébergement / Tourisme / Restauration",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 1
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://maison-blanchet.fr/notre-histoire"
+   ],
+   "dns": {
+    "maison-blanchet.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "llm": {
+    "found": true,
+    "quote": "Depuis 1954, Maison Blanchet est une entreprise de restauration collective qui sert chaque jour douze mille repas."
+   },
+   "fixtures": {
+    "https://maison-blanchet.fr/notre-histoire": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/05-blanchet.html"
+    }
+   }
+  },
+  {
+   "case_id": "06-citation-inventee-par-le-modele",
+   "kind": "prose",
+   "tests": "citation absente de la page téléchargée, rejetée mécaniquement",
+   "organisation_raw": "Maison Blanchet",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_QUOTE_NOT_GROUNDED",
+    "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+    "max_requests": 1,
+    "max_llm_calls": 1
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://maison-blanchet.fr/notre-histoire"
+   ],
+   "dns": {
+    "maison-blanchet.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "llm": {
+    "found": true,
+    "quote": "Maison Blanchet exploite un réseau de boulangeries artisanales."
+   },
+   "fixtures": {
+    "https://maison-blanchet.fr/notre-histoire": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/05-blanchet.html"
+    }
+   }
+  },
+  {
+   "case_id": "07-homonyme-nom-plus-long",
+   "kind": "prose",
+   "tests": "la page nomme une entité plus large que la victime",
+   "organisation_raw": "Velizone",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_IDENTITY_HOMONYM",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://velizone.fr/groupe"
+   ],
+   "dns": {
+    "velizone.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://velizone.fr/groupe": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/07-velizone.html"
+    }
+   }
+  },
+  {
+   "case_id": "08-homonyme-resolu-par-alias",
+   "kind": "prose",
+   "tests": "un alias validé résout l'homonymie au lieu d'être bloqué par elle",
+   "organisation_raw": "Velizone",
+   "expected": {
+    "sector": "Numérique / Technologie",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://velizone.fr/groupe"
+   ],
+   "dns": {
+    "velizone.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "identity_registry": {
+    "velizone groupe": "velizone"
+   },
+   "fixtures": {
+    "https://velizone.fr/groupe": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/07-velizone.html"
+    }
+   }
+  },
+  {
+   "case_id": "09-nom-court-ambigu",
+   "kind": "prose",
+   "tests": "nom court ambigu, la page décrit une autre entreprise",
+   "organisation_raw": "Reso",
+   "expected": {
+    "sector": "Inconnu",
+    "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://reso-conseil.fr/a-propos"
+   ],
+   "dns": {
+    "reso-conseil.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://reso-conseil.fr/a-propos": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/09-reso.html"
+    }
+   }
+  },
+  {
+   "case_id": "10-marque-et-forme-juridique",
+   "kind": "prose",
+   "tests": "marque contre société juridique, forme postposée acceptée",
+   "organisation_raw": "Cartabl",
+   "expected": {
+    "sector": "Numérique / Technologie",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://cartabl.fr/societe"
+   ],
+   "dns": {
+    "cartabl.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://cartabl.fr/societe": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/10-cartabl.html"
+    }
+   }
+  },
+  {
+   "case_id": "11-organisation-absente-de-la-page",
+   "kind": "prose",
+   "tests": "la page ne nomme pas la victime : la bonne réponse est Inconnu",
+   "organisation_raw": "Sofrigel",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_IDENTITY_NOT_NAMED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://transdev-reunion.fr/a-propos"
+   ],
+   "dns": {
+    "transdev-reunion.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://transdev-reunion.fr/a-propos": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/11-transdev.html"
+    }
+   }
+  },
+  {
+   "case_id": "12-piege-prestataire",
+   "kind": "prose",
+   "tests": "activité attribuée à un prestataire, refusée après désignation",
+   "organisation_raw": "Logipro",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_ACTIVITY_THIRD_PARTY",
+    "max_requests": 1,
+    "max_llm_calls": 1
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://logipro.fr/a-propos"
+   ],
+   "dns": {
+    "logipro.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "llm": {
+    "found": true,
+    "quote": "Logipro est un distributeur qui fait appel à un prestataire chargé de toute la logistique de ses commandes."
+   },
+   "fixtures": {
+    "https://logipro.fr/a-propos": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/12-prestataire.html"
+    }
+   }
+  },
+  {
+   "case_id": "13-piege-filiale",
+   "kind": "prose",
+   "tests": "appartenance à un groupe : le métier décrit est celui de la maison mère",
+   "organisation_raw": "Novachim Ouest",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_ACTIVITY_NOT_DESCRIBED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://novachim-ouest.fr/societe"
+   ],
+   "dns": {
+    "novachim-ouest.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://novachim-ouest.fr/societe": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/13-novachim.html"
+    }
+   }
+  },
+  {
+   "case_id": "14-recit-d-incident-seul",
+   "kind": "prose",
+   "tests": "la page ne décrit que l'incident, jamais le métier",
+   "organisation_raw": "Sofrigel",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_NO_QUOTE",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://sofrigel.fr/communique"
+   ],
+   "dns": {
+    "sofrigel.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://sofrigel.fr/communique": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/14-sofrigel.html"
+    }
+   }
+  },
+  {
+   "case_id": "15-activite-reellement-ambigue",
+   "kind": "prose",
+   "tests": "activité prouvée mais trop vague : abstention justifiée",
+   "organisation_raw": "Groupe Marceau",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "origin": "BLF_EXTERNAL_ACTIVITY",
+    "max_requests": 1,
+    "max_llm_calls": 1
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://groupe-marceau.fr/qui-sommes-nous"
+   ],
+   "dns": {
+    "groupe-marceau.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://groupe-marceau.fr/qui-sommes-nous": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/15-marceau.html"
+    }
+   }
+  },
+  {
+   "case_id": "16-registre-homonyme-qare",
+   "kind": "registry",
+   "tests": "fiche de registre concordante par le nom, sans corroboration indépendante",
+   "organisation_raw": "Qare",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_IDENTITY_UNVERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "entreprises_registry"
+   },
+   "item": {
+    "Location": "France métropolitaine"
+   },
+   "fact": {
+    "Fine_Location": ""
+   },
+   "dns": {
+    "recherche-entreprises.api.gouv.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://recherche-entreprises.api.gouv.fr/search?q=Qare&per_page=5": {
+     "status_code": 200,
+     "content_type": "application/json",
+     "body_file": "fixtures/16-qare.json"
+    }
+   }
+  },
+  {
+   "case_id": "17-registre-corrobore-par-la-commune",
+   "kind": "registry",
+   "tests": "fiche de registre corroborée par la commune du siège",
+   "organisation_raw": "Transports Dupont",
+   "expected": {
+    "sector": "Transport / Logistique",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "verification_method": "REGISTRY_STRUCTURED_RECORD",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "entreprises_registry"
+   },
+   "item": {
+    "Location": "La Réunion"
+   },
+   "fact": {
+    "Fine_Location": "Sainte-Marie"
+   },
+   "dns": {
+    "recherche-entreprises.api.gouv.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Dupont&per_page=5": {
+     "status_code": 200,
+     "content_type": "application/json",
+     "body_file": "fixtures/17-transports-dupont.json"
+    }
+   }
+  },
+  {
+   "case_id": "18-registre-conflit-de-preuve",
+   "kind": "registry",
+   "tests": "la raison sociale classerait ailleurs que le code d'activité",
+   "organisation_raw": "Transports Beaulieu",
+   "expected": {
+    "sector": "Inconnu",
+    "external_status": "EXTERNAL_EVIDENCE_SECTOR_CONFLICT",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "entreprises_registry"
+   },
+   "item": {
+    "Location": "La Réunion"
+   },
+   "fact": {
+    "Fine_Location": "Sainte-Marie"
+   },
+   "dns": {
+    "recherche-entreprises.api.gouv.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Beaulieu&per_page=5": {
+     "status_code": 200,
+     "content_type": "application/json",
+     "body_file": "fixtures/18-conflit.json"
+    }
+   }
+  },
+  {
+   "case_id": "19-cible-interdite-et-redirection",
+   "kind": "safety",
+   "tests": "adresse privée résolue et redirection vers un service de métadonnées",
+   "organisation_raw": "Cartabl",
+   "expected": {
+    "sector": "Inconnu",
+    "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://cartabl-prive.fr/a-propos",
+    "https://cartabl-interne.fr/a-propos"
+   ],
+   "dns": {
+    "cartabl-prive.fr": [
+     "10.0.0.5"
+    ],
+    "cartabl-interne.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "fixtures": {
+    "https://cartabl-interne.fr/a-propos": {
+     "status_code": 200,
+     "content_type": "text/html",
+     "body_file": "fixtures/19-redirection.html",
+     "final_url": "http://169.254.169.254/latest/meta-data/",
+     "redirect_chain": [
+      "http://169.254.169.254/latest/meta-data/"
+     ]
+    }
+   }
+  },
+  {
+   "case_id": "20-reutilisation-du-cache",
+   "kind": "cache",
+   "tests": "preuve réutilisée d'un incident à l'autre, sans nouvelle requête",
+   "organisation_raw": "PassPass",
+   "expected": {
+    "sector": "Transport / Logistique",
+    "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+    "max_requests": 1,
+    "max_llm_calls": 0
+   },
+   "env": {
+    "EXTERNAL_ACTIVITY_SOURCES": "owned_url"
+   },
+   "owned_urls": [
+    "https://passpass-mobilite.fr/qui-sommes-nous"
+   ],
+   "dns": {
+    "passpass-mobilite.fr": [
+     "93.184.216.34"
+    ]
+   },
+   "passes": [
+    {
+     "expected": {
+      "requests": 0,
+      "external_status": "EXTERNAL_ACTIVITY_CACHE_HIT"
+     }
+    }
+   ],
+   "fixtures": {
+    "https://passpass-mobilite.fr/qui-sommes-nous": {
+     "status_code": 200,
+     "content_type": "text/html; charset=utf-8",
+     "body_file": "fixtures/01-passpass.html"
+    }
+   }
+  }
+ ]
+}

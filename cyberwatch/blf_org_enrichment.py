@@ -1,19 +1,32 @@
-"""Activités BLF-only : preuves historiques, sans extraction ni inférence LLM.
+"""Activités BLF-only : preuves historiques, puis résolution externe vérifiée.
 
-Un provider explicite peut être injecté ; aucun moteur externe n'est installé
-ou activé par ce module. Les descriptions différentes sans compatibilité
-démontrée restent conflictuelles, même si elles partagent un secteur.
+Niveau 1 — réutilisation d'une activité déjà prouvée par une source riche pour
+la même identité canonique, sans extraction ni inférence LLM. Les descriptions
+différentes sans compatibilité démontrée restent conflictuelles, même si elles
+partagent un secteur.
+
+Niveau 2 — si aucun historique n'existe, un resolver injecté peut aller chercher
+une activité à l'extérieur (:mod:`cyberwatch.organisation_activity_external`).
+Ce module ne lui fait **aucune** confiance : tout résultat repasse par les
+portes pures de :mod:`cyberwatch.organisation_activity`, y compris lorsqu'il
+sort d'un cache. Sans resolver, le chemin reste exactement celui du niveau 1.
+
+La garde de composante ci-dessous est le verrou réel du périmètre : elle exige
+une composante exclusivement BONJOURLAFUITE, sans secteur, sans activité et
+sans rubrique exploitable. Autoriser une autre source au niveau 2 demande de
+l'éditer *aussi* — la policy seule n'y suffit pas.
 """
 from __future__ import annotations
 
 import json
 import logging
-from dataclasses import asdict, dataclass
 from typing import Protocol
 from urllib.parse import urlsplit
 
 from . import config
+from . import organisation_activity
 from .model import Item
+from .organisation_activity import VerifiedActivityEvidence
 from .normalize import searchable
 from .org_identity import effective_organisation_key
 from .sector import classify_source_sector
@@ -45,18 +58,20 @@ def _url(value: str) -> bool:
         return False
 
 
-@dataclass(frozen=True)
-class ActivityEvidence:
-    organisation: str
-    activity_description: str
-    evidence_quote: str
-    evidence_url: str
-    confidence: float
-    provider: str
+class OrganisationActivityResolver(Protocol):
+    """Point d'injection du niveau 2.
 
+    ``resolve`` reçoit l'**item** et non le seul nom : la corroboration
+    d'identité du registre a besoin de ``Location``, le cache de
+    ``Organisation_Key``, et l'ordonnancement de ``Published_Date``. Un seam
+    limité au nom ne pourrait rien porter de tout cela.
 
-class OrganisationActivityProvider(Protocol):
-    def resolve(self, organisation: str) -> ActivityEvidence | None: ...
+    Un resolver peut exposer ``last_status`` (motif du dernier refus) et
+    ``note_decision(applied=...)`` (comptage) ; les deux sont optionnels et lus
+    défensivement.
+    """
+
+    def resolve(self, item: Item) -> "VerifiedActivityEvidence | None": ...
 
 
 def activity_subject(item: Item, fact: dict) -> str:
@@ -151,24 +166,46 @@ def _select(candidates: list[dict]) -> tuple[dict | None, bool]:
             if candidates else None), False
 
 
-def _external(item: Item, provider: OrganisationActivityProvider) -> dict | None:
+def _external(item: Item, resolver: OrganisationActivityResolver, fact: dict) -> dict:
+    """Résultat du niveau 2, toujours re-vérifié, et jamais fatal.
+
+    Rend **toujours** un dict : un `None` fondu dans le record d'absence
+    perdrait le motif, or c'est le motif qui distingue « rien trouvé » de « pas
+    essayé ». En mode shadow, le secteur candidat est calculé ici puis consigné
+    sans être appliqué.
+    """
     try:
-        result = provider.resolve(item.Organisation_Raw)
-        if (not isinstance(result, ActivityEvidence) or not result.provider.strip()
-                or not _url(result.evidence_url) or not 0.8 <= result.confidence <= 1
-                or effective_organisation_key(result.organisation) !=
-                effective_organisation_key(item.Organisation_Raw, item.Organisation_Key)
-                or not supported_activity(result.organisation, result.activity_description,
-                                          result.evidence_quote)):
-            return None
-        return {**asdict(result), "origin": "BLF_EXTERNAL_ACTIVITY"}
-    except Exception as exc:
-        logger.warning("blf_activity_provider_failed item=%s error=%s", item.Item_ID, type(exc).__name__)
-        return None
+        result = resolver.resolve(item)
+    except Exception as exc:  # noqa: BLE001 — le niveau 2 ne casse pas la collecte
+        logger.warning("external_activity_failed item=%s error=%s",
+                       item.Item_ID, type(exc).__name__)
+        return organisation_activity.not_applied(organisation_activity.EXTERNAL_ERROR)
+
+    if not isinstance(result, VerifiedActivityEvidence):
+        return organisation_activity.not_applied(str(
+            getattr(resolver, "last_status", organisation_activity.EXTERNAL_NO_CANDIDATE)))
+    rejection = organisation_activity.accepts(result, item)
+    if rejection:
+        return organisation_activity.not_applied(rejection)
+
+    # Le mode vient du resolver lorsqu'il en porte un : c'est sa policy qui
+    # fait foi, pas une seconde lecture de l'environnement à un autre moment
+    # du run. Le repli couvre un resolver tiers sans policy.
+    shadow = getattr(resolver, "shadow", None)
+    if not isinstance(shadow, bool):
+        shadow = organisation_activity.shadow_mode()
+    candidate = organisation_activity.candidate_sector(
+        result.organisation, result.activity_description, result.evidence_quote,
+        source_sector_raw=str(fact.get("Source_Sector_Raw") or "").strip(),
+    ) if shadow else None
+    note = getattr(resolver, "note_decision", None)
+    if callable(note):
+        note(applied=not shadow)
+    return organisation_activity.blf_record(result, shadow=shadow, candidate=candidate)
 
 
 def enrich(items: list[Item], facts: list[dict], *, incident_decisions: list[dict] | None = None,
-           provider: OrganisationActivityProvider | None = None) -> list[str]:
+           provider: OrganisationActivityResolver | None = None) -> list[str]:
     """Rejoue les preuves possédées, y compris leur retrait, avant le mapper."""
     from .dedup import group_components, incident_decision_map
 
@@ -228,7 +265,7 @@ def enrich(items: list[Item], facts: list[dict], *, incident_decisions: list[dic
             elif chosen:
                 record = {**chosen, "origin": "BLF_ACTIVITY_REUSE"}
             elif provider is not None:
-                record = _external(item, provider) or record
+                record = _external(item, provider, fact)
             if record.get("activity_description"):
                 fact["Activity_Description"] = record["activity_description"]
                 proof = metadata(fact.get("Evidence_JSON"))

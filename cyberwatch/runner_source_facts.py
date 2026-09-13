@@ -114,6 +114,33 @@ def retry_pending(queued_at_start: list[dict], *,
     }
 
 
+def resolve_activities(items: list[Item], facts: list[dict], incident_rows: list[dict],
+                       *, offline: bool, run_id: str,
+                       persist: bool) -> tuple[object | None, list[str]]:
+    """Qualification d'activité complète, dans l'ordre qui la rend exploitable.
+
+    Niveau 1 (activité BLF déjà prouvée) et niveau 2 (résolution externe
+    vérifiée) s'exécutent **dans** ``blf_org_enrichment.enrich``, puis le
+    rapprochement sémantique passe : c'est cet ordre qui permet au mapper
+    taxonomique de voir une activité tout juste découverte. L'inverser le
+    priverait de son entrée, et remonter le niveau 2 avant la sanitation
+    exposerait sa preuve à un nettoyage qui ne la concerne pas.
+
+    Rend le moteur externe — ``None`` s'il n'avait rien à faire, auquel cas
+    ``enrich`` reprend exactement son chemin historique — et les Item_ID dont
+    le rapprochement sémantique a changé.
+    """
+    from . import blf_org_enrichment, enrichment, organisation_activity_external
+    from . import sector_semantic
+
+    reference = enrichment.load_reference()
+    engine = organisation_activity_external.run_stage(
+        items, facts, reference, offline=offline, run_id=run_id, persist_results=persist)
+    blf_org_enrichment.enrich(items, facts, incident_decisions=incident_rows,
+                              provider=engine)
+    return engine, sector_semantic.annotate_source_facts(items, facts, reference)
+
+
 def settle_sectors(rows: list[dict], incidents: list[Incident]) -> dict:
     """Clôt la reprise sectorielle une fois les décisions finales établies."""
     from .sector_activity import ACTIVITY_FIELDS

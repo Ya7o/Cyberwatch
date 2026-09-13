@@ -136,7 +136,7 @@ def test_conflict_abstains_even_with_provider(replay):
     other_fact = {**old_fact, "Item_ID": other.Item_ID, "Activity_Description": activity,
                   "Evidence_JSON": json.dumps({"Activity_Description": activity})}
     class Provider:
-        def resolve(self, organisation):
+        def resolve(self, item):
             pytest.fail("Un conflit ne doit pas être contourné")
     blf.enrich([item, old, other], [fact, old_fact, other_fact], provider=Provider())
     assert origin(fact) == "BLF_ACTIVITY_CONFLICT"
@@ -168,12 +168,28 @@ def test_non_blf_and_mixed_incidents_unchanged(replay, source):
     ("https://example.org/about", "", "PassPass", False),
     ("https://example.org/about", ACTIVITY, "Other", False),
 ])
-def test_external_contract(replay, url, quote, organisation, accepted):
+def test_external_contract(replay, monkeypatch, url, quote, organisation, accepted):
+    """Un resolver ne peut rien imposer : la preuve est re-vérifiée sur place.
+
+    Le contrat n'a plus de champ `confidence` — il portait un nombre qu'aucun
+    composant du projet ne calculait, et qui invitait un provider à se noter
+    lui-même. URL absente, citation absente ou organisation discordante restent
+    refusées, exactement comme avant.
+    """
+    monkeypatch.setenv("EXTERNAL_ACTIVITY_SHADOW_MODE", "0")
     item, fact, _, _ = replay
-    class Provider:
-        def resolve(self, name):
-            return blf.ActivityEvidence(organisation, ACTIVITY, quote, url, .9, "official-test")
-    blf.enrich([item], [fact], provider=Provider())
+
+    class Resolver:
+        def resolve(self, given):
+            return blf.VerifiedActivityEvidence(
+                organisation=organisation, organisation_key=org_identity
+                .effective_organisation_key(organisation),
+                activity_description=ACTIVITY, evidence_quote=quote, evidence_url=url,
+                source_type="official_site", provider="official-test",
+                verified_at="2026-09-12T00:00:00+00:00", content_hash="deadbeef",
+                verification_method="PROSE_LITERAL_QUOTE")
+
+    blf.enrich([item], [fact], provider=Resolver())
     assert bool(fact.get("Activity_Description")) == accepted
 
 

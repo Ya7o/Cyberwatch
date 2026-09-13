@@ -1,0 +1,1202 @@
+{
+ "cases": 20,
+ "gates": [
+  {
+   "detail": "20/20",
+   "gate": "cas_executes",
+   "ok": true
+  },
+  {
+   "detail": [],
+   "gate": "zero_faux_positif",
+   "ok": true
+  },
+  {
+   "detail": [],
+   "gate": "zero_erreur_identite",
+   "ok": true
+  },
+  {
+   "detail": [],
+   "gate": "zero_secteur_sans_activite_prouvee",
+   "ok": true
+  },
+  {
+   "detail": "20/20",
+   "gate": "decisions_correctes",
+   "ok": true
+  },
+  {
+   "detail": "9/9",
+   "gate": "rappel_sur_cas_repondables",
+   "ok": true
+  },
+  {
+   "detail": [],
+   "gate": "idempotence",
+   "ok": true
+  },
+  {
+   "detail": [],
+   "gate": "budget_par_cas",
+   "ok": true
+  },
+  {
+   "detail": 5,
+   "gate": "budget_llm_total",
+   "ok": true
+  },
+  {
+   "detail": 21,
+   "gate": "budget_reseau_total",
+   "ok": true
+  }
+ ],
+ "passed": true,
+ "results": [
+  {
+   "Abstained": false,
+   "Activity_Description": "PassPass est un service de vente de titres de transport.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://passpass-mobilite.fr/qui-sommes-nous"
+   ],
+   "Case_ID": "01-nom-simple-site-officiel",
+   "Correct": true,
+   "Deterministic_Sector": "Transport / Logistique",
+   "Diff": {},
+   "Duration": 0.013,
+   "Evidence_Quote": "PassPass est un service de vente de titres de transport.",
+   "Expected_Sector": "Transport / Logistique",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Transport / Logistique",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-01-nom-simple-site-officiel-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "PassPass",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "PassPass est un service de vente de titres de transport.",
+     "calls": [
+      "https://passpass-mobilite.fr/qui-sommes-nous"
+     ],
+     "deterministic_sector": "Transport / Logistique",
+     "evidence_quote": "PassPass est un service de vente de titres de transport.",
+     "evidence_url": "https://passpass-mobilite.fr/qui-sommes-nous",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Transport / Logistique",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://passpass-mobilite.fr/qui-sommes-nous"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://passpass-mobilite.fr/qui-sommes-nous",
+   "Tests": "nom simple, site officiel facile, activité déterministe"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "La Librairie du Port commercialise des livres neufs et d'occasion dans son magasin du centre-ville.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://librairie-du-port.fr/a-propos"
+   ],
+   "Case_ID": "02-url-de-reference",
+   "Correct": true,
+   "Deterministic_Sector": "Commerce / Distribution",
+   "Diff": {},
+   "Duration": 0.015,
+   "Evidence_Quote": "La Librairie du Port commercialise des livres neufs et d'occasion dans son magasin du centre-ville.",
+   "Expected_Sector": "Commerce / Distribution",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Commerce / Distribution",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-02-url-de-reference-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Librairie du Port",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "La Librairie du Port commercialise des livres neufs et d'occasion dans son magasin du centre-ville.",
+     "calls": [
+      "https://librairie-du-port.fr/a-propos"
+     ],
+     "deterministic_sector": "Commerce / Distribution",
+     "evidence_quote": "La Librairie du Port commercialise des livres neufs et d'occasion dans son magasin du centre-ville.",
+     "evidence_url": "https://librairie-du-port.fr/a-propos",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Commerce / Distribution",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://librairie-du-port.fr/a-propos"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://librairie-du-port.fr/a-propos",
+   "Tests": "URL de validation du référentiel, secteur déterministe"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "Atelier Ferrand est spécialisé dans la fabrication de pièces pour l'industrie aéronautique.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://atelier-ferrand.fr/",
+    "https://atelier-ferrand.fr/qui-sommes-nous"
+   ],
+   "Case_ID": "03-site-officiel-difficile",
+   "Correct": true,
+   "Deterministic_Sector": "Industrie / Manufacture",
+   "Diff": {},
+   "Duration": 0.019,
+   "Evidence_Quote": "Atelier Ferrand est spécialisé dans la fabrication de pièces pour l'industrie aéronautique.",
+   "Expected_Sector": "Industrie / Manufacture",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Industrie / Manufacture",
+   "HTTP_Requests": 2,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-03-site-officiel-difficile-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Atelier Ferrand",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Atelier Ferrand est spécialisé dans la fabrication de pièces pour l'industrie aéronautique.",
+     "calls": [
+      "https://atelier-ferrand.fr/",
+      "https://atelier-ferrand.fr/qui-sommes-nous"
+     ],
+     "deterministic_sector": "Industrie / Manufacture",
+     "evidence_quote": "Atelier Ferrand est spécialisé dans la fabrication de pièces pour l'industrie aéronautique.",
+     "evidence_url": "https://atelier-ferrand.fr/qui-sommes-nous",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 2,
+     "sector": "Industrie / Manufacture",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://atelier-ferrand.fr/",
+    "https://atelier-ferrand.fr/qui-sommes-nous"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://atelier-ferrand.fr/qui-sommes-nous",
+   "Tests": "page-défi après HTTP 200, ordre des candidats"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "Orbitale est un opérateur de constellations de nanosatellites destinées à l'observation de la Terre.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://orbitale-systems.fr/societe"
+   ],
+   "Case_ID": "04-activite-mappee-par-le-mapper",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.018,
+   "Evidence_Quote": "Orbitale est un opérateur de constellations de nanosatellites destinées à l'observation de la Terre.",
+   "Expected_Sector": "Numérique / Technologie",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Numérique / Technologie",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-04-activite-mappee-par-le-mapper-0",
+   "Kind": "prose",
+   "LLM_Called": true,
+   "LLM_Calls": 1,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 1,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Orbitale",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Orbitale est un opérateur de constellations de nanosatellites destinées à l'observation de la Terre.",
+     "calls": [
+      "https://orbitale-systems.fr/societe"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "Orbitale est un opérateur de constellations de nanosatellites destinées à l'observation de la Terre.",
+     "evidence_url": "https://orbitale-systems.fr/societe",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Numérique / Technologie",
+     "sector_reason": "SEMANTIC_ACTIVITY_MATCH",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "SEMANTIC_ACTIVITY_MATCH",
+   "Requested_URLs": [
+    "https://orbitale-systems.fr/societe"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://orbitale-systems.fr/societe",
+   "Tests": "activité prouvée, secteur résolu par le mapper taxonomique existant"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "Depuis 1954, Maison Blanchet est une entreprise de restauration collective qui sert chaque jour douze mille repas.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://maison-blanchet.fr/notre-histoire"
+   ],
+   "Case_ID": "05-citation-choisie-par-le-modele",
+   "Correct": true,
+   "Deterministic_Sector": "Hébergement / Tourisme / Restauration",
+   "Diff": {},
+   "Duration": 0.007,
+   "Evidence_Quote": "Depuis 1954, Maison Blanchet est une entreprise de restauration collective qui sert chaque jour douze mille repas.",
+   "Expected_Sector": "Hébergement / Tourisme / Restauration",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Hébergement / Tourisme / Restauration",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-05-citation-choisie-par-le-modele-0",
+   "Kind": "prose",
+   "LLM_Called": true,
+   "LLM_Calls": 1,
+   "LLM_Quote_Calls": 1,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Maison Blanchet",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Depuis 1954, Maison Blanchet est une entreprise de restauration collective qui sert chaque jour douze mille repas.",
+     "calls": [
+      "https://maison-blanchet.fr/notre-histoire"
+     ],
+     "deterministic_sector": "Hébergement / Tourisme / Restauration",
+     "evidence_quote": "Depuis 1954, Maison Blanchet est une entreprise de restauration collective qui sert chaque jour douze mille repas.",
+     "evidence_url": "https://maison-blanchet.fr/notre-histoire",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Hébergement / Tourisme / Restauration",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://maison-blanchet.fr/notre-histoire"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://maison-blanchet.fr/notre-histoire",
+   "Tests": "citation désignée par le modèle, puis revalidée déterministement"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://maison-blanchet.fr/notre-histoire"
+   ],
+   "Case_ID": "06-citation-inventee-par-le-modele",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_QUOTE_NOT_GROUNDED",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-06-citation-inventee-par-le-modele-0",
+   "Kind": "prose",
+   "LLM_Called": true,
+   "LLM_Calls": 1,
+   "LLM_Quote_Calls": 1,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Maison Blanchet",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://maison-blanchet.fr/notre-histoire"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_QUOTE_NOT_GROUNDED",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://maison-blanchet.fr/notre-histoire"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "citation absente de la page téléchargée, rejetée mécaniquement"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://velizone.fr/groupe"
+   ],
+   "Case_ID": "07-homonyme-nom-plus-long",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_IDENTITY_HOMONYM",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-07-homonyme-nom-plus-long-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Velizone",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://velizone.fr/groupe"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_IDENTITY_HOMONYM",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://velizone.fr/groupe"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "la page nomme une entité plus large que la victime"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "Velizone Groupe est un éditeur de logiciels de billettique.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://velizone.fr/groupe"
+   ],
+   "Case_ID": "08-homonyme-resolu-par-alias",
+   "Correct": true,
+   "Deterministic_Sector": "Numérique / Technologie",
+   "Diff": {},
+   "Duration": 0.009,
+   "Evidence_Quote": "Velizone Groupe est un éditeur de logiciels de billettique.",
+   "Expected_Sector": "Numérique / Technologie",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Numérique / Technologie",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-08-homonyme-resolu-par-alias-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Velizone",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Velizone Groupe est un éditeur de logiciels de billettique.",
+     "calls": [
+      "https://velizone.fr/groupe"
+     ],
+     "deterministic_sector": "Numérique / Technologie",
+     "evidence_quote": "Velizone Groupe est un éditeur de logiciels de billettique.",
+     "evidence_url": "https://velizone.fr/groupe",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Numérique / Technologie",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://velizone.fr/groupe"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://velizone.fr/groupe",
+   "Tests": "un alias validé résout l'homonymie au lieu d'être bloqué par elle"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://reso-conseil.fr/a-propos"
+   ],
+   "Case_ID": "09-nom-court-ambigu",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.003,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_NO_QUOTE",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-09-nom-court-ambigu-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Reso",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://reso-conseil.fr/a-propos"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_NO_QUOTE",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://reso-conseil.fr/a-propos"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "nom court ambigu, la page décrit une autre entreprise"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "Cartabl SAS est un éditeur de logiciels de gestion de stocks.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://cartabl.fr/societe"
+   ],
+   "Case_ID": "10-marque-et-forme-juridique",
+   "Correct": true,
+   "Deterministic_Sector": "Numérique / Technologie",
+   "Diff": {},
+   "Duration": 0.009,
+   "Evidence_Quote": "Cartabl SAS est un éditeur de logiciels de gestion de stocks.",
+   "Expected_Sector": "Numérique / Technologie",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Numérique / Technologie",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-10-marque-et-forme-juridique-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Cartabl",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Cartabl SAS est un éditeur de logiciels de gestion de stocks.",
+     "calls": [
+      "https://cartabl.fr/societe"
+     ],
+     "deterministic_sector": "Numérique / Technologie",
+     "evidence_quote": "Cartabl SAS est un éditeur de logiciels de gestion de stocks.",
+     "evidence_url": "https://cartabl.fr/societe",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Numérique / Technologie",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://cartabl.fr/societe"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://cartabl.fr/societe",
+   "Tests": "marque contre société juridique, forme postposée acceptée"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://transdev-reunion.fr/a-propos"
+   ],
+   "Case_ID": "11-organisation-absente-de-la-page",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.014,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_IDENTITY_NOT_NAMED",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-11-organisation-absente-de-la-page-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Sofrigel",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://transdev-reunion.fr/a-propos"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_IDENTITY_NOT_NAMED",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://transdev-reunion.fr/a-propos"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "la page ne nomme pas la victime : la bonne réponse est Inconnu"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://logipro.fr/a-propos"
+   ],
+   "Case_ID": "12-piege-prestataire",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_ACTIVITY_THIRD_PARTY",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-12-piege-prestataire-0",
+   "Kind": "prose",
+   "LLM_Called": true,
+   "LLM_Calls": 1,
+   "LLM_Quote_Calls": 1,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Logipro",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://logipro.fr/a-propos"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_ACTIVITY_THIRD_PARTY",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://logipro.fr/a-propos"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "activité attribuée à un prestataire, refusée après désignation"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://novachim-ouest.fr/societe"
+   ],
+   "Case_ID": "13-piege-filiale",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_ACTIVITY_NOT_DESCRIBED",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-13-piege-filiale-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Novachim Ouest",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://novachim-ouest.fr/societe"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_ACTIVITY_NOT_DESCRIBED",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://novachim-ouest.fr/societe"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "appartenance à un groupe : le métier décrit est celui de la maison mère"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://sofrigel.fr/communique"
+   ],
+   "Case_ID": "14-recit-d-incident-seul",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_NO_QUOTE",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-14-recit-d-incident-seul-0",
+   "Kind": "prose",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Sofrigel",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://sofrigel.fr/communique"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_NO_QUOTE",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://sofrigel.fr/communique"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "la page ne décrit que l'incident, jamais le métier"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "Groupe Marceau est une société de services présente sur plusieurs marchés.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://groupe-marceau.fr/qui-sommes-nous"
+   ],
+   "Case_ID": "15-activite-reellement-ambigue",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.021,
+   "Evidence_Quote": "Groupe Marceau est une société de services présente sur plusieurs marchés.",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-15-activite-reellement-ambigue-0",
+   "Kind": "prose",
+   "LLM_Called": true,
+   "LLM_Calls": 1,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 1,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Groupe Marceau",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Groupe Marceau est une société de services présente sur plusieurs marchés.",
+     "calls": [
+      "https://groupe-marceau.fr/qui-sommes-nous"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "Groupe Marceau est une société de services présente sur plusieurs marchés.",
+     "evidence_url": "https://groupe-marceau.fr/qui-sommes-nous",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+     "sector_status": "unknown",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "Requested_URLs": [
+    "https://groupe-marceau.fr/qui-sommes-nous"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "https://groupe-marceau.fr/qui-sommes-nous",
+   "Tests": "activité prouvée mais trop vague : abstention justifiée"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [],
+   "Case_ID": "16-registre-homonyme-qare",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_IDENTITY_UNVERIFIED",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-16-registre-homonyme-qare-0",
+   "Kind": "registry",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Qare",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://recherche-entreprises.api.gouv.fr/search?q=Qare&per_page=5"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_IDENTITY_UNVERIFIED",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://recherche-entreprises.api.gouv.fr/search?q=Qare&per_page=5"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "fiche de registre concordante par le nom, sans corroboration indépendante"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "Transports terrestres et transport par conduites",
+   "Budget_Respected": true,
+   "Candidate_URLs": [],
+   "Case_ID": "17-registre-corrobore-par-la-commune",
+   "Correct": true,
+   "Deterministic_Sector": "Transport / Logistique",
+   "Diff": {},
+   "Duration": 0.009,
+   "Evidence_Quote": "{\"activite_principale\":\"49.41A\",\"etat_administratif\":\"A\",\"nom_complet\":\"TRANSPORTS DUPONT\",\"siege_commune\":\"SAINTE-MARIE\",\"siege_departement\":\"974\",\"siren\":\"123456789\",\"source\":\"recherche-entreprises.api.gouv.fr\"}",
+   "Expected_Sector": "Transport / Logistique",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Transport / Logistique",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-17-registre-corrobore-par-la-commune-0",
+   "Kind": "registry",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Transports Dupont",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "Transports terrestres et transport par conduites",
+     "calls": [
+      "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Dupont&per_page=5"
+     ],
+     "deterministic_sector": "Transport / Logistique",
+     "evidence_quote": "{\"activite_principale\":\"49.41A\",\"etat_administratif\":\"A\",\"nom_complet\":\"TRANSPORTS DUPONT\",\"siege_commune\":\"SAINTE-MARIE\",\"siege_departement\":\"974\",\"siren\":\"123456789\",\"source\":\"recherche-entreprises.api.gouv.fr\"}",
+     "evidence_url": "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Dupont&per_page=5",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Transport / Logistique",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "REGISTRY_STRUCTURED_RECORD"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Dupont&per_page=5"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Dupont&per_page=5",
+   "Tests": "fiche de registre corroborée par la commune du siège"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [],
+   "Case_ID": "18-registre-conflit-de-preuve",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.005,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_EVIDENCE_SECTOR_CONFLICT",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-18-registre-conflit-de-preuve-0",
+   "Kind": "registry",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Transports Beaulieu",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Beaulieu&per_page=5"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_EVIDENCE_SECTOR_CONFLICT",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://recherche-entreprises.api.gouv.fr/search?q=Transports+Beaulieu&per_page=5"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "la raison sociale classerait ailleurs que le code d'activité"
+  },
+  {
+   "Abstained": true,
+   "Activity_Description": "",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://cartabl-prive.fr/a-propos",
+    "https://cartabl-interne.fr/a-propos"
+   ],
+   "Case_ID": "19-cible-interdite-et-redirection",
+   "Correct": true,
+   "Deterministic_Sector": "Inconnu",
+   "Diff": {},
+   "Duration": 0.004,
+   "Evidence_Quote": "",
+   "Expected_Sector": "Inconnu",
+   "External_Status": "EXTERNAL_REDIRECT_REJECTED",
+   "Final_Candidate_Sector": "Inconnu",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": false,
+   "Incident_ID": "",
+   "Item_ID": "ITM-19-cible-interdite-et-redirection-0",
+   "Kind": "safety",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "Cartabl",
+   "Origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+   "Passes": [
+    {
+     "activity_description": "",
+     "calls": [
+      "https://cartabl-interne.fr/a-propos"
+     ],
+     "deterministic_sector": "Inconnu",
+     "evidence_quote": "",
+     "evidence_url": "",
+     "external_status": "EXTERNAL_REDIRECT_REJECTED",
+     "identity_verified": false,
+     "origin": "BLF_NO_EXTERNAL_ACTIVITY_APPLIED",
+     "requests": 1,
+     "sector": "Inconnu",
+     "sector_reason": "NO_ACTIVITY_EVIDENCE",
+     "sector_status": "unknown",
+     "verification_method": ""
+    }
+   ],
+   "Reason": "NO_ACTIVITY_EVIDENCE",
+   "Requested_URLs": [
+    "https://cartabl-interne.fr/a-propos"
+   ],
+   "Sector_Status": "unknown",
+   "Selected_URL": "",
+   "Tests": "adresse privée résolue et redirection vers un service de métadonnées"
+  },
+  {
+   "Abstained": false,
+   "Activity_Description": "PassPass est un service de vente de titres de transport.",
+   "Budget_Respected": true,
+   "Candidate_URLs": [
+    "https://passpass-mobilite.fr/qui-sommes-nous"
+   ],
+   "Case_ID": "20-reutilisation-du-cache",
+   "Correct": true,
+   "Deterministic_Sector": "Transport / Logistique",
+   "Diff": {},
+   "Duration": 0.007,
+   "Evidence_Quote": "PassPass est un service de vente de titres de transport.",
+   "Expected_Sector": "Transport / Logistique",
+   "External_Status": "EXTERNAL_ACTIVITY_VERIFIED",
+   "Final_Candidate_Sector": "Transport / Logistique",
+   "HTTP_Requests": 1,
+   "Idempotent": true,
+   "Identity_Verified": true,
+   "Incident_ID": "",
+   "Item_ID": "ITM-20-reutilisation-du-cache-0",
+   "Kind": "cache",
+   "LLM_Called": false,
+   "LLM_Calls": 0,
+   "LLM_Quote_Calls": 0,
+   "LLM_Sector_Calls": 0,
+   "Organisation_Key": "",
+   "Organisation_Raw": "PassPass",
+   "Origin": "BLF_EXTERNAL_ACTIVITY",
+   "Passes": [
+    {
+     "activity_description": "PassPass est un service de vente de titres de transport.",
+     "calls": [
+      "https://passpass-mobilite.fr/qui-sommes-nous"
+     ],
+     "deterministic_sector": "Transport / Logistique",
+     "evidence_quote": "PassPass est un service de vente de titres de transport.",
+     "evidence_url": "https://passpass-mobilite.fr/qui-sommes-nous",
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 1,
+     "sector": "Transport / Logistique",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    },
+    {
+     "activity_description": "PassPass est un service de vente de titres de transport.",
+     "calls": [],
+     "deterministic_sector": "Transport / Logistique",
+     "evidence_quote": "PassPass est un service de vente de titres de transport.",
+     "evidence_url": "https://passpass-mobilite.fr/qui-sommes-nous",
+     "expected": {
+      "external_status": "EXTERNAL_ACTIVITY_CACHE_HIT",
+      "requests": 0
+     },
+     "external_status": "EXTERNAL_ACTIVITY_VERIFIED",
+     "identity_verified": true,
+     "origin": "BLF_EXTERNAL_ACTIVITY",
+     "requests": 0,
+     "sector": "Transport / Logistique",
+     "sector_reason": "ACTIVITY_RULE",
+     "sector_status": "inferred",
+     "verification_method": "PROSE_LITERAL_QUOTE"
+    }
+   ],
+   "Reason": "ACTIVITY_RULE",
+   "Requested_URLs": [
+    "https://passpass-mobilite.fr/qui-sommes-nous"
+   ],
+   "Sector_Status": "inferred",
+   "Selected_URL": "https://passpass-mobilite.fr/qui-sommes-nous",
+   "Tests": "preuve réutilisée d'un incident à l'autre, sans nouvelle requête"
+  }
+ ],
+ "totals": {
+  "abstained": 11,
+  "correct": 20,
+  "http_requests": 21,
+  "llm_calls": 5
+ },
+ "version": "2026-09-13.external-activity.1"
+}

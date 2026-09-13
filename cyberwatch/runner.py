@@ -567,6 +567,9 @@ class RunReport:
     source_facts_retry_summary: dict = field(default_factory=dict)
     sector_resolution_rows: list[dict] = field(default_factory=list)
     sector_semantic_ids: list[str] = field(default_factory=list)
+    #: Synthèse du niveau 2 d'activité externe. Volontairement tenue à
+    #: l'écart de la télémétrie source_facts, qui mesure autre chose.
+    external_activity_summary: dict = field(default_factory=dict)
     incident_id_registry: list[dict] = field(default_factory=list)
     dedup_ai_summary: dict = field(default_factory=dict)
     dedup_ai_problems: list[str] = field(default_factory=list)
@@ -816,15 +819,15 @@ def execute(
     report.source_facts, _sanitized_fact_ids = source_facts.sanitize_source_facts(
         report.source_facts
     )
-    # Après sanitation : activité BLF prouvée, puis mapping avant résolution.
-    from . import blf_org_enrichment
+    # Après sanitation : activité prouvée, puis mapping, avant résolution.
     source_facts.apply_event_dates(report.items, report.source_facts)
-    blf_org_enrichment.enrich(
-        report.items, report.source_facts, incident_decisions=report.incident_dedup_rows,
+    external_engine, report.sector_semantic_ids = runner_source_facts.resolve_activities(
+        report.items, report.source_facts, report.incident_dedup_rows,
+        offline=offline, run_id=context.run_id, persist=persist,
     )
-    report.sector_semantic_ids = sector_semantic.annotate_source_facts(
-        report.items, report.source_facts, enrichment.load_reference()
-    )
+    if external_engine is not None:
+        report.external_activity_summary = external_engine.summary()
+        print("  Activité externe (niveau 2) : " + external_engine.summary_line())
     enriched = enrichment.finalize_snapshot(
         report.items, report.source_facts, run_id=context.run_id, as_of=context.as_of,
     )

@@ -46,6 +46,12 @@ DEFAULT_TASK_BUDGETS = {
     # item. Il reste sur le modèle par défaut — d'où un nom sans le marqueur
     # `source_facts`, qui l'enverrait sur le modèle riche sans raison.
     "evidence_repair": {"max_calls": 120, "max_cost_usd": 0.15},
+    # Sélecteur extractif de citation du niveau 2 : une page préparée et un nom
+    # d'organisation par appel, au plus un appel par organisation. Il reste sur
+    # le modèle par défaut — d'où un nom sans marqueur de `RICH_TASK_MARKERS`.
+    # Le plafond ne mord jamais en régime (cinq organisations par run au plus) ;
+    # il borne une régression du portillon qui appellerait sur chaque candidat.
+    "activity_quote": {"max_calls": 10, "max_cost_usd": 0.01},
 }
 
 

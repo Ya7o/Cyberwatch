@@ -554,6 +554,10 @@ DATE_BASIS_PUBLICATION = "PUBLICATION"
 
 HTTP_TIMEOUT_SECONDS = 20
 HTTP_MAX_RETRIES = 2
+#: `requests` autorise 30 redirections par défaut, ce qui est une chaîne
+#: d'hôtes qu'aucun article ne justifie et autant d'occasions d'aboutir
+#: ailleurs que prévu.
+HTTP_MAX_REDIRECTS = 5
 HTTP_POLITE_DELAY_SECONDS = 1.0
 # L'API publique ransomware.live limite certains endpoints à une lecture par
 # minute. Ce délai n'est employé que par son collecteur, lors d'un vrai 429 ;
@@ -596,6 +600,33 @@ MAX_SECONDS_PER_SOURCE = 180
 
 MAX_REQUESTS_PER_RUN = 800
 MAX_SECONDS_PER_RUN = 45 * 60
+
+# --------------------------------------------------------------------------
+# Niveau 2 — qualification externe d'activité métier (§ METHODOLOGY.md)
+# --------------------------------------------------------------------------
+#
+# Plafonds volontairement petits : le niveau 2 lit une page « à propos » par
+# organisation, pas un site. Il possède son propre budget et ne peut donc
+# jamais consommer celui de la collecte, dont dépend la couverture des sources.
+
+EXTERNAL_ACTIVITY_MAX_ORGS_PER_RUN = 5
+EXTERNAL_ACTIVITY_MAX_CANDIDATES_PER_ORG = 3
+EXTERNAL_ACTIVITY_MAX_REQUESTS = 12
+EXTERNAL_ACTIVITY_MAX_SECONDS = 60
+EXTERNAL_ACTIVITY_TIMEOUT_SECONDS = 10
+#: 1 MiB : une page éditoriale tient très largement dedans, un binaire non.
+EXTERNAL_ACTIVITY_MAX_CONTENT_BYTES = 1024 * 1024
+#: Une preuve vérifiée reste valable six mois ; un refus est reconsidéré plus
+#: vite, parce qu'un site peut publier la page qui manquait. Une absence totale
+#: de candidat est le cas le moins coûteux à réessayer.
+EXTERNAL_ACTIVITY_TTL_DAYS = 180
+EXTERNAL_ACTIVITY_REJECTED_TTL_DAYS = 30
+EXTERNAL_ACTIVITY_UNRESOLVED_TTL_DAYS = 14
+#: Registre public français, sans clé d'API. L'hôte est épinglé par la policy
+#: indépendamment de cette valeur : la changer ne permet pas d'atteindre un
+#: autre service.
+EXTERNAL_ACTIVITY_REGISTRY_URL = "https://recherche-entreprises.api.gouv.fr/search"
+EXTERNAL_ACTIVITY_REGISTRY_HOST = "recherche-entreprises.api.gouv.fr"
 
 # --------------------------------------------------------------------------
 # Couches de sourcing (§2)

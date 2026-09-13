@@ -85,6 +85,13 @@ REASON_SOURCE_INACTIVE = "SOURCE_INACTIVE"
 REASON_PARSE_ERROR = "PARSE_ERROR"
 REASON_NO_RESULT = "NO_RESULT"
 REASON_INCOMPLETE = "INCOMPLETE"
+#: Refus décidés par la couche HTTP elle-même, avant ou pendant la lecture du
+#: corps. Ils concernent une URL fournie par un tiers, jamais une source
+#: inventoriée : une source du référentiel ne peut pas les déclencher.
+REASON_URL_REJECTED = "URL_REJECTED"
+REASON_REDIRECT_REJECTED = "REDIRECT_REJECTED"
+REASON_CONTENT_TOO_LARGE = "CONTENT_TOO_LARGE"
+REASON_CONTENT_TYPE = "CONTENT_TYPE_REJECTED"
 
 REASON_TEXTS = {
     REASON_OK: "Protocole complet, test de succès satisfait.",
@@ -99,6 +106,10 @@ REASON_TEXTS = {
     REASON_ROBOTS: "Chemin interdit par le robots.txt du site : source volontairement non interrogée.",
     REASON_BUDGET_SOURCE: "Plafond de la source atteint (requêtes, pages ou durée).",
     REASON_BUDGET_RUN: "Budget global du run atteint : la source n'a pas pu être terminée.",
+    REASON_URL_REJECTED: "URL refusée par la politique de cible (schéma, hôte ou adresse privée).",
+    REASON_REDIRECT_REJECTED: "Une redirection menait vers une adresse non publique.",
+    REASON_CONTENT_TOO_LARGE: "Contenu plus volumineux que le plafond demandé : lecture interrompue.",
+    REASON_CONTENT_TYPE: "Type de contenu non accepté pour cette lecture.",
     REASON_LAYER_NOT_SCHEDULED: "Couche non planifiée pour ce run (balayage hebdomadaire).",
     REASON_SOURCE_INACTIVE: "Source désactivée dans le référentiel SOURCES.",
     REASON_PARSE_ERROR: "Contenu récupéré mais illisible.",

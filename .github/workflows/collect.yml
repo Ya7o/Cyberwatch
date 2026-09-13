@@ -48,6 +48,13 @@ jobs:
           # après — sans marge il serait coupé en budget_blocked.
           LLM_MAX_COST_USD_PER_RUN: "0.035"
           DEDUP_AI_DAILY_ENABLED: "1"
+          # Niveau 2 : résolution externe d'activité métier. Activé après le
+          # benchmark d'activation (validation/external_activity_20/report.md,
+          # 20/20, dix portes bloquantes franchies). Le moteur possède son
+          # propre budget réseau et ne peut pas entamer celui de la collecte ;
+          # son budget de modèle vit dans DEFAULT_TASK_BUDGETS, pas ici.
+          BLF_EXTERNAL_ACTIVITY_ENABLED: "1"
+          EXTERNAL_ACTIVITY_SHADOW_MODE: "0"
         run: python -m cyberwatch maj
       - name: Purger la base
         if: github.event_name == 'workflow_dispatch' && inputs.operation == 'PURGE'

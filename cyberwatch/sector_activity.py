@@ -165,6 +165,24 @@ def describes_incident(value: str) -> bool:
 
 
 def supported_activity(organisation: str, value: str, evidence: str) -> bool:
+    """Contrat de preuve d'activité, prose par défaut, structurée par exception.
+
+    Cette fonction est rejouée **à la lecture** d'un fait persisté par
+    ``sector_resolution._decision_from_facts`` et ``sector_semantic.gap`` :
+    c'est pourquoi une preuve de registre doit pouvoir y passer, sans quoi elle
+    serait acceptée à l'écriture puis refusée pour toujours à la relecture, y
+    compris par ``cyberwatch check`` hors ligne.
+
+    Le corps prose ci-dessous est inchangé. Le branchement est gardé par un
+    discriminant prouvé disjoint de toute prose — objet JSON **et** marqueur de
+    source épinglé — et la porte structurée est plus stricte, pas moins : elle
+    re-parse le fragment téléchargé et revérifie identité, état administratif et
+    libellé officiel de la division NAF.
+    """
+    from .organisation_activity import structured_activity_supports, structured_proof
+
+    if structured_proof(evidence):
+        return structured_activity_supports(organisation, value, evidence)
     proof = searchable(evidence)
     segments = re.split(r"(?<=[.!?;])\s+|\n+", evidence)
     if len(segments) > 1:
