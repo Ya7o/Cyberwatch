@@ -30,6 +30,32 @@ class TestComponents:
         decision = decide_merge(left, right)
         assert decision.action == MERGE
         assert decision.reason_code == "INCIDENT_MERGE_SOURCE_ALERT_ID"
+        assert len(build_incidents([left, right])) == 1
+
+    def test_frenchbreaches_alert_suffix_rule_stays_strict(self, make_item):
+        left = make_item(
+            source="FRENCHBREACHES", source_item_id="alerte-one-abcdefghijkl",
+            org="Clinique de Vontes", url="https://frenchbreaches.test/a",
+        )
+        different = make_item(
+            source="FRENCHBREACHES", source_item_id="alerte-two-zyxwvutsrqpo",
+            org="Clinique de Vontes", url="https://frenchbreaches.test/b",
+        )
+        short = make_item(
+            source="FRENCHBREACHES", source_item_id="alerte-three-short",
+            org="Clinique de Vontes", url="https://frenchbreaches.test/c",
+        )
+        other_source = make_item(
+            source="OTHER", source_item_id="renamed-abcdefghijkl",
+            org="Clinique de Vontes", url="https://other.test/a",
+        )
+        other_source_again = make_item(
+            source="OTHER", source_item_id="old-abcdefghijkl",
+            org="Clinique de Vontes", url="https://other.test/b",
+        )
+        assert decide_merge(left, different).action == KEEP_SEPARATE
+        assert decide_merge(left, short).action == KEEP_SEPARATE
+        assert decide_merge(other_source, other_source_again).action == KEEP_SEPARATE
 
     def test_ecart_14_jours_sans_signal_fort_reste_separe(self, make_item):
         items = [
