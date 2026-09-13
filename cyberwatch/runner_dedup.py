@@ -37,7 +37,9 @@ def _validated_proposals(
         proposal = dedup_ai.validate_ai_dedup_decision(
             candidate, decision, model=cached_row.get("Model") or state.model, input_hash=input_hash
         )
-        if proposal is not None:
+        # Une identité d'organisation nouvelle ne doit pas contourner une
+        # abstention sur l'incident et provoquer une fusion indirecte.
+        if proposal is not None and decision.same_incident != dedup_ai.UNKNOWN:
             organisation_proposals.append(proposal)
         incident_proposal = dedup_ai.validate_ai_incident_decision(
             candidate, decision, model=cached_row.get("Model") or state.model, input_hash=input_hash
@@ -67,10 +69,14 @@ def apply_daily_decisions(
         items,
         company_ids=company_ids,
         victim_websites=victim_websites,
+        facts_by_item=facts_by_item,
         deferred=deferred,
     )
     candidate_map = {dedup_ai.candidate_id(c): c for c in candidates}
-    for candidate in dedup_review.retry_candidates(state.pending_rows, items, limit=state.daily_max_candidates):
+    for candidate in dedup_review.retry_candidates(
+        state.pending_rows, items, limit=state.daily_max_candidates,
+        facts_by_item=facts_by_item, victim_websites=victim_websites,
+    ):
         candidate_map.setdefault(dedup_ai.candidate_id(candidate), candidate)
     candidates = list(candidate_map.values())
     pending = {row["pair_key"]: row for row in state.pending_rows

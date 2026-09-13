@@ -23,6 +23,7 @@ from .duplicate_audit import (
     DedupAuditCandidate,
     RISK_FALSE_MERGE,
     RISK_MISSED_DUPLICATE,
+    fact_comparison,
     signal_rank,
 )
 from .dedup_ai_telemetry import (
@@ -362,6 +363,8 @@ def _decision_from_values(
     cache_hit: bool = False,
     matched_facts: tuple[str, ...] = (),
     conflicting_facts: tuple[str, ...] = (),
+    missing_facts: tuple[str, ...] = (),
+    incomparable_facts: tuple[str, ...] = (),
 ) -> DedupAiDecision:
     if same_organisation not in {SAME, DIFFERENT, UNKNOWN}:
         raise ValueError("same_organisation invalide")
@@ -381,6 +384,8 @@ def _decision_from_values(
         cache_hit=cache_hit,
         matched_facts=matched_facts,
         conflicting_facts=conflicting_facts,
+        missing_facts=missing_facts,
+        incomparable_facts=incomparable_facts,
     )
 
 
@@ -397,6 +402,14 @@ def _decision_from_cache(row: dict[str, str]) -> DedupAiDecision:
         conflicting_facts = tuple(json.loads(row.get("Conflicting_Facts_JSON") or "[]"))
     except (json.JSONDecodeError, TypeError):
         conflicting_facts = ()
+    try:
+        missing_facts = tuple(json.loads(row.get("Missing_Facts_JSON") or "[]"))
+    except (json.JSONDecodeError, TypeError):
+        missing_facts = ()
+    try:
+        incomparable_facts = tuple(json.loads(row.get("Incomparable_Facts_JSON") or "[]"))
+    except (json.JSONDecodeError, TypeError):
+        incomparable_facts = ()
     return _decision_from_values(
         STATUS_CACHE_HIT,
         row.get("Same_Organisation", UNKNOWN),
@@ -407,7 +420,21 @@ def _decision_from_cache(row: dict[str, str]) -> DedupAiDecision:
         cache_hit=True,
         matched_facts=_string_list(list(matched_facts)),
         conflicting_facts=_string_list(list(conflicting_facts)),
+        missing_facts=_string_list(list(missing_facts)),
+        incomparable_facts=_string_list(list(incomparable_facts)),
     )
+
+
+def _count_decision(state: DedupAiRunState, decision: DedupAiDecision) -> None:
+    """Compte une décision finale une seule fois, y compris depuis le cache."""
+    if decision.same_organisation == SAME:
+        state.same_organisation_count += 1
+    if decision.same_incident == SAME:
+        state.same_incident_count += 1
+    if UNKNOWN in {decision.same_organisation, decision.same_incident}:
+        state.unknown_count += 1
+    elif DIFFERENT in {decision.same_organisation, decision.same_incident}:
+        state.different_count += 1
 
 
 # --------------------------------------------------------------------------
@@ -433,7 +460,11 @@ BATCH_SYSTEM_PROMPT = (
     "puis (5) les contradictions ou indices de recurrence. Les signaux de nom "
     "et fuzzy proposent la paire mais ne prouvent jamais a eux seuls le meme "
     "incident. Renseigne matched_facts et conflicting_facts a partir de ces "
-    "axes, puis tranche seulement a la fin. "
+    "axes, puis tranche seulement a la fin. L'absence d'un fait dans une "
+    "source n'est jamais une contradiction. Un conflit exige deux assertions "
+    "incompatibles sur le meme champ semantique et dans une unite comparable. "
+    "Classe les faits absents dans missing_facts et les concepts ou unites "
+    "non directement comparables dans incomparable_facts. "
     "same_organisation=SAME signifie que les deux libelles designent la meme "
     "entite victime. same_incident=SAME exige en plus des indices concrets "
     "qu'il s'agit du meme evenement, pas seulement de la meme victime a des "
@@ -481,6 +512,8 @@ def _batch_schema() -> dict:
             },
             "matched_facts": {"type": "array", "items": {"type": "string"}},
             "conflicting_facts": {"type": "array", "items": {"type": "string"}},
+            "missing_facts": {"type": "array", "items": {"type": "string"}},
+            "incomparable_facts": {"type": "array", "items": {"type": "string"}},
             "evidence": {"type": "string"},
             "reason": {"type": "string"},
         },
@@ -491,6 +524,8 @@ def _batch_schema() -> dict:
             "confidence",
             "matched_facts",
             "conflicting_facts",
+            "missing_facts",
+            "incomparable_facts",
             "evidence",
             "reason",
         ],
@@ -518,6 +553,12 @@ def _daily_context_payload(
         "reason_code": candidate.reason_code,
         "days_apart": candidate.days_apart,
         "signals": asdict(candidate.signals) if candidate.signals is not None else {},
+        "fact_comparison": (
+            fact_comparison(candidate.signals) if candidate.signals is not None else {
+                "matched_facts": [], "conflicting_facts": [],
+                "missing_facts": [], "incomparable_facts": [],
+            }
+        ),
         "left": _item_payload(candidate.left, facts_by_item, left_company_id),
         "right": _item_payload(candidate.right, facts_by_item, right_company_id),
     }
@@ -602,7 +643,9 @@ def _uncached_batch_entries(
         if cached:
             state.cache_hits += 1
             try:
-                results[_pair_key(candidate)] = _decision_from_cache(cached)
+                decision = _decision_from_cache(cached)
+                results[_pair_key(candidate)] = decision
+                _count_decision(state, decision)
                 state.rows_by_pair[_pair_key(candidate)] = cached
                 state.effective_model = cached.get("Model", "")
                 continue
@@ -703,6 +746,8 @@ def _decision_from_batch_value(raw: dict) -> DedupAiDecision:
         str(raw.get("evidence") or ""), str(raw.get("reason") or ""),
         matched_facts=_string_list(raw.get("matched_facts")),
         conflicting_facts=_string_list(raw.get("conflicting_facts")),
+        missing_facts=_string_list(raw.get("missing_facts")),
+        incomparable_facts=_string_list(raw.get("incomparable_facts")),
     )
 
 
@@ -728,14 +773,7 @@ def _store_batch_decisions(
             )
             continue
         results[cid] = decision
-        if decision.same_organisation == SAME:
-            state.same_organisation_count += 1
-        elif decision.same_organisation == DIFFERENT:
-            state.different_count += 1
-        else:
-            state.unknown_count += 1
-        if decision.same_incident == SAME:
-            state.same_incident_count += 1
+        _count_decision(state, decision)
         row = {
             "Pair_Key": cid, "Left_Item_ID": candidate.left.Item_ID,
             "Right_Item_ID": candidate.right.Item_ID, "Input_Hash": input_hash,
@@ -747,6 +785,8 @@ def _store_batch_decisions(
             "Reason": decision.reason,
             "Matched_Facts_JSON": json.dumps(list(decision.matched_facts), ensure_ascii=False),
             "Conflicting_Facts_JSON": json.dumps(list(decision.conflicting_facts), ensure_ascii=False),
+            "Missing_Facts_JSON": json.dumps(list(decision.missing_facts), ensure_ascii=False),
+            "Incomparable_Facts_JSON": json.dumps(list(decision.incomparable_facts), ensure_ascii=False),
             "Input_Tokens": "", "Cached_Input_Tokens": "", "Output_Tokens": "",
             "Total_Tokens": "", "Estimated_Cost_USD": "",
         }

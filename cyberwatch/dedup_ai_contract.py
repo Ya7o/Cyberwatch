@@ -34,8 +34,8 @@ STATUS_NOT_REVIEWED_PAIR_TOO_LARGE = "NOT_REVIEWED_PAIR_TOO_LARGE"
 #: batch n'invalide jamais silencieusement le cache pair-à-pair existant, et
 #: réciproquement.
 DAILY_BATCH_SCHEMA_NAME = "cyberwatch_dedup_batch_audit"
-DAILY_BATCH_PROMPT_VERSION = "2026-09-11.1"
-DAILY_BATCH_SCHEMA_VERSION = "2"
+DAILY_BATCH_PROMPT_VERSION = "2026-09-13.1"
+DAILY_BATCH_SCHEMA_VERSION = "3"
 
 #: Seuil de confiance requis pour qu'une décision LLM soit proposée aux
 #: registres d'identité organisationnelle ou d'incident (§Lot 5).
@@ -69,6 +69,8 @@ CACHE_COLUMNS = [
     "Reason",
     "Matched_Facts_JSON",
     "Conflicting_Facts_JSON",
+    "Missing_Facts_JSON",
+    "Incomparable_Facts_JSON",
     "Input_Tokens",
     "Cached_Input_Tokens",
     "Output_Tokens",
@@ -107,3 +109,5 @@ class DedupAiDecision:
     cache_hit: bool = False
     matched_facts: tuple[str, ...] = ()
     conflicting_facts: tuple[str, ...] = ()
+    missing_facts: tuple[str, ...] = ()
+    incomparable_facts: tuple[str, ...] = ()

@@ -7,7 +7,7 @@ from pathlib import Path
 from . import dedup, dedup_ai, duplicate_audit
 
 AUTO_RETRY = {"DISABLED", "BUDGET_BLOCKED", "ERROR", "NOT_REVIEWED_CAPACITY", "TOP_K_DEFERRED"}
-TERMINAL_STATUSES = {"APPLIED", "DIFFERENT"}
+TERMINAL_STATUSES = {"APPLIED", "DIFFERENT", "UNKNOWN_SEPARATE"}
 MAX_ERROR_ATTEMPTS = 3
 
 
@@ -21,7 +21,11 @@ def load(path: Path) -> list[dict]:
     return value
 
 
-def retry_candidates(rows: list[dict], items: list, *, limit: int = 40) -> list:
+def retry_candidates(
+    rows: list[dict], items: list, *, limit: int = 40,
+    facts_by_item: dict[str, dict] | None = None,
+    victim_websites: dict[str, str] | None = None,
+) -> list:
     by_id = {item.Item_ID: item for item in items}
     result = []
     for row in sorted(rows, key=lambda r: (r.get("attempts", 0), r.get("first_seen", ""), r.get("pair_key", ""))):
@@ -33,10 +37,50 @@ def retry_candidates(rows: list[dict], items: list, *, limit: int = 40) -> list:
         a, b = by_id.get(row.get("left")), by_id.get(row.get("right"))
         if a is None or b is None:
             continue
-        result.extend(duplicate_audit.find_daily_llm_candidates([a], [a, b], max_candidates_per_item=1))
+        result.extend(duplicate_audit.find_daily_llm_candidates(
+            [a], [a, b], max_candidates_per_item=1,
+            facts_by_item=facts_by_item, victim_websites=victim_websites,
+        ))
         if len(result) >= limit:
             break
     return result
+
+
+def requires_review(candidate, decision) -> bool:
+    """Signale une abstention à forte valeur sans la transformer en décision."""
+    if decision.status not in {dedup_ai.STATUS_OK, dedup_ai.STATUS_CACHE_HIT}:
+        return False
+    if (
+        decision.same_organisation != dedup_ai.UNKNOWN
+        and decision.same_incident != dedup_ai.UNKNOWN
+    ):
+        return False
+    signals = candidate.signals
+    if signals is None or signals.publication_days_apart not in {0, 1, 2}:
+        return False
+    strong_identity = (
+        signals.organisation_exact
+        or signals.organisation_similarity >= 0.95
+        or signals.shared_company_id
+        or signals.shared_victim_domain
+    )
+    corroborated_event = any((
+        signals.event_date_match == "MATCH",
+        signals.threat_match == "MATCH",
+        signals.threat_actor_match == "MATCH",
+        signals.affected_count_match == "MATCH",
+        signals.data_type_match == "MATCH",
+    ))
+    conflicts = any((
+        signals.event_date_match == "CONFLICT",
+        signals.threat_match == "CONFLICT",
+        signals.threat_actor_match == "CONFLICT",
+        signals.affected_count_match == "CONFLICT",
+        signals.source_native_id_match == "CONFLICT",
+    ))
+    deterministic = dedup.decide_merge(candidate.left, candidate.right)
+    veto = deterministic.reason_code in dedup.STRONG_KEEP_REASON_CODES
+    return strong_identity and corroborated_event and not conflicts and not veto
 
 
 def reconcile(
@@ -105,6 +149,14 @@ def outcomes(
                               grouped.get(candidate.left.Item_ID) == grouped.get(candidate.right.Item_ID))
                 status = "APPLIED" if same_group else "SAME_NOT_GROUPED"
                 state.incident_pairs_resolved += int(same_group)
+        review_required = requires_review(candidate, decision)
+        if review_required:
+            status = "REVIEW_REQUIRED"
+        elif reviewed and (
+            decision.same_organisation == dedup_ai.UNKNOWN
+            or decision.same_incident == dedup_ai.UNKNOWN
+        ):
+            status = "UNKNOWN_SEPARATE"
         previous_attempts = int(previous.get("attempts", 0) or 0)
         attempts = previous_attempts + 1 if decision.status == "ERROR" else (
             0 if reviewed else previous_attempts
@@ -119,6 +171,9 @@ def outcomes(
                 candidate.right.Item_ID,
                 incident_decisions,
             )
+        deterministic = dedup.decide_merge(candidate.left, candidate.right)
+        same_group = (candidate.left.Item_ID in grouped and
+                      grouped.get(candidate.left.Item_ID) == grouped.get(candidate.right.Item_ID))
         row = {"pair_key": key, "left": candidate.left.Item_ID, "right": candidate.right.Item_ID,
                "status": status, "first_seen": previous.get("first_seen", state.run_id),
                "last_run": state.run_id,
@@ -129,8 +184,49 @@ def outcomes(
                "input_hash": state.rows_by_pair.get(key, {}).get("Input_Hash", ""),
                "model": state.rows_by_pair.get(key, {}).get("Model", ""),
                "disabled_reason": dedup_ai.daily_summary(state)["dedup_disabled_reason"] if status == "DISABLED" else ""}
+        row.update({
+            "Pair_Key": key,
+            "Candidate_Generated": 1,
+            "Candidate_Selected": int(decision.status in {
+                dedup_ai.STATUS_OK, dedup_ai.STATUS_CACHE_HIT,
+                dedup_ai.STATUS_ERROR, dedup_ai.STATUS_BUDGET_BLOCKED,
+            }),
+            "Deterministic_Decision": deterministic.action,
+            "Deterministic_Reason": deterministic.reason_code,
+            "LLM_Called": int(
+                decision.status in {dedup_ai.STATUS_OK, dedup_ai.STATUS_ERROR}
+                and not decision.cache_hit
+            ),
+            "LLM_Model": row["model"],
+            "LLM_Cache_Hit": int(decision.cache_hit),
+            "LLM_Same_Organisation": decision.same_organisation,
+            "LLM_Same_Incident": decision.same_incident,
+            "LLM_Confidence": decision.confidence,
+            "Review_Required": int(review_required),
+            "Merge_Applied": int(same_group),
+            "Final_Separation_Reason": "" if same_group else (blocked_reason or status),
+            "Signals": duplicate_audit.fact_comparison(candidate.signals)
+            if candidate.signals is not None else {},
+        })
+        if candidate.signals is not None:
+            row.update({
+                "Organisation_Exact": int(candidate.signals.organisation_exact),
+                "Organisation_Similarity": candidate.signals.organisation_similarity,
+                "Publication_Days_Apart": candidate.signals.publication_days_apart,
+                "Event_Date_Match": candidate.signals.event_date_match,
+                "Threat_Match": candidate.signals.threat_match,
+                "Threat_Actor_Match": candidate.signals.threat_actor_match,
+                "Affected_Count_Match": candidate.signals.affected_count_match,
+                "Data_Type_Overlap": candidate.signals.data_type_overlap,
+                "Source_Pair": candidate.signals.source_pair,
+                "Source_Native_ID_Match": candidate.signals.source_native_id_match,
+                "Matched_Facts": list(decision.matched_facts),
+                "Conflicting_Facts": list(decision.conflicting_facts),
+                "Missing_Facts": list(decision.missing_facts),
+                "Incomparable_Facts": list(decision.incomparable_facts),
+            })
         state.review_rows.append(row)
-        if status in {"APPLIED", "DIFFERENT"}:
+        if status in TERMINAL_STATUSES:
             pending.pop(key, None)
         else:
             pending[key] = row
