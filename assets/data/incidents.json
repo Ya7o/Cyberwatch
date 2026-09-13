@@ -1,6 +1,121 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-13",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-A00DBB2273A4",
+  "location": "France métropolitaine",
+  "org": "Groupe MGEL",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-mgel-mtzinl1af3p94rq9r2p",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-groupe-mgel-mutuelle-vitalite-sante/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-mgel-mtzinl1af3p94rq9r2p"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un acteur revendique la vente de 16 bases de la MGEL contenant 38,8 millions de lignes et 450 806 IBAN.",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0D418F193074",
+  "location": "France métropolitaine",
+  "org": "Ekolis",
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Transport",
+   "evidence_url": "https://frenchbreaches.com/alertes/ekolis-mtye57ckbfljbjhsei",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ekolis-mtye57ckbfljbjhsei"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-ED5E5886980A",
+  "location": "France métropolitaine",
+  "org": "eracm",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/a34c6dc5ac3bd4acd0ff22b009c376c1630c21ed2aa3ba56630909633c198cba/"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-12",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1C4D92961F4E",
+  "location": "France métropolitaine",
+  "org": "Revolut",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/revolut.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Revolut.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -67,7 +182,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Une base attribuée à Boulanger contenant 132 230 dossiers SAV a été mise en ligne par un hacker le 11 septembre 2026.",
+  "summary": "Boulanger touché par une revendication de cyberattaque impliquant 132 000 dossiers SAV",
   "threat": "Fuite de données"
  },
  {
@@ -358,6 +473,60 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "CANDIDATE",
+  "admission_reason": "Un délégué syndical a allégué que l'ancien système informatique de manutention avait été volontairement mis hors service lors de la transition du port de Longoni. L'allégation n'est pas corroborée ; les sources disponibles documentent aussi un différend opérationnel et juridique ainsi que des difficultés d'adaptation des outils.",
+  "date": "2026-08-31",
+  "id": "INC-DD5F35198F05",
+  "location": "Mayotte",
+  "org": "MANU-PORT",
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Transport / Logistique",
+   "evidence_url": "https://lejournaldemayotte.yt/2026/09/02/si-elle-fait-des-blocages-on-le-decouvrira-a-longoni-le-departement-defie-ida-nel/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://lejournaldemayotte.yt/2026/09/02/si-elle-fait-des-blocages-on-le-decouvrira-a-longoni-le-departement-defie-ida-nel/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "Signal à investiguer : une source syndicale a dénoncé une mise hors service volontaire de l'ancien système utilisé par MANU-PORT lors de la reprise du port de Longoni. Les sources ultérieures décrivent surtout une transition opérationnelle et juridique conflictuelle, des outils à adapter et une reprise d'activité après accord. Aucun élément public nouveau ne confirme ni ne réfute formellement une action cyber distincte.",
+  "threat": "Inconnu"
+ },
+ {
+  "admission": "CANDIDATE",
+  "admission_reason": "Le vol de données a été confirmé par la direction de Bureau Vallée et l'enseigne dispose de magasins à La Réunion, mais aucune source publique consultée ne démontre que des données de clients réunionnais figurent dans le périmètre compromis.",
+  "date": "2026-08-09",
+  "id": "INC-4A430372EB5E",
+  "location": "La Réunion",
+  "org": "Bureau Vallée",
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce / Distribution",
+   "evidence_url": "https://www.dailymotion.com/video/xayol4i",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.dailymotion.com/video/xayol4i"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "Signal territorial plausible : une cyberattaque contre Bureau Vallée est établie au niveau national et l'enseigne exploite plusieurs magasins à La Réunion. Faute de preuve qu'un client, un magasin ou un système réunionnais est inclus dans la fuite, le signal reste CANDIDATE.",
+  "threat": "Fuite de données"
+ },
+ {
   "admission": "ACCEPTED",
   "admission_reason": "Intrusion et exfiltration confirmées par le ministère ; la veille gouvernementale Outre-mer rapporte explicitement des données liées à l’académie de La Réunion dans le périmètre rendu public.",
   "date": "2026-07-25",
@@ -437,6 +606,57 @@
   ],
   "summary": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
   "threat": "Fuite de données"
+ },
+ {
+  "admission": "CANDIDATE",
+  "admission_reason": "Impact informatique documenté sans preuve d'une action cyber.",
+  "date": "2026-06-29",
+  "id": "INC-7957FB7116F1",
+  "location": "La Réunion",
+  "org": "Le Quotidien de La Réunion",
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique.",
+  "threat": "Inconnu"
+ },
+ {
+  "admission": "CANDIDATE",
+  "admission_reason": "Incident informatique documenté, mais origine cyber non démontrée.",
+  "date": "2026-06-13",
+  "id": "INC-0C583422D46E",
+  "location": "Mayotte",
+  "org": "Commune de Ouangani",
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Entité ou alias territorial validé du référentiel Cyberwatch",
+   "evidence_url": "https://github.com/Ya7o/Cyberwatch/blob/main/cyberwatch/watchlists.py",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber.",
+  "threat": "Inconnu"
  },
  {
   "admission": "ACCEPTED",
@@ -545,5 +765,32 @@
   ],
   "summary": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
   "threat": "Fuite de données"
+ },
+ {
+  "admission": "CANDIDATE",
+  "admission_reason": "Aucune preuve publique d'une origine cyber.",
+  "date": "2026-02-04",
+  "id": "INC-28E45E300CB9",
+  "location": "La Réunion",
+  "org": "Commune de Saint-Leu",
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Entité ou alias territorial validé du référentiel Cyberwatch",
+   "evidence_url": "https://github.com/Ya7o/Cyberwatch/blob/main/cyberwatch/watchlists.py",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique. Aucun élément public ne démontre une cyberattaque.",
+  "threat": "Inconnu"
  }
 ]
