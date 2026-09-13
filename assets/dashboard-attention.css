@@ -1,0 +1,35 @@
+/* Mise en évidence des incidents à surveiller, sans ajouter de niveau de sévérité artificiel. */
+.incident-card[data-attention="watch"] {
+  border-color: color-mix(in srgb, var(--series-2) 38%, var(--border));
+  box-shadow: inset 3px 0 0 var(--series-2);
+  background: color-mix(in srgb, var(--series-2) 4%, var(--surface));
+}
+
+.incident-attention {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  color: var(--text-primary);
+  font-size: 11.5px;
+  font-weight: 750;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.incident-attention::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--series-2);
+}
+
+@media (max-width: 560px) {
+  .incident-attention {
+    width: 100%;
+    margin-left: 0;
+  }
+}
