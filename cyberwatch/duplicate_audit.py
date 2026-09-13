@@ -11,11 +11,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from difflib import SequenceMatcher
+import json
 
 from . import config
 from .dedup import MERGE, NO_DECISION, decide_merge
 from .model import Item
-from .normalize import date_or_empty, organisation_acronym, organisation_key
+from .normalize import date_or_empty, organisation_acronym, organisation_key, searchable
 from .org_identity import effective_organisation_key
 
 
@@ -87,6 +88,17 @@ class CandidateSignals:
     shared_company_id: bool = False
     shared_victim_domain: bool = False
     fuzzy_score: float = 0.0
+    organisation_exact: bool = False
+    organisation_similarity: float = 0.0
+    publication_days_apart: int = -1
+    event_date_match: str = "MISSING"
+    threat_match: str = "MISSING"
+    threat_actor_match: str = "MISSING"
+    affected_count_match: str = "MISSING"
+    data_type_overlap: float = 0.0
+    data_type_match: str = "MISSING"
+    source_pair: str = ""
+    source_native_id_match: str = "MISSING"
 
     @property
     def strong_signal_count(self) -> int:
@@ -411,12 +423,78 @@ def _fuzzy_ratio(a: str, b: str) -> float:
     return round(SequenceMatcher(None, a, b).ratio(), 4)
 
 
+def _comparison(left: str, right: str) -> str:
+    left, right = str(left or "").strip(), str(right or "").strip()
+    if not left or not right:
+        return "MISSING"
+    return "MATCH" if searchable(left) == searchable(right) else "CONFLICT"
+
+
+def _affected_count_comparison(left: dict, right: dict) -> str:
+    left_value = str(left.get("Affected_Count") or "").strip()
+    right_value = str(right.get("Affected_Count") or "").strip()
+    if not left_value or not right_value:
+        return "MISSING"
+    left_unit = searchable(str(left.get("Affected_Unit") or ""))
+    right_unit = searchable(str(right.get("Affected_Unit") or ""))
+    if not left_unit or not right_unit:
+        return "INCOMPARABLE"
+    if left_unit != right_unit:
+        return "INCOMPARABLE"
+    try:
+        left_number, right_number = int(left_value), int(right_value)
+    except ValueError:
+        return "MATCH" if left_value == right_value else "CONFLICT"
+    if left_number == right_number:
+        return "MATCH"
+    largest = max(abs(left_number), abs(right_number))
+    return "MATCH" if largest and abs(left_number - right_number) / largest <= 0.05 else "CONFLICT"
+
+
+def _data_type_overlap(left: dict, right: dict) -> tuple[float, str]:
+    def values(row: dict) -> set[str]:
+        try:
+            raw = json.loads(row.get("Data_Types_JSON") or "[]")
+        except (TypeError, ValueError):
+            return set()
+        if not isinstance(raw, list):
+            return set()
+        return {searchable(str(value)) for value in raw if searchable(str(value))}
+
+    left_values, right_values = values(left), values(right)
+    if not left_values or not right_values:
+        return 0.0, "MISSING"
+    overlap = len(left_values & right_values) / len(left_values | right_values)
+    # Deux listes disjointes peuvent simplement refléter des articles
+    # complémentaires ; l'absence de recouvrement n'est pas une contradiction.
+    return round(overlap, 4), "MATCH" if overlap else "INCOMPARABLE"
+
+
+def fact_comparison(signals: CandidateSignals) -> dict[str, list[str]]:
+    """Classe les signaux par sémantique pour le prompt et l'audit."""
+    fields = {
+        "event_date": signals.event_date_match,
+        "threat": signals.threat_match,
+        "threat_actor": signals.threat_actor_match,
+        "affected_count": signals.affected_count_match,
+        "data_types": signals.data_type_match,
+        "source_native_id": signals.source_native_id_match,
+    }
+    return {
+        "matched_facts": [name for name, status in fields.items() if status == "MATCH"],
+        "conflicting_facts": [name for name, status in fields.items() if status == "CONFLICT"],
+        "missing_facts": [name for name, status in fields.items() if status == "MISSING"],
+        "incomparable_facts": [name for name, status in fields.items() if status == "INCOMPARABLE"],
+    }
+
+
 def compute_candidate_signals(
     left: Item,
     right: Item,
     *,
     company_ids: dict[str, str] | None = None,
     victim_websites: dict[str, str] | None = None,
+    facts_by_item: dict[str, dict] | None = None,
 ) -> CandidateSignals:
     """Calcule les indices de rapprochement d'une paire, sans autoriser de fusion.
 
@@ -428,6 +506,7 @@ def compute_candidate_signals(
     """
     company_ids = company_ids or {}
     victim_websites = victim_websites or {}
+    facts_by_item = facts_by_item or {}
 
     left_key = organisation_key(left.Organisation_Raw) or left.Organisation_Key
     right_key = organisation_key(right.Organisation_Raw) or right.Organisation_Key
@@ -462,6 +541,29 @@ def compute_candidate_signals(
         _fuzzy_ratio(left_compact, right_acronym),
         _fuzzy_ratio(right_compact, left_acronym),
     )
+    organisation_similarity = _fuzzy_ratio(left_compact, right_compact)
+    left_published = date_or_empty(left.Published_Date)
+    right_published = date_or_empty(right.Published_Date)
+    publication_days = (
+        abs((left_published - right_published).days)
+        if left_published is not None and right_published is not None else None
+    )
+    left_facts = facts_by_item.get(left.Item_ID, {})
+    right_facts = facts_by_item.get(right.Item_ID, {})
+    event_date_match = _comparison(left.Event_Date, right.Event_Date)
+    known_threats = {"", config.THREAT_UNKNOWN}
+    threat_match = (
+        "MISSING" if left.Threat in known_threats or right.Threat in known_threats
+        else "MATCH" if left.Threat == right.Threat else "CONFLICT"
+    )
+    threat_actor_match = _comparison(
+        str(left_facts.get("Threat_Actor") or ""),
+        str(right_facts.get("Threat_Actor") or ""),
+    )
+    data_type_overlap, data_type_match = _data_type_overlap(left_facts, right_facts)
+    native_match = "MISSING"
+    if left.Source_ID == right.Source_ID and left.Source_Item_ID and right.Source_Item_ID:
+        native_match = "MATCH" if left.Source_Item_ID == right.Source_Item_ID else "CONFLICT"
 
     return CandidateSignals(
         exact_key=exact_key,
@@ -472,6 +574,17 @@ def compute_candidate_signals(
         shared_company_id=shared_company_id,
         shared_victim_domain=shared_victim_domain,
         fuzzy_score=fuzzy_score,
+        organisation_exact=exact_key,
+        organisation_similarity=organisation_similarity,
+        publication_days_apart=publication_days if publication_days is not None else -1,
+        event_date_match=event_date_match,
+        threat_match=threat_match,
+        threat_actor_match=threat_actor_match,
+        affected_count_match=_affected_count_comparison(left_facts, right_facts),
+        data_type_overlap=data_type_overlap,
+        data_type_match=data_type_match,
+        source_pair="|".join(sorted((left.Source_ID, right.Source_ID))),
+        source_native_id_match=native_match,
     )
 
 
@@ -486,6 +599,7 @@ def find_daily_llm_candidates(
     *,
     company_ids: dict[str, str] | None = None,
     victim_websites: dict[str, str] | None = None,
+    facts_by_item: dict[str, dict] | None = None,
     max_candidates_per_item: int = DAILY_LLM_MAX_CANDIDATES_PER_ITEM,
     deferred: list[DedupAuditCandidate] | None = None,
 ) -> list[DedupAuditCandidate]:
@@ -532,6 +646,7 @@ def find_daily_llm_candidates(
                 continue
             signals = compute_candidate_signals(
                 left, right, company_ids=company_ids, victim_websites=victim_websites,
+                facts_by_item=facts_by_item,
             )
             if not signals.any_signal:
                 continue
