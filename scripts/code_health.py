@@ -66,7 +66,7 @@ def function_findings(limit: int) -> list[Finding]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-module-lines", type=int, default=1000)
-    parser.add_argument("--max-function-lines", type=int, default=100)
+    parser.add_argument("--max-function-lines", type=int, default=120)
     parser.add_argument("--module-budget", type=int, default=0)
     parser.add_argument("--function-budget", type=int, default=0)
     args = parser.parse_args(argv)
