@@ -1,5 +1,6 @@
 [
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -36,6 +37,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -69,6 +71,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -102,6 +105,7 @@
   "threat": "Phishing / fraude"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -138,6 +142,7 @@
   "threat": "Intrusion"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -163,6 +168,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -191,6 +197,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -224,6 +231,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": true,
@@ -252,6 +260,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-10",
   "high_sensitivity_data_exposed": false,
@@ -285,6 +294,8 @@
   "threat": "Intrusion"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "La commune a communiqué publiquement sur une cyberattaque visant ses systèmes ; plusieurs médias locaux et sources cyber relaient cette communication.",
   "date": "2026-09-09",
   "id": "INC-90C7B09E294B",
   "location": "La Réunion",
@@ -306,9 +317,11 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "La mairie du Tampon a été visée par une cyberattaque annoncée le 9 septembre 2026. Les services municipaux fonctionnent en mode dégradé et des coupures d'Internet et de téléphonie ont été décidées à titre de sécurité. FrenchBreaches confirme l'incident mais indique que sa nature exacte, son ampleur et l'existence éventuelle d'une compromission de données restent inconnues.",
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-02",
   "high_sensitivity_data_exposed": false,
@@ -345,6 +358,8 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Intrusion et exfiltration confirmées par le ministère ; la veille gouvernementale Outre-mer rapporte explicitement des données liées à l’académie de La Réunion dans le périmètre rendu public.",
   "date": "2026-07-25",
   "id": "INC-9B11A8F11CE1",
   "location": "La Réunion",
@@ -366,9 +381,12 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "Cyberattaque confirmée contre un système du ministère de l’Éducation nationale, avec exfiltration de données de personnels ; le lien avec l’académie de La Réunion est explicitement rapporté, tandis que le détail des données locales reste à préciser.",
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Exfiltration revendiquée avec échantillons de données attribués à l'établissement.",
   "date": "2026-06-30",
   "id": "INC-DEF298242E44",
   "location": "La Réunion",
@@ -390,9 +408,12 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle.",
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Fuite de données revendiquée visant explicitement l'entreprise réunionnaise.",
   "date": "2026-06-29",
   "id": "INC-3B8C2F71BF60",
   "location": "La Réunion",
@@ -414,9 +435,12 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Incident de cybersécurité confirmé officiellement par la victime.",
   "date": "2026-06-11",
   "id": "INC-DB8BDF7CCB2D",
   "location": "Mayotte",
@@ -438,9 +462,12 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
   "threat": "Intrusion"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Fuite de données documentée et incident rapporté comme confirmé par la victime.",
   "date": "2026-05-31",
   "id": "INC-08D80AA8EF71",
   "location": "La Réunion",
@@ -462,9 +489,12 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation.",
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
   "date": "2026-04-24",
   "id": "INC-A36AFC8D9E10",
   "location": "La Réunion",
@@ -486,9 +516,12 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime.",
   "threat": "Intrusion"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "Fuite de données revendiquée et rattachée explicitement à une entité réunionnaise.",
   "date": "2026-02-19",
   "id": "INC-78D32D7D8C37",
   "location": "La Réunion",
@@ -510,6 +543,7 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
   "threat": "Fuite de données"
  }
 ]

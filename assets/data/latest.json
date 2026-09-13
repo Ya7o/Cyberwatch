@@ -1,5 +1,6 @@
 [
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -25,6 +26,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -58,6 +60,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -86,6 +89,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -122,6 +126,7 @@
   "threat": "Intrusion"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": true,
@@ -150,6 +155,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -186,6 +192,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -219,6 +226,7 @@
   "threat": "Phishing / fraude"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-11",
   "high_sensitivity_data_exposed": false,
@@ -252,6 +260,7 @@
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-10",
   "high_sensitivity_data_exposed": false,
@@ -285,6 +294,8 @@
   "threat": "Intrusion"
  },
  {
+  "admission": "ACCEPTED",
+  "admission_reason": "La commune a communiqué publiquement sur une cyberattaque visant ses systèmes ; plusieurs médias locaux et sources cyber relaient cette communication.",
   "date": "2026-09-09",
   "id": "INC-90C7B09E294B",
   "location": "La Réunion",
@@ -306,9 +317,11 @@
   "sources": [
    "VEILLE_LLM"
   ],
+  "summary": "La mairie du Tampon a été visée par une cyberattaque annoncée le 9 septembre 2026. Les services municipaux fonctionnent en mode dégradé et des coupures d'Internet et de téléphonie ont été décidées à titre de sécurité. FrenchBreaches confirme l'incident mais indique que sa nature exacte, son ampleur et l'existence éventuelle d'une compromission de données restent inconnues.",
   "threat": "Fuite de données"
  },
  {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-02",
   "high_sensitivity_data_exposed": false,
