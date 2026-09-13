@@ -290,15 +290,8 @@ def build() -> tuple[int, int]:
     _decorate_admission(payload)
 
     state = _legacy.status_payload()
-
-    # Les CANDIDATE sont visibles et recherchables comme les autres incidents,
-    # mais ne modifient pas les KPI, tendances et signaux réservés aux incidents
-    # établis. Une corroboration par une autre source les fait repasser ACCEPTED.
-    analytics_payload = [
-        row for row in payload if row.get("admission") != "CANDIDATE"
-    ]
     state["analytics"] = analytics.build_analytics(
-        analytics_payload,
+        payload,
         focus_locations=config.FOCUS_LOCATIONS,
         ocean_locations=config.OCEAN_LOCATIONS,
     )
