@@ -1,9 +1,9 @@
 """Import déterministe du snapshot régional produit par Veille LLM.
 
 La routine conserve à la fois les incidents publiables et les signaux encore
-incertains. Seuls les enregistrements explicitement admis ``ACCEPTED`` entrent
-dans la base : une panne, un incident informatique ou un sabotage physique sans
-preuve cyber reste auditable dans le snapshot sous ``CANDIDATE``.
+incertains. Les enregistrements ``ACCEPTED`` et ``CANDIDATE`` sont matérialisés
+dans la base ; l'admission reste transportée dans les métadonnées afin que le
+dashboard distingue les signaux à confirmer des incidents établis.
 """
 
 from __future__ import annotations
@@ -166,8 +166,6 @@ class VeilleLlmCollector(Collector):
             if values["date"] > window.end:
                 future += 1
                 continue
-            if values["admission"] != ADMISSION_ACCEPTED:
-                continue
             if window.contains(values["date"]):
                 requested_window_hits += 1
             entries.append(_entry_from_record(record, values))
@@ -200,6 +198,6 @@ class VeilleLlmCollector(Collector):
                 f"generated_at={generated_at}; freshness_days={freshness_days}; "
                 f"max_age_days={max_age}"
             ),
-            items_seen=admission_counts[ADMISSION_ACCEPTED],
+            items_seen=len(entries),
             items_in_window=requested_window_hits,
         )
