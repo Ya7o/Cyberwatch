@@ -7,6 +7,8 @@ internes conservent l'accès aux faits complets du corpus canonique.
 """
 from __future__ import annotations
 
+import json
+
 from . import (
     analytics,
     config,
@@ -16,6 +18,7 @@ from . import (
     sector_resolution,
     site_legacy as _legacy,
     site_window,
+    sources,
     store,
     threat_resolution,
 )
@@ -27,6 +30,7 @@ from .normalize import organisation_key
 _INCIDENT_PUBLIC_FIELDS = frozenset({
     "id", "date", "org", "sector", "threat", "location", "sources",
     "source_links", "summary", "sector_status", "sector_tentative", "threat_tentative",
+    "admission", "admission_reason",
     "personal_data_exposed", "high_sensitivity_data_exposed",
     "credentials_or_secrets_exposed",
 })
@@ -130,6 +134,74 @@ def _threat_decisions_by_incident(items: list, source_fact_rows: list[dict]) -> 
     }
 
 
+def _regional_admission_by_key() -> dict[tuple[str, str], dict]:
+    """Indexe l'admission du snapshot Veille LLM par organisation et date.
+
+    ``ACCEPTED`` gagne toujours si plusieurs lignes convergent vers la même clé.
+    Le snapshot reste la source canonique de cette distinction, sans ajouter de
+    colonne au modèle CSV historique des incidents.
+    """
+    spec = sources.by_id("VEILLE_LLM")
+    relative = str(spec.params.get("path") or "").strip() if spec else ""
+    if not relative:
+        return {}
+    path = (store.ROOT / relative).resolve()
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, TypeError, ValueError):
+        return {}
+
+    indexed: dict[tuple[str, str], dict] = {}
+    for record in payload.get("records") or []:
+        if not isinstance(record, dict):
+            continue
+        organisation = str(record.get("organisation") or "").strip()
+        date = str(record.get("date") or "").strip()
+        admission = str(record.get("admission") or "").strip().upper()
+        if not organisation or not date or admission not in {"ACCEPTED", "CANDIDATE"}:
+            continue
+        try:
+            score = int(record.get("score_cyberattaque") or 0)
+        except (TypeError, ValueError):
+            score = 0
+        value = {
+            "admission": admission,
+            "admission_reason": str(record.get("admission_reason") or "").strip(),
+            "summary": str(record.get("synthese") or record.get("statut") or "").strip(),
+            "score": score,
+        }
+        key = (organisation_key(organisation), date)
+        previous = indexed.get(key)
+        if previous is None or (
+            value["admission"] == "ACCEPTED" and previous["admission"] != "ACCEPTED"
+        ) or (
+            value["admission"] == previous["admission"] and value["score"] > previous["score"]
+        ):
+            indexed[key] = value
+    return indexed
+
+
+def _decorate_admission(payload: list[dict]) -> None:
+    """Publie le statut CANDIDATE sans dégrader un incident corroboré ailleurs."""
+    regional = _regional_admission_by_key()
+    for row in payload:
+        row["admission"] = "ACCEPTED"
+        key = (organisation_key(row.get("org", "")), str(row.get("date") or ""))
+        local = regional.get(key)
+        if not local:
+            continue
+        has_independent_source = any(
+            str(source or "") != "VEILLE_LLM" for source in row.get("sources", [])
+        )
+        if local["admission"] == "CANDIDATE" and has_independent_source:
+            continue
+        row["admission"] = local["admission"]
+        if local["admission_reason"]:
+            row["admission_reason"] = local["admission_reason"]
+        if not str(row.get("summary") or "").strip() and local["summary"]:
+            row["summary"] = local["summary"]
+
+
 def _resolved_details(payload: list[dict], raw_facts: dict[str, list[dict]]) -> dict:
     organisations = {
         str(row.get("id") or ""): str(row.get("org") or "")
@@ -215,14 +287,18 @@ def build() -> tuple[int, int]:
         if decisions and row.get("sector") != expected:
             raise ValueError("sector_incident_projection_gap: " + str(row.get("id")))
     _decorate_payload(payload, resolved, threat_decisions, sectors)
+    _decorate_admission(payload)
 
     state = _legacy.status_payload()
 
-    # Important : les analytics gardent les faits bruts attachés au payload.
-    # Les métriques existantes ne changent donc pas de sémantique du seul fait
-    # que le dashboard reçoit un JSON plus compact.
+    # Les CANDIDATE sont visibles et recherchables comme les autres incidents,
+    # mais ne modifient pas les KPI, tendances et signaux réservés aux incidents
+    # établis. Une corroboration par une autre source les fait repasser ACCEPTED.
+    analytics_payload = [
+        row for row in payload if row.get("admission") != "CANDIDATE"
+    ]
     state["analytics"] = analytics.build_analytics(
-        payload,
+        analytics_payload,
         focus_locations=config.FOCUS_LOCATIONS,
         ocean_locations=config.OCEAN_LOCATIONS,
     )
