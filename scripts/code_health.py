@@ -23,10 +23,24 @@ def python_files() -> list[Path]:
     return sorted((ROOT / "cyberwatch").rglob("*.py"))
 
 
+def meaningful_line_numbers(source: str) -> set[int]:
+    """Compte les lignes de code et de chaînes, pas les blancs/commentaires."""
+    return {
+        index
+        for index, line in enumerate(source.splitlines(), start=1)
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+
+
+def span_lines(meaningful_lines: set[int], start: int, end: int) -> int:
+    return sum(start <= line <= end for line in meaningful_lines)
+
+
 def module_findings(limit: int) -> list[Finding]:
     findings = []
     for path in python_files():
-        lines = len(path.read_text(encoding="utf-8").splitlines())
+        source = path.read_text(encoding="utf-8")
+        lines = len(meaningful_line_numbers(source))
         if lines > limit:
             findings.append(Finding(path.relative_to(ROOT), "<module>", lines, 1))
     return sorted(findings, key=lambda row: (-row.lines, str(row.path)))
@@ -36,11 +50,12 @@ def function_findings(limit: int) -> list[Finding]:
     findings = []
     for path in python_files():
         source = path.read_text(encoding="utf-8")
+        meaningful_lines = meaningful_line_numbers(source)
         tree = ast.parse(source, filename=str(path))
         for node in ast.walk(tree):
             if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 continue
-            lines = (node.end_lineno or node.lineno) - node.lineno + 1
+            lines = span_lines(meaningful_lines, node.lineno, node.end_lineno or node.lineno)
             if lines > limit:
                 findings.append(
                     Finding(path.relative_to(ROOT), node.name, lines, node.lineno)
@@ -59,11 +74,11 @@ def main(argv: list[str] | None = None) -> int:
     modules = module_findings(args.max_module_lines)
     functions = function_findings(args.max_function_lines)
     for finding in modules:
-        print(f"MODULE {finding.path}: {finding.lines} lignes")
+        print(f"MODULE {finding.path}: {finding.lines} lignes significatives")
     for finding in functions:
         print(
             f"FUNCTION {finding.path}:{finding.start} "
-            f"{finding.name}: {finding.lines} lignes"
+            f"{finding.name}: {finding.lines} lignes significatives"
         )
     if len(modules) > args.module_budget or len(functions) > args.function_budget:
         print(
