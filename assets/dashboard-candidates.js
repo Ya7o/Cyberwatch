@@ -50,13 +50,18 @@
   function decorateDetail() {
     const content = document.querySelector("#detail-dialog-content");
     if (!content) return;
-    content.querySelector("[data-candidate-note]")?.remove();
+    const existing = content.querySelector("[data-candidate-note]");
     const candidate = candidates.get(activeIncidentId);
-    if (!candidate) return;
+    if (!candidate) {
+      existing?.remove();
+      return;
+    }
+    if (existing?.dataset?.candidateNote === activeIncidentId) return;
+    existing?.remove();
 
     const note = document.createElement("p");
     note.className = "hint";
-    note.dataset.candidateNote = "";
+    note.dataset.candidateNote = activeIncidentId;
     const reason = String(candidate.admission_reason || "Signal en cours de vérification.").trim();
     note.innerHTML = `<strong>À confirmer.</strong> ${esc(reason)}`;
     const heading = content.querySelector("h2, h3");
