@@ -169,12 +169,14 @@ def test_libelles_de_sources_ne_dependent_pas_de_shared_js():
     assert "window.CW" not in js
 
 
-def test_site_publie_les_faits_resolus_sans_priver_analytics_des_faits_bruts():
+def test_site_publie_les_faits_resolus_et_filtre_les_candidats_des_analytics():
     site = _read("cyberwatch/site.py")
     assert "raw_facts = _legacy._source_facts_by_incident" in site
     assert "resolved = _resolved_details(payload, raw_facts)" in site
     assert "return fact_resolution.resolve_all(raw_facts" in site
-    assert "analytics.build_analytics(\n        payload" in site
+    assert "analytics_payload = [" in site
+    assert 'row for row in payload if row.get("admission") != "CANDIDATE"' in site
+    assert "analytics.build_analytics(\n        analytics_payload" in site
     assert 'row["summary"] = str(detail.get("display_summary") or "")' in site
 
 
