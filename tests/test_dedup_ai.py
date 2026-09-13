@@ -99,6 +99,8 @@ def _decision_payload(candidate, **overrides):
         "confidence": 0.97,
         "matched_facts": ["compact_match"],
         "conflicting_facts": [],
+        "missing_facts": [],
+        "incomparable_facts": [],
         "evidence": "Même nom, avec ou sans espace.",
         "reason": "Variante typographique.",
     }
@@ -320,6 +322,8 @@ def test_batch_cache_hit_skips_second_call(monkeypatch, tmp_path, make_item):
     second = dedup_ai.challenge_candidates_batch([candidate], {}, second_state, {})
     assert second[dedup_ai.candidate_id(candidate)].status == dedup_ai.STATUS_CACHE_HIT
     assert second_state.batch_calls_attempted == 0
+    assert second_state.same_organisation_count == 1
+    assert second_state.different_count == 1
     assert len(calls) == 1
 
 

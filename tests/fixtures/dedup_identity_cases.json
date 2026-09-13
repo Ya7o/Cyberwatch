@@ -1,6 +1,70 @@
 {
-  "description": "Corpus de régression pour le filet LLM de déduplication (organisations et incidents). Chaque cas oppose deux libellés d'organisation, indépendamment de toute base de données réelle : il sert à qualifier la génération de candidats, la politique de validation des décisions LLM et à mesurer known_duplicate_recall / known_nonduplicate_false_merge_count. `same_incident` vaut `null` quand la question n'a pas de sens au niveau du nom seul (paire purement organisationnelle).",
+  "description": "Corpus de régression pour le filet LLM de déduplication (organisations et incidents). Les cas HISTORICAL_202608_09 proviennent des snapshots Git 7c70ace et 5d5fda2, couvrant fin août et début septembre 2026. Chaque cas oppose deux libellés d'organisation, indépendamment de toute base de données réelle : il sert à qualifier la génération de candidats, la politique de validation des décisions LLM et à mesurer known_duplicate_recall / known_nonduplicate_false_merge_count. `same_incident` vaut `null` quand la question n'a pas de sens au niveau du nom seul (paire purement organisationnelle).",
   "cases": [
+    {
+      "case_id": "HISTORICAL_202608_09_REPARSTORES",
+      "left": "Répar’stores",
+      "right": "Répar'Store",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Même victime publiée par Cyberattaque.org et FrenchBreaches le 5 septembre 2026."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_VONTES",
+      "left": "Clinique de Vontes",
+      "right": "Clinique de Vontes",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Même alerte observée avec deux slugs FrenchBreaches et dans Cyberattaque.org."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_SOLIMUT",
+      "left": "Solimut Mutuelle",
+      "right": "Solimut Mutuelle de France",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Variantes multisources du 23 août 2026."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_FRERES_TOQUE",
+      "left": "Frères Toque",
+      "right": "Frères Toque",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Observations multisources des 28 et 29 août 2026."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_EASYPARA",
+      "left": "Easypara",
+      "right": "Easypara",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Observations Cyberattaque.org et FrenchBreaches du 29 août 2026."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_CARTEDEPECHE",
+      "left": "CarteDePeche.fr",
+      "right": "Carte De Pêche",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Marque, domaine et forme espacée observés dans le corpus historique."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_SON_VIDEO",
+      "left": "Son-Video.com",
+      "right": "SON VIDEO",
+      "same_organisation": true,
+      "same_incident": true,
+      "reason": "Observations Cyberattaque.org et Ransomware.live du 12 août 2026."
+    },
+    {
+      "case_id": "HISTORICAL_202608_09_DGFIP",
+      "left": "DGFiP",
+      "right": "Direction générale des Finances publiques",
+      "same_organisation": true,
+      "same_incident": null,
+      "reason": "Acronyme et nom développé observés dans le corpus d'août 2026."
+    },
     {
       "case_id": "DGFIP_ACRONYM",
       "left": "DGFiP",
