@@ -45,15 +45,21 @@
       return;
     }
 
-    card.dataset.attention = "watch";
+    if (card.dataset.attention !== "watch") card.dataset.attention = "watch";
     const top = card.querySelector(".incident-card-top");
     if (!top) return;
 
+    // L'observateur écoute les mutations enfant. Réécrire le texte du badge
+    // déjà présent créait donc une nouvelle mutation à chaque passage, puis
+    // une boucle microtask infinie qui empêchait le navigateur de peindre les
+    // cartes. Ne modifier le DOM que si le contenu a réellement changé.
     const marker = current || document.createElement("span");
-    marker.className = "incident-attention";
-    marker.textContent = "À surveiller";
-    marker.title = reasons.join(" · ");
-    marker.setAttribute("aria-label", `À surveiller : ${reasons.join(" ; ")}`);
+    const title = reasons.join(" · ");
+    const label = `À surveiller : ${reasons.join(" ; ")}`;
+    if (!current) marker.className = "incident-attention";
+    if (marker.textContent !== "À surveiller") marker.textContent = "À surveiller";
+    if (marker.title !== title) marker.title = title;
+    if (marker.getAttribute("aria-label") !== label) marker.setAttribute("aria-label", label);
     if (!current) top.appendChild(marker);
   }
 

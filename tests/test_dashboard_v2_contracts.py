@@ -32,6 +32,14 @@ def test_filet_de_secours_detecte_une_liste_sans_cartes():
     assert "containers.every" not in failsafe
 
 
+def test_badge_attention_ne_redeclenche_pas_son_observateur():
+    attention = _read("assets/dashboard-attention.js")
+
+    assert 'if (marker.textContent !== "À surveiller")' in attention
+    assert "if (marker.title !== title)" in attention
+    assert 'if (marker.getAttribute("aria-label") !== label)' in attention
+
+
 def test_stockage_navigateur_bloque_ne_casse_pas_le_rendu():
     js = _read("assets/dashboard-v2.js")
 
