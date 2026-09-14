@@ -1,6 +1,135 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A5039CEBC10A",
+  "location": "France métropolitaine",
+  "org": "Grand Delta Habitat",
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Grand Delta Habitat est un bailleur social qui gère notamment des logements HLM et accompagne ses locataires dans l’accès et le maintien dans le logement.",
+   "evidence_url": "https://www.cyberattaque.org/grand-delta-habitat-188-000-commandes-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/grand-delta-habitat-188-000-commandes-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grand-delta-habitat-mu11w5cp7qxnf8bxui9"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un acteur revendique la fuite d'une base de 188 014 commandes et interventions liée au bailleur social Grand Delta Habitat.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-D72A05DFD66E",
+  "location": "Inconnu",
+  "org": "Revolut piégé par de fausses demandes gouvernementales",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/revolut-piege-par-de-fausses-demandes-gouvernementales-des-passeports-transmis-a-un-tiers/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
+  "threat": "Phishing / fraude"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-218799D3E526",
+  "location": "France métropolitaine",
+  "org": "CARIDRO VAL DE LOIRE",
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Agriculture / Agroalimentaire"
+   ],
+   "evidence": "Caridro Val de Loire spécialiste de la carrosserie industrielle",
+   "evidence_url": "https://www.cyberattaque.org/caridro-val-de-loire-des-centaines-de-fichiers-internes-publies-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/caridro-val-de-loire-des-centaines-de-fichiers-internes-publies-apres-une-cyberattaque/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=224e65b0-92cc-464a-871e-518f88a99685"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Des centaines de fichiers internes de Caridro Val de Loire ont été publiés par le groupe Qilin après une cyberattaque.",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CC9731B28C94",
+  "location": "France métropolitaine",
+  "org": "Fédération francophone de Gymnastique",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-francophone-de-gymnastique-mu038ez5nh94acseflc",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-francophone-de-gymnastique-mu038ez5nh94acseflc"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la mise en vente des données de plus de 200 000 adhérents de la Fédération francophone de Gymnastique.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-13",
   "high_sensitivity_data_exposed": true,
@@ -31,7 +160,44 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un acteur revendique la vente de 16 bases de la MGEL contenant 38,8 millions de lignes et 450 806 IBAN.",
-  "threat": "Intrusion"
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BEB27450B5FC",
+  "location": "France métropolitaine",
+  "org": "Sushi&Cie",
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Sushi&Cie est un établissement spécialisé dans la cuisine japonaise, notamment les sushis, makis et sashimis.",
+   "evidence_url": "https://www.cyberattaque.org/sushicie-victime-dune-cyberattaque-plus-de-6-000-clients-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sushicie-victime-dune-cyberattaque-plus-de-6-000-clients-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sushi-cie-mtzyrhan3ic1hahpxtv"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Sushi&Cie victime d’une cyberattaque plus de 6 000 clients en fuite",
+  "threat": "Fuite de données"
  },
  {
   "admission": "ACCEPTED",
@@ -59,7 +225,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Un pirate revendique la publication de huit fichiers attribués à Ekolis contenant environ 70 000 lignes incluant véhicules, conducteurs et comptes utilisateurs.",
   "threat": "Fuite de données"
  },
  {
