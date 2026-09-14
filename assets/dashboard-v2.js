@@ -29,6 +29,14 @@
   const known = (value) => Boolean(String(value ?? "").trim()) && String(value).trim() !== UNKNOWN;
   const unique = (values) => Array.from(new Set(values.filter(known)));
   const formatNumber = (value) => new Intl.NumberFormat("fr-FR").format(Number(value));
+  const readStorage = (scope, key) => {
+    try { return window[scope]?.getItem(key) || ""; }
+    catch (_) { return ""; }
+  };
+  const writeStorage = (scope, key, value) => {
+    try { window[scope]?.setItem(key, value); }
+    catch (_) { /* Le dashboard reste fonctionnel si le navigateur bloque le stockage. */ }
+  };
   const formatDate = (value) => {
     const date = value ? new Date(value) : null;
     return date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric" }).format(date) : "—";
@@ -72,7 +80,7 @@
     status: null,
     filters: { q: "", threat: "", sector: "", locations: [], source: "", period: "all" },
     sort: "date-desc",
-    page: 1, pageSize: Number(sessionStorage.getItem("cw-page-size")) || PAGE_SIZE,
+    page: 1, pageSize: Number(readStorage("sessionStorage", "cw-page-size")) || PAGE_SIZE,
   };
   let incidentsPromise = null;
 
@@ -553,9 +561,9 @@
     $("#theme-toggle").addEventListener("click", () => {
       const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
       document.documentElement.dataset.theme = next;
-      localStorage.setItem("cw-theme", next);
+      writeStorage("localStorage", "cw-theme", next);
     });
-    const savedTheme = localStorage.getItem("cw-theme");
+    const savedTheme = readStorage("localStorage", "cw-theme");
     if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     $("#run-pill").addEventListener("click", (event) => { event.preventDefault(); state.view = "analyse"; syncUrl(true); render(); requestAnimationFrame(() => $("#sources")?.scrollIntoView({ behavior: "smooth" })); });
     $("#detail-dialog").addEventListener("click", (event) => { if (event.target === $("#detail-dialog")) $("#detail-dialog").close(); });
@@ -572,7 +580,7 @@
       state.filters[key] = event.target.value; state.page = 1; syncUrl(); renderRecherche();
     }));
     $("#s-sort").addEventListener("change", (event) => { state.sort = event.target.value; state.page = 1; syncUrl(); renderRecherche(); });
-    $("#s-page-size").addEventListener("change", (event) => { state.pageSize = Number(event.target.value) || PAGE_SIZE; sessionStorage.setItem("cw-page-size", String(state.pageSize)); state.page = 1; renderRecherche(); });
+    $("#s-page-size").addEventListener("change", (event) => { state.pageSize = Number(event.target.value) || PAGE_SIZE; writeStorage("sessionStorage", "cw-page-size", String(state.pageSize)); state.page = 1; renderRecherche(); });
     const closeLocations = () => { $("#location-menu").hidden = true; $("#location-toggle").setAttribute("aria-expanded", "false"); };
     $("#location-toggle").addEventListener("click", () => { const menu = $("#location-menu"); menu.hidden = !menu.hidden; $("#location-toggle").setAttribute("aria-expanded", String(!menu.hidden)); });
     $("#location-close").addEventListener("click", closeLocations);

@@ -20,6 +20,29 @@ def test_runtime_v2_est_le_seul_runtime_charge():
     assert not (ROOT / "assets" / "shared.js").exists()
 
 
+def test_filet_de_secours_detecte_une_liste_sans_cartes():
+    """Un texte annexe ou un faux état vide ne doit jamais neutraliser le
+    secours quand latest.json contient réellement des incidents."""
+    html = _read("index.html")
+    failsafe = _read("assets/dashboard-failsafe.js")
+
+    assert html.index("assets/dashboard-failsafe.js") < html.index("assets/dashboard-v2.js")
+    assert 'function dashboardNeedsFallback()' in failsafe
+    assert 'Boolean($("#veille-list")) && !dashboardAlreadyRendered()' in failsafe
+    assert "containers.every" not in failsafe
+
+
+def test_stockage_navigateur_bloque_ne_casse_pas_le_rendu():
+    js = _read("assets/dashboard-v2.js")
+
+    assert 'readStorage("sessionStorage", "cw-page-size")' in js
+    assert 'readStorage("localStorage", "cw-theme")' in js
+    assert 'writeStorage("sessionStorage", "cw-page-size"' in js
+    assert 'writeStorage("localStorage", "cw-theme"' in js
+    assert 'sessionStorage.getItem(' not in js
+    assert 'localStorage.getItem(' not in js
+
+
 def test_header_regroupe_sante_sources_et_date_collecte():
     js = _read("assets/dashboard-v2.js")
     html = _read("index.html")
@@ -57,7 +80,7 @@ def test_recherche_permet_jusqua_1000_resultats_par_page():
     assert 'id="s-page-size"' in html
     assert '<option value="1000">1000</option>' in html
     assert "rows.slice(start, start + state.pageSize)" in js
-    assert 'sessionStorage.setItem("cw-page-size"' in js
+    assert 'writeStorage("sessionStorage", "cw-page-size"' in js
 
 
 def test_v2_restores_audit_and_interaction_contracts():

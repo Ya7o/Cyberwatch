@@ -72,10 +72,12 @@
     return Boolean($("#veille-list .incident-card") || $("#focus-body .incident-card") || $("#s-list .incident-card"));
   }
 
-  function dashboardLooksBlank() {
-    const containers = [$("#veille-list"), $("#focus-body"), $("#s-list"), $("#chart-evolution")].filter(Boolean);
-    if (!containers.length) return false;
-    return !dashboardAlreadyRendered() && containers.every((node) => !String(node.textContent || "").trim());
+  function dashboardNeedsFallback() {
+    // Le texte d'un module annexe ou un état vide rendu après un fetch échoué
+    // ne prouve pas que le runtime principal fonctionne. La seule preuve
+    // fiable est la présence d'au moins une carte ; latest.json tranche ensuite
+    // entre une base réellement vide et un rendu défaillant.
+    return Boolean($("#veille-list")) && !dashboardAlreadyRendered();
   }
 
   function sourceBadges(row) {
@@ -132,7 +134,7 @@
 
   async function renderFailsafe() {
     scheduled = false;
-    if (rendered || dashboardAlreadyRendered() || !dashboardLooksBlank()) return;
+    if (rendered || !dashboardNeedsFallback()) return;
 
     const [latest, status] = await Promise.all([
       loadJson(DATA_PATH, []),
