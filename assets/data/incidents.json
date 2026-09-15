@@ -2,6 +2,289 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5AD7E8261825",
+  "location": "France métropolitaine",
+  "org": "Aforpa",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_UNMAPPED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://aforpa.fr"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-56553114E3FD",
+  "location": "France métropolitaine",
+  "org": "Centrale Canine",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/centrale-canine-mu2khodutmhix9d29g",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/centrale-canine-une-cyberattaque-expose-les-donnees-de-plus-de-122-000-personnes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/centrale-canine-mu2khodutmhix9d29g"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de données diffusée par le hacker ChimeraZ expose des fichiers de la Centrale Canine contenant des informations sur environ 122 147 personnes.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8C6C97916F72",
+  "location": "France métropolitaine",
+  "org": "EAD-Online",
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/ead-online-mu2kkot4fts8pqcld0c",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ead-online-mu2kkot4fts8pqcld0c"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de données revendiquée affectant EAD-Online.be, l'auteur affirme disposer de 19 456 enregistrements au format JSON (~3 Mo).",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-015E0D4D14C0",
+  "location": "France métropolitaine",
+  "org": "Fédération Royale Belge de Tennis de Table",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-tennis-de-table-mu2l3yrjnywvyypn0z",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-tennis-de-table-mu2l3yrjnywvyypn0z"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique l'exfiltration d'environ 1,69 Go de données visant l’AFTT et la FRBTT, incluant 66 852 adhérents et 17 441 utilisateurs.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-F6EA93C0805A",
+  "location": "France métropolitaine",
+  "org": "Papouille France",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/papouille-france-blgcloud-mu2kat4fov2247lxirf",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/papouille-france-touche-par-la-fuite-de-son-compte-blgcloud-avec-75-go-et-240-000-fichiers-exposes/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/papouille-france-blgcloud-mu2kat4fov2247lxirf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Papouille France concernée par une fuite liée à BlgCloud exposant environ 75 Go et 240 177 fichiers attribués à son environnement BlgCloud.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-20C6D9DEDD18",
+  "location": "France métropolitaine",
+  "org": "Presses universitaires de Franche-Comté",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/presses-universitaires-de-franche-comt-mu2lpccdyoxn2sw5p3e",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/presses-universitaires-de-franche-comt-mu2lpccdyoxn2sw5p3e"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-77FA7FC04A8A",
+  "location": "France métropolitaine",
+  "org": "Welyb",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/welyb-agiris-mu2m3x9bh33cfsst2bl",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/welyb-agiris-mu2m3x9bh33cfsst2bl"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Welyb (AGIRIS)",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C25097FEA710",
+  "location": "France métropolitaine",
+  "org": "Bouteilles et bocaux",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Bouteilles et bocaux informe ses clients avoir été victime d’une cyberattaque visant directement sa boutique en ligne.",
+   "evidence_url": "https://www.cyberattaque.org/bouteilles-et-bocaux-une-cyberattaque-compromet-la-boutique-en-ligne-et-expose-des-donnees-clients/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/bouteilles-bocaux.png"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bouteilles-et-bocaux-une-cyberattaque-compromet-la-boutique-en-ligne-et-expose-des-donnees-clients/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bouteilles-et-bocaux-mu1wwqvgmn17bqmth5"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Bouteilles et bocaux : une cyberattaque compromet la boutique en ligne et expose des données clients",
+  "threat": "Malware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C4310380AA3C",
+  "location": "France métropolitaine",
+  "org": "Familea",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/familea-mu1wyyw70shufju3yby",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/familea-bruguieres-cyberattaque-les-portails-familles-inaccessibles/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/familea-mu1wyyw70shufju3yby"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les serveurs du portail Familea ont été coupés après une cyberattaque affectant l'accès au portail famille de Bruguières.",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-09-14",
   "high_sensitivity_data_exposed": false,
   "id": "INC-A5039CEBC10A",
@@ -40,6 +323,69 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-75B912C7A455",
+  "location": "France métropolitaine",
+  "org": "Nature & Découvertes",
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Nature & Découvertes est une enseigne française spécialisée dans les produits liés au bien-être, aux loisirs, à la découverte et à la nature. Son activité s’appuie sur un réseau de magasins mais également sur un important service de commerce en ligne.",
+   "evidence_url": "https://www.cyberattaque.org/nature-decouvertes-touche-par-une-cyberattaque-chez-un-prestataire/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/nature-decouvertes-touche-par-une-cyberattaque-chez-un-prestataire/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/nature-d-couvertes-mu1euyvui0h3fnzm19"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Nature & Découvertes signale une fuite de données clients via une cyberattaque ayant affecté le système d'un de ses prestataires.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6741AD9842BA",
+  "location": "France métropolitaine",
+  "org": "Nature et découvertes",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/nature-decouvertes.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Nature et découvertes.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
   "high_sensitivity_data_exposed": true,
   "id": "INC-D72A05DFD66E",
   "location": "Inconnu",
@@ -61,6 +407,40 @@
   ],
   "summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
   "threat": "Phishing / fraude"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-10677A4FD49A",
+  "location": "France métropolitaine",
+  "org": "Rosello et Fils",
+  "personal_data_exposed": false,
+  "sector": "Agriculture / Agroalimentaire",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Agriculture and Food Production",
+   "evidence_url": "http://eclipse4g5kxfwsvpu4qx5sdcnrji6gxl5gt67bucjlgt35g7akvjoid.onion/place/ff64huj542fj0suv/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/rosello-et-fils-pres-de-60-go-de-donnees-revendique-par-un-ransomware/"
+   },
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://eclipse4g5kxfwsvpu4qx5sdcnrji6gxl5gt67bucjlgt35g7akvjoid.onion/place/ff64huj542fj0suv/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Le groupe ransomware Eclipse revendique la récupération d'environ 60 Go de données internes chez Rosello et Fils.",
+  "threat": "Ransomware"
  },
  {
   "admission": "ACCEPTED",
