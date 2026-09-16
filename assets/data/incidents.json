@@ -2,6 +2,64 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-09-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-21AE16486F4B",
+  "location": "France métropolitaine",
+  "org": "Maison du souvenir",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/maison-du-souvenir-mu3s96ekg9d5znwpghs",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/maison-du-souvenir-mu3s96ekg9d5znwpghs"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Maison du souvenir de Maillé a subi une cyberattaque rendant inaccessibles plus de vingt ans d’archives et une rançon de 5 000 dollars est réclamée.",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B6C3BE11559E",
+  "location": "France métropolitaine",
+  "org": "Ville de Libercourt",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ville de Libercourt",
+   "evidence_url": "https://frenchbreaches.com/alertes/ville-de-libercourt-mu3s726lzo8j6uv1ta",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ville-de-libercourt-mu3s726lzo8j6uv1ta"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Ville de Libercourt a subi fin août 2026 une attaque par rançongiciel entraînant l’exfiltration de données personnelles.",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-09-15",
   "high_sensitivity_data_exposed": false,
   "id": "INC-5AD7E8261825",
@@ -24,6 +82,98 @@
   ],
   "summary": "",
   "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E67015756A95",
+  "location": "France métropolitaine",
+  "org": "AFPA",
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "AFPA",
+   "evidence_url": "https://www.cyberattaque.org/afpa-pres-dun-million-de-dossiers-revendiques-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/afpa-pres-dun-million-de-dossiers-revendiques-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/afpa-mu3sfxoqeownzuda0zt"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de 971 420 enregistrements est revendiquée contre l'AFPA, contenant des données personnelles vendues par un acteur se nommant xMetah.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-78281AB82197",
+  "location": "France métropolitaine",
+  "org": "Alaxione",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Alaxione fournit des solutions de gestion d’agenda, prise et suivi de rendez-vous médicaux ;",
+   "evidence_url": "https://frenchbreaches.com/alertes/point-vision-alaxione-mu2xkknzvrz0vmolzuf",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/point-vision-alaxione-mu2xkknzvrz0vmolzuf"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un prestataire chargé des rendez-vous de Point Vision a été victime d’une cyberattaque ayant entraîné l’accès à des données patients.",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D7E1EEBAB16D",
+  "location": "France métropolitaine",
+  "org": "Carte De Pêche",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/carte-de-p-che-mu2y1dhf81dp7ixpy9y",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/carte-de-p-che-mu2y1dhf81dp7ixpy9y"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la fuite de fichiers d'adhérents de Carte-de-pêche.fr couvrant 2012-2026 et visant plusieurs milliers d'adhérents.",
+  "threat": "Fuite de données"
  },
  {
   "admission": "ACCEPTED",
@@ -119,6 +269,35 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-41D3A5E68E62",
+  "location": "Inconnu",
+  "org": "Maison du Souvenir de Maillé",
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Depuis son ouverture, la Maison du Souvenir produit et rassemble des ressources destinées aussi bien à la recherche qu’aux expositions et aux activités pédagogiques.",
+   "evidence_url": "https://www.cyberattaque.org/maison-du-souvenir-de-maille-vingt-ans-de-travail-numerique-perdus-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/maison-du-souvenir-de-maille-vingt-ans-de-travail-numerique-perdus-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La Maison du Souvenir de Maillé a perdu près de vingt années de travail numérique à la suite d'une cyberattaque.",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-15",
   "high_sensitivity_data_exposed": true,
@@ -148,7 +327,41 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Papouille France concernée par une fuite liée à BlgCloud exposant environ 75 Go et 240 177 fichiers attribués à son environnement BlgCloud.",
+  "summary": "Papouille France voit 75 Go et 240 177 fichiers attribués à son compte BlgCloud diffusés publiquement.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-096E79FC178A",
+  "location": "France métropolitaine",
+  "org": "Point Vision",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Point Vision est un réseau français de centres spécialisés dans l’ophtalmologie.",
+   "evidence_url": "https://www.cyberattaque.org/point-vision-une-cyberattaque-expose-des-numeros-de-securite-sociale-et-des-donnees-de-patients/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/point-vision.png"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/point-vision-une-cyberattaque-expose-des-numeros-de-securite-sociale-et-des-donnees-de-patients/"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Point Vision signale qu'une violation chez un prestataire a exposé des numéros de sécurité sociale et d'autres données de patients.",
   "threat": "Fuite de données"
  },
  {
@@ -189,24 +402,32 @@
   "location": "France métropolitaine",
   "org": "Welyb",
   "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
-   "evidence_url": "https://frenchbreaches.com/alertes/welyb-agiris-mu2m3x9bh33cfsst2bl",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Numérique / Technologie"
+   ],
+   "evidence": "Welyb est une plateforme de gestion électronique de documents et de collaboration particulièrement orientée vers les cabinets d’expertise comptable.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-welyb-agiris-une-faille-expose-les-donnees-de-clients-de-cabinets-comptables/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-welyb-agiris-une-faille-expose-les-donnees-de-clients-de-cabinets-comptables/"
+   },
    {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/welyb-agiris-mu2m3x9bh33cfsst2bl"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Welyb (AGIRIS)",
+  "summary": "Une faille d'un composant lié à Welyb/Portail AGIRIS CONNECT a exposé des données de clients de cabinets d'expertise comptable.",
   "threat": "Fuite de données"
  },
  {
@@ -279,7 +500,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Les serveurs du portail Familea ont été coupés après une cyberattaque affectant l'accès au portail famille de Bruguières.",
+  "summary": "Familea victime d’une cyberattaque : les portails familles inaccessibles",
   "threat": "Intrusion"
  },
  {
@@ -324,7 +545,7 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-14",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-75B912C7A455",
+  "id": "INC-6741AD9842BA",
   "location": "France métropolitaine",
   "org": "Nature & Découvertes",
   "personal_data_exposed": true,
@@ -341,6 +562,10 @@
   },
   "source_links": [
    {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/nature-decouvertes.png"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/nature-decouvertes-touche-par-une-cyberattaque-chez-un-prestataire/"
    },
@@ -350,36 +575,11 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Nature & Découvertes signale une fuite de données clients via une cyberattaque ayant affecté le système d'un de ses prestataires.",
-  "threat": "Fuite de données"
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-14",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-6741AD9842BA",
-  "location": "France métropolitaine",
-  "org": "Nature et découvertes",
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/nature-decouvertes.png"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Nature et découvertes.",
   "threat": "Fuite de données"
  },
  {
@@ -439,7 +639,7 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Le groupe ransomware Eclipse revendique la récupération d'environ 60 Go de données internes chez Rosello et Fils.",
+  "summary": "Rosello et Fils : près de 60 Go de données revendiqués par un ransomware",
   "threat": "Ransomware"
  },
  {
