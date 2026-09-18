@@ -1,4 +1,5 @@
 {
+ "archived_at": "2026-09-18T11:57:53.343445+00:00",
  "entries": [
   {
    "attempts": 1,
@@ -1934,5 +1935,169 @@
    "reason": "SEMANTIC_REJECTED"
   }
  ],
+ "run_id": "RUN-20260918T155553",
+ "sector_qualification": {
+  "conflict_item_ids": [],
+  "items": 87,
+  "resolved": 72,
+  "resolved_item_ids": [
+   "ITM-12b2e4ca5634c3e0",
+   "ITM-150823a6ef95df78",
+   "ITM-1764b17f2c4b5c48",
+   "ITM-17e3c4c13804a513",
+   "ITM-1835cac2bbdf9b81",
+   "ITM-188b3b88eceafa8a",
+   "ITM-199a3a93438fa74e",
+   "ITM-26ccc95579f37b49",
+   "ITM-29562c0f52b87a9d",
+   "ITM-297ee9a28f2428ee",
+   "ITM-2bb0fc4052122b1c",
+   "ITM-2c765040652d9e75",
+   "ITM-2f18fd4763986071",
+   "ITM-32fe91231131ddf7",
+   "ITM-344b889900c38717",
+   "ITM-35718a8bb62c520a",
+   "ITM-3d66807cb3a2905a",
+   "ITM-4509703010707dc1",
+   "ITM-48ecbdf8da035a41",
+   "ITM-4923799b4214bfc6",
+   "ITM-4c238d21765dbe75",
+   "ITM-503153bbb0d8be59",
+   "ITM-5366750b9713f248",
+   "ITM-57627dee3b4b8f1a",
+   "ITM-5d16bc3a35cb2e27",
+   "ITM-5f2d9f83384f973b",
+   "ITM-5fd021f4b27756d1",
+   "ITM-60d103d1c68f03d5",
+   "ITM-62e437543f1280c0",
+   "ITM-69c664e7f86d4a4c",
+   "ITM-6d660f08d2bb4755",
+   "ITM-7117d7b0e950425f",
+   "ITM-80cc8ab052423602",
+   "ITM-8118b83c05930a99",
+   "ITM-83a963dca4c19db7",
+   "ITM-8b87c4bab3fdb358",
+   "ITM-8e1b34e80f9a2eb7",
+   "ITM-924203e4f2abca03",
+   "ITM-978b825e19437cf6",
+   "ITM-9906e87746af307a",
+   "ITM-9f3d8f5db9d90222",
+   "ITM-a0f7c97b09ef400c",
+   "ITM-a19da989cf9c4169",
+   "ITM-aab4f42b07d0ddce",
+   "ITM-b427adb39981c957",
+   "ITM-b448f47c38da62fd",
+   "ITM-b4c1e713b305b165",
+   "ITM-b656cc6deb846a0e",
+   "ITM-b6adc61fa1454e37",
+   "ITM-ba6d921c3cb19b45",
+   "ITM-c3a36ee338fcd65d",
+   "ITM-c468aaef607411be",
+   "ITM-c890a72d45f49174",
+   "ITM-c928efa51d6249f8",
+   "ITM-c9f092781992098e",
+   "ITM-cf98c476194a920f",
+   "ITM-d0c4415a4aa024c8",
+   "ITM-d12ad621f23be439",
+   "ITM-d602743d5213f84e",
+   "ITM-d6937a7d84d3f70d",
+   "ITM-dacf662cd7c6fd34",
+   "ITM-de572addb19c98a8",
+   "ITM-e0b6cb365b0ff98c",
+   "ITM-e1e3ecdb12ce1f80",
+   "ITM-e9ceb8ca4d2e254b",
+   "ITM-f2e010fc520c1cd0",
+   "ITM-f4e4e11cbcc11b38",
+   "ITM-f7f7641178235572",
+   "ITM-f9908688a719357a",
+   "ITM-fc2b714cad93ff17",
+   "ITM-fdc47ad9dffdbe4d",
+   "ITM-fe9e2a84d331b7ab"
+  ],
+  "state": "PARTIAL",
+  "unknown_incidents": 8,
+  "unknown_item_ids": [
+   "ITM-042fdd9bcd3ffeaf",
+   "ITM-154fd7f6a72a310b",
+   "ITM-15d98e980a937e24",
+   "ITM-1c5e3cf885791145",
+   "ITM-28e858e26c316ede",
+   "ITM-334a64fd5bca6da5",
+   "ITM-4bd5428d86dc863b",
+   "ITM-4fef33cf24051868",
+   "ITM-55735f00ce58c05d",
+   "ITM-71e8272f75aeb478",
+   "ITM-833fd1334242b547",
+   "ITM-ab1122ef76324a6a",
+   "ITM-afd4259690cd4330",
+   "ITM-d5c554b19f3dcaa9",
+   "ITM-e7ad616bfc469067"
+  ]
+ },
+ "summary": {
+  "by_field": {
+   "activity_description": 7,
+   "activity_sector_match": 7,
+   "incident_summary": 1,
+   "summary": 1
+  },
+  "by_kind": {
+   "ACTIVITY_NOT_DESCRIBED": 11,
+   "AMBIGUOUS_IDENTITY": 1,
+   "EVIDENCE_TOO_LONG": 2,
+   "FIELD_VALIDATION": 1,
+   "HEADLINE_VALIDATION": 1
+  },
+  "by_reason": {
+   "ACTIVITY_IDENTITY_AMBIGUOUS": 1,
+   "ACTIVITY_NOT_DESCRIBED": 4,
+   "CONFIDENCE_REJECTED": 2,
+   "EVIDENCE_TOO_LONG": 2,
+   "FIELD_VALIDATION_REJECTED": 1,
+   "HEADLINE_TOO_LONG": 1,
+   "NO_VALID_ACTIVITY_PAIR": 5
+  },
+  "dossiers": 8,
+  "dossiers_pending": 2,
+  "exhausted_fields": 12,
+  "pending_fields": 4,
+  "reasons": [
+   {
+    "fields": 1,
+    "kind": "AMBIGUOUS_IDENTITY",
+    "reason": "ACTIVITY_IDENTITY_AMBIGUOUS"
+   },
+   {
+    "fields": 4,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "ACTIVITY_NOT_DESCRIBED"
+   },
+   {
+    "fields": 2,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "CONFIDENCE_REJECTED"
+   },
+   {
+    "fields": 2,
+    "kind": "EVIDENCE_TOO_LONG",
+    "reason": "EVIDENCE_TOO_LONG"
+   },
+   {
+    "fields": 1,
+    "kind": "FIELD_VALIDATION",
+    "reason": "FIELD_VALIDATION_REJECTED"
+   },
+   {
+    "fields": 1,
+    "kind": "HEADLINE_VALIDATION",
+    "reason": "HEADLINE_TOO_LONG"
+   },
+   {
+    "fields": 5,
+    "kind": "ACTIVITY_NOT_DESCRIBED",
+    "reason": "NO_VALID_ACTIVITY_PAIR"
+   }
+  ]
+ },
  "version": 2
 }

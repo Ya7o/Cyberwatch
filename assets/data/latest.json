@@ -2,11 +2,140 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-09-18",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-F01F1A75909C",
+  "location": "France métropolitaine",
+  "org": "L’Orange bleue",
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "L’Orange bleue est un réseau français de salles de sport et de fitness présent dans de nombreuses villes.",
+   "evidence_url": "https://www.cyberattaque.org/lorange-bleue-732-000-fiches-dadherents-et-440-000-iban-dans-une-fuite-massive-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lorange-bleue-732-000-fiches-dadherents-et-440-000-iban-dans-une-fuite-massive-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/orange-bleue-mu6sr6lm5tsbb71uwjf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Venus1337 revendique la fuite de 732 385 fiches d'adhérents et 440 326 IBAN de L’Orange bleue.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-25FB4E5B300E",
+  "location": "France métropolitaine",
+  "org": "Stim",
+  "personal_data_exposed": false,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technology",
+   "evidence_url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/stim",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/stim"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
   "date": "2026-09-17",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-DC8AC46291C7",
+  "location": "France métropolitaine",
+  "org": "Tribunal des activités économiques de Paris",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/tribunal-des-activit-s-conomiques-de-paris-tae-mu5i6aq2tacwkov45cr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/tribunal-des-activit-s-conomiques-de-paris-tae-mu5i6aq2tacwkov45cr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de données revendiquée expose les informations d'environ 722 personnes liées au Greffe du Tribunal des activités économiques de Paris.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-17",
+  "high_sensitivity_data_exposed": true,
   "id": "INC-D2FB7EB1592C",
   "location": "France métropolitaine",
   "org": "Zenfirst",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/zenfirst-mu5htqiwd1qoi6ixtx5",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/zenfirst-victime-dune-cyberattaque-des-milliers-de-donnees-de-facturation-exposees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/zenfirst-mu5htqiwd1qoi6ixtx5"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Zenfirst victime d’une cyberattaque : des milliers de données de facturation exposées",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-911E74AADDEB",
+  "location": "Inconnu",
+  "org": "Greffe du Tribunal de Paris",
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -15,14 +144,48 @@
   },
   "source_links": [
    {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/zenfirst-mu5htqiwd1qoi6ixtx5"
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/greffe-du-tribunal-de-paris-des-adresses-privees-et-donnees-familiales-de-juges-en-fuite/"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Greffe du Tribunal de Paris : des adresses privées et données familiales de juges en fuite",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2EA9D4F2C864",
+  "location": "France métropolitaine",
+  "org": "Pays de L’Aigle",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/pays-de-l-aigle-mu62uazzlgiwn2iy3q",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pays-de-laigle-une-cyberattaque-contre-les-messageries-fait-craindre-une-fuite-de-donnees-sensibles/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pays-de-l-aigle-mu62uazzlgiwn2iy3q"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "La Communauté de communes des Pays de L’Aigle a subi une intrusion touchant son serveur de messagerie professionnelle le 14-15 septembre 2026.",
   "threat": "Fuite de données"
  },
  {
