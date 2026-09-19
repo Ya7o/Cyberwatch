@@ -358,7 +358,10 @@ def _quality(rows: list[dict], anchor: date) -> dict[str, Any]:
         "mono_source": mono,
         "mono_source_pct": round(100 * _ratio(mono, total), 1),
         "corroborated_pct": round(100 * _ratio(total - mono, total), 1),
-        "with_summary_pct": round(100 * _ratio(sum(bool(row.get("summary")) for row in rows), total), 1),
+        "with_summary_pct": round(100 * _ratio(
+            sum(bool(row.get("summary") or row.get("detail_summary")) for row in rows),
+            total,
+        ), 1),
         "sources": len(sources),
         "first_date": min(days).isoformat() if days else "",
         "last_date": max(days).isoformat() if days else "",

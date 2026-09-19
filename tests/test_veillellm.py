@@ -161,7 +161,7 @@ def test_candidate_admission_is_published_and_independent_source_wins(monkeypatc
 
     assert candidate["admission"] == "CANDIDATE"
     assert candidate["admission_reason"] == "Signal à corroborer."
-    assert candidate["summary"] == "Incident encore incertain."
+    assert "summary" not in candidate
     assert corroborated["admission"] == "ACCEPTED"
     assert "admission" in site._INCIDENT_PUBLIC_FIELDS
     assert "admission_reason" in site._INCIDENT_PUBLIC_FIELDS

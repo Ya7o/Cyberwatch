@@ -201,12 +201,12 @@ def _source_fact_payload(row: dict) -> dict | None:
     « donnée disponible = visible, donnée absente = masquée ». Les champs de
     debug/extraction et le secteur brut ne franchissent pas cette frontière.
 
-    Veille LLM est volontairement laissée au renderer historique pour cette
-    release de stabilisation afin d'éviter tout double affichage.
+    Les synthèses de Veille LLM sont publiées comme détail narratif local :
+    elles ne sont jamais réutilisées comme headline de carte.
     """
     source_id = str(row.get("Source_ID") or "").strip()
     item_id = str(row.get("Item_ID") or "").strip()
-    if not source_id or not item_id or source_id == "VEILLE_LLM":
+    if not source_id or not item_id:
         return None
 
     payload: dict[str, object] = {"source": source_id, "item_id": item_id}
@@ -219,6 +219,15 @@ def _source_fact_payload(row: dict) -> dict | None:
         value = strip_markdown_emphasis(str(row.get(column) or "").strip())
         if value:
             payload[key] = value
+
+    # La veille locale produit une synthèse éditoriale, souvent plus longue
+    # qu'une headline. Elle alimente donc uniquement le contrat de détail v3.
+    # La borne reste défensive sans confondre cette synthèse avec les 160
+    # caractères admis sur une carte.
+    if source_id == "VEILLE_LLM":
+        local_summary = str(payload.get("summary") or "").strip()
+        if local_summary:
+            payload["local_summary"] = local_summary[:1200]
 
     for column, key in _FACT_INT_FIELDS.items():
         value = str(row.get(column) or "").strip()
@@ -323,7 +332,12 @@ def _best_source_summary(facts: list[dict]) -> str:
     fusion ni réécriture n'est faite ici. Les critères de départage sont stables
     afin qu'un rebuild identique publie exactement la même synthèse.
     """
-    candidates = [fact for fact in facts if str(fact.get("summary") or "").strip()]
+    from .fact_resolution import is_publishable_summary
+
+    candidates = [
+        fact for fact in facts
+        if is_publishable_summary(str(fact.get("summary") or "").strip())
+    ]
     if not candidates:
         return ""
 
@@ -629,12 +643,13 @@ def focus_feed(payload: list[dict], *, as_of: str, site_url: str) -> str:
         detail[1] = f"{len(row.get('sources') or [])} source(s) : " + (
             ", ".join(config.source_label(value) for value in (row.get("sources") or [])) or "non documentée"
         )
-        summary = str(row.get("summary") or "").strip()
+        summary = str(row.get("summary") or row.get("detail_summary") or "").strip()
         if summary:
             detail.append(summary)
         local = row.get("local") or {}
-        if local.get("summary"):
-            detail.append(f"Analyse locale (score {local.get('score')}/100) : {local['summary']}")
+        local_summary = str(local.get("summary") or "").strip()
+        if local_summary and local_summary != summary:
+            detail.append(f"Analyse locale (score {local.get('score')}/100) : {local_summary}")
         link = _public_link(row.get("urls"), site_url)
         lines += [
             "  <entry>",

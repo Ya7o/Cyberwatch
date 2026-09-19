@@ -63,12 +63,23 @@ def test_existing_incident_keeps_its_short_summary_as_fallback():
 
 
 def test_missing_or_oversized_fallback_uses_a_safe_message():
-    unsafe = "<img src=x onerror=alert(1)>" + " x" * 100
+    unsafe = "<img src=x onerror=alert(1)>" + " x" * 700
     result = render({"id": "example", "org": "Exemple", "summary": unsafe}, None)
     assert result["paragraphs"] == [
         "Les informations disponibles ne permettent pas encore de résumer précisément cet incident."
     ]
     assert "<img" not in result["html"]
+
+
+def test_local_detail_summary_can_be_longer_than_a_card_headline():
+    paragraph = (
+        "La mairie a activé un fonctionnement dégradé après une cyberattaque. " * 4
+    ).strip()
+    result = render({"id": "example", "org": "Exemple"}, {
+        "version": 3, "summary_paragraphs": [paragraph],
+    })
+    assert result["paragraphs"] == [paragraph]
+    assert paragraph in result["html"]
 
 
 def test_generated_html_is_escaped():

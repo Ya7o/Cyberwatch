@@ -2,7 +2,7 @@ from cyberwatch import site
 from cyberwatch.normalize import organisation_key
 
 
-def test_regional_snapshot_summary_is_published_for_accepted_incident():
+def test_regional_snapshot_summary_is_not_published_as_a_card_headline():
     regional = site._regional_admission_by_key()
     key = (organisation_key("EPF Réunion / VALGO"), "2026-02-19")
 
@@ -19,8 +19,8 @@ def test_regional_snapshot_summary_is_published_for_accepted_incident():
     site._decorate_admission([row])
 
     assert row["admission"] == "ACCEPTED"
-    assert row["summary"] == regional[key]["summary"]
-    assert site._public_fields(row, site._INCIDENT_PUBLIC_FIELDS)["summary"] == row["summary"]
+    assert "summary" not in row
+    assert "summary" not in site._public_fields(row, site._INCIDENT_PUBLIC_FIELDS)
 
 
 def test_regional_snapshot_summary_is_published_for_candidate():
@@ -40,5 +40,5 @@ def test_regional_snapshot_summary_is_published_for_candidate():
     site._decorate_admission([row])
 
     assert row["admission"] == "CANDIDATE"
-    assert row["summary"] == regional[key]["summary"]
+    assert "summary" not in row
     assert row["admission_reason"] == regional[key]["admission_reason"]

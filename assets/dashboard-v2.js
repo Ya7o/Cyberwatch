@@ -510,12 +510,12 @@
     const raw = validDetail && Array.isArray(detail.summary_paragraphs)
       ? detail.summary_paragraphs.slice(0, 2).map((value) => String(value || "").trim())
       : [];
-    const generated = raw[0] && raw[0].length <= 160
-      ? raw.filter((value) => known(value) && value.length <= 160)
+    const generated = raw[0] && raw[0].length <= 1200
+      ? raw.filter((value) => known(value) && value.length <= 1200)
       : [];
     if (generated.length) return generated;
     const headline = cleanSummary((validDetail && detail.display_summary) || incident.summary);
-    if (known(headline) && headline.length <= 160) return [headline];
+    if (known(headline) && headline.length <= 1200) return [headline];
     return ["Les informations disponibles ne permettent pas encore de résumer précisément cet incident."];
   }
 

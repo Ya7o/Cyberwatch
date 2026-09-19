@@ -198,8 +198,9 @@ def _decorate_admission(payload: list[dict]) -> None:
         row["admission"] = local["admission"]
         if local["admission_reason"]:
             row["admission_reason"] = local["admission_reason"]
-        if not str(row.get("summary") or "").strip() and local["summary"]:
-            row["summary"] = local["summary"]
+        # `summary` est une headline de carte : ne jamais y projeter la
+        # synthèse Veille LLM, qui peut être un paragraphe complet. Cette
+        # synthèse est publiée dans facts.json via le fait source associé.
 
 
 def _resolved_details(payload: list[dict], raw_facts: dict[str, list[dict]]) -> dict:
@@ -230,6 +231,14 @@ def _decorate_payload(
         if detail is None:
             continue
         row["summary"] = str(detail.get("display_summary") or "")
+        # Champ interne : le dashboard de liste ne le publie pas, mais les
+        # analytics et le flux Atom doivent continuer à compter/présenter une
+        # synthèse déplacée vers la fiche détaillée.
+        row["detail_summary"] = " ".join(
+            str(value or "").strip()
+            for value in detail.get("summary_paragraphs") or []
+            if str(value or "").strip()
+        )
         exposure = data_sensitivity.classify(detail)
         row.update({
             key: exposure[key]

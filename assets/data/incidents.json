@@ -1598,10 +1598,13 @@
  {
   "admission": "ACCEPTED",
   "admission_reason": "Cyberattaque confirmée publiquement par la collectivité et reprise par plusieurs sources locales.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-09-09",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-A6AC87645DB8",
   "location": "La Réunion",
   "org": "Ville du Tampon",
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.8,
@@ -1619,7 +1622,7 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "La mairie du Tampon a été visée par une cyberattaque annoncée le 9 septembre 2026. Les services municipaux fonctionnent en mode dégradé et des coupures d'Internet et de téléphonie ont été décidées par sécurité. La nature exacte de l'attaque, son ampleur et l'existence éventuelle d'une compromission de données restent inconnues.",
+  "summary": "",
   "threat": "Fuite de données"
  },
  {
@@ -1662,10 +1665,13 @@
  {
   "admission": "CANDIDATE",
   "admission_reason": "Un délégué syndical a allégué que l'ancien système informatique de manutention avait été volontairement mis hors service lors de la transition du port de Longoni. L'allégation n'est pas corroborée ; les sources disponibles documentent aussi un différend opérationnel et juridique ainsi que des difficultés d'adaptation des outils.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-08-31",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-630FE3AFB253",
   "location": "Mayotte",
   "org": "MANU-PORT",
+  "personal_data_exposed": false,
   "sector": "Transport / Logistique",
   "sector_status": {
    "confidence": 0.7,
@@ -1683,16 +1689,19 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "Signal à investiguer : une source syndicale a dénoncé une mise hors service volontaire de l'ancien système utilisé par MANU-PORT lors de la reprise du port de Longoni. Les sources ultérieures décrivent surtout une transition opérationnelle et juridique conflictuelle, des outils à adapter et une reprise d'activité après accord. Aucun élément public nouveau ne confirme ni ne réfute formellement une action cyber distincte.",
+  "summary": "",
   "threat": "Inconnu"
  },
  {
   "admission": "CANDIDATE",
   "admission_reason": "Le vol de données a été confirmé par la direction de Bureau Vallée et l'enseigne dispose de magasins à La Réunion, mais aucune source publique consultée ne démontre que des données de clients réunionnais figurent dans le périmètre compromis.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-08-09",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-8C3B062EFF51",
   "location": "La Réunion",
   "org": "Bureau Vallée",
+  "personal_data_exposed": false,
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.7,
@@ -1710,16 +1719,19 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "Incident cyber avéré pour l'enseigne nationale, conservé comme signal territorial plausible en raison de son implantation à La Réunion, sans preuve publique d'un impact local.",
+  "summary": "",
   "threat": "Fuite de données"
  },
  {
   "admission": "ACCEPTED",
   "admission_reason": "Intrusion et exfiltration confirmées par le ministère ; la veille gouvernementale Outre-mer rapporte explicitement des données liées à l’académie de La Réunion dans le périmètre rendu public.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-07-25",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-9B11A8F11CE1",
   "location": "La Réunion",
   "org": "Ministère de l’Éducation nationale / Académie de La Réunion",
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.8,
@@ -1737,16 +1749,19 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "Cyberattaque confirmée contre un système du ministère de l’Éducation nationale, avec exfiltration de données de personnels ; le lien avec l’académie de La Réunion est explicitement rapporté, tandis que le détail des données locales reste à préciser.",
+  "summary": "",
   "threat": "Fuite de données"
  },
  {
   "admission": "ACCEPTED",
   "admission_reason": "Exfiltration revendiquée avec échantillons de données attribués à l'établissement.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-06-30",
+  "high_sensitivity_data_exposed": true,
   "id": "INC-DEF298242E44",
   "location": "La Réunion",
   "org": "Lycée polyvalent Paul Moreau",
+  "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
    "confidence": 0.8,
@@ -1770,10 +1785,13 @@
  {
   "admission": "ACCEPTED",
   "admission_reason": "Fuite de données revendiquée visant explicitement l'entreprise réunionnaise.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-06-29",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-3B8C2F71BF60",
   "location": "La Réunion",
   "org": "EGEP Réunion",
+  "personal_data_exposed": false,
   "sector": "Construction / BTP",
   "sector_status": {
    "confidence": 0.7,
@@ -1797,10 +1815,13 @@
  {
   "admission": "CANDIDATE",
   "admission_reason": "Impact informatique documenté sans preuve d'une action cyber.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-06-29",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-7957FB7116F1",
   "location": "La Réunion",
   "org": "Le Quotidien de La Réunion",
+  "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
    "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
@@ -1821,10 +1842,13 @@
  {
   "admission": "CANDIDATE",
   "admission_reason": "Incident informatique documenté, mais origine cyber non démontrée.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-06-13",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-0C583422D46E",
   "location": "Mayotte",
   "org": "Commune de Ouangani",
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.9,
@@ -1848,10 +1872,13 @@
  {
   "admission": "ACCEPTED",
   "admission_reason": "Incident de cybersécurité confirmé officiellement par la victime.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-06-11",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-DB8BDF7CCB2D",
   "location": "Mayotte",
   "org": "Ville de Mamoudzou",
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.9,
@@ -1875,10 +1902,13 @@
  {
   "admission": "ACCEPTED",
   "admission_reason": "Fuite de données documentée et incident rapporté comme confirmé par la victime.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-05-31",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-08D80AA8EF71",
   "location": "La Réunion",
   "org": "Air Austral",
+  "personal_data_exposed": false,
   "sector": "Transport / Logistique",
   "sector_status": {
    "confidence": 0.9,
@@ -1896,16 +1926,19 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "L’existence de l’incident est rapportée comme confirmée par la compagnie ; la fuite de données est documentée, mais l’attribution, le vecteur et le volume revendiqué restent à distinguer de cette confirmation.",
+  "summary": "",
   "threat": "Fuite de données"
  },
  {
   "admission": "ACCEPTED",
   "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-04-24",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-A36AFC8D9E10",
   "location": "La Réunion",
   "org": "STOR Solutions",
+  "personal_data_exposed": false,
   "sector": "Numérique / Technologie",
   "sector_status": {
    "confidence": 0.7,
@@ -1923,16 +1956,19 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime.",
+  "summary": "",
   "threat": "Intrusion"
  },
  {
   "admission": "ACCEPTED",
   "admission_reason": "Fuite de données revendiquée et rattachée explicitement à une entité réunionnaise.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-02-19",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-78D32D7D8C37",
   "location": "La Réunion",
   "org": "EPF Réunion / VALGO",
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.7,
@@ -1956,10 +1992,13 @@
  {
   "admission": "CANDIDATE",
   "admission_reason": "Aucune preuve publique d'une origine cyber.",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-02-04",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-28E45E300CB9",
   "location": "La Réunion",
   "org": "Commune de Saint-Leu",
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.9,
@@ -1977,7 +2016,7 @@
   "sources": [
    "VEILLE_LLM"
   ],
-  "summary": "Signal faible concernant la disponibilité ou l’intégrité d’une donnée administrative numérique. Aucun élément public ne démontre une cyberattaque.",
+  "summary": "",
   "threat": "Inconnu"
  }
 ]

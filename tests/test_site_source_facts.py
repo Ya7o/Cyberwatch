@@ -6,7 +6,7 @@ entre sources et aucune mutation des champs canoniques de l'incident.
 
 import json
 
-from cyberwatch import config, identity, site
+from cyberwatch import config, fact_resolution, identity, site
 from cyberwatch.model import Incident, Item
 
 
@@ -170,13 +170,35 @@ def test_rich_facts_preserve_type_timeline_relations_et_volumes():
     assert rich["data_volumes"][0]["unit"] == "gb"
 
 
-def test_veille_llm_reste_sur_son_renderer_historique():
-    assert site._source_fact_payload({
+def test_veille_llm_publie_sa_synthese_dans_le_detail_uniquement():
+    payload = site._source_fact_payload({
         "Item_ID": "ITM-local",
         "Source_ID": "VEILLE_LLM",
         "Cyberattack_Score": "100",
-        "Summary": "Synthèse",
-    }) is None
+        "Summary": "Synthèse locale suffisamment développée pour la fiche.",
+    })
+    assert payload["source"] == "VEILLE_LLM"
+    assert payload["local_summary"] == payload["summary"]
+
+
+def test_veille_llm_only_incident_publie_le_detail_sans_polluer_la_carte():
+    summary = (
+        "La mairie fonctionne en mode dégradé après une cyberattaque ; la nature "
+        "exacte de l'atteinte et l'exposition éventuelle de données restent à confirmer, "
+        "tandis que les équipes rétablissent progressivement les communications."
+    )
+    fact = site._source_fact_payload({
+        "Item_ID": "ITM-local-only",
+        "Source_ID": "VEILLE_LLM",
+        "Summary": summary,
+        "Impact": "Services municipaux en mode dégradé.",
+    })
+
+    resolved = fact_resolution.resolve_all({"INC-local-only": [fact]})
+
+    assert resolved["INC-local-only"]["summary_paragraphs"] == [summary]
+    assert resolved["INC-local-only"]["display_summary"] == ""
+    assert site._best_source_summary([fact]) == ""
 
 
 def test_fait_sans_donnee_publiable_est_ignore():

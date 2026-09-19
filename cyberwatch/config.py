@@ -357,6 +357,7 @@ STRUCTURED_SECTOR_AMBIGUOUS = frozenset({
     "non classe",
     "inconnu",
     "unknown",
+    "not found",
     "n a",
     "sans objet",
     # Désignent une taille ou un statut d'entreprise, jamais une activité.

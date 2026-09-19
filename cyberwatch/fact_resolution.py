@@ -812,7 +812,18 @@ def resolve_incident_summary(facts: Iterable[dict]) -> list[str]:
             _text(fact.get("item_id")),
         )
         candidates.append((rank, paragraphs))
-    return max(candidates, key=lambda candidate: candidate[0])[1] if candidates else []
+    if candidates:
+        return max(candidates, key=lambda candidate: candidate[0])[1]
+
+    # Une synthèse Veille LLM est un paragraphe de contexte local, pas une
+    # headline. Elle ne peut servir de repli que pour un incident uniquement
+    # issu de cette source ; une source externe reste prioritaire.
+    ordered = list(_ordered_facts(facts))
+    if ordered and all(_text(fact.get("source")) == "VEILLE_LLM" for fact in ordered):
+        local = _text(ordered[0].get("local_summary"))
+        if local and len(local) <= 1200:
+            return [local]
+    return []
 
 
 def _evidence_unique_value_counts(facts: Iterable[dict]) -> list[dict]:

@@ -120,6 +120,24 @@ def test_le_flux_nomme_les_sources_avec_le_libelle_partage():
     assert "VEILLE_LLM" not in feed
 
 
+def test_le_flux_conserve_la_synthese_deplacee_dans_le_detail():
+    rows = [_row("2026-08-20", "INC-D", location="La Réunion")]
+    rows[0]["summary"] = ""
+    rows[0]["detail_summary"] = "Synthèse narrative publiée dans la fiche."
+    rows[0]["local"] = {
+        "score": 100,
+        "summary": "Synthèse narrative publiée dans la fiche.",
+    }
+
+    feed = site.focus_feed(
+        rows,
+        as_of="2026-08-21T00:00:00Z",
+        site_url="https://example.test/",
+    )
+
+    assert feed.count("Synthèse narrative publiée dans la fiche.") == 1
+
+
 # ------------------------------------------------------ libellés partagés
 
 def test_les_libelles_de_sources_ont_une_seule_origine():
