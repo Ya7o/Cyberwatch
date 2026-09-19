@@ -3,6 +3,103 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A47A707953EA",
+  "location": "France métropolitaine",
+  "org": "Armurerie Lavaux",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Une importante fuite de données attribuée à Armurerie Lavaux, entreprise spécialisée dans la vente d’armes, de munitions et d’accessoires, est désormais proposée à la vente sur un forum cybercriminel.",
+   "evidence_url": "https://frenchbreaches.com/alertes/armurerie-lavaux-fftir-sia-mu4veintm4jse4e4ix",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/armurerie-lavaux-fftir-sia-mu4veintm4jse4e4ix"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base revendiquée de 220 Mo liée à l’Armurerie Lavaux, contenant 232 341 lignes et les informations de 120 158 personnes, est mise en vente par un pirate.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-18",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-2D5B61EEEBC6",
+  "location": "France métropolitaine",
+  "org": "CUC Loisirs & Vacances",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/cuc-loisirs-vacances-mu7ahotf7ukds1b294",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cuc-loisirs-vacances-des-informations-de-sante-de-mineurs-diffusees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cuc-loisirs-vacances-mu7ahotf7ukds1b294"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des informations médicales et personnelles de mineurs issues des inscriptions de CUC Loisirs & Vacances ont été diffusées après une revendication de piratage.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-845CF3A0AFE4",
+  "location": "France métropolitaine",
+  "org": "Le Club TotalEnergies",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/totalenergies-le-club-mu7a3uzvcz8fsq6txcu",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/le-club-totalenergies-touche-par-une-cyberattaque-les-historiques-de-transactions-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/totalenergies-le-club-mu7a3uzvcz8fsq6txcu"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le Club TotalEnergies victime d'une fuite de données clients via un prestataire, incluant identités, comptes fidélité et historiques de transactions.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-18",
   "high_sensitivity_data_exposed": true,
   "id": "INC-F01F1A75909C",
   "location": "France métropolitaine",
@@ -1316,6 +1413,35 @@
   ],
   "summary": "GreenGo indique qu’un acteur non autorisé a consulté des données de comptes, réservations et messages via un outil interne reposant sur Metabase.",
   "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-40F47F722BA0",
+  "location": "France métropolitaine",
+  "org": "Mairie d’Espelette",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Mairie d’Espelette",
+   "evidence_url": "https://frenchbreaches.com/alertes/mairie-d-espelette-mu74hl5nkpj7248ih2a",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mairie-d-espelette-mu74hl5nkpj7248ih2a"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La mairie d'Espelette a été victime d'une cyberattaque le 11 septembre 2026 après l'ouverture d'une pièce jointe malveillante se présentant comme une facture.",
+  "threat": "Malware"
  },
  {
   "admission": "ACCEPTED",
