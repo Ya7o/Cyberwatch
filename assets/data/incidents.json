@@ -2,6 +2,260 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-09-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F3FE3B65CD68",
+  "location": "France métropolitaine",
+  "org": "Hôpital Paris Saint-Joseph",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Hôpital Paris Saint-Joseph",
+   "evidence_url": "https://www.cyberattaque.org/hopital-paris-saint-joseph-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/hopital-paris-saint-joseph-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/h-pital-paris-saint-joseph-mu93cn8lvv9l381ye9f"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les fichiers de plus de 15 000 patients de l’Hôpital Paris Saint-Joseph ont été publiés en ligne.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-02BB571E8CCD",
+  "location": "France métropolitaine",
+  "org": "ambpvc",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3336EBD9F855",
+  "location": "France métropolitaine",
+  "org": "Diamonds Factory",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/diamonds-factory-mu8elc69ehzc7qh8dpn",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/diamonds-factory-24-000-commandes-clients-revendiques-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/diamonds-factory-mu8elc69ehzc7qh8dpn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Diamonds Factory : 24 094 lignes de données clients revendiquées à la vente après une fuite de données.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-601E3DC05F51",
+  "location": "France métropolitaine",
+  "org": "Faktus",
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Numérique / Technologie"
+   ],
+   "evidence": "Faktus , société française spécialisée dans le financement de factures et l’affacturage notamment pour les entreprises du BTP, fait l’objet d’une fuite de données particulièrement massive.",
+   "evidence_url": "https://www.cyberattaque.org/faktus-cyberattaque-facture/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/faktus-cyberattaque-facture/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/faktus-mu8r9zho1hh7afgp9w8i"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Faktus affirme avoir vu 53,7 Go de données financières et documents sensibles publiés par le hacker DaOnlySpark.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B52A1013C987",
+  "location": "France métropolitaine",
+  "org": "FRANCARETRAD",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6906B2607D08",
+  "location": "France métropolitaine",
+  "org": "HEOLIS",
+  "personal_data_exposed": false,
+  "sector": "Énergie / Utilities",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Energy & Utilities",
+   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=bgsedfhgsbdfs",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=bgsedfhgsbdfs"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FD11035E7E5A",
+  "location": "France métropolitaine",
+  "org": "VitalWeb",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "VitalWeb est un outil proposé par  VitalAire , acteur de la santé à domicile, notamment dans l’accompagnement de patients atteints de maladies chroniques.",
+   "evidence_url": "https://www.cyberattaque.org/vitalweb-50-000-dossiers-patients-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/vitalweb-50-000-dossiers-patients-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/vitalweb-mu8rm6d0f8s6d6vte3g"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la fuite de 50 000 dossiers patients de VitalWeb contenant des numéros de sécurité sociale.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-19",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-4D9B53C749DA",
+  "location": "France métropolitaine",
+  "org": "Whoof",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/whoof-mu8dyyqbqoaiqbzpoqr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/whoof-5-000-adoptants-et-eleveurs-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/whoof-mu8dyyqbqoaiqbzpoqr"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Whoof, plateforme française d'adoption de chiens, voit une fuite revendiquée exposant environ 5 000 personnes et près de 500 élevages.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-09-18",
   "high_sensitivity_data_exposed": false,
   "id": "INC-A47A707953EA",
@@ -59,7 +313,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Des informations médicales et personnelles de mineurs issues des inscriptions de CUC Loisirs & Vacances ont été diffusées après une revendication de piratage.",
+  "summary": "CUC Loisirs & Vacances : des informations de santé de mineurs diffusées après une cyberattaque",
   "threat": "Fuite de données"
  },
  {
@@ -93,7 +347,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le Club TotalEnergies victime d'une fuite de données clients via un prestataire, incluant identités, comptes fidélité et historiques de transactions.",
+  "summary": "Le Club TotalEnergies touché par une cyberattaque : les historiques de transactions en fuite",
   "threat": "Fuite de données"
  },
  {
@@ -472,7 +726,7 @@
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_UNMAPPED",
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
    "status": "unknown"
   },
   "source_links": [
@@ -950,6 +1204,36 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un acteur revendique la fuite d'une base de 188 014 commandes et interventions liée au bailleur social Grand Delta Habitat.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "admission_reason": "Le rectorat rapporte qu'un élève a été pris en flagrant délit de tentative de connexion au serveur ; l'analyse technique attribue les arrêts répétés à l'activation manuelle d'une commande de redémarrage via un compte administrateur.",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-14",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-72BF97901CE1",
+  "location": "La Réunion",
+  "org": "Lycée polyvalent Jean Joly",
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Lycée polyvalent Jean Joly",
+   "evidence_url": "https://imazpress.com/toute-l-actu/attaque-informatique-sur-le-lycee-de-saint-louis-jean-joly",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "VEILLE_LLM",
+    "url": "https://imazpress.com/toute-l-actu/attaque-informatique-sur-le-lycee-de-saint-louis-jean-joly"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "",
   "threat": "Fuite de données"
  },
  {
