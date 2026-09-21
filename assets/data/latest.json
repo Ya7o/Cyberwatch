@@ -1,6 +1,74 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-A88202D7AFA6",
+  "location": "France métropolitaine",
+  "org": "Fédération Française de Spéléologie",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-sp-l-ologie-ffs-muac5a8sxy44x4kows",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/federation-francaise-de-speleologie-93-000-membres-et-des-donnees-bancaires-revendiques-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-sp-l-ologie-ffs-muac5a8sxy44x4kows"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Fédération Française de Spéléologie revendiquée compromise avec 93 493 personnes et 371 IBAN annoncés.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-745CC3BD768D",
+  "location": "France métropolitaine",
+  "org": "WayToMe",
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Transport",
+   "evidence_url": "https://frenchbreaches.com/alertes/waytome-muaf8bf677nfxz6peuh",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/waytome-147-000-utilisateurs-et-des-milliers-de-trajets-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/waytome-muaf8bf677nfxz6peuh"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "WayToMe : 147 000 utilisateurs et des milliers de trajets exposés après une cyberattaque",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-20",
   "high_sensitivity_data_exposed": false,
@@ -31,6 +99,74 @@
    "FRENCHBREACHES"
   ],
   "summary": "Les fichiers de plus de 15 000 patients de l’Hôpital Paris Saint-Joseph ont été publiés en ligne.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-20",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-BD9850BF3E4B",
+  "location": "France métropolitaine",
+  "org": "Biocoop",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/biocoop-mua6zxxgg1gjqmuiut",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/biocoop-28-go-de-donnees-internes-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/biocoop-mua6zxxgg1gjqmuiut"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Biocoop victime d'une fuite revendiquée de 2,8 Go de données internes comprenant bases SQL, chiffres magasins, assortiments et positionnement tarifaire.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-20",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-195E6B7F17E8",
+  "location": "France métropolitaine",
+  "org": "Oceania Hotels",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/oceania-hotels-muafduvclbs1sm0cei8",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/oceania-hotels-les-reservations-clients-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/oceania-hotels-muafduvclbs1sm0cei8"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Oceania Hotels signale une fuite de données de réservations consultées chez son prestataire d’hébergement du moteur de réservation.",
   "threat": "Fuite de données"
  },
  {
@@ -190,7 +326,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Whoof, plateforme française d'adoption de chiens, voit une fuite revendiquée exposant environ 5 000 personnes et près de 500 élevages.",
+  "summary": "Whoof : 5 000 adoptants et éleveurs exposés après une cyberattaque",
   "threat": "Fuite de données"
  },
  {
