@@ -3,6 +3,103 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F2C5F9D520CA",
+  "location": "France métropolitaine",
+  "org": "Répar'Store",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/r-par-store-mubj46abrs6i9ywytt7",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-par-store-mubj46abrs6i9ywytt7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E005064D73B2",
+  "location": "France métropolitaine",
+  "org": "Altagem",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/altagem-mubgua4y1pn9jonb1uu",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/altagem-clients-equipes-et-donnees-operationnelles-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/altagem-mubgua4y1pn9jonb1uu"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Altagem : clients, équipes et données opérationnelles exposés après une cyberattaque",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DFEB66426AD8",
+  "location": "France métropolitaine",
+  "org": "ColiSport",
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Colisport intervient comme **intermédiaire dans la réservation du transport**, plutôt que comme transporteur assurant directement l’acheminement des colis.",
+   "evidence_url": "https://frenchbreaches.com/alertes/colisport-mubqtrrp16gjlm6g0pn",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/colisport-pres-de-20-000-expeditions-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/colisport-mubqtrrp16gjlm6g0pn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ColisPort subit une fuite de données revendiquée par le hacker Quantique exposant près de 20 000 demandes et expéditions.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-21",
   "high_sensitivity_data_exposed": true,
   "id": "INC-A88202D7AFA6",
   "location": "France métropolitaine",
@@ -31,7 +128,7 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Fédération Française de Spéléologie revendiquée compromise avec 93 493 personnes et 371 IBAN annoncés.",
-  "threat": "Fuite de données"
+  "threat": "Intrusion"
  },
  {
   "admission": "ACCEPTED",
@@ -64,8 +161,63 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "WayToMe : 147 000 utilisateurs et des milliers de trajets exposés après une cyberattaque",
+  "summary": "WayToMe, plateforme française de livraison de colis entre particuliers, voit 147 287 profils et des milliers de trajets revendiqués exposés après une attaque.",
   "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6A804DBD820F",
+  "location": "France métropolitaine",
+  "org": "Académie de Créteil",
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Académie de Créteil",
+   "evidence_url": "https://bonjourlafuite.eu.org/img/creteil.png",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/creteil.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Académie de Créteil.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-5E8059ABAC74",
+  "location": "Inconnu",
+  "org": "Amadeus iHotelier",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/amadeus-ihotelier-une-cyberattaque-expose-les-reservations-de-plusieurs-hotels-en-france/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Une cyberattaque sur la plateforme Amadeus iHotelier a permis l'accès non autorisé à des réservations d'hôtels, exposant des données de réservation.",
+  "threat": "Intrusion"
  },
  {
   "admission": "ACCEPTED",
@@ -166,7 +318,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Oceania Hotels signale une fuite de données de réservations consultées chez son prestataire d’hébergement du moteur de réservation.",
+  "summary": "Oceania Hotels : les réservations clients exposées après une cyberattaque",
   "threat": "Fuite de données"
  },
  {
@@ -304,13 +456,16 @@
   "location": "France métropolitaine",
   "org": "Whoof",
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/whoof-mu8dyyqbqoaiqbzpoqr",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Whoof, plateforme française spécialisée dans l’adoption responsable de chiens auprès d’éleveurs professionnels, fait l’objet d’une importante fuite de données revendiquée par le hacker DaOnlySpark .",
+   "evidence_url": "https://www.cyberattaque.org/whoof-5-000-adoptants-et-eleveurs-exposes-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
