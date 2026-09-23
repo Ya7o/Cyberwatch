@@ -1,6 +1,373 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DFE22B730AB6",
+  "location": "France métropolitaine",
+  "org": "BackPower",
+  "personal_data_exposed": true,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "BackPower, entreprise française spécialisée dans le reconditionnement et la fabrication de batteries au lithium, fait l’objet d’une cyberattaque revendiquée ce 23 septembre 2026 .",
+   "evidence_url": "https://www.cyberattaque.org/cyberatatque-backpower-47-millions-de-lignes-revendiquees-dans-une-fuite-massive/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberatatque-backpower-47-millions-de-lignes-revendiquees-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/backpower-mudibqhhe5pk8lk0ylr"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "BackPower : 47 millions de lignes revendiquées dans une fuite massive",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C63850DBEE3B",
+  "location": "France métropolitaine",
+  "org": "Place des Salariés",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/place-des-salari-s-haxoneo-mudy0b27eljs842gfja",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-place-des-salaries-des-donnees-familiales-et-administratives-compromises/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/place-des-salari-s-haxoneo-mudy0b27eljs842gfja"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Place des Salariés signale une violation de données le 16 septembre 2026 ayant permis la consultation et la copie de données personnelles.",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C3E56A9BD7F1",
+  "location": "France métropolitaine",
+  "org": "MesMarches",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/mesmarches-mud8tygyg3fsz8lhaa",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/mesmarches-2-535-profils-dexposants-en-fuite-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mesmarches-mud8tygyg3fsz8lhaa"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "MesMarches : 2 535 profils d'exposants revendiqués en fuite de données.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-BB2E3878A0EC",
+  "location": "France métropolitaine",
+  "org": "Activa Assurances",
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Activa Assurances, groupe d'assurance africain présent dans plusieurs pays du continent, apparaît dans une publication diffusée sur un forum cybercriminel. [étiquette source écartée : Santé]",
+   "evidence_url": "https://frenchbreaches.com/alertes/activa-assurances-mue1g3lzqpswxa7ldb8",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/activa-assurances-mue1g3lzqpswxa7ldb8"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Activa Assurances apparaît dans une publication revendiquant 18 765 lignes de données et FrenchBreaches estime ~10 758 personnes identifiables après analyse.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-83DD9A00472C",
+  "location": "France métropolitaine",
+  "org": "Twizzit",
+  "personal_data_exposed": true,
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Éducation / Formation"
+   ],
+   "evidence": "Twizzit, plateforme de gestion utilisée par des milliers de clubs, associations et fédérations européennes, fait l’objet d’une fuite de données d’une ampleur inhabituelle.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-twizzit-1-53-million-de-membres-de-clubs-et-associations-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-twizzit-1-53-million-de-membres-de-clubs-et-associations-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/twizzit-mud9l0fmn55odchtxul"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Twizzit voit une base de 1 532 886 membres revendiquée à la vente par un hacker.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1994FB59EEA0",
+  "location": "France métropolitaine",
+  "org": "Autobacs",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "**Autobacs est une enseigne de centres automobiles** proposant des produits et des services liés à l’entretien, à la réparation et à l’équipement des véhicules.",
+   "evidence_url": "https://frenchbreaches.com/alertes/autobacs-muda8o22m5n90gsgobl",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/autobacs-34-000-rendez-vous-atelier-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/autobacs-muda8o22m5n90gsgobl"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Autobacs France voit 34 017 enregistrements de rendez‑vous atelier revendiqués publiquement après une fuite de données.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0E75E6FDF77D",
+  "location": "France métropolitaine",
+  "org": "Aokkef",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion/company/bayalah/"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CCB0A791DF2D",
+  "location": "France métropolitaine",
+  "org": "Legalstart",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/legalstart-muctklh6rpolz3fsiu",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/legalstart-une-cyberattaque-expose-les-donnees-personnelles-de-ses-clients/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/legalstart-muctklh6rpolz3fsiu"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Legalstart informe d'une violation de données personnelles liée à l'exploitation d'une faille dans Metabase début septembre 2026.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8D7AC4DCF1CA",
+  "location": "France métropolitaine",
+  "org": "UniFormation",
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Uniformation est amené à collecter ce type d'identifiant dans le cadre de certaines démarches liées à la **formation professionnelle**, notamment pour assurer le suivi administratif de certains parcours et dispositifs.",
+   "evidence_url": "https://frenchbreaches.com/alertes/uniformation-mud6nma32hq847xdxml",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/uniformation-1-200-stagiaires-en-fuite-avec-leurs-numeros-de-securite-sociale/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/uniformation-mud6nma32hq847xdxml"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Uniformation victime d'une fuite de données revendiquée affectant environ 1 200 personnes incluant noms, dates de naissance et numéros de Sécurité sociale.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-22",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-182F9EE2F8D0",
+  "location": "France métropolitaine",
+  "org": "JIMS",
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "**JIMS est une chaîne de salles de sport et de fitness**, notamment présente en Belgique. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/jims-mucy4j69k4im0qnlul",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/jims-mucy4j69k4im0qnlul"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0E4631F3A262",
+  "location": "France métropolitaine",
+  "org": "Paymium",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/paymium-mud5fwguie84679mrab",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/paymium.png"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/paymium-des-donnees-personnelles-de-clients-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/paymium-mud5fwguie84679mrab"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Paymium informe que des données personnelles de clients ont pu être consultées après une intrusion chez son prestataire Brevo.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-21",
   "high_sensitivity_data_exposed": false,
@@ -216,7 +583,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une cyberattaque sur la plateforme Amadeus iHotelier a permis l'accès non autorisé à des réservations d'hôtels, exposant des données de réservation.",
+  "summary": "Amadeus iHotelier : une cyberattaque expose les réservations de plusieurs hôtels en France",
   "threat": "Intrusion"
  },
  {
