@@ -1,6 +1,234 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EA45CB7EDDDE",
+  "location": "France métropolitaine",
+  "org": "Aéroclub de l’AIA",
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Transport",
+   "evidence_url": "https://frenchbreaches.com/alertes/a-roclub-de-l-aia-mufen4abudexvcjiwgs",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/acaia-fr-pirate-les-licences-des-pilotes-et-personnels-lies-a-la-defense-expose/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/a-roclub-de-l-aia-mufen4abudexvcjiwgs"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de données d'Acaia.fr liée à l'Aéroclub de l’AIA expose licences de pilote, coordonnées et informations professionnelles.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-D9091A0211B6",
+  "location": "France métropolitaine",
+  "org": "Agence de Services et de Paiement",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/asp.png"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "L’Agence de services et de paiement confirme l’exfiltration de documents contenant des données personnelles liées au portail « Coup de pouce énergie ».",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D8AF87664D6E",
+  "location": "France métropolitaine",
+  "org": "Celinni",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/celinni.jpg"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C51E0C2AE395",
+  "location": "France métropolitaine",
+  "org": "Uptoo",
+  "personal_data_exposed": true,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Numérique / Technologie"
+   ],
+   "evidence": "Uptoo accompagne depuis de nombreuses années les entreprises dans le recrutement de commerciaux, business developers, responsables commerciaux ou directeurs des ventes.",
+   "evidence_url": "https://www.cyberattaque.org/uptoo-740-000-cv-revendiques-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/uptoo-740-000-cv-revendiques-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/uptoo-mufge8zlw34qomqu3h"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Uptoo voit un hacker revendiquer l'accès à plus de 740 000 profils et CV après une cyberattaque.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9607A0C6CE0E",
+  "location": "France métropolitaine",
+  "org": "Horizane Santé",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Horizane Santé, entreprise française spécialisée dans les produits de santé, d’hygiène et de bien-être, fait l’objet d’une cyberattaque…",
+   "evidence_url": "https://www.cyberattaque.org/horizane-sante-pres-de-9-000-comptes-clients-et-un-acces-administrateur-en-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/horizane-sante-pres-de-9-000-comptes-clients-et-un-acces-administrateur-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/horizane-sant-muewzi6yot5enput9xc"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Horizane Santé voit 8 864 comptes clients et un accès administrateur revendiqués dans une fuite de données.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-42EC20D224C2",
+  "location": "France métropolitaine",
+  "org": "ARNtreal",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/arntreal-muff0l3o37eafdqvz6z",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-arntreal-101-000-utilisateurs-et-leurs-reseaux-sociaux-revendiques-dans-une-fuite-massive/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/arntreal-muff0l3o37eafdqvz6z"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La fuite revendiquée par RedStone concernerait 101 015 comptes utilisateurs d'ARNtreal et 3,5 Go de données mis en vente.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0D46C7B8737B",
+  "location": "France métropolitaine",
+  "org": "Doinsport",
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Doinsport, plateforme française de gestion et de réservation destinée aux clubs et infrastructures sportives, apparaît dans une publication diffusée sur un forum cybercriminel. [étiquette source écartée : Technologie]",
+   "evidence_url": "https://frenchbreaches.com/alertes/doinsport-muffxg0l7wvtj6cqckl",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/doinsport-muffxg0l7wvtj6cqckl"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Doinsport affirme faire l’objet d’une mise en vente de 6,9 Go de données comprenant 1,75 million de réservations et des profils utilisateurs revendiqués.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-23",
   "high_sensitivity_data_exposed": false,
@@ -142,16 +370,11 @@
   "location": "France métropolitaine",
   "org": "Twizzit",
   "personal_data_exposed": true,
-  "sector": "Association / Syndicat",
+  "sector": "Inconnu",
   "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Éducation / Formation"
-   ],
-   "evidence": "Twizzit, plateforme de gestion utilisée par des milliers de clubs, associations et fédérations européennes, fait l’objet d’une fuite de données d’une ampleur inhabituelle.",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-twizzit-1-53-million-de-membres-de-clubs-et-associations-en-fuite/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
+   "evidence": "Association / Syndicat | Sport",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
   },
   "source_links": [
    {
@@ -261,7 +484,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Legalstart informe d'une violation de données personnelles liée à l'exploitation d'une faille dans Metabase début septembre 2026.",
+  "summary": "Legalstart : une cyberattaque expose les données personnelles de ses clients",
   "threat": "Fuite de données"
  },
  {
