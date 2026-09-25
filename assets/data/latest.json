@@ -1,6 +1,127 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-25",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-AE83733D5446",
+  "location": "France métropolitaine",
+  "org": "Plurélya",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/plur-lya-mueuh3xn6xyhrqeahlh",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/plur-lya-mueuh3xn6xyhrqeahlh"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1609FD7212B6",
+  "location": "France métropolitaine",
+  "org": "Century 21",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Century 21 est l’un des principaux réseaux immobiliers français, constitué de centaines d’agences franchisées réparties sur le territoire.",
+   "evidence_url": "https://www.cyberattaque.org/century-21-les-donnees-de-pres-de-131-000-personnes-mises-en-vente-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/century-21-les-donnees-de-pres-de-131-000-personnes-mises-en-vente-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/century-21-mugqgu352cjof5r1vro"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Century 21 France : un hacker revendique la mise en vente les données de 130 995 personnes issues de formulaires contactant des agences.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FFCBE53FECAC",
+  "location": "France métropolitaine",
+  "org": "agiliance",
+  "personal_data_exposed": false,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=cdbgfyjtgfdsf",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=cdbgfyjtgfdsf"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FB1C1AB0773B",
+  "location": "Inconnu",
+  "org": "Maileva, filiale de La Poste",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/maileva-filiale-de-la-poste-victime-dune-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Maileva, filiale de La Poste victime d’une cyberattaque",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-24",
   "high_sensitivity_data_exposed": false,
@@ -64,7 +185,7 @@
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "L’Agence de services et de paiement confirme l’exfiltration de documents contenant des données personnelles liées au portail « Coup de pouce énergie ».",
+  "summary": "Un accès frauduleux à un compte utilisateur a permis l’exfiltration d’avis de paiement contenant des données personnelles et bancaires de l’ASP.",
   "threat": "Fuite de données"
  },
  {
@@ -132,6 +253,64 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B35474814A8B",
+  "location": "France métropolitaine",
+  "org": "amb-pvc",
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Manufacturing",
+   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AEF41727FCA2",
+  "location": "France métropolitaine",
+  "org": "Agora coopérative agricole",
+  "personal_data_exposed": false,
+  "sector": "Agriculture / Agroalimentaire",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Agriculture and Food Production",
+   "evidence_url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=02785247-5bb1-42b8-aa7f-3dd0d96e2dc3",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=02785247-5bb1-42b8-aa7f-3dd0d96e2dc3"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-24",
   "high_sensitivity_data_exposed": false,
@@ -169,6 +348,64 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-24",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-6A6C77858168",
+  "location": "France métropolitaine",
+  "org": "Digit RE Group",
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Digit RE Group, groupe français spécialisé dans l’immobilier et les solutions numériques, est de nouveau confronté à une fuite de données. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/digit-re-group-mufsoxj6psj83lnr4wt",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/digit-re-group-mufsoxj6psj83lnr4wt"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Digit RE Group : un pirate revendique la publication de 159 135 enregistrements d'appels et de données liées à 54 569 personnes.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-447AE4B3A871",
+  "location": "France métropolitaine",
+  "org": "Maileva",
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/maileva-mufora09gh9so92vdk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/maileva-mufora09gh9so92vdk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Maileva a interrompu ses services après des tentatives d’accès non autorisé visant à effectuer des envois illégitimes de courriers.",
+  "threat": "Intrusion"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-42EC20D224C2",
   "location": "France métropolitaine",
   "org": "ARNtreal",
@@ -195,7 +432,88 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La fuite revendiquée par RedStone concernerait 101 015 comptes utilisateurs d'ARNtreal et 3,5 Go de données mis en vente.",
+  "summary": "ARNtreal : 101 000 utilisateurs et leurs réseaux sociaux revendiqués dans une fuite de données",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3E7D77B3D0DC",
+  "location": "France métropolitaine",
+  "org": "BMGP Groupe",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://xjhmtitnrdrgzw4vmsghirdoo2fk35a3tzj4enlmah4pvehdspydsiyd.onion/blog/?post_uuid=539a46d4-2e59-4ef7-aabf-5cddda6a7606"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2C2D95145031",
+  "location": "France métropolitaine",
+  "org": "francare",
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Healthcare",
+   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-24",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-216C758CC758",
+  "location": "Inconnu",
+  "org": "ASP",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_EVIDENCE_REJECTED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/asp-une-cyberattaque-expose-143-000-lignes-de-beneficiaires-daides-publiques/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "L'ASP confirme une fuite de documents contenant des données personnelles et bancaires de bénéficiaires liée au dispositif Coup de pouce énergie.",
   "threat": "Fuite de données"
  },
  {
@@ -207,24 +525,27 @@
   "location": "France métropolitaine",
   "org": "Doinsport",
   "personal_data_exposed": true,
-  "sector": "Sport",
+  "sector": "Inconnu",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Doinsport, plateforme française de gestion et de réservation destinée aux clubs et infrastructures sportives, apparaît dans une publication diffusée sur un forum cybercriminel. [étiquette source écartée : Technologie]",
-   "evidence_url": "https://frenchbreaches.com/alertes/doinsport-muffxg0l7wvtj6cqckl",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
+   "evidence": "Numérique / Technologie | Sport",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
   },
   "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-doinsport-175-million-de-reservations-de-la-plateforme-sportive-revendiquees/"
+   },
    {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/doinsport-muffxg0l7wvtj6cqckl"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Doinsport affirme faire l’objet d’une mise en vente de 6,9 Go de données comprenant 1,75 million de réservations et des profils utilisateurs revendiqués.",
+  "summary": "Doinsport voit revendiquée une fuite de 6,9 Go incluant 1,75 million de réservations et 54 545 utilisateurs, selon le hacker RedStone.",
   "threat": "Fuite de données"
  },
  {
@@ -472,6 +793,10 @@
   },
   "source_links": [
    {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/legalstart.jpg"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/legalstart-une-cyberattaque-expose-les-donnees-personnelles-de-ses-clients/"
    },
@@ -481,6 +806,7 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
