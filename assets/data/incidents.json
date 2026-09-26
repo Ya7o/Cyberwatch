@@ -1,6 +1,74 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-78419FB9DA1C",
+  "location": "France métropolitaine",
+  "org": "Aestria",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Aestria , société française spécialisée dans les services informatiques, les réseaux et la cybersécurité, fait l'objet d'une importante revendication de piratage.",
+   "evidence_url": "https://www.cyberattaque.org/aestria-les-donnees-clients-et-outils-internes-dun-prestataire-cyber-en-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/aestria-les-donnees-clients-et-outils-internes-dun-prestataire-cyber-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/aestria-mui0okz5kx91njjeuw"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Aestria : les données clients et outils internes d’un prestataire cyber en fuite",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-26",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FABD16004BFF",
+  "location": "France métropolitaine",
+  "org": "Communauto",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/communauto-mui6jwgstgrtgydw18",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/communauto-permis-cyberattaque-voles/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/communauto-mui6jwgstgrtgydw18"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Communauto a signalé l’utilisation non autorisée d’un compte interne ayant potentiellement exposé des documents d’identité de certains membres.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-25",
   "high_sensitivity_data_exposed": false,
@@ -38,6 +106,74 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-523457E7106A",
+  "location": "France métropolitaine",
+  "org": "GeoNat’ÎdF",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/geonatidf-les-donnees-de-3-400-utilisateurs-de-la-plateforme-biodiversite-francilienne-pirate/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/geonat-df-muh0ong95l9qveyqzp4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La fuite revendiquée de données de 3 400 comptes utilisateurs de la plateforme GeoNat’îdF.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-25",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-87D2AA2BDA02",
+  "location": "France métropolitaine",
+  "org": "Pharmaland",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Pharmaland est un  logiciel de gestion officinale  édité par La Source Informatique.",
+   "evidence_url": "https://www.cyberattaque.org/pharmaland-cyberattaque-pres-de-6-800-fiches-liees-aux-pharmacies-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pharmaland-cyberattaque-pres-de-6-800-fiches-liees-aux-pharmacies-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pharmaland-muh0qob0a3hg4o62f7w"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Pharmaland a vu une fuite de données revendiquée, avec près de 6 800 enregistrements diffusés selon l'attaquant.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-25",
   "high_sensitivity_data_exposed": true,
@@ -45,24 +181,98 @@
   "location": "France métropolitaine",
   "org": "Plurélya",
   "personal_data_exposed": true,
-  "sector": "Santé",
+  "sector": "Association / Syndicat",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/plur-lya-mueuh3xn6xyhrqeahlh",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Santé"
+   ],
+   "evidence": "Plurélya , organisme historique de gestion des œuvres sociales des agents de la fonction publique, fait l’objet d’une importante revendication de fuite de données.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-plurelya-les-donnees-de-150-114-agents-publics-et-enfants-mises-en-vente-sur-le-dark-web/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-plurelya-les-donnees-de-150-114-agents-publics-et-enfants-mises-en-vente-sur-le-dark-web/"
+   },
    {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/plur-lya-mueuh3xn6xyhrqeahlh"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Plurélya voit une base de 4,4 Go et 965 575 lignes revendiquée, incluant les données de 150 114 personnes mises en vente pour 250 dollars.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CCB9516D9CFF",
+  "location": "France métropolitaine",
+  "org": "Réassurez-moi",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Créé en 2013 et basé à Paris, Réassurez-moi est un courtier en assurances enregistré auprès de l’ORIAS. La société accompagne notamment les particuliers dans la comparaison et la souscription d’ assurances emprunteur et de mutuelles santé ,",
+   "evidence_url": "https://www.cyberattaque.org/reassurez-moi-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reassurez-moi-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-assurez-moi-muh4vu8j4ovtx022ru"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Réassurez-moi signale l’exfiltration de données personnelles lors d’une cyberattaque le 13 septembre 2026.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0B0B8C7EB128",
+  "location": "France métropolitaine",
+  "org": "Réserver.fr",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/r-server-fr-muh0tz8riz7fzvv5x2",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-server-fr-muh0tz8riz7fzvv5x2"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Réserver.fr voit publiée une base de données présentée comme une ancienne sauvegarde MySQL et un code WordPress exposés publiquement.",
   "threat": "Fuite de données"
  },
  {
@@ -205,6 +415,10 @@
   },
   "source_links": [
    {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/arntreal.png"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-arntreal-101-000-utilisateurs-et-leurs-reseaux-sociaux-revendiques-dans-une-fuite-massive/"
    },
@@ -214,6 +428,7 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
@@ -229,10 +444,13 @@
   "location": "Inconnu",
   "org": "ASP",
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "ACTIVITY_EVIDENCE_REJECTED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "L’ Agence de services et de paiement (ASP) , organisme public chargé de gérer et verser de nombreuses aides publiques en France, confirme avoir subi une fuite de données .",
+   "evidence_url": "https://www.cyberattaque.org/asp-une-cyberattaque-expose-143-000-lignes-de-beneficiaires-daides-publiques/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -243,7 +461,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "L'ASP confirme une fuite de documents contenant des données personnelles et bancaires de bénéficiaires liée au dispositif Coup de pouce énergie.",
+  "summary": "ASP : une cyberattaque expose 143 000 lignes de bénéficiaires du Coup de pouce énergie",
   "threat": "Fuite de données"
  },
  {
@@ -314,22 +532,30 @@
   "id": "INC-D8AF87664D6E",
   "location": "France métropolitaine",
   "org": "Celinni",
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Celinni confirme que ce message a bien été envoyé avec  noreply@celinni.com , une adresse utilisée pour les notifications de sa boutique en ligne.",
+   "evidence_url": "https://www.cyberattaque.org/celinni-les-proprietaires-de-bijoux-exposes-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/celinni.jpg"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/celinni-les-proprietaires-de-bijoux-exposes-apres-une-cyberattaque/"
    }
   ],
   "sources": [
-   "BONJOURLAFUITE"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
   ],
-  "summary": "",
+  "summary": "Celinni fait l’objet d’une revendication de cyberattaque avec la prétendue exfiltration de 243 871 références et 32 914 diamants GIA.",
   "threat": "Fuite de données"
  },
  {
@@ -1593,6 +1819,35 @@
   ],
   "summary": "Venus1337 revendique la fuite de 732 385 fiches d'adhérents et 440 326 IBAN de L’Orange bleue.",
   "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3344F0DB45BC",
+  "location": "France métropolitaine",
+  "org": "Mairie de Mortagne-au-Perche",
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Mairie de Mortagne-au-Perche",
+   "evidence_url": "https://frenchbreaches.com/alertes/mairie-de-mortagne-au-perche-muhiffjbw9vo6wzaqt",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mairie-de-mortagne-au-perche-muhiffjbw9vo6wzaqt"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La mairie de Mortagne-au-Perche a vu plusieurs fichiers chiffrés sur deux serveurs après une cyberattaque découverte le 18 septembre 2026.",
+  "threat": "Intrusion"
  },
  {
   "admission": "ACCEPTED",
