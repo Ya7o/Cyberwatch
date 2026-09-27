@@ -1,6 +1,61 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BCB0E97E5B45",
+  "location": "France métropolitaine",
+  "org": "Fédération française de basketball",
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération française de basketball",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-basketball-mujll4cjhxoskk8ka8",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-basketball-mujll4cjhxoskk8ka8"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-88E7A1ED85A0",
+  "location": "Inconnu",
+  "org": "SDIS 80",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sdis-80-pres-de-2-500-sapeurs-pompiers-et-agents-de-la-somme-dans-une-fuite-de-donnees/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le SDIS 80 fait l’objet d’une fuite de données revendiquée le 26 septembre 2026 exposant près de 2 500 profils.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-26",
   "high_sensitivity_data_exposed": false,
@@ -30,7 +85,107 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Aestria : les données clients et outils internes d’un prestataire cyber en fuite",
+  "summary": "Aestria voit plusieurs bases de données internes et données clients revendiquées publiées après une compromission revendiquée.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-26",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-DB70F62CAABE",
+  "location": "France métropolitaine",
+  "org": "CAPM Europe",
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Commerce / Distribution | Industrie / Manufacture",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/capm-europe-cyberattaque-200-go-de-mails-documents-et-donnees-crm-diffuses/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/capm-europe-blgcloud-muiqoe2111aliz5rbfbn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ChimeraZ revendique la diffusion d'environ 200 Go et 193 982 fichiers issus de l'environnement blgCloud de CAPM Europe.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7AAA2E982784",
+  "location": "France métropolitaine",
+  "org": "Carrefour",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/carrefour-shipup-muixw7rd535cstgrh65",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/carrefour-des-donnees-clients-exposees-apres-la-cyberattaque-de-son-prestataire/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/carrefour-shipup-muixw7rd535cstgrh65"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Carrefour informe l'exposition de noms, prénoms, e-mails et numéros de téléphone après un incident chez un de ses prestataires.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DEDD0ED9EB9A",
+  "location": "France métropolitaine",
+  "org": "Cigusto",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/cigusto-muiqgjuvvmozfkjzrdp",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cigusto-les-donnees-de-150-000-clients-de-lenseigne-de-vape-revendiquees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cigusto-muiqgjuvvmozfkjzrdp"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ZMLOOKUP revendique la fuite d'environ 150 000 profils clients de Cigusto contenant noms, e‑mails et données de fidélité.",
   "threat": "Fuite de données"
  },
  {
@@ -66,6 +221,40 @@
   ],
   "summary": "Communauto a signalé l’utilisation non autorisée d’un compte interne ayant potentiellement exposé des documents d’identité de certains membres.",
   "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8FE3D1894F9C",
+  "location": "France métropolitaine",
+  "org": "Ecofone",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/ecofone-muimai8f33qqkk1kskt",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ecofone-une-faille-zero-day-de-magento-ouvre-lacces-aux-donnees-de-ses-clients/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ecofone-muimai8f33qqkk1kskt"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Ecofone signale une intrusion exploitant une faille zero-day de Magento ayant potentiellement exposé des données clients.",
+  "threat": "Intrusion"
  },
  {
   "admission": "ACCEPTED",
@@ -132,7 +321,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "La fuite revendiquée de données de 3 400 comptes utilisateurs de la plateforme GeoNat’îdF.",
+  "summary": "GeoNat’îdF : les données de 3 400 utilisateurs de la plateforme biodiversité francilienne piraté",
   "threat": "Fuite de données"
  },
  {
@@ -279,40 +468,6 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-24",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-D9091A0211B6",
-  "location": "France métropolitaine",
-  "org": "Agence de Services et de Paiement",
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/asp.png"
-   },
-   {
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un accès frauduleux à un compte utilisateur a permis l’exfiltration d’avis de paiement contenant des données personnelles et bancaires de l’ASP.",
-  "threat": "Fuite de données"
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-24",
   "high_sensitivity_data_exposed": false,
   "id": "INC-FFCBE53FECAC",
   "location": "France métropolitaine",
@@ -372,35 +527,6 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-24",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-B35474814A8B",
-  "location": "France métropolitaine",
-  "org": "amb-pvc",
-  "personal_data_exposed": false,
-  "sector": "Industrie / Manufacture",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Manufacturing",
-   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware"
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-24",
-  "high_sensitivity_data_exposed": false,
   "id": "INC-42EC20D224C2",
   "location": "France métropolitaine",
   "org": "ARNtreal",
@@ -440,26 +566,36 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-24",
   "high_sensitivity_data_exposed": true,
-  "id": "INC-216C758CC758",
-  "location": "Inconnu",
+  "id": "INC-D9091A0211B6",
+  "location": "France métropolitaine",
   "org": "ASP",
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "L’ Agence de services et de paiement (ASP) , organisme public chargé de gérer et verser de nombreuses aides publiques en France, confirme avoir subi une fuite de données .",
-   "evidence_url": "https://www.cyberattaque.org/asp-une-cyberattaque-expose-143-000-lignes-de-beneficiaires-daides-publiques/",
-   "reason": "SEMANTIC_ACTIVITY_MATCH",
-   "status": "inferred"
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/asp.png"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/asp-une-cyberattaque-expose-143-000-lignes-de-beneficiaires-daides-publiques/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "ASP : une cyberattaque expose 143 000 lignes de bénéficiaires du Coup de pouce énergie",
   "threat": "Fuite de données"
@@ -549,11 +685,16 @@
    {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/celinni-les-proprietaires-de-bijoux-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/celinni-muim3c0lnes4szg970p"
    }
   ],
   "sources": [
    "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Celinni fait l’objet d’une revendication de cyberattaque avec la prétendue exfiltration de 243 871 références et 32 914 diamants GIA.",
   "threat": "Fuite de données"
@@ -621,35 +762,6 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-24",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-2C2D95145031",
-  "location": "France métropolitaine",
-  "org": "francare",
-  "personal_data_exposed": false,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Healthcare",
-   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware"
- },
- {
-  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-24",
   "high_sensitivity_data_exposed": false,
@@ -701,38 +813,17 @@
   },
   "source_links": [
    {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/maileva-filiale-de-la-poste-victime-dune-cyberattaque/"
+   },
+   {
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/maileva-mufora09gh9so92vdk"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
-  ],
-  "summary": "Maileva a interrompu ses services après des tentatives d’accès non autorisé visant à effectuer des envois illégitimes de courriers.",
-  "threat": "Intrusion"
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-24",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-FB1C1AB0773B",
-  "location": "Inconnu",
-  "org": "Maileva, filiale de La Poste",
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/maileva-filiale-de-la-poste-victime-dune-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
   ],
   "summary": "Maileva, filiale de La Poste victime d’une cyberattaque",
   "threat": "Intrusion"
@@ -1470,12 +1561,15 @@
   "high_sensitivity_data_exposed": false,
   "id": "INC-02BB571E8CCD",
   "location": "France métropolitaine",
-  "org": "ambpvc",
+  "org": "amb-pvc",
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Industrie / Manufacture",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Manufacturing",
+   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
@@ -1569,10 +1663,13 @@
   "location": "France métropolitaine",
   "org": "FRANCARETRAD",
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Healthcare",
+   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
