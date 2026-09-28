@@ -2,6 +2,201 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-09-28",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B2323F1F0DB2",
+  "location": "France métropolitaine",
+  "org": "Alaxione",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Alaxione , société française de e-santé spécialisée dans la gestion des agendas médicaux et du parcours patient, fait l\u0002objet d\u0002une nouvelle revendication majeure.",
+   "evidence_url": "https://www.cyberattaque.org/alaxione-86-millions-de-patients-revendiques-dans-une-nouvelle-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/alaxione-86-millions-de-patients-revendiques-dans-une-nouvelle-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/alaxione-mukgc44jlfsfro727v"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Alaxione est visée par une revendication de fuite contenant 8,6 millions de patients et 311 286 numéros de Sécurité sociale.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-49CFE67751C8",
+  "location": "France métropolitaine",
+  "org": "Azaé",
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Commerce / Distribution | Services aux entreprises",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/azae-cyberattaque-fichiers-revelent-des-informations-medicales-sur-des-beneficiaires/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/aza-mukkqhuagxmqmicsl9j"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Azaé fait l'objet d'une revendication de fuite de données de 3 731 fichiers attribuée au pseudonyme « ChimeraZ ».",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0C6419E48F71",
+  "location": "Inconnu",
+  "org": "Planity",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Planity propose une plateforme de réservation accessible 24h/24 ainsi qu’un logiciel de gestion destiné aux professionnels de la beauté.",
+   "evidence_url": "https://www.cyberattaque.org/planity-17-244-fiches-clients-diffusees-apres-une-nouvelle-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/planity-17-244-fiches-clients-diffusees-apres-une-nouvelle-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Planity : 17 244 fiches clients diffusées après une nouvelle cyberattaque",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-63A143370102",
+  "location": "France métropolitaine",
+  "org": "Portalia",
+  "personal_data_exposed": true,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Finance / Assurance"
+   ],
+   "evidence": "Portalia est une société de portage salarial .",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-chez-portalia-22-000-documents-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-portalia-22-000-documents-en-fuite/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/portalia-mukjf8v1pk2fw5xkrf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Portalia subit une fuite de données revendiquée avec 22 221 fichiers et 21 698 enregistrements, dont des bulletins de salaire contenant des données sensibles.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8568A4E43460",
+  "location": "Inconnu",
+  "org": "Spareka",
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Spareka, plateforme française spécialisée dans la réparation d’appareils et la vente de pièces détachées, fait l’objet d’une fuite de données revendiquée ce 28 septembre 2026.",
+   "evidence_url": "https://www.cyberattaque.org/spareka-cyberattaque-pres-de-8-000-demandes-de-reparation-avec-les-coordonnees-des-clients-en-fuite/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/spareka-cyberattaque-pres-de-8-000-demandes-de-reparation-avec-les-coordonnees-des-clients-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Spareka subit une fuite revendiquée de 7 770 demandes de réparation contenant des coordonnées clients.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-39AC99DC698D",
+  "location": "France métropolitaine",
+  "org": "Agefiph",
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/agefiph-mujvbup2qid66k3d18c",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/agefiph-les-donnees-de-3-700-personnes-en-situation-de-handicap-diffusees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agefiph-mujvbup2qid66k3d18c"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "L'Agefiph voit 3 736 fiches de personnes en situation de handicap diffusées publiquement, incluant des données d'identité et des informations sur le handicap.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-09-27",
   "high_sensitivity_data_exposed": false,
   "id": "INC-BCB0E97E5B45",
@@ -26,6 +221,219 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-4CA0BE29DA39",
+  "location": "France métropolitaine",
+  "org": "Fédération Royale Belge des Échecs",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-checs-mujyxodizhqrcrsf8b",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-checs-mujyxodizhqrcrsf8b"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une revendication de fuite affirme exposer les données de 5 914 joueurs et 210 clubs de la Fédération royale belge des échecs.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-EB38E1F1F3E0",
+  "location": "France métropolitaine",
+  "org": "Kiassure",
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Finance",
+   "evidence_url": "https://frenchbreaches.com/alertes/kiassure-mukbnw9ya3i9enxgs1l",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/kiassure-42-000-dossiers-clients-dans-une-fuite-de-donnees/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/kiassure-mukbnw9ya3i9enxgs1l"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Kiassure fait l’objet d’une revendication de fuite de 42 742 dossiers clients et d’un millier de coordonnées bancaires.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-06ECF42EF0B5",
+  "location": "France métropolitaine",
+  "org": "Oracio",
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Oracio est une **application professionnelle consacrée aux états des lieux immobiliers**. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/oracio-snexi-muk9vavg2razv5dv9de",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/oracio-les-adresses-de-96-000-personnes-exposees-avec-1-856-digicodes-apres-une-cyberattaque/"
+   },
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/oracio-snexi-muk9vavg2razv5dv9de"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Oracio : les adresses de 96 000 personnes exposées avec 1 856 digicodes après une cyberattaque",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-676716BCCE94",
+  "location": "France métropolitaine",
+  "org": "Planity",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/planity-muk9e2w3bmx7yd3yyfe",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/planity-muk9e2w3bmx7yd3yyfe"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Publication revendiquée d'une base contenant 17 243 fiches clients liées à des professionnels utilisant Planity.",
+  "threat": "Phishing / fraude"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-56866F7B17D0",
+  "location": "France métropolitaine",
+  "org": "Ressources Si",
+  "personal_data_exposed": false,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/ressources-si",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/ressources-si"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DCADE9E8E394",
+  "location": "France métropolitaine",
+  "org": "Scorenco",
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/scorenco-muk3vycif9p7gzzgupl",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/scorenco-muk3vycif9p7gzzgupl"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une revendication publique allègue la diffusion gratuite d'une base attribuée à Score'n'co contenant 22 962 enregistrements.",
+  "threat": "Fuite de données"
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-27",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3139AFB2614E",
+  "location": "Inconnu",
+  "org": "Score’n’co",
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Score’n’co , plateforme française dédiée au suivi et à la gestion du sport amateur, fait l’objet d’une fuite de données revendiquée ce 27 septembre 2026 .",
+   "evidence_url": "https://www.cyberattaque.org/scorenco-pres-de-23-000-fiches-de-membres-de-clubs-sportifs-en-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/scorenco-pres-de-23-000-fiches-de-membres-de-clubs-sportifs-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Score’n’co victime d'une fuite revendiquée exposant 22 962 lignes de fiches de membres de clubs sportifs.",
   "threat": "Fuite de données"
  },
  {
@@ -151,7 +559,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Carrefour informe l'exposition de noms, prénoms, e-mails et numéros de téléphone après un incident chez un de ses prestataires.",
+  "summary": "Carrefour : des données clients exposées après la cyberattaque de son prestataire",
   "threat": "Fuite de données"
  },
  {
@@ -383,6 +791,10 @@
   },
   "source_links": [
    {
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/plurelya.png"
+   },
+   {
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-plurelya-les-donnees-de-150-114-agents-publics-et-enfants-mises-en-vente-sur-le-dark-web/"
    },
@@ -392,6 +804,7 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
