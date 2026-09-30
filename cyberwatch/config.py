@@ -499,7 +499,7 @@ SECTOR_ACTIVITY_RULES: list[tuple[str, list[str]]] = [
         "vente de sneakers", "vente en ligne de chaussures",
     ]),
     (SECTOR_TECH, [
-        "technologies", "technology", "reseaux", "editeur de logiciels", "esn",
+        "technologies", "technology", "reseaux informatiques", "editeur de logiciels", "esn",
         "cloud", "logiciel", "software", "saas", "numerique", "telecom",
         "telecommunication", "operateur mobile", "technologie", "tech",
         "informatique", "hebergeur", "datacenter", "orange", "sfr", "zeop",

@@ -11,7 +11,7 @@ from .model import Incident, Item
 from .normalize import organisation_key
 
 SECTOR_UNKNOWN_TARGET_PCT = 10.0  # Alerte, jamais un secteur par défaut.
-POLICY_VERSION = "2026-09-12.sector.5"
+POLICY_VERSION = "2026-09-30.sector.6"
 
 
 @dataclass(frozen=True)

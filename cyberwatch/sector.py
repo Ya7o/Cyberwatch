@@ -190,7 +190,7 @@ _SPORT_NAME_TERMS = (
     "athletisme", "gymnastique", "gym", "badminton", "hockey", "chasse",
     "equitation", "bridge", "savate", "ski", "vol libre", "aeronautique",
     "escalade", "twirling", "squash", "ulm", "pagaie", "handisport",
-    "tennis de table", "sport automobile", "sport universitaire",
+    "tennis de table", "echecs", "speleologie", "sport automobile", "sport universitaire",
     "sport scolaire", "sport", "sports",
 )
 
@@ -279,7 +279,7 @@ def _safe_institutional_name_sector(organisation: str) -> str:
         return config.SECTOR_SPORT
     if blob.startswith("federation sportive "):
         return config.SECTOR_SPORT
-    if blob.startswith(("federation francaise ", "federation nationale ")):
+    if blob.startswith("federation "):
         if any(_contains(blob, term) for term in _SPORT_NAME_TERMS):
             return config.SECTOR_SPORT
 
@@ -310,6 +310,9 @@ def classify_sector_name(organisation: str) -> str:
 def classify_sector_activity(activity_description: str) -> str:
     """Classe une description d'activité explicitement extraite de la source."""
     blob = searchable(activity_description)
+    # A brokerage remains insurance even when its products include health cover.
+    if re.search(r"\b(?:courtier|courtage)\b.{0,30}\bassurances?\b", blob):
+        return config.SECTOR_FINANCE
     # Principal business, not the software used, client industry or a brand.
     if re.search(r"\b(?:commercialis\w*|vend\w*)\b", blob) and any(
         term in blob for term in ("mobilier", "luminaires", "equipements", "produits", "chaussures")

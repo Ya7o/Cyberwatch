@@ -158,6 +158,10 @@ def backfill_unknowns(
     reservations = reservations or {}
 
     for item in ordered:
+        # Re-evaluate historical feed defaults as well as newly collected rows.
+        foreign_name = location_resolution.foreign_institution_name(item.Organisation_Raw)
+        if foreign_name and item.Location == _source_location_default(item.Source_ID):
+            item.Location = config.LOC_INCONNU
         if item.Threat == config.THREAT_UNKNOWN:
             threat = _backfill_unknown_threat(item, reservations.get(item.Item_ID))
             if threat != config.THREAT_UNKNOWN:
@@ -182,7 +186,7 @@ def backfill_unknowns(
 
         if location == config.LOC_INCONNU:
             default = _source_location_default(item.Source_ID)
-            if default:
+            if default and not foreign_name:
                 location = default
                 report["location_default"] += 1
 

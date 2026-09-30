@@ -537,16 +537,16 @@
   "date": "2026-09-28",
   "high_sensitivity_data_exposed": false,
   "id": "INC-0DACE151ECA1",
-  "location": "France métropolitaine",
+  "location": "Inconnu",
   "org": "Fédération flamande de judo",
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
+   "confidence": 0.8,
+   "evidence": "Fédération flamande de judo",
    "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-flamande-de-judo-mulg7iicslkivaezmf9",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -798,16 +798,16 @@
   "date": "2026-09-27",
   "high_sensitivity_data_exposed": true,
   "id": "INC-4CA0BE29DA39",
-  "location": "France métropolitaine",
+  "location": "Inconnu",
   "org": "Fédération Royale Belge des Échecs",
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
+   "confidence": 0.8,
+   "evidence": "Fédération Royale Belge des Échecs",
    "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-checs-mujyxodizhqrcrsf8b",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -1045,7 +1045,7 @@
    "confidence": 0.8,
    "evidence": "Aestria , société française spécialisée dans les services informatiques, les réseaux et la cybersécurité, fait l'objet d'une importante revendication de piratage.",
    "evidence_url": "https://www.cyberattaque.org/aestria-les-donnees-clients-et-outils-internes-dun-prestataire-cyber-en-fuite/",
-   "reason": "ACTIVITY_RULE",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
    "status": "inferred"
   },
   "source_links": [
@@ -1242,7 +1242,7 @@
   "location": "France métropolitaine",
   "org": "Century 21",
   "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
+  "sector": "Construction / BTP",
   "sector_status": {
    "confidence": 0.8,
    "discarded_source_labels": [
@@ -1389,7 +1389,7 @@
   "location": "France métropolitaine",
   "org": "Réassurez-moi",
   "personal_data_exposed": true,
-  "sector": "Santé",
+  "sector": "Finance / Assurance",
   "sector_status": {
    "confidence": 0.8,
    "discarded_source_labels": [
@@ -2346,13 +2346,13 @@
   "location": "France métropolitaine",
   "org": "Fédération Française de Spéléologie",
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-sp-l-ologie-ffs-muac5a8sxy44x4kows",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "evidence": "Fédération Française de Spéléologie",
+   "evidence_url": "https://www.cyberattaque.org/federation-francaise-de-speleologie-93-000-membres-et-des-donnees-bancaires-revendiques-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -3179,7 +3179,7 @@
   "high_sensitivity_data_exposed": false,
   "id": "INC-6DBA5222763D",
   "location": "Inconnu",
-  "org": "Propertips by iad visé par une cyberattaque",
+  "org": "Propertips by iad",
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -3443,16 +3443,16 @@
   "date": "2026-09-15",
   "high_sensitivity_data_exposed": false,
   "id": "INC-015E0D4D14C0",
-  "location": "France métropolitaine",
+  "location": "Inconnu",
   "org": "Fédération Royale Belge de Tennis de Table",
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
+   "confidence": 0.8,
+   "evidence": "Fédération Royale Belge de Tennis de Table",
    "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-tennis-de-table-mu2l3yrjnywvyypn0z",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -3823,32 +3823,6 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-14",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-D72A05DFD66E",
-  "location": "Inconnu",
-  "org": "Revolut piégé par de fausses demandes gouvernementales",
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/revolut-piege-par-de-fausses-demandes-gouvernementales-des-passeports-transmis-a-un-tiers/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
-  "threat": "Phishing / fraude"
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-14",
   "high_sensitivity_data_exposed": false,
   "id": "INC-10677A4FD49A",
   "location": "France métropolitaine",
@@ -3925,13 +3899,13 @@
   "location": "France métropolitaine",
   "org": "Fédération francophone de Gymnastique",
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
+   "confidence": 0.8,
+   "evidence": "Fédération francophone de Gymnastique",
    "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-francophone-de-gymnastique-mu038ez5nh94acseflc",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -4089,12 +4063,17 @@
    {
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/revolut.png"
+   },
+   {
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/revolut-piege-par-de-fausses-demandes-gouvernementales-des-passeports-transmis-a-un-tiers/"
    }
   ],
   "sources": [
-   "BONJOURLAFUITE"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
   ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Revolut.",
+  "summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
   "threat": "Fuite de données"
  },
  {
