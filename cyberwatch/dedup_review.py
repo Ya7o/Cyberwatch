@@ -41,9 +41,10 @@ def retry_candidates(
             [a], [a, b], max_candidates_per_item=1,
             facts_by_item=facts_by_item, victim_websites=victim_websites,
         ))
-        if len(result) >= limit:
-            break
-    return result
+    # The retry limit must not hide a corroborated identity behind an older
+    # queue of fuzzy names. Keep the existing age order within each tier.
+    result.sort(key=lambda c: duplicate_audit.signal_rank(c.signals)[0])
+    return result[:max(0, limit)]
 
 
 def requires_review(candidate, decision) -> bool:

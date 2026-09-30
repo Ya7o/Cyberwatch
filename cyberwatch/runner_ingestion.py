@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from . import config
+from . import config, location_resolution
 from .collectors.base import CollectResult, RawEntry, SourceSpec
 from .collectors.cyberattaque_org import is_negated_incident, is_obvious_multi
 from .model import Item
@@ -63,6 +63,7 @@ def process_entries(
             item.Location == config.LOC_INCONNU
             and spec.location_rule in config.LOCATIONS
             and spec.location_rule != config.LOC_INCONNU
+            and not location_resolution.foreign_institution_name(item.Organisation_Raw)
         ):
             item.Location = spec.location_rule
         if fact_rows is not None:

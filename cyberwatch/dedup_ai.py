@@ -602,7 +602,7 @@ def _batch_body(
         {"candidates": [payload for _, payload, _ in selected]},
         ensure_ascii=False,
         sort_keys=True,
-        indent=2,
+        separators=(",", ":"),
     )
 
 
@@ -633,6 +633,7 @@ def _uncached_batch_entries(
     entries: list[tuple[DedupAuditCandidate, dict, str]] = []
     pending = {row["pair_key"]: row for row in state.pending_rows}
     for candidate in sorted(worthy, key=lambda c: (
+        signal_rank(c.signals)[0] if c.signals is not None else 1,
         pending.get(_pair_key(c), {}).get("first_seen", state.run_id), _batch_priority(c)
     )):
         left_id = candidate.company_id or company_ids.get(candidate.left.Organisation_Key, "")
@@ -661,12 +662,13 @@ def _select_batch_entries(
 ) -> list[tuple[DedupAuditCandidate, dict, str]]:
     selected: list[tuple[DedupAuditCandidate, dict, str]] = []
     deferred: list[tuple[DedupAuditCandidate, str]] = []
-    budget = max(0, state.max_context_chars - len(BATCH_PREAMBLE))
+    budget = max(0, state.max_context_chars - len(BATCH_PREAMBLE) - len('{"candidates":[]}'))
     used_chars = 0
     full = False
     for entry in entries:
         candidate, payload, _ = entry
-        serialized_len = len(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+        serialized_len = len(json.dumps(payload, ensure_ascii=False, sort_keys=True,
+                                        separators=(",", ":")))
         if full or len(selected) >= state.daily_max_candidates:
             full = True
             deferred.append((candidate, STATUS_NOT_REVIEWED_CAPACITY))
@@ -676,12 +678,12 @@ def _select_batch_entries(
             # jamais amputée, et son motif la distingue d'un simple débordement.
             deferred.append((candidate, STATUS_NOT_REVIEWED_PAIR_TOO_LARGE))
             continue
-        if used_chars + serialized_len > budget:
-            full = True
+        separator_len = int(bool(selected))
+        if used_chars + separator_len + serialized_len > budget:
             deferred.append((candidate, STATUS_NOT_REVIEWED_CAPACITY))
             continue
         selected.append(entry)
-        used_chars += serialized_len
+        used_chars += separator_len + serialized_len
     for candidate, status in deferred:
         results[_pair_key(candidate)] = DedupAiDecision(status=status)
         if status == STATUS_NOT_REVIEWED_PAIR_TOO_LARGE:

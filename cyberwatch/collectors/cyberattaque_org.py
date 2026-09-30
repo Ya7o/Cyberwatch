@@ -77,7 +77,7 @@ _LEGACY_EDITORIAL_TAIL = re.compile(
     r"informe(?:\s+ses\s+clients)?\s+d['’]une\s+fuite\b|"
     r"ouvre\s+la\s+s[ée]rie\s+de\s+fuites\b|"
     r"touch(?:é|ée|e)?|victime|cibl(?:é|ée|e)?|frapp(?:é|ée|e)?|"
-    r"pirat(?:é|ée)|menac(?:é|ée|e)?|conteste|alerte|au cœur|sous la menace)\b",
+    r"pirat(?:é|ée)|vis(?:é|ée|e)?|pi(?:é|e)g(?:é|ée|e)?|menac(?:é|ée|e)?|conteste|alerte|au cœur|sous la menace)\b",
     re.I,
 )
 _AFTER_COLON_CONFIRMS = re.compile(
@@ -238,15 +238,26 @@ def organisation_from_title(title: str) -> str:
     return organisation_from_cyberattaque_entry(RawEntry(title=title), {})
 
 
-def repair_existing_identities(items: list[Item]) -> tuple[list[Item], int]:
+def repair_existing_identities(
+    items: list[Item], *, editorial_tails_only: bool = False,
+) -> tuple[list[Item], int]:
     """Répare les titres historiques sans deviner un contexte absent du CSV."""
     repaired: list[Item] = []
     changed = 0
     for item in items:
+        if editorial_tails_only and (
+            item.Source_ID != "CYBERATTAQUE_ORG" or not item.Source_Item_ID
+            or not _LEGACY_EDITORIAL_TAIL.match(item.Title.split(":", 1)[0])
+        ):
+            repaired.append(item)
+            continue
         organisation = item.Organisation_Raw
         if item.Source_ID == "CYBERATTAQUE_ORG":
             organisation = organisation_from_title(item.Title)
             if not organisation:
+                if editorial_tails_only:
+                    repaired.append(item)
+                    continue
                 changed += 1
                 continue
         key = organisation_key(organisation)

@@ -438,6 +438,16 @@ def _snapshot_freshness(snapshot: dict, now: dt.datetime) -> tuple[float | None,
     return round(exact, 2), exact < FRESHNESS_TARGET_HOURS
 
 
+def published_source_coverage(snapshot: dict) -> list[dict]:
+    """Expose each source's coverage even when the overall run is publishable."""
+    run_id = str(snapshot.get("Run_ID") or "")
+    if not run_id:
+        return []
+    fields = ("Source_ID", "Status", "Coverage", "Reason_Code", "Comment")
+    return [{key: row.get(key, "") for key in fields}
+            for row in store.load_run_sources() if row.get("Run_ID") == run_id]
+
+
 def health_payload(*, now: dt.datetime | None = None) -> dict:
     now = now or dt.datetime.now(dt.UTC)
     if now.tzinfo is None:
@@ -453,6 +463,11 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
     sector_rows = store.load_sector_resolution()
     inferred_rows, referenced_rows, low_rows = _sector_status_groups(sector_rows)
     reasons = _dedup_alert_reasons(snapshot, latest)
+    source_coverage = published_source_coverage(snapshot)
+    reasons.extend(
+        f"couverture source {row['Source_ID']} : {row['Status']} ({row['Reason_Code']})"
+        for row in source_coverage if row.get("Status") != "OK"
+    )
     unmapped_labels = unmapped_source_sector_labels()
     if unmapped_labels:
         # Publié malgré tout — le corpus reste cohérent — mais jamais invisible :
@@ -501,6 +516,7 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
             "ok": freshness_ok,
         },
         "scheduled_reliability": reliability,
+        "source_coverage": source_coverage,
         "quality": {
             "sector_unknown_pct": None if sector_unknown_pct < 0 else sector_unknown_pct,
             "sector_unknown_target_pct": SECTOR_UNKNOWN_TARGET_PCT,

@@ -7,13 +7,21 @@ from dataclasses import dataclass
 
 from . import config, sources
 from .model import Item
-from .normalize import classify_location
+from .normalize import classify_location, searchable
 from .sector_activity import organisation_span
 
 _THIRD_PARTY_RE = re.compile(
     r"\b(?:prestataire|fournisseur|partenaire|client|filiale|sous[- ]traitant|tiers)\b",
     re.I,
 )
+
+
+def foreign_institution_name(organisation: str) -> bool:
+    """A named foreign federation cannot inherit a French feed's default."""
+    blob = searchable(organisation)
+    return blob.startswith("federation ") and bool(re.search(
+        r"\b(?:belge|flamande|suisse|canadienne|luxembourgeoise)\b", blob,
+    ))
 
 
 @dataclass(frozen=True)

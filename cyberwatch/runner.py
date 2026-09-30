@@ -21,6 +21,7 @@ from .collectors.cyberattaque_org import (
     is_negated_incident,
     is_obvious_multi,
     organisation_from_cyberattaque_entry,
+    repair_existing_identities,
 )
 from .collectors.base import CollectResult, RawEntry, SourceSpec, Window
 from .dedup import build_incidents, build_incidents_with_registry, merge_items
@@ -799,6 +800,7 @@ def execute(
     previous_ids = {i.Incident_ID for i in previous_incidents}
 
     snapshot_items = store.load_items()
+    snapshot_items, _ = repair_existing_identities(snapshot_items, editorial_tails_only=True)
     existing_items = snapshot_items
     existing_item_ids = {item.Item_ID for item in existing_items}
 

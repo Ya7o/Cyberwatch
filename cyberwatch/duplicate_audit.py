@@ -589,8 +589,11 @@ def compute_candidate_signals(
 
 
 def signal_rank(signals: CandidateSignals) -> tuple:
-    """Clé de tri déterministe : plus de signaux forts, puis fuzzy plus élevé."""
-    return (-signals.strong_signal_count, -signals.fuzzy_score)
+    """Identité étayée avant les ressemblances de noms et les acronymes."""
+    identity = any((signals.organisation_exact, signals.compact_match,
+                    signals.token_permutation, signals.shared_company_id,
+                    signals.shared_victim_domain, signals.organisation_similarity >= 0.95))
+    return (0 if identity else 1, -signals.strong_signal_count, -signals.fuzzy_score)
 
 
 def find_daily_llm_candidates(
