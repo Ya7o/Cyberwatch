@@ -58,12 +58,15 @@ def test_header_regroupe_couverture_et_date_collecte():
     assert 'id="freshness"' not in html
 
 
-def test_veille_est_un_flux_unique_avec_choix_du_territoire():
+def test_veille_associe_une_veille_regionale_et_un_flux_global_pagine():
     html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
     assert 'id="v-scope"' in html
     assert 'id="focus-body"' not in html
-    assert "rows.slice(0, VEILLE_SIZE)" in js
+    assert 'id="regional-watch"' in html
+    assert 'id="veille-pager"' in html
+    assert 'id="veille-more"' not in html
+    assert "rows.slice(start, start + VEILLE_SIZE)" in js
     assert "median_gap_days" not in js
     assert "max_gap_days" not in js
 
@@ -258,14 +261,16 @@ def test_diagnostic_technique_est_separe_de_l_analyse_metier():
     assert "llm_cost_usd" in js
 
 
-def test_incidents_complets_ne_sont_charges_qu_a_l_ouverture_de_recherche():
+def test_veille_et_recherche_chargent_le_corpus_complet_mais_pas_les_fiches():
     js = _read("assets/dashboard-v2.js")
     init = js[js.index("async function init()") : js.index("\n  init();")]
 
     assert 'loadJson("assets/data/incidents.json", [])' in js
     assert "async function ensureIncidents()" in js
     assert 'if (state.view === "recherche") { await ensureIncidents();' in js
+    assert 'else if (state.view === "veille") await ensureIncidents();' in init
     assert "assets/data/incidents.json" not in init
+    assert "ensureFacts()" not in init
 
 
 def test_detail_presente_un_resume_seul_et_les_sources():

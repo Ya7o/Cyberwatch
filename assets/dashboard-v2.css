@@ -19,16 +19,36 @@ html, body { overflow-x:visible; }
 .scope-field select, .sort-field select { max-width:100%; min-width:0; min-height:44px; padding:.55rem .75rem; border:1px solid var(--border); border-radius:9px; color:var(--text-primary); background:var(--surface); font:inherit; }
 .analysis-controls { display:flex; gap:1rem; flex-wrap:wrap; }
 .incident-list { gap:.65rem; }
-.incident-card { display:block; padding:1rem 1.2rem; }
+.incident-card { display:block; padding:1rem 1.2rem; cursor:pointer; transition:border-color .15s ease; }
+.incident-card:hover { border-color:var(--series-1); background:color-mix(in srgb,var(--series-1) 4%,var(--surface)); }
+.incident-card:focus-visible { outline:2px solid var(--series-1); outline-offset:3px; }
+.incident-card-regional { border-left:4px solid var(--series-1); }
 .incident-card-top { align-items:center; font-size:.78rem; color:var(--text-secondary); }
-.incident-org-link { width:auto; max-width:100%; min-height:40px; overflow-wrap:anywhere; margin:.15rem 0; font-size:1rem; text-decoration:none; }
+.incident-org-link { width:auto; max-width:100%; min-height:0; overflow-wrap:anywhere; margin:.45rem 0; font-size:1rem; text-decoration:none; line-height:1.4; }
 .incident-org-link:hover { text-decoration:underline; text-underline-offset:3px; }
+.incident-location { display:inline-flex; align-items:center; }
+.incident-location-regional { padding:.2rem .55rem; border-radius:6px; background:color-mix(in srgb,var(--series-1) 12%,var(--surface)); color:var(--text-primary); font-weight:700; }
 .incident-meta { margin:0; font-size:.8rem; color:var(--text-secondary); overflow-wrap:anywhere; }
 .incident-summary-text { margin:.45rem 0 0; line-height:1.55; max-width:95ch; }
-.incident-exposure { margin:.5rem 0 0; font-size:.78rem; color:var(--text-primary); font-weight:600; }
+.incident-exposure { width:fit-content; max-width:100%; margin:.6rem 0 0; padding:.3rem .55rem; border-radius:6px; background:color-mix(in srgb,var(--series-2) 10%,var(--surface)); font-size:.78rem; color:var(--text-primary); font-weight:600; }
 .incident-exposure::before { content:""; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--series-2); margin-right:.45rem; vertical-align:middle; }
 .candidate-status { font-weight:600; color:var(--text-primary); }
-.list-more { display:block; margin:1.5rem auto 2rem; }
+.regional-watch { margin:0 0 1.75rem; border:1px solid color-mix(in srgb,var(--series-1) 40%,var(--border)); border-top:3px solid var(--series-1); border-radius:var(--radius); background:color-mix(in srgb,var(--series-1) 4%,var(--surface)); }
+.regional-watch > summary { display:flex; align-items:center; gap:1rem; padding:1rem 1.2rem; cursor:pointer; list-style:none; }
+.regional-watch > summary::-webkit-details-marker { display:none; }
+.regional-watch > summary::after { content:"+"; font-size:1.3rem; color:var(--series-1); }
+.regional-watch[open] > summary::after { content:"−"; }
+.regional-watch-heading { display:grid; gap:.3rem; margin-right:auto; }
+.regional-watch-heading strong { font-size:1.05rem; }
+.regional-watch-heading > span { font-size:.8rem; color:var(--text-secondary); }
+.regional-watch-count { font-size:.82rem; font-weight:600; }
+.regional-watch-body { padding:0 1.2rem 1.2rem; }
+.regional-watch-body > .view-context { margin:0 0 .75rem; }
+.regional-watch-locations { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1rem; }
+.regional-watch-locations > span { display:inline-flex; gap:.6rem; align-items:center; padding:.25rem .65rem; border:1px solid var(--border); border-radius:999px; background:var(--surface); font-size:.8rem; }
+#regional-watch-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+#regional-watch-list .incident-summary-text { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+#veille-title { scroll-margin-top:100px; }
 .search-bar { grid-template-columns:minmax(240px,2fr) repeat(3,minmax(0,1fr)); gap:.9rem; margin-top:0; padding:1rem; }
 .search-bar > *, .search-bar label, .advanced-fields > * { min-width:0; }
 .search-field { grid-column:auto; }
@@ -52,7 +72,9 @@ html, body { overflow-x:visible; }
 .result-bar { justify-content:flex-start; gap:.8rem; margin-top:.8rem; }
 .result-count { margin-right:auto; scroll-margin-top:110px; }
 .sort-field select { border:0; background:transparent; }
-.pager { display:flex; justify-content:center; align-items:center; gap:.8rem; margin:1.25rem 0 2rem; }
+.pager { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.8rem; margin:1.25rem 0 2rem; }
+.pager .btn { min-height:44px; }
+.pager > span { font-size:.85rem; color:var(--text-secondary); }
 .analysis-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
 .analysis-grid .card { margin-top:0; }
 .card h3 { font-size:1rem; }
@@ -83,9 +105,7 @@ button.metric-bar:hover { color:var(--series-1); }
 .incident-source-badges a { border:0; border-radius:0; padding:0; background:none; font-size:.85rem; color:var(--series-1); text-decoration:underline; text-underline-offset:3px; max-width:100%; overflow-wrap:anywhere; }
 .incident-source-badges span { background:none; padding:0; font-size:.85rem; color:var(--text-secondary); }
 .organisation-sites { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.8rem; font-size:.8rem; color:var(--text-secondary); }
-.sector-evidence { margin-top:1rem; font-size:.8rem; color:var(--text-secondary); }
-.sector-evidence summary { cursor:pointer; }
-.detail-actions { display:flex; align-items:center; gap:.75rem; margin-top:1.5rem; font-size:.8rem; }
+.detail-location { margin:.7rem 0 0; font-size:.85rem; }
 .candidate-note { font-size:.85rem; color:var(--text-secondary); }
 .health-dialog h2 { margin-top:.35rem; }
 .sources-detail { overflow:auto; margin:1rem 0; }
@@ -105,6 +125,12 @@ button.metric-bar:hover { color:var(--series-1); }
   .analysis-grid { grid-template-columns:1fr; }
 }
 @media (max-width:600px) {
+  .regional-watch > summary { flex-wrap:wrap; gap:.65rem; padding:.9rem; }
+  .regional-watch-heading { flex:1 1 calc(100% - 2rem); }
+  .regional-watch > summary::after { order:1; }
+  .regional-watch-count { order:2; flex-basis:100%; }
+  .regional-watch-body { padding:0 .9rem .9rem; }
+  #regional-watch-list { grid-template-columns:1fr; }
   .view-heading { align-items:flex-start; gap:.75rem; }
   .view-heading > .scope-field { width:100%; }
   .view-heading > .scope-field select { flex:1; }

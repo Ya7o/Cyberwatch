@@ -7,9 +7,9 @@
 <meta name="description" content="Veille des incidents cyber publiquement documentés en France et dans l’Océan Indien.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
 <link rel="alternate" type="application/atom+xml" title="Cyberwatch — La Réunion / Mayotte" href="assets/data/reunion-mayotte.xml">
-<link rel="stylesheet" href="assets/style.css?v=20261001-1">
-<link rel="stylesheet" href="assets/dashboard-v2.css?v=20261001-1">
-<link rel="stylesheet" href="assets/dashboard-compact.css?v=20261001-1">
+<link rel="stylesheet" href="assets/style.css?v=20261001-2">
+<link rel="stylesheet" href="assets/dashboard-v2.css?v=20261001-2">
+<link rel="stylesheet" href="assets/dashboard-compact.css?v=20261001-2">
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -31,11 +31,15 @@
   </nav>
 
   <section id="view-veille" class="view" aria-labelledby="veille-title">
-    <div class="view-heading"><h2 id="veille-title">Derniers incidents</h2><label class="scope-field"><span>Territoire</span><select id="v-scope"><option value="all">Tous les territoires</option><option value="focus">La Réunion / Mayotte</option><option value="ocean">Océan Indien</option><option value="metro">France métropolitaine</option></select></label></div>
+    <details id="regional-watch" class="regional-watch">
+      <summary><span class="regional-watch-heading"><strong>Veille océan Indien</strong><span>La Réunion, Mayotte et territoires de l’océan Indien</span></span><span id="regional-watch-count" class="regional-watch-count" role="status"></span></summary>
+      <div class="regional-watch-body"><p id="regional-watch-period" class="view-context"></p><div id="regional-watch-locations" class="regional-watch-locations"></div><div id="regional-watch-list" class="incident-list"></div></div>
+    </details>
+    <div class="view-heading"><h2 id="veille-title" tabindex="-1">Tous les incidents</h2><label class="scope-field"><span>Territoire</span><select id="v-scope"><option value="all">Tous les territoires</option><option value="focus">La Réunion / Mayotte</option><option value="ocean">Océan Indien</option><option value="metro">France métropolitaine</option></select></label></div>
     <p class="view-context" id="veille-count" role="status"></p>
     <p id="regional-watch-status" class="view-context" hidden></p>
     <div id="veille-list" class="incident-list"></div>
-    <button id="veille-more" class="btn list-more" type="button" hidden>Voir tous les incidents</button>
+    <nav id="veille-pager" class="pager" aria-label="Pages des incidents" hidden></nav>
   </section>
 
   <section id="view-recherche" class="view" hidden aria-labelledby="recherche-title">
@@ -48,9 +52,9 @@
       <details id="search-advanced" class="search-advanced"><summary>Plus de filtres</summary><div class="advanced-fields"><label><span>Menace</span><select id="s-threat"><option value="">Toutes</option></select></label><label><span>Source de veille</span><select id="s-source"><option value="">Toutes</option></select></label><label><span>Statut</span><select id="s-admission"><option value="">Tous</option><option value="ACCEPTED">Incidents retenus</option><option value="CANDIDATE">À confirmer</option></select></label></div></details>
     </form>
     <div class="active-filters" id="s-active-filters" aria-label="Filtres actifs"></div>
-    <div class="result-bar"><p class="result-count" id="s-count" role="status" aria-live="polite"></p><label class="sort-field"><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option></select></label><button id="s-reset" type="button" class="btn btn-link" hidden>Tout effacer</button></div>
+    <div class="result-bar"><p class="result-count" id="s-count" role="status" aria-live="polite" tabindex="-1"></p><label class="sort-field"><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option></select></label><button id="s-reset" type="button" class="btn btn-link" hidden>Tout effacer</button></div>
     <div id="s-list" class="incident-list"></div>
-    <div id="s-pager" class="pager"></div>
+    <nav id="s-pager" class="pager" aria-label="Pages des résultats"></nav>
   </section>
 
   <section id="view-analyse" class="view" hidden aria-labelledby="analyse-title">
@@ -68,7 +72,6 @@
 <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-dialog-title">
   <button id="detail-close" class="dialog-close" type="button" aria-label="Fermer la fiche">×</button>
   <div id="detail-dialog-content"></div>
-  <div class="detail-actions"><button id="detail-copy" class="btn" type="button">Copier le lien</button><span id="detail-copy-status" role="status" aria-live="polite"></span></div>
 </dialog>
 <dialog id="health-dialog" class="detail-dialog health-dialog" aria-labelledby="health-title">
   <button id="health-close" class="dialog-close" type="button" aria-label="Fermer l’état de la veille">×</button>
@@ -77,8 +80,8 @@
   <div class="sources-detail"><table><thead><tr><th>Source</th><th>État</th><th>Dernière mise à jour</th><th>Détail</th></tr></thead><tbody id="sources-detail-body"></tbody></table></div>
   <details class="ops-fold" id="production-fold"><summary><span id="production-title">Diagnostic technique</span></summary><div class="ops-fold-body"><div class="production-metrics" id="production-metrics"></div></div></details>
 </dialog>
-<script src="assets/dashboard-failsafe.js?v=20261001-1"></script>
-<script src="assets/dashboard-v2.js?v=20261001-1"></script>
-<script src="assets/dashboard-integrity.js?v=20261001-1"></script>
+<script src="assets/dashboard-failsafe.js?v=20261001-2"></script>
+<script src="assets/dashboard-v2.js?v=20261001-2"></script>
+<script src="assets/dashboard-integrity.js?v=20261001-2"></script>
 </body>
 </html>
