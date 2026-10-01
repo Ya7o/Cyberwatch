@@ -21,7 +21,7 @@ from .normalize import _THREAT_SPECIFIC_PRIORITY, _contains, _matched_threats, s
 
 #: Version du vocabulaire de réserve, tracée dans les métadonnées SourceFacts
 #: pour qu'une décision archivée reste interprétable après évolution des motifs.
-RESERVATION_VERSION = "threat-reservation-2026-09-10.1"
+RESERVATION_VERSION = "threat-reservation-2026-10-01.1"
 
 _SENTENCE_RE = re.compile(r"(?<=[.!?;:])\s+|\n+")
 
@@ -64,7 +64,9 @@ _MARKERS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("NOT_CONFIRMED", re.compile(
         r"\baucune\b.{0,40}\bconfirmee? a ce stade\b|"
         r"\bnon confirmee?\b|"
-        r"\baucune? [a-z ]{0,30}\bconfirmee?\b"
+        r"\baucune? [a-z ]{0,30}\bconfirmee?\b|"
+        r"\baucune?\b.{0,70}\bn est (?:etabli|etablie|confirme|confirmee)\b|"
+        r"\bnon (?:etabli|etablie|etablies)\b"
     )),
 )
 
@@ -238,8 +240,11 @@ def index_source_facts(rows) -> dict[str, dict]:
             continue
         payload = metadata.get("threat_reservation")
         if not (isinstance(payload, dict) and payload.get("reserved")):
-            context = str(metadata.get("editorial_context") or "")
-            payload = decision(context) if context else None
+            texts = [str(metadata.get("editorial_context") or "")]
+            texts.extend(str(row.get(field) or "") for field in (
+                "Summary", "Impact", "Claim_Status_Raw",
+            ))
+            payload = decision(*texts)
         if isinstance(payload, dict) and payload.get("reserved"):
             index[item_id] = payload
     return index

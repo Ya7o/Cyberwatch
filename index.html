@@ -3,111 +3,82 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cyberwatch — Observatoire cyber France / Océan Indien</title>
-<meta name="description" content="Incidents cyber publiquement listés en France métropolitaine et dans l’Océan Indien.">
+<title>Cyberwatch — Veille cyber France / Océan Indien</title>
+<meta name="description" content="Veille des incidents cyber publiquement documentés en France et dans l’Océan Indien.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
 <link rel="alternate" type="application/atom+xml" title="Cyberwatch — La Réunion / Mayotte" href="assets/data/reunion-mayotte.xml">
-<link rel="stylesheet" href="assets/style.css?v=20260822-3">
-<link rel="stylesheet" href="assets/dashboard-v2.css?v=20260910-1">
-<link rel="stylesheet" href="assets/dashboard-compact.css?v=20260912-1">
-<link rel="stylesheet" href="assets/dashboard-attention.css?v=20260913-1">
+<link rel="stylesheet" href="assets/style.css?v=20261001-1">
+<link rel="stylesheet" href="assets/dashboard-v2.css?v=20261001-1">
+<link rel="stylesheet" href="assets/dashboard-compact.css?v=20261001-1">
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <header class="topbar">
   <div class="wrap topbar-inner">
-    <div class="brand">
-      <span class="brand-mark" aria-hidden="true">🛡️</span>
-      <div><h1>Cyberwatch</h1><p class="brand-sub">Incidents cyber — France &amp; Océan Indien</p></div>
-    </div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">🛡️</span><div><h1>Cyberwatch</h1><p class="brand-sub">Incidents cyber — France &amp; Océan Indien</p></div></div>
     <div class="topbar-right">
-      <a class="run-pill" id="run-pill" href="?vue=analyse#production-title" title="Voir la fiabilité de production et l’état des sources"><span class="run-dot" aria-hidden="true"></span><span id="run-pill-text">Chargement…</span></a>
+      <a class="run-pill" id="run-pill" href="?diagnostic=1#production-title" aria-haspopup="dialog"><span class="run-dot" aria-hidden="true"></span><span id="run-pill-text">Chargement…</span></a>
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de thème"><span data-theme-icon>◐</span></button>
     </div>
   </div>
 </header>
-
 <main class="wrap" id="contenu">
   <div id="data-alert" class="data-alert" role="alert" hidden><strong>Données indisponibles.</strong><p id="data-alert-detail"></p></div>
   <nav class="views" aria-label="Vue du dashboard">
-    <button type="button" data-view="veille" aria-current="true">Veille</button>
+    <button type="button" data-view="veille" aria-current="page">Veille</button>
     <button type="button" data-view="recherche" aria-current="false">Recherche</button>
     <button type="button" data-view="analyse" aria-current="false">Analyse</button>
   </nav>
 
-  <section id="view-veille" class="view" aria-label="Veille">
-    <div id="veille-signal"></div>
-    <section id="focus-card" class="card focus-card" aria-labelledby="focus-title">
-      <div class="card-head"><h2 id="focus-title">La Réunion / Mayotte</h2></div>
-      <div id="focus-body"></div>
-    </section>
-    <section class="card" aria-labelledby="veille-title">
-      <div class="card-head"><h2 id="veille-title">Derniers incidents — 30 jours</h2><p class="hint" id="veille-count"></p></div>
-      <div id="veille-list" class="incident-list"></div>
-    </section>
+  <section id="view-veille" class="view" aria-labelledby="veille-title">
+    <div class="view-heading"><h2 id="veille-title">Derniers incidents</h2><label class="scope-field"><span>Territoire</span><select id="v-scope"><option value="all">Tous les territoires</option><option value="focus">La Réunion / Mayotte</option><option value="ocean">Océan Indien</option><option value="metro">France métropolitaine</option></select></label></div>
+    <p class="view-context" id="veille-count" role="status"></p>
+    <p id="regional-watch-status" class="view-context" hidden></p>
+    <div id="veille-list" class="incident-list"></div>
+    <button id="veille-more" class="btn list-more" type="button" hidden>Voir tous les incidents</button>
   </section>
 
-  <section id="view-recherche" class="view" hidden aria-label="Recherche">
-    <div class="quick-filters" aria-label="Raccourcis territoriaux">
-      <button id="quick-focus" class="btn" type="button">Réunion / Mayotte</button>
-      <button id="quick-ocean" class="btn" type="button">Océan Indien</button>
-    </div>
-    <div class="search-bar" role="search" aria-label="Recherche des incidents">
-      <label class="search-field"><span>Recherche</span><input id="s-q" type="search" autocomplete="off" placeholder="Organisation, menace, secteur, source, synthèse…"></label>
-      <label><span>Menace</span><select id="s-threat"><option value="">Toutes</option></select></label>
+  <section id="view-recherche" class="view" hidden aria-labelledby="recherche-title">
+    <h2 id="recherche-title" class="sr-only">Recherche des incidents</h2>
+    <form class="search-bar" role="search" aria-label="Recherche des incidents">
+      <label class="search-field"><span>Recherche</span><input id="s-q" type="search" autocomplete="off" placeholder="Organisation ou mots-clés"></label>
       <label><span>Secteur</span><select id="s-sector"><option value="">Tous</option></select></label>
-      <div class="location-picker"><span>Territoire</span><button id="location-toggle" type="button" class="btn" aria-expanded="false">Tous les territoires</button><div id="location-menu" class="location-menu" hidden><div id="s-locations"></div><button id="location-close" type="button" class="btn">Valider / Fermer</button></div></div>
-      <label><span>Source</span><select id="s-source"><option value="">Toutes</option></select></label>
-      <label><span>Période</span><select id="s-period"><option value="all">Toute la base</option><option value="30">30 jours</option><option value="90">90 jours</option><option value="365">365 jours</option></select></label>
-      <label><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option></select></label>
-      <label><span>Résultats / page</span><select id="s-page-size"><option value="30">30</option><option value="100">100</option><option value="250">250</option><option value="500">500</option><option value="1000">1000</option></select></label>
-      <button id="s-reset" type="button" class="btn">Réinitialiser</button>
-    </div>
-    <div class="active-filters" id="s-active-filters"></div>
-    <div class="result-bar"><p class="result-count" id="s-count" role="status" aria-live="polite"></p></div>
+      <div class="location-picker"><span id="location-label">Territoire</span><button id="location-toggle" type="button" class="btn" aria-labelledby="location-label location-toggle" aria-controls="location-menu" aria-expanded="false">Tous les territoires</button><div id="location-menu" class="location-menu" hidden><div class="location-presets"><button id="quick-focus" class="btn" type="button">Réunion / Mayotte</button><button id="quick-ocean" class="btn" type="button">Océan Indien</button></div><div id="s-locations"></div><button id="location-close" type="button" class="btn">Fermer</button></div></div>
+      <label><span>Période</span><select id="s-period"><option value="all">Toute la base</option><option value="30">30 jours</option><option value="90">90 jours</option><option value="365">1 an</option></select></label>
+      <details id="search-advanced" class="search-advanced"><summary>Plus de filtres</summary><div class="advanced-fields"><label><span>Menace</span><select id="s-threat"><option value="">Toutes</option></select></label><label><span>Source de veille</span><select id="s-source"><option value="">Toutes</option></select></label><label><span>Statut</span><select id="s-admission"><option value="">Tous</option><option value="ACCEPTED">Incidents retenus</option><option value="CANDIDATE">À confirmer</option></select></label></div></details>
+    </form>
+    <div class="active-filters" id="s-active-filters" aria-label="Filtres actifs"></div>
+    <div class="result-bar"><p class="result-count" id="s-count" role="status" aria-live="polite"></p><label class="sort-field"><span>Tri</span><select id="s-sort"><option value="date-desc">Plus récents</option><option value="date-asc">Plus anciens</option><option value="org">Organisation</option></select></label><button id="s-reset" type="button" class="btn btn-link" hidden>Tout effacer</button></div>
     <div id="s-list" class="incident-list"></div>
     <div id="s-pager" class="pager"></div>
   </section>
 
-  <section id="view-analyse" class="view" hidden aria-label="Analyse">
+  <section id="view-analyse" class="view" hidden aria-labelledby="analyse-title">
+    <div class="view-heading"><h2 id="analyse-title">Analyse du corpus</h2><div class="analysis-controls"><label class="scope-field"><span>Territoire</span><select id="a-scope"><option value="all">Tous les territoires</option><option value="focus">La Réunion / Mayotte</option><option value="ocean">Océan Indien</option><option value="metro">France métropolitaine</option></select></label><label class="scope-field"><span>Période</span><select id="a-period"><option value="30">30 jours</option><option value="90">90 jours</option><option value="365">1 an</option><option value="all">Toute la base</option></select></label></div></div>
     <div id="analysis-content">
-      <p class="reading-line" id="reading-line"></p>
+      <p class="view-context" id="reading-line" role="status"></p>
       <p class="analysis-coverage-note" id="analysis-coverage-note" hidden></p>
-      <section class="card" aria-labelledby="evolution-title"><div class="card-head"><h2 id="evolution-title">Évolution mensuelle</h2></div><div class="chart" id="chart-evolution"></div><p id="evolution-note" hidden></p></section>
-      <section class="analysis-grid">
-        <section class="card"><div class="card-head"><h2 id="threat-title">Menaces — 90 derniers jours</h2></div><div class="chart" id="chart-threat"></div></section>
-        <section class="card"><div class="card-head"><h2 id="sector-title">Secteurs — 90 derniers jours</h2></div><div class="chart" id="chart-sector"></div></section>
-      </section>
-      <section class="card" aria-labelledby="signals-title"><div class="card-head"><h2 id="signals-title">Ce qui change</h2></div><div id="signals-list" class="signal-list"></div></section>
-      <section class="card" aria-labelledby="ocean-title"><div class="card-head"><h2 id="ocean-title">Océan Indien</h2></div><div class="ocean-compare"><div id="ocean-focus"></div><div id="ocean-ensemble"></div></div></section>
-      <section class="card ops-card" aria-labelledby="production-title">
-        <details class="ops-fold" id="production-fold">
-          <summary><span id="production-title">Fiabilité de production</span></summary>
-          <div class="ops-fold-body"><div class="production-metrics" id="production-metrics"></div></div>
-        </details>
-      </section>
-      <section class="card reliability ops-card" id="sources" aria-labelledby="sources-title">
-        <details class="ops-fold" id="sources-fold">
-          <summary><span id="sources-title">État des sources</span></summary>
-          <div class="ops-fold-body">
-            <div id="sources-leds" class="source-leds"></div>
-            <details class="sources-detail"><summary>Détail par source</summary><table><thead><tr><th>Source</th><th>Statut</th><th>Dernière exécution</th><th>Durée</th><th>Éléments</th><th>Alerte</th></tr></thead><tbody id="sources-detail-body"></tbody></table></details>
-          </div>
-        </details>
-      </section>
+      <div class="analysis-grid"><section class="card"><div class="card-head"><h3>Menaces</h3></div><div class="chart" id="chart-threat"></div></section><section class="card"><div class="card-head"><h3>Secteurs</h3></div><div class="chart" id="chart-sector"></div></section></div>
+      <section class="card" id="monthly-card" hidden><div class="card-head"><h3>Publications par mois</h3></div><div class="chart" id="chart-evolution"></div></section>
+      <section class="card" id="signals-card" hidden><div class="card-head"><h3>Ce qui change</h3></div><div id="signals-list" class="signal-list"></div></section>
     </div>
   </section>
 </main>
 
 <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-dialog-title">
+  <button id="detail-close" class="dialog-close" type="button" aria-label="Fermer la fiche">×</button>
   <div id="detail-dialog-content"></div>
-  <form method="dialog"><button class="btn">Fermer</button></form>
+  <div class="detail-actions"><button id="detail-copy" class="btn" type="button">Copier le lien</button><span id="detail-copy-status" role="status" aria-live="polite"></span></div>
 </dialog>
-<script src="assets/dashboard-failsafe.js?v=20260914-1"></script>
-<script src="assets/dashboard-v2.js?v=20260919-1"></script>
-<script src="assets/dashboard-attention.js?v=20260914-1"></script>
-<script src="assets/dashboard-candidates.js?v=20260913-3"></script>
-<script src="assets/dashboard-qualification.js?v=20260912-1"></script>
-<script src="assets/dashboard-integrity.js?v=20260901-2"></script>
+<dialog id="health-dialog" class="detail-dialog health-dialog" aria-labelledby="health-title">
+  <button id="health-close" class="dialog-close" type="button" aria-label="Fermer l’état de la veille">×</button>
+  <h2 id="health-title">État de la veille</h2>
+  <p id="health-context" class="view-context"></p>
+  <div class="sources-detail"><table><thead><tr><th>Source</th><th>État</th><th>Dernière mise à jour</th><th>Détail</th></tr></thead><tbody id="sources-detail-body"></tbody></table></div>
+  <details class="ops-fold" id="production-fold"><summary><span id="production-title">Diagnostic technique</span></summary><div class="ops-fold-body"><div class="production-metrics" id="production-metrics"></div></div></details>
+</dialog>
+<script src="assets/dashboard-failsafe.js?v=20261001-1"></script>
+<script src="assets/dashboard-v2.js?v=20261001-1"></script>
+<script src="assets/dashboard-integrity.js?v=20261001-1"></script>
 </body>
 </html>

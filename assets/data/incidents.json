@@ -7,6 +7,7 @@
   "id": "INC-697D5F99FFA4",
   "location": "France métropolitaine",
   "org": "Belnet",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -18,6 +19,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/belnet-munsqkj0sc95q8fxu2r"
    }
@@ -26,7 +28,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Des attaquants ont copié pendant plus de deux mois les e-mails entrants de Belnet et leurs pièces jointes vers une infrastructure externe.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -36,6 +41,7 @@
   "id": "INC-3540E86641E4",
   "location": "France métropolitaine",
   "org": "Décoclim",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -44,6 +50,7 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/decoclim.png"
    }
@@ -52,7 +59,10 @@
    "BONJOURLAFUITE"
   ],
   "summary": "BonjourLaFuite signale une fuite de données concernant Décoclim.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -62,6 +72,9 @@
   "id": "INC-C76D252079F0",
   "location": "France métropolitaine",
   "org": "Europrim",
+  "organisation_links": [
+   "https://euro-prim.com"
+  ],
   "personal_data_exposed": false,
   "sector": "Santé",
   "sector_status": {
@@ -71,17 +84,15 @@
    "reason": "SOURCE_SECTOR_RAW",
    "status": "reported"
   },
-  "source_links": [
-   {
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://euro-prim.com"
-   }
-  ],
+  "source_links": [],
   "sources": [
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -91,6 +102,7 @@
   "id": "INC-514833CDCCB3",
   "location": "Inconnu",
   "org": "FFRandonnée",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -102,6 +114,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/ffrandonnee-143-million-de-fiches-dadherents-en-fuite-apres-une-cyberattaque/"
    }
@@ -110,7 +123,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "La FFRandonnée fait l’objet d’une revendication de fuite de 1 429 334 fiches d’adhérents contenant divers identifiants et données personnelles.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -120,6 +136,7 @@
   "id": "INC-AC0AE089503F",
   "location": "France métropolitaine",
   "org": "Frontières",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -128,6 +145,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/fronti-res-muo3jsnd6wflxqyd4w8"
    }
@@ -136,7 +154,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Fuite de noms, prénoms et adresses e-mail d’abonnés du média Frontières, potentiellement plusieurs dizaines de milliers concernés.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -146,6 +167,7 @@
   "id": "INC-32DEDB181594",
   "location": "France métropolitaine",
   "org": "Scribd",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -157,10 +179,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/scribd-confirme-une-cyberattaque-ayant-expose-les-donnees-de-certains-utilisateurs/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/scribd-munsjrub5u8wlyhjfd"
    }
@@ -170,7 +194,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Scribd confirme un accès non autorisé à ses systèmes et l’exposition de certaines données d’utilisateurs.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -180,6 +207,7 @@
   "id": "INC-36BF040BEA60",
   "location": "France métropolitaine",
   "org": "Alaxione",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -191,10 +219,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/alaxione-les-donnees-de-sante-de-162-millions-de-personnes-en-fuite-67-centres-point-vision-concernes/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/alaxione-mukgc44jlfsfro727v"
    }
@@ -204,7 +234,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Alaxione fait l'objet d'une revendication de fuite de données de santé concernant 16 221 383 personnes.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -214,6 +247,7 @@
   "id": "INC-FB1EC7E5A99A",
   "location": "France métropolitaine",
   "org": "Fédération Française de la randonnée",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -225,6 +259,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-la-randonn-e-ffr-mun6o16r4h0ud0vz18i"
    }
@@ -233,7 +268,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique la mise en vente d’une base de 1,43 million d’enregistrements d’adhérents de la Fédération française de la randonnée.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -243,6 +281,7 @@
   "id": "INC-20CE598D53A6",
   "location": "France métropolitaine",
   "org": "Groupe KEL",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -254,6 +293,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/groupe-kel-orisha-mukzqxqoj9x80n11kl"
    }
@@ -262,7 +302,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Revendication de fuite chez KEL/Orisha: ~1,3 million de personnes et ~200 000 documents proposés à la vente par un pirate.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -272,6 +315,7 @@
   "id": "INC-8977F4E00B2B",
   "location": "France métropolitaine",
   "org": "Groupe KRYS",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -283,6 +327,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/groupe-krys-mumwngoynr60917ydof"
    }
@@ -291,7 +336,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Fuite revendiquée de données de 9 537 personnes attribuée à Krys Group, fichiers publiés sur un forum cybercriminel.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -301,6 +349,7 @@
   "id": "INC-C4A651F59644",
   "location": "France métropolitaine",
   "org": "Groupe Proxitel",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
@@ -309,6 +358,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/groupe-proxitel-mumql7oahuw19uxxrcs"
    }
@@ -317,7 +367,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Le groupe de ransomware Vexy revendique avoir récupéré 35 Go de données attribuées à Proxitel.",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -327,6 +380,7 @@
   "id": "INC-2906CE42B265",
   "location": "Inconnu",
   "org": "Krys Group",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -335,6 +389,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/krys-group-les-donnees-de-plus-de-8-000-personnes-diffusees-apres-une-cyberattaque/"
    }
@@ -343,7 +398,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Krys Group : les données de plus de 8 000 personnes diffusées après une cyberattaque",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -353,6 +411,7 @@
   "id": "INC-8DD0D487E22E",
   "location": "France métropolitaine",
   "org": "Laboratoire LCS",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -364,10 +423,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-laboratoire-lcs-les-donnees-de-30-000-porteurs-de-lentilles-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/laboratoire-lcs-mumvnwq04l1mbwn1j5"
    }
@@ -377,7 +438,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Le Laboratoire LCS annonce une fuite de données contenant 30 215 porteurs de lentilles, publiée le 29 septembre 2026.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -387,6 +451,7 @@
   "id": "INC-87031C7549CF",
   "location": "Inconnu",
   "org": "Orisha",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -395,6 +460,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/orisha-groupe-kel-13-million-de-personnes-et-143-000-iban-revendiques-apres-une-cyberattaque/"
    }
@@ -403,7 +469,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "ChimeraZ revendique l'exfiltration de données de KEL/Orisha, soit environ 1,3 million de personnes et 142 913 IBAN.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -413,6 +482,7 @@
   "id": "INC-5D9E8757B8BE",
   "location": "France métropolitaine",
   "org": "SFR",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -421,10 +491,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/sfr-pres-de-16-000-dossiers-de-rendez-vous-de-raccordement-diffuses-sur-le-darknet/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/sfr-mumwwgpf6irybx9jcw7"
    }
@@ -434,7 +506,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "SFR : 15 817 dossiers de souscriptions et raccordements diffusés sur le Darknet.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -444,6 +519,7 @@
   "id": "INC-B2323F1F0DB2",
   "location": "Inconnu",
   "org": "Alaxione",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -455,6 +531,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/alaxione-86-millions-de-patients-revendiques-dans-une-nouvelle-fuite/"
    }
@@ -463,7 +540,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Alaxione est visée par une revendication de fuite contenant 8,6 millions de patients et 311 286 numéros de Sécurité sociale.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -473,6 +553,7 @@
   "id": "INC-49CFE67751C8",
   "location": "France métropolitaine",
   "org": "Azaé",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
@@ -482,10 +563,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/azae-cyberattaque-fichiers-revelent-des-informations-medicales-sur-des-beneficiaires/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/aza-mukkqhuagxmqmicsl9j"
    }
@@ -495,7 +578,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Azaé fait l'objet d'une revendication de fuite de données de 3 731 fichiers attribuée au pseudonyme « ChimeraZ ».",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -505,6 +591,7 @@
   "id": "INC-5EDD2772312B",
   "location": "France métropolitaine",
   "org": "Colec",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -516,10 +603,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/colec-victime-dune-cyberattaque-336-go-de-donnees-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/colec-mulppzyrqa4qwnvus7c"
    }
@@ -529,7 +618,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Colec victime d’une cyberattaque, 3,36 Go de données en fuite",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -539,6 +631,7 @@
   "id": "INC-0DACE151ECA1",
   "location": "Inconnu",
   "org": "Fédération flamande de judo",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -550,6 +643,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-flamande-de-judo-mulg7iicslkivaezmf9"
    }
@@ -558,7 +652,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Fédération flamande de judo fait l'objet d'une revendication de fuite de données contenant les informations de 98 495 membres.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -568,6 +665,7 @@
   "id": "INC-947343AC5270",
   "location": "France métropolitaine",
   "org": "Les Clés de l’Atelier",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -579,10 +677,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/les-cles-de-latelier-une-fuite-expose-des-donnees-de-stagiaires/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/les-cl-s-de-l-atelier-mulcuy15p8t3i1p5war"
    }
@@ -592,7 +692,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Les Clés de l’Atelier voit une base de 10 193 lignes revendiquée diffusant des données de stagiaires.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -602,6 +705,7 @@
   "id": "INC-0C6419E48F71",
   "location": "Inconnu",
   "org": "Planity",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -613,6 +717,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/planity-17-244-fiches-clients-diffusees-apres-une-nouvelle-cyberattaque/"
    }
@@ -621,7 +726,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Planity voit 17 244 fiches clients diffusées dans une nouvelle fuite de données revendiquée le 27 septembre 2026.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -631,6 +739,7 @@
   "id": "INC-63A143370102",
   "location": "France métropolitaine",
   "org": "Portalia",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Services aux entreprises",
   "sector_status": {
@@ -645,10 +754,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-chez-portalia-22-000-documents-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/portalia-mukjf8v1pk2fw5xkrf"
    }
@@ -658,7 +769,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Portalia subit une fuite de données revendiquée avec 22 221 fichiers et 21 698 enregistrements, dont des bulletins de salaire contenant des données sensibles.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -668,6 +782,7 @@
   "id": "INC-8568A4E43460",
   "location": "France métropolitaine",
   "org": "Spareka",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -679,10 +794,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/spareka-cyberattaque-pres-de-8-000-demandes-de-reparation-avec-les-coordonnees-des-clients-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/spareka-mulcy9rimwnqor7klib"
    }
@@ -692,7 +809,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Spareka signale une fuite revendiquée de 7 770 fiches de demandes de réparation contenant des coordonnées clients.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -702,6 +822,7 @@
   "id": "INC-A84ABFF6796F",
   "location": "France métropolitaine",
   "org": "Talentplug",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -711,10 +832,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/talentplug-cyberattaque-pres-de-119-000-candidatures-diffusees-sur-le-dark-web/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/talentplug-mulp4xdy2f3iyz3qle5"
    }
@@ -724,7 +847,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Talentplug a vu une base de 118 676 candidatures diffusée sur le Dark Web contenant noms, e-mails et numéros de téléphone de candidats.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -734,6 +860,7 @@
   "id": "INC-39AC99DC698D",
   "location": "France métropolitaine",
   "org": "Agefiph",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Association / Syndicat",
   "sector_status": {
@@ -748,10 +875,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/agefiph-les-donnees-de-3-700-personnes-en-situation-de-handicap-diffusees/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/agefiph-mujvbup2qid66k3d18c"
    }
@@ -761,7 +890,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Agefiph : les données de 3 700 personnes en situation de handicap diffusées",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -771,6 +903,7 @@
   "id": "INC-BCB0E97E5B45",
   "location": "France métropolitaine",
   "org": "Fédération française de basketball",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -782,6 +915,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-basketball-mujll4cjhxoskk8ka8"
    }
@@ -790,7 +924,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -800,6 +937,7 @@
   "id": "INC-4CA0BE29DA39",
   "location": "Inconnu",
   "org": "Fédération Royale Belge des Échecs",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -811,6 +949,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-checs-mujyxodizhqrcrsf8b"
    }
@@ -819,7 +958,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une revendication de fuite affirme exposer les données de 5 914 joueurs et 210 clubs de la Fédération royale belge des échecs.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -829,6 +971,7 @@
   "id": "INC-EB38E1F1F3E0",
   "location": "France métropolitaine",
   "org": "Kiassure",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Finance / Assurance",
   "sector_status": {
@@ -840,10 +983,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/kiassure-42-000-dossiers-clients-dans-une-fuite-de-donnees/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/kiassure-mukbnw9ya3i9enxgs1l"
    }
@@ -853,7 +998,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Kiassure fait l’objet d’une revendication de fuite de 42 742 dossiers clients et d’un millier de coordonnées bancaires.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -863,6 +1011,7 @@
   "id": "INC-06ECF42EF0B5",
   "location": "France métropolitaine",
   "org": "Oracio",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -874,10 +1023,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/oracio-les-adresses-de-96-000-personnes-exposees-avec-1-856-digicodes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/oracio-snexi-muk9vavg2razv5dv9de"
    }
@@ -887,7 +1038,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Oracio : fuite revendiquée d'une base de ~96 274 personnes et 1 856 digicodes exposés.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -897,6 +1051,7 @@
   "id": "INC-676716BCCE94",
   "location": "France métropolitaine",
   "org": "Planity",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -908,6 +1063,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/planity-muk9e2w3bmx7yd3yyfe"
    }
@@ -916,7 +1072,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Publication revendiquée d'une base contenant 17 243 fiches clients liées à des professionnels utilisant Planity.",
-  "threat": "Phishing / fraude"
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -926,6 +1085,7 @@
   "id": "INC-56866F7B17D0",
   "location": "France métropolitaine",
   "org": "Ressources Si",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Services aux entreprises",
   "sector_status": {
@@ -937,6 +1097,7 @@
   },
   "source_links": [
    {
+    "label": "pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/ressources-si"
    }
@@ -945,7 +1106,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -955,6 +1119,7 @@
   "id": "INC-DCADE9E8E394",
   "location": "France métropolitaine",
   "org": "Scorenco",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -966,6 +1131,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/scorenco-muk3vycif9p7gzzgupl"
    }
@@ -974,7 +1140,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une revendication publique allègue la diffusion gratuite d'une base attribuée à Score'n'co contenant 22 962 enregistrements.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -984,6 +1153,7 @@
   "id": "INC-3139AFB2614E",
   "location": "Inconnu",
   "org": "Score’n’co",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -995,6 +1165,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/scorenco-pres-de-23-000-fiches-de-membres-de-clubs-sportifs-en-fuite/"
    }
@@ -1003,7 +1174,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Score’n’co victime d'une fuite revendiquée exposant 22 962 lignes de fiches de membres de clubs sportifs.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1013,6 +1187,7 @@
   "id": "INC-88E7A1ED85A0",
   "location": "Inconnu",
   "org": "SDIS 80",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -1021,6 +1196,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/sdis-80-pres-de-2-500-sapeurs-pompiers-et-agents-de-la-somme-dans-une-fuite-de-donnees/"
    }
@@ -1029,7 +1205,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Le SDIS 80 fait l’objet d’une fuite de données revendiquée le 26 septembre 2026 exposant près de 2 500 profils.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1039,6 +1218,7 @@
   "id": "INC-78419FB9DA1C",
   "location": "France métropolitaine",
   "org": "Aestria",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -1050,10 +1230,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/aestria-les-donnees-clients-et-outils-internes-dun-prestataire-cyber-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/aestria-mui0okz5kx91njjeuw"
    }
@@ -1063,7 +1245,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Aestria voit plusieurs bases de données internes et données clients revendiquées publiées après une compromission revendiquée.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1073,6 +1258,7 @@
   "id": "INC-DB70F62CAABE",
   "location": "France métropolitaine",
   "org": "CAPM Europe",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -1082,10 +1268,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/capm-europe-cyberattaque-200-go-de-mails-documents-et-donnees-crm-diffuses/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/capm-europe-blgcloud-muiqoe2111aliz5rbfbn"
    }
@@ -1095,7 +1283,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "ChimeraZ revendique la diffusion d'environ 200 Go et 193 982 fichiers issus de l'environnement blgCloud de CAPM Europe.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1105,6 +1296,7 @@
   "id": "INC-7AAA2E982784",
   "location": "France métropolitaine",
   "org": "Carrefour",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1116,10 +1308,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/carrefour-des-donnees-clients-exposees-apres-la-cyberattaque-de-son-prestataire/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/carrefour-shipup-muixw7rd535cstgrh65"
    }
@@ -1129,7 +1323,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Carrefour : des données clients exposées après la cyberattaque de son prestataire",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1139,6 +1336,7 @@
   "id": "INC-DEDD0ED9EB9A",
   "location": "France métropolitaine",
   "org": "Cigusto",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1150,10 +1348,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cigusto-les-donnees-de-150-000-clients-de-lenseigne-de-vape-revendiquees/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/cigusto-muiqgjuvvmozfkjzrdp"
    }
@@ -1163,7 +1363,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "ZMLOOKUP revendique la fuite d'environ 150 000 profils clients de Cigusto contenant noms, e‑mails et données de fidélité.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1173,6 +1376,7 @@
   "id": "INC-FABD16004BFF",
   "location": "France métropolitaine",
   "org": "Communauto",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1184,10 +1388,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/communauto-permis-cyberattaque-voles/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/communauto-mui6jwgstgrtgydw18"
    }
@@ -1197,7 +1403,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Communauto a signalé l’utilisation non autorisée d’un compte interne ayant potentiellement exposé des documents d’identité de certains membres.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1207,6 +1416,7 @@
   "id": "INC-8FE3D1894F9C",
   "location": "France métropolitaine",
   "org": "Ecofone",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1218,10 +1428,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/ecofone-une-faille-zero-day-de-magento-ouvre-lacces-aux-donnees-de-ses-clients/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ecofone-muimai8f33qqkk1kskt"
    }
@@ -1231,7 +1443,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Ecofone signale une intrusion exploitant une faille zero-day de Magento ayant potentiellement exposé des données clients.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1241,6 +1456,7 @@
   "id": "INC-1609FD7212B6",
   "location": "France métropolitaine",
   "org": "Century 21",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -1255,10 +1471,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/century-21-les-donnees-de-pres-de-131-000-personnes-mises-en-vente-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/century-21-mugqgu352cjof5r1vro"
    }
@@ -1268,7 +1486,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Century 21 France : un hacker revendique la mise en vente les données de 130 995 personnes issues de formulaires contactant des agences.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1278,6 +1499,7 @@
   "id": "INC-523457E7106A",
   "location": "France métropolitaine",
   "org": "GeoNat’ÎdF",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -1286,10 +1508,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/geonatidf-les-donnees-de-3-400-utilisateurs-de-la-plateforme-biodiversite-francilienne-pirate/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/geonat-df-muh0ong95l9qveyqzp4"
    }
@@ -1299,7 +1523,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "GeoNat’îdF : les données de 3 400 utilisateurs de la plateforme biodiversité francilienne piraté",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1309,6 +1536,7 @@
   "id": "INC-87D2AA2BDA02",
   "location": "France métropolitaine",
   "org": "Pharmaland",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -1323,10 +1551,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/pharmaland-cyberattaque-pres-de-6-800-fiches-liees-aux-pharmacies-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/pharmaland-muh0qob0a3hg4o62f7w"
    }
@@ -1336,7 +1566,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Pharmaland a vu une fuite de données revendiquée, avec près de 6 800 enregistrements diffusés selon l'attaquant.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1346,6 +1579,7 @@
   "id": "INC-AE83733D5446",
   "location": "France métropolitaine",
   "org": "Plurélya",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Association / Syndicat",
   "sector_status": {
@@ -1360,14 +1594,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/plurelya.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-plurelya-les-donnees-de-150-114-agents-publics-et-enfants-mises-en-vente-sur-le-dark-web/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/plur-lya-mueuh3xn6xyhrqeahlh"
    }
@@ -1378,7 +1615,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Plurélya voit une base de 4,4 Go et 965 575 lignes revendiquée, incluant les données de 150 114 personnes mises en vente pour 250 dollars.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1388,6 +1628,7 @@
   "id": "INC-CCB9516D9CFF",
   "location": "France métropolitaine",
   "org": "Réassurez-moi",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Finance / Assurance",
   "sector_status": {
@@ -1402,10 +1643,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/reassurez-moi-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/r-assurez-moi-muh4vu8j4ovtx022ru"
    }
@@ -1415,7 +1658,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Réassurez-moi signale l’exfiltration de données personnelles lors d’une cyberattaque le 13 septembre 2026.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1425,6 +1671,7 @@
   "id": "INC-0B0B8C7EB128",
   "location": "France métropolitaine",
   "org": "Réserver.fr",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1436,6 +1683,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/r-server-fr-muh0tz8riz7fzvv5x2"
    }
@@ -1444,7 +1692,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Réserver.fr voit publiée une base de données présentée comme une ancienne sauvegarde MySQL et un code WordPress exposés publiquement.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1454,6 +1705,9 @@
   "id": "INC-FFCBE53FECAC",
   "location": "France métropolitaine",
   "org": "agiliance",
+  "organisation_links": [
+   "https://agiliance.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Services aux entreprises",
   "sector_status": {
@@ -1465,6 +1719,7 @@
   },
   "source_links": [
    {
+    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=cdbgfyjtgfdsf"
    }
@@ -1473,7 +1728,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1483,6 +1741,9 @@
   "id": "INC-AEF41727FCA2",
   "location": "France métropolitaine",
   "org": "Agora coopérative agricole",
+  "organisation_links": [
+   "https://coopagora.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Agriculture / Agroalimentaire",
   "sector_status": {
@@ -1494,6 +1755,7 @@
   },
   "source_links": [
    {
+    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=02785247-5bb1-42b8-aa7f-3dd0d96e2dc3"
    }
@@ -1502,7 +1764,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1512,6 +1777,7 @@
   "id": "INC-42EC20D224C2",
   "location": "France métropolitaine",
   "org": "ARNtreal",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1523,14 +1789,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/arntreal.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-arntreal-101-000-utilisateurs-et-leurs-reseaux-sociaux-revendiques-dans-une-fuite-massive/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/arntreal-muff0l3o37eafdqvz6z"
    }
@@ -1541,7 +1810,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "ARNtreal : 101 000 utilisateurs et leurs réseaux sociaux revendiqués dans une fuite de données",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1551,6 +1823,7 @@
   "id": "INC-D9091A0211B6",
   "location": "France métropolitaine",
   "org": "ASP",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -1562,14 +1835,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/asp.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/asp-une-cyberattaque-expose-143-000-lignes-de-beneficiaires-daides-publiques/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mufhbfg6dferxvrn99"
    }
@@ -1580,7 +1856,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "ASP : une cyberattaque expose 143 000 lignes de bénéficiaires du Coup de pouce énergie",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1590,6 +1869,7 @@
   "id": "INC-EA45CB7EDDDE",
   "location": "France métropolitaine",
   "org": "Aéroclub de l’AIA",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Transport / Logistique",
   "sector_status": {
@@ -1601,10 +1881,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/acaia-fr-pirate-les-licences-des-pilotes-et-personnels-lies-a-la-defense-expose/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/a-roclub-de-l-aia-mufen4abudexvcjiwgs"
    }
@@ -1614,7 +1896,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une fuite de données d'Acaia.fr liée à l'Aéroclub de l’AIA expose licences de pilote, coordonnées et informations professionnelles.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1624,6 +1909,9 @@
   "id": "INC-3E7D77B3D0DC",
   "location": "France métropolitaine",
   "org": "BMGP Groupe",
+  "organisation_links": [
+   "https://polyresine.com"
+  ],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
@@ -1632,6 +1920,7 @@
   },
   "source_links": [
    {
+    "label": "xjhmtitnrdrgzw4vmsghirdoo2fk35a3tzj4enlmah4pvehdspydsiyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://xjhmtitnrdrgzw4vmsghirdoo2fk35a3tzj4enlmah4pvehdspydsiyd.onion/blog/?post_uuid=539a46d4-2e59-4ef7-aabf-5cddda6a7606"
    }
@@ -1640,7 +1929,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1650,6 +1942,7 @@
   "id": "INC-D8AF87664D6E",
   "location": "France métropolitaine",
   "org": "Celinni",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1661,14 +1954,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/celinni.jpg"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/celinni-les-proprietaires-de-bijoux-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/celinni-muim3c0lnes4szg970p"
    }
@@ -1679,7 +1975,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Celinni fait l’objet d’une revendication de cyberattaque avec la prétendue exfiltration de 243 871 références et 32 914 diamants GIA.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1689,6 +1988,7 @@
   "id": "INC-6A6C77858168",
   "location": "France métropolitaine",
   "org": "Digit RE Group",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -1700,6 +2000,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/digit-re-group-mufsoxj6psj83lnr4wt"
    }
@@ -1708,7 +2009,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Digit RE Group : un pirate revendique la publication de 159 135 enregistrements d'appels et de données liées à 54 569 personnes.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1718,6 +2022,7 @@
   "id": "INC-0D46C7B8737B",
   "location": "France métropolitaine",
   "org": "Doinsport",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -1727,10 +2032,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-doinsport-175-million-de-reservations-de-la-plateforme-sportive-revendiquees/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/doinsport-muffxg0l7wvtj6cqckl"
    }
@@ -1740,7 +2047,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Doinsport voit revendiquée une fuite de 6,9 Go incluant 1,75 million de réservations et 54 545 utilisateurs, selon le hacker RedStone.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1750,6 +2060,7 @@
   "id": "INC-9607A0C6CE0E",
   "location": "France métropolitaine",
   "org": "Horizane Santé",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -1761,10 +2072,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/horizane-sante-pres-de-9-000-comptes-clients-et-un-acces-administrateur-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/horizane-sant-muewzi6yot5enput9xc"
    }
@@ -1774,7 +2087,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Horizane Santé voit 8 864 comptes clients et un accès administrateur revendiqués dans une fuite de données.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1784,6 +2100,7 @@
   "id": "INC-447AE4B3A871",
   "location": "France métropolitaine",
   "org": "Maileva",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -1795,10 +2112,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/maileva-filiale-de-la-poste-victime-dune-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/maileva-mufora09gh9so92vdk"
    }
@@ -1808,7 +2127,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Maileva, filiale de La Poste victime d’une cyberattaque",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1818,6 +2140,7 @@
   "id": "INC-C51E0C2AE395",
   "location": "France métropolitaine",
   "org": "Uptoo",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Services aux entreprises",
   "sector_status": {
@@ -1832,10 +2155,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/uptoo-740-000-cv-revendiques-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/uptoo-mufge8zlw34qomqu3h"
    }
@@ -1845,7 +2170,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Uptoo voit un hacker revendiquer l'accès à plus de 740 000 profils et CV après une cyberattaque.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1855,6 +2183,7 @@
   "id": "INC-BB2E3878A0EC",
   "location": "France métropolitaine",
   "org": "Activa Assurances",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Finance / Assurance",
   "sector_status": {
@@ -1866,6 +2195,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/activa-assurances-mue1g3lzqpswxa7ldb8"
    }
@@ -1874,7 +2204,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Activa Assurances apparaît dans une publication revendiquant 18 765 lignes de données et FrenchBreaches estime ~10 758 personnes identifiables après analyse.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1884,6 +2217,9 @@
   "id": "INC-0E75E6FDF77D",
   "location": "France métropolitaine",
   "org": "Aokkef",
+  "organisation_links": [
+   "https://aokkef.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
@@ -1892,6 +2228,7 @@
   },
   "source_links": [
    {
+    "label": "t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion/company/bayalah/"
    }
@@ -1900,7 +2237,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1910,6 +2250,7 @@
   "id": "INC-1994FB59EEA0",
   "location": "France métropolitaine",
   "org": "Autobacs",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1921,10 +2262,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/autobacs-34-000-rendez-vous-atelier-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/autobacs-muda8o22m5n90gsgobl"
    }
@@ -1934,7 +2277,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Autobacs France voit 34 017 enregistrements de rendez‑vous atelier revendiqués publiquement après une fuite de données.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1944,6 +2290,7 @@
   "id": "INC-DFE22B730AB6",
   "location": "France métropolitaine",
   "org": "BackPower",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Industrie / Manufacture",
   "sector_status": {
@@ -1958,10 +2305,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberatatque-backpower-47-millions-de-lignes-revendiquees-dans-une-fuite-massive/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/backpower-mudibqhhe5pk8lk0ylr"
    }
@@ -1971,7 +2320,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "BackPower : 47 millions de lignes revendiquées dans une fuite massive",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -1981,6 +2333,7 @@
   "id": "INC-C3E56A9BD7F1",
   "location": "France métropolitaine",
   "org": "MesMarches",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1992,10 +2345,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/mesmarches-2-535-profils-dexposants-en-fuite-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/mesmarches-mud8tygyg3fsz8lhaa"
    }
@@ -2005,7 +2360,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "MesMarches : 2 535 profils d'exposants revendiqués en fuite de données.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2015,6 +2373,7 @@
   "id": "INC-C63850DBEE3B",
   "location": "France métropolitaine",
   "org": "Place des Salariés",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2026,10 +2385,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-chez-place-des-salaries-des-donnees-familiales-et-administratives-compromises/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/place-des-salari-s-haxoneo-mudy0b27eljs842gfja"
    }
@@ -2039,7 +2400,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Place des Salariés signale une violation de données le 16 septembre 2026 ayant permis la consultation et la copie de données personnelles.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2049,6 +2413,7 @@
   "id": "INC-83DD9A00472C",
   "location": "France métropolitaine",
   "org": "Twizzit",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -2058,10 +2423,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-twizzit-1-53-million-de-membres-de-clubs-et-associations-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/twizzit-mud9l0fmn55odchtxul"
    }
@@ -2071,7 +2438,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Twizzit voit une base de 1 532 886 membres revendiquée à la vente par un hacker.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2081,6 +2451,7 @@
   "id": "INC-182F9EE2F8D0",
   "location": "France métropolitaine",
   "org": "JIMS",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -2092,6 +2463,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/jims-mucy4j69k4im0qnlul"
    }
@@ -2100,7 +2472,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2110,6 +2485,7 @@
   "id": "INC-CCB0A791DF2D",
   "location": "France métropolitaine",
   "org": "Legalstart",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -2121,14 +2497,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/legalstart.jpg"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/legalstart-une-cyberattaque-expose-les-donnees-personnelles-de-ses-clients/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/legalstart-muctklh6rpolz3fsiu"
    }
@@ -2139,7 +2518,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Legalstart : une cyberattaque expose les données personnelles de ses clients",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2149,6 +2531,7 @@
   "id": "INC-0E4631F3A262",
   "location": "France métropolitaine",
   "org": "Paymium",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -2160,14 +2543,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/paymium.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/paymium-des-donnees-personnelles-de-clients-exposees-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/paymium-mud5fwguie84679mrab"
    }
@@ -2178,7 +2564,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Paymium informe que des données personnelles de clients ont pu être consultées après une intrusion chez son prestataire Brevo.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2188,6 +2577,7 @@
   "id": "INC-8D7AC4DCF1CA",
   "location": "France métropolitaine",
   "org": "UniFormation",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -2199,10 +2589,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/uniformation-1-200-stagiaires-en-fuite-avec-leurs-numeros-de-securite-sociale/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/uniformation-mud6nma32hq847xdxml"
    }
@@ -2212,7 +2604,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Uniformation victime d'une fuite de données revendiquée affectant environ 1 200 personnes incluant noms, dates de naissance et numéros de Sécurité sociale.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2222,6 +2617,7 @@
   "id": "INC-6A804DBD820F",
   "location": "France métropolitaine",
   "org": "Académie de Créteil",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -2233,6 +2629,7 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/creteil.png"
    }
@@ -2241,7 +2638,10 @@
    "BONJOURLAFUITE"
   ],
   "summary": "BonjourLaFuite signale une fuite de données concernant Académie de Créteil.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2251,6 +2651,7 @@
   "id": "INC-E005064D73B2",
   "location": "France métropolitaine",
   "org": "Altagem",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -2262,10 +2663,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/altagem-clients-equipes-et-donnees-operationnelles-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/altagem-mubgua4y1pn9jonb1uu"
    }
@@ -2275,7 +2678,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Altagem : clients, équipes et données opérationnelles exposés après une cyberattaque",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2285,6 +2691,7 @@
   "id": "INC-5E8059ABAC74",
   "location": "Inconnu",
   "org": "Amadeus iHotelier",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -2293,6 +2700,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/amadeus-ihotelier-une-cyberattaque-expose-les-reservations-de-plusieurs-hotels-en-france/"
    }
@@ -2301,7 +2709,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Amadeus iHotelier : une cyberattaque expose les réservations de plusieurs hôtels en France",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2311,6 +2722,7 @@
   "id": "INC-DFEB66426AD8",
   "location": "France métropolitaine",
   "org": "ColiSport",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Transport / Logistique",
   "sector_status": {
@@ -2322,10 +2734,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/colisport-pres-de-20-000-expeditions-en-fuite-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/colisport-mubqtrrp16gjlm6g0pn"
    }
@@ -2335,7 +2749,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "ColisPort subit une fuite de données revendiquée par le hacker Quantique exposant près de 20 000 demandes et expéditions.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2345,6 +2762,7 @@
   "id": "INC-A88202D7AFA6",
   "location": "France métropolitaine",
   "org": "Fédération Française de Spéléologie",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -2356,10 +2774,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/federation-francaise-de-speleologie-93-000-membres-et-des-donnees-bancaires-revendiques-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-sp-l-ologie-ffs-muac5a8sxy44x4kows"
    }
@@ -2369,7 +2789,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Fédération Française de Spéléologie revendiquée compromise avec 93 493 personnes et 371 IBAN annoncés.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2379,6 +2802,7 @@
   "id": "INC-F2C5F9D520CA",
   "location": "France métropolitaine",
   "org": "Répar'Store",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2390,6 +2814,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/r-par-store-mubj46abrs6i9ywytt7"
    }
@@ -2398,7 +2823,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2408,6 +2836,7 @@
   "id": "INC-745CC3BD768D",
   "location": "France métropolitaine",
   "org": "WayToMe",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Transport / Logistique",
   "sector_status": {
@@ -2419,10 +2848,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/waytome-147-000-utilisateurs-et-des-milliers-de-trajets-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/waytome-muaf8bf677nfxz6peuh"
    }
@@ -2432,7 +2863,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "WayToMe, plateforme française de livraison de colis entre particuliers, voit 147 287 profils et des milliers de trajets revendiqués exposés après une attaque.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2442,6 +2876,7 @@
   "id": "INC-BD9850BF3E4B",
   "location": "France métropolitaine",
   "org": "Biocoop",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2453,10 +2888,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/biocoop-28-go-de-donnees-internes-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/biocoop-mua6zxxgg1gjqmuiut"
    }
@@ -2466,7 +2903,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Biocoop victime d'une fuite revendiquée de 2,8 Go de données internes comprenant bases SQL, chiffres magasins, assortiments et positionnement tarifaire.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2476,6 +2916,7 @@
   "id": "INC-F3FE3B65CD68",
   "location": "France métropolitaine",
   "org": "Hôpital Paris Saint-Joseph",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -2487,10 +2928,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/hopital-paris-saint-joseph-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/h-pital-paris-saint-joseph-mu93cn8lvv9l381ye9f"
    }
@@ -2500,7 +2943,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Les fichiers de plus de 15 000 patients de l’Hôpital Paris Saint-Joseph ont été publiés en ligne.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2510,6 +2956,7 @@
   "id": "INC-195E6B7F17E8",
   "location": "France métropolitaine",
   "org": "Oceania Hotels",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2521,10 +2968,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/oceania-hotels-les-reservations-clients-exposees-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/oceania-hotels-muafduvclbs1sm0cei8"
    }
@@ -2534,7 +2983,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Oceania Hotels : les réservations clients exposées après une cyberattaque",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2544,6 +2996,9 @@
   "id": "INC-02BB571E8CCD",
   "location": "France métropolitaine",
   "org": "amb-pvc",
+  "organisation_links": [
+   "https://amb-pvc.com"
+  ],
   "personal_data_exposed": false,
   "sector": "Industrie / Manufacture",
   "sector_status": {
@@ -2555,6 +3010,7 @@
   },
   "source_links": [
    {
+    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm"
    }
@@ -2563,7 +3019,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2573,6 +3032,7 @@
   "id": "INC-3336EBD9F855",
   "location": "France métropolitaine",
   "org": "Diamonds Factory",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2584,10 +3044,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/diamonds-factory-24-000-commandes-clients-revendiques-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/diamonds-factory-mu8elc69ehzc7qh8dpn"
    }
@@ -2597,7 +3059,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Diamonds Factory : 24 094 lignes de données clients revendiquées à la vente après une fuite de données.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2607,6 +3072,7 @@
   "id": "INC-601E3DC05F51",
   "location": "France métropolitaine",
   "org": "Faktus",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -2621,10 +3087,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/faktus-cyberattaque-facture/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/faktus-mu8r9zho1hh7afgp9w8i"
    }
@@ -2634,7 +3102,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Faktus affirme avoir vu 53,7 Go de données financières et documents sensibles publiés par le hacker DaOnlySpark.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2644,6 +3115,9 @@
   "id": "INC-B52A1013C987",
   "location": "France métropolitaine",
   "org": "FRANCARETRAD",
+  "organisation_links": [
+   "https://www.francare.com"
+  ],
   "personal_data_exposed": false,
   "sector": "Santé",
   "sector_status": {
@@ -2655,6 +3129,7 @@
   },
   "source_links": [
    {
+    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz"
    }
@@ -2663,7 +3138,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2673,6 +3151,7 @@
   "id": "INC-6906B2607D08",
   "location": "France métropolitaine",
   "org": "HEOLIS",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Énergie / Utilities",
   "sector_status": {
@@ -2684,6 +3163,7 @@
   },
   "source_links": [
    {
+    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=bgsedfhgsbdfs"
    }
@@ -2692,7 +3172,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2702,6 +3185,7 @@
   "id": "INC-FD11035E7E5A",
   "location": "France métropolitaine",
   "org": "VitalWeb",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -2713,10 +3197,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/vitalweb-50-000-dossiers-patients-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/vitalweb-mu8rm6d0f8s6d6vte3g"
    }
@@ -2726,7 +3212,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique la fuite de 50 000 dossiers patients de VitalWeb contenant des numéros de sécurité sociale.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2736,6 +3225,7 @@
   "id": "INC-4D9B53C749DA",
   "location": "France métropolitaine",
   "org": "Whoof",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Services aux entreprises",
   "sector_status": {
@@ -2750,10 +3240,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/whoof-5-000-adoptants-et-eleveurs-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/whoof-mu8dyyqbqoaiqbzpoqr"
    }
@@ -2763,7 +3255,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Whoof : 5 000 adoptants et éleveurs exposés après une cyberattaque",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2773,6 +3268,7 @@
   "id": "INC-A47A707953EA",
   "location": "France métropolitaine",
   "org": "Armurerie Lavaux",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2784,6 +3280,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/armurerie-lavaux-fftir-sia-mu4veintm4jse4e4ix"
    }
@@ -2792,7 +3289,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une base revendiquée de 220 Mo liée à l’Armurerie Lavaux, contenant 232 341 lignes et les informations de 120 158 personnes, est mise en vente par un pirate.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2802,6 +3302,7 @@
   "id": "INC-2D5B61EEEBC6",
   "location": "France métropolitaine",
   "org": "CUC Loisirs & Vacances",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2813,10 +3314,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cuc-loisirs-vacances-des-informations-de-sante-de-mineurs-diffusees-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/cuc-loisirs-vacances-mu7ahotf7ukds1b294"
    }
@@ -2826,7 +3329,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "CUC Loisirs & Vacances : des informations de santé de mineurs diffusées après une cyberattaque",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2836,6 +3342,7 @@
   "id": "INC-845CF3A0AFE4",
   "location": "France métropolitaine",
   "org": "Le Club TotalEnergies",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -2847,10 +3354,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/le-club-totalenergies-touche-par-une-cyberattaque-les-historiques-de-transactions-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/totalenergies-le-club-mu7a3uzvcz8fsq6txcu"
    }
@@ -2860,7 +3369,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Le Club TotalEnergies touché par une cyberattaque : les historiques de transactions en fuite",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2870,6 +3382,7 @@
   "id": "INC-F01F1A75909C",
   "location": "France métropolitaine",
   "org": "L’Orange bleue",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -2884,10 +3397,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/lorange-bleue-732-000-fiches-dadherents-et-440-000-iban-dans-une-fuite-massive-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/orange-bleue-mu6sr6lm5tsbb71uwjf"
    }
@@ -2897,7 +3412,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Venus1337 revendique la fuite de 732 385 fiches d'adhérents et 440 326 IBAN de L’Orange bleue.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2907,6 +3425,7 @@
   "id": "INC-3344F0DB45BC",
   "location": "France métropolitaine",
   "org": "Mairie de Mortagne-au-Perche",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -2918,6 +3437,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/mairie-de-mortagne-au-perche-muhiffjbw9vo6wzaqt"
    }
@@ -2926,7 +3446,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La mairie de Mortagne-au-Perche a vu plusieurs fichiers chiffrés sur deux serveurs après une cyberattaque découverte le 18 septembre 2026.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2936,6 +3459,9 @@
   "id": "INC-25FB4E5B300E",
   "location": "France métropolitaine",
   "org": "Stim",
+  "organisation_links": [
+   "https://stim.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -2947,6 +3473,7 @@
   },
   "source_links": [
    {
+    "label": "pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/stim"
    }
@@ -2955,7 +3482,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2965,6 +3495,9 @@
   "id": "INC-911E74AADDEB",
   "location": "Inconnu",
   "org": "Greffe du Tribunal de Paris",
+  "organisation_links": [
+   "https://greffe-tae-paris.fr"
+  ],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -2973,6 +3506,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/greffe-du-tribunal-de-paris-des-adresses-privees-et-donnees-familiales-de-juges-en-fuite/"
    }
@@ -2981,7 +3515,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Greffe du Tribunal de Paris : des adresses privées et données familiales de juges en fuite",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -2991,6 +3528,7 @@
   "id": "INC-2EA9D4F2C864",
   "location": "France métropolitaine",
   "org": "Pays de L’Aigle",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -3002,10 +3540,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/pays-de-laigle-une-cyberattaque-contre-les-messageries-fait-craindre-une-fuite-de-donnees-sensibles/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/pays-de-l-aigle-mu62uazzlgiwn2iy3q"
    }
@@ -3015,7 +3555,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Communauté de communes des Pays de L’Aigle a subi une intrusion touchant son serveur de messagerie professionnelle le 14-15 septembre 2026.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3025,6 +3568,7 @@
   "id": "INC-DC8AC46291C7",
   "location": "France métropolitaine",
   "org": "Tribunal des activités économiques de Paris",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -3036,6 +3580,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/tribunal-des-activit-s-conomiques-de-paris-tae-mu5i6aq2tacwkov45cr"
    }
@@ -3044,7 +3589,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une fuite de données revendiquée expose les informations d'environ 722 personnes liées au Greffe du Tribunal des activités économiques de Paris.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3054,6 +3602,7 @@
   "id": "INC-D2FB7EB1592C",
   "location": "France métropolitaine",
   "org": "Zenfirst",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -3065,10 +3614,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/zenfirst-victime-dune-cyberattaque-des-milliers-de-donnees-de-facturation-exposees/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/zenfirst-mu5htqiwd1qoi6ixtx5"
    }
@@ -3078,7 +3629,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Zenfirst victime d’une cyberattaque : des milliers de données de facturation exposées",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3088,6 +3642,7 @@
   "id": "INC-F34197834D47",
   "location": "France métropolitaine",
   "org": "AFPA",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -3099,6 +3654,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/afpa-mu3sfxoqeownzuda0zt"
    }
@@ -3107,7 +3663,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique mettre en vente une base associée au domaine afpa.fr contenant 971 420 enregistrements.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3117,6 +3676,7 @@
   "id": "INC-6671500C32EB",
   "location": "France métropolitaine",
   "org": "CrowdSec",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -3128,10 +3688,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/crowdsec-son-code-source-en-fuite-apres-la-compromission-dune-cle-api/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/crowdsec-mu4npqnxblj4hm33zkp"
    }
@@ -3141,7 +3703,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "CrowdSec : son code source en fuite après la compromission d’une clé API",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3151,6 +3716,7 @@
   "id": "INC-4522C21E32DC",
   "location": "France métropolitaine",
   "org": "NosRezo",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -3162,6 +3728,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/nosrezo-propertips-mu452qgr87fyxkxkxh"
    }
@@ -3170,7 +3737,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une base attribuée à NosRezo / Propertips et revendiquée contenant les données de 413 722 personnes est proposée à la vente sur un forum cybercriminel.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3180,6 +3750,7 @@
   "id": "INC-6DBA5222763D",
   "location": "Inconnu",
   "org": "Propertips by iad",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -3188,6 +3759,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/propertips-iad-cyberattaque-nosrezo/"
    }
@@ -3196,7 +3768,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Propertips by iad visé par une cyberattaque : 413 000 clients et conseillers en fuite",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3206,6 +3781,9 @@
   "id": "INC-1E4AB4109456",
   "location": "France métropolitaine",
   "org": "Thema Foundries",
+  "organisation_links": [
+   "https://www.thema-foundries.com"
+  ],
   "personal_data_exposed": false,
   "sector": "Industrie / Manufacture",
   "sector_status": {
@@ -3217,6 +3795,7 @@
   },
   "source_links": [
    {
+    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=37cc9331-88ba-48f1-ab5c-a4636f8fbd84"
    }
@@ -3225,7 +3804,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3235,6 +3817,7 @@
   "id": "INC-B6C3BE11559E",
   "location": "France métropolitaine",
   "org": "Ville de Libercourt",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -3246,6 +3829,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ville-de-libercourt-mu3s726lzo8j6uv1ta"
    }
@@ -3254,7 +3838,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Ville de Libercourt a subi fin août 2026 une attaque par rançongiciel entraînant l’exfiltration de données personnelles.",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3264,23 +3851,24 @@
   "id": "INC-5AD7E8261825",
   "location": "France métropolitaine",
   "org": "Aforpa",
+  "organisation_links": [
+   "https://aforpa.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
    "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
    "status": "unknown"
   },
-  "source_links": [
-   {
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://aforpa.fr"
-   }
-  ],
+  "source_links": [],
   "sources": [
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3290,6 +3878,7 @@
   "id": "INC-E67015756A95",
   "location": "France métropolitaine",
   "org": "AFPA",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -3301,10 +3890,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/afpa-pres-dun-million-de-dossiers-revendiques-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/afpa-mu4jbja3w3es4t7j0a8"
    }
@@ -3314,7 +3905,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une fuite de 971 420 enregistrements est revendiquée contre l'AFPA, contenant des données personnelles vendues par un acteur se nommant xMetah.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3324,6 +3918,7 @@
   "id": "INC-78281AB82197",
   "location": "France métropolitaine",
   "org": "Alaxione",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -3335,6 +3930,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/point-vision-alaxione-mu2xkknzvrz0vmolzuf"
    }
@@ -3343,7 +3939,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un prestataire chargé des rendez-vous de Point Vision a été victime d’une cyberattaque ayant entraîné l’accès à des données patients.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3353,6 +3952,7 @@
   "id": "INC-D7E1EEBAB16D",
   "location": "France métropolitaine",
   "org": "Carte De Pêche",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -3364,6 +3964,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/carte-de-p-che-mu2y1dhf81dp7ixpy9y"
    }
@@ -3372,7 +3973,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique la fuite de fichiers d'adhérents de Carte-de-pêche.fr couvrant 2012-2026 et visant plusieurs milliers d'adhérents.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3382,6 +3986,7 @@
   "id": "INC-56553114E3FD",
   "location": "France métropolitaine",
   "org": "Centrale Canine",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -3393,10 +3998,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/centrale-canine-une-cyberattaque-expose-les-donnees-de-plus-de-122-000-personnes/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/centrale-canine-mu2khodutmhix9d29g"
    }
@@ -3406,7 +4013,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une fuite de données diffusée par le hacker ChimeraZ expose des fichiers de la Centrale Canine contenant des informations sur environ 122 147 personnes.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3416,6 +4026,7 @@
   "id": "INC-8C6C97916F72",
   "location": "France métropolitaine",
   "org": "EAD-Online",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Éducation / Formation",
   "sector_status": {
@@ -3427,6 +4038,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ead-online-mu2kkot4fts8pqcld0c"
    }
@@ -3435,7 +4047,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une fuite de données revendiquée affectant EAD-Online.be, l'auteur affirme disposer de 19 456 enregistrements au format JSON (~3 Mo).",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3445,6 +4060,7 @@
   "id": "INC-015E0D4D14C0",
   "location": "Inconnu",
   "org": "Fédération Royale Belge de Tennis de Table",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -3456,6 +4072,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-tennis-de-table-mu2l3yrjnywvyypn0z"
    }
@@ -3464,7 +4081,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique l'exfiltration d'environ 1,69 Go de données visant l’AFTT et la FRBTT, incluant 66 852 adhérents et 17 441 utilisateurs.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3474,6 +4094,7 @@
   "id": "INC-41D3A5E68E62",
   "location": "France métropolitaine",
   "org": "Maison du Souvenir de Maillé",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Culture / Médias / Loisirs",
   "sector_status": {
@@ -3488,10 +4109,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/maison-du-souvenir-de-maille-vingt-ans-de-travail-numerique-perdus-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/maison-du-souvenir-mu3s96ekg9d5znwpghs"
    }
@@ -3501,7 +4124,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Maison du Souvenir de Maillé a perdu près de vingt années de travail numérique à la suite d'une cyberattaque.",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3511,6 +4137,7 @@
   "id": "INC-F6EA93C0805A",
   "location": "France métropolitaine",
   "org": "Papouille France",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -3522,10 +4149,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/papouille-france-touche-par-la-fuite-de-son-compte-blgcloud-avec-75-go-et-240-000-fichiers-exposes/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/papouille-france-blgcloud-mu2kat4fov2247lxirf"
    }
@@ -3535,7 +4164,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Papouille France voit 75 Go et 240 177 fichiers attribués à son compte BlgCloud diffusés publiquement.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3545,6 +4177,7 @@
   "id": "INC-096E79FC178A",
   "location": "France métropolitaine",
   "org": "Point Vision",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -3556,10 +4189,12 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/point-vision.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/point-vision-une-cyberattaque-expose-des-numeros-de-securite-sociale-et-des-donnees-de-patients/"
    }
@@ -3569,7 +4204,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Point Vision signale qu'une violation chez un prestataire a exposé des numéros de sécurité sociale et d'autres données de patients.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3579,6 +4217,7 @@
   "id": "INC-20C6D9DEDD18",
   "location": "France métropolitaine",
   "org": "Presses universitaires de Franche-Comté",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -3590,6 +4229,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/presses-universitaires-de-franche-comt-mu2lpccdyoxn2sw5p3e"
    }
@@ -3598,7 +4238,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3608,6 +4251,7 @@
   "id": "INC-77FA7FC04A8A",
   "location": "France métropolitaine",
   "org": "Welyb",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Services aux entreprises",
   "sector_status": {
@@ -3622,10 +4266,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-welyb-agiris-une-faille-expose-les-donnees-de-clients-de-cabinets-comptables/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/welyb-agiris-mu2m3x9bh33cfsst2bl"
    }
@@ -3635,7 +4281,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une faille d'un composant lié à Welyb/Portail AGIRIS CONNECT a exposé des données de clients de cabinets d'expertise comptable.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3645,6 +4294,7 @@
   "id": "INC-C25097FEA710",
   "location": "France métropolitaine",
   "org": "Bouteilles et bocaux",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -3656,14 +4306,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/bouteilles-bocaux.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/bouteilles-et-bocaux-une-cyberattaque-compromet-la-boutique-en-ligne-et-expose-des-donnees-clients/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/bouteilles-et-bocaux-mu1wwqvgmn17bqmth5"
    }
@@ -3674,17 +4327,21 @@
    "FRENCHBREACHES"
   ],
   "summary": "Bouteilles et bocaux : une cyberattaque compromet la boutique en ligne et expose des données clients",
-  "threat": "Malware"
+  "threat": "Malware",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-14",
-  "high_sensitivity_data_exposed": true,
+  "high_sensitivity_data_exposed": false,
   "id": "INC-C4310380AA3C",
   "location": "France métropolitaine",
   "org": "Familea",
-  "personal_data_exposed": true,
+  "organisation_links": [],
+  "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.7,
@@ -3695,10 +4352,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/familea-bruguieres-cyberattaque-les-portails-familles-inaccessibles/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/familea-mu1wyyw70shufju3yby"
    }
@@ -3708,7 +4367,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Familea victime d’une cyberattaque : les portails familles inaccessibles",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3718,6 +4380,7 @@
   "id": "INC-A5039CEBC10A",
   "location": "France métropolitaine",
   "org": "Grand Delta Habitat",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -3732,10 +4395,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/grand-delta-habitat-188-000-commandes-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/grand-delta-habitat-mu11w5cp7qxnf8bxui9"
    }
@@ -3745,18 +4410,22 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un acteur revendique la fuite d'une base de 188 014 commandes et interventions liée au bailleur social Grand Delta Habitat.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
   "admission_reason": "Le rectorat rapporte qu'un élève a été pris en flagrant délit de tentative de connexion au serveur ; l'analyse technique attribue les arrêts répétés à l'activation manuelle d'une commande de redémarrage via un compte administrateur.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-14",
-  "high_sensitivity_data_exposed": true,
+  "high_sensitivity_data_exposed": false,
   "id": "INC-72BF97901CE1",
   "location": "La Réunion",
   "org": "Lycée polyvalent Jean Joly",
-  "personal_data_exposed": true,
+  "organisation_links": [],
+  "personal_data_exposed": false,
   "sector": "Éducation / Formation",
   "sector_status": {
    "confidence": 0.8,
@@ -3767,6 +4436,7 @@
   },
   "source_links": [
    {
+    "label": "Imaz Press",
     "source": "VEILLE_LLM",
     "url": "https://imazpress.com/toute-l-actu/attaque-informatique-sur-le-lycee-de-saint-louis-jean-joly"
    }
@@ -3775,7 +4445,10 @@
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3785,6 +4458,7 @@
   "id": "INC-6741AD9842BA",
   "location": "France métropolitaine",
   "org": "Nature & Découvertes",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Culture / Médias / Loisirs",
   "sector_status": {
@@ -3799,14 +4473,17 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/nature-decouvertes.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/nature-decouvertes-touche-par-une-cyberattaque-chez-un-prestataire/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/nature-d-couvertes-mu1euyvui0h3fnzm19"
    }
@@ -3817,7 +4494,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Nature & Découvertes signale une fuite de données clients via une cyberattaque ayant affecté le système d'un de ses prestataires.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3827,6 +4507,9 @@
   "id": "INC-10677A4FD49A",
   "location": "France métropolitaine",
   "org": "Rosello et Fils",
+  "organisation_links": [
+   "https://rosello-fils.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Agriculture / Agroalimentaire",
   "sector_status": {
@@ -3838,10 +4521,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/rosello-et-fils-pres-de-60-go-de-donnees-revendique-par-un-ransomware/"
    },
    {
+    "label": "eclipse4g5kxfwsvpu4qx5sdcnrji6gxl5gt67bucjlgt35g7akvjoid.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://eclipse4g5kxfwsvpu4qx5sdcnrji6gxl5gt67bucjlgt35g7akvjoid.onion/place/ff64huj542fj0suv/"
    }
@@ -3851,7 +4536,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "Rosello et Fils : près de 60 Go de données revendiqués par un ransomware",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3861,6 +4549,9 @@
   "id": "INC-218799D3E526",
   "location": "France métropolitaine",
   "org": "CARIDRO VAL DE LOIRE",
+  "organisation_links": [
+   "https://caridrovaldeloire.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Industrie / Manufacture",
   "sector_status": {
@@ -3875,10 +4566,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/caridro-val-de-loire-des-centaines-de-fichiers-internes-publies-apres-une-cyberattaque/"
    },
    {
+    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=224e65b0-92cc-464a-871e-518f88a99685"
    }
@@ -3888,7 +4581,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "Des centaines de fichiers internes de Caridro Val de Loire ont été publiés par le groupe Qilin après une cyberattaque.",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3898,6 +4594,7 @@
   "id": "INC-CC9731B28C94",
   "location": "France métropolitaine",
   "org": "Fédération francophone de Gymnastique",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
@@ -3909,6 +4606,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-francophone-de-gymnastique-mu038ez5nh94acseflc"
    }
@@ -3917,7 +4615,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique la mise en vente des données de plus de 200 000 adhérents de la Fédération francophone de Gymnastique.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3927,6 +4628,7 @@
   "id": "INC-A00DBB2273A4",
   "location": "France métropolitaine",
   "org": "Groupe MGEL",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
@@ -3938,10 +4640,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-groupe-mgel-mutuelle-vitalite-sante/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/groupe-mgel-mtzinl1af3p94rq9r2p"
    }
@@ -3951,7 +4655,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un acteur revendique la vente de 16 bases de la MGEL contenant 38,8 millions de lignes et 450 806 IBAN.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3961,6 +4668,7 @@
   "id": "INC-BEB27450B5FC",
   "location": "France métropolitaine",
   "org": "Sushi&Cie",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
@@ -3975,10 +4683,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/sushicie-victime-dune-cyberattaque-plus-de-6-000-clients-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/sushi-cie-mtzyrhan3ic1hahpxtv"
    }
@@ -3988,7 +4698,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Sushi&Cie victime d’une cyberattaque plus de 6 000 clients en fuite",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -3998,6 +4711,7 @@
   "id": "INC-0D418F193074",
   "location": "France métropolitaine",
   "org": "Ekolis",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Transport / Logistique",
   "sector_status": {
@@ -4009,6 +4723,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ekolis-mtye57ckbfljbjhsei"
    }
@@ -4017,7 +4732,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique la publication de huit fichiers attribués à Ekolis contenant environ 70 000 lignes incluant véhicules, conducteurs et comptes utilisateurs.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4027,6 +4745,9 @@
   "id": "INC-ED5E5886980A",
   "location": "France métropolitaine",
   "org": "eracm",
+  "organisation_links": [
+   "https://eracm.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
@@ -4035,6 +4756,7 @@
   },
   "source_links": [
    {
+    "label": "krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/a34c6dc5ac3bd4acd0ff22b009c376c1630c21ed2aa3ba56630909633c198cba/"
    }
@@ -4043,7 +4765,10 @@
    "RANSOMWARE_LIVE"
   ],
   "summary": "",
-  "threat": "Ransomware"
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4053,6 +4778,7 @@
   "id": "INC-1C4D92961F4E",
   "location": "France métropolitaine",
   "org": "Revolut",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -4061,12 +4787,19 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/revolut.png"
    },
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/revolut-piege-par-de-fausses-demandes-gouvernementales-des-passeports-transmis-a-un-tiers/"
+   },
+   {
+    "label": "ewatchers.org",
+    "source": "BONJOURLAFUITE",
+    "url": "https://ewatchers.org/info/2026-09-12-revolut-les-donnees-de-certains-clients-compromises-suite-a-de-fausses-demandes-d-informations-gouvernementales-247"
    }
   ],
   "sources": [
@@ -4074,7 +4807,10 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4084,6 +4820,7 @@
   "id": "INC-575DE7755221",
   "location": "France métropolitaine",
   "org": "Aqualter",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Énergie / Utilities",
   "sector_status": {
@@ -4098,10 +4835,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/aqualter-187-000-numeros-de-telephone-exposes-apres-une-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/aqualter-mtw3s7ufzaqj8v0kb3b"
    }
@@ -4111,7 +4850,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Une fuite revendiquée expose 187 073 numéros de téléphone et 86 156 adresses e-mail liées à Aqualter.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4121,6 +4863,7 @@
   "id": "INC-1A4F2221C3A0",
   "location": "France métropolitaine",
   "org": "Boulanger",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -4132,10 +4875,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/boulanger-touche-par-une-cyberattaque-avec-132-000-dossiers-sav-revendiques-en-fuite/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/boulanger-mtx6sn0e1djwcj87mtd"
    }
@@ -4145,7 +4890,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Boulanger touché par une revendication de cyberattaque impliquant 132 000 dossiers SAV",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4155,6 +4903,7 @@
   "id": "INC-3AAEEA9D575F",
   "location": "France métropolitaine",
   "org": "Brevo",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -4166,10 +4915,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/brevo-cyberattaque-campagne-de-phishing-frappe-trezor-et-cointracking/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/brevo-mtwuixif0kdw2y7yp3bn"
    }
@@ -4179,7 +4930,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Brevo : 138 comptes compromis, une vaste campagne de phishing frappe Trezor et CoinTracking",
-  "threat": "Phishing / fraude"
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4189,6 +4943,7 @@
   "id": "INC-673354204E98",
   "location": "France métropolitaine",
   "org": "GreenGo",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
@@ -4203,10 +4958,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/greengo-victime-dune-cyberattaque-donnees-de-comptes-reservations-et-messages-potentiellement-consultes/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/greengo-mtwzey831kyjkwc99r"
    }
@@ -4216,7 +4973,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "GreenGo indique qu’un acteur non autorisé a consulté des données de comptes, réservations et messages via un outil interne reposant sur Metabase.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4226,6 +4986,7 @@
   "id": "INC-40F47F722BA0",
   "location": "France métropolitaine",
   "org": "Mairie d’Espelette",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4237,6 +4998,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/mairie-d-espelette-mu74hl5nkpj7248ih2a"
    }
@@ -4245,7 +5007,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La mairie d'Espelette a été victime d'une cyberattaque le 11 septembre 2026 après l'ouverture d'une pièce jointe malveillante se présentant comme une facture.",
-  "threat": "Malware"
+  "threat": "Malware",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4255,6 +5020,7 @@
   "id": "INC-7C0FCA2CE323",
   "location": "France métropolitaine",
   "org": "Pass Pass",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Inconnu",
   "sector_status": {
@@ -4263,6 +5029,7 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/passpass.png"
    }
@@ -4271,7 +5038,10 @@
    "BONJOURLAFUITE"
   ],
   "summary": "BonjourLaFuite signale une fuite de données concernant Pass Pass.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4281,6 +5051,7 @@
   "id": "INC-6FB6E50001AA",
   "location": "France métropolitaine",
   "org": "Salt Mobile",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -4292,6 +5063,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/salt-mobile-mtx0gdjpa301y7tku9k"
    }
@@ -4300,7 +5072,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Salt Mobile confirme une utilisation abusive d’un accès à un système périphérique potentiellement exposant des données personnelles clients.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4310,6 +5085,7 @@
   "id": "INC-7BF9828040F8",
   "location": "France métropolitaine",
   "org": "Ville de Joigny",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4321,10 +5097,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-contre-la-ville-de-joigny-268-795-tentatives-dintrusion-en-une-semaine/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ville-de-joigny-mtwuflm1iee4jiwh7bf"
    }
@@ -4334,7 +5112,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "La Ville de Joigny a subi 268 795 tentatives d’intrusion détectées en une semaine, sans équipement endommagé ni données personnelles volées.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4344,6 +5125,7 @@
   "id": "INC-5F3F78296574",
   "location": "France métropolitaine",
   "org": "WiziShop",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -4355,6 +5137,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/wizishop-dropizi-mtw3klqur74gdjp72ya"
    }
@@ -4363,7 +5146,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique et publie une base de factures de WiziShop et Dropizi, revendiquant 511 661 lignes et 21 402 boutiques.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4373,6 +5159,7 @@
   "id": "INC-6E2B3A6C871F",
   "location": "France métropolitaine",
   "org": "NaturaBuy",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -4384,10 +5171,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/naturabuy-victime-dune-cyberattaque-un-risque-pour-les-detenteurs-darmes/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/naturabuy-mtwzqa9gplhhoi6l87a"
    }
@@ -4397,7 +5186,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "NaturaBuy victime d’une cyberattaque, un risque pour les détenteurs d’armes",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4408,6 +5200,7 @@
   "id": "INC-A6AC87645DB8",
   "location": "La Réunion",
   "org": "Ville du Tampon",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4419,15 +5212,34 @@
   },
   "source_links": [
    {
+    "label": "Réunion La 1ère",
     "source": "VEILLE_LLM",
     "url": "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "VEILLE_LLM",
+    "url": "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "VEILLE_LLM",
+    "url": "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm"
+   },
+   {
+    "label": "Linfo.re",
+    "source": "VEILLE_LLM",
+    "url": "https://www.linfo.re/la-reunion/societe/la-mairie-du-tampon-victime-d-une-cyberattaque-il-pourrait-y-avoir-une-fuite-de-donnees-c-est-une-hypothese"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4437,6 +5249,7 @@
   "id": "INC-D06CA5297DDC",
   "location": "France métropolitaine",
   "org": "Snexi",
+  "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -4451,10 +5264,12 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/citya-snexi-fuite-de-donnees-cyberattaque/"
    },
    {
+    "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/snexi-citya-immobilier-mtwb9nopcz1weg06yq7"
    }
@@ -4464,7 +5279,10 @@
    "FRENCHBREACHES"
   ],
   "summary": "Snexi confirme une cyberattaque du 2 septembre 2026 et une revendication prétend contenir 2 249 970 lignes liées à Citya, dont près de 50 000 digicodes.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "CANDIDATE",
@@ -4475,6 +5293,7 @@
   "id": "INC-630FE3AFB253",
   "location": "Mayotte",
   "org": "MANU-PORT",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Transport / Logistique",
   "sector_status": {
@@ -4486,15 +5305,24 @@
   },
   "source_links": [
    {
+    "label": "documentation.outre-mer.gouv.fr",
     "source": "VEILLE_LLM",
     "url": "https://documentation.outre-mer.gouv.fr/Record.htm?idlist=3&record=19154760124919729429"
+   },
+   {
+    "label": "memento.fr",
+    "source": "VEILLE_LLM",
+    "url": "https://www.memento.fr/article_03-09-2026-le-port-de-longoni-regule-l-entree-des-conteneurs-apres-l-arret-des-manutentions-de-manu-port"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Inconnu"
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "CANDIDATE",
@@ -4505,6 +5333,7 @@
   "id": "INC-8C3B062EFF51",
   "location": "La Réunion",
   "org": "Bureau Vallée",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -4516,6 +5345,7 @@
   },
   "source_links": [
    {
+    "label": "ayinedjimi-consultants.fr",
     "source": "VEILLE_LLM",
     "url": "https://ayinedjimi-consultants.fr/news/fuite-donnees-bureau-vallee-2026"
    }
@@ -4524,7 +5354,10 @@
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4535,6 +5368,7 @@
   "id": "INC-9B11A8F11CE1",
   "location": "La Réunion",
   "org": "Ministère de l’Éducation nationale / Académie de La Réunion",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4546,26 +5380,41 @@
   },
   "source_links": [
    {
+    "label": "education.gouv.fr",
     "source": "VEILLE_LLM",
     "url": "https://www.education.gouv.fr/incident-de-securite-affectant-les-donnees-de-personnels-de-l-education-nationale-505407"
+   },
+   {
+    "label": "education.gouv.fr",
+    "source": "VEILLE_LLM",
+    "url": "https://www.education.gouv.fr/incident-de-securite-affectant-des-donnees-detenues-par-le-ministere-de-l-education-nationale-505441"
+   },
+   {
+    "label": "documentation.outre-mer.gouv.fr",
+    "source": "VEILLE_LLM",
+    "url": "https://documentation.outre-mer.gouv.fr/Record.htm?idlist=1&record=19154690124919728729"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
   "admission_reason": "Exfiltration revendiquée avec échantillons de données attribués à l'établissement.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-06-30",
-  "high_sensitivity_data_exposed": true,
+  "high_sensitivity_data_exposed": false,
   "id": "INC-DEF298242E44",
   "location": "La Réunion",
   "org": "Lycée polyvalent Paul Moreau",
-  "personal_data_exposed": true,
+  "organisation_links": [],
+  "personal_data_exposed": false,
   "sector": "Éducation / Formation",
   "sector_status": {
    "confidence": 0.8,
@@ -4576,6 +5425,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "VEILLE_LLM",
     "url": "https://frenchbreaches.com/alertes/lyc-e-polyvalent-paul-moreau-mr0pgi7zh4w9k8gxh3d"
    }
@@ -4584,7 +5434,10 @@
    "VEILLE_LLM"
   ],
   "summary": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4595,6 +5448,7 @@
   "id": "INC-3B8C2F71BF60",
   "location": "La Réunion",
   "org": "EGEP Réunion",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Construction / BTP",
   "sector_status": {
@@ -4606,6 +5460,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "VEILLE_LLM",
     "url": "https://frenchbreaches.com/alertes/axonaut-mqygp4ygl2o4wc6v2i"
    }
@@ -4614,7 +5469,10 @@
    "VEILLE_LLM"
   ],
   "summary": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "CANDIDATE",
@@ -4625,6 +5483,7 @@
   "id": "INC-7957FB7116F1",
   "location": "La Réunion",
   "org": "Le Quotidien de La Réunion",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
@@ -4633,6 +5492,7 @@
   },
   "source_links": [
    {
+    "label": "zinfos974.com",
     "source": "VEILLE_LLM",
     "url": "https://www.zinfos974.com/le-quotidien-offert-ce-lundi-29-juin/"
    }
@@ -4641,7 +5501,10 @@
    "VEILLE_LLM"
   ],
   "summary": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique.",
-  "threat": "Inconnu"
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "CANDIDATE",
@@ -4652,6 +5515,7 @@
   "id": "INC-0C583422D46E",
   "location": "Mayotte",
   "org": "Commune de Ouangani",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4663,6 +5527,7 @@
   },
   "source_links": [
    {
+    "label": "govserv.org",
     "source": "VEILLE_LLM",
     "url": "https://www.govserv.org/FR/Ouangani/102429281625245/Ville-de-Ouangani"
    }
@@ -4671,7 +5536,10 @@
    "VEILLE_LLM"
   ],
   "summary": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber.",
-  "threat": "Inconnu"
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4682,6 +5550,7 @@
   "id": "INC-DB8BDF7CCB2D",
   "location": "Mayotte",
   "org": "Ville de Mamoudzou",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4693,15 +5562,24 @@
   },
   "source_links": [
    {
+    "label": "mamoudzou.yt",
     "source": "VEILLE_LLM",
     "url": "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/"
+   },
+   {
+    "label": "lejournaldemayotte.yt",
+    "source": "VEILLE_LLM",
+    "url": "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4712,6 +5590,7 @@
   "id": "INC-08D80AA8EF71",
   "location": "La Réunion",
   "org": "Air Austral",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Transport / Logistique",
   "sector_status": {
@@ -4723,15 +5602,29 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "VEILLE_LLM",
     "url": "https://www.cyberattaque.org/air-austral-les-donnees-de-1-000-employes-diffusees-publiquement/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "VEILLE_LLM",
+    "url": "https://frenchbreaches.com/alertes/air-austral-mpvvb04ho44kuefgda"
+   },
+   {
+    "label": "facebook.com",
+    "source": "VEILLE_LLM",
+    "url": "https://www.facebook.com/lequotidien/posts/dabord-relay%C3%A9e-par-plusieurs-sites-sp%C3%A9cialis%C3%A9s-linformation-a-%C3%A9t%C3%A9-confirm%C3%A9e-par-/1629082165889606/"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4742,6 +5635,7 @@
   "id": "INC-A36AFC8D9E10",
   "location": "La Réunion",
   "org": "STOR Solutions",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Numérique / Technologie",
   "sector_status": {
@@ -4753,6 +5647,7 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
     "source": "VEILLE_LLM",
     "url": "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
    }
@@ -4761,7 +5656,10 @@
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Intrusion"
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "ACCEPTED",
@@ -4772,6 +5670,7 @@
   "id": "INC-78D32D7D8C37",
   "location": "La Réunion",
   "org": "EPF Réunion / VALGO",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4783,6 +5682,7 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
     "source": "VEILLE_LLM",
     "url": "https://frenchbreaches.com/alertes/valgo-sa-rw_Vm1Gc1oyOGdVMEZBYVc1amNtRnVjMjl0"
    }
@@ -4791,7 +5691,10 @@
    "VEILLE_LLM"
   ],
   "summary": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
-  "threat": "Fuite de données"
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
  },
  {
   "admission": "CANDIDATE",
@@ -4802,6 +5705,7 @@
   "id": "INC-28E45E300CB9",
   "location": "La Réunion",
   "org": "Commune de Saint-Leu",
+  "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
@@ -4813,6 +5717,7 @@
   },
   "source_links": [
    {
+    "label": "freedom.fr",
     "source": "VEILLE_LLM",
     "url": "https://freedom.fr/podcast-passeport-carte-didentite-six-mois-dattente-pour-un-dossier-perdu-a-la-mairie-de-saint-leu/"
    }
@@ -4821,6 +5726,9 @@
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Inconnu"
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
  }
 ]

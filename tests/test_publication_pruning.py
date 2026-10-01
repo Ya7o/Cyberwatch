@@ -49,7 +49,7 @@ def test_build_compact_conserve_les_informations_affichees(tmp_path, monkeypatch
     assert published("latest") == [row]
     assert row["org"] == "Exemple"
     assert row["summary"] == "Exemple signale une fuite de données."
-    assert row["source_links"] == [{"source": item.Source_ID, "url": item.URL}]
+    assert row["source_links"] == [{"source": item.Source_ID, "url": item.URL, "label": "FrenchBreaches"}]
     assert row["sector_status"]["status"] == "unknown"
     assert row["personal_data_exposed"] is True
     detail = published("facts")[row["id"]]

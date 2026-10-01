@@ -163,31 +163,22 @@ class TestDashboardSourcesSection:
     def _read(self, path):
         return open(path, encoding="utf-8").read()
 
-    def test_vue_globale_reste_compacte_sans_metriques(self):
-        js = self._read("assets/dashboard-v2.js")
-        match = re.search(r'"#sources-leds"\)\.innerHTML = .*?;', js)
-        assert match, "rendu de #sources-leds introuvable"
-        compact_part = match.group(0)
-        for forbidden in ("items_seen", "items_in_window", "latest_item"):
-            assert forbidden not in compact_part
-
-    def test_detail_accessible_sous_la_vue_globale_avec_les_six_champs(self):
+    def test_sources_sont_dans_le_dialogue_de_sante_uniquement(self):
         html = self._read("index.html")
-        assert '<div id="sources-leds"' in html
-        list_pos = html.index('id="sources-leds"')
-        detail_pos = html.index('class="sources-detail"')
-        assert detail_pos > list_pos, "le détail doit suivre la vue globale"
-        assert "<summary>" in html
+        analysis = html[html.index('id="view-analyse"'):html.index('<dialog id="detail-dialog"')]
+        assert 'id="sources-detail-body"' not in analysis
+        assert 'id="health-dialog"' in html
+        assert 'id="sources-detail-body"' in html
+        assert 'id="sources-leds"' not in html
 
+    def test_sources_ont_un_detail_unique_avec_leur_limite(self):
         js = self._read("assets/dashboard-v2.js")
         match = re.search(r'"#sources-detail-body"\)\.innerHTML = .*?;', js)
-        assert match, "rendu de #sources-detail-body introuvable"
+        assert match
         body = match.group(0)
-        for expected in (
-            "sourceLabel(source.id)", "source.status", "formatDateTime(source.last_run)",
-            "source.duration", "source.items_collected", "source.reason",
-        ):
+        for expected in ("sourceLabel(source.id)", "source.status", "formatDateTime(source.last_run)", "source.reason"):
             assert expected in body
+        assert "source.duration" not in body
 
     def test_veille_llm_utilise_le_libelle_partage_dans_le_dashboard(self):
         """`VEILLE_LLM` s'affichait « veillellmReYt » dans app.js et « Veille IA »

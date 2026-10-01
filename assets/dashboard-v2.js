@@ -1,96 +1,73 @@
-/* Cyberwatch dashboard v2 — rendu des données canoniques, sans arbitrage métier. */
+/* Cyberwatch — parcours consultant, à partir des données canoniques publiées. */
 (() => {
   "use strict";
-
   const DAY = 864e5;
   const FRESHNESS_WARNING_HOURS = 30;
   const FRESHNESS_STALE_HOURS = 36;
   const PAGE_SIZE = 30;
+  const VEILLE_SIZE = 15;
   const UNKNOWN = "Inconnu";
   const OCEAN_LOCATIONS = ["La Réunion", "Mayotte", "Maurice", "Madagascar", "Seychelles", "Comores"];
-  const FOCUS_LOCATIONS_FALLBACK = ["La Réunion", "Mayotte"];
-  // config.FOCUS_LOCATIONS (Python) est déjà publié dans status.json
-  // (focus_locations) : le lire évite qu'une liste dupliquée côté JS ne
-  // dérive silencieusement de la source de vérité si elle change un jour.
-  const focusLocations = () => state.status?.focus_locations || FOCUS_LOCATIONS_FALLBACK;
   const SOURCE_LABELS = {
-    RANSOMWARE_LIVE: "Ransomware.live",
-    CYBERATTAQUE_ORG: "Cyberattaque.org",
-    FRENCHBREACHES: "FrenchBreaches",
-    BONJOURLAFUITE: "BonjourLaFuite",
+    RANSOMWARE_LIVE: "Ransomware.live", CYBERATTAQUE_ORG: "Cyberattaque.org",
+    FRENCHBREACHES: "FrenchBreaches", BONJOURLAFUITE: "BonjourLaFuite",
     VEILLE_LLM: "Veille locale Réunion / Mayotte",
   };
-
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const normalize = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const sourceLabel = (id) => SOURCE_LABELS[id] || id || "Source";
   const known = (value) => Boolean(String(value ?? "").trim()) && String(value).trim() !== UNKNOWN;
-  const unique = (values) => Array.from(new Set(values.filter(known)));
+  const unique = (values) => Array.from(new Set(values.filter(Boolean)));
   const formatNumber = (value) => new Intl.NumberFormat("fr-FR").format(Number(value));
-  const readStorage = (scope, key) => {
-    try { return window[scope]?.getItem(key) || ""; }
-    catch (_) { return ""; }
-  };
-  const writeStorage = (scope, key, value) => {
-    try { window[scope]?.setItem(key, value); }
-    catch (_) { /* Le dashboard reste fonctionnel si le navigateur bloque le stockage. */ }
-  };
+  const readStorage = (scope, key) => { try { return window[scope]?.getItem(key) || ""; } catch (_) { return ""; } };
+  const writeStorage = (scope, key, value) => { try { window[scope]?.setItem(key, value); } catch (_) { /* Le stockage est facultatif. */ } };
   const formatDate = (value) => {
     const date = value ? new Date(value) : null;
-    return date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric" }).format(date) : "—";
+    return date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(date) : "Date non déterminée";
   };
   const formatDateTime = (value) => {
     const date = value ? new Date(value) : null;
-    return date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(date) : "—";
+    return date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(date) : "Date indisponible";
   };
+  const safeUrl = (value) => {
+    try { const url = new URL(value); return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password ? url.href : ""; }
+    catch (_) { return ""; }
+  };
+  const host = (value) => { try { return new URL(value).hostname.replace(/^www\./, ""); } catch (_) { return "Source"; } };
+  const cleanSummary = (value) => String(value || "").replace(/^Éléments documentés\s*:\s*/i, "").replace(/^Impact documenté\s*:\s*/i, "").replace(/\s*;\s*données concernées\s*:\s*/i, ". Données exposées : ").replace(/\s+/g, " ").trim();
+  const emptyFilters = () => ({ q: "", threat: "", sector: "", locations: [], source: "", period: "all", admission: "" });
+  const state = {
+    view: "veille", scope: "all", analysisScope: "all", analysisPeriod: "90",
+    latest: [], incidents: [], incidentsLoaded: false, facts: null, status: null,
+    filters: emptyFilters(), sort: "date-desc", page: 1, incidentId: "", diagnostic: false,
+    loadErrors: new Set(),
+  };
+  const focusLocations = () => state.status?.focus_locations || ["La Réunion", "Mayotte"];
+  const sourceLabel = (id) => state.status?.labels?.sources?.[id] || SOURCE_LABELS[id] || id || "Source";
+  const scopeLocations = (scope) => scope === "focus" ? focusLocations().slice() : scope === "ocean" ? OCEAN_LOCATIONS.slice() : scope === "metro" ? ["France métropolitaine"] : [];
   const integrity = () => state.status?.integrity || {};
   const trendsReady = () => integrity().known === true && integrity().trend_ready === true;
   const freshness = (value) => {
     const date = value ? new Date(value) : null;
     if (!date || Number.isNaN(date.getTime())) return { status: "unknown", hours: null };
     const hours = Math.max(0, (Date.now() - date.getTime()) / 36e5);
-    if (hours >= FRESHNESS_STALE_HOURS) return { status: "stale", hours };
-    if (hours >= FRESHNESS_WARNING_HOURS) return { status: "warning", hours };
-    return { status: "fresh", hours };
-  };
-  const trendNoticeHtml = () => {
-    const meta = integrity();
-    const available = meta.known ? `${formatNumber(meta.days)} jour${Number(meta.days) > 1 ? "s" : ""} continu${Number(meta.days) > 1 ? "s" : ""}` : "une couverture encore indéterminée";
-    return `<p class="integrity-notice"><strong>Tendances temporairement neutralisées.</strong> ${esc(available)} disponible${Number(meta.days) > 1 ? "s" : ""} ; ${formatNumber(meta.trend_required_days || 60)} jours sont requis pour comparer deux périodes complètes de 30 jours.</p>`;
-  };
-  const safeUrl = (value) => {
-    try { const url = new URL(value); return ["http:", "https:"].includes(url.protocol) ? url.href : ""; }
-    catch (_) { return ""; }
-  };
-  const host = (value) => { try { return new URL(value).hostname.replace(/^www\./, ""); } catch (_) { return "Source"; } };
-  const cleanSummary = (value) => String(value || "")
-    .replace(/^Éléments documentés\s*:\s*/i, "")
-    .replace(/^Impact documenté\s*:\s*/i, "")
-    .replace(/\s*;\s*données concernées\s*:\s*/i, ". Données exposées : ")
-    .replace(/\s+/g, " ").trim();
-
-  const state = {
-    view: "veille",
-    latest: [],
-    incidents: [],
-    incidentsLoaded: false,
-    facts: null,
-    status: null,
-    filters: { q: "", threat: "", sector: "", locations: [], source: "", period: "all" },
-    sort: "date-desc",
-    page: 1, pageSize: Number(readStorage("sessionStorage", "cw-page-size")) || PAGE_SIZE,
+    return { status: hours >= FRESHNESS_STALE_HOURS ? "stale" : hours >= FRESHNESS_WARNING_HOURS ? "warning" : "fresh", hours };
   };
   let incidentsPromise = null;
+  let factsPromise = null;
+  let detailToken = 0;
 
   async function loadJson(path, fallback) {
     try {
       const response = await fetch(path, { cache: "no-store" });
       if (!response.ok) throw new Error(`${response.status}`);
-      return await response.json();
+      const value = await response.json();
+      state.loadErrors.delete(path);
+      return value;
     } catch (error) {
-      console.error(`Cyberwatch: échec de chargement ${path}`, error);
+      state.loadErrors.add(path);
+      console.error(`Cyberwatch : chargement impossible de ${path}`, error);
       return fallback;
     }
   }
@@ -98,118 +75,249 @@
   async function ensureIncidents() {
     if (state.incidentsLoaded) return state.incidents;
     if (!incidentsPromise) incidentsPromise = loadJson("assets/data/incidents.json", []);
-    const incidents = await incidentsPromise;
-    state.incidents = Array.isArray(incidents) ? incidents : [];
-    state.incidentsLoaded = true;
+    const rows = await incidentsPromise;
+    state.incidents = Array.isArray(rows) ? rows : [];
+    state.incidentsLoaded = !state.loadErrors.has("assets/data/incidents.json");
+    if (!state.incidentsLoaded) incidentsPromise = null;
     return state.incidents;
   }
 
   function readUrl() {
     const params = new URLSearchParams(location.search);
     state.view = ["veille", "recherche", "analyse"].includes(params.get("vue")) ? params.get("vue") : "veille";
-    state.filters.q = params.get("q") || "";
-    state.filters.threat = params.get("threat") || "";
-    state.filters.sector = params.get("sector") || "";
-    state.filters.locations = unique(params.getAll("location"));
-    state.filters.source = params.get("source") || "";
-    state.filters.period = params.get("period") || "all";
-    state.sort = params.get("sort") || "date-desc";
-    state.page = Math.max(1, Number(params.get("page")) || 1);
+    const scope = ["all", "focus", "ocean", "metro"].includes(params.get("scope")) ? params.get("scope") : "all";
+    if (state.view === "veille") state.scope = scope;
+    if (state.view === "analyse") {
+      state.analysisScope = scope;
+      state.analysisPeriod = ["30", "90", "365", "all"].includes(params.get("period")) ? params.get("period") : "90";
+    }
+    if (state.view === "recherche") {
+      state.filters = emptyFilters();
+      ["q", "threat", "sector", "source"].forEach((key) => { state.filters[key] = params.get(key) || ""; });
+      state.filters.locations = unique(params.getAll("location"));
+      state.filters.period = ["30", "90", "365"].includes(params.get("period")) ? params.get("period") : "all";
+      state.filters.admission = ["ACCEPTED", "CANDIDATE"].includes(params.get("admission")) ? params.get("admission") : "";
+      state.sort = ["date-asc", "org"].includes(params.get("sort")) ? params.get("sort") : "date-desc";
+      state.page = Math.max(1, Math.floor(Number(params.get("page")) || 1));
+    }
+    state.incidentId = params.get("incident") || "";
+    state.diagnostic = params.get("diagnostic") === "1";
   }
 
   function syncUrl(push = false) {
     const params = new URLSearchParams();
     if (state.view !== "veille") params.set("vue", state.view);
+    if (state.view === "veille" && state.scope !== "all") params.set("scope", state.scope);
+    if (state.view === "analyse") {
+      if (state.analysisScope !== "all") params.set("scope", state.analysisScope);
+      if (state.analysisPeriod !== "90") params.set("period", state.analysisPeriod);
+    }
     if (state.view === "recherche") {
-      if (state.filters.q) params.set("q", state.filters.q);
-      if (state.filters.threat) params.set("threat", state.filters.threat);
-      if (state.filters.sector) params.set("sector", state.filters.sector);
+      ["q", "threat", "sector", "source", "admission"].forEach((key) => { if (state.filters[key]) params.set(key, state.filters[key]); });
       state.filters.locations.forEach((value) => params.append("location", value));
-      if (state.filters.source) params.set("source", state.filters.source);
       if (state.filters.period !== "all") params.set("period", state.filters.period);
       if (state.sort !== "date-desc") params.set("sort", state.sort);
       if (state.page > 1) params.set("page", String(state.page));
     }
+    if (state.incidentId) params.set("incident", state.incidentId);
+    if (state.diagnostic) params.set("diagnostic", "1");
     const query = params.toString();
     const url = `${location.pathname}${query ? `?${query}` : ""}`;
     if (push) history.pushState(null, "", url); else history.replaceState(null, "", url);
   }
 
   function sourceBadges(incident) {
-    const direct = new Map((incident.source_links || []).map((link) => [link.source, safeUrl(link.url)]));
-    return unique(incident.sources || []).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr")).map((id) => {
-      const url = direct.get(id);
-      return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(sourceLabel(id))}</a>` : `<span>${esc(sourceLabel(id))}</span>`;
+    const links = unique((incident.source_links || []).map((link) => safeUrl(link.url))).filter(Boolean);
+    if (!links.length) return '<span class="source-unavailable">Publication directe indisponible</span>';
+    return links.map((url) => {
+      const link = incident.source_links.find((value) => safeUrl(value.url) === url);
+      return `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(link.label || host(url))}</a>`;
     }).join("");
   }
 
-  function sectorTentativeChip(incident) {
+  function sectorLabel(incident) {
     if (known(incident.sector)) {
-      const status = incident.sector_status?.status || "confirmed";
-      if (status === "confirmed") return "";
-      const confidence = Number(incident.sector_status?.confidence);
-      const level = status === "referenced" ? "référencé" : status === "reported" ? "déclaré" : "estimé";
-      const title = [incident.sector_status?.reason, incident.sector_status?.evidence]
-        .filter(known).join(" — ");
-      const confidenceText = Number.isFinite(confidence) ? ` · ${Math.round(confidence * 100)} %` : "";
-      return `<span class="chip" data-status="PARTIAL"${title ? ` title="${esc(title)}"` : ""}>${esc(incident.sector)} (${level}${confidenceText})</span>`;
+      const status = incident.sector_status?.status;
+      const suffix = status === "reported" ? " (déclaré)" : ["inferred", "inferred_low"].includes(status) ? " (estimé)" : "";
+      return incident.sector + suffix;
     }
-    // Le point coloré du chip (`.chip[data-status]::before`) porte déjà
-    // visuellement l'information "non confirmé" : répéter la précision en
-    // toutes lettres ne faisait qu'étirer la pastille en bulle démesurée
-    // (retour utilisateur réel) pour une redondance.
-    if (known(incident.sector_tentative)) {
-      return `<span class="chip" data-status="PARTIAL">${esc(incident.sector_tentative)} (supposé)</span>`;
-    }
-    // Sans candidat du tout (sector_status.status === "unknown"), le secteur
-    // était auparavant simplement absent de l'affichage — contrairement aux
-    // cas où un candidat existe. Les deux variantes de "Inconnu" doivent
-    // rester lisibles de la même façon plutôt que l'une d'elles disparaissant.
-    if (incident.sector_status?.status === "unknown") {
-      return `<span class="chip" data-status="UNKNOWN">Secteur non déterminé</span>`;
-    }
-    return "";
+    return known(incident.sector_tentative) ? `${incident.sector_tentative} (supposé)` : "";
   }
 
-  function threatTentativeChip(incident) {
-    if (known(incident.threat) || !known(incident.threat_tentative)) return "";
-    return `<span class="chip" data-status="PARTIAL">${esc(incident.threat_tentative)} (supposée)</span>`;
+  function threatLabel(incident) {
+    if (!known(incident.threat) || incident.threat === "Autre cyber") return "Nature non déterminée";
+    const status = incident.threat_status?.status;
+    return incident.threat + (status === "claimed" ? " (revendiqué)" : "");
+  }
+
+  function exposureLabel(incident) {
+    return incident.credentials_or_secrets_exposed ? "Identifiants exposés" : incident.high_sensitivity_data_exposed ? "Données très sensibles signalées" : "";
   }
 
   function incidentCardHtml(incident) {
-    const confirmedSector = incident.sector_status?.status === "confirmed" ? incident.sector : "";
-    const exposureTag = incident.credentials_or_secrets_exposed
-      ? `<span data-status="PARTIAL">Identifiants ou secrets exposés</span>`
-      : incident.high_sensitivity_data_exposed
-        ? `<span data-status="PARTIAL">Données très sensibles signalées</span>`
-        : incident.personal_data_exposed
-          ? `<span data-status="PARTIAL">Données personnelles signalées</span>`
-          : "";
-    const tags = [incident.threat, confirmedSector].filter(known).map((value) => `<span>${esc(value)}</span>`).join("") + threatTentativeChip(incident) + exposureTag + sectorTentativeChip(incident);
+    const sector = sectorLabel(incident);
+    const exposure = exposureLabel(incident);
     const summary = cleanSummary(incident.summary);
+    const candidate = incident.admission === "CANDIDATE";
     return `<article class="incident-card" data-id="${esc(incident.id)}">
-      <div class="incident-main">
-        <div class="incident-card-top"><time datetime="${esc(incident.date)}">${esc(formatDate(incident.date))}</time>${known(incident.location) ? `<span>${esc(incident.location)}</span>` : ""}</div>
-        <button type="button" class="incident-org-link" data-open-id="${esc(incident.id)}">${esc(incident.org || "Organisation inconnue")}</button>
-        ${tags ? `<p class="incident-tags">${tags}</p>` : ""}
-        ${summary ? `<p class="incident-summary-text">${esc(summary)}</p>` : ""}
-      </div>
-      <div class="incident-side">
-        <div class="incident-source-badges">${sourceBadges(incident)}</div>
-        <button type="button" class="btn btn-primary" data-open-id="${esc(incident.id)}">Voir le détail</button>
-      </div>
+      <div class="incident-card-top"><time datetime="${esc(incident.date || "")}">${esc(formatDate(incident.date))}</time>${known(incident.location) ? `<span>${esc(incident.location)}</span>` : ""}${candidate ? '<span class="candidate-status">À confirmer</span>' : ""}</div>
+      <button type="button" class="incident-org-link" data-open-id="${esc(incident.id)}">${esc(incident.org || "Organisation inconnue")}</button>
+      <p class="incident-meta">${esc([threatLabel(incident), sector].filter(Boolean).join(" · "))}</p>
+      ${summary ? `<p class="incident-summary-text">${esc(summary)}</p>` : ""}
+      ${exposure && !normalize(summary).includes(normalize(exposure)) ? `<p class="incident-exposure">${esc(exposure)}</p>` : ""}
     </article>`;
   }
 
-  function signalTitle(signal) {
-    if (signal.kind === "new_pair") return `Nouveau signal : ${signal.label}`;
-    if (signal.kind === "emerging") return `${signal.label} apparaît dans la période récente`;
-    return `Hausse des incidents — ${signal.label}`;
+  function renderHeader() {
+    const sources = state.status?.sources || [];
+    const age = freshness(state.status?.run?.as_of);
+    const stamp = formatDateTime(state.status?.run?.as_of);
+    const partial = sources.some((source) => source.status !== "OK");
+    const freshnessLabel = age.status === "stale" ? `Données périmées · ${stamp}` : age.status === "warning" ? `Mise à jour en retard · ${stamp}` : age.status === "fresh" ? `${partial ? "Couverture partielle" : "À jour"} · ${stamp}` : "Date indisponible";
+    $("#run-pill-text").textContent = freshnessLabel;
+    $("#run-pill").dataset.status = age.status === "stale" ? "stale" : age.status === "fresh" && !partial ? "ok" : "degraded";
+    $("#run-pill").title = "Voir l’état de la veille et les sources";
   }
 
-  function signalSummary(signal) {
-    if (signal.previous === 0) return `${signal.current} incidents sur ${signal.window_days} jours, contre aucun sur la période précédente.`;
-    return `${signal.current} incidents sur ${signal.window_days} jours, contre ${signal.previous} sur les ${signal.window_days} jours précédents.`;
+  function renderIntegrityAlert() {
+    const age = freshness(state.status?.run?.as_of);
+    const meta = integrity();
+    const alert = $("#data-alert");
+    const messages = [];
+    if (meta.known && Number(meta.days) < 30) messages.push(`${meta.days} jours de couverture continue disponibles.`);
+    if (age.status === "stale" || age.status === "warning") messages.push(`Dernière mise à jour : ${formatDateTime(state.status?.run?.as_of)}.`);
+    if (age.status === "unknown") messages.push("La date de mise à jour est indisponible.");
+    if (state.loadErrors.size) messages.push("Certaines données n’ont pas pu être chargées. Réessayez en actualisant la page.");
+    alert.hidden = messages.length === 0;
+    alert.dataset.status = age.status === "stale" ? "stale" : "warning";
+    alert.querySelector("strong").textContent = state.loadErrors.size ? "Chargement incomplet." : age.status === "stale" ? "Données périmées." : "Couverture limitée.";
+    $("#data-alert-detail").textContent = messages.join(" ");
+  }
+
+  function renderVeille() {
+    $("#v-scope").value = state.scope;
+    const locations = scopeLocations(state.scope);
+    const rows = state.latest.filter((row) => !locations.length || locations.includes(row.location));
+    const shown = rows.slice(0, VEILLE_SIZE);
+    $("#veille-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""} · 30 jours${rows.length > VEILLE_SIZE ? ` · ${VEILLE_SIZE} affichés` : ""}`;
+    $("#veille-list").innerHTML = shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun incident publié dans ce périmètre sur les 30 jours du snapshot.</p>';
+    $("#veille-more").hidden = rows.length <= VEILLE_SIZE;
+    $("#veille-more").textContent = `Voir les ${formatNumber(rows.length)} incidents`;
+  }
+
+  function optionHtml(values, current, allLabel) {
+    return `<option value="">${esc(allLabel)}</option>` + values.map((value) => `<option value="${esc(value)}" ${value === current ? "selected" : ""}>${esc(value === UNKNOWN ? "Non déterminé" : value)}</option>`).join("");
+  }
+
+  function populateSearchControls() {
+    const values = (field) => unique(state.incidents.map((row) => String(row[field] || UNKNOWN))).sort((a, b) => a.localeCompare(b, "fr"));
+    $("#s-threat").innerHTML = optionHtml(values("threat"), state.filters.threat, "Toutes");
+    $("#s-sector").innerHTML = optionHtml(values("sector"), state.filters.sector, "Tous");
+    const sources = unique(state.incidents.flatMap((row) => row.sources || [])).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr"));
+    $("#s-source").innerHTML = '<option value="">Toutes</option>' + sources.map((id) => `<option value="${esc(id)}">${esc(sourceLabel(id))}</option>`).join("");
+    const locations = unique([...values("location"), ...state.filters.locations]);
+    $("#s-locations").innerHTML = locations.map((value) => `<label><input type="checkbox" value="${esc(value)}"><span>${esc(value === UNKNOWN ? "Non déterminé" : value)}</span></label>`).join("");
+  }
+
+  function updateSearchControls() {
+    ["q", "threat", "sector", "source", "period", "admission"].forEach((key) => { $("#s-" + key).value = state.filters[key]; });
+    $("#s-sort").value = state.sort;
+    $$("#s-locations input").forEach((input) => { input.checked = state.filters.locations.includes(input.value); });
+    const names = state.filters.locations;
+    $("#location-toggle").textContent = !names.length ? "Tous les territoires" : names.length === 1 ? names[0] : names.every((name) => focusLocations().includes(name)) && names.length === focusLocations().length ? "Réunion / Mayotte" : `${names.length} territoires`;
+  }
+
+  function periodBounds(period) {
+    if (period === "all") return null;
+    const stamp = String(state.status?.run?.as_of || "").slice(0, 10);
+    const end = new Date(`${stamp}T00:00:00Z`);
+    if (Number.isNaN(end.getTime())) return null;
+    return { start: new Date(end.getTime() - (Number(period) - 1) * DAY), end };
+  }
+
+  function filteredSearch() {
+    const query = normalize(state.filters.q);
+    const bounds = periodBounds(state.filters.period);
+    if (state.filters.period !== "all" && !bounds) return [];
+    return state.incidents.filter((incident) => {
+      const searchText = normalize([incident.org, incident.threat, incident.sector, incident.location, incident.summary, ...(incident.sources || []).map(sourceLabel)].join(" "));
+      if (query && !searchText.includes(query)) return false;
+      if (state.filters.threat && String(incident.threat || UNKNOWN) !== state.filters.threat) return false;
+      if (state.filters.sector && String(incident.sector || UNKNOWN) !== state.filters.sector) return false;
+      if (state.filters.locations.length && !state.filters.locations.includes(String(incident.location || UNKNOWN))) return false;
+      if (state.filters.source && !(incident.sources || []).includes(state.filters.source)) return false;
+      if (state.filters.admission && (incident.admission || "ACCEPTED") !== state.filters.admission) return false;
+      if (bounds) {
+        const day = new Date(`${String(incident.date || "").slice(0, 10)}T00:00:00Z`);
+        if (Number.isNaN(day.getTime()) || day < bounds.start || day > bounds.end) return false;
+      }
+      return true;
+    });
+  }
+
+  function sortedSearch(rows) {
+    return rows.slice().sort((a, b) => state.sort === "org" ? String(a.org || "").localeCompare(String(b.org || ""), "fr") : state.sort === "date-asc" ? String(a.date || "").localeCompare(String(b.date || "")) : String(b.date || "").localeCompare(String(a.date || "")) || String(b.id).localeCompare(String(a.id)));
+  }
+
+  function renderActiveFilters() {
+    const filters = [];
+    const add = (key, label, value = "") => filters.push(`<button type="button" class="filter-chip" data-remove-filter="${key}" data-value="${esc(value)}" aria-label="Retirer ${esc(label)}">${esc(label)} <span aria-hidden="true">×</span></button>`);
+    if (state.filters.q) add("q", `Recherche : ${state.filters.q}`);
+    if (state.filters.threat) add("threat", `Menace : ${state.filters.threat === UNKNOWN ? "non déterminée" : state.filters.threat}`);
+    if (state.filters.sector) add("sector", `Secteur : ${state.filters.sector === UNKNOWN ? "non déterminé" : state.filters.sector}`);
+    state.filters.locations.forEach((value) => add("locations", value, value));
+    if (state.filters.source) add("source", sourceLabel(state.filters.source));
+    if (state.filters.period !== "all") add("period", `${state.filters.period} jours`);
+    if (state.filters.admission) add("admission", state.filters.admission === "ACCEPTED" ? "Incidents retenus" : "À confirmer");
+    $("#s-active-filters").innerHTML = filters.join("");
+    $("#s-reset").hidden = filters.length === 0;
+  }
+
+  function renderRecherche() {
+    updateSearchControls();
+    renderActiveFilters();
+    const rows = sortedSearch(filteredSearch());
+    const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+    state.page = Math.min(state.page, pages);
+    const start = (state.page - 1) * PAGE_SIZE;
+    const shown = rows.slice(start, start + PAGE_SIZE);
+    $("#s-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""}${rows.length && pages > 1 ? ` · ${start + 1}–${start + shown.length}` : ""}`;
+    $("#s-list").innerHTML = !state.incidentsLoaded ? '<p class="empty-state">La liste n’a pas pu être chargée. Actualisez la page pour réessayer.</p>' : state.filters.period !== "all" && !periodBounds(state.filters.period) ? '<p class="empty-state">Période indisponible : la date du snapshot manque.</p>' : shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun résultat. Retirez un filtre pour élargir la recherche.</p>';
+    $("#s-pager").hidden = pages <= 1;
+    $("#s-pager").innerHTML = pages <= 1 ? "" : `<button type="button" class="btn" data-page="prev" ${state.page <= 1 ? "disabled" : ""}>← Précédent</button><span>Page ${state.page} sur ${pages}</span><button type="button" class="btn" data-page="next" ${state.page >= pages ? "disabled" : ""}>Suivant →</button>`;
+  }
+
+  function simpleBars(container, rows, onSelect) {
+    if (!rows?.length) { container.innerHTML = '<p class="empty-state">Aucune publication dans ce périmètre.</p>'; return; }
+    const max = Math.max(...rows.map((row) => Number(row.count || 0)), 1);
+    container.innerHTML = rows.map((row) => {
+      const value = Number(row.count || 0);
+      const name = row.label === UNKNOWN ? "Non déterminé" : row.label;
+      const tag = onSelect ? "button" : "div";
+      return `<${tag}${onSelect ? ' type="button"' : ""} class="metric-bar" data-label="${esc(row.label)}"${onSelect ? ` aria-label="Voir les ${value} incidents : ${esc(name)}"` : ""}><span class="metric-bar-label">${esc(name)}</span><span class="metric-bar-track" aria-hidden="true"><span style="width:${value === 0 ? 0 : (value / max) * 100}%"></span></span><strong>${formatNumber(value)}</strong></${tag}>`;
+    }).join("");
+    if (onSelect) $$("button.metric-bar", container).forEach((button) => button.addEventListener("click", () => onSelect(button.dataset.label)));
+  }
+
+  function renderDistribution(container, rows, onSelect) {
+    const knownRows = rows.filter((row) => row.label !== UNKNOWN);
+    const unknown = rows.find((row) => row.label === UNKNOWN);
+    simpleBars(container, knownRows.slice(0, 6), onSelect);
+    if (knownRows.length > 6) {
+      const more = document.createElement("details");
+      more.className = "distribution-more";
+      more.innerHTML = `<summary>Autres catégories (${knownRows.length - 6})</summary><div></div>`;
+      container.appendChild(more);
+      simpleBars(more.querySelector("div"), knownRows.slice(6), onSelect);
+    }
+    if (unknown?.count) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "btn btn-link distribution-unknown";
+      button.textContent = `${formatNumber(unknown.count)} non déterminé${unknown.count > 1 ? "s" : ""}`;
+      button.addEventListener("click", () => onSelect(UNKNOWN));
+      container.appendChild(button);
+    }
   }
 
   function signalFilter(signal) {
@@ -222,186 +330,56 @@
     return { period: String(signal.window_days || 30) };
   }
 
-  function signalHtml(signal, compact = false) {
-    const evidence = (signal.incident_ids || []).slice(0, 5).map((id) => state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id)).filter(Boolean);
-    const detail = evidence.length ? `<ul>${evidence.map((row) => `<li>${esc(formatDate(row.date))} — ${esc(row.org || "Organisation inconnue")}${known(row.threat) ? ` · ${esc(row.threat)}` : ""}</li>`).join("")}</ul>` : "";
-    return `<article class="signal-card ${compact ? "signal-card--compact" : ""}">
-      <div class="signal-card-head"><span class="trend-arrow" aria-hidden="true">↑</span><div><strong>${esc(signalTitle(signal))}</strong><p>${esc(signalSummary(signal))}</p></div></div>
-      ${compact ? "" : `<details><summary>Pourquoi ce signal ?</summary><div class="signal-why"><p>Écart observé : +${formatNumber(signal.delta || 0)} incident${Number(signal.delta || 0) > 1 ? "s" : ""} par rapport à la période précédente.</p>${detail}</div></details>`}
-      <button type="button" class="btn btn-link" data-signal='${esc(JSON.stringify(signalFilter(signal)))}'>Voir les incidents →</button>
-    </article>`;
+  function signalHtml(signal) {
+    const current = Number(signal.current || 0);
+    const previous = Number(signal.previous || 0);
+    return `<article class="signal-card"><strong>Hausse des incidents — ${esc(signal.label)}</strong><p>${current} publications sur ${signal.window_days} jours, contre ${previous} précédemment.</p><details><summary>Pourquoi ce signal ?</summary><p>Écart observé : +${formatNumber(signal.delta || 0)} publication${Number(signal.delta || 0) > 1 ? "s" : ""} entre deux périodes de ${signal.window_days} jours.</p></details><button type="button" class="btn btn-link" data-signal='${esc(JSON.stringify(signalFilter(signal)))}'>Voir les incidents →</button></article>`;
   }
 
-  function renderHeader() {
-    const counts = state.status?.counts || {};
-    const sources = state.status?.sources || [];
-    const total = sources.length || [counts.ok, counts.partial, counts.fail, counts.skipped].reduce((sum, value) => sum + Number(value || 0), 0);
-    const ok = Number(counts.ok || 0);
-    const run = state.status?.run || {};
-    const age = freshness(run.as_of);
-    const stamp = formatDateTime(run.as_of);
-    const freshnessLabel = age.status === "stale" ? `données périmées · ${stamp}` : age.status === "warning" ? `mise à jour en retard · ${stamp}` : age.status === "fresh" ? `à jour · ${stamp}` : "date indisponible";
-    $("#run-pill-text").textContent = total ? `${ok}/${total} sources · ${freshnessLabel}` : "État des sources indisponible";
-    $("#run-pill").dataset.status = age.status === "stale" ? "stale" : total && ok === total && age.status === "fresh" ? "ok" : "degraded";
-    $("#run-pill").title = age.hours === null ? "Date du dernier run indisponible" : `Dernier run publié il y a ${Math.floor(age.hours)} h`;
-  }
-
-  function renderIntegrityAlert() {
-    const alert = $("#data-alert");
-    const detail = $("#data-alert-detail");
-    const strong = alert.querySelector("strong");
-    const meta = integrity();
-    const age = freshness(state.status?.run?.as_of);
-    const messages = [];
-
-    if (meta.known && Number(meta.days) < Number(meta.window_days || 30)) {
-      messages.push(`Le corpus couvre ${meta.days} jour${Number(meta.days) > 1 ? "s" : ""} continu${Number(meta.days) > 1 ? "s" : ""}, du ${formatDate(meta.start)} au ${formatDate(meta.end)}, pas encore ${meta.window_days || 30} jours complets.`);
-    }
-    if (age.status === "warning" || age.status === "stale") {
-      messages.push(`Le dernier snapshot a été publié il y a ${Math.floor(age.hours)} h.`);
-    }
-    if (age.status === "unknown") {
-      messages.push("La date du dernier snapshot est indisponible.");
-    }
-    // Qualification incomplète : la publication a bien eu lieu, mais des
-    // traitements nécessaires — extraction ou déduplication — sont restés
-    // bloqués. L'alerte le dit au lieu de laisser croire à un run complet.
-    const qualification = state.status?.qualification || {};
-    if (qualification.state === "PARTIAL") {
-      const reasons = (qualification.reasons || []).join(" ; ");
-      messages.push(`${qualification.label || "Qualification incomplète"}${reasons ? ` : ${reasons}` : ""}.`);
-    }
-
-    alert.hidden = messages.length === 0;
-    if (!messages.length) return;
-    const alertStatus = age.status === "stale" ? "stale" : ["warning", "unknown"].includes(age.status) ? "warning" : qualification.state === "PARTIAL" ? "warning" : "coverage";
-    alert.dataset.status = alertStatus;
-    strong.textContent = alertStatus === "stale" ? "Données périmées." : age.status === "warning" || age.status === "unknown" ? "Mise à jour en retard." : qualification.state === "PARTIAL" ? (qualification.label || "Qualification incomplète") : "Couverture partielle.";
-    detail.textContent = messages.join(" ");
-  }
-
-  function renderVeille() {
-    const signal = trendsReady() ? state.status?.analytics?.signals?.[0] : null;
-    $("#veille-signal").innerHTML = signal ? signalHtml(signal, true) : trendsReady() ? "" : trendNoticeHtml();
-    const local = state.latest.filter((row) => focusLocations().includes(row.location));
-    $("#focus-body").innerHTML = local.length
-      ? `<p class="status-bubble status-bubble--active"><strong>${local.length}</strong> incident${local.length > 1 ? "s" : ""} à La Réunion / Mayotte sur les 30 derniers jours.</p><div class="focus-list">${local.map(incidentCardHtml).join("")}</div>`
-      : '<p class="status-bubble status-bubble--quiet">Aucun incident à La Réunion / Mayotte sur les 30 derniers jours.</p>';
-    $("#veille-count").textContent = state.latest.length ? `${formatNumber(state.latest.length)} incidents` : "Aucun incident";
-    $("#veille-list").innerHTML = state.latest.length ? state.latest.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun incident sur les 30 derniers jours.</p>';
-  }
-
-  function optionHtml(values, current, allLabel) {
-    return `<option value="">${esc(allLabel)}</option>` + values.map((value) => `<option value="${esc(value)}" ${value === current ? "selected" : ""}>${esc(value)}</option>`).join("");
-  }
-
-  function populateSearchControls() {
-    const rows = state.incidents;
-    const withUnknown = (values) => Array.from(new Set(values.map((value) => String(value || UNKNOWN).trim() || UNKNOWN))).sort((a, b) => a.localeCompare(b, "fr"));
-    const threats = withUnknown(rows.map((row) => row.threat));
-    const sectors = withUnknown(rows.map((row) => row.sector));
-    const locations = withUnknown(rows.map((row) => row.location));
-    const sources = unique(rows.flatMap((row) => row.sources || [])).sort((a, b) => sourceLabel(a).localeCompare(sourceLabel(b), "fr"));
-    $("#s-threat").innerHTML = optionHtml(threats, state.filters.threat, "Toutes");
-    $("#s-sector").innerHTML = optionHtml(sectors, state.filters.sector, "Tous");
-    $("#s-source").innerHTML = `<option value="">Toutes</option>` + sources.map((value) => `<option value="${esc(value)}" ${value === state.filters.source ? "selected" : ""}>${esc(sourceLabel(value))}</option>`).join("");
-    $("#s-locations").innerHTML = locations.map((value) => `<label><input type="checkbox" value="${esc(value)}" ${state.filters.locations.includes(value) ? "checked" : ""}> <span>${esc(value)}</span></label>`).join("");
-    $("#s-q").value = state.filters.q;
-    $("#s-period").value = state.filters.period;
-    $("#s-sort").value = state.sort;
-    $("#s-page-size").value = String(state.pageSize);
-    updateLocationSummary();
-  }
-
-  function updateLocationSummary() {
-    const count = state.filters.locations.length;
-    $("#location-toggle").textContent = count ? `${count} territoire${count > 1 ? "s" : ""} sélectionné${count > 1 ? "s" : ""}` : "Tous les territoires";
-  }
-
-  function cutoffFor(period) {
-    const days = Number(period);
-    return Number.isFinite(days) && days > 0 ? new Date(Date.now() - days * DAY) : null;
-  }
-
-  function filteredSearch() {
-    const query = normalize(state.filters.q);
-    const cutoff = cutoffFor(state.filters.period);
-    return state.incidents.filter((incident) => {
-      const searchText = normalize([incident.org, incident.threat, incident.sector, incident.location, incident.summary, ...(incident.sources || []).map(sourceLabel)].join(" "));
-      if (query && !searchText.includes(query)) return false;
-      if (state.filters.threat && String(incident.threat || UNKNOWN) !== state.filters.threat) return false;
-      if (state.filters.sector && String(incident.sector || UNKNOWN) !== state.filters.sector) return false;
-      if (state.filters.locations.length && !state.filters.locations.includes(String(incident.location || UNKNOWN))) return false;
-      if (state.filters.source && !(incident.sources || []).includes(state.filters.source)) return false;
-      if (cutoff) {
-        const date = new Date(incident.date);
-        if (Number.isNaN(date.getTime()) || date < cutoff) return false;
-      }
-      return true;
-    });
-  }
-
-  function sortedSearch(rows) {
-    const result = rows.slice();
-    if (state.sort === "date-asc") return result.sort((a, b) => String(a.date).localeCompare(String(b.date)));
-    if (state.sort === "org") return result.sort((a, b) => String(a.org || "").localeCompare(String(b.org || ""), "fr"));
-    return result.sort((a, b) => String(b.date).localeCompare(String(a.date)));
-  }
-
-  function renderActiveFilters() {
-    const labels = [];
-    if (state.filters.q) labels.push(`Recherche : “${state.filters.q}”`);
-    if (state.filters.threat) labels.push(`Menace : ${state.filters.threat}`);
-    if (state.filters.sector) labels.push(`Secteur : ${state.filters.sector}`);
-    state.filters.locations.forEach((value) => labels.push(`Territoire : ${value}`));
-    if (state.filters.source) labels.push(`Source : ${sourceLabel(state.filters.source)}`);
-    if (state.filters.period !== "all") labels.push(`Période : ${state.filters.period} jours`);
-    $("#s-active-filters").innerHTML = labels.map((label) => `<span>${esc(label)}</span>`).join("");
-  }
-
-  function renderRecherche() {
-    if (!state.incidentsLoaded) return;
+  async function applySearchPatch(patch) {
+    state.filters = { ...emptyFilters(), ...patch };
+    state.page = 1;
+    state.sort = "date-desc";
+    state.view = "recherche";
+    syncUrl(true);
+    await ensureIncidents();
     populateSearchControls();
-    renderActiveFilters();
-    const rows = sortedSearch(filteredSearch());
-    const pages = Math.max(1, Math.ceil(rows.length / state.pageSize));
-    state.page = Math.min(state.page, pages);
-    const start = (state.page - 1) * state.pageSize;
-    const shown = rows.slice(start, start + state.pageSize);
-    $("#s-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""}`;
-    $("#s-list").innerHTML = shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun résultat.</p>';
-    $("#s-pager").innerHTML = `<button type="button" class="btn" data-page="prev" ${state.page <= 1 ? "disabled" : ""}>← Précédent</button><span>${state.page} / ${pages}</span><button type="button" class="btn" data-page="next" ${state.page >= pages ? "disabled" : ""}>Suivant →</button>`;
+    render();
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
-  function simpleBars(container, rows, onSelect) {
-    if (!container) return;
-    if (!rows?.length) { container.innerHTML = '<p class="empty-state">Aucune donnée.</p>'; return; }
-    const max = Math.max(...rows.map((row) => Number(row.count ?? row.value ?? 0)), 1);
-    container.innerHTML = rows.slice(0, 10).map((row) => {
-      const value = Number(row.count ?? row.value ?? 0);
-      const width = Math.max(2, Math.round((value / max) * 100));
-      return `<button type="button" class="metric-bar" data-label="${esc(row.label)}"><span class="metric-bar-label">${esc(row.label)}</span><span class="metric-bar-track"><span style="width:${width}%"></span></span><strong>${formatNumber(value)}</strong></button>`;
-    }).join("");
-    if (onSelect) $$(".metric-bar", container).forEach((button) => button.addEventListener("click", () => onSelect(button.dataset.label)));
-  }
-
-  function renderMonthly(series) {
-    const container = $("#chart-evolution");
-    if (!series?.months?.length) { container.innerHTML = '<p class="empty-state">Aucune donnée.</p>'; return; }
-    simpleBars(container, series.months.map((month, index) => ({ label: month, count: series.total[index] })).slice(-12));
-  }
-
-  function oceanProfileHtml(profile, label) {
-    if (!profile?.incidents) return `<p><strong>${esc(label)}</strong> — aucun incident observé.</p>`;
-    const threats = (profile.threats || []).slice(0, 3).map((row) => `${row.label} (${row.count})`).join(" · ");
-    return `<div class="ocean-profile"><strong>${esc(label)}</strong><span>${formatNumber(profile.incidents)} incidents</span>${threats ? `<small>${esc(threats)}</small>` : ""}</div>`;
+  function renderAnalyse() {
+    $("#a-scope").value = state.analysisScope;
+    $("#a-period").value = state.analysisPeriod;
+    const a = state.status?.analytics;
+    const profile = a?.scopes?.[state.analysisScope]?.[state.analysisPeriod];
+    if (!profile) {
+      $("#reading-line").textContent = "Analyse indisponible pour ce périmètre.";
+      ["#chart-threat", "#chart-sector", "#signals-list", "#chart-evolution"].forEach((selector) => { $(selector).innerHTML = ""; });
+      $("#monthly-card").hidden = $("#signals-card").hidden = true;
+      return;
+    }
+    const period = state.analysisPeriod === "all" ? "Toute la base" : `${state.analysisPeriod} jours`;
+    $("#reading-line").textContent = `${formatNumber(profile.incidents)} incidents retenus · ${formatNumber(profile.organisations)} organisations · ${period}${profile.undated ? ` · ${profile.undated} sans date` : ""}`;
+    const meta = integrity();
+    const complete = meta.known && meta.days >= (state.analysisPeriod === "all" ? Infinity : Number(state.analysisPeriod));
+    const note = $("#analysis-coverage-note");
+    note.hidden = complete;
+    note.textContent = meta.known ? `Couverture continue : ${meta.days} jours. Ces répartitions décrivent les publications du corpus.` : "Couverture temporelle non établie. Ces répartitions décrivent les publications du corpus.";
+    const patch = { locations: scopeLocations(state.analysisScope), period: state.analysisPeriod, admission: "ACCEPTED" };
+    renderDistribution($("#chart-threat"), profile.threat || [], (label) => applySearchPatch({ ...patch, threat: label }));
+    renderDistribution($("#chart-sector"), profile.sector || [], (label) => applySearchPatch({ ...patch, sector: label }));
+    $("#monthly-card").hidden = !complete || (profile.months || []).length < 2;
+    if (!$("#monthly-card").hidden) simpleBars($("#chart-evolution"), profile.months || []);
+    const signals = trendsReady() && state.analysisScope === "all" && state.analysisPeriod === "30" ? (a.signals || []).filter((signal) => Number(signal.window_days) === 30).slice(0, 3) : [];
+    $("#signals-card").hidden = !signals.length;
+    $("#signals-list").innerHTML = signals.map(signalHtml).join("");
   }
 
   function renderSources() {
-    $("#sources-leds").innerHTML = (state.status?.sources || []).map((source) => `<div class="source-status"><span class="source-dot" data-status="${esc(source.status || "unknown")}"></span><strong>${esc(sourceLabel(source.id))}</strong><small>${esc(source.status || "—")}</small></div>`).join("");
-    $("#sources-detail-body").innerHTML = (state.status?.sources || []).map((source) => `<tr><td>${esc(sourceLabel(source.id))}</td><td>${esc(source.status || "—")}</td><td>${esc(formatDateTime(source.last_run))}</td><td>${esc(source.duration ? `${source.duration} s` : "—")}</td><td>${esc(formatNumber(source.items_collected || source.items || 0))}</td><td>${esc(source.reason || source.comment || "—")}</td></tr>`).join("");
+    const labels = { OK: "Disponible", PARTIAL: "Partielle", FAIL: "Indisponible", SKIPPED: "Non consultée" };
+    $("#sources-detail-body").innerHTML = (state.status?.sources || []).map((source) => `<tr><th scope="row">${esc(sourceLabel(source.id))}</th><td><span class="source-state" data-status="${esc(source.status || "unknown")}">${esc(labels[source.status] || "État inconnu")}</span></td><td>${esc(formatDateTime(source.last_run))}</td><td>${source.status === "OK" ? "—" : esc(source.reason || "Couverture limitée.")}</td></tr>`).join("");
   }
-
   function productionMetric(label, value, detail, ok) {
     const status = ok === null ? "pending" : ok ? "ok" : "alert";
     return `<div class="production-metric" data-status="${status}"><small>${esc(label)}</small><strong>${esc(value)}</strong><span>${esc(detail)}</span></div>`;
@@ -442,7 +420,7 @@
         "Qualification",
         qualification.state || "n.d.",
         qualification.state === "PARTIAL"
-          ? `${formatNumber(qualification.pending_fields || 0)} champ(s) · ${formatNumber(qualification.pending_pairs || 0)} paire(s) en attente`
+          ? (qualification.reasons || []).join(" ; ")
           : "traitements nécessaires terminés",
         qualificationOk,
       ),
@@ -464,77 +442,77 @@
     ].join("");
   }
 
-  async function applySearchPatch(patch) {
-    state.filters = { q: "", threat: "", sector: "", locations: [], source: "", period: "all", ...state.filters, ...patch };
-    state.page = 1;
-    state.view = "recherche";
-    syncUrl(true);
-    await ensureIncidents();
-    render();
-  }
-
-  function renderAnalyse() {
-    const a = state.status?.analytics;
-    if (!a) { $("#analysis-content").innerHTML = '<p class="empty-state">Analyse indisponible.</p>'; return; }
-    const q = a.quality || {};
-    const meta = integrity();
-    const availableDays = meta.known ? Math.max(1, Math.min(90, Number(meta.days) || 1)) : 0;
-    $("#reading-line").innerHTML = `<strong>${formatNumber(q.incidents || a.dated_incidents || 0)}</strong> incidents · <strong>${formatNumber(q.organisations || 0)}</strong> organisations · ${esc(formatDate(q.first_date))} → ${esc(formatDate(q.last_date))}`;
-    $("#analysis-coverage-note").hidden = !meta.known || Number(meta.days) >= 90;
-    $("#analysis-coverage-note").textContent = meta.known && Number(meta.days) < 90 ? `Analyses descriptives calculées sur ${meta.days} jour${Number(meta.days) > 1 ? "s" : ""} disponible${Number(meta.days) > 1 ? "s" : ""}. Les tendances comparatives restent neutralisées jusqu’à ${meta.trend_required_days || 60} jours continus.` : "";
-    $("#threat-title").textContent = availableDays && availableDays < 90 ? `Menaces — ${availableDays} jours disponibles` : "Menaces — 90 derniers jours";
-    $("#sector-title").textContent = availableDays && availableDays < 90 ? `Secteurs — ${availableDays} jours disponibles` : "Secteurs — 90 derniers jours";
-    renderMonthly(a.series);
-    simpleBars($("#chart-threat"), a.top_90d?.threat || [], (label) => applySearchPatch({ threat: label, period: "90" }));
-    const sectorRows = (a.top_90d?.sector || []).filter((row) => row.label !== UNKNOWN);
-    const sectorUnknown = (a.top_90d?.sector || []).find((row) => row.label === UNKNOWN)?.count || 0;
-    simpleBars($("#chart-sector"), sectorRows, (label) => applySearchPatch({ sector: label, period: "90" }));
-    $("#chart-sector").insertAdjacentHTML("beforeend", `<p class="hint">Secteur non renseigné : ${formatNumber(sectorUnknown)} incident${sectorUnknown > 1 ? "s" : ""}</p>`);
-    $("#signals-list").innerHTML = trendsReady() ? ((a.signals || []).slice(0, 12).map((signal) => signalHtml(signal)).join("") || '<p class="empty-state">Aucun signal notable sur la période.</p>') : trendNoticeHtml();
-    $("#ocean-focus").innerHTML = oceanProfileHtml(a.focus?.profile, "La Réunion / Mayotte");
-    $("#ocean-ensemble").innerHTML = oceanProfileHtml(a.ocean?.profile, "Ensemble Océan Indien");
-    $("#ocean-focus").onclick = () => applySearchPatch({ locations: focusLocations().slice() });
-    $("#ocean-ensemble").onclick = () => applySearchPatch({ locations: OCEAN_LOCATIONS.slice() });
-    renderProduction();
-    renderSources();
-  }
-
   async function ensureFacts() {
     if (state.facts) return state.facts;
-    state.facts = await loadJson("assets/data/facts.json", {});
-    return state.facts;
+    if (!factsPromise) factsPromise = loadJson("assets/data/facts.json", {});
+    const facts = await factsPromise;
+    if (state.loadErrors.has("assets/data/facts.json")) factsPromise = null;
+    else state.facts = facts;
+    return facts;
   }
 
   function incidentSummaryParagraphs(incident, detail) {
     const validDetail = detail && detail.version === 3;
-    const raw = validDetail && Array.isArray(detail.summary_paragraphs)
-      ? detail.summary_paragraphs.slice(0, 2).map((value) => String(value || "").trim())
-      : [];
-    const generated = raw[0] && raw[0].length <= 1200
-      ? raw.filter((value) => known(value) && value.length <= 1200)
-      : [];
+    const raw = validDetail && Array.isArray(detail.summary_paragraphs) ? detail.summary_paragraphs.slice(0, 2).map((value) => String(value || "").trim()) : [];
+    const generated = raw[0] && raw[0].length <= 1200 ? raw.filter((value) => known(value) && value.length <= 1200) : [];
     if (generated.length) return generated;
     const headline = cleanSummary((validDetail && detail.display_summary) || incident.summary);
     if (known(headline) && headline.length <= 1200) return [headline];
-    return ["Les informations disponibles ne permettent pas encore de résumer précisément cet incident."];
+    return ["Synthèse indisponible."];
   }
 
-  async function openIncident(id) {
-    const incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
-    if (!incident) return;
-    const facts = await ensureFacts();
-    const detail = facts[id];
-    const meta = [incident.date ? formatDate(incident.date) : "", incident.threat, incident.sector, incident.location].filter(known).join(" · ");
-    const paragraphs = incidentSummaryParagraphs(incident, detail);
-    const tentativeChip = sectorTentativeChip(incident);
-    $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${meta ? `<p>${esc(meta)}</p>` : ""}${tentativeChip ? `<p>${tentativeChip}</p>` : ""}</div>
-      <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
-      <div class="detail-sources"><strong>Sources</strong><div class="incident-source-badges">${sourceBadges(incident)}</div></div>`;
-    // Réouvrir la fiche d'un autre incident doit repartir du haut : un
-    // <dialog> natif ne réinitialise pas toujours son scroll interne.
+  async function openIncident(id, navigate = true) {
+    const token = ++detailToken;
+    state.incidentId = id;
+    if (navigate) syncUrl(true);
+    const dialog = $("#detail-dialog");
+    $("#detail-dialog-content").innerHTML = '<h2 id="detail-dialog-title">Chargement de la fiche…</h2>';
+    $("#detail-copy-status").textContent = "";
+    $("#detail-copy").hidden = true;
+    if (!dialog.open) dialog.showModal();
+    let incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
+    if (!incident) {
+      await ensureIncidents();
+      incident = state.incidents.find((row) => row.id === id);
+    }
+    const facts = incident ? await ensureFacts() : {};
+    if (token !== detailToken || state.incidentId !== id) return;
+    $("#detail-copy").hidden = !incident;
+    if (!incident) {
+      $("#detail-dialog-content").innerHTML = '<h2 id="detail-dialog-title">Incident introuvable</h2><p>Cette fiche n’est pas disponible dans le corpus publié.</p>';
+    } else {
+      const detail = facts[id];
+      const meta = [incident.date ? formatDate(incident.date) : "Date non déterminée", threatLabel(incident), sectorLabel(incident) || "Secteur non déterminé", known(incident.location) ? incident.location : ""].filter(Boolean).join(" · ");
+      const paragraphs = incidentSummaryParagraphs(incident, detail);
+      const candidate = incident.admission === "CANDIDATE" ? `<p class="candidate-note"><strong>À confirmer.</strong> ${esc(incident.admission_reason || "Publication en cours de vérification.")}</p>` : "";
+      const websites = (incident.organisation_links || []).map(safeUrl).filter(Boolean);
+      const websiteHtml = websites.length ? `<div class="organisation-sites"><span>Site de l’organisation</span>${websites.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : "";
+      const evidence = incident.sector_status?.evidence;
+      const method = known(evidence) ? `<details class="sector-evidence"><summary>Qualification du secteur</summary><p>${esc(evidence)}</p></details>` : "";
+      $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2><p class="detail-meta">${esc(meta)}</p>${candidate}</div>
+        <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
+        <div class="detail-sources"><h3>Publications</h3><div class="incident-source-badges">${sourceBadges(incident)}</div></div>${websiteHtml}${method}`;
+    }
     $("#detail-dialog-content").scrollTop = 0;
-    $("#detail-dialog").showModal();
     $("#detail-dialog").scrollTop = 0;
+    renderIntegrityAlert();
+  }
+
+  function openHealth(navigate = true) {
+    state.diagnostic = true;
+    if (navigate) syncUrl(true);
+    renderSources();
+    renderProduction();
+    const meta = integrity();
+    $("#health-context").textContent = `Dernière mise à jour : ${formatDateTime(state.status?.run?.as_of)} · ${meta.known ? `${meta.days} jours de couverture continue` : "Couverture temporelle non établie"}`;
+    if (!$("#health-dialog").open) $("#health-dialog").showModal();
+  }
+
+  async function restoreDialogs() {
+    if (!state.incidentId && $("#detail-dialog").open) $("#detail-dialog").close();
+    if (!state.diagnostic && $("#health-dialog").open) $("#health-dialog").close();
+    if (state.incidentId) await openIncident(state.incidentId, false);
+    if (state.diagnostic) openHealth(false);
   }
 
   function bindGlobal() {
@@ -544,86 +522,124 @@
       state.view = button.dataset.view;
       state.page = 1;
       syncUrl(true);
-      if (state.view === "recherche") await ensureIncidents();
+      if (state.view === "recherche") { await ensureIncidents(); populateSearchControls(); }
       render();
     });
     document.addEventListener("click", (event) => {
       const open = event.target.closest("[data-open-id]");
       if (open) { event.preventDefault(); openIncident(open.dataset.openId); return; }
       const signal = event.target.closest("[data-signal]");
-      if (signal) { event.preventDefault(); try { applySearchPatch(JSON.parse(signal.dataset.signal)); } catch (_) {} }
+      if (signal) { event.preventDefault(); try { applySearchPatch({ ...JSON.parse(signal.dataset.signal), admission: "ACCEPTED" }); } catch (_) {} }
     });
     window.addEventListener("popstate", async () => {
       readUrl();
-      if (state.view === "recherche") await ensureIncidents();
+      if (state.view === "recherche") { await ensureIncidents(); populateSearchControls(); }
       render();
+      await restoreDialogs();
     });
+    $("#v-scope").addEventListener("change", (event) => { state.scope = event.target.value; syncUrl(); render(); });
+    $("#veille-more").addEventListener("click", () => applySearchPatch({ locations: scopeLocations(state.scope), period: "30" }));
+    ["scope", "period"].forEach((key) => $("#a-" + key).addEventListener("change", (event) => {
+      if (key === "scope") state.analysisScope = event.target.value;
+      else state.analysisPeriod = event.target.value;
+      syncUrl(); renderAnalyse();
+    }));
     $("#theme-toggle").addEventListener("click", () => {
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      const dark = getComputedStyle(document.documentElement).colorScheme === "dark";
+      const next = dark ? "light" : "dark";
       document.documentElement.dataset.theme = next;
       writeStorage("localStorage", "cw-theme", next);
     });
     const savedTheme = readStorage("localStorage", "cw-theme");
-    if (savedTheme) document.documentElement.dataset.theme = savedTheme;
-    $("#run-pill").addEventListener("click", (event) => { event.preventDefault(); state.view = "analyse"; syncUrl(true); render(); requestAnimationFrame(() => $("#sources")?.scrollIntoView({ behavior: "smooth" })); });
-    $("#detail-dialog").addEventListener("click", (event) => { if (event.target === $("#detail-dialog")) $("#detail-dialog").close(); });
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && $("#detail-dialog").open) $("#detail-dialog").close(); });
+    if (["light", "dark"].includes(savedTheme)) document.documentElement.dataset.theme = savedTheme;
+    $("#run-pill").addEventListener("click", (event) => { event.preventDefault(); openHealth(); });
+    ["detail", "health"].forEach((name) => {
+      const dialog = $("#" + name + "-dialog");
+      $("#" + name + "-close").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (event) => {
+        const rect = dialog.getBoundingClientRect();
+        if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
+      });
+      dialog.addEventListener("close", () => {
+        // Un popstate peut déjà avoir désigné une autre fiche : sa route gagne.
+        if (name === "detail" && !state.incidentId || name === "health" && !state.diagnostic) return;
+        if (name === "detail") { state.incidentId = ""; detailToken += 1; }
+        else state.diagnostic = false;
+        syncUrl();
+      });
+    });
+    $("#detail-copy").addEventListener("click", async () => {
+      const message = $("#detail-copy-status");
+      try { await navigator.clipboard.writeText(location.href); message.textContent = "Lien copié"; }
+      catch (_) { message.innerHTML = `<a href="${esc(location.href)}">Lien de cette fiche</a>`; }
+    });
   }
 
   function bindSearch() {
     let timer;
+    const update = () => { state.page = 1; syncUrl(); renderRecherche(); };
+    const closeLocations = (focus = false) => {
+      $("#location-menu").hidden = true;
+      $("#location-toggle").setAttribute("aria-expanded", "false");
+      if (focus) $("#location-toggle").focus();
+    };
+    $(".search-bar").addEventListener("submit", (event) => event.preventDefault());
     $("#s-q").addEventListener("input", (event) => {
+      state.filters.q = event.target.value;
       clearTimeout(timer);
-      timer = setTimeout(() => { state.filters.q = event.target.value; state.page = 1; syncUrl(); renderRecherche(); }, 160);
+      timer = setTimeout(update, 160);
     });
-    ["threat", "sector", "source", "period"].forEach((key) => $("#s-" + key).addEventListener("change", (event) => {
-      state.filters[key] = event.target.value; state.page = 1; syncUrl(); renderRecherche();
-    }));
-    $("#s-sort").addEventListener("change", (event) => { state.sort = event.target.value; state.page = 1; syncUrl(); renderRecherche(); });
-    $("#s-page-size").addEventListener("change", (event) => { state.pageSize = Number(event.target.value) || PAGE_SIZE; writeStorage("sessionStorage", "cw-page-size", String(state.pageSize)); state.page = 1; renderRecherche(); });
-    const closeLocations = () => { $("#location-menu").hidden = true; $("#location-toggle").setAttribute("aria-expanded", "false"); };
-    $("#location-toggle").addEventListener("click", () => { const menu = $("#location-menu"); menu.hidden = !menu.hidden; $("#location-toggle").setAttribute("aria-expanded", String(!menu.hidden)); });
-    $("#location-close").addEventListener("click", closeLocations);
+    ["threat", "sector", "source", "period", "admission"].forEach((key) => $("#s-" + key).addEventListener("change", (event) => { state.filters[key] = event.target.value; update(); }));
+    $("#s-sort").addEventListener("change", (event) => { state.sort = event.target.value; update(); });
+    $("#location-toggle").addEventListener("click", () => {
+      const menu = $("#location-menu"); menu.hidden = !menu.hidden;
+      $("#location-toggle").setAttribute("aria-expanded", String(!menu.hidden));
+      if (!menu.hidden) $("#location-menu button").focus();
+    });
+    $("#location-close").addEventListener("click", () => closeLocations(true));
     document.addEventListener("click", (event) => { if (!event.target.closest(".location-picker")) closeLocations(); });
-    $("#s-locations").addEventListener("change", () => {
-      state.filters.locations = $$("input:checked", $("#s-locations")).map((input) => input.value);
-      state.page = 1; updateLocationSummary(); syncUrl(); renderRecherche();
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("#location-menu").hidden) { event.preventDefault(); closeLocations(true); } });
+    $("#s-locations").addEventListener("change", () => { state.filters.locations = $$("#s-locations input:checked").map((input) => input.value); update(); });
+    $("#quick-focus").addEventListener("click", () => { state.filters.locations = focusLocations().slice(); update(); closeLocations(true); });
+    $("#quick-ocean").addEventListener("click", () => { state.filters.locations = OCEAN_LOCATIONS.slice(); update(); closeLocations(true); });
+    $("#s-active-filters").addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-remove-filter]");
+      if (!chip) return;
+      const key = chip.dataset.removeFilter;
+      if (key === "locations") state.filters.locations = state.filters.locations.filter((value) => value !== chip.dataset.value);
+      else state.filters[key] = key === "period" ? "all" : "";
+      update();
+      $("#s-q").focus();
     });
-    $("#quick-focus").addEventListener("click", () => { state.filters.locations = focusLocations().slice(); state.page = 1; syncUrl(); renderRecherche(); });
-    $("#quick-ocean").addEventListener("click", () => { state.filters.locations = OCEAN_LOCATIONS.slice(); state.page = 1; syncUrl(); renderRecherche(); });
-    $("#s-reset").addEventListener("click", () => {
-      state.filters = { q: "", threat: "", sector: "", locations: [], source: "", period: "all" }; state.sort = "date-desc"; state.page = 1; syncUrl(); renderRecherche();
-    });
+    $("#s-reset").addEventListener("click", () => { state.filters = emptyFilters(); state.sort = "date-desc"; update(); $("#s-q").focus(); });
     $("#s-pager").addEventListener("click", (event) => {
       const button = event.target.closest("[data-page]");
       if (!button) return;
       state.page += button.dataset.page === "next" ? 1 : -1;
-      syncUrl(); renderRecherche(); window.scrollTo({ top: $("#s-count").offsetTop - 90, behavior: "smooth" });
+      syncUrl(); renderRecherche();
+      $("#s-count").scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
 
   function render() {
-    $$(".views [data-view]").forEach((button) => button.setAttribute("aria-current", String(button.dataset.view === state.view)));
+    $$(".views [data-view]").forEach((button) => button.setAttribute("aria-current", button.dataset.view === state.view ? "page" : "false"));
     $$(".view").forEach((view) => { view.hidden = view.id !== `view-${state.view}`; });
     if (state.view === "veille") renderVeille();
     else if (state.view === "recherche") renderRecherche();
     else renderAnalyse();
+    renderIntegrityAlert();
+    document.dispatchEvent(new CustomEvent("cyberwatch:render", { detail: { scope: state.scope } }));
   }
 
   async function init() {
-    readUrl();
-    bindGlobal();
-    bindSearch();
-    const [latest, status] = await Promise.all([
-      loadJson("assets/data/latest.json", []),
-      loadJson("assets/data/status.json", null),
-    ]);
+    readUrl(); bindGlobal(); bindSearch();
+    const [latest, status] = await Promise.all([loadJson("assets/data/latest.json", []), loadJson("assets/data/status.json", null)]);
     state.latest = Array.isArray(latest) ? latest : [];
     state.status = status;
-    if (state.view === "recherche") await ensureIncidents();
-    renderHeader();
-    renderIntegrityAlert();
-    render();
+    if (state.view === "recherche") { await ensureIncidents(); populateSearchControls(); }
+    renderHeader(); render();
+    document.body.dataset.dashboardReady = "true";
+    await restoreDialogs();
     window.setInterval(() => { renderHeader(); renderIntegrityAlert(); }, 5 * 60 * 1000);
   }
 
