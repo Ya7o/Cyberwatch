@@ -40,7 +40,7 @@
   const state = {
     view: "veille", scope: "all", analysisScope: "all", analysisPeriod: "90",
     latest: [], incidents: [], incidentsLoaded: false, facts: null, status: null,
-    filters: emptyFilters(), sort: "date-desc", page: 1, incidentId: "", diagnostic: false,
+    filters: emptyFilters(), sort: "date-desc", page: 1, veillePage: 1, incidentId: "", diagnostic: false,
     loadErrors: new Set(),
   };
   const focusLocations = () => state.status?.focus_locations || ["La Réunion", "Mayotte"];
@@ -57,6 +57,7 @@
   let incidentsPromise = null;
   let factsPromise = null;
   let detailToken = 0;
+  let regionalWatchInitialized = false;
 
   async function loadJson(path, fallback) {
     try {
@@ -86,7 +87,10 @@
     const params = new URLSearchParams(location.search);
     state.view = ["veille", "recherche", "analyse"].includes(params.get("vue")) ? params.get("vue") : "veille";
     const scope = ["all", "focus", "ocean", "metro"].includes(params.get("scope")) ? params.get("scope") : "all";
-    if (state.view === "veille") state.scope = scope;
+    if (state.view === "veille") {
+      state.scope = scope;
+      state.veillePage = Math.max(1, Math.floor(Number(params.get("page")) || 1));
+    }
     if (state.view === "analyse") {
       state.analysisScope = scope;
       state.analysisPeriod = ["30", "90", "365", "all"].includes(params.get("period")) ? params.get("period") : "90";
@@ -108,6 +112,7 @@
     const params = new URLSearchParams();
     if (state.view !== "veille") params.set("vue", state.view);
     if (state.view === "veille" && state.scope !== "all") params.set("scope", state.scope);
+    if (state.view === "veille" && state.veillePage > 1) params.set("page", String(state.veillePage));
     if (state.view === "analyse") {
       if (state.analysisScope !== "all") params.set("scope", state.analysisScope);
       if (state.analysisPeriod !== "90") params.set("period", state.analysisPeriod);
@@ -151,7 +156,7 @@
   }
 
   function exposureLabel(incident) {
-    return incident.credentials_or_secrets_exposed ? "Identifiants exposés" : incident.high_sensitivity_data_exposed ? "Données très sensibles signalées" : "";
+    return [incident.credentials_or_secrets_exposed ? "Identifiants exposés" : "", incident.high_sensitivity_data_exposed ? "Données très sensibles signalées" : ""].filter(Boolean).join(" · ");
   }
 
   function incidentCardHtml(incident) {
@@ -159,12 +164,14 @@
     const exposure = exposureLabel(incident);
     const summary = cleanSummary(incident.summary);
     const candidate = incident.admission === "CANDIDATE";
-    return `<article class="incident-card" data-id="${esc(incident.id)}">
-      <div class="incident-card-top"><time datetime="${esc(incident.date || "")}">${esc(formatDate(incident.date))}</time>${known(incident.location) ? `<span>${esc(incident.location)}</span>` : ""}${candidate ? '<span class="candidate-status">À confirmer</span>' : ""}</div>
-      <button type="button" class="incident-org-link" data-open-id="${esc(incident.id)}">${esc(incident.org || "Organisation inconnue")}</button>
+    const regional = OCEAN_LOCATIONS.includes(incident.location);
+    const accessibleName = [`Ouvrir la fiche de ${incident.org || "l’organisation inconnue"}`, known(incident.location) ? incident.location : "", threatLabel(incident), candidate ? "À confirmer" : "", exposure].filter(Boolean).join(" · ");
+    return `<article class="incident-card${regional ? " incident-card-regional" : ""}" data-id="${esc(incident.id)}" data-open-id="${esc(incident.id)}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="${esc(accessibleName)}">
+      <div class="incident-card-top"><time datetime="${esc(incident.date || "")}">${esc(formatDate(incident.date))}</time>${known(incident.location) ? `<span class="incident-location${regional ? " incident-location-regional" : ""}">${esc(incident.location)}</span>` : ""}${candidate ? '<span class="candidate-status">À confirmer</span>' : ""}</div>
+      <h3 class="incident-org-link">${esc(incident.org || "Organisation inconnue")}</h3>
       <p class="incident-meta">${esc([threatLabel(incident), sector].filter(Boolean).join(" · "))}</p>
       ${summary ? `<p class="incident-summary-text">${esc(summary)}</p>` : ""}
-      ${exposure && !normalize(summary).includes(normalize(exposure)) ? `<p class="incident-exposure">${esc(exposure)}</p>` : ""}
+      ${exposure ? `<p class="incident-exposure">${esc(exposure)}</p>` : ""}
     </article>`;
   }
 
@@ -194,15 +201,40 @@
     $("#data-alert-detail").textContent = messages.join(" ");
   }
 
+  function renderPager(container, page, pages) {
+    container.hidden = pages <= 1;
+    container.innerHTML = pages <= 1 ? "" : `<button type="button" class="btn" data-page="prev" ${page <= 1 ? "disabled" : ""}>← Précédent</button><span role="status" aria-live="polite">Page ${page} sur ${pages}</span><button type="button" class="btn" data-page="next" ${page >= pages ? "disabled" : ""}>Suivant →</button>`;
+  }
+
+  function renderRegionalWatch() {
+    const panel = $("#regional-watch");
+    const bounds = periodBounds("90");
+    const rows = state.incidentsLoaded && bounds ? state.incidents.filter((incident) => {
+      const day = new Date(`${String(incident.date || "").slice(0, 10)}T00:00:00Z`);
+      return OCEAN_LOCATIONS.includes(incident.location) && day >= bounds.start && day <= bounds.end;
+    }).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")) || String(b.id).localeCompare(String(a.id))) : [];
+    const available = state.incidentsLoaded && Boolean(bounds);
+    $("#regional-watch-count").textContent = available ? `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""} · 3 derniers mois` : "Veille régionale indisponible";
+    $("#regional-watch-period").textContent = available ? rows.length ? `90 derniers jours · du ${formatDate(bounds.start)} au ${formatDate(bounds.end)}` : "Aucun incident publié dans l’océan Indien sur les 90 derniers jours." : "La période ou les données n’ont pas pu être chargées. Actualisez la page pour réessayer.";
+    $("#regional-watch-locations").innerHTML = OCEAN_LOCATIONS.map((name) => ({ name, count: rows.filter((row) => row.location === name).length })).filter((row) => row.count).map((row) => `<span>${esc(row.name)} <strong>${row.count}</strong></span>`).join("");
+    $("#regional-watch-list").innerHTML = rows.map(incidentCardHtml).join("");
+    if (!regionalWatchInitialized || !rows.length) panel.open = rows.length > 0;
+    regionalWatchInitialized = true;
+  }
+
   function renderVeille() {
+    renderRegionalWatch();
     $("#v-scope").value = state.scope;
     const locations = scopeLocations(state.scope);
-    const rows = state.latest.filter((row) => !locations.length || locations.includes(row.location));
-    const shown = rows.slice(0, VEILLE_SIZE);
-    $("#veille-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""} · 30 jours${rows.length > VEILLE_SIZE ? ` · ${VEILLE_SIZE} affichés` : ""}`;
-    $("#veille-list").innerHTML = shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun incident publié dans ce périmètre sur les 30 jours du snapshot.</p>';
-    $("#veille-more").hidden = rows.length <= VEILLE_SIZE;
-    $("#veille-more").textContent = `Voir les ${formatNumber(rows.length)} incidents`;
+    const corpus = state.incidentsLoaded ? state.incidents : state.latest;
+    const rows = corpus.filter((row) => !locations.length || locations.includes(row.location)).slice().sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")) || String(b.id).localeCompare(String(a.id)));
+    const pages = Math.max(1, Math.ceil(rows.length / VEILLE_SIZE));
+    state.veillePage = Math.min(state.veillePage, pages);
+    const start = (state.veillePage - 1) * VEILLE_SIZE;
+    const shown = rows.slice(start, start + VEILLE_SIZE);
+    $("#veille-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""} · ${state.incidentsLoaded ? "Toute la base" : "Liste partielle · 30 jours"}${rows.length ? ` · ${start + 1}–${start + shown.length}` : ""}`;
+    $("#veille-list").innerHTML = shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun incident publié dans ce périmètre.</p>';
+    renderPager($("#veille-pager"), state.veillePage, pages);
   }
 
   function optionHtml(values, current, allLabel) {
@@ -283,8 +315,7 @@
     const shown = rows.slice(start, start + PAGE_SIZE);
     $("#s-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""}${rows.length && pages > 1 ? ` · ${start + 1}–${start + shown.length}` : ""}`;
     $("#s-list").innerHTML = !state.incidentsLoaded ? '<p class="empty-state">La liste n’a pas pu être chargée. Actualisez la page pour réessayer.</p>' : state.filters.period !== "all" && !periodBounds(state.filters.period) ? '<p class="empty-state">Période indisponible : la date du snapshot manque.</p>' : shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun résultat. Retirez un filtre pour élargir la recherche.</p>';
-    $("#s-pager").hidden = pages <= 1;
-    $("#s-pager").innerHTML = pages <= 1 ? "" : `<button type="button" class="btn" data-page="prev" ${state.page <= 1 ? "disabled" : ""}>← Précédent</button><span>Page ${state.page} sur ${pages}</span><button type="button" class="btn" data-page="next" ${state.page >= pages ? "disabled" : ""}>Suivant →</button>`;
+    renderPager($("#s-pager"), state.page, pages);
   }
 
   function simpleBars(container, rows, onSelect) {
@@ -467,8 +498,6 @@
     if (navigate) syncUrl(true);
     const dialog = $("#detail-dialog");
     $("#detail-dialog-content").innerHTML = '<h2 id="detail-dialog-title">Chargement de la fiche…</h2>';
-    $("#detail-copy-status").textContent = "";
-    $("#detail-copy").hidden = true;
     if (!dialog.open) dialog.showModal();
     let incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
     if (!incident) {
@@ -477,21 +506,20 @@
     }
     const facts = incident ? await ensureFacts() : {};
     if (token !== detailToken || state.incidentId !== id) return;
-    $("#detail-copy").hidden = !incident;
     if (!incident) {
       $("#detail-dialog-content").innerHTML = '<h2 id="detail-dialog-title">Incident introuvable</h2><p>Cette fiche n’est pas disponible dans le corpus publié.</p>';
     } else {
       const detail = facts[id];
-      const meta = [incident.date ? formatDate(incident.date) : "Date non déterminée", threatLabel(incident), sectorLabel(incident) || "Secteur non déterminé", known(incident.location) ? incident.location : ""].filter(Boolean).join(" · ");
+      const meta = [incident.date ? formatDate(incident.date) : "Date non déterminée", threatLabel(incident), sectorLabel(incident) || "Secteur non déterminé"].filter(Boolean).join(" · ");
+      const locationHtml = known(incident.location) ? `<p class="detail-location"><span class="incident-location${OCEAN_LOCATIONS.includes(incident.location) ? " incident-location-regional" : ""}">${esc(incident.location)}</span></p>` : "";
+      const exposure = exposureLabel(incident);
       const paragraphs = incidentSummaryParagraphs(incident, detail);
       const candidate = incident.admission === "CANDIDATE" ? `<p class="candidate-note"><strong>À confirmer.</strong> ${esc(incident.admission_reason || "Publication en cours de vérification.")}</p>` : "";
       const websites = (incident.organisation_links || []).map(safeUrl).filter(Boolean);
       const websiteHtml = websites.length ? `<div class="organisation-sites"><span>Site de l’organisation</span>${websites.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : "";
-      const evidence = incident.sector_status?.evidence;
-      const method = known(evidence) ? `<details class="sector-evidence"><summary>Qualification du secteur</summary><p>${esc(evidence)}</p></details>` : "";
-      $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2><p class="detail-meta">${esc(meta)}</p>${candidate}</div>
+      $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${locationHtml}<p class="detail-meta">${esc(meta)}</p>${candidate}${exposure ? `<p class="incident-exposure">${esc(exposure)}</p>` : ""}</div>
         <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
-        <div class="detail-sources"><h3>Publications</h3><div class="incident-source-badges">${sourceBadges(incident)}</div></div>${websiteHtml}${method}`;
+        <div class="detail-sources"><h3>Publications</h3><div class="incident-source-badges">${sourceBadges(incident)}</div></div>${websiteHtml}`;
     }
     $("#detail-dialog-content").scrollTop = 0;
     $("#detail-dialog").scrollTop = 0;
@@ -523,22 +551,35 @@
       state.page = 1;
       syncUrl(true);
       if (state.view === "recherche") { await ensureIncidents(); populateSearchControls(); }
+      else if (state.view === "veille") await ensureIncidents();
       render();
     });
     document.addEventListener("click", (event) => {
       const open = event.target.closest("[data-open-id]");
-      if (open) { event.preventDefault(); openIncident(open.dataset.openId); return; }
+      if (open) { if (window.getSelection()?.toString()) return; event.preventDefault(); openIncident(open.dataset.openId); return; }
       const signal = event.target.closest("[data-signal]");
       if (signal) { event.preventDefault(); try { applySearchPatch({ ...JSON.parse(signal.dataset.signal), admission: "ACCEPTED" }); } catch (_) {} }
+    });
+    document.addEventListener("keydown", (event) => {
+      const card = event.target.closest(".incident-card[data-open-id]");
+      if (card && ["Enter", " "].includes(event.key)) { event.preventDefault(); openIncident(card.dataset.openId); }
     });
     window.addEventListener("popstate", async () => {
       readUrl();
       if (state.view === "recherche") { await ensureIncidents(); populateSearchControls(); }
+      else if (state.view === "veille") await ensureIncidents();
       render();
       await restoreDialogs();
     });
-    $("#v-scope").addEventListener("change", (event) => { state.scope = event.target.value; syncUrl(); render(); });
-    $("#veille-more").addEventListener("click", () => applySearchPatch({ locations: scopeLocations(state.scope), period: "30" }));
+    $("#v-scope").addEventListener("change", (event) => { state.scope = event.target.value; state.veillePage = 1; syncUrl(); render(); });
+    $("#veille-pager").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-page]");
+      if (!button || button.disabled) return;
+      state.veillePage += button.dataset.page === "next" ? 1 : -1;
+      renderVeille(); syncUrl(true);
+      $("#veille-title").focus({ preventScroll: true });
+      $("#veille-title").scrollIntoView({ behavior: "instant", block: "start" });
+    });
     ["scope", "period"].forEach((key) => $("#a-" + key).addEventListener("change", (event) => {
       if (key === "scope") state.analysisScope = event.target.value;
       else state.analysisPeriod = event.target.value;
@@ -567,11 +608,6 @@
         else state.diagnostic = false;
         syncUrl();
       });
-    });
-    $("#detail-copy").addEventListener("click", async () => {
-      const message = $("#detail-copy-status");
-      try { await navigator.clipboard.writeText(location.href); message.textContent = "Lien copié"; }
-      catch (_) { message.innerHTML = `<a href="${esc(location.href)}">Lien de cette fiche</a>`; }
     });
   }
 
@@ -614,9 +650,10 @@
     $("#s-reset").addEventListener("click", () => { state.filters = emptyFilters(); state.sort = "date-desc"; update(); $("#s-q").focus(); });
     $("#s-pager").addEventListener("click", (event) => {
       const button = event.target.closest("[data-page]");
-      if (!button) return;
+      if (!button || button.disabled) return;
       state.page += button.dataset.page === "next" ? 1 : -1;
-      syncUrl(); renderRecherche();
+      renderRecherche(); syncUrl(true);
+      $("#s-count").focus({ preventScroll: true });
       $("#s-count").scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
@@ -637,6 +674,7 @@
     state.latest = Array.isArray(latest) ? latest : [];
     state.status = status;
     if (state.view === "recherche") { await ensureIncidents(); populateSearchControls(); }
+    else if (state.view === "veille") await ensureIncidents();
     renderHeader(); render();
     document.body.dataset.dashboardReady = "true";
     await restoreDialogs();

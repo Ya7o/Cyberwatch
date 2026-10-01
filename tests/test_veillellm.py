@@ -171,7 +171,7 @@ def test_dashboard_candidate_badge_is_discreet_and_uses_regular_cards():
     js = open("assets/dashboard-v2.js", encoding="utf-8").read()
     assert 'candidate-status' in js
     assert 'À confirmer' in js
-    assert 'class="incident-card" data-id=' in js
+    assert 'class="incident-card${regional ? " incident-card-regional" : ""}" data-id=' in js
     assert 'admission_reason' in js
     assert 'Signaux à confirmer' not in js
 
