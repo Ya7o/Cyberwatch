@@ -2,6 +2,391 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3A4CFEB0905F",
+  "location": "Inconnu",
+  "org": "Avantages Jeunes",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/avantages-jeunes-cyberattaque-318-000-profils-en-fuite-des-milliers-de-mineurs-exposes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Avantages Jeunes : 318 000 profils en fuite, des milliers de mineurs exposés",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-AF6A27F3AB60",
+  "location": "France métropolitaine",
+  "org": "AvantagesJeunes",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/avantagesjeunes-muovatamt78zurmvlo",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/avantagesjeunes-muovatamt78zurmvlo"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base attribuée à AvantagesJeunes et revendiquée sur un forum annonce environ 318 000 profils, dont des mineurs.",
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2ECF4B71AF30",
+  "location": "France métropolitaine",
+  "org": "Dr Veto",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/dr-veto-mupgpk69hg67nnxmf9v",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/dr-veto-mupgpk69hg67nnxmf9v"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-45C1E638A824",
+  "location": "France métropolitaine",
+  "org": "GPS Santé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/gps-sant-muotbmo1pgbtt3zmbgj",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/gps-sante-150-000-patients-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/gps-sant-muotbmo1pgbtt3zmbgj"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "GPS Santé : 150 000 patients revendiqués après l’exploitation d’un compte médecin",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1D4141D387DB",
+  "location": "France métropolitaine",
+  "org": "Orkyn",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/orkyn-mupff8p55spyc9k49rw",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/orkyn-les-donnees-de-sante-de-patients-voles-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/orkyn-mupff8p55spyc9k49rw"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Orkyn : les données de santé de patients volés après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1AB8FA0FE5D3",
+  "location": "France métropolitaine",
+  "org": "Rofim Doctor",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/rofim-doctor-muos8j29zwxrqrh47y",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/rofim-doctor-muos8j29zwxrqrh47y"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EB398EFD54DA",
+  "location": "France métropolitaine",
+  "org": "Transparence Santé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Transparence Santé est une **base de données publique pilotée par le ministère chargé de la Santé**. [étiquette source écartée : Santé]",
+   "evidence_url": "https://frenchbreaches.com/alertes/transparence-sant-muotiueh6mk3xcpj5ah",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/transparence-sant-muotiueh6mk3xcpj5ah"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un utilisateur affirme avoir récupéré et publié environ 9,1 millions d'enregistrements provenant de la base publique Transparence Santé.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-723CD35E91B1",
+  "location": "France métropolitaine",
+  "org": "VosFactures",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/vosfactures-muoqv8ylnty27ia39xm",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/vosfactures-touche-par-une-cyberattaque-les-factures-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/vosfactures-muoqv8ylnty27ia39xm"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "VosFactures touché par une cyberattaque : les factures exposées",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-473AA3A9AF12",
+  "location": "Inconnu",
+  "org": "Adéquat",
+  "organisation_links": [
+   "https://jobadequat.fr"
+  ],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/adequat-les-donnees-de-candidats-exposees-pendant-trois-mois/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Adéquat : les données de candidats exposées pendant trois mois",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AA49D64CDD92",
+  "location": "France métropolitaine",
+  "org": "ANSSI",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "bfmtv.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.bfmtv.com/tech/cybersecurite/l-anssi-et-la-dinum-victimes-a-leur-tour-d-une-fuite-de-donnees-les-deux-agences-dediees-a-la-cybersecurite-ont-ete-compromises_AV-202609300718.html"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant ANSSI.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D95CB21B4453",
+  "location": "France métropolitaine",
+  "org": "Autos",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/autos-distinxion-muo73x46b5xto1nd1oq",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/autos-distinxion-muo73x46b5xto1nd1oq"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Distinxion : un pirate revendique une base CRM de 518 903 contacts correspondant selon lui à 415 990 personnes distinctes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-09-30",
   "high_sensitivity_data_exposed": false,
   "id": "INC-697D5F99FFA4",
@@ -37,31 +422,213 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-CFA199A7659B",
+  "location": "France métropolitaine",
+  "org": "Centre-Val de Loire",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/centre-val-de-loire-muo89rks0k0zzitcbl67",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/centre-val-de-loire-muo89rks0k0zzitcbl67"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Revendication d'une fuite de 6 768 lignes de dossiers de stagiaires de la Région Centre-Val de Loire contenant NIR et IBAN.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-905219E08A66",
+  "location": "France métropolitaine",
+  "org": "Cookson-CLAL",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/cookson-clal-muomsy4ng1mk25gtxwj",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/cookson-clal.webp"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cookson-clal-muomsy4ng1mk25gtxwj"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
   "high_sensitivity_data_exposed": false,
   "id": "INC-3540E86641E4",
   "location": "France métropolitaine",
-  "org": "Décoclim",
+  "org": "DECOClim",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/decoclim-muo93wa9ekpdn1pzq2",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
     "label": "BonjourLaFuite",
     "source": "BONJOURLAFUITE",
     "url": "https://bonjourlafuite.eu.org/img/decoclim.png"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/decoclim-muo93wa9ekpdn1pzq2"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "DECOClim a confirmé un accès non autorisé à certaines données de sa base clients, exposant noms, coordonnées et informations de commandes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6B36814D6E1B",
+  "location": "France métropolitaine",
+  "org": "DINUM",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Direction interministérielle du numérique : administration centrale de l’État",
+   "evidence_url": "https://www.numerique.gouv.fr/dinum/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "label": "bfmtv.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.bfmtv.com/tech/cybersecurite/l-anssi-et-la-dinum-victimes-a-leur-tour-d-une-fuite-de-donnees-les-deux-agences-dediees-a-la-cybersecurite-ont-ete-compromises_AV-202609300718.html"
    }
   ],
   "sources": [
    "BONJOURLAFUITE"
   ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Décoclim.",
+  "summary": "BonjourLaFuite signale une fuite de données concernant DINUM.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-148B4A8FB9BA",
+  "location": "France métropolitaine",
+  "org": "Direction interministérielle du numérique",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/direction-interminist-rielle-du-num-rique-dinum-muol6l7pjtbxn5jirpc",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/direction-interminist-rielle-du-num-rique-dinum-muol6l7pjtbxn5jirpc"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Deux instances Metabase de la DINUM liées à ProConnect et Nuage-Public ont été compromises avec exfiltration de données.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5176DF5FE5D0",
+  "location": "Inconnu",
+  "org": "Distinxion",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/distinxion-autos-fr-pres-de-500-000-prospects-exposes-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Distinxion (autos.fr) : près de 500 000 prospects exposés après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -122,8 +689,50 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "La FFRandonnée fait l’objet d’une revendication de fuite de 1 429 334 fiches d’adhérents contenant divers identifiants et données personnelles.",
+  "summary": "FFRandonnée : 1,43 million de fiches d’adhérents en fuite après une cyberattaque",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FAB241BB235B",
+  "location": "France métropolitaine",
+  "org": "FIDUCIAL",
+  "organisation_links": [
+   "https://fiducial.fr"
+  ],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Financial Services",
+   "evidence_url": "http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/eb0edc0f82864cce5e7de5ee755f7bee",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fiducial-65-go-de-donnees-judiciaires-et-financieres-revendiques-par-un-ransomware/"
+   },
+   {
+    "label": "lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/eb0edc0f82864cce5e7de5ee755f7bee"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Fiducial : 65 Go de données judiciaires et financières revendiqués par un ransomware",
+  "threat": "Ransomware",
   "threat_status": {
    "status": "reported"
   }
@@ -138,12 +747,20 @@
   "org": "Frontières",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/fronti-res-muo3jsnd6wflxqyd4w8",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/frontieres-les-donnees-personnelles-de-ses-utilisateurs-se-retrouvent-exposees/"
+   },
    {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
@@ -151,12 +768,184 @@
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Fuite de noms, prénoms et adresses e-mail d’abonnés du média Frontières, potentiellement plusieurs dizaines de milliers concernés.",
+  "summary": "Frontières : les données personnelles de ses utilisateurs se retrouvent exposées",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0F486B50ABB2",
+  "location": "France métropolitaine",
+  "org": "Groupe Adéquat",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le Groupe Adéquat, spécialiste de l’intérim et du recrutement, confirme un incident de sécurité ayant concerné son site jobadequat.fr. [étiquette source écartée : public]",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-ad-quat-muo97kpzpiathfhwe8l",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-ad-quat-muo97kpzpiathfhwe8l"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le Groupe Adéquat signale des accès non autorisés sur jobadequat.fr entre le 24 avril et le 22 juillet 2026, exposant potentiellement des données de candidats.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EE167D8D9DEA",
+  "location": "France métropolitaine",
+  "org": "Laboratoire d’innovation de l’ANSSI",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/laboratoire-d-innovation-de-l-anssi-muol4p978duakorwom",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/laboratoire-d-innovation-de-l-anssi-muol4p978duakorwom"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-60BCEF25FA60",
+  "location": "France métropolitaine",
+  "org": "Le Centre National de l'Expertise Hospitalière",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/le-centre-national-de-l-expertise-hospitali-re-cneh-muome98fga2iaxy1jk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/le-centre-national-de-l-expertise-hospitali-re-cneh-muome98fga2iaxy1jk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Le Centre National de l’Expertise Hospitalière (CNEH)",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-48E6506D90E3",
+  "location": "France métropolitaine",
+  "org": "QualiCharge",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "**QualiCharge, service lié à la gestion des infrastructures de recharge pour véhicules électriques, a été touché par une compromission informatique après l’exploitation d’une vulnérabilité Metabase. [étiquette source écartée : public]",
+   "evidence_url": "https://frenchbreaches.com/alertes/qualicharge-muolobigbcjjcaxs45",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/qualicharge-muolobigbcjjcaxs45"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Exfiltration de 102 000 sessions de recherche et d'informations de ~100 comptes techniques après exploitation d'une vulnérabilité Metabase chez QualiCharge.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E1DAFF22CE19",
+  "location": "Inconnu",
+  "org": "Région Centre-Val de Loire",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Région Centre-Val de Loire",
+   "evidence_url": "https://www.cyberattaque.org/region-centre-val-de-loire-des-milliers-de-dossiers-en-fuite-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/region-centre-val-de-loire-des-milliers-de-dossiers-en-fuite-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Région Centre-Val de Loire : des milliers de dossiers en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -187,16 +976,164 @@
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/scribd-munsjrub5u8wlyhjfd"
+   },
+   {
+    "label": "support.scribd.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://support.scribd.com/hc/fr/articles/53787421531284-Informations-concernant-l-incident-de-s%C3%A9curit%C3%A9-r%C3%A9cent"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Scribd confirme une cyberattaque ayant exposé les données de certains utilisateurs",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-938BAAE8F945",
+  "location": "Inconnu",
+  "org": "SDIS 66",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le SDIS 66 est le service public chargé des missions de secours et de lutte contre les incendies dans les Pyrénées-Orientales.",
+   "evidence_url": "https://www.cyberattaque.org/sdis-66-118-892-interventions-et-pres-de-100-000-documents-medicaux-revendiques-par-un-hacker/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sdis-66-118-892-interventions-et-pres-de-100-000-documents-medicaux-revendiques-par-un-hacker/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "SDIS 66 : 118 892 interventions et près de 100 000 documents médicaux revendiqués par un hacker",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-8D3392DD5A1A",
+  "location": "France métropolitaine",
+  "org": "SDIS des Pyrénées-Orientales",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/sdis-des-pyr-n-es-orientales-muofwgorb7tkmw3yu9a",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sdis-des-pyr-n-es-orientales-muofwgorb7tkmw3yu9a"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le pirate revendique la fuite de 118 892 enregistrements et 99 108 documents/images issus du SDIS des Pyrénées-Orientales.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-10CAECE09DE1",
+  "location": "France métropolitaine",
+  "org": "TRACFIN",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/tracfin-muohckeoxgv08biqk4c",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/tracfin-muohckeoxgv08biqk4c"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F38A1241BA3D",
+  "location": "France métropolitaine",
+  "org": "École vétérinaire d’Alfort",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "École vétérinaire d’Alfort",
+   "evidence_url": "https://www.cyberattaque.org/ecole-veterinaire-dalfort-des-acces-administrateurs-et-cookies-de-session-revendiques-par-un-hacker/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ecole-veterinaire-dalfort-des-acces-administrateurs-et-cookies-de-session-revendiques-par-un-hacker/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cole-v-t-rinaire-d-alfort-muoleigqmwt70lr0rg"
    }
   ],
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Scribd confirme un accès non autorisé à ses systèmes et l’exposition de certaines données d’utilisateurs.",
-  "threat": "Intrusion",
+  "summary": "École vétérinaire d’Alfort : des accès administrateurs et cookies de session revendiqués par un hacker",
+  "threat": "Inconnu",
   "threat_status": {
-   "status": "confirmed"
+   "status": "unknown"
   }
  },
  {
@@ -505,7 +1442,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "SFR : 15 817 dossiers de souscriptions et raccordements diffusés sur le Darknet.",
+  "summary": "SFR : près de 16 000 dossiers de rendez-vous de raccordement diffusés sur le Darknet",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
