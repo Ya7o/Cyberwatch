@@ -92,12 +92,16 @@
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 7,
+      "count": 5,
       "label": "Fuite de données"
      },
      {
-      "count": 2,
+      "count": 3,
       "label": "Intrusion"
+     },
+     {
+      "count": 1,
+      "label": "Inconnu"
      }
     ]
    },
@@ -203,12 +207,16 @@
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 7,
+      "count": 5,
       "label": "Fuite de données"
      },
      {
-      "count": 2,
+      "count": 3,
       "label": "Intrusion"
+     },
+     {
+      "count": 1,
+      "label": "Inconnu"
      }
     ]
    },
@@ -228,9 +236,1343 @@
    "unknown_pct": {
     "location": 8.9,
     "sector": 15.1,
-    "threat": 0.0
+    "threat": 0.7
    },
    "with_summary_pct": 89.0
+  },
+  "scopes": {
+   "all": {
+    "30": {
+     "first_date": "2026-09-02",
+     "incidents": 139,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 139,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 135,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 22,
+       "label": "Inconnu"
+      },
+      {
+       "count": 15,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 11,
+       "label": "Santé"
+      },
+      {
+       "count": 11,
+       "label": "Sport"
+      },
+      {
+       "count": 10,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 8,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 6,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 103,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 13,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    },
+    "365": {
+     "first_date": "2026-02-19",
+     "incidents": 146,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-02"
+      },
+      {
+       "count": 1,
+       "label": "2026-04"
+      },
+      {
+       "count": 1,
+       "label": "2026-05"
+      },
+      {
+       "count": 3,
+       "label": "2026-06"
+      },
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 139,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 142,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 22,
+       "label": "Inconnu"
+      },
+      {
+       "count": 16,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 13,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 11,
+       "label": "Santé"
+      },
+      {
+       "count": 11,
+       "label": "Sport"
+      },
+      {
+       "count": 9,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 7,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 5,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 108,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 15,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    },
+    "90": {
+     "first_date": "2026-07-25",
+     "incidents": 140,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 139,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 136,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 22,
+       "label": "Inconnu"
+      },
+      {
+       "count": 15,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 11,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 11,
+       "label": "Santé"
+      },
+      {
+       "count": 11,
+       "label": "Sport"
+      },
+      {
+       "count": 8,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 6,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 104,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 13,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    },
+    "all": {
+     "first_date": "2026-02-19",
+     "incidents": 146,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-02"
+      },
+      {
+       "count": 1,
+       "label": "2026-04"
+      },
+      {
+       "count": 1,
+       "label": "2026-05"
+      },
+      {
+       "count": 3,
+       "label": "2026-06"
+      },
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 139,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 142,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 22,
+       "label": "Inconnu"
+      },
+      {
+       "count": 16,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 13,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 11,
+       "label": "Santé"
+      },
+      {
+       "count": 11,
+       "label": "Sport"
+      },
+      {
+       "count": 9,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 7,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 5,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 108,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 15,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    }
+   },
+   "focus": {
+    "30": {
+     "first_date": "2026-09-09",
+     "incidents": 2,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 2,
+     "sector": [
+      {
+       "count": 1,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 1,
+       "label": "Éducation / Formation"
+      }
+     ],
+     "threat": [
+      {
+       "count": 1,
+       "label": "Inconnu"
+      },
+      {
+       "count": 1,
+       "label": "Intrusion"
+      }
+     ],
+     "undated": 0
+    },
+    "365": {
+     "first_date": "2026-02-19",
+     "incidents": 9,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-02"
+      },
+      {
+       "count": 1,
+       "label": "2026-04"
+      },
+      {
+       "count": 1,
+       "label": "2026-05"
+      },
+      {
+       "count": 3,
+       "label": "2026-06"
+      },
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 9,
+     "sector": [
+      {
+       "count": 4,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 2,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 1,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 1,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
+      }
+     ],
+     "threat": [
+      {
+       "count": 5,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 3,
+       "label": "Intrusion"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    },
+    "90": {
+     "first_date": "2026-07-25",
+     "incidents": 3,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 3,
+     "sector": [
+      {
+       "count": 2,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 1,
+       "label": "Éducation / Formation"
+      }
+     ],
+     "threat": [
+      {
+       "count": 1,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      },
+      {
+       "count": 1,
+       "label": "Intrusion"
+      }
+     ],
+     "undated": 0
+    },
+    "all": {
+     "first_date": "2026-02-19",
+     "incidents": 9,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-02"
+      },
+      {
+       "count": 1,
+       "label": "2026-04"
+      },
+      {
+       "count": 1,
+       "label": "2026-05"
+      },
+      {
+       "count": 3,
+       "label": "2026-06"
+      },
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 9,
+     "sector": [
+      {
+       "count": 4,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 2,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 1,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 1,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
+      }
+     ],
+     "threat": [
+      {
+       "count": 5,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 3,
+       "label": "Intrusion"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    }
+   },
+   "metro": {
+    "30": {
+     "first_date": "2026-09-02",
+     "incidents": 124,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 124,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 122,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 16,
+       "label": "Inconnu"
+      },
+      {
+       "count": 14,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 10,
+       "label": "Santé"
+      },
+      {
+       "count": 9,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 7,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 6,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 6,
+       "label": "Sport"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 91,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 11,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      }
+     ],
+     "undated": 0
+    },
+    "365": {
+     "first_date": "2026-09-02",
+     "incidents": 124,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 124,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 122,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 16,
+       "label": "Inconnu"
+      },
+      {
+       "count": 14,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 10,
+       "label": "Santé"
+      },
+      {
+       "count": 9,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 7,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 6,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 6,
+       "label": "Sport"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 91,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 11,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      }
+     ],
+     "undated": 0
+    },
+    "90": {
+     "first_date": "2026-09-02",
+     "incidents": 124,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 124,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 122,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 16,
+       "label": "Inconnu"
+      },
+      {
+       "count": 14,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 10,
+       "label": "Santé"
+      },
+      {
+       "count": 9,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 7,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 6,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 6,
+       "label": "Sport"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 91,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 11,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      }
+     ],
+     "undated": 0
+    },
+    "all": {
+     "first_date": "2026-09-02",
+     "incidents": 124,
+     "last_date": "2026-09-30",
+     "months": [
+      {
+       "count": 124,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 122,
+     "sector": [
+      {
+       "count": 29,
+       "label": "Commerce / Distribution"
+      },
+      {
+       "count": 16,
+       "label": "Inconnu"
+      },
+      {
+       "count": 14,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 10,
+       "label": "Santé"
+      },
+      {
+       "count": 9,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 7,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 6,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 6,
+       "label": "Services aux entreprises"
+      },
+      {
+       "count": 6,
+       "label": "Sport"
+      },
+      {
+       "count": 4,
+       "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
+      },
+      {
+       "count": 3,
+       "label": "Finance / Assurance"
+      },
+      {
+       "count": 2,
+       "label": "Agriculture / Agroalimentaire"
+      },
+      {
+       "count": 2,
+       "label": "Association / Syndicat"
+      },
+      {
+       "count": 2,
+       "label": "Culture / Médias / Loisirs"
+      },
+      {
+       "count": 2,
+       "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 2,
+       "label": "Énergie / Utilities"
+      }
+     ],
+     "threat": [
+      {
+       "count": 91,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 18,
+       "label": "Ransomware"
+      },
+      {
+       "count": 11,
+       "label": "Intrusion"
+      },
+      {
+       "count": 2,
+       "label": "Malware"
+      },
+      {
+       "count": 2,
+       "label": "Phishing / fraude"
+      }
+     ],
+     "undated": 0
+    }
+   },
+   "ocean": {
+    "30": {
+     "first_date": "2026-09-09",
+     "incidents": 2,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 2,
+     "sector": [
+      {
+       "count": 1,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 1,
+       "label": "Éducation / Formation"
+      }
+     ],
+     "threat": [
+      {
+       "count": 1,
+       "label": "Inconnu"
+      },
+      {
+       "count": 1,
+       "label": "Intrusion"
+      }
+     ],
+     "undated": 0
+    },
+    "365": {
+     "first_date": "2026-02-19",
+     "incidents": 9,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-02"
+      },
+      {
+       "count": 1,
+       "label": "2026-04"
+      },
+      {
+       "count": 1,
+       "label": "2026-05"
+      },
+      {
+       "count": 3,
+       "label": "2026-06"
+      },
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 9,
+     "sector": [
+      {
+       "count": 4,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 2,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 1,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 1,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
+      }
+     ],
+     "threat": [
+      {
+       "count": 5,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 3,
+       "label": "Intrusion"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    },
+    "90": {
+     "first_date": "2026-07-25",
+     "incidents": 3,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 3,
+     "sector": [
+      {
+       "count": 2,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 1,
+       "label": "Éducation / Formation"
+      }
+     ],
+     "threat": [
+      {
+       "count": 1,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      },
+      {
+       "count": 1,
+       "label": "Intrusion"
+      }
+     ],
+     "undated": 0
+    },
+    "all": {
+     "first_date": "2026-02-19",
+     "incidents": 9,
+     "last_date": "2026-09-14",
+     "months": [
+      {
+       "count": 1,
+       "label": "2026-02"
+      },
+      {
+       "count": 1,
+       "label": "2026-04"
+      },
+      {
+       "count": 1,
+       "label": "2026-05"
+      },
+      {
+       "count": 3,
+       "label": "2026-06"
+      },
+      {
+       "count": 1,
+       "label": "2026-07"
+      },
+      {
+       "count": 2,
+       "label": "2026-09"
+      }
+     ],
+     "organisations": 9,
+     "sector": [
+      {
+       "count": 4,
+       "label": "Administration / Collectivité"
+      },
+      {
+       "count": 2,
+       "label": "Éducation / Formation"
+      },
+      {
+       "count": 1,
+       "label": "Construction / BTP"
+      },
+      {
+       "count": 1,
+       "label": "Numérique / Technologie"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
+      }
+     ],
+     "threat": [
+      {
+       "count": 5,
+       "label": "Fuite de données"
+      },
+      {
+       "count": 3,
+       "label": "Intrusion"
+      },
+      {
+       "count": 1,
+       "label": "Inconnu"
+      }
+     ],
+     "undated": 0
+    }
+   }
   },
   "series": {
    "excluded_future": 0,
@@ -325,7 +1667,7 @@
      2,
      1,
      0,
-     105
+     103
     ],
     "Intrusion": [
      0,
@@ -335,7 +1677,7 @@
      1,
      0,
      0,
-     12
+     13
     ],
     "Malware": [
      0,
@@ -486,74 +1828,6 @@
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 12,
-     "known_ratio": 0.944,
-     "level": "high",
-     "multi_source_incidents": 8,
-     "score": 91
-    },
-    "current": 12,
-    "delta": 12,
-    "dimension": "threat",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-32DEDB181594",
-     "INC-3344F0DB45BC",
-     "INC-447AE4B3A871",
-     "INC-5E8059ABAC74",
-     "INC-673354204E98",
-     "INC-697D5F99FFA4",
-     "INC-6E2B3A6C871F",
-     "INC-78281AB82197",
-     "INC-8FE3D1894F9C",
-     "INC-A88202D7AFA6",
-     "INC-C4310380AA3C",
-     "INC-C63850DBEE3B"
-    ],
-    "kind": "emerging",
-    "label": "Intrusion",
-    "previous": 0,
-    "share_pct": 8.6,
-    "window_days": 30
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 500.0,
-    "confidence": {
-     "incidents": 12,
-     "known_ratio": 0.944,
-     "level": "high",
-     "multi_source_incidents": 8,
-     "score": 91
-    },
-    "current": 12,
-    "delta": 10,
-    "dimension": "threat",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-32DEDB181594",
-     "INC-3344F0DB45BC",
-     "INC-447AE4B3A871",
-     "INC-5E8059ABAC74",
-     "INC-673354204E98",
-     "INC-697D5F99FFA4",
-     "INC-6E2B3A6C871F",
-     "INC-78281AB82197",
-     "INC-8FE3D1894F9C",
-     "INC-A88202D7AFA6",
-     "INC-C4310380AA3C",
-     "INC-C63850DBEE3B"
-    ],
-    "kind": "acceleration",
-    "label": "Intrusion",
-    "previous": 2,
-    "share_pct": 8.6,
-    "window_days": 90
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
      "incidents": 124,
      "known_ratio": 0.957,
      "level": "high",
@@ -656,14 +1930,14 @@
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 105,
-     "known_ratio": 0.911,
+     "incidents": 103,
+     "known_ratio": 0.909,
      "level": "high",
      "multi_source_incidents": 66,
      "score": 89
     },
-    "current": 105,
-    "delta": 105,
+    "current": 103,
+    "delta": 103,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
@@ -683,21 +1957,21 @@
     "kind": "emerging",
     "label": "Fuite de données",
     "previous": 0,
-    "share_pct": 75.5,
+    "share_pct": 74.1,
     "window_days": 30
    },
    {
     "base_rate_pct": null,
-    "change_pct": 3433.3,
+    "change_pct": 3366.7,
     "confidence": {
-     "incidents": 106,
-     "known_ratio": 0.912,
+     "incidents": 104,
+     "known_ratio": 0.91,
      "level": "high",
      "multi_source_incidents": 66,
      "score": 89
     },
-    "current": 106,
-    "delta": 103,
+    "current": 104,
+    "delta": 101,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
@@ -717,7 +1991,75 @@
     "kind": "acceleration",
     "label": "Fuite de données",
     "previous": 3,
-    "share_pct": 75.7,
+    "share_pct": 74.3,
+    "window_days": 90
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 13,
+     "known_ratio": 0.949,
+     "level": "high",
+     "multi_source_incidents": 8,
+     "score": 89
+    },
+    "current": 13,
+    "delta": 13,
+    "dimension": "threat",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-32DEDB181594",
+     "INC-3344F0DB45BC",
+     "INC-447AE4B3A871",
+     "INC-5E8059ABAC74",
+     "INC-673354204E98",
+     "INC-697D5F99FFA4",
+     "INC-6E2B3A6C871F",
+     "INC-72BF97901CE1",
+     "INC-78281AB82197",
+     "INC-8FE3D1894F9C",
+     "INC-A88202D7AFA6",
+     "INC-C4310380AA3C"
+    ],
+    "kind": "emerging",
+    "label": "Intrusion",
+    "previous": 0,
+    "share_pct": 9.4,
+    "window_days": 30
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 550.0,
+    "confidence": {
+     "incidents": 13,
+     "known_ratio": 0.949,
+     "level": "high",
+     "multi_source_incidents": 8,
+     "score": 89
+    },
+    "current": 13,
+    "delta": 11,
+    "dimension": "threat",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-32DEDB181594",
+     "INC-3344F0DB45BC",
+     "INC-447AE4B3A871",
+     "INC-5E8059ABAC74",
+     "INC-673354204E98",
+     "INC-697D5F99FFA4",
+     "INC-6E2B3A6C871F",
+     "INC-72BF97901CE1",
+     "INC-78281AB82197",
+     "INC-8FE3D1894F9C",
+     "INC-A88202D7AFA6",
+     "INC-C4310380AA3C"
+    ],
+    "kind": "acceleration",
+    "label": "Intrusion",
+    "previous": 2,
+    "share_pct": 9.3,
     "window_days": 90
    },
    {
@@ -758,10 +2100,10 @@
     "change_pct": 1000.0,
     "confidence": {
      "incidents": 11,
-     "known_ratio": 1.0,
+     "known_ratio": 0.97,
      "level": "high",
      "multi_source_incidents": 5,
-     "score": 82
+     "score": 81
     },
     "current": 11,
     "delta": 10,
@@ -821,7 +2163,7 @@
     "change_pct": 100.0,
     "confidence": {
      "incidents": 10,
-     "known_ratio": 1.0,
+     "known_ratio": 0.967,
      "level": "high",
      "multi_source_incidents": 5,
      "score": 78
@@ -1083,7 +2425,7 @@
    ],
    "threat": [
     {
-     "count": 106,
+     "count": 104,
      "label": "Fuite de données"
     },
     {
@@ -1091,7 +2433,7 @@
      "label": "Ransomware"
     },
     {
-     "count": 12,
+     "count": 13,
      "label": "Intrusion"
     },
     {
@@ -1101,6 +2443,10 @@
     {
      "count": 2,
      "label": "Phishing / fraude"
+    },
+    {
+     "count": 1,
+     "label": "Inconnu"
     }
    ]
   }

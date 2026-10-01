@@ -32,42 +32,40 @@ def test_filet_de_secours_detecte_une_liste_sans_cartes():
     assert "containers.every" not in failsafe
 
 
-def test_badge_attention_ne_redeclenche_pas_son_observateur():
-    attention = _read("assets/dashboard-attention.js")
-
-    assert 'if (marker.textContent !== "À surveiller")' in attention
-    assert "if (marker.title !== title)" in attention
-    assert 'if (marker.getAttribute("aria-label") !== label)' in attention
+def test_l_attention_est_portee_par_la_raison_sans_module_observateur():
+    html = _read("index.html")
+    js = _read("assets/dashboard-v2.js")
+    assert "dashboard-attention.js" not in html
+    assert "À surveiller" not in js
+    assert "Identifiants exposés" in js
 
 
 def test_stockage_navigateur_bloque_ne_casse_pas_le_rendu():
     js = _read("assets/dashboard-v2.js")
-
-    assert 'readStorage("sessionStorage", "cw-page-size")' in js
     assert 'readStorage("localStorage", "cw-theme")' in js
-    assert 'writeStorage("sessionStorage", "cw-page-size"' in js
     assert 'writeStorage("localStorage", "cw-theme"' in js
-    assert 'sessionStorage.getItem(' not in js
     assert 'localStorage.getItem(' not in js
+    assert 'sessionStorage.getItem(' not in js
 
 
-def test_header_regroupe_sante_sources_et_date_collecte():
+def test_header_regroupe_couverture_et_date_collecte():
     js = _read("assets/dashboard-v2.js")
     html = _read("index.html")
     assert 'id="run-pill-text"' in html
-    assert "`${ok}/${total} sources · ${freshnessLabel}`" in js
-    assert "`à jour · ${stamp}`" in js
-    assert "données périmées" in js
-    assert "mise à jour en retard" in js
+    assert "Couverture partielle" in js
+    assert "Données périmées" in js
+    assert "Mise à jour en retard" in js
     assert 'id="freshness"' not in html
 
 
-def test_reunion_mayotte_est_un_statut_30_jours_compact():
+def test_veille_est_un_flux_unique_avec_choix_du_territoire():
+    html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
-    assert "Aucun incident à La Réunion / Mayotte sur les 30 derniers jours." in js
+    assert 'id="v-scope"' in html
+    assert 'id="focus-body"' not in html
+    assert "rows.slice(0, VEILLE_SIZE)" in js
     assert "median_gap_days" not in js
     assert "max_gap_days" not in js
-    assert "multi_source" not in js
 
 
 def test_recherche_supporte_plusieurs_territoires_et_les_raccourcis():
@@ -81,25 +79,23 @@ def test_recherche_supporte_plusieurs_territoires_et_les_raccourcis():
     assert "state.filters.locations.includes(String(incident.location || UNKNOWN))" in js
 
 
-def test_recherche_permet_jusqua_1000_resultats_par_page():
+def test_recherche_utilise_une_pagination_bornee_sans_reglage_superflu():
     html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
     assert "const PAGE_SIZE = 30;" in js
-    assert 'id="s-page-size"' in html
-    assert '<option value="1000">1000</option>' in html
-    assert "rows.slice(start, start + state.pageSize)" in js
-    assert 'writeStorage("sessionStorage", "cw-page-size"' in js
+    assert 'id="s-page-size"' not in html
+    assert "rows.slice(start, start + PAGE_SIZE)" in js
 
 
-def test_v2_restores_audit_and_interaction_contracts():
+def test_recherche_garde_les_territoires_accessibles_et_les_filtres_retirables():
     html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
     assert 'id="location-close"' in html
-    assert 'id="sources-detail-body"' in html
+    assert "Valider / Fermer" not in html
     assert "closeLocations" in js
     assert 'event.key === "Escape"' in js
-    assert 'event.target === $("#detail-dialog")' in js
-    assert "sectorRows" in js and "Secteur non renseigné" in js
+    assert "data-remove-filter" in js
+    assert 'id="search-advanced"' in html
 
 
 def test_actions_et_blocs_inutiles_sont_supprimes():
@@ -125,30 +121,28 @@ def test_footer_editorial_et_liens_descriptifs_sont_retires():
     assert "<footer" not in html
 
 
-def test_cartes_ne_rendent_pas_la_provenance_redondante_ni_inconnu():
+def test_cartes_ne_rendent_pas_la_provenance_redondante():
     js = _read("assets/dashboard-v2.js")
-    assert "provenanceLabel" not in js
-    assert "2 sources · corroboré" not in js
-    assert "const confirmedSector = incident.sector_status?.status === \"confirmed\"" in js
-    assert "sectorTentativeChip(incident)" in js
+    card = js[js.index("function incidentCardHtml"):js.index("function renderHeader")]
+    assert "sourceBadges" not in card
+    assert "Voir le détail" not in card
+    assert card.count("data-open-id") == 1
+    assert "sectorLabel(incident)" in card
 
 
-def test_secteur_suppose_utilise_un_chip_distinct_du_secteur_confirme():
+def test_secteur_suppose_garde_sa_reserve_sans_score_de_methode():
     js = _read("assets/dashboard-v2.js")
-    assert "function sectorTentativeChip(incident)" in js
-    assert 'data-status="PARTIAL"' in js
-    assert "(supposé)" in js
-    # Réutilisé identiquement en carte et en détail, jamais dupliqué à la main.
-    assert js.count("sectorTentativeChip(incident)") >= 3
+    label = js[js.index("function sectorLabel"):js.index("function threatLabel")]
+    assert "(supposé)" in label
+    assert "(estimé)" in label
+    assert "confidence" not in label
+    assert js.count("sectorLabel(incident)") >= 3
 
 
-def test_secteur_sans_aucun_candidat_est_explicite_plutot_que_silencieux():
-    """Cas réel constaté sur Déclic Services : contrairement à SUEZ/Solimut
-    (un candidat tentatif existe), aucun indice de secteur n'était affiché du
-    tout quand sector_status.status vaut "unknown" (NO_EVIDENCE)."""
+def test_secteur_absent_est_explicite_dans_la_fiche():
     js = _read("assets/dashboard-v2.js")
-    assert 'incident.sector_status?.status === "unknown"' in js
-    assert "Secteur non déterminé" in js
+    assert 'sectorLabel(incident) || "Secteur non déterminé"' in js
+    assert 'value === UNKNOWN ? "Non déterminé"' in js
 
 
 def test_signaux_exposent_une_lecture_consultant_et_masquent_les_scores():
@@ -189,7 +183,7 @@ def test_couleurs_de_la_fiche_reutilisent_les_variables_reellement_definies():
     réellement défini — d'où l'impression d'un gris isolé, non harmonisé."""
     css = _read("assets/dashboard-v2.css")
     assert "var(--muted)" not in css
-    assert "color:var(--text-muted)" in css
+    assert "color:var(--text-secondary)" in css
 
 
 def test_libelles_de_sources_ne_dependent_pas_de_shared_js():
@@ -249,21 +243,18 @@ def test_boucle_de_reparation_des_claims_numeriques_evite_les_doublons():
     assert '"raw": _text(claim.get("raw")) or value})' not in backend
 
 
-def test_analyse_affiche_le_pilotage_de_production():
+def test_diagnostic_technique_est_separe_de_l_analyse_metier():
     html = _read("index.html")
     js = _read("assets/dashboard-v2.js")
-
+    analysis = html[html.index('id="view-analyse"'):html.index('<dialog id="detail-dialog"')]
+    assert "production-metrics" not in analysis
+    assert 'id="health-dialog"' in html
     assert 'id="production-fold"' in html
     assert 'id="production-metrics"' in html
-    assert 'id="sources-fold"' in html
-    assert '<details class="sources-detail"><summary>Détail par source</summary>' in html
-    assert 'href="assets/dashboard-compact.css' in html
+    assert 'id="sources-detail-body"' in html
+    assert "sources-leds" not in html
+    assert "function openHealth(" in js
     assert "function renderProduction()" in js
-    assert "scheduled_reliability" in js
-    assert "missed_duplicate_candidate_pairs" in js
-    assert "weak_merge_review_pairs" in js
-    assert "validated_same_not_grouped_pairs" in js
-    assert "pending_review_pairs" in js
     assert "llm_cost_usd" in js
 
 
@@ -273,7 +264,7 @@ def test_incidents_complets_ne_sont_charges_qu_a_l_ouverture_de_recherche():
 
     assert 'loadJson("assets/data/incidents.json", [])' in js
     assert "async function ensureIncidents()" in js
-    assert 'if (state.view === "recherche") await ensureIncidents();' in js
+    assert 'if (state.view === "recherche") { await ensureIncidents();' in js
     assert "assets/data/incidents.json" not in init
 
 

@@ -168,10 +168,10 @@ def test_candidate_admission_is_published_and_independent_source_wins(monkeypatc
 
 
 def test_dashboard_candidate_badge_is_discreet_and_uses_regular_cards():
-    js = open("assets/dashboard-candidates.js", encoding="utf-8").read()
-    assert 'data-candidate-badge' in js
+    js = open("assets/dashboard-v2.js", encoding="utf-8").read()
+    assert 'candidate-status' in js
     assert 'À confirmer' in js
-    assert '.incident-card[data-id]' in js
+    assert 'class="incident-card" data-id=' in js
     assert 'admission_reason' in js
     assert 'Signaux à confirmer' not in js
 
@@ -194,22 +194,18 @@ def test_dashboard_payload_exposes_local_summary_score_and_references():
 
 
 def test_dashboard_has_single_reunion_mayotte_focus_block():
-    """Réunion / Mayotte n'est plus un simple bouton de filtre : c'est un bloc
-    dédié en tête de la vue Veille, alimenté par les incidents dont la
-    localisation est dans `config.FOCUS_LOCATIONS`, jamais d'une liste
-    écrite en dur côté JS. Cible `dashboard-v2.js`, le runtime actif —
-    `dashboard.js` (v1) qu'il a remplacé a été retiré."""
+    """Le périmètre régional filtre un seul flux : aucune carte dupliquée."""
     from cyberwatch import config
     html = open("index.html", encoding="utf-8").read()
     js = open("assets/dashboard-v2.js", encoding="utf-8").read()
 
-    assert 'id="focus-card"' in html
-    assert 'id="focus-body"' in html
+    assert 'id="v-scope"' in html
+    assert 'id="focus-body"' not in html
     assert "function renderVeille(" in js
     # config.FOCUS_LOCATIONS est publié dans status.json (focus_locations) et
     # lu dynamiquement plutôt que dupliqué comme constante JS figée.
     assert "state.status?.focus_locations" in js
     assert 'f-veille-llm' not in html + js
     assert 'f-presse-mahoraise' not in html + js
-    assert "La Réunion / Mayotte" in js
+    assert "La Réunion / Mayotte" in html
     assert config.FOCUS_LOCATIONS == ["La Réunion", "Mayotte"]

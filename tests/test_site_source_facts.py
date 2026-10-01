@@ -308,7 +308,7 @@ def test_renderer_ui_est_conditionnel_et_sans_nouvelles_colonnes():
     fait-source de `dashboard.js` (v1, supprimé)."""
     js = open("assets/dashboard-v2.js", encoding="utf-8").read()
 
-    assert "async function openIncident(id)" in js
+    assert "async function openIncident(id, navigate = true)" in js
     assert "const validDetail = detail && detail.version === 3" in js
     assert "function incidentSummaryParagraphs(incident, detail)" in js
 

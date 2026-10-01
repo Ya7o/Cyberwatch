@@ -16,7 +16,7 @@ const elements = {};
 const context = {
   sessionStorage: {getItem: () => null},
   URL,
-  document: {querySelector: (key) => elements[key] ||= {showModal() {}}},
+  document: {querySelector: (key) => elements[key] ||= {dataset: {}, querySelector: () => ({}), showModal() {}}},
 };
 const source = fs.readFileSync("assets/dashboard-v2.js", "utf8").replace(
   "  init();",
@@ -26,7 +26,7 @@ vm.runInNewContext(source, context);
 const api = context.testApi;
 api.state.latest = [input.incident];
 api.state.facts = {[input.incident.id]: input.detail};
-api.openIncident(input.incident.id).then(() => console.log(JSON.stringify({
+api.openIncident(input.incident.id, false).then(() => console.log(JSON.stringify({
   paragraphs: api.incidentSummaryParagraphs(input.incident, input.detail),
   html: elements["#detail-dialog-content"].innerHTML,
 })));
@@ -66,7 +66,7 @@ def test_missing_or_oversized_fallback_uses_a_safe_message():
     unsafe = "<img src=x onerror=alert(1)>" + " x" * 700
     result = render({"id": "example", "org": "Exemple", "summary": unsafe}, None)
     assert result["paragraphs"] == [
-        "Les informations disponibles ne permettent pas encore de résumer précisément cet incident."
+        "Synthèse indisponible."
     ]
     assert "<img" not in result["html"]
 

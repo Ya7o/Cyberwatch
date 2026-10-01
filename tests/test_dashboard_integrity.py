@@ -49,14 +49,14 @@ def test_garde_integrite_est_charge_apres_le_runtime_principal():
 def test_couverture_et_fraicheur_sont_portees_par_le_contrat_principal():
     regional = _read("assets/dashboard-integrity.js")
     dashboard = _read("assets/dashboard-v2.js")
-    assert '=== "ACCEPTED"' in regional
-    assert '=== "CANDIDATE"' in regional
-    assert "Aucun incident cyber retenu" in regional
-    assert "signal non confirmé" in regional
+    assert "ACCEPTED" in regional and "CANDIDATE" in regional
+    assert "en attente de synchronisation" in regional
+    assert "Aucun signal" not in regional
+    assert "cyberwatch:render" in regional
     assert "data/run_log.csv" not in regional
     assert "FRESHNESS_WARNING_HOURS = 30" in dashboard
     assert "FRESHNESS_STALE_HOURS = 36" in dashboard
-    assert "Tendances temporairement neutralisées" in dashboard
+    assert "Couverture temporelle non établie" in dashboard
     assert "trendsReady()" in dashboard
 
 

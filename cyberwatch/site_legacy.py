@@ -25,6 +25,7 @@ import json
 
 from collections import defaultdict
 from datetime import date, timedelta
+from urllib.parse import urlsplit
 from xml.sax.saxutils import escape as xml_escape
 
 from . import analytics, config, identity, incident_identity, site_status, site_window, sources, status, store
@@ -364,9 +365,17 @@ def _source_links(incident: Incident) -> list[dict[str, str]]:
     result = []
     for source in incident.Sources.split(" | "):
         expected = hosts.get(source, "")
-        match = next((url for url in urls if url not in used and (not expected or expected in url)), "")
-        if not match and source == "RANSOMWARE_LIVE":
-            match = next((url for url in urls if url not in used and ".onion/" in url), "")
+        def belongs(url: str) -> bool:
+            try:
+                host = (urlsplit(url).hostname or "").lower()
+                if expected:
+                    return host == expected or host.endswith("." + expected)
+                if source == "RANSOMWARE_LIVE":
+                    return host.endswith(".onion") or host in {"ransomware.live", "www.ransomware.live"}
+                return source == "VEILLE_LLM"
+            except ValueError:
+                return False
+        match = next((url for url in urls if url not in used and belongs(url)), "")
         if match:
             used.add(match)
             result.append({"source": source, "url": match})

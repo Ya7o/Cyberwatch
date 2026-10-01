@@ -1,9 +1,11 @@
 """Classification déterministe et multidimensionnelle des données exposées."""
 from __future__ import annotations
 
+import re
 from typing import Any
 
-from .normalize import searchable
+from . import threat_reservation
+from .normalize import searchable, threat_evidence_text
 
 
 _PERSONAL_MARKERS = (
@@ -57,11 +59,36 @@ def classify(detail: dict[str, Any] | None) -> dict[str, Any]:
         str(entry.get("value") or "").strip()
         for entry in detail.get("data_types", [])
         if isinstance(entry, dict) and str(entry.get("value") or "").strip()
+        and entry.get("status") not in {"denied", "negated", "hypothesis", "unconfirmed"}
     ]
     personal_types = [value for value in values if _contains(value, _PERSONAL_MARKERS)]
     high_types = [value for value in values if _contains(value, _HIGH_MARKERS)]
     credential_types = [value for value in values if _contains(value, _CREDENTIAL_MARKERS)]
-    vulnerable = _contains(_context(detail), _VULNERABLE_MARKERS)
+    # L'auteur présumé peut être un élève sans que les données d'élèves aient
+    # été exposées. Seules les données décrites, ou une exposition positive
+    # dans la même phrase, qualifient ici les personnes vulnérables.
+    context = _context(detail)
+    vulnerable = any(_contains(value, _VULNERABLE_MARKERS) for value in values)
+    for sentence in re.split(r"(?<=[.!?;])\s+", context):
+        positive = threat_evidence_text(threat_reservation.unreserved_text(sentence))
+        denied = re.search(
+            r"\b(?:n|ne) (?:ont|a|avait|avaient|sont|est) (?:pas|jamais)\b|"
+            r"\baucune?\b.{0,100}\b(?:expose|diffuse|exfiltre|derobe|vole|publie)\w*\b",
+            positive,
+        )
+        target = re.search(
+            r"\b(?:donnees|dossiers|fichiers|informations)\b.{0,100}"
+            r"\b(?:de|des|d|aux|dont)\s+(?:des\s+)?(?:mineur|enfant|eleve)\w*\b",
+            positive,
+        )
+        exposure = re.search(
+            r"\b(?:donnees|dossiers|fichiers|informations)\b.{0,100}"
+            r"\b(?:expose\w*|diffuse\w*|exfiltr\w*|derob\w*|vole\w*|publie\w*)\b|"
+            r"\b(?:fuite|exfiltration)\b.{0,80}\b(?:donnees|dossiers|fichiers)\b",
+            positive,
+        )
+        if exposure and target and not denied:
+            vulnerable = True
     personal = bool(personal_types or high_types or credential_types or vulnerable)
     high = bool(high_types or vulnerable)
     sensitive_types = list(dict.fromkeys(high_types + credential_types))

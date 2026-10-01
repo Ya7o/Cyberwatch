@@ -16,6 +16,8 @@ from . import (
     fact_resolution,
     org_identity,
     sector_resolution,
+    site_analysis,
+    site_evidence,
     site_legacy as _legacy,
     site_window,
     sources,
@@ -29,7 +31,8 @@ from .normalize import organisation_key
 # disponibles aux résolveurs ; seuls les champs lus par le dashboard voyagent.
 _INCIDENT_PUBLIC_FIELDS = frozenset({
     "id", "date", "org", "sector", "threat", "location", "sources",
-    "source_links", "summary", "sector_status", "sector_tentative", "threat_tentative",
+    "source_links", "organisation_links", "summary", "sector_status", "sector_tentative", "threat_tentative",
+    "threat_status",
     "admission", "admission_reason",
     "personal_data_exposed", "high_sensitivity_data_exposed",
     "credentials_or_secrets_exposed",
@@ -40,12 +43,19 @@ _SOURCE_PUBLIC_FIELDS = frozenset({
     "reason", "comment",
 })
 _ANALYTICS_PUBLIC_FIELDS = frozenset({
-    "dated_incidents", "quality", "series", "top_90d", "signals", "focus", "ocean",
+    "dated_incidents", "quality", "series", "top_90d", "signals", "focus", "ocean", "scopes",
 })
 
 
 def _public_fields(row: dict, fields: frozenset[str]) -> dict:
     return {key: value for key, value in row.items() if key in fields}
+
+
+def _public_incident(row: dict) -> dict:
+    result = _public_fields(row, _INCIDENT_PUBLIC_FIELDS)
+    if "threat_status" in result:
+        result["threat_status"] = _public_fields(result["threat_status"], frozenset({"status"}))
+    return result
 
 
 def _public_status(state: dict) -> dict:
@@ -297,6 +307,8 @@ def build() -> tuple[int, int]:
             raise ValueError("sector_incident_projection_gap: " + str(row.get("id")))
     _decorate_payload(payload, resolved, threat_decisions, sectors)
     _decorate_admission(payload)
+    for row in payload:
+        site_evidence.decorate(row, raw_facts.get(str(row.get("id") or ""), []))
 
     state = _legacy.status_payload()
 
@@ -308,11 +320,15 @@ def build() -> tuple[int, int]:
     ]
     state["analytics"] = analytics.build_analytics(
         analytics_payload,
+        as_of=str(state.get("run", {}).get("as_of") or ""),
         focus_locations=config.FOCUS_LOCATIONS,
         ocean_locations=config.OCEAN_LOCATIONS,
     )
+    state["analytics"]["scopes"] = site_analysis.build(
+        analytics_payload, str(state.get("run", {}).get("as_of") or ""),
+    )
 
-    slim = [_public_fields(row, _INCIDENT_PUBLIC_FIELDS) for row in payload]
+    slim = [_public_incident(row) for row in payload]
     latest = site_window.latest_rows(
         payload,
         state.get("run", {}).get("as_of", ""),
@@ -322,7 +338,7 @@ def build() -> tuple[int, int]:
     store.write_json(store.SITE_DATA_DIR / "incidents.json", slim)
     store.write_json(
         store.SITE_DATA_DIR / "latest.json",
-        [_public_fields(row, _INCIDENT_PUBLIC_FIELDS) for row in latest],
+        [_public_incident(row) for row in latest],
     )
     store.write_json(store.SITE_DATA_DIR / "facts.json", {
         incident_id: _public_fields(detail, _FACT_PUBLIC_FIELDS)

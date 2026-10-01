@@ -11,7 +11,6 @@
   const CHECK_DELAY_MS = 1400;
   const DATA_PATH = "assets/data/latest.json";
   const STATUS_PATH = "assets/data/status.json";
-  const FOCUS_FALLBACK = ["La Réunion", "Mayotte"];
   const SOURCE_LABELS = {
     RANSOMWARE_LIVE: "Ransomware.live",
     CYBERATTAQUE_ORG: "Cyberattaque.org",
@@ -69,7 +68,7 @@
   }
 
   function dashboardAlreadyRendered() {
-    return Boolean($("#veille-list .incident-card") || $("#focus-body .incident-card") || $("#s-list .incident-card"));
+    return document.body.dataset.dashboardReady === "true" || Boolean($("#veille-list .incident-card") || $("#s-list .incident-card"));
   }
 
   function dashboardNeedsFallback() {
@@ -105,7 +104,7 @@
   }
 
   function activateVeilleView() {
-    $$(".views [data-view]").forEach((button) => button.setAttribute("aria-current", String(button.dataset.view === "veille")));
+    $$(".views [data-view]").forEach((button) => button.setAttribute("aria-current", button.dataset.view === "veille" ? "page" : "false"));
     $$(".view").forEach((view) => { view.hidden = view.id !== "view-veille"; });
   }
 
@@ -143,26 +142,14 @@
     if (!Array.isArray(latest) || !latest.length || dashboardAlreadyRendered()) return;
 
     rendered = true;
-    const focusLocations = Array.isArray(status?.focus_locations) && status.focus_locations.length
-      ? status.focus_locations
-      : FOCUS_FALLBACK;
-    const local = latest.filter((row) => focusLocations.includes(row.location));
-
     activateVeilleView();
     renderHeader(status);
-    renderAlert(`Le rendu principal ne s'est pas terminé (${lastFailure}). Les données publiées existent ; affichage minimal chargé depuis ${DATA_PATH}.`);
-
-    const focusBody = $("#focus-body");
-    if (focusBody) {
-      focusBody.innerHTML = local.length
-        ? `<p class="status-bubble status-bubble--active"><strong>${local.length}</strong> incident${local.length > 1 ? "s" : ""} à La Réunion / Mayotte sur les 30 derniers jours.</p><div class="focus-list">${local.map(cardHtml).join("")}</div>`
-        : '<p class="status-bubble status-bubble--quiet">Aucun incident à La Réunion / Mayotte sur les 30 derniers jours.</p>';
-    }
+    renderAlert("Affichage simplifié. Actualisez la page pour rétablir toutes les fonctions.");
 
     const count = $("#veille-count");
     if (count) count.textContent = `${formatNumber(latest.length)} incident${latest.length > 1 ? "s" : ""}`;
     const list = $("#veille-list");
-    if (list) list.innerHTML = latest.map(cardHtml).join("");
+    if (list) list.innerHTML = latest.slice(0, 15).map(cardHtml).join("");
   }
 
   function schedule(reason) {

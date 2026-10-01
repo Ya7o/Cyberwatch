@@ -151,7 +151,7 @@ def _append_tentative_signal(metadata: dict, signals: dict, source: str) -> None
 
 
 def _append_text_signals(signals: dict, text: str, status: str, source: str) -> None:
-    blob = threat_evidence_text(text)
+    blob = threat_evidence_text(threat_reservation.unreserved_text(text))
     if not blob:
         return
     for threat, pattern in (
@@ -287,6 +287,13 @@ def resolve_component(
     # le statut de son signal.
     for threat in reserved:
         signals.pop(threat, None)
+
+    if reservation_evidence:
+        # Une cyberattaque confirmée ne prouve pas une intrusion technique.
+        signals[config.THREAT_INTRUSION] = [
+            signal for signal in signals.get(config.THREAT_INTRUSION, [])
+            if threat_reservation._affirms_intrusion(threat_evidence_text(signal[2]))
+        ]
 
     # Catégories techniques univoques, puis conséquence de fuite prouvée.
     for threat in (
