@@ -2,6 +2,126 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B7A187FB027A",
+  "location": "Inconnu",
+  "org": "Fédération royale belge de football",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération royale belge de football",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-football-rbfa-urbsfa-muqax4zegee0ktaus1o",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-football-rbfa-urbsfa-muqax4zegee0ktaus1o"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base attribuée à la Fédération royale belge de football est proposée à la vente, l'origine et la nature confidentielle des données n'étant pas confirmées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E839CB798199",
+  "location": "France métropolitaine",
+  "org": "LDLC",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le groupe LDLC est un acteur français spécialisé dans la vente de matériel informatique, high-tech et équipements électroniques .",
+   "evidence_url": "https://www.cyberattaque.org/ldlc-victime-dune-cyberattaque-les-donnees-personnelles-de-clients-exposees/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/ldlc-2.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ldlc-victime-dune-cyberattaque-les-donnees-personnelles-de-clients-exposees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ldlc-muqsxvb7wz9y21k96wp"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "LDLC confirme un accès non autorisé à un système ayant permis la consultation de données personnelles de clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A1421571278F",
+  "location": "France métropolitaine",
+  "org": "ADMR",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/admr-mupn6cbtuoer51cdk4",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-admr-pres-de-10-000-comptes-internes-exposes-dans-une-nouvelle-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/admr-mupn6cbtuoer51cdk4"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "L’ADMR voit environ 9 700 fiches de comptes internes revendiquées publiquement par un hacker.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-01",
   "high_sensitivity_data_exposed": false,
   "id": "INC-3A4CFEB0905F",
@@ -24,7 +144,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Avantages Jeunes : 318 000 profils en fuite, des milliers de mineurs exposés",
+  "summary": "La plateforme Avantages Jeunes a fait l’objet d’une fuite de 318 000 profils revendiquée le 1er octobre 2026.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
@@ -92,10 +212,46 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Une base de 31 240 lignes attribuée à Dr.Veto, portail lié au logiciel de gestion vétérinaire Hubvet, a été publiée gratuitement sur un forum cybercriminel.",
   "threat": "Phishing / fraude",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-91CF3E89369C",
+  "location": "France métropolitaine",
+  "org": "EURODITEL/RESOTELECOM",
+  "organisation_links": [
+   "https://euroditel.com"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technology",
+   "evidence_url": "http://krybieodq754vlwufrsuxaswxb5zpxyibaawmed2jaduoz2e5m56hmid.onion/blog/pending-6abed0d0df3cc-1790890192/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "krybieodq754vlwufrsuxaswxb5zpxyibaawmed2jaduoz2e5m56hmid.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://krybieodq754vlwufrsuxaswxb5zpxyibaawmed2jaduoz2e5m56hmid.onion/blog/pending-6abed0d0df3cc-1790890192/"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
   }
  },
  {
@@ -132,10 +288,10 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "GPS Santé : 150 000 patients revendiqués après l’exploitation d’un compte médecin",
+  "summary": "Le hacker Quantique revendique la fuite des données personnelles d'environ 150 000 patients de la plateforme GPS Santé.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {
@@ -150,13 +306,18 @@
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/orkyn-mupff8p55spyc9k49rw",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "evidence": "Orkyn  confirme une cyberattaque ayant entraîné l’accès non autorisé à un fichier contenant des  données personnelles et de santé de patients .",
+   "evidence_url": "https://www.cyberattaque.org/orkyn-les-donnees-de-sante-de-patients-voles-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
   },
   "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/orkyn.png"
+   },
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
@@ -169,13 +330,48 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Orkyn : les données de santé de patients volés après une cyberattaque",
+  "summary": "Orkyn confirme l'accès non autorisé à un fichier contenant des données personnelles et de santé de patients.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C1CED4C6534B",
+  "location": "France métropolitaine",
+  "org": "Renault",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/renault-mupmungs4a3nz30ow1l",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/renault-mupmungs4a3nz30ow1l"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base d'environ 12 000 enregistrements attribuée à Renault et publiée sur un forum cybercriminel contient immatriculations, VIN et autres données véhicules.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -280,7 +476,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "VosFactures touché par une cyberattaque : les factures exposées",
+  "summary": "VosFactures indirectement affecté par une cyberattaque chez son prestataire, exposant des données de comptes, clients, fournisseurs et documents.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -610,10 +806,13 @@
   "org": "Distinxion",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Distinxion, réseau français spécialisé dans la vente de véhicules d’occasion récents et à faible kilométrage, est visé par…",
+   "evidence_url": "https://www.cyberattaque.org/distinxion-autos-fr-pres-de-500-000-prospects-exposes-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -2053,51 +2252,20 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-09-27",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-DCADE9E8E394",
+  "id": "INC-3139AFB2614E",
   "location": "France métropolitaine",
   "org": "Scorenco",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
-   "evidence_url": "https://frenchbreaches.com/alertes/scorenco-muk3vycif9p7gzzgupl",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/scorenco-muk3vycif9p7gzzgupl"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une revendication publique allègue la diffusion gratuite d'une base attribuée à Score'n'co contenant 22 962 enregistrements.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-27",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-3139AFB2614E",
-  "location": "Inconnu",
-  "org": "Score’n’co",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
   "sector_status": {
    "confidence": 0.8,
+   "discarded_source_labels": [
+    "Numérique / Technologie"
+   ],
    "evidence": "Score’n’co , plateforme française dédiée au suivi et à la gestion du sport amateur, fait l’objet d’une fuite de données revendiquée ce 27 septembre 2026 .",
    "evidence_url": "https://www.cyberattaque.org/scorenco-pres-de-23-000-fiches-de-membres-de-clubs-sportifs-en-fuite/",
-   "reason": "ACTIVITY_RULE",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
    "status": "inferred"
   },
   "source_links": [
@@ -2105,10 +2273,16 @@
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/scorenco-pres-de-23-000-fiches-de-membres-de-clubs-sportifs-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/scorenco-muk3vycif9p7gzzgupl"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Score’n’co victime d'une fuite revendiquée exposant 22 962 lignes de fiches de membres de clubs sportifs.",
   "threat": "Fuite de données",
