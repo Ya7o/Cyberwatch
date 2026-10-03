@@ -1,6 +1,293 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E4D2A28AC615",
+  "location": "Inconnu",
+  "org": "CNEH",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le CNEH est un organisme français créé en 1974 qui accompagne les établissements sanitaires et médico-sociaux ainsi que les professionnels de santé , notamment dans les domaines de la formation, du conseil et de l’expertise hospitalière.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-centre-national-de-expertise-hospitaliere/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-centre-national-de-expertise-hospitaliere/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "CNEH : 645 Go de données menacées de diffusion par un ransomware",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AE4B3CED8F6F",
+  "location": "France métropolitaine",
+  "org": "CNAM",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/cnam-murn43e35w5ztpqrxtc",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cnam-murn43e35w5ztpqrxtc"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A674F41CD218",
+  "location": "Inconnu",
+  "org": "Fédération Royale Belge des Sports Équestres",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération Royale Belge des Sports Équestres",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-sports-questres-frbse-kbrsf-murj93me4zg2qdmw1k",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-sports-questres-frbse-kbrsf-murj93me4zg2qdmw1k"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fédération Royale Belge des Sports Équestres (FRBSE/KBRSF)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A511F1D9017B",
+  "location": "Inconnu",
+  "org": "CGT de l’Aude",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cgt-plus-de-100-000-personnes-exposees-apres-la-decouverte-dune-vulnerabilite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Un fichier de 76 951 entrées lié principalement à la CGT de l’Aude a été diffusé après qu'un collectif revendique une vulnérabilité sur cgt.fr.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9351E1D07BE3",
+  "location": "France métropolitaine",
+  "org": "CAPEB",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Industrie",
+   "evidence_url": "https://frenchbreaches.com/alertes/capeb-murke1g4sga4x80oopk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/capeb-cyberattaque-3-9-millions-de-lignes-diffusees-500-000-artisans-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/capeb-murke1g4sga4x80oopk"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La CAPEB fait l’objet d’une revendication de fuite de 3 966 461 lignes de données, revendiquées par le hacker ChimeraZ.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5E8DA92FB14A",
+  "location": "Inconnu",
+  "org": "Fédération Royale Colombophile Belge",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-colombophile-belge-murjhz3kb1mdmj9m5g4",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-colombophile-belge-murjhz3kb1mdmj9m5g4"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-56943E53C070",
+  "location": "France métropolitaine",
+  "org": "CGT Aude",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/cgt-aude-murlk6wfg15fmu7agjq",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cgt-aude-murlk6wfg15fmu7agjq"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-ED39677A0644",
+  "location": "France métropolitaine",
+  "org": "Région Hauts-de-France",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Région Hauts-de-France",
+   "evidence_url": "https://bonjourlafuite.eu.org/img/hauts-de-france.jpg",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/hauts-de-france.jpg"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/region-hauts-de-france-des-donnees-personnelles-exposees-suite-a-une-cyberattaque-chez-atexo/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-atexo-mur6n6zz7mtgktgessr"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Région Hauts-de-France : des données personnelles exposées suite à une cyberattaque chez ATEXO",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-02",
   "high_sensitivity_data_exposed": true,
@@ -12,9 +299,12 @@
   "sector": "Numérique / Technologie",
   "sector_status": {
    "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
    "evidence": "Le groupe LDLC est un acteur français spécialisé dans la vente de matériel informatique, high-tech et équipements électroniques .",
    "evidence_url": "https://www.cyberattaque.org/ldlc-victime-dune-cyberattaque-les-donnees-personnelles-de-clients-exposees/",
-   "reason": "ACTIVITY_RULE",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
    "status": "inferred"
   },
   "source_links": [
@@ -77,6 +367,190 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AA1E1BAAF08B",
+  "location": "France métropolitaine",
+  "org": "CNAM",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/cnam-adage-muri2nsuk18ssrkyap",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-cnam-pres-de-16-000-profils-denseignants-exposes-dans-une-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cnam-adage-muri2nsuk18ssrkyap"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cnam : près de 900 000 fiches et 16 000 profils d’enseignants en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A6E6102B7E57",
+  "location": "France métropolitaine",
+  "org": "FMG Sales & Marketing",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/fmg-sales-marketing-mur94aon523ticxpdfy",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fmg-sales-marketing-cyberattaque-plus-de-10-000-intervenants-exposes-dans-une-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fmg-sales-marketing-mur94aon523ticxpdfy"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "FMG Sales & Marketing : plus de 10 000 intervenants exposés dans une fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6D1A06BBDEFA",
+  "location": "France métropolitaine",
+  "org": "pierrefeu",
+  "organisation_links": [
+   "https://www.pierrefeu.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/8b4ba9a7921f9cedc14275f97019a1c2717ee9d99a108241fbb94368079647c2/"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-55B78F7C08BD",
+  "location": "France métropolitaine",
+  "org": "FitnessBoutique",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/fitnessboutique-mur3td4i3kz7pnkibuc",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fitnessboutique-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fitnessboutique-mur3td4i3kz7pnkibuc"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "FitnessBoutique : près de 2 millions de fiches clients en vente sur le darkweb",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0DDC0E58C729",
+  "location": "Inconnu",
+  "org": "Genae Écully",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/genae-ecully-cyberattaque-fitnesskpi-1-848-adherents-exposes-avec-leurs-paiements-et-habitudes-de-frequentation/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Genae Écully : les habitudes de fréquentation de 1 848 adhérents exposés après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -1434,7 +1908,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le Laboratoire LCS annonce une fuite de données contenant 30 215 porteurs de lentilles, publiée le 29 septembre 2026.",
+  "summary": "Laboratoire LCS : les données de 30 000 porteurs de lentilles en fuite",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -6267,7 +6741,7 @@
   "credentials_or_secrets_exposed": true,
   "date": "2026-09-10",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-6E2B3A6C871F",
+  "id": "INC-DB37F06CE825",
   "location": "France métropolitaine",
   "org": "NaturaBuy",
   "organisation_links": [],
@@ -6282,6 +6756,40 @@
   },
   "source_links": [
    {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/naturabuy-mtwzqa9gplhhoi6l87a"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-09-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6E2B3A6C871F",
+  "location": "France métropolitaine",
+  "org": "NaturaBuy",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/naturabuy-murj0vegw4dz8ukhqva",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/naturabuy-victime-dune-cyberattaque-un-risque-pour-les-detenteurs-darmes/"
@@ -6289,17 +6797,17 @@
    {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/naturabuy-mtwzqa9gplhhoi6l87a"
+    "url": "https://frenchbreaches.com/alertes/naturabuy-murj0vegw4dz8ukhqva"
    }
   ],
   "sources": [
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "NaturaBuy victime d’une cyberattaque, un risque pour les détenteurs d’armes",
-  "threat": "Intrusion",
+  "summary": "NaturaBuy annonce qu'une base de 1,43 million de comptes lui appartenant est mise en vente après une cyberattaque détectée le 10 septembre 2026.",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {
