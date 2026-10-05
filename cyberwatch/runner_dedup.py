@@ -2,8 +2,39 @@
 
 from __future__ import annotations
 
+import json
+
 from . import dedup, dedup_ai, dedup_review, duplicate_audit, incident_dedup, org_identity
 from .model import Item
+
+
+def changed_items(
+    items: list[Item], facts: list[dict], previous_items: list[Item], previous_facts: list[dict],
+) -> list[Item]:
+    """Ignore une simple relecture du snapshot, conserve tout changement métier."""
+    def item_values(item: Item) -> dict:
+        return {key: value for key, value in item.to_row().items() if key != "Collected_As_Of"}
+
+    def fact_values(row: dict) -> dict:
+        values = {key: value for key, value in row.items()
+                  if key not in {"Extraction_Method", "Extraction_Version", "Source_Metadata_JSON"}}
+        try:
+            metadata = json.loads(str(row.get("Source_Metadata_JSON") or "{}"))
+        except (TypeError, ValueError):
+            metadata = {}
+        if isinstance(metadata, dict):
+            values["metadata"] = {key: metadata.get(key) for key in (
+                "rich_facts", "threat_tentative", "_source_facts_content_hash",
+            )}
+        return values
+
+    old_items = {item.Item_ID: item_values(item) for item in previous_items}
+    old_facts = {str(row.get("Item_ID") or ""): fact_values(row) for row in previous_facts}
+    current_facts = {str(row.get("Item_ID") or ""): fact_values(row) for row in facts}
+    return [item for item in items if (
+        old_items.get(item.Item_ID) != item_values(item)
+        or old_facts.get(item.Item_ID) != current_facts.get(item.Item_ID)
+    )]
 
 
 def _fact_indexes(source_fact_rows: list[dict]) -> tuple[dict[str, dict], dict[str, str]]:

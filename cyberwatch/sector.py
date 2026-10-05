@@ -335,7 +335,8 @@ def classify_sector_activity(activity_description: str) -> str:
         return config.SECTOR_ADMIN
     if any(term in blob for term in ("chambre de metiers", "chambre de commerce et d industrie")):
         return config.SECTOR_ADMIN
-    if any(term in blob for term in ("commercialise en ligne", "vente en ligne", "negoce")):
+    if any(term in blob for term in ("commercialise en ligne", "vente en ligne", "negoce",
+                                    "vente de materiel", "vente d equipements")):
         return config.SECTOR_RETAIL
     if any(term in blob for term in ("reexpedition de colis", "plateforme d expedition")):
         return config.SECTOR_TRANSPORT

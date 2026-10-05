@@ -60,7 +60,7 @@ def test_replace_snapshot_keeps_full_source_snapshot_outside_daily_window(monkey
     monkeypatch.setattr(
         runner.runner_source_facts,
         "retry_pending",
-        lambda _queued: ([], {}),
+        lambda _queued, **_kwargs: ([], {}),
     )
 
     def fake_run_source(_client, spec, *_args, **_kwargs):

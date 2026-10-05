@@ -5,7 +5,7 @@
   "date": "2026-10-04",
   "high_sensitivity_data_exposed": true,
   "id": "INC-584E3E37779F",
-  "location": "France métropolitaine",
+  "location": "Inconnu",
   "org": "IFAPME",
   "organisation_links": [],
   "personal_data_exposed": true,
@@ -316,6 +316,40 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-03",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-504E072622BB",
+  "location": "France métropolitaine",
+  "org": "Région Hauts-de-France",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Région Hauts-de-France",
+   "evidence_url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-muqbs0geks60ywxsfd",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-muqbs0geks60ywxsfd"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Région Hauts-de-France fait l'objet de revendications de fuite de données incluant 782 583 enregistrements et 48 Go soit 90 011 documents, selon un pirate.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-02",
   "high_sensitivity_data_exposed": false,
@@ -509,16 +543,13 @@
   "org": "LDLC",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Le groupe LDLC est un acteur français spécialisé dans la vente de matériel informatique, high-tech et équipements électroniques .",
-   "evidence_url": "https://www.cyberattaque.org/ldlc-victime-dune-cyberattaque-les-donnees-personnelles-de-clients-exposees/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/ldlc-muqsxvb7wz9y21k96wp",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
@@ -637,13 +668,13 @@
   "org": "ADMR",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Association / Syndicat",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/admr-mupn6cbtuoer51cdk4",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.9,
+   "evidence": "L’ADMR est un réseau français de services à la personne et d’aide à domicile dont l’organisation repose sur de nombreuses associations et fédérations départementales.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-admr-pres-de-10-000-comptes-internes-exposes-dans-une-nouvelle-fuite/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -7429,40 +7460,6 @@
   "threat": "Inconnu",
   "threat_status": {
    "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2025-10-10",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-504E072622BB",
-  "location": "France métropolitaine",
-  "org": "Région Hauts-de-France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Région Hauts-de-France",
-   "evidence_url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-muqbs0geks60ywxsfd",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-muqbs0geks60ywxsfd"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "La Région Hauts-de-France fait l'objet de revendications de fuite de données incluant 782 583 enregistrements et 48 Go soit 90 011 documents, selon un pirate.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
   }
  }
 ]

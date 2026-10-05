@@ -1,4 +1,4 @@
-"""Recalcule secteur, menace et localisation hors réseau ; simulation par défaut."""
+"""Recalcule qualifications et dates sourcées hors réseau ; simulation par défaut."""
 from __future__ import annotations
 
 import argparse
@@ -11,10 +11,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from cyberwatch import enrichment, identity, store  # noqa: E402
+from cyberwatch import enrichment, identity, source_facts, store  # noqa: E402
 
-ITEM_FIELDS = ("Sector", "Threat", "Location")
-INCIDENT_FIELDS = ("Secteur", "Menace", "Localisation")
+ITEM_FIELDS = ("Sector", "Threat", "Location", "Event_Date")
+INCIDENT_FIELDS = ("Secteur", "Menace", "Localisation", "Date", "Date_Basis")
 
 
 def main() -> int:
@@ -23,12 +23,24 @@ def main() -> int:
     args = parser.parse_args()
     items = store.load_items()
     incidents = store.load_incidents()
+    previous_sector_rows = store.load_sector_resolution()
     as_of = dt.datetime.now(dt.UTC).isoformat()
+    facts, fact_changes = source_facts.sanitize_source_facts(store.load_source_facts())
+    revised_items = copy.deepcopy(items)
+    source_facts.apply_event_dates(revised_items, facts)
     result = enrichment.finalize_snapshot(
-        copy.deepcopy(items), store.load_source_facts(),
-        run_id="QUALIFICATION-REPAIR-20260907", as_of=as_of,
-        previous_sector_rows=store.load_sector_resolution(),
+        revised_items, facts,
+        run_id="QUALIFICATION-REPAIR-" + as_of[:10].replace("-", ""), as_of=as_of,
+        previous_sector_rows=previous_sector_rows,
     )
+    previous_sectors = {row["Item_ID"]: row for row in previous_sector_rows}
+    ignored = {"Run_ID", "As_Of", "Previous_Sector"}
+    for position, row in enumerate(result.sector_resolution_rows):
+        previous = previous_sectors.get(row["Item_ID"], {})
+        if {key: value for key, value in row.items() if key not in ignored} == {
+            key: value for key, value in previous.items() if key not in ignored
+        }:
+            result.sector_resolution_rows[position] = previous
     before_items = {item.Item_ID: item for item in items}
     before_incidents = {incident.Incident_ID: incident for incident in incidents}
     if set(before_items) != {item.Item_ID for item in result.items}:
@@ -71,10 +83,13 @@ def main() -> int:
         "incidents": len(result.incidents),
         "item_changes": item_changes,
         "incident_changes": incident_changes,
+        "source_fact_changes": fact_changes,
     }
     if args.write:
         store.save_items(result.items)
         store.save_incidents(result.incidents)
+        if fact_changes:
+            store.save_source_facts(facts)
         if any("Sector" in row["fields"] for row in item_changes):
             store.save_sector_resolution(result.sector_resolution_rows)
         snapshot = store.load_snapshot()
