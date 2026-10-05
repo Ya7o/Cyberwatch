@@ -1,6 +1,191 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-05",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F7BB72962D53",
+  "location": "France métropolitaine",
+  "org": "April",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "**April, groupe français spécialisé dans l’assurance et le courtage**, est visé par une nouvelle revendication sur un forum spécialisé.",
+   "evidence_url": "https://frenchbreaches.com/alertes/april-muumgsdxm1u9tprneco",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/april-muumgsdxm1u9tprneco"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des identifiants et accès techniques internes d'April ont été publiés sur un forum, sans preuve d'exfiltration de données clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-05",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B9C05B36A12A",
+  "location": "France métropolitaine",
+  "org": "Sport 2000",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/sport-2000-pilot-muunws1w23wqgil8bzi",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sport-2000-483-953-reservations-en-fuite-apres-une-nouvelle-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sport-2000-pilot-muunws1w23wqgil8bzi"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Sport 2000 : 483 953 enregistrements de réservations publiés en téléchargement libre après une nouvelle fuite liée à Pilot.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-04",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9C6AEF0A9A93",
+  "location": "France métropolitaine",
+  "org": "QPM Pro",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "QPM Pro, entreprise française spécialisée dans les équipements et solutions informatiques pour les professionnels, fait l’objet d’une revendication de fuite de données publiée le 4 octobre 2026 .",
+   "evidence_url": "https://www.cyberattaque.org/qpm-pro-un-specialiste-des-solutions-informatiques-victime-dune-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/qpm-pro-un-specialiste-des-solutions-informatiques-victime-dune-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/qpm-pro-muu4mfing345hnh7wo8"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "QPM Pro : un spécialiste des solutions informatiques victime d’une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-04",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-827F032013D7",
+  "location": "Inconnu",
+  "org": "Fédération Belge de Taekwondo",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-belge-de-taekwondo-muu0b20duvxzilati3",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-belge-de-taekwondo-muu0b20duvxzilati3"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la mise en vente de bases attribuées à Taekwondo.be et Coachbelgium.be, concernant 53 580 personnes et 599 803 enregistrements.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-04",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6D5364A98379",
+  "location": "Inconnu",
+  "org": "OFB",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "L’OFB est un établissement public français chargé notamment de la protection de la biodiversité, de la police de l’environnement et de missions liées à la chasse .",
+   "evidence_url": "https://www.cyberattaque.org/ofb-165-000-dossiers-de-permis-de-chasser-exposes-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ofb-165-000-dossiers-de-permis-de-chasser-exposes-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "LunarisSec revendique l'extraction d'environ 165 000 lignes de dossiers de permis de chasser via une vulnérabilité IDOR chez l'OFB.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-04",
   "high_sensitivity_data_exposed": true,
@@ -28,6 +213,108 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-04",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5752F4E0EEB5",
+  "location": "France métropolitaine",
+  "org": "AMCEN",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/amcen-mutyyvhhx4zer2dulkd",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/amcen-mutyyvhhx4zer2dulkd"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une revendication diffuse une sauvegarde du site WordPress d'AMCEN avec des données personnelles revendiquées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-04",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2B7599B47966",
+  "location": "France métropolitaine",
+  "org": "Predige",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/predige-muu12gyqcsend5g0uks",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/predige-muu12gyqcsend5g0uks"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un utilisateur a publié le 4 octobre 2026 une revendication et un échantillon prétendant être une copie de la base clients de Predige contenant 21 393 comptes.",
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-04",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-151DF83A2049",
+  "location": "France métropolitaine",
+  "org": "Permis de chasser",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/permis-de-chasser-ofb-muu25et2a0kk8inl375",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/permis-de-chasser-ofb-muu25et2a0kk8inl375"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données du service Permis de chasser (OFB) exposant environ 1 200 demandeurs et revendication d'accès à 170 000 lignes par un pirate.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
@@ -825,6 +1112,11 @@
     "label": "krybieodq754vlwufrsuxaswxb5zpxyibaawmed2jaduoz2e5m56hmid.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://krybieodq754vlwufrsuxaswxb5zpxyibaawmed2jaduoz2e5m56hmid.onion/blog/pending-6abed0d0df3cc-1790890192/"
+   },
+   {
+    "label": "krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/27493989ead6f1ebaa7f57d106ce8fc61e1d15cbee51562d9af6a683fe544f53/"
    }
   ],
   "sources": [
@@ -870,7 +1162,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "VosFactures indirectement affecté par une cyberattaque chez son prestataire, exposant des données de comptes, clients, fournisseurs et documents.",
+  "summary": "VosFactures touché par une cyberattaque : les factures exposées",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -941,7 +1233,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "La plateforme Avantages Jeunes a fait l’objet d’une fuite de 318 000 profils revendiquée le 1er octobre 2026.",
+  "summary": "Avantages Jeunes : 318 000 profils en fuite, des milliers de mineurs exposés",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"

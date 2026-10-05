@@ -1,125 +1,126 @@
 {
   "abstained_field_cache_hits": 0,
-  "accepted_field_cache_hits": 22,
-  "accepted_field_rate": 0.3846,
+  "accepted_field_cache_hits": 1,
+  "accepted_field_rate": 0.617,
   "activity_pairs": {
     "accepted": {
-      "from_cache": 2,
-      "from_call": 0,
+      "from_cache": 0,
+      "from_call": 2,
       "total": 2
     },
     "rejected": {
       "from_cache": 0,
-      "from_call": 1,
-      "total": 1
-    },
-    "rejected_exhausted": {
-      "from_cache": 0,
       "from_call": 3,
       "total": 3
     },
-    "requested": 6
+    "rejected_exhausted": {
+      "from_cache": 0,
+      "from_call": 2,
+      "total": 2
+    },
+    "requested": 7
   },
-  "average_duration_seconds": 6.042,
+  "average_duration_seconds": 8.195,
   "cache_format": "source-facts-ai-field-cache-v1",
-  "cache_hits": 1,
-  "calls_attempted": 18,
+  "cache_hits": 0,
+  "calls_attempted": 16,
   "calls_budget_blocked": 0,
   "calls_failed": 0,
-  "calls_success": 18,
-  "cost_per_accepted_field_usd": 0.00181791,
+  "calls_success": 16,
+  "cost_per_accepted_field_usd": 0.00082324,
   "disabled_reason": "",
   "effective_model": "gpt-5-mini",
   "enabled": true,
   "error_reasons": {},
-  "estimated_cost_usd": 0.027269,
-  "evidence_failures": 2,
-  "field_cache_hits": 22,
+  "estimated_cost_usd": 0.023874,
+  "evidence_failures": 7,
+  "field_cache_hits": 1,
   "field_outcomes": {
-    "abstained": 14,
-    "accepted": 15,
-    "miss": 2,
-    "rejected": 2,
-    "rejected_exhausted": 6
+    "abstained": 2,
+    "accepted": 29,
+    "miss": 7,
+    "rejected": 6,
+    "rejected_exhausted": 3
   },
   "field_outcomes_by_name": {
     "activity_description": {
-      "rejected": 1,
-      "rejected_exhausted": 3
+      "accepted": 3,
+      "rejected": 3,
+      "rejected_exhausted": 1
     },
     "activity_sector_match": {
-      "rejected": 1,
-      "rejected_exhausted": 3
+      "accepted": 2,
+      "rejected": 3,
+      "rejected_exhausted": 2
     },
     "incident_summary": {
-      "abstained": 4,
-      "accepted": 5,
-      "miss": 1
+      "abstained": 1,
+      "accepted": 10
     },
     "summary": {
-      "abstained": 9,
-      "accepted": 5,
+      "abstained": 1,
+      "accepted": 9,
       "miss": 1
     },
     "threat_candidate": {
-      "abstained": 1,
-      "accepted": 5
+      "accepted": 5,
+      "miss": 6
     }
   },
   "fields_invalidated": 0,
   "fields_requested": {
-    "activity_description": 4,
-    "activity_sector_match": 4,
-    "incident_summary": 10,
-    "summary": 15,
-    "threat_candidate": 6
+    "activity_description": 7,
+    "activity_sector_match": 7,
+    "incident_summary": 11,
+    "summary": 11,
+    "threat_candidate": 11
   },
   "fields_requested_new": {
-    "activity_description": 4,
-    "activity_sector_match": 4,
-    "incident_summary": 10,
-    "summary": 15,
-    "threat_candidate": 6
+    "activity_description": 7,
+    "activity_sector_match": 7,
+    "incident_summary": 11,
+    "summary": 11,
+    "threat_candidate": 11
   },
-  "final_acceptance_rate": 0.3846,
-  "final_accepted": 15,
-  "healthy_abstentions": 14,
+  "final_acceptance_rate": 0.617,
+  "final_accepted": 29,
+  "healthy_abstentions": 2,
   "http_429": 0,
   "http_5xx": 0,
-  "initial_acceptance_rate": 0.3333,
-  "initial_accepted": 13,
-  "input_tokens": 57790,
-  "items_eligible": 19,
-  "items_fully_cached": 1,
-  "items_partially_cached": 10,
+  "initial_acceptance_rate": 0.5319,
+  "initial_accepted": 25,
+  "input_tokens": 45143,
+  "items_eligible": 16,
+  "items_fully_cached": 0,
+  "items_partially_cached": 1,
   "items_skipped_no_missing_fields": 0,
-  "items_would_call": 18,
+  "items_would_call": 16,
   "legacy_field_cache_hits": 0,
   "legacy_null_migrations": 0,
   "legacy_null_skips": 0,
-  "max_duration_seconds": 28.557,
+  "max_duration_seconds": 34.023,
   "model": "gpt-5-nano",
-  "output_tokens": 4359,
-  "p50_duration_seconds": 3.074,
-  "p95_duration_seconds": 28.557,
+  "output_tokens": 4786,
+  "p50_duration_seconds": 3.818,
+  "p95_duration_seconds": 34.023,
   "prompt_version": "2026-09-11.source-facts.20",
   "rejected_field_cache_hits": 0,
-  "repair_attempted": 10,
-  "repair_cost_usd": 0.00410315,
-  "repair_deterministic_success": 2,
-  "repair_eligible": 10,
-  "repair_failed": 8,
-  "repair_llm_calls": 3,
+  "repair_attempted": 11,
+  "repair_cost_usd": 0.00301615,
+  "repair_deterministic_success": 4,
+  "repair_eligible": 11,
+  "repair_failed": 7,
+  "repair_llm_calls": 4,
   "repair_llm_success": 0,
   "requested_model": "gpt-5-nano",
   "retries": 0,
-  "run_id": "RUN-20261004T165404",
+  "run_id": "RUN-20261005T192122",
   "schema_version": "11",
-  "semantic_first_misses": 3,
-  "semantic_new_abstentions": 15,
-  "semantic_recovered_on_retry": 8,
-  "semantic_retries": 28,
+  "semantic_first_misses": 7,
+  "semantic_new_abstentions": 8,
+  "semantic_recovered_on_retry": 0,
+  "semantic_retries": 5,
   "timeouts": 0,
-  "total_duration_seconds": 108.763,
-  "unsafe_proposals_rejected": 2
+  "total_duration_seconds": 131.115,
+  "unsafe_proposals_rejected": 6
 }
