@@ -358,21 +358,26 @@ def run_source(
     processing_started = time.monotonic()
     source_facts_before = source_facts_ai.runtime_stats()
 
-    items, metrics = runner_ingestion.process_entries(
-        result,
-        spec,
-        context.as_of,
-        known_orgs,
-        entity_index,
-        territories,
-        reference,
-        fact_rows,
-        convert=entry_to_item,
-        extract_fact=_extract_source_fact_for_entry,
-    )
-
-    outcome.processing_duration_seconds = round(time.monotonic() - processing_started, 3)
-    _record_source_fact_usage(outcome, source_facts_before)
+    source_fact_rows: list[dict] = []
+    try:
+        items, metrics = runner_ingestion.process_entries(
+            result, spec, context.as_of, known_orgs, entity_index, territories,
+            reference, source_fact_rows if fact_rows is not None else None,
+            convert=entry_to_item, extract_fact=_extract_source_fact_for_entry,
+        )
+    except Exception as exc:
+        outcome.status = status.FAIL
+        outcome.coverage = 0
+        outcome.reason_code = status.REASON_PARSE_ERROR
+        outcome.comment = f"processing: {type(exc).__name__}: {exc}"[:300]
+        outcome.calls = result.calls
+        outcome.duration_seconds = round(time.monotonic() - started, 1)
+        return outcome, [], []
+    finally:
+        outcome.processing_duration_seconds = round(time.monotonic() - processing_started, 3)
+        _record_source_fact_usage(outcome, source_facts_before)
+    if fact_rows is not None:
+        fact_rows.extend(source_fact_rows)
 
     source_status, coverage = result.resolve()
     outcome.status = source_status
@@ -725,7 +730,8 @@ def _collect_for_run(
         if row.get("Source_ID") not in replacement_source_ids
     ]
     retry_rows, report.source_facts_retry_summary = runner_source_facts.retry_pending(
-        queued_at_start
+        queued_at_start,
+        current_facts=source_facts.merge_source_facts(facts_base, new_fact_rows),
     )
     report.source_facts = source_facts.merge_source_facts(
         facts_base, new_fact_rows + retry_rows
@@ -739,8 +745,9 @@ def _apply_daily_dedup(
     *,
     persist: bool,
 ) -> None:
-    daily_ids = {item.Item_ID for item in collected if item.Item_ID}
-    daily_scope = [item for item in report.items if item.Item_ID in daily_ids]
+    daily_scope = runner_dedup.changed_items(
+        report.items, report.source_facts, store.load_items(), store.load_source_facts(),
+    )
     dedup_state, problems = run_daily_dedup_net(
         report.items,
         daily_scope,
@@ -888,12 +895,18 @@ def execute(
 
 def _checkpoint_and_persist(report: RunReport, watch_rows: list[dict], offline: bool) -> None:
     context = report.context
-    sector_summary = runner_source_facts.settle_sectors(
+    publishable = report.overall == status.OK and not report.problems
+    sector_summary = sector_resolution.qualification_summary(
         report.sector_resolution_rows, report.incidents
     )
-    runner_source_facts.settle_published_fields(
-        report.source_facts, report.items, report.incidents
-    )
+    if publishable:
+        source_facts_retry.save(runner_source_facts.current_retry_contexts(
+            source_facts_retry.load(), report.source_facts,
+        ))
+        runner_source_facts.settle_sectors(report.sector_resolution_rows, report.incidents)
+        runner_source_facts.settle_published_fields(
+            report.source_facts, report.items, report.incidents
+        )
     report.source_facts_retry_summary["queued_after"] = len(source_facts_retry.load())
     source_facts_ai._runtime().checkpoint(force=True)
     # La file est globale et sans identifiant de run : sans cette copie,
@@ -903,7 +916,7 @@ def _checkpoint_and_persist(report: RunReport, watch_rows: list[dict], offline: 
     _persist(
         report,
         watch_rows if not offline else [],
-        persist_snapshot=offline or (report.overall == status.OK and not report.problems),
+        persist_snapshot=publishable,
     )
 
 

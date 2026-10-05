@@ -91,6 +91,22 @@ jobs:
           if git diff --staged --quiet; then exit 0; fi
           git commit -m "data: mise à jour du corpus"
           git push origin HEAD:main
+      - name: Conserver les diagnostics en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: collect-diagnostics-${{ github.run_id }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            data/run_log.csv
+            data/run_sources.csv
+            data/production_metrics.csv
+            data/llm_usage.json
+            data/source_facts_ai_usage.json
+            data/source_facts_retry_queue.json
+            data/dedup_ai_daily_usage.csv
+            data/llm_runs/
       - name: Notifier l'état de production
         if: always() && (inputs.operation != 'PURGE' || failure())
         env:

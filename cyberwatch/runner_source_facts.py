@@ -1,6 +1,7 @@
 """Extraction courante et reprise différée des faits de source."""
 from __future__ import annotations
 
+import json
 import os
 
 from . import config, source_facts, source_facts_ai, source_facts_retry, sources
@@ -51,12 +52,37 @@ def _pending_by_key(scope: set[str] | None) -> dict[str, set[str] | None]:
     return pending
 
 
-def retry_pending(queued_at_start: list[dict], *,
-                  fields: set[str] | None = None) -> tuple[list[dict], dict]:
+def current_retry_contexts(entries: list[dict], facts: list[dict]) -> list[dict]:
+    """Un ancien corps d'article ne doit pas écraser ses faits plus récents."""
+    hashes: dict[str, str] = {}
+    for fact in facts:
+        try:
+            metadata = json.loads(str(fact.get("Source_Metadata_JSON") or "{}"))
+        except (TypeError, ValueError):
+            continue
+        if isinstance(metadata, dict) and metadata.get("_source_facts_content_hash"):
+            hashes[str(fact.get("Item_ID") or "")] = str(metadata["_source_facts_content_hash"])
+    kept: list[dict] = []
+    for record in entries:
+        try:
+            item, entry = source_facts_retry.restore(record)
+        except (TypeError, ValueError):
+            kept.append(record)
+            continue
+        current = hashes.get(item.Item_ID)
+        if not current or current == source_facts_ai.content_hash(entry):
+            kept.append(record)
+    return kept
+
+
+def retry_pending(queued_at_start: list[dict], *, fields: set[str] | None = None,
+                  current_facts: list[dict] | None = None) -> tuple[list[dict], dict]:
     """Reprend quelques champs différés, même après la fenêtre de collecte."""
     retry_rows: list[dict] = []
     from .source_facts_ai_contract import RETIRED_LLM_FIELDS
 
+    queued_count = len(queued_at_start)
+    queued_at_start = current_retry_contexts(queued_at_start, current_facts or [])
     source_facts_retry.retire_fields(RETIRED_LLM_FIELDS)
     retry_limit = max(0, int(os.getenv("SOURCE_FACTS_RETRY_MAX_PER_RUN", "5")))
     attempted = 0
@@ -74,7 +100,9 @@ def retry_pending(queued_at_start: list[dict], *,
             source_facts_retry.resolve(item, entry, ACTIVITY_FIELDS)
     active = _pending_by_key(scope)
     if source_facts_ai._runtime().enabled:
-        for pending in queued_at_start:
+        for pending in sorted(queued_at_start, key=lambda row: (
+            row.get("last_attempt_at", ""), row.get("first_queued_at", ""), row.get("key", ""),
+        )):
             key = str(pending.get("key") or "")
             if attempted >= retry_limit:
                 break
@@ -107,7 +135,8 @@ def retry_pending(queued_at_start: list[dict], *,
                 retry_rows.append(fact)
             active = _pending_by_key(scope)
     return retry_rows, {
-        "queued_before": len(queued_at_start),
+        "queued_before": queued_count,
+        "superseded_contexts_skipped": queued_count - len(queued_at_start),
         "attempted": attempted,
         "facts_refreshed": len(retry_rows),
         "queued_after": len(source_facts_retry.load()),

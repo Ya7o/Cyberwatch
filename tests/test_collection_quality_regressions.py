@@ -4,7 +4,7 @@ from dataclasses import replace
 
 import pytest
 
-from cyberwatch import config, dedup_ai, dedup_review, enrichment, production, sector, store
+from cyberwatch import config, dedup_ai, dedup_review, enrichment, normalize, org_identity, production, sector, store
 from cyberwatch.collectors.base import RawEntry
 from cyberwatch.collectors.cyberattaque_org import (
     organisation_from_cyberattaque_entry, repair_existing_identities,
@@ -86,7 +86,9 @@ def test_published_partial_source_is_visible_even_when_overall_run_is_ok(monkeyp
     assert production.published_source_coverage({}) == []
 
 
-def test_strong_pending_identity_precedes_older_fuzzy_queue(make_item, tmp_path):
+def test_strong_pending_identity_precedes_older_fuzzy_queue(make_item, tmp_path, monkeypatch):
+    monkeypatch.setattr(normalize, "ORGANISATION_ALIASES", {})
+    monkeypatch.setattr(org_identity, "ORGANISATION_IDENTITY_REGISTRY", {})
     strong_left = make_item(source="A", org="Scorenco", published="2026-09-27")
     strong_right = make_item(source="B", org="Score’n’co", published="2026-09-27")
     strong = find_daily_llm_candidates([strong_left], [strong_right])[0]
@@ -111,7 +113,9 @@ def test_strong_pending_identity_precedes_older_fuzzy_queue(make_item, tmp_path)
     assert dedup_ai.candidate_id(retried[0]) == dedup_ai.candidate_id(strong)
 
 
-def test_batch_budget_counts_exact_wire_json_and_fills_remaining_space(make_item, tmp_path):
+def test_batch_budget_counts_exact_wire_json_and_fills_remaining_space(make_item, tmp_path, monkeypatch):
+    monkeypatch.setattr(normalize, "ORGANISATION_ALIASES", {})
+    monkeypatch.setattr(org_identity, "ORGANISATION_IDENTITY_REGISTRY", {})
     left = make_item(source="A", org="Scorenco")
     right = make_item(source="B", org="Score’n’co")
     candidate = find_daily_llm_candidates([left], [right])[0]
