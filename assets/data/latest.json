@@ -1,6 +1,40 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-06",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-838BDB4325BB",
+  "location": "France métropolitaine",
+  "org": "Agence nationale des fréquences",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/agence-nationale-des-fr-quences-anfr-mod3706u7p85pi7xpe3",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agence-nationale-des-fr-quences-anfr-mod3706u7p85pi7xpe3"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base de 406 053 enregistrements attribuée à l'ANFR a été diffusée sur un forum cybercriminel le 5 octobre 2026.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-05",
   "high_sensitivity_data_exposed": false,
@@ -71,6 +105,114 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-05",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5F4A9FD7D455",
+  "location": "France métropolitaine",
+  "org": "Ouverture Fine",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "**Ouverture Fine**, entreprise française spécialisée dans la vente d’équipements de serrurerie et de sécurité ainsi que dans la formation, fait l’objet d’une revendication de **fuite de données**.",
+   "evidence_url": "https://frenchbreaches.com/alertes/ouverture-fine-muvw4aoi2gfiz2x1qgw",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ouverture-fine-muvw4aoi2gfiz2x1qgw"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Ouverture Fine fait l’objet d’une revendication de fuite de données d’environ 60 000 lignes proposées à la vente.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-05",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5BDF6CC8AB6A",
+  "location": "France métropolitaine",
+  "org": "Réussir",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Agriculture / Agroalimentaire",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le portail Réussir.fr, spécialisé dans l’information professionnelle agricole et agroalimentaire, fait l’objet d’une importante revendication de cyberattaque.",
+   "evidence_url": "https://www.cyberattaque.org/reussir-fr-plus-de-32-millions-denregistrements-en-vente-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reussir-fr-plus-de-32-millions-denregistrements-en-vente-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-ussir-muvvypa1nqypdmm17t"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le portail Réussir.fr revendiqué compromis, avec environ 3,3 millions d'enregistrements annoncés à la vente.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-05",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-27DA984EF5A3",
+  "location": "Inconnu",
+  "org": "Ouverture Fine, spécialiste de la serrurerie",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ouverture Fine , entreprise française spécialisée dans le matériel, les solutions de sécurité et la formation pour les professionnels de la serrurerie, voit actuellement réapparaître une ancienne base de données issue d’une cyberattaque survenue en septembre 2024 .",
+   "evidence_url": "https://www.cyberattaque.org/ouverture-fine-specialiste-de-la-serrurerie-victime-dune-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ouverture-fine-specialiste-de-la-serrurerie-victime-dune-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Ouverture Fine signale la remise en vente d'une ancienne base de données issue d'une cyberattaque de septembre 2024 contenant environ 60 000 lignes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -6428,13 +6570,23 @@
     "label": "Imaz Press",
     "source": "VEILLE_LLM",
     "url": "https://imazpress.com/toute-l-actu/attaque-informatique-sur-le-lycee-de-saint-louis-jean-joly"
+   },
+   {
+    "label": "Imaz Press",
+    "source": "VEILLE_LLM",
+    "url": "https://imazpress.com/toute-l-actu/saint-louis-cyberattaque-lycee-jean-joly-manifestation"
+   },
+   {
+    "label": "Imaz Press",
+    "source": "VEILLE_LLM",
+    "url": "https://imazpress.com/toute-l-actu/manif-lycee-jean-joly-saint-louis"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
   }
