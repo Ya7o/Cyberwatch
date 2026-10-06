@@ -4,6 +4,80 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-06",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-E7EECFC58978",
+  "location": "France métropolitaine",
+  "org": "Hespéride",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Hespéride commercialise du mobilier et des équipements d’extérieur.",
+   "evidence_url": "https://www.cyberattaque.org/hesperide-7-700-clients-touches-par-une-cyberattaque-chez-un-prestataire/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/hesperide.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/hesperide-7-700-clients-touches-par-une-cyberattaque-chez-un-prestataire/"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Hespéride signale que des données de 7 700 clients ont pu être consultées après une violation chez l'un de ses prestataires techniques.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-06",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A3FC35E0B6B9",
+  "location": "Inconnu",
+  "org": "Gefradis",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Gefradis, entreprise française spécialisée dans la vente de menuiseries sur mesure, fait l’objet d’une importante revendication de fuite…",
+   "evidence_url": "https://www.cyberattaque.org/gefradis-vise-par-une-cyberattaque-plus-de-100-000-lignes-de-donnees-clients-mises-en-vente/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/gefradis-vise-par-une-cyberattaque-plus-de-100-000-lignes-de-donnees-clients-mises-en-vente/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Gefradis fait l’objet d’une revendication de fuite de plus de 100 000 lignes de données clients mises en vente.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-06",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-838BDB4325BB",
   "location": "France métropolitaine",
   "org": "Agence nationale des fréquences",
@@ -29,6 +103,80 @@
   ],
   "summary": "Une base de 406 053 enregistrements attribuée à l'ANFR a été diffusée sur un forum cybercriminel le 5 octobre 2026.",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-06",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-7F028203AC2F",
+  "location": "France métropolitaine",
+  "org": "Armurerie Douillet",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/armurerie-douillet-muw77q13c7eazckgjfe",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-armurerie-douillet-7-546-documents-en-fuite-des-detenteurs-darmes-identifiables-avec-leur-adresse/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/armurerie-douillet-muw77q13c7eazckgjfe"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "L'armurerie Douillet-Dreumont fait l'objet d'une revendication de fuite de 7 546 fichiers (4,65 Go) proposés à la vente.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-06",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0AB5E9FB09C5",
+  "location": "Inconnu",
+  "org": "Bati-Avenue",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Bati-Avenue, spécialiste français de la vente en ligne de matériel et d’outillage pour les professionnels du bâtiment, confirme…",
+   "evidence_url": "https://www.cyberattaque.org/bati-avenue-touche-par-la-cyberattaque-shipup-des-clients-amazon-et-manomano-exposes/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bati-avenue-touche-par-la-cyberattaque-shipup-des-clients-amazon-et-manomano-exposes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Bati-Avenue indique que des noms, prénoms et numéros de téléphone de clients ont pu être consultés après la cyberattaque de son prestataire Shipup.",
+  "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
   }
@@ -496,7 +644,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Une fuite de 40 070 enregistrements de facturation de Cours Thalès après une vulnérabilité IDOR revendiquée.",
+  "summary": "Cours Thalès : 40 070 données de facturation exposées après une faille IDOR",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
