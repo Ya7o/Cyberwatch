@@ -92,11 +92,11 @@
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 6,
+      "count": 5,
       "label": "Fuite de données"
      },
      {
-      "count": 2,
+      "count": 3,
       "label": "Intrusion"
      },
      {
@@ -207,11 +207,11 @@
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 6,
+      "count": 5,
       "label": "Fuite de données"
      },
      {
-      "count": 2,
+      "count": 3,
       "label": "Intrusion"
      },
      {
@@ -329,7 +329,7 @@
      ],
      "threat": [
       {
-       "count": 150,
+       "count": 149,
        "label": "Fuite de données"
       },
       {
@@ -337,7 +337,7 @@
        "label": "Ransomware"
       },
       {
-       "count": 15,
+       "count": 16,
        "label": "Intrusion"
       },
       {
@@ -462,7 +462,7 @@
      ],
      "threat": [
       {
-       "count": 156,
+       "count": 155,
        "label": "Fuite de données"
       },
       {
@@ -470,7 +470,7 @@
        "label": "Ransomware"
       },
       {
-       "count": 17,
+       "count": 18,
        "label": "Intrusion"
       },
       {
@@ -579,7 +579,7 @@
      ],
      "threat": [
       {
-       "count": 152,
+       "count": 151,
        "label": "Fuite de données"
       },
       {
@@ -587,7 +587,7 @@
        "label": "Ransomware"
       },
       {
-       "count": 15,
+       "count": 16,
        "label": "Intrusion"
       },
       {
@@ -712,7 +712,7 @@
      ],
      "threat": [
       {
-       "count": 156,
+       "count": 155,
        "label": "Fuite de données"
       },
       {
@@ -720,7 +720,7 @@
        "label": "Ransomware"
       },
       {
-       "count": 17,
+       "count": 18,
        "label": "Intrusion"
       },
       {
@@ -764,11 +764,11 @@
      "threat": [
       {
        "count": 1,
-       "label": "Fuite de données"
+       "label": "Inconnu"
       },
       {
        "count": 1,
-       "label": "Inconnu"
+       "label": "Intrusion"
       }
      ],
      "undated": 0
@@ -828,11 +828,11 @@
      ],
      "threat": [
       {
-       "count": 6,
+       "count": 5,
        "label": "Fuite de données"
       },
       {
-       "count": 2,
+       "count": 3,
        "label": "Intrusion"
       },
       {
@@ -869,12 +869,16 @@
      ],
      "threat": [
       {
-       "count": 2,
+       "count": 1,
        "label": "Fuite de données"
       },
       {
        "count": 1,
        "label": "Inconnu"
+      },
+      {
+       "count": 1,
+       "label": "Intrusion"
       }
      ],
      "undated": 0
@@ -934,11 +938,11 @@
      ],
      "threat": [
       {
-       "count": 6,
+       "count": 5,
        "label": "Fuite de données"
       },
       {
-       "count": 2,
+       "count": 3,
        "label": "Intrusion"
       },
       {
@@ -1428,11 +1432,11 @@
      "threat": [
       {
        "count": 1,
-       "label": "Fuite de données"
+       "label": "Inconnu"
       },
       {
        "count": 1,
-       "label": "Inconnu"
+       "label": "Intrusion"
       }
      ],
      "undated": 0
@@ -1492,11 +1496,11 @@
      ],
      "threat": [
       {
-       "count": 6,
+       "count": 5,
        "label": "Fuite de données"
       },
       {
-       "count": 2,
+       "count": 3,
        "label": "Intrusion"
       },
       {
@@ -1533,12 +1537,16 @@
      ],
      "threat": [
       {
-       "count": 2,
+       "count": 1,
        "label": "Fuite de données"
       },
       {
        "count": 1,
        "label": "Inconnu"
+      },
+      {
+       "count": 1,
+       "label": "Intrusion"
       }
      ],
      "undated": 0
@@ -1598,11 +1606,11 @@
      ],
      "threat": [
       {
-       "count": 6,
+       "count": 5,
        "label": "Fuite de données"
       },
       {
-       "count": 2,
+       "count": 3,
        "label": "Intrusion"
       },
       {
@@ -1715,7 +1723,7 @@
      2,
      1,
      0,
-     120,
+     119,
      31
     ],
     "Intrusion": [
@@ -1726,7 +1734,7 @@
      1,
      0,
      0,
-     11,
+     12,
      4
     ],
     "Malware": [
@@ -2083,16 +2091,16 @@
    },
    {
     "base_rate_pct": null,
-    "change_pct": 14900.0,
+    "change_pct": 14800.0,
     "confidence": {
-     "incidents": 150,
+     "incidents": 149,
      "known_ratio": 0.911,
      "level": "high",
      "multi_source_incidents": 84,
      "score": 87
     },
-    "current": 150,
-    "delta": 149,
+    "current": 149,
+    "delta": 148,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
@@ -2112,21 +2120,21 @@
     "kind": "acceleration",
     "label": "Fuite de données",
     "previous": 1,
-    "share_pct": 76.1,
+    "share_pct": 75.6,
     "window_days": 30
    },
    {
     "base_rate_pct": null,
     "change_pct": 100.0,
     "confidence": {
-     "incidents": 15,
-     "known_ratio": 0.867,
+     "incidents": 16,
+     "known_ratio": 0.875,
      "level": "high",
      "multi_source_incidents": 8,
-     "score": 86
+     "score": 85
     },
-    "current": 15,
-    "delta": 15,
+    "current": 16,
+    "delta": 16,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
@@ -2139,28 +2147,28 @@
      "INC-697D5F99FFA4",
      "INC-6D5364A98379",
      "INC-723CD35E91B1",
+     "INC-72BF97901CE1",
      "INC-78281AB82197",
-     "INC-8FE3D1894F9C",
-     "INC-9C6AEF0A9A93"
+     "INC-8FE3D1894F9C"
     ],
     "kind": "emerging",
     "label": "Intrusion",
     "previous": 0,
-    "share_pct": 7.6,
+    "share_pct": 8.1,
     "window_days": 30
    },
    {
     "base_rate_pct": null,
-    "change_pct": 650.0,
+    "change_pct": 700.0,
     "confidence": {
-     "incidents": 15,
-     "known_ratio": 0.867,
+     "incidents": 16,
+     "known_ratio": 0.875,
      "level": "high",
      "multi_source_incidents": 8,
-     "score": 86
+     "score": 85
     },
-    "current": 15,
-    "delta": 13,
+    "current": 16,
+    "delta": 14,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
@@ -2173,49 +2181,15 @@
      "INC-697D5F99FFA4",
      "INC-6D5364A98379",
      "INC-723CD35E91B1",
+     "INC-72BF97901CE1",
      "INC-78281AB82197",
-     "INC-8FE3D1894F9C",
-     "INC-9C6AEF0A9A93"
+     "INC-8FE3D1894F9C"
     ],
     "kind": "acceleration",
     "label": "Intrusion",
     "previous": 2,
-    "share_pct": 7.5,
+    "share_pct": 8.0,
     "window_days": 90
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 100.0,
-    "confidence": {
-     "incidents": 12,
-     "known_ratio": 1.0,
-     "level": "high",
-     "multi_source_incidents": 5,
-     "score": 85
-    },
-    "current": 12,
-    "delta": 12,
-    "dimension": "threat_sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-27DA984EF5A3",
-     "INC-584E3E37779F",
-     "INC-6A804DBD820F",
-     "INC-72BF97901CE1",
-     "INC-8C6C97916F72",
-     "INC-8D7AC4DCF1CA",
-     "INC-947343AC5270",
-     "INC-AA1E1BAAF08B",
-     "INC-AE4B3CED8F6F",
-     "INC-E67015756A95",
-     "INC-F19CA8144B3E",
-     "INC-F34197834D47"
-    ],
-    "kind": "new_pair",
-    "label": "Fuite de données × Éducation / Formation",
-    "previous": 0,
-    "share_pct": 6.1,
-    "window_days": 30
    },
    {
     "base_rate_pct": null,
@@ -2284,6 +2258,39 @@
     "previous": 1,
     "share_pct": 7.0,
     "window_days": 90
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 11,
+     "known_ratio": 1.0,
+     "level": "high",
+     "multi_source_incidents": 5,
+     "score": 82
+    },
+    "current": 11,
+    "delta": 11,
+    "dimension": "threat_sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-27DA984EF5A3",
+     "INC-584E3E37779F",
+     "INC-6A804DBD820F",
+     "INC-8C6C97916F72",
+     "INC-8D7AC4DCF1CA",
+     "INC-947343AC5270",
+     "INC-AA1E1BAAF08B",
+     "INC-AE4B3CED8F6F",
+     "INC-E67015756A95",
+     "INC-F19CA8144B3E",
+     "INC-F34197834D47"
+    ],
+    "kind": "new_pair",
+    "label": "Fuite de données × Éducation / Formation",
+    "previous": 0,
+    "share_pct": 5.6,
+    "window_days": 30
    },
    {
     "base_rate_pct": null,
@@ -2507,7 +2514,7 @@
    ],
    "threat": [
     {
-     "count": 152,
+     "count": 151,
      "label": "Fuite de données"
     },
     {
@@ -2515,7 +2522,7 @@
      "label": "Ransomware"
     },
     {
-     "count": 15,
+     "count": 16,
      "label": "Intrusion"
     },
     {

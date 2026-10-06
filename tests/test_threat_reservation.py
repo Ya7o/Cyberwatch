@@ -39,6 +39,45 @@ def test_une_reserve_nefface_pas_une_affirmation_positive_independante():
     assert classify_threat(texte) == config.THREAT_RANSOMWARE
 
 
+@pytest.mark.parametrize("reserve", [
+    "Elles ne démontrent ni une nouvelle attaque ni une exfiltration.",
+    "Ce suivi ne démontre pas une exfiltration de données.",
+    "Les sources ne confirment pas une fuite de données.",
+])
+def test_absence_de_preuve_de_fuite_ne_remplace_pas_intrusion(reserve):
+    texte = "Une intrusion au serveur est confirmée. " + reserve
+    assert threat_reservation.reserved(texte)[config.THREAT_LEAK][0] == "NOT_DEMONSTRATED"
+    assert classify_threat(texte) == config.THREAT_INTRUSION
+
+
+def test_fuite_positive_independante_du_suivi_reste_exploitable():
+    texte = (
+        "Le suivi ne démontre pas une exfiltration. "
+        "Une autre source confirme une fuite de données."
+    )
+    assert threat_reservation.net_reserved(texte) == set()
+    assert classify_threat(texte) == config.THREAT_LEAK
+
+
+def test_suivi_regional_sans_exfiltration_conserve_menace_incident(make_item):
+    from cyberwatch import threat_resolution
+
+    item = make_item(
+        source="VEILLE_LLM", title="Lycée Exemple : Intrusion",
+        threat=config.THREAT_INTRUSION,
+    )
+    facts = {item.Item_ID: [{
+        "Source_ID": "VEILLE_LLM",
+        "Summary": (
+            "Des élèves demandent des informations sur la protection des données. "
+            "Ces publications ne démontrent ni une nouvelle attaque ni une exfiltration."
+        ),
+        "Impact": "Aucune exfiltration de données n'est établie publiquement.",
+        "Source_Metadata_JSON": "{}",
+    }]}
+    assert threat_resolution.resolve_component([item], facts).value == config.THREAT_INTRUSION
+
+
 @pytest.mark.parametrize("phrase, code", [
     ("Il serait prématuré de parler de ransomware.", "PREMATURE_TO_NAME"),
     ("Il n'est donc pas possible, à ce stade, de déterminer s'il s'agit d'un rançongiciel.",

@@ -21,13 +21,16 @@ from .normalize import _THREAT_SPECIFIC_PRIORITY, _contains, _matched_threats, s
 
 #: Version du vocabulaire de réserve, tracée dans les métadonnées SourceFacts
 #: pour qu'une décision archivée reste interprétable après évolution des motifs.
-RESERVATION_VERSION = "threat-reservation-2026-10-01.1"
+RESERVATION_VERSION = "threat-reservation-2026-10-06.1"
 
 _SENTENCE_RE = re.compile(r"(?<=[.!?;:])\s+|\n+")
 
 #: (code, motif appliqué à la phrase normalisée). Chaque code nomme une
 #: formulation réellement observée, jamais une heuristique ouverte.
 _MARKERS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("NOT_DEMONSTRATED", re.compile(
+        r"\bne (?:demontre(?:nt)?|confirme(?:nt)?|etablit|etablissent) (?:pas|ni)\b"
+    )),
     ("PREMATURE_TO_NAME", re.compile(
         r"\b(?:premature|premature e|trop tot)\b.{0,20}\bparler\b"
     )),
