@@ -137,7 +137,7 @@ FIELD_VERSIONS = {
     "third_party": "third-party-v1",
     # V4 invalide les valeurs LLM/déterministes dont la « preuve » n'était qu'un mot
     # présent dans une phrase de démenti (ex. « aucun IBAN identifié »).
-    "data_types": "data-types-v8",
+    "data_types": "data-types-v9",
     "fine_location": "fine-location-v1",
     "affected_counts": "affected-counts-v2",
     "affected_systems": "affected-systems-v1",
@@ -270,10 +270,12 @@ _NEGATED_DATA_VALUE_PREFIX = re.compile(
     re.I,
 )
 _NEGATED_DATA_VALUE_SENTENCE = re.compile(
-    r"\b(?:ne|n['’])\b.{0,140}\b(?:sont|seraient|figurent|font|ont\s+[ée]t[ée])\b"
-    r".{0,60}\bpas\b.{0,80}\b(?:concern[ée]s?|expos[ée]s?|compromis(?:es)?|"
-    r"inclus(?:es)?|r[ée]cup[ée]r[ée]s?|vol[ée]s?)\b|"
-    r"\b(?:ne\s+sont\s+pas|n['’]ont\s+pas\s+[ée]t[ée])\s+concern[ée]s?\b",
+    r"\b(?:ne\s+(?:est|[ée]tait|[ée]taient|sont|seraient|figurent|font|ont\s+[ée]t[ée])|"
+    r"n['’](?:est|[ée]tait|[ée]taient))\b"
+    r"\s+(?:(?:notamment|toutefois|encore|donc)\s+)?pas\s+"
+    r"(?:(?:non\s+plus|directement|tous|toutes|du\s+tout)\s+)?(?:concern[ée]s?|expos[ée]s?|compromis(?:es)?|"
+    r"inclus(?:es)?|accessibles?|r[ée]cup[ée]r[ée]s?|vol[ée]s?)\b|"
+    r"\bn['’](?:a|ont)\s+pas\s+[ée]t[ée]\s+(?:concern[ée]s?|expos[ée]s?|vol[ée]s?|accessibles?)\b",
     re.I,
 )
 _DATA_TYPE_PATTERNS: tuple[tuple[str, re.Pattern], ...] = (

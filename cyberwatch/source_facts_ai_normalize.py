@@ -33,6 +33,7 @@ from .source_facts_ai_contract import (
     _INITIAL_ACCESS_UNCERTAIN_RE,
     _INITIAL_ACCESS_UNKNOWN_RE,
     _NEGATED_DATA_VALUE_PREFIX,
+    _NEGATED_DATA_VALUE_SENTENCE,
     _RESPONSE_ACTION_RE,
 )
 
@@ -97,23 +98,40 @@ def _evidence_window(evidence: str, context: str, radius: int = 180) -> str:
     return context[max(0, pos - radius): min(len(context), pos + len(evidence) + radius)]
 
 
-def _evidence_sentence(evidence: str, context: str) -> str:
+def _evidence_sentence(evidence: str, context: str, *, line_bounded: bool = False) -> str:
     """Retourne la phrase source qui contient l'extrait cité par le modèle."""
     if not evidence or not context:
         return evidence or ""
     pos = context.casefold().find(evidence.casefold())
     if pos < 0:
         return evidence
-    start = max(context.rfind(".", 0, pos), context.rfind("!", 0, pos), context.rfind("?", 0, pos)) + 1
-    ends = [point for point in (context.find(".", pos), context.find("!", pos), context.find("?", pos)) if point >= 0]
+    marks = (".", "!", "?", "\n") if line_bounded else (".", "!", "?")
+    start = max(context.rfind(mark, 0, pos) for mark in marks) + 1
+    ends = [point for mark in marks
+            if (point := context.find(mark, pos)) >= 0]
     end = min(ends) + 1 if ends else len(context)
     return context[start:end]
 
 
+def data_evidence_clause(value: str, evidence: str, context: str) -> str:
+    """Borne une réserve au type cité, sans nier le fait dans une autre proposition."""
+    sentence = _evidence_sentence(evidence, context, line_bounded=True)
+    clauses = re.split(r"\b(?:mais|tandis que|en revanche|alors que)\b", sentence, flags=re.I)
+    pattern = next((pattern for canonical, pattern in _DATA_TYPE_PATTERNS
+                    if searchable(canonical) == searchable(value)), None)
+    for clause in clauses:
+        if (pattern and pattern.search(clause)) or (
+            searchable(value) and searchable(value) in searchable(clause)
+        ):
+            return clause
+    return sentence
+
+
 def _negated_data_type(value: str, evidence: str, context: str) -> bool:
     """Vérifie qu'une catégorie n'est pas citée hors d'une exposition réelle."""
-    sentence = _evidence_sentence(evidence, context)
-    if _NON_EXPOSURE_DATA_CONTEXT_RE.search(sentence):
+    sentence = data_evidence_clause(value, evidence, context)
+    if (_NON_EXPOSURE_DATA_CONTEXT_RE.search(sentence)
+            or _NEGATED_DATA_VALUE_SENTENCE.search(sentence)):
         return True
     value_key = searchable(value)
     for canonical, pattern in _DATA_TYPE_PATTERNS:

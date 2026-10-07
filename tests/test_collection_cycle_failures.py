@@ -100,6 +100,33 @@ def test_rich_fact_change_is_included_even_without_new_item(make_item):
     assert runner_dedup.changed_items([item], [fact], [item], []) == [item]
 
 
+def test_replacement_keeps_first_collection_and_still_removes_absent_records(
+    isolated_store, monkeypatch, make_item,
+):
+    spec = sources.by_id("VEILLE_LLM")
+    original = make_item(source="VEILLE_LLM", org="Original", url="https://a/old",
+                         collected="2026-09-01T10:00:00+04:00")
+    removed = make_item(source="VEILLE_LLM", org="Removed", url="https://a/removed")
+    refreshed = replace(original, Collected_As_Of="2026-10-07T18:00:00+04:00",
+                        Title="Enriched article")
+    added = make_item(source="VEILLE_LLM", org="Added", url="https://a/new",
+                     collected="2026-10-07T18:00:00+04:00")
+    monkeypatch.setattr(sources, "active_sources", lambda _: [spec])
+    monkeypatch.setattr(runner, "run_source", lambda *args: (
+        status.SourceOutcome(spec.source_id, spec.layer), [refreshed, added], [],
+    ))
+    context = runner.make_run_context(runner.MODE_MAJ)
+    report = runner.RunReport(context)
+    runner._collect_for_run(report, context, [original, removed],
+                            {original.Item_ID, removed.Item_ID})
+    by_id = {item.Item_ID: item for item in report.items}
+    assert set(by_id) == {original.Item_ID, added.Item_ID}
+    assert by_id[original.Item_ID].Collected_As_Of == original.Collected_As_Of
+    assert by_id[original.Item_ID].Title == "Enriched article"
+    assert by_id[added.Item_ID].Collected_As_Of == "2026-10-07T18:00:00+04:00"
+    assert report.new_items == 1
+
+
 def test_superseded_retry_context_cannot_overwrite_updated_article(make_item):
     item = make_item(source="CYBERATTAQUE_ORG")
     old = RawEntry(title="old article")

@@ -339,11 +339,11 @@
   "org": "Medialog",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Hébergement / Tourisme / Restauration",
+  "sector": "Numérique / Technologie",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "Medialog informe ses clients d’un incident de sécurité ayant permis à un acteur non autorisé d’accéder à des fiches clients et des informations de réservation enregistrées dans son logiciel Medialog Hôtel.",
-   "evidence_url": "https://www.cyberattaque.org/medialog-des-reservations-dhotels-exposees-apres-une-cyberattaque/",
+   "evidence": "Medialog, éditeur français de logiciels de gestion pour l'hôtellerie et la restauration, a été victime d'une cyberattaque ayant permis l'extraction massive de données appartenant à ses établissements clients.",
+   "evidence_url": "https://frenchbreaches.com/alertes/medialog-muwvy9ney4pypgf3qff",
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
   },
@@ -364,9 +364,9 @@
    "FRENCHBREACHES"
   ],
   "summary": "Medialog signale une intrusion exploitant une vulnérabilité ayant permis l'accès à des fiches clients et des réservations dans Medialog Hôtel.",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "confirmed"
+   "status": "reported"
   }
  },
  {
@@ -1693,8 +1693,8 @@
   "sector": "Santé",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "Orkyn  confirme une cyberattaque ayant entraîné l’accès non autorisé à un fichier contenant des  données personnelles et de santé de patients .",
-   "evidence_url": "https://www.cyberattaque.org/orkyn-les-donnees-de-sante-de-patients-voles-apres-une-cyberattaque/",
+   "evidence": "**Orkyn’, spécialiste de la prise en charge de patients à domicile, confirme une cyberattaque ayant compromis des données personnelles et de santé.",
+   "evidence_url": "https://frenchbreaches.com/alertes/orkyn-mupff8p55spyc9k49rw",
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
   },
@@ -2732,12 +2732,12 @@
   "org": "Alaxione",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Santé",
+  "sector": "Numérique / Technologie",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "**Alaxione**, éditeur français de logiciels utilisés par des cabinets médicaux et établissements de santé, fait l'objet d'une importante revendication de fuite de données.",
+   "evidence": "**Alaxione**, éditeur français de logiciels utilisés par des cabinets médicaux et établissements de santé, fait l'objet d'une importante revendication de fuite de données. [étiquette source écartée : Santé]",
    "evidence_url": "https://frenchbreaches.com/alertes/alaxione-mukgc44jlfsfro727v",
-   "reason": "ACTIVITY_RULE",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
    "status": "inferred"
   },
   "source_links": [
@@ -6802,11 +6802,11 @@
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Bouteilles et bocaux informe ses clients avoir été victime d’une cyberattaque visant directement sa boutique en ligne.",
-   "evidence_url": "https://www.cyberattaque.org/bouteilles-et-bocaux-une-cyberattaque-compromet-la-boutique-en-ligne-et-expose-des-donnees-clients/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/bouteilles-et-bocaux-mu1wwqvgmn17bqmth5",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {

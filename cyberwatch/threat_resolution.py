@@ -40,6 +40,7 @@ _STATUS_RANK = {
 _LEAK_RE = re.compile(
     r"\b(?:fuite(?:\s+de\s+donnees|\s+revendiquee)?\b|data\s+breach|exfiltr\w*|vol\s+de\s+donnees|"
     r"publication\s+d\s+une\s+base|"
+    r"extraction\b.{0,100}\b(?:donnees|fiches\s+clients?|fichiers?|documents?)|"
     r"(?:donnees|base|fichiers?|documents?|comptes?)\b.{0,70}\b"
     r"(?:vole\w*|derob\w*|expose\w*|diffus\w*|publie\w*|extrait\w*|mis(?:e)?\s+en\s+vente))\b"
 )

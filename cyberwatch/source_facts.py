@@ -718,6 +718,7 @@ def sanitize_source_facts(facts: list[dict]) -> tuple[list[dict], list[str]]:
     Cette passe répare aussi les snapshots antérieurs sans nouvel appel LLM.
     """
     from . import editorial_corrections
+    from .source_fact_data import sanitize_data_types
 
     changed: list[str] = editorial_corrections.apply_source_facts(facts)
     for fact in facts:
@@ -730,6 +731,7 @@ def sanitize_source_facts(facts: list[dict]) -> tuple[list[dict], list[str]]:
         touched = False
 
         touched = sanitize_attack_date(fact, metadata, evidence)
+        touched = sanitize_data_types(fact, metadata, evidence) or touched
 
         from .sector_activity import describes_incident
         activity = str(fact.get("Activity_Description") or "")

@@ -202,6 +202,10 @@ def supported_activity(organisation: str, value: str, evidence: str) -> bool:
             return False
     if describes_incident(value):
         return False
+    # An incident notification mentioning the software in use does not prove
+    # the claimed publisher activity (Medialog, October 2026).
+    if re.search(r"^(?:informe|confirme)\b.{0,90}\b(?:incident|intrusion|cyberattaque|fuite)\b", body):
+        return False
     if re.search(r"\b(?:son|ses|le|un|du|d un) (?:prestataire|fournisseur|partenaire|client)\b", body):
         return False
     if re.search(r"\b(?:utilise|fait appel|client de|via)\b", body):

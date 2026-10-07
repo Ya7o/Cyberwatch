@@ -313,6 +313,10 @@ def classify_sector_activity(activity_description: str) -> str:
     # A brokerage remains insurance even when its products include health cover.
     if re.search(r"\b(?:courtier|courtage)\b.{0,30}\bassurances?\b", blob):
         return config.SECTOR_FINANCE
+    # Software publishers keep their own activity, including when the
+    # software serves hotels, hospitals or schools.
+    if re.search(r"\bediteur\b.{0,40}\b(?:logiciels?|applications?)\b", blob):
+        return config.SECTOR_TECH
     # Principal business, not the software used, client industry or a brand.
     if re.search(r"\b(?:commercialis\w*|vend\w*)\b", blob) and any(
         term in blob for term in ("mobilier", "luminaires", "equipements", "produits", "chaussures")

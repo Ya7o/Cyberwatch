@@ -699,7 +699,8 @@ def _collect_for_run(
         row for row in new_fact_rows if row.get("Item_ID") in collected_ids
     ]
     merge_base = [
-        item for item in existing_items if item.Source_ID not in replacement_source_ids
+        item for item in existing_items
+        if item.Source_ID not in replacement_source_ids or item.Item_ID in collected_ids
     ]
     report.items, _ = merge_items(merge_base, collected)
     report.new_items = sum(
