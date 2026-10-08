@@ -508,7 +508,51 @@
  "INC-2D5B61EEEBC6": {
   "display_summary": "CUC Loisirs & Vacances : des informations de santé de mineurs diffusées après une cyberattaque",
   "sensitive_data": {
-   "types": [],
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "noms et prénoms"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "dates de naissance"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "adresses e-mail"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "numéros de téléphone"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "adresses postales"
+    }
+   ],
    "vulnerable_people": true
   },
   "summary_paragraphs": [
@@ -2237,7 +2281,40 @@
  "INC-AF6A27F3AB60": {
   "display_summary": "Une base attribuée à AvantagesJeunes et revendiquée sur un forum annonce environ 318 000 profils, dont des mineurs.",
   "sensitive_data": {
-   "types": [],
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "adresses e-mail"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "numéros de téléphone"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "noms et prénoms"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "dates de naissance"
+    }
+   ],
    "vulnerable_people": true
   },
   "summary_paragraphs": [
