@@ -199,6 +199,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-11C1B1A5AB59": {
+  "display_summary": "Bordeaux Sciences Agro confirme une violation ayant permis l'extraction de données de son application de gestion des conventions de stage.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un accès non autorisé détecté le 8 septembre a permis l'extraction d'informations relatives à des conventions de stage couvrant 2020-2021 à 2026-2027."
+  ],
+  "version": 3
+ },
  "INC-148B4A8FB9BA": {
   "display_summary": "Deux instances Metabase de la DINUM liées à ProConnect et Nuage-Public ont été compromises avec exfiltration de données.",
   "summary_paragraphs": [
@@ -298,6 +318,36 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-1B274FA275AE": {
+  "display_summary": "TrainMe : la filiale de Decathlon touchée par une fuite de données, des informations de santé exposées",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "TrainMe indique qu’un prestataire logiciel a causé une exposition de données personnelles et de santé.",
+   "TrainMe précise que ses équipes ont rapidement identifié et maîtrisé l’accès non autorisé et réinitialisé tous les mots de passe par précaution."
+  ],
   "version": 3
  },
  "INC-1C4D92961F4E": {
@@ -434,8 +484,10 @@
   "version": 3
  },
  "INC-213413E40675": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "SINEQUAE, société de commissaires de justice, fait l'objet d'une revendication de vol de 65 Go de données judiciaires et financières par le groupe LAMASHTU.",
+  "summary_paragraphs": [
+   "La société SINEQUAE, spécialisée dans les activités de commissaires de justice, est au cœur d’une cyberattaque revendiquée par le groupe LAMASHTU."
+  ],
   "version": 3
  },
  "INC-218799D3E526": {
@@ -775,6 +827,14 @@
   ],
   "version": 3
  },
+ "INC-4331E4DD71A4": {
+  "display_summary": "Une fuite revendiquée affirme exposer une base attribuée aux Scouts de France contenant environ 71 000 enregistrements, incluant possiblement des mineurs.",
+  "summary_paragraphs": [
+   "La revendication indique une base attribuée aux Scouts de France d'environ 71 000 enregistrements.",
+   "Les échantillons publiés montrent noms, adresses, dates de naissance et coordonnées de représentants légaux, et des mineurs pourraient être concernés."
+  ],
+  "version": 3
+ },
  "INC-447AE4B3A871": {
   "display_summary": "Maileva, filiale de La Poste victime d’une cyberattaque",
   "summary_paragraphs": [
@@ -982,6 +1042,27 @@
   "summary_paragraphs": [
    "Le hacker ChimeraZ a publié le 15 septembre 2026 une base partielle de centrale-canine.fr et revendique des informations concernant 122 147 personnes.",
    "Les fichiers diffusés contiennent noms, adresses, téléphones et données précises sur les chiens (numéro de puce, numéro LOF, date de naissance, race, pedigree)."
+  ],
+  "version": 3
+ },
+ "INC-5670759E18BE": {
+  "display_summary": "Les Cousins a confirmé qu'un code malveillant sur sa page de paiement a pu intercepter des coordonnées bancaires entre le 25 août et le 5 septembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un code malveillant présent sur la page de paiement a pu capturer les coordonnées bancaires saisies par les clients entre le 25 août et le 5 septembre 2026.",
+   "Les Cousins indique avoir détecté puis corrigé l'incident, neutralisé le code malveillant et sécurisé son site."
   ],
   "version": 3
  },
@@ -1290,6 +1371,44 @@
   ],
   "version": 3
  },
+ "INC-6883A7E582E7": {
+  "display_summary": "AP-HP : 1 015 patients exposés après le piratage d’un logiciel utilisé dans 23 hôpitaux",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "L’AP-HP confirme le vol des données de 1 015 patients publiées sur un forum cybercriminel.",
+   "Les données proviennent d’un module du logiciel SRD Restauration édité par Dedalus et utilisées dans 23 hôpitaux de l’AP-HP."
+  ],
+  "version": 3
+ },
  "INC-6906B2607D08": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -1358,6 +1477,11 @@
   ],
   "version": 3
  },
+ "INC-6D16BC6BDCE1": {
+  "display_summary": "Les Scouts et Guides de France font l'objet d'une revendication de fuite de 71 000 lignes de données d'adhérents et participants.",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-6D1A06BBDEFA": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -1416,6 +1540,24 @@
    "Salt indique avoir identifié une utilisation abusive d’un accès existant à un système périphérique, sans intrusion dans ses systèmes principaux.",
    "Les données potentiellement concernées comprennent noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail."
   ],
+  "version": 3
+ },
+ "INC-6FD3B892BC32": {
+  "display_summary": "Bordeaux Sciences Agro a subi une cyberattaque visant son application de gestion des conventions de stage et des données personnelles ont été extraites.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-723CD35E91B1": {
@@ -1701,9 +1843,9 @@
   "version": 3
  },
  "INC-86A70CFF76FE": {
-  "display_summary": "Un acteur nommé 0xRune revendique la mise en vente d'une base de 62 848 fiches d'agents et professionnels rattachés au réseau France Travail.",
+  "display_summary": "France Travail : 62 848 fiches d’agents revendiquées après une nouvelle cyberattaque",
   "summary_paragraphs": [
-   "0xRune revendique détenir une base de 62 848 lignes concernant des agents et professionnels rattachés au réseau France Travail."
+   "0xRune revendique la vente d'une base de 62 848 lignes d'agents et professionnels liés à France Travail."
   ],
   "version": 3
  },
@@ -2081,6 +2223,13 @@
   "display_summary": "Une base revendiquée de 220 Mo liée à l’Armurerie Lavaux, contenant 232 341 lignes et les informations de 120 158 personnes, est mise en vente par un pirate.",
   "summary_paragraphs": [
    "ChimeraZ affirme détenir et vendre une base de 220 Mo, 232 341 lignes et 120 158 personnes issues de l’Armurerie Lavaux."
+  ],
+  "version": 3
+ },
+ "INC-A489C56960A9": {
+  "display_summary": "Justice.fr : plus de 7 000 personnes en fuite après une cyberattaque",
+  "summary_paragraphs": [
+   "Un utilisateur pseudonyme ChimeraZ a annoncé la diffusion gratuite d'une base attribuée à Justice.fr contenant 7 138 lignes et 7 135 personnes."
   ],
   "version": 3
  },
@@ -2619,6 +2768,27 @@
   ],
   "version": 3
  },
+ "INC-CB3FABAACC36": {
+  "display_summary": "Assurimo fait l’objet d’une revendication de fuite de données revendiquant 674 303 clients et 954 000 lignes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le hacker ChimeraZ affirme avoir récupéré environ 954 000 lignes représentant 674 303 clients, pour un volume total de près de 1,8 Go.",
+   "ChimeraZ affirme que les données comprennent polices, devis, adresses, informations contractuelles, montants de primes et données liées à des prélèvements."
+  ],
+  "version": 3
+ },
  "INC-CC9731B28C94": {
   "display_summary": "Un pirate revendique la mise en vente des données de plus de 200 000 adhérents de la Fédération francophone de Gymnastique.",
   "sensitive_data": {
@@ -2679,6 +2849,14 @@
   "summary_paragraphs": [
    "Un hacker affirme détenir 2 249 970 lignes de données liées à Citya et près de 50 000 digicodes.",
    "Snexi avait reconnu une violation de données personnelles après l’attaque, citant noms, e‑mails, adresses et téléphones mais pas de données financières."
+  ],
+  "version": 3
+ },
+ "INC-D27A23CD8686": {
+  "display_summary": "Le Centre National du Droit du Travail fait l’objet d’une revendication de fuite de 150 000 lignes après une faille SQL alléguée.",
+  "summary_paragraphs": [
+   "LunarisSec, via TimeSape, revendique avoir exploité une vulnérabilité d'injection SQL sur le site du Centre National du Droit du Travail et extrait des tables.",
+   "Cyberattaque.org n’a pas pu vérifier les données ni confirmer l’authenticité, le volume ou la présence des catégories revendiquées."
   ],
   "version": 3
  },
@@ -2765,6 +2943,14 @@
   "display_summary": "Distinxion : un pirate revendique une base CRM de 518 903 contacts correspondant selon lui à 415 990 personnes distinctes.",
   "summary_paragraphs": [
    "Un pirate affirme détenir une base CRM de 518 903 contacts et 415 990 personnes distinctes, publiée le 30 septembre 2026."
+  ],
+  "version": 3
+ },
+ "INC-D9E27A4834F8": {
+  "display_summary": "Aqua-Store confirme l'extraction de sa base de données clients après une cyberattaque les 29 et 30 septembre 2026.",
+  "summary_paragraphs": [
+   "Aqua-Store confirme avoir été victime d'une cyberattaque ayant permis l'extraction de sa base de données clients.",
+   "Les données compromises peuvent comprendre noms, adresses email, adresses postales, dates de naissance et numéros de téléphone."
   ],
   "version": 3
  },
@@ -2882,6 +3068,14 @@
      "specifics": [],
      "status": "unknown",
      "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "pièces d'identité"
     }
    ],
    "vulnerable_people": false
@@ -2947,7 +3141,7 @@
   "version": 3
  },
  "INC-E3AE583C7002": {
-  "display_summary": "Double Counter (Discord)",
+  "display_summary": "Le bot de sécurité Discord Double Counter a subi une cyberattaque début octobre 2026 avec environ 12 Go de données copiées.",
   "summary_paragraphs": [
    "Le bot de sécurité Discord Double Counter a été victime d’une importante cyberattaque début octobre 2026 avec environ 12 Go de données copiées."
   ],
@@ -2987,6 +3181,14 @@
   "summary_paragraphs": [
    "xMetah revendique la récupération d'un fichier de 971 420 enregistrements proposé à la vente.",
    "Les échantillons contiennent nom, date de naissance, adresse, téléphone et identifiants internes."
+  ],
+  "version": 3
+ },
+ "INC-E6CCB8C573E7": {
+  "display_summary": "Swedish Fit : 253 000 profils clients et autant de photos revendiqués après une cyberattaque",
+  "summary_paragraphs": [
+   "Le pirate affirme proposer 253 155 enregistrements clients et 253 104 images, soit près de 2,4 Go de données.",
+   "L'authenticité et l'étendue de cette fuite restent à confirmer indépendamment."
   ],
   "version": 3
  },
