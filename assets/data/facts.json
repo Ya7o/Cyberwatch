@@ -26,6 +26,7 @@
     "admission_reason": "Fuite de données documentée et incident rapporté comme confirmé par la victime.",
     "localisation": "Sainte-Marie",
     "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Incident rapporté comme confirmé par la compagnie ; attribution et ampleur non corroborées"
    }
   ],
@@ -64,6 +65,7 @@
     "admission_reason": "Incident informatique documenté, mais origine cyber non démontrée.",
     "localisation": "Ouangani",
     "score": 25,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Incident informatique confirmé ; origine cyber non démontrée"
    }
   ],
@@ -221,6 +223,11 @@
   ],
   "version": 3
  },
+ "INC-213413E40675": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-218799D3E526": {
   "display_summary": "Des centaines de fichiers internes de Caridro Val de Loire ont été publiés par le groupe Qilin après une cyberattaque.",
   "summary_paragraphs": [
@@ -253,6 +260,7 @@
     "admission_reason": "Aucune preuve publique d'une origine cyber.",
     "localisation": "Saint-Leu",
     "score": 15,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Incident de donnée numérique signalé ; origine cyber non démontrée"
    }
   ],
@@ -328,6 +336,14 @@
   ],
   "version": 3
  },
+ "INC-3357D5ED86D1": {
+  "display_summary": "Al Bayyinah : la librairie musulmane victime d’une cyberattaque, les données clients exposées",
+  "summary_paragraphs": [
+   "Un tiers non autorisé a accédé au site et à la base de données d'Al Bayyinah, avec des éléments malveillants et des accès administrateurs frauduleux identifiés.",
+   "Les données consultées comprennent noms, emails, adresses postales, numéros de téléphone, historique des commandes et mots de passe hachés."
+  ],
+  "version": 3
+ },
  "INC-3540E86641E4": {
   "display_summary": "DECOClim a confirmé un accès non autorisé à certaines données de sa base clients, exposant noms, coordonnées et informations de commandes.",
   "summary_paragraphs": [
@@ -371,6 +387,7 @@
     "admission_reason": "Fuite de données revendiquée visant explicitement l'entreprise réunionnaise.",
     "localisation": "Saint-Joseph",
     "score": 60,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Revendication non corroborée"
    }
   ],
@@ -447,6 +464,14 @@
   ],
   "version": 3
  },
+ "INC-4A1F0A2427B3": {
+  "display_summary": "PRO&Cie, enseigne d'électroménager, a confirmé une intrusion sur procie.com exposant des données personnelles de clients.",
+  "summary_paragraphs": [
+   "L’attaquant a accédé à des données personnelles clients via une vulnérabilité exploitée sur le site procie.com.",
+   "Les données exposées comprennent noms, adresses e-mail, téléphones, adresses postales et dates de création de comptes."
+  ],
+  "version": 3
+ },
  "INC-4CA0BE29DA39": {
   "display_summary": "Une revendication de fuite affirme exposer les données de 5 914 joueurs et 210 clubs de la Fédération royale belge des échecs.",
   "summary_paragraphs": [
@@ -480,6 +505,13 @@
  "INC-523457E7106A": {
   "display_summary": "GeoNat’îdF : les données de 3 400 utilisateurs de la plateforme biodiversité francilienne piraté",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-52648B55EA47": {
+  "display_summary": "Oh ! La Bonne Pizza : 370 fiches clients diffusées gratuitement, téléphones et emails exposés",
+  "summary_paragraphs": [
+   "Une base de données de 372 lignes attribuée à Oh ! La Bonne Pizza a été publiée gratuitement sur le forum PwnForums."
+  ],
   "version": 3
  },
  "INC-55B78F7C08BD": {
@@ -605,6 +637,7 @@
     "admission_reason": "Un délégué syndical a allégué que l'ancien système informatique de manutention avait été volontairement mis hors service lors de la transition du port de Longoni. L'allégation n'est pas corroborée ; les sources disponibles documentent aussi un différend opérationnel et juridique ainsi que des difficultés d'adaptation des outils.",
     "localisation": "Port de Longoni",
     "score": 20,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Allégation non corroborée ; explications opérationnelles concurrentes"
    }
   ],
@@ -738,6 +771,7 @@
     "admission_reason": "Le rectorat rapporte qu'un élève a été pris en flagrant délit de tentative de connexion au serveur ; l'analyse technique attribue les arrêts répétés à l'activation manuelle d'une commande de redémarrage via un compte administrateur.",
     "localisation": "Saint-Louis",
     "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Action cyber établie par l'investigation du rectorat ; auteur présumé identifié et plainte déposée; mobilisation des élèves le 29 septembre pour la protection des données"
    }
   ],
@@ -778,6 +812,7 @@
     "admission_reason": "Fuite de données revendiquée et rattachée explicitement à une entité réunionnaise.",
     "localisation": "Sainte-Marie",
     "score": 65,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Revendication non corroborée"
    }
   ],
@@ -793,6 +828,7 @@
     "admission_reason": "Impact informatique documenté sans preuve d'une action cyber.",
     "localisation": "La Réunion",
     "score": 30,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Incident informatique confirmé ; origine cyber non démontrée"
    }
   ],
@@ -830,6 +866,27 @@
   ],
   "version": 3
  },
+ "INC-804EFB835A4A": {
+  "display_summary": "",
+  "regional_watch": [
+   {
+    "admission_reason": "Le parquet de Saint-Denis confirme une enquête pour détournement de finalité de fichier et corruption, mais les consultations et transmissions alléguées ne sont pas établies publiquement à ce stade.",
+    "localisation": "Saint-Denis",
+    "score": 50,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
+    "statut": "Enquête en cours ; garde à vue du 28 septembre levée le même jour, sans mise en examen publiquement rapportée"
+   }
+  ],
+  "summary_paragraphs": [
+   "Signal de menace interne à Saint-Denis : une policière est soupçonnée d'avoir utilisé ses accès professionnels pour rechercher des personnes et communiquer des informations confidentielles contre rémunération. L'ouverture de l'enquête est confirmée par le parquet ; les faits matériels restent au stade de l'allégation, ce qui justifie le maintien en CANDIDATE."
+  ],
+  "version": 3
+ },
+ "INC-823A16F66FCB": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-827F032013D7": {
   "display_summary": "Un pirate revendique la mise en vente de bases attribuées à Taekwondo.be et Coachbelgium.be, concernant 53 580 personnes et 599 803 enregistrements.",
   "summary_paragraphs": [
@@ -864,6 +921,13 @@
   "summary_paragraphs": [
    "Spareka voit une fuite de 7 770 demandes de réparation avec coordonnées et description des pannes, revendiquée le 28 septembre 2026.",
    "Spareka indique que l’incident est circonscrit à la compromission d’un compte individuel et que l’accès avait été neutralisé."
+  ],
+  "version": 3
+ },
+ "INC-86A70CFF76FE": {
+  "display_summary": "Un acteur nommé 0xRune revendique la mise en vente d'une base de 62 848 fiches d'agents et professionnels rattachés au réseau France Travail.",
+  "summary_paragraphs": [
+   "0xRune revendique détenir une base de 62 848 lignes concernant des agents et professionnels rattachés au réseau France Travail."
   ],
   "version": 3
  },
@@ -906,6 +970,7 @@
     "admission_reason": "Le vol de données a été confirmé par la direction de Bureau Vallée et l'enseigne dispose de magasins à La Réunion, mais aucune source publique consultée ne démontre que des données de clients réunionnais figurent dans le périmètre compromis.",
     "localisation": "La Réunion",
     "score": 45,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Incident national confirmé ; périmètre réunionnais non démontré"
    }
   ],
@@ -1004,6 +1069,7 @@
     "admission_reason": "Intrusion et exfiltration confirmées par le ministère ; la veille gouvernementale Outre-mer rapporte explicitement des données liées à l’académie de La Réunion dans le périmètre rendu public.",
     "localisation": "Académie de La Réunion",
     "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Incident confirmé par le ministère ; périmètre exact des données locales encore en cours d’expertise"
    }
   ],
@@ -1043,6 +1109,7 @@
     "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
     "localisation": "Sainte-Clotilde / Saint-Denis",
     "score": 75,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Revendication avec éléments techniques"
    }
   ],
@@ -1094,6 +1161,7 @@
     "admission_reason": "Cyberattaque confirmée publiquement par la collectivité et reprise par plusieurs sources locales.",
     "localisation": "Le Tampon",
     "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Cyberattaque confirmée ; nature technique et éventuelle fuite non établies"
    }
   ],
@@ -1315,6 +1383,14 @@
   ],
   "version": 3
  },
+ "INC-CA02BD802A13": {
+  "display_summary": "Biocorp : une cyberattaque WordPress piège les visiteurs avec un faux reCAPTCHA",
+  "summary_paragraphs": [
+   "Biocorp indique que son site institutionnel a été piraté entre le 22 et le 24 août 2026 via l'exploitation d'une faille de WordPress.",
+   "Le pirate a pu accéder aux informations transmises via le formulaire de contact : identité, coordonnées et contenu des messages."
+  ],
+  "version": 3
+ },
  "INC-CC9731B28C94": {
   "display_summary": "Un pirate revendique la mise en vente des données de plus de 200 000 adhérents de la Fédération francophone de Gymnastique.",
   "summary_paragraphs": [],
@@ -1358,10 +1434,10 @@
   "version": 3
  },
  "INC-D7D9458445F1": {
-  "display_summary": "Gold Service confirme une fuite de données de clients liés à des transactions en ligne, certains clients ayant déjà été contactés par des fraudeurs.",
+  "display_summary": "Gold Service confirme une fuite de données clients liées à des transactions en ligne, certains clients ayant déjà été contactés par des fraudeurs.",
   "summary_paragraphs": [
-   "Gold Service confirme un incident de sécurité touchant des données de clients ayant réalisé des transactions en ligne.",
-   "Certains clients ont déjà été contactés par un tiers disposant d'informations les concernant."
+   "Gold Service confirme un incident de sécurité affectant des données de clients ayant réalisé des transactions en ligne.",
+   "Certains clients ont déjà été contactés par un tiers disposant d’informations les concernant."
   ],
   "version": 3
  },
@@ -1417,6 +1493,7 @@
     "admission_reason": "Incident de cybersécurité confirmé officiellement par la victime.",
     "localisation": "Mamoudzou",
     "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Confirmé officiellement"
    }
   ],
@@ -1448,11 +1525,19 @@
     "admission_reason": "Exfiltration revendiquée avec échantillons de données attribués à l'établissement.",
     "localisation": "Bras-Panon",
     "score": 80,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Revendication crédible avec échantillons ; non confirmée officiellement"
    }
   ],
   "summary_paragraphs": [
    "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle."
+  ],
+  "version": 3
+ },
+ "INC-DF7462A643E2": {
+  "display_summary": "TimeSape revendique la diffusion de 38 382 fichiers (2,06 Go) attribués à France Pare-Brise contenant des données sensibles.",
+  "summary_paragraphs": [
+   "TimeSape affirme diffuser un dossier de 2,06 Go et 38 382 fichiers attribués à France Pare-Brise."
   ],
   "version": 3
  },
@@ -1486,9 +1571,9 @@
   "version": 3
  },
  "INC-E3AE583C7002": {
-  "display_summary": "Le service Double Counter a subi une violation de données début octobre 2026 exposant environ 12 Go et des millions d'utilisateurs Discord.",
+  "display_summary": "Double Counter (Discord)",
   "summary_paragraphs": [
-   "L'attaque a permis d'extraire environ 12 Go de données concernant potentiellement des millions d'utilisateurs du service."
+   "Le bot de sécurité Discord Double Counter a été victime d’une importante cyberattaque début octobre 2026 avec environ 12 Go de données copiées."
   ],
   "version": 3
  },
