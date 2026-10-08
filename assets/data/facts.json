@@ -1,6 +1,19 @@
 {
  "INC-015E0D4D14C0": {
   "display_summary": "Un pirate revendique l'exfiltration d'environ 1,69 Go de données visant l’AFTT et la FRBTT, incluant 66 852 adhérents et 17 441 utilisateurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le pirate « Venus1337 » revendique avoir extrait environ 1,69 Go de données et cite 66 852 adhérents et 17 441 utilisateurs."
   ],
@@ -37,6 +50,35 @@
  },
  "INC-096E79FC178A": {
   "display_summary": "Point Vision signale qu'une violation chez un prestataire a exposé des numéros de sécurité sociale et d'autres données de patients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Numéro de sécurité sociale"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Une personne non autorisée a accédé à l'environnement informatique d'un prestataire et a pu consulter ou télécharger certaines données de patients.",
    "Les données potentiellement exposées incluent nom, prénom, date de naissance, coordonnées et numéro de sécurité sociale."
@@ -97,6 +139,27 @@
  },
  "INC-0DACE151ECA1": {
   "display_summary": "La Fédération flamande de judo fait l'objet d'une revendication de fuite de données contenant les informations de 98 495 membres.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -161,11 +224,37 @@
  },
  "INC-182F9EE2F8D0": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-195E6B7F17E8": {
   "display_summary": "Oceania Hotels : les réservations clients exposées après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Oceania Hotels indique qu'un tiers non autorisé a pu consulter des données de réservation via un prestataire compromis.",
    "Les données consultées concernent des séjours entre août 2026 et juillet 2027 et incluent nom, email, téléphone, numéro de réservation, dates et tarifs."
@@ -187,11 +276,59 @@
  },
  "INC-1AB8FA0FE5D3": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-1C4D92961F4E": {
   "display_summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Pièce d’identité"
+     ],
+     "status": "reported",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "IBAN"
+     ],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Revolut a remis des informations clients à un tiers après avoir traité de fausses demandes présentées comme provenant d’une administration.",
    "Les demandes utilisaient le véritable domaine d’un organisme gouvernemental et comportaient des éléments d’authentification valides."
@@ -200,6 +337,37 @@
  },
  "INC-1D4141D387DB": {
   "display_summary": "Orkyn confirme l'accès non autorisé à un fichier contenant des données personnelles et de santé de patients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Numéro de sécurité sociale"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Code patient"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Orkyn indique que des données personnelles et de santé de patients ont été compromises et qu'un fichier a été accédé.",
    "Un hacker revendique le vol et propose au téléchargement près de 18 000 profils."
@@ -213,11 +381,53 @@
  },
  "INC-20C6D9DEDD18": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-20CE598D53A6": {
   "display_summary": "Revendication de fuite chez KEL/Orisha: ~1,3 million de personnes et ~200 000 documents proposés à la vente par un pirate.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un pirate nommé « ChimeraZ » affirme avoir compromis KEL et propose à la vente des données d'environ 1,3 million de personnes et près de 200 000 documents."
   ],
@@ -250,6 +460,19 @@
  },
  "INC-27DA984EF5A3": {
   "display_summary": "Ouverture Fine signale la remise en vente d'une ancienne base de données issue d'une cyberattaque de septembre 2024 contenant environ 60 000 lignes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -284,6 +507,10 @@
  },
  "INC-2D5B61EEEBC6": {
   "display_summary": "CUC Loisirs & Vacances : des informations de santé de mineurs diffusées après une cyberattaque",
+  "sensitive_data": {
+   "types": [],
+   "vulnerable_people": true
+  },
   "summary_paragraphs": [
    "Un pirate affirme avoir récupéré une base de 8 915 lignes liée aux inscriptions du CUC Loisirs & Vacances."
   ],
@@ -291,6 +518,19 @@
  },
  "INC-2EA9D4F2C864": {
   "display_summary": "La Communauté de communes des Pays de L’Aigle a subi une intrusion touchant son serveur de messagerie professionnelle le 14-15 septembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "L'attaque a ciblé leur serveur de messagerie professionnelle et pourrait avoir permis le vol de données personnelles contenues dans les échanges.",
    "L’accès compromis a été coupé dès la découverte et la collectivité indique que les autres serveurs et logiciels n’ont pas été touchés."
@@ -338,6 +578,20 @@
  },
  "INC-3357D5ED86D1": {
   "display_summary": "Al Bayyinah : la librairie musulmane victime d’une cyberattaque, les données clients exposées",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un tiers non autorisé a accédé au site et à la base de données d'Al Bayyinah, avec des éléments malveillants et des accès administrateurs frauduleux identifiés.",
    "Les données consultées comprennent noms, emails, adresses postales, numéros de téléphone, historique des commandes et mots de passe hachés."
@@ -353,6 +607,35 @@
  },
  "INC-36BF040BEA60": {
   "display_summary": "Alaxione fait l'objet d'une revendication de fuite de données de santé concernant 16 221 383 personnes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Une base attribuée à Alaxione est proposée à la vente et revendique 16 221 383 personnes et 65 658 246 lignes de données.",
    "Les statistiques revendiquent notamment 9 629 697 téléphones, 5 376 044 e-mails et 568 737 numéros de Sécurité sociale."
@@ -374,6 +657,19 @@
  },
  "INC-3AAEEA9D575F": {
   "display_summary": "Brevo : 138 comptes compromis, une vaste campagne de phishing frappe Trezor et CoinTracking",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "La faille SAML SSO a permis à un attaquant d'accéder à 138 comptes, six ayant servi à envoyer des e-mails de phishing.",
    "Des contacts ont été exportés depuis 43 comptes et Brevo dit avoir fermé l'accès deux heures après détection."
@@ -403,6 +699,19 @@
  },
  "INC-40F47F722BA0": {
   "display_summary": "La mairie d'Espelette a été victime d'une cyberattaque le 11 septembre 2026 après l'ouverture d'une pièce jointe malveillante se présentant comme une facture.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -453,6 +762,19 @@
  },
  "INC-48E6506D90E3": {
   "display_summary": "Exfiltration de 102 000 sessions de recherche et d'informations de ~100 comptes techniques après exploitation d'une vulnérabilité Metabase chez QualiCharge.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -474,6 +796,19 @@
  },
  "INC-4CA0BE29DA39": {
   "display_summary": "Une revendication de fuite affirme exposer les données de 5 914 joueurs et 210 clubs de la Fédération royale belge des échecs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un utilisateur affirme disposer d'une base comprenant des informations sur 5 914 joueurs affiliés et 210 clubs belges."
   ],
@@ -481,11 +816,62 @@
  },
  "INC-4D9B53C749DA": {
   "display_summary": "Whoof : 5 000 adoptants et éleveurs exposés après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-504E072622BB": {
   "display_summary": "La Région Hauts-de-France fait l'objet de revendications de fuite de données incluant 782 583 enregistrements et 48 Go soit 90 011 documents, selon un pirate.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un utilisateur nommé « ChimeraZ » a publié le 3 octobre 2026 des revendications visant des services numériques de la Région Hauts-de-France.",
    "L'auteur revendique 782 583 lignes (~708 000 personnes) et 48 Go correspondant à 90 011 fichiers, dont RIB, contrats d'apprentissage et pièces d'identité."
@@ -494,6 +880,19 @@
  },
  "INC-514833CDCCB3": {
   "display_summary": "FFRandonnée : 1,43 million de fiches d’adhérents en fuite après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -504,6 +903,19 @@
  },
  "INC-523457E7106A": {
   "display_summary": "GeoNat’îdF : les données de 3 400 utilisateurs de la plateforme biodiversité francilienne piraté",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -543,6 +955,19 @@
  },
  "INC-5752F4E0EEB5": {
   "display_summary": "Une revendication diffuse une sauvegarde du site WordPress d'AMCEN avec des données personnelles revendiquées.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un acteur diffuse ce qu’il présente comme la base de données du site amcen.fr, datée de septembre 2026.",
    "Le dépôt serait une sauvegarde complète du site WordPress d’AMCEN contenant notamment des adresses e-mail et 260 candidatures."
@@ -559,6 +984,19 @@
  },
  "INC-584E3E37779F": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -569,6 +1007,20 @@
  },
  "INC-5BDF6CC8AB6A": {
   "display_summary": "Le portail Réussir.fr revendiqué compromis, avec environ 3,3 millions d'enregistrements annoncés à la vente.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le hacker seraphims affirme avoir compromis son environnement et propose à la vente plusieurs bases représentant environ 3,3 millions de lignes.",
    "Des échantillons montrent la présence de comptes utilisateurs et de hashs de mots de passe confirmés par Cyberattaque.org."
@@ -577,11 +1029,37 @@
  },
  "INC-5D9E8757B8BE": {
   "display_summary": "SFR : près de 16 000 dossiers de rendez-vous de raccordement diffusés sur le Darknet",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-5E8059ABAC74": {
   "display_summary": "Amadeus iHotelier : une cyberattaque expose les réservations de plusieurs hôtels en France",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -594,6 +1072,20 @@
  },
  "INC-5EDD2772312B": {
   "display_summary": "Colec victime d’une cyberattaque, 3,36 Go de données en fuite",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un pirate revendique avoir diffusé 3,36 Go et 10 336 fichiers comprenant des informations relatives à plusieurs milliers d'utilisateurs.",
    "Des échantillons montrent la présence de noms, e-mails, villes et hashes bcrypt d'empruntes de mots de passe dans les données examinées."
@@ -610,6 +1102,19 @@
  },
  "INC-5F4A9FD7D455": {
   "display_summary": "Ouverture Fine fait l’objet d’une revendication de fuite de données d’environ 60 000 lignes proposées à la vente.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un utilisateur \"Linda2000\" affirme détenir une base issue du site ouverture-fine.com d'environ 60 000 lignes et la propose à la vente."
   ],
@@ -617,6 +1122,36 @@
  },
  "INC-601E3DC05F51": {
   "display_summary": "Faktus affirme avoir vu 53,7 Go de données financières et documents sensibles publiés par le hacker DaOnlySpark.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le hacker DaOnlySpark affirme avoir compromis l’entreprise le 10 septembre 2026 et publie désormais 53,7 Go de données en téléchargement."
   ],
@@ -624,6 +1159,19 @@
  },
  "INC-60BCEF25FA60": {
   "display_summary": "Le Centre National de l’Expertise Hospitalière (CNEH)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un groupe de pirates affirme détenir environ 645 Go de données attribuées au Centre National de l’Expertise Hospitalière (CNEH).",
    "Les échantillons publiés montrent des copies de pièces d'identité, cartes Vitale, informations RH, coordonnées personnelles et documents financiers."
@@ -664,6 +1212,19 @@
  },
  "INC-673354204E98": {
   "display_summary": "GreenGo indique qu’un acteur non autorisé a consulté des données de comptes, réservations et messages via un outil interne reposant sur Metabase.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "GreenGo rapporte qu’un acteur non autorisé a profité d’une vulnérabilité de Metabase entre le 9 août et le 7 septembre 2026 pour accéder à des données.",
    "Les informations potentiellement consultées comprennent noms, dates de naissance, e‑mails, téléphones, réservations, messages et cartes cadeaux."
@@ -711,6 +1272,21 @@
  },
  "INC-6B36814D6E1B": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant DINUM.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Mot de passe hachés"
+     ],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant DINUM."
   ],
@@ -718,6 +1294,21 @@
  },
  "INC-6CFE298CA338": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Maileva.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "IBAN"
+     ],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Maileva."
   ],
@@ -743,6 +1334,20 @@
  },
  "INC-6E2B3A6C871F": {
   "display_summary": "NaturaBuy annonce qu'une base de 1,43 million de comptes lui appartenant est mise en vente après une cyberattaque détectée le 10 septembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un fichier de 1 428 331 comptes NaturaBuy est revendiqué à la vente par un vendeur se présentant comme RedStone."
   ],
@@ -750,6 +1355,19 @@
  },
  "INC-6FB6E50001AA": {
   "display_summary": "Salt Mobile confirme une utilisation abusive d’un accès à un système périphérique potentiellement exposant des données personnelles clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Salt indique avoir identifié une utilisation abusive d’un accès existant à un système périphérique, sans intrusion dans ses systèmes principaux.",
    "Les données potentiellement concernées comprennent noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail."
@@ -758,6 +1376,19 @@
  },
  "INC-723CD35E91B1": {
   "display_summary": "VosFactures touché par une cyberattaque : les factures exposées",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "FACTUAL SAS a été informé d’un incident de cybersécurité touchant l’un de ses prestataires techniques externes, Fakturownia sp. z o.o.",
    "L'attaquant aurait obtenu un accès en lecture à une réplique de la base de données de production du prestataire."
@@ -790,6 +1421,28 @@
  },
  "INC-77FA7FC04A8A": {
   "display_summary": "Une faille d'un composant lié à Welyb/Portail AGIRIS CONNECT a exposé des données de clients de cabinets d'expertise comptable.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un composant technique interagissant avec la plateforme Welyb a été compromis, entraînant l’exposition de données de clients de cabinets d’expertise comptable."
   ],
@@ -797,11 +1450,46 @@
  },
  "INC-78281AB82197": {
   "display_summary": "Un prestataire chargé des rendez-vous de Point Vision a été victime d’une cyberattaque ayant entraîné l’accès à des données patients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-78419FB9DA1C": {
   "display_summary": "Aestria voit plusieurs bases de données internes et données clients revendiquées publiées après une compromission revendiquée.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -860,6 +1548,29 @@
  },
  "INC-7F028203AC2F": {
   "display_summary": "L'armurerie Douillet-Dreumont fait l'objet d'une revendication de fuite de 7 546 fichiers (4,65 Go) proposés à la vente.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le site armurerie-douillet.com fait l’objet d’une fuite de données revendiquée avec 4,65 Go et 7 546 fichiers mis en vente.",
    "Le pirate revendique notamment environ 1 900 licences FFTir, des numéros SIA, des pièces d’identité et des décisions préfectorales."
@@ -889,6 +1600,27 @@
  },
  "INC-827F032013D7": {
   "display_summary": "Un pirate revendique la mise en vente de bases attribuées à Taekwondo.be et Coachbelgium.be, concernant 53 580 personnes et 599 803 enregistrements.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le 4 octobre 2026, un utilisateur nommé « ChimeraZ » a annoncé la mise en vente de bases attribuées aux sites Taekwondo.be et Coachbelgium.be.",
    "Le pirate revendique 599 803 enregistrements, 53 580 personnes et la présence de 47 648 certificats médicaux, sans confirmation indépendante."
@@ -933,6 +1665,35 @@
  },
  "INC-87031C7549CF": {
   "display_summary": "ChimeraZ revendique l'exfiltration de données de KEL/Orisha, soit environ 1,3 million de personnes et 142 913 IBAN.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le hacker ChimeraZ affirme avoir compromis une large partie de l'infrastructure de KEL et récupéré les données d’environ 1,3 million de personnes.",
    "ChimeraZ revendique aussi 142 913 IBAN et environ 200 000 PDF représentant 110 Go compressés."
@@ -941,6 +1702,28 @@
  },
  "INC-87D2AA2BDA02": {
   "display_summary": "Pharmaland a vu une fuite de données revendiquée, avec près de 6 800 enregistrements diffusés selon l'attaquant.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Pharmaland fait l’objet d’une fuite de données revendiquée le 25 septembre 2026.",
    "Le hacker Alduin affirme avoir diffusé près de 6 800 enregistrements contenant identités, e‑mails, et pour certaines pharmacies IBAN, SIRET et FINESS."
@@ -981,6 +1764,19 @@
  },
  "INC-8C6C97916F72": {
   "display_summary": "Une fuite de données revendiquée affectant EAD-Online.be, l'auteur affirme disposer de 19 456 enregistrements au format JSON (~3 Mo).",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "La publication revendique la base de données d'EAD-Online.be et affirme 19 456 personnes pour 19 456 lignes.",
    "Le volume annoncé est d'environ 3 Mo et les données sont présentées au format JSON."
@@ -989,6 +1785,19 @@
  },
  "INC-8D3392DD5A1A": {
   "display_summary": "Le pirate revendique la fuite de 118 892 enregistrements et 99 108 documents/images issus du SDIS des Pyrénées-Orientales.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le pirate publie sur un forum la revendication d'environ 118 892 lignes de données (328 Mo) et 99 108 documents et images (10,5 Go) provenant du SDIS 66."
   ],
@@ -1012,6 +1821,19 @@
  },
  "INC-8FE3D1894F9C": {
   "display_summary": "Ecofone signale une intrusion exploitant une faille zero-day de Magento ayant potentiellement exposé des données clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "L'attaque, détectée le 5 septembre 2026, aurait débuté le 4 septembre en exploitant une vulnérabilité alors inconnue d’Adobe Magento.",
    "Ecofone indique que nom, adresses de facturation et livraison, e‑mail, téléphone et informations relatives aux commandes sont potentiellement exposés."
@@ -1020,6 +1842,27 @@
  },
  "INC-905219E08A66": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Numéro de carte bancaire"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1043,6 +1886,19 @@
  },
  "INC-938BAAE8F945": {
   "display_summary": "SDIS 66 : 118 892 interventions et près de 100 000 documents médicaux revendiqués par un hacker",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1056,6 +1912,20 @@
  },
  "INC-9607A0C6CE0E": {
   "display_summary": "Horizane Santé voit 8 864 comptes clients et un accès administrateur revendiqués dans une fuite de données.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "La cyberattaque revendiquée concernerait 8 864 comptes clients actifs, selon l'assaillant.",
    "L'attaquant affirme également disposer d'un accès administrateur et de données de 12 salariés."
@@ -1080,6 +1950,20 @@
  },
  "INC-9C6AEF0A9A93": {
   "display_summary": "QPM Pro : un spécialiste des solutions informatiques victime d’une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un utilisateur pseudonyme affirme avoir exploité une injection SQL accessible sans authentification sur le site qpm-pro.com et extrait une base de données.",
    "L'attaquant revendique l'extraction de comptes internes et clients, 54 commandes et 112 adresses de livraison."
@@ -1088,6 +1972,29 @@
  },
  "INC-A00DBB2273A4": {
   "display_summary": "Un acteur revendique la vente de 16 bases de la MGEL contenant 38,8 millions de lignes et 450 806 IBAN.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "RedStone revendique 16 bases, 387 tables et plus de 38,8 millions de lignes attribuées au Groupe MGEL.",
    "L'auteur affirme avoir reconstitué 450 806 IBAN uniques et des fichiers contiennent NIR, identités, coordonnées et données bancaires."
@@ -1143,11 +2050,37 @@
  },
  "INC-A511F1D9017B": {
   "display_summary": "Un fichier de 76 951 entrées lié principalement à la CGT de l’Aude a été diffusé après qu'un collectif revendique une vulnérabilité sur cgt.fr.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-A674F41CD218": {
   "display_summary": "Fédération Royale Belge des Sports Équestres (FRBSE/KBRSF)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le vendeur revendique 9 019 135 enregistrements attribués à Equibel et à l’écosystème de la Fédération Royale Belge des Sports Équestres.",
    "Parmi ces enregistrements, il revendique les données de 55 846 personnes et 167 947 chevaux."
@@ -1188,6 +2121,28 @@
  },
  "INC-A88202D7AFA6": {
   "display_summary": "La Fédération Française de Spéléologie revendiquée compromise avec 93 493 personnes et 371 IBAN annoncés.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "RedStone affirme avoir récupéré une copie complète de plusieurs bases de données contenant les informations de plus de 93 000 personnes.",
    "Le hacker revendique aussi 371 IBAN et un accès RCE avec modification de sept sous-domaines."
@@ -1204,6 +2159,21 @@
  },
  "INC-AA49D64CDD92": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant ANSSI.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Mot de passe hachés"
+     ],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant ANSSI."
   ],
@@ -1231,6 +2201,28 @@
  },
  "INC-AE83733D5446": {
   "display_summary": "Plurélya voit une base de 4,4 Go et 965 575 lignes revendiquée, incluant les données de 150 114 personnes mises en vente pour 250 dollars.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le hacker ChimeraZ affirme avoir récupéré 965 575 lignes concernant 150 114 personnes et les propose à la vente.",
    "Le périmètre annoncé comprend 60 245 agents, 89 869 enfants et 50 572 enregistrements bancaires partiels."
@@ -1244,6 +2236,10 @@
  },
  "INC-AF6A27F3AB60": {
   "display_summary": "Une base attribuée à AvantagesJeunes et revendiquée sur un forum annonce environ 318 000 profils, dont des mineurs.",
+  "sensitive_data": {
+   "types": [],
+   "vulnerable_people": true
+  },
   "summary_paragraphs": [
    "Une publication du 1er octobre 2026 revendique une base d'environ 318 000 enregistrements attribuée à AvantagesJeunes.",
    "L'échantillon publié comporte noms, dates de naissance, e-mails, téléphones et plusieurs enregistrements concernent des mineurs."
@@ -1265,6 +2261,19 @@
  },
  "INC-B6C3BE11559E": {
   "display_summary": "La Ville de Libercourt a subi fin août 2026 une attaque par rançongiciel entraînant l’exfiltration de données personnelles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "La Ville de Libercourt a annoncé le 15 septembre 2026 avoir subi une violation de données à la suite d’une attaque par rançongiciel.",
    "La municipalité confirme que des données personnelles ont été exfiltrées, mais la nature et le volume restent inconnus."
@@ -1280,6 +2289,27 @@
  },
  "INC-B9C05B36A12A": {
   "display_summary": "Sport 2000 : 483 953 enregistrements de réservations publiés en téléchargement libre après une nouvelle fuite liée à Pilot.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "483 953 enregistrements, représentant environ 907 Mo, sont proposés directement en téléchargement libre.",
    "Les extraits montrent des réservations avec nom, pays, ville, adresse, email, magasin Sport 2000, dates du séjour et statut de la réservation."
@@ -1288,6 +2318,27 @@
  },
  "INC-BB2E3878A0EC": {
   "display_summary": "Activa Assurances apparaît dans une publication revendiquant 18 765 lignes de données et FrenchBreaches estime ~10 758 personnes identifiables après analyse.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un pirate revendique une base liée à Group-Activa.com avec 18 765 lignes; FrenchBreaches a analysé 18 764 enregistrements.",
    "FrenchBreaches estime qu'environ 10 758 personnes distinctes sont identifiables après déduplication des 18 764 enregistrements analysés."
@@ -1304,6 +2355,27 @@
  },
  "INC-BD9850BF3E4B": {
   "display_summary": "Biocoop victime d'une fuite revendiquée de 2,8 Go de données internes comprenant bases SQL, chiffres magasins, assortiments et positionnement tarifaire.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le hacker Venus1337 revendique avoir récupéré environ 2,8 Go de données provenant de l’extranet du groupe Biocoop.",
    "Les éléments diffusés incluent bases SQL, chiffres magasins, assortiments de produits et documents de positionnement tarifaire."
@@ -1328,6 +2400,19 @@
  },
  "INC-C25097FEA710": {
   "display_summary": "Bouteilles et bocaux : une cyberattaque compromet la boutique en ligne et expose des données clients",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Bouteilles et bocaux a subi une intrusion permettant l'installation d'un logiciel malveillant dans l'environnement de sa boutique en ligne.",
    "Les attaquants auraient pu accéder à un ensemble limité de données clients comprenant noms, prénoms, adresses postales et adresses e-mail."
@@ -1336,6 +2421,19 @@
  },
  "INC-C3E56A9BD7F1": {
   "display_summary": "MesMarches : 2 535 profils d'exposants revendiqués en fuite de données.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "MesMarches fait l’objet d’une fuite de données revendiquée le 22 septembre 2026 avec 2 535 profils d’exposants annoncés.",
    "Le hacker Quantique affirme avoir récupéré les informations de 2 535 profils d’exposants après avoir exploré les API utilisées par le site."
@@ -1365,6 +2463,36 @@
  },
  "INC-C63850DBEE3B": {
   "display_summary": "Place des Salariés signale une violation de données le 16 septembre 2026 ayant permis la consultation et la copie de données personnelles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un tiers non autorisé a pu consulter et copier des données présentes dans la base de Place des Salariés.",
    "Les catégories touchées incluent identité, coordonnées, informations professionnelles, justificatifs et données de connexion, selon Haxoneo."
@@ -1378,6 +2506,29 @@
  },
  "INC-C7F6C2258D3A": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant MGEL.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Numéro de sécurité sociale"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Coordonnées bancaires"
+     ],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant MGEL."
   ],
@@ -1393,6 +2544,19 @@
  },
  "INC-CC9731B28C94": {
   "display_summary": "Un pirate revendique la mise en vente des données de plus de 200 000 adhérents de la Fédération francophone de Gymnastique.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1414,6 +2578,19 @@
  },
  "INC-CFA199A7659B": {
   "display_summary": "Revendication d'une fuite de 6 768 lignes de dossiers de stagiaires de la Région Centre-Val de Loire contenant NIR et IBAN.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un pirate a publié le 30 septembre 2026 une base de 6 768 lignes contenant identités, NIR et informations bancaires de stagiaires.",
    "FrenchBreaches analyse 6 767 enregistrements exploitables et ~5 400 identifiants individuels distincts, sans confirmation officielle de la Région."
@@ -1430,6 +2607,19 @@
  },
  "INC-D2FB7EB1592C": {
   "display_summary": "Zenfirst victime d’une cyberattaque : des milliers de données de facturation exposées",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1450,6 +2640,19 @@
  },
  "INC-D8AF87664D6E": {
   "display_summary": "Celinni fait l’objet d’une revendication de cyberattaque avec la prétendue exfiltration de 243 871 références et 32 914 diamants GIA.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un acteur pseudonyme 0xDzz affirme avoir compromis ses systèmes et récupéré des données clients ainsi que des informations commerciales internes.",
    "La revendication mentionne 243 871 références et 32 914 diamants GIA revendiqués par l'attaquant."
@@ -1458,6 +2661,23 @@
  },
  "INC-D9091A0211B6": {
   "display_summary": "ASP : une cyberattaque expose 143 000 lignes de bénéficiaires du Coup de pouce énergie",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "IBAN"
+     ],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un accès frauduleux à un compte utilisateur a permis l’exfiltration d’avis de paiement de 2023 et 2024 contenant identités et coordonnées bancaires.",
    "Selon FrenchBreaches, plus de 143 000 personnes seraient concernées, chiffre revendiqué sur un forum cybercriminel."
@@ -1473,6 +2693,19 @@
  },
  "INC-DB37F06CE825": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "NaturaBuy confirme avoir été victime d’une cyberattaque le 10 septembre 2026."
   ],
@@ -1480,6 +2713,20 @@
  },
  "INC-DB70F62CAABE": {
   "display_summary": "ChimeraZ revendique la diffusion d'environ 200 Go et 193 982 fichiers issus de l'environnement blgCloud de CAPM Europe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un cybercriminel affirme avoir publié 200 Go et 193 982 fichiers issus de l’environnement de CAPM Europe dans une fuite liée à BlgCloud.",
    "Les échantillons montrent des données CRM, des e-mails et des informations bancaires parmi les éléments publiés."
@@ -1504,6 +2751,19 @@
  },
  "INC-DC8AC46291C7": {
   "display_summary": "Une fuite de données revendiquée expose les informations d'environ 722 personnes liées au Greffe du Tribunal des activités économiques de Paris.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un cybercriminel affirme avoir publié plusieurs fichiers contenant des informations sur des juges, magistrats, greffiers et autres personnes liées au tribunal.",
    "L'analyse des fichiers montre 1 364 entrées cumulées correspondant à environ 722 personnes distinctes."
@@ -1536,6 +2796,19 @@
  },
  "INC-DF7462A643E2": {
   "display_summary": "TimeSape revendique la diffusion de 38 382 fichiers (2,06 Go) attribués à France Pare-Brise contenant des données sensibles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "TimeSape affirme diffuser un dossier de 2,06 Go et 38 382 fichiers attribués à France Pare-Brise."
   ],
@@ -1559,6 +2832,19 @@
  },
  "INC-E005064D73B2": {
   "display_summary": "Altagem : clients, équipes et données opérationnelles exposés après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le groupe UWAYS Qarani revendique avoir infiltré l'environnement d'Altagem et extrait des données clients et utilisateurs.",
    "Les captures montrent l'accès à 3 284 clients, 36 comptes administrateurs et des milliers d'éléments opérationnels."
@@ -1567,6 +2853,19 @@
  },
  "INC-E1DAFF22CE19": {
   "display_summary": "Région Centre-Val de Loire : des milliers de dossiers en fuite après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1579,6 +2878,27 @@
  },
  "INC-E4D2A28AC615": {
   "display_summary": "Le Centre National de l’Expertise Hospitalière (CNEH) est visé par une revendication de ransomware affirmant la récupération d’environ 645 Go de données.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Kairos revendique avoir récupéré environ 645 Go de données et publie des preuves de leur accès.",
    "Les documents publiés incluent cartes d’identité, RIB, numéros de sécurité sociale, adresses, emails, CV et informations RH et salariales."
@@ -1603,6 +2923,29 @@
  },
  "INC-E839CB798199": {
   "display_summary": "LDLC confirme un accès non autorisé à un système ayant permis la consultation de données personnelles de clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "LDLC informe qu’un acte malveillant a permis un accès non autorisé à un de ses systèmes et la consultation potentielle de données personnelles clients.",
    "LDLC indique que les RIB, numéros de carte bancaire, identifiants de connexion et mots de passe n'ont pas été affectés."
@@ -1611,6 +2954,20 @@
  },
  "INC-EA45CB7EDDDE": {
   "display_summary": "Une fuite de données d'Acaia.fr liée à l'Aéroclub de l’AIA expose licences de pilote, coordonnées et informations professionnelles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Acaia.fr, site lié à un aéroclub de Clermont-Ferrand, fait l’objet d’une importante fuite de données publiée ce 24 septembre 2026."
   ],
@@ -1618,6 +2975,28 @@
  },
  "INC-EB38E1F1F3E0": {
   "display_summary": "Kiassure fait l’objet d’une revendication de fuite de 42 742 dossiers clients et d’un millier de coordonnées bancaires.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "RedStone affirme mettre en vente une base de 42 929 lignes, comprenant notamment 42 742 dossiers clients.",
    "L’échantillon consulté confirme la présence de noms, adresses, e‑mails, téléphones, montants de cotisations et IBAN."
@@ -1634,6 +3013,35 @@
  },
  "INC-ED39677A0644": {
   "display_summary": "Région Hauts-de-France : des données personnelles exposées suite à une cyberattaque chez ATEXO",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "La Région Hauts-de-France signale qu'une cyberattaque visant ATEXO, son prestataire, a permis l'accès à des données personnelles.",
    "Les catégories confirmées exposées sont nom, prénom et adresse e-mail, l'enquête se poursuit pour d'autres données éventuelles."
@@ -1647,6 +3055,19 @@
  },
  "INC-EE167D8D9DEA": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Une vulnérabilité Metabase a permis de compromettre 118 comptes utilisateurs du laboratoire d'innovation de l'ANSSI.",
    "Les données compromises incluent identifiants, adresses e-mail, mots de passe hachés et données statistiques d'utilisation."
@@ -1655,6 +3076,20 @@
  },
  "INC-F01F1A75909C": {
   "display_summary": "Venus1337 revendique la fuite de 732 385 fiches d'adhérents et 440 326 IBAN de L’Orange bleue.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Le hacker Venus1337 affirme avoir récupéré les informations de 732 385 adhérents, dont 440 326 IBAN, et propose la base à la vente.",
    "Les données incluent identité, date de naissance, adresse, téléphone, e-mail, coordonnées bancaires, abonnement, échéance et date du dernier passage."
@@ -1670,6 +3105,19 @@
  },
  "INC-F2C5F9D520CA": {
   "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1683,6 +3131,20 @@
  },
  "INC-F38A1241BA3D": {
   "display_summary": "École vétérinaire d’Alfort : des accès administrateurs et cookies de session revendiqués par un hacker",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1696,6 +3158,28 @@
  },
  "INC-F6EA93C0805A": {
   "display_summary": "Papouille France voit 75 Go et 240 177 fichiers attribués à son compte BlgCloud diffusés publiquement.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Une fuite de données publiée sur un forum revendique 75 Go et 240 177 fichiers attribués à Papouillefrance.com.",
    "Les échantillons publiés montrent des données CRM et des e-mails, mais l'authenticité n'est pas confirmée."
@@ -1704,6 +3188,19 @@
  },
  "INC-F7BB72962D53": {
   "display_summary": "Des identifiants et accès techniques internes d'April ont été publiés sur un forum, sans preuve d'exfiltration de données clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un pirate affirme avoir publié des accès techniques internes d'April sur un forum, incluant identifiants de base, FTP et proxy.",
    "Aucune preuve visible n'indique que des données personnelles de clients April ont été téléchargées."
@@ -1712,6 +3209,27 @@
  },
  "INC-FAB241BB235B": {
   "display_summary": "Fiducial : 65 Go de données judiciaires et financières revendiqués par un ransomware",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1730,6 +3248,19 @@
  },
  "INC-FD11035E7E5A": {
   "display_summary": "Un pirate revendique la fuite de 50 000 dossiers patients de VitalWeb contenant des numéros de sécurité sociale.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un cybercriminel affirme avoir obtenu une base de données attribuée à VitalWeb.fr contenant selon lui 50 000 lignes de données liées à des patients.",
    "La revendication indique que l’accès aurait été obtenu via un compte compromis dépourvu de 2FA permettant d’interroger l’API."

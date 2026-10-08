@@ -141,6 +141,9 @@ def _rich_facts_from_metadata(row: dict) -> dict | None:
         metadata = json.loads(raw)
     except (TypeError, ValueError):
         return None
+    if isinstance(metadata, dict):
+        from .source_fact_data import sanitize_data_types
+        sanitize_data_types({}, metadata, {})
     rich = metadata.get("rich_facts") if isinstance(metadata, dict) else None
     if not isinstance(rich, dict):
         return None

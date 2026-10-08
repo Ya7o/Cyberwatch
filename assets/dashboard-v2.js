@@ -507,6 +507,21 @@
     }).join("")}${candidate ? '<p class="qualification-context">Ce signal est exclu des statistiques des incidents retenus.</p>' : ""}</section>`;
   }
 
+  function sensitiveDataHtml(incident, detail) {
+    const sensitive = detail?.sensitive_data;
+    if (!sensitive && !incident.high_sensitivity_data_exposed && !incident.credentials_or_secrets_exposed) return "";
+    const labels = { confirmed: "Confirmé par une source", reported: "Rapporté par une source", claimed: "Revendiqué — non confirmé", unknown: "Signalé — confirmation non précisée" };
+    const types = Array.isArray(sensitive?.types) ? sensitive.types.filter((entry) => known(entry.value) && !["denied", "negated", "hypothesis", "unconfirmed"].includes(entry.status)) : [];
+    const entries = types.map((entry) => {
+      const specifics = Array.isArray(entry.specifics) && entry.specifics.length ? ` (${entry.specifics.map(esc).join(", ")})` : "";
+      const sources = unique((entry.sources || []).map(sourceLabel)).map(esc).join(" · ");
+      return `<li><strong>${esc(entry.value)}${specifics}</strong><span class="sensitive-data-proof">${esc(labels[entry.status] || labels.unknown)}${sources ? ` · ${sources}` : ""}</span></li>`;
+    }).join("");
+    const vulnerable = sensitive?.vulnerable_people ? '<p>Les sources signalent des données concernant des enfants ou des élèves.</p>' : "";
+    const missing = !types.length ? '<p>Catégories de données sensibles non précisées à ce stade.</p>' : "";
+    return `<section class="detail-sensitive-data"><h3>Données sensibles signalées</h3>${entries ? `<ul>${entries}</ul>` : ""}${vulnerable}${missing}</section>`;
+  }
+
   async function openIncident(id, navigate = true) {
     const token = ++detailToken;
     state.incidentId = id;
@@ -536,6 +551,7 @@
       const websiteHtml = websites.length ? `<div class="organisation-sites"><span>Site de l’organisation</span>${websites.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : "";
       $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${locationHtml}<p class="detail-meta">${esc(meta)}</p>${candidate}${exposure ? `<p class="incident-exposure">${esc(exposure)}</p>` : ""}</div>
         <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
+        ${sensitiveDataHtml(incident, detail)}
         ${qualificationHtml}
         <div class="detail-sources"><h3>Publications</h3><div class="incident-source-badges">${sourceBadges(incident)}</div></div>${websiteHtml}`;
     }

@@ -2,15 +2,30 @@
 from __future__ import annotations
 
 import json
+import re
 
 from .source_facts_ai_contract import _NEGATED_DATA_VALUE_SENTENCE
 from .source_facts_ai_normalize import data_evidence_clause
 
 
 def _denied(value: str, proof: str, context: str) -> bool:
-    return bool(proof and _NEGATED_DATA_VALUE_SENTENCE.search(
-        data_evidence_clause(value, proof, context),
-    ))
+    if not proof:
+        return False
+    clause = data_evidence_clause(value, proof, context)
+    if _NEGATED_DATA_VALUE_SENTENCE.search(clause) or re.search(
+        r"\b[ée]pargn[ée]s?\b|\bne pas accepter\b|"
+        r"\battire\b.{0,60}\bl['’]attention\b|"
+        r"\bdemandes? frauduleuses?\b.{0,90}\b(?:r[ée]cup[ée]rer|modification)\b",
+        clause, re.I,
+    ):
+        return True
+    # Une puce isolée hérite du démenti qui introduit sa liste, sans nier
+    # les catégories d'un paragraphe ou d'une liste positive ultérieurs.
+    position = context.casefold().find(proof.casefold())
+    if position >= 0 and proof.lstrip().startswith(("-", "•")):
+        block = re.search(r"([^.!?\n]{0,350}:\s*(?:[-•][^\n]*\n\s*)*)$", context[:position])
+        return bool(block and _NEGATED_DATA_VALUE_SENTENCE.search(block.group()))
+    return False
 
 
 def sanitize_data_types(fact: dict, metadata: dict, evidence: dict) -> bool:

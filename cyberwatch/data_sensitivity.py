@@ -19,7 +19,8 @@ _PERSONAL_MARKERS = (
 _HIGH_MARKERS = (
     "iban", "rib", "bancair", "carte de paiement", "paiement",
     "sante", "medical", "patient", "diagnostic", "patholog", "nir",
-    "securite sociale", "passeport", "piece d identite", "biometr",
+    "securite sociale", "passeport", "piece d identite", "pieces d identite",
+    "carte d identite", "cartes d identite", "biometr",
     "permis de conduire",
 )
 _CREDENTIAL_MARKERS = (
