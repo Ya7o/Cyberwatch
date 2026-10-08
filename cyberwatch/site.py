@@ -18,6 +18,7 @@ from . import (
     sector_resolution,
     site_analysis,
     site_evidence,
+    site_regional_watch,
     site_legacy as _legacy,
     site_window,
     sources,
@@ -37,7 +38,7 @@ _INCIDENT_PUBLIC_FIELDS = frozenset({
     "personal_data_exposed", "high_sensitivity_data_exposed",
     "credentials_or_secrets_exposed",
 })
-_FACT_PUBLIC_FIELDS = frozenset({"version", "summary_paragraphs", "display_summary"})
+_FACT_PUBLIC_FIELDS = frozenset({"version", "summary_paragraphs", "display_summary", "regional_watch"})
 _SOURCE_PUBLIC_FIELDS = frozenset({
     "id", "status", "last_run", "duration", "items_collected", "items",
     "reason", "comment",
@@ -299,6 +300,7 @@ def build() -> tuple[int, int]:
     )
     threat_decisions = _threat_decisions_by_incident(items, source_fact_rows)
     resolved = _resolved_details(payload, raw_facts)
+    site_regional_watch.decorate_details(resolved, raw_facts)
     sectors = _sector_decisions_by_incident(items)
     for row in payload:
         decisions = sectors.get(str(row.get("id") or ""), [])

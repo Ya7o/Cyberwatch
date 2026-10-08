@@ -89,9 +89,20 @@ aucun champ en moins.
 
 ## Ce que le collecteur en fait
 
-Seuls les `ACCEPTED` entrent dans le corpus. Les `CANDIDATE` restent dans le
-fichier pour permettre une promotion ultérieure si une preuve apparaît, et le
-site en affiche le décompte sur 30 jours.
+Les `ACCEPTED` et les `CANDIDATE` sont collectés dans la base. Les candidats
+apparaissent dans les listes et la recherche avec la mention **À confirmer**,
+mais restent exclus des statistiques des incidents admis. Leur fiche conserve
+les publications, la synthèse, le score de confiance et les réserves de
+qualification. Le score seul ne décide jamais de l'admission.
+
+Une preuve ultérieure permet de modifier l'admission en `ACCEPTED`. Conserver
+les références initiales : le collecteur garde l'URL d'ancrage existante même
+si une nouvelle publication est ajoutée en tête des sources, afin de préserver
+l'identité de l'incident. La disparition de l'URL d'ancrage ou une correction
+de date/organisation demande une réconciliation d'identité distincte.
+
+Le bloc régional couvre 90 jours. Son raccourci vers les signaux à confirmer
+ouvre toute la base Réunion / Mayotte, y compris les candidats plus anciens.
 
 Deux événements d'une même organisation et d'un même jour restent distincts
 lorsque leur localisation diffère.

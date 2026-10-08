@@ -283,6 +283,11 @@ def _source_fact_payload(row: dict) -> dict | None:
     if tentative:
         payload["threat_tentative"] = tentative
 
+    from . import site_regional_watch
+    regional = site_regional_watch.qualification(row)
+    if regional:
+        payload["regional_watch"] = regional
+
     return payload if len(payload) > 2 else None
 
 

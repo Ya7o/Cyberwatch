@@ -139,6 +139,16 @@ def _entry_from_record(record: dict, values: dict) -> RawEntry:
     )
 
 
+def _primary_references() -> dict[tuple[str, str, str], set[str]]:
+    """Garde l'ancre existante lors d'un enrichissement ou d'une confirmation."""
+    references: dict[tuple[str, str, str], set[str]] = {}
+    for item in store.load_items():
+        if item.Source_ID == "VEILLE_LLM":
+            key = (item.Event_Date or item.Published_Date, item.Organisation_Key, item.Location)
+            references.setdefault(key, set()).add(item.URL)
+    return references
+
+
 class VeilleLlmCollector(Collector):
     """Lit le snapshot complet pour inclure les découvertes historiques tardives."""
 
@@ -152,6 +162,7 @@ class VeilleLlmCollector(Collector):
         requested_window_hits = 0
         admission_counts = {value: 0 for value in ADMISSIONS}
         seen_records: set[tuple[str, str, str, str]] = set()
+        primary_references = _primary_references()
 
         for index, record in enumerate(records, start=1):
             values = _validate_record(record, index)
@@ -168,7 +179,13 @@ class VeilleLlmCollector(Collector):
                 continue
             if window.contains(values["date"]):
                 requested_window_hits += 1
-            entries.append(_entry_from_record(record, values))
+            entry = _entry_from_record(record, values)
+            key = (values["date"], organisation_key(values["organisation"]), values["territory"])
+            anchors = primary_references.get(key, set()).intersection(values["evidence"])
+            if len(anchors) == 1:
+                entry.url = next(iter(anchors))
+            entry.source_metadata["score_definition"] = str(metadata.get("score_definition") or "")
+            entries.append(entry)
 
         declared_accepted = metadata.get("accepted_count")
         declared_candidates = metadata.get("candidate_count")

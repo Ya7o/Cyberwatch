@@ -107,6 +107,11 @@ button.metric-bar:hover { color:var(--series-1); }
 .organisation-sites { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.8rem; font-size:.8rem; color:var(--text-secondary); }
 .detail-location { margin:.7rem 0 0; font-size:.85rem; }
 .candidate-note { font-size:.85rem; color:var(--text-secondary); }
+.regional-qualification { margin-top:1.4rem; padding-top:1rem; border-top:1px solid var(--border); overflow-wrap:anywhere; }
+.regional-qualification h3 { font-size:.9rem; }
+.regional-qualification p { margin:.6rem 0; line-height:1.6; }
+.qualification-context { font-size:.85rem; color:var(--text-secondary); }
+#regional-candidates { margin-bottom:1rem; white-space:normal; text-align:left; }
 .health-dialog h2 { margin-top:.35rem; }
 .sources-detail { overflow:auto; margin:1rem 0; }
 .sources-detail table { width:100%; border-collapse:collapse; font-size:.8rem; }

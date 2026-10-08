@@ -214,7 +214,12 @@
       return OCEAN_LOCATIONS.includes(incident.location) && day >= bounds.start && day <= bounds.end;
     }).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")) || String(b.id).localeCompare(String(a.id))) : [];
     const available = state.incidentsLoaded && Boolean(bounds);
-    $("#regional-watch-count").textContent = available ? `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""} · 3 derniers mois` : "Veille régionale indisponible";
+    const candidates = rows.filter((row) => row.admission === "CANDIDATE").length;
+    const admitted = rows.length - candidates;
+    $("#regional-watch-count").textContent = available ? `${formatNumber(admitted)} incident${admitted > 1 ? "s" : ""} retenu${admitted > 1 ? "s" : ""}${candidates ? ` · ${formatNumber(candidates)} à confirmer` : ""} · 3 derniers mois` : "Veille régionale indisponible";
+    const pending = state.incidents.filter((row) => focusLocations().includes(row.location) && row.admission === "CANDIDATE").length;
+    $("#regional-candidates").hidden = !state.incidentsLoaded || !pending;
+    $("#regional-candidates").textContent = `Voir les ${formatNumber(pending)} signaux à confirmer — toute la base Réunion / Mayotte`;
     $("#regional-watch-period").textContent = available ? rows.length ? `90 derniers jours · du ${formatDate(bounds.start)} au ${formatDate(bounds.end)}` : "Aucun incident publié dans l’océan Indien sur les 90 derniers jours." : "La période ou les données n’ont pas pu être chargées. Actualisez la page pour réessayer.";
     $("#regional-watch-locations").innerHTML = OCEAN_LOCATIONS.map((name) => ({ name, count: rows.filter((row) => row.location === name).length })).filter((row) => row.count).map((row) => `<span>${esc(row.name)} <strong>${row.count}</strong></span>`).join("");
     $("#regional-watch-list").innerHTML = rows.map(incidentCardHtml).join("");
@@ -492,6 +497,16 @@
     return ["Synthèse indisponible."];
   }
 
+  function regionalQualificationHtml(incident, detail) {
+    const qualifications = Array.isArray(detail?.regional_watch) ? detail.regional_watch : [];
+    if (!qualifications.length) return "";
+    const candidate = incident.admission === "CANDIDATE";
+    return `<section class="regional-qualification"><h3>Qualification de la veille régionale</h3>${qualifications.map((qualification) => {
+      const score = Number.isInteger(qualification.score) && qualification.score >= 0 && qualification.score <= 100 ? `<p><strong>Score de confiance cyber : ${qualification.score}/100</strong></p><p class="qualification-context">${esc(qualification.score_definition || "Indicateur de confiance dans l’origine cyber du signal. Le score seul ne décide pas de son admission.")}</p>` : "";
+      return `${score}${qualification.statut ? `<p><strong>${candidate ? "Incertitudes / état des preuves" : "État des preuves"}</strong> : ${esc(qualification.statut)}</p>` : ""}${qualification.admission_reason ? `<p><strong>${candidate ? "Éléments manquants / à confirmer" : "Motif de qualification"}</strong> : ${esc(qualification.admission_reason)}</p>` : ""}`;
+    }).join("")}${candidate ? '<p class="qualification-context">Ce signal est exclu des statistiques des incidents retenus.</p>' : ""}</section>`;
+  }
+
   async function openIncident(id, navigate = true) {
     const token = ++detailToken;
     state.incidentId = id;
@@ -514,11 +529,14 @@
       const locationHtml = known(incident.location) ? `<p class="detail-location"><span class="incident-location${OCEAN_LOCATIONS.includes(incident.location) ? " incident-location-regional" : ""}">${esc(incident.location)}</span></p>` : "";
       const exposure = exposureLabel(incident);
       const paragraphs = incidentSummaryParagraphs(incident, detail);
-      const candidate = incident.admission === "CANDIDATE" ? `<p class="candidate-note"><strong>À confirmer.</strong> ${esc(incident.admission_reason || "Publication en cours de vérification.")}</p>` : "";
+      const qualificationHtml = regionalQualificationHtml(incident, detail);
+      const candidateReason = qualificationHtml ? "" : esc(incident.admission_reason || "Publication en cours de vérification.");
+      const candidate = incident.admission === "CANDIDATE" ? `<p class="candidate-note"><strong>À confirmer.</strong> ${candidateReason}</p>` : "";
       const websites = (incident.organisation_links || []).map(safeUrl).filter(Boolean);
       const websiteHtml = websites.length ? `<div class="organisation-sites"><span>Site de l’organisation</span>${websites.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join("")}</div>` : "";
       $("#detail-dialog-content").innerHTML = `<div class="detail-heading"><h2 id="detail-dialog-title">${esc(incident.org || "Organisation inconnue")}</h2>${locationHtml}<p class="detail-meta">${esc(meta)}</p>${candidate}${exposure ? `<p class="incident-exposure">${esc(exposure)}</p>` : ""}</div>
         <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
+        ${qualificationHtml}
         <div class="detail-sources"><h3>Publications</h3><div class="incident-source-badges">${sourceBadges(incident)}</div></div>${websiteHtml}`;
     }
     $("#detail-dialog-content").scrollTop = 0;
@@ -544,6 +562,7 @@
   }
 
   function bindGlobal() {
+    $("#regional-candidates").addEventListener("click", () => applySearchPatch({ locations: focusLocations().slice(), admission: "CANDIDATE" }));
     $(".views").addEventListener("click", async (event) => {
       const button = event.target.closest("[data-view]");
       if (!button) return;
