@@ -200,7 +200,7 @@
   "version": 3
  },
  "INC-11C1B1A5AB59": {
-  "display_summary": "Bordeaux Sciences Agro confirme une violation ayant permis l'extraction de données de son application de gestion des conventions de stage.",
+  "display_summary": "Cyberattaque contre Bordeaux Sciences Agro : les données de conventions de stage extraites",
   "sensitive_data": {
    "types": [
     {
@@ -214,8 +214,13 @@
    ],
    "vulnerable_people": false
   },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-13200FD49444": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Quick.",
   "summary_paragraphs": [
-   "Un accès non autorisé détecté le 8 septembre a permis l'extraction d'informations relatives à des conventions de stage couvrant 2020-2021 à 2026-2027."
+   "BonjourLaFuite signale une fuite de données concernant Quick."
   ],
   "version": 3
  },
@@ -327,7 +332,8 @@
     {
      "sources": [
       "CYBERATTAQUE_ORG",
-      "FRENCHBREACHES"
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
      ],
      "specifics": [],
      "status": "unknown",
@@ -484,10 +490,8 @@
   "version": 3
  },
  "INC-213413E40675": {
-  "display_summary": "SINEQUAE, société de commissaires de justice, fait l'objet d'une revendication de vol de 65 Go de données judiciaires et financières par le groupe LAMASHTU.",
-  "summary_paragraphs": [
-   "La société SINEQUAE, spécialisée dans les activités de commissaires de justice, est au cœur d’une cyberattaque revendiquée par le groupe LAMASHTU."
-  ],
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-218799D3E526": {
@@ -735,6 +739,14 @@
   "summary_paragraphs": [
    "Une base attribuée à Alaxione est proposée à la vente et revendique 16 221 383 personnes et 65 658 246 lignes de données.",
    "Les statistiques revendiquent notamment 9 629 697 téléphones, 5 376 044 e-mails et 568 737 numéros de Sécurité sociale."
+  ],
+  "version": 3
+ },
+ "INC-37F3A66690B2": {
+  "display_summary": "",
+  "summary_paragraphs": [
+   "La cyberattaque a entraîné l'interruption de l'ensemble du système téléphonique et une perturbation partielle du système informatique de la collectivité.",
+   "La mairie indique qu'aucune fuite de données, revendication ou recours à un rançongiciel n'est établi à ce stade et une enquête est en cours."
   ],
   "version": 3
  },
@@ -1078,6 +1090,34 @@
   ],
   "version": 3
  },
+ "INC-56CC02EDADEE": {
+  "display_summary": "Peggy Sage : 106 000 fichiers sensibles diffusés après la cyberattaque de 2025",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-5752F4E0EEB5": {
   "display_summary": "Une revendication diffuse une sauvegarde du site WordPress d'AMCEN avec des données personnelles revendiquées.",
   "sensitive_data": {
@@ -1105,6 +1145,42 @@
    "ChimeraZ affirme avoir diffusé une base de 320 936 lignes contenant 187 073 numéros de téléphone et 86 156 adresses e-mail liées à Aqualter.",
    "Aqualter n’a pas confirmé et la publication ne montre aucun élément démontrant une intrusion dans des systèmes industriels ou infrastructures d’eau."
   ],
+  "version": 3
+ },
+ "INC-576B7F1829F8": {
+  "display_summary": "EPITA : 11 074 profils en fuite après un accès malveillant à son annuaire",
+  "summary_paragraphs": [
+   "L'école d'informatique EPITA voit 11 074 profils et 2 649 photographies présentés à la vente sur le dark web.",
+   "Le vendeur affirme avoir obtenu les informations par scraping; aucune intrusion dans les systèmes d'EPITA n'est démontrée."
+  ],
+  "version": 3
+ },
+ "INC-58395B4BE203": {
+  "display_summary": "Les Métaux Précieux : 134 000 commandes exposées, avec pièces d’identité et RIB d’acheteurs d’or",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-584E3E37779F": {
@@ -1560,6 +1636,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-70737EF727A7": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-723CD35E91B1": {
   "display_summary": "VosFactures touché par une cyberattaque : les factures exposées",
   "sensitive_data": {
@@ -1602,6 +1683,14 @@
   "summary_paragraphs": [
    "Un cybercriminel nommé Quantique revendique avoir compromis WayToMe et extrait plusieurs tables d'une instance Supabase.",
    "Le pirate revendique 669 445 enregistrements cumulés répartis entre fichiers Users, Routes, Notifications et Parcel."
+  ],
+  "version": 3
+ },
+ "INC-76971BFA51B9": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Distinxion.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Distinxion.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse email ; Numéro de téléphone ; Status de contact (prospect, lead ou client) ; Point de vente."
   ],
   "version": 3
  },
@@ -1780,7 +1869,7 @@
   "version": 3
  },
  "INC-823A16F66FCB": {
-  "display_summary": "",
+  "display_summary": "Réso : 676 Go de données publiées par un ransomware",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1840,6 +1929,11 @@
    "Spareka voit une fuite de 7 770 demandes de réparation avec coordonnées et description des pannes, revendiquée le 28 septembre 2026.",
    "Spareka indique que l’incident est circonscrit à la compromission d’un compte individuel et que l’accès avait été neutralisé."
   ],
+  "version": 3
+ },
+ "INC-85B65263A155": {
+  "display_summary": "Eau Cœur d’Essonne : 55 000 contrats d’eau en fuite après une cyberattaque",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-86A70CFF76FE": {
@@ -2472,6 +2566,18 @@
   ],
   "version": 3
  },
+ "INC-AFB021A15908": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-B039906F8F9A": {
+  "display_summary": "SKIF Belgium visée par une fuite de données revendiquée, une base de 8 840 personnes proposée à la vente.",
+  "summary_paragraphs": [
+   "Le pirate ChimeraZ publie une annonce le 9 octobre 2026 proposant une base attribuée à skifb.be, revendiquant 8 840 personnes et 9 366 lignes."
+  ],
+  "version": 3
+ },
  "INC-B2323F1F0DB2": {
   "display_summary": "Alaxione est visée par une revendication de fuite contenant 8,6 millions de patients et 311 286 numéros de Sécurité sociale.",
   "summary_paragraphs": [
@@ -2568,6 +2674,28 @@
   "summary_paragraphs": [
    "Un pirate revendique une base liée à Group-Activa.com avec 18 765 lignes; FrenchBreaches a analysé 18 764 enregistrements.",
    "FrenchBreaches estime qu'environ 10 758 personnes distinctes sont identifiables après déduplication des 18 764 enregistrements analysés."
+  ],
+  "version": 3
+ },
+ "INC-BBF76A545815": {
+  "display_summary": "ASP frappé par une nouvelle cyberattaque : 29 611 personnes exposées",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "ChimeraZ revendique une nouvelle base liée à l'Agence de services et de paiement contenant 31 028 lignes et 29 611 personnes.",
+   "FrenchBreaches précise que ces chiffres proviennent de la revendication et n'ont pas été vérifiés dans leur intégralité."
   ],
   "version": 3
  },
@@ -2853,11 +2981,8 @@
   "version": 3
  },
  "INC-D27A23CD8686": {
-  "display_summary": "Le Centre National du Droit du Travail fait l’objet d’une revendication de fuite de 150 000 lignes après une faille SQL alléguée.",
-  "summary_paragraphs": [
-   "LunarisSec, via TimeSape, revendique avoir exploité une vulnérabilité d'injection SQL sur le site du Centre National du Droit du Travail et extrait des tables.",
-   "Cyberattaque.org n’a pas pu vérifier les données ni confirmer l’authenticité, le volume ou la présence des catégories revendiquées."
-  ],
+  "display_summary": "Centre National du Droit du Travail : 150 000 lignes revendiquées après une faille SQL",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-D2FB7EB1592C": {
@@ -2947,10 +3072,9 @@
   "version": 3
  },
  "INC-D9E27A4834F8": {
-  "display_summary": "Aqua-Store confirme l'extraction de sa base de données clients après une cyberattaque les 29 et 30 septembre 2026.",
+  "display_summary": "Aqua-Store : les données clients et historiques de commandes volés après une cyberattaque",
   "summary_paragraphs": [
-   "Aqua-Store confirme avoir été victime d'une cyberattaque ayant permis l'extraction de sa base de données clients.",
-   "Les données compromises peuvent comprendre noms, adresses email, adresses postales, dates de naissance et numéros de téléphone."
+   "L'intrusion, survenue les 29 et 30 septembre 2026, aurait permis d'extraire des informations personnelles et des historiques de commandes."
   ],
   "version": 3
  },
@@ -3124,6 +3248,24 @@
  },
  "INC-E1DAFF22CE19": {
   "display_summary": "Région Centre-Val de Loire : des milliers de dossiers en fuite après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-E2A97D3DEBFA": {
+  "display_summary": "Institut Sourdille Atlantique : les patients exposés après la cyberattaque d’Alaxione",
   "sensitive_data": {
    "types": [
     {
@@ -3353,6 +3495,11 @@
   ],
   "version": 3
  },
+ "INC-EF6AF4F03502": {
+  "display_summary": "Saint-Pierre-des-Corps : une cyberattaque perturbe ses systèmes",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-F01F1A75909C": {
   "display_summary": "Venus1337 revendique la fuite de 732 385 fiches d'adhérents et 440 326 IBAN de L’Orange bleue.",
   "sensitive_data": {
@@ -3433,6 +3580,11 @@
    "Une fuite de données vise l’Hôpital Paris Saint-Joseph avec des fichiers publiés contenant les données de plus de 15 000 patients disponibles au téléchargement.",
    "Le principal fichier contient 15 060 identifiants patients distincts associés à des noms, adresses e-mail et informations de paiements."
   ],
+  "version": 3
+ },
+ "INC-F624C40BD089": {
+  "display_summary": "Les données de 55 000 clients d'Eau Cœur d’Essonne seraient mises en vente sur le dark web.",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-F6EA93C0805A": {
@@ -3522,6 +3674,14 @@
   "summary_paragraphs": [
    "Un pirate nommé « RedStone » affirme avoir récupéré une base contenant près de 1,43 million d’enregistrements d’adhérents de la FFRandonnée.",
    "Le pirate propose à la vente environ 317 Mo de fichiers CSV comprenant e-mails, téléphones, adresses et données présentées comme médicales."
+  ],
+  "version": 3
+ },
+ "INC-FCBE905E1444": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant FitnessBoutique.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant FitnessBoutique.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Numéro de téléphone ; Date de naissance ; Status de fidélité."
   ],
   "version": 3
  },

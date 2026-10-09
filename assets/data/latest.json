@@ -2,6 +2,244 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-09",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-BBF76A545815",
+  "location": "France métropolitaine",
+  "org": "ASP",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Administration / Collectivité"
+   ],
+   "evidence": "L’ASP intervient justement pour le compte de l’État et de plusieurs régions dans la gestion administrative et le versement de la  rémunération des stagiaires de la formation professionnelle .",
+   "evidence_url": "https://www.cyberattaque.org/asp-frappe-par-une-nouvelle-cyberattaque-29-611-personnes-exposees/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/asp-frappe-par-une-nouvelle-cyberattaque-29-611-personnes-exposees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agence-de-services-et-de-paiement-asp-mv0ezdl3icbsppki7i"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ASP frappé par une nouvelle cyberattaque : 29 611 personnes exposées",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B039906F8F9A",
+  "location": "France métropolitaine",
+  "org": "SKIF Belgium",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/skif-belgium-f-d-ration-belge-de-karat-mv0emtc43pd3ulth9wa",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/skif-belgium-f-d-ration-belge-de-karat-mv0emtc43pd3ulth9wa"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "SKIF Belgium visée par une fuite de données revendiquée, une base de 8 840 personnes proposée à la vente.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-76971BFA51B9",
+  "location": "France métropolitaine",
+  "org": "Distinxion",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Distinxion, réseau français spécialisé dans la vente de véhicules d’occasion récents et à faible kilométrage, est visé par…",
+   "evidence_url": "https://www.cyberattaque.org/distinxion-autos-fr-pres-de-500-000-prospects-exposes-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/distinxion.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Distinxion.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-13200FD49444",
+  "location": "France métropolitaine",
+  "org": "Quick",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/quick.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Quick.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FCBE905E1444",
+  "location": "France métropolitaine",
+  "org": "FitnessBoutique",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fitnessboutique.jpg"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant FitnessBoutique.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F624C40BD089",
+  "location": "France métropolitaine",
+  "org": "Eau coeur d'Essonne",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/eau-coeur-d-essonne-muzn191gxgjagxzkie",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/eau-coeur-d-essonne-muzn191gxgjagxzkie"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les données de 55 000 clients d'Eau Cœur d’Essonne seraient mises en vente sur le dark web.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EF6AF4F03502",
+  "location": "Inconnu",
+  "org": "Saint-Pierre-des-Corps",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/saint-pierre-des-corps-une-cyberattaque-perturbe-ses-systemes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Saint-Pierre-des-Corps : une cyberattaque perturbe ses systèmes",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-08",
   "high_sensitivity_data_exposed": false,
   "id": "INC-E6CCB8C573E7",
@@ -37,6 +275,37 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E2A97D3DEBFA",
+  "location": "Inconnu",
+  "org": "Institut Sourdille Atlantique",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/institut-sourdille-atlantique-les-patients-exposes-apres-la-cyberattaque-dalaxione/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Institut Sourdille Atlantique : les patients exposés après la cyberattaque d’Alaxione",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -113,7 +382,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Aqua-Store confirme l'extraction de sa base de données clients après une cyberattaque les 29 et 30 septembre 2026.",
+  "summary": "Aqua-Store : les données clients et historiques de commandes volés après une cyberattaque",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -144,10 +413,10 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Le Centre National du Droit du Travail fait l’objet d’une revendication de fuite de 150 000 lignes après une faille SQL alléguée.",
+  "summary": "Centre National du Droit du Travail : 150 000 lignes revendiquées après une faille SQL",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "claimed"
+   "status": "unknown"
   }
  },
  {
@@ -195,6 +464,34 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-08",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-AFB021A15908",
+  "location": "France métropolitaine",
+  "org": "SOCOCO",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technology",
+   "evidence_url": "http://umbra7isogjsgdcndz3uu6qvl5zftjptt6s3iiuecjlwbt4yqyvrhcid.onion",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-A489C56960A9",
   "location": "France métropolitaine",
   "org": "Justice.fr",
@@ -228,6 +525,74 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-85B65263A155",
+  "location": "Inconnu",
+  "org": "Eau Cœur d’Essonne",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Eau Cœur d’Essonne  est une régie publique créée pour assurer directement la distribution de l’eau potable sur le territoire de Cœur d’Essonne Agglomération.",
+   "evidence_url": "https://www.cyberattaque.org/eau-coeur-dessonne-55-000-contrats-deau-en-fuite-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/eau-coeur-dessonne-55-000-contrats-deau-en-fuite-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Eau Cœur d’Essonne : 55 000 contrats d’eau en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-70737EF727A7",
+  "location": "France métropolitaine",
+  "org": "Boullard Musique",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Retail & E-Commerce",
+   "evidence_url": "http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/c76973f9-dba2-4851-87b0-0c26fd6192f1",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/c76973f9-dba2-4851-87b0-0c26fd6192f1"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
   }
  },
  {
@@ -343,6 +708,129 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-08",
   "high_sensitivity_data_exposed": true,
+  "id": "INC-58395B4BE203",
+  "location": "France métropolitaine",
+  "org": "Les Métaux Précieux",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Les Métaux Précieux  est une société française spécialisée dans la vente et le rachat d’or et d’argent.",
+   "evidence_url": "https://www.cyberattaque.org/les-metaux-precieux-18-794-photos-de-pieces-didentite-et-16-822-rib-exposes/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/les-metaux-precieux-18-794-photos-de-pieces-didentite-et-16-822-rib-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les Métaux Précieux : 134 000 commandes exposées, avec pièces d’identité et RIB d’acheteurs d’or",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-576B7F1829F8",
+  "location": "France métropolitaine",
+  "org": "EPITA",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/epita-muzr046e2dqzncv1z5r",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/epita-11-074-profils-en-fuite-apres-un-acces-malveillant-a-son-annuaire/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/epita-muzr046e2dqzncv1z5r"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "EPITA : 11 074 profils en fuite après un accès malveillant à son annuaire",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-56CC02EDADEE",
+  "location": "France métropolitaine",
+  "org": "Peggy Sage",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/peggy-sage-muzn7yrso630xi9d6dk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/peggy-sage-106-000-fichiers-sensibles-diffuses-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/peggy-sage-muzn7yrso630xi9d6dk"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Peggy Sage : 106 000 fichiers sensibles diffusés après la cyberattaque de 2025",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": true,
   "id": "INC-5670759E18BE",
   "location": "Inconnu",
   "org": "Les Cousins",
@@ -351,7 +839,7 @@
   "sector": "Culture / Médias / Loisirs",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "Les Cousins, entreprise française spécialisée dans la vente de produits et de matériel pour la céramique, la poterie et les loisirs créatifs , confirme une cyberattaque particulièrement sensible sur son site marchand.",
+   "evidence": "Les Cousins , entreprise française spécialisée dans la vente de produits et de matériel pour la  céramique, la poterie et les loisirs créatifs , confirme une cyberattaque particulièrement sensible sur son site marchand.",
    "evidence_url": "https://www.cyberattaque.org/cyberattaque-les-cousins-un-hacker-intercepte-les-donnees-de-cartes-bancaires/",
    "reason": "ACTIVITY_RULE",
    "status": "inferred"
@@ -454,6 +942,40 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-08",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-37F3A66690B2",
+  "location": "France métropolitaine",
+  "org": "Mairie de Saint-Pierre-des-Corps",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Mairie de Saint-Pierre-des-Corps",
+   "evidence_url": "https://frenchbreaches.com/alertes/mairie-de-saint-pierre-des-corps-muzs72wmvuffv5f3x98",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mairie-de-saint-pierre-des-corps-muzs72wmvuffv5f3x98"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-08",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-213413E40675",
   "location": "France métropolitaine",
   "org": "Sinequae",
@@ -477,7 +999,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "SINEQUAE, société de commissaires de justice, fait l'objet d'une revendication de vol de 65 Go de données judiciaires et financières par le groupe LAMASHTU.",
+  "summary": "",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -501,6 +1023,11 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/trainme.png"
+   },
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/trainme-la-filiale-de-decathlon-touchee-par-une-fuite-de-donnees-des-informations-de-sante-exposees/"
@@ -512,6 +1039,7 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
@@ -546,7 +1074,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Bordeaux Sciences Agro confirme une violation ayant permis l'extraction de données de son application de gestion des conventions de stage.",
+  "summary": "Cyberattaque contre Bordeaux Sciences Agro : les données de conventions de stage extraites",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -751,7 +1279,7 @@
   "organisation_links": [
    "https://www.reso.fr"
   ],
-  "personal_data_exposed": false,
+  "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.9,
@@ -762,18 +1290,24 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/reso-676-go-de-donnees-publies-par-un-ransomware/"
+   },
+   {
     "label": "xjhmtitnrdrgzw4vmsghirdoo2fk35a3tzj4enlmah4pvehdspydsiyd.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://xjhmtitnrdrgzw4vmsghirdoo2fk35a3tzj4enlmah4pvehdspydsiyd.onion/blog/?post_uuid=e7424f37-2786-42d1-a413-a7c88a8b1796"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "",
+  "summary": "Réso : 676 Go de données publiées par un ransomware",
   "threat": "Ransomware",
   "threat_status": {
-   "status": "claimed"
+   "status": "reported"
   }
  },
  {
@@ -8540,56 +9074,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "admission_reason": "Cyberattaque confirmée publiquement par la collectivité et reprise par plusieurs sources locales.",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-09",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-A6AC87645DB8",
-  "location": "La Réunion",
-  "org": "Ville du Tampon",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Ville du Tampon",
-   "evidence_url": "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Réunion La 1ère",
-    "source": "VEILLE_LLM",
-    "url": "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "VEILLE_LLM",
-    "url": "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "VEILLE_LLM",
-    "url": "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm"
-   },
-   {
-    "label": "Linfo.re",
-    "source": "VEILLE_LLM",
-    "url": "https://www.linfo.re/la-reunion/societe/la-mairie-du-tampon-victime-d-une-cyberattaque-il-pourrait-y-avoir-une-fuite-de-donnees-c-est-une-hypothese"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "summary": "",
-  "threat": "Inconnu",
-  "threat_status": {
-   "status": "unknown"
   }
  }
 ]
