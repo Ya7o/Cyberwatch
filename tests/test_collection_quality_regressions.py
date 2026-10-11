@@ -134,6 +134,38 @@ def test_quota_failure_is_explicit_in_qualification():
     assert "quota API LLM épuisé : insufficient_quota" in result["reasons"]
 
 
+def test_repeated_429_is_not_reported_as_billing_quota():
+    from cyberwatch import qualification
+
+    result = qualification.evaluate(qualification.QualificationRun(
+        run_id="outage", documented=True,
+        transport={"provider_blocked_reason": "repeated_http_429", "http_429": 3,
+                   "calls_provider_blocked": 20, "provider_error_formats": {"non_json": 3}},
+    ))
+    assert result["state"] == qualification.STATE_PARTIAL
+    assert not any("quota" in reason for reason in result["reasons"])
+    assert any("non JSON" in reason for reason in result["reasons"])
+    assert any("20 appel(s)" in reason for reason in result["reasons"])
+
+
+def test_audit_qualification_reads_its_own_queue_and_transport(tmp_path, monkeypatch):
+    from cyberwatch import qualification
+
+    live = tmp_path / 'live'
+    archived = tmp_path / 'archive'
+    live.mkdir()
+    archived.mkdir()
+    (live / 'dedup_review_queue.json').write_text('[{"pair_key":"live"}]')
+    (archived / 'dedup_review_queue.json').write_text('[{"pair_key":"audit"}]')
+    monkeypatch.setattr(store, 'DATA_DIR', live)
+    run = qualification.load_run('RUN-OLD', root=archived)
+    assert run.pending_pairs == [{'pair_key': 'audit'}]
+    frozen = qualification.run_from_snapshot({
+        'snapshot': {'Run_ID': 'RUN-OLD'}, 'llm_usage': {'http_429': 3},
+    })
+    assert '3 refus HTTP 429 de l\'API LLM' in qualification.evaluate(frozen)['reasons']
+
+
 def test_published_partial_source_is_visible_even_when_overall_run_is_ok(monkeypatch):
     monkeypatch.setattr(store, "load_run_sources", lambda: [
         {"Run_ID": "OLD", "Source_ID": "FRENCHBREACHES", "Status": "FAIL"},

@@ -140,7 +140,7 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
         # La file est globale et sans identifiant de run : la prêter à un run
         # ancien lui ferait décrire un état qui n'est pas le sien.
         deferred, deferred_source = [], ""
-    pending = _read_json(store.DATA_DIR / "dedup_review_queue.json")
+    pending = _read_json((root or store.DATA_DIR) / "dedup_review_queue.json")
     return QualificationRun(
         run_id=run_id,
         extraction=extraction if isinstance(extraction, dict) else {},
@@ -177,6 +177,7 @@ def run_from_snapshot(payload: dict) -> QualificationRun:
         # dire, plutôt que d'annoncer zéro.
         deferred_source="archive" if payload.get("deferred_entries") is not None else "",
         sectors=payload.get("sector_qualification"),
+        transport=payload.get("llm_usage") if isinstance(payload.get("llm_usage"), dict) else {},
     )
 
 
@@ -333,10 +334,9 @@ def evaluate(run: QualificationRun) -> dict:
 
     extraction = _extraction_counts(run)
     dedup = _dedup_counts(run)
-    if run.transport.get("provider_blocked_reason"):
-        reasons.append("quota API LLM épuisé : " + str(run.transport["provider_blocked_reason"]))
-    elif run.transport.get("http_429"):
-        reasons.append(f"{run.transport['http_429']} refus HTTP 429 de l'API LLM")
+    from . import llm_provider
+
+    reasons.extend(llm_provider.qualification_reasons(run.transport))
 
     if pending_required:
         reasons.append(f"{pending_required} champ(s) d'extraction différé(s)")

@@ -10,10 +10,11 @@ from cyberwatch.collectors import semantic_claims
 
 
 class _Response:
-    def __init__(self, status_code=200, payload=None, text=""):
+    def __init__(self, status_code=200, payload=None, text="", headers=None):
         self.status_code = status_code
         self._payload = payload or {}
         self.text = text
+        self.headers = headers or {}
 
     def json(self):
         return self._payload
@@ -198,6 +199,104 @@ def test_http_error_details_are_not_exposed_in_telemetry(monkeypatch):
     assert str(failure.value) == "HTTP 429: unknown_provider_error"
     assert runtime.stats.provider_error_codes == {"unknown_provider_error": 1}
     assert runtime.stats.provider_blocked_reason == ""
+
+
+def test_repeated_429_stops_transport_across_tasks_and_new_run_recovers(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    calls = []
+    unavailable = True
+
+    def post(*args, **kwargs):
+        calls.append(kwargs)
+        return _Response(status_code=429) if unavailable else _Response(payload=_payload({"value": "ok"}))
+
+    monkeypatch.setattr(llm_runtime.requests, "post", post)
+    runtime = llm_runtime.LlmRuntime()
+    for task in ["source_facts", "source_facts", "dedup"]:
+        with pytest.raises(llm_runtime.LlmError, match="HTTP 429"):
+            runtime.post_response(task=task, body={"model": "gpt-5-mini"})
+    with pytest.raises(llm_runtime.LlmProviderUnavailable, match="repeated_http_429"):
+        runtime.post_response(task="dedup", body={"model": "gpt-5-mini"})
+    assert len(calls) == runtime.stats.calls_failed == runtime.stats.calls_attempted == 3
+    assert runtime.stats.by_task["dedup"]["calls_provider_blocked"] == 1
+    unavailable = False
+    fresh = llm_runtime.LlmRuntime()
+    fresh.post_response(task="dedup", body={"model": "gpt-5-mini"})
+    assert fresh.stats.calls_succeeded == 1
+
+
+def test_success_resets_consecutive_429_counter(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    responses = iter([_Response(status_code=429), _Response(status_code=429),
+                      _Response(payload=_payload({"value": "ok"})), _Response(status_code=429)])
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *a, **kw: next(responses))
+    runtime = llm_runtime.LlmRuntime()
+    for failed in [True, True, False, True]:
+        if failed:
+            with pytest.raises(llm_runtime.LlmError):
+                runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+        else:
+            runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    assert runtime.stats.provider_blocked_reason == ""
+
+
+def test_retry_after_is_respected_without_a_long_blocking_sleep(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("LLM_MAX_RETRIES", "2")
+    clock = [100.0]
+    monkeypatch.setattr(llm_runtime, "_monotonic", lambda: clock[0])
+    monkeypatch.setattr(llm_runtime.time, "sleep", lambda _: pytest.fail("long delay must be deferred"))
+    responses = iter([_Response(status_code=429, headers={"Retry-After": "120"}),
+                      _Response(payload=_payload({"value": "ok"}))])
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *a, **kw: next(responses))
+    runtime = llm_runtime.LlmRuntime()
+    with pytest.raises(llm_runtime.LlmError, match="HTTP 429"):
+        runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    clock[0] = 219
+    with pytest.raises(llm_runtime.LlmProviderUnavailable, match="retry_after"):
+        runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    clock[0] = 220
+    runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    assert runtime.stats.calls_attempted == 2
+
+
+def test_short_retry_after_uses_provider_delay(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("LLM_MAX_RETRIES", "1")
+    sleeps = []
+    monkeypatch.setattr(llm_runtime.time, "sleep", sleeps.append)
+    responses = iter([_Response(status_code=429, headers={"Retry-After": "5"}),
+                      _Response(payload=_payload({"value": "ok"}))])
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *a, **kw: next(responses))
+    result = llm_runtime.LlmRuntime().post_response(task="unit", body={"model": "gpt-5-nano"})
+    assert result.retries == 1
+    assert sleeps == [5]
+
+
+def test_non_json_failure_is_identified_without_exposing_body(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+
+    class NonJson(_Response):
+        def json(self):
+            raise ValueError("private proxy detail")
+
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *a, **kw: NonJson(
+        status_code=429, text="private response body"))
+    runtime = llm_runtime.LlmRuntime()
+    with pytest.raises(llm_runtime.LlmError, match="unknown_provider_error"):
+        runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    assert runtime.stats.provider_error_formats == {"non_json": 1}
+    assert "private" not in str(runtime.stats)
+
+
+def test_known_error_type_is_used_when_code_is_unknown(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *a, **kw: _Response(
+        status_code=429, payload={"error": {"code": "private-code", "type": "insufficient_quota"}}))
+    runtime = llm_runtime.LlmRuntime()
+    with pytest.raises(llm_runtime.LlmError, match="insufficient_quota"):
+        runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    assert runtime.stats.provider_blocked_reason == "insufficient_quota"
 
 
 def test_runtime_retries_timeout_then_fails(monkeypatch):

@@ -20,16 +20,14 @@ from typing import Any
 
 import requests
 
+from . import llm_provider
+
 DEFAULT_MODEL = "gpt-5-nano"
 RICH_MODEL = "gpt-5-mini"
 OPENAI_URL = "https://api.openai.com/v1/responses"
 DEFAULT_TIMEOUT_SECONDS = 30
 DEFAULT_MAX_RETRIES = 0
-_PROVIDER_ERROR_CODES = {
-    "insufficient_quota", "billing_hard_limit_reached", "rate_limit_exceeded",
-    "invalid_api_key", "model_not_found", "invalid_request_error", "server_error",
-}
-_PERMANENT_QUOTA_ERRORS = {"insufficient_quota", "billing_hard_limit_reached"}
+_PERMANENT_QUOTA_ERRORS = llm_provider.QUOTA_ERRORS
 DEFAULT_PRICING = {
     "gpt-5-nano": {"input": 0.05, "cached_input": 0.005, "output": 0.40},
     "gpt-4o-mini": {"input": 0.15, "cached_input": 0.075, "output": 0.60},
@@ -111,6 +109,10 @@ class LlmBudgetExceeded(LlmError):
     pass
 
 
+class LlmProviderUnavailable(LlmError):
+    """Appel différé avant transport ; aucune tentative métier n'a eu lieu."""
+
+
 @dataclass(frozen=True)
 class LlmUsage:
     input_tokens: int = 0
@@ -162,6 +164,8 @@ class LlmRuntimeStats:
     retries: int = 0
     http_429: int = 0
     provider_error_codes: dict[str, int] = field(default_factory=dict)
+    provider_error_formats: dict[str, int] = field(default_factory=dict)
+    provider_retry_after_seconds: float = 0.0
     provider_blocked_reason: str = ""
     calls_provider_blocked: int = 0
     http_5xx: int = 0
@@ -185,6 +189,8 @@ class LlmRuntime:
         self.max_retries = _env_int("LLM_MAX_RETRIES", DEFAULT_MAX_RETRIES)
         self.stats = LlmRuntimeStats()
         self.run_id = ""
+        self._consecutive_429 = 0
+        self._provider_retry_at = 0.0
         self._lock = threading.Lock()
 
     @property
@@ -252,6 +258,8 @@ class LlmRuntime:
         with self._lock:
             s = self.stats
             s.calls_succeeded += 1
+            self._consecutive_429 = 0
+            self._provider_retry_at = 0.0
             s.retries += retries
             s.input_tokens += usage.input_tokens
             s.cached_input_tokens += usage.cached_input_tokens
@@ -283,28 +291,48 @@ class LlmRuntime:
             b["duration_seconds"] += duration
 
     def _provider_error(self, response) -> str:
-        try:
-            payload = response.json()
-        except (ValueError, TypeError):
-            payload = {}
-        error = payload.get("error") if isinstance(payload, dict) else None
-        raw = str(error.get("code") or error.get("type") or "") if isinstance(error, dict) else ""
-        code = raw if raw in _PROVIDER_ERROR_CODES else "unknown_provider_error"
+        code, error_format = llm_provider.error_diagnostic(response)
+        retry_after = llm_provider.retry_after_seconds(response)
         with self._lock:
             counts = self.stats.provider_error_codes
             counts[code] = counts.get(code, 0) + 1
+            formats = self.stats.provider_error_formats
+            formats[error_format] = formats.get(error_format, 0) + 1
+            self._consecutive_429 = self._consecutive_429 + 1 if response.status_code == 429 else 0
+            if response.status_code == 429:
+                self.stats.provider_retry_after_seconds = retry_after
+                self._provider_retry_at = _monotonic() + retry_after
             if code in _PERMANENT_QUOTA_ERRORS:
                 self.stats.provider_blocked_reason = code
+            elif self._consecutive_429 >= 3:
+                self.stats.provider_blocked_reason = "repeated_http_429"
         return code
+
+    def _retry_http(self, response, retries: int) -> bool:
+        if self.stats.provider_blocked_reason or retries >= self.max_retries:
+            return False
+        if response.status_code != 429 and not 500 <= response.status_code < 600:
+            return False
+        delay = max(2 ** (retries + 1), llm_provider.retry_after_seconds(response))
+        if delay > 30:
+            return False  # Un délai long est différé, jamais raccourci.
+        time.sleep(delay)
+        return True
 
     def post_response(self, *, task: str, body: dict, api_key: str | None = None):
         key = (api_key or self.api_key or "").strip()
         if not key:
             raise LlmError("OPENAI_API_KEY absente")
         with self._lock:
-            if self.stats.provider_blocked_reason:
+            if self.stats.provider_blocked_reason or _monotonic() < self._provider_retry_at:
                 self.stats.calls_provider_blocked += 1
-                raise LlmError(f"OpenAI indisponible pour ce run : {self.stats.provider_blocked_reason}")
+                self._task_bucket(task)["calls_provider_blocked"] = (
+                    self._task_bucket(task).get("calls_provider_blocked", 0) + 1
+                )
+                raise LlmProviderUnavailable(
+                    "OpenAI indisponible pour ce run : "
+                    + (self.stats.provider_blocked_reason or "retry_after")
+                )
 
         request_body = dict(body)
         requested_model = str(body.get("model") or "")
@@ -355,7 +383,6 @@ class LlmRuntime:
                         declared_model=str(payload.get("model") or ""),
                     )
 
-                retryable = response.status_code == 429 or 500 <= response.status_code < 600
                 if response.status_code == 429:
                     with self._lock:
                         self.stats.http_429 += 1
@@ -363,9 +390,8 @@ class LlmRuntime:
                     with self._lock:
                         self.stats.http_5xx += 1
                 code = self._provider_error(response)
-                if retryable and code not in _PERMANENT_QUOTA_ERRORS and retries < self.max_retries:
+                if self._retry_http(response, retries):
                     retries += 1
-                    time.sleep(2**retries)
                     continue
                 raise LlmError(f"HTTP {response.status_code}: {code}")
         except Exception:

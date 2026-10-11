@@ -20,14 +20,14 @@ def _too_large(state) -> int:
 def daily_status(state) -> str:
     if not state.enabled or not state.daily_enabled:
         return DAILY_STATUS_LLM_DISABLED
-    if state.candidates_not_reviewed_capacity > 0 or _too_large(state) > 0:
-        return DAILY_STATUS_CAPACITY_LIMIT
-    if state.calls_budget_blocked > 0 and state.batch_calls_succeeded == 0:
+    if state.calls_budget_blocked > 0:
         return DAILY_STATUS_BUDGET_BLOCKED
-    if state.batch_calls_failed > 0 and state.batch_calls_succeeded == 0:
+    if state.batch_calls_failed > 0 or getattr(state, "calls_provider_blocked", 0):
         return DAILY_STATUS_LLM_ERROR
     if any(row.get("status") == "ERROR" for row in state.review_rows):
         return DAILY_STATUS_LLM_ERROR
+    if state.candidates_not_reviewed_capacity > 0 or _too_large(state) > 0:
+        return DAILY_STATUS_CAPACITY_LIMIT
     if state.pending_rows:
         return "REVIEW_REQUIRED"
     if state.candidates_generated == 0:
@@ -51,6 +51,7 @@ def daily_summary(state) -> dict[str, object]:
         "dedup_llm_calls": state.batch_calls_attempted,
         "dedup_llm_calls_succeeded": state.batch_calls_succeeded,
         "dedup_llm_calls_failed": state.batch_calls_failed,
+        "dedup_llm_calls_provider_blocked": getattr(state, "calls_provider_blocked", 0),
         "dedup_llm_cache_hits": state.cache_hits,
         "dedup_llm_same_org": state.same_organisation_count,
         "dedup_llm_same_incident": state.same_incident_count,

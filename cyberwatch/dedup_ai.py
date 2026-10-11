@@ -79,10 +79,12 @@ class DedupAiRunState:
     #: la collecte quotidienne par `DEDUP_AI_DAILY_ENABLED=1`.
     daily_enabled: bool = False
     daily_max_candidates: int = 40
+    daily_max_batches: int = 1
     calls_attempted: int = 0
     calls_succeeded: int = 0
     calls_failed: int = 0
     calls_budget_blocked: int = 0
+    calls_provider_blocked: int = 0
     cache_hits: int = 0
     estimated_cost_usd: float = 0.0
     #: Compteurs dédiés au batch quotidien, distincts des compteurs
@@ -149,11 +151,8 @@ def start_run(cache_path: Path) -> DedupAiRunState:
         # Cas réel constaté sur RUN-20260825T084327 (fenêtre MAJ à recouvrement
         # de 21 jours, §MAJ_OVERLAP_DAYS) : 428 candidats générés, 8000
         # caractères n'en laissaient passer que 4 avant capacité — parmi les
-        # 424 non revus, au moins 3 paires (Capgemini/Capgemini Engineering,
-        # Netim/Netim Company, Intermarché/Intermarché Drive) étaient des
-        # doublons réels confirmés manuellement. Un seul appel/jour reste la
-        # règle (§Lot 4) ; le coût suit le nombre de candidats effectivement
-        # envoyés et reste négligeable (~$0.0002/candidat mesuré ce jour-là).
+        # 424 non revus, au moins 3 paires étaient des doublons réels confirmés.
+        # Les lots supplémentaires sont bornés et restent sous le même budget.
         max_context_chars=_env_int("DEDUP_AI_MAX_CONTEXT_CHARS", 40000),
         # 350 suffisait pour une décision paire-à-paire ; le batch quotidien
         # (§Lot 3/4) répond potentiellement pour des dizaines de candidats
@@ -164,6 +163,7 @@ def start_run(cache_path: Path) -> DedupAiRunState:
         max_output_tokens=_env_int("DEDUP_AI_MAX_OUTPUT_TOKENS", 6000),
         daily_enabled=_env_bool("DEDUP_AI_DAILY_ENABLED", True),
         daily_max_candidates=_env_int("DEDUP_AI_DAILY_MAX_CANDIDATES", 40),
+        daily_max_batches=max(1, min(3, _env_int("DEDUP_AI_DAILY_MAX_BATCHES", 1))),
     )
     state.requested_model = requested_model
     for row in _read_rows(cache_path):
@@ -659,6 +659,7 @@ def _uncached_batch_entries(
 def _select_batch_entries(
     entries: list[tuple[DedupAuditCandidate, dict, str]], state: DedupAiRunState,
     results: dict[str, DedupAiDecision],
+    *, candidate_limit: int | None = None,
 ) -> list[tuple[DedupAuditCandidate, dict, str]]:
     selected: list[tuple[DedupAuditCandidate, dict, str]] = []
     deferred: list[tuple[DedupAuditCandidate, str]] = []
@@ -669,7 +670,7 @@ def _select_batch_entries(
         candidate, payload, _ = entry
         serialized_len = len(json.dumps(payload, ensure_ascii=False, sort_keys=True,
                                         separators=(",", ":")))
-        if full or len(selected) >= state.daily_max_candidates:
+        if full or len(selected) >= (state.daily_max_candidates if candidate_limit is None else candidate_limit):
             full = True
             deferred.append((candidate, STATUS_NOT_REVIEWED_CAPACITY))
             continue
@@ -708,6 +709,11 @@ def _call_batch(
         state.calls_budget_blocked += 1
         for candidate, _, _ in selected:
             results[_pair_key(candidate)] = DedupAiDecision(status=STATUS_BUDGET_BLOCKED)
+        return None
+    except llm_runtime.LlmProviderUnavailable:
+        state.calls_provider_blocked += 1
+        for candidate, _, _ in selected:
+            results[_pair_key(candidate)] = DedupAiDecision(status=STATUS_ERROR, reason="PROVIDER_HTTP_429")
         return None
     except llm_runtime.LlmError as exc:
         state.calls_attempted += 1
@@ -805,20 +811,11 @@ def challenge_candidates_batch(
     state: DedupAiRunState,
     company_ids: dict[str, str] | None = None,
 ) -> dict[str, DedupAiDecision]:
-    """Challenge N candidats en au plus un seul appel LLM (§Lot 3/4).
+    """Challenge en lots bornés, sans dépasser le plafond total de candidats.
 
-    Contrairement à `challenge_candidate` (paire-à-paire, conservé pour
-    `export_dedup_audit.py` et le backfill manuel), cette fonction structure
-    systématiquement un unique appel `Structured Output` pour la totalité des
-    candidats retenus du run. Elle ne fait jamais plus d'un appel réseau,
-    quel que soit le nombre de candidats reçus : au-delà de la capacité
-    (nombre ou taille de contexte), les candidats en trop sont explicitement
-    marqués `NOT_REVIEWED_CAPACITY` plutôt que silencieusement ignorés ou
-    envoyés dans un second appel.
-
-    Le budget et le transport passent par `llm_runtime` (tâche `"dedup"`),
-    afin de centraliser budgets et télémétrie LLM (§Lot 14/20) plutôt que de
-    dupliquer une politique de coût parallèle à celle du runtime central.
+    Un lot par défaut, jusqu'à trois si configuré. Les paires conservent leur
+    contexte entier ; un budget épuisé ou une panne arrête les lots suivants.
+    Les candidats restants sont explicitement différés pour une autre collecte.
     """
     company_ids = company_ids or {}
     results: dict[str, DedupAiDecision] = {}
@@ -840,12 +837,9 @@ def challenge_candidates_batch(
     to_call = _uncached_batch_entries(worthy, facts_by_item, state, company_ids, results)
     if not to_call:
         return results
-    selected = _select_batch_entries(to_call, state, results)
-    if not selected:
-        return results
-    call_result = _call_batch(selected, state, results)
-    if call_result is not None:
-        _store_batch_decisions(selected, call_result, state, results)
+    from . import dedup_ai_batches
+
+    dedup_ai_batches.challenge(to_call, state, results)
     return results
 
 

@@ -54,6 +54,8 @@ jobs:
           # après — sans marge il serait coupé en budget_blocked.
           LLM_MAX_COST_USD_PER_RUN: "0.035"
           DEDUP_AI_DAILY_ENABLED: "1"
+          # Jusqu'à trois lots, 40 paires au total, budget partagé inchangé.
+          DEDUP_AI_DAILY_MAX_BATCHES: "3"
           # Niveau 2 : résolution externe d'activité métier. Activé après le
           # benchmark d'activation (validation/external_activity_20/report.md,
           # 20/20, dix portes bloquantes franchies). Le moteur possède son

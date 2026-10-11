@@ -7,6 +7,7 @@ import pytest
 
 from cyberwatch import dedup, dedup_ai, dedup_review, incident_dedup, llm_runtime, org_identity, runner_dedup
 from cyberwatch.model import Item
+from cyberwatch import duplicate_audit
 
 
 FIXTURES = Path(__file__).parent / 'fixtures/editorial_20260906'
@@ -60,6 +61,89 @@ def mock_transport(monkeypatch, label='SAME'):
 def examples():
     rows = json.loads((FIXTURES / 'dedup_pairs.json').read_text())
     return [Item.from_row(r['item']) for r in rows], [r['facts'] for r in rows]
+
+
+def multibatch(tmp_path, monkeypatch):
+    items, facts = examples()
+    run = state(tmp_path, monkeypatch)
+    run.daily_max_batches = 3
+    fact_index = {r['Item_ID']: r for r in facts}
+    candidates = duplicate_audit.find_daily_llm_candidates(items, items, facts_by_item=fact_index)
+    entries = dedup_ai._uncached_batch_entries(candidates, fact_index, run, {}, {})
+    assert len(entries) == 2
+    run.max_context_chars = max(len(dedup_ai._batch_body([e], run)) for e in entries)
+    return run, items, facts
+
+
+def test_context_limited_pairs_are_processed_in_bounded_batches(tmp_path, monkeypatch):
+    run, items, facts = multibatch(tmp_path, monkeypatch)
+    calls = mock_transport(monkeypatch)
+    assert runner_dedup.apply_daily_decisions(run, items, items, facts) == []
+    assert len(calls) == run.batch_calls_succeeded == 2
+    assert run.candidates_selected == 2
+    assert run.candidates_not_reviewed_capacity == 0
+    assert run.incident_pairs_resolved == 2
+    assert not run.pending_rows
+    monkeypatch.setattr(org_identity, 'ORGANISATION_IDENTITY_REGISTRY', {
+        row['Alias_Key']: row['Canonical_Key'] for row in run.organisation_identity_rows})
+    incidents, _ = dedup.build_incidents_with_registry(items, [], run.incident_dedup_rows)
+    assert len(incidents) == 2
+
+
+def test_multibatch_preserves_total_candidate_limit(tmp_path, monkeypatch):
+    run, items, facts = multibatch(tmp_path, monkeypatch)
+    run.daily_max_candidates = 1
+    calls = mock_transport(monkeypatch)
+    runner_dedup.apply_daily_decisions(run, items, items, facts)
+    assert len(calls) == run.candidates_selected == 1
+    assert run.candidates_not_reviewed_capacity == 1
+    assert len(run.pending_rows) == 1
+
+
+@pytest.mark.parametrize('failure', ['quota', 'transport', 'budget'])
+def test_multibatch_stops_on_failure_and_keeps_remaining_queue(tmp_path, monkeypatch, failure):
+    run, items, facts = multibatch(tmp_path, monkeypatch)
+    calls = []
+
+    def unavailable(**kwargs):
+        calls.append(kwargs)
+        errors = {'quota': llm_runtime.LlmProviderUnavailable('OpenAI indisponible pour ce run'),
+                  'transport': llm_runtime.LlmError('HTTP 429: unknown_provider_error'),
+                  'budget': llm_runtime.LlmBudgetExceeded('budget épuisé')}
+        raise errors[failure]
+
+    monkeypatch.setattr(llm_runtime, 'runtime', lambda: SimpleNamespace(call_json=unavailable))
+    runner_dedup.apply_daily_decisions(run, items, items, facts)
+    assert len(calls) == 1
+    assert len(run.pending_rows) == 2
+    assert run.candidates_not_reviewed_capacity == 1
+    assert all(r['attempts'] == 0 for r in run.pending_rows)
+    if failure == 'quota':
+        assert run.batch_calls_attempted == 0
+        assert run.calls_provider_blocked == 1
+    assert dedup_ai.daily_status(run) == ('BUDGET_BLOCKED' if failure == 'budget' else 'LLM_ERROR')
+
+
+def test_budget_exhausted_after_first_batch_preserves_success_and_pending_pair(tmp_path, monkeypatch):
+    run, items, facts = multibatch(tmp_path, monkeypatch)
+    calls = mock_transport(monkeypatch)
+    successful = llm_runtime.runtime().call_json
+    attempted = []
+
+    def call_json(**kwargs):
+        attempted.append(kwargs)
+        if len(attempted) == 2:
+            raise llm_runtime.LlmBudgetExceeded('budget partagé épuisé')
+        return successful(**kwargs)
+
+    monkeypatch.setattr(llm_runtime, 'runtime', lambda: SimpleNamespace(call_json=call_json))
+    runner_dedup.apply_daily_decisions(run, items, items, facts)
+    assert len(calls) == run.batch_calls_succeeded == run.incident_pairs_resolved == 1
+    assert len(attempted) == 2
+    assert len(run.pending_rows) == 1
+    assert run.pending_rows[0]['status'] == 'BUDGET_BLOCKED'
+    assert run.pending_rows[0]['attempts'] == 0
+    assert dedup_ai.daily_status(run) == 'BUDGET_BLOCKED'
 
 
 def test_actual_pairs_are_merged_persisted_and_replayed(tmp_path, monkeypatch):

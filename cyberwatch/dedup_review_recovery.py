@@ -26,10 +26,12 @@ def recover_provider_failures(rows: list[dict], root: Path | None = None) -> lis
                     count = int(usage.get("calls_attempted") or 0)
                 except (TypeError, ValueError):
                     count = 0
+                tasks = usage.get("by_task")
+                dedup_usage = tasks.get("dedup") if isinstance(tasks, dict) else None
                 archived[run_id] = bool(count and count == usage.get("calls_failed")
                                         and count == usage.get("http_429")
                                         and not usage.get("calls_succeeded")
-                                        and usage.get("by_task", {}).get("dedup", {}).get("calls_failed"))
+                                        and isinstance(dedup_usage, dict) and dedup_usage.get("calls_failed"))
             if archived[run_id]:
                 row.update(status="ERROR", attempts=0, reason="PROVIDER_HTTP_429",
                            attempts_before_transport_recovery=row.get("attempts", 0))
