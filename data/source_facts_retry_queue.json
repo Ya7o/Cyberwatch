@@ -12282,7 +12282,7 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 4,
+   "attempts": 5,
    "entry": {
     "content": "Bordeaux Sciences Agro  confirme une violation de données ayant touché son  application de gestion des conventions de stage . L’établissement a détecté le  8 septembre 2026  un accès non autorisé ayant permis à un tiers d’extraire des informations relatives à des conventions enregistrées sur plusieurs années. \n\n\n\n La fuite concerne des conventions couvrant une période particulièrement large, allant des années scolaires  2020-2021 à 2026-2027 . Des informations relatives aux  étudiants mais également aux tuteurs et contacts au sein des entreprises d’accueil  ont été récupérées. \n\n\n\n Une grande école publique spécialisée dans l’agronomie \n\n\n\n  Bordeaux Sciences Agro , officiellement École Nationale Supérieure des Sciences Agronomiques de Bordeaux Aquitaine, est un établissement public d’enseignement supérieur et de recherche placé sous la tutelle du ministère chargé de l’Agriculture. \n\n\n\n Installée à  Gradignan, dans l’agglomération bordelaise , l’école forme notamment des ingénieurs agronomes et entretient de nombreux liens avec des entreprises et organismes accueillant ses étudiants dans le cadre de stages. \n\n\n\n Des données extraites sur près de six années universitaires \n\n\n\n L’établissement indique qu’un tiers est parvenu à  extraire des données contenues dans son application de gestion des conventions de stage . La compromission ne concerne donc pas uniquement l’année universitaire actuelle. \n\n\n\n Le périmètre annoncé comprend des conventions enregistrées entre  2020-2021 et 2026-2027 , soit plusieurs promotions successives d’étudiants et potentiellement un nombre important d’entreprises partenaires. \n\n\n\n Bordeaux Sciences Agro ne précise toutefois pas publiquement  le nombre de conventions extraites ni le nombre exact de personnes concernées . \n\n\n\n Étudiants, tuteurs et contacts en entreprise concernés \n\n\n\n Les données touchées sont décrites par l’école comme des  informations relatives aux étudiants ainsi qu’aux tuteurs ou contacts dans les entreprises . \n\n\n\n L’établissement ne publie pas la liste détaillée des champs effectivement récupérés. Une convention de stage permet néanmoins, par nature, d’établir une relation entre  un étudiant, son établissement et l’organisme qui l’accueille . Il convient toutefois de ne pas considérer que toutes les informations habituellement présentes dans une convention ont nécessairement été extraites : Bordeaux Sciences Agro ne le confirme pas. \n\n\n\n L’école apporte en revanche une précision importante :  aucun mot de passe, identifiant de connexion ou donnée bancaire n’est concerné  par l’incident. \n\n\n\n   \n\n\n\n L’application arrêtée et le serveur isolé \n\n\n\n Après la détection de l’accès non autorisé le  8 septembre , Bordeaux Sciences Agro indique avoir immédiatement  arrêté l’application concernée et isolé son serveur du réseau . \n\n\n\n Des investigations ont ensuite été menées afin de déterminer l’étendue de l’incident et les mesures nécessaires pour sécuriser l’application. L’établissement ne précise pas pour le moment  la vulnérabilité ou la méthode utilisée par l’attaquant pour obtenir l’accès . \n\n\n\n La CNIL notifiée deux jours après la découverte \n\n\n\n La violation de données a été  notifiée à la CNIL le 10 septembre 2026 , soit deux jours après sa détection. Bordeaux Sciences Agro indique également avoir signalé l’incident aux services compétents du  ministère de l’Agriculture . \n\n\n\n L’établissement annonce par ailleurs qu’une  plainte sera déposée . Les personnes identifiées comme concernées par la fuite sont informées individuellement. \n\n\n\n Les entreprises partenaires également appelées à la vigilance \n\n\n\n L’un des principaux risques identifiés concerne désormais les tentatives de  phishing et de fraude utilisant le contexte réel d’un stage . Un attaquant disposant d’informations sur une relation entre un étudiant et une entreprise pourrait tenter de se faire passer pour l’école, le stagiaire ou un interlocuteur de l’entreprise. \n\n\n\n Bordeaux Sciences Agro adresse d’ailleurs une mise en garde spécifique à ses partenaires et leur demande d’être particulièrement vigilants face aux  demandes de modification de coordonnées bancaires  ou aux messages présentés comme étant liés à une convention de stage. \n\n\n\n L’école rappelle qu’elle  ne demande jamais de modification de coordonnées bancaires par email . Ce type de fraude pourrait notamment chercher à détourner un paiement en profitant d’informations permettant de rendre le message plus crédible. \n\n\n\n Le volume exact de la fuite reste inconnu \n\n\n\n L’incident est donc  officiellement confirmé par Bordeaux Sciences Agro , tout comme l’extraction effective de données depuis l’application de gestion des conventions de stage. \n\n\n\n Le nombre de personnes concernées et le volume total de données récupérées ne sont en revanche pas communiqués. L’attaque porte potentiellement sur plusieurs années de relations entre  étudiants et entreprises partenaires , avec des conventions enregistrées jusqu’à l’année scolaire 2026-2027.",
     "entity": "",
@@ -12402,7 +12402,7 @@
     "URL": "https://www.cyberattaque.org/cyberattaque-contre-bordeaux-sciences-agro-les-donnees-de-conventions-de-stage-extraites/"
    },
    "key": "ITM-863f96bd314631cb:2c4a73a9919a1f651fbb67bd0b9827f9f14ae25aa321b76facc593fd373b06bc",
-   "last_queued_at": "2026-10-11T06:45:00.475728+00:00",
+   "last_queued_at": "2026-10-11T13:36:39.452317+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -12410,7 +12410,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 4,
+   "attempts": 5,
    "entry": {
     "content": "Le  Centre National du Droit du Travail  ferait l’objet d’une importante fuite de données. Un utilisateur utilisant le pseudonyme  TimeSape  affirme, au nom du groupe  LunarisSec , qu’une vulnérabilité de type  injection SQL  aurait permis d’accéder aux différentes tables de la base associée au site centre-national-droit-du-travail.fr. \n\n\n\n Les attaquants revendiquent environ  150 000 lignes de données  et évoquent notamment des informations relatives à des comptes, des coordonnées, des entreprises, des commandes et des accès à différents contenus juridiques. \n\n\n\n  Cyberattaque.org n’a cependant pas eu accès aux données revendiquées ni à un échantillon permettant de les vérifier.  Il nous est donc impossible, à ce stade, de confirmer l’authenticité de la fuite, le volume annoncé ou la présence effective des différentes catégories de données citées par les hackers. \n\n\n\n   \n\n\n\n Un site consacré au droit du travail et aux conventions collectives \n\n\n\n Le Centre National du Droit du Travail propose notamment des contenus et services autour du  droit du travail, des conventions collectives, des codes IDCC et des obligations réglementaires des entreprises . \n\n\n\n Le site permet également la création d’un compte utilisateur et propose différents contenus ou produits liés à la documentation juridique. Les données revendiquées pourraient donc concerner à la fois des particuliers et des professionnels ou entreprises ayant utilisé ces services. \n\n\n\n LunarisSec revendique l’exploitation d’une injection SQL \n\n\n\n Selon la revendication relayée par TimeSape,  LunarisSec aurait découvert une vulnérabilité SQLi  sur le site. Les attaquants affirment avoir ensuite pu extraire l’ensemble des tables accessibles depuis la base compromise. \n\n\n\n Une injection SQL est une vulnérabilité permettant, lorsque les contrôles d’une application sont insuffisants, d’interagir de manière non autorisée avec sa base de données. Selon les droits associés au compte technique utilisé par l’application, l’impact peut aller de la consultation de quelques informations jusqu’à l’extraction d’un volume beaucoup plus important de données. \n\n\n\n Dans le cas présent,  Cyberattaque.org n’a pas pu vérifier l’existence de cette vulnérabilité . L’origine SQLi de la fuite repose donc uniquement sur les déclarations de LunarisSec. \n\n\n\n Emails, téléphones, adresses et informations de comptes revendiqués \n\n\n\n Les attaquants publient une longue liste de champs qui auraient été récupérés. Parmi eux figureraient notamment les  noms, prénoms, adresses postales, codes postaux, villes, pays, numéros de téléphone, emails, fax et noms d’entreprises . \n\n\n\n Des informations liées aux comptes seraient également présentes, avec des champs concernant les  noms d’utilisateur, dates de création ou d’activation des comptes, dates d’expiration et derniers accès . \n\n\n\n La revendication mentionne aussi des champs intitulés  « password » et « password_sas » . Leur simple présence dans la liste communiquée ne permet toutefois pas de savoir s’ils contiennent réellement des mots de passe, s’ils sont renseignés, ni sous quelle forme ils seraient stockés. \n\n\n\n En l’absence d’accès aux fichiers,  nous ne pouvons donc pas affirmer que des mots de passe sont effectivement exposés , et encore moins qu’ils seraient stockés en clair. \n\n\n\n Des commandes et accès à des contenus juridiques également évoqués \n\n\n\n La liste diffusée par TimeSape ferait également apparaître des tables ou champs liés à des  commandes, comptes clients, abonnements, conventions collectives et accès à différents contenus juridiques . \n\n\n\n Des références à  Magento , à des numéros de commande ainsi qu’à des informations relatives à des conventions ou codes IDCC figurent également dans la revendication. \n\n\n\n Ces éléments pourraient être cohérents avec l’activité commerciale du site, mais  aucun fichier n’a pu être analysé par Cyberattaque.org  pour déterminer quelles tables seraient réellement concernées ou combien de personnes distinctes apparaîtraient dans l’ensemble. \n\n\n\n 150 000 lignes ne signifient pas 150 000 victimes \n\n\n\n Le chiffre de  150 000 lignes  annoncé par les hackers doit également être interprété avec prudence. Une extraction de plusieurs tables peut contenir de nombreux enregistrements associés à une même personne : compte, commande, adresse, abonnement ou historique d’accès. \n\n\n\n Il serait donc incorrect d’évoquer 150 000 personnes touchées sur la seule base de cette revendication.  Aucun nombre de victimes uniques n’est actuellement vérifiable.  \n\n\n\n Des risques de phishing si la fuite est confirmée \n\n\n\n Si les données revendiquées sont authentiques, l’association entre une  identité, une adresse email, un téléphone, une entreprise et l’utilisation d’un service consacré au droit du travail  pourrait notamment faciliter des campagnes de phishing ciblées. \n\n\n\n Un attaquant pourrait tenter de se faire passer pour le Centre National du Droit du Travail en évoquant une convention collective, une commande, un abonnement ou une mise à jour réglementaire afin d’inciter une victime à communiquer des informations supplémentaires ou à effectuer un paiement. \n\n\n\n Une revendication impossible à confirmer pour le moment \n\n\n\n À ce stade,  Cyberattaque.org n’a pas eu accès à la base annoncée par TimeSape et LunarisSec . Nous ne sommes donc pas en mesure de confirmer les  150 000 lignes revendiquées, la présence des données annoncées ou l’exploitation effective d’une injection SQL . \n\n\n\n Le Centre National du Droit du Travail ne semble pas non plus avoir publiquement confirmé cette revendication pour le moment. Jusqu’à l’obtention d’éléments supplémentaires ou d’une confirmation de l’entreprise,  l’ensemble de ces informations doit donc être considéré comme une revendication cybercriminelle non vérifiée .",
     "entity": "",
@@ -12691,7 +12691,7 @@
     "URL": "https://www.cyberattaque.org/centre-national-du-droit-du-travail-150-000-lignes-revendiquees-apres-une-faille-sql/"
    },
    "key": "ITM-d14be259cc8b7adf:245d29044f996cd9d81337d88f91a7ef52fabdf42721e48df0f63f391b19b0d5",
-   "last_queued_at": "2026-10-11T06:45:00.628869+00:00",
+   "last_queued_at": "2026-10-11T13:36:39.609498+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -12699,7 +12699,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 4,
+   "attempts": 5,
    "entry": {
     "content": "Swedish Fit , enseigne française spécialisée dans les cours collectifs de fitness, fait l’objet d’une importante revendication de fuite de données. Le hacker  Syrv4x  affirme avoir récupéré une base contenant  253 155 lignes  accompagnée de  253 104 fichiers présentés comme des photos . \n\n\n\n L’ensemble représenterait près de  2,4 Go de données  : environ 978 Mo pour la base clients au format JSONL et 1,4 Go supplémentaires pour le dossier contenant les images. Le hacker propose désormais ces données à la vente. \n\n\n\n   \n\n\n\n Une enseigne spécialisée dans les cours collectifs de fitness \n\n\n\n  Swedish Fit  propose des cours collectifs de fitness, de renforcement musculaire, de cardio, de yoga ou encore de Pilates, en salles mais également en ligne. Son fonctionnement repose notamment sur la création de comptes permettant de gérer les abonnements, forfaits et réservations de cours. \n\n\n\n C’est précisément ce type d’environnement qui semble apparaître dans les données présentées par Syrv4x : la structure revendiquée ne se limite pas à un simple fichier marketing, mais comporte de nombreuses informations liées au  compte, aux abonnements et à l’activité des utilisateurs . \n\n\n\n Noms, adresses, téléphones et dates de naissance \n\n\n\n Les champs communiqués comprennent notamment les  noms, adresses postales, codes postaux, villes, pays, adresses email, numéros de téléphone et dates de naissance . \n\n\n\n Des informations concernant la création et l’utilisation du compte apparaissent également :  date de création, dernière connexion, nombre de connexions, région de rattachement, statut du compte ou encore choix concernant les communications commerciales . \n\n\n\n Selon les statistiques publiées par Syrv4x, la base contiendrait  251 568 adresses email , dont 250 979 différentes, ainsi que  238 861 numéros de téléphone , correspondant à 227 286 valeurs uniques. \n\n\n\n Le hacker revendique également  198 756 adresses postales , dont 171 882 distinctes. Ces chiffres restent ceux communiqués avec la mise en vente et ne permettent pas d’établir précisément le nombre de personnes uniques touchées. \n\n\n\n Tout l’historique sportif potentiellement visible \n\n\n\n La fuite revendiquée va beaucoup plus loin que les simples coordonnées des utilisateurs. La structure fournie comprend différentes sections consacrées aux  anciens abonnements, forfaits, coupons, cartes et options de réservation . \n\n\n\n Des informations peuvent notamment indiquer le type de forfait, sa période de validité, son statut, le pays concerné ou encore la valeur de certains coupons. Un récapitulatif des  réservations de cours  figure également parmi les champs annoncés. \n\n\n\n Ces éléments pourraient donc permettre de reconstruire une partie de l’ historique d’utilisation de Swedish Fit  pour certains membres : ancienneté du compte, abonnements souscrits, réservations et habitudes liées au service. \n\n\n\n   \n\n\n\n Plus de 253 000 images également revendiquées \n\n\n\n L’autre élément notable de cette revendication concerne un dossier séparé contenant  253 104 images  pour un volume annoncé d’environ 1,4 Go. \n\n\n\n Les fiches clients comprennent effectivement un champ destiné à une  photo de profil . L’échantillon publié montre toutefois qu’une fiche peut également pointer vers une image générique utilisée par défaut. Sans analyse de l’ensemble du dossier, il n’est donc pas possible d’affirmer que les 253 104 fichiers correspondent tous à des photographies personnelles différentes. \n\n\n\n La présence d’un dossier d’images de cette ampleur reste néanmoins particulièrement notable, puisqu’elle suggère que l’attaquant ne se serait pas limité à l’extraction d’une seule table de base de données. \n\n\n\n Une base construite sur plus de quinze ans \n\n\n\n L’échantillon diffusé montre au moins un compte créé dès  2009 , ce qui laisse penser que la base peut contenir des profils particulièrement anciens. \n\n\n\n Les  253 155 lignes  ne doivent cependant pas être automatiquement assimilées à autant de clients actuels. Syrv4x indique lui-même 253 114 noms renseignés, pour  236 346 noms distincts , ce qui montre la présence de doublons ou de personnes partageant la même identité. \n\n\n\n La base contient également des profils provenant d’autres pays. Le hacker évoque notamment  487 profils associés à la Suisse, 452 à l’Allemagne, 382 au Royaume-Uni et 220 au Canada . \n\n\n\n Une probable extraction depuis un environnement d’administration \n\n\n\n La méthode utilisée pour récupérer les données n’est pas expliquée. Plusieurs éléments de la structure publiée sont cependant associés à des  interfaces de gestion de comptes clients , avec des références à des fiches individuelles et à différentes sections administratives. \n\n\n\n Cela pourrait être cohérent avec une extraction depuis un outil interne ou un environnement d’administration compromis, mais aucun élément disponible ne permet actuellement d’établir le scénario technique exact. Une vulnérabilité, un compte administrateur compromis ou un autre accès non autorisé restent parmi les possibilités. \n\n\n\n Des données particulièrement utiles pour du phishing ciblé \n\n\n\n L’association entre  nom, téléphone, email, adresse, date de naissance et historique d’abonnements  constitue un ensemble particulièrement exploitable pour des campagnes de phishing ou d’ingénierie sociale. \n\n\n\n Un attaquant pourrait notamment se faire passer pour Swedish Fit en évoquant un abonnement, une réservation, un remboursement ou une modification de forfait, tout en utilisant de véritables informations pour rendre le message crédible. \n\n\n\n Les dates de naissance et adresses complètes peuvent également faciliter certaines tentatives d’ usurpation d’identité  lorsqu’elles sont combinées avec d’autres bases déjà disponibles dans la nature. \n\n\n\n Une fuite revendiquée mais pas encore confirmée \n\n\n\n À ce stade,  Swedish Fit n’a pas publiquement confirmé cette cyberattaque ni le volume de 253 155 lignes annoncé par Syrv4x . Le hacker a toutefois publié un échantillon de 1 500 lignes ainsi qu’une description détaillée de la structure de la base pour appuyer sa revendication. \n\n\n\n La provenance exacte des données, la date de leur extraction et le nombre réel de personnes uniques concernées restent donc à déterminer. Si les volumes annoncés sont confirmés, cette fuite ferait néanmoins partie des compromissions les plus importantes récemment observées dans le secteur français du fitness.",
     "entity": "",
@@ -13061,7 +13061,7 @@
     "URL": "https://www.cyberattaque.org/swedish-fit-253-000-profils-clients-et-autant-de-photos-revendiques-apres-une-cyberattaque/"
    },
    "key": "ITM-d009e384c25cc7da:3261d2f0391f5f98ccbb9a61ac230d057a7e642468317371bb0764fd59c14dfa",
-   "last_queued_at": "2026-10-11T06:45:00.781619+00:00",
+   "last_queued_at": "2026-10-11T13:36:39.768460+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -13069,7 +13069,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 4,
+   "attempts": 5,
    "entry": {
     "content": "L’Assistance publique – Hôpitaux de Paris (AP-HP)  confirme le vol de données de  1 015 patients  après une intrusion dans un logiciel de gestion des repas utilisé par  23 de ses hôpitaux . Les informations dérobées avaient été proposées à la vente sur un espace fréquenté par des cybercriminels avant que l’établissement ne confirme leur authenticité. \n\n\n\n L’AP-HP avait été alertée le  24 septembre 2026 . Après plusieurs jours d’investigations menées par sa direction des services numériques avec ses partenaires et les autorités compétentes, le premier centre hospitalier universitaire d’Europe confirme désormais qu’une partie des données publiées provient bien de ses systèmes. \n\n\n\n Un logiciel utilisé pour choisir les repas à l’hôpital \n\n\n\n L’incident ne concerne pas directement le dossier médical informatisé principal de l’AP-HP. Les données proviennent d’un module du logiciel  SRD Restauration , une solution éditée par la société  Dedalus  et utilisée pour la gestion des repas hospitaliers. \n\n\n\n Le service compromis permettait notamment aux patients hospitalisés d’accéder en ligne au logiciel afin de  choisir les menus servis pendant leur séjour . Selon les premiers éléments communiqués par l’AP-HP, c’est ce service accessible depuis Internet qui aurait été visé par l’intrusion. \n\n\n\n SRD Restauration est déployé dans  23 établissements de l’AP-HP , parmi lesquels la Pitié-Salpêtrière, Necker-Enfants malades, Saint-Louis, Cochin-Port-Royal, Lariboisière, Saint-Antoine, Bicêtre, Avicenne ou encore l’Hôpital européen Georges-Pompidou. \n\n\n\n Noms, prénoms et informations de naissance confirmés \n\n\n\n Les données dont le vol est actuellement confirmé comprennent les  noms et prénoms des patients, des informations relatives à leur naissance ainsi qu’un numéro d’identifiant patient interne . \n\n\n\n L’AP-HP précise qu’au regard des informations actuellement publiées,  aucune donnée médicale directe ou indirecte, donnée bancaire, information administrative ou coordonnée de contact  ne serait concernée par les 1 015 fiches confirmées. \n\n\n\n Cette distinction est importante : la présence d’un patient dans un logiciel utilisé pendant une hospitalisation ne signifie pas que son dossier médical, son diagnostic ou ses traitements ont été récupérés. \n\n\n\n Une intrusion dans le service en ligne quelques jours avant la découverte \n\n\n\n Selon l’AP-HP, le vol aurait eu lieu  quelques jours avant le signalement du 24 septembre . L’établissement évoque une « intrusion frauduleuse » dans le service en ligne permettant aux patients d’accéder au module de commande des repas. \n\n\n\n La méthode technique exacte n’est pas détaillée. L’AP-HP indique cependant avoir procédé, avec ses fournisseurs, à la  correction de vulnérabilités suspectées d’avoir pu permettre le vol . Aucun détail n’est pour le moment donné sur la nature de ces failles ou sur leur mode d’exploitation. \n\n\n\n Le chiffre de 1 015 patients pourrait ne représenter qu’une partie de la fuite \n\n\n\n Le périmètre de l’incident pourrait encore évoluer. Les  1 015 patients  correspondent aux données publiées que l’AP-HP a pu authentifier à ce stade. \n\n\n\n Les revendications examinées par l’établissement font cependant état d’un  nombre plus important de patients . Elles mentionnent également des informations concernant certains  comptes de professionnels de l’AP-HP utilisant le logiciel de commande des repas . \n\n\n\n L’AP-HP ne confirme pas encore cette partie de la revendication et poursuit ses investigations. Le bilan de 1 015 personnes ne doit donc pas nécessairement être considéré comme le périmètre définitif de la cyberattaque. \n\n\n\n Le service fermé et tous les mots de passe réinitialisés \n\n\n\n Le module en ligne compromis a été  fermé jusqu’à nouvel ordre . L’AP-HP a également décidé de réinitialiser les mots de passe de l’ensemble des utilisateurs du logiciel, une mesure qui concerne notamment les comptes professionnels disposant d’un accès à l’outil. \n\n\n\n Plusieurs mesures complémentaires de sécurisation ont été mises en œuvre avec les fournisseurs de l’établissement, tandis que les vulnérabilités considérées comme potentiellement liées à l’attaque ont été corrigées. \n\n\n\n CNIL, autorités cyber et plainte dès le lendemain \n\n\n\n L’AP-HP indique avoir effectué les signalements nécessaires auprès de la  CNIL  et de la  Cellule d’accompagnement en cybersécurité des structures de santé . \n\n\n\n Une  plainte a également été déposée dès le 25 septembre , soit le lendemain du signalement initial, afin de permettre l’ouverture d’une enquête sur l’intrusion et le vol de données. \n\n\n\n Dedalus, un fournisseur central dans le système informatique hospitalier \n\n\n\n Le logiciel de restauration concerné est édité par  Dedalus , un acteur important des solutions numériques de santé. L’entreprise travaille depuis de nombreuses années avec l’AP-HP sur plusieurs outils hospitaliers. \n\n\n\n Il faut toutefois distinguer le module SRD Restauration touché ici des autres logiciels Dedalus utilisés par l’AP-HP. L’incident actuellement confirmé concerne le  service de gestion et de commande des repas  et aucun élément communiqué par l’établissement ne permet d’étendre la compromission à son dossier patient informatisé général. \n\n\n\n Un risque de phishing malgré l’absence de données médicales \n\n\n\n Les informations confirmées restent moins sensibles qu’un dossier médical complet, mais elles ne sont pas sans risque. L’association entre une  identité, des informations de naissance et un identifiant patient  peut notamment servir à renforcer des tentatives d’usurpation d’identité ou de phishing. \n\n\n\n Le contexte hospitalier peut également être exploité par des fraudeurs qui chercheraient à se faire passer pour l’AP-HP ou un établissement de santé en utilisant le vol de données comme prétexte pour réclamer des informations complémentaires. \n\n\n\n Pour l’heure, l’AP-HP confirme donc formellement le  vol de données de 1 015 patients  issus du logiciel de restauration utilisé dans 23 hôpitaux. Les investigations se poursuivent néanmoins afin de déterminer si le volume réel est plus important et si des comptes de professionnels de santé ont également été compromis.",
     "entity": "",
@@ -13293,7 +13293,7 @@
     "URL": "https://www.cyberattaque.org/ap-hp-1-015-patients-exposes-apres-le-piratage-dun-logiciel-utilise-dans-23-hopitaux/"
    },
    "key": "ITM-9254342bd232adf9:117fd45d43937f8515629d8a8c38e492c697dbaf036922fa3d5425304bde56fe",
-   "last_queued_at": "2026-10-11T06:45:00.937202+00:00",
+   "last_queued_at": "2026-10-11T13:36:39.931188+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -13301,7 +13301,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 4,
+   "attempts": 5,
    "entry": {
     "content": "Justice.fr , le portail officiel français d’information sur la justice et les procédures juridiques, fait l’objet d’une nouvelle revendication de fuite de données. Le hacker  ChimeraZ  affirme avoir obtenu une partie d’une base associée au site et diffuse gratuitement un fichier contenant plusieurs milliers de  noms et adresses email . \n\n\n\n Le pirate annonce  7 138 lignes pour 7 135 personnes . Cyberattaque.org s’est procuré l’archive complète et a réussi à extraire le fichier CSV qu’elle contient. Son analyse permet de préciser sensiblement le périmètre réel de cette fuite. \n\n\n\n   \n\n\n\n 7 136 lignes réellement présentes dans le fichier \n\n\n\n Le fichier diffusé, nommé  « 7.1K_utilisateurs.csv » , contient en réalité  7 136 enregistrements , auxquels s’ajoute la ligne d’en-tête du CSV. \n\n\n\n Chaque ligne comporte seulement trois champs : un  identifiant numérique, un nom complet et une adresse email . Les 7 136 identifiants présents sont distincts. \n\n\n\n Cyberattaque.org a identifié  7 135 adresses email uniques , ce qui correspond exactement au nombre de personnes revendiqué par ChimeraZ. Une seule adresse apparaît deux fois dans le fichier. Les noms sont légèrement plus redondants, avec  7 118 noms complets différents . \n\n\n\n Ce ne sont pas 7 000 agents du ministère de la Justice \n\n\n\n L’analyse du fichier apporte surtout une nuance importante : cette base ne correspond pas à une liste de plus de 7 000 agents utilisant une adresse professionnelle du ministère. \n\n\n\n Sur les 7 136 lignes analysées, seulement  196 adresses utilisent le domaine @justice.fr . Sept autres utilisent  @justice.gouv.fr . La très grande majorité des emails provient au contraire de messageries personnelles ou d’organisations extérieures. \n\n\n\n On retrouve notamment  2 427 adresses Gmail, 818 Orange, 546 Hotmail.fr, 445 Yahoo.fr ou encore 301 Wanadoo . Au total, plus d’un millier de domaines différents apparaissent dans le fichier. \n\n\n\n Ces éléments rendent donc très improbable l’hypothèse d’un simple annuaire interne des agents du ministère de la Justice. Le fichier semble plutôt correspondre à une  liste d’utilisateurs, de contacts ou de personnes enregistrées dans un service , sans qu’il soit possible de déterminer précisément lequel avec les seules données disponibles. \n\n\n\n Aucun dossier judiciaire ou mot de passe dans la fuite analysée \n\n\n\n La portée de la fuite doit également être correctement mesurée. Cyberattaque.org n’a trouvé dans le fichier  aucun mot de passe, numéro de téléphone, adresse postale, pièce d’identité ou information relative à une procédure judiciaire . \n\n\n\n Aucun numéro de dossier, jugement, convocation ou information sur une affaire en cours n’apparaît non plus. Les données diffusées se limitent, dans cette archive, aux  identifiants techniques, noms et emails . \n\n\n\n L’origine exacte des données reste une inconnue \n\n\n\n ChimeraZ présente l’ensemble comme une  « base partielle de justice.fr » , mais ne fournit aucune explication sur la manière dont les informations auraient été récupérées. \n\n\n\n La présence d’un identifiant unique pour chaque enregistrement et le nom du fichier peuvent être cohérents avec un export provenant d’une table d’utilisateurs ou de contacts. Ils ne suffisent cependant pas à démontrer qu’un attaquant a directement compromis l’infrastructure de justice.fr. \n\n\n\n À ce stade, il est donc impossible de déterminer si le fichier provient d’une  intrusion informatique, d’une application périphérique, d’un prestataire, d’un export ancien ou d’une autre source . \n\n\n\n Des adresses exploitables pour usurper l’identité de la Justice \n\n\n\n Même limitée à des noms et emails, la diffusion de cette base présente un risque de  phishing ciblé . Si certaines personnes présentes dans le fichier ont effectivement utilisé un service lié à justice.fr, un attaquant pourrait tenter de leur adresser de faux messages évoquant une procédure, une convocation ou une démarche administrative. \n\n\n\n Les quelque  200 adresses professionnelles directement rattachées aux domaines de la Justice  peuvent également présenter un intérêt pour des campagnes ciblant des agents ou des professionnels du ministère avec des messages d’ingénierie sociale. \n\n\n\n Le fait que ChimeraZ mette le fichier  gratuitement en téléchargement  facilite par ailleurs sa copie et sa redistribution. Les données peuvent désormais être intégrées à d’autres bases ou utilisées indépendamment de leur provenance initiale. \n\n\n\n Une revendication qui doit encore être confirmée \n\n\n\n L’archive diffusée par ChimeraZ est donc bien exploitable et contient  7 136 lignes associant des identités à des adresses email . En revanche, son contenu ne permet pas d’affirmer que 7 135 agents de la Justice sont concernés, ni que des dossiers judiciaires ont été compromis. \n\n\n\n  Le ministère de la Justice n’a pas confirmé publiquement cette fuite à ce stade.  L’origine exacte du fichier et le service depuis lequel ces données auraient été récupérées restent les principales inconnues de cette nouvelle revendication.",
     "entity": "",
@@ -13568,7 +13568,7 @@
     "URL": "https://www.cyberattaque.org/justice-fr-plus-de-7-000-personnes-en-fuite-apres-une-cyberattaque/"
    },
    "key": "ITM-610efc10c3ed21cf:8655697f580ed01d9785e24f741073cdcd817e20df8a183022b28d5b2e80068e",
-   "last_queued_at": "2026-10-11T06:45:01.086799+00:00",
+   "last_queued_at": "2026-10-11T13:36:40.087521+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -15805,7 +15805,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:41.472449+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-7ead9e662c10d606",
     "Location": "France métropolitaine",
@@ -15821,7 +15821,7 @@
     "URL": "https://frenchbreaches.com/alertes/infogreffe-mv2l1dzn9pdnebnwv0o"
    },
    "key": "ITM-7ead9e662c10d606:fe1941f71cee081d0d7d53bf5ae7217e008887ef59ef910f1c19ffd52783b462",
-   "last_queued_at": "2026-10-11T06:44:41.095478+00:00",
+   "last_queued_at": "2026-10-11T13:36:16.334588+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -16220,7 +16220,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:42.425735+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-4001d1dd7afec1ad",
     "Location": "France métropolitaine",
@@ -16236,7 +16236,7 @@
     "URL": "https://frenchbreaches.com/alertes/france-bourse-mv2jgulk2i7bo3dy9bf"
    },
    "key": "ITM-4001d1dd7afec1ad:797f45acfe30f9ce36e80ab0bad0e52e671d7420fad1ec8775399cbac729ac19",
-   "last_queued_at": "2026-10-11T06:44:41.378470+00:00",
+   "last_queued_at": "2026-10-11T13:36:16.483858+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -16514,7 +16514,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:44.445593+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-c9d447f3028c9c90",
     "Location": "France métropolitaine",
@@ -16530,7 +16530,7 @@
     "URL": "https://frenchbreaches.com/alertes/callibri-mv242sdqy4ee2qs8uum"
    },
    "key": "ITM-c9d447f3028c9c90:6505b680c01c4f52a5aed18c8b9a5751de044068d09ab09184f95d15ce9b00d8",
-   "last_queued_at": "2026-10-11T06:44:41.736204+00:00",
+   "last_queued_at": "2026-10-11T13:36:16.850928+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -16808,7 +16808,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:45.345021+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-211dbbfd32606322",
     "Location": "France métropolitaine",
@@ -16824,7 +16824,7 @@
     "URL": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn"
    },
    "key": "ITM-211dbbfd32606322:1b870a2cc811e36e8b2aef0bd65b8601f86cc6e1ac798311b13005928eacffbe",
-   "last_queued_at": "2026-10-11T06:44:41.889584+00:00",
+   "last_queued_at": "2026-10-11T13:36:17.005897+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -19965,7 +19965,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:57.000616+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-7543d5198870d435",
     "Location": "Inconnu",
@@ -19981,7 +19981,7 @@
     "URL": "https://www.cyberattaque.org/infogreffe-37-millions-de-lignes-revendiquees-apres-une-cyberattaque/"
    },
    "key": "ITM-7543d5198870d435:ecd0c17aa3237d52351298924fc3a540524fe806e11bb21dfcec083d777477a7",
-   "last_queued_at": "2026-10-11T06:44:50.524998+00:00",
+   "last_queued_at": "2026-10-11T13:36:24.953942+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -20063,7 +20063,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:58.657699+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-d28adb4e5492baf5",
     "Location": "Inconnu",
@@ -20079,7 +20079,7 @@
     "URL": "https://www.cyberattaque.org/wimoov-une-cyberttaque-touche-la-plateforme-win/"
    },
    "key": "ITM-d28adb4e5492baf5:dc55746409cfa291704d9a0f068fba138168d961453f365f04a547ea70f904e9",
-   "last_queued_at": "2026-10-11T06:44:50.782067+00:00",
+   "last_queued_at": "2026-10-11T13:36:25.215083+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -20183,6 +20183,1179 @@
    },
    "key": "ITM-320e000af50cee1c:b5e0e396069849c2e6f370d1bcf76a964a5f8d94f91106f7c4bb8231c496c5a0",
    "last_queued_at": "2026-10-11T06:14:59.701944+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "TECHNICAL_FAILURE"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/10/2026\n— Secteur Commerce\nFuite de données Armurerie du Bocage : 284 Mo de fichiers clients et de documents d'identité mis en vente\nArmurerie du Bocage, une boutique française spécialisée dans les équipements de chasse, de tir et d'archerie, est visée par une revendication de fuite de données. Le 11 octobre 2026, un pirate a annoncé la mise en vente de 284 Mo de fichiers attribués au site armurerie-du-bocage.fr. Les données présentées comprennent notamment des informations personnelles de clients, des adresses, des numéros de téléphone, des factures et des documents d'identité.\nUn pirate met en vente 284 Mo de données attribuées à Armurerie du Bocage\nLe 11 octobre 2026, un individu utilisant le pseudonyme ChimeraZ a publié une annonce sur le forum cybercriminel, affirmant posséder des données provenant du site armurerie-du-bocage.fr.\nL'entreprise est spécialisée dans la vente d'équipements de chasse, d'armes, d'accessoires de tir et de matériel d'archerie.\nSelon l'annonce publiée par le pirate, les données proposées à la vente représenteraient :\n284 Mo de fichiers ;\n574 fichiers au total ;\n12 606 lignes de données ;\nEnviron 1 000 personnes selon l'estimation du pirate ;\n48 dossiers, dont certains contiendraient des documents personnels ;\n127 fichiers d'identité classés par personne ;\n439 factures comportant des informations sur les clients et leurs achats.\nLes fichiers seraient disponibles sous différents formats, notamment CSV, PDF et images.\nLe nombre de personnes annoncé reste une estimation et ne permet pas de confirmer combien de clients distincts seraient réellement concernés.\nNoms, adresses, téléphones et documents d'identité dans les fichiers présentés\nLes captures d'écran accompagnant l'annonce montrent plusieurs extraits de fichiers contenant des informations personnelles et commerciales.\nParmi les données visibles ou revendiquées figurent :\nNoms et prénoms de clients ;\nAdresses postales et coordonnées de livraison ;\nNuméros de téléphone fixes et mobiles ;\nAdresses e-mail personnelles ;\nRéférences de commandes et de facturation ;\nInformations relatives aux achats et aux produits commandés ;\nDocuments d'identité, selon la description du pirate ;\nInformations administratives et références de dossiers ;\nDonnées techniques associées aux comptes clients.\nLes fichiers présentés comprennent notamment des exports nommés 945_clients.csv, 698_commandes.csv, 109_livraisons.csv, 104_facturations.csv et 58_adresses.csv.\nD'autres éléments apparaissent également, dont un fichier newsletter.txt et un export reset_pwd.csv lié à des opérations de réinitialisation de mot de passe.\nLa présence de ce dernier fichier ne permet toutefois pas d'affirmer que des mots de passe en clair ont été compromis.\nExtraits des fichiers CSV présentés dans l'annonce, montrant la structure des informations clients, commandes, livraisons et facturations. Les données personnelles doivent être masquées avant publication.\nDes factures et des informations sur les achats également revendiquées\nL'annonce du pirate mentionne également 439 factures associées à des clients de l'armurerie.\nL'exemple présenté dans la publication contient notamment des informations d'identification d'un acheteur, des coordonnées, une référence de client et des détails sur les produits achetés.\nCes documents pourraient permettre d'associer certaines personnes à des commandes précises réalisées auprès de l'enseigne.\nLa nature des produits commercialisés par Armurerie du Bocage rend cette exposition potentiellement sensible, notamment lorsque des données d'identité sont associées à des informations d'achat.\nLes fichiers pourraient ainsi révéler des informations sur les habitudes d'achat de certains clients.\nDes risques d'usurpation d'identité et de phishing ciblé\nSi cette fuite est authentifiée, les données pourraient être utilisées pour organiser des campagnes de phishing, des tentatives d'usurpation d'identité ou des escroqueries ciblées.\nUn cybercriminel disposant des coordonnées d'un client et d'informations sur une commande pourrait notamment se faire passer pour le service client d'Armurerie du Bocage ou pour un transporteur.\nLes personnes concernées pourraient recevoir des messages frauduleux évoquant :\nUne commande nécessitant une confirmation ;\nUn colis en attente de livraison ;\nUne facture ou un remboursement ;\nUne vérification de compte client ;\nUne demande de transmission de documents d'identité ;\nUne prétendue mise à jour administrative.\nLa présence revendiquée de documents d'identité pourrait également accroître les risques d'utilisation frauduleuse des informations personnelles.\nUne fuite de données revendiquée qui reste à confirmer\nÀ ce stade, la fuite repose sur les déclarations du pirate ChimeraZ et les échantillons présentés dans son annonce.\nL'authenticité de l'ensemble des 574 fichiers, leur origine exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.\nLes éléments présentés ne permettent pas non plus de déterminer la méthode utilisée pour obtenir les données ni de confirmer une intrusion directe dans l'infrastructure informatique du site.\nAucune confirmation officielle d'Armurerie du Bocage n'est établie à partir des informations disponibles.\nLes clients d'Armurerie du Bocage appelés à la vigilance\nDans l'attente d'éventuelles précisions, les clients de l'enseigne doivent rester vigilants face aux communications inattendues concernant leurs commandes ou leurs comptes.\nIl est recommandé de ne pas transmettre de documents d'identité, de coordonnées bancaires ou d'informations de connexion à la suite d'un message suspect.\nLes clients peuvent également vérifier directement auprès de l'entreprise toute demande inhabituelle relative à une commande ou à une livraison.\nCette revendication met en lumière les risques liés à l'exposition de données commerciales et de documents personnels, particulièrement lorsque des informations d'identité sont associées à des historiques d'achat.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-11",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 6041,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "L'authenticité de l'ensemble des 574 fichiers, leur origine exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "raw": "574 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "unit": "files",
+        "value": 574
+       },
+       {
+        "date": "",
+        "evidence": "12 606 lignes de données ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "raw": "12 606 lignes",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "records",
+        "value": 12606
+       },
+       {
+        "date": "",
+        "evidence": "Environ 1 000 personnes selon l'estimation du pirate ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "raw": "1 000 personnes",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "people",
+        "value": 1000
+       },
+       {
+        "date": "",
+        "evidence": "574 fichiers au total ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "raw": "574 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 574
+       },
+       {
+        "date": "",
+        "evidence": "127 fichiers d'identité classés par personne ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "raw": "127 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 127
+       },
+       {
+        "date": "",
+        "evidence": "48 dossiers, dont certains contiendraient des documents personnels ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "raw": "48 dossiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 48
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "L'authenticité de l'ensemble des 574 fichiers, leur origine exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 574
+       },
+       {
+        "date": "",
+        "evidence": "12 606 lignes de données ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 12606
+       },
+       {
+        "date": "",
+        "evidence": "Environ 1 000 personnes selon l'estimation du pirate ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 1000
+       },
+       {
+        "date": "",
+        "evidence": "574 fichiers au total ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 574
+       },
+       {
+        "date": "",
+        "evidence": "127 fichiers d'identité classés par personne ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 127
+       },
+       {
+        "date": "",
+        "evidence": "48 dossiers, dont certains contiendraient des documents personnels ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 48
+       },
+       {
+        "date": "",
+        "evidence": "Fuite de données Armurerie du Bocage : 284 Mo de fichiers clients et de documents d'identité mis en vente Armurerie du Bocage, une boutique française spécialisée dans les équipements de chasse, de tir et d'archerie, est visée par une revendication de fuite de données.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 284.0
+       },
+       {
+        "date": "",
+        "evidence": "Les données présentées comprennent notamment des informations personnelles de clients, des adresses, des numéros de téléphone, des factures et des documents d'identité.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données présentées comprennent notamment des informations personnelles de clients, des adresses, des numéros de téléphone, des factures et des documents d'identité.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Noms, adresses, téléphones et documents d'identité dans les fichiers présentés",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Noms et prénoms de clients ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses postales et coordonnées de livraison ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Numéros de téléphone fixes et mobiles ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses e-mail personnelles ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et de facturation ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "références de commande"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et de facturation ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et de facturation ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "Informations administratives et références de dossiers ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "informations administratives"
+       },
+       {
+        "date": "",
+        "evidence": "Données techniques associées aux comptes clients.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "données techniques"
+       },
+       {
+        "date": "",
+        "evidence": "D'autres éléments apparaissent également, dont un fichier newsletter.txt et un export reset_pwd.csv lié à des opérations de réinitialisation de mot de passe.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures et des informations sur les achats également revendiquées",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Ces documents pourraient permettre d'associer certaines personnes à des commandes précises réalisées auprès de l'enseigne.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Une facture ou un remboursement ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Dans l'attente d'éventuelles précisions, les clients de l'enseigne doivent rester vigilants face aux communications inattendues concernant leurs commandes ou leurs comptes.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "informations de commandes"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les données présentées comprennent notamment des informations personnelles de clients, des adresses, des numéros de téléphone, des factures et des documents d'identité.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données présentées comprennent notamment des informations personnelles de clients, des adresses, des numéros de téléphone, des factures et des documents d'identité.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Noms, adresses, téléphones et documents d'identité dans les fichiers présentés",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Noms et prénoms de clients ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses postales et coordonnées de livraison ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Numéros de téléphone fixes et mobiles ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses e-mail personnelles ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et de facturation ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "références de commande"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et de facturation ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et de facturation ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "Informations administratives et références de dossiers ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "informations administratives"
+       },
+       {
+        "date": "",
+        "evidence": "Données techniques associées aux comptes clients.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "données techniques"
+       },
+       {
+        "date": "",
+        "evidence": "D'autres éléments apparaissent également, dont un fichier newsletter.txt et un export reset_pwd.csv lié à des opérations de réinitialisation de mot de passe.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures et des informations sur les achats également revendiquées",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Ces documents pourraient permettre d'associer certaines personnes à des commandes précises réalisées auprès de l'enseigne.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Une facture ou un remboursement ;",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Dans l'attente d'éventuelles précisions, les clients de l'enseigne doivent rester vigilants face aux communications inattendues concernant leurs commandes ou leurs comptes.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "informations de commandes"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Fuite de données Armurerie du Bocage : 284 Mo de fichiers clients et de documents d'identité mis en vente Armurerie du Bocage, une boutique française spécialisée dans les équipements de chasse, de tir et d'archerie, est visée par une revendication de fuite de données.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 284.0
+       }
+      ],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 6343,
+       "claims": 24,
+       "hypotheses": 3,
+       "semantic_candidate": true,
+       "sentences": 68
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [
+       {
+        "date": "2026-10-11",
+        "event": "Le 11 octobre 2026, un individu utilisant le pseudonyme ChimeraZ a publié une annonce sur le forum cybercriminel, affirmant posséder des données provenant du site armurerie-du-bocage.fr.",
+        "evidence": "Le 11 octobre 2026, un individu utilisant le pseudonyme ChimeraZ a publié une annonce sur le forum cybercriminel, affirmant posséder des données provenant du site armurerie-du-bocage.fr.",
+        "item_id": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Fuite de données Armurerie du Bocage : 284 Mo de fichiers clients et de documents d'identité mis en vente Armurerie du Bocage, une boutique française spécialisée dans les équipements de chasse, de tir et d'archerie, est visée par une revendication de fuite de données. Le 11 octob…",
+    "threat": "Fuite de données",
+    "title": "Armurerie du Bocage",
+    "url": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {},
+   "first_queued_at": "2026-10-11T13:36:15.700174+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-fc31d19bd099734d",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "armurerie du bocage",
+    "Organisation_Raw": "Armurerie du Bocage",
+    "Published_Date": "2026-10-11",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Armurerie du Bocage",
+    "URL": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung"
+   },
+   "key": "ITM-fc31d19bd099734d:d35b73078992a855da036f78bf742d2981c42ae44b86183ebde2735fa96f587a",
+   "last_queued_at": "2026-10-11T13:36:15.700174+00:00",
+   "pending_fields": [
+    "incident_summary",
+    "summary"
+   ],
+   "reason": "TECHNICAL_FAILURE"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/10/2026\n— Secteur Commerce\nGrand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate\nGrand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données. Le 11 octobre 2026, un pirate informatique a annoncé la mise en vente d'une base contenant 188 010 enregistrements, représentant 272 Mo de données. Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.\nUn pirate revendique 188 010 enregistrements provenant de Grand Delta Habitat\nLe 11 octobre 2026, un individu utilisant le pseudonyme mica a publié une annonce sur le forum cybercriminel, affirmant détenir une base de données associée à Grand Delta Habitat (granddelta.fr).\nGrand Delta Habitat est un organisme français spécialisé dans le logement social, la gestion locative, la construction et l'entretien de logements.\nDans son annonce, le pirate affirme proposer un fichier contenant :\n188 010 enregistrements ;\n272 Mo de données ;\nUn fichier unique regroupant des informations de gestion et de suivi ;\nDes données relatives aux locataires, aux interventions techniques et aux prestations.\nLe volume revendiqué est important, mais le chiffre de 188 010 correspond à des enregistrements et ne permet pas d'établir le nombre exact de personnes concernées.\nNoms, adresses, téléphones et e-mails dans les données présentées\nL'échantillon de données associé à cette revendication contient des fiches structurées relatives à des interventions réalisées dans des logements.\nLes informations visibles comprennent notamment :\nNoms et prénoms de locataires et d'occupants ;\nAdresses postales de logements et de résidences ;\nNuméros de téléphone fixes et mobiles ;\nAdresses e-mail personnelles et professionnelles ;\nNoms et coordonnées de gestionnaires ou d'interlocuteurs ;\nRéférences de commandes et d'interventions ;\nDescriptions de travaux et de demandes de maintenance ;\nMontants de facturation et détails des prestations ;\nHistorique des interventions et statuts administratifs.\nLes fichiers présentés utilisent notamment des champs tels que ref, client, montantTTC, description_demande, events_history, prestations, patrimoine et occupants_info.\nCe dernier champ peut contenir des informations associant directement des occupants à leur adresse, leurs coordonnées et leur logement.\nDes informations détaillées sur les logements et les interventions\nL'échantillon consulté contient des références à plusieurs secteurs géographiques, notamment Avignon, Arles, Le Pontet, Mallemort et Pont-Saint-Esprit.\nLes enregistrements présentés concernent différentes opérations de gestion immobilière :\nRéparations de plomberie et recherches de fuites ;\nTravaux de maintenance et interventions électriques ;\nRemplacement d'équipements dans les logements ;\nOpérations de déménagement ;\nPrestations d'entretien et travaux techniques ;\nSuivi administratif et facturation.\nCertaines fiches associent des coordonnées personnelles à des informations précises sur les logements, les bâtiments, les étages ou les interventions effectuées.\nCette combinaison de données pourrait présenter un risque particulier pour les personnes concernées en cas de réutilisation malveillante.\nDes risques de phishing et d'arnaques ciblant les locataires\nSi l'authenticité de la fuite est confirmée, les informations pourraient être exploitées pour organiser des campagnes de phishing, de démarchage frauduleux ou d'usurpation d'identité.\nUn escroc disposant du nom d'un locataire, de son adresse et de détails concernant une intervention pourrait notamment se faire passer pour un agent de Grand Delta Habitat ou un prestataire chargé de travaux.\nLes personnes concernées pourraient recevoir des communications frauduleuses évoquant :\nUne intervention de maintenance à confirmer ;\nUne facture ou un paiement en attente ;\nUne régularisation de charges locatives ;\nUne mise à jour du dossier locataire ;\nUne demande de documents ou de coordonnées bancaires.\nLes informations relatives aux interventions techniques pourraient rendre ces tentatives de fraude plus crédibles.\nUne fuite de 272 Mo dont l'origine reste à établir\nÀ ce stade, la publication repose sur les déclarations du pirate et l'échantillon de données présenté.\nL'authenticité de l'ensemble des 188 010 enregistrements, leur provenance exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.\nLa présence de données attribuées à Grand Delta Habitat ne démontre pas nécessairement une intrusion directe dans ses systèmes informatiques. Les fichiers pourraient également provenir d'un prestataire, d'un outil de gestion ou d'une autre source non identifiée.\nAucune confirmation officielle de Grand Delta Habitat n'est établie à partir des éléments disponibles.\nLes locataires de Grand Delta Habitat appelés à la vigilance\nDans l'attente d'éventuelles précisions sur cette revendication, les locataires et interlocuteurs professionnels de Grand Delta Habitat doivent rester vigilants face aux communications inhabituelles.\nIl est notamment recommandé de ne pas communiquer de coordonnées bancaires, de mots de passe ou de documents personnels à la suite d'un appel, d'un SMS ou d'un e-mail inattendu.\nToute demande évoquant des travaux, une facture ou une démarche administrative devrait être vérifiée directement auprès de l'organisme par ses canaux officiels.\nCette revendication illustre les risques associés à l'exposition de données de gestion immobilière, particulièrement lorsque les informations personnelles sont accompagnées de détails sur les logements et leurs occupants.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-11",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 5737,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Un pirate revendique 188 010 enregistrements provenant de Grand Delta Habitat",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "raw": "188 010 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "unit": "records",
+        "value": 188010
+       },
+       {
+        "date": "",
+        "evidence": "L'authenticité de l'ensemble des 188 010 enregistrements, leur provenance exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "raw": "188 010 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "unit": "records",
+        "value": 188010
+       },
+       {
+        "date": "",
+        "evidence": "Grand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate Grand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "raw": "188 010 enregistrements",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "records",
+        "value": 188010
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Un pirate revendique 188 010 enregistrements provenant de Grand Delta Habitat",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 188010
+       },
+       {
+        "date": "",
+        "evidence": "L'authenticité de l'ensemble des 188 010 enregistrements, leur provenance exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 188010
+       },
+       {
+        "date": "",
+        "evidence": "Grand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate Grand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 188010
+       },
+       {
+        "date": "2026-10-11",
+        "evidence": "Le 11 octobre 2026, un pirate informatique a annoncé la mise en vente d'une base contenant 188 010 enregistrements, représentant 272 Mo de données.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 272.0
+       },
+       {
+        "date": "",
+        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Noms et prénoms de locataires et d'occupants ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses postales de logements et de résidences ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et d'interventions ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "références de commande"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et d'interventions ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Montants de facturation et détails des prestations ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "Montants de facturation et détails des prestations ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "Une facture ou un paiement en attente ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Une demande de documents ou de coordonnées bancaires.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "données bancaires"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Noms et prénoms de locataires et d'occupants ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses postales de logements et de résidences ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et d'interventions ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "références de commande"
+       },
+       {
+        "date": "",
+        "evidence": "Références de commandes et d'interventions ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "Montants de facturation et détails des prestations ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "Montants de facturation et détails des prestations ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "Une facture ou un paiement en attente ;",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Une demande de documents ou de coordonnées bancaires.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "données bancaires"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "2026-10-11",
+        "evidence": "Le 11 octobre 2026, un pirate informatique a annoncé la mise en vente d'une base contenant 188 010 enregistrements, représentant 272 Mo de données.",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 272.0
+       }
+      ],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 6039,
+       "claims": 14,
+       "hypotheses": 2,
+       "semantic_candidate": true,
+       "sentences": 66
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [
+       {
+        "date": "2026-10-11",
+        "event": "Le 11 octobre 2026, un individu utilisant le pseudonyme mica a publié une annonce sur le forum cybercriminel, affirmant détenir une base de données associée à Grand Delta Habitat (granddelta.fr).",
+        "evidence": "Le 11 octobre 2026, un individu utilisant le pseudonyme mica a publié une annonce sur le forum cybercriminel, affirmant détenir une base de données associée à Grand Delta Habitat (granddelta.fr).",
+        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Grand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate Grand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données. Le 11 octobre 2026, un pirate informatique a annoncé la mise en v…",
+    "threat": "Fuite de données",
+    "title": "Grand Delta Habitat",
+    "url": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {},
+   "first_queued_at": "2026-10-11T13:36:15.995569+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-cdd61dbd45b99c7e",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "grand delta habitat",
+    "Organisation_Raw": "Grand Delta Habitat",
+    "Published_Date": "2026-10-11",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Grand Delta Habitat",
+    "URL": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9"
+   },
+   "key": "ITM-cdd61dbd45b99c7e:02b2e6bc98f38f780157fcf7c0a5a948559a35061a712fd363fde85d4f05bba2",
+   "last_queued_at": "2026-10-11T13:36:15.995569+00:00",
+   "pending_fields": [
+    "incident_summary",
+    "summary"
+   ],
+   "reason": "TECHNICAL_FAILURE"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Callibri , société française proposant des solutions de permanence téléphonique, de gestion d’appels et de prise de rendez-vous pour les professionnels, fait l’objet d’une nouvelle fuite de données. Un hacker utilisant le pseudonyme  mondial  affirme, sur un forum cybercriminel, avoir récupéré puis diffusé une base contenant environ  61 000 enregistrements  provenant de callibri.fr. \n\n\n\n Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance . Plusieurs champs internes laissent également penser qu’il s’agit de fiches de contacts associées aux dossiers gérés depuis le logiciel de Callibri. \n\n\n\n Callibri centralise les appels et rendez-vous de professionnels \n\n\n\n  Callibri  propose des outils destinés aux entreprises et professionnels souhaitant gérer leurs appels, leurs agendas et leurs prises de rendez-vous. La plateforme peut ainsi centraliser des fiches de contacts utilisées dans le cadre de la relation avec les personnes appelant ou prenant rendez-vous. \n\n\n\n Cette particularité est importante : les personnes présentes dans la base ne sont pas nécessairement toutes des clientes directes de Callibri. Certaines peuvent correspondre à des  contacts enregistrés pour le compte des professionnels utilisant la solution . \n\n\n\n   \n\n\n\n Une base annoncée à environ 61 000 enregistrements \n\n\n\n Le hacker mondial présente la publication sous le titre  « CALLIBRI 61k »  et indique diffuser la base de données de callibri.fr. \n\n\n\n Le chiffre de 61 000 doit toutefois être considéré comme un  nombre approximatif de lignes ou de fiches . Rien ne permet pour le moment d’affirmer qu’il correspond à 61 000 personnes uniques. \n\n\n\n Un même individu pourrait notamment apparaître dans plusieurs dossiers ou disposer de plusieurs fiches selon les professionnels avec lesquels il a été en contact. \n\n\n\n Téléphones, adresses et dates de naissance dans les fiches \n\n\n\n L’échantillon diffusé avec la fuite révèle une structure typique de  fichier de contacts ou de CRM . Chaque enregistrement comporte un identifiant de dossier et un identifiant de contact. \n\n\n\n Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance . \n\n\n\n Certaines fiches sont beaucoup plus complètes que d’autres : plusieurs informations peuvent être absentes selon les personnes. \n\n\n\n Des champs liés aux rendez-vous et au suivi des contacts \n\n\n\n La structure comprend également des champs intitulés  « DernierRDV », « DateUtilisation », « Notes », « Extensions » ou encore « Indesirable » . \n\n\n\n Ces éléments suggèrent que la base ne correspond pas simplement à une liste marketing, mais à des  contacts utilisés dans un outil métier de gestion des appels ou des rendez-vous . \n\n\n\n Le champ « CleDossier » laisse également penser que les contacts sont rattachés à différents dossiers, potentiellement associés aux professionnels clients de Callibri. \n\n\n\n Le champ « Notes » pourrait contenir des informations supplémentaires \n\n\n\n Le fichier comporte un champ prévu pour enregistrer des  notes libres . Dans les quelques exemples publiés avec la revendication, celui-ci apparaît vide. \n\n\n\n Il n’est donc pas possible d’affirmer que des commentaires confidentiels figurent réellement dans les 61 000 fiches. Si certains professionnels utilisaient néanmoins ce champ pour documenter leurs échanges avec un contact, son contenu pourrait augmenter sensiblement la sensibilité de certaines lignes. \n\n\n\n Une base directement publiée par le hacker \n\n\n\n Contrairement à de nombreuses revendications où les données sont proposées contre paiement, mondial indique ici  « leaking the database »  et accompagne son message d’un lien de téléchargement. \n\n\n\n Cette mise à disposition augmente le risque de réutilisation des informations, puisqu’une fois téléchargée la base peut être copiée et redistribuée sans contrôle. \n\n\n\n Des risques de phishing et d’usurpation d’identité \n\n\n\n La combinaison entre  nom, date de naissance, adresse, email et numéro de téléphone  peut être exploitée pour mener des campagnes de phishing particulièrement personnalisées. \n\n\n\n Un fraudeur pourrait également se faire passer pour le professionnel auprès duquel la personne avait pris contact ou réservé un rendez-vous, en utilisant des informations issues de la fiche pour rendre son message plus crédible. \n\n\n\n Les données peuvent enfin être croisées avec d’autres fuites afin de compléter des profils déjà constitués et faciliter certaines tentatives d’ usurpation d’identité . \n\n\n\n L’origine de la fuite reste inconnue \n\n\n\n Mondial ne donne aucune précision sur la manière dont la base aurait été obtenue. Impossible donc de savoir si elle provient d’une  intrusion dans les systèmes de Callibri, d’un compte compromis, d’une vulnérabilité applicative ou d’un export récupéré autrement . \n\n\n\n À ce stade, Callibri n’a pas publiquement confirmé cette fuite. Le volume de  61 000 fiches  repose donc sur la revendication du hacker, tandis que les exemples diffusés confirment la présence de données structurées correspondant à des contacts enregistrés dans un environnement de gestion des appels et rendez-vous.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-11",
+    "sector": "",
+    "source_item_id": "4091",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Un hacker utilisant le pseudonyme  mondial  affirme, sur un forum cybercriminel, avoir récupéré puis diffusé une base contenant environ  61 000 enregistrements  provenant de callibri.fr.",
+        "raw": "61 000 enregistrements",
+        "scope": "",
+        "status": "claimed",
+        "unit": "records",
+        "value": 61000
+       },
+       {
+        "date": "",
+        "evidence": "Une base annoncée à environ 61 000 enregistrements",
+        "raw": "61 000 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 61000
+       },
+       {
+        "date": "",
+        "evidence": "Rien ne permet pour le moment d’affirmer qu’il correspond à 61 000 personnes uniques.",
+        "raw": "61 000 personnes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "people",
+        "value": 61000
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Un hacker utilisant le pseudonyme  mondial  affirme, sur un forum cybercriminel, avoir récupéré puis diffusé une base contenant environ  61 000 enregistrements  provenant de callibri.fr.",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 61000
+       },
+       {
+        "date": "",
+        "evidence": "Une base annoncée à environ 61 000 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 61000
+       },
+       {
+        "date": "",
+        "evidence": "Rien ne permet pour le moment d’affirmer qu’il correspond à 61 000 personnes uniques.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 61000
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Téléphones, adresses et dates de naissance dans les fiches",
+        "status": "reported",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Téléphones, adresses et dates de naissance dans les fiches",
+        "status": "reported",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Chaque enregistrement comporte un identifiant de dossier et un identifiant de contact.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "références de réservation"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Il n’est donc pas possible d’affirmer que des commentaires confidentiels figurent réellement dans les 61 000 fiches.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "commentaires"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les exemples publiés montrent des  noms, prénoms, adresses postales, numéros de téléphone, adresses email et dates de naissance .",
+        "status": "unknown",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Téléphones, adresses et dates de naissance dans les fiches",
+        "status": "reported",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Téléphones, adresses et dates de naissance dans les fiches",
+        "status": "reported",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Chaque enregistrement comporte un identifiant de dossier et un identifiant de contact.",
+        "status": "unknown",
+        "value": "références de réservation"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs disponibles peuvent comprendre la  civilité, le nom, le prénom, la société, l’adresse, le code postal, la ville, différents numéros de téléphone, l’adresse email et la date de naissance .",
+        "status": "hypothesis",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Il n’est donc pas possible d’affirmer que des commentaires confidentiels figurent réellement dans les 61 000 fiches.",
+        "status": "hypothesis",
+        "value": "commentaires"
+       }
+      ],
+      "data_volumes": [],
+      "profile": {
+       "chars": 5474,
+       "claims": 16,
+       "dates": 0,
+       "hypotheses": 5,
+       "numbers": 3,
+       "sentences": 42
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Callibri, société française proposant des solutions de permanence téléphonique, de gestion d’appels et de prise de rendez-vous pour…",
+    "threat": "",
+    "title": "Callibri : 61 000 contacts exposés après une fuite de sa base de données",
+    "url": "https://www.cyberattaque.org/callibri-61-000-contacts-exposes-apres-une-fuite-de-sa-base-de-donnees/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {},
+   "first_queued_at": "2026-10-11T13:36:24.814614+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-f5c7ca5a3a79aeed",
+    "Location": "Inconnu",
+    "Organisation_Key": "callibri",
+    "Organisation_Raw": "Callibri",
+    "Published_Date": "2026-10-11",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4091",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Callibri : 61 000 contacts exposés après une fuite de sa base de données",
+    "URL": "https://www.cyberattaque.org/callibri-61-000-contacts-exposes-apres-une-fuite-de-sa-base-de-donnees/"
+   },
+   "key": "ITM-f5c7ca5a3a79aeed:91f573cc1cf906aef63fc0704b898b55cab095a1823807620b22cd66775a2502",
+   "last_queued_at": "2026-10-11T13:36:24.814614+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
