@@ -15,6 +15,7 @@ on:
           - PURGE
 
 permissions:
+  actions: read
   contents: write
   issues: write
 
@@ -37,6 +38,11 @@ jobs:
           cache: pip
       - name: Installer les dépendances
         run: pip install -r requirements.txt
+      - name: Lire les résultats des collectes planifiées
+        if: github.event_name != 'workflow_dispatch' || inputs.operation != 'PURGE'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/read-collection-workflows.sh
       - name: Collecter
         if: github.event_name != 'workflow_dispatch' || inputs.operation != 'PURGE'
         env:

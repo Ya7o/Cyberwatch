@@ -485,6 +485,15 @@ class TestNewsRss:
 
 
 class TestRansomwareLive:
+    def test_api_record_outside_requested_geography_is_not_french(self):
+        spec = SourceSpec("RANSOMWARE_LIVE", config.LAYER_CORE, "Multi")
+        record = {"victim": "Boullard Musique", "country": "CH", "discovered": "2026-10-08"}
+        assert _entry_from_record(record, spec, "FR") is None
+        entry = _entry_from_record({**record, "country": "RE"}, spec, "FR")
+        assert entry is not None
+        assert entry.location == config.LOC_REUNION
+        assert entry.source_metadata["country"] == "RE"
+
     def test_date_discovered_est_prioritaire_comme_sur_la_carte_publique(self):
         entry = _entry_from_record({
             "victim": "Entreprise Alpha",

@@ -42,6 +42,35 @@ def test_un_echec_planifie_casse_la_serie_et_le_taux():
     assert result["seven_run_proof_ready"] is False
 
 
+def test_github_failure_before_publication_is_counted(tmp_path, monkeypatch):
+    monkeypatch.setattr(store, "DATA_DIR", tmp_path)
+    (tmp_path / "collection_workflow_runs.json").write_text(json.dumps([
+        {"id": 1, "event": "schedule", "created_at": "2026-10-09T07:00:00Z",
+         "status": "completed", "conclusion": "success"},
+        {"id": 2, "event": "schedule", "created_at": "2026-10-10T07:00:00Z",
+         "status": "completed", "conclusion": "failure"},
+        {"id": 3, "event": "schedule", "created_at": "2026-10-11T07:00:00Z",
+         "status": "in_progress", "conclusion": None},
+    ]))
+    result = production.scheduled_reliability([
+        {"Trigger": "schedule", "Overall_Status": "OK", "As_Of": "2026-10-09T11:00:00+04:00"},
+    ])
+    assert result["observed"] == 2
+    assert result["success_rate_pct"] == 50.0
+    assert result["consecutive_successes"] == 0
+    assert result["includes_unpublished_failures"] is True
+    assert result["seven_run_proof_ready"] is False
+
+
+def test_missing_workflow_results_explicitly_limits_reliability_scope(tmp_path, monkeypatch):
+    monkeypatch.setattr(store, "DATA_DIR", tmp_path)
+    result = production.scheduled_reliability([
+        {"Trigger": "schedule", "Overall_Status": "OK", "As_Of": "2026-10-09T11:00:00+04:00"},
+    ])
+    assert result["scope"] == "published_run_log"
+    assert result["includes_unpublished_failures"] is False
+
+
 def test_fraicheur_est_strictement_inferieure_a_36_heures(monkeypatch):
     monkeypatch.setattr(store, "load_snapshot", lambda: {"As_Of": "2026-09-01T00:00:00+00:00"})
     monkeypatch.setattr(store, "load_production_metrics", lambda: [])

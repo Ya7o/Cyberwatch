@@ -112,6 +112,29 @@ def test_un_nouveau_create_reinitialise_la_couverture():
     assert payload["days"] == 3
 
 
+def test_maj_bootstrap_tracks_coverage_without_obsolete_create():
+    payload = coverage_status([
+        _run("MAJ", "2026-09-11", "2026-09-12"),
+        _run("MAJ", "2026-09-12", "2026-09-13"),
+        _run("MAJ", "2026-09-13", "2026-09-14", status="BROKEN"),
+        _run("MAJ", "2026-09-13", "2026-09-15"),
+    ])
+    assert payload["known"] is True
+    assert payload["days"] == 5
+    assert payload["end"] == "2026-09-15"
+    assert payload["trend_ready"] is False
+
+
+def test_purge_starts_a_new_coverage_segment():
+    payload = coverage_status([
+        _run("MAJ", "2026-09-01", "2026-09-12"),
+        _run("PURGE", "2026-09-12", "2026-09-12"),
+        _run("MAJ", "2026-09-14", "2026-09-15"),
+    ])
+    assert payload["start"] == "2026-09-14"
+    assert payload["days"] == 2
+
+
 def test_collecte_planifiee_est_active_et_quotidienne():
     workflow = _read(".github/workflows/collect.yml")
     assert 'cron: "0 7 * * *"' in workflow

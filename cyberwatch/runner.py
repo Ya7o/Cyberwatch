@@ -17,6 +17,7 @@ from .runner_support import (
     save_snapshot_provenance,
 )
 from .collectors import get_collector
+from .collectors.feed import repair_frenchbreaches_identities
 from .collectors.cyberattaque_org import (
     is_negated_incident,
     is_obvious_multi,
@@ -119,9 +120,21 @@ def make_run_context(
     end = now.date().isoformat()
 
     start = (now.date() - dt.timedelta(days=config.MAJ_LOOKBACK_DAYS)).isoformat()
+    run_log = store.load_run_log()
+    if mode == MODE_MAJ:
+        published = next((row for row in reversed(run_log)
+                          if row.get("Mode") == MODE_MAJ
+                          and row.get("Overall_Status") == status.OK), {})
+        last_end = str(published.get("Target_End") or "")
+        try:
+            previous_day = dt.date.fromisoformat(last_end)
+        except ValueError:
+            previous_day = now.date()
+        if previous_day <= now.date():
+            start = min(start, previous_day.isoformat())
 
     base_run_id = now.strftime("RUN-%Y%m%dT%H%M%S")
-    existing_run_ids = {row.get("Run_ID", "") for row in store.load_run_log()}
+    existing_run_ids = {row.get("Run_ID", "") for row in run_log}
     sequence = 1
     run_id = base_run_id
     while run_id in existing_run_ids:
@@ -809,6 +822,7 @@ def execute(
 
     snapshot_items = store.load_items()
     snapshot_items, _ = repair_existing_identities(snapshot_items, editorial_tails_only=True)
+    repair_frenchbreaches_identities(snapshot_items)
     existing_items = snapshot_items
     existing_item_ids = {item.Item_ID for item in existing_items}
 

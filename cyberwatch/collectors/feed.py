@@ -43,7 +43,7 @@ _FRENCHBREACHES_SUFFIX_MARKERS = (
 _EXPLICIT_VICTIM_RE = re.compile(
     r"\b(?:fuite(?:\s+de\s+données)?|cyberattaque|attaque)\s+"
     r"(?:touche|touchant|visant|attribuée?\s+à|contre)\s+"
-    r"(?P<victim>[^,\n]{2,100})(?=,\s+(?:la|le|un|une|service|réseau|plateforme)\b)",
+    r"(?P<victim>(?:(?![.!?]\s)[^,\n]){2,100})(?=,\s+(?:la|le|un|une|service|réseau|plateforme)\b)",
     flags=re.IGNORECASE,
 )
 
@@ -54,9 +54,33 @@ def explicit_frenchbreaches_victim(text: str) -> str:
     if not match:
         return ""
     victim = strip_html(match.group("victim")).strip(" .:;–—-")
-    if len(victim) < 2 or len(victim.split()) > 12:
+    if len(victim) < 2 or len(victim.split()) > 12 or non_victim_object(victim):
         return ""
     return victim
+
+
+def non_victim_object(value: str) -> bool:
+    """Un système possédé par la victime n'est pas son nom d'organisation."""
+    return bool(re.match(
+        r"^(?:son|sa|ses|leur|leurs)\s+(?:application|syst[èe]me|serveur|plateforme|r[ée]seau)\b",
+        value.strip(), re.I,
+    ))
+
+
+def repair_frenchbreaches_identities(items: list) -> int:
+    from ..normalize import organisation_from_entry_title, organisation_key
+
+    changed = 0
+    for item in items:
+        if (item.Source_ID != "FRENCHBREACHES" or not item.Source_Item_ID
+                or not non_victim_object(item.Organisation_Raw)):
+            continue
+        organisation = organisation_from_entry_title(item.Title)
+        if organisation and not non_victim_object(organisation):
+            item.Organisation_Raw = organisation
+            item.Organisation_Key = organisation_key(organisation)
+            changed += 1
+    return changed
 
 
 def stable_frenchbreaches_detail_text(html_text: str) -> str:

@@ -314,7 +314,12 @@ def source_fact_quality_counts(rows: list[dict]) -> dict[str, int]:
 
 
 def scheduled_reliability(run_log: list[dict]) -> dict:
+    from .production_workflows import completed_scheduled_runs
+
     observed = [row for row in run_log if row.get("Trigger") == "schedule"][-SCHEDULED_RELIABILITY_WINDOW:]
+    workflows = completed_scheduled_runs(run_log)
+    if workflows is not None:
+        observed = workflows[-SCHEDULED_RELIABILITY_WINDOW:]
     successes = sum(row.get("Overall_Status") == "OK" for row in observed)
     consecutive = 0
     for row in reversed(observed):
@@ -322,6 +327,8 @@ def scheduled_reliability(run_log: list[dict]) -> dict:
             break
         consecutive += 1
     return {
+        "scope": "github_completed_workflows" if workflows is not None else "published_run_log",
+        "includes_unpublished_failures": workflows is not None,
         "observed": len(observed),
         "window": SCHEDULED_RELIABILITY_WINDOW,
         "successes": successes,
@@ -582,7 +589,12 @@ def markdown_report(payload: dict) -> str:
         qualification_line,
         f"- Fraîcheur : **{age}** (cible < {fresh['target_hours']:.0f} h)",
         f"- Succès planifiés : **{scheduled_rate}** sur {reliability['observed']} run(s) observé(s) (cible ≥ {reliability['target_pct']:.0f} %)",
-        f"- Série planifiée : **{reliability['consecutive_successes']}/{reliability['required_consecutive_successes']}** succès consécutifs réels",
+        f"- Série planifiée : **{reliability['consecutive_successes']}/{reliability['required_consecutive_successes']}** succès consécutifs observés",
+        "- Périmètre de fiabilité : " + (
+            "workflows GitHub terminés, échecs avant publication inclus"
+            if reliability.get("includes_unpublished_failures")
+            else "journal publié uniquement ; échecs avant publication exclus"
+        ),
         f"- Secteur inconnu : **{sector_unknown}** (cible < {quality['sector_unknown_target_pct']:.0f} %)",
         "- Rubriques source non reconnues : **{}**".format(
             ", ".join(quality["source_sector_unmapped_labels"]) or "aucune"

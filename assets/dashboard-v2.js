@@ -466,7 +466,7 @@
         pairsDetail,
         pairs ? pairsPending === 0 : null,
       ),
-      productionMetric("Série planifiée", `${reliability.consecutive_successes || 0}/${reliability.required_consecutive_successes || 7}`, observed ? `${Number(reliability.success_rate_pct).toFixed(2)} % de succès observés` : "preuve en acquisition", observed ? Boolean(reliability.seven_run_proof_ready) : null),
+      productionMetric("Série planifiée", `${reliability.consecutive_successes || 0}/${reliability.required_consecutive_successes || 7}`, observed ? `${Number(reliability.success_rate_pct).toFixed(2)} % de succès · ${reliability.includes_unpublished_failures ? "échecs avant publication inclus" : "journal publié, échecs avant publication exclus"}` : "preuve en acquisition", observed && reliability.includes_unpublished_failures ? Boolean(reliability.seven_run_proof_ready) : null),
       productionMetric("Secteur inconnu", sectorKnown ? `${sector.toFixed(2)} %` : "n.d.", `cible < ${targets.sector_unknown_pct || 20} %`, sectorKnown ? sector < Number(targets.sector_unknown_pct || 20) : null),
       productionMetric("Localisation inconnue", locationKnown ? `${location.toFixed(2)} %` : "n.d.", `cible < ${targets.location_unknown_pct || 5} %`, locationKnown ? location < Number(targets.location_unknown_pct || 5) : null),
       productionMetric("Doublons potentiellement manqués", dedupValue("missed_duplicate_candidate_pairs"), "paires encore séparées", null),

@@ -209,10 +209,13 @@ def _entry_from_record(record, spec: SourceSpec, country: str) -> RawEntry | Non
     group = _first_field(record, FIELD_ALIASES["group"])
     source_item_id = _first_field(record, FIELD_ALIASES["source_item_id"])
     record_country = (_first_field(record, FIELD_ALIASES["country"]) or country).upper()[:2]
+    if record_country not in COUNTRY_TO_LOCATION:
+        return None
     location = COUNTRY_TO_LOCATION.get(record_country, spec.location_rule)
     title = f"{organisation} revendiqué par {group}" if group else organisation
 
     source_metadata = {
+        "country": record_country,
         "group": group,
         "discovered": _first_field(record, ["discovered", "discovered_date"]),
         "attackdate": _first_field(record, ["attackdate", "attack_date"]),

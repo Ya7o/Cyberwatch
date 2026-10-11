@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   issues: write
 
@@ -23,6 +24,10 @@ jobs:
           cache: pip
       - name: Installer les dépendances d'exécution
         run: pip install -r requirements.txt
+      - name: Lire les résultats des collectes planifiées
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/read-collection-workflows.sh
       - name: Mesurer la santé de production
         id: production_health
         run: python -m cyberwatch production-status --markdown --github-output | tee -a "$GITHUB_STEP_SUMMARY"

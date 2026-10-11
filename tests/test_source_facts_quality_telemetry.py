@@ -114,6 +114,51 @@ def test_legacy_row_without_content_hash_is_never_destructively_migrated():
     assert json.loads(merged["Evidence_JSON"])["Summary"] == "preuve historique"
 
 
+def test_changed_article_without_llm_result_preserves_published_summary():
+    item = Item(Item_ID="ITM-maileva", Source_ID="FRENCHBREACHES",
+                Organisation_Raw="Maileva")
+    entry = RawEntry(title="Maileva", content=(
+        "La cyberattaque chez Maileva concerne les données de 22 millions de personnes."
+    ))
+    semantic = sfa.SemanticExtraction(
+        item_id=item.Item_ID, content_hash=sfa.content_hash(entry), fields={}, statuses={},
+    )
+    new = sf.extract_source_fact(
+        item, entry, SourceSpec(source_id="FRENCHBREACHES", layer="core", zone="France"),
+        semantic=semantic,
+    )
+    assert new is not None
+    assert new["Summary"] == ""
+    assert json.loads(new["Source_Metadata_JSON"])["_source_facts_summary_status"] == "deferred"
+    old = {**_row("old", summary="Maileva a interrompu ses services après une intrusion.",
+                 statuses={"summary": "accepted"}), "Item_ID": item.Item_ID}
+    merged = sf.merge_source_facts([old], [new])[0]
+    assert merged["Summary"] == old["Summary"]
+    assert json.loads(merged["Evidence_JSON"])["Summary"] == "preuve synthèse"
+    assert sf.semantic_materialization_gaps([merged]) == []
+
+
+def test_unpublishable_accepted_summary_records_quality_rejection():
+    item = _item()
+    entry = RawEntry(title="Exemple SA", content="Exemple SA confirme une cyberattaque.")
+    semantic = sfa.SemanticExtraction(
+        item_id=item.Item_ID, content_hash=sfa.content_hash(entry),
+        fields={"summary": {"value": "Exemple SA", "evidence": "Exemple SA"}},
+        statuses={"summary": "accepted"},
+    )
+    new = sf.extract_source_fact(
+        item, entry, SourceSpec(source_id=item.Source_ID, layer="core", zone="France"),
+        semantic=semantic,
+    )
+    assert new is not None
+    old = {**_row("old", summary="Ancienne synthèse.", statuses={"summary": "accepted"}),
+           "Item_ID": item.Item_ID}
+    merged = sf.merge_source_facts([old], [new])[0]
+    assert merged["Summary"] == ""
+    assert json.loads(merged["Source_Metadata_JSON"])["_source_facts_semantic_status"]["summary"] == "rejected_quality"
+    assert sf.semantic_materialization_gaps([merged]) == []
+
+
 def _configure_runtime(monkeypatch, tmp_path):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
     monkeypatch.setenv("SOURCE_FACTS_AI_CACHE_PATH", str(tmp_path / "cache.json"))

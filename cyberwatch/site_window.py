@@ -52,7 +52,7 @@ def latest_rows(payload: list[dict], as_of: object, *, window_days: int = 30) ->
 
 
 def coverage_status(run_log: list[dict]) -> dict:
-    """Décrit la couverture continue du corpus depuis le dernier ``CREATE``.
+    """Décrit la couverture depuis l'amorçage MAJ ou le dernier reset historique.
 
     Les tendances comparent 30 jours aux 30 jours précédents : elles ne sont
     publiables qu'après 60 jours continus. Un simple minimum/maximum masquerait
@@ -62,7 +62,7 @@ def coverage_status(run_log: list[dict]) -> dict:
     last_create = -1
     for index, row in enumerate(run_log):
         if (
-            str(row.get("Mode") or "").upper() == "CREATE"
+            str(row.get("Mode") or "").upper() in {"CREATE", "PURGE"}
             and str(row.get("Overall_Status") or "").upper() == "OK"
         ):
             last_create = index
@@ -77,7 +77,7 @@ def coverage_status(run_log: list[dict]) -> dict:
         "trend_ready": False,
     }
     if last_create < 0:
-        return empty
+        last_create = 0
 
     intervals: list[tuple[date, date]] = []
     for row in run_log[last_create:]:

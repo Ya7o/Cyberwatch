@@ -459,8 +459,13 @@ def _finalize(fact: dict, item: Item, entry: RawEntry, evidence: dict) -> dict |
             evidence.pop("Summary", None)
             status = (semantic_status or {}).get("summary") if isinstance(semantic_status, dict) else ""
             metadata["_source_facts_summary_status"] = (
-                "abstained" if status == "abstained" else "rejected_quality"
+                "abstained" if status == "abstained"
+                else "rejected_quality" if status else "deferred"
             )
+            if status == "accepted":
+                metadata["_source_facts_semantic_status"] = {
+                    **semantic_status, "summary": "rejected_quality",
+                }
             metadata["_source_facts_summary_rejection"] = (
                 "organisation_name_only" if is_organisation_name_only(summary, organisation)
                 else rejection_reason(summary) or status or "missing"

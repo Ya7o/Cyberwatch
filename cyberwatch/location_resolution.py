@@ -19,7 +19,9 @@ _THIRD_PARTY_RE = re.compile(
 def foreign_institution_name(organisation: str) -> bool:
     """A named foreign federation cannot inherit a French feed's default."""
     blob = searchable(organisation)
-    return blob.startswith("federation ") and bool(re.search(
+    return bool(re.search(r"\b(?:belgium|switzerland)\b", blob)) or bool(re.search(
+        r"\bfederation\b", blob,
+    )) and bool(re.search(
         r"\b(?:belge|flamande|suisse|canadienne|luxembourgeoise)\b", blob,
     ))
 

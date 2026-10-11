@@ -6,6 +6,7 @@ import pytest
 
 from cyberwatch import config, dedup_ai, dedup_review, enrichment, normalize, org_identity, production, sector, store
 from cyberwatch.collectors.base import RawEntry
+from cyberwatch.collectors.feed import explicit_frenchbreaches_victim, repair_frenchbreaches_identities
 from cyberwatch.collectors.cyberattaque_org import (
     organisation_from_cyberattaque_entry, repair_existing_identities,
 )
@@ -71,6 +72,32 @@ def test_foreign_federation_cannot_inherit_french_feed_location(make_item):
     assert french.Location == config.LOC_FRANCE
     enrichment.backfill_unknowns([foreign], {})
     assert foreign.Location == config.LOC_INCONNU
+
+
+def test_frenchbreaches_targeted_application_is_not_the_victim(make_item):
+    text = ("Bordeaux Sciences Agro a confirmé avoir été victime d’une cyberattaque visant "
+            "son application de gestion des conventions de stage. L’établissement a détecté, "
+            "le 8 septembre 2026, un accès non autorisé.")
+    assert explicit_frenchbreaches_victim(text) == ""
+    assert explicit_frenchbreaches_victim(
+        "Une cyberattaque touche Acme, une entreprise informatique."
+    ) == "Acme"
+    item = make_item(source="FRENCHBREACHES", source_item_id="https://source/bordeaux",
+                     org="son application de gestion des conventions de stage. L’établissement a détecté",
+                     title="Bordeaux Sciences Agro")
+    original_id = item.Item_ID
+    assert repair_frenchbreaches_identities([item]) == 1
+    assert item.Organisation_Raw == "Bordeaux Sciences Agro"
+    assert item.Organisation_Key == "bordeaux sciences agro"
+    assert item.Item_ID == original_id
+    assert repair_frenchbreaches_identities([item]) == 0
+
+
+def test_belgium_federation_does_not_count_as_french(make_item):
+    item = make_item(source="FRENCHBREACHES", org="SKIF Belgium",
+                     title="SKIF Belgium (Fédération belge de karaté)", location=config.LOC_FRANCE)
+    enrichment.backfill_unknowns([item], {})
+    assert item.Location == config.LOC_INCONNU
 
 
 def test_published_partial_source_is_visible_even_when_overall_run_is_ok(monkeypatch):

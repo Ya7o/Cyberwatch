@@ -15,7 +15,7 @@ collecte -> identité -> enrichissement -> déduplication -> publication
 - `assets/data/` est généré pour le dashboard ;
 - `main` contient le code, les données et la production GitHub Pages.
 
-Une `MAJ` collecte uniquement aujourd'hui et hier à La Réunion (UTC+4) et conserve le corpus existant. `PURGE` vide le corpus et le dashboard sans lancer de collecte.
+Une `MAJ` collecte aujourd'hui et hier à La Réunion (UTC+4) et conserve le corpus existant. Après un échec, elle reprend depuis le dernier jour publié pour récupérer les publications manquées. `PURGE` vide le corpus et le dashboard sans lancer de collecte.
 
 ## Sources actives
 

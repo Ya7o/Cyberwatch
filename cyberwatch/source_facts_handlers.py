@@ -408,7 +408,7 @@ def _should_clear_fact(column: str, new: dict, new_meta: dict, field_columns: di
                        statuses: dict) -> bool:
     field = field_columns.get(column, "")
     if column == "Summary" and new_meta.get("_source_facts_summary_status") in {
-        "rejected_quality", "abstained", "technical_failure",
+        "rejected_quality", "abstained",
     }:
         return True
     return bool(

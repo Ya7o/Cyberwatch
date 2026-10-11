@@ -218,6 +218,29 @@ class TestHistoryStatus:
 
 
 class TestRunContext:
+    @pytest.mark.parametrize("last_end,expected", [
+        ("2026-10-10", "2026-10-10"),
+        ("2026-10-09", "2026-10-09"),
+        ("2026-10-07", "2026-10-07"),
+        ("invalid", "2026-10-10"),
+        ("2026-10-12", "2026-10-10"),
+    ])
+    def test_maj_recovers_days_since_last_published_collection(self, monkeypatch, last_end, expected):
+        monkeypatch.setattr(runner.store, "load_run_log", lambda: [
+            {"Mode": "MAJ", "Overall_Status": "OK", "Target_End": last_end},
+            {"Mode": "MAJ", "Overall_Status": "BROKEN", "Target_End": "2026-10-10"},
+        ])
+        context = make_run_context(runner.MODE_MAJ, as_of="2026-10-11T10:00:00+04:00")
+        assert context.target_start == expected
+        assert context.target_end == "2026-10-11"
+
+    def test_replay_keeps_explicit_window_despite_published_history(self, monkeypatch):
+        monkeypatch.setattr(runner.store, "load_run_log", lambda: [
+            {"Mode": "MAJ", "Overall_Status": "OK", "Target_End": "2026-10-01"},
+        ])
+        context = make_run_context(runner.MODE_REPLAY, as_of="2026-10-11T10:00:00+04:00")
+        assert context.target_start == "2026-10-10"
+
     def test_maj_ne_collecte_que_les_dernieres_24_heures(self):
         context = make_run_context(runner.MODE_MAJ, as_of="2026-09-01T10:00:00+04:00")
         assert context.target_start == "2026-08-31"

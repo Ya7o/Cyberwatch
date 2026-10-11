@@ -159,7 +159,9 @@ def backfill_unknowns(
 
     for item in ordered:
         # Re-evaluate historical feed defaults as well as newly collected rows.
-        foreign_name = location_resolution.foreign_institution_name(item.Organisation_Raw)
+        foreign_name = location_resolution.foreign_institution_name(
+            f"{item.Organisation_Raw} {item.Title}"
+        )
         if foreign_name and item.Location == _source_location_default(item.Source_ID):
             item.Location = config.LOC_INCONNU
         if item.Threat == config.THREAT_UNKNOWN:
