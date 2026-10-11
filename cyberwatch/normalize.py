@@ -132,6 +132,7 @@ def strip_accents(text: str) -> str:
 
 def _base_organisation_key(raw: str) -> str:
     text = _DOMAIN_SUFFIX_RE.sub("", strip_accents(str(raw or "")).strip()).lower()
+    text = text.replace("œ", "oe")
     text = _SPACES_RE.sub(" ", _PUNCT_RE.sub(" ", text)).strip()
     tokens = [token for token in text.split() if token and token not in LEGAL_FORMS]
     while tokens and tokens[-1] in INCIDENT_SUFFIXES:

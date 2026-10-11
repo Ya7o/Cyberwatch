@@ -100,6 +100,40 @@ def test_belgium_federation_does_not_count_as_french(make_item):
     assert item.Location == config.LOC_INCONNU
 
 
+def test_ligature_variants_merge_without_changing_native_item_identity(make_item):
+    left = make_item(source="FRENCHBREACHES", source_item_id="feed/eau", org="Eau coeur d'Essonne")
+    right = make_item(source="CYBERATTAQUE_ORG", source_item_id="123", org="Eau Cœur d’Essonne")
+    right.Organisation_Key = "eau cœur d essonne"  # clé persistée avant correction
+    previous_ids = [left.Item_ID, right.Item_ID]
+    from cyberwatch.dedup import build_incidents
+
+    incidents = build_incidents([left, right])
+    assert len(incidents) == 1
+    assert incidents[0].Items_Count == 2
+    assert [left.Item_ID, right.Item_ID] == previous_ids
+
+
+def test_drinking_water_operator_does_not_become_retail():
+    assert sector.classify_sector_activity(
+        "une régie publique créée pour assurer directement la distribution de l’eau potable"
+    ) == config.SECTOR_ENERGY
+    assert sector.classify_sector_activity(
+        "commercialise des équipements de plomberie et de distribution"
+    ) == config.SECTOR_RETAIL
+
+
+def test_quota_failure_is_explicit_in_qualification():
+    from cyberwatch import qualification
+
+    run = qualification.QualificationRun(
+        run_id="quota", documented=True,
+        transport={"provider_blocked_reason": "insufficient_quota", "http_429": 1},
+    )
+    result = qualification.evaluate(run)
+    assert result["state"] == qualification.STATE_PARTIAL
+    assert "quota API LLM épuisé : insufficient_quota" in result["reasons"]
+
+
 def test_published_partial_source_is_visible_even_when_overall_run_is_ok(monkeypatch):
     monkeypatch.setattr(store, "load_run_sources", lambda: [
         {"Run_ID": "OLD", "Source_ID": "FRENCHBREACHES", "Status": "FAIL"},

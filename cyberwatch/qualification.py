@@ -94,6 +94,7 @@ class QualificationRun:
     #: Le défaut vide préserve le chemin des runs construits à la main.
     deferred_source: str = ""
     sectors: dict | None = None
+    transport: dict = field(default_factory=dict)
 
     @property
     def pairs(self) -> list[dict]:
@@ -111,6 +112,7 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
     run_id = run_id or latest_run_id(root)
     directory = runs_dir(root) / run_id if run_id else None
     extraction = _read_json(directory / "source_facts_ai_usage.json") if directory else None
+    transport = _read_json(directory / "llm_usage.json") if directory else None
     trace = _read_json(directory / "source_facts_ai_trace.json") if directory else None
     contexts = _read_json(directory / "source_facts_ai_contexts.json") if directory else None
     dedup = _read_json(directory / "dedup_review.json") if directory else None
@@ -150,6 +152,7 @@ def load_run(run_id: str = "", root: Path | None = None) -> QualificationRun:
         documented=isinstance(extraction, dict) or isinstance(dedup, dict),
         deferred_source=deferred_source,
         sectors=sectors if isinstance(sectors, dict) else None,
+        transport=transport if isinstance(transport, dict) else {},
     )
 
 
@@ -330,6 +333,10 @@ def evaluate(run: QualificationRun) -> dict:
 
     extraction = _extraction_counts(run)
     dedup = _dedup_counts(run)
+    if run.transport.get("provider_blocked_reason"):
+        reasons.append("quota API LLM épuisé : " + str(run.transport["provider_blocked_reason"]))
+    elif run.transport.get("http_429"):
+        reasons.append(f"{run.transport['http_429']} refus HTTP 429 de l'API LLM")
 
     if pending_required:
         reasons.append(f"{pending_required} champ(s) d'extraction différé(s)")

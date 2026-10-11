@@ -161,6 +161,45 @@ def test_runtime_retries_429(monkeypatch):
     assert runtime.stats.retries == 1
 
 
+def test_permanent_quota_stops_http_calls_for_the_run_without_retry(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    monkeypatch.setenv("LLM_MAX_RETRIES", "2")
+    runtime = llm_runtime.LlmRuntime()
+    calls = []
+
+    def unavailable(*args, **kwargs):
+        calls.append(kwargs)
+        return _Response(status_code=429, payload={
+            "error": {"code": "insufficient_quota", "message": "private account details"},
+        })
+
+    monkeypatch.setattr(llm_runtime.requests, "post", unavailable)
+    monkeypatch.setattr(llm_runtime.time, "sleep", lambda _: pytest.fail("quota is not retryable"))
+    with pytest.raises(llm_runtime.LlmError, match="insufficient_quota"):
+        runtime.post_response(task="source_facts", body={"model": "gpt-5-nano"})
+    with pytest.raises(llm_runtime.LlmError, match="insufficient_quota"):
+        runtime.post_response(task="dedup", body={"model": "gpt-5-mini"})
+    assert len(calls) == 1
+    assert runtime.stats.calls_attempted == runtime.stats.calls_failed == 1
+    assert runtime.stats.calls_provider_blocked == 1
+    assert runtime.stats.provider_error_codes == {"insufficient_quota": 1}
+    assert runtime.stats.provider_blocked_reason == "insufficient_quota"
+
+
+def test_http_error_details_are_not_exposed_in_telemetry(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    runtime = llm_runtime.LlmRuntime()
+    monkeypatch.setattr(llm_runtime.requests, "post", lambda *args, **kwargs: _Response(
+        status_code=429, payload={"error": {"code": "unknown-private-code", "message": "private"}},
+        text="private account details",
+    ))
+    with pytest.raises(llm_runtime.LlmError) as failure:
+        runtime.post_response(task="unit", body={"model": "gpt-5-nano"})
+    assert str(failure.value) == "HTTP 429: unknown_provider_error"
+    assert runtime.stats.provider_error_codes == {"unknown_provider_error": 1}
+    assert runtime.stats.provider_blocked_reason == ""
+
+
 def test_runtime_retries_timeout_then_fails(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "test")
     monkeypatch.setenv("LLM_MAX_RETRIES", "1")

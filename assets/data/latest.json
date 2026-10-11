@@ -430,13 +430,13 @@
   "org": "SKIF Belgium",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
+   "confidence": 0.9,
+   "evidence": "Fédération belge de karaté : activité sportive explicitement décrite dans le titre et le premier paragraphe de la source",
    "evidence_url": "https://frenchbreaches.com/alertes/skif-belgium-f-d-ration-belge-de-karat-mv0emtc43pd3ulth9wa",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -850,40 +850,6 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-08",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-F624C40BD089",
-  "location": "France métropolitaine",
-  "org": "Eau coeur d'Essonne",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/eau-coeur-d-essonne-muzn191gxgjagxzkie",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/eau-coeur-d-essonne-muzn191gxgjagxzkie"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Les données de 55 000 clients d'Eau Cœur d’Essonne seraient mises en vente sur le dark web.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-08",
-  "high_sensitivity_data_exposed": false,
   "id": "INC-EF6AF4F03502",
   "location": "Inconnu",
   "org": "Saint-Pierre-des-Corps",
@@ -1210,13 +1176,13 @@
   "org": "Eau Cœur d’Essonne",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Énergie / Utilities",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Eau Cœur d’Essonne  est une régie publique créée pour assurer directement la distribution de l’eau potable sur le territoire de Cœur d’Essonne Agglomération.",
+   "confidence": 0.9,
+   "evidence": "Audit 2026-10-11 : régie publique assurant la distribution de l’eau potable dans 21 communes de l’Essonne ; activité de service de l’eau et non de commerce de produits.",
    "evidence_url": "https://www.cyberattaque.org/eau-coeur-dessonne-55-000-contrats-deau-en-fuite-apres-une-cyberattaque/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -1228,11 +1194,17 @@
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/eau-coeur-dessonne-55-000-contrats-deau-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/eau-coeur-d-essonne-muzn191gxgjagxzkie"
    }
   ],
   "sources": [
    "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Eau Cœur d’Essonne : 55 000 contrats d’eau en fuite après une cyberattaque",
   "threat": "Fuite de données",

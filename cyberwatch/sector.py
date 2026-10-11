@@ -310,6 +310,8 @@ def classify_sector_name(organisation: str) -> str:
 def classify_sector_activity(activity_description: str) -> str:
     """Classe une description d'activité explicitement extraite de la source."""
     blob = searchable(activity_description)
+    if re.search(r"\b(?:distribution|production|traitement|fourniture)\b.{0,45}\beau potable\b", blob):
+        return config.SECTOR_ENERGY
     # A brokerage remains insurance even when its products include health cover.
     if re.search(r"\b(?:courtier|courtage)\b.{0,30}\bassurances?\b", blob):
         return config.SECTOR_FINANCE
