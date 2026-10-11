@@ -205,10 +205,11 @@
    "types": [
     {
      "sources": [
-      "CYBERATTAQUE_ORG"
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
      ],
      "specifics": [],
-     "status": "unknown",
+     "status": "reported",
      "value": "données bancaires"
     }
    ],
@@ -218,10 +219,8 @@
   "version": 3
  },
  "INC-13200FD49444": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant Quick.",
-  "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant Quick."
-  ],
+  "display_summary": "Quick : les données des membres du programme fidélité exposées après une intrusion",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-148B4A8FB9BA": {
@@ -561,6 +560,11 @@
   ],
   "version": 3
  },
+ "INC-2CD3C2DD3934": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-2D5B61EEEBC6": {
   "display_summary": "CUC Loisirs & Vacances : des informations de santé de mineurs diffusées après une cyberattaque",
   "sensitive_data": {
@@ -642,6 +646,24 @@
   "summary_paragraphs": [
    "Un utilisateur du pseudonyme « Syrv4x » affirme avoir récupéré puis mis gratuitement à disposition une base provenant de drveto.mobi."
   ],
+  "version": 3
+ },
+ "INC-2F086959A78B": {
+  "display_summary": "Vos Démarches Éco Energy (VD2E)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-3139AFB2614E": {
@@ -800,6 +822,24 @@
   ],
   "version": 3
  },
+ "INC-3C9CC8162AB9": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-3E7D77B3D0DC": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -848,11 +888,24 @@
   "version": 3
  },
  "INC-447AE4B3A871": {
-  "display_summary": "Maileva, filiale de La Poste victime d’une cyberattaque",
-  "summary_paragraphs": [
-   "Des tentatives d’accès non autorisé par un cybercriminel visant à procéder à l’envoi illégitime de courriers ont été confirmées.",
-   "Maileva a bloqué les comptes concernés et interrompu préventivement le service depuis le 23 septembre à 7h; une plainte a été déposée."
-  ],
+  "display_summary": "Maileva a interrompu ses services après des tentatives d’accès non autorisé visant à effectuer des envois illégitimes de courriers.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "IBAN"
+     ],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-4522C21E32DC": {
@@ -861,6 +914,11 @@
    "Le cybercriminel ChimeraZ affirme vendre une base attribuée à NosRezo contenant des informations sur 413 722 personnes.",
    "L'échantillon publié contient noms, téléphones, adresses, e-mails et informations relatives à des projets immobiliers."
   ],
+  "version": 3
+ },
+ "INC-45A1B4470EF6": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-45C1E638A824": {
@@ -1009,6 +1067,11 @@
    ],
    "vulnerable_people": false
   },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-5156949E8337": {
+  "display_summary": "Primaire de la gauche : une cyberattaque perturbe le vote en ligne dès son ouverture",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1395,6 +1458,11 @@
   ],
   "version": 3
  },
+ "INC-639CC9B593D5": {
+  "display_summary": "Maileva, filiale de La Poste victime d’une cyberattaque",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-63A143370102": {
   "display_summary": "Portalia subit une fuite de données revendiquée avec 22 221 fichiers et 21 698 enregistrements, dont des bulletins de salaire contenant des données sensibles.",
   "summary_paragraphs": [
@@ -1531,26 +1599,22 @@
   ],
   "version": 3
  },
- "INC-6CFE298CA338": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant Maileva.",
+ "INC-6C6E65546759": {
+  "display_summary": "Wimoov : une cyberttaque touche la plateforme WIN",
   "sensitive_data": {
    "types": [
     {
      "sources": [
-      "BONJOURLAFUITE"
+      "CYBERATTAQUE_ORG"
      ],
-     "specifics": [
-      "IBAN"
-     ],
+     "specifics": [],
      "status": "unknown",
-     "value": "données bancaires"
+     "value": "mots de passe"
     }
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant Maileva."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-6D16BC6BDCE1": {
@@ -1618,24 +1682,6 @@
   ],
   "version": 3
  },
- "INC-6FD3B892BC32": {
-  "display_summary": "Bordeaux Sciences Agro a subi une cyberattaque visant son application de gestion des conventions de stage et des données personnelles ont été extraites.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "reported",
-     "value": "données bancaires"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [],
-  "version": 3
- },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -1684,6 +1730,11 @@
    "Un cybercriminel nommé Quantique revendique avoir compromis WayToMe et extrait plusieurs tables d'une instance Supabase.",
    "Le pirate revendique 669 445 enregistrements cumulés répartis entre fichiers Users, Routes, Notifications et Parcel."
   ],
+  "version": 3
+ },
+ "INC-74F8DA9C8697": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-76971BFA51B9": {
@@ -1852,6 +1903,11 @@
   ],
   "version": 3
  },
+ "INC-7F396298E98C": {
+  "display_summary": "École 42 : 140 080 profils en fuite après scraping",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-804EFB835A4A": {
   "display_summary": "",
   "regional_watch": [
@@ -1866,6 +1922,32 @@
   "summary_paragraphs": [
    "Signal de menace interne à Saint-Denis : une policière est soupçonnée d'avoir utilisé ses accès professionnels pour rechercher des personnes et communiquer des informations confidentielles contre rémunération. L'ouverture de l'enquête est confirmée par le parquet ; les faits matériels restent au stade de l'allégation, ce qui justifie le maintien en CANDIDATE."
   ],
+  "version": 3
+ },
+ "INC-814D4F227E47": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-823A16F66FCB": {
@@ -2063,6 +2145,51 @@
   ],
   "version": 3
  },
+ "INC-8D0A88C9DE97": {
+  "display_summary": "VACAF : 1,39 million de lignes en fuite, les données de familles et d’enfants exposées",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "noms et prénoms"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "dates de naissance"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "identifiants"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "adresses e-mail"
+    }
+   ],
+   "vulnerable_people": true
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-8D3392DD5A1A": {
   "display_summary": "Le pirate revendique la fuite de 118 892 enregistrements et 99 108 documents/images issus du SDIS des Pyrénées-Orientales.",
   "sensitive_data": {
@@ -2118,6 +2245,11 @@
    "L'attaque, détectée le 5 septembre 2026, aurait débuté le 4 septembre en exploitant une vulnérabilité alors inconnue d’Adobe Magento.",
    "Ecofone indique que nom, adresses de facturation et livraison, e‑mail, téléphone et informations relatives aux commandes sont potentiellement exposés."
   ],
+  "version": 3
+ },
+ "INC-8FF98F83B6B9": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-905219E08A66": {
@@ -2248,6 +2380,11 @@
    "Un utilisateur pseudonyme affirme avoir exploité une injection SQL accessible sans authentification sur le site qpm-pro.com et extrait une base de données.",
    "L'attaquant revendique l'extraction de comptes internes et clients, 54 commandes et 112 adresses de livraison."
   ],
+  "version": 3
+ },
+ "INC-9EE84A2D2888": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-A00DBB2273A4": {
@@ -2466,6 +2603,13 @@
   ],
   "version": 3
  },
+ "INC-AA7DB5B72ECC": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Réussir Agra.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Réussir Agra."
+  ],
+  "version": 3
+ },
  "INC-AB04B4010204": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant WayToMe.",
   "summary_paragraphs": [
@@ -2578,12 +2722,35 @@
   ],
   "version": 3
  },
+ "INC-B1F98892AA25": {
+  "display_summary": "Institut de Formation Politique (IFP)",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-B2323F1F0DB2": {
   "display_summary": "Alaxione est visée par une revendication de fuite contenant 8,6 millions de patients et 311 286 numéros de Sécurité sociale.",
   "summary_paragraphs": [
    "ChimeraZ revendique une base de 8 597 658 patients, 7,2 Go et 311 286 numéros de Sécurité sociale.",
    "Des échantillons confirmés contiennent des fiches patients récentes, créées ou modifiées en septembre 2026."
   ],
+  "version": 3
+ },
+ "INC-B254378071C7": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-B52A1013C987": {
@@ -2802,6 +2969,25 @@
   ],
   "version": 3
  },
+ "INC-C43165AEFC29": {
+  "display_summary": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-C4A651F59644": {
   "display_summary": "Le groupe de ransomware Vexy revendique avoir récupéré 35 Go de données attribuées à Proxitel.",
   "summary_paragraphs": [],
@@ -2970,6 +3156,24 @@
    "Un pirate a publié le 30 septembre 2026 une base de 6 768 lignes contenant identités, NIR et informations bancaires de stagiaires.",
    "FrenchBreaches analyse 6 767 enregistrements exploitables et ~5 400 identifiants individuels distincts, sans confirmation officielle de la Région."
   ],
+  "version": 3
+ },
+ "INC-D063B76AE259": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-D06CA5297DDC": {
@@ -3283,10 +3487,8 @@
   "version": 3
  },
  "INC-E3AE583C7002": {
-  "display_summary": "Le bot de sécurité Discord Double Counter a subi une cyberattaque début octobre 2026 avec environ 12 Go de données copiées.",
-  "summary_paragraphs": [
-   "Le bot de sécurité Discord Double Counter a été victime d’une importante cyberattaque début octobre 2026 avec environ 12 Go de données copiées."
-  ],
+  "display_summary": "Double Counter (Discord)",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-E4D2A28AC615": {
@@ -3495,6 +3697,11 @@
   ],
   "version": 3
  },
+ "INC-EE5ED30C854D": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-EF6AF4F03502": {
   "display_summary": "Saint-Pierre-des-Corps : une cyberattaque perturbe ses systèmes",
   "summary_paragraphs": [],
@@ -3635,6 +3842,13 @@
   "summary_paragraphs": [
    "Un pirate affirme avoir publié des accès techniques internes d'April sur un forum, incluant identifiants de base, FTP et proxy.",
    "Aucune preuve visible n'indique que des données personnelles de clients April ont été téléchargées."
+  ],
+  "version": 3
+ },
+ "INC-F833F61DB919": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Scouts guides de France.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Scouts guides de France."
   ],
   "version": 3
  },
