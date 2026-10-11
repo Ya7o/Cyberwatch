@@ -709,13 +709,16 @@ def _call_batch(
         for candidate, _, _ in selected:
             results[_pair_key(candidate)] = DedupAiDecision(status=STATUS_BUDGET_BLOCKED)
         return None
-    except llm_runtime.LlmError:
+    except llm_runtime.LlmError as exc:
         state.calls_attempted += 1
         state.calls_failed += 1
         state.batch_calls_attempted += 1
         state.batch_calls_failed += 1
+        reason = "PROVIDER_HTTP_429" if (
+            str(exc).startswith("HTTP 429:") or str(exc).startswith("OpenAI indisponible pour ce run")
+        ) else ""
         for candidate, _, _ in selected:
-            results[_pair_key(candidate)] = DedupAiDecision(status=STATUS_ERROR)
+            results[_pair_key(candidate)] = DedupAiDecision(status=STATUS_ERROR, reason=reason)
         return None
     state.calls_attempted += 1
     state.calls_succeeded += 1

@@ -18,7 +18,9 @@ def load(path: Path) -> list[dict]:
         return []
     if not isinstance(value, list) or any(not isinstance(row, dict) for row in value):
         raise ValueError("Invalid dedup review queue")
-    return value
+    from .dedup_review_recovery import recover_provider_failures
+
+    return recover_provider_failures(value)
 
 
 def retry_candidates(
@@ -159,7 +161,9 @@ def outcomes(
         ):
             status = "UNKNOWN_SEPARATE"
         previous_attempts = int(previous.get("attempts", 0) or 0)
-        attempts = previous_attempts + 1 if decision.status == "ERROR" else (
+        attempts = previous_attempts + 1 if (
+            decision.status == "ERROR" and decision.reason != "PROVIDER_HTTP_429"
+        ) else (
             0 if reviewed else previous_attempts
         )
         if status == "ERROR" and attempts >= MAX_ERROR_ATTEMPTS:

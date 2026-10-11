@@ -134,6 +134,42 @@ def test_three_errors_exhaust_retry_and_keep_review_visible(tmp_path, monkeypatc
     assert dedup_ai.daily_summary(following_run)['dedup_status'] == 'REVIEW_REQUIRED'
 
 
+def test_http_429_does_not_exhaust_semantic_review_retries(tmp_path, monkeypatch):
+    items, facts = examples()
+    run = state(tmp_path, monkeypatch)
+
+    def unavailable(**_):
+        raise llm_runtime.LlmError('HTTP 429: unknown_provider_error')
+
+    monkeypatch.setattr(llm_runtime, 'runtime', lambda: SimpleNamespace(call_json=unavailable))
+    for _ in range(4):
+        assert runner_dedup.apply_daily_decisions(run, items, items, facts) == []
+    assert {row['status'] for row in run.pending_rows} == {'ERROR'}
+    assert {row['attempts'] for row in run.pending_rows} == {0}
+    assert {row['reason'] for row in run.pending_rows} == {'PROVIDER_HTTP_429'}
+    assert dedup_review.retry_candidates(run.pending_rows, items)
+
+
+def test_archived_provider_errors_reopen_exhausted_reviews_only_with_proof(tmp_path):
+    from cyberwatch.dedup_review_recovery import recover_provider_failures
+
+    path = tmp_path / 'llm_runs' / 'RUN-429'
+    path.mkdir(parents=True)
+    (path / 'llm_usage.json').write_text(json.dumps({
+        'calls_attempted': 3, 'calls_failed': 3, 'http_429': 3, 'calls_succeeded': 0,
+        'by_task': {'dedup': {'calls_failed': 1}},
+    }))
+    rows = [
+        {'status': 'RETRY_EXHAUSTED', 'attempts': 3, 'last_run': 'RUN-429'},
+        {'status': 'RETRY_EXHAUSTED', 'attempts': 3, 'last_run': 'RUN-other'},
+    ]
+    recovered = recover_provider_failures(rows, tmp_path)
+    assert recovered[0]['status'] == 'ERROR'
+    assert recovered[0]['attempts'] == 0
+    assert recovered[0]['attempts_before_transport_recovery'] == 3
+    assert recovered[1] == rows[1]
+
+
 def test_reconcile_removes_a_same_pair_now_grouped(make_item):
     left = make_item(source='A', org='Globex', published='2026-08-01', url='https://a')
     right = make_item(source='B', org='Globex', published='2026-08-08', url='https://b')
