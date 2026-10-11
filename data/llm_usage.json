@@ -6,7 +6,7 @@
       "calls_budget_blocked": 0,
       "calls_failed": 1,
       "calls_succeeded": 0,
-      "duration_seconds": 0.4108090599999912,
+      "duration_seconds": 0.37104709499999444,
       "estimated_cost_usd": 0.0,
       "input_tokens": 0,
       "last_model": "",
@@ -23,7 +23,7 @@
       "calls_budget_blocked": 0,
       "calls_failed": 5,
       "calls_succeeded": 0,
-      "duration_seconds": 1.9483062249999676,
+      "duration_seconds": 2.338438745000019,
       "estimated_cost_usd": 0.0,
       "input_tokens": 0,
       "last_model": "",
@@ -36,11 +36,11 @@
     },
     "source_facts": {
       "cached_input_tokens": 0,
-      "calls_attempted": 29,
+      "calls_attempted": 15,
       "calls_budget_blocked": 0,
-      "calls_failed": 29,
+      "calls_failed": 15,
       "calls_succeeded": 0,
-      "duration_seconds": 18.089259037000062,
+      "duration_seconds": 7.241108933000007,
       "estimated_cost_usd": 0.0,
       "input_tokens": 0,
       "last_model": "",
@@ -53,20 +53,25 @@
     }
   },
   "cached_input_tokens": 0,
-  "calls_attempted": 35,
+  "calls_attempted": 21,
   "calls_budget_blocked": 0,
-  "calls_failed": 35,
+  "calls_failed": 21,
+  "calls_provider_blocked": 0,
   "calls_succeeded": 0,
   "disabled_reason": "",
-  "duration_seconds": 20.44837432200002,
+  "duration_seconds": 9.95059477300002,
   "enabled": true,
   "estimated_cost_usd": 0.0,
-  "http_429": 35,
+  "http_429": 21,
   "http_5xx": 0,
   "input_tokens": 0,
   "max_calls": 3000,
   "max_cost_usd": 0.035,
   "output_tokens": 0,
+  "provider_blocked_reason": "",
+  "provider_error_codes": {
+    "unknown_provider_error": 21
+  },
   "reasoning_tokens": 0,
   "retries": 0,
   "routing": {
@@ -79,7 +84,7 @@
       "dedup"
     ]
   },
-  "run_id": "RUN-20261011T101417",
+  "run_id": "RUN-20261011T102557",
   "timeouts": 0,
   "total_tokens": 0
 }

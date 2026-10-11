@@ -2701,10 +2701,10 @@
  },
  "production": {
   "performance": {
-   "duration_seconds": 75.7,
-   "llm_calls": 35,
+   "duration_seconds": 58.1,
+   "llm_calls": 21,
    "llm_cost_usd": 0.0,
-   "requests": 31
+   "requests": 20
   },
   "quality": {
    "corpus_classification_errors": 0,
@@ -2713,12 +2713,12 @@
    "dedup_known_false_merges": 0,
    "location_unknown_pct": 13.19,
    "missed_duplicate_candidate_pairs": 8,
-   "pending_review_pairs": 660,
-   "potential_duplicate_pairs": 177,
-   "potential_duplicate_rate_pct": 64.6,
+   "pending_review_pairs": 658,
+   "potential_duplicate_pairs": 179,
+   "potential_duplicate_rate_pct": 65.57,
    "sector_unknown_pct": 15.02,
    "validated_same_not_grouped_pairs": 1,
-   "weak_merge_review_pairs": 155
+   "weak_merge_review_pairs": 157
   },
   "scheduled_reliability": {
    "consecutive_successes": 0,
@@ -2742,29 +2742,29 @@
  "qualification": {
   "label": "Qualification incomplète",
   "pairs": {
-   "requested": 12,
+   "requested": 7,
    "technical_failure": {
     "from_cache": 0,
     "from_call": 0,
-    "total": 12
+    "total": 7
    }
   },
   "pending_fields": 57,
   "pending_fields_available": true,
-  "pending_pairs": 134,
+  "pending_pairs": 55,
   "pending_required_fields": 52,
   "reasons": [
-   "35 refus HTTP 429 de l'API LLM",
+   "21 refus HTTP 429 de l'API LLM",
    "52 champ(s) d'extraction différé(s)",
-   "134 paire(s) non tranchée(s) : ERROR, NOT_REVIEWED_CAPACITY",
-   "104 observation(s) au secteur inconnu ou non étayé",
+   "55 paire(s) non tranchée(s) : ERROR, NOT_REVIEWED_CAPACITY, RETRY_EXHAUSTED",
+   "103 observation(s) au secteur inconnu ou non étayé",
    "41 incident(s) au secteur inconnu ou contradictoire"
   ],
-  "run_id": "RUN-20261011T101417",
+  "run_id": "RUN-20261011T102557",
   "sectors": {
    "conflict_item_ids": [],
    "items": 426,
-   "resolved": 322,
+   "resolved": 323,
    "resolved_item_ids": [
     "ITM-007146cf8e7f7faa",
     "ITM-00bc64e4aa26f514",
@@ -2861,6 +2861,7 @@
     "ITM-4cc0a1d1b316f9f2",
     "ITM-4cf7d2d35340767a",
     "ITM-4fcc6a4c4f548c3a",
+    "ITM-501a9cc212001a2b",
     "ITM-503153bbb0d8be59",
     "ITM-527f96099faa1133",
     "ITM-5366750b9713f248",
@@ -3127,7 +3128,6 @@
     "ITM-4d6130f15e20275d",
     "ITM-4dba7e770d761e34",
     "ITM-4fef33cf24051868",
-    "ITM-501a9cc212001a2b",
     "ITM-52021e0428705e8a",
     "ITM-529e9bc1d8b0b2b9",
     "ITM-52bf3b1b1fdbba7c",
@@ -3201,61 +3201,61 @@
   "state": "PARTIAL"
  },
  "run": {
-  "as_of": "2026-10-11T10:14:17.452530+04:00",
-  "duration": "75.7",
-  "id": "RUN-20261011T101417",
-  "incidents": 274,
-  "incidents_hash": "2a5bf89e206df184f2d71d7cd689d6a26cd607acdb0a99f8f3f68d467f9aa52d",
+  "as_of": "2026-10-11T10:25:57.700049+04:00",
+  "duration": "58.1",
+  "id": "RUN-20261011T102557",
+  "incidents": 273,
+  "incidents_hash": "403b14063e99b25358fbb40499cfe647c7c6b8c07d4f24c8af4bab39cbd506be",
   "items": 426,
-  "items_hash": "5df44ccaae76212551dc0da624278796344c3072f3714e47494778682b2b171e",
+  "items_hash": "c8096c1c95e16606c1b2f6583235e4bb0c891daf6a396aa4b591cf782926e2aa",
   "layers": "CORE_DIRECT,REGIONAL_WATCH",
   "mode": "MAJ",
-  "new_incidents": 20,
-  "new_items": 28,
+  "new_incidents": 0,
+  "new_items": 0,
   "notes": "",
   "overall": "OK",
-  "requests": 31,
+  "requests": 20,
   "target_end": "2026-10-11",
-  "target_start": "2026-10-09"
+  "target_start": "2026-10-10"
  },
  "sources": [
   {
-   "comment": "items_in_window=7",
-   "duration": "1.8",
+   "comment": "items_in_window=1",
+   "duration": "1.9",
    "id": "BONJOURLAFUITE",
-   "items": 7,
-   "items_collected": 7,
-   "last_run": "2026-10-11T10:14:17.452530+04:00",
+   "items": 1,
+   "items_collected": 1,
+   "last_run": "2026-10-11T10:25:57.700049+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   },
   {
-   "comment": "articles_seen=100; articles_in_window=7; victims_identified=7; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
-   "duration": "8.0",
+   "comment": "articles_seen=100; articles_in_window=3; victims_identified=3; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
+   "duration": "5.3",
    "id": "CYBERATTAQUE_ORG",
-   "items": 7,
-   "items_collected": 7,
-   "last_run": "2026-10-11T10:14:17.452530+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  },
-  {
-   "comment": "details_hydrates=18/18; rich_facts=18/18; details_degrades=0",
-   "duration": "33.5",
-   "id": "FRENCHBREACHES",
-   "items": 18,
-   "items_collected": 18,
-   "last_run": "2026-10-11T10:14:17.452530+04:00",
-   "reason": "Protocole complet, test de succès satisfait.",
-   "status": "OK"
-  },
-  {
-   "comment": "items_seen=720; items_in_window=3",
-   "duration": "7.3",
-   "id": "RANSOMWARE_LIVE",
    "items": 3,
    "items_collected": 3,
-   "last_run": "2026-10-11T10:14:17.452530+04:00",
+   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "status": "OK"
+  },
+  {
+   "comment": "details_hydrates=7/7; rich_facts=7/7; details_degrades=0",
+   "duration": "13.1",
+   "id": "FRENCHBREACHES",
+   "items": 7,
+   "items_collected": 7,
+   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "reason": "Protocole complet, test de succès satisfait.",
+   "status": "OK"
+  },
+  {
+   "comment": "items_seen=720; items_in_window=1",
+   "duration": "10.2",
+   "id": "RANSOMWARE_LIVE",
+   "items": 1,
+   "items_collected": 1,
+   "last_run": "2026-10-11T10:25:57.700049+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   },
@@ -3265,7 +3265,7 @@
    "id": "VEILLE_LLM",
    "items": 15,
    "items_collected": 15,
-   "last_run": "2026-10-11T10:14:17.452530+04:00",
+   "last_run": "2026-10-11T10:25:57.700049+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   }
