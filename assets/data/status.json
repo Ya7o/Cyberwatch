@@ -2701,8 +2701,8 @@
  },
  "production": {
   "performance": {
-   "duration_seconds": 58.1,
-   "llm_calls": 21,
+   "duration_seconds": 51.1,
+   "llm_calls": 1,
    "llm_cost_usd": 0.0,
    "requests": 20
   },
@@ -2751,16 +2751,17 @@
   },
   "pending_fields": 57,
   "pending_fields_available": true,
-  "pending_pairs": 55,
+  "pending_pairs": 53,
   "pending_required_fields": 52,
   "reasons": [
-   "21 refus HTTP 429 de l'API LLM",
+   "quota API LLM épuisé : insufficient_quota",
+   "20 appel(s) LLM différé(s) pour indisponibilité",
    "52 champ(s) d'extraction différé(s)",
-   "55 paire(s) non tranchée(s) : ERROR, NOT_REVIEWED_CAPACITY, RETRY_EXHAUSTED",
+   "53 paire(s) non tranchée(s) : ERROR, NOT_REVIEWED_CAPACITY",
    "103 observation(s) au secteur inconnu ou non étayé",
    "41 incident(s) au secteur inconnu ou contradictoire"
   ],
-  "run_id": "RUN-20261011T102557",
+  "run_id": "RUN-20261011T104430",
   "sectors": {
    "conflict_item_ids": [],
    "items": 426,
@@ -3201,9 +3202,9 @@
   "state": "PARTIAL"
  },
  "run": {
-  "as_of": "2026-10-11T10:25:57.700049+04:00",
-  "duration": "58.1",
-  "id": "RUN-20261011T102557",
+  "as_of": "2026-10-11T10:44:30.488525+04:00",
+  "duration": "51.1",
+  "id": "RUN-20261011T104430",
   "incidents": 273,
   "incidents_hash": "403b14063e99b25358fbb40499cfe647c7c6b8c07d4f24c8af4bab39cbd506be",
   "items": 426,
@@ -3221,41 +3222,41 @@
  "sources": [
   {
    "comment": "items_in_window=1",
-   "duration": "1.9",
+   "duration": "4.6",
    "id": "BONJOURLAFUITE",
    "items": 1,
    "items_collected": 1,
-   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "last_run": "2026-10-11T10:44:30.488525+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   },
   {
    "comment": "articles_seen=100; articles_in_window=3; victims_identified=3; articles_rejected_no_victim=0; articles_rejected_negated=0; articles_rejected_multi=0",
-   "duration": "5.3",
+   "duration": "4.3",
    "id": "CYBERATTAQUE_ORG",
    "items": 3,
    "items_collected": 3,
-   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "last_run": "2026-10-11T10:44:30.488525+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   },
   {
    "comment": "details_hydrates=7/7; rich_facts=7/7; details_degrades=0",
-   "duration": "13.1",
+   "duration": "11.4",
    "id": "FRENCHBREACHES",
    "items": 7,
    "items_collected": 7,
-   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "last_run": "2026-10-11T10:44:30.488525+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   },
   {
    "comment": "items_seen=720; items_in_window=1",
-   "duration": "10.2",
+   "duration": "7.9",
    "id": "RANSOMWARE_LIVE",
    "items": 1,
    "items_collected": 1,
-   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "last_run": "2026-10-11T10:44:30.488525+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   },
@@ -3265,7 +3266,7 @@
    "id": "VEILLE_LLM",
    "items": 15,
    "items_collected": 15,
-   "last_run": "2026-10-11T10:25:57.700049+04:00",
+   "last_run": "2026-10-11T10:44:30.488525+04:00",
    "reason": "Protocole complet, test de succès satisfait.",
    "status": "OK"
   }

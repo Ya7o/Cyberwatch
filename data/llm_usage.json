@@ -2,11 +2,12 @@
   "by_task": {
     "dedup": {
       "cached_input_tokens": 0,
-      "calls_attempted": 1,
+      "calls_attempted": 0,
       "calls_budget_blocked": 0,
-      "calls_failed": 1,
+      "calls_failed": 0,
+      "calls_provider_blocked": 1,
       "calls_succeeded": 0,
-      "duration_seconds": 0.37104709499999444,
+      "duration_seconds": 0.0,
       "estimated_cost_usd": 0.0,
       "input_tokens": 0,
       "last_model": "",
@@ -19,11 +20,12 @@
     },
     "sector_taxonomy": {
       "cached_input_tokens": 0,
-      "calls_attempted": 5,
+      "calls_attempted": 0,
       "calls_budget_blocked": 0,
-      "calls_failed": 5,
+      "calls_failed": 0,
+      "calls_provider_blocked": 5,
       "calls_succeeded": 0,
-      "duration_seconds": 2.338438745000019,
+      "duration_seconds": 0.0,
       "estimated_cost_usd": 0.0,
       "input_tokens": 0,
       "last_model": "",
@@ -36,11 +38,12 @@
     },
     "source_facts": {
       "cached_input_tokens": 0,
-      "calls_attempted": 15,
+      "calls_attempted": 1,
       "calls_budget_blocked": 0,
-      "calls_failed": 15,
+      "calls_failed": 1,
+      "calls_provider_blocked": 14,
       "calls_succeeded": 0,
-      "duration_seconds": 7.241108933000007,
+      "duration_seconds": 1.5356222779999982,
       "estimated_cost_usd": 0.0,
       "input_tokens": 0,
       "last_model": "",
@@ -53,25 +56,29 @@
     }
   },
   "cached_input_tokens": 0,
-  "calls_attempted": 21,
+  "calls_attempted": 1,
   "calls_budget_blocked": 0,
-  "calls_failed": 21,
-  "calls_provider_blocked": 0,
+  "calls_failed": 1,
+  "calls_provider_blocked": 20,
   "calls_succeeded": 0,
   "disabled_reason": "",
-  "duration_seconds": 9.95059477300002,
+  "duration_seconds": 1.5356222779999982,
   "enabled": true,
   "estimated_cost_usd": 0.0,
-  "http_429": 21,
+  "http_429": 1,
   "http_5xx": 0,
   "input_tokens": 0,
   "max_calls": 3000,
   "max_cost_usd": 0.035,
   "output_tokens": 0,
-  "provider_blocked_reason": "",
+  "provider_blocked_reason": "insufficient_quota",
   "provider_error_codes": {
-    "unknown_provider_error": 21
+    "insufficient_quota": 1
   },
+  "provider_error_formats": {
+    "structured_error": 1
+  },
+  "provider_retry_after_seconds": 0.0,
   "reasoning_tokens": 0,
   "retries": 0,
   "routing": {
@@ -84,7 +91,7 @@
       "dedup"
     ]
   },
-  "run_id": "RUN-20261011T102557",
+  "run_id": "RUN-20261011T104430",
   "timeouts": 0,
   "total_tokens": 0
 }

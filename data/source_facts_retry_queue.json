@@ -12282,7 +12282,7 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 3,
+   "attempts": 4,
    "entry": {
     "content": "Bordeaux Sciences Agro  confirme une violation de données ayant touché son  application de gestion des conventions de stage . L’établissement a détecté le  8 septembre 2026  un accès non autorisé ayant permis à un tiers d’extraire des informations relatives à des conventions enregistrées sur plusieurs années. \n\n\n\n La fuite concerne des conventions couvrant une période particulièrement large, allant des années scolaires  2020-2021 à 2026-2027 . Des informations relatives aux  étudiants mais également aux tuteurs et contacts au sein des entreprises d’accueil  ont été récupérées. \n\n\n\n Une grande école publique spécialisée dans l’agronomie \n\n\n\n  Bordeaux Sciences Agro , officiellement École Nationale Supérieure des Sciences Agronomiques de Bordeaux Aquitaine, est un établissement public d’enseignement supérieur et de recherche placé sous la tutelle du ministère chargé de l’Agriculture. \n\n\n\n Installée à  Gradignan, dans l’agglomération bordelaise , l’école forme notamment des ingénieurs agronomes et entretient de nombreux liens avec des entreprises et organismes accueillant ses étudiants dans le cadre de stages. \n\n\n\n Des données extraites sur près de six années universitaires \n\n\n\n L’établissement indique qu’un tiers est parvenu à  extraire des données contenues dans son application de gestion des conventions de stage . La compromission ne concerne donc pas uniquement l’année universitaire actuelle. \n\n\n\n Le périmètre annoncé comprend des conventions enregistrées entre  2020-2021 et 2026-2027 , soit plusieurs promotions successives d’étudiants et potentiellement un nombre important d’entreprises partenaires. \n\n\n\n Bordeaux Sciences Agro ne précise toutefois pas publiquement  le nombre de conventions extraites ni le nombre exact de personnes concernées . \n\n\n\n Étudiants, tuteurs et contacts en entreprise concernés \n\n\n\n Les données touchées sont décrites par l’école comme des  informations relatives aux étudiants ainsi qu’aux tuteurs ou contacts dans les entreprises . \n\n\n\n L’établissement ne publie pas la liste détaillée des champs effectivement récupérés. Une convention de stage permet néanmoins, par nature, d’établir une relation entre  un étudiant, son établissement et l’organisme qui l’accueille . Il convient toutefois de ne pas considérer que toutes les informations habituellement présentes dans une convention ont nécessairement été extraites : Bordeaux Sciences Agro ne le confirme pas. \n\n\n\n L’école apporte en revanche une précision importante :  aucun mot de passe, identifiant de connexion ou donnée bancaire n’est concerné  par l’incident. \n\n\n\n   \n\n\n\n L’application arrêtée et le serveur isolé \n\n\n\n Après la détection de l’accès non autorisé le  8 septembre , Bordeaux Sciences Agro indique avoir immédiatement  arrêté l’application concernée et isolé son serveur du réseau . \n\n\n\n Des investigations ont ensuite été menées afin de déterminer l’étendue de l’incident et les mesures nécessaires pour sécuriser l’application. L’établissement ne précise pas pour le moment  la vulnérabilité ou la méthode utilisée par l’attaquant pour obtenir l’accès . \n\n\n\n La CNIL notifiée deux jours après la découverte \n\n\n\n La violation de données a été  notifiée à la CNIL le 10 septembre 2026 , soit deux jours après sa détection. Bordeaux Sciences Agro indique également avoir signalé l’incident aux services compétents du  ministère de l’Agriculture . \n\n\n\n L’établissement annonce par ailleurs qu’une  plainte sera déposée . Les personnes identifiées comme concernées par la fuite sont informées individuellement. \n\n\n\n Les entreprises partenaires également appelées à la vigilance \n\n\n\n L’un des principaux risques identifiés concerne désormais les tentatives de  phishing et de fraude utilisant le contexte réel d’un stage . Un attaquant disposant d’informations sur une relation entre un étudiant et une entreprise pourrait tenter de se faire passer pour l’école, le stagiaire ou un interlocuteur de l’entreprise. \n\n\n\n Bordeaux Sciences Agro adresse d’ailleurs une mise en garde spécifique à ses partenaires et leur demande d’être particulièrement vigilants face aux  demandes de modification de coordonnées bancaires  ou aux messages présentés comme étant liés à une convention de stage. \n\n\n\n L’école rappelle qu’elle  ne demande jamais de modification de coordonnées bancaires par email . Ce type de fraude pourrait notamment chercher à détourner un paiement en profitant d’informations permettant de rendre le message plus crédible. \n\n\n\n Le volume exact de la fuite reste inconnu \n\n\n\n L’incident est donc  officiellement confirmé par Bordeaux Sciences Agro , tout comme l’extraction effective de données depuis l’application de gestion des conventions de stage. \n\n\n\n Le nombre de personnes concernées et le volume total de données récupérées ne sont en revanche pas communiqués. L’attaque porte potentiellement sur plusieurs années de relations entre  étudiants et entreprises partenaires , avec des conventions enregistrées jusqu’à l’année scolaire 2026-2027.",
     "entity": "",
@@ -12402,7 +12402,7 @@
     "URL": "https://www.cyberattaque.org/cyberattaque-contre-bordeaux-sciences-agro-les-donnees-de-conventions-de-stage-extraites/"
    },
    "key": "ITM-863f96bd314631cb:2c4a73a9919a1f651fbb67bd0b9827f9f14ae25aa321b76facc593fd373b06bc",
-   "last_queued_at": "2026-10-11T06:26:30.309039+00:00",
+   "last_queued_at": "2026-10-11T06:45:00.475728+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -12410,7 +12410,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 3,
+   "attempts": 4,
    "entry": {
     "content": "Le  Centre National du Droit du Travail  ferait l’objet d’une importante fuite de données. Un utilisateur utilisant le pseudonyme  TimeSape  affirme, au nom du groupe  LunarisSec , qu’une vulnérabilité de type  injection SQL  aurait permis d’accéder aux différentes tables de la base associée au site centre-national-droit-du-travail.fr. \n\n\n\n Les attaquants revendiquent environ  150 000 lignes de données  et évoquent notamment des informations relatives à des comptes, des coordonnées, des entreprises, des commandes et des accès à différents contenus juridiques. \n\n\n\n  Cyberattaque.org n’a cependant pas eu accès aux données revendiquées ni à un échantillon permettant de les vérifier.  Il nous est donc impossible, à ce stade, de confirmer l’authenticité de la fuite, le volume annoncé ou la présence effective des différentes catégories de données citées par les hackers. \n\n\n\n   \n\n\n\n Un site consacré au droit du travail et aux conventions collectives \n\n\n\n Le Centre National du Droit du Travail propose notamment des contenus et services autour du  droit du travail, des conventions collectives, des codes IDCC et des obligations réglementaires des entreprises . \n\n\n\n Le site permet également la création d’un compte utilisateur et propose différents contenus ou produits liés à la documentation juridique. Les données revendiquées pourraient donc concerner à la fois des particuliers et des professionnels ou entreprises ayant utilisé ces services. \n\n\n\n LunarisSec revendique l’exploitation d’une injection SQL \n\n\n\n Selon la revendication relayée par TimeSape,  LunarisSec aurait découvert une vulnérabilité SQLi  sur le site. Les attaquants affirment avoir ensuite pu extraire l’ensemble des tables accessibles depuis la base compromise. \n\n\n\n Une injection SQL est une vulnérabilité permettant, lorsque les contrôles d’une application sont insuffisants, d’interagir de manière non autorisée avec sa base de données. Selon les droits associés au compte technique utilisé par l’application, l’impact peut aller de la consultation de quelques informations jusqu’à l’extraction d’un volume beaucoup plus important de données. \n\n\n\n Dans le cas présent,  Cyberattaque.org n’a pas pu vérifier l’existence de cette vulnérabilité . L’origine SQLi de la fuite repose donc uniquement sur les déclarations de LunarisSec. \n\n\n\n Emails, téléphones, adresses et informations de comptes revendiqués \n\n\n\n Les attaquants publient une longue liste de champs qui auraient été récupérés. Parmi eux figureraient notamment les  noms, prénoms, adresses postales, codes postaux, villes, pays, numéros de téléphone, emails, fax et noms d’entreprises . \n\n\n\n Des informations liées aux comptes seraient également présentes, avec des champs concernant les  noms d’utilisateur, dates de création ou d’activation des comptes, dates d’expiration et derniers accès . \n\n\n\n La revendication mentionne aussi des champs intitulés  « password » et « password_sas » . Leur simple présence dans la liste communiquée ne permet toutefois pas de savoir s’ils contiennent réellement des mots de passe, s’ils sont renseignés, ni sous quelle forme ils seraient stockés. \n\n\n\n En l’absence d’accès aux fichiers,  nous ne pouvons donc pas affirmer que des mots de passe sont effectivement exposés , et encore moins qu’ils seraient stockés en clair. \n\n\n\n Des commandes et accès à des contenus juridiques également évoqués \n\n\n\n La liste diffusée par TimeSape ferait également apparaître des tables ou champs liés à des  commandes, comptes clients, abonnements, conventions collectives et accès à différents contenus juridiques . \n\n\n\n Des références à  Magento , à des numéros de commande ainsi qu’à des informations relatives à des conventions ou codes IDCC figurent également dans la revendication. \n\n\n\n Ces éléments pourraient être cohérents avec l’activité commerciale du site, mais  aucun fichier n’a pu être analysé par Cyberattaque.org  pour déterminer quelles tables seraient réellement concernées ou combien de personnes distinctes apparaîtraient dans l’ensemble. \n\n\n\n 150 000 lignes ne signifient pas 150 000 victimes \n\n\n\n Le chiffre de  150 000 lignes  annoncé par les hackers doit également être interprété avec prudence. Une extraction de plusieurs tables peut contenir de nombreux enregistrements associés à une même personne : compte, commande, adresse, abonnement ou historique d’accès. \n\n\n\n Il serait donc incorrect d’évoquer 150 000 personnes touchées sur la seule base de cette revendication.  Aucun nombre de victimes uniques n’est actuellement vérifiable.  \n\n\n\n Des risques de phishing si la fuite est confirmée \n\n\n\n Si les données revendiquées sont authentiques, l’association entre une  identité, une adresse email, un téléphone, une entreprise et l’utilisation d’un service consacré au droit du travail  pourrait notamment faciliter des campagnes de phishing ciblées. \n\n\n\n Un attaquant pourrait tenter de se faire passer pour le Centre National du Droit du Travail en évoquant une convention collective, une commande, un abonnement ou une mise à jour réglementaire afin d’inciter une victime à communiquer des informations supplémentaires ou à effectuer un paiement. \n\n\n\n Une revendication impossible à confirmer pour le moment \n\n\n\n À ce stade,  Cyberattaque.org n’a pas eu accès à la base annoncée par TimeSape et LunarisSec . Nous ne sommes donc pas en mesure de confirmer les  150 000 lignes revendiquées, la présence des données annoncées ou l’exploitation effective d’une injection SQL . \n\n\n\n Le Centre National du Droit du Travail ne semble pas non plus avoir publiquement confirmé cette revendication pour le moment. Jusqu’à l’obtention d’éléments supplémentaires ou d’une confirmation de l’entreprise,  l’ensemble de ces informations doit donc être considéré comme une revendication cybercriminelle non vérifiée .",
     "entity": "",
@@ -12691,7 +12691,7 @@
     "URL": "https://www.cyberattaque.org/centre-national-du-droit-du-travail-150-000-lignes-revendiquees-apres-une-faille-sql/"
    },
    "key": "ITM-d14be259cc8b7adf:245d29044f996cd9d81337d88f91a7ef52fabdf42721e48df0f63f391b19b0d5",
-   "last_queued_at": "2026-10-11T06:26:30.834816+00:00",
+   "last_queued_at": "2026-10-11T06:45:00.628869+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -12699,7 +12699,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 3,
+   "attempts": 4,
    "entry": {
     "content": "Swedish Fit , enseigne française spécialisée dans les cours collectifs de fitness, fait l’objet d’une importante revendication de fuite de données. Le hacker  Syrv4x  affirme avoir récupéré une base contenant  253 155 lignes  accompagnée de  253 104 fichiers présentés comme des photos . \n\n\n\n L’ensemble représenterait près de  2,4 Go de données  : environ 978 Mo pour la base clients au format JSONL et 1,4 Go supplémentaires pour le dossier contenant les images. Le hacker propose désormais ces données à la vente. \n\n\n\n   \n\n\n\n Une enseigne spécialisée dans les cours collectifs de fitness \n\n\n\n  Swedish Fit  propose des cours collectifs de fitness, de renforcement musculaire, de cardio, de yoga ou encore de Pilates, en salles mais également en ligne. Son fonctionnement repose notamment sur la création de comptes permettant de gérer les abonnements, forfaits et réservations de cours. \n\n\n\n C’est précisément ce type d’environnement qui semble apparaître dans les données présentées par Syrv4x : la structure revendiquée ne se limite pas à un simple fichier marketing, mais comporte de nombreuses informations liées au  compte, aux abonnements et à l’activité des utilisateurs . \n\n\n\n Noms, adresses, téléphones et dates de naissance \n\n\n\n Les champs communiqués comprennent notamment les  noms, adresses postales, codes postaux, villes, pays, adresses email, numéros de téléphone et dates de naissance . \n\n\n\n Des informations concernant la création et l’utilisation du compte apparaissent également :  date de création, dernière connexion, nombre de connexions, région de rattachement, statut du compte ou encore choix concernant les communications commerciales . \n\n\n\n Selon les statistiques publiées par Syrv4x, la base contiendrait  251 568 adresses email , dont 250 979 différentes, ainsi que  238 861 numéros de téléphone , correspondant à 227 286 valeurs uniques. \n\n\n\n Le hacker revendique également  198 756 adresses postales , dont 171 882 distinctes. Ces chiffres restent ceux communiqués avec la mise en vente et ne permettent pas d’établir précisément le nombre de personnes uniques touchées. \n\n\n\n Tout l’historique sportif potentiellement visible \n\n\n\n La fuite revendiquée va beaucoup plus loin que les simples coordonnées des utilisateurs. La structure fournie comprend différentes sections consacrées aux  anciens abonnements, forfaits, coupons, cartes et options de réservation . \n\n\n\n Des informations peuvent notamment indiquer le type de forfait, sa période de validité, son statut, le pays concerné ou encore la valeur de certains coupons. Un récapitulatif des  réservations de cours  figure également parmi les champs annoncés. \n\n\n\n Ces éléments pourraient donc permettre de reconstruire une partie de l’ historique d’utilisation de Swedish Fit  pour certains membres : ancienneté du compte, abonnements souscrits, réservations et habitudes liées au service. \n\n\n\n   \n\n\n\n Plus de 253 000 images également revendiquées \n\n\n\n L’autre élément notable de cette revendication concerne un dossier séparé contenant  253 104 images  pour un volume annoncé d’environ 1,4 Go. \n\n\n\n Les fiches clients comprennent effectivement un champ destiné à une  photo de profil . L’échantillon publié montre toutefois qu’une fiche peut également pointer vers une image générique utilisée par défaut. Sans analyse de l’ensemble du dossier, il n’est donc pas possible d’affirmer que les 253 104 fichiers correspondent tous à des photographies personnelles différentes. \n\n\n\n La présence d’un dossier d’images de cette ampleur reste néanmoins particulièrement notable, puisqu’elle suggère que l’attaquant ne se serait pas limité à l’extraction d’une seule table de base de données. \n\n\n\n Une base construite sur plus de quinze ans \n\n\n\n L’échantillon diffusé montre au moins un compte créé dès  2009 , ce qui laisse penser que la base peut contenir des profils particulièrement anciens. \n\n\n\n Les  253 155 lignes  ne doivent cependant pas être automatiquement assimilées à autant de clients actuels. Syrv4x indique lui-même 253 114 noms renseignés, pour  236 346 noms distincts , ce qui montre la présence de doublons ou de personnes partageant la même identité. \n\n\n\n La base contient également des profils provenant d’autres pays. Le hacker évoque notamment  487 profils associés à la Suisse, 452 à l’Allemagne, 382 au Royaume-Uni et 220 au Canada . \n\n\n\n Une probable extraction depuis un environnement d’administration \n\n\n\n La méthode utilisée pour récupérer les données n’est pas expliquée. Plusieurs éléments de la structure publiée sont cependant associés à des  interfaces de gestion de comptes clients , avec des références à des fiches individuelles et à différentes sections administratives. \n\n\n\n Cela pourrait être cohérent avec une extraction depuis un outil interne ou un environnement d’administration compromis, mais aucun élément disponible ne permet actuellement d’établir le scénario technique exact. Une vulnérabilité, un compte administrateur compromis ou un autre accès non autorisé restent parmi les possibilités. \n\n\n\n Des données particulièrement utiles pour du phishing ciblé \n\n\n\n L’association entre  nom, téléphone, email, adresse, date de naissance et historique d’abonnements  constitue un ensemble particulièrement exploitable pour des campagnes de phishing ou d’ingénierie sociale. \n\n\n\n Un attaquant pourrait notamment se faire passer pour Swedish Fit en évoquant un abonnement, une réservation, un remboursement ou une modification de forfait, tout en utilisant de véritables informations pour rendre le message crédible. \n\n\n\n Les dates de naissance et adresses complètes peuvent également faciliter certaines tentatives d’ usurpation d’identité  lorsqu’elles sont combinées avec d’autres bases déjà disponibles dans la nature. \n\n\n\n Une fuite revendiquée mais pas encore confirmée \n\n\n\n À ce stade,  Swedish Fit n’a pas publiquement confirmé cette cyberattaque ni le volume de 253 155 lignes annoncé par Syrv4x . Le hacker a toutefois publié un échantillon de 1 500 lignes ainsi qu’une description détaillée de la structure de la base pour appuyer sa revendication. \n\n\n\n La provenance exacte des données, la date de leur extraction et le nombre réel de personnes uniques concernées restent donc à déterminer. Si les volumes annoncés sont confirmés, cette fuite ferait néanmoins partie des compromissions les plus importantes récemment observées dans le secteur français du fitness.",
     "entity": "",
@@ -13061,7 +13061,7 @@
     "URL": "https://www.cyberattaque.org/swedish-fit-253-000-profils-clients-et-autant-de-photos-revendiques-apres-une-cyberattaque/"
    },
    "key": "ITM-d009e384c25cc7da:3261d2f0391f5f98ccbb9a61ac230d057a7e642468317371bb0764fd59c14dfa",
-   "last_queued_at": "2026-10-11T06:26:31.526450+00:00",
+   "last_queued_at": "2026-10-11T06:45:00.781619+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -13069,7 +13069,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 3,
+   "attempts": 4,
    "entry": {
     "content": "L’Assistance publique – Hôpitaux de Paris (AP-HP)  confirme le vol de données de  1 015 patients  après une intrusion dans un logiciel de gestion des repas utilisé par  23 de ses hôpitaux . Les informations dérobées avaient été proposées à la vente sur un espace fréquenté par des cybercriminels avant que l’établissement ne confirme leur authenticité. \n\n\n\n L’AP-HP avait été alertée le  24 septembre 2026 . Après plusieurs jours d’investigations menées par sa direction des services numériques avec ses partenaires et les autorités compétentes, le premier centre hospitalier universitaire d’Europe confirme désormais qu’une partie des données publiées provient bien de ses systèmes. \n\n\n\n Un logiciel utilisé pour choisir les repas à l’hôpital \n\n\n\n L’incident ne concerne pas directement le dossier médical informatisé principal de l’AP-HP. Les données proviennent d’un module du logiciel  SRD Restauration , une solution éditée par la société  Dedalus  et utilisée pour la gestion des repas hospitaliers. \n\n\n\n Le service compromis permettait notamment aux patients hospitalisés d’accéder en ligne au logiciel afin de  choisir les menus servis pendant leur séjour . Selon les premiers éléments communiqués par l’AP-HP, c’est ce service accessible depuis Internet qui aurait été visé par l’intrusion. \n\n\n\n SRD Restauration est déployé dans  23 établissements de l’AP-HP , parmi lesquels la Pitié-Salpêtrière, Necker-Enfants malades, Saint-Louis, Cochin-Port-Royal, Lariboisière, Saint-Antoine, Bicêtre, Avicenne ou encore l’Hôpital européen Georges-Pompidou. \n\n\n\n Noms, prénoms et informations de naissance confirmés \n\n\n\n Les données dont le vol est actuellement confirmé comprennent les  noms et prénoms des patients, des informations relatives à leur naissance ainsi qu’un numéro d’identifiant patient interne . \n\n\n\n L’AP-HP précise qu’au regard des informations actuellement publiées,  aucune donnée médicale directe ou indirecte, donnée bancaire, information administrative ou coordonnée de contact  ne serait concernée par les 1 015 fiches confirmées. \n\n\n\n Cette distinction est importante : la présence d’un patient dans un logiciel utilisé pendant une hospitalisation ne signifie pas que son dossier médical, son diagnostic ou ses traitements ont été récupérés. \n\n\n\n Une intrusion dans le service en ligne quelques jours avant la découverte \n\n\n\n Selon l’AP-HP, le vol aurait eu lieu  quelques jours avant le signalement du 24 septembre . L’établissement évoque une « intrusion frauduleuse » dans le service en ligne permettant aux patients d’accéder au module de commande des repas. \n\n\n\n La méthode technique exacte n’est pas détaillée. L’AP-HP indique cependant avoir procédé, avec ses fournisseurs, à la  correction de vulnérabilités suspectées d’avoir pu permettre le vol . Aucun détail n’est pour le moment donné sur la nature de ces failles ou sur leur mode d’exploitation. \n\n\n\n Le chiffre de 1 015 patients pourrait ne représenter qu’une partie de la fuite \n\n\n\n Le périmètre de l’incident pourrait encore évoluer. Les  1 015 patients  correspondent aux données publiées que l’AP-HP a pu authentifier à ce stade. \n\n\n\n Les revendications examinées par l’établissement font cependant état d’un  nombre plus important de patients . Elles mentionnent également des informations concernant certains  comptes de professionnels de l’AP-HP utilisant le logiciel de commande des repas . \n\n\n\n L’AP-HP ne confirme pas encore cette partie de la revendication et poursuit ses investigations. Le bilan de 1 015 personnes ne doit donc pas nécessairement être considéré comme le périmètre définitif de la cyberattaque. \n\n\n\n Le service fermé et tous les mots de passe réinitialisés \n\n\n\n Le module en ligne compromis a été  fermé jusqu’à nouvel ordre . L’AP-HP a également décidé de réinitialiser les mots de passe de l’ensemble des utilisateurs du logiciel, une mesure qui concerne notamment les comptes professionnels disposant d’un accès à l’outil. \n\n\n\n Plusieurs mesures complémentaires de sécurisation ont été mises en œuvre avec les fournisseurs de l’établissement, tandis que les vulnérabilités considérées comme potentiellement liées à l’attaque ont été corrigées. \n\n\n\n CNIL, autorités cyber et plainte dès le lendemain \n\n\n\n L’AP-HP indique avoir effectué les signalements nécessaires auprès de la  CNIL  et de la  Cellule d’accompagnement en cybersécurité des structures de santé . \n\n\n\n Une  plainte a également été déposée dès le 25 septembre , soit le lendemain du signalement initial, afin de permettre l’ouverture d’une enquête sur l’intrusion et le vol de données. \n\n\n\n Dedalus, un fournisseur central dans le système informatique hospitalier \n\n\n\n Le logiciel de restauration concerné est édité par  Dedalus , un acteur important des solutions numériques de santé. L’entreprise travaille depuis de nombreuses années avec l’AP-HP sur plusieurs outils hospitaliers. \n\n\n\n Il faut toutefois distinguer le module SRD Restauration touché ici des autres logiciels Dedalus utilisés par l’AP-HP. L’incident actuellement confirmé concerne le  service de gestion et de commande des repas  et aucun élément communiqué par l’établissement ne permet d’étendre la compromission à son dossier patient informatisé général. \n\n\n\n Un risque de phishing malgré l’absence de données médicales \n\n\n\n Les informations confirmées restent moins sensibles qu’un dossier médical complet, mais elles ne sont pas sans risque. L’association entre une  identité, des informations de naissance et un identifiant patient  peut notamment servir à renforcer des tentatives d’usurpation d’identité ou de phishing. \n\n\n\n Le contexte hospitalier peut également être exploité par des fraudeurs qui chercheraient à se faire passer pour l’AP-HP ou un établissement de santé en utilisant le vol de données comme prétexte pour réclamer des informations complémentaires. \n\n\n\n Pour l’heure, l’AP-HP confirme donc formellement le  vol de données de 1 015 patients  issus du logiciel de restauration utilisé dans 23 hôpitaux. Les investigations se poursuivent néanmoins afin de déterminer si le volume réel est plus important et si des comptes de professionnels de santé ont également été compromis.",
     "entity": "",
@@ -13293,7 +13293,7 @@
     "URL": "https://www.cyberattaque.org/ap-hp-1-015-patients-exposes-apres-le-piratage-dun-logiciel-utilise-dans-23-hopitaux/"
    },
    "key": "ITM-9254342bd232adf9:117fd45d43937f8515629d8a8c38e492c697dbaf036922fa3d5425304bde56fe",
-   "last_queued_at": "2026-10-11T06:26:32.204294+00:00",
+   "last_queued_at": "2026-10-11T06:45:00.937202+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -13301,7 +13301,7 @@
    "reason": "TECHNICAL_FAILURE"
   },
   {
-   "attempts": 3,
+   "attempts": 4,
    "entry": {
     "content": "Justice.fr , le portail officiel français d’information sur la justice et les procédures juridiques, fait l’objet d’une nouvelle revendication de fuite de données. Le hacker  ChimeraZ  affirme avoir obtenu une partie d’une base associée au site et diffuse gratuitement un fichier contenant plusieurs milliers de  noms et adresses email . \n\n\n\n Le pirate annonce  7 138 lignes pour 7 135 personnes . Cyberattaque.org s’est procuré l’archive complète et a réussi à extraire le fichier CSV qu’elle contient. Son analyse permet de préciser sensiblement le périmètre réel de cette fuite. \n\n\n\n   \n\n\n\n 7 136 lignes réellement présentes dans le fichier \n\n\n\n Le fichier diffusé, nommé  « 7.1K_utilisateurs.csv » , contient en réalité  7 136 enregistrements , auxquels s’ajoute la ligne d’en-tête du CSV. \n\n\n\n Chaque ligne comporte seulement trois champs : un  identifiant numérique, un nom complet et une adresse email . Les 7 136 identifiants présents sont distincts. \n\n\n\n Cyberattaque.org a identifié  7 135 adresses email uniques , ce qui correspond exactement au nombre de personnes revendiqué par ChimeraZ. Une seule adresse apparaît deux fois dans le fichier. Les noms sont légèrement plus redondants, avec  7 118 noms complets différents . \n\n\n\n Ce ne sont pas 7 000 agents du ministère de la Justice \n\n\n\n L’analyse du fichier apporte surtout une nuance importante : cette base ne correspond pas à une liste de plus de 7 000 agents utilisant une adresse professionnelle du ministère. \n\n\n\n Sur les 7 136 lignes analysées, seulement  196 adresses utilisent le domaine @justice.fr . Sept autres utilisent  @justice.gouv.fr . La très grande majorité des emails provient au contraire de messageries personnelles ou d’organisations extérieures. \n\n\n\n On retrouve notamment  2 427 adresses Gmail, 818 Orange, 546 Hotmail.fr, 445 Yahoo.fr ou encore 301 Wanadoo . Au total, plus d’un millier de domaines différents apparaissent dans le fichier. \n\n\n\n Ces éléments rendent donc très improbable l’hypothèse d’un simple annuaire interne des agents du ministère de la Justice. Le fichier semble plutôt correspondre à une  liste d’utilisateurs, de contacts ou de personnes enregistrées dans un service , sans qu’il soit possible de déterminer précisément lequel avec les seules données disponibles. \n\n\n\n Aucun dossier judiciaire ou mot de passe dans la fuite analysée \n\n\n\n La portée de la fuite doit également être correctement mesurée. Cyberattaque.org n’a trouvé dans le fichier  aucun mot de passe, numéro de téléphone, adresse postale, pièce d’identité ou information relative à une procédure judiciaire . \n\n\n\n Aucun numéro de dossier, jugement, convocation ou information sur une affaire en cours n’apparaît non plus. Les données diffusées se limitent, dans cette archive, aux  identifiants techniques, noms et emails . \n\n\n\n L’origine exacte des données reste une inconnue \n\n\n\n ChimeraZ présente l’ensemble comme une  « base partielle de justice.fr » , mais ne fournit aucune explication sur la manière dont les informations auraient été récupérées. \n\n\n\n La présence d’un identifiant unique pour chaque enregistrement et le nom du fichier peuvent être cohérents avec un export provenant d’une table d’utilisateurs ou de contacts. Ils ne suffisent cependant pas à démontrer qu’un attaquant a directement compromis l’infrastructure de justice.fr. \n\n\n\n À ce stade, il est donc impossible de déterminer si le fichier provient d’une  intrusion informatique, d’une application périphérique, d’un prestataire, d’un export ancien ou d’une autre source . \n\n\n\n Des adresses exploitables pour usurper l’identité de la Justice \n\n\n\n Même limitée à des noms et emails, la diffusion de cette base présente un risque de  phishing ciblé . Si certaines personnes présentes dans le fichier ont effectivement utilisé un service lié à justice.fr, un attaquant pourrait tenter de leur adresser de faux messages évoquant une procédure, une convocation ou une démarche administrative. \n\n\n\n Les quelque  200 adresses professionnelles directement rattachées aux domaines de la Justice  peuvent également présenter un intérêt pour des campagnes ciblant des agents ou des professionnels du ministère avec des messages d’ingénierie sociale. \n\n\n\n Le fait que ChimeraZ mette le fichier  gratuitement en téléchargement  facilite par ailleurs sa copie et sa redistribution. Les données peuvent désormais être intégrées à d’autres bases ou utilisées indépendamment de leur provenance initiale. \n\n\n\n Une revendication qui doit encore être confirmée \n\n\n\n L’archive diffusée par ChimeraZ est donc bien exploitable et contient  7 136 lignes associant des identités à des adresses email . En revanche, son contenu ne permet pas d’affirmer que 7 135 agents de la Justice sont concernés, ni que des dossiers judiciaires ont été compromis. \n\n\n\n  Le ministère de la Justice n’a pas confirmé publiquement cette fuite à ce stade.  L’origine exacte du fichier et le service depuis lequel ces données auraient été récupérées restent les principales inconnues de cette nouvelle revendication.",
     "entity": "",
@@ -13568,7 +13568,7 @@
     "URL": "https://www.cyberattaque.org/justice-fr-plus-de-7-000-personnes-en-fuite-apres-une-cyberattaque/"
    },
    "key": "ITM-610efc10c3ed21cf:8655697f580ed01d9785e24f741073cdcd817e20df8a183022b28d5b2e80068e",
-   "last_queued_at": "2026-10-11T06:26:32.744979+00:00",
+   "last_queued_at": "2026-10-11T06:45:01.086799+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -15805,7 +15805,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:41.472449+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:25:57.700049+04:00",
+    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-7ead9e662c10d606",
     "Location": "France métropolitaine",
@@ -15821,7 +15821,7 @@
     "URL": "https://frenchbreaches.com/alertes/infogreffe-mv2l1dzn9pdnebnwv0o"
    },
    "key": "ITM-7ead9e662c10d606:fe1941f71cee081d0d7d53bf5ae7217e008887ef59ef910f1c19ffd52783b462",
-   "last_queued_at": "2026-10-11T06:26:07.287380+00:00",
+   "last_queued_at": "2026-10-11T06:44:41.095478+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -16220,7 +16220,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:42.425735+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:25:57.700049+04:00",
+    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-4001d1dd7afec1ad",
     "Location": "France métropolitaine",
@@ -16236,7 +16236,7 @@
     "URL": "https://frenchbreaches.com/alertes/france-bourse-mv2jgulk2i7bo3dy9bf"
    },
    "key": "ITM-4001d1dd7afec1ad:797f45acfe30f9ce36e80ab0bad0e52e671d7420fad1ec8775399cbac729ac19",
-   "last_queued_at": "2026-10-11T06:26:07.940149+00:00",
+   "last_queued_at": "2026-10-11T06:44:41.378470+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -16514,7 +16514,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:44.445593+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:25:57.700049+04:00",
+    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-c9d447f3028c9c90",
     "Location": "France métropolitaine",
@@ -16530,7 +16530,7 @@
     "URL": "https://frenchbreaches.com/alertes/callibri-mv242sdqy4ee2qs8uum"
    },
    "key": "ITM-c9d447f3028c9c90:6505b680c01c4f52a5aed18c8b9a5751de044068d09ab09184f95d15ce9b00d8",
-   "last_queued_at": "2026-10-11T06:26:10.118461+00:00",
+   "last_queued_at": "2026-10-11T06:44:41.736204+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -16808,7 +16808,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:45.345021+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:25:57.700049+04:00",
+    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-211dbbfd32606322",
     "Location": "France métropolitaine",
@@ -16824,7 +16824,7 @@
     "URL": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn"
    },
    "key": "ITM-211dbbfd32606322:1b870a2cc811e36e8b2aef0bd65b8601f86cc6e1ac798311b13005928eacffbe",
-   "last_queued_at": "2026-10-11T06:26:10.716826+00:00",
+   "last_queued_at": "2026-10-11T06:44:41.889584+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
@@ -19965,7 +19965,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:57.000616+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:25:57.700049+04:00",
+    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-7543d5198870d435",
     "Location": "Inconnu",
@@ -19981,7 +19981,7 @@
     "URL": "https://www.cyberattaque.org/infogreffe-37-millions-de-lignes-revendiquees-apres-une-cyberattaque/"
    },
    "key": "ITM-7543d5198870d435:ecd0c17aa3237d52351298924fc3a540524fe806e11bb21dfcec083d777477a7",
-   "last_queued_at": "2026-10-11T06:26:16.809605+00:00",
+   "last_queued_at": "2026-10-11T06:44:50.524998+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -20063,7 +20063,7 @@
    "field_reasons": {},
    "first_queued_at": "2026-10-11T06:14:58.657699+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:25:57.700049+04:00",
+    "Collected_As_Of": "2026-10-11T10:44:30.488525+04:00",
     "Event_Date": "",
     "Item_ID": "ITM-d28adb4e5492baf5",
     "Location": "Inconnu",
@@ -20079,7 +20079,7 @@
     "URL": "https://www.cyberattaque.org/wimoov-une-cyberttaque-touche-la-plateforme-win/"
    },
    "key": "ITM-d28adb4e5492baf5:dc55746409cfa291704d9a0f068fba138168d961453f365f04a547ea70f904e9",
-   "last_queued_at": "2026-10-11T06:26:17.933488+00:00",
+   "last_queued_at": "2026-10-11T06:44:50.782067+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
