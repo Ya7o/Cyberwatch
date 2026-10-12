@@ -2,6 +2,111 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-12",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-F29ACDC2C7FF",
+  "location": "France métropolitaine",
+  "org": "Kiassure",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Finance",
+   "evidence_url": "https://frenchbreaches.com/alertes/kiassure-mv4fc0mzhzpeqr8upub",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/kiassure-mv4fc0mzhzpeqr8upub"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DD426ED425CD",
+  "location": "Inconnu",
+  "org": "Intermarché et Super U",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/intermarche-et-super-u-une-cyberattaque-deregle-le-froid-dans-des-centaines-de-magasins/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Intermarché et Super U : une cyberattaque dérègle le froid dans des centaines de magasins",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-12",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-3B12E9BC1C38",
+  "location": "France métropolitaine",
+  "org": "AlloExtra",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "AlloExtra, plateforme française spécialisée dans l’emploi en hôtellerie-restauration, fait l’objet d’une revendication particulièrement sensible.",
+   "evidence_url": "https://www.cyberattaque.org/alloextra-14-516-cv-de-candidats-mis-en-vente-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/alloextra-14-516-cv-de-candidats-mis-en-vente-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/alloextra-mv4mhd0168xtcvl3oeh"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "AlloExtra : 14 516 CV de candidats mis en vente après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-11",
   "high_sensitivity_data_exposed": false,
   "id": "INC-F20034DB3A78",
@@ -35,9 +140,49 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
+  "credentials_or_secrets_exposed": true,
   "date": "2026-10-11",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-B9B7E2BD936C",
+  "location": "France métropolitaine",
+  "org": "G La Dalle",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/g-la-dalle-mv3xc2n46n3e6glqle",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/g-la-dalle-les-clients-dune-centaine-de-restaurants-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/g-la-dalle-mv3xc2n46n3e6glqle"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "G La Dalle : les clients d’une centaine de restaurants en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-11",
+  "high_sensitivity_data_exposed": true,
   "id": "INC-6C763C3BB763",
   "location": "France métropolitaine",
   "org": "Armurerie du Bocage",
@@ -53,15 +198,130 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-armurerie-du-bocage-pres-de-1-000-clients-exposes-avec-leurs-pieces-didentite/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Armurerie du Bocage : les achats d’armes d’un millier de clients exposés dans fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-64F708830C0C",
+  "location": "France métropolitaine",
+  "org": "RGIS",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Numérique / Technologie | Services aux entreprises",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/rgis-30-366-candidatures-de-son-site-de-recrutement-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/rgis-mv3xepguzoelpdbi1bo"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "RGIS : 30 366 candidatures de son site de recrutement en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-624936F92BC4",
+  "location": "France métropolitaine",
+  "org": "AK Transport",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "AK Transport, société de transport routier basée à Saint-Étienne, fait l’objet d’une importante revendication de fuite de données….",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-ak-transport-11-681-livraisons-dont-des-colis-encore-en-transit-en-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-ak-transport-11-681-livraisons-dont-des-colis-encore-en-transit-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ak-transport-mv3xwqhui7pi030y058"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "AK Transport : 11 681 livraisons dont des colis encore en transit en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-272FE22FDE61",
+  "location": "Inconnu",
+  "org": "VD2E",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/vd2e-86-000-fiches-clients-de-la-renovation-energetique-mises-en-vente-sur-le-darkweb/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "VD2E : 86 000 fiches clients de la rénovation énergétique mises en vente sur le darkweb",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -161,18 +421,24 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/france-bourse-les-revenus-de-milliers-dinvestisseurs-exposes-apres-une-cyberattaque/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/france-bourse-mv2jgulk2i7bo3dy9bf"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "",
-  "threat": "Fuite de données",
+  "summary": "France Bourse : les revenus de milliers d’investisseurs exposés après une cyberattaque",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "reported"
   }
  },
  {
@@ -2169,6 +2435,46 @@
   ],
   "summary": "Gefradis fait l’objet d’une revendication de fuite de plus de 100 000 lignes de données clients mises en vente.",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-06",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8C617A0F4FB3",
+  "location": "France métropolitaine",
+  "org": "Egide",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Industrie",
+   "evidence_url": "https://frenchbreaches.com/alertes/egide-mv46ib7195c2bleeq67",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/egide-frappe-par-une-cyberattaque-son-site-de-bollene-partiellement-interrompu/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/egide-mv46ib7195c2bleeq67"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Egide frappé par une cyberattaque : son site de Bollène partiellement interrompu",
+  "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
   }
@@ -9218,115 +9524,6 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-12",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-ED5E5886980A",
-  "location": "France métropolitaine",
-  "org": "eracm",
-  "organisation_links": [
-   "https://eracm.fr"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/a34c6dc5ac3bd4acd0ff22b009c376c1630c21ed2aa3ba56630909633c198cba/"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-12",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-1C4D92961F4E",
-  "location": "France métropolitaine",
-  "org": "Revolut",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/revolut.png"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/revolut-piege-par-de-fausses-demandes-gouvernementales-des-passeports-transmis-a-un-tiers/"
-   },
-   {
-    "label": "ewatchers.org",
-    "source": "BONJOURLAFUITE",
-    "url": "https://ewatchers.org/info/2026-09-12-revolut-les-donnees-de-certains-clients-compromises-suite-a-de-fausses-demandes-d-informations-gouvernementales-247"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-12",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-0D418F193074",
-  "location": "France métropolitaine",
-  "org": "Ekolis",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Transport / Logistique",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport",
-   "evidence_url": "https://frenchbreaches.com/alertes/ekolis-mtye57ckbfljbjhsei",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ekolis-mtye57ckbfljbjhsei"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un pirate revendique la publication de huit fichiers attribués à Ekolis contenant environ 70 000 lignes incluant véhicules, conducteurs et comptes utilisateurs.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
   }
  }
 ]
