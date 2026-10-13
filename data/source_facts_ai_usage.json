@@ -3,26 +3,26 @@
   "accepted_field_cache_hits": 0,
   "accepted_field_rate": 0.0,
   "activity_pairs": {
-    "requested": 16,
+    "requested": 10,
     "technical_failure": {
       "from_cache": 0,
       "from_call": 0,
-      "total": 16
+      "total": 10
     }
   },
-  "average_duration_seconds": 0.075,
+  "average_duration_seconds": 0.146,
   "cache_format": "source-facts-ai-field-cache-v1",
   "cache_hits": 0,
-  "calls_attempted": 23,
+  "calls_attempted": 16,
   "calls_budget_blocked": 0,
-  "calls_failed": 23,
+  "calls_failed": 16,
   "calls_success": 0,
   "cost_per_accepted_field_usd": null,
   "disabled_reason": "",
   "effective_model": "",
   "enabled": true,
   "error_reasons": {
-    "source_facts_ai_error": 23
+    "source_facts_ai_error": 16
   },
   "estimated_cost_usd": 0.0,
   "evidence_failures": 0,
@@ -31,18 +31,18 @@
   "field_outcomes_by_name": {},
   "fields_invalidated": 0,
   "fields_requested": {
-    "activity_description": 16,
-    "activity_sector_match": 16,
-    "incident_summary": 18,
-    "summary": 18,
-    "threat_candidate": 18
+    "activity_description": 10,
+    "activity_sector_match": 10,
+    "incident_summary": 11,
+    "summary": 11,
+    "threat_candidate": 11
   },
   "fields_requested_new": {
-    "activity_description": 16,
-    "activity_sector_match": 16,
-    "incident_summary": 18,
-    "summary": 18,
-    "threat_candidate": 18
+    "activity_description": 10,
+    "activity_sector_match": 10,
+    "incident_summary": 11,
+    "summary": 11,
+    "threat_candidate": 11
   },
   "final_acceptance_rate": 0.0,
   "final_accepted": 0,
@@ -52,19 +52,19 @@
   "initial_acceptance_rate": 0.0,
   "initial_accepted": 0,
   "input_tokens": 0,
-  "items_eligible": 23,
+  "items_eligible": 16,
   "items_fully_cached": 0,
   "items_partially_cached": 0,
   "items_skipped_no_missing_fields": 0,
-  "items_would_call": 23,
+  "items_would_call": 16,
   "legacy_field_cache_hits": 0,
   "legacy_null_migrations": 0,
   "legacy_null_skips": 0,
-  "max_duration_seconds": 1.716,
+  "max_duration_seconds": 2.332,
   "model": "gpt-5-nano",
   "output_tokens": 0,
   "p50_duration_seconds": 0.0,
-  "p95_duration_seconds": 0.0,
+  "p95_duration_seconds": 2.332,
   "prompt_version": "2026-09-11.source-facts.20",
   "rejected_field_cache_hits": 0,
   "repair_attempted": 0,
@@ -76,13 +76,13 @@
   "repair_llm_success": 0,
   "requested_model": "gpt-5-nano",
   "retries": 0,
-  "run_id": "RUN-20261012T201304",
+  "run_id": "RUN-20261013T183838",
   "schema_version": "11",
   "semantic_first_misses": 0,
   "semantic_new_abstentions": 0,
   "semantic_recovered_on_retry": 0,
   "semantic_retries": 0,
   "timeouts": 0,
-  "total_duration_seconds": 1.717,
+  "total_duration_seconds": 2.333,
   "unsafe_proposals_rejected": 0
 }
