@@ -1,6 +1,246 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-922ADE9AC953",
+  "location": "Inconnu",
+  "org": "Grande Pharmacie des Halles",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/grande-pharmacie-des-halles-les-ordonnances-de-patients-diffusees-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Grande Pharmacie des Halles : les ordonnances de patients diffusées après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6F760CFC7E64",
+  "location": "France métropolitaine",
+  "org": "Tailleur Auto",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/tailleur-auto-mv9fdaoyn4mk3ep2ta8",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/tailleur-auto-mv9fdaoyn4mk3ep2ta8"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-6670B08468DD",
+  "location": "France métropolitaine",
+  "org": "Grande Pharmarcie des Halles",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/grande-pharmarcie-des-halles-mv9f3l34xvwhlhz1g7",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grande-pharmarcie-des-halles-mv9f3l34xvwhlhz1g7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1951E7B97C26",
+  "location": "Inconnu",
+  "org": "TailleurAuto",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "TailleurAuto, spécialiste français des housses et tapis automobiles sur mesure, informe actuellement certains de ses clients d’un incident…",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-tailleurauto-un-code-malveillant-a-siphonne-les-donnees-saisies-lors-des-commandes/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-tailleurauto-un-code-malveillant-a-siphonne-les-donnees-saisies-lors-des-commandes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "TailleurAuto : un code malveillant a siphonné les données saisies lors des commandes",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-135E28CAB136",
+  "location": "France métropolitaine",
+  "org": "ASCOR",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "ASCOR, organisme français de formation à distance, a été victime d'une fuite de données personnelles liée à une intrusion chez l'un de ses prestataires informatiques.",
+   "evidence_url": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F128C85AC433",
+  "location": "France métropolitaine",
+  "org": "saintpierredescorps",
+  "organisation_links": [
+   "https://saintpierredescorps.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://lockbitapt67g6rwzjbcxnww5efpg4qok6vpfeth7wx3okj52ks4wtad.onion/post/203103916a7e57f725aefa8a3a371d0a"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DFEC634D689C",
+  "location": "France métropolitaine",
+  "org": "Climb Up",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Climb Up est une enseigne française spécialisée dans l'exploitation de salles d'escalade en intérieur.",
+   "evidence_url": "https://frenchbreaches.com/alertes/climb-up-mv88m4y8xbpdjxtdm6n",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/climb-up-pres-de-151-000-profils-en-vente-sur-le-darkweb-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/climb-up-mv88m4y8xbpdjxtdm6n"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Climb Up : près de 151 000 profils en vente sur le darkweb après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-14",
   "high_sensitivity_data_exposed": true,
@@ -31,6 +271,46 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-14",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3634AD5756CD",
+  "location": "France métropolitaine",
+  "org": "BodySwap",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/bodyswap-mv8n254b9jvyg9eol5",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-bodyswap-les-donnees-de-10-309-utilisateurs-du-service-dimages-pour-adultes-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bodyswap-mv8n254b9jvyg9eol5"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "BodySwap : les données de 10 309 utilisateurs du service d’images pour adultes en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -8981,449 +9261,6 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-F6EA93C0805A",
-  "location": "France métropolitaine",
-  "org": "Papouille France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/papouille-france-blgcloud-mu2kat4fov2247lxirf",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/papouille-france-touche-par-la-fuite-de-son-compte-blgcloud-avec-75-go-et-240-000-fichiers-exposes/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/papouille-france-blgcloud-mu2kat4fov2247lxirf"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Papouille France voit 75 Go et 240 177 fichiers attribués à son compte BlgCloud diffusés publiquement.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-E67015756A95",
-  "location": "France métropolitaine",
-  "org": "AFPA",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Éducation / Formation",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "AFPA",
-   "evidence_url": "https://www.cyberattaque.org/afpa-pres-dun-million-de-dossiers-revendiques-apres-une-cyberattaque/",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/afpa-pres-dun-million-de-dossiers-revendiques-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/afpa-mu4jbja3w3es4t7j0a8"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une fuite de 971 420 enregistrements est revendiquée contre l'AFPA, contenant des données personnelles vendues par un acteur se nommant xMetah.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-D7E1EEBAB16D",
-  "location": "France métropolitaine",
-  "org": "Carte De Pêche",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/carte-de-p-che-mu2y1dhf81dp7ixpy9y",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/carte-de-p-che-mu2y1dhf81dp7ixpy9y"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un pirate revendique la fuite de fichiers d'adhérents de Carte-de-pêche.fr couvrant 2012-2026 et visant plusieurs milliers d'adhérents.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-8C6C97916F72",
-  "location": "France métropolitaine",
-  "org": "EAD-Online",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Éducation / Formation",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Éducation",
-   "evidence_url": "https://frenchbreaches.com/alertes/ead-online-mu2kkot4fts8pqcld0c",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ead-online-mu2kkot4fts8pqcld0c"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une fuite de données revendiquée affectant EAD-Online.be, l'auteur affirme disposer de 19 456 enregistrements au format JSON (~3 Mo).",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-78281AB82197",
-  "location": "France métropolitaine",
-  "org": "Alaxione",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Alaxione fournit des solutions de gestion d’agenda, prise et suivi de rendez-vous médicaux ;",
-   "evidence_url": "https://frenchbreaches.com/alertes/point-vision-alaxione-mu2xkknzvrz0vmolzuf",
-   "reason": "SEMANTIC_ACTIVITY_MATCH",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/point-vision-alaxione-mu2xkknzvrz0vmolzuf"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un prestataire chargé des rendez-vous de Point Vision a été victime d’une cyberattaque ayant entraîné l’accès à des données patients.",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-77FA7FC04A8A",
-  "location": "France métropolitaine",
-  "org": "Welyb",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Services aux entreprises",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Numérique / Technologie"
-   ],
-   "evidence": "Welyb est une plateforme de gestion électronique de documents et de collaboration particulièrement orientée vers les cabinets d’expertise comptable.",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-welyb-agiris-une-faille-expose-les-donnees-de-clients-de-cabinets-comptables/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-welyb-agiris-une-faille-expose-les-donnees-de-clients-de-cabinets-comptables/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/welyb-agiris-mu2m3x9bh33cfsst2bl"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une faille d'un composant lié à Welyb/Portail AGIRIS CONNECT a exposé des données de clients de cabinets d'expertise comptable.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-5AD7E8261825",
-  "location": "France métropolitaine",
-  "org": "Aforpa",
-  "organisation_links": [
-   "https://aforpa.fr"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-56553114E3FD",
-  "location": "France métropolitaine",
-  "org": "Centrale Canine",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/centrale-canine-mu2khodutmhix9d29g",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/centrale-canine-une-cyberattaque-expose-les-donnees-de-plus-de-122-000-personnes/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/centrale-canine-mu2khodutmhix9d29g"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une fuite de données diffusée par le hacker ChimeraZ expose des fichiers de la Centrale Canine contenant des informations sur environ 122 147 personnes.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-41D3A5E68E62",
-  "location": "France métropolitaine",
-  "org": "Maison du Souvenir de Maillé",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Culture / Médias / Loisirs",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Depuis son ouverture, la Maison du Souvenir produit et rassemble des ressources destinées aussi bien à la recherche qu’aux expositions et aux activités pédagogiques.",
-   "evidence_url": "https://www.cyberattaque.org/maison-du-souvenir-de-maille-vingt-ans-de-travail-numerique-perdus-apres-une-cyberattaque/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/maison-du-souvenir-de-maille-vingt-ans-de-travail-numerique-perdus-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/maison-du-souvenir-mu3s96ekg9d5znwpghs"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "La Maison du Souvenir de Maillé a perdu près de vingt années de travail numérique à la suite d'une cyberattaque.",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-20C6D9DEDD18",
-  "location": "France métropolitaine",
-  "org": "Presses universitaires de Franche-Comté",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/presses-universitaires-de-franche-comt-mu2lpccdyoxn2sw5p3e",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/presses-universitaires-de-franche-comt-mu2lpccdyoxn2sw5p3e"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-096E79FC178A",
-  "location": "France métropolitaine",
-  "org": "Point Vision",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Point Vision est un réseau français de centres spécialisés dans l’ophtalmologie.",
-   "evidence_url": "https://www.cyberattaque.org/point-vision-une-cyberattaque-expose-des-numeros-de-securite-sociale-et-des-donnees-de-patients/",
-   "reason": "SEMANTIC_ACTIVITY_MATCH",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/point-vision.png"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/point-vision-une-cyberattaque-expose-des-numeros-de-securite-sociale-et-des-donnees-de-patients/"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Point Vision signale qu'une violation chez un prestataire a exposé des numéros de sécurité sociale et d'autres données de patients.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-015E0D4D14C0",
-  "location": "Inconnu",
-  "org": "Fédération Royale Belge de Tennis de Table",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Sport",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Fédération Royale Belge de Tennis de Table",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-tennis-de-table-mu2l3yrjnywvyypn0z",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-tennis-de-table-mu2l3yrjnywvyypn0z"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un pirate revendique l'exfiltration d'environ 1,69 Go de données visant l’AFTT et la FRBTT, incluant 66 852 adhérents et 17 441 utilisateurs.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
   }
  }
 ]
