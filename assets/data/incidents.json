@@ -2,6 +2,142 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0A79C15C4861",
+  "location": "France métropolitaine",
+  "org": "Clinique vétérinaire Voltaire",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Clinique vétérinaire Voltaire",
+   "evidence_url": "https://frenchbreaches.com/alertes/clinique-v-t-rinaire-voltaire-mva4rshyi51tv1f51z",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clinique-v-t-rinaire-voltaire-mva4rshyi51tv1f51z"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FD563387C197",
+  "location": "France métropolitaine",
+  "org": "Grimaldi Forum",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grimaldi-forum-mvavilj5vmn4fj3vw5h"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F45C849F1F86",
+  "location": "Inconnu",
+  "org": "Le Havre",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/le-havre-une-cyberattaque-paralyse-les-terminaux-de-normandie/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le Havre : une cyberattaque paralyse les Terminaux de Normandie",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FCF965AF5FEC",
+  "location": "France métropolitaine",
+  "org": "Ouest-France",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/ouest-france-mvabub8ypl4qw9tiss",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ouest-france-une-cyberattaque-touche-les-formulaires-dabonnement-de-loffre-jeunes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ouest-france-mvabub8ypl4qw9tiss"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Ouest-France : une cyberattaque touche les formulaires d’abonnement de l’offre jeunes",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-15",
   "high_sensitivity_data_exposed": false,
   "id": "INC-135E28CAB136",
@@ -28,6 +164,116 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-33569EB21902",
+  "location": "La Réunion",
+  "org": "Commune Du Tampon",
+  "organisation_links": [
+   "https://www.letampon.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Commune Du Tampon",
+   "evidence_url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=17857655-4f48-478d-95f2-8b1f5b8cf529",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=17857655-4f48-478d-95f2-8b1f5b8cf529"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B20D9C9A2C7A",
+  "location": "France métropolitaine",
+  "org": "Couleur CE",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "La plateforme Couleur CE, spécialisée notamment dans la billetterie destinée aux comités sociaux et économiques (CSE), est concernée par un incident de sécurité ayant entraîné une fuite de données personnelles liées aux achats de billets de cinéma. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/couleur-ce-mv9tv3s8eqb7umy8io6",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/couleur-ce-des-billets-de-cinema-exposes-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/couleur-ce-mv9tv3s8eqb7umy8io6"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Couleur CE : des billets de cinéma exposés après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E169348335AE",
+  "location": "France métropolitaine",
+  "org": "Grand Orient de France",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/grand-orient-de-france-godf-mv9oi8r1g2i8nqlg8uh",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grand-orient-de-france-godf-mv9oi8r1g2i8nqlg8uh"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Grand Orient de France (GODF)",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -96,6 +342,77 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D7DA5F0D4FBE",
+  "location": "Inconnu",
+  "org": "La clinique vétérinaire Voltaire à Dijon",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-clinique-veterinaire-voltaire-a-dijon-victime-dune-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La clinique vétérinaire Voltaire à Dijon victime d’une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E57490F0E0D4",
+  "location": "France métropolitaine",
+  "org": "Mairie de Saillans",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Mairie de Saillans",
+   "evidence_url": "https://www.cyberattaque.org/mairie-de-saillans-sa-messagerie-utilisee-pour-envoyer-de-fausses-factures-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/mairie-de-saillans-sa-messagerie-utilisee-pour-envoyer-de-fausses-factures-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mairie-de-saillans-mva4u7duoeidk4s95hb"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Mairie de Saillans : sa messagerie utilisée pour envoyer de fausses factures après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -260,6 +577,11 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/climb-up.png"
+   },
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/climb-up-pres-de-151-000-profils-en-vente-sur-le-darkweb-apres-une-cyberattaque/"
@@ -268,16 +590,22 @@
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/climb-up-mv88m4y8xbpdjxtdm6n"
+   },
+   {
+    "label": "climb-up.fr",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.climb-up.fr/fuite-de-donnees-personnelles-chez-climb-up/"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Climb Up : près de 151 000 profils en vente sur le darkweb après une cyberattaque",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {
