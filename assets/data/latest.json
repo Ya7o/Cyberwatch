@@ -2,6 +2,219 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C4B84AC40DA1",
+  "location": "Inconnu",
+  "org": "Franc-maçonnerie",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/franc-maconnerie-3-400-documents-de-la-grande-loge-traditionnelle-de-france-diffuses-par-un-hacker/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Franc-maçonnerie : 3 400 documents de la Grande Loge Traditionnelle de France diffusés par un hacker",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9B7B6F1DF9AE",
+  "location": "France métropolitaine",
+  "org": "Inter-Etab",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "INTER-ETAB est une solution informatique destinée aux établissements d'enseignement, notamment aux lycées. [étiquette source écartée : Technologie]",
+   "evidence_url": "https://frenchbreaches.com/alertes/inter-etab-mvbltm1qureji88mucs",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/inter-etab-286-773-dossiers-deleves-et-leurs-familles-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/inter-etab-mvbltm1qureji88mucs"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Inter-Etab : 286 773 dossiers d’élèves et leurs familles en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-4C59C26E31C7",
+  "location": "France métropolitaine",
+  "org": "O'Tacos",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/o-tacos-mvbm4idbuf2ef1t8tog",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/o-tacos-mvbm4idbuf2ef1t8tog"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2AADE4847930",
+  "location": "France métropolitaine",
+  "org": "Paroisse Saint-Urbain–Sainte-Marie",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/paroisse-saint-urbain-sainte-marie-mvc6rymwndmz2b0dmbr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/paroisse-saint-urbain-sainte-marie-mvc6rymwndmz2b0dmbr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-06066B2EEF57",
+  "location": "France métropolitaine",
+  "org": "Grande Loge Traditionnelle de France",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/grande-loge-traditionnelle-de-france-gltf-mvboimp4km30ucqk1nr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grande-loge-traditionnelle-de-france-gltf-mvboimp4km30ucqk1nr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Grande Loge Traditionnelle de France (GLTF)",
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-01E8D3339D48",
+  "location": "France métropolitaine",
+  "org": "Nomad Education",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Nomad Education est une application française spécialisée dans le soutien scolaire et la préparation aux examens.",
+   "evidence_url": "https://frenchbreaches.com/alertes/nomad-education-mvbmcnqo6n4tadn92k6",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-contre-nomad-education-485-millions-de-comptes-mis-en-vente-sur-le-darkweb/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/nomad-education-mvbmcnqo6n4tadn92k6"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque contre Nomad Education : 4,85 millions de comptes mis en vente sur le darkweb",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-16",
   "high_sensitivity_data_exposed": false,
   "id": "INC-FD563387C197",
@@ -9,10 +222,13 @@
   "org": "Grimaldi Forum",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/grimaldi-forum-mvavilj5vmn4fj3vw5h",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
@@ -106,6 +322,80 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-16",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-A83829E8180E",
+  "location": "France métropolitaine",
+  "org": "Courtepaille Bayeux",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/courtepaille-bayeux-mvb88as4rtz2lyik2s",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/courtepaille-bayeux-8-734-lignes-issues-de-loutil-de-reservation-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/courtepaille-bayeux-mvb88as4rtz2lyik2s"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Courtepaille Bayeux : 8 734 lignes issues de l’outil de réservation en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8A890C06B458",
+  "location": "France métropolitaine",
+  "org": "Vélogrimpe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/v-logrimpe-mvb7cujdb3r2s61tuo9",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/v-logrimpe-mvb7cujdb3r2s61tuo9"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-0A79C15C4861",
   "location": "France métropolitaine",
   "org": "Clinique vétérinaire Voltaire",
@@ -133,6 +423,37 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-00C7F75053E1",
+  "location": "France métropolitaine",
+  "org": "Vélo Grimpe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/velo-grimpe.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Vélo Grimpe.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -9233,153 +9554,6 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-17",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-DC8AC46291C7",
-  "location": "France métropolitaine",
-  "org": "Tribunal des activités économiques de Paris",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/tribunal-des-activit-s-conomiques-de-paris-tae-mu5i6aq2tacwkov45cr",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/tribunal-des-activit-s-conomiques-de-paris-tae-mu5i6aq2tacwkov45cr"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une fuite de données revendiquée expose les informations d'environ 722 personnes liées au Greffe du Tribunal des activités économiques de Paris.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-17",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-D2FB7EB1592C",
-  "location": "France métropolitaine",
-  "org": "Zenfirst",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
-   "evidence_url": "https://frenchbreaches.com/alertes/zenfirst-mu5htqiwd1qoi6ixtx5",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/zenfirst-victime-dune-cyberattaque-des-milliers-de-donnees-de-facturation-exposees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/zenfirst-mu5htqiwd1qoi6ixtx5"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Zenfirst victime d’une cyberattaque : des milliers de données de facturation exposées",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-17",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-911E74AADDEB",
-  "location": "Inconnu",
-  "org": "Greffe du Tribunal de Paris",
-  "organisation_links": [
-   "https://greffe-tae-paris.fr"
-  ],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/greffe-du-tribunal-de-paris-des-adresses-privees-et-donnees-familiales-de-juges-en-fuite/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Greffe du Tribunal de Paris : des adresses privées et données familiales de juges en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-17",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-2EA9D4F2C864",
-  "location": "France métropolitaine",
-  "org": "Pays de L’Aigle",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/pays-de-l-aigle-mu62uazzlgiwn2iy3q",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/pays-de-laigle-une-cyberattaque-contre-les-messageries-fait-craindre-une-fuite-de-donnees-sensibles/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/pays-de-l-aigle-mu62uazzlgiwn2iy3q"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "La Communauté de communes des Pays de L’Aigle a subi une intrusion touchant son serveur de messagerie professionnelle le 14-15 septembre 2026.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
   }
  }
 ]
