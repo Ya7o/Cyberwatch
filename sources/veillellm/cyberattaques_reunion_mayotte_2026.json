@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-10-18T09:16:01+04:00",
+    "generated_at": "2026-10-19T09:06:09+04:00",
     "record_count": 15,
     "accepted_count": 9,
     "candidate_count": 6,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
       "new_incidents": 0,
-      "enriched_incidents": 0,
+      "enriched_incidents": 1,
       "corrected_incidents": 0,
-      "note": "Veille vérifiée le 18 octobre 2026. Aucun nouvel incident ou signal territorial admissible, aucun enrichissement substantiel et aucune correction établis dans les sources consultées. Les six CANDIDATE restent collectés et visibles avec la mention « À confirmer » ; aucune preuve nouvelle ne justifie une promotion."
+      "note": "Veille vérifiée le 19 octobre 2026. Aucun nouvel incident territorial admissible et aucune correction. Enrichissement de l'incident de la Ville du Tampon : Qilin a revendiqué la commune le 15 octobre sur son site de fuite selon plusieurs agrégateurs spécialisés. La cyberattaque reste confirmée par la collectivité, mais l'attribution, le ransomware, la demande de rançon et l'exfiltration ne sont pas confirmés officiellement. Les six CANDIDATE restent visibles avec la mention « À confirmer »."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 18 octobre 2026 depuis le snapshot courant de main : conservation des 15 records, de leurs dates et de leurs sources d'ancrage ; recherches séparées sur les nouveaux incidents et sur les suivis, avec priorité aux autorités et à la presse locale indexée, puis aux sources cyber accessibles. Requêtes ciblées sur LINFO.re, Imaz Press, Zinfos974, Journal de Mayotte, Mayotte Hebdo et Info976 ; résultats effectivement consultés auprès de LINFO.re, Imaz Press, Journal de Mayotte, Info976, Mayotte Hebdo, Autorité de la concurrence, CASUD, FrenchBreaches et Piratage.fr. Suivis ciblés sur Le Tampon, Jean Joly, MANU-PORT/Longoni et Police nationale/DTPN 974. La reprise locale du 17 octobre sur la chaîne du froid a été examinée et confirme qu'aucun incident similaire n'est signalé dans la région.",
-      "limitations": "Certaines pages sociales et certaines pages de La Réunion La 1ère et Mayotte La 1ère sont bloquées ou difficilement accessibles ; aucun accès exhaustif n'est revendiqué. Aucun suivi public nouveau n'a été trouvé pour le signal DTPN 974 : l'ouverture de l'enquête est confirmée, mais les consultations, transmissions, fichiers touchés, personnes concernées et période des faits ne sont toujours pas établis ; le record reste CANDIDATE et apparaît « À confirmer ». Le Tampon reste confirmé sans vecteur technique ni fuite démontrés. MANU-PORT/Longoni reste une allégation non corroborée dans un contexte opérationnel, juridique et concurrentiel ; la sanction du 15 octobre porte sur des abus de position dominante, pas sur un incident cyber. L'exposition potentielle d'équipements frigorifiques dans la région ne prouve aucune compromission locale. L'incident Vacaf/Cnaf reste hors admission faute de preuve publique d'un périmètre réunionnais ou mahorais touché. La recherche publique et indexée ne démontre pas une absence générale d'incidents.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 19 octobre 2026 depuis le snapshot courant de main : conservation des 15 records et de leurs dates ; recherches séparées sur les nouveaux incidents et sur les suivis, avec priorité aux autorités et à la presse locale indexée, puis aux sources cyber accessibles. Requêtes ciblées sur LINFO.re, Imaz Press, Zinfos974, Journal de Mayotte, Mayotte Hebdo et Info976 ; résultats effectivement consultés auprès de LINFO.re, Imaz Press, Journal de Mayotte, Info976, Mayotte In Tech, Cyber Réunion, FrenchBreaches, Piratage.fr, Cyber Threat Intelligence, SOCRadar et Comparitech Ransomware. Suivis ciblés sur Le Tampon, Jean Joly, MANU-PORT/Longoni et Police nationale/DTPN 974. La revendication Qilin du 15 octobre visant letampon.fr a été rapprochée de l'incident confirmé du 9 septembre et traitée comme un enrichissement, non comme une nouvelle attaque.",
+      "limitations": "Certaines pages sociales et certaines pages de La Réunion La 1ère et Mayotte La 1ère sont bloquées ou difficilement accessibles ; aucun accès exhaustif n'est revendiqué. La revendication Qilin contre la commune du Tampon est documentée par des agrégateurs spécialisés, mais aucune confirmation publique de la collectivité ou d'une autorité, aucun échantillon, aucun volume de données, aucune demande de rançon et aucune preuve d'exfiltration n'ont été trouvés ; la date du 15 octobre correspond à la publication sur le site de fuite, pas à la date de l'attaque, qui reste le 9 septembre. Aucun suivi public nouveau n'a été trouvé pour DTPN 974 ; le record reste CANDIDATE et apparaît « À confirmer ». MANU-PORT/Longoni reste une allégation non corroborée dans un contexte opérationnel, juridique et concurrentiel. L'incident Vacaf/Cnaf reste hors admission faute de preuve publique d'un périmètre réunionnais ou mahorais touché. La recherche publique et indexée ne démontre pas une absence générale d'incidents.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -300,19 +300,21 @@
       "territoire": "La Réunion",
       "localisation": "Le Tampon",
       "secteur": "Administration / Collectivité",
-      "type_menace": "Autre cyber",
-      "acteur": "Inconnu",
-      "statut": "Cyberattaque confirmée ; nature technique et éventuelle fuite non établies",
+      "type_menace": "Ransomware",
+      "acteur": "Qilin (revendication du 15 octobre 2026, attribution non confirmée)",
+      "statut": "Cyberattaque confirmée par la collectivité ; revendication ransomware Qilin non corroborée ; fuite non confirmée",
       "score_cyberattaque": 100,
-      "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Une éventuelle fuite de données a été évoquée comme hypothèse, sans confirmation publique.",
+      "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Aucun échantillon, volume de données, demande de rançon ou exfiltration n'est confirmé publiquement.",
       "sources": [
         "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
         "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/",
         "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm",
-        "https://www.linfo.re/la-reunion/societe/la-mairie-du-tampon-victime-d-une-cyberattaque-il-pourrait-y-avoir-une-fuite-de-donnees-c-est-une-hypothese"
+        "https://www.linfo.re/la-reunion/societe/la-mairie-du-tampon-victime-d-une-cyberattaque-il-pourrait-y-avoir-une-fuite-de-donnees-c-est-une-hypothese",
+        "https://cyberthreatintelligence.net/ransomware-victim/commune-du-tampon-qilin-2026",
+        "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920"
       ],
-      "synthese": "La mairie du Tampon a été visée par une cyberattaque annoncée le 9 septembre 2026. Les services municipaux fonctionnent en mode dégradé et des coupures d'Internet et de téléphonie ont été décidées par sécurité. La nature exacte de l'attaque, son ampleur et l'existence éventuelle d'une compromission de données restent inconnues.",
-      "evolution": "inchange"
+      "synthese": "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a revendiqué la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. Cette revendication permet de qualifier la menace comme ransomware, mais l'attribution, le vecteur, la demande de rançon et une éventuelle exfiltration restent non confirmés par la collectivité ou une autorité.",
+      "evolution": "enrichi"
     },
     {
       "date": "2026-09-14",
