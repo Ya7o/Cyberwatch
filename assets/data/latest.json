@@ -2,6 +2,188 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E5498DAA0754",
+  "location": "France métropolitaine",
+  "org": "Réseau ZOU !",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/r-seau-zou-r-gion-sud-mvf99a1li52u9t2qu8d",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-seau-zou-r-gion-sud-mvf99a1li52u9t2qu8d"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Réseau ZOU ! (Région Sud)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5015A1A62B1F",
+  "location": "Inconnu",
+  "org": "Région Sud",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Région Sud",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-region-sud-zou/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-region-sud-zou/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Région Sud : 89 083 dossiers d’usagers de ZOU! mis en vente sur le darkweb",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EBC21FA3C0FE",
+  "location": "France métropolitaine",
+  "org": "I-CAD",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/i-cad-mvbcrt0yq9mamnwtom",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/i-cad-mvbcrt0yq9mamnwtom"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-18",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B59F0D3DF872",
+  "location": "France métropolitaine",
+  "org": "Blissim",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/blissim-mve0347d9gvblekdsnc",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/blissim-pres-de-2-millions-de-transactions-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/blissim-mve0347d9gvblekdsnc"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Blissim : près de 2 millions de transactions en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5E9D13873E4E",
+  "location": "France métropolitaine",
+  "org": "Axialys",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Axialys est un éditeur de logiciels SaaS et un opérateur télécoms français spécialisé dans les communications professionnelles.",
+   "evidence_url": "https://frenchbreaches.com/alertes/axialys-mvdrkf84jselnsp3zb",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/axialys-63-036-dossiers-de-fraude-telephonique-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/axialys-mvdrkf84jselnsp3zb"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Axialys : 63 036 dossiers de fraude téléphonique en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-17",
   "high_sensitivity_data_exposed": true,
   "id": "INC-ED0F6C3D5980",
@@ -9800,278 +9982,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-FD11035E7E5A",
-  "location": "France métropolitaine",
-  "org": "VitalWeb",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "VitalWeb est un outil proposé par  VitalAire , acteur de la santé à domicile, notamment dans l’accompagnement de patients atteints de maladies chroniques.",
-   "evidence_url": "https://www.cyberattaque.org/vitalweb-50-000-dossiers-patients-cyberattaque/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/vitalweb-50-000-dossiers-patients-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/vitalweb-mu8rm6d0f8s6d6vte3g"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un pirate revendique la fuite de 50 000 dossiers patients de VitalWeb contenant des numéros de sécurité sociale.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-B52A1013C987",
-  "location": "France métropolitaine",
-  "org": "FRANCARETRAD",
-  "organisation_links": [
-   "https://www.francare.com"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Healthcare",
-   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=vdssdcnhuysdz"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-6906B2607D08",
-  "location": "France métropolitaine",
-  "org": "HEOLIS",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Énergie / Utilities",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Energy & Utilities",
-   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=bgsedfhgsbdfs",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=bgsedfhgsbdfs"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-601E3DC05F51",
-  "location": "France métropolitaine",
-  "org": "Faktus",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Construction / BTP",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Numérique / Technologie"
-   ],
-   "evidence": "Faktus , société française spécialisée dans le financement de factures et l’affacturage notamment pour les entreprises du BTP, fait l’objet d’une fuite de données particulièrement massive.",
-   "evidence_url": "https://www.cyberattaque.org/faktus-cyberattaque-facture/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/faktus-cyberattaque-facture/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/faktus-mu8r9zho1hh7afgp9w8i"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Faktus affirme avoir vu 53,7 Go de données financières et documents sensibles publiés par le hacker DaOnlySpark.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-4D9B53C749DA",
-  "location": "France métropolitaine",
-  "org": "Whoof",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Services aux entreprises",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Whoof, plateforme française spécialisée dans l’adoption responsable de chiens auprès d’éleveurs professionnels, fait l’objet d’une importante fuite de données revendiquée par le hacker DaOnlySpark .",
-   "evidence_url": "https://www.cyberattaque.org/whoof-5-000-adoptants-et-eleveurs-exposes-apres-une-cyberattaque/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/whoof-5-000-adoptants-et-eleveurs-exposes-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/whoof-mu8dyyqbqoaiqbzpoqr"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Whoof : 5 000 adoptants et éleveurs exposés après une cyberattaque",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-3336EBD9F855",
-  "location": "France métropolitaine",
-  "org": "Diamonds Factory",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/diamonds-factory-mu8elc69ehzc7qh8dpn",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/diamonds-factory-24-000-commandes-clients-revendiques-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/diamonds-factory-mu8elc69ehzc7qh8dpn"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Diamonds Factory : 24 094 lignes de données clients revendiquées à la vente après une fuite de données.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-19",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-02BB571E8CCD",
-  "location": "France métropolitaine",
-  "org": "amb-pvc",
-  "organisation_links": [
-   "https://amb-pvc.com"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Industrie / Manufacture",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Manufacturing",
-   "evidence_url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "https://fyenuhkq3pfhnbpidj5jm2fl2lryxip4byhg6eozynrnlomu4szf2nyd.onion/index.html?indexId=daszxvbgfnczm"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
   }
  }
 ]

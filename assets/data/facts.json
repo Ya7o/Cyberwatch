@@ -1205,6 +1205,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-5015A1A62B1F": {
+  "display_summary": "Région Sud : 89 083 dossiers d’usagers de ZOU! mis en vente sur le darkweb",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-504E072622BB": {
   "display_summary": "La Région Hauts-de-France fait l'objet de revendications de fuite de données incluant 782 583 enregistrements et 48 Go soit 90 011 documents, selon un pirate.",
   "sensitive_data": {
@@ -1522,6 +1527,11 @@
   "summary_paragraphs": [
    "Le vendeur revendique les informations de 8 680 colombophiles licenciés et plus de 3,4 millions de résultats de courses, pour un ensemble d'environ 2,1 Go."
   ],
+  "version": 3
+ },
+ "INC-5E9D13873E4E": {
+  "display_summary": "Axialys : 63 036 dossiers de fraude téléphonique en fuite après une cyberattaque",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-5EDD2772312B": {
@@ -2954,11 +2964,11 @@
     "localisation": "Le Tampon",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Cyberattaque confirmée ; nature technique et éventuelle fuite non établies"
+    "statut": "Cyberattaque confirmée par la collectivité ; revendication ransomware Qilin non corroborée ; fuite non confirmée"
    }
   ],
   "summary_paragraphs": [
-   "La mairie du Tampon a été visée par une cyberattaque annoncée le 9 septembre 2026. Les services municipaux fonctionnent en mode dégradé et des coupures d'Internet et de téléphonie ont été décidées par sécurité. La nature exacte de l'attaque, son ampleur et l'existence éventuelle d'une compromission de données restent inconnues."
+   "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a revendiqué la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. Cette revendication permet de qualifier la menace comme ransomware, mais l'attribution, le vecteur, la demande de rançon et une éventuelle exfiltration restent non confirmés par la collectivité ou une autorité."
   ],
   "version": 3
  },
@@ -3222,6 +3232,24 @@
  },
  "INC-B52A1013C987": {
   "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-B59F0D3DF872": {
+  "display_summary": "Blissim : près de 2 millions de transactions en fuite après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -4137,6 +4165,11 @@
   ],
   "version": 3
  },
+ "INC-E5498DAA0754": {
+  "display_summary": "Réseau ZOU ! (Région Sud)",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-E57490F0E0D4": {
   "display_summary": "Mairie de Saillans : sa messagerie utilisée pour envoyer de fausses factures après une cyberattaque",
   "sensitive_data": {
@@ -4267,6 +4300,11 @@
    "Un utilisateur d’un forum affirme avoir récupéré et publié environ 9,1 millions d’enregistrements issus de la base publique Transparence Santé.",
    "FrenchBreaches indique que les données publiées correspondent à des informations déjà rendues publiques par le ministère chargé de la Santé."
   ],
+  "version": 3
+ },
+ "INC-EBC21FA3C0FE": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-ED0F6C3D5980": {

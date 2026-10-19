@@ -2,6 +2,188 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5015A1A62B1F",
+  "location": "Inconnu",
+  "org": "Région Sud",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Région Sud",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-region-sud-zou/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-region-sud-zou/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Région Sud : 89 083 dossiers d’usagers de ZOU! mis en vente sur le darkweb",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E5498DAA0754",
+  "location": "France métropolitaine",
+  "org": "Réseau ZOU !",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/r-seau-zou-r-gion-sud-mvf99a1li52u9t2qu8d",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/r-seau-zou-r-gion-sud-mvf99a1li52u9t2qu8d"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Réseau ZOU ! (Région Sud)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5E9D13873E4E",
+  "location": "France métropolitaine",
+  "org": "Axialys",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Axialys est un éditeur de logiciels SaaS et un opérateur télécoms français spécialisé dans les communications professionnelles.",
+   "evidence_url": "https://frenchbreaches.com/alertes/axialys-mvdrkf84jselnsp3zb",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/axialys-63-036-dossiers-de-fraude-telephonique-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/axialys-mvdrkf84jselnsp3zb"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Axialys : 63 036 dossiers de fraude téléphonique en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-18",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B59F0D3DF872",
+  "location": "France métropolitaine",
+  "org": "Blissim",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/blissim-mve0347d9gvblekdsnc",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/blissim-pres-de-2-millions-de-transactions-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/blissim-mve0347d9gvblekdsnc"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Blissim : près de 2 millions de transactions en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EBC21FA3C0FE",
+  "location": "France métropolitaine",
+  "org": "I-CAD",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/i-cad-mvbcrt0yq9mamnwtom",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/i-cad-mvbcrt0yq9mamnwtom"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-17",
   "high_sensitivity_data_exposed": false,
   "id": "INC-1E369089EA55",
@@ -12088,15 +12270,25 @@
     "label": "Linfo.re",
     "source": "VEILLE_LLM",
     "url": "https://www.linfo.re/la-reunion/societe/la-mairie-du-tampon-victime-d-une-cyberattaque-il-pourrait-y-avoir-une-fuite-de-donnees-c-est-une-hypothese"
+   },
+   {
+    "label": "cyberthreatintelligence.net",
+    "source": "VEILLE_LLM",
+    "url": "https://cyberthreatintelligence.net/ransomware-victim/commune-du-tampon-qilin-2026"
+   },
+   {
+    "label": "socradar.io",
+    "source": "VEILLE_LLM",
+    "url": "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920"
    }
   ],
   "sources": [
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Inconnu",
+  "threat": "Ransomware",
   "threat_status": {
-   "status": "unknown"
+   "status": "reported"
   }
  },
  {
