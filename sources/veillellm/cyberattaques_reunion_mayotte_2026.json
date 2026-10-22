@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-10-21T09:23:37+04:00",
-    "record_count": 15,
-    "accepted_count": 9,
+    "generated_at": "2026-10-22T08:55:44+04:00",
+    "record_count": 16,
+    "accepted_count": 10,
     "candidate_count": 6,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Veille vérifiée le 21 octobre 2026. Aucun nouvel incident territorial admissible, aucun enrichissement métier nouveau et aucune correction. Les enrichissements déjà publiés concernant Jean Joly et la revendication Qilin du 15 octobre contre la Ville du Tampon sont conservés. Aucun élément public nouveau ne confirme l’attribution Qilin, une demande de rançon ou une exfiltration. Les six CANDIDATE restent visibles avec la mention « À confirmer »."
+      "note": "Veille vérifiée le 22 octobre 2026. Un nouvel incident ACCEPTED est ajouté : piratage des installations frigorifiques du Leader Price de Saint-André dans la nuit du 11 au 12 octobre, avec perte de stocks. Aucun enrichissement métier ni correction des records existants. Une seconde enseigne réunionnaise aurait été touchée, mais son identité n’a pas été rendue publique ; le signal est documenté parmi les exclusions. Les six CANDIDATE restent visibles avec la mention « À confirmer »."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 21 octobre 2026 depuis le snapshot courant de main : conservation des 15 records, de leurs dates et de tous les enrichissements publiés. Les nouveaux incidents ou signaux des quatorze derniers jours ont été recherchés séparément des suivis d’incidents existants. Les recherches ont couvert les index de la presse locale réunionnaise et mahoraise (LINFO.re, Imaz Press, Zinfos974, Journal de Mayotte, Mayotte Hebdo, Info976 et L’Info Kwezi), les autorités territoriales indexées et les sources cyber. Les pages effectivement ouvertes et contrôlées portent sur DTPN 974 chez LINFO.re, le contexte et les incidents réunionnais chez Imaz Press, Jean Joly via le relais CyberVeille, MANU-PORT/Longoni dans le Journal de Mayotte et la revendication Qilin chez Cyber Threat Intelligence. Aucun changement métier distinct de ceux déjà présents dans le snapshot n’a été retenu.",
-      "limitations": "Les recherches datées des 20 et 21 octobre dans les index de presse locale n’ont retourné aucun résultat cyber pertinent. Certaines pages sociales et certaines pages de La Réunion La 1ère et Mayotte La 1ère sont bloquées ou difficilement accessibles ; aucun accès exhaustif n’est revendiqué. La revendication Qilin contre la commune du Tampon reste un signal de site de fuite agrégé : aucune confirmation publique supplémentaire de la collectivité ou d’une autorité, aucun échantillon, volume de données, demande de rançon ni preuve d’exfiltration vérifiables n’ont été trouvés ; la date du 15 octobre reste celle du signal de revendication et ne remplace pas la date d’incident du 9 septembre. Aucun suivi public nouveau n’a été trouvé pour DTPN 974, qui reste CANDIDATE et apparaît « À confirmer ». Les publications récentes sur MANU-PORT/Longoni décrivent un contentieux concurrentiel et portuaire, pas une cyberattaque. L’incident Vacaf/Cnaf reste hors admission faute de preuve publique d’un périmètre réunionnais ou mahorais touché. La recherche publique et indexée ne démontre pas une absence générale d’incidents.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 22 octobre 2026 depuis le snapshot courant de main : conservation des 15 records existants, de leurs dates et de tous les enrichissements publiés, puis ajout d’un record documenté. Les nouveaux incidents ou signaux des quatorze derniers jours ont été recherchés séparément des suivis d’incidents existants. Les recherches ont couvert les index de LINFO.re, Imaz Press, Zinfos974, Journal de Mayotte, Mayotte Hebdo, Info976 et L’Info Kwezi, les autorités territoriales indexées et les sources cyber. Les pages effectivement ouvertes et contrôlées comprennent les articles Zinfos974 et Imaz Press sur le Leader Price de Saint-André et la seconde enseigne non nommée, l’article Imaz Press sur la mise en maintenance préventive des sites de préfecture, les suivis locaux du Tampon, de Jean Joly et de DTPN 974, l’Autorité de la concurrence sur MANU-PORT/Longoni et Cyber Threat Intelligence sur la revendication Qilin.",
+      "limitations": "Le record Leader Price repose sur deux publications de presse locale ; la direction a communiqué l’impact à Zinfos974, mais aucune publication directe de la victime, aucun rapport forensique et aucune attribution publique n’ont été trouvés. Les estimations de préjudice diffèrent : 60 000 euros selon Zinfos974 et 66 000 euros selon Imaz Press ; les deux valeurs sont conservées comme estimations sourcées. La seconde enseigne réunionnaise signalée par Imaz Press n’est pas nommée et reste exclue faute d’identité vérifiable. La mise hors ligne du site de la préfecture de La Réunion le 21 octobre était une maintenance préventive demandée après la découverte d’une vulnérabilité critique, non une compromission documentée. La revendication Qilin contre Le Tampon reste sans preuve publique supplémentaire d’exfiltration ou d’attribution. DTPN 974 reste CANDIDATE, sans suivi public nouveau. Les publications MANU-PORT/Longoni relèvent d’un contentieux concurrentiel et portuaire, non d’une cyberattaque établie. Certaines pages sociales ou audiovisuelles restent difficilement accessibles ; la recherche publique indexée n’est pas exhaustive.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -43,6 +43,10 @@
         {
           "organisation": "CAF / Cnaf — Vacaf",
           "reason": "Incident de cybersécurité national confirmé le 10 octobre 2026, mais aucune source publique consultée ne démontre qu'un bénéficiaire ou système propre à La Réunion ou Mayotte figure dans le périmètre compromis."
+        },
+        {
+          "organisation": "Deuxième enseigne de grande consommation non nommée — La Réunion",
+          "reason": "Imaz Press rapporte le 21 octobre 2026 une seconde cyberattaque confirmée à Cyber Réunion, mais le nom de l’entreprise n’a pas été communiqué. Aucun record distinct ne peut être créé ni dédoublonné sans victime identifiée."
         }
       ],
       "unresolved_social_signals": [
@@ -356,6 +360,26 @@
         "https://www.piratage.fr/incidents/interieur-policiere-saint-denis-reunion-fichiers-septembre-2026"
       ],
       "synthese": "Signal de menace interne à Saint-Denis : une policière est soupçonnée d'avoir utilisé ses accès professionnels pour rechercher des personnes et communiquer des informations confidentielles contre rémunération. L'ouverture de l'enquête est confirmée par le parquet ; les faits matériels restent au stade de l'allégation, ce qui justifie le maintien en CANDIDATE.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-10-12",
+      "organisation": "Leader Price de Saint-André",
+      "admission": "ACCEPTED",
+      "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+      "territoire": "La Réunion",
+      "localisation": "Saint-André",
+      "secteur": "Commerce / Distribution",
+      "type_menace": "Autre cyber",
+      "acteur": "Inconnu",
+      "statut": "Cyberattaque documentée par la presse locale ; investigation et remise en service en cours au moment des publications ; attribution non établie",
+      "score_cyberattaque": 90,
+      "impact_connu": "Les températures des congélateurs ont dépassé 50 °C et les stocks surgelés ont été perdus. Zinfos974 rapporte un préjudice estimé à 60 000 euros ; Imaz Press rapporte 66 000 euros. Les rayons étaient encore vides lors de la publication.",
+      "sources": [
+        "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/",
+        "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates"
+      ],
+      "synthese": "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées. La presse locale rapporte une élévation des températures au-delà de 50 °C et la destruction des produits surgelés. Les sources rapprochent l’incident d’une campagne nationale contre des contrôleurs de réfrigération connectés, sans permettre d’établir qu’il s’agit des mêmes auteurs.",
       "evolution": "nouveau"
     }
   ]
