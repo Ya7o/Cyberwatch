@@ -849,6 +849,11 @@
   ],
   "version": 3
  },
+ "INC-34CEC7E073BC": {
+  "display_summary": "Graines de Culture(s) : une cyberattaque coupe le portail de 34 médiathèques en Pévèle Carembault",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-3540E86641E4": {
   "display_summary": "DECOClim a confirmé un accès non autorisé à certaines données de sa base clients, exposant noms, coordonnées et informations de commandes.",
   "summary_paragraphs": [
@@ -2146,6 +2151,22 @@
   ],
   "version": 3
  },
+ "INC-76D14B45CE67": {
+  "display_summary": "",
+  "regional_watch": [
+   {
+    "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+    "localisation": "Saint-André",
+    "score": 90,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
+    "statut": "Cyberattaque documentée par la presse locale ; investigation et remise en service en cours au moment des publications ; attribution non établie"
+   }
+  ],
+  "summary_paragraphs": [
+   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées. La presse locale rapporte une élévation des températures au-delà de 50 °C et la destruction des produits surgelés. Les sources rapprochent l’incident d’une campagne nationale contre des contrôleurs de réfrigération connectés, sans permettre d’établir qu’il s’agit des mêmes auteurs."
+  ],
+  "version": 3
+ },
  "INC-77FA7FC04A8A": {
   "display_summary": "Une faille d'un composant lié à Welyb/Portail AGIRIS CONNECT a exposé des données de clients de cabinets d'expertise comptable.",
   "sensitive_data": {
@@ -2519,6 +2540,11 @@
    "Pharmaland fait l’objet d’une fuite de données revendiquée le 25 septembre 2026.",
    "Le hacker Alduin affirme avoir diffusé près de 6 800 enregistrements contenant identités, e‑mails, et pour certaines pharmacies IBAN, SIRET et FINESS."
   ],
+  "version": 3
+ },
+ "INC-88C00BEE687A": {
+  "display_summary": "Institut national d'études démographiques (Ined)",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-88E7A1ED85A0": {
@@ -3151,6 +3177,11 @@
   ],
   "version": 3
  },
+ "INC-A8CDAF30D7A2": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-AA1E1BAAF08B": {
   "display_summary": "Cnam : près de 900 000 fiches et 16 000 profils d’enseignants en fuite",
   "summary_paragraphs": [
@@ -3203,6 +3234,28 @@
  },
  "INC-ADEEE05084B6": {
   "display_summary": "La Poste Mobile : son site visé par une cyberattaque DDoS prorusse",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -3570,6 +3623,11 @@
    "Le hacker Venus1337 revendique avoir récupéré environ 2,8 Go de données provenant de l’extranet du groupe Biocoop.",
    "Les éléments diffusés incluent bases SQL, chiffres magasins, assortiments de produits et documents de positionnement tarifaire."
   ],
+  "version": 3
+ },
+ "INC-BE6D801D42FD": {
+  "display_summary": "INED : une cyberattaque paralyse son système informatique",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-BEB27450B5FC": {
@@ -3947,6 +4005,19 @@
  },
  "INC-D5DE3AD49366": {
   "display_summary": "Portaleco : plus de 100 000 fiches avec noms et adresses en fuite",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -4884,6 +4955,14 @@
  "INC-FD563387C197": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-FF05712F8905": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tir.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tir.",
+   "Les données indiquées comprennent : Nom, prénom ; Catégorie d’âge ; Club ; Grade Cibles Couleurs ; Pratique handisport ; Dossier complet."
+  ],
   "version": 3
  },
  "INC-FFCBE53FECAC": {

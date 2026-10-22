@@ -2,6 +2,73 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FF05712F8905",
+  "location": "France métropolitaine",
+  "org": "Fédération Française de Tir",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fftir-1.png"
+   },
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fftir-2.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tir.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-34CEC7E073BC",
+  "location": "Inconnu",
+  "org": "Graines de Culture",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/graines-de-cultures-une-cyberattaque-coupe-le-portail-de-34-mediatheques-en-pevele-carembault/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Graines de Culture(s) : une cyberattaque coupe le portail de 34 médiathèques en Pévèle Carembault",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-21",
   "high_sensitivity_data_exposed": false,
   "id": "INC-4E33287FC026",
@@ -68,9 +135,9 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-21",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-ADEEE05084B6",
+  "id": "INC-BE6D801D42FD",
   "location": "Inconnu",
-  "org": "La Poste Mobile",
+  "org": "INED",
   "organisation_links": [],
   "personal_data_exposed": false,
   "sector": "Inconnu",
@@ -82,11 +149,48 @@
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/la-poste-mobile-son-site-vise-par-une-cyberattaque-ddos-prorusse/"
+    "url": "https://www.cyberattaque.org/cyberattaque-institut-national-detudes-demographiques/"
    }
   ],
   "sources": [
    "CYBERATTAQUE_ORG"
+  ],
+  "summary": "INED : une cyberattaque paralyse son système informatique",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-ADEEE05084B6",
+  "location": "France métropolitaine",
+  "org": "La Poste Mobile",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-poste-mobile-son-site-vise-par-une-cyberattaque-ddos-prorusse/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-poste-mobile-mvi3xiudmuk1ptig4ce"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "La Poste Mobile : son site visé par une cyberattaque DDoS prorusse",
   "threat": "DDoS",
@@ -123,6 +227,42 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A8CDAF30D7A2",
+  "location": "France métropolitaine",
+  "org": "MECA PRECIS",
+  "organisation_links": [
+   "https://mecaprecis.com"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Manufacturing",
+   "evidence_url": "http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/6b08b44b54e028d4fa14065150b08494",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://lamashtux5j74mcm7lwwgn5yrvuwtrpxjoyendif3v3hrztjesfoyayd.onion/post/6b08b44b54e028d4fa14065150b08494"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
   }
  },
  {
@@ -447,7 +587,7 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
+  "high_sensitivity_data_exposed": true,
   "id": "INC-D5DE3AD49366",
   "location": "France métropolitaine",
   "org": "PortaleCo",
@@ -480,7 +620,7 @@
   "summary": "Portaleco : plus de 100 000 fiches avec noms et adresses en fuite",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {
@@ -1547,6 +1687,37 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-88C00BEE687A",
+  "location": "France métropolitaine",
+  "org": "Institut national d'études démographiques",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/institut-national-d-tudes-d-mographiques-ined-mvikz1nok03if5tiw9n"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Institut national d'études démographiques (Ined)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
   }
  },
  {
@@ -2952,6 +3123,46 @@
   ],
   "summary": "",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-76D14B45CE67",
+  "location": "La Réunion",
+  "org": "Leader Price de Saint-André",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce / Distribution",
+   "evidence_url": "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "zinfos974.com",
+    "source": "VEILLE_LLM",
+    "url": "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/"
+   },
+   {
+    "label": "Imaz Press",
+    "source": "VEILLE_LLM",
+    "url": "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "",
+  "threat": "Autre cyber",
   "threat_status": {
    "status": "unknown"
   }
