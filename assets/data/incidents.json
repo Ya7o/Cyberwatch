@@ -2,6 +2,172 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B7C006F6CB62",
+  "location": "Inconnu",
+  "org": "Caisse des Dépôts",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-caisse-des-depots-des-comptes-peps-demployeurs-publics-compromis/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Caisse des Dépôts : des comptes PEP’s d’employeurs publics compromis",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C3A23F1C7187",
+  "location": "Inconnu",
+  "org": "Ircantec",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-ircantec-une-nouvelle-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Ircantec : les données de plus de 450 000 affiliés revendiquées après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6FDE34AF395B",
+  "location": "France métropolitaine",
+  "org": "Tailleur Auto",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/tailleur-auto.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D5F48B0C6F2B",
+  "location": "France métropolitaine",
+  "org": "AMSAM",
+  "organisation_links": [
+   "https://www.amsam.net"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/cc468ef2-0eee-4c8a-8753-26d68b8bae5f"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CA8AFA3C9AD6",
+  "location": "France métropolitaine",
+  "org": "Clin d'œil Opticiens",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/clin-d-il-opticiens-mvjqwafqwazubtzvvbd",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/clin-doeil-opticiens-les-numeros-de-securite-sociale-de-clients-exposes-dans-une-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clin-d-il-opticiens-mvjqwafqwazubtzvvbd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Clin d’œil Opticiens : les numéros de sécurité sociale de clients exposés dans une fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-22",
   "high_sensitivity_data_exposed": false,
   "id": "INC-FF05712F8905",
@@ -62,6 +228,130 @@
   ],
   "summary": "Graines de Culture(s) : une cyberattaque coupe le portail de 34 médiathèques en Pévèle Carembault",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CF293FAA403B",
+  "location": "France métropolitaine",
+  "org": "Icantec",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/icantec-retraites-mvk0hhi1k0g8fp7vhof",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/icantec-retraites-mvk0hhi1k0g8fp7vhof"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Icantec (retraites)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-508934937659",
+  "location": "France métropolitaine",
+  "org": "La Compagnie des Sens",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Commerce / Distribution | Santé",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/compagnie-sens.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-compagnie-des-sens-une-intrusion-compromet-les-comptes-de-sa-boutique-en-ligne/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-compagnie-des-sens-mvjln10z6tvrzovg8bp"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Compagnie des Sens : une intrusion compromet les comptes de sa boutique en ligne",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2E9A68445846",
+  "location": "France métropolitaine",
+  "org": "Printerpix",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/printerpix-mvjpwa9iz1zpm22i3k",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/printerpix.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/printerpix-les-mots-de-passe-clients-compromis-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/printerpix-mvjpwa9iz1zpm22i3k"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Printerpix : les mots de passe clients compromis après une cyberattaque",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -3129,7 +3419,7 @@
  },
  {
   "admission": "ACCEPTED",
-  "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-12",
   "high_sensitivity_data_exposed": false,
@@ -3156,6 +3446,11 @@
     "label": "Imaz Press",
     "source": "VEILLE_LLM",
     "url": "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates"
+   },
+   {
+    "label": "Linfo.re",
+    "source": "VEILLE_LLM",
+    "url": "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes"
    }
   ],
   "sources": [

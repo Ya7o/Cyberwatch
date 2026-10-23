@@ -2,6 +2,99 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C3A23F1C7187",
+  "location": "Inconnu",
+  "org": "Ircantec",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-ircantec-une-nouvelle-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Ircantec : les données de plus de 450 000 affiliés revendiquées après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B7C006F6CB62",
+  "location": "Inconnu",
+  "org": "Caisse des Dépôts",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-caisse-des-depots-des-comptes-peps-demployeurs-publics-compromis/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Caisse des Dépôts : des comptes PEP’s d’employeurs publics compromis",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6FDE34AF395B",
+  "location": "France métropolitaine",
+  "org": "Tailleur Auto",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/tailleur-auto.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-22",
   "high_sensitivity_data_exposed": false,
   "id": "INC-FF05712F8905",
@@ -40,6 +133,157 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-22",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-D5F48B0C6F2B",
+  "location": "France métropolitaine",
+  "org": "AMSAM",
+  "organisation_links": [
+   "https://www.amsam.net"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/cc468ef2-0eee-4c8a-8753-26d68b8bae5f"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CF293FAA403B",
+  "location": "France métropolitaine",
+  "org": "Icantec",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/icantec-retraites-mvk0hhi1k0g8fp7vhof",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/icantec-retraites-mvk0hhi1k0g8fp7vhof"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Icantec (retraites)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CA8AFA3C9AD6",
+  "location": "France métropolitaine",
+  "org": "Clin d'œil Opticiens",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/clin-d-il-opticiens-mvjqwafqwazubtzvvbd",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/clin-doeil-opticiens-les-numeros-de-securite-sociale-de-clients-exposes-dans-une-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clin-d-il-opticiens-mvjqwafqwazubtzvvbd"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Clin d’œil Opticiens : les numéros de sécurité sociale de clients exposés dans une fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-508934937659",
+  "location": "France métropolitaine",
+  "org": "La Compagnie des Sens",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Commerce / Distribution | Santé",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/compagnie-sens.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-compagnie-des-sens-une-intrusion-compromet-les-comptes-de-sa-boutique-en-ligne/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-compagnie-des-sens-mvjln10z6tvrzovg8bp"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Compagnie des Sens : une intrusion compromet les comptes de sa boutique en ligne",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-34CEC7E073BC",
   "location": "Inconnu",
   "org": "Graines de Culture",
@@ -62,6 +306,52 @@
   ],
   "summary": "Graines de Culture(s) : une cyberattaque coupe le portail de 34 médiathèques en Pévèle Carembault",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2E9A68445846",
+  "location": "France métropolitaine",
+  "org": "Printerpix",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/printerpix-mvjpwa9iz1zpm22i3k",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/printerpix.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/printerpix-les-mots-de-passe-clients-compromis-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/printerpix-mvjpwa9iz1zpm22i3k"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Printerpix : les mots de passe clients compromis après une cyberattaque",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -3129,7 +3419,7 @@
  },
  {
   "admission": "ACCEPTED",
-  "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-12",
   "high_sensitivity_data_exposed": false,
@@ -3156,6 +3446,11 @@
     "label": "Imaz Press",
     "source": "VEILLE_LLM",
     "url": "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates"
+   },
+   {
+    "label": "Linfo.re",
+    "source": "VEILLE_LLM",
+    "url": "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes"
    }
   ],
   "sources": [
@@ -10089,274 +10384,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-DFE22B730AB6",
-  "location": "France métropolitaine",
-  "org": "BackPower",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Industrie / Manufacture",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "BackPower, entreprise française spécialisée dans le reconditionnement et la fabrication de batteries au lithium, fait l’objet d’une cyberattaque revendiquée ce 23 septembre 2026 .",
-   "evidence_url": "https://www.cyberattaque.org/cyberatatque-backpower-47-millions-de-lignes-revendiquees-dans-une-fuite-massive/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberatatque-backpower-47-millions-de-lignes-revendiquees-dans-une-fuite-massive/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/backpower-mudibqhhe5pk8lk0ylr"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "BackPower : 47 millions de lignes revendiquées dans une fuite massive",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-C63850DBEE3B",
-  "location": "France métropolitaine",
-  "org": "Place des Salariés",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/place-des-salari-s-haxoneo-mudy0b27eljs842gfja",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-chez-place-des-salaries-des-donnees-familiales-et-administratives-compromises/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/place-des-salari-s-haxoneo-mudy0b27eljs842gfja"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Place des Salariés signale une violation de données le 16 septembre 2026 ayant permis la consultation et la copie de données personnelles.",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-C3E56A9BD7F1",
-  "location": "France métropolitaine",
-  "org": "MesMarches",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/mesmarches-mud8tygyg3fsz8lhaa",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/mesmarches-2-535-profils-dexposants-en-fuite-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/mesmarches-mud8tygyg3fsz8lhaa"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "MesMarches : 2 535 profils d'exposants revendiqués en fuite de données.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-BB2E3878A0EC",
-  "location": "France métropolitaine",
-  "org": "Activa Assurances",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Finance / Assurance",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Activa Assurances, groupe d'assurance africain présent dans plusieurs pays du continent, apparaît dans une publication diffusée sur un forum cybercriminel. [étiquette source écartée : Santé]",
-   "evidence_url": "https://frenchbreaches.com/alertes/activa-assurances-mue1g3lzqpswxa7ldb8",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/activa-assurances-mue1g3lzqpswxa7ldb8"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Activa Assurances apparaît dans une publication revendiquant 18 765 lignes de données et FrenchBreaches estime ~10 758 personnes identifiables après analyse.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-83DD9A00472C",
-  "location": "France métropolitaine",
-  "org": "Twizzit",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "evidence": "Association / Syndicat | Sport",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-twizzit-1-53-million-de-membres-de-clubs-et-associations-en-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/twizzit-mud9l0fmn55odchtxul"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Twizzit voit une base de 1 532 886 membres revendiquée à la vente par un hacker.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-1994FB59EEA0",
-  "location": "France métropolitaine",
-  "org": "Autobacs",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "**Autobacs est une enseigne de centres automobiles** proposant des produits et des services liés à l’entretien, à la réparation et à l’équipement des véhicules.",
-   "evidence_url": "https://frenchbreaches.com/alertes/autobacs-muda8o22m5n90gsgobl",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/autobacs-34-000-rendez-vous-atelier-exposes-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/autobacs-muda8o22m5n90gsgobl"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Autobacs France voit 34 017 enregistrements de rendez‑vous atelier revendiqués publiquement après une fuite de données.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-0E75E6FDF77D",
-  "location": "France métropolitaine",
-  "org": "Aokkef",
-  "organisation_links": [
-   "https://aokkef.fr"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://t33zoj4qwv455fog7qnb2azi5xcdxkixughmmduzbw2rtdgryqfbh6id.onion/company/bayalah/"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
   }
  }
 ]

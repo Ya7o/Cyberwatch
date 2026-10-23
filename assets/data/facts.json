@@ -739,6 +739,27 @@
   ],
   "version": 3
  },
+ "INC-2E9A68445846": {
+  "display_summary": "Printerpix : les mots de passe clients compromis après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Mot de passe"
+     ],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-2EA9D4F2C864": {
   "display_summary": "La Communauté de communes des Pays de L’Aigle a subi une intrusion touchant son serveur de messagerie professionnelle le 14-15 septembre 2026.",
   "sensitive_data": {
@@ -1298,6 +1319,25 @@
    "Un utilisateur nommé « ChimeraZ » a publié le 3 octobre 2026 des revendications visant des services numériques de la Région Hauts-de-France.",
    "L'auteur revendique 782 583 lignes (~708 000 personnes) et 48 Go correspondant à 90 011 fichiers, dont RIB, contrats d'apprentissage et pièces d'identité."
   ],
+  "version": 3
+ },
+ "INC-508934937659": {
+  "display_summary": "La Compagnie des Sens : une intrusion compromet les comptes de sa boutique en ligne",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-514833CDCCB3": {
@@ -2088,6 +2128,14 @@
   ],
   "version": 3
  },
+ "INC-6FDE34AF395B": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Numéro de téléphone."
+  ],
+  "version": 3
+ },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -2155,15 +2203,15 @@
   "display_summary": "",
   "regional_watch": [
    {
-    "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+    "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
     "localisation": "Saint-André",
-    "score": 90,
+    "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Cyberattaque documentée par la presse locale ; investigation et remise en service en cours au moment des publications ; attribution non établie"
+    "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; attribution et vecteur technique exact non établis"
    }
   ],
   "summary_paragraphs": [
-   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées. La presse locale rapporte une élévation des températures au-delà de 50 °C et la destruction des produits surgelés. Les sources rapprochent l’incident d’une campagne nationale contre des contrôleurs de réfrigération connectés, sans permettre d’établir qu’il s’agit des mêmes auteurs."
+   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Les publications antérieures estimaient la perte de marchandises entre 60 000 et 66 000 euros. L’auteur, le vecteur technique exact et le rattachement aux attaques de l’Hexagone restent non établis."
   ],
   "version": 3
  },
@@ -3467,6 +3515,11 @@
   ],
   "version": 3
  },
+ "INC-B7C006F6CB62": {
+  "display_summary": "Caisse des Dépôts : des comptes PEP’s d’employeurs publics compromis",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-B7C9655CDC32": {
   "display_summary": "CHICAS de Gap : plus de 3 300 fichiers revendiqués dans une cyberattaque",
   "sensitive_data": {
@@ -3675,6 +3728,11 @@
   ],
   "version": 3
  },
+ "INC-C3A23F1C7187": {
+  "display_summary": "Ircantec : les données de plus de 450 000 affiliés revendiquées après une cyberattaque",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-C3E56A9BD7F1": {
   "display_summary": "MesMarches : 2 535 profils d'exposants revendiqués en fuite de données.",
   "sensitive_data": {
@@ -3841,6 +3899,11 @@
   ],
   "version": 3
  },
+ "INC-CA8AFA3C9AD6": {
+  "display_summary": "Clin d’œil Opticiens : les numéros de sécurité sociale de clients exposés dans une fuite de données",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-CB3FABAACC36": {
   "display_summary": "Assurimo fait l’objet d’une revendication de fuite de données revendiquant 674 303 clients et 954 000 lignes.",
   "sensitive_data": {
@@ -3933,6 +3996,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-CF293FAA403B": {
+  "display_summary": "Icantec (retraites)",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-CFA199A7659B": {
   "display_summary": "Revendication d'une fuite de 6 768 lignes de dossiers de stagiaires de la Région Centre-Val de Loire contenant NIR et IBAN.",
   "sensitive_data": {
@@ -4018,6 +4086,11 @@
    ],
    "vulnerable_people": false
   },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-D5F48B0C6F2B": {
+  "display_summary": "",
   "summary_paragraphs": [],
   "version": 3
  },
