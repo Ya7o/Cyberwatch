@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-10-22T08:55:44+04:00",
+    "generated_at": "2026-10-23T09:28:20+04:00",
     "record_count": 16,
     "accepted_count": 10,
     "candidate_count": 6,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
-      "new_incidents": 1,
-      "enriched_incidents": 0,
+      "new_incidents": 0,
+      "enriched_incidents": 1,
       "corrected_incidents": 0,
-      "note": "Veille vérifiée le 22 octobre 2026. Un nouvel incident ACCEPTED est ajouté : piratage des installations frigorifiques du Leader Price de Saint-André dans la nuit du 11 au 12 octobre, avec perte de stocks. Aucun enrichissement métier ni correction des records existants. Une seconde enseigne réunionnaise aurait été touchée, mais son identité n’a pas été rendue publique ; le signal est documenté parmi les exclusions. Les six CANDIDATE restent visibles avec la mention « À confirmer »."
+      "note": "Veille vérifiée le 23 octobre 2026. Aucun nouvel incident territorial admissible et aucune correction. Le record Leader Price de Saint-André est enrichi : le propriétaire confirme publiquement l’attaque à distance, estime les pertes globales à 100 000 euros, signale une baisse de fréquentation de 20 % et indique qu’une plainte a été déposée. Les estimations antérieures de 60 000 et 66 000 euros sont conservées comme évaluations publiées distinctes. La seconde enseigne réunionnaise signalée reste exclue faute d’identité publique. Les six CANDIDATE restent visibles avec la mention « À confirmer »."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 22 octobre 2026 depuis le snapshot courant de main : conservation des 15 records existants, de leurs dates et de tous les enrichissements publiés, puis ajout d’un record documenté. Les nouveaux incidents ou signaux des quatorze derniers jours ont été recherchés séparément des suivis d’incidents existants. Les recherches ont couvert les index de LINFO.re, Imaz Press, Zinfos974, Journal de Mayotte, Mayotte Hebdo, Info976 et L’Info Kwezi, les autorités territoriales indexées et les sources cyber. Les pages effectivement ouvertes et contrôlées comprennent les articles Zinfos974 et Imaz Press sur le Leader Price de Saint-André et la seconde enseigne non nommée, l’article Imaz Press sur la mise en maintenance préventive des sites de préfecture, les suivis locaux du Tampon, de Jean Joly et de DTPN 974, l’Autorité de la concurrence sur MANU-PORT/Longoni et Cyber Threat Intelligence sur la revendication Qilin.",
-      "limitations": "Le record Leader Price repose sur deux publications de presse locale ; la direction a communiqué l’impact à Zinfos974, mais aucune publication directe de la victime, aucun rapport forensique et aucune attribution publique n’ont été trouvés. Les estimations de préjudice diffèrent : 60 000 euros selon Zinfos974 et 66 000 euros selon Imaz Press ; les deux valeurs sont conservées comme estimations sourcées. La seconde enseigne réunionnaise signalée par Imaz Press n’est pas nommée et reste exclue faute d’identité vérifiable. La mise hors ligne du site de la préfecture de La Réunion le 21 octobre était une maintenance préventive demandée après la découverte d’une vulnérabilité critique, non une compromission documentée. La revendication Qilin contre Le Tampon reste sans preuve publique supplémentaire d’exfiltration ou d’attribution. DTPN 974 reste CANDIDATE, sans suivi public nouveau. Les publications MANU-PORT/Longoni relèvent d’un contentieux concurrentiel et portuaire, non d’une cyberattaque établie. Certaines pages sociales ou audiovisuelles restent difficilement accessibles ; la recherche publique indexée n’est pas exhaustive.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 23 octobre 2026 depuis le snapshot courant de main : conservation des 16 records, de leurs dates et des enrichissements publiés. Les nouveaux incidents ou signaux des quatorze derniers jours ont été recherchés séparément des suivis d’incidents existants. Les recherches ont couvert les index de LINFO.re, Imaz Press, Zinfos974, Journal de Mayotte, Mayotte Hebdo, Info976 et L’Info Kwezi, les autorités territoriales indexées, le CERT-FR et les sources cyber. Les pages effectivement ouvertes et contrôlées comprennent LINFO.re, Imaz Press et Zinfos974 sur Leader Price et la seconde enseigne non nommée, ainsi que les suivis du Tampon chez Cyber Threat Intelligence, de Jean Joly chez Imaz Press et de DTPN 974 chez LINFO.re. L’entretien du propriétaire de Leader Price publié par LINFO.re constitue l’unique enrichissement métier retenu.",
+      "limitations": "Le propriétaire du Leader Price confirme l’attaque et une plainte, mais aucun rapport forensique, auteur ni vecteur technique exact n’est public. Les estimations ne portent pas nécessairement sur le même périmètre : 60 000 euros selon Zinfos974, 66 000 euros selon Imaz Press et 100 000 euros de pertes globales selon le propriétaire interrogé par LINFO.re ; elles sont donc conservées séparément sans en déduire une valeur unique. La seconde enseigne réunionnaise signalée par Imaz Press n’est toujours pas nommée et reste exclue faute d’identité vérifiable. La revendication Qilin contre Le Tampon reste sans preuve publique supplémentaire d’exfiltration ou d’attribution. DTPN 974 reste CANDIDATE sans suivi public nouveau. Certaines pages sociales ou audiovisuelles restent difficilement accessibles ; la recherche publique indexée n’est pas exhaustive.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -366,21 +366,22 @@
       "date": "2026-10-12",
       "organisation": "Leader Price de Saint-André",
       "admission": "ACCEPTED",
-      "admission_reason": "Zinfos974 et Imaz Press documentent un piratage des installations frigorifiques de ce magasin identifié de La Réunion. L’existence de l’action cyber et l’impact local sont rapportés ; l’auteur, le vecteur précis et le rattachement aux attaques de l’Hexagone ne sont pas établis.",
+      "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
       "territoire": "La Réunion",
       "localisation": "Saint-André",
       "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
       "acteur": "Inconnu",
-      "statut": "Cyberattaque documentée par la presse locale ; investigation et remise en service en cours au moment des publications ; attribution non établie",
-      "score_cyberattaque": 90,
-      "impact_connu": "Les températures des congélateurs ont dépassé 50 °C et les stocks surgelés ont été perdus. Zinfos974 rapporte un préjudice estimé à 60 000 euros ; Imaz Press rapporte 66 000 euros. Les rayons étaient encore vides lors de la publication.",
+      "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; attribution et vecteur technique exact non établis",
+      "score_cyberattaque": 100,
+      "impact_connu": "Les températures des congélateurs ont atteint 50 °C et les produits frais et surgelés ont été perdus. Zinfos974 rapporte 60 000 euros de préjudice et Imaz Press 66 000 euros ; le propriétaire estime auprès de LINFO.re les pertes globales à 100 000 euros, avec une fréquentation en baisse de 20 % la semaine suivante et un déficit d’image.",
       "sources": [
         "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/",
-        "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates"
+        "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates",
+        "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes"
       ],
-      "synthese": "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées. La presse locale rapporte une élévation des températures au-delà de 50 °C et la destruction des produits surgelés. Les sources rapprochent l’incident d’une campagne nationale contre des contrôleurs de réfrigération connectés, sans permettre d’établir qu’il s’agit des mêmes auteurs.",
-      "evolution": "nouveau"
+      "synthese": "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Les publications antérieures estimaient la perte de marchandises entre 60 000 et 66 000 euros. L’auteur, le vecteur technique exact et le rattachement aux attaques de l’Hexagone restent non établis.",
+      "evolution": "enrichi"
     }
   ]
 }
