@@ -27,6 +27,24 @@
   ],
   "version": 3
  },
+ "INC-0196C8D14808": {
+  "display_summary": "ADMR : 4,5 millions de lignes revendiquées avec des dossiers d’aide à domicile très sensibles",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-01E8D3339D48": {
   "display_summary": "Cyberattaque contre Nomad Education : 4,85 millions de comptes mis en vente sur le darkweb",
   "sensitive_data": {
@@ -297,6 +315,24 @@
    "FrenchBreaches a analysé 1 213 dossiers transmis par le pirate, correspondant à environ 1 200 demandeurs uniques et 94 fédérations ou entités.",
    "Le pirate « m0rphyn » revendique l’accès à environ 170 000 lignes de données, affirmation non indépendante confirmée."
   ],
+  "version": 3
+ },
+ "INC-16036600937F": {
+  "display_summary": "Plenitude On The Road : des données clients exposées après un piratage",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-1609FD7212B6": {
@@ -1066,8 +1102,60 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-3CD401B79A41": {
+  "display_summary": "FFVoile : plus de 2 millions de fiches de licenciés extraites après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-3CF4220529D0": {
   "display_summary": "Buddiz : 2 307 profils de sportifs en fuite après une cyberattaque",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-3D16F508C078": {
+  "display_summary": "Armurerie Meneux : les données de 916 clients en fuite après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1197,6 +1285,11 @@
    "L’attaquant a accédé à des données personnelles clients via une vulnérabilité exploitée sur le site procie.com.",
    "Les données exposées comprennent noms, adresses e-mail, téléphones, adresses postales et dates de création de comptes."
   ],
+  "version": 3
+ },
+ "INC-4AF85812E3E9": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-4C59C26E31C7": {
@@ -2611,6 +2704,40 @@
   ],
   "version": 3
  },
+ "INC-89D759429998": {
+  "display_summary": "Fédération Française de Voile (FF Voile)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-8A890C06B458": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -3538,6 +3665,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-B7F0248C35F0": {
+  "display_summary": "Parti Communiste Français (PCF)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-B9B7E2BD936C": {
   "display_summary": "G La Dalle : les clients d’une centaine de restaurants en fuite après une cyberattaque",
   "sensitive_data": {
@@ -3697,6 +3842,11 @@
    "Une base attribuée à Renault et contenant environ 12 000 entrées a été publiée sur un forum cybercriminel.",
    "L’échantillon inclut immatriculation, numéro VIN, kilométrage, modèle et d'autres champs, et semble provenir d'un fichier daté de mai 2025."
   ],
+  "version": 3
+ },
+ "INC-C2248ACAC277": {
+  "display_summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-C25097FEA710": {
@@ -4050,6 +4200,11 @@
  },
  "INC-D27A23CD8686": {
   "display_summary": "Centre National du Droit du Travail : 150 000 lignes revendiquées après une faille SQL",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-D2F7DFB530B1": {
+  "display_summary": "La France insoumise : 1,27 million de lignes issues de ses outils de campagne diffusées par un hacker",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -4755,6 +4910,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-EEC1299E6B91": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Point Vision.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Point Vision.",
+   "Les données indiquées comprennent : Nom, prénom ; Date de naissance ; Adresse postale ; Adresse email ; Numéro de téléphone ; Échanges relatifs aux rendez-vous."
+  ],
+  "version": 3
+ },
  "INC-EF6AF4F03502": {
   "display_summary": "Saint-Pierre-des-Corps : une cyberattaque perturbe ses systèmes",
   "summary_paragraphs": [],
@@ -4936,6 +5099,11 @@
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Scouts guides de France."
   ],
+  "version": 3
+ },
+ "INC-FA1476D826EC": {
+  "display_summary": "Alliance Police Nationale : les données de ses adhérents exposées après une cyberattaque",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-FAB241BB235B": {

@@ -2,6 +2,228 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-24",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-0196C8D14808",
+  "location": "France métropolitaine",
+  "org": "ADMR",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "L’ADMR est un réseau français de services à la personne et d’aide à domicile dont l’organisation repose sur de nombreuses associations et fédérations départementales.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-admr-pres-de-10-000-comptes-internes-exposes-dans-une-nouvelle-fuite/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-admr-45-millions-de-lignes-revendiquees-avec-des-dossiers-daide-a-domicile-tres-sensibles/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/admr-mvlsq0w75bxir1rjo56"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ADMR : 4,5 millions de lignes revendiquées avec des dossiers d’aide à domicile très sensibles",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FA1476D826EC",
+  "location": "France métropolitaine",
+  "org": "Alliance Police Nationale",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Alliance Police Nationale",
+   "evidence_url": "https://www.cyberattaque.org/alliance-police-nationale-les-donnees-de-ses-adherents-exposees-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/alliance-police-nationale-les-donnees-de-ses-adherents-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/alliance-police-nationale-mvm8kwbes2qjalfgawg"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Alliance Police Nationale : les données de ses adhérents exposées après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-24",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-3CD401B79A41",
+  "location": "Inconnu",
+  "org": "FFVoile",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ffvoile-plus-de-2-millions-de-fiches-de-licencies-extraites-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "FFVoile : plus de 2 millions de fiches de licenciés extraites après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D2F7DFB530B1",
+  "location": "France métropolitaine",
+  "org": "La France Insoumise",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-france-insoumise-mvm6atypwytjz0coskh",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-la-france-insoumise/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-france-insoumise-mvm6atypwytjz0coskh"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La France insoumise : 1,27 million de lignes issues de ses outils de campagne diffusées par un hacker",
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C2248ACAC277",
+  "location": "Inconnu",
+  "org": "Le Parti communiste français",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/le-parti-communiste-francais-victime-dune-cyberattaque-pres-de-190-000-personnes-exposees/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-3D16F508C078",
+  "location": "France métropolitaine",
+  "org": "Armurerie Meneux",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/armurerie-meneux-mvl9owabk9q4erhu38g",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/armurerie-meneux-les-donnees-de-916-clients-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/armurerie-meneux-mvl9owabk9q4erhu38g"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Armurerie Meneux : les données de 916 clients en fuite après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-23",
   "high_sensitivity_data_exposed": false,
   "id": "INC-B7C006F6CB62",
@@ -35,6 +257,80 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-23",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-4AF85812E3E9",
+  "location": "France métropolitaine",
+  "org": "ENGIE",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/engie-mvlo8lnlyi52chd0vmq",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/engie.png"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/engie-mvlo8lnlyi52chd0vmq"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-89D759429998",
+  "location": "France métropolitaine",
+  "org": "Fédération Française de Voile",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération Française de Voile",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-voile-ff-voile-mvl6ymmsn9guk06lpyo",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-voile-ff-voile-mvl6ymmsn9guk06lpyo"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fédération Française de Voile (FF Voile)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-C3A23F1C7187",
   "location": "Inconnu",
   "org": "Ircantec",
@@ -57,6 +353,71 @@
   ],
   "summary": "Ircantec : les données de plus de 450 000 affiliés revendiquées après une cyberattaque",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B7F0248C35F0",
+  "location": "France métropolitaine",
+  "org": "Parti Communiste Français",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/parti-communiste-fran-ais-pcf-mvl13xuxyt1dju2rbve",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/parti-communiste-fran-ais-pcf-mvl13xuxyt1dju2rbve"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Parti Communiste Français (PCF)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EEC1299E6B91",
+  "location": "France métropolitaine",
+  "org": "Point Vision",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/point-vision-2.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Point Vision.",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -871,6 +1232,49 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-16036600937F",
+  "location": "France métropolitaine",
+  "org": "Plenitude On The Road",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Plenitude On The Road est le service de mobilité électrique du groupe Plenitude.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-plenitude-on-the-road-des-donnees-clients-exposees-apres-un-piratage/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-plenitude-on-the-road-des-donnees-clients-exposees-apres-un-piratage/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/plenitude-on-the-road-mvkzvkaghaihpwmydjt"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Plenitude On The Road : des données clients exposées après un piratage",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
