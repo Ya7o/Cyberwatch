@@ -5,7 +5,7 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-10-25T17:10:19+04:00",
+    "generated_at": "2026-10-25T20:19:01+04:00",
     "record_count": 16,
     "accepted_count": 9,
     "candidate_count": 7,
@@ -13,8 +13,8 @@
     "watch_result": {
       "new_incidents": 0,
       "enriched_incidents": 0,
-      "corrected_incidents": 2,
-      "note": "Veille vérifiée le 25 octobre 2026. Aucun nouvel incident territorial admissible. STOR Solutions est reclassé CANDIDATE : la revendication KillNet n'est pas vérifiée et l'ancien lien de référence redirige vers l'accueil. La formulation du suivi Qilin du Tampon distingue désormais le site de fuite d'une infection par rançongiciel non démontrée. Les indisponibilités préventives des sites administratifs des 21 et 22 octobre ne sont pas admises comme cyberattaques locales. Les autres enrichissements historiques sont préservés."
+      "corrected_incidents": 3,
+      "note": "Veille vérifiée le 25 octobre 2026. Aucun nouvel incident territorial admissible. STOR Solutions est reclassé CANDIDATE : la revendication KillNet n'est pas vérifiée et l'ancien lien de référence redirige vers l'accueil. La formulation du suivi Qilin du Tampon distingue désormais le site de fuite d'une infection par rançongiciel non démontrée. Mamoudzou reste un incident de messagerie confirmé, sans mécanisme de compromission établi. Les indisponibilités préventives des sites administratifs des 21 et 22 octobre ne sont pas admises comme cyberattaques locales. Les autres enrichissements historiques sont préservés."
     },
     "coverage": {
       "method": "Veille cumulative Réunion/Mayotte vérifiée le 25 octobre 2026 depuis le snapshot courant de main : conservation des 16 dossiers et de leurs dates. Les nouveaux signaux des 21 au 25 octobre ont été recherchés dans la presse régionale et les communications publiques. Les dossiers historiques à une seule source et les cas récents ont été revérifiés. Les pages effectivement contrôlées comprennent les articles LINFO.re et Journal de Mayotte sur les indisponibilités administratives des 21 et 22 octobre, la communication municipale de Mamoudzou, les fiches FrenchBreaches sur le lycée Paul Moreau et EGEP Réunion, l'article BankInfoSecurity sur la revendication STOR Solutions et les suivis du Tampon et de Leader Price. Aucune cyberattaque locale nouvelle vérifiable n'a été retenue.",
@@ -153,17 +153,17 @@
       "territoire": "Mayotte",
       "localisation": "Mamoudzou",
       "secteur": "Administration / Collectivité",
-      "type_menace": "Compromission de compte / messagerie",
+      "type_menace": "Autre cyber",
       "acteur": "Inconnu",
-      "statut": "Confirmé officiellement",
+      "statut": "Incident de messagerie confirmé ; mécanisme de compromission non précisé",
       "score_cyberattaque": 100,
       "impact_connu": "Messagerie affectée, envoi de courriels non sollicités, mesures conservatoires et correctives ; aucune fuite de données identifiée à ce stade selon la Ville.",
       "sources": [
         "https://www.mamoudzou.yt/actualite/incident-de-cybersecurite-la-ville-de-mamoudzou-prend-toutes-les-mesures-pour-proteger-ses-systemes-et-ses-partenaires/",
         "https://lejournaldemayotte.yt/2026/06/11/incident-de-cybersecurite-la-ville-de-mamoudzou-assure-proteger-ses-systemes/"
       ],
-      "synthese": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
-      "evolution": "inchange"
+      "synthese": "La Ville de Mamoudzou confirme un incident affectant sa messagerie et l'envoi de courriels non sollicités. Elle indique n'avoir identifié aucune fuite de données ; elle ne précise pas si un compte ou un serveur a été compromis.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-06-13",

@@ -1,7 +1,7 @@
 """La fiche du Tampon conserve le contexte régional sans fusion forcée."""
 import json
 
-from cyberwatch import site, store
+from cyberwatch import config, editorial_corrections, site, store, threat_resolution
 
 
 def test_tampon_follow_up_is_documented_and_linked(tmp_path, monkeypatch):
@@ -46,3 +46,18 @@ def test_recent_regional_snapshot_cases_have_context(tmp_path, monkeypatch):
         if "VEILLE_LLM" in row["sources"]:
             qualification = detail["regional_watch"][0]
             assert qualification["statut"] and qualification["impact_connu"]
+
+
+def test_regional_editorial_qualification_prevents_unproven_threat_labels():
+    ids = {"ITM-80cc8ab052423602", "ITM-fdc47ad9dffdbe4d"}
+    items = [item for item in store.load_items() if item.Item_ID in ids]
+    facts = [fact for fact in store.load_source_facts() if fact["Item_ID"] in ids]
+    assert {item.Item_ID for item in items} == ids
+    assert {fact["Item_ID"] for fact in facts} == ids
+
+    editorial_corrections.apply_source_facts(facts)
+    indexed = threat_resolution.index_source_facts(facts)
+    for item in items:
+        decision = threat_resolution.resolve_component([item], indexed)
+        assert decision.value == config.THREAT_OTHER
+        assert decision.reason == "THREAT_EDITORIAL_CORRECTION"
