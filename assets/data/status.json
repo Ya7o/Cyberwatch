@@ -1,9 +1,9 @@
 {
  "analytics": {
-  "dated_incidents": 388,
+  "dated_incidents": 387,
   "focus": {
    "by_location": {
-    "La Réunion": 10,
+    "La Réunion": 9,
     "Mayotte": 1
    },
    "comparison": {
@@ -55,23 +55,23 @@
     ]
    },
    "days_since_last": 10,
-   "incidents": 11,
+   "incidents": 10,
    "last_date": "2026-10-15",
    "locations": [
     "La Réunion",
     "Mayotte"
    ],
-   "max_gap_days": 64,
-   "median_gap_days": 25,
+   "max_gap_days": 101,
+   "median_gap_days": 18,
    "multi_source": 0,
    "profile": {
     "by_source": {
      "RANSOMWARE_LIVE": 1,
-     "VEILLE_LLM": 10
+     "VEILLE_LLM": 9
     },
-    "dominant_source_pct": 90.9,
-    "incidents": 11,
-    "ransomware_pct": 18.2,
+    "dominant_source_pct": 90.0,
+    "incidents": 10,
+    "ransomware_pct": 20.0,
     "sectors": [
      {
       "count": 5,
@@ -97,7 +97,7 @@
       "label": "Fuite de données"
      },
      {
-      "count": 3,
+      "count": 2,
       "label": "Intrusion"
      },
      {
@@ -110,13 +110,13 @@
      }
     ]
    },
-   "share_pct": 2.8,
+   "share_pct": 2.6,
    "silence_is_unusual": false
   },
   "ocean": {
    "by_location": {
     "Comores": 0,
-    "La Réunion": 10,
+    "La Réunion": 9,
     "Madagascar": 0,
     "Maurice": 0,
     "Mayotte": 1,
@@ -171,7 +171,7 @@
     ]
    },
    "days_since_last": 10,
-   "incidents": 11,
+   "incidents": 10,
    "last_date": "2026-10-15",
    "locations": [
     "La Réunion",
@@ -181,17 +181,17 @@
     "Seychelles",
     "Comores"
    ],
-   "max_gap_days": 64,
-   "median_gap_days": 25,
+   "max_gap_days": 101,
+   "median_gap_days": 18,
    "multi_source": 0,
    "profile": {
     "by_source": {
      "RANSOMWARE_LIVE": 1,
-     "VEILLE_LLM": 10
+     "VEILLE_LLM": 9
     },
-    "dominant_source_pct": 90.9,
-    "incidents": 11,
-    "ransomware_pct": 18.2,
+    "dominant_source_pct": 90.0,
+    "incidents": 10,
+    "ransomware_pct": 20.0,
     "sectors": [
      {
       "count": 5,
@@ -217,7 +217,7 @@
       "label": "Fuite de données"
      },
      {
-      "count": 3,
+      "count": 2,
       "label": "Intrusion"
      },
      {
@@ -230,21 +230,21 @@
      }
     ]
    },
-   "share_pct": 2.8,
+   "share_pct": 2.6,
    "silence_is_unusual": false
   },
   "quality": {
-   "corroborated_pct": 46.9,
+   "corroborated_pct": 47.0,
    "first_date": "2025-05-26",
    "history_months": 18,
-   "incidents": 388,
+   "incidents": 387,
    "last_date": "2026-10-25",
-   "mono_source": 206,
-   "mono_source_pct": 53.1,
-   "organisations": 369,
+   "mono_source": 205,
+   "mono_source_pct": 53.0,
+   "organisations": 368,
    "sources": 5,
    "unknown_pct": {
-    "location": 16.2,
+    "location": 16.3,
     "sector": 19.6,
     "threat": 1.8
    },
@@ -375,16 +375,12 @@
     },
     "365": {
      "first_date": "2026-02-19",
-     "incidents": 387,
+     "incidents": 386,
      "last_date": "2026-10-25",
      "months": [
       {
        "count": 1,
        "label": "2026-02"
-      },
-      {
-       "count": 1,
-       "label": "2026-04"
       },
       {
        "count": 1,
@@ -407,7 +403,7 @@
        "label": "2026-10"
       }
      ],
-     "organisations": 368,
+     "organisations": 367,
      "sector": [
       {
        "count": 103,
@@ -422,7 +418,7 @@
        "label": "Administration / Collectivité"
       },
       {
-       "count": 30,
+       "count": 29,
        "label": "Numérique / Technologie"
       },
       {
@@ -484,7 +480,7 @@
        "label": "Fuite de données"
       },
       {
-       "count": 49,
+       "count": 48,
        "label": "Intrusion"
       },
       {
@@ -637,7 +633,7 @@
     },
     "all": {
      "first_date": "2025-05-26",
-     "incidents": 388,
+     "incidents": 387,
      "last_date": "2026-10-25",
      "months": [
       {
@@ -647,10 +643,6 @@
       {
        "count": 1,
        "label": "2026-02"
-      },
-      {
-       "count": 1,
-       "label": "2026-04"
       },
       {
        "count": 1,
@@ -673,7 +665,7 @@
        "label": "2026-10"
       }
      ],
-     "organisations": 369,
+     "organisations": 368,
      "sector": [
       {
        "count": 103,
@@ -688,7 +680,7 @@
        "label": "Administration / Collectivité"
       },
       {
-       "count": 30,
+       "count": 29,
        "label": "Numérique / Technologie"
       },
       {
@@ -750,7 +742,7 @@
        "label": "Fuite de données"
       },
       {
-       "count": 49,
+       "count": 48,
        "label": "Intrusion"
       },
       {
@@ -817,16 +809,12 @@
     },
     "365": {
      "first_date": "2026-02-19",
-     "incidents": 11,
+     "incidents": 10,
      "last_date": "2026-10-15",
      "months": [
       {
        "count": 1,
        "label": "2026-02"
-      },
-      {
-       "count": 1,
-       "label": "2026-04"
       },
       {
        "count": 1,
@@ -849,7 +837,7 @@
        "label": "2026-10"
       }
      ],
-     "organisations": 11,
+     "organisations": 10,
      "sector": [
       {
        "count": 5,
@@ -869,10 +857,6 @@
       },
       {
        "count": 1,
-       "label": "Numérique / Technologie"
-      },
-      {
-       "count": 1,
        "label": "Transport / Logistique"
       }
      ],
@@ -882,7 +866,7 @@
        "label": "Fuite de données"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "Intrusion"
       },
       {
@@ -943,16 +927,12 @@
     },
     "all": {
      "first_date": "2026-02-19",
-     "incidents": 11,
+     "incidents": 10,
      "last_date": "2026-10-15",
      "months": [
       {
        "count": 1,
        "label": "2026-02"
-      },
-      {
-       "count": 1,
-       "label": "2026-04"
       },
       {
        "count": 1,
@@ -975,7 +955,7 @@
        "label": "2026-10"
       }
      ],
-     "organisations": 11,
+     "organisations": 10,
      "sector": [
       {
        "count": 5,
@@ -995,10 +975,6 @@
       },
       {
        "count": 1,
-       "label": "Numérique / Technologie"
-      },
-      {
-       "count": 1,
        "label": "Transport / Logistique"
       }
      ],
@@ -1008,7 +984,7 @@
        "label": "Fuite de données"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "Intrusion"
       },
       {
@@ -1529,16 +1505,12 @@
     },
     "365": {
      "first_date": "2026-02-19",
-     "incidents": 11,
+     "incidents": 10,
      "last_date": "2026-10-15",
      "months": [
       {
        "count": 1,
        "label": "2026-02"
-      },
-      {
-       "count": 1,
-       "label": "2026-04"
       },
       {
        "count": 1,
@@ -1561,7 +1533,7 @@
        "label": "2026-10"
       }
      ],
-     "organisations": 11,
+     "organisations": 10,
      "sector": [
       {
        "count": 5,
@@ -1581,10 +1553,6 @@
       },
       {
        "count": 1,
-       "label": "Numérique / Technologie"
-      },
-      {
-       "count": 1,
        "label": "Transport / Logistique"
       }
      ],
@@ -1594,7 +1562,7 @@
        "label": "Fuite de données"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "Intrusion"
       },
       {
@@ -1655,16 +1623,12 @@
     },
     "all": {
      "first_date": "2026-02-19",
-     "incidents": 11,
+     "incidents": 10,
      "last_date": "2026-10-15",
      "months": [
       {
        "count": 1,
        "label": "2026-02"
-      },
-      {
-       "count": 1,
-       "label": "2026-04"
       },
       {
        "count": 1,
@@ -1687,7 +1651,7 @@
        "label": "2026-10"
       }
      ],
-     "organisations": 11,
+     "organisations": 10,
      "sector": [
       {
        "count": 5,
@@ -1707,10 +1671,6 @@
       },
       {
        "count": 1,
-       "label": "Numérique / Technologie"
-      },
-      {
-       "count": 1,
        "label": "Transport / Logistique"
       }
      ],
@@ -1720,7 +1680,7 @@
        "label": "Fuite de données"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "Intrusion"
       },
       {
@@ -1811,7 +1771,7 @@
      0,
      0,
      0,
-     1,
+     0,
      0,
      0,
      0,
@@ -1892,7 +1852,7 @@
     0,
     1,
     0,
-    1,
+    0,
     1,
     1,
     1,
@@ -1953,7 +1913,7 @@
      0,
      0,
      0,
-     1,
+     0,
      0,
      1,
      0,
@@ -2034,7 +1994,7 @@
     0,
     1,
     0,
-    1,
+    0,
     1,
     3,
     1,
