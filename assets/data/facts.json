@@ -95,7 +95,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "ChimeraZ",
     "admission_reason": "Fuite de données documentée et incident rapporté comme confirmé par la victime.",
+    "impact_connu": "Publication d'une base attribuée à Air Austral contenant des informations professionnelles de salariés. Les sources OSINT évoquent environ 1 000 comptes, mais l'authenticité complète, l'origine des données et l'ampleur restent non confirmées indépendamment.",
     "localisation": "Sainte-Marie",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -178,7 +180,9 @@
   "display_summary": "Incident informatique municipal confirmé, sans élément public permettant de qualifier la menace cyber.",
   "regional_watch": [
    {
+    "acteur": "Non identifié",
     "admission_reason": "Incident informatique documenté, mais origine cyber non démontrée.",
+    "impact_connu": "Certains services municipaux ne fonctionnaient plus, perturbant temporairement les démarches et l'accès aux informations.",
     "localisation": "Ouangani",
     "score": 25,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -675,7 +679,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Non identifié",
     "admission_reason": "Aucune preuve publique d'une origine cyber.",
+    "impact_connu": "Une administrée a appris que son dossier numérique de renouvellement de passeport et de carte d’identité, déposé plusieurs mois auparavant et présenté comme archivé, était introuvable ; elle a dû recommencer ses démarches.",
     "localisation": "Saint-Leu",
     "score": 15,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -881,7 +887,22 @@
  },
  "INC-33569EB21902": {
   "display_summary": "",
-  "summary_paragraphs": [],
+  "related_cases": [
+   {
+    "date": "2026-09-09",
+    "evidence_urls": [
+     "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
+     "https://cyberthreatintelligence.net/ransomware-victim/commune-du-tampon-qilin-2026",
+     "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920"
+    ],
+    "id": "INC-A6AC87645DB8",
+    "note": "Le 15 octobre 2026, Qilin a revendiqué la commune du Tampon sur son site de fuite. La veille régionale rapproche cette publication de la cyberattaque confirmée par la mairie le 9 septembre. L'attribution à Qilin et une éventuelle exfiltration de données ne sont pas confirmées par la collectivité ni par une autorité.",
+    "org": "Ville du Tampon"
+   }
+  ],
+  "summary_paragraphs": [
+   "Le 15 octobre 2026, Qilin a revendiqué la commune du Tampon sur son site de fuite. La veille régionale rapproche cette publication de la cyberattaque confirmée par la mairie le 9 septembre. L'attribution à Qilin et une éventuelle exfiltration de données ne sont pas confirmées par la collectivité ni par une autorité."
+  ],
   "version": 3
  },
  "INC-3357D5ED86D1": {
@@ -1072,7 +1093,9 @@
   "display_summary": "Fuite de documents et données revendiquée pour une entreprise réunionnaise, sans confirmation indépendante de l’origine de la compromission.",
   "regional_watch": [
    {
+    "acteur": "0xSec",
     "admission_reason": "Fuite de données revendiquée visant explicitement l'entreprise réunionnaise.",
+    "impact_connu": "EGEP Réunion est citée parmi huit entreprises dont des bases ou documents liés à Axonaut auraient été compromis ; le vecteur d'accès n'est pas établi.",
     "localisation": "Saint-Joseph",
     "score": 60,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -1870,7 +1893,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Non identifié",
     "admission_reason": "Un délégué syndical a allégué que l'ancien système informatique de manutention avait été volontairement mis hors service lors de la transition du port de Longoni. L'allégation n'est pas corroborée ; les sources disponibles documentent aussi un différend opérationnel et juridique ainsi que des difficultés d'adaptation des outils.",
+    "impact_connu": "Arrêt temporaire des opérations de manutention au port de Longoni dans un contexte de transition de gouvernance ; aucun incident cyber distinct n'est établi.",
     "localisation": "Port de Longoni",
     "score": 20,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -2287,7 +2312,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Élève de première de l'établissement (auteur présumé)",
     "admission_reason": "Le rectorat rapporte qu'un élève a été pris en flagrant délit de tentative de connexion au serveur ; l'analyse technique attribue les arrêts répétés à l'activation manuelle d'une commande de redémarrage via un compte administrateur.",
+    "impact_connu": "Arrêts intempestifs et répétés du serveur pédagogique pendant plusieurs jours, perturbant le partage de documents et l'accès à un serveur qui stocke aussi des dossiers personnels d'élèves. Aucune exfiltration de données n'est établie publiquement. Le 29 septembre 2026, des élèves se sont mobilisés devant le lycée pour demander des informations sur la sécurité de leurs données personnelles et sur les responsabilités.",
     "localisation": "Saint-Louis",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -2324,7 +2351,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Inconnu",
     "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
+    "impact_connu": "Les températures des congélateurs ont atteint 50 °C et les produits frais et surgelés ont été perdus. Zinfos974 rapporte 60 000 euros de préjudice et Imaz Press 66 000 euros ; le propriétaire estime auprès de LINFO.re les pertes globales à 100 000 euros, avec une fréquentation en baisse de 20 % la semaine suivante et un déficit d’image.",
     "localisation": "Saint-André",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -2419,7 +2448,9 @@
   "display_summary": "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF.",
   "regional_watch": [
    {
+    "acteur": "incransom",
     "admission_reason": "Fuite de données revendiquée et rattachée explicitement à une entité réunionnaise.",
+    "impact_connu": "Des données attribuées à l'EPF Réunion sont citées dans une fuite revendiquée visant VALGO ; volume global revendiqué de 279 Go.",
     "localisation": "Sainte-Marie",
     "score": 65,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -2435,7 +2466,9 @@
   "display_summary": "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique.",
   "regional_watch": [
    {
+    "acteur": "Non identifié",
     "admission_reason": "Impact informatique documenté sans preuve d'une action cyber.",
+    "impact_connu": "Édition du journal réduite de 32 à 16 pages à la suite d'un incident informatique.",
     "localisation": "La Réunion",
     "score": 30,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -2508,7 +2541,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Fonctionnaire de police mise en cause (faits allégués, identité non publiée)",
     "admission_reason": "Le parquet de Saint-Denis confirme une enquête pour détournement de finalité de fichier et corruption, mais les consultations et transmissions alléguées ne sont pas établies publiquement à ce stade.",
+    "impact_connu": "Une fonctionnaire est soupçonnée d'avoir consulté des informations sur des personnes et transmis ou vendu des documents et renseignements confidentiels issus de fichiers policiers. Les fichiers concernés, la période, le nombre de personnes et la réalité des transmissions ne sont pas établis publiquement.",
     "localisation": "Saint-Denis",
     "score": 50,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -2775,7 +2810,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "ZeroBytes (revendication)",
     "admission_reason": "Le vol de données a été confirmé par la direction de Bureau Vallée et l'enseigne dispose de magasins à La Réunion, mais aucune source publique consultée ne démontre que des données de clients réunionnais figurent dans le périmètre compromis.",
+    "impact_connu": "Une fuite de données clients de Bureau Vallée est documentée au niveau national ; l'exposition de clients réunionnais reste non établie publiquement.",
     "localisation": "La Réunion",
     "score": 45,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -3103,7 +3140,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "ZeroBytes (revendication, attribution non confirmée officiellement)",
     "admission_reason": "Intrusion et exfiltration confirmées par le ministère ; la veille gouvernementale Outre-mer rapporte explicitement des données liées à l’académie de La Réunion dans le périmètre rendu public.",
+    "impact_connu": "Le ministère confirme une intrusion frauduleuse dans la nuit du 25 juillet et une exfiltration de données personnelles de personnels ayant exercé en académie depuis 2001. Une veille gouvernementale Outre-mer du 18 août, relayant la presse locale, indique que des fichiers revendiqués concernent notamment l’académie de La Réunion. L’étendue exacte du périmètre réunionnais n’est pas établie publiquement.",
     "localisation": "Académie de La Réunion",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -3218,7 +3257,9 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Non identifié publiquement",
     "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
+    "impact_connu": "Captures présentées comme provenant de consoles réseau, cartographies d'architecture et supervision électrique ; accès et ampleur revendiqués non confirmés indépendamment.",
     "localisation": "Sainte-Clotilde / Saint-Denis",
     "score": 75,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -3322,11 +3363,26 @@
   "display_summary": "",
   "regional_watch": [
    {
+    "acteur": "Qilin (revendication du 15 octobre 2026, attribution non confirmée)",
     "admission_reason": "Cyberattaque confirmée publiquement par la collectivité et reprise par plusieurs sources locales.",
+    "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Aucun échantillon, volume de données, demande de rançon ou exfiltration n'est confirmé publiquement.",
     "localisation": "Le Tampon",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
     "statut": "Cyberattaque confirmée par la collectivité ; revendication ransomware Qilin non corroborée ; fuite non confirmée"
+   }
+  ],
+  "related_cases": [
+   {
+    "date": "2026-10-15",
+    "evidence_urls": [
+     "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
+     "https://cyberthreatintelligence.net/ransomware-victim/commune-du-tampon-qilin-2026",
+     "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920"
+    ],
+    "id": "INC-33569EB21902",
+    "note": "Le 15 octobre 2026, Qilin a revendiqué la commune du Tampon sur son site de fuite. La veille régionale rapproche cette publication de la cyberattaque confirmée par la mairie le 9 septembre. L'attribution à Qilin et une éventuelle exfiltration de données ne sont pas confirmées par la collectivité ni par une autorité.",
+    "org": "Commune Du Tampon"
    }
   ],
   "summary_paragraphs": [
@@ -4408,7 +4464,9 @@
   "display_summary": "Incident confirmé directement par la Ville de Mamoudzou et affectant sa messagerie électronique.",
   "regional_watch": [
    {
+    "acteur": "Inconnu",
     "admission_reason": "Incident de cybersécurité confirmé officiellement par la victime.",
+    "impact_connu": "Messagerie affectée, envoi de courriels non sollicités, mesures conservatoires et correctives ; aucune fuite de données identifiée à ce stade selon la Ville.",
     "localisation": "Mamoudzou",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
@@ -4458,7 +4516,9 @@
   "display_summary": "Exfiltration et diffusion revendiquées d’une base d’élèves ; échantillons publiés mais absence de confirmation officielle.",
   "regional_watch": [
    {
+    "acteur": "0xSec",
     "admission_reason": "Exfiltration revendiquée avec échantillons de données attribués à l'établissement.",
+    "impact_connu": "L'auteur revendique 716 enregistrements ; les échantillons montrent des données d'identité, de scolarité et des identifiants liés à Pix.",
     "localisation": "Bras-Panon",
     "score": 80,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",

@@ -138,6 +138,18 @@ def test_le_flux_conserve_la_synthese_deplacee_dans_le_detail():
     assert feed.count("Synthèse narrative publiée dans la fiche.") == 1
 
 
+def test_le_flux_regional_prefere_la_veille_corrigee_au_texte_historique():
+    rows = [_row("2026-09-09", "INC-TAMPON", location="La Réunion")]
+    rows[0]["sources"] = ["VEILLE_LLM"]
+    rows[0]["summary"] = "Ancienne qualification ransomware"
+    rows[0]["local"] = {"score": 100, "summary": "Cyberattaque confirmée ; rançongiciel non démontré."}
+
+    feed = site.focus_feed(rows, as_of="2026-10-25T17:00:00+04:00", site_url="https://example.test/")
+
+    assert "Cyberattaque confirmée ; rançongiciel non démontré." in feed
+    assert "Ancienne qualification ransomware" not in feed
+
+
 # ------------------------------------------------------ libellés partagés
 
 def test_les_libelles_de_sources_ont_une_seule_origine():

@@ -13,6 +13,13 @@ on:
         options:
           - MAJ
           - PURGE
+      api_mode:
+        description: "MAJ : STANDARD utilise l'API configurée ; NO_API collecte sans appel API."
+        type: choice
+        default: STANDARD
+        options:
+          - STANDARD
+          - NO_API
 
 permissions:
   actions: read
@@ -47,6 +54,7 @@ jobs:
         if: github.event_name != 'workflow_dispatch' || inputs.operation != 'PURGE'
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
+          CYBERWATCH_API_MODE: ${{ inputs.api_mode || 'STANDARD' }}
           # Plafond partagé par l'enrichissement et la déduplication.
           # Plafond partagé par l'enrichissement, la déduplication et le
           # mapper sectoriel. Relevé de 0.03 à 0.035 : le run du 11/09 a
@@ -63,7 +71,11 @@ jobs:
           # son budget de modèle vit dans DEFAULT_TASK_BUDGETS, pas ici.
           BLF_EXTERNAL_ACTIVITY_ENABLED: "1"
           EXTERNAL_ACTIVITY_SHADOW_MODE: "0"
-        run: python -m cyberwatch maj
+        run: |
+          if [ "$CYBERWATCH_API_MODE" = "NO_API" ]; then
+            unset OPENAI_API_KEY
+          fi
+          python -m cyberwatch maj
       - name: Purger la base
         if: github.event_name == 'workflow_dispatch' && inputs.operation == 'PURGE'
         run: python -m cyberwatch purge

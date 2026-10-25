@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-10-25T09:15:23+04:00",
+    "generated_at": "2026-10-25T17:10:19+04:00",
     "record_count": 16,
-    "accepted_count": 10,
-    "candidate_count": 6,
+    "accepted_count": 9,
+    "candidate_count": 7,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
       "new_incidents": 0,
       "enriched_incidents": 0,
-      "corrected_incidents": 0,
-      "note": "Veille vérifiée le 25 octobre 2026. Aucun nouvel incident territorial admissible, aucun enrichissement métier nouveau et aucune correction. Le record Leader Price de Saint-André conserve la confirmation du propriétaire, les trois estimations publiées, la baisse de fréquentation et le dépôt de plainte. La seconde enseigne réunionnaise reste exclue faute d’identité publique. Les enrichissements de Jean Joly et du Tampon sont préservés ; les six CANDIDATE restent visibles avec la mention « À confirmer »."
+      "corrected_incidents": 2,
+      "note": "Veille vérifiée le 25 octobre 2026. Aucun nouvel incident territorial admissible. STOR Solutions est reclassé CANDIDATE : la revendication KillNet n'est pas vérifiée et l'ancien lien de référence redirige vers l'accueil. La formulation du suivi Qilin du Tampon distingue désormais le site de fuite d'une infection par rançongiciel non démontrée. Les indisponibilités préventives des sites administratifs des 21 et 22 octobre ne sont pas admises comme cyberattaques locales. Les autres enrichissements historiques sont préservés."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 25 octobre 2026 depuis le snapshot courant de main : conservation des 16 records, de leurs dates et de tous les enrichissements publiés. Les nouveaux incidents ou signaux des quatorze derniers jours ont été recherchés séparément des suivis d’incidents existants. Les recherches ont couvert les index de LINFO.re, Imaz Press, Zinfos974, Le Quotidien, Journal de Mayotte, Mayotte Hebdo, Info976 et L’Info Kwezi, les services de l’État à La Réunion et à Mayotte, le CERT-FR et les sources cyber. Les pages effectivement ouvertes et contrôlées comprennent la rubrique cyberattaque de LINFO.re, l’article Zinfos974 sur Leader Price, la fiche spécialisée DTPN 974, la page cyberattaque.org du Tampon, la rubrique menaces et incidents du CERT-FR, l’accueil d’Imaz Press et le signal social du Quotidien, dont le contenu complet n’était pas accessible. Aucun changement métier distinct de ceux déjà présents dans le snapshot n’a été retenu.",
-      "limitations": "Aucun rapport forensique, auteur ni vecteur technique exact n’est public pour Leader Price ; les estimations de 60 000, 66 000 et 100 000 euros sont conservées séparément car elles ne portent pas nécessairement sur le même périmètre. La seconde enseigne réunionnaise signalée par Imaz Press n’est toujours pas nommée et reste exclue faute d’identité vérifiable. La revendication Qilin contre Le Tampon reste sans preuve publique supplémentaire d’exfiltration ou d’attribution. DTPN 974 reste CANDIDATE sans suivi officiel public nouveau. Le signal du Quotidien sur des magasins touchés n’est accessible que sous forme d’extrait social et ne permet pas d’identifier une victime supplémentaire. Certaines pages sociales ou audiovisuelles restent difficilement accessibles ; la recherche publique indexée n’est pas exhaustive.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 25 octobre 2026 depuis le snapshot courant de main : conservation des 16 dossiers et de leurs dates. Les nouveaux signaux des 21 au 25 octobre ont été recherchés dans la presse régionale et les communications publiques. Les dossiers historiques à une seule source et les cas récents ont été revérifiés. Les pages effectivement contrôlées comprennent les articles LINFO.re et Journal de Mayotte sur les indisponibilités administratives des 21 et 22 octobre, la communication municipale de Mamoudzou, les fiches FrenchBreaches sur le lycée Paul Moreau et EGEP Réunion, l'article BankInfoSecurity sur la revendication STOR Solutions et les suivis du Tampon et de Leader Price. Aucune cyberattaque locale nouvelle vérifiable n'a été retenue.",
+      "limitations": "Aucun rapport forensique, auteur ni vecteur technique exact n’est public pour Leader Price ; les estimations de 60 000, 66 000 et 100 000 euros sont conservées séparément car elles ne portent pas nécessairement sur le même périmètre. La seconde enseigne réunionnaise signalée par Imaz Press n’est toujours pas nommée et reste exclue faute d’identité vérifiable. La revendication Qilin contre Le Tampon ne prouve ni l'infection par rançongiciel, ni l'exfiltration, ni l'attribution de l'attaque de septembre. La revendication KillNet contre STOR Solutions demeure non vérifiée ; la publication initiale redirige vers l'accueil, mais son URL est conservée comme ancre historique et une référence consultable est ajoutée. DTPN 974 reste CANDIDATE sans suivi officiel public nouveau. Certaines pages sociales ou audiovisuelles restent difficilement accessibles ; la recherche publique indexée n’est pas exhaustive.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -47,6 +47,10 @@
         {
           "organisation": "Deuxième enseigne de grande consommation non nommée — La Réunion",
           "reason": "Imaz Press rapporte le 21 octobre 2026 une seconde cyberattaque confirmée à Cyber Réunion, mais le nom de l’entreprise n’a pas été communiqué. Aucun record distinct ne peut être créé ni dédoublonné sans victime identifiée."
+        },
+        {
+          "organisation": "Sites administratifs de La Réunion et Mayotte — 21-22 octobre 2026",
+          "reason": "Les sites de Météo-France océan Indien, de préfectures, de la CAF/CGSS/CSSM et des impôts ont été temporairement indisponibles dans le contexte d'une alerte nationale sur des vulnérabilités PHP. Les sources consultées décrivent des mesures préventives ou un lien local non établi ; aucune compromission locale n'est démontrée."
         }
       ],
       "unresolved_social_signals": [
@@ -103,21 +107,22 @@
     {
       "date": "2026-04-24",
       "organisation": "STOR Solutions",
-      "admission": "ACCEPTED",
-      "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
+      "admission": "CANDIDATE",
+      "admission_reason": "Revendication KillNet visant explicitement une organisation réunionnaise, qualifiée de non vérifiée par la veille spécialisée ; aucune confirmation publique de la victime.",
       "territoire": "La Réunion",
       "localisation": "Sainte-Clotilde / Saint-Denis",
       "secteur": "Numérique / Technologie",
       "type_menace": "Intrusion",
-      "acteur": "Non identifié publiquement",
-      "statut": "Revendication avec éléments techniques",
-      "score_cyberattaque": 75,
-      "impact_connu": "Captures présentées comme provenant de consoles réseau, cartographies d'architecture et supervision électrique ; accès et ampleur revendiqués non confirmés indépendamment.",
+      "acteur": "KillNet (revendication non vérifiée)",
+      "statut": "Revendication non vérifiée ; aucun impact établi",
+      "score_cyberattaque": 40,
+      "impact_connu": "KillNet a revendiqué en avril un contrôle direct de réseaux de technologie opérationnelle attribués à STOR Solutions. Vecert a qualifié cette revendication de non vérifiée ; aucun accès, arrêt de service ou impact chez STOR Solutions n'est confirmé publiquement.",
       "sources": [
-        "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/"
+        "https://www.cyberattaque.org/stor-solutions-datacenter-cyberattaque-canal-alpha/",
+        "https://www.bankinfosecurity.net/rush-to-build-data-centers-leaves-ot-security-behind-a-32538"
       ],
-      "synthese": "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime.",
-      "evolution": "inchange"
+      "synthese": "Revendication KillNet contre un datacenter de STOR Solutions à La Réunion. La veille spécialisée la qualifie de non vérifiée ; aucune preuve indépendante d'une intrusion ou d'un impact n'est publique.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-05-31",
@@ -304,9 +309,9 @@
       "territoire": "La Réunion",
       "localisation": "Le Tampon",
       "secteur": "Administration / Collectivité",
-      "type_menace": "Ransomware",
+      "type_menace": "Autre cyber",
       "acteur": "Qilin (revendication du 15 octobre 2026, attribution non confirmée)",
-      "statut": "Cyberattaque confirmée par la collectivité ; revendication ransomware Qilin non corroborée ; fuite non confirmée",
+      "statut": "Cyberattaque confirmée par la collectivité ; inscription par Qilin sur un site de fuite ; rançongiciel et exfiltration non démontrés",
       "score_cyberattaque": 100,
       "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Aucun échantillon, volume de données, demande de rançon ou exfiltration n'est confirmé publiquement.",
       "sources": [
@@ -317,8 +322,8 @@
         "https://cyberthreatintelligence.net/ransomware-victim/commune-du-tampon-qilin-2026",
         "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920"
       ],
-      "synthese": "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a revendiqué la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. Cette revendication permet de qualifier la menace comme ransomware, mais l'attribution, le vecteur, la demande de rançon et une éventuelle exfiltration restent non confirmés par la collectivité ou une autorité.",
-      "evolution": "enrichi"
+      "synthese": "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a inscrit la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. La publication ne démontre pas à elle seule une infection par rançongiciel ni un lien technique avec l'attaque de septembre. L'attribution, le vecteur, une éventuelle demande de rançon et l'exfiltration restent non confirmés par la collectivité ou une autorité.",
+      "evolution": "corrige"
     },
     {
       "date": "2026-09-14",

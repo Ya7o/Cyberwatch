@@ -661,10 +661,12 @@ def focus_feed(payload: list[dict], *, as_of: str, site_url: str) -> str:
             ", ".join(config.source_label(value) for value in (row.get("sources") or [])) or "non documentée"
         )
         summary = str(row.get("summary") or row.get("detail_summary") or "").strip()
-        if summary:
-            detail.append(summary)
         local = row.get("local") or {}
         local_summary = str(local.get("summary") or "").strip()
+        if (row.get("sources") or []) == ["VEILLE_LLM"] and local_summary:
+            summary = local_summary
+        if summary:
+            detail.append(summary)
         if local_summary and local_summary != summary:
             detail.append(f"Analyse locale (score {local.get('score')}/100) : {local_summary}")
         link = _public_link(row.get("urls"), site_url)

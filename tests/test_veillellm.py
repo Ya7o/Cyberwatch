@@ -66,6 +66,21 @@ def test_veille_llm_materializes_accepted_and_candidate_records():
     ]
 
 
+def test_regional_watch_keeps_unverified_claims_distinct_from_confirmed_attack():
+    with open(sources.by_id("VEILLE_LLM").params["path"], encoding="utf-8") as handle:
+        records = json.load(handle)["records"]
+    by_org = {row["organisation"]: row for row in records}
+    stor = by_org["STOR Solutions"]
+    tampon = by_org["Ville du Tampon"]
+
+    assert stor["admission"] == "CANDIDATE"
+    assert "non vérifiée" in stor["synthese"]
+    assert any("bankinfosecurity.net" in url for url in stor["sources"])
+    assert tampon["admission"] == "ACCEPTED"
+    assert tampon["type_menace"] == "Autre cyber"
+    assert "ne démontre pas" in tampon["synthese"]
+
+
 def test_veille_llm_admission_not_score_controls_candidate_flag(tmp_path, monkeypatch):
     spec = sources.by_id("VEILLE_LLM")
     with open(spec.params["path"], encoding="utf-8") as handle:
