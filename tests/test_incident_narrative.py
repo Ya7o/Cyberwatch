@@ -88,3 +88,28 @@ def test_generated_html_is_escaped():
     })
     assert "<script>" not in result["html"]
     assert "&lt;script&gt;" in result["html"]
+
+
+def test_regional_detail_shows_evidence_and_related_case_without_asserting_attribution():
+    note = "Qilin revendique la commune ; attribution non confirmée."
+    result = render({"id": "follow-up", "org": "Commune du Tampon", "location": "La Réunion"}, {
+        "version": 3, "summary_paragraphs": [note],
+        "regional_watch": [{
+            "statut": "Cyberattaque confirmée ; fuite non confirmée",
+            "impact_connu": "Services municipaux perturbés",
+            "acteur": "Qilin (revendication, attribution non confirmée)",
+            "localisation": "Le Tampon",
+        }],
+        "related_cases": [{
+            "id": "earlier", "org": "Ville du Tampon", "date": "2026-09-09",
+            "note": note,
+            "evidence_urls": ["https://example.org/source"],
+        }],
+    })
+    html = result["html"]
+    assert "Synthèse indisponible" not in html
+    assert "Impact documenté" in html and "Services municipaux perturbés" in html
+    assert "Acteur mentionné" in html and "attribution non confirmée" in html
+    assert 'data-open-id="earlier"' in html
+    assert "https://example.org/source" in html
+    assert html.count(note) == 1

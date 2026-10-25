@@ -503,8 +503,20 @@
     const candidate = incident.admission === "CANDIDATE";
     return `<section class="regional-qualification"><h3>Qualification de la veille régionale</h3>${qualifications.map((qualification) => {
       const score = Number.isInteger(qualification.score) && qualification.score >= 0 && qualification.score <= 100 ? `<p><strong>Score de confiance cyber : ${qualification.score}/100</strong></p><p class="qualification-context">${esc(qualification.score_definition || "Indicateur de confiance dans l’origine cyber du signal. Le score seul ne décide pas de son admission.")}</p>` : "";
-      return `${score}${qualification.statut ? `<p><strong>${candidate ? "Incertitudes / état des preuves" : "État des preuves"}</strong> : ${esc(qualification.statut)}</p>` : ""}${qualification.admission_reason ? `<p><strong>${candidate ? "Éléments manquants / à confirmer" : "Motif de qualification"}</strong> : ${esc(qualification.admission_reason)}</p>` : ""}`;
+      return `${score}${qualification.localisation ? `<p><strong>Lieu documenté</strong> : ${esc(qualification.localisation)}</p>` : ""}${qualification.statut ? `<p><strong>${candidate ? "Incertitudes / état des preuves" : "État des preuves"}</strong> : ${esc(qualification.statut)}</p>` : ""}${qualification.impact_connu ? `<p><strong>Impact documenté</strong> : ${esc(qualification.impact_connu)}</p>` : ""}${qualification.acteur ? `<p><strong>Acteur mentionné</strong> : ${esc(qualification.acteur)}</p>` : ""}${qualification.admission_reason ? `<p><strong>${candidate ? "Éléments manquants / à confirmer" : "Motif de qualification"}</strong> : ${esc(qualification.admission_reason)}</p>` : ""}`;
     }).join("")}${candidate ? '<p class="qualification-context">Ce signal est exclu des statistiques des incidents retenus.</p>' : ""}</section>`;
+  }
+
+  function relatedCasesHtml(detail) {
+    const cases = Array.isArray(detail?.related_cases) ? detail.related_cases : [];
+    if (!cases.length) return "";
+    const paragraphs = Array.isArray(detail?.summary_paragraphs) ? detail.summary_paragraphs : [];
+    return `<section class="regional-related"><h3>Suivi du dossier</h3>${cases.map((related) => {
+      const evidence = unique((related.evidence_urls || []).map(safeUrl)).filter(Boolean);
+      const refs = evidence.length ? `<p class="qualification-context">Références du rapprochement : ${evidence.map((url) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(host(url))}</a>`).join(" · ")}</p>` : "";
+      const note = related.note && !paragraphs.includes(related.note) ? `<p>${esc(related.note)}</p>` : "";
+      return `${note}<button type="button" class="regional-related-link" data-open-id="${esc(related.id)}">Voir ${esc(related.org)} · ${esc(formatDate(related.date))}</button>${refs}`;
+    }).join("")}</section>`;
   }
 
   function sensitiveDataHtml(incident, detail) {
@@ -545,6 +557,7 @@
       const exposure = exposureLabel(incident);
       const paragraphs = incidentSummaryParagraphs(incident, detail);
       const qualificationHtml = regionalQualificationHtml(incident, detail);
+      const relatedHtml = relatedCasesHtml(detail);
       const candidateReason = qualificationHtml ? "" : esc(incident.admission_reason || "Publication en cours de vérification.");
       const candidate = incident.admission === "CANDIDATE" ? `<p class="candidate-note"><strong>À confirmer.</strong> ${candidateReason}</p>` : "";
       const websites = (incident.organisation_links || []).map(safeUrl).filter(Boolean);
@@ -553,6 +566,7 @@
         <div class="detail-summary">${paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}</div>
         ${sensitiveDataHtml(incident, detail)}
         ${qualificationHtml}
+        ${relatedHtml}
         <div class="detail-sources"><h3>Publications</h3><div class="incident-source-badges">${sourceBadges(incident)}</div></div>${websiteHtml}`;
     }
     $("#detail-dialog-content").scrollTop = 0;
