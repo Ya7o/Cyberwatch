@@ -3257,17 +3257,17 @@
   "display_summary": "",
   "regional_watch": [
    {
-    "acteur": "Non identifié publiquement",
-    "admission_reason": "Intrusion revendiquée avec éléments techniques visant explicitement une organisation réunionnaise.",
-    "impact_connu": "Captures présentées comme provenant de consoles réseau, cartographies d'architecture et supervision électrique ; accès et ampleur revendiqués non confirmés indépendamment.",
+    "acteur": "KillNet (revendication non vérifiée)",
+    "admission_reason": "Revendication KillNet visant explicitement une organisation réunionnaise, qualifiée de non vérifiée par la veille spécialisée ; aucune confirmation publique de la victime.",
+    "impact_connu": "KillNet a revendiqué en avril un contrôle direct de réseaux de technologie opérationnelle attribués à STOR Solutions. Vecert a qualifié cette revendication de non vérifiée ; aucun accès, arrêt de service ou impact chez STOR Solutions n'est confirmé publiquement.",
     "localisation": "Sainte-Clotilde / Saint-Denis",
-    "score": 75,
+    "score": 40,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Revendication avec éléments techniques"
+    "statut": "Revendication non vérifiée ; aucun impact établi"
    }
   ],
   "summary_paragraphs": [
-   "Intrusion revendiquée contre un acteur réunionnais du datacenter et de l’hébergement, avec éléments techniques publiés mais sans confirmation publique de la victime."
+   "Revendication KillNet contre un datacenter de STOR Solutions à La Réunion. La veille spécialisée la qualifie de non vérifiée ; aucune preuve indépendante d'une intrusion ou d'un impact n'est publique."
   ],
   "version": 3
  },
@@ -3369,7 +3369,7 @@
     "localisation": "Le Tampon",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Cyberattaque confirmée par la collectivité ; revendication ransomware Qilin non corroborée ; fuite non confirmée"
+    "statut": "Cyberattaque confirmée par la collectivité ; inscription par Qilin sur un site de fuite ; rançongiciel et exfiltration non démontrés"
    }
   ],
   "related_cases": [
@@ -3386,7 +3386,7 @@
    }
   ],
   "summary_paragraphs": [
-   "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a revendiqué la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. Cette revendication permet de qualifier la menace comme ransomware, mais l'attribution, le vecteur, la demande de rançon et une éventuelle exfiltration restent non confirmés par la collectivité ou une autorité."
+   "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a inscrit la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. La publication ne démontre pas à elle seule une infection par rançongiciel ni un lien technique avec l'attaque de septembre. L'attribution, le vecteur, une éventuelle demande de rançon et l'exfiltration restent non confirmés par la collectivité ou une autorité."
   ],
   "version": 3
  },
