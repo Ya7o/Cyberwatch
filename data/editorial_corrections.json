@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-10.1",
+  "version": "2026-10-25.1",
   "items": {
     "ITM-4b3c8a7f68dcc41c": {"audit": "AUDIT-2026-10-11", "reason": "Le record ransomware.live est désormais publié dans countryvictims/CH avec country=CH, description située à Morges, Suisse, et website=boullard.ch. Il ne doit pas être compté comme France métropolitaine.", "sources": ["https://api.ransomware.live/v2/countryvictims/CH"], "set": {"Location": "Inconnu"}},
     "ITM-78ac6a41043cc667": {"set": {"Location": "Inconnu"}, "reason": "IFAPME est explicitement décrit comme un organisme public belge de formation en Wallonie ; la Belgique est hors de la taxonomie géographique actuelle.", "evidence": "L’IFAPME (Institut wallon de Formation en Alternance et des indépendants et PME), organisme public belge chargé notamment de la formation des indépendants, entrepreneurs et apprentis en Wallonie", "evidence_url": "https://frenchbreaches.com/alertes/ifapme-mljdutarctws1xjua8o"},
@@ -731,6 +731,28 @@
           "value": "Fuite de données",
           "status": "claimed",
           "evidence": "Sophia revendique la publication de données attribuées à Vision2i."
+        }
+      }
+    },
+    "ITM-80cc8ab052423602": {
+      "audit": "AUDIT-2026-10-25-REGIONAL",
+      "reason": "La cyberattaque du 9 septembre est confirmée, mais la publication ultérieure sur le site de Qilin ne démontre ni exfiltration ni infection par rançongiciel.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Autre cyber",
+          "status": "confirmed",
+          "evidence": "La mairie confirme une cyberattaque et des services perturbés ; la nature technique et une fuite de données restent non établies."
+        }
+      }
+    },
+    "ITM-fdc47ad9dffdbe4d": {
+      "audit": "AUDIT-2026-10-25-REGIONAL",
+      "reason": "La Ville de Mamoudzou confirme un incident affectant sa messagerie, sans préciser si un compte ou un serveur a été compromis.",
+      "metadata_set": {
+        "threat_override": {
+          "value": "Autre cyber",
+          "status": "confirmed",
+          "evidence": "La Ville signale des courriels non sollicités et aucune fuite de données identifiée ; le mécanisme reste inconnu."
         }
       }
     }
