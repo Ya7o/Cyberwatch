@@ -1,6 +1,185 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-26",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-0369B007BDB8",
+  "location": "Inconnu",
+  "org": "Fédération suisse de hockey sur glace",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération suisse de hockey sur glace",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-hockey-sur-glace-sihf-mvovz4lyan9qc7wovbi",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-hockey-sur-glace-sihf-mvovz4lyan9qc7wovbi"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Fédération suisse de hockey sur glace fait l'objet d'une revendication de fuite massive de données mise en vente.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-13ABCF45198A",
+  "location": "France métropolitaine",
+  "org": "Garanka",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Énergie / Utilities",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Garanka est une entreprise française spécialisée dans le chauffage, la climatisation et la ventilation.",
+   "evidence_url": "https://www.cyberattaque.org/garanka-une-cyberattaque-contraint-lentreprise-a-isoler-tous-ses-systemes-informatiques/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/garanka-une-cyberattaque-contraint-lentreprise-a-isoler-tous-ses-systemes-informatiques/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/garanka-mvp5u5169z0jw96lm8e"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Garanka a isolé l'ensemble de ses systèmes informatiques et signale des perturbations de ses canaux de communication et de ses interventions.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-82D10D1D260F",
+  "location": "France métropolitaine",
+  "org": "IFOCOP",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/ifocop-mvp03q7e12101ut26mr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ifocop-mvp03q7e12101ut26mr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le centre de formation IFOCOP de Montigny-le-Bretonneux signale un piratage informatique ayant entraîné l'envoi de faux courriels réclamant notamment 850 €.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-26",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5615883899C8",
+  "location": "Inconnu",
+  "org": "Mairie de Touget",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Mairie de Touget",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-mairie-de-touget-un-hacker-anti-macron/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-mairie-de-touget-un-hacker-anti-macron/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le site de la mairie de Touget a été compromis et sa page d’accueil remplacée par un message politique signé « Hacked by GaSsPeR ».",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0A7579664EAF",
+  "location": "France métropolitaine",
+  "org": "Delatad",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/delatad-mvo6xajrex6fjllr89s",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/delatad-mvo6xajrex6fjllr89s"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-25",
   "high_sensitivity_data_exposed": false,
@@ -9,13 +188,16 @@
   "org": "FootballMinigames",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Sport",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/footballminigames-mvnivky1qjwaoqm62xh",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "FootballMinigames propose de nombreux jeux reposant sur de grandes quantités de données sportives : deviner un joueur à partir de sa carrière, comparer des statistiques, retrouver un footballeur grâce à son âge ou encore remplir des grilles en fonction des clubs et nationalités.",
+   "evidence_url": "https://www.cyberattaque.org/footballminigames-un-hacker-revendique-22-074-utilisateurs-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -37,6 +219,71 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7A443660ADFD",
+  "location": "Inconnu",
+  "org": "FSU",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fsu-des-hackers-accedent-a-un-serveur-et-a-des-comptes-internes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "FSU : des hackers accèdent à un serveur et à des comptes internes",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-606A74E0F7CF",
+  "location": "France métropolitaine",
+  "org": "Fédération syndicale unitaire",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération syndicale unitaire",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-syndicale-unitaire-fsu-mvo6q4sbdeahqvm9z7b",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-syndicale-unitaire-fsu-mvo6q4sbdeahqvm9z7b"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fédération syndicale unitaire (FSU)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
   }
  },
  {
@@ -64,8 +311,8 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Cyberattaque contre Orange : près de 30 000 fichiers internes dévoilent les secrets de son réseau",
-  "threat": "Intrusion",
+  "summary": "Près de 30 000 fichiers attribués à Orange, soit environ 6,5 Go de données, ont été diffusés par un hacker se présentant comme « 0xRune ».",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -190,7 +437,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "DEKRA : plus de 15 000 bénéficiaires de travaux énergétiques exposés dans une fuite",
+  "summary": "Une base attribuée à DEKRA Industrial contenant 16 171 lignes exposant plus de 15 000 bénéficiaires de contrôles CEE a été diffusée par le hacker Syrv4x.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
@@ -594,10 +841,13 @@
   "org": "Point Vision",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Point Vision est un réseau français de centres spécialisés dans l’ophtalmologie.",
+   "evidence_url": "https://www.cyberattaque.org/point-vision-une-cyberattaque-expose-des-numeros-de-securite-sociale-et-des-donnees-de-patients/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -915,39 +1165,6 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-21",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-4E33287FC026",
-  "location": "Inconnu",
-  "org": "BilletsNantes",
-  "organisation_links": [
-   "https://BilletsNantes.fr"
-  ],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/billetsnantes-161-supporters-exposes-apres-une-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "BilletsNantes : 161 supporters exposés après une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-21",
-  "high_sensitivity_data_exposed": false,
   "id": "INC-3CF4220529D0",
   "location": "Inconnu",
   "org": "Buddiz",
@@ -1114,37 +1331,6 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-21",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-E03D86EED03F",
-  "location": "France métropolitaine",
-  "org": "Solutions30",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "BONJOURLAFUITE",
-    "url": "https://www.cyberattaque.org/solutions30-103-millions-de-lignes-mises-en-vente-les-clients-de-grands-groupes-exposes/"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-21",
-  "high_sensitivity_data_exposed": false,
   "id": "INC-9D94800B90F1",
   "location": "Inconnu",
   "org": "Transporteur.com",
@@ -1216,7 +1402,9 @@
   "id": "INC-4F05D65DCC88",
   "location": "France métropolitaine",
   "org": "Billets Nantes",
-  "organisation_links": [],
+  "organisation_links": [
+   "https://BilletsNantes.fr"
+  ],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
@@ -1228,18 +1416,24 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/billetsnantes-161-supporters-exposes-apres-une-cyberattaque/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/billets-nantes-mvh6pydjtys8slkzvks"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "",
-  "threat": "Fuite de données",
+  "summary": "BilletsNantes : 161 supporters exposés après une cyberattaque",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -1600,13 +1794,16 @@
   "org": "Valeurs actuelles",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Culture / Médias / Loisirs",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/valeurs-actuelles-mvgxt8dpogb8av8bdzm",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Valeurs actuelles est un hebdomadaire français d’actualité et d’opinion édité par  Valmonde et Cie .",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-valeurs-actuelles/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -2771,10 +2968,13 @@
   "org": "OpenCode",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "OpenCode est un agent de développement open source permettant d’utiliser de nombreux modèles d’intelligence artificielle.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-opencode-pirate-les-cles-api-openai-anthropic-et-google-exposees/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -4066,7 +4266,7 @@
   "high_sensitivity_data_exposed": false,
   "id": "INC-E1DA055D023A",
   "location": "France métropolitaine",
-  "org": "Solutions 30",
+  "org": "Solutions30",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
@@ -4090,6 +4290,7 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
@@ -4301,10 +4502,13 @@
   "org": "VD2E",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Énergie / Utilities",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "VD2E intervient dans la gestion administrative de projets liés aux  énergies renouvelables et à la rénovation énergétique .",
+   "evidence_url": "https://www.cyberattaque.org/vd2e-86-000-fiches-clients-de-la-renovation-energetique-mises-en-vente-sur-le-darkweb/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -4332,13 +4536,13 @@
   "org": "Callibri",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
+   "confidence": 0.8,
+   "evidence": "Callibri est une entreprise française proposant des services de secrétariat téléphonique externalisé, de gestion des appels et de prise de rendez-vous. [étiquette source écartée : Technologie]",
    "evidence_url": "https://frenchbreaches.com/alertes/callibri-mv242sdqy4ee2qs8uum",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -5119,13 +5323,16 @@
   "org": "Wimoov",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Transport / Logistique",
+  "sector": "Association / Syndicat",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport",
-   "evidence_url": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Transport / Logistique"
+   ],
+   "evidence": "Wimoov  est une association spécialisée dans la mobilité inclusive.",
+   "evidence_url": "https://www.cyberattaque.org/wimoov-une-cyberttaque-touche-la-plateforme-win/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -5492,37 +5699,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-08",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-FCBE905E1444",
-  "location": "France métropolitaine",
-  "org": "FitnessBoutique",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/fitnessboutique.jpg"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant FitnessBoutique.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
   }
  },
  {
@@ -7478,6 +7654,11 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fitnessboutique.jpg"
+   },
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/fitnessboutique-cyberattaque/"
@@ -7489,13 +7670,14 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "FitnessBoutique : près de 2 millions de fiches clients en vente sur le darkweb",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {

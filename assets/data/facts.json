@@ -68,6 +68,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-0369B007BDB8": {
+  "display_summary": "La Fédération suisse de hockey sur glace fait l'objet d'une revendication de fuite massive de données mise en vente.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-06066B2EEF57": {
   "display_summary": "Grande Loge Traditionnelle de France (GLTF)",
   "summary_paragraphs": [],
@@ -143,6 +161,14 @@
   "summary_paragraphs": [
    "Une personne non autorisée a accédé à l'environnement informatique d'un prestataire et a pu consulter ou télécharger certaines données de patients.",
    "Les données potentiellement exposées incluent nom, prénom, date de naissance, coordonnées et numéro de sécurité sociale."
+  ],
+  "version": 3
+ },
+ "INC-0A7579664EAF": {
+  "display_summary": "",
+  "summary_paragraphs": [
+   "Un individu pseudonymé « suicid » revendique avoir compromis l'interface d'administration et extrait des demandes clients.",
+   "FrenchBreaches a examiné un fichier CSV contenant 90 fiches comprenant e‑mails, numéros et contenus de demandes."
   ],
   "version": 3
  },
@@ -304,6 +330,14 @@
  "INC-135E28CAB136": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-13ABCF45198A": {
+  "display_summary": "Garanka a isolé l'ensemble de ses systèmes informatiques et signale des perturbations de ses canaux de communication et de ses interventions.",
+  "summary_paragraphs": [
+   "Garanka confirme avoir été la cible d'une cyberattaque et a isolé l'ensemble de ses systèmes informatiques.",
+   "La mesure préventive perturbe les communications et entraîne le report possible d'interventions chez ses clients."
+  ],
   "version": 3
  },
  "INC-148B4A8FB9BA": {
@@ -1202,7 +1236,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Opek0xx affirme avoir extrait 22 074 enregistrements de FootballMinigames.com.",
+   "L'échantillon publié contient une fiche de footballeur professionnel et non d'utilisateur inscrit sur le site."
+  ],
   "version": 3
  },
  "INC-40F47F722BA0": {
@@ -1390,18 +1427,13 @@
   "summary_paragraphs": [],
   "version": 3
  },
- "INC-4E33287FC026": {
-  "display_summary": "BilletsNantes : 161 supporters exposés après une cyberattaque",
-  "summary_paragraphs": [],
-  "version": 3
- },
  "INC-4E51D15B6834": {
   "display_summary": "OVHcloud : un hacker piège plusieurs versions de son CLI officiel",
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-4F05D65DCC88": {
-  "display_summary": "",
+  "display_summary": "BilletsNantes : 161 supporters exposés après une cyberattaque",
   "sensitive_data": {
    "types": [
     {
@@ -1546,6 +1578,14 @@
   "display_summary": "FitnessBoutique : près de 2 millions de fiches clients en vente sur le darkweb",
   "summary_paragraphs": [
    "Un utilisateur nommé « Syrv4x » a publié le 2 octobre 2026 une base présentée comme provenant de FitnessBoutique et proposée à la vente."
+  ],
+  "version": 3
+ },
+ "INC-5615883899C8": {
+  "display_summary": "Le site de la mairie de Touget a été compromis et sa page d’accueil remplacée par un message politique signé « Hacked by GaSsPeR ».",
+  "summary_paragraphs": [
+   "Le site internet de la mairie de Touget a été compromis et sa page d’accueil remplacée par un message politique visant Emmanuel Macron.",
+   "La page porte également la signature « Hacked by GaSsPeR » et la capture consultée montre un defacement signé par un acteur utilisant le pseudonyme « GaSsPeR »."
   ],
   "version": 3
  },
@@ -1860,6 +1900,26 @@
   },
   "summary_paragraphs": [
    "Le hacker DaOnlySpark affirme avoir compromis l’entreprise le 10 septembre 2026 et publie désormais 53,7 Go de données en téléchargement."
+  ],
+  "version": 3
+ },
+ "INC-606A74E0F7CF": {
+  "display_summary": "Fédération syndicale unitaire (FSU)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "LunarisSec affirme avoir découvert une LFI, une XSS persistante et une injection SQL sur des plateformes liées à la FSU."
   ],
   "version": 3
  },
@@ -2480,6 +2540,26 @@
   ],
   "version": 3
  },
+ "INC-7A443660ADFD": {
+  "display_summary": "FSU : des hackers accèdent à un serveur et à des comptes internes",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des vulnérabilités permettraient de lire des fichiers sur un serveur et d'accéder à une base contenant des comptes utilisateurs."
+  ],
+  "version": 3
+ },
  "INC-7AAA2E982784": {
   "display_summary": "Carrefour : des données clients exposées après la cyberattaque de son prestataire",
   "summary_paragraphs": [],
@@ -2612,6 +2692,14 @@
   "summary_paragraphs": [
    "Le 4 octobre 2026, un utilisateur nommé « ChimeraZ » a annoncé la mise en vente de bases attribuées aux sites Taekwondo.be et Coachbelgium.be.",
    "Le pirate revendique 599 803 enregistrements, 53 580 personnes et la présence de 47 648 certificats médicaux, sans confirmation indépendante."
+  ],
+  "version": 3
+ },
+ "INC-82D10D1D260F": {
+  "display_summary": "Le centre de formation IFOCOP de Montigny-le-Bretonneux signale un piratage informatique ayant entraîné l'envoi de faux courriels réclamant notamment 850 €.",
+  "summary_paragraphs": [
+   "L'IFOCOP confirme un piratage informatique et l'envoi de messages frauduleux aux collaborateurs et apprenants.",
+   "Des courriels frauduleux réclament notamment 850 euros de frais de scolarité et invitent à cliquer sur des liens potentiellement malveillants."
   ],
   "version": 3
  },
@@ -3002,8 +3090,11 @@
   "version": 3
  },
  "INC-8FFC0C049830": {
-  "display_summary": "Cyberattaque contre Orange : près de 30 000 fichiers internes dévoilent les secrets de son réseau",
-  "summary_paragraphs": [],
+  "display_summary": "Près de 30 000 fichiers attribués à Orange, soit environ 6,5 Go de données, ont été diffusés par un hacker se présentant comme « 0xRune ».",
+  "summary_paragraphs": [
+   "Près de 30 000 fichiers attribués à Orange, soit 29 516 fichiers et 6,5 Go de données, ont été diffusés et analysés par Cyberattaque.org.",
+   "La fuite contient notamment 20 706 tickets Jira, des pièces jointes techniques et des documents sur projets, infrastructures et déploiements."
+  ],
   "version": 3
  },
  "INC-905219E08A66": {
@@ -4531,7 +4622,7 @@
   "version": 3
  },
  "INC-DF4C35B8AD85": {
-  "display_summary": "DEKRA : plus de 15 000 bénéficiaires de travaux énergétiques exposés dans une fuite",
+  "display_summary": "Une base attribuée à DEKRA Industrial contenant 16 171 lignes exposant plus de 15 000 bénéficiaires de contrôles CEE a été diffusée par le hacker Syrv4x.",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -4613,11 +4704,6 @@
    "Le groupe UWAYS Qarani revendique avoir infiltré l'environnement d'Altagem et extrait des données clients et utilisateurs.",
    "Les captures montrent l'accès à 3 284 clients, 36 comptes administrateurs et des milliers d'éléments opérationnels."
   ],
-  "version": 3
- },
- "INC-E03D86EED03F": {
-  "display_summary": "",
-  "summary_paragraphs": [],
   "version": 3
  },
  "INC-E0EEEF2A5AA2": {
@@ -5240,14 +5326,6 @@
   "summary_paragraphs": [
    "Un pirate nommé « RedStone » affirme avoir récupéré une base contenant près de 1,43 million d’enregistrements d’adhérents de la FFRandonnée.",
    "Le pirate propose à la vente environ 317 Mo de fichiers CSV comprenant e-mails, téléphones, adresses et données présentées comme médicales."
-  ],
-  "version": 3
- },
- "INC-FCBE905E1444": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant FitnessBoutique.",
-  "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant FitnessBoutique.",
-   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Numéro de téléphone ; Date de naissance ; Status de fidélité."
   ],
   "version": 3
  },
