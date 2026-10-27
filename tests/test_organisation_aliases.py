@@ -37,6 +37,7 @@ from cyberwatch.normalize import load_organisation_aliases, organisation_acronym
     ("Wesh bien", "WeshBien"),
     ("L.Commerce", "Allo E.Leclerc"),
     ("Eusko", "Euskal Moneta"),
+    ("FSU", "Fédération syndicale unitaire"),
 ])
 def test_versioned_aliases_are_exact(left, right):
     assert organisation_key(left) == organisation_key(right)

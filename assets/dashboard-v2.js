@@ -180,9 +180,10 @@
     const age = freshness(state.status?.run?.as_of);
     const stamp = formatDateTime(state.status?.run?.as_of);
     const partial = sources.some((source) => source.status !== "OK");
-    const freshnessLabel = age.status === "stale" ? `Données périmées · ${stamp}` : age.status === "warning" ? `Mise à jour en retard · ${stamp}` : age.status === "fresh" ? `${partial ? "Couverture partielle" : "À jour"} · ${stamp}` : "Date indisponible";
+    const qualificationPartial = state.status?.qualification?.state === "PARTIAL";
+    const freshnessLabel = age.status === "stale" ? `Données périmées · ${stamp}` : age.status === "warning" ? `Mise à jour en retard · ${stamp}` : age.status === "fresh" ? `${partial ? "Couverture partielle" : qualificationPartial ? "Qualification incomplète" : "À jour"} · ${stamp}` : "Date indisponible";
     $("#run-pill-text").textContent = freshnessLabel;
-    $("#run-pill").dataset.status = age.status === "stale" ? "stale" : age.status === "fresh" && !partial ? "ok" : "degraded";
+    $("#run-pill").dataset.status = age.status === "stale" ? "stale" : age.status === "fresh" && !partial && !qualificationPartial ? "ok" : "degraded";
     $("#run-pill").title = "Voir l’état de la veille et les sources";
   }
 

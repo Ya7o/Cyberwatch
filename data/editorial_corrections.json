@@ -26,6 +26,7 @@
     "ITM-a27286500e1e2431": {"set":{"Threat":"Fuite de données"}}
   },
   "source_facts": {
+    "ITM-55b265847884c3b1": {"audit": "SITE-QA-2026-10-27", "reason": "L’article indique que la FSU compte environ 160 000 adhérents, mais précise que les captures ne prouvent pas une fuite massive et que le nombre de comptes accessibles est inconnu. Cet effectif ne mesure pas les personnes touchées.", "sources": ["https://www.cyberattaque.org/fsu-des-hackers-accedent-a-un-serveur-et-a-des-comptes-internes/"], "clear": ["Affected_Count", "Affected_Unit", "Affected_Count_Raw"]},
     "ITM-4b3c8a7f68dcc41c": {"audit": "AUDIT-2026-10-11", "reason": "Le record ransomware.live est désormais publié dans countryvictims/CH avec country=CH, description située à Morges, Suisse, et website=boullard.ch. Il ne doit pas être compté comme France métropolitaine.", "sources": ["https://api.ransomware.live/v2/countryvictims/CH"], "metadata_set": {"country": "CH"}},
     "ITM-297a7e21d0f7da49": {
       "audit": "LAST_COLLECTION_2026-09-09",

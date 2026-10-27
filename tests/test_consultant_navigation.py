@@ -19,8 +19,9 @@ const context = {
   location: {pathname: "/Cyberwatch/", search: input.query || ""},
   history: {pushState(a,b,url) {context.savedUrl=url;}, replaceState(a,b,url) {context.savedUrl=url;}},
 };
+if (input.now) context.Date = class extends Date { static now() { return new Date(input.now).getTime(); } };
 const source = fs.readFileSync("assets/dashboard-v2.js", "utf8").replace(
-  "  init();", "  globalThis.api = {state, readUrl, syncUrl, filteredSearch, applySearchPatch, incidentCardHtml, sectorLabel, simpleBars, renderVeille, openIncident};"
+  "  init();", "  globalThis.api = {state, readUrl, syncUrl, filteredSearch, applySearchPatch, incidentCardHtml, sectorLabel, simpleBars, renderVeille, renderHeader, renderIntegrityAlert, openIncident};"
 );
 vm.runInNewContext(source, context);
 (async () => {
@@ -31,6 +32,7 @@ vm.runInNewContext(source, context);
   if (input.action === "route") {api.readUrl(); api.syncUrl();}
   if (input.action === "bars") api.simpleBars(element("bars"), input.rows);
   if (input.action === "veille") api.renderVeille();
+  if (input.action === "health") { api.renderHeader(); api.renderIntegrityAlert(); }
   if (input.action === "detail") await api.openIncident(input.id);
   console.log(JSON.stringify({
     filters: api.state.filters,
@@ -48,6 +50,9 @@ vm.runInNewContext(source, context);
     veilleCount: elements["#veille-count"]?.textContent,
     veillePager: elements["#veille-pager"]?.innerHTML,
     detail: elements["#detail-dialog-content"]?.innerHTML,
+    healthLabel: elements["#run-pill-text"]?.textContent,
+    healthStatus: elements["#run-pill"]?.dataset.status,
+    alertHidden: elements["#data-alert"]?.hidden,
   }));
 })();
 '''
@@ -57,6 +62,32 @@ def runtime(**payload):
     result = subprocess.run(["node", "-e", SCRIPT], cwd=ROOT, check=True,
                             input=json.dumps(payload), text=True, capture_output=True)
     return json.loads(result.stdout)
+
+
+def test_fresh_collection_with_partial_qualification_is_not_presented_as_healthy():
+    result = runtime(action="health", now="2026-10-25T16:30:00+04:00", state={
+        "status": {
+            "run": {"as_of": "2026-10-25T16:09:47+04:00"},
+            "sources": [{"status": "OK"}],
+            "qualification": {"state": "PARTIAL"},
+        },
+    })
+    assert "Qualification incomplète" in result["healthLabel"]
+    assert result["healthStatus"] == "degraded"
+    assert result["alertHidden"] is True
+
+
+def test_fresh_collection_with_complete_qualification_keeps_healthy_status():
+    result = runtime(action="health", now="2026-10-25T16:30:00+04:00", state={
+        "status": {
+            "run": {"as_of": "2026-10-25T16:09:47+04:00"},
+            "sources": [{"status": "OK"}],
+            "qualification": {"state": "COMPLETE"},
+        },
+    })
+    assert "À jour" in result["healthLabel"]
+    assert result["healthStatus"] == "ok"
+    assert result["alertHidden"] is True
 
 
 def test_graph_drilldown_replaces_unrelated_query_and_source_filters():
