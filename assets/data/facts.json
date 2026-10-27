@@ -1904,22 +1904,23 @@
   "version": 3
  },
  "INC-606A74E0F7CF": {
-  "display_summary": "Fédération syndicale unitaire (FSU)",
+  "display_summary": "FSU : des hackers accèdent à un serveur et à des comptes internes",
   "sensitive_data": {
    "types": [
     {
      "sources": [
+      "CYBERATTAQUE_ORG",
       "FRENCHBREACHES"
      ],
      "specifics": [],
-     "status": "claimed",
+     "status": "reported",
      "value": "mots de passe"
     }
    ],
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "LunarisSec affirme avoir découvert une LFI, une XSS persistante et une injection SQL sur des plateformes liées à la FSU."
+   "Des vulnérabilités permettraient de lire des fichiers sur un serveur et d'accéder à une base contenant des comptes utilisateurs."
   ],
   "version": 3
  },
@@ -2537,26 +2538,6 @@
   ],
   "summary_paragraphs": [
    "Impact informatique confirmé, mais information insuffisante pour rattacher l’incident à une menace cyber canonique."
-  ],
-  "version": 3
- },
- "INC-7A443660ADFD": {
-  "display_summary": "FSU : des hackers accèdent à un serveur et à des comptes internes",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "CYBERATTAQUE_ORG"
-     ],
-     "specifics": [],
-     "status": "reported",
-     "value": "mots de passe"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [
-   "Des vulnérabilités permettraient de lire des fichiers sur un serveur et d'accéder à une base contenant des comptes utilisateurs."
   ],
   "version": 3
  },
