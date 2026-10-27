@@ -755,6 +755,42 @@
   ],
   "version": 3
  },
+ "INC-2CAC467A2EC3": {
+  "display_summary": "La FSCF fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements, incluant des mineurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "adresses postales"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "dates de naissance"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "noms et prénoms"
+    }
+   ],
+   "vulnerable_people": true
+  },
+  "summary_paragraphs": [
+   "Un individu pseudonymé « camillelellouche » a publié des extraits présentés comme provenant des fichiers de la fédération le 26 octobre 2026."
+  ],
+  "version": 3
+ },
  "INC-2CD3C2DD3934": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -1030,11 +1066,8 @@
   "version": 3
  },
  "INC-37F3A66690B2": {
-  "display_summary": "",
-  "summary_paragraphs": [
-   "La cyberattaque a entraîné l'interruption de l'ensemble du système téléphonique et une perturbation partielle du système informatique de la collectivité.",
-   "La mairie indique qu'aucune fuite de données, revendication ou recours à un rançongiciel n'est établi à ce stade et une enquête est en cours."
-  ],
+  "display_summary": "La mairie de Saint-Pierre-des-Corps confirme une cyberattaque paralysant son réseau téléphonique et perturbant une partie de ses services informatiques.",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-3968EAFD86F6": {
@@ -2695,7 +2728,7 @@
   "version": 3
  },
  "INC-82CA1ABDB325": {
-  "display_summary": "Le Closet : deux cyberattaques exposent ses comptes clients",
+  "display_summary": "Le Closet signale l'exposition de données personnelles de certains utilisateurs suite à deux incidents de sécurité en août.",
   "sensitive_data": {
    "types": [
     {
@@ -2710,7 +2743,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le Closet a été affecté par la compromission d'un prestataire (Klark) et par une intrusion distincte sur un outil interne.",
+   "Les informations exposées peuvent comprendre l'adresse email, le nom, le prénom et le mot de passe sous forme chiffrée."
+  ],
   "version": 3
  },
  "INC-82D10D1D260F": {
@@ -3152,7 +3188,7 @@
   "version": 3
  },
  "INC-913A6D48E0BE": {
-  "display_summary": "Fédération sportive et culturelle de France (FSCF)",
+  "display_summary": "La FSCF fait l'objet d'une revendication de fuite de données avec des milliers d'enregistrements revendiqués.",
   "sensitive_data": {
    "types": [
     {
@@ -4262,6 +4298,26 @@
   ],
   "version": 3
  },
+ "INC-C80DA1397366": {
+  "display_summary": "Elloha confirme un incident de sécurité ayant permis l'envoi de messages WhatsApp frauduleux à des voyageurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Elloha a détecté le 25 octobre 2026 un incident de sécurité et l'a immédiatement confiné, bloquant l'accès concerné et déployant des correctifs."
+  ],
+  "version": 3
+ },
  "INC-CA02BD802A13": {
   "display_summary": "Biocorp : une cyberattaque WordPress piège les visiteurs avec un faux reCAPTCHA",
   "summary_paragraphs": [
@@ -4877,7 +4933,7 @@
   "version": 3
  },
  "INC-E6F26432E781": {
-  "display_summary": "ACTIL : 152 187 dossiers de santé exposés après une cyberattaque",
+  "display_summary": "ACTIL : 60 790 numéros de Sécurité sociale distincts visibles dans une base de dossiers de santé diffusée après une cyberattaque.",
   "sensitive_data": {
    "types": [
     {
@@ -4892,7 +4948,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Une base de données attribuée à ACTIL, diffusée par Syrv4x, contient 152 186 enregistrements et des données de santé détaillées.",
+   "L'analyse montre 60 790 numéros de Sécurité sociale distincts et des informations médicales détaillées, notamment sur des appareillages auditifs."
+  ],
   "version": 3
  },
  "INC-E7EECFC58978": {
@@ -5168,8 +5227,11 @@
   "version": 3
  },
  "INC-EFC568CADE17": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "Le groupe de ransomware Emperador revendique une attaque contre Alain Afflelou et menace de publier des données personnelles clients.",
+  "summary_paragraphs": [
+   "Emperador affirme avoir publié une fiche Afflelou avec un fichier afflelou_leak.txt de 11,1 Mo et des captures montrant des données clients.",
+   "Les extraits montrent noms, adresses email, téléphones, dates de naissance, adresses postales et historiques de commandes."
+  ],
   "version": 3
  },
  "INC-F01F1A75909C": {

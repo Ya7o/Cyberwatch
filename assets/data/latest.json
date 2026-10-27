@@ -2,13 +2,78 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-10-27",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C80DA1397366",
+  "location": "France métropolitaine",
+  "org": "Ellloha",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/ellloha-mvqfnl724vqieq7gvjv",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ellloha-mvqfnl724vqieq7gvjv"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Elloha confirme un incident de sécurité ayant permis l'envoi de messages WhatsApp frauduleux à des voyageurs.",
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-27",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-2CAC467A2EC3",
+  "location": "Inconnu",
+  "org": "FSCF",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fscf-les-donnees-de-28-000-licencies-diffusees-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La FSCF fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements, incluant des mineurs.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-10-26",
   "high_sensitivity_data_exposed": false,
   "id": "INC-EFC568CADE17",
   "location": "France métropolitaine",
   "org": "Afflelou",
   "organisation_links": [],
-  "personal_data_exposed": false,
+  "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.7,
@@ -19,18 +84,24 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/afflelou-vise-par-un-ransomware-qui-menace-de-diffuser-les-donnees-des-clients/"
+   },
+   {
     "label": "emprdr4p7iwlhpky33tswt3k2qdeljyjcdpoysabudmmrz4z32laexad.onion",
     "source": "RANSOMWARE_LIVE",
     "url": "http://emprdr4p7iwlhpky33tswt3k2qdeljyjcdpoysabudmmrz4z32laexad.onion/post/afflelou/"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "",
+  "summary": "Le groupe de ransomware Emperador revendique une attaque contre Alain Afflelou et menace de publier des données personnelles clients.",
   "threat": "Ransomware",
   "threat_status": {
-   "status": "claimed"
+   "status": "reported"
   }
  },
  {
@@ -67,10 +138,10 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "ACTIL : 152 187 dossiers de santé exposés après une cyberattaque",
-  "threat": "Intrusion",
+  "summary": "ACTIL : 60 790 numéros de Sécurité sociale distincts visibles dans une base de dossiers de santé diffusée après une cyberattaque.",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {
@@ -132,10 +203,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Fédération sportive et culturelle de France (FSCF)",
+  "summary": "La FSCF fait l'objet d'une revendication de fuite de données avec des milliers d'enregistrements revendiqués.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -206,7 +277,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Le Closet : deux cyberattaques exposent ses comptes clients",
+  "summary": "Le Closet signale l'exposition de données personnelles de certains utilisateurs suite à deux incidents de sécurité en août.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -6292,10 +6363,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
-  "threat": "Fuite de données",
+  "summary": "La mairie de Saint-Pierre-des-Corps confirme une cyberattaque paralysant son réseau téléphonique et perturbant une partie de ses services informatiques.",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
