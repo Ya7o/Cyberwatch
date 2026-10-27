@@ -38,6 +38,7 @@ from cyberwatch.normalize import load_organisation_aliases, organisation_acronym
     ("L.Commerce", "Allo E.Leclerc"),
     ("Eusko", "Euskal Moneta"),
     ("FSU", "Fédération syndicale unitaire"),
+    ("Caisse de sécurité sociale de Mayotte (CSSM)", "Caisse de sécurité sociale de Mayotte"),
 ])
 def test_versioned_aliases_are_exact(left, right):
     assert organisation_key(left) == organisation_key(right)

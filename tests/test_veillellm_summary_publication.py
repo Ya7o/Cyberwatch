@@ -1,5 +1,6 @@
 from cyberwatch import site
 from cyberwatch.normalize import organisation_key
+from cyberwatch import store
 
 
 def test_regional_snapshot_summary_is_not_published_as_a_card_headline():
@@ -42,3 +43,28 @@ def test_regional_snapshot_summary_is_published_for_candidate():
     assert row["admission"] == "CANDIDATE"
     assert "summary" not in row
     assert row["admission_reason"] == regional[key]["admission_reason"]
+
+
+def test_cssm_national_outage_remains_a_candidate_without_intrusion_label():
+    row = {
+        "id": "INC-428941FDD31E",
+        "org": "Caisse de sécurité sociale de Mayotte",
+        "date": "2026-10-22",
+        "sources": ["VEILLE_LLM"],
+        "threat": "Intrusion",
+        "threat_status": {"status": "reported"},
+    }
+
+    site._decorate_admission([row])
+
+    assert row["admission"] == "CANDIDATE"
+    assert row["threat"] == "Incident tiers"
+    assert row["threat_status"]["status"] == "unknown"
+
+
+def test_every_regional_snapshot_record_matches_a_published_incident():
+    incident_keys = {
+        (organisation_key(incident.Organisation), incident.Date)
+        for incident in store.load_incidents()
+    }
+    assert set(site._regional_admission_by_key()) <= incident_keys
