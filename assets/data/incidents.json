@@ -1084,7 +1084,8 @@
   }
  },
  {
-  "admission": "ACCEPTED",
+  "admission": "CANDIDATE",
+  "admission_reason": "Impact opérationnel territorial documenté à Mayotte à la suite d’un incident de sécurité informatique national ; aucune compromission locale, exploitation des vulnérabilités ou fuite de données démontrée. À confirmer.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-22",
   "high_sensitivity_data_exposed": false,
@@ -1122,9 +1123,9 @@
    "VEILLE_LLM"
   ],
   "summary": "",
-  "threat": "Intrusion",
+  "threat": "Incident tiers",
   "threat_status": {
-   "status": "reported"
+   "status": "unknown"
   }
  },
  {

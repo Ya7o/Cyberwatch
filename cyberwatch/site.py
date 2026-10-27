@@ -183,6 +183,7 @@ def _regional_admission_by_key() -> dict[tuple[str, str], dict]:
             "admission": admission,
             "admission_reason": str(record.get("admission_reason") or "").strip(),
             "summary": str(record.get("synthese") or record.get("statut") or "").strip(),
+            "threat": str(record.get("type_menace") or "").strip(),
             "score": score,
         }
         key = (organisation_key(organisation), date)
@@ -213,6 +214,14 @@ def _decorate_admission(payload: list[dict]) -> None:
         row["admission"] = local["admission"]
         if local["admission_reason"]:
             row["admission_reason"] = local["admission_reason"]
+        if (local["admission"] == "CANDIDATE" and not has_independent_source
+                and local.get("threat") in config.THREATS
+                and row.get("threat") != local["threat"]):
+            # Un résumé d'impact peut contenir « indisponibilité » sans prouver
+            # une intrusion locale. Le type curaté du snapshot prime tant que
+            # ce signal reste à confirmer et sans corroboration indépendante.
+            row["threat"] = local["threat"]
+            row["threat_status"] = {"status": "unknown"}
         # `summary` est une headline de carte : ne jamais y projeter la
         # synthèse Veille LLM, qui peut être un paragraphe complet. Cette
         # synthèse est publiée dans facts.json via le fait source associé.
