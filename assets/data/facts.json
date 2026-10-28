@@ -662,7 +662,7 @@
   "version": 3
  },
  "INC-213413E40675": {
-  "display_summary": "",
+  "display_summary": "SINEQUAE est visée par une revendication de vol de 65 Go de données judiciaires, financières et personnelles par le groupe LAMASHTU.",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1771,7 +1771,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "FrenchBreaches indique que 134 000 commandes, 18 794 photos de documents d’identité et 16 822 RIB seraient exposés."
+  ],
   "version": 3
  },
  "INC-584E3E37779F": {
@@ -2394,6 +2396,35 @@
   ],
   "version": 3
  },
+ "INC-6FFC07DEADC9": {
+  "display_summary": "La Mutuelle Communale visée par une fuite de données revendiquée, 50 344 contacts et 114 214 fichiers PDF annoncés par les attaquants.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Les cybercriminels affirment avoir récupéré 50 344 contacts, des numéros de Sécurité sociale et 114 214 fichiers PDF représentant 46,6 Go."
+  ],
+  "version": 3
+ },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -2858,6 +2889,27 @@
   ],
   "version": 3
  },
+ "INC-877537555260": {
+  "display_summary": "Le groupe BlackHatSect0r revendique la compromission des systèmes de Quorum Groupe et la fuite d'un important ensemble de données applicatives.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "BlackHatSect0r revendique la compromission et la fuite de données de Quorum Groupe, avec exports SQL et fichiers transmis à Cyberattaque.org.",
+   "Les archives examinées contiennent un export principal de 69 tables et 2 976 283 lignes, incluant catalogues, fournisseurs, production et facturation."
+  ],
+  "version": 3
+ },
  "INC-87D2AA2BDA02": {
   "display_summary": "Pharmaland a vu une fuite de données revendiquée, avec près de 6 800 enregistrements diffusés selon l'attaquant.",
   "sensitive_data": {
@@ -2935,6 +2987,24 @@
      ],
      "specifics": [],
      "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-89E876F90CD4": {
+  "display_summary": "Cave Coste a divulgué des adresses email et des mots de passe clients en clair après une cyberattaque exploitant une faille.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
      "value": "mots de passe"
     }
    ],
@@ -3203,6 +3273,26 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-91CC09486E31": {
+  "display_summary": "Renfe confirme une cyberattaque du 24 septembre 2026 ayant potentiellement compromis des données personnelles de voyageurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un tiers non autorisé a accédé à certains systèmes informatiques le 24 septembre 2026, liés aux processus de vente de billets."
+  ],
   "version": 3
  },
  "INC-91CF3E89369C": {
@@ -4206,6 +4296,11 @@
   ],
   "version": 3
  },
+ "INC-C53B2C304EA4": {
+  "display_summary": "Fédération Française Handisport (FFH)",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-C57E97814D97": {
   "display_summary": "Be-in-Home : une base SQL de 30 000 utilisateurs refait surface",
   "sensitive_data": {
@@ -4524,6 +4619,14 @@
  "INC-D5F48B0C6F2B": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-D65FC6FFE6CD": {
+  "display_summary": "Une fuite de données revendiquée le 27 octobre 2026 expose 23 777 enregistrements liés à ACF Assurances.",
+  "summary_paragraphs": [
+   "Un individu a diffusé une base présentée comme contenant 23 777 enregistrements personnels d’ACF Assurances.",
+   "Les fichiers comprennent noms, adresses, numéros de téléphone, emails et certaines dates de naissance mais pas de mots de passe ni de données bancaires."
+  ],
   "version": 3
  },
  "INC-D7D9458445F1": {

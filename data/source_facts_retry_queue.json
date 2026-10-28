@@ -10245,7 +10245,7 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 1,
+   "attempts": 2,
    "entry": {
     "content": "France Travail  fait l’objet d’une nouvelle revendication de fuite de données. Un cybercriminel utilisant le pseudonyme  0xRune  propose à la vente une base contenant  62 848 fiches relatives à des agents et professionnels du réseau France Travail . \n\n\n\n Contrairement aux précédents incidents ayant touché l’organisme public, cette affaire ne concerne pas directement les demandeurs d’emploi, mais les  collaborateurs, conseillers, responsables et partenaires de France Travail . Les informations exposées comprennent notamment des identités, coordonnées téléphoniques, adresses email professionnelles, fonctions et lieux d’affectation. \n\n\n\n De nouveaux éléments permettent désormais de mieux comprendre les circonstances de cette compromission. L’intrusion aurait été réalisée  par l’intermédiaire du compte Microsoft professionnel d’un salarié , au cours de la semaine précédant la publication de cette affaire. L’accès non autorisé aurait finalement été repéré et interrompu quelques jours après le vol des informations. \n\n\n\n   \n\n\n\n Un compte Microsoft compromis à l’origine de l’intrusion ? \n\n\n\n Les premières informations concernant le déroulement de cette cyberattaque orientent vers la  compromission d’un compte Microsoft appartenant à un employé de France Travail . Cet accès aurait permis à l’attaquant de récupérer des données professionnelles avant que l’activité suspecte ne soit identifiée. \n\n\n\n L’intrusion se serait produite  fin septembre ou début octobre 2026 . Plusieurs jours se seraient ensuite écoulés entre l’extraction des informations et le blocage de l’accès utilisé par l’attaquant. \n\n\n\n Ces éléments restent néanmoins à confirmer officiellement. Ils ne permettent pas de déterminer si le compte a été compromis à la suite d’une campagne de phishing, d’un vol d’identifiants, d’une session détournée ou d’une autre méthode. \n\n\n\n La chronologie soulève également une question importante :  quelles ressources étaient accessibles depuis ce compte et comment un seul accès aurait-il pu permettre l’extraction d’un annuaire professionnel d’une telle ampleur ?  \n\n\n\n 62 848 fiches et plus de 100 000 numéros de téléphone \n\n\n\n Le périmètre de l’incident apparaît particulièrement important. La base revendiquée par 0xRune comporterait  62 848 fiches professionnelles et 100 738 numéros de téléphone fixes et mobiles . \n\n\n\n Le nombre de coordonnées téléphoniques dépasse celui des profils, ce qui peut notamment s’expliquer par la présence de plusieurs numéros associés à un même collaborateur. Ces chiffres ne doivent donc pas être additionnés pour estimer le nombre de victimes. \n\n\n\n Les données concerneraient  25 entités territoriales et organisationnelles  du réseau France Travail. Plusieurs régions seraient représentées, notamment  l’Île-de-France, la Bretagne, l’Occitanie, la Nouvelle-Aquitaine et l’Auvergne-Rhône-Alpes . \n\n\n\n L’incident pourrait ainsi dépasser largement le cadre d’une seule agence ou direction régionale, avec des informations relatives à des professionnels répartis dans différentes structures de l’organisme. \n\n\n\n Ces volumes concernent pour l’instant les données annoncées dans le cadre de l’affaire.  Cyberattaque.org n’a pas pu vérifier individuellement l’intégralité des 62 848 fiches ni les 100 738 numéros annoncés.  \n\n\n\n Une base présentée comme datant de septembre 2026 \n\n\n\n Le hacker commercialise son fichier sous l’appellation  « France Travail September 2026 » . Cette dénomination suggère une base constituée ou actualisée en septembre, sans nécessairement correspondre à la date précise de l’intrusion. \n\n\n\n Les nouveaux éléments concernant une compromission survenue fin septembre ou début octobre sont donc compatibles avec cette présentation, sans établir à eux seuls la date de création ou de dernière mise à jour des données. \n\n\n\n 0xRune n’avait initialement fourni aucun détail technique permettant d’identifier le point d’entrée utilisé pour récupérer les informations. \n\n\n\n Cyberattaque.org a analysé un millier de fiches \n\n\n\n  Cyberattaque.org s’est procuré l’échantillon diffusé avec la revendication . Celui-ci contient  1 000 lignes et 22 champs , organisés selon une structure homogène qui évoque un  annuaire professionnel interne ou un export d’une application de gestion des collaborateurs . \n\n\n\n Les enregistrements comportent notamment les  noms et prénoms, adresses email professionnelles, fonctions, numéros de téléphone fixes et portables, régions de rattachement, types de structures et sites d’affectation . \n\n\n\n Plusieurs champs présentent un caractère plus technique :  codes de sites, identifiants DGA SI, codes SAFIR, informations d’habilitation CLI et références vers des photographies de profil . \n\n\n\n Les adresses associées aux photographies observées dans l’échantillon pointent notamment vers le domaine de l’ intranet de France Travail . Leur présence constitue un indice supplémentaire de l’origine professionnelle des informations. \n\n\n\n 971 adresses France Travail sur les 1 000 lignes analysées \n\n\n\n L’examen des adresses électroniques apporte des précisions sur les professionnels concernés. Parmi les  999 fiches disposant d’un email , 971 utilisent le domaine  @francetravail.fr . \n\n\n\n Les autres enregistrements contiennent notamment des adresses associées à plusieurs organismes  Cap emploi  et à différentes structures partenaires. \n\n\n\n Cette particularité invite à nuancer la présentation initiale de la fuite comme portant exclusivement sur des salariés de France Travail. La base pourrait également intégrer des  professionnels partenaires disposant d’un accès ou d’un rattachement aux outils du réseau . \n\n\n\n Il convient également de distinguer le nombre d’enregistrements du nombre réel de personnes concernées.  Les 62 848 fiches revendiquées ne correspondent pas nécessairement à autant de salariés uniques , notamment en raison de la présence possible de partenaires, d’anciens profils ou d’enregistrements multiples. \n\n\n\n Des coordonnées personnelles et professionnelles particulièrement exposées \n\n\n\n Les numéros de téléphone occupent une place importante dans les données examinées. Sur les 1 000 fiches analysées par Cyberattaque.org,  858 comportent un numéro fixe et 709 un téléphone portable . Au total, 865 profils disposent d’au moins une coordonnée téléphonique renseignée. \n\n\n\n Cette forte présence de coordonnées téléphoniques est cohérente avec les nouveaux chiffres évoquant  100 738 numéros répartis dans l’ensemble de la base . \n\n\n\n Les fonctions mentionnées couvrent de nombreux métiers :  conseillers emploi, responsables d’équipe, directeurs d’agence, psychologues du travail, gestionnaires, personnels techniques et chargés de mission . \n\n\n\n En croisant les fonctions, les coordonnées, les régions et les sites d’affectation, un acteur malveillant pourrait reconstituer une partie de l’organisation interne de France Travail, identifier des interlocuteurs précis et cibler certaines équipes. \n\n\n\n   \n\n\n\n Pas de mots de passe ni de dossiers de demandeurs d’emploi dans l’échantillon \n\n\n\n Dans les 1 000 enregistrements étudiés,  Cyberattaque.org n’a identifié aucun mot de passe, hash de mot de passe, donnée bancaire ou information directement issue des dossiers de demandeurs d’emploi . \n\n\n\n Les éléments disponibles portent principalement sur les  identités, coordonnées professionnelles et informations organisationnelles des collaborateurs et partenaires . \n\n\n\n Cette situation distingue l’incident des précédentes violations de données impliquant les personnes inscrites à France Travail. L’absence de données financières ou d’identifiants de connexion dans l’échantillon ne permet toutefois pas de conclure sur le contenu intégral de la base commercialisée. \n\n\n\n Une fuite qui pourrait mettre davantage les agents en danger \n\n\n\n La sensibilité de cette affaire ne se limite pas au nombre de données exposées. Les personnes potentiellement concernées exercent des missions qui les placent régulièrement en contact direct avec le public, parfois dans des situations sociales particulièrement difficiles. \n\n\n\n Pour des conseillers et collaborateurs déjà confrontés à des tensions ou à des menaces dans l’exercice de leurs fonctions,  la circulation de coordonnées téléphoniques associées à leur identité, leur poste et leur agence constitue un risque supplémentaire . \n\n\n\n Ces données pourraient être exploitées pour des  appels malveillants, des tentatives d’intimidation, des campagnes de phishing ciblées ou des usurpations d’identité professionnelle . \n\n\n\n Les informations internes présentes dans les fiches pourraient également faciliter des scénarios d’ingénierie sociale. Un attaquant connaissant le nom d’un responsable, son service, son site de rattachement et certains identifiants organisationnels disposerait d’éléments pour rendre une communication frauduleuse plus crédible. \n\n\n\n Le fait que la compromission présumée soit liée à un compte Microsoft professionnel soulève par ailleurs des interrogations sur les mécanismes de surveillance des accès, les autorisations accordées aux comptes et la détection des extractions importantes de données. \n\n\n\n Des investigations encore nécessaires pour confirmer le périmètre \n\n\n\n Si les nouveaux éléments apportent un éclairage sur le déroulement possible de la cyberattaque, plusieurs questions restent ouvertes :  l’origine précise de la compromission du compte, les ressources consultées, la durée réelle de l’accès et le volume exact de données exfiltrées . \n\n\n\n La cohérence de l’échantillon étudié par Cyberattaque.org, associée à la présence de nombreux champs internes, renforce la crédibilité de la revendication. Elle ne constitue toutefois pas une preuve suffisante pour authentifier l’intégralité des données mises en vente. \n\n\n\n  Cyberattaque.org n’a pas obtenu de confirmation officielle de France Travail à ce stade.  Les informations relatives au compte Microsoft compromis, au délai de détection, aux 100 738 numéros de téléphone et aux 25 entités concernées devront donc encore être corroborées. \n\n\n\n Cette nouvelle affaire met une fois de plus en lumière les conséquences possibles d’une compromission d’identifiants professionnels. Au-delà de l’accès initial, c’est la quantité d’informations accessibles depuis un compte et la rapidité de détection d’une extraction qui peuvent déterminer l’ampleur d’une fuite de données.",
     "entity": "",
@@ -10433,7 +10433,16 @@
     "title": "France Travail : 62 848 fiches d’agents revendiquées après une nouvelle cyberattaque",
     "url": "https://www.cyberattaque.org/france-travail-62-848-fiches-dagents-revendiquees-apres-une-nouvelle-cyberattaque/"
    },
-   "exhausted_fields": {},
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-10-28T13:39:45.231554+00:00",
+     "reason": "CONFIDENCE_REJECTED"
+    },
+    "activity_sector_match": {
+     "at": "2026-10-28T13:39:45.231554+00:00",
+     "reason": "CONFIDENCE_REJECTED"
+    }
+   },
    "field_reasons": {
     "activity_description": "ACTIVITY_THIRD_PARTY",
     "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
@@ -10456,55 +10465,87 @@
     "URL": "https://www.cyberattaque.org/france-travail-62-848-fiches-dagents-revendiquees-apres-une-nouvelle-cyberattaque/"
    },
    "key": "ITM-d9b0c191d071aa5f:2c065aca835312203645777919f40e728f55b2eb3e9e1445b5ee5f33dac07721",
+   "last_attempt_at": "2026-10-28T13:39:42.544082+00:00",
    "last_queued_at": "2026-10-27T12:51:49.785397+00:00",
-   "pending_fields": [
-    "activity_description",
-    "activity_sector_match"
-   ],
+   "pending_fields": [],
    "reason": "SEMANTIC_REJECTED"
   },
   {
    "attempts": 0,
    "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 08/10/2026\n— Secteur Commerce\nLes Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés\nSelon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fuite de données. Les éléments recueillis font état de 134 000 commandes, 18 794 photos de documents d’identité et 16 822 RIB potentiellement exposés.\nLe pirate \"0xDzz\" affirme avoir conservé un accès aux systèmes pendant plusieurs mois sans être détecté. Selon ses déclarations, l’administration aurait été protégée par le simple mot de passe « azerty », sans double authentification (2FA). Ces affirmations n’ont pas pu être vérifiées indépendamment par FrenchBreaches.\nPrès de 19 000 pièces d’identité et 16 822 RIB\nSelon les éléments analysés, les données exposées comprendraient notamment :\n18 794 photos de documents d’identité recto verso ;\n16 822 RIB ;\n9 588 clients associés à des CNI recto/verso, présentées comme accessibles sans authentification ;\n1 351 acheteurs identifiés, avec CNI ou passeport, adresses et historiques d’achats ;\nEnviron 1 722 factures, dont 558 réglées par chèque et 1 162 associées à des virements.\nLes fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.\n134 000 commandes et des informations sur les kits postaux\nEnviron 134 000 commandes figureraient parmi les données exposées, avec les identités des clients, leurs adresses, les dates de commande et de livraison ainsi que les produits achetés.\nLes informations concerneraient notamment des lingots, lingotins et pièces en or ou en argent.\nLes données pourraient également inclure des informations relatives aux kits postaux utilisés pour l'envoi de métaux précieux, notamment dans le cadre des opérations de rachat.\nCes kits peuvent être associés à des démarches d'expédition et de suivi. La nature exacte des informations relatives aux kits postaux présentes dans les fichiers reste toutefois à préciser.\nDes IBAN et des transactions bancaires\nUn fichier relatif à des contrats associés à des IBAN contiendrait des identités, coordonnées et informations bancaires.\nUn autre fichier, intitulé virements.csv, compterait 4 258 lignes, pour un montant cumulé annoncé de 9,48 millions d’euros. Ce chiffre correspondrait à des transactions enregistrées et non à une somme dérobée.\nDes numéros de chèques associés à certaines factures apparaîtraient également dans les données.\nDes historiques d'achat particulièrement sensibles\nLa fuite pourrait permettre d'associer l'identité et l'adresse d'un client aux quantités et types de métaux précieux achetés.\nLes historiques de commandes, les informations bancaires et les éventuelles données d'expédition des kits postaux pourraient ainsi révéler des renseignements sensibles sur les transactions réalisées.\nFrenchBreaches ne publie volontairement aucun document d’identité, IBAN, numéro de chèque ou autre identifiant personnel provenant des fichiers analysés.\nQuels risques pour les clients ?\nLa combinaison de pièces d’identité, RIB, adresses et historiques d’achats pourrait faciliter des tentatives d’usurpation d’identité, de fraude bancaire et d’hameçonnage ciblé.\nLes informations sur les achats et les éventuels kits postaux pourraient également être utilisées pour envoyer de fausses demandes de paiement, de livraison ou de vérification d'identité, en se faisant passer pour l'entreprise.\nLes clients sont invités à rester vigilants face aux sollicitations inhabituelles et à vérifier toute demande directement auprès de l'enseigne.\nLes circonstances exactes de la compromission et le nombre définitif de personnes concernées restent à confirmer indépendamment.",
+    "content": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.  Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération. Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives. \n\n\n\n Le point le plus préoccupant concerne la présence de  données personnelles d’enfants mineurs , dont certains âgés de moins de 12 ans. Les fichiers permettent notamment d’associer leur identité à un club, une discipline et une catégorie sportive. \n\n\n\n Créée en 1898, la  Fédération Sportive et Culturelle de France  est une organisation reconnue d’utilité publique qui fédère des associations sportives, culturelles et socio-éducatives sur l’ensemble du territoire. Elle intervient notamment dans la gymnastique, le twirling, les activités artistiques et l’animation jeunesse. \n\n\n\n   \n\n\n\n 21 634 licences et plus de 5 300 présélections dans les données revendiquées \n\n\n\n La publication du 26 octobre détaille sept catégories de données qui auraient été récupérées depuis les services de la FSCF. \n\n\n\n \n  21 634  enregistrements de licences ; \n\n\n\n  5 305  enregistrements de présélections ; \n\n\n\n  1 573  abonnés ; \n\n\n\n  642  enregistrements liés aux instances de la FSCF ; \n\n\n\n  457  correspondants par discipline ; \n\n\n\n  270  licences annulées ; \n\n\n\n  140  abonnements. \n \n\n\n\n Le total atteint précisément  30 021 enregistrements . Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories. \n\n\n\n Les fichiers révèlent l’identité, l’adresse et le club sportif des licenciés \n\n\n\n Les extraits diffusés présentent une structure caractéristique d’un export de données de gestion fédérale. Plusieurs dizaines de champs sont recensés, permettant de retrouver des informations personnelles particulièrement détaillées. \n\n\n\n Parmi les informations apparaissant dans les exemples figurent : \n\n\n\n \n Les  noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales, communes et codes postaux ; \n\n\n\n Les adresses email et potentiellement les numéros de téléphone ; \n\n\n\n Les numéros de licence et leur statut ; \n\n\n\n Les  clubs sportifs et les disciplines pratiquées  ; \n\n\n\n Les catégories d’âge et les niveaux de compétition ; \n\n\n\n Les comités départementaux et régionaux ; \n\n\n\n Les dates de validation et d’expiration des licences ; \n\n\n\n Certains montants financiers associés aux licences. \n \n\n\n\n Les exemples concernent notamment des licenciés de  Loire-Atlantique , dans des clubs situés autour de Nantes et de Saint-Herblain. On retrouve des pratiquants de gymnastique féminine, de gymnastique rythmique et de twirling. \n\n\n\n Des enfants nés en 2014 et 2016 apparaissent dans les extraits \n\n\n\n La présence de mineurs constitue l’un des aspects les plus sensibles de cette divulgation. Plusieurs fiches correspondent à des enfants nés en  2014 et 2016 , avec des catégories sportives U12 et U10. \n\n\n\n Pour ces jeunes licenciés, les informations permettent de connaître simultanément leur  identité, leur âge, leur commune de résidence et leur association sportive . \n\n\n\n Cette combinaison est particulièrement problématique : les données ne permettent pas seulement d’identifier un enfant, mais aussi de connaître une partie de ses activités extrascolaires. Si elles sont réutilisées à des fins malveillantes, elles pourraient faciliter des prises de contact frauduleuses auprès des familles. \n\n\n\n Des licences actives pour la saison 2026 \n\n\n\n Les enregistrements présentés ne semblent pas provenir exclusivement d’anciennes archives. Plusieurs fiches portent la mention  « Active » pour la saison 2026 , avec des dates de validation situées en 2025 et une fin de validité fixée au 31 août 2026. \n\n\n\n D’autres informations font référence à des licences de compétition dont les périodes de validité peuvent s’étendre jusqu’en  2028 . \n\n\n\n Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes. Ils ne permettent toutefois pas de déterminer la date exacte à laquelle elles ont été extraites. \n\n\n\n Le hacker évoque une extraction automatisée des données \n\n\n\n L’auteur de la publication présente son opération comme un  « scraping » . Cette technique consiste à collecter automatiquement des informations accessibles depuis un site ou une application, parfois en exploitant des interfaces qui ne limitent pas suffisamment les requêtes. \n\n\n\n Dans le cas de la FSCF, plusieurs scénarios sont envisageables :  une interface de consultation insuffisamment protégée, une API exposant trop d’informations ou un défaut de contrôle des autorisations . \n\n\n\n La présence de champs administratifs détaillés laisse penser que les informations proviennent d’un système structuré de gestion des licences. En revanche, rien ne permet de déterminer si le hacker a contourné une protection, utilisé un accès légitime compromis ou simplement collecté des données accessibles sans authentification. \n\n\n\n Des escroqueries possibles en usurpant l’identité des clubs sportifs \n\n\n\n Le principal risque concerne désormais l’utilisation de ces informations pour mener des  campagnes de phishing ciblées contre les licenciés et leurs familles . \n\n\n\n Un fraudeur connaissant le nom d’un sportif, son club, sa discipline et sa saison de licence pourrait se faire passer pour une association afin de réclamer un paiement, une régularisation d’inscription ou une mise à jour du dossier administratif. \n\n\n\n La présence de données concernant des mineurs renforce cette inquiétude. Les parents pourraient recevoir des sollicitations suffisamment précises pour sembler provenir de véritables responsables associatifs. \n\n\n\n À ce stade,  aucune confirmation officielle de la FSCF n’a été identifiée concernant cette extraction . Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués. \n\n\n\n L’enjeu principal reste donc de déterminer comment des informations aussi détaillées, notamment celles de jeunes licenciés, ont pu être récupérées et si d’autres données de la fédération demeurent accessibles.",
     "entity": "",
     "event_date": "",
     "location": "",
     "organisation": "",
-    "published": "2026-10-08",
+    "published": "2026-10-27",
     "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
+    "source_item_id": "4592",
     "source_metadata": {
-     "detail_hydration": {
-      "chars": 3844,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
      "rich_facts": {
       "affected_counts": [
        {
         "date": "",
-        "evidence": "9 588 clients associés à des CNI recto/verso, présentées comme accessibles sans authentification ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "raw": "9 588 clients",
+        "evidence": "Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués.",
+        "raw": "30 021 enregistrements",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "clients",
-        "value": 9588
+        "status": "claimed",
+        "unit": "records",
+        "value": 30021
        },
        {
         "date": "",
-        "evidence": "Un autre fichier, intitulé virements.csv, compterait 4 258 lignes, pour un montant cumulé annoncé de 9,48 millions d’euros.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "raw": "4 258 lignes",
+        "evidence": "Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories.",
+        "raw": "30 021 personnes",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "unit": "people",
+        "value": 30021
+       },
+       {
+        "date": "",
+        "evidence": "Le total atteint précisément  30 021 enregistrements .",
+        "raw": "30 021 enregistrements",
+        "scope": "",
         "status": "unknown",
         "unit": "records",
-        "value": 4258
+        "value": 30021
+       },
+       {
+        "date": "",
+        "evidence": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.",
+        "raw": "30 000 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 30000
+       },
+       {
+        "date": "",
+        "evidence": "21 634  enregistrements de licences ;",
+        "raw": "21 634  enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 21634
+       },
+       {
+        "date": "",
+        "evidence": "5 305  enregistrements de présélections ;",
+        "raw": "5 305  enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 5305
+       },
+       {
+        "date": "",
+        "evidence": "642  enregistrements liés aux instances de la FSCF ;",
+        "raw": "642  enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 642
        }
       ],
       "affected_datasets": [],
@@ -10512,596 +10553,237 @@
       "claims": [
        {
         "date": "",
-        "evidence": "9 588 clients associés à des CNI recto/verso, présentées comme accessibles sans authentification ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
+        "evidence": "Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués.",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
+        "status": "claimed",
         "type": "affected_count",
-        "unit": "clients",
-        "value": 9588
+        "unit": "records",
+        "value": 30021
        },
        {
         "date": "",
-        "evidence": "Un autre fichier, intitulé virements.csv, compterait 4 258 lignes, pour un montant cumulé annoncé de 9,48 millions d’euros.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
+        "evidence": "Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories.",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 30021
+       },
+       {
+        "date": "",
+        "evidence": "Le total atteint précisément  30 021 enregistrements .",
+        "scope": "",
         "status": "unknown",
         "type": "affected_count",
         "unit": "records",
-        "value": 4258
+        "value": 30021
        },
        {
         "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "pièces d'identité"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.",
+        "scope": "",
         "status": "unknown",
-        "type": "data_type",
-        "value": "données bancaires"
+        "type": "affected_count",
+        "unit": "records",
+        "value": 30000
        },
        {
         "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "21 634  enregistrements de licences ;",
+        "scope": "",
         "status": "unknown",
-        "type": "data_type",
-        "value": "pièces d'identité"
+        "type": "affected_count",
+        "unit": "records",
+        "value": 21634
        },
        {
         "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "5 305  enregistrements de présélections ;",
+        "scope": "",
         "status": "unknown",
-        "type": "data_type",
-        "value": "informations de commandes"
+        "type": "affected_count",
+        "unit": "records",
+        "value": 5305
        },
        {
         "date": "",
-        "evidence": "Les éléments recueillis font état de 134 000 commandes, 18 794 photos de documents d’identité et 16 822 RIB potentiellement exposés.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "photographies"
-       },
-       {
-        "date": "",
-        "evidence": "Selon ses déclarations, l’administration aurait été protégée par le simple mot de passe « azerty », sans double authentification (2FA).",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "18 794 photos de documents d’identité recto verso ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "photographies"
-       },
-       {
-        "date": "",
-        "evidence": "16 822 RIB ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "1 351 acheteurs identifiés, avec CNI ou passeport, adresses et historiques d’achats ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "pièces d'identité"
-       },
-       {
-        "date": "",
-        "evidence": "Environ 1 722 factures, dont 558 réglées par chèque et 1 162 associées à des virements.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "factures"
-       },
-       {
-        "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "642  enregistrements liés aux instances de la FSCF ;",
+        "scope": "",
         "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
+        "type": "affected_count",
+        "unit": "records",
+        "value": 642
        },
        {
         "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
         "status": "unknown",
         "type": "data_type",
         "value": "adresses postales"
        },
        {
         "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Les  noms, prénoms et dates de naissance  ;",
         "status": "unknown",
         "type": "data_type",
         "value": "noms et prénoms"
        },
        {
         "date": "",
-        "evidence": "Un fichier relatif à des contrats associés à des IBAN contiendrait des identités, coordonnées et informations bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
+        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "status": "hypothesis",
         "type": "data_type",
-        "value": "contrats"
+        "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Un autre fichier, intitulé virements.csv, compterait 4 258 lignes, pour un montant cumulé annoncé de 9,48 millions d’euros.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Certains montants financiers associés aux licences.",
         "status": "unknown",
         "type": "data_type",
         "value": "montants"
        },
        {
         "date": "",
-        "evidence": "Des numéros de chèques associés à certaines factures apparaîtraient également dans les données.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
+        "evidence": "Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes.",
+        "status": "claimed",
         "type": "data_type",
-        "value": "factures"
+        "value": "informations administratives"
+       },
+       {
+        "date": "2026-10-26",
+        "evidence": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération."
        }
       ],
       "data_types": [
        {
         "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "pièces d'identité"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "pièces d'identité"
-       },
-       {
-        "date": "",
-        "evidence": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Les éléments recueillis font état de 134 000 commandes, 18 794 photos de documents d’identité et 16 822 RIB potentiellement exposés.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "photographies"
-       },
-       {
-        "date": "",
-        "evidence": "Selon ses déclarations, l’administration aurait été protégée par le simple mot de passe « azerty », sans double authentification (2FA).",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "18 794 photos de documents d’identité recto verso ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "photographies"
-       },
-       {
-        "date": "",
-        "evidence": "16 822 RIB ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "1 351 acheteurs identifiés, avec CNI ou passeport, adresses et historiques d’achats ;",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "pièces d'identité"
-       },
-       {
-        "date": "",
-        "evidence": "Environ 1 722 factures, dont 558 réglées par chèque et 1 162 associées à des virements.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "factures"
-       },
-       {
-        "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
         "status": "unknown",
         "value": "adresses postales"
        },
        {
         "date": "",
-        "evidence": "Les fichiers contiendraient également des noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
+        "status": "unknown",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Les  noms, prénoms et dates de naissance  ;",
         "status": "unknown",
         "value": "noms et prénoms"
        },
        {
         "date": "",
-        "evidence": "Un fichier relatif à des contrats associés à des IBAN contiendrait des identités, coordonnées et informations bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "contrats"
+        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Un autre fichier, intitulé virements.csv, compterait 4 258 lignes, pour un montant cumulé annoncé de 9,48 millions d’euros.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Certains montants financiers associés aux licences.",
         "status": "unknown",
         "value": "montants"
        },
        {
         "date": "",
-        "evidence": "Des numéros de chèques associés à certaines factures apparaîtraient également dans les données.",
-        "item_id": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "factures"
+        "evidence": "Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes.",
+        "status": "claimed",
+        "value": "informations administratives"
        }
       ],
       "data_volumes": [],
-      "engine": "generic-rich-facts",
       "profile": {
-       "chars": 4146,
-       "claims": 21,
-       "hypotheses": 5,
-       "semantic_candidate": true,
-       "sentences": 40
+       "chars": 6594,
+       "claims": 14,
+       "dates": 2,
+       "hypotheses": 3,
+       "numbers": 7,
+       "sentences": 61
       },
       "relations": [],
       "semantic": {
-       "candidate": true,
        "used": false
       },
-      "source_adapter": "frenchbreaches",
-      "timeline": [],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Les Métaux Précieux piraté : 134 000 commandes, près de 19 000 pièces d’identité et 16 822 RIB exposés Selon des informations obtenues par FrenchBreaches, Les Métaux Précieux, site français spécialisé dans l’achat et la vente de métaux précieux, serait victime d’une importante fu…",
-    "threat": "Fuite de données",
-    "title": "Les Métaux Précieux",
-    "url": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "incident_summary": "CONFIDENCE_REJECTED",
-    "summary": "CONFIDENCE_REJECTED"
-   },
-   "first_queued_at": "2026-10-09T13:56:05.188120+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-09T17:55:26.671747+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-bb16a8f7bc9de746",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "les metaux precieux",
-    "Organisation_Raw": "Les Métaux Précieux",
-    "Published_Date": "2026-10-08",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Les Métaux Précieux",
-    "URL": "https://frenchbreaches.com/alertes/les-m-taux-pr-cieux-mudzdac4wsgp60brxup"
-   },
-   "key": "ITM-bb16a8f7bc9de746:e9440f4a4b3c5f963746bcb811ecd4faeab52e98368b21ccf07d25f720638164",
-   "last_queued_at": "2026-10-09T13:56:05.188120+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "SEMANTIC_MISS"
-  },
-  {
-   "attempts": 0,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 08/10/2026\n— Secteur Commerce\nSINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués\nMise à jour du 8 octobre 2026 à 14h00\nContacté par le service de presse de SINEQUAE, FrenchBreaches a reçu un démenti formel : l’entreprise affirme n’avoir subi aucune intrusion informatique et ne pas être l’étude visée par cette attaque.\nSelon SINEQUAE, le document de 2023 évoqué dans cette affaire avait été transmis à un tiers dans le cadre normal de ses activités et ne provient pas de ses systèmes informatiques.\nLa société SINEQUAE, spécialisée dans les activités de commissaires de justice, est au cœur d’une cyberattaque revendiquée par le groupe LAMASHTU. Les cybercriminels affirment avoir dérobé 65 Go de données, représentant près de 80 000 fichiers, comprenant notamment des documents judiciaires, financiers et des informations personnelles.\nUne communication publiée le 1er octobre 2026 confirme par ailleurs une intrusion chez un client utilisant un logiciel de FIDUCIAL Informatique, tout en précisant que les systèmes du groupe n’ont pas été compromis.\nPrès de 80 000 fichiers sensibles revendiqués\nLe groupe LAMASHTU affirme détenir une importante quantité de documents attribués à SINEQUAE, notamment :\nDes dossiers judiciaires et de recouvrement ;\nDes décisions de justice et pièces d’identité ;\nDes coordonnées bancaires, RIB et IBAN ;\nDes informations sur des dettes, paiements et situations financières ;\nDes documents concernant des particuliers et des entreprises.\nCes informations pourraient présenter des risques importants pour les personnes concernées, notamment en matière d'usurpation d'identité, de fraude et d'hameçonnage ciblé.\nLes volumes annoncés et la nature exacte des fichiers restent toutefois des affirmations des cybercriminels, qui n'ont pas été intégralement vérifiées de manière indépendante.\nUne intrusion confirmée, mais une origine technique inconnue\nDans un communiqué du 1er octobre, FIDUCIAL indique qu'un client utilisant un logiciel installé dans son propre environnement informatique, dit « on premise », a subi une intrusion.\nLe groupe précise que des mesures de remédiation et de sécurisation ont immédiatement été mises en place et qu'une déclaration à la CNIL a été recommandée à l'entreprise concernée.\nIl affirme également n'avoir constaté aucune intrusion ni exfiltration de données sur ses propres systèmes.\nÀ ce stade, la méthode employée par les attaquants reste inconnue. Aucun élément public ne permet d'affirmer que le logiciel utilisé par le client est à l'origine de la compromission.\nDes conséquences potentiellement importantes\nLa nature des documents revendiqués rend cette affaire particulièrement sensible. Les dossiers traités par les commissaires de justice peuvent contenir des informations détaillées sur la situation personnelle, judiciaire et financière de particuliers comme d'entreprises.\nSi la fuite annoncée se confirme dans son intégralité, les données pourraient être exploitées à des fins frauduleuses.\nL'intrusion signalée est distincte de la compromission alléguée de 65 Go de fichiers : l'étendue réelle des données dérobées reste à établir.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-08",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 3211,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Les cybercriminels affirment avoir dérobé 65 Go de données, représentant près de 80 000 fichiers, comprenant notamment des documents judiciaires, financiers et des informations personnelles.",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "raw": "80 000 fichiers",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "files",
-        "value": 80000
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Les cybercriminels affirment avoir dérobé 65 Go de données, représentant près de 80 000 fichiers, comprenant notamment des documents judiciaires, financiers et des informations personnelles.",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "files",
-        "value": 80000
-       },
-       {
-        "date": "2026-10-08",
-        "evidence": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués Mise à jour du 8 octobre 2026 à 14h00 Contacté par le service de presse de SINEQUAE, FrenchBreaches a reçu un démenti formel : l’entreprise affirme n’avoir subi aucune intrusion informat…",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "denied",
-        "type": "data_volume",
-        "unit": "GO",
-        "value": 65.0
-       },
-       {
-        "date": "",
-        "evidence": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_volume",
-        "unit": "GO",
-        "value": 65.0
-       },
-       {
-        "date": "",
-        "evidence": "L'intrusion signalée est distincte de la compromission alléguée de 65 Go de fichiers : l'étendue réelle des données dérobées reste à établir.",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_volume",
-        "unit": "GO",
-        "value": 65.0
-       }
-      ],
-      "data_types": [],
-      "data_volumes": [
-       {
-        "date": "2026-10-08",
-        "evidence": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués Mise à jour du 8 octobre 2026 à 14h00 Contacté par le service de presse de SINEQUAE, FrenchBreaches a reçu un démenti formel : l’entreprise affirme n’avoir subi aucune intrusion informat…",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "denied",
-        "unit": "GO",
-        "value": 65.0
-       },
-       {
-        "date": "",
-        "evidence": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "GO",
-        "value": 65.0
-       },
-       {
-        "date": "",
-        "evidence": "L'intrusion signalée est distincte de la compromission alléguée de 65 Go de fichiers : l'étendue réelle des données dérobées reste à établir.",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "GO",
-        "value": 65.0
-       }
-      ],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 3502,
-       "claims": 4,
-       "hypotheses": 0,
-       "semantic_candidate": true,
-       "sentences": 33
-      },
-      "relations": [
-       {
-        "evidence": "La société SINEQUAE, spécialisée dans les activités de commissaires de justice, est au cœur d’une cyberattaque revendiquée par le groupe LAMASHTU.",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "object": "incident",
-        "relation": "claimed_by",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "subject": "LAMASHTU"
-       }
-      ],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
       "timeline": [
        {
-        "date": "2026-10-08",
-        "event": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués Mise à jour du 8 octobre 2026 à 14h00 Contacté par le service de presse de SINEQUAE, FrenchBreaches a reçu un démenti formel : l’entreprise affirm",
-        "evidence": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués Mise à jour du 8 octobre 2026 à 14h00 Contacté par le service de presse de SINEQUAE, FrenchBreaches a reçu un démenti formel : l’entreprise affirme n’avoir subi aucune intrusion informat…",
-        "item_id": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
-        "source_id": "FRENCHBREACHES",
-        "status": "denied"
+        "date": "2026-10-26",
+        "event": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération.",
+        "evidence": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération.",
+        "status": "unknown"
        }
       ],
       "version": "2",
       "vulnerabilities": []
      }
     },
-    "summary": "SINEQUAE victime d’une cyberattaque : 65 Go de données judiciaires et financières revendiqués Mise à jour du 8 octobre 2026 à 14h00 Contacté par le service de presse de SINEQUAE, FrenchBreaches a reçu un démenti formel : l’entreprise affirme n’avoir subi aucune intrusion informat…",
-    "threat": "Fuite de données",
-    "title": "Sinequae",
-    "url": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw"
+    "summary": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur…",
+    "threat": "",
+    "title": "FSCF : les données de 28 000 licenciés diffusées après une cyberattaque",
+    "url": "https://www.cyberattaque.org/fscf-les-donnees-de-28-000-licencies-diffusees-apres-une-cyberattaque/"
    },
-   "exhausted_fields": {},
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-10-28T13:39:21.260882+00:00",
+     "reason": "ACTIVITY_IDENTITY_AMBIGUOUS"
+    },
+    "activity_sector_match": {
+     "at": "2026-10-28T13:39:21.260882+00:00",
+     "reason": "NO_VALID_ACTIVITY_PAIR"
+    }
+   },
    "field_reasons": {
-    "incident_summary": "CONFIDENCE_REJECTED",
-    "summary": "CONFIDENCE_REJECTED"
+    "activity_description": "EVIDENCE_TOO_LONG",
+    "activity_sector_match": "EVIDENCE_TOO_LONG"
    },
-   "first_queued_at": "2026-10-09T13:56:43.158767+00:00",
+   "first_queued_at": "2026-10-27T12:50:45.355370+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-09T17:55:26.671747+04:00",
+    "Collected_As_Of": "2026-10-27T16:48:56.196648+04:00",
     "Event_Date": "",
-    "Item_ID": "ITM-9e813bef7047849e",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "sinequae",
-    "Organisation_Raw": "Sinequae",
-    "Published_Date": "2026-10-08",
+    "Item_ID": "ITM-a4157e2e1c8daf67",
+    "Location": "Inconnu",
+    "Organisation_Key": "fscf",
+    "Organisation_Raw": "FSCF",
+    "Published_Date": "2026-10-27",
     "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4592",
     "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Sinequae",
-    "URL": "https://frenchbreaches.com/alertes/sinequae-muyos33t5ew77t08bw"
+    "Threat_Raw": "",
+    "Title": "FSCF : les données de 28 000 licenciés diffusées après une cyberattaque",
+    "URL": "https://www.cyberattaque.org/fscf-les-donnees-de-28-000-licencies-diffusees-apres-une-cyberattaque/"
    },
-   "key": "ITM-9e813bef7047849e:56dfc2441c262777115d4938a7b9f8da522bc8c4d8976f6335f740498714382b",
-   "last_queued_at": "2026-10-09T13:56:43.158767+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "SEMANTIC_MISS"
+   "key": "ITM-a4157e2e1c8daf67:42de279794f3b56e6ba9f6e7b722e88e2b27833bdde7bfdd696c9b45acc21692",
+   "last_queued_at": "2026-10-27T12:50:45.355370+00:00",
+   "pending_fields": [],
+   "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 0,
+   "attempts": 1,
    "entry": {
     "content": "La ville de Saint-Pierre-des-Corps, en Indre-et-Loire, confirme être victime d’une cyberattaque  affectant ses services municipaux. L’incident a entraîné le  blocage de l’ensemble du système téléphonique  de la collectivité et perturbe également une partie de son système informatique. \n\n\n\n La mairie indique avoir mobilisé dès la détection de l’attaque son équipe informatique ainsi que des  experts en cybersécurité  afin de sécuriser l’infrastructure et de circonscrire la menace. Une enquête est désormais en cours pour déterminer si des  données internes ou des informations concernant les habitants  ont également pu être compromises. \n\n\n\n Une cyberattaque qui perturbe directement les services municipaux \n\n\n\n La cyberattaque a eu des conséquences immédiatement visibles pour les habitants. La ville confirme que  l’ensemble du réseau téléphonique de la mairie et des lieux municipaux est actuellement indisponible . \n\n\n\n Le système informatique est également  partiellement touché . Les équipes procèdent désormais à une remise en service progressive des équipements, avec des contrôles de sécurité avant leur reconnexion. \n\n\n\n Un premier service a déjà pu être restauré : selon la mairie,  la messagerie électronique municipale fonctionne de nouveau . \n\n\n\n   \n\n\n\n Un numéro temporaire mis en place pour joindre la mairie \n\n\n\n En raison de l’indisponibilité du réseau téléphonique habituel, Saint-Pierre-des-Corps a activé un  numéro de téléphone temporaire  permettant de contacter l’accueil de la mairie. \n\n\n\n Les services municipaux restent néanmoins  ouverts aux horaires habituels  et la collectivité assure poursuivre le traitement des démarches afin de maintenir autant que possible la continuité du service public. \n\n\n\n La panne téléphonique ne concerne d’ailleurs pas uniquement le standard de l’hôtel de ville mais  l’ensemble des lieux municipaux raccordés au réseau concerné . \n\n\n\n L’impact sur les données des habitants fait l’objet d’une enquête \n\n\n\n La principale inconnue concerne désormais les données. La mairie indique avoir immédiatement ouvert une  enquête technique et administrative  afin de déterminer si l’attaque a permis d’accéder à des informations stockées dans son système informatique. \n\n\n\n Les investigations doivent notamment vérifier un éventuel impact sur les  données internes de la collectivité ainsi que sur les données des usagers . \n\n\n\n À ce stade, la ville  ne confirme donc aucune fuite de données . Aucun volume, aucune catégorie d’informations et aucun nombre de personnes concernées n’ont été annoncés. Il faudra attendre les résultats des investigations pour déterminer si l’attaque s’est limitée à une perturbation des systèmes ou si des informations ont également été consultées ou exfiltrées. \n\n\n\n État civil, écoles, CCAS… une mairie gère de nombreuses données sensibles \n\n\n\n L’enjeu est particulièrement important pour une collectivité territoriale. Les systèmes municipaux sont utilisés quotidiennement par de nombreux services :  état civil, ressources humaines, finances, petite enfance, affaires scolaires, centre communal d’action sociale, logement, urbanisme ou encore centre municipal de santé . \n\n\n\n Cela ne signifie pas que les données de ces services ont été compromises dans l’attaque de Saint-Pierre-des-Corps. La ville ne le confirme pas. Mais cette diversité explique pourquoi une  analyse approfondie du périmètre de l’intrusion  est nécessaire avant de pouvoir écarter définitivement une violation de données personnelles. \n\n\n\n La CNIL et l’ANSSI saisies \n\n\n\n La ville indique avoir saisi les autorités compétentes, notamment la  Commission nationale de l’informatique et des libertés (CNIL)  et l’ Agence nationale de la sécurité des systèmes d’information (ANSSI) . \n\n\n\n Ces signalements interviennent alors que les investigations techniques sont toujours en cours. Les équipes cherchent notamment à comprendre  le point d’entrée utilisé par les attaquants, les systèmes effectivement touchés et l’existence éventuelle d’un accès aux données . \n\n\n\n La méthode utilisée par les attaquants reste inconnue \n\n\n\n Saint-Pierre-des-Corps ne fournit pour le moment aucun détail concernant l’origine technique de la cyberattaque. On ignore donc s’il s’agit d’un  rançongiciel, de l’exploitation d’une vulnérabilité, de la compromission d’un compte ou d’un autre type d’intrusion . \n\n\n\n La ville n’évoque pas non plus de demande de rançon, de revendication par un groupe cybercriminel ou de publication de documents sur Internet. \n\n\n\n La priorité semble actuellement être donnée à l’ isolement des systèmes concernés et à leur remise en service progressive , afin d’éviter qu’un équipement compromis ne permette à l’attaquant de reprendre pied dans le réseau. \n\n\n\n La mairie reste ouverte malgré l’attaque \n\n\n\n Malgré les perturbations, Saint-Pierre-des-Corps indique que  la mairie et les différents services municipaux restent ouverts . Cette continuité est particulièrement importante pour les démarches qui ne peuvent pas être reportées ou réalisées en ligne. \n\n\n\n La remise en fonctionnement du système informatique doit désormais se poursuivre progressivement. Le réseau téléphonique reste pour le moment le principal service totalement indisponible. \n\n\n\n La collectivité promet de publier de nouvelles informations au fur et à mesure des opérations de rétablissement. Le point le plus attendu concernera désormais les résultats de l’enquête sur les données :  aucune fuite n’est confirmée pour l’instant, mais cette possibilité fait explicitement partie des investigations engagées par la mairie .",
     "entity": "",
@@ -11157,7 +10839,10 @@
     "url": "https://www.cyberattaque.org/saint-pierre-des-corps-une-cyberattaque-perturbe-ses-systemes/"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "activity_description": "EVIDENCE_NOT_GROUNDED",
+    "activity_sector_match": "EVIDENCE_NOT_GROUNDED"
+   },
    "first_queued_at": "2026-10-09T13:56:53.242094+00:00",
    "item": {
     "Collected_As_Of": "2026-10-09T17:55:26.671747+04:00",
@@ -11176,15 +10861,15 @@
     "URL": "https://www.cyberattaque.org/saint-pierre-des-corps-une-cyberattaque-perturbe-ses-systemes/"
    },
    "key": "ITM-cf2eb918bf4d1e44:4c51eaac5a0a6d86630fb7c979e3327c67729165fd0bff4d562312ffd2b22971",
-   "last_queued_at": "2026-10-09T13:56:53.242094+00:00",
+   "last_queued_at": "2026-10-28T13:40:20.745035+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 0,
+   "attempts": 1,
    "entry": {
     "content": "L’Institut Ophtalmologique Sourdille Atlantique  confirme que des données de certains de ses patients ont été compromises à la suite d’une  cyberattaque contre Alaxione , son ancien prestataire de prise de rendez-vous en ligne. L’incident est survenu  fin septembre 2026  sur les infrastructures du prestataire. \n\n\n\n Les personnes concernées sont exclusivement des patients ayant utilisé la plateforme de prise de rendez-vous d’Alaxione pour consulter à l’Institut  avant 2022 . Parmi les informations potentiellement dérobées figurent les identités, coordonnées et dates de naissance. Plus sensible encore, le  numéro de Sécurité sociale de 125 patients  est également concerné. \n\n\n\n Un important institut d’ophtalmologie en Loire-Atlantique \n\n\n\n L’Institut Ophtalmologique Sourdille Atlantique est un important établissement spécialisé dans la prise en charge des  pathologies de l’œil et la chirurgie ophtalmologique . Il dispose de cinq centres de consultation en Loire-Atlantique, notamment à Saint-Herblain, Nantes, Pornic, Ancenis-Saint-Géréon et Machecoul. \n\n\n\n Plusieurs dizaines de médecins et orthoptistes y exercent, avec des spécialités couvrant notamment la cataracte, la rétine, le glaucome, la chirurgie réfractive ou encore l’ophtalmologie pédiatrique. L’Institut annonce réaliser plus de  16 000 interventions chirurgicales chaque année . \n\n\n\n   \n\n\n\n Alaxione était utilisé pour gérer les rendez-vous avant 2022 \n\n\n\n L’intrusion n’a pas eu lieu directement dans les systèmes informatiques actuels de l’Institut. Elle concerne   Alaxione  , une société française spécialisée dans les solutions numériques de santé et notamment dans la gestion d’agendas et la prise de rendez-vous médicaux. \n\n\n\n Alaxione intervient comme sous-traitant auprès de professionnels et d’établissements de santé et peut, à ce titre, héberger ou traiter des données nécessaires à l’organisation des rendez-vous. \n\n\n\n Sourdille Atlantique précise avoir cessé d’utiliser cette solution en  2022 , année depuis laquelle ses rendez-vous sont gérés avec  Doctolib . L’Institut insiste sur le fait que ses systèmes actuels et son service de prise de rendez-vous utilisé depuis 2022  ne sont pas concernés par cette cyberattaque . \n\n\n\n Des données anciennes étaient encore conservées chez le prestataire \n\n\n\n L’incident soulève néanmoins une question importante : plusieurs années après la fin de la relation avec Alaxione,  des informations relatives à d’anciens patients étaient encore présentes sur les infrastructures du prestataire . \n\n\n\n L’Institut indique avoir demandé à Alaxione de lui confirmer la  destruction définitive de l’intégralité des données historiques résiduelles  encore conservées sur ses serveurs. \n\n\n\n Cette demande montre que l’enjeu ne porte pas uniquement sur la sécurisation du prestataire après l’attaque, mais également sur la durée pendant laquelle des données personnelles peuvent rester stockées après la fin d’un contrat ou d’un changement de solution. \n\n\n\n Identité, téléphone, adresse et date de naissance concernés \n\n\n\n Selon les informations transmises par Alaxione à l’Institut, un  nombre restreint de fiches  aurait été compromis. Le nombre total de patients concernés n’est cependant pas communiqué publiquement. \n\n\n\n Les informations potentiellement exposées comprennent les  noms, prénoms, civilité, adresses email, numéros de téléphone, adresses postales et dates de naissance . \n\n\n\n Pour  125 patients , le  numéro de Sécurité sociale, également appelé NIR , figure également parmi les données compromises. Associé à une identité complète, une date de naissance et des coordonnées, cet identifiant augmente fortement les possibilités d’usurpation d’identité et de fraude ciblée. \n\n\n\n Aucun dossier médical n’aurait été récupéré \n\n\n\n L’Institut apporte toutefois une précision importante :  aucun document médical, dossier de soins ou pièce jointe n’aurait été extrait  lors de l’incident. \n\n\n\n La compromission concerne donc les données utilisées pour organiser les rendez-vous et identifier les patients, et non les dossiers médicaux actuellement conservés par Sourdille Atlantique. \n\n\n\n La présence du numéro de Sécurité sociale pour certains patients reste néanmoins particulièrement sensible, même en l’absence de comptes rendus médicaux, diagnostics ou prescriptions. \n\n\n\n La CNIL a été informée par Alaxione \n\n\n\n L’incident a fait l’objet d’une  notification auprès de la CNIL par Alaxione . L’Institut Sourdille Atlantique indique de son côté informer les patients afin qu’ils puissent prendre les précautions nécessaires. \n\n\n\n La méthode utilisée par l’attaquant pour accéder aux infrastructures d’Alaxione n’est pas détaillée dans la communication de l’Institut. Le volume total de données récupérées à l’échelle du prestataire n’est pas davantage précisé. \n\n\n\n Un scénario idéal pour de faux messages de l’Assurance Maladie \n\n\n\n Le principal risque concerne désormais les campagnes de  phishing particulièrement personnalisées . Un cybercriminel disposant du nom, du téléphone, de la date de naissance et éventuellement du numéro de Sécurité sociale d’un patient peut créer des messages beaucoup plus crédibles. \n\n\n\n Les victimes pourraient notamment recevoir de faux emails, SMS ou appels prétendant provenir de  l’Institut, de l’Assurance Maladie, d’une mutuelle ou d’un autre professionnel de santé , avec pour objectif de récupérer des informations bancaires, des mots de passe ou des codes de validation. \n\n\n\n Sourdille Atlantique recommande donc aux patients ayant utilisé la plateforme de rendez-vous avant 2022 de rester particulièrement vigilants face aux communications inattendues et de ne jamais transmettre leurs  coordonnées bancaires ou identifiants  en réponse à un message ou un appel non sollicité. \n\n\n\n Une nouvelle conséquence directe de l’incident Alaxione \n\n\n\n Cette communication permet désormais d’établir officiellement qu’un établissement de santé ayant utilisé Alaxione a vu des  données réelles de patients compromises . Sourdille Atlantique confirme explicitement le vol survenu chez son ancien prestataire et précise le type d’informations concernées. \n\n\n\n Le nombre total de patients touchés reste inconnu, mais la présence confirmée de  125 numéros de Sécurité sociale  montre que l’incident dépasse une simple exposition d’adresses email. Les investigations et les notifications des différents établissements utilisant ou ayant utilisé Alaxione pourraient encore permettre de préciser l’ampleur globale de cette cyberattaque.",
     "entity": "",
@@ -11383,7 +11068,10 @@
     "url": "https://www.cyberattaque.org/institut-sourdille-atlantique-les-patients-exposes-apres-la-cyberattaque-dalaxione/"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "activity_description": "CONFIDENCE_REJECTED",
+    "activity_sector_match": "CONFIDENCE_REJECTED"
+   },
    "first_queued_at": "2026-10-09T13:56:53.840448+00:00",
    "item": {
     "Collected_As_Of": "2026-10-09T17:55:26.671747+04:00",
@@ -11402,12 +11090,12 @@
     "URL": "https://www.cyberattaque.org/institut-sourdille-atlantique-les-patients-exposes-apres-la-cyberattaque-dalaxione/"
    },
    "key": "ITM-bc70f47670987605:3125997c1f376401cd82ede8b2824684dd2db99e7c3c76e228896f14a989534e",
-   "last_queued_at": "2026-10-09T13:56:53.840448+00:00",
+   "last_queued_at": "2026-10-28T13:40:23.519613+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_REJECTED"
   },
   {
    "attempts": 0,
@@ -54226,257 +53914,139 @@
   {
    "attempts": 0,
    "entry": {
-    "content": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.  Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération. Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives. \n\n\n\n Le point le plus préoccupant concerne la présence de  données personnelles d’enfants mineurs , dont certains âgés de moins de 12 ans. Les fichiers permettent notamment d’associer leur identité à un club, une discipline et une catégorie sportive. \n\n\n\n Créée en 1898, la  Fédération Sportive et Culturelle de France  est une organisation reconnue d’utilité publique qui fédère des associations sportives, culturelles et socio-éducatives sur l’ensemble du territoire. Elle intervient notamment dans la gymnastique, le twirling, les activités artistiques et l’animation jeunesse. \n\n\n\n   \n\n\n\n 21 634 licences et plus de 5 300 présélections dans les données revendiquées \n\n\n\n La publication du 26 octobre détaille sept catégories de données qui auraient été récupérées depuis les services de la FSCF. \n\n\n\n \n  21 634  enregistrements de licences ; \n\n\n\n  5 305  enregistrements de présélections ; \n\n\n\n  1 573  abonnés ; \n\n\n\n  642  enregistrements liés aux instances de la FSCF ; \n\n\n\n  457  correspondants par discipline ; \n\n\n\n  270  licences annulées ; \n\n\n\n  140  abonnements. \n \n\n\n\n Le total atteint précisément  30 021 enregistrements . Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories. \n\n\n\n Les fichiers révèlent l’identité, l’adresse et le club sportif des licenciés \n\n\n\n Les extraits diffusés présentent une structure caractéristique d’un export de données de gestion fédérale. Plusieurs dizaines de champs sont recensés, permettant de retrouver des informations personnelles particulièrement détaillées. \n\n\n\n Parmi les informations apparaissant dans les exemples figurent : \n\n\n\n \n Les  noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales, communes et codes postaux ; \n\n\n\n Les adresses email et potentiellement les numéros de téléphone ; \n\n\n\n Les numéros de licence et leur statut ; \n\n\n\n Les  clubs sportifs et les disciplines pratiquées  ; \n\n\n\n Les catégories d’âge et les niveaux de compétition ; \n\n\n\n Les comités départementaux et régionaux ; \n\n\n\n Les dates de validation et d’expiration des licences ; \n\n\n\n Certains montants financiers associés aux licences. \n \n\n\n\n Les exemples concernent notamment des licenciés de  Loire-Atlantique , dans des clubs situés autour de Nantes et de Saint-Herblain. On retrouve des pratiquants de gymnastique féminine, de gymnastique rythmique et de twirling. \n\n\n\n Des enfants nés en 2014 et 2016 apparaissent dans les extraits \n\n\n\n La présence de mineurs constitue l’un des aspects les plus sensibles de cette divulgation. Plusieurs fiches correspondent à des enfants nés en  2014 et 2016 , avec des catégories sportives U12 et U10. \n\n\n\n Pour ces jeunes licenciés, les informations permettent de connaître simultanément leur  identité, leur âge, leur commune de résidence et leur association sportive . \n\n\n\n Cette combinaison est particulièrement problématique : les données ne permettent pas seulement d’identifier un enfant, mais aussi de connaître une partie de ses activités extrascolaires. Si elles sont réutilisées à des fins malveillantes, elles pourraient faciliter des prises de contact frauduleuses auprès des familles. \n\n\n\n Des licences actives pour la saison 2026 \n\n\n\n Les enregistrements présentés ne semblent pas provenir exclusivement d’anciennes archives. Plusieurs fiches portent la mention  « Active » pour la saison 2026 , avec des dates de validation situées en 2025 et une fin de validité fixée au 31 août 2026. \n\n\n\n D’autres informations font référence à des licences de compétition dont les périodes de validité peuvent s’étendre jusqu’en  2028 . \n\n\n\n Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes. Ils ne permettent toutefois pas de déterminer la date exacte à laquelle elles ont été extraites. \n\n\n\n Le hacker évoque une extraction automatisée des données \n\n\n\n L’auteur de la publication présente son opération comme un  « scraping » . Cette technique consiste à collecter automatiquement des informations accessibles depuis un site ou une application, parfois en exploitant des interfaces qui ne limitent pas suffisamment les requêtes. \n\n\n\n Dans le cas de la FSCF, plusieurs scénarios sont envisageables :  une interface de consultation insuffisamment protégée, une API exposant trop d’informations ou un défaut de contrôle des autorisations . \n\n\n\n La présence de champs administratifs détaillés laisse penser que les informations proviennent d’un système structuré de gestion des licences. En revanche, rien ne permet de déterminer si le hacker a contourné une protection, utilisé un accès légitime compromis ou simplement collecté des données accessibles sans authentification. \n\n\n\n Des escroqueries possibles en usurpant l’identité des clubs sportifs \n\n\n\n Le principal risque concerne désormais l’utilisation de ces informations pour mener des  campagnes de phishing ciblées contre les licenciés et leurs familles . \n\n\n\n Un fraudeur connaissant le nom d’un sportif, son club, sa discipline et sa saison de licence pourrait se faire passer pour une association afin de réclamer un paiement, une régularisation d’inscription ou une mise à jour du dossier administratif. \n\n\n\n La présence de données concernant des mineurs renforce cette inquiétude. Les parents pourraient recevoir des sollicitations suffisamment précises pour sembler provenir de véritables responsables associatifs. \n\n\n\n À ce stade,  aucune confirmation officielle de la FSCF n’a été identifiée concernant cette extraction . Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués. \n\n\n\n L’enjeu principal reste donc de déterminer comment des informations aussi détaillées, notamment celles de jeunes licenciés, ont pu être récupérées et si d’autres données de la fédération demeurent accessibles.",
+    "content": "Renfe, la compagnie ferroviaire espagnole qui exploite également des trains en France, confirme une cyberattaque ayant potentiellement compromis les données personnelles de ses voyageurs.  L’incident, survenu le 24 septembre 2026, pourrait concerner des informations d’identité, des historiques de voyages, des billets achetés et même des mots de passe protégés par chiffrement. \n\n\n\n  Les voyageurs français pourraient également être concernés.  Depuis juillet 2023, Renfe commercialise des trajets à grande vitesse entre la France et l’Espagne, notamment depuis Lyon, Marseille, Montpellier, Nîmes ou Perpignan. L’entreprise ne précise toutefois pas si les données de clients français figurent parmi celles auxquelles les attaquants ont pu accéder. \n\n\n\n Renfe est l’opérateur ferroviaire public espagnol. Au-delà de ses services nationaux, la compagnie exploite des trains AVE internationaux reliant notamment Barcelone à Lyon et Madrid à Marseille, et commercialise également des trajets entre plusieurs villes françaises. \n\n\n\n Un accès non autorisé détecté le 24 septembre 2026 \n\n\n\n Dans une notification officielle publiée en français, Renfe Viajeros reconnaît qu’un tiers non autorisé a accédé à certains systèmes informatiques de l’entreprise le  24 septembre 2026 . \n\n\n\n L’intrusion a été détectée grâce aux outils internes de surveillance. Les premières investigations indiquent que les systèmes concernés étaient notamment liés aux  processus de vente de billets de train . \n\n\n\n Dans un premier communiqué publié le 25 septembre, Renfe évoquait principalement des noms et des adresses email potentiellement exposés. La compagnie avait alors indiqué ne disposer d’aucune preuve d’accès à des documents d’identité ou à d’autres informations particulièrement sensibles. \n\n\n\n Mais les investigations ont ensuite conduit Renfe à  élargir sensiblement le périmètre des données susceptibles d’avoir été compromises . \n\n\n\n Pièces d’identité, billets, déplacements et mots de passe potentiellement compromis \n\n\n\n La notification adressée aux personnes concernées évoque désormais plusieurs catégories d’informations : \n\n\n\n \n  Les données d’identité et de contact  des voyageurs ; \n\n\n\n  Les numéros de documents d’identité , notamment DNI, NIE ou documents équivalents ; \n\n\n\n  Les billets de train achetés  et les informations de réservation ; \n\n\n\n  Les trajets et voyages effectués  ; \n\n\n\n  Les identifiants de connexion et mots de passe , protégés par des mécanismes cryptographiques. \n \n\n\n\n Renfe précise que les mots de passe ne sont pas directement lisibles. La compagnie reconnaît néanmoins qu’un mot de passe trop faible pourrait être découvert par des tentatives de cassage. \n\n\n\n  La présence de ces différentes catégories de données dans les informations effectivement récupérées n’est pas encore établie.  L’entreprise poursuit ses investigations et ne communique aucun nombre précis de voyageurs concernés. \n\n\n\n Pourquoi les voyageurs français pourraient être touchés \n\n\n\n Cette cyberattaque ne concerne pas nécessairement uniquement les voyageurs espagnols. Renfe exploite et commercialise directement des services ferroviaires en France depuis 2023. \n\n\n\n Ses trains AVE desservent notamment  Lyon, Valence, Nîmes, Montpellier, Narbonne, Perpignan, Avignon, Aix-en-Provence et Marseille . Les voyageurs peuvent acheter leurs billets sur le site de Renfe, y compris pour des trajets internationaux ou réalisés en France. \n\n\n\n Dans ces conditions,  des résidents français ayant acheté des billets ou créé un compte Renfe pourraient figurer parmi les personnes concernées , si leurs informations étaient enregistrées dans les systèmes affectés. \n\n\n\n La compagnie n’a cependant pas précisé si les systèmes de réservation de ses lignes françaises étaient concernés par l’intrusion. Il n’est donc pas possible de confirmer à ce stade qu’un voyageur français a effectivement subi une fuite de données. \n\n\n\n Des historiques de déplacements exploitables pour des escroqueries ciblées \n\n\n\n L’un des risques les plus préoccupants concerne les informations liées aux déplacements des voyageurs. \n\n\n\n Un cybercriminel disposant du nom d’une personne, de ses coordonnées et de références à ses voyages pourrait élaborer des  messages frauduleux particulièrement crédibles , en évoquant une réservation, un remboursement ou une indemnisation. \n\n\n\n L’historique des trajets pourrait également révéler certaines habitudes de déplacement. Renfe reconnaît elle-même que ces informations pourraient permettre de reconstituer des profils ou des comportements de voyageurs. \n\n\n\n La compagnie recommande aux utilisateurs de modifier leur mot de passe et de se méfier des sollicitations demandant des coordonnées bancaires ou des informations personnelles. Elle précise ne pas avoir connaissance, à ce stade, d’une utilisation frauduleuse des données liée à cet incident. \n\n\n\n Renfe a signalé la cyberattaque aux autorités espagnoles \n\n\n\n Renfe indique avoir rapidement engagé des mesures de confinement, renforcé la surveillance de ses systèmes et lancé une investigation technique pour déterminer l’origine et l’étendue de l’intrusion. \n\n\n\n L’incident a été signalé aux autorités espagnoles compétentes, notamment à la  Garde civile et à l’Agence espagnole de protection des données (AEPD) . \n\n\n\n Dans sa communication initiale, Renfe évoquait une possible origine de l’incident dans des serveurs précédemment compromis d’Adif, le gestionnaire des infrastructures ferroviaires espagnoles. Les investigations se poursuivent pour déterminer précisément les circonstances de l’accès non autorisé. \n\n\n\n  Le nombre de personnes touchées reste inconnu, tout comme la présence éventuelle de voyageurs français parmi les victimes.  Compte tenu des activités de Renfe en France et du périmètre des systèmes de billetterie concernés, cette possibilité mérite toutefois une attention particulière.",
     "entity": "",
     "event_date": "",
     "location": "",
     "organisation": "",
-    "published": "2026-10-27",
+    "published": "2026-10-28",
     "sector": "",
-    "source_item_id": "4592",
+    "source_item_id": "4629",
     "source_metadata": {
      "rich_facts": {
-      "affected_counts": [
+      "affected_counts": [],
+      "affected_datasets": [
        {
         "date": "",
-        "evidence": "Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués.",
-        "raw": "30 021 enregistrements",
-        "scope": "",
-        "status": "claimed",
-        "unit": "records",
-        "value": 30021
+        "evidence": "Les billets de train achetés  et les informations de réservation ;",
+        "status": "unknown",
+        "value": "réservations"
        },
        {
         "date": "",
-        "evidence": "Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories.",
-        "raw": "30 021 personnes",
-        "scope": "",
+        "evidence": "Un cybercriminel disposant du nom d’une personne, de ses coordonnées et de références à ses voyages pourrait élaborer des  messages frauduleux particulièrement crédibles , en évoquant une réservation, un remboursement ou une indemnisation.",
         "status": "hypothesis",
-        "unit": "people",
-        "value": 30021
-       },
-       {
-        "date": "",
-        "evidence": "Le total atteint précisément  30 021 enregistrements .",
-        "raw": "30 021 enregistrements",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 30021
-       },
-       {
-        "date": "",
-        "evidence": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.",
-        "raw": "30 000 enregistrements",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 30000
-       },
-       {
-        "date": "",
-        "evidence": "21 634  enregistrements de licences ;",
-        "raw": "21 634  enregistrements",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 21634
-       },
-       {
-        "date": "",
-        "evidence": "5 305  enregistrements de présélections ;",
-        "raw": "5 305  enregistrements",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 5305
-       },
-       {
-        "date": "",
-        "evidence": "642  enregistrements liés aux instances de la FSCF ;",
-        "raw": "642  enregistrements",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 642
+        "value": "réservations"
        }
       ],
-      "affected_datasets": [],
       "affected_systems": [],
       "claims": [
        {
-        "date": "",
-        "evidence": "Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués.",
-        "scope": "",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 30021
-       },
-       {
-        "date": "",
-        "evidence": "Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories.",
-        "scope": "",
+        "date": "2026-09-24",
+        "evidence": "L’incident, survenu le 24 septembre 2026, pourrait concerner des informations d’identité, des historiques de voyages, des billets achetés et même des mots de passe protégés par chiffrement.",
         "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 30021
-       },
-       {
-        "date": "",
-        "evidence": "Le total atteint précisément  30 021 enregistrements .",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 30021
-       },
-       {
-        "date": "",
-        "evidence": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 30000
-       },
-       {
-        "date": "",
-        "evidence": "21 634  enregistrements de licences ;",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 21634
-       },
-       {
-        "date": "",
-        "evidence": "5 305  enregistrements de présélections ;",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 5305
-       },
-       {
-        "date": "",
-        "evidence": "642  enregistrements liés aux instances de la FSCF ;",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 642
-       },
-       {
-        "date": "",
-        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
-        "status": "unknown",
         "type": "data_type",
-        "value": "adresses postales"
+        "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les  noms, prénoms et dates de naissance  ;",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "evidence": "Dans un premier communiqué publié le 25 septembre, Renfe évoquait principalement des noms et des adresses email potentiellement exposés.",
         "status": "hypothesis",
         "type": "data_type",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "evidence": "Pièces d’identité, billets, déplacements et mots de passe potentiellement compromis",
         "status": "hypothesis",
         "type": "data_type",
-        "value": "numéros de téléphone"
+        "value": "pièces d'identité"
        },
        {
         "date": "",
-        "evidence": "Certains montants financiers associés aux licences.",
+        "evidence": "Les identifiants de connexion et mots de passe , protégés par des mécanismes cryptographiques.",
         "status": "unknown",
         "type": "data_type",
-        "value": "montants"
+        "value": "identifiants"
        },
        {
         "date": "",
-        "evidence": "Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes.",
-        "status": "claimed",
+        "evidence": "Les identifiants de connexion et mots de passe , protégés par des mécanismes cryptographiques.",
+        "status": "unknown",
         "type": "data_type",
-        "value": "informations administratives"
+        "value": "mots de passe"
        },
        {
-        "date": "2026-10-26",
-        "evidence": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération.",
+        "date": "",
+        "evidence": "Les billets de train achetés  et les informations de réservation ;",
+        "status": "unknown",
+        "type": "dataset",
+        "value": "réservations"
+       },
+       {
+        "date": "",
+        "evidence": "Un cybercriminel disposant du nom d’une personne, de ses coordonnées et de références à ses voyages pourrait élaborer des  messages frauduleux particulièrement crédibles , en évoquant une réservation, un remboursement ou une indemnisation.",
+        "status": "hypothesis",
+        "type": "dataset",
+        "value": "réservations"
+       },
+       {
+        "date": "2026-09-24",
+        "evidence": "Un accès non autorisé détecté le 24 septembre 2026",
         "kind": "statement",
         "scope": "Chronologie",
         "status": "unknown",
-        "value": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération."
+        "value": "Un accès non autorisé détecté le 24 septembre 2026"
+       },
+       {
+        "date": "2026-09-24",
+        "evidence": "Dans une notification officielle publiée en français, Renfe Viajeros reconnaît qu’un tiers non autorisé a accédé à certains systèmes informatiques de l’entreprise le  24 septembre 2026 .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "confirmed",
+        "value": "Dans une notification officielle publiée en français, Renfe Viajeros reconnaît qu’un tiers non autorisé a accédé à certains systèmes informatiques de l’entreprise le  24 septembre 2026 ."
        }
       ],
       "data_types": [
        {
-        "date": "",
-        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
-        "status": "unknown",
-        "value": "adresses postales"
+        "date": "2026-09-24",
+        "evidence": "L’incident, survenu le 24 septembre 2026, pourrait concerner des informations d’identité, des historiques de voyages, des billets achetés et même des mots de passe protégés par chiffrement.",
+        "status": "hypothesis",
+        "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives.",
-        "status": "unknown",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les  noms, prénoms et dates de naissance  ;",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "evidence": "Dans un premier communiqué publié le 25 septembre, Renfe évoquait principalement des noms et des adresses email potentiellement exposés.",
         "status": "hypothesis",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Les adresses email et potentiellement les numéros de téléphone ;",
+        "evidence": "Pièces d’identité, billets, déplacements et mots de passe potentiellement compromis",
         "status": "hypothesis",
-        "value": "numéros de téléphone"
+        "value": "pièces d'identité"
        },
        {
         "date": "",
-        "evidence": "Certains montants financiers associés aux licences.",
+        "evidence": "Les identifiants de connexion et mots de passe , protégés par des mécanismes cryptographiques.",
         "status": "unknown",
-        "value": "montants"
+        "value": "identifiants"
        },
        {
         "date": "",
-        "evidence": "Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes.",
-        "status": "claimed",
-        "value": "informations administratives"
+        "evidence": "Les identifiants de connexion et mots de passe , protégés par des mécanismes cryptographiques.",
+        "status": "unknown",
+        "value": "mots de passe"
        }
       ],
       "data_volumes": [],
       "profile": {
-       "chars": 6594,
-       "claims": 14,
-       "dates": 2,
-       "hypotheses": 3,
-       "numbers": 7,
-       "sentences": 61
+       "chars": 6100,
+       "claims": 7,
+       "dates": 3,
+       "hypotheses": 4,
+       "numbers": 0,
+       "sentences": 49
       },
       "relations": [],
       "semantic": {
@@ -54484,45 +54054,424 @@
       },
       "timeline": [
        {
-        "date": "2026-10-26",
-        "event": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération.",
-        "evidence": "Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération.",
+        "date": "2026-09-24",
+        "event": "L’incident, survenu le 24 septembre 2026, pourrait concerner des informations d’identité, des historiques de voyages, des billets achetés et même des mots de passe protégés par chiffrement.",
+        "evidence": "L’incident, survenu le 24 septembre 2026, pourrait concerner des informations d’identité, des historiques de voyages, des billets achetés et même des mots de passe protégés par chiffrement.",
+        "status": "hypothesis"
+       },
+       {
+        "date": "2026-09-24",
+        "event": "Un accès non autorisé détecté le 24 septembre 2026",
+        "evidence": "Un accès non autorisé détecté le 24 septembre 2026",
         "status": "unknown"
+       },
+       {
+        "date": "2026-09-24",
+        "event": "Dans une notification officielle publiée en français, Renfe Viajeros reconnaît qu’un tiers non autorisé a accédé à certains systèmes informatiques de l’entreprise le  24 septembre 2026 .",
+        "evidence": "Dans une notification officielle publiée en français, Renfe Viajeros reconnaît qu’un tiers non autorisé a accédé à certains systèmes informatiques de l’entreprise le  24 septembre 2026 .",
+        "status": "confirmed"
        }
       ],
       "version": "2",
       "vulnerabilities": []
      }
     },
-    "summary": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur…",
+    "summary": "Renfe, la compagnie ferroviaire espagnole qui exploite également des trains en France, confirme une cyberattaque ayant potentiellement compromis…",
     "threat": "",
-    "title": "FSCF : les données de 28 000 licenciés diffusées après une cyberattaque",
-    "url": "https://www.cyberattaque.org/fscf-les-donnees-de-28-000-licencies-diffusees-apres-une-cyberattaque/"
+    "title": "Renfe : une cyberattaque pourrait expose les données de ses voyageurs français",
+    "url": "https://www.cyberattaque.org/renfe-une-cyberattaque-pourrait-expose-les-donnees-de-ses-voyageurs-francais/"
    },
    "exhausted_fields": {},
    "field_reasons": {
-    "activity_description": "EVIDENCE_TOO_LONG",
-    "activity_sector_match": "EVIDENCE_TOO_LONG"
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
    },
-   "first_queued_at": "2026-10-27T12:50:45.355370+00:00",
+   "first_queued_at": "2026-10-28T13:38:52.156102+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-27T16:48:56.196648+04:00",
+    "Collected_As_Of": "2026-10-28T17:38:09.694740+04:00",
     "Event_Date": "",
-    "Item_ID": "ITM-a4157e2e1c8daf67",
+    "Item_ID": "ITM-a63bcf712f177913",
     "Location": "Inconnu",
-    "Organisation_Key": "fscf",
-    "Organisation_Raw": "FSCF",
+    "Organisation_Key": "renfe",
+    "Organisation_Raw": "Renfe",
+    "Published_Date": "2026-10-28",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4629",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Renfe : une cyberattaque pourrait expose les données de ses voyageurs français",
+    "URL": "https://www.cyberattaque.org/renfe-une-cyberattaque-pourrait-expose-les-donnees-de-ses-voyageurs-francais/"
+   },
+   "key": "ITM-a63bcf712f177913:fc227d45e79e18ff02ed4c948b4897cccd2716b2f6642d72dcb530b8cc2444d1",
+   "last_queued_at": "2026-10-28T13:38:52.156102+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Le groupe de hackers BlackHatSect0r revendique une compromission majeure des systèmes informatiques de Quorum Groupe, un prestataire français des arts graphiques dont les données font référence à SIPLEC, GALEC, Renault, JCB et PPG.  Une capture montre une page de défacement sur un serveur applicatif, tandis que les fichiers transmis à Cyberattaque.org contiennent un important ensemble de données commerciales et techniques. \n\n\n\n  L’analyse élargie des archives révèle un export PostgreSQL de 2 976 283 lignes réparties dans 69 tables.  Ce chiffre dépasse les 859 419 lignes annoncées par les attaquants, mais comprend une majorité de journaux techniques. Il ne correspond donc pas à trois millions de personnes touchées. \n\n\n\n Un prestataire des arts graphiques dans le viseur \n\n\n\n La revendication présente Quorum comme une entreprise de services numériques. Les éléments disponibles décrivent plutôt un environnement consacré aux arts graphiques, au packaging et à la préparation de supports imprimés. La société  Quorum Graphic Media , implantée à Rungis, est enregistrée dans les activités de prépresse. \n\n\n\n Les données examinées proviennent d’un environnement applicatif baptisé  KATTY . Elles portent sur des catalogues de produits, des fournisseurs, des travaux de production, des livraisons et des éléments de facturation. \n\n\n\n Une capture documente le défacement du serveur applicatif \n\n\n\n Sur  app01.quorum.servers.pm , la page présente le message  « HACKED BY BlackHatSect0r » , ainsi que de la mention « DXSCAN C2 — OPERATION QUORUM ». \n\n\n\n   La capture fournie montre une page de défacement à l’adresse app01.quorum.servers.pm, avec la signature BlackHatSect0r.  \n\n\n\n Le contenu affiche un drapeau palestinien, le slogan  « Free Palestine »  et un texte visant les multinationales, l’ANSSI et la DGSE. Un encadré reprend plusieurs chiffres de la revendication, dont les 64 tables et 859 419 lignes prétendument extraites. \n\n\n\n  Cette capture constitue un élément visuel documentant le défacement du serveur applicatif.  Elle ne permet toutefois pas, à elle seule, d’établir un accès root, de confirmer les deux autres points d’accès annoncés comme défigurés ou de vérifier la suppression des sauvegardes. \n\n\n\n Près de 3 millions de lignes dans le principal export \n\n\n\n Cyberattaque.org a examiné deux archives SQL, les exports CSV disponibles et un index de chemins PDF. Le principal export contient  69 tables et 2 976 283 lignes , pour environ 299 Mo de texte SQL décompressé. Le second comprend  61 tables et 473 091 lignes . \n\n\n\n  Ces volumes ne doivent pas être additionnés.  Les deux archives contiennent des données qui se recoupent, et les CSV reprennent une partie des tables déjà présentes dans le SQL. Les 53 CSV du dossier principal représentent ainsi 791 170 lignes, déjà comprises dans le grand export. \n\n\n\n Le total principal inclut  1 766 845 entrées de journal de tâches planifiées  et  356 931 entrées de suivi des changements d’état . Ces deux journaux représentent environ 71 % des lignes. Les historiques et les tables de liaison expliquent également pourquoi un nombre d’enregistrements ne peut pas être assimilé à un nombre de victimes. \n\n\n\n Catalogues, fournisseurs, production et facturation exposés \n\n\n\n Les informations commerciales et opérationnelles restent conséquentes. Parmi les principales tables, Cyberattaque.org a recensé : \n\n\n\n \n  38 067 fiches produits  et 25 963 associations entre produits et fournisseurs ; \n\n\n\n  1 450 fiches fournisseurs  ; \n\n\n\n  39 763 enregistrements de travaux de production  et 7 530 dossiers de production ; \n\n\n\n  284 353 entrées de suivi d’interventions  ; \n\n\n\n  36 771 enregistrements de suivi comptable  et 5 938 enregistrements de livraison ; \n\n\n\n  242 fiches de contacts professionnels  et 55 comptes applicatifs. \n \n\n\n\n Les champs comprennent notamment des références de produits, des coordonnées de fournisseurs, des commentaires, des échéances, des prix et des références de facturation. Plusieurs tables décrivent différentes étapes d’un même travail : leurs effectifs ne correspondent donc pas à autant de dossiers distincts. \n\n\n\n Les chiffres diffèrent de ceux de BlackHatSect0r, qui annonce notamment 25 892 produits et 1 011 fournisseurs.  Le filtrage des seules fiches actives ne reproduit pas ces nombres  : l’export contient 29 811 produits et 947 fournisseurs marqués actifs. L’origine des écarts reste indéterminée. \n\n\n\n SIPLEC, GALEC, Renault, JCB et PPG apparaissent dans la base \n\n\n\n La table des organisations contient notamment les noms  SIPLEC, GALEC, PPG, RENAULT TECH et JCB SAS . Des produits, des contacts et des opérations de production sont associés à plusieurs de ces structures. \n\n\n\n Parmi les 242 fiches de contacts professionnels,  195 sont rattachées à SIPLEC . Le champ email contient 136 adresses au domaine siplec.com et 11 au domaine siplec.leclerc, sans garantir autant de personnes distinctes. Des adresses aux domaines de PPG, JCB, Renault et GALEC figurent également dans les fichiers. \n\n\n\n Les informations comprennent des noms, prénoms, adresses électroniques et parfois des numéros de téléphone.  La présence de ces entreprises ne démontre aucune intrusion dans leurs propres systèmes.  Les données correspondent aux relations professionnelles enregistrées dans l’environnement attribué à Quorum. \n\n\n\n 55 comptes applicatifs, dont deux superutilisateurs \n\n\n\n La table d’authentification contient  55 comptes, dont 14 marqués actifs et deux superutilisateurs . Quarante comportent une adresse au domaine quorumfrance.com. Ces statuts décrivent l’état enregistré dans l’export, sans prouver que les accès fonctionnent encore. \n\n\n\n Les champs de mots de passe contiennent des  empreintes PBKDF2-SHA256 à 15 000 itérations , et non des mots de passe directement lisibles. Leur exposition peut néanmoins permettre des tentatives de recherche de mots de passe hors ligne. La base comprend aussi des tables de groupes, de permissions et de sessions Django. \n\n\n\n Plus de 56 000 références PDF et des traces jusqu’en juillet 2026 \n\n\n\n La table des fichiers téléversés contient  57 260 références, dont 56 150 déclarées au format PDF . Un index distinct recense également 56 150 chemins PDF. Les autres références concernent notamment des images et des formats utilisés dans la production graphique. \n\n\n\n  Les documents binaires correspondants ne figurent pas dans le dossier analysé.  Ces références documentent un fonds de fichiers, mais ne prouvent pas que les attaquants ont récupéré chaque document. Le volume de 49 Go de médias annoncé reste à confirmer. \n\n\n\n Les travaux de production comportent des dates remontant à 2015. Les historiques de produits et de fournisseurs enregistrent des modifications jusqu’au  10 juillet 2026 . Des connexions de comptes et des journaux techniques vont jusqu’au  14 juillet 2026 . Ces dates montrent la présence de données récentes dans le corpus, sans dater l’intrusion. \n\n\n\n Les destructions et les secrets techniques restent revendiqués \n\n\n\n BlackHatSect0r affirme avoir supprimé les bases de données, les médias et les sauvegardes après exfiltration. Le groupe évoque également un chiffrement AES-256 des données emportées.  Cette déclaration ne suffit pas à établir le déploiement d’un rançongiciel ou le chiffrement des systèmes de production.  \n\n\n\n Les attaquants annoncent aussi des identifiants de bases de données et de messagerie, des secrets applicatifs, des configurations OpenVPN et des certificats .p12. Les fichiers de configuration et certificats correspondants ne sont pas présents dans le périmètre fourni : leur possession et leur validité ne sont pas vérifiées. \n\n\n\n  La capture documente le défacement du serveur applicatif, et les archives contiennent un ensemble structuré de données attribuées à Quorum.  En revanche, l’accès root, les suppressions et l’étendue des conséquences opérationnelles restent à établir. Les contacts, les informations commerciales et les historiques de production exposés pourraient notamment servir à préparer du phishing ciblé ou des usurpations de partenaires.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-27",
+    "sector": "",
+    "source_item_id": "4613",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Près de 3 millions de lignes dans le principal export",
+        "raw": "3 millions de lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 3000000
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse élargie des archives révèle un export PostgreSQL de 2 976 283 lignes réparties dans 69 tables.",
+        "raw": "2 976 283 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 2976283
+       },
+       {
+        "date": "",
+        "evidence": "Ce chiffre dépasse les 859 419 lignes annoncées par les attaquants, mais comprend une majorité de journaux techniques.",
+        "raw": "859 419 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 859419
+       },
+       {
+        "date": "",
+        "evidence": "Les 53 CSV du dossier principal représentent ainsi 791 170 lignes, déjà comprises dans le grand export.",
+        "raw": "791 170 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 791170
+       },
+       {
+        "date": "",
+        "evidence": "Le second comprend  61 tables et 473 091 lignes .",
+        "raw": "473 091 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 473091
+       },
+       {
+        "date": "",
+        "evidence": "39 763 enregistrements de travaux de production  et 7 530 dossiers de production ;",
+        "raw": "39 763 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 39763
+       },
+       {
+        "date": "",
+        "evidence": "36 771 enregistrements de suivi comptable  et 5 938 enregistrements de livraison ;",
+        "raw": "36 771 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 36771
+       },
+       {
+        "date": "",
+        "evidence": "39 763 enregistrements de travaux de production  et 7 530 dossiers de production ;",
+        "raw": "7 530 dossiers",
+        "scope": "",
+        "status": "unknown",
+        "unit": "files",
+        "value": 7530
+       },
+       {
+        "date": "",
+        "evidence": "36 771 enregistrements de suivi comptable  et 5 938 enregistrements de livraison ;",
+        "raw": "5 938 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 5938
+       },
+       {
+        "date": "",
+        "evidence": "242 fiches de contacts professionnels  et 55 comptes applicatifs.",
+        "raw": "55 comptes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "accounts",
+        "value": 55
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Près de 3 millions de lignes dans le principal export",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3000000
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse élargie des archives révèle un export PostgreSQL de 2 976 283 lignes réparties dans 69 tables.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 2976283
+       },
+       {
+        "date": "",
+        "evidence": "Ce chiffre dépasse les 859 419 lignes annoncées par les attaquants, mais comprend une majorité de journaux techniques.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 859419
+       },
+       {
+        "date": "",
+        "evidence": "Les 53 CSV du dossier principal représentent ainsi 791 170 lignes, déjà comprises dans le grand export.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 791170
+       },
+       {
+        "date": "",
+        "evidence": "Le second comprend  61 tables et 473 091 lignes .",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 473091
+       },
+       {
+        "date": "",
+        "evidence": "39 763 enregistrements de travaux de production  et 7 530 dossiers de production ;",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 39763
+       },
+       {
+        "date": "",
+        "evidence": "36 771 enregistrements de suivi comptable  et 5 938 enregistrements de livraison ;",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 36771
+       },
+       {
+        "date": "",
+        "evidence": "39 763 enregistrements de travaux de production  et 7 530 dossiers de production ;",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 7530
+       },
+       {
+        "date": "",
+        "evidence": "36 771 enregistrements de suivi comptable  et 5 938 enregistrements de livraison ;",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 5938
+       },
+       {
+        "date": "",
+        "evidence": "242 fiches de contacts professionnels  et 55 comptes applicatifs.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "accounts",
+        "value": 55
+       },
+       {
+        "date": "",
+        "evidence": "Le principal export contient  69 tables et 2 976 283 lignes , pour environ 299 Mo de texte SQL décompressé.",
+        "scope": "",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 299.0
+       },
+       {
+        "date": "",
+        "evidence": "Le volume de 49 Go de médias annoncé reste à confirmer.",
+        "scope": "",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 49.0
+       },
+       {
+        "date": "",
+        "evidence": "Elles portent sur des catalogues de produits, des fournisseurs, des travaux de production, des livraisons et des éléments de facturation.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs comprennent notamment des références de produits, des coordonnées de fournisseurs, des commentaires, des échéances, des prix et des références de facturation.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs comprennent notamment des références de produits, des coordonnées de fournisseurs, des commentaires, des échéances, des prix et des références de facturation.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "commentaires"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs de mots de passe contiennent des  empreintes PBKDF2-SHA256 à 15 000 itérations , et non des mots de passe directement lisibles.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Leur exposition peut néanmoins permettre des tentatives de recherche de mots de passe hors ligne.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les attaquants annoncent aussi des identifiants de bases de données et de messagerie, des secrets applicatifs, des configurations OpenVPN et des certificats .p12.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Elles portent sur des catalogues de produits, des fournisseurs, des travaux de production, des livraisons et des éléments de facturation.",
+        "status": "unknown",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs comprennent notamment des références de produits, des coordonnées de fournisseurs, des commentaires, des échéances, des prix et des références de facturation.",
+        "status": "unknown",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs comprennent notamment des références de produits, des coordonnées de fournisseurs, des commentaires, des échéances, des prix et des références de facturation.",
+        "status": "unknown",
+        "value": "commentaires"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs de mots de passe contiennent des  empreintes PBKDF2-SHA256 à 15 000 itérations , et non des mots de passe directement lisibles.",
+        "status": "unknown",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Leur exposition peut néanmoins permettre des tentatives de recherche de mots de passe hors ligne.",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les attaquants annoncent aussi des identifiants de bases de données et de messagerie, des secrets applicatifs, des configurations OpenVPN et des certificats .p12.",
+        "status": "unknown",
+        "value": "identifiants"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Le principal export contient  69 tables et 2 976 283 lignes , pour environ 299 Mo de texte SQL décompressé.",
+        "scope": "",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 299.0
+       },
+       {
+        "date": "",
+        "evidence": "Le volume de 49 Go de médias annoncé reste à confirmer.",
+        "scope": "",
+        "status": "unknown",
+        "unit": "GO",
+        "value": 49.0
+       }
+      ],
+      "profile": {
+       "chars": 8312,
+       "claims": 18,
+       "dates": 2,
+       "hypotheses": 1,
+       "numbers": 14,
+       "sentences": 80
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Le groupe de hackers BlackHatSect0r revendique une compromission majeure des systèmes informatiques de Quorum Groupe, un prestataire français…",
+    "threat": "",
+    "title": "Cyberattaque contre Quorum Groupe : des données liées à E.Leclerc, Renault, JCB et PPG en fuite",
+    "url": "https://www.cyberattaque.org/cyberattaque-contre-quorum-groupe-des-donnees-liees-a-e-leclerc-renault-jcb-et-ppg-en-fuite/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_IDENTITY_AMBIGUOUS",
+    "activity_sector_match": "CONFIDENCE_REJECTED"
+   },
+   "first_queued_at": "2026-10-28T13:39:07.544772+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-28T17:38:09.694740+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-976e3029d0434410",
+    "Location": "Inconnu",
+    "Organisation_Key": "quorum groupe",
+    "Organisation_Raw": "Quorum Groupe",
     "Published_Date": "2026-10-27",
     "Sector": "Inconnu",
     "Source_ID": "CYBERATTAQUE_ORG",
-    "Source_Item_ID": "4592",
-    "Threat": "Fuite de données",
+    "Source_Item_ID": "4613",
+    "Threat": "Ransomware",
     "Threat_Raw": "",
-    "Title": "FSCF : les données de 28 000 licenciés diffusées après une cyberattaque",
-    "URL": "https://www.cyberattaque.org/fscf-les-donnees-de-28-000-licencies-diffusees-apres-une-cyberattaque/"
+    "Title": "Cyberattaque contre Quorum Groupe : des données liées à E.Leclerc, Renault, JCB et PPG en fuite",
+    "URL": "https://www.cyberattaque.org/cyberattaque-contre-quorum-groupe-des-donnees-liees-a-e-leclerc-renault-jcb-et-ppg-en-fuite/"
    },
-   "key": "ITM-a4157e2e1c8daf67:42de279794f3b56e6ba9f6e7b722e88e2b27833bdde7bfdd696c9b45acc21692",
-   "last_queued_at": "2026-10-27T12:50:45.355370+00:00",
+   "key": "ITM-976e3029d0434410:d1fc33d80edde0f84f9026090ae0e379ac2c54700f52ea069fb6ccd76dc0aae8",
+   "last_queued_at": "2026-10-28T13:39:07.544772+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
