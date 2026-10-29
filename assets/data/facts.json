@@ -127,6 +127,14 @@
   ],
   "version": 3
  },
+ "INC-09073EE29E03": {
+  "display_summary": "Service public fédéral Finances (SPF Finances)",
+  "summary_paragraphs": [
+   "Le Service public fédéral Finances (SPF Finances) confirme être la cible d'un incident de cybersécurité et a désactivé plusieurs plateformes par précaution.",
+   "Aucune fuite de données personnelles n'est confirmée à ce stade selon le SPF Finances."
+  ],
+  "version": 3
+ },
  "INC-096E79FC178A": {
   "display_summary": "Point Vision signale qu'une violation chez un prestataire a exposé des numéros de sécurité sociale et d'autres données de patients.",
   "sensitive_data": {
@@ -344,6 +352,35 @@
   "display_summary": "Deux instances Metabase de la DINUM liées à ProConnect et Nuage-Public ont été compromises avec exfiltration de données.",
   "summary_paragraphs": [
    "Deux instances Metabase de la DINUM, associées à ProConnect et Nuage-Public, ont été compromises."
+  ],
+  "version": 3
+ },
+ "INC-14FECD1E56D5": {
+  "display_summary": "Le Crestois signale une intrusion le 13 octobre 2026 ayant potentiellement exposé noms, prénoms et adresses email de ses lecteurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Intrusion confirmée le 13 octobre 2026 dans l’interface d’administration du site du Crestois.",
+   "Le journal indique que les noms, prénoms et adresses email ont pu être consultés lors de l’intrusion."
   ],
   "version": 3
  },
@@ -600,6 +637,31 @@
  "INC-1E4AB4109456": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-1F5B15404E86": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-200DAD8FFFDF": {
+  "display_summary": "La CTS signale l'exfiltration de données personnelles de 230 000 comptes clients depuis son site Internet.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "230 000 comptes clients ont été concernés par une extraction frauduleuse de données personnelles depuis son site Internet."
+  ],
   "version": 3
  },
  "INC-20C6D9DEDD18": {
@@ -1382,6 +1444,14 @@
   ],
   "version": 3
  },
+ "INC-46701BD1F131": {
+  "display_summary": "Liberté FM, radio associative de Ribérac (Dordogne), a été victime d'une cyberattaque le 28 octobre 2026.",
+  "summary_paragraphs": [
+   "Liberté FM, la radio associative de Ribérac, en Dordogne, a été victime d’une cyberattaque ce mercredi 28 octobre 2026.",
+   "Aucune revendication ni demande de rançon n'accompagne pour l’instant cette annonce publique."
+  ],
+  "version": 3
+ },
  "INC-473AA3A9AF12": {
   "display_summary": "Adéquat : les données de candidats exposées pendant trois mois",
   "summary_paragraphs": [],
@@ -1424,6 +1494,35 @@
  "INC-4AF85812E3E9": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-4B050A659EA3": {
+  "display_summary": "Cybertek signale une intrusion le 7 octobre 2026 ayant permis l'accès à des données personnelles clients via une faille sur cybertek.fr.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une vulnérabilité du site cybertek.fr a été exploitée le 7 octobre 2026, permettant l'accès à des informations personnelles clients."
+  ],
   "version": 3
  },
  "INC-4C59C26E31C7": {
@@ -1648,6 +1747,14 @@
   ],
   "version": 3
  },
+ "INC-5662BDE787F5": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant CTS.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant CTS.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Identifiant."
+  ],
+  "version": 3
+ },
  "INC-5670759E18BE": {
   "display_summary": "Les Cousins a confirmé qu'un code malveillant sur sa page de paiement a pu intercepter des coordonnées bancaires entre le 25 août et le 5 septembre 2026.",
   "sensitive_data": {
@@ -1818,6 +1925,27 @@
   "summary_paragraphs": [
    "Le hacker seraphims affirme avoir compromis son environnement et propose à la vente plusieurs bases représentant environ 3,3 millions de lignes.",
    "Des échantillons montrent la présence de comptes utilisateurs et de hashs de mots de passe confirmés par Cyberattaque.org."
+  ],
+  "version": 3
+ },
+ "INC-5C85D745AB05": {
+  "display_summary": "Des pirates revendiquent la détention de données incluant 14 millions de plaques d'immatriculation liées à Auto-Planning.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une cyberattaque revendiquée contre Auto-Planning viserait près de 18 millions d'identités et 13,9 millions de plaques d'immatriculation.",
+   "Les attaquants affirment avoir exfiltré bases clients, factures, documents confidentiels et codes sources et demandent 33 333 dollars."
   ],
   "version": 3
  },
@@ -2406,7 +2534,7 @@
       "FRENCHBREACHES"
      ],
      "specifics": [],
-     "status": "confirmed",
+     "status": "claimed",
      "value": "données bancaires"
     },
     {
@@ -2416,6 +2544,22 @@
      "specifics": [],
      "status": "unknown",
      "value": "données de santé"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
     }
    ],
    "vulnerable_people": false
@@ -2479,7 +2623,10 @@
  },
  "INC-74F8DA9C8697": {
   "display_summary": "Callibri : 61 000 contacts exposés après une fuite de sa base de données",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate a revendiqué le 10 octobre 2026 détenir une base d'environ 61 000 contacts attribués à Callibri.",
+   "L'échantillon publié contient noms, prénoms, téléphones, adresses postales et données de rendez‑vous selon FrenchBreaches, authenticité non confirmée."
+  ],
   "version": 3
  },
  "INC-76971BFA51B9": {
@@ -3010,7 +3157,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Cave Coste confirme une cyberattaque ayant entraîné la divulgation d'adresses email et de mots de passe clients stockés en clair dans un ancien fichier.",
+   "La faille a été exploitée entre août et début septembre 2026 et corrigée début septembre; l'incident a été reconnu le 3 octobre 2026."
+  ],
   "version": 3
  },
  "INC-8A890C06B458": {
@@ -3276,7 +3426,7 @@
   "version": 3
  },
  "INC-91CC09486E31": {
-  "display_summary": "Renfe confirme une cyberattaque du 24 septembre 2026 ayant potentiellement compromis des données personnelles de voyageurs.",
+  "display_summary": "Renfe signale une cyberattaque du 24 septembre 2026 ayant potentiellement compromis des données personnelles de ses voyageurs.",
   "sensitive_data": {
    "types": [
     {
@@ -3291,7 +3441,7 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un tiers non autorisé a accédé à certains systèmes informatiques le 24 septembre 2026, liés aux processus de vente de billets."
+   "Un accès non autorisé a été détecté le 24 septembre 2026 et visait des systèmes liés aux processus de vente de billets."
   ],
   "version": 3
  },
@@ -3818,6 +3968,27 @@
   ],
   "version": 3
  },
+ "INC-AEA60C8F66F6": {
+  "display_summary": "La Communauté de communes des Portes du Berry signale une cyberattaque détectée le 12 octobre 2026 ayant rendu certaines données inaccessibles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "La communauté de communes des Portes du Berry a détecté une cyberattaque le 12 octobre 2026, entraînant l'indisponibilité de certaines données.",
+   "La collectivité indique qu'un vol de données ne peut actuellement être ni confirmé ni exclu et a déclaré l'incident à la CNIL."
+  ],
+  "version": 3
+ },
  "INC-AEF41727FCA2": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -3935,7 +4106,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate a annoncé la diffusion gratuite d'une base de 16 425 fiches clients attribuées à France Bourse.",
+   "Les extraits consultés indiquent des noms, adresses, e‑mails, téléphones, mots de passe et informations sur les revenus, mais l'authenticité reste à confirmer."
+  ],
   "version": 3
  },
  "INC-B52A1013C987": {
@@ -4358,6 +4532,14 @@
   ],
   "version": 3
  },
+ "INC-C6C111EC6F92": {
+  "display_summary": "Portes du Berry : une cyberattaque menace les dossiers personnels des habitants",
+  "summary_paragraphs": [
+   "L’intrusion a rendu certaines données informatiques inaccessibles et pourrait avoir compromis des informations personnelles transmises par les administrés.",
+   "La collectivité indique n’avoir confirmé aucun vol de données à ce stade mais ne peut exclure une extraction d’informations par les attaquants."
+  ],
+  "version": 3
+ },
  "INC-C76D252079F0": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -4649,6 +4831,14 @@
   ],
   "version": 3
  },
+ "INC-D879F13A339E": {
+  "display_summary": "La Compagnie des Transports Strasbourgeois signale l'exfiltration de données personnelles de clients via une utilisation illicite de son site internet.",
+  "summary_paragraphs": [
+   "La CTS indique une exfiltration de noms, prénoms, dates de naissance, adresses et identifiants de comptes clients.",
+   "La CTS affirme avoir interrompu l'exfiltration, déclaré l'incident à la CNIL et exclut les données bancaires et mots de passe."
+  ],
+  "version": 3
+ },
  "INC-D8AF87664D6E": {
   "display_summary": "Celinni fait l’objet d’une revendication de cyberattaque avec la prétendue exfiltration de 243 871 références et 32 914 diamants GIA.",
   "sensitive_data": {
@@ -4914,6 +5104,14 @@
  "INC-E169348335AE": {
   "display_summary": "Grand Orient de France (GODF)",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-E1CA28A543A8": {
+  "display_summary": "Un pirate affirme mettre en vente plus de 122 000 fiches liées à AVOCATS.BE, incluant des données publiques et prétendument 13 585 comptes privés.",
+  "summary_paragraphs": [
+   "Un internaute affirme détenir et vendre 122 116 fiches attribuées à AVOCATS.BE, dont certaines pourraient provenir de son annuaire public.",
+   "Le pirate revendique aussi des données de 13 585 comptes privés, mais aucune preuve indépendante d'une intrusion n'est fournie."
+  ],
   "version": 3
  },
  "INC-E1DA055D023A": {
@@ -5596,6 +5794,27 @@
   "summary_paragraphs": [
    "Un cybercriminel affirme avoir obtenu une base de données attribuée à VitalWeb.fr contenant selon lui 50 000 lignes de données liées à des patients.",
    "La revendication indique que l’accès aurait été obtenu via un compte compromis dépourvu de 2FA permettant d’interroger l’API."
+  ],
+  "version": 3
+ },
+ "INC-FD1A0DA6CF73": {
+  "display_summary": "Un hacker revendique la diffusion d'une base d'environ 5 000 fiches de contacts et prospects d'AGSI.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un hacker affirme avoir diffusé une base d'environ 5 000 fiches de contacts et de prospects liés à AGSI.",
+   "Cyberattaque.org indique que AGSI n’a pas encore confirmé la fuite."
   ],
   "version": 3
  },

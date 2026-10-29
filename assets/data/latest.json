@@ -1,6 +1,154 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-29",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FD1A0DA6CF73",
+  "location": "France métropolitaine",
+  "org": "AGSI",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/agsi-mvta3wt5s3dnci91z9",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/agsi-un-hacker-revendique-la-fuite-de-5-000-contacts-et-prospects/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agsi-mvta3wt5s3dnci91z9"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un hacker revendique la diffusion d'une base d'environ 5 000 fiches de contacts et prospects d'AGSI.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-29",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E1CA28A543A8",
+  "location": "France métropolitaine",
+  "org": "Ordre des barreaux francophones et germanophone de Belgique",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/ordre-des-barreaux-francophones-et-germanophone-de-belgique-mvtdqn0in7s29avy7cj",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ordre-des-barreaux-francophones-et-germanophone-de-belgique-mvtdqn0in7s29avy7cj"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate affirme mettre en vente plus de 122 000 fiches liées à AVOCATS.BE, incluant des données publiques et prétendument 13 585 comptes privés.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-29",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-5C85D745AB05",
+  "location": "France métropolitaine",
+  "org": "Auto-Planning",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/auto-planning-mvsr5k8z732ik7zcded",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/auto-planning-14-millions-de-plaques-dimmatriculation-revendiquees-par-des-pirates/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/auto-planning-mvsr5k8z732ik7zcded"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des pirates revendiquent la détention de données incluant 14 millions de plaques d'immatriculation liées à Auto-Planning.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D879F13A339E",
+  "location": "France métropolitaine",
+  "org": "Compagnie des Transports Strasbourgeois",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/compagnie-des-transports-strasbourgeois-cts-mvsjyn88bwno9i3umgo",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/compagnie-des-transports-strasbourgeois-cts-mvsjyn88bwno9i3umgo"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Compagnie des Transports Strasbourgeois signale l'exfiltration de données personnelles de clients via une utilisation illicite de son site internet.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-28",
   "high_sensitivity_data_exposed": false,
@@ -38,6 +186,40 @@
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-28",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-AEA60C8F66F6",
+  "location": "France métropolitaine",
+  "org": "Communauté de communes des Portes du Berry",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/communaut-de-communes-des-portes-du-berry-mvsk9pzoj4df8bidfvk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/communaut-de-communes-des-portes-du-berry-mvsk9pzoj4df8bidfvk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Communauté de communes des Portes du Berry signale une cyberattaque détectée le 12 octobre 2026 ayant rendu certaines données inaccessibles.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-91CC09486E31",
   "location": "Inconnu",
   "org": "Renfe",
@@ -58,7 +240,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Renfe confirme une cyberattaque du 24 septembre 2026 ayant potentiellement compromis des données personnelles de voyageurs.",
+  "summary": "Renfe signale une cyberattaque du 24 septembre 2026 ayant potentiellement compromis des données personnelles de ses voyageurs.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -93,6 +275,201 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "Cave Coste a divulgué des adresses email et des mots de passe clients en clair après une cyberattaque exploitant une faille.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5662BDE787F5",
+  "location": "France métropolitaine",
+  "org": "CTS",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/cts.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant CTS.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-46701BD1F131",
+  "location": "Inconnu",
+  "org": "Liberté FM",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/liberte-fm-une-cyberattaque-frappe-la-radio-de-dordogne/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Liberté FM, radio associative de Ribérac (Dordogne), a été victime d'une cyberattaque le 28 octobre 2026.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-200DAD8FFFDF",
+  "location": "Inconnu",
+  "org": "CTS Strasbourg",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cts-strasbourg-les-donnees-de-230-000-comptes-clients-derobees-lors-dune-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La CTS signale l'exfiltration de données personnelles de 230 000 comptes clients depuis son site Internet.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1F5B15404E86",
+  "location": "France métropolitaine",
+  "org": "Marbre Design",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Manufacturing",
+   "evidence_url": "http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/9dc5e696-700c-4c5d-88b7-396487d81128",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://payloadrz5yw227brtbvdqpnlhq3rdcdekdnn3rgucbcdeawq2v6vuyd.onion/posts/9dc5e696-700c-4c5d-88b7-396487d81128"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-14FECD1E56D5",
+  "location": "Inconnu",
+  "org": "Le Crestois",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 1900 à Crest , Le Crestois est un hebdomadaire historique consacré à l’actualité de la vallée de la Drôme.",
+   "evidence_url": "https://www.cyberattaque.org/le-crestois-les-donnees-personnelles-de-ses-lecteurs-exposees-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/le-crestois-les-donnees-personnelles-de-ses-lecteurs-exposees-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le Crestois signale une intrusion le 13 octobre 2026 ayant potentiellement exposé noms, prénoms et adresses email de ses lecteurs.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-09073EE29E03",
+  "location": "France métropolitaine",
+  "org": "Service public fédéral Finances",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Service public fédéral Finances",
+   "evidence_url": "https://frenchbreaches.com/alertes/service-public-f-d-ral-finances-spf-finances-mvsmhff1or8rv1qbcab",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/service-public-f-d-ral-finances-spf-finances-mvsmhff1or8rv1qbcab"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Service public fédéral Finances (SPF Finances)",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -217,7 +594,7 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
+  "credentials_or_secrets_exposed": true,
   "date": "2026-10-27",
   "high_sensitivity_data_exposed": true,
   "id": "INC-6FFC07DEADC9",
@@ -4709,6 +5086,37 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C6C111EC6F92",
+  "location": "Inconnu",
+  "org": "Portes du Berry",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/portes-du-berry-une-cyberattaque-menace-les-dossiers-personnels-des-habitants/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Portes du Berry : une cyberattaque menace les dossiers personnels des habitants",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-12",
@@ -5087,9 +5495,9 @@
    "FRENCHBREACHES"
   ],
   "summary": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "claimed"
   }
  },
  {
@@ -5929,10 +6337,13 @@
   "org": "Institut Sourdille Atlantique",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Éducation / Formation",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "L’Institut Ophtalmologique Sourdille Atlantique est un important établissement spécialisé dans la prise en charge des pathologies de l’œil et la chirurgie ophtalmologique .",
+   "evidence_url": "https://www.cyberattaque.org/institut-sourdille-atlantique-les-patients-exposes-apres-la-cyberattaque-dalaxione/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -6901,6 +7312,46 @@
   ],
   "summary": "Réso : 676 Go de données publiées par un ransomware",
   "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-07",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-4B050A659EA3",
+  "location": "France métropolitaine",
+  "org": "Cybertek",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/cybertek-mvsk5r74rex9n6ijyxn",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cybertek-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cybertek-mvsk5r74rex9n6ijyxn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cybertek signale une intrusion le 7 octobre 2026 ayant permis l'accès à des données personnelles clients via une faille sur cybertek.fr.",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
   }
@@ -9707,318 +10158,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-FB1EC7E5A99A",
-  "location": "France métropolitaine",
-  "org": "Fédération Française de la randonnée",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Sport",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Fédération Française de la randonnée",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-la-randonn-e-ffr-mun6o16r4h0ud0vz18i",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-la-randonn-e-ffr-mun6o16r4h0ud0vz18i"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un pirate revendique la mise en vente d’une base de 1,43 million d’enregistrements d’adhérents de la Fédération française de la randonnée.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-C4A651F59644",
-  "location": "France métropolitaine",
-  "org": "Groupe Proxitel",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/groupe-proxitel-mumql7oahuw19uxxrcs"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Le groupe de ransomware Vexy revendique avoir récupéré 35 Go de données attribuées à Proxitel.",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-8DD0D487E22E",
-  "location": "France métropolitaine",
-  "org": "Laboratoire LCS",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "**Laboratoire LCS**, entreprise française spécialisée dans la conception et la fabrication de lentilles de contact sur mesure, fait l’objet d’une revendication de fuite de données.",
-   "evidence_url": "https://frenchbreaches.com/alertes/laboratoire-lcs-mumvnwq04l1mbwn1j5",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-laboratoire-lcs-les-donnees-de-30-000-porteurs-de-lentilles-en-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/laboratoire-lcs-mumvnwq04l1mbwn1j5"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Laboratoire LCS : les données de 30 000 porteurs de lentilles en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-8977F4E00B2B",
-  "location": "France métropolitaine",
-  "org": "Groupe KRYS",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/groupe-krys-mumwngoynr60917ydof",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/groupe-krys-mumwngoynr60917ydof"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Fuite revendiquée de données de 9 537 personnes attribuée à Krys Group, fichiers publiés sur un forum cybercriminel.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-87031C7549CF",
-  "location": "Inconnu",
-  "org": "Orisha",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/orisha-groupe-kel-13-million-de-personnes-et-143-000-iban-revendiques-apres-une-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "ChimeraZ revendique l'exfiltration de données de KEL/Orisha, soit environ 1,3 million de personnes et 142 913 IBAN.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-5D9E8757B8BE",
-  "location": "France métropolitaine",
-  "org": "SFR",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/sfr-pres-de-16-000-dossiers-de-rendez-vous-de-raccordement-diffuses-sur-le-darknet/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/sfr-mumwwgpf6irybx9jcw7"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "SFR : près de 16 000 dossiers de rendez-vous de raccordement diffusés sur le Darknet",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-36BF040BEA60",
-  "location": "France métropolitaine",
-  "org": "Alaxione",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "**Alaxione**, éditeur français de logiciels utilisés par des cabinets médicaux et établissements de santé, fait l'objet d'une importante revendication de fuite de données. [étiquette source écartée : Santé]",
-   "evidence_url": "https://frenchbreaches.com/alertes/alaxione-mukgc44jlfsfro727v",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/alaxione-les-donnees-de-sante-de-162-millions-de-personnes-en-fuite-67-centres-point-vision-concernes/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/alaxione-mukgc44jlfsfro727v"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Alaxione fait l'objet d'une revendication de fuite de données de santé concernant 16 221 383 personnes.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-2906CE42B265",
-  "location": "Inconnu",
-  "org": "Krys Group",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/krys-group-les-donnees-de-plus-de-8-000-personnes-diffusees-apres-une-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Krys Group : les données de plus de 8 000 personnes diffusées après une cyberattaque",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-09-29",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-20CE598D53A6",
-  "location": "France métropolitaine",
-  "org": "Groupe KEL",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/groupe-kel-orisha-mukzqxqoj9x80n11kl",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/groupe-kel-orisha-mukzqxqoj9x80n11kl"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Revendication de fuite chez KEL/Orisha: ~1,3 million de personnes et ~200 000 documents proposés à la vente par un pirate.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
   }
  }
 ]
