@@ -1,6 +1,299 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C5B5AF9DF4E2",
+  "location": "France métropolitaine",
+  "org": "Autorité des marchés financiers",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/autorit-des-march-s-financiers-amf-mvuy51z3ozeems9avn9",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/autorit-des-march-s-financiers-amf-mvuy51z3ozeems9avn9"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la publication de 11 173 enregistrements liés au domaine amf-france.org de l'Autorité des marchés financiers.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C22941539BC1",
+  "location": "France métropolitaine",
+  "org": "Cherry Rocher",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/cherry-rocher-mvuyevrzxepmkshpet",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cherry-rocher-mvuyevrzxepmkshpet"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cherry Rocher confirme un incident touchant sa boutique en ligne et l'exposition potentielle de données personnelles de clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-4AE32B34B3B0",
+  "location": "France métropolitaine",
+  "org": "Fédération française des échecs",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération française des échecs",
+   "evidence_url": "https://www.cyberattaque.org/federation-francaise-des-echecs-15-730-donnees-de-facturation-en-fuite/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/federation-francaise-des-echecs-15-730-donnees-de-facturation-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-des-checs-ffe-mvuvucknfz4wtsag966"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Fédération française des échecs voit une fuite revendiquée d'un fichier contenant 15 730 enregistrements de facturation couvrant 2008-2026.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-74DACCF9E08E",
+  "location": "Inconnu",
+  "org": "Fédération suisse de basketball",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération suisse de basketball",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AD8302014420",
+  "location": "France métropolitaine",
+  "org": "Incognito",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Incognito est un laboratoire photographique proposant des tirages, agrandissements, impressions sur toile et produits photo personnalisés.",
+   "evidence_url": "https://www.cyberattaque.org/incognito-fr-21-352-commandes-en-fuite-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/incognito-fr-21-352-commandes-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/incognito-mvuvrgxlz5tatqo6vp"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Incognito.fr visé par la diffusion d'une base de 21 352 commandes et 14 996 combinaisons noms+adresses couvrant près de 17 ans.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-00A1AB0800D1",
+  "location": "France métropolitaine",
+  "org": "MySexShop",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/mysexshop-mvuvlj5sstgejcg5ykg",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/mysexshop-fr-des-adresses-de-clients-exposes-dans-une-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mysexshop-mvuvlj5sstgejcg5ykg"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "MySexShop.fr : des adresses de clients exposés dans une fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-339200C3B54D",
+  "location": "France métropolitaine",
+  "org": "Parti Radicale de Gauche",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/parti-radicale-de-gauche-prg-mvurpr190cuwki1hy5g",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/parti-radicale-de-gauche-prg-mvurpr190cuwki1hy5g"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le pirate revendique la publication d'une base de données liée au Parti radical de gauche contenant environ 820 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-691E4F934EDE",
+  "location": "France métropolitaine",
+  "org": "Refugilys",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-29",
   "high_sensitivity_data_exposed": false,
@@ -81,6 +374,40 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-29",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7CD8C5D3BC41",
+  "location": "Inconnu",
+  "org": "Caréco",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 2003, Caréco est un réseau français spécialisé dans le recyclage automobile et la commercialisation de pièces détachées de réemploi.",
+   "evidence_url": "https://www.cyberattaque.org/careco-victime-dune-cyberattaque-des-pirates-menacent-de-publier-les-donnees-de-ses-clients/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/careco-victime-dune-cyberattaque-des-pirates-menacent-de-publier-les-donnees-de-ses-clients/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Caréco fait l'objet d'une revendication de piratage et de menace de diffusion de données clients par des groupes de hackers.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-29",
   "high_sensitivity_data_exposed": false,
@@ -111,6 +438,86 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-29",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6F29A97D3DEC",
+  "location": "France métropolitaine",
+  "org": "Pierres et Mer",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Pierres et Mer, réseau immobilier français spécialisé dans les propriétés du littoral, est visé par une fuite de…",
+   "evidence_url": "https://www.cyberattaque.org/pierres-et-mer-plus-de-45-000-enregistrements-internes-en-fuite-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pierres-et-mer-plus-de-45-000-enregistrements-internes-en-fuite-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pierres-et-mer-mvtoua6prfvty5sn388"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Pierres et Mer : 45 551 enregistrements internes diffusés publiquement après une fuite de données revendiquée.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-7003F55367D8",
+  "location": "France métropolitaine",
+  "org": "Bourse Direct",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Finance",
+   "evidence_url": "https://frenchbreaches.com/alertes/bourse-direct-mvuyn5mfi8mn9058gb",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bourse-direct-victime-dune-cyberattaque-les-iban-de-ses-clients-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bourse-direct-mvuyn5mfi8mn9058gb"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Bourse Direct confirme une cyberattaque ayant exposé les noms, numéros de compte client et IBAN de 800 comptes.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -351,29 +758,38 @@
   "date": "2026-10-28",
   "high_sensitivity_data_exposed": false,
   "id": "INC-46701BD1F131",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "Liberté FM",
   "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Liberté FM est une radio locale qui cherche à donner la parole aux habitants, \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+   "evidence_url": "https://frenchbreaches.com/alertes/libert-fm-mvtp7y5u8aoocygj9gc",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/liberte-fm-une-cyberattaque-frappe-la-radio-de-dordogne/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/libert-fm-mvtp7y5u8aoocygj9gc"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "Liberté FM, radio associative de Ribérac (Dordogne), a été victime d'une cyberattaque le 28 octobre 2026.",
+  "summary": "La radio associative Liberté FM affirme avoir perdu plus de dix ans de travail suite à une cyberattaque.",
   "threat": "Intrusion",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {

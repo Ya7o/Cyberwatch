@@ -1,4 +1,23 @@
 {
+ "INC-00A1AB0800D1": {
+  "display_summary": "MySexShop.fr : des adresses de clients exposés dans une fuite de données",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-00C7F75053E1": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Vélo Grimpe.",
   "summary_paragraphs": [
@@ -1059,6 +1078,14 @@
   ],
   "version": 3
  },
+ "INC-339200C3B54D": {
+  "display_summary": "Le pirate revendique la publication d'une base de données liée au Parti radical de gauche contenant environ 820 personnes.",
+  "summary_paragraphs": [
+   "Un pirate affirme avoir publié une base de données provenant du site partyradicaldegauche.fr et présente un extrait au format JSON.",
+   "Le fichier contiendrait 825 enregistrements concernant environ 820 personnes avec noms, adresses, téléphones, professions et dates de naissance."
+  ],
+  "version": 3
+ },
  "INC-34CEC7E073BC": {
   "display_summary": "Graines de Culture(s) : une cyberattaque coupe le portail de 34 médiathèques en Pévèle Carembault",
   "summary_paragraphs": [],
@@ -1445,10 +1472,10 @@
   "version": 3
  },
  "INC-46701BD1F131": {
-  "display_summary": "Liberté FM, radio associative de Ribérac (Dordogne), a été victime d'une cyberattaque le 28 octobre 2026.",
+  "display_summary": "La radio associative Liberté FM affirme avoir perdu plus de dix ans de travail suite à une cyberattaque.",
   "summary_paragraphs": [
-   "Liberté FM, la radio associative de Ribérac, en Dordogne, a été victime d’une cyberattaque ce mercredi 28 octobre 2026.",
-   "Aucune revendication ni demande de rançon n'accompagne pour l’instant cette annonce publique."
+   "Liberté FM annonce avoir perdu plus de dix ans de travail, d'émissions et de souvenirs à la suite d'un piratage informatique.",
+   "La nature exacte de l'attaque et l'étendue des pertes ne sont pas précisées dans le témoignage."
   ],
   "version": 3
  },
@@ -1489,6 +1516,24 @@
    "L’attaquant a accédé à des données personnelles clients via une vulnérabilité exploitée sur le site procie.com.",
    "Les données exposées comprennent noms, adresses e-mail, téléphones, adresses postales et dates de création de comptes."
   ],
+  "version": 3
+ },
+ "INC-4AE32B34B3B0": {
+  "display_summary": "La Fédération française des échecs voit une fuite revendiquée d'un fichier contenant 15 730 enregistrements de facturation couvrant 2008-2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-4AF85812E3E9": {
@@ -1944,8 +1989,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Une cyberattaque revendiquée contre Auto-Planning viserait près de 18 millions d'identités et 13,9 millions de plaques d'immatriculation.",
-   "Les attaquants affirment avoir exfiltré bases clients, factures, documents confidentiels et codes sources et demandent 33 333 dollars."
+   "Des attaquants revendiquent détenir des données concernant jusqu’à 18 millions de personnes et 14 millions de plaques d’immatriculation liées à Auto-Planning.",
+   "Une demande de rançon est évoquée par les revendiquants."
   ],
   "version": 3
  },
@@ -2298,6 +2343,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-691E4F934EDE": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-697D5F99FFA4": {
   "display_summary": "Des attaquants ont copié pendant plus de deux mois les e-mails entrants de Belnet et leurs pièces jointes vers une infrastructure externe.",
   "summary_paragraphs": [
@@ -2490,6 +2553,28 @@
   ],
   "version": 3
  },
+ "INC-6F29A97D3DEC": {
+  "display_summary": "Pierres et Mer : 45 551 enregistrements internes diffusés publiquement après une fuite de données revendiquée.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un hacker a diffusé une base de données présentée comme provenant de Pierres et Mer, contenant 45 551 enregistrements.",
+   "Les fichiers analysés comprennent agendas de visites, messages commerciaux, descriptions de biens et plus de 11 000 historiques de connexion."
+  ],
+  "version": 3
+ },
  "INC-6F760CFC7E64": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -2569,6 +2654,36 @@
   ],
   "version": 3
  },
+ "INC-7003F55367D8": {
+  "display_summary": "Bourse Direct confirme une cyberattaque ayant exposé les noms, numéros de compte client et IBAN de 800 comptes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.",
+   "La société précise que 800 comptes sont concernés par cet incident."
+  ],
+  "version": 3
+ },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -2618,6 +2733,13 @@
   "summary_paragraphs": [
    "Un cybercriminel nommé Quantique revendique avoir compromis WayToMe et extrait plusieurs tables d'une instance Supabase.",
    "Le pirate revendique 669 445 enregistrements cumulés répartis entre fichiers Users, Routes, Notifications et Parcel."
+  ],
+  "version": 3
+ },
+ "INC-74DACCF9E08E": {
+  "display_summary": "",
+  "summary_paragraphs": [
+   "Un pirate affirme avoir accédé à un extranet de la Fédération suisse de basketball et récupéré des données personnelles."
   ],
   "version": 3
  },
@@ -2788,6 +2910,27 @@
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Pass Pass.",
    "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Date de naissance ; Achats des titres."
+  ],
+  "version": 3
+ },
+ "INC-7CD8C5D3BC41": {
+  "display_summary": "Caréco fait l'objet d'une revendication de piratage et de menace de diffusion de données clients par des groupes de hackers.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des groupes revendiquent avoir compromis le site piecesauto-online.fr et menacent de publier des données clients si une rançon n'est pas payée.",
+   "Des captures d’écran montrent des extraits de base de données comprenant noms, adresses, emails, téléphones et un champ relatif aux mots de passe."
   ],
   "version": 3
  },
@@ -3904,6 +4047,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-AD8302014420": {
+  "display_summary": "Incognito.fr visé par la diffusion d'une base de 21 352 commandes et 14 996 combinaisons noms+adresses couvrant près de 17 ans.",
+  "summary_paragraphs": [
+   "Un hacker a diffusé une base présentée comme provenant d'Incognito.fr contenant 21 352 enregistrements de commandes et 14 996 combinaisons nom+adresse.",
+   "Les fichiers couvrent presque 17 années d'activité, avec des références de commandes d'octobre 2009 à octobre 2026."
+  ],
+  "version": 3
+ },
  "INC-ADEEE05084B6": {
   "display_summary": "La Poste Mobile : son site visé par une cyberattaque DDoS prorusse",
   "sensitive_data": {
@@ -4370,6 +4521,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-C22941539BC1": {
+  "display_summary": "Cherry Rocher confirme un incident touchant sa boutique en ligne et l'exposition potentielle de données personnelles de clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Identifié le 20 octobre 2026, l'incident pourrait avoir permis l'accès à des données personnelles de certains clients."
+  ],
+  "version": 3
+ },
  "INC-C25097FEA710": {
   "display_summary": "Bouteilles et bocaux : une cyberattaque compromet la boutique en ligne et expose des données clients",
   "sensitive_data": {
@@ -4487,6 +4658,24 @@
      "specifics": [],
      "status": "unknown",
      "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-C5B5AF9DF4E2": {
+  "display_summary": "Un pirate revendique la publication de 11 173 enregistrements liés au domaine amf-france.org de l'Autorité des marchés financiers.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
     }
    ],
    "vulnerable_people": false
